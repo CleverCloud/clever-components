@@ -1,5 +1,5 @@
 import { expect } from '@bundled-es-modules/chai';
-import { clampNumber, groupBy, isStringEmpty, randomString, range } from '../src/lib/utils.js';
+import { clampNumber, groupBy, isStringBlank, isStringEmpty, randomString, range } from '../src/lib/utils.js';
 
 describe('range function', function () {
   it('should return array', function () {
@@ -65,6 +65,24 @@ describe('isStringEmpty', () => {
   });
   it('should return false with non empty string', () => {
     expect(isStringEmpty('non-empty-string')).to.eql(false);
+  });
+});
+
+describe('isStringBlank', () => {
+  it('should return true with null', () => {
+    expect(isStringBlank(null)).to.eql(true);
+  });
+  it('should return true with undefined', () => {
+    expect(isStringBlank(undefined)).to.eql(true);
+  });
+  it('should return true with empty string', () => {
+    expect(isStringBlank('')).to.eql(true);
+  });
+  it('should return true with blank string', () => {
+    expect(isStringBlank('   ')).to.eql(true);
+  });
+  it('should return false with non empty string', () => {
+    expect(isStringBlank('non-blank-string')).to.eql(false);
   });
 });
 

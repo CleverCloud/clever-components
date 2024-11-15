@@ -678,6 +678,145 @@ export const translations = {
   'cc-jenkins-info.update.title': `Mises à jour`,
   'cc-jenkins-info.update.up-to-date': `Votre version de Jenkins est à jour.`,
   //#endregion
+  //#region cc-kv-console
+  'cc-kv-console.header': `KV Explorer Console`,
+  'cc-kv-console.shell.prompt': `Ligne de commande`,
+  'cc-kv-console.warning': `Les commandes exécutées dans cette interface sont directement envoyées à la base de données`,
+  //#endregion
+  //#region cc-kv-explorer
+  'cc-kv-explorer.details.empty': `Sélectionnez une clé pour en récupérer le contenu`,
+  'cc-kv-explorer.details.unsupported': `Le type de la clé sélectionnée n'est pas supporté`,
+  'cc-kv-explorer.error.add-key': `Une erreur est survenue lors de l'ajout de la clé`,
+  'cc-kv-explorer.error.delete-key': `Une erreur est survenue lors de la suppression de la clé`,
+  'cc-kv-explorer.error.fetch-keys': `Une erreur est survenue lors de la récupération des clés`,
+  'cc-kv-explorer.error.get-key': `Une erreur est survenue lors de la récupération de la clé`,
+  'cc-kv-explorer.error.key-doesnt-exist': `La clé n'existe plus`,
+  'cc-kv-explorer.filter.all': `Tous`,
+  'cc-kv-explorer.filter.apply': `Appliquer le filtre`,
+  'cc-kv-explorer.filter.by-pattern': `Filtrer par clé`,
+  'cc-kv-explorer.filter.by-type': `Filtrer par type`,
+  'cc-kv-explorer.form.add': `Ajouter`,
+  'cc-kv-explorer.form.error.already-used': `Ce nom de clé est déjà utilisé`,
+  'cc-kv-explorer.form.key': `Nom de la clé`,
+  'cc-kv-explorer.form.reset': `Annuler`,
+  'cc-kv-explorer.form.string.value': `Valeur`,
+  'cc-kv-explorer.form.type': `Type de clé`,
+  'cc-kv-explorer.key.delete': /** @param {{index: number}} _ */ ({ index }) => `Supprimer la clé à l'index ${index}`,
+  'cc-kv-explorer.key.header.copy': `Copier le nom de la clé dans le presse-papier`,
+  'cc-kv-explorer.key.header.delete': `Supprimer`,
+  'cc-kv-explorer.key.type.hash': `Hash`,
+  'cc-kv-explorer.key.type.list': `List`,
+  'cc-kv-explorer.key.type.set': `Set`,
+  'cc-kv-explorer.key.type.string': `String`,
+  'cc-kv-explorer.keys.empty': `La base de données est vide !`,
+  'cc-kv-explorer.keys.empty.create-key': `Créez une clé`,
+  'cc-kv-explorer.keys.header.add-key': `clé`,
+  'cc-kv-explorer.keys.header.add-key.a11y': `Ajouter une clé`,
+  'cc-kv-explorer.keys.header.refresh': `Rafraichir`,
+  'cc-kv-explorer.keys.header.total': /** @param {{total: number}} _ */ ({ total }) =>
+    `${formatNumber(lang, total)} ${plural(total, 'clé')}`,
+  'cc-kv-explorer.keys.no-results': `Aucun résultat ne correspond au filtre`,
+  'cc-kv-explorer.loading.error': `Une erreur est survenue lors de la connection à la base`,
+  'cc-kv-explorer.success.add-key': `La clé a été ajoutée`,
+  'cc-kv-explorer.success.delete-key': `La clé a été supprimée`,
+  //#endregion
+  //#region cc-kv-hash-explorer
+  'cc-kv-hash-explorer.add-form.element-field': `Champ`,
+  'cc-kv-hash-explorer.add-form.element-value': `Valeur`,
+  'cc-kv-hash-explorer.add-form.submit': `Ajouter`,
+  'cc-kv-hash-explorer.add-form.submit.a11y': `Ajouter le champ`,
+  'cc-kv-hash-explorer.element.copy': /** @param {{index: number}} _ */ ({ index }) =>
+    `Copier la valeur du champ à l'index ${index} dans le presse-papier`,
+  'cc-kv-hash-explorer.element.delete': /** @param {{index: number}} _ */ ({ index }) =>
+    `Supprimer le champ à l'index ${index}`,
+  'cc-kv-hash-explorer.element.edit.cancel': `Annuler l'édition de la valeur`,
+  'cc-kv-hash-explorer.element.edit.save': `Modifier la valeur`,
+  'cc-kv-hash-explorer.element.edit.start': /** @param {{index: number}} _ */ ({ index }) =>
+    `Éditer la valeur du champ à l'index ${index}`,
+  'cc-kv-hash-explorer.element.edit.value-input': `Valeur`,
+  'cc-kv-hash-explorer.error.apply-filter': `Une erreur est survenue lors de l'application du filtre`,
+  'cc-kv-hash-explorer.error.element-add': `Une erreur est survenue lors de l'ajout du champ`,
+  'cc-kv-hash-explorer.error.element-delete': `Une erreur est survenue lors de la suppression du champ`,
+  'cc-kv-hash-explorer.error.element-update': `Une erreur est survenue lors de modification de la valeur`,
+  'cc-kv-hash-explorer.error.fetch-elements': `Une erreur est survenue lors de la récupération des champs`,
+  'cc-kv-hash-explorer.filter': `Filtrer par champ`,
+  'cc-kv-hash-explorer.filter.apply': `Appliquer le filtre`,
+  'cc-kv-hash-explorer.header.field': `Champ`,
+  'cc-kv-hash-explorer.header.value': `Valeur`,
+  'cc-kv-hash-explorer.no-results': `Aucun résultat ne correspond au filtre`,
+  'cc-kv-hash-explorer.success.element-add': `Le champ a été ajouté`,
+  'cc-kv-hash-explorer.success.element-delete': `Le champ a été supprimé`,
+  'cc-kv-hash-explorer.success.element-update': `La valeur a été modifiée`,
+  //#endregion
+  //#region cc-kv-hash-input
+  'cc-kv-hash-input.element.add': `Ajouter un nouveau champ`,
+  'cc-kv-hash-input.element.delete': /** @param {{index: number}} _ */ ({ index }) =>
+    `Enlever le champ à l'index ${index}`,
+  'cc-kv-hash-input.element.field-input': `Champ`,
+  'cc-kv-hash-input.element.value-input': `Valeur`,
+  'cc-kv-hash-input.header.field': `Champ`,
+  'cc-kv-hash-input.header.value': `Valeur`,
+  //#endregion
+  //#region cc-kv-list-explorer
+  'cc-kv-list-explorer.add-form.element-position': `Ajouter`,
+  'cc-kv-list-explorer.add-form.element-position.head': `Au début`,
+  'cc-kv-list-explorer.add-form.element-position.tail': `À la fin`,
+  'cc-kv-list-explorer.add-form.element-value': `Élément`,
+  'cc-kv-list-explorer.add-form.submit': `Ajouter`,
+  'cc-kv-list-explorer.add-form.submit.a11y': `Ajouter l'élément`,
+  'cc-kv-list-explorer.element.copy': /** @param {{index: number}} _ */ ({ index }) =>
+    `Copier la valeur à l'index ${index} dans le presse-papier`,
+  'cc-kv-list-explorer.element.edit.cancel': `Annuler l'édition de l'élément`,
+  'cc-kv-list-explorer.element.edit.save': `Modifier l'élément`,
+  'cc-kv-list-explorer.element.edit.start': /** @param {{index: number}} _ */ ({ index }) =>
+    `Éditer l'élément à l'index ${index}`,
+  'cc-kv-list-explorer.element.edit.value-input': `Valeur de l'élément`,
+  'cc-kv-list-explorer.error.apply-filter': `Une erreur est survenue lors de l'application du filtre`,
+  'cc-kv-list-explorer.error.element-add': `Une erreur est survenue lors de l'ajout de l'élément`,
+  'cc-kv-list-explorer.error.element-update': `Une erreur est survenue lors de la modification de l'élément`,
+  'cc-kv-list-explorer.error.fetch-elements': `Une erreur est survenue lors de la récupération des éléments`,
+  'cc-kv-list-explorer.filter': `Filtrer par index`,
+  'cc-kv-list-explorer.filter.apply': `Appliquer le filtre`,
+  'cc-kv-list-explorer.header.index': `Index`,
+  'cc-kv-list-explorer.header.value': `Élément`,
+  'cc-kv-list-explorer.no-results': `Aucun résultat ne correspond au filtre`,
+  'cc-kv-list-explorer.success.element-add': /** @param {{index: number}} _ */ ({ index }) =>
+    `L'élément à été ajouté à l'index ${index}`,
+  'cc-kv-list-explorer.success.element-update': `L'élément à été modifié`,
+  //#endregion
+  //#region cc-kv-list-input
+  'cc-kv-list-input.element.add': `Ajouter un nouvel élément`,
+  'cc-kv-list-input.element.delete': /** @param {{index: number}} _ */ ({ index }) =>
+    `Enlever l'élément à l'index ${index}`,
+  'cc-kv-list-input.element.value-input': `Élément`,
+  'cc-kv-list-input.header.elements': `Éléments`,
+  //#endregion
+  //#region cc-kv-set-explorer
+  'cc-kv-set-explorer.add-form.element-value': `Membre`,
+  'cc-kv-set-explorer.add-form.submit': `Ajouter`,
+  'cc-kv-set-explorer.add-form.submit.a11y': `Ajouter le membre`,
+  'cc-kv-set-explorer.element.copy': /** @param {{index: number}} _ */ ({ index }) =>
+    `Copier la valeur à l'index ${index} dans le presse-papier`,
+  'cc-kv-set-explorer.element.delete': /** @param {{index: number}} _ */ ({ index }) =>
+    `Supprimer le membre à l'index ${index}`,
+  'cc-kv-set-explorer.error.apply-filter': `Une erreur est survenue lors de l'application du filtre`,
+  'cc-kv-set-explorer.error.element-add': `Une erreur est survenue lors de l'ajout du membre`,
+  'cc-kv-set-explorer.error.element-delete': `Une erreur est survenue lors de la suppression du membre`,
+  'cc-kv-set-explorer.error.fetch-elements': `Une erreur est survenue lors de la récupération des membres`,
+  'cc-kv-set-explorer.filter': `Filtre`,
+  'cc-kv-set-explorer.filter.apply': `Appliquer le filtre`,
+  'cc-kv-set-explorer.no-results': `Aucun résultat ne correspond au filtre`,
+  'cc-kv-set-explorer.success.element-add': `Le membre a été ajouté`,
+  'cc-kv-set-explorer.success.element-already-exist': `Le membre existe déjà`,
+  'cc-kv-set-explorer.success.element-delete': `Le membre a été supprimé`,
+  //#endregion
+  //#region cc-kv-string-editor
+  'cc-kv-string-editor.error.update-value': `Une erreur est survenue lors de la modification de la valeur`,
+  'cc-kv-string-editor.form.reset': `Annuler`,
+  'cc-kv-string-editor.form.save': `Sauvegarder`,
+  'cc-kv-string-editor.form.value': `Valeur`,
+  'cc-kv-string-editor.success.update-value': `La valeur a été modifiée`,
+  //#endregion
   //#region cc-loader
   'cc-loader.a11y-name': `Chargement en cours`,
   //#endregion

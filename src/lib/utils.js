@@ -214,6 +214,14 @@ export function isStringEmpty(string) {
 }
 
 /**
+ * @param {string} string
+ * @return {boolean}
+ */
+export function isStringBlank(string) {
+  return string == null || string.trim().length === 0;
+}
+
+/**
  *
  * @param {number} delay
  * @return {Promise<unknown>} a Promise that resolves when the given delay is timed out.
