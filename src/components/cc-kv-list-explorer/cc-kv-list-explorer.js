@@ -538,6 +538,11 @@ export class CcKvListExplorer extends LitElement {
           margin: 0.15em 0;
         }
 
+        .element-value-buttons {
+          display: flex;
+          gap: 0.35em;
+        }
+
         .skeleton {
           background-color: #bbb;
           border-color: #777;
