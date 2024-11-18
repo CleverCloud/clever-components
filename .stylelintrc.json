@@ -1,7 +1,7 @@
 {
   "extends": ["stylelint-config-standard"],
   "plugins": ["stylelint-order"],
-  "customSyntax": "postcss-lit",
+  "customSyntax": "postcss-styled-syntax",
   "rules": {
     "order/properties-alphabetical-order": true,
     "no-duplicate-selectors": true,
