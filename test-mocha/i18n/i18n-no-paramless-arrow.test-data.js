@@ -1,4 +1,4 @@
-import i18nNoParamlessArrow from '../../eslint-local-plugins/i18n/custom-rules/i18n-no-paramless-arrow.js';
+import i18nNoParamlessArrow from '../../eslint/i18n/custom-rules/i18n-no-paramless-arrow.js';
 
 export default {
   name: 'i18n-no-paramless-arrow',

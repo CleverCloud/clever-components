@@ -1,4 +1,4 @@
-import i18nValidValue from '../../eslint-local-plugins/i18n/custom-rules/i18n-valid-value.js';
+import i18nValidValue from '../../eslint/i18n/custom-rules/i18n-valid-value.js';
 
 export default {
   name: 'i18n-valid-value',

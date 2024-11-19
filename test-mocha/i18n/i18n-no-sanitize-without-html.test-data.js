@@ -1,4 +1,4 @@
-import i18nNoSanitizeWithoutHtml from '../../eslint-local-plugins/i18n/custom-rules/i18n-no-sanitize-without-html.js';
+import i18nNoSanitizeWithoutHtml from '../../eslint/i18n/custom-rules/i18n-no-sanitize-without-html.js';
 
 export default {
   name: 'i18n-no-sanitize-without-html',

@@ -180,13 +180,15 @@ Check the CSS of our components with [Stylelint](https://stylelint.io/) and fix 
 
 * Run all unit tests present in `test` with [Web Test Runner](https://modern-web.dev/docs/test-runner/overview/).
 
-## `npm run test:cem`
+## `npm run test:mocha`
 
-* Run unit tests present in `cem/test` with [Mocha](https://mochajs.org/).
+* Run unit tests present in `test-mocha` with [Mocha](https://mochajs.org/).
+* These tests cannot be run with `wtr` because they rely on Node.js / commonjs APIs.
 
-## `npm run test:cem:watch`
+## `npm run test:mocha:watch`
 
-* Run unit tests present in `cem/test` with [Mocha](https://mochajs.org/) in watch mode.
+* Run unit tests present in `test-mocha` with [Mocha](https://mochajs.org/) in watch mode.
+* These tests cannot be run with `wtr` because they rely on Node.js / commonjs APIs.
 
 ## `npm run test:watch`
 

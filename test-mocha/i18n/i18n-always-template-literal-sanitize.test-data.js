@@ -1,4 +1,4 @@
-import i18nAlwaysTemplateLiteralSanitize from '../../eslint-local-plugins/i18n/custom-rules/i18n-always-template-literal-sanitize.js';
+import i18nAlwaysTemplateLiteralSanitize from '../../eslint/i18n/custom-rules/i18n-always-template-literal-sanitize.js';
 
 export default {
   name: 'i18n-always-template-literal-sanitize',

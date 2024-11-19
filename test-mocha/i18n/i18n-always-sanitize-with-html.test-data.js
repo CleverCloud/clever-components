@@ -1,5 +1,5 @@
 // i18n-always-sanitize-with-html.test.mjs
-import i18nAlwaysSanitizeWithHtml from '../../eslint-local-plugins/i18n/custom-rules/i18n-always-sanitize-with-html.js';
+import i18nAlwaysSanitizeWithHtml from '../../eslint/i18n/custom-rules/i18n-always-sanitize-with-html.js';
 
 export default {
   name: 'i18n-always-sanitize-with-html',

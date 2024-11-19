@@ -1,4 +1,4 @@
-import i18nAlwaysArrowWithSanitize from '../../eslint-local-plugins/i18n/custom-rules/i18n-always-arrow-with-sanitize.js';
+import i18nAlwaysArrowWithSanitize from '../../eslint/i18n/custom-rules/i18n-always-arrow-with-sanitize.js';
 
 export default {
   name: 'i18n-always-arrow-with-sanitize',

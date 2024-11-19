@@ -49,8 +49,8 @@
     "stylelint": "stylelint src/components/*/*.js",
     "stylelint:fix": "stylelint src/components/*/*.js --fix",
     "test": "wtr",
-    "test:cem": "mocha cem/test/*.js",
-    "test:cem:watch": "mocha --watch cem/test/*.js",
+    "test:mocha": "mocha test-mocha/**/*.test.*js",
+    "test:mocha:watch": "mocha --watch test-mocha/**/*.*js",
     "test:watch": "wtr --watch",
     "typecheck": "tsc -p tsconfig.ci.json",
     "typecheck:stats": "node tasks/typechecking-stats.js"

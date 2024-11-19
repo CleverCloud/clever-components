@@ -1,4 +1,4 @@
-import { LitElement } from 'lit-element';
+import { LitElement } from 'lit';
 
 /**
  * @typedef {import('./cc-test-component.types.js').Foo} Foo
@@ -11,7 +11,7 @@ import { LitElement } from 'lit-element';
  * @typedef {import('./cc-test-component.types.js').CustomEventFoo} CustomEventFoo
  * @typedef {import('./cc-test-component.types.js').CustomEventBar} CustomEventBar
  * @tyedef {import('./cc-test-component.types.js').ShouldBeIgnored} ShouldBeIgnored
- * @typedef {import('../common.types.js').Common} Common
+ * @typedef {import('./common.types.js').Common} Common
  */
 
 /**
@@ -31,9 +31,9 @@ import { LitElement } from 'lit-element';
  * @fires {CustomType<CustomEventType>} event - Should be ignored (not a CustomEvent type)
  * @evet {CustomEvent<CustomEventType>} event - Should be ignored (wrong tag name)
  */
+// eslint-disable-next-line wc/define-tag-after-class-definition
 export class CcTestComponent extends LitElement {
-
-  constructor () {
+  constructor() {
     super();
 
     /** @type {Foo|Bar} - lorem ipsum.  */
@@ -62,7 +62,5 @@ export class CcTestComponent extends LitElement {
 
     /** @type {PrivateInterface} - lorem ipsum.  */
     this._private = null;
-
   }
-
 }

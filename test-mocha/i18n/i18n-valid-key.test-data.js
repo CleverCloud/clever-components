@@ -1,4 +1,4 @@
-import i18nValidKey from '../../eslint-local-plugins/i18n/custom-rules/i18n-valid-key.js';
+import i18nValidKey from '../../eslint/i18n/custom-rules/i18n-valid-key.js';
 
 export default {
   name: 'i18n-valid-key',

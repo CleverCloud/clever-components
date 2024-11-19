@@ -1,4 +1,4 @@
-import i18nOrder from '../../eslint-local-plugins/i18n/custom-rules/i18n-order.js';
+import i18nOrder from '../../eslint/i18n/custom-rules/i18n-order.js';
 
 export default {
   name: 'i18n-order',
