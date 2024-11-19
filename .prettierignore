@@ -4,11 +4,7 @@ src/stories/assets
 
 # Ignore fixtures
 src/stories/fixtures
-cem/test/fixtures
-
-# Ignore ESLint config file
-**/.eslintrc.cjs
+test-mocha/cem/fixtures
 
 # Ignore MD files
 **/*.md
-
