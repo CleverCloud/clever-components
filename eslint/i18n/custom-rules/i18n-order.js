@@ -1,12 +1,11 @@
-'use strict';
-
-const { isTranslationFile, isMainTranslationNode, getTranslationProperties } = require('./i18n-shared.js');
+import { getTranslationProperties, isMainTranslationNode, isTranslationFile } from './i18n-shared.js';
 
 function getPrefix(key) {
   return key.split('.')[0];
 }
 
-module.exports = {
+/** @type {import('eslint').Rule.RuleModule} */
+export default {
   meta: {
     type: 'suggestion',
     docs: {
@@ -31,33 +30,9 @@ module.exports = {
           return;
         }
 
-        const sourceCode = context.getSourceCode();
-
-        // Identify empty lines inside the translations so we can remove them
-        const emptyLines = sourceCode.lines
-          // Only lines inside the translations node
-          .slice(node.loc.start.line, node.loc.end.line - 1)
-          .map((line, index) => {
-            if (line.trim() === '') {
-              const lineIndex = index + node.loc.start.line + 1;
-              const rangeStart = sourceCode.getIndexFromLoc({ line: lineIndex, column: 0 });
-              const rangeEnd = sourceCode.getIndexFromLoc({ line: lineIndex + 1, column: 0 });
-              return { rangeStart, rangeEnd };
-            }
-            return null;
-          })
-          .filter((a) => a != null);
+        const sourceCode = context.sourceCode;
 
         const keysToNode = {};
-
-        // Identify translation comments so we can remove them (they will be recreated after words
-        const translationComments = sourceCode.ast.comments.filter((commentNode) => {
-          return (
-            commentNode.type === 'Line' &&
-            node.loc.start.line < commentNode.loc.start.line &&
-            commentNode.loc.end.line < node.loc.end.line
-          );
-        });
 
         getTranslationProperties(node).forEach((tpNode) => {
           keysToNode[tpNode.key.value] = tpNode;
@@ -72,6 +47,7 @@ module.exports = {
         });
 
         if (JSON.stringify(translationKeys) !== JSON.stringify(sortedTranslationKeys)) {
+          /** @type {Record<string, Pars>} */
           const firstNodes = {};
 
           const fixes = translationKeys
@@ -82,7 +58,7 @@ module.exports = {
 
               // Add +1 at the end of the range for the trailing comma
               const oldRange = [oldNode.range[0], oldNode.range[1] + 1];
-              const newText = sourceCode.text.substring(newNode.start, newNode.end + 1);
+              const newText = sourceCode.text.substring(newNode.range[0], newNode.range[1] + 1);
 
               const prefix = getPrefix(newKey);
               const isFirstNode = firstNodes[prefix] == null;
@@ -101,24 +77,30 @@ module.exports = {
             node,
             messageId: 'badTranslationKeysSortOrder',
             fix: (fixer) => {
-              return [
-                // Remove empty lines
-                ...emptyLines.flatMap(({ rangeStart, rangeEnd }) => fixer.removeRange([rangeStart, rangeEnd])),
+              // Line numbers start with 1 but `sourceCode.lines` is an array starting with index 0 so if
+              // we want the first line, we need the [0] instead of [1]
+              const translationObjectIndent = sourceCode.lines[node.loc.start.line - 1].match(/^\s*/)?.[0] ?? '';
+              const translationPropertyIndent = sourceCode.lines[node.loc.start.line].match(/^\s*/)?.[0] ?? '';
 
-                // Remove translation comments
-                ...translationComments.flatMap((cmtNode) =>
-                  fixer.removeRange([cmtNode.range[0], cmtNode.range[1] + 1]),
-                ),
+              // Concatenate all fixes into a single one so that we can set the proper baseIndent
+              // Rules are re-run for every single fix returned so if we return several fixes (one for each translation node + removed comment)
+              // this breaks indentation because all subsequent fixes add new indentation levels
+              const orderedTranslations = fixes
+                .map(({ newText, isFirstNode, isLastNode, prefix }) => {
+                  let result = '';
+                  if (isFirstNode) {
+                    result += `${translationPropertyIndent}//#region ${prefix}\n`;
+                  }
+                  result += `${translationPropertyIndent}${newText}`;
+                  if (isLastNode) {
+                    result += `\n${translationPropertyIndent}//#endregion`;
+                  }
+                  return result;
+                })
+                .join('\n');
+              const objectBodyWithOrderedTranslations = `{\n${orderedTranslations}\n${translationObjectIndent}}`;
 
-                // Sort translations (and insert fold region comments)
-                ...fixes.flatMap(({ oldRange, newText, isFirstNode, isLastNode, prefix }) => {
-                  return [
-                    isFirstNode ? fixer.insertTextBeforeRange(oldRange, `  //#region ${prefix}\n`) : null,
-                    fixer.replaceTextRange(oldRange, newText),
-                    isLastNode ? fixer.insertTextAfterRange(oldRange, `\n  //#endregion`) : null,
-                  ].filter((a) => a != null);
-                }),
-              ];
+              return fixer.replaceText(node.declaration.declarations[0].init, objectBodyWithOrderedTranslations);
             },
           });
         }

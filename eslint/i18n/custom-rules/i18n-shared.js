@@ -1,11 +1,9 @@
-'use strict';
-
-function isTranslationFile(context) {
+export function isTranslationFile(context) {
   const filename = context.getFilename();
   return filename.match(/\/translations\/translations\.[a-z]+\.js$/);
 }
 
-function isMainTranslationNode(node) {
+export function isMainTranslationNode(node) {
   return (
     node.type === 'ExportNamedDeclaration' &&
     node.declaration.type === 'VariableDeclaration' &&
@@ -26,7 +24,7 @@ function isMainTranslationNode(node) {
  * @param {String|null} type
  * @returns {*|null}
  */
-function getClosestParentFromType(node, type) {
+export function getClosestParentFromType(node, type) {
   if (node == null) {
     return null;
   }
@@ -37,22 +35,22 @@ function getClosestParentFromType(node, type) {
   let directParent = node;
   do {
     directParent = directParent.parent;
-  } while (directParent.parent?.type !== type && directParent.type !== 'Program');
+  } while (directParent.type !== type && directParent.type !== 'Program');
 
-  return directParent.parent;
+  return directParent;
 }
 
-function getTranslationProperties(node) {
+export function getTranslationProperties(node) {
   return node.declaration.declarations[0].init.properties;
 }
 
-const OPENING_HTML_TAG = /<[a-z]+([^>]*)?>/;
-const CLOSING_HTML_TAG = /<\/[a-z]+>/;
-const HTML_NBSP_ENTITY = '&nbsp;';
+export const OPENING_HTML_TAG = /<[a-z]+([^>]*)?>/;
+export const CLOSING_HTML_TAG = /<\/[a-z]+>/;
+export const HTML_NBSP_ENTITY = '&nbsp;';
 
-function parseTemplate(context, node) {
+export function parseTemplate(context, node) {
   const sourceCode = context.getSourceCode();
-  const contents = sourceCode.text.substring(node.start + 1, node.end - 1);
+  const contents = sourceCode.text.substring(node.range[0] + 1, node.range[1] - 1);
   const hasOpeningHtmlTags = contents.search(OPENING_HTML_TAG) !== -1;
   const hasClosingHtmlTags = contents.search(CLOSING_HTML_TAG) !== -1;
   const hasNbsp = contents.includes(HTML_NBSP_ENTITY);
@@ -60,15 +58,6 @@ function parseTemplate(context, node) {
   return { contents, hasHtml };
 }
 
-function isSanitizeTagFunction(node) {
+export function isSanitizeTagFunction(node) {
   return node.type === 'TaggedTemplateExpression' && node.tag.name === 'sanitize';
 }
-
-module.exports = {
-  isTranslationFile,
-  isMainTranslationNode,
-  getClosestParentFromType,
-  getTranslationProperties,
-  parseTemplate,
-  isSanitizeTagFunction,
-};

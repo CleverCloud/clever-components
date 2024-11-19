@@ -1,11 +1,4 @@
-'use strict';
-
-const {
-  isTranslationFile,
-  isMainTranslationNode,
-  getTranslationProperties,
-  parseTemplate,
-} = require('./i18n-shared.js');
+import { getTranslationProperties, isMainTranslationNode, isTranslationFile, parseTemplate } from './i18n-shared.js';
 
 function testNode(context, key, templateLiteralNode) {
   if (templateLiteralNode.type === 'TemplateLiteral') {
@@ -25,7 +18,8 @@ function report(context, key, templateLiteralNode, contents) {
   });
 }
 
-module.exports = {
+/** @type {import('eslint').Rule.RuleModule} */
+export default {
   meta: {
     type: 'problem',
     docs: {
