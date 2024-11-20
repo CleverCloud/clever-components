@@ -78,9 +78,9 @@ const SKELETON_REQUESTS = Array.from(new Array(NUMBER_OF_POINTS)).map((_, index)
 export class CcTileMetrics extends LitElement {
   static get properties() {
     return {
-      metricsLink: { type: String },
-      metricsState: { type: Object },
-      grafanaLinkState: { type: Object },
+      metricsLink: { type: String, attribute: 'metrics-link' },
+      metricsState: { type: Object, attribute: 'metrics-state' },
+      grafanaLinkState: { type: Object, attribute: 'grafana-link-state' },
       _docsPanelVisible: { type: Boolean, state: true },
     };
   }
