@@ -23,6 +23,8 @@ Here's list of interesting things to read, watch and listen to if you're working
 * [Web Dev Server](https://modern-web.dev/docs/dev-server/overview/)
 * [Web Test Runner](https://modern-web.dev/docs/test-runner/overview/)
 * [Writing one-sentence-per-line](https://hieuphay.com/one-sentence-per-line/)
+* [JSDoc as an alternative TypeScript Syntax](https://alexharri.com/blog/jsdoc-as-an-alternative-typescript-syntax)
+* [ARIA Authoring Practices Guide (APG)](https://www.w3.org/WAI/ARIA/apg/patterns/)
 
 ### From MDN
 
