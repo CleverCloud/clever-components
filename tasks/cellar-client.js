@@ -1,3 +1,4 @@
+// eslint-disable-next-line import/default
 import AWS from '@aws-sdk/client-s3';
 import { createReadStream } from 'fs';
 import rawGlob from 'glob';

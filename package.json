@@ -88,6 +88,7 @@
     "@storybook/addon-essentials": "^8.4.5",
     "@storybook/addon-links": "^8.4.5",
     "@storybook/blocks": "^8.4.5",
+    "@storybook/core-events": "^8.4.5",
     "@storybook/manager-api": "^8.4.5",
     "@storybook/theming": "^8.4.5",
     "@storybook/web-components": "^8.4.5",

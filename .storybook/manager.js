@@ -1,6 +1,6 @@
 import { addons } from '@storybook/manager-api';
 import { create } from '@storybook/theming';
-import { enhanceStoryName } from '../src/stories/lib/story-names';
+import { enhanceStoryName } from '../src/stories/lib/story-names.js';
 
 // We could create an addon to provide a control that would switch between dark / light
 // but it would only switch the UI theme, not the stories so right now it's not worth it
