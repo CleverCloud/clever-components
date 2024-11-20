@@ -12,7 +12,7 @@ export function getCountryName(lang, code, name) {
   try {
     // This API was not really designed for this but...
     return new Intl.DisplayNames([lang], { type: 'region' }).of(code.toUpperCase());
-  } catch (e) {
+  } catch {
     return name;
   }
 }

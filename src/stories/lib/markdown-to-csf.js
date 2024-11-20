@@ -1,6 +1,4 @@
-/* eslint-disable import/no-extraneous-dependencies */
-// we disable this rule because this file is only meant to be processed by Storybook. It is not part of our npm / CDN bundle.
-import yaml from 'js-yaml';
+import { load as yamlLoad } from 'js-yaml';
 import frontmatter from 'remark-frontmatter';
 import remarkGfm from 'remark-gfm';
 import highlight from 'remark-highlight.js';
@@ -52,13 +50,13 @@ export function markdownToCsfWithDocsPage(markdownText) {
 
     /**
      * We export an empty story as "docs" so that it can be considered a "docs only" story
-     * this solution is unofficial & undocumented so it might break some day but it works 
+     * this solution is unofficial & undocumented so it might break some day but it works
      * both with storybook 7 & 8 which should be enough for now.
      * Basically, instead of generating two entries within the menu:
      * - a "Docs" story of type "docs" (yellow icon)
      * - a "My Story Subtitle" (classic story).
      * We get a single "My Story Subtitle" story of type "docs" story (yellow icon).
-    */ 
+    */
     export const docs = {};
   `;
 
@@ -80,7 +78,7 @@ export function getMetaDataFromMd(markdownContent) {
 
 function getSubTitle(frontmatterNode, headingNode) {
   if (frontmatterNode != null) {
-    const fmObject = yaml.load(frontmatterNode.value);
+    const fmObject = yamlLoad(frontmatterNode.value);
     if (fmObject.title != null) {
       return fmObject.title;
     }
@@ -95,7 +93,7 @@ function getSubTitle(frontmatterNode, headingNode) {
 
 function getKind(frontmatterNode) {
   if (frontmatterNode != null) {
-    const fmObject = yaml.load(frontmatterNode.value);
+    const fmObject = yamlLoad(frontmatterNode.value);
     if (fmObject.kind != null) {
       return fmObject.kind;
     }

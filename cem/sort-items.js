@@ -10,14 +10,20 @@ export default function sortItems() {
   return {
     name: 'sort-items',
     packageLinkPhase({ customElementsManifest }) {
-      for (const module of customElementsManifest?.modules) {
-        for (const declaration of module?.declarations) {
-          declaration.attributes?.sort(sortBy('name'));
-          declaration.cssParts?.sort(sortBy('name'));
-          declaration.cssProperties?.sort(sortBy('name'));
-          declaration.events?.sort(sortBy('name'));
-          declaration.members?.sort(sortBy('name'));
-          declaration.slots?.sort(sortBy('name'));
+      if (customElementsManifest.modules == null) {
+        return;
+      }
+
+      for (const module of customElementsManifest.modules) {
+        if (module.declarations != null) {
+          for (const declaration of module.declarations) {
+            declaration.attributes?.sort(sortBy('name'));
+            declaration.cssParts?.sort(sortBy('name'));
+            declaration.cssProperties?.sort(sortBy('name'));
+            declaration.events?.sort(sortBy('name'));
+            declaration.members?.sort(sortBy('name'));
+            declaration.slots?.sort(sortBy('name'));
+          }
         }
       }
     },

@@ -347,7 +347,7 @@ export class CcLogsApplicationView extends LitElement {
       try {
         parseRegex(this._messageFilter);
         this._messageFilterValid = true;
-      } catch (e) {
+      } catch {
         this._messageFilterValid = false;
       }
     } else {

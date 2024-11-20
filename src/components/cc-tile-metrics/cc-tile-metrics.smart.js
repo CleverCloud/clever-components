@@ -33,7 +33,7 @@ defineSmartComponent({
    * @param {AbortSignal} settings.signal
    */
   // @ts-expect-error FIXME: remove once `onContextUpdate` is typed with generics
-  onContextUpdate({ component, context, onEvent, updateComponent, signal }) {
+  onContextUpdate({ context, updateComponent, signal }) {
     const { apiConfig, ownerId, appId, grafanaBaseLink, consoleGrafanaLink } = context;
 
     updateComponent('state', { type: 'loading' });

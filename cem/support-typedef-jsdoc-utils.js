@@ -277,7 +277,7 @@ function handleTuple(tuple, node, ts, parents) {
   return types;
 }
 
-export function convertInterface(ts, node, code, interfaceName, filename) {
+export function convertInterface(ts, node, code, interfaceName) {
   const st = node?.statements.find((st) => st?.name?.getText() === interfaceName);
   if (st == null) {
     return '';

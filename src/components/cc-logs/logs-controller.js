@@ -396,7 +396,7 @@ export class LogsController {
       try {
         const regex = parseRegex(messageFilter.value);
         return (log) => log.message.match(regex) != null;
-      } catch (e) {
+      } catch {
         return falsePredicate;
       }
     }

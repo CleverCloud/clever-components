@@ -93,7 +93,7 @@ async function deletePreviewBranch(branch) {
 }
 
 async function getManifest() {
-  return cellar.getObject({ key: 'preview-manifest.json' }).catch((e) => {
+  return cellar.getObject({ key: 'preview-manifest.json' }).catch(() => {
     return {
       version: 1,
       previews: [],

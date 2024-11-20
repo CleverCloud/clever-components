@@ -485,7 +485,3 @@ export class CcMap extends LitElement {
 }
 
 window.customElements.define('cc-map', CcMap);
-// eslint-disable-next-line spaced-comment
-/// <reference types="leaflet" />
-// eslint-disable-next-line spaced-comment
-/// <reference path="../../node_modules/@types/leaflet/index.d.ts" />

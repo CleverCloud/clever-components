@@ -22,6 +22,7 @@ const config = {
     options: {},
   },
   // index markdown stories so they can be part of the generated menu and lazy loaded
+  // eslint-disable-next-line camelcase
   experimental_indexers: async (existingIndexers) => {
     return [markdownIndexer, ...(existingIndexers ?? [])];
   },

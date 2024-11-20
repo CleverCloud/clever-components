@@ -11,7 +11,7 @@ function isDifferentOrigin(rawUrl) {
   try {
     const url = new URL(rawUrl, location.href);
     return url.origin !== location.origin;
-  } catch (e) {
+  } catch {
     // Consider bad URLs as different origin
     return true;
   }

@@ -8,7 +8,6 @@ import { rawPriceSystemEuro } from './price-system.js';
  */
 
 /* prettier-ignore */
-/* eslint-disable quote-props, camelcase */
 /** @satisfies {Array<RawAddonProvider>} */
 const rawAddonProviders = /** @type {const} */ ([
   {
@@ -6895,7 +6894,6 @@ const rawAddonProviders = /** @type {const} */ ([
     ],
   },
 ]);
-/* eslint-enable quote-props, camelcase */
 
 /**
  * @param {typeof rawAddonProviders[number]['id']} addonProviderId

@@ -62,7 +62,7 @@ export class CcAnsiPaletteSandbox extends LitElement {
     console.log(this._selectedPaletteName);
   }
 
-  firstUpdated(changedProperties) {
+  firstUpdated() {
     getGoghPalettes().then((goghPalettes) => {
       this._palettes = Object.fromEntries(
         Object.entries(goghPalettes).map(([name, p]) => {

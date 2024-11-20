@@ -95,7 +95,7 @@ class CcLogsSandbox extends LitElement {
     `;
   }
 
-  firstUpdated(changedProperties) {
+  firstUpdated() {
     this._onApply();
   }
 

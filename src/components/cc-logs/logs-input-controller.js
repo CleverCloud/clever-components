@@ -136,7 +136,7 @@ export class LogsInputController {
   /**
    * Initiates the drag movement.
    */
-  onMouseDownGutter(e) {
+  onMouseDownGutter() {
     this._windowMouseMoveHandler.connect();
     this._windowMouseUpHandler.connect();
     this._dragState = 'init';
@@ -204,7 +204,7 @@ export class LogsInputController {
   /**
    * Terminate the drag movement.
    */
-  _onDragStop(e) {
+  _onDragStop() {
     this._windowMouseMoveHandler.disconnect();
     this._windowMouseUpHandler.disconnect();
     this._dragAnimationRunner.stop();
