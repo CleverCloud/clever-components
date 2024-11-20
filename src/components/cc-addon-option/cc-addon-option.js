@@ -28,7 +28,7 @@ export class CcAddonOption extends LitElement {
       enabled: { type: Boolean, reflect: true },
       icon: { type: Object },
       logo: { type: String },
-      title: { type: String },
+      heading: { type: String },
     };
   }
 
@@ -44,8 +44,8 @@ export class CcAddonOption extends LitElement {
     /** @type {string|null} The logo URL of the option. */
     this.logo = null;
 
-    /** @type {string|null} Title of the option. */
-    this.title = null;
+    /** @type {string|null} Heading of the option. */
+    this.heading = null;
   }
 
   /** @param {CustomEvent<'DISABLED'|'ENABLED'>} event */
@@ -64,7 +64,7 @@ export class CcAddonOption extends LitElement {
       ${this.icon != null ? html` <cc-icon class="icon" .icon=${this.icon}></cc-icon> ` : ''}
       ${this.logo != null && this.icon == null ? html` <cc-img class="logo" src=${this.logo}></cc-img> ` : ''}
       <div class="option-main">
-        <div class="option-name">${this.title}</div>
+        <div class="option-name">${this.heading}</div>
         <slot class="option-details"></slot>
         <cc-toggle
           .choices=${choices}
