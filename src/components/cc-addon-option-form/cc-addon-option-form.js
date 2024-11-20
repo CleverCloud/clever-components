@@ -26,7 +26,7 @@ export class CcAddonOptionForm extends LitElement {
   static get properties() {
     return {
       options: { type: Array },
-      title: { type: String },
+      heading: { type: String },
     };
   }
 
@@ -36,8 +36,8 @@ export class CcAddonOptionForm extends LitElement {
     /** @type {AddonOptionWithMetadata[]} List of Option object to render. */
     this.options = null;
 
-    /** @type {string} Title of the whole options form. */
-    this.title = null;
+    /** @type {string} Heading of the whole options form. */
+    this.heading = null;
 
     /** @type {AddonOptionStates} */
     this._optionsStates = {};
@@ -65,13 +65,13 @@ export class CcAddonOptionForm extends LitElement {
   render() {
     return html`
       <cc-block>
-        <div slot="header-title">${this.title}</div>
+        <div slot="header-title">${this.heading}</div>
         <div slot="content-body" class="content">
           <slot name="description"></slot>
           ${this.options.map((option) => {
             const enabled = option.enabled || false;
             return html` <cc-addon-option
-              title="${option.title}"
+              heading="${option.title}"
               .icon="${option.icon}"
               logo="${option.logo}"
               ?enabled=${enabled}
