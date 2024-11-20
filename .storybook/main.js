@@ -16,20 +16,6 @@ const config = {
     // The smart component Markdown docs
     '../src/**/*smart*.md',
   ],
-  staticDirs: [
-    {
-      from: '../src/styles/default-theme.css',
-      to: 'styles/default-theme.css',
-    },
-    {
-      from: '../node_modules/highlight.js/styles/vs.css',
-      to: 'styles/vs.css',
-    },
-    {
-      from: '../node_modules/github-markdown-css/github-markdown.css',
-      to: 'styles/github-markdown.css',
-    },
-  ],
   addons: ['@storybook/addon-links', '@storybook/addon-essentials'],
   framework: {
     name: '@storybook/web-components-vite',
