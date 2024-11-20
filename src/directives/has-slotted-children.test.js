@@ -26,6 +26,7 @@ describe('hasSlottedChildrenDirective', () => {
 
   it('Should not set the attribute when slot is not used', async () => {
     const slot = defineCE(
+      // eslint-disable-next-line wc/max-elements-per-file
       class extends LitElement {
         hasIsSlottedAttribute(name) {
           return this.shadowRoot.querySelector('.main').hasAttribute(`${name}-is-slotted`);
@@ -44,6 +45,7 @@ describe('hasSlottedChildrenDirective', () => {
 
   it('Should set the right attribute when stack slot is used', async () => {
     const slot = defineCE(
+      // eslint-disable-next-line wc/max-elements-per-file
       class extends LitElement {
         hasIsSlottedAttribute(name) {
           return this.shadowRoot.querySelector('.main').hasAttribute(`${name}-is-slotted`);
@@ -65,6 +67,7 @@ describe('hasSlottedChildrenDirective', () => {
 
   it('Should set the default attribute when default slot is used', async () => {
     const slot = defineCE(
+      // eslint-disable-next-line wc/max-elements-per-file
       class extends LitElement {
         hasDefaultIsSlottedAttribute() {
           return this.shadowRoot.querySelector('.main').hasAttribute(`is-slotted`);
@@ -85,6 +88,7 @@ describe('hasSlottedChildrenDirective', () => {
 
   it('Should remove the attribute when slot is not used anymore', async () => {
     const slot = defineCE(
+      // eslint-disable-next-line wc/max-elements-per-file
       class extends LitElement {
         hasIsSlottedAttribute(name) {
           return this.shadowRoot.querySelector('.main').hasAttribute(`${name}-is-slotted`);

@@ -8,7 +8,7 @@ const CUSTOM_ERROR_MESSAGES = {
   badEmail: () => '😡 Please enter a valid email address',
 };
 
-export class DemoWithCustomError extends LitElement {
+export class FormDemoWithCustomErrorMessage extends LitElement {
   static get properties() {
     return {};
   }
@@ -52,4 +52,4 @@ export class DemoWithCustomError extends LitElement {
   }
 }
 
-window.customElements.define('form-demo-with-custom-error-message', DemoWithCustomError);
+window.customElements.define('form-demo-with-custom-error-message', FormDemoWithCustomErrorMessage);

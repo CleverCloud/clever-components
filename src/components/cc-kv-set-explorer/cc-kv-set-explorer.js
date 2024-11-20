@@ -381,4 +381,5 @@ export class CcKvSetExplorer extends LitElement {
   }
 }
 
+// eslint-disable-next-line wc/tag-name-matches-class
 window.customElements.define('cc-kv-set-explorer-beta', CcKvSetExplorer);

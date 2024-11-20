@@ -1120,4 +1120,5 @@ export class CcLogs extends LitElement {
   }
 }
 
+// eslint-disable-next-line wc/tag-name-matches-class
 window.customElements.define('cc-logs-beta', CcLogs);

@@ -331,4 +331,5 @@ export class CcKvTerminal extends LitElement {
   }
 }
 
+// eslint-disable-next-line wc/tag-name-matches-class
 window.customElements.define('cc-kv-terminal-beta', CcKvTerminal);

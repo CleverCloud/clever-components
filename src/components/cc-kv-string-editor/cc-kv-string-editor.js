@@ -103,4 +103,5 @@ export class CcKvStringEditor extends LitElement {
   }
 }
 
+// eslint-disable-next-line wc/tag-name-matches-class
 window.customElements.define('cc-kv-string-editor-beta', CcKvStringEditor);

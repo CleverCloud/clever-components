@@ -17,7 +17,7 @@ const DATE_RANGE_SELECTION_OPTIONS = [
   { label: 'yesterday', value: 'yesterday', range: { type: 'predefined', def: 'yesterday' } },
 ];
 
-class CcLogsSandbox extends LitElement {
+class CcLogsApplicationViewSandbox extends LitElement {
   static get properties() {
     return {
       _ownerId: { type: String, state: true },
@@ -136,4 +136,4 @@ class CcLogsSandbox extends LitElement {
   }
 }
 
-window.customElements.define('cc-logs-application-view-sandbox', CcLogsSandbox);
+window.customElements.define('cc-logs-application-view-sandbox', CcLogsApplicationViewSandbox);

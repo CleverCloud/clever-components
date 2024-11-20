@@ -491,4 +491,5 @@ export class CcLogsControl extends LitElement {
   }
 }
 
+// eslint-disable-next-line wc/tag-name-matches-class
 window.customElements.define('cc-logs-control-beta', CcLogsControl);

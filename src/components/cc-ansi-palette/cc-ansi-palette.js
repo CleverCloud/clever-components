@@ -15,7 +15,7 @@ const COLORS = /** @type {const} */ (['red', 'green', 'yellow', 'blue', 'magenta
 /**
  * @typedef {import('../../lib/ansi/ansi.types.js').AnsiPalette} AnsiPalette
  * @typedef {import('../../lib/ansi/ansi.types.js').ColorName} ColorName
- * @typedef {import('lit').PropertyValues<CcAnsiPaletteComponent>} CcAnsiPalettePropertyValues
+ * @typedef {import('lit').PropertyValues<CcAnsiPalette>} CcAnsiPalettePropertyValues
  */
 
 /**
@@ -23,7 +23,7 @@ const COLORS = /** @type {const} */ (['red', 'green', 'yellow', 'blue', 'magenta
  *
  * @cssdisplay block
  */
-export class CcAnsiPaletteComponent extends LitElement {
+export class CcAnsiPalette extends LitElement {
   static get properties() {
     return {
       name: { type: String },
@@ -216,4 +216,4 @@ export class CcAnsiPaletteComponent extends LitElement {
   }
 }
 
-window.customElements.define('cc-ansi-palette', CcAnsiPaletteComponent);
+window.customElements.define('cc-ansi-palette', CcAnsiPalette);

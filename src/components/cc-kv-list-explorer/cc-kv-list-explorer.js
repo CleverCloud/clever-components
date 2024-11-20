@@ -571,4 +571,5 @@ export class CcKvListExplorer extends LitElement {
   }
 }
 
+// eslint-disable-next-line wc/tag-name-matches-class
 window.customElements.define('cc-kv-list-explorer-beta', CcKvListExplorer);

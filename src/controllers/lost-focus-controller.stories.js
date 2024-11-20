@@ -4,6 +4,7 @@ import '../components/cc-button/cc-button.js';
 import { LostFocusController } from './lost-focus-controller.js';
 import docStoryModule from './lost-focus-controller.md';
 
+// eslint-disable-next-line wc/file-name-matches-element
 class MyList extends LitElement {
   static get properties() {
     return {
