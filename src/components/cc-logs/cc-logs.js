@@ -234,7 +234,7 @@ export class CcLogs extends LitElement {
       messageFilter: { type: String, attribute: 'message-filter' },
       messageFilterMode: { type: String, attribute: 'message-filter-mode' },
       metadataFilter: { type: Array, attribute: 'metadata-filter' },
-      metadataRenderers: { type: Object },
+      metadataRenderers: { type: Object, attribute: 'metadata-renderers' },
       stripAnsi: { type: Boolean, attribute: 'strip-ansi' },
       dateDisplay: { type: String, attribute: 'date-display' },
       timezone: { type: String },

@@ -82,6 +82,7 @@ export const defaultStory = () => {
     setTimeout(() => storyDom.querySelector('my-list').focus(), 10);
   };
 
+  /* eslint-disable lit/prefer-static-styles */
   const template = html`
     <style>
       .main {
@@ -98,6 +99,7 @@ export const defaultStory = () => {
       <cc-button @cc-button:click=${onReset}>reset</cc-button>
     </div>
   `;
+  /* eslint-enable lit/prefer-static-styles */
 
   render(template, storyDom);
 
