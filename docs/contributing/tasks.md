@@ -35,8 +35,8 @@ This project provides a series of tasks you can run as [npm scripts](https://doc
 
 * Upload all assets in `cdn-ui` to the preview CDN remote object storage.
 * You can get more details by reading:
-  * [the documentation about the preview](https://www.clever-cloud.com/doc/clever-components/?path=/docs/%F0%9F%91%8B-contributing-previews--docs). 
-  * [the documentation about the release](https://www.clever-cloud.com/doc/clever-components/?path=/docs/%F0%9F%91%8B-contributing-release--docs). 
+  * [the documentation about the preview](https://www.clever-cloud.com/doc/clever-components/?path=/docs/%F0%9F%91%8B-contributing-previews--docs).
+  * [the documentation about the release](https://www.clever-cloud.com/doc/clever-components/?path=/docs/%F0%9F%91%8B-contributing-release--docs).
 
 ## `npm run cdn-release:build`
 
@@ -171,10 +171,6 @@ This project provides a series of tasks you can run as [npm scripts](https://doc
 ## `npm run stylelint`
 
 Check the CSS of our components with [Stylelint](https://stylelint.io/).
-
-## `npm run stylelint:ci`
-
-Used by our GitHub action to check our CSS and report errors.
 
 ## `npm run stylelint:fix`
 

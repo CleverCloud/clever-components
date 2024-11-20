@@ -47,7 +47,6 @@
     "storybook:build": "storybook build -o storybook-static${STORYBOOK_PATH}",
     "storybook:dev": "storybook dev -p 6006 --no-open",
     "stylelint": "stylelint src/components/*/*.js",
-    "stylelint:ci": "stylelint src/components/*/*.js",
     "stylelint:fix": "stylelint src/components/*/*.js --fix",
     "test": "wtr",
     "test:cem": "mocha cem/test/*.js",
