@@ -7,6 +7,8 @@ export type CcKvExplorerState =
   | CcKvExplorerStateLoading
   | CcKvExplorerStateError
   | CcKvExplorerStateLoadingKeys
+  | CcKvExplorerStateFiltering
+  | CcKvExplorerStateRefreshing
   | CcKvExplorerStateLoaded;
 
 export interface CcKvExplorerStateLoading {
@@ -19,6 +21,18 @@ export interface CcKvExplorerStateError {
 
 export interface CcKvExplorerStateLoadingKeys {
   type: 'loading-keys';
+  keys: Array<CcKvKeyState>;
+  total: number;
+}
+
+export interface CcKvExplorerStateFiltering {
+  type: 'filtering';
+  keys: Array<CcKvKeyState>;
+  total: number;
+}
+
+export interface CcKvExplorerStateRefreshing {
+  type: 'refreshing';
   keys: Array<CcKvKeyState>;
   total: number;
 }

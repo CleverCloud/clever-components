@@ -93,7 +93,33 @@ export const loadingMoreKeys = makeStory(conf, {
     {
       state: {
         type: 'loading-keys',
-        keys: keyStates,
+        keys: generateKeyStates(5),
+        total: 100,
+      },
+    },
+  ],
+});
+
+export const filteringKeys = makeStory(conf, {
+  /** @type {Array<Partial<CcKvExplorer>>} */
+  items: [
+    {
+      state: {
+        type: 'filtering',
+        keys: [],
+        total: 100,
+      },
+    },
+  ],
+});
+
+export const refreshingKeys = makeStory(conf, {
+  /** @type {Array<Partial<CcKvExplorer>>} */
+  items: [
+    {
+      state: {
+        type: 'refreshing',
+        keys: [],
         total: 100,
       },
     },

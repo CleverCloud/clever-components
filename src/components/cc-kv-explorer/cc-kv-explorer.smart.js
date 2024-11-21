@@ -71,13 +71,13 @@ defineSmartComponent({
         };
 
         kvKeysScanner.setFilter(filter);
-        await fetchKeys({ keys: [] });
+        await fetchKeys({ type: 'filtering', keys: [] });
       },
     );
 
     onEvent('cc-kv-explorer:refresh-keys', async () => {
       kvKeysScanner.reset();
-      await fetchKeys({ keys: [] });
+      await fetchKeys({ type: 'refreshing', keys: [] });
     });
 
     onEvent('cc-kv-explorer:load-more-keys', async () => {
@@ -705,7 +705,7 @@ defineSmartComponent({
     }
 
     /**
-     * @param {{keys?: Array<CcKvKeyState>, total?: number}} [init]
+     * @param {{type?: 'loading-keys'|'filtering'|'refreshing', keys?: Array<CcKvKeyState>, total?: number}} [init]
      */
     async function fetchKeys(init = {}) {
       /** @type {Array<CcKvKeyState>} */
@@ -718,7 +718,7 @@ defineSmartComponent({
         total = init.total ?? component.state.total;
       }
 
-      keysCtrl.updateState({ type: 'loading-keys', keys: keys ?? [], total: total ?? 0 });
+      keysCtrl.updateState({ type: init.type ?? 'loading-keys', keys: keys ?? [], total: total ?? 0 });
 
       try {
         if (kvKeysScanner.hasMore()) {

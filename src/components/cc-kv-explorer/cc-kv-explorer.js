@@ -36,6 +36,8 @@ import '../cc-select/cc-select.js';
  * @typedef {import('./cc-kv-explorer.types.js').CcKvExplorerState} CcKvExplorerState
  * @typedef {import('./cc-kv-explorer.types.js').CcKvExplorerStateLoaded} CcKvExplorerStateLoaded
  * @typedef {import('./cc-kv-explorer.types.js').CcKvExplorerStateLoadingKeys} CcKvExplorerStateLoadingKeys
+ * @typedef {import('./cc-kv-explorer.types.js').CcKvExplorerStateFiltering} CcKvExplorerStateFiltering
+ * @typedef {import('./cc-kv-explorer.types.js').CcKvExplorerStateRefreshing} CcKvExplorerStateRefreshing
  * @typedef {import('./cc-kv-explorer.types.js').CcKvExplorerDetailState} CcKvExplorerDetailState
  * @typedef {import('./cc-kv-explorer.types.js').CcKvExplorerKeyAddFormState} CcKvExplorerKeyAddFormState
  * @typedef {import('./cc-kv-explorer.types.js').CcKvKeyFilter} CcKvKeyFilter
@@ -149,6 +151,9 @@ export class CcKvExplorer extends LitElement {
     /** @type {CcKvSetExplorerRef} */
     this._setEditor = createRef();
 
+    /** @type {CcKvKeyType | 'all'} */
+    this._filterType = 'all';
+
     new FormErrorFocusController(this, this._addFormRef, () => {
       if (this.detailState.type === 'add') {
         return this.detailState.formState.errors;
@@ -197,7 +202,8 @@ export class CcKvExplorer extends LitElement {
     await this.updateComplete;
     await this._keysRef?.value?.layoutComplete;
     const deleteButton = /** @type {HTMLElement} */ (
-      this.shadowRoot.querySelector(`.delete-key-button[data-index="${index}"]`)
+      this.shadowRoot.querySelector(`.delete-key-button[data-index="${index}"]`) ??
+        this.shadowRoot.querySelector(`.delete-key-button[data-index="${index - 1}"]`)
     );
     if (deleteButton == null) {
       this.focusAddKeyButton();
@@ -340,7 +346,11 @@ export class CcKvExplorer extends LitElement {
     }
   }
 
-  async _onTypeFilterChange() {
+  /**
+   * @param {CustomEvent<CcKvKeyType|'all'>} e
+   */
+  async _onTypeFilterChange(e) {
+    this._filterType = e.detail;
     // we need to wait for next update because the `ElementInternals` form data synchronization is done asynchronously (in `updated` stage)
     await this.updateComplete;
     this._filterFormRef.value.requestSubmit();
@@ -488,8 +498,8 @@ export class CcKvExplorer extends LitElement {
 
     return html`
       <div class="wrapper">
-        ${this._renderFilterBar()}
-        <div class="keys">${this._renderKeys(this.state)}</div>
+        ${this._renderFilterBar(this.state)}
+        <div class="keys">${this._renderKeysHeader(this.state)} ${this._renderKeys(this.state)}</div>
         ${this._renderDetail()}
         <cc-kv-console-beta
           class="console"
@@ -500,10 +510,20 @@ export class CcKvExplorer extends LitElement {
     `;
   }
 
-  _renderFilterBar() {
+  /**
+   * @param {CcKvExplorerStateLoaded | CcKvExplorerStateLoadingKeys | CcKvExplorerStateFiltering| CcKvExplorerStateRefreshing} state
+   * @return {TemplateResult}
+   */
+  _renderFilterBar(state) {
+    const fetching = state.type === 'loading-keys' || state.type === 'filtering' || state.type === 'refreshing';
+    const filtering = state.type === 'filtering';
+
     /** @type {Array<CcKvKeyType | 'all'>} */
     const redisFilters = ['all', ...this.supportedTypes];
-    const kvFilterOptions = redisFilters.map((f) => ({ label: this._getKeyFilterLabel(f), value: f }));
+    const kvFilterOptions = redisFilters
+      // todo: remove this filter and replace by a proper `readonly` property once `<cc-select>` supports it.
+      .filter((f) => !fetching || f !== this._filterType)
+      .map((f) => ({ label: this._getKeyFilterLabel(f), value: f }));
 
     return html`
       <form class="filter-bar" ${ref(this._filterFormRef)} ${formSubmit(this._onFilterFormSubmit)}>
@@ -516,22 +536,33 @@ export class CcKvExplorer extends LitElement {
           .options=${kvFilterOptions}
           @cc-select:input=${this._onTypeFilterChange}
         ></cc-select>
-        <cc-input-text name="match" inline label=${i18n('cc-kv-explorer.filter.by-pattern')}></cc-input-text>
-        <cc-button type="submit" .icon=${iconFilter} hide-text outlined ?disabled=${this.state.type === 'loading-keys'}
-          >${i18n('cc-kv-explorer.filter.apply')}</cc-button
+        <cc-input-text
+          name="match"
+          inline
+          label=${i18n('cc-kv-explorer.filter.by-pattern')}
+          ?readonly=${fetching}
+        ></cc-input-text>
+        <cc-button
+          type="submit"
+          .icon=${iconFilter}
+          hide-text
+          outlined
+          ?disabled=${fetching && !filtering}
+          ?waiting=${filtering}
         >
+          ${i18n('cc-kv-explorer.filter.apply')}
+        </cc-button>
       </form>
     `;
   }
 
   /**
-   * @param {CcKvExplorerStateLoaded | CcKvExplorerStateLoadingKeys} state
+   * @param {CcKvExplorerStateLoaded | CcKvExplorerStateLoadingKeys | CcKvExplorerStateFiltering | CcKvExplorerStateRefreshing} state
    * @return {TemplateResult}
    */
   _renderKeys(state) {
     if (state.type === 'loaded' && state.keys.length === 0) {
       return html`
-        ${this._renderKeysHeader(state)}
         <div class="keys-list-empty">
           ${state.total === 0
             ? html`
@@ -546,7 +577,7 @@ export class CcKvExplorer extends LitElement {
       `;
     }
 
-    const fetching = state.type === 'loading-keys';
+    const fetching = state.type === 'loading-keys' || state.type === 'filtering' || state.type === 'refreshing';
 
     /** @type {Array<{keyState: CcKvKeyState, skeleton: boolean}>} */
     let keys = state.keys.map((keyState) => ({ keyState, skeleton: false }));
@@ -567,7 +598,6 @@ export class CcKvExplorer extends LitElement {
     const getKeyName = (k) => k.keyState.key.name;
 
     return html`
-      ${this._renderKeysHeader(state)}
       <lit-virtualizer
         ${ref(this._keysRef)}
         class="keys-list"
@@ -583,11 +613,13 @@ export class CcKvExplorer extends LitElement {
   }
 
   /**
-   * @param {CcKvExplorerStateLoaded | CcKvExplorerStateLoadingKeys} state
+   * @param {CcKvExplorerStateLoaded | CcKvExplorerStateLoadingKeys | CcKvExplorerStateFiltering | CcKvExplorerStateRefreshing} state
    * @return {TemplateResult}
    */
   _renderKeysHeader(state) {
-    const skeleton = state.type === 'loading-keys';
+    const fetching = state.type === 'loading-keys' || state.type === 'filtering' || state.type === 'refreshing';
+    const skeleton = state.type === 'loading-keys' || state.type === 'refreshing';
+    const refreshing = state.type === 'refreshing';
 
     return html`<div class="keys-header">
       <div>
@@ -608,7 +640,8 @@ export class CcKvExplorer extends LitElement {
         .icon=${iconRefresh}
         hide-text
         outlined
-        ?waiting=${skeleton}
+        ?disabled=${fetching && !refreshing}
+        ?waiting=${refreshing}
         @cc-button:click=${this._onRefreshKeysButtonClick}
         >${i18n('cc-kv-explorer.keys.header.refresh')}</cc-button
       >
@@ -910,7 +943,7 @@ export class CcKvExplorer extends LitElement {
         .filter-bar {
           align-items: center;
           display: flex;
-          gap: 0.5em;
+          gap: 1em;
           grid-area: top-bar;
         }
 
@@ -1027,7 +1060,7 @@ export class CcKvExplorer extends LitElement {
 
         .add-form-header {
           display: grid;
-          gap: 0.5em;
+          gap: 0.35em;
           grid-template-columns: 1fr auto;
         }
 
