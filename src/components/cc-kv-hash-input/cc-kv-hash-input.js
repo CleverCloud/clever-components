@@ -255,11 +255,9 @@ export class CcKvHashInput extends CcFormControlElement {
         }
 
         .elements {
-          column-gap: 0.5em;
           display: grid;
+          gap: 0.35em;
           grid-template-columns: 1fr 1fr auto auto;
-          padding: 0.25em;
-          row-gap: 0.25em;
         }
 
         .element-last {
