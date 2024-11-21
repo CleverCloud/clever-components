@@ -423,7 +423,7 @@ export class CcKvListExplorer extends LitElement {
         ?skeleton=${skeleton}
         ?disabled=${this.disabled}
         @cc-button:click=${this._onCopyKeyButtonClick}
-        >${i18n('cc-kv-list-explorer.element.copy', { index: index + 1 })}</cc-button
+        >${i18n('cc-kv-list-explorer.element.copy', { index })}</cc-button
       >
     `;
   }
