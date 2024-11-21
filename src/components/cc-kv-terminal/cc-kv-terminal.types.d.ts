@@ -16,3 +16,20 @@ export interface CcKvCommandHistoryEntry {
   result: Array<string>;
   success: boolean;
 }
+
+export type CcKvCommandContentItem = CcKvCommandContentItemCommandLine | CcKvCommandContentItemResultLine;
+
+interface CcKvCommandContentItemCommandLine {
+  id: string;
+  type: 'commandLine';
+  line: string;
+  hasResult: boolean;
+}
+
+interface CcKvCommandContentItemResultLine {
+  id: string;
+  type: 'resultLine';
+  line: string;
+  success: boolean;
+  last: boolean;
+}

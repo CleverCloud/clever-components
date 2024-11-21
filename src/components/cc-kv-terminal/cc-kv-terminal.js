@@ -1,3 +1,4 @@
+import '@lit-labs/virtualizer';
 import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { createRef, ref } from 'lit/directives/ref.js';
@@ -10,9 +11,13 @@ import '../cc-icon/cc-icon.js';
 
 /**
  * @typedef {import('./cc-kv-terminal.types.d.ts').CcKvTerminalState} CcKvTerminalState
+ * @typedef {import('./cc-kv-terminal.types.d.ts').CcKvCommandContentItem} CcKvCommandContentItem
  * @typedef {import('../../lib/events.types.js').GenericEventWithTarget<KeyboardEvent,HTMLInputElement>} HTMLInputKeyboardEvent
  * @typedef {import('lit').PropertyValues<CcKvTerminal>} CcKvTerminalPropertyValues
+ * @typedef {import('lit/directives/ref.js').Ref<HTMLDivElement>} HTMLDivElementRef
  * @typedef {import('lit/directives/ref.js').Ref<HTMLInputElement>} HTMLInputElementRef
+ * @typedef {import('lit/directives/ref.js').Ref<Virtualizer>} VirtualizerRef
+ * @typedef {import('@lit-labs/virtualizer/LitVirtualizer.js').LitVirtualizer} Virtualizer
  */
 
 /**
@@ -52,6 +57,19 @@ export class CcKvTerminal extends LitElement {
 
     /** @type {HTMLInputElementRef} */
     this._promptRef = createRef();
+
+    /** @type {VirtualizerRef} */
+    this._historyRef = createRef();
+
+    /** @type {HTMLDivElementRef} */
+    this._scrollerRef = createRef();
+
+    // this is for lit-virtualizer
+    this._elementRender = {
+      /** @param {CcKvCommandContentItem} e */
+      key: (e) => e.id,
+      item: this._renderItem.bind(this),
+    };
   }
 
   /**
@@ -61,6 +79,60 @@ export class CcKvTerminal extends LitElement {
     if (this._cmdHistory.length === 0 || this._cmdHistory[this._cmdHistory.length - 1] !== command) {
       this._cmdHistory.push(command);
     }
+  }
+
+  /**
+   * @returns {Array<CcKvCommandContentItem>}
+   */
+  _getItems() {
+    /** @type {Array<CcKvCommandContentItem>} */
+    const items = [];
+
+    this.state.history.forEach((historyEntry, cmdIndex) => {
+      const cmdId = `cmd/${cmdIndex}`;
+      const resultLength = historyEntry.result.length;
+
+      items.push({
+        id: cmdId,
+        type: 'commandLine',
+        line: historyEntry.commandLine,
+        hasResult: resultLength > 0,
+      });
+
+      historyEntry.result.forEach((lineOfResult, resultIndex) => {
+        items.push({
+          id: `${cmdId}/result/${resultIndex}`,
+          type: 'resultLine',
+          line: lineOfResult,
+          success: historyEntry.success,
+          last: resultIndex === resultLength - 1,
+        });
+      });
+    });
+
+    return items;
+  }
+
+  /**
+   * This is a strange workaround that makes sure we scroll to the bottom of a virtualizer
+   */
+  async _scrollToBottom() {
+    // We force scroll to the bottom.
+    // This can be strange, but it is necessary because in some case, the `layoutComplete` promise that you see below doesn't resolve.
+    // (When a promise doesn't resolve, the code after the `await` is never executed)
+    // The `layoutComplete` promise doesn't resolve when the item added to the model won't generate a DOM node addition because it is too far from the current scroll position
+    // This happens when user
+    // 1. runs a command with a huge output
+    // 2. scrolls up (enough to make the last item to be dropped by the virtualizer)
+    // 3. hits `Enter`
+    // Forcing a first scroll to bottom will force the `layoutComplete` promise to always resolve.
+    this._scrollerRef.value.scrollTop = this._scrollerRef.value.scrollHeight;
+
+    // we wait for virtualizer to complete layout
+    await this._historyRef.value?.layoutComplete;
+
+    // After the layout completes, we can do the real scroll to bottom
+    this._scrollerRef.value.scrollTop = this._scrollerRef.value.scrollHeight;
   }
 
   /**
@@ -124,6 +196,10 @@ export class CcKvTerminal extends LitElement {
         }
       }
     }
+
+    // When an input text receives this kind of event, the browser automatically scrolls to make it visible.
+    // But to be pixel perfect, we force scroll to the bottom of the scroller.
+    this._scrollerRef.value.scrollTop = this._scrollerRef.value.scrollHeight;
   }
 
   /**
@@ -149,9 +225,11 @@ export class CcKvTerminal extends LitElement {
   /**
    * @param {CcKvTerminalPropertyValues} changedProperties
    */
-  updated(changedProperties) {
-    if (changedProperties.has('state')) {
-      this._promptRef.value?.scrollIntoView();
+  async updated(changedProperties) {
+    if (changedProperties.has('state') && this.state.type === 'idle') {
+      await this._scrollToBottom();
+      // don't ask me why, but we really need to call it twice to make sure it really scrolls to the bottom
+      await this._scrollToBottom();
     }
   }
 
@@ -168,23 +246,15 @@ export class CcKvTerminal extends LitElement {
             ${i18n('cc-kv-terminal.warning')}
           </div>
         </div>
-        <div class="content">
-          ${this.state.history.length > 0
-            ? html`
-                <div aria-live="polite" aria-atomic="true">
-                  ${this.state.history.map(({ commandLine, result, success }) => {
-                    return html`
-                      <div class="history-entry">
-                        <div class="history-entry-command">
-                          <cc-icon .icon=${iconShellPrompt}></cc-icon>${commandLine}
-                        </div>
-                        ${result.map((l) => html`<div class=${classMap({ result: true, error: !success })}>${l}</div>`)}
-                      </div>
-                    `;
-                  })}
-                </div>
-              `
-            : ''}
+        <div class="scroller" ${ref(this._scrollerRef)}>
+          <lit-virtualizer
+            ${ref(this._historyRef)}
+            aria-live="polite"
+            aria-atomic="true"
+            .items=${this._getItems()}
+            .keyFunction=${this._elementRender.key}
+            .renderItem=${this._elementRender.item}
+          ></lit-virtualizer>
           <div class="prompt">
             <cc-icon .icon=${iconShellPrompt}></cc-icon>
             <label class="visually-hidden" for="prompt">${i18n('cc-kv-terminal.shell.prompt')}</label>
@@ -204,6 +274,22 @@ export class CcKvTerminal extends LitElement {
     `;
   }
 
+  /**
+   * @param {CcKvCommandContentItem} item
+   */
+  _renderItem(item) {
+    switch (item.type) {
+      case 'commandLine': {
+        return html`<div class="command ${classMap({ empty: !item.hasResult })}">
+          <cc-icon .icon=${iconShellPrompt}></cc-icon>${item.line}
+        </div>`;
+      }
+      case 'resultLine': {
+        return html`<div class="result ${classMap({ error: !item.success, last: item.last })}">${item.line}</div>`;
+      }
+    }
+  }
+
   static get styles() {
     return [
       accessibilityStyles,
@@ -219,8 +305,6 @@ export class CcKvTerminal extends LitElement {
         }
 
         .wrapper {
-          --shell-gap: 0.5em;
-
           background-color: var(--cc-kv-terminal-color-background);
           color: var(--cc-kv-terminal-color-foreground);
           display: grid;
@@ -254,23 +338,17 @@ export class CcKvTerminal extends LitElement {
           gap: 0.5em;
         }
 
-        .content {
+        .scroller {
           overflow: auto;
           padding: 0.5em;
         }
 
-        .history-entry {
-          display: flex;
-          flex-direction: column;
-          gap: 0.2em;
-          padding-bottom: var(--shell-gap);
-        }
-
-        .history-entry-command {
+        .command {
           align-items: center;
           display: flex;
           font-weight: bold;
           gap: 0.2em;
+          padding-bottom: 0.2em;
         }
 
         cc-icon {
@@ -285,6 +363,11 @@ export class CcKvTerminal extends LitElement {
 
         .result.error {
           color: var(--cc-kv-terminal-color-foreground-error);
+        }
+
+        .result.last,
+        .command.empty {
+          padding-bottom: 0.5em;
         }
 
         .prompt {
