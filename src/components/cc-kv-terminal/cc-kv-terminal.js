@@ -1,3 +1,4 @@
+import '@lit-labs/virtualizer';
 import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { createRef, ref } from 'lit/directives/ref.js';
@@ -10,9 +11,13 @@ import '../cc-icon/cc-icon.js';
 
 /**
  * @typedef {import('./cc-kv-terminal.types.d.ts').CcKvTerminalState} CcKvTerminalState
+ * @typedef {import('./cc-kv-terminal.types.d.ts').CcKvCommandContentItem} CcKvCommandContentItem
  * @typedef {import('../../lib/events.types.js').GenericEventWithTarget<KeyboardEvent,HTMLInputElement>} HTMLInputKeyboardEvent
  * @typedef {import('lit').PropertyValues<CcKvTerminal>} CcKvTerminalPropertyValues
+ * @typedef {import('lit/directives/ref.js').Ref<HTMLDivElement>} HTMLDivElementRef
  * @typedef {import('lit/directives/ref.js').Ref<HTMLInputElement>} HTMLInputElementRef
+ * @typedef {import('lit/directives/ref.js').Ref<Virtualizer>} VirtualizerRef
+ * @typedef {import('@lit-labs/virtualizer/LitVirtualizer.js').LitVirtualizer} Virtualizer
  */
 
 /**
@@ -52,6 +57,22 @@ export class CcKvTerminal extends LitElement {
 
     /** @type {HTMLInputElementRef} */
     this._promptRef = createRef();
+
+    /** @type {VirtualizerRef} */
+    this._contentRef = createRef();
+
+    /** @type {HTMLDivElementRef} */
+    this._scrollerRef = createRef();
+
+    /** @type {boolean} */
+    this._shouldRestoreFocusToPrompt = false;
+
+    // this is for lit-virtualizer
+    this._elementRender = {
+      /** @param {CcKvCommandContentItem} e */
+      key: (e) => e.id,
+      item: this._renderItem.bind(this),
+    };
   }
 
   /**
@@ -64,12 +85,63 @@ export class CcKvTerminal extends LitElement {
   }
 
   /**
+   * @returns {Array<CcKvCommandContentItem>}
+   */
+  _getItems() {
+    /** @type {Array<CcKvCommandContentItem>} */
+    const items = [];
+
+    this.state.history.forEach((historyEntry, cmdIndex) => {
+      const cmdId = `cmd/${cmdIndex}`;
+
+      items.push({
+        id: cmdId,
+        type: 'commandLine',
+        line: historyEntry.commandLine,
+      });
+
+      const resultLength = historyEntry.result.length;
+
+      historyEntry.result.forEach((lineOfResult, resultIndex) => {
+        items.push({
+          id: `${cmdId}/result/${resultIndex}`,
+          type: 'resultLine',
+          line: lineOfResult,
+          success: historyEntry.success,
+          last: resultIndex === resultLength - 1,
+        });
+      });
+    });
+
+    const isCommandRunning = this.state.type === 'running';
+    const currentCommandLine = this.state.type === 'running' ? this.state.commandLine : '';
+
+    items.push({
+      id: 'prompt',
+      type: 'prompt',
+      command: currentCommandLine,
+      running: isCommandRunning,
+    });
+    if (isCommandRunning) {
+      items.push({
+        id: 'caret',
+        type: 'caret',
+      });
+    }
+
+    return items;
+  }
+
+  /**
    * @param {HTMLInputKeyboardEvent} e
    */
   _onShellPromptKeyDown(e) {
     e.stopPropagation();
 
     if (e.key === 'Enter') {
+      // ask for restoring focus on the next update.
+      this._shouldRestoreFocusToPrompt = true;
+
       e.preventDefault();
       this._cmdHistoryIndex = null;
       const commandLine = e.target.value.trim();
@@ -149,16 +221,32 @@ export class CcKvTerminal extends LitElement {
   /**
    * @param {CcKvTerminalPropertyValues} changedProperties
    */
-  updated(changedProperties) {
-    if (changedProperties.has('state')) {
-      this._promptRef.value?.scrollIntoView();
+  async updated(changedProperties) {
+    if (changedProperties.has('state') && this.state.type === 'idle') {
+      await this._contentRef.value?.layoutComplete;
+
+      // can be replaced with the scrollIntoView virtualizer API once lit virtualizer has been fixed
+      this._scrollerRef.value?.scrollTo(0, this._scrollerRef.value?.scrollHeight);
+
+      // restores focus only if necessary
+      if (this._shouldRestoreFocusToPrompt) {
+        this._shouldRestoreFocusToPrompt = false;
+        // if the command result was not very verbose, the _promptRef is set
+        // we should not wait for layoutComplete in such cases because it simply won't be triggered
+        // if you try to wait for the layoutComplete before focusing in such cases, the code after `layoutComplete` won't be run until the next `layoutComplete`, for instance the next time the component is scrolled
+        if (this._promptRef.value != null) {
+          this._promptRef.value.focus();
+        } else {
+          // if promptRef isn't set, it means it's not yet rendered and we should wait before trying to focus it
+          await this._contentRef.value?.layoutComplete;
+          this._promptRef.value?.focus();
+        }
+      }
     }
   }
 
   render() {
-    const isCommandRunning = this.state.type === 'running';
-    const currentCommandLine = this.state.type === 'running' ? this.state.commandLine : '';
-
+    const items = this._getItems();
     return html`
       <div class="wrapper" @mouseup=${this._onContentMouseUp} @keydown=${this._onShellPromptKeyDown}>
         <div class="header">
@@ -168,40 +256,49 @@ export class CcKvTerminal extends LitElement {
             ${i18n('cc-kv-terminal.warning')}
           </div>
         </div>
-        <div class="content">
-          ${this.state.history.length > 0
-            ? html`
-                <div aria-live="polite" aria-atomic="true">
-                  ${this.state.history.map(({ commandLine, result, success }) => {
-                    return html`
-                      <div class="history-entry">
-                        <div class="history-entry-command">
-                          <cc-icon .icon=${iconShellPrompt}></cc-icon>${commandLine}
-                        </div>
-                        ${result.map((l) => html`<div class=${classMap({ result: true, error: !success })}>${l}</div>`)}
-                      </div>
-                    `;
-                  })}
-                </div>
-              `
-            : ''}
-          <div class="prompt">
-            <cc-icon .icon=${iconShellPrompt}></cc-icon>
-            <label class="visually-hidden" for="prompt">${i18n('cc-kv-terminal.shell.prompt')}</label>
-            <input
-              ${ref(this._promptRef)}
-              id="prompt"
-              type="text"
-              autocomplete="false"
-              spellcheck="false"
-              .value=${currentCommandLine}
-              ?readonly=${isCommandRunning}
-            />
-          </div>
-          ${isCommandRunning ? html`<div><span class="caret-blink">&nbsp;</span></div>` : ''}
+        <div class="scroller" ${ref(this._scrollerRef)}>
+          <lit-virtualizer
+            class="content"
+            aria-live="polite"
+            aria-atomic="true"
+            ${ref(this._contentRef)}
+            .items=${items}
+            .keyFunction=${this._elementRender.key}
+            .renderItem=${this._elementRender.item}
+          ></lit-virtualizer>
         </div>
       </div>
     `;
+  }
+
+  /**
+   * @param {CcKvCommandContentItem} item
+   */
+  _renderItem(item) {
+    switch (item.type) {
+      case 'caret':
+        return html`<div><span class="caret-blink">&nbsp;</span></div>`;
+      case 'commandLine':
+        return html`<div class="command"><cc-icon .icon=${iconShellPrompt}></cc-icon>${item.line}</div>`;
+      case 'resultLine': {
+        const clazz = { result: true, error: !item.success, last: item.last };
+        return html`<div class=${classMap(clazz)}>${item.line}</div>`;
+      }
+      case 'prompt':
+        return html`<div class="prompt">
+          <cc-icon .icon=${iconShellPrompt}></cc-icon>
+          <label class="visually-hidden" for="prompt">${i18n('cc-kv-terminal.shell.prompt')}</label>
+          <input
+            ${ref(this._promptRef)}
+            id="prompt"
+            type="text"
+            autocomplete="false"
+            spellcheck="false"
+            .value=${item.command}
+            ?readonly=${item.running}
+          />
+        </div>`;
+    }
   }
 
   static get styles() {
@@ -219,7 +316,8 @@ export class CcKvTerminal extends LitElement {
         }
 
         .wrapper {
-          --shell-gap: 0.5em;
+          --shell-inner-gap: 0.2em; /* gap between command line and first result line */
+          --shell-gap: 0.5em; /* gap between result and next command */
 
           background-color: var(--cc-kv-terminal-color-background);
           color: var(--cc-kv-terminal-color-foreground);
@@ -255,22 +353,19 @@ export class CcKvTerminal extends LitElement {
         }
 
         .content {
+          margin: 0.5em;
+        }
+
+        .content.overflow {
           overflow: auto;
-          padding: 0.5em;
         }
 
-        .history-entry {
-          display: flex;
-          flex-direction: column;
-          gap: 0.2em;
-          padding-bottom: var(--shell-gap);
-        }
-
-        .history-entry-command {
+        .command {
           align-items: center;
           display: flex;
           font-weight: bold;
           gap: 0.2em;
+          padding-bottom: var(--shell-inner-gap);
         }
 
         cc-icon {
@@ -325,6 +420,12 @@ export class CcKvTerminal extends LitElement {
           50% {
             background-color: var(--cc-kv-terminal-color-foreground);
           }
+        }
+
+        .scroller {
+          /* max-height: 25em; */
+          overflow-x: hidden;
+          overflow-y: auto;
         }
       `,
     ];
