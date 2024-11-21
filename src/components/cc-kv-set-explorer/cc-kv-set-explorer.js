@@ -369,8 +369,8 @@ export class CcKvSetExplorer extends LitElement {
         .add-form {
           border-top: 1px solid var(--cc-color-border-neutral-strong);
           display: flex;
-          gap: 0.5em;
-          padding: 1em;
+          gap: 1em;
+          padding: 0.5em;
         }
 
         .add-form cc-input-text {
