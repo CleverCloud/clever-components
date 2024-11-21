@@ -825,10 +825,6 @@ export const translations = {
   'cc-logs.unselect-button.label': /** @param {{index: number}} _ */ ({ index }) => `Unselect the line ${index}`,
   //#endregion
   //#region cc-logs-application-view
-  'cc-logs-application-view.filter': `Filter`,
-  'cc-logs-application-view.filter.bad-format': `Invalid regex`,
-  'cc-logs-application-view.filter.mode.regex': `Filter with a regular expression`,
-  'cc-logs-application-view.filter.mode.strict': `Filter with an exact string`,
   'cc-logs-application-view.fullscreen': `Fullscreen`,
   'cc-logs-application-view.fullscreen.exit': `Exit fullscreen`,
   'cc-logs-application-view.logs.error': `Something went wrong while loading logs`,

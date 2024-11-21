@@ -8,8 +8,6 @@ import {
   iconRemixPlayLine,
 } from '../../assets/cc-remix.icons.js';
 import { dispatchCustomEvent } from '../../lib/events.js';
-import { parseRegex } from '../../lib/regex-parse.js';
-import { isStringEmpty } from '../../lib/utils.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-datetime-relative/cc-datetime-relative.js';
 import '../cc-icon/cc-icon.js';
@@ -18,6 +16,7 @@ import '../cc-logs-control/cc-logs-control.js';
 import '../cc-logs-date-range-selector/cc-logs-date-range-selector.js';
 import { dateRangeSelectionToDateRange } from '../cc-logs-date-range-selector/date-range-selection.js';
 import '../cc-logs-instances/cc-logs-instances.js';
+import '../cc-logs-message-filter/cc-logs-message-filter.js';
 import '../cc-notice/cc-notice.js';
 import '../cc-toggle/cc-toggle.js';
 
@@ -55,9 +54,9 @@ const CUSTOM_METADATA_RENDERERS = {
  * @typedef {import('./cc-logs-application-view.types.js').ProgressState} ProgressState
  * @typedef {import('../cc-logs/cc-logs.types.js').Log} Log
  * @typedef {import('../cc-logs/cc-logs.types.js').MetadataRenderer} MetadataRenderer
- * @typedef {import('../cc-logs/cc-logs.types.js').LogMessageFilterMode} LogMessageFilterMode
  * @typedef {import('../cc-logs-date-range-selector/cc-logs-date-range-selector.types.js').LogsDateRangeSelection} LogsDateRangeSelection
  * @typedef {import('../cc-logs-date-range-selector/cc-logs-date-range-selector.types.js').LogsDateRangeSelectionChangeEventData} LogsDateRangeSelectionChangeEventData
+ * @typedef {import('../cc-logs-message-filter/cc-logs-message-filter.types.js').LogsMessageFilterValue} LogsMessageFilterValue
  * @typedef {import('lit/directives/ref.js').Ref<CcLogsControl>} RefCcLogsControl
  * @typedef {import('lit').PropertyValues<CcLogsApplicationView>} CcLogsApplicationViewPropertyValues
  * @typedef {import('lit').TemplateResult<1>} TemplateResult
@@ -79,10 +78,9 @@ export class CcLogsApplicationView extends LitElement {
       overflowWatermarkOffset: { type: Number, attribute: 'overflow-watermark-offset' },
       selectedInstances: { type: Array, attribute: 'selected-instances' },
       state: { type: Object },
-      _messageFilter: { type: String, state: true },
-      _messageFilterMode: { type: String, state: true },
+      _fullscreen: { type: Boolean, state: true },
+      _messageFilter: { type: Object, state: true },
       _overflowDecision: { type: String, state: true },
-      _selectedDateRangeMenuEntry: { type: String, state: true },
     };
   }
 
@@ -125,6 +123,9 @@ export class CcLogsApplicationView extends LitElement {
 
     this._loadingProgressCtrl = new LoadingProgressController(this);
 
+    /** @type {LogsMessageFilterValue} */
+    this._messageFilter = { value: '', mode: 'loose' };
+
     /** @type {{instance: LogsMetadataDisplay}} */
     this._metadataDisplay = {
       instance: {
@@ -135,15 +136,6 @@ export class CcLogsApplicationView extends LitElement {
 
     /** @type {'none'|'accepted'|'discarded'} */
     this._overflowDecision = 'none';
-
-    /** @type {string} */
-    this._messageFilter = '';
-
-    /** @type {LogMessageFilterMode} */
-    this._messageFilterMode = 'loose';
-
-    /** @type {boolean} */
-    this._messageFilterValid = true;
 
     this._fullscreen = false;
   }
@@ -186,21 +178,6 @@ export class CcLogsApplicationView extends LitElement {
     }
 
     return i18n('cc-logs-application-view.progress.loading', { percent: this._loadingProgressCtrl.percent / 100 });
-  }
-
-  _validateMessageFilter() {
-    if (isStringEmpty(this._messageFilter)) {
-      this._messageFilterValid = true;
-    } else if (this._messageFilterMode === 'regex') {
-      try {
-        parseRegex(this._messageFilter);
-        this._messageFilterValid = true;
-      } catch {
-        this._messageFilterValid = false;
-      }
-    } else {
-      this._messageFilterValid = true;
-    }
   }
 
   /* endregion */
@@ -281,29 +258,10 @@ export class CcLogsApplicationView extends LitElement {
   }
 
   /**
-   * @param {Object} event
-   * @param {string} event.detail
+   * @param {CustomEvent<LogsMessageFilterValue>} event
    */
-  _onTextFilterInput({ detail }) {
-    this._messageFilter = detail;
-
-    this._validateMessageFilter();
-  }
-
-  /**
-   * @param {Event & {target: HTMLElement & {dataset: {mode: LogMessageFilterMode}}}} e
-   * @private
-   */
-  _onTextFilterModeClick(e) {
-    const mode = e.target.dataset.mode;
-
-    if (this._messageFilterMode === mode) {
-      this._messageFilterMode = 'loose';
-    } else {
-      this._messageFilterMode = mode;
-    }
-
-    this._validateMessageFilter();
+  _onMessageFilterInput(event) {
+    this._messageFilter = event.detail;
   }
 
   /* endregion */
@@ -516,9 +474,6 @@ export class CcLogsApplicationView extends LitElement {
           })
         : [];
 
-    const strictToggleButtonLabel = i18n('cc-logs-application-view.filter.mode.strict');
-    const regexToggleButtonLabel = i18n('cc-logs-application-view.filter.mode.regex');
-
     return html`
       <cc-logs-control-beta
         ${ref(this._logsRef)}
@@ -527,8 +482,8 @@ export class CcLogsApplicationView extends LitElement {
         limit="${this.limit}"
         .dateDisplay=${this.options['date-display']}
         .metadataDisplay=${this._metadataDisplay}
-        .messageFilter=${this._messageFilter}
-        .messageFilterMode=${this._messageFilterMode}
+        .messageFilter=${this._messageFilter.value}
+        .messageFilterMode=${this._messageFilter.mode}
         .metadataFilter=${metadataFilter}
         .metadataRenderers=${CUSTOM_METADATA_RENDERERS}
         .palette=${this.options.palette}
@@ -537,58 +492,22 @@ export class CcLogsApplicationView extends LitElement {
         ?wrap-lines=${this.options['wrap-lines']}
         @cc-logs-control:option-change=${this._onLogsOptionChange}
       >
-        <div slot="header">
-          <div class="logs-header">
-            <div class="input-wrapper">
-              <cc-input-text
-                class="logs-filter-input"
-                label=${i18n('cc-logs-application-view.filter')}
-                .value=${this._messageFilter}
-                inline
-                @cc-input-text:input=${this._onTextFilterInput}
-              >
-              </cc-input-text>
+        <div slot="header" class="logs-header">
+          <cc-logs-message-filter-beta
+            class="logs-message-filter"
+            .filter=${this._messageFilter}
+            @cc-logs-message-filter:input=${this._onMessageFilterInput}
+          ></cc-logs-message-filter-beta>
 
-              <div class="inner-buttons-wrapper">
-                ${!this._messageFilterValid
-                  ? html`
-                      <div class="logs-filter-input-error" id="logs-filter-input-error">
-                        ${i18n('cc-logs-application-view.filter.bad-format')}
-                      </div>
-                    `
-                  : ''}
-                <button
-                  data-mode="strict"
-                  title="${strictToggleButtonLabel}"
-                  aria-label="${strictToggleButtonLabel}"
-                  aria-pressed=${this._messageFilterMode === 'strict'}
-                  @click=${this._onTextFilterModeClick}
-                >
-                  “”
-                </button>
-                <button
-                  data-mode="regex"
-                  title="${regexToggleButtonLabel}"
-                  aria-label="${regexToggleButtonLabel}"
-                  aria-pressed=${this._messageFilterMode === 'regex'}
-                  @click=${this._onTextFilterModeClick}
-                  aria-describedby="${this._messageFilterValid ? '' : 'logs-filter-input-error'}"
-                >
-                  .*
-                </button>
-              </div>
-            </div>
-
-            <cc-button
-              class="header-fullscreen-button"
-              .icon=${this._fullscreen ? fullscreenExitIcon : fullscreenIcon}
-              a11y-name=${this._fullscreen
-                ? i18n('cc-logs-application-view.fullscreen.exit')
-                : i18n('cc-logs-application-view.fullscreen')}
-              hide-text
-              @cc-button:click=${this._onFullscreenToggle}
-            ></cc-button>
-          </div>
+          <cc-button
+            class="header-fullscreen-button"
+            .icon=${this._fullscreen ? fullscreenExitIcon : fullscreenIcon}
+            a11y-name=${this._fullscreen
+              ? i18n('cc-logs-application-view.fullscreen.exit')
+              : i18n('cc-logs-application-view.fullscreen')}
+            hide-text
+            @cc-button:click=${this._onFullscreenToggle}
+          ></cc-button>
         </div>
       </cc-logs-control-beta>
 
@@ -682,11 +601,6 @@ export class CcLogsApplicationView extends LitElement {
           flex: 1;
         }
 
-        .mode {
-          grid-area: mode;
-          padding: 0.25em;
-        }
-
         .logs-loading-state {
           background-color: var(--cc-color-bg-default, #fff);
           border: 1px solid var(--cc-color-border-neutral, #aaa);
@@ -771,9 +685,7 @@ export class CcLogsApplicationView extends LitElement {
           width: 100%;
         }
 
-        .logs-filter-input {
-          --cc-input-font-family: var(--cc-ff-monospace, monospace);
-
+        .logs-message-filter {
           flex: 1;
         }
 
@@ -801,80 +713,6 @@ export class CcLogsApplicationView extends LitElement {
         .overlay-logs-wrapper--loader cc-loader {
           height: 1.5em;
           width: 1.5em;
-        }
-
-        .input-wrapper {
-          display: flex;
-          flex: 1;
-          position: relative;
-        }
-
-        .input-wrapper .inner-buttons-wrapper {
-          align-items: center;
-          display: flex;
-          height: 100%;
-          position: absolute;
-          right: 5px;
-          z-index: 2;
-        }
-
-        .inner-buttons-wrapper button {
-          background: unset;
-          background: var(--cc-color-bg-default, #fff);
-          border: none;
-          border-radius: var(--cc-border-radius-default, 0.15em);
-          color: var(--cc-input-btn-icons-color, #595959);
-          cursor: pointer;
-          display: block;
-          flex-shrink: 0;
-          font-family: var(--cc-ff-monospace, monospace);
-          font-size: unset;
-          height: 1.6em;
-          margin: 0;
-          padding: 0;
-          width: 1.6em;
-        }
-
-        .inner-buttons-wrapper button:focus {
-          outline: var(--cc-focus-outline, #000 solid 2px);
-          outline-offset: var(--cc-focus-outline-offset, 2px);
-          z-index: 1;
-        }
-
-        .inner-buttons-wrapper button:active,
-        .inner-buttons-wrapper button:hover {
-          box-shadow: none;
-          outline: 0;
-        }
-
-        .inner-buttons-wrapper button:hover {
-          background-color: var(--cc-color-bg-neutral-hovered);
-        }
-
-        .inner-buttons-wrapper button:active,
-        .inner-buttons-wrapper button[aria-pressed='true'] {
-          background-color: var(--cc-color-bg-neutral-active);
-          color: var(--cc-color-text-primary);
-        }
-
-        .inner-buttons-wrapper button::-moz-focus-inner {
-          border: 0;
-        }
-
-        .inner-buttons-wrapper button:first-of-type {
-          border-bottom-right-radius: 0;
-          border-top-right-radius: 0;
-        }
-
-        .inner-buttons-wrapper button:last-of-type {
-          border-bottom-left-radius: 0;
-          border-top-left-radius: 0;
-        }
-
-        .logs-filter-input-error {
-          background: var(--cc-color-bg-default, #fff);
-          color: var(--cc-color-text-danger);
-          margin-right: 0.5em;
         }
       `,
     ];

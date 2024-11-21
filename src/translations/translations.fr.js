@@ -837,10 +837,6 @@ export const translations = {
   'cc-logs.unselect-button.label': /** @param {{index: number}} _ */ ({ index }) => `Désélectionner la ligne ${index}`,
   //#endregion
   //#region cc-logs-application-view
-  'cc-logs-application-view.filter': `Filtrer`,
-  'cc-logs-application-view.filter.bad-format': `Regex invalide`,
-  'cc-logs-application-view.filter.mode.regex': `Filtrer avec une expression régulière`,
-  'cc-logs-application-view.filter.mode.strict': `Filtrer avec une chaîne exacte`,
   'cc-logs-application-view.fullscreen': `Mode plein écran`,
   'cc-logs-application-view.fullscreen.exit': `Sortir du mode plein écran`,
   'cc-logs-application-view.logs.error': `Une erreur est survenue pendant le chargement des logs`,
