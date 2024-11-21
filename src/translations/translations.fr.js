@@ -927,6 +927,12 @@ export const translations = {
   'cc-logs-instances.running.header': `Instances démarrées`,
   'cc-logs-instances.stopping.header': `Instances arrêtées`,
   //#endregion
+  //#region cc-logs-message-filter
+  'cc-logs-message-filter.bad-format': `Regex invalide`,
+  'cc-logs-message-filter.label': `Filtrer`,
+  'cc-logs-message-filter.mode.regex': `Filtrer avec une expression régulière`,
+  'cc-logs-message-filter.mode.strict': `Filtrer avec une chaîne exacte`,
+  //#endregion
   //#region cc-logsmap
   'cc-logsmap.legend.heatmap': /** @param {{orgaName: string}} _ */ ({ orgaName }) =>
     sanitize`Carte de chaleur des requêtes HTTP reçues par les applications de <strong>${orgaName}</strong> durant les dernières 24 heures.`,

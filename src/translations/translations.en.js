@@ -915,6 +915,12 @@ export const translations = {
   'cc-logs-instances.running.header': `Running instances`,
   'cc-logs-instances.stopping.header': `Stopping instances`,
   //#endregion
+  //#region cc-logs-message-filter
+  'cc-logs-message-filter.bad-format': `Invalid regex`,
+  'cc-logs-message-filter.label': `Filter`,
+  'cc-logs-message-filter.mode.regex': `Filter with a regular expression`,
+  'cc-logs-message-filter.mode.strict': `Filter with an exact string`,
+  //#endregion
   //#region cc-logsmap
   'cc-logsmap.legend.heatmap': /** @param {{orgaName: string}} _ */ ({ orgaName }) =>
     sanitize`Heatmap of HTTP requests received by all apps from <strong>${orgaName}</strong> during the last 24 hours.`,
