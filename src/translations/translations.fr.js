@@ -693,7 +693,7 @@ export const translations = {
   'cc-kv-explorer.error.key-doesnt-exist': `La clé n'existe plus`,
   'cc-kv-explorer.filter.all': `Tous`,
   'cc-kv-explorer.filter.apply': `Appliquer le filtre`,
-  'cc-kv-explorer.filter.by-pattern': `Filtrer par clé`,
+  'cc-kv-explorer.filter.by-pattern': `Filtrer les clés par pattern`,
   'cc-kv-explorer.filter.by-type': `Filtrer par type`,
   'cc-kv-explorer.form.add': `Ajouter`,
   'cc-kv-explorer.form.error.already-used': `Ce nom de clé est déjà utilisé`,

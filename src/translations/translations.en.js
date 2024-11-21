@@ -682,7 +682,7 @@ export const translations = {
   'cc-kv-explorer.error.key-doesnt-exist': `The key doesn't exist anymore`,
   'cc-kv-explorer.filter.all': `All`,
   'cc-kv-explorer.filter.apply': `Apply the filter`,
-  'cc-kv-explorer.filter.by-pattern': `Filter by key`,
+  'cc-kv-explorer.filter.by-pattern': `Filter keys by pattern`,
   'cc-kv-explorer.filter.by-type': `Filter by type`,
   'cc-kv-explorer.form.add': `Add`,
   'cc-kv-explorer.form.error.already-used': `Key name already used`,
