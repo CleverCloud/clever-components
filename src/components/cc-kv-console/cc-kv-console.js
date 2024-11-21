@@ -1,6 +1,7 @@
 import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { createRef, ref } from 'lit/directives/ref.js';
+import { repeat } from 'lit/directives/repeat.js';
 import { iconRemixHashtag as iconShellPrompt, iconRemixAlertFill as iconWarning } from '../../assets/cc-remix.icons.js';
 import { dispatchCustomEvent } from '../../lib/events.js';
 import { isStringBlank, isStringEmpty } from '../../lib/utils.js';
@@ -10,9 +11,12 @@ import '../cc-icon/cc-icon.js';
 
 /**
  * @typedef {import('./cc-kv-console.types.js').CcKvConsoleState} CcKvConsoleState
+ * @typedef {import('./cc-kv-console.types.js').CcKvCommandContentItem} CcKvCommandContentItem
  * @typedef {import('../../lib/events.types.js').GenericEventWithTarget<KeyboardEvent,HTMLInputElement>} HTMLInputKeyboardEvent
  * @typedef {import('lit').PropertyValues<CcKvConsole>} CcKvConsolePropertyValues
  * @typedef {import('lit/directives/ref.js').Ref<HTMLInputElement>} HTMLInputElementRef
+ * @typedef {import('lit/directives/ref.js').Ref<Virtualizer>} VirtualizerRef
+ * @typedef {import('@lit-labs/virtualizer/LitVirtualizer.js').LitVirtualizer} Virtualizer
  */
 
 /**
@@ -52,6 +56,16 @@ export class CcKvConsole extends LitElement {
 
     /** @type {HTMLInputElementRef} */
     this._promptRef = createRef();
+
+    /** @type {VirtualizerRef} */
+    this._contentRef = createRef();
+
+    // this is for lit-virtualizer
+    this._elementRender = {
+      /** @param {CcKvCommandContentItem} e */
+      key: (e) => e.id,
+      item: this._renderItem.bind(this),
+    };
   }
 
   /**
@@ -61,6 +75,38 @@ export class CcKvConsole extends LitElement {
     if (this._cmdHistory.length === 0 || this._cmdHistory[this._cmdHistory.length - 1] !== command) {
       this._cmdHistory.push(command);
     }
+  }
+
+  /**
+   * @returns {Array<CcKvCommandContentItem>}
+   */
+  _getItems() {
+    /** @type {Array<CcKvCommandContentItem>} */
+    const items = [];
+
+    this.state.history.forEach((historyEntry, cmdIndex) => {
+      const cmdId = `cmd/${cmdIndex}`;
+
+      items.push({
+        id: cmdId,
+        type: 'commandLine',
+        line: historyEntry.commandLine,
+      });
+
+      const resultLength = historyEntry.result.length;
+
+      historyEntry.result.forEach((lineOfResult, resultIndex) => {
+        items.push({
+          id: `${cmdId}/result/${resultIndex}`,
+          type: 'resultLine',
+          line: lineOfResult,
+          success: historyEntry.success,
+          last: resultIndex === resultLength - 1,
+        });
+      });
+    });
+
+    return items;
   }
 
   /**
@@ -149,13 +195,15 @@ export class CcKvConsole extends LitElement {
   /**
    * @param {CcKvConsolePropertyValues} changedProperties
    */
-  updated(changedProperties) {
+  async updated(changedProperties) {
+    // restores focus only if necessary
     if (changedProperties.has('state')) {
       this._promptRef.value?.scrollIntoView();
     }
   }
 
   render() {
+    const items = this._getItems();
     const isCommandRunning = this.state.type === 'running';
     const currentCommandLine = this.state.type === 'running' ? this.state.commandLine : '';
 
@@ -168,25 +216,11 @@ export class CcKvConsole extends LitElement {
             ${i18n('cc-kv-console.warning')}
           </div>
         </div>
+
         <div class="content">
-          ${this.state.history.length > 0
-            ? html`
-                <div aria-live="polite" aria-atomic="true">
-                  ${this.state.history.map(({ commandLine, result, success }) => {
-                    return html`
-                      <div class="history-entry">
-                        <div class="history-entry-command">
-                          <cc-icon .icon=${iconShellPrompt}></cc-icon>${commandLine}
-                        </div>
-                        ${result.map((l) => html`<div class=${classMap({ result: true, error: !success })}>${l}</div>`)}
-                      </div>
-                    `;
-                  })}
-                </div>
-              `
-            : ''}
+          ${repeat(items, this._elementRender.key, this._elementRender.item)}
           <div class="prompt">
-            <cc-icon .icon=${iconShellPrompt}></cc-icon>
+            <cc-icon .icon=${iconShellPrompt}> </cc-icon>
             <label class="visually-hidden" for="prompt">${i18n('cc-kv-console.shell.prompt')}</label>
             <input
               ${ref(this._promptRef)}
@@ -204,6 +238,23 @@ export class CcKvConsole extends LitElement {
     `;
   }
 
+  /**
+   * @param {CcKvCommandContentItem} item
+   */
+  _renderItem(item) {
+    switch (item.type) {
+      case 'commandLine':
+        return html` <div class="command">
+          <cc-icon .icon=${iconShellPrompt}></cc-icon>
+          ${item.line}
+        </div>`;
+      case 'resultLine': {
+        const clazz = { result: true, error: !item.success, last: item.last };
+        return html` <div class=${classMap(clazz)}>${item.line}</div>`;
+      }
+    }
+  }
+
   static get styles() {
     return [
       accessibilityStyles,
@@ -219,7 +270,8 @@ export class CcKvConsole extends LitElement {
         }
 
         .wrapper {
-          --shell-gap: 0.5em;
+          --shell-inner-gap: 0.2em; /* gap between command line and first result line */
+          --shell-gap: 0.5em; /* gap between result and next command */
 
           background-color: var(--cc-kv-console-color-background);
           color: var(--cc-kv-console-color-foreground);
@@ -255,22 +307,17 @@ export class CcKvConsole extends LitElement {
         }
 
         .content {
+          content-visibility: auto;
+          margin: 0.5em;
           overflow: auto;
-          padding: 0.5em;
         }
 
-        .history-entry {
-          display: flex;
-          flex-direction: column;
-          gap: 0.2em;
-          padding-bottom: var(--shell-gap);
-        }
-
-        .history-entry-command {
+        .command {
           align-items: center;
           display: flex;
           font-weight: bold;
           gap: 0.2em;
+          padding-bottom: var(--shell-inner-gap);
         }
 
         cc-icon {
@@ -285,6 +332,10 @@ export class CcKvConsole extends LitElement {
 
         .result.error {
           color: var(--cc-kv-console-color-foreground-error);
+        }
+
+        .result.last {
+          padding-bottom: var(--shell-gap);
         }
 
         .prompt {
