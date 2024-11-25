@@ -834,21 +834,6 @@ export const translations = {
   'cc-logs-application-view.logs.warning.waiting.message': `New log entries emitted by the application will appear here`,
   'cc-logs-application-view.logs.warning.waiting.title': `No logs to show right now`,
   'cc-logs-application-view.options.display-instance': `Display instance name`,
-  'cc-logs-application-view.progress.loaded': `Logs loaded: 100%`,
-  'cc-logs-application-view.progress.loading': /** @param {{percent: number}} _ */ ({ percent }) =>
-    `Loading logs: ${formatPercent(lang, percent)}`,
-  'cc-logs-application-view.progress.loading.live': `Fetching realtime...`,
-  'cc-logs-application-view.progress.message': /** @param {{count: number}} _ */ ({ count }) =>
-    `${formatNumber(lang, count)} entries loaded`,
-  'cc-logs-application-view.progress.overflow.continue': `Continue`,
-  'cc-logs-application-view.progress.overflow.message': /** @param {{limit: number}} _ */ ({ limit }) =>
-    `To maintain optimal performance, only the last ${formatNumber(lang, limit)} logs are shown.`,
-  'cc-logs-application-view.progress.overflow.message.almost': /** @param {{limit: number}} _ */ ({ limit }) =>
-    `You'll soon reach ${formatNumber(lang, limit)} logs loaded. What do you want to do?`,
-  'cc-logs-application-view.progress.overflow.stop': `Stop`,
-  'cc-logs-application-view.progress.overflow.title': `Large volume`,
-  'cc-logs-application-view.progress.pause': `Pause`,
-  'cc-logs-application-view.progress.resume': `Resume`,
   //#endregion
   //#region cc-logs-control
   'cc-logs-control.date-display': `Date format`,

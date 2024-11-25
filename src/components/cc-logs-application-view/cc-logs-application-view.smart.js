@@ -114,11 +114,11 @@ defineSmartComponent({
       },
     );
 
-    onEvent('cc-logs-application-view:pause', () => {
+    onEvent('cc-logs-loading-progress:pause', () => {
       controller.pause();
     });
 
-    onEvent('cc-logs-application-view:resume', () => {
+    onEvent('cc-logs-loading-progress:resume', () => {
       controller.resume();
     });
 

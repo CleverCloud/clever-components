@@ -4,8 +4,6 @@ import { createRef, ref } from 'lit/directives/ref.js';
 import {
   iconRemixFullscreenExitLine as fullscreenExitIcon,
   iconRemixFullscreenLine as fullscreenIcon,
-  iconRemixPauseLine,
-  iconRemixPlayLine,
 } from '../../assets/cc-remix.icons.js';
 import { dispatchCustomEvent } from '../../lib/events.js';
 import { i18n } from '../../translations/translation.js';
@@ -14,8 +12,9 @@ import '../cc-icon/cc-icon.js';
 import '../cc-loader/cc-loader.js';
 import '../cc-logs-control/cc-logs-control.js';
 import '../cc-logs-date-range-selector/cc-logs-date-range-selector.js';
-import { dateRangeSelectionToDateRange } from '../cc-logs-date-range-selector/date-range-selection.js';
 import '../cc-logs-instances/cc-logs-instances.js';
+import '../cc-logs-loading-progress/cc-logs-loading-progress.js';
+import { LogsLoadingProgressController } from '../cc-logs-loading-progress/logs-loading-progress-ctrl.js';
 import '../cc-logs-message-filter/cc-logs-message-filter.js';
 import '../cc-notice/cc-notice.js';
 import '../cc-toggle/cc-toggle.js';
@@ -56,6 +55,7 @@ const CUSTOM_METADATA_RENDERERS = {
  * @typedef {import('../cc-logs/cc-logs.types.js').MetadataRenderer} MetadataRenderer
  * @typedef {import('../cc-logs-date-range-selector/cc-logs-date-range-selector.types.js').LogsDateRangeSelection} LogsDateRangeSelection
  * @typedef {import('../cc-logs-date-range-selector/cc-logs-date-range-selector.types.js').LogsDateRangeSelectionChangeEventData} LogsDateRangeSelectionChangeEventData
+ * @typedef {import('../cc-logs-loading-progress/cc-logs-loading-progress.types.js').LogsLoadingProgressState} LogsLoadingProgressState
  * @typedef {import('../cc-logs-message-filter/cc-logs-message-filter.types.js').LogsMessageFilterValue} LogsMessageFilterValue
  * @typedef {import('lit/directives/ref.js').Ref<CcLogsControl>} RefCcLogsControl
  * @typedef {import('lit').PropertyValues<CcLogsApplicationView>} CcLogsApplicationViewPropertyValues
@@ -63,9 +63,6 @@ const CUSTOM_METADATA_RENDERERS = {
  */
 
 /**
- *
- * @fires {CustomEvent<void>} cc-logs-application-view:pause - Fires when the pause button is clicked.
- * @fires {CustomEvent<void>} cc-logs-application-view:resume - Fires when the resume button is clicked.
  *
  * @beta
  */
@@ -80,7 +77,6 @@ export class CcLogsApplicationView extends LitElement {
       state: { type: Object },
       _fullscreen: { type: Boolean, state: true },
       _messageFilter: { type: Object, state: true },
-      _overflowDecision: { type: String, state: true },
     };
   }
 
@@ -118,10 +114,10 @@ export class CcLogsApplicationView extends LitElement {
       type: 'loadingInstances',
     };
 
+    this._loadingProgressCtrl = new LogsLoadingProgressController(this);
+
     /** @type {RefCcLogsControl} */
     this._logsRef = createRef();
-
-    this._loadingProgressCtrl = new LoadingProgressController(this);
 
     /** @type {LogsMessageFilterValue} */
     this._messageFilter = { value: '', mode: 'loose' };
@@ -133,9 +129,6 @@ export class CcLogsApplicationView extends LitElement {
         hidden: !this.options['metadata-display'].instance,
       },
     };
-
-    /** @type {'none'|'accepted'|'discarded'} */
-    this._overflowDecision = 'none';
 
     this._fullscreen = false;
   }
@@ -163,25 +156,6 @@ export class CcLogsApplicationView extends LitElement {
 
   /* endregion */
 
-  /* region Private methods */
-
-  /**
-   * @return {string}
-   */
-  _getLoadingProgressTitle() {
-    if (this._loadingProgressCtrl.state === 'completed') {
-      return i18n('cc-logs-application-view.progress.loaded');
-    }
-
-    if (this._loadingProgressCtrl.percent == null) {
-      return i18n('cc-logs-application-view.progress.loading.live');
-    }
-
-    return i18n('cc-logs-application-view.progress.loading', { percent: this._loadingProgressCtrl.percent / 100 });
-  }
-
-  /* endregion */
-
   /* region Event handlers */
 
   /**
@@ -190,7 +164,6 @@ export class CcLogsApplicationView extends LitElement {
   _onDateRangeSelectionChange(event) {
     this._loadingProgressCtrl.cancel();
     this.dateRangeSelection = event.detail.selection;
-    this._overflowDecision = 'none';
   }
 
   /**
@@ -229,34 +202,6 @@ export class CcLogsApplicationView extends LitElement {
     this._fullscreen = !this._fullscreen;
   }
 
-  _onPause() {
-    dispatchCustomEvent(this, 'pause');
-  }
-
-  _onResume() {
-    dispatchCustomEvent(this, 'resume');
-  }
-
-  _onOverflowWatermarkReached() {
-    if (this._overflowDecision === 'none') {
-      dispatchCustomEvent(this, 'pause');
-    }
-  }
-
-  _onAcceptOverflow() {
-    this._overflowDecision = 'accepted';
-    dispatchCustomEvent(this, 'resume');
-  }
-
-  _onDiscardOverflow() {
-    this._overflowDecision = 'discarded';
-    this.dateRangeSelection = {
-      type: 'custom',
-      since: dateRangeSelectionToDateRange(this.dateRangeSelection).since,
-      until: this._loadingProgressCtrl.lastLogDate.toISOString(),
-    };
-  }
-
   /**
    * @param {CustomEvent<LogsMessageFilterValue>} event
    */
@@ -277,7 +222,7 @@ export class CcLogsApplicationView extends LitElement {
       if (this.state.type === 'errorLogs') {
         this._loadingProgressCtrl.reset();
       } else if (this.state.type === 'connectingLogs') {
-        this._loadingProgressCtrl.init(this.dateRangeSelection);
+        this._loadingProgressCtrl.init();
       } else if (this.state.type === 'receivingLogs') {
         this._loadingProgressCtrl.start();
       } else if (this.state.type === 'logStreamPaused') {
@@ -356,97 +301,16 @@ export class CcLogsApplicationView extends LitElement {
    * @return {TemplateResult|null}
    */
   _renderLoadingProgress() {
-    if (this._loadingProgressCtrl.value === 0) {
+    const state = this._loadingProgressCtrl.getLoadingProgressState();
+
+    if (state == null) {
       return null;
     }
 
-    const shouldAskForOverflowDecision =
-      this._overflowDecision === 'none' && this._loadingProgressCtrl.overflowWatermarkReached;
-    const shouldDisplayPauseResumeControls =
-      !shouldAskForOverflowDecision &&
-      (this._loadingProgressCtrl.state === 'running' || this._loadingProgressCtrl.state === 'paused');
-    const shouldDisplayOverflowWarning = !shouldAskForOverflowDecision && this._loadingProgressCtrl.overflowing;
-
-    const getPlayPauseButton = () => {
-      if (!shouldDisplayPauseResumeControls) {
-        return null;
-      }
-      if (this._loadingProgressCtrl.state === 'running') {
-        return {
-          icon: iconRemixPauseLine,
-          a11yName: i18n('cc-logs-application-view.progress.pause'),
-          onclick: this._onPause,
-        };
-      }
-      if (this._loadingProgressCtrl.state === 'paused') {
-        return {
-          icon: iconRemixPlayLine,
-          a11yName: i18n('cc-logs-application-view.progress.resume'),
-          onclick: this._onResume,
-        };
-      }
-      return null;
-    };
-
-    const playPauseButton = getPlayPauseButton();
-
-    return html`
-      <div class="logs-loading-state">
-        <div class="loading-state-heading">
-          <div class="loading-state-title">${this._getLoadingProgressTitle()}</div>
-
-          ${playPauseButton != null
-            ? html`
-                <cc-button
-                  .icon=${playPauseButton.icon}
-                  hide-text
-                  a11y-name=${playPauseButton.a11yName}
-                  @cc-button:click=${playPauseButton.onclick}
-                ></cc-button>
-              `
-            : ''}
-        </div>
-        ${this._loadingProgressCtrl.percent != null
-          ? html`
-              <div class="progress-bar">
-                <div class="progress-bar-track" style="width: ${this._loadingProgressCtrl.percent}%;"></div>
-              </div>
-            `
-          : ''}
-        <div class="loading-state-content">
-          <div class="loading-state-text">
-            ${i18n('cc-logs-application-view.progress.message', { count: this._loadingProgressCtrl.value })}
-          </div>
-
-          ${shouldAskForOverflowDecision
-            ? html`
-                <cc-notice intent="info" heading="${i18n('cc-logs-application-view.progress.overflow.title')}">
-                  <div slot="message">
-                    ${i18n('cc-logs-application-view.progress.overflow.message.almost', { limit: this.limit })}
-                    <div class="overflow-control">
-                      <cc-button link @cc-button:click=${this._onAcceptOverflow}>
-                        ${i18n('cc-logs-application-view.progress.overflow.continue')}
-                      </cc-button>
-                      <cc-button link @cc-button:click=${this._onDiscardOverflow}>
-                        ${i18n('cc-logs-application-view.progress.overflow.stop')}
-                      </cc-button>
-                    </div>
-                  </div>
-                </cc-notice>
-              `
-            : ''}
-          ${shouldDisplayOverflowWarning
-            ? html`
-                <cc-notice intent="info" no-icon>
-                  <div slot="message">
-                    ${i18n('cc-logs-application-view.progress.overflow.message', { limit: this.limit })}
-                  </div>
-                </cc-notice>
-              `
-            : ''}
-        </div>
-      </div>
-    `;
+    return html`<cc-logs-loading-progress-beta
+      .state=${this._loadingProgressCtrl.getLoadingProgressState()}
+      limit=${this.limit}
+    ></cc-logs-loading-progress-beta>`;
   }
 
   /**
@@ -601,74 +465,6 @@ export class CcLogsApplicationView extends LitElement {
           flex: 1;
         }
 
-        .logs-loading-state {
-          background-color: var(--cc-color-bg-default, #fff);
-          border: 1px solid var(--cc-color-border-neutral, #aaa);
-          border-radius: var(--cc-border-radius-default, 0.25em);
-        }
-
-        .loading-state-heading {
-          align-items: center;
-          background-color: var(--cc-color-bg-neutral, #eee);
-          border-top-left-radius: var(--cc-border-radius-default, 0.25em);
-          border-top-right-radius: var(--cc-border-radius-default, 0.25em);
-          display: flex;
-          gap: 0.3em;
-          max-height: 2em;
-          padding: 0.5em;
-        }
-
-        .loading-state-title {
-          color: var(--cc-color-text-default, #000);
-          flex: 1;
-          font-weight: bold;
-        }
-
-        .loading-state-content {
-          color: var(--cc-color-text-weak);
-          display: flex;
-          flex-direction: column;
-          gap: 1em;
-          padding: 1em;
-        }
-
-        .progress-bar {
-          background-color: var(--cc-color-bg-primary-weak);
-          height: 0.2em;
-          overflow: hidden;
-          width: 100%;
-        }
-
-        .progress-bar-track {
-          background-color: var(--cc-color-bg-primary);
-          height: 100%;
-        }
-
-        .progress-bar-track.indeterminate {
-          animation: indeterminate-animation 1s infinite linear;
-          transform-origin: 0 50%;
-          width: 100%;
-        }
-
-        .overflow-control {
-          display: flex;
-          gap: 1.5em;
-        }
-
-        @keyframes indeterminate-animation {
-          0% {
-            transform: translateX(0) scaleX(0);
-          }
-
-          40% {
-            transform: translateX(0) scaleX(0.4);
-          }
-
-          100% {
-            transform: translateX(100%) scaleX(0.5);
-          }
-        }
-
         .logs-wrapper {
           flex: 1;
           position: relative;
@@ -721,243 +517,3 @@ export class CcLogsApplicationView extends LitElement {
 
 // eslint-disable-next-line wc/tag-name-matches-class
 window.customElements.define('cc-logs-application-view-beta', CcLogsApplicationView);
-
-/**
- * State:
- * * `none`: No progression yet, reset state
- * * 'init': The dateRange has been set and the progress is ready to start
- * * 'started': The progress has been started (but no logs have been received yet)
- * * 'waiting': The progress has been started since a long time and no logs have been received yet (this state is used only on live mode)
- * * 'running': The progress is running: some logs are being received
- * * 'paused': The progress is on pause
- * * 'completed': The progress is completed
- */
-class LoadingProgressController {
-  /**
-   *
-   * @param {CcLogsApplicationView} host
-   */
-  constructor(host) {
-    this._host = host;
-    this._debug = false;
-    this.reset();
-  }
-
-  reset() {
-    this._dateRange = null;
-    this._isLive = false;
-    this._dateRangeStart = null;
-    this._dateRangeDuration = null;
-    this._lastLogDate = null;
-    /** @type {ProgressState} */
-    this._state = 'none';
-    this._percent = 0;
-    this._value = 0;
-    this._clearWaitingTimeout();
-
-    this._host.requestUpdate();
-  }
-
-  /**
-   * @param {LogsDateRangeSelection} dateRangeSelection
-   */
-  init(dateRangeSelection) {
-    this.reset();
-
-    this._dateRange = dateRangeSelectionToDateRange(dateRangeSelection);
-
-    this._step('init', {
-      none: () => {
-        this._isLive = dateRangeSelection.type === 'live';
-        this._dateRangeStart = new Date(this._dateRange.since).getTime();
-        this._dateRangeDuration = this._isLive ? 0 : new Date(this._dateRange.until).getTime() - this._dateRangeStart;
-
-        return 'init';
-      },
-    });
-  }
-
-  start() {
-    this._step('start', {
-      none: () => {
-        return 'none';
-      },
-      paused: () => {
-        return 'running';
-      },
-      init: () => {
-        this._waitingTimeoutId = setTimeout(() => {
-          this._step('nothingReceived', {
-            started: () => {
-              return this._isLive ? 'waiting' : 'completed';
-            },
-          });
-        }, 2000);
-        return 'started';
-      },
-    });
-  }
-
-  /**
-   *
-   * @param {Array<Log>} logs
-   */
-  progress(logs) {
-    if (logs.length === 0) {
-      return;
-    }
-
-    const doProgress = () => {
-      this._value = this._value + logs.length;
-      this._lastLogDate = logs[logs.length - 1].date;
-
-      if (!this._isLive) {
-        const timeProgress = this._lastLogDate.getTime() - this._dateRangeStart;
-        this._percent = (100 * timeProgress) / this._dateRangeDuration;
-      }
-
-      if (this.overflowWatermarkReached) {
-        this._host._onOverflowWatermarkReached();
-      }
-    };
-
-    this._step('progress', {
-      started: () => {
-        this._clearWaitingTimeout();
-        doProgress();
-        return 'running';
-      },
-      waiting: () => {
-        doProgress();
-        return 'running';
-      },
-      running: () => {
-        doProgress();
-        return 'running';
-      },
-      completed: () => {
-        doProgress();
-        return 'running';
-      },
-    });
-  }
-
-  pause() {
-    this._step('pause', {
-      running: () => {
-        return 'paused';
-      },
-    });
-  }
-
-  complete() {
-    this._step('complete', {
-      none: () => {
-        return 'none';
-      },
-      init: () => {
-        return 'init';
-      },
-      started: () => {
-        this._clearWaitingTimeout();
-        this._percent = 100;
-        return 'completed';
-      },
-      '*': () => {
-        this._percent = 100;
-        return 'completed';
-      },
-    });
-  }
-
-  cancel() {
-    this._step('cancel', {
-      '*': () => {
-        this.reset();
-        return 'none';
-      },
-    });
-  }
-
-  /**
-   * @return {ProgressState}
-   */
-  get state() {
-    return this._state;
-  }
-
-  /**
-   * @return {number|null}
-   */
-  get percent() {
-    return this._isLive ? null : this._percent;
-  }
-
-  /**
-   * @return {number}
-   */
-  get value() {
-    return this._value;
-  }
-
-  /**
-   * @return {boolean}
-   */
-  get overflowing() {
-    return this._value > this._host.limit;
-  }
-
-  /**
-   * @return {boolean}
-   */
-  get overflowWatermarkReached() {
-    return this._value >= this._host.limit - this._host.overflowWatermarkOffset;
-  }
-
-  /**
-   * @return {Date}
-   */
-  get lastLogDate() {
-    return this._lastLogDate;
-  }
-
-  _clearWaitingTimeout() {
-    if (this._waitingTimeoutId != null) {
-      clearTimeout(this._waitingTimeoutId);
-      this._waitingTimeoutId = null;
-    }
-  }
-
-  /**
-   * @param {string} actionName
-   * @param {Partial<{[state in ProgressState|'*']: () => ProgressState|null}>} machine
-   */
-  _step(actionName, machine) {
-    const state = this._state;
-
-    this._log(`progressCtrl: ACTION<${actionName}> from state ${state}`);
-
-    const step = machine[state] ?? machine['*'];
-
-    if (step == null) {
-      console.warn(`progressCtrl: ACTION<${actionName}>: no step walker found from state ${state}`);
-      return;
-    }
-
-    const newState = step();
-
-    if (newState != null) {
-      if (newState !== this._state) {
-        this._log(`progressCtrl: ${this._state} -> ${newState}`);
-        this._state = newState;
-      }
-      this._host.requestUpdate();
-    }
-  }
-
-  _log() {
-    if (this._debug) {
-      console.log(arguments);
-    }
-  }
-}
