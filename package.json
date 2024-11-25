@@ -37,6 +37,7 @@
     "format:check": "prettier . --check",
     "lint": "eslint",
     "lint:fix": "eslint --fix",
+    "lint:inspect-config": "eslint --inspect-config",
     "prepack": "npm run lint && npm run stylelint && npm run components:check-lit && npm run typecheck && npm run components:check-i18n && npm run components:check-type-imports && npm run test && npm run components:build && npm run components:docs",
     "prestorybook:build": "npm run components:docs",
     "preview:delete": "node tasks/preview.js delete",

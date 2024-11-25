@@ -119,6 +119,12 @@ This project provides a series of tasks you can run as [npm scripts](https://doc
 
 * Check source files with [ESLint](https://eslint.org/) and fix errors automatically when it's possible.
 
+## `npm run lint:fix`
+
+* Runs the [ESLint config inspector](https://github.com/eslint/config-inspector).
+* The config inspector opens up in a new browser tab but you can access `http://localhost:7777` if it doesn't open automatically.
+* The inspector can be useful to visualize the ESLint config and help troubleshooting.
+
 ## `npm run prepack`
 
 * Run all tasks required before publishing on npm:
