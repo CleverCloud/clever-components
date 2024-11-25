@@ -15,7 +15,8 @@
     "rule-empty-line-before": [
       "always-multi-line",
       {
-        "except": ["first-nested"]
+        "except": ["first-nested", "after-single-line-comment"],
+        "ignore": ["after-comment"]
       }
     ],
     "selector-pseudo-element-colon-notation": "double",
