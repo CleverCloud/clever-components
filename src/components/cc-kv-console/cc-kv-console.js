@@ -1,7 +1,7 @@
+import '@lit-labs/virtualizer';
 import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { createRef, ref } from 'lit/directives/ref.js';
-import { repeat } from 'lit/directives/repeat.js';
 import { iconRemixHashtag as iconShellPrompt, iconRemixAlertFill as iconWarning } from '../../assets/cc-remix.icons.js';
 import { dispatchCustomEvent } from '../../lib/events.js';
 import { isStringBlank, isStringEmpty } from '../../lib/utils.js';
@@ -60,6 +60,9 @@ export class CcKvConsole extends LitElement {
     /** @type {VirtualizerRef} */
     this._contentRef = createRef();
 
+    /** @type {boolean} */
+    this._shouldRestoreFocusToPrompt = false;
+
     // this is for lit-virtualizer
     this._elementRender = {
       /** @param {CcKvCommandContentItem} e */
@@ -106,6 +109,22 @@ export class CcKvConsole extends LitElement {
       });
     });
 
+    const isCommandRunning = this.state.type === 'running';
+    const currentCommandLine = this.state.type === 'running' ? this.state.commandLine : '';
+
+    items.push({
+      id: 'prompt',
+      type: 'prompt',
+      command: currentCommandLine,
+      running: isCommandRunning,
+    });
+    if (isCommandRunning) {
+      items.push({
+        id: 'caret',
+        type: 'caret',
+      });
+    }
+
     return items;
   }
 
@@ -116,6 +135,9 @@ export class CcKvConsole extends LitElement {
     e.stopPropagation();
 
     if (e.key === 'Enter') {
+      // ask for restoring focus on the next update.
+      this._shouldRestoreFocusToPrompt = true;
+
       e.preventDefault();
       this._cmdHistoryIndex = null;
       const commandLine = e.target.value.trim();
@@ -198,15 +220,20 @@ export class CcKvConsole extends LitElement {
   async updated(changedProperties) {
     // restores focus only if necessary
     if (changedProperties.has('state')) {
-      this._promptRef.value?.scrollIntoView();
+      await this._contentRef.value?.layoutComplete;
+
+      this.shadowRoot.querySelector('.scroller').scrollTo(0, this.shadowRoot.querySelector('.scroller').scrollHeight);
+
+      await this._contentRef.value?.layoutComplete;
+      if (this._shouldRestoreFocusToPrompt) {
+        this._promptRef.value?.focus();
+        // this._shouldRestoreFocusToPrompt = false;
+      }
     }
   }
 
   render() {
     const items = this._getItems();
-    const isCommandRunning = this.state.type === 'running';
-    const currentCommandLine = this.state.type === 'running' ? this.state.commandLine : '';
-
     return html`
       <div class="wrapper" @mouseup=${this._onContentMouseUp} @keydown=${this._onShellPromptKeyDown}>
         <div class="header">
@@ -216,23 +243,16 @@ export class CcKvConsole extends LitElement {
             ${i18n('cc-kv-console.warning')}
           </div>
         </div>
-
-        <div class="content">
-          ${repeat(items, this._elementRender.key, this._elementRender.item)}
-          <div class="prompt">
-            <cc-icon .icon=${iconShellPrompt}> </cc-icon>
-            <label class="visually-hidden" for="prompt">${i18n('cc-kv-console.shell.prompt')}</label>
-            <input
-              ${ref(this._promptRef)}
-              id="prompt"
-              type="text"
-              autocomplete="false"
-              spellcheck="false"
-              .value=${currentCommandLine}
-              ?readonly=${isCommandRunning}
-            />
-          </div>
-          ${isCommandRunning ? html`<div><span class="caret-blink">&nbsp;</span></div>` : ''}
+        <div class="scroller">
+          <lit-virtualizer
+            class="content"
+            aria-live="polite"
+            aria-atomic="true"
+            ${ref(this._contentRef)}
+            .items=${items}
+            .keyFunction=${this._elementRender.key}
+            .renderItem=${this._elementRender.item}
+          ></lit-virtualizer>
         </div>
       </div>
     `;
@@ -243,15 +263,28 @@ export class CcKvConsole extends LitElement {
    */
   _renderItem(item) {
     switch (item.type) {
+      case 'caret':
+        return html`<div><span class="caret-blink">&nbsp;</span></div>`;
       case 'commandLine':
-        return html` <div class="command">
-          <cc-icon .icon=${iconShellPrompt}></cc-icon>
-          ${item.line}
-        </div>`;
+        return html`<div class="command"><cc-icon .icon=${iconShellPrompt}></cc-icon>${item.line}</div>`;
       case 'resultLine': {
         const clazz = { result: true, error: !item.success, last: item.last };
-        return html` <div class=${classMap(clazz)}>${item.line}</div>`;
+        return html`<div class=${classMap(clazz)}>${item.line}</div>`;
       }
+      case 'prompt':
+        return html`<div class="prompt">
+          <cc-icon .icon=${iconShellPrompt}></cc-icon>
+          <label class="visually-hidden" for="prompt">${i18n('cc-kv-console.shell.prompt')}</label>
+          <input
+            ${ref(this._promptRef)}
+            id="prompt"
+            type="text"
+            autocomplete="false"
+            spellcheck="false"
+            .value=${item.command}
+            ?readonly=${item.running}
+          />
+        </div>`;
     }
   }
 
@@ -307,8 +340,10 @@ export class CcKvConsole extends LitElement {
         }
 
         .content {
-          content-visibility: auto;
           margin: 0.5em;
+        }
+
+        .content.overflow {
           overflow: auto;
         }
 
@@ -376,6 +411,12 @@ export class CcKvConsole extends LitElement {
           50% {
             background-color: var(--cc-kv-console-color-foreground);
           }
+        }
+
+        .scroller {
+          /* max-height: 25em; */
+          overflow-x: hidden;
+          overflow-y: auto;
         }
       `,
     ];
