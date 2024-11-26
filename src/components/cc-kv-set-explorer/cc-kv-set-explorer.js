@@ -240,7 +240,7 @@ export class CcKvSetExplorer extends LitElement {
   _renderElement(state, skeleton, index) {
     return html`
       <div class="element">
-        <span class=${classMap({ 'element-value': true, skeleton })}>${state.value}</span>
+        <span class="element-value ${classMap({ skeleton })}">${state.value}</span>
         <div class="element-value-buttons">
           <cc-button
             class="delete-button"

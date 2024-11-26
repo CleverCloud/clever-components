@@ -326,9 +326,7 @@ export class CcKvListExplorer extends LitElement {
                 ></cc-input-text>
               `
             : ''}
-          ${!isEditing
-            ? html`<span class=${classMap({ 'element-value-span': true, skeleton })}>${state.value}</span>`
-            : ''}
+          ${!isEditing ? html`<span class="element-value-span ${classMap({ skeleton })}">${state.value}</span>` : ''}
 
           <div class="element-value-buttons">${this._renderElementButtons(state, skeleton, isEditing, index)}</div>
         </div>

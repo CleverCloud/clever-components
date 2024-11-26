@@ -673,7 +673,7 @@ export class CcKvExplorer extends LitElement {
         .disabled=${skeleton}
       />
       <label for=${id}>
-        <span class=${classMap({ 'key-name': true, skeleton })}>${keyState.key.name}</span>
+        <span class="key-name ${classMap({ skeleton })}">${keyState.key.name}</span>
         <cc-badge weight="outlined" ?skeleton=${skeleton}>${this._getKeyTypeLabel(keyState.key.type)}</cc-badge>
         <cc-button
           class="delete-key-button"
