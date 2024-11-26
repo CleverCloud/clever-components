@@ -92,10 +92,6 @@ export class CcKvStringEditor extends LitElement {
           display: block;
         }
 
-        form {
-          padding: 1em;
-        }
-
         .buttons {
           display: flex;
           gap: 0.5em;

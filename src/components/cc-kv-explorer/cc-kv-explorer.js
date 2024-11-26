@@ -866,7 +866,11 @@ export class CcKvExplorer extends LitElement {
    * @return {TemplateResult}
    */
   _renderEditString(state, disabled) {
-    return html`<cc-kv-string-editor-beta .state=${state} ?disabled=${disabled}></cc-kv-string-editor-beta>`;
+    return html`<cc-kv-string-editor-beta
+      class="string-editor"
+      .state=${state}
+      ?disabled=${disabled}
+    ></cc-kv-string-editor-beta>`;
   }
 
   /**
@@ -1085,6 +1089,10 @@ export class CcKvExplorer extends LitElement {
           overflow: hidden;
           text-overflow: ellipsis;
           white-space: nowrap;
+        }
+
+        .string-editor {
+          margin: 1em;
         }
 
         .buttons {
