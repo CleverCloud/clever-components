@@ -113,6 +113,25 @@ export class CcKvHashInput extends CcFormControlElement {
 
   /* endregion */
 
+  /* region Private methods */
+
+  /**
+   * @return {HTMLElement}
+   */
+  _getLastFieldInput() {
+    const all = this.shadowRoot.querySelectorAll('.input-field');
+    return /** @type {HTMLElement} */ (all[all.length - 1]);
+  }
+
+  /**
+   * @param {FocusOptions} [options]
+   */
+  _focusLastFieldInput(options) {
+    this._getLastFieldInput().focus(options);
+  }
+
+  /* endregion */
+
   async _onAdd() {
     this.value = [...this.value, { field: '', value: '' }];
 
@@ -229,21 +248,6 @@ export class CcKvHashInput extends CcFormControlElement {
           : html`<div></div>`}
       </div>
     `;
-  }
-
-  /**
-   * @return {HTMLElement}
-   */
-  _getLastFieldInput() {
-    const all = this.shadowRoot.querySelectorAll('.input-field');
-    return /** @type {HTMLElement} */ (all[all.length - 1]);
-  }
-
-  /**
-   * @param {FocusOptions} [options]
-   */
-  _focusLastFieldInput(options) {
-    this._getLastFieldInput().focus(options);
   }
 
   static get styles() {
