@@ -656,11 +656,11 @@ export class CcKvExplorer extends LitElement {
    * @return {TemplateResult}
    */
   _renderKey({ keyState, skeleton }, index) {
-    const selected = keyState.type === 'selected';
-    const loading = keyState.type === 'loading';
-    const deleting = keyState.type === 'deleting';
+    const isSelected = keyState.type === 'selected';
+    const isLoading = keyState.type === 'loading';
+    const isDeleting = keyState.type === 'deleting';
     const id = `key-${keyState.key.name}`;
-    const buttonTabindex = selected || loading ? undefined : -1;
+    const buttonTabindex = isSelected || isLoading ? undefined : -1;
 
     return html`<div class="key">
       <input
@@ -669,7 +669,7 @@ export class CcKvExplorer extends LitElement {
         id=${id}
         name="selectedKey"
         .value=${keyState.key.name}
-        .checked=${selected || loading}
+        .checked=${isSelected || isLoading}
         .disabled=${skeleton}
       />
       <label for=${id}>
@@ -678,8 +678,8 @@ export class CcKvExplorer extends LitElement {
         <cc-button
           class="delete-key-button"
           tabindex=${ifDefined(buttonTabindex)}
-          ?disabled=${loading || skeleton}
-          ?waiting=${deleting}
+          ?disabled=${isLoading || skeleton}
+          ?waiting=${isDeleting}
           ?skeleton=${skeleton}
           hide-text
           danger

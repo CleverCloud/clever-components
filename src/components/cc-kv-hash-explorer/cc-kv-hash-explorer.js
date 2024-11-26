@@ -437,23 +437,23 @@ export class CcKvHashExplorer extends LitElement {
   }
 
   _renderAddForm() {
-    const loading = this.state.type === 'loading';
-    const adding = this.state.type !== 'loading' && this.state.addForm.type === 'adding';
-    const readonly = loading || adding;
+    const isLoading = this.state.type === 'loading';
+    const isAdding = this.state.type !== 'loading' && this.state.addForm.type === 'adding';
+    const isReadonly = isLoading || isAdding;
 
     return html`
       <form class="add-form" ${ref(this._addFormRef)} ${formSubmit(this._onAddFormSubmit)}>
         <cc-input-text
           name="field"
           label=${i18n('cc-kv-hash-explorer.add-form.element-field')}
-          ?readonly=${readonly}
+          ?readonly=${isReadonly}
           ?disabled=${this.disabled}
           inline
         ></cc-input-text>
         <cc-input-text
           name="value"
           label=${i18n('cc-kv-hash-explorer.add-form.element-value')}
-          ?readonly=${readonly}
+          ?readonly=${isReadonly}
           ?disabled=${this.disabled}
           inline
           multi
@@ -462,8 +462,8 @@ export class CcKvHashExplorer extends LitElement {
           type="submit"
           a11y-name=${i18n('cc-kv-hash-explorer.add-form.submit.a11y')}
           .icon=${iconAdd}
-          ?waiting=${adding}
-          ?disabled=${loading || this.disabled}
+          ?waiting=${isAdding}
+          ?disabled=${isLoading || this.disabled}
           >${i18n('cc-kv-hash-explorer.add-form.submit')}</cc-button
         >
       </form>
