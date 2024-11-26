@@ -65,7 +65,7 @@
     "chartjs-plugin-datalabels": "^2.0.0",
     "immer": "^9.0.15",
     "leaflet": "^1.7.1",
-    "lit": "^2.3.1",
+    "lit": "^3.2.1",
     "statuses": "^2.0.1"
   },
   "devDependencies": {
