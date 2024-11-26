@@ -3,11 +3,21 @@
 import yaml from 'js-yaml';
 import frontmatter from 'remark-frontmatter';
 import remarkGfm from 'remark-gfm';
+// @ts-ignore no types available for this dependency
 import highlight from 'remark-highlight.js';
 import remark2Html from 'remark-html';
 import remarkParse from 'remark-parse';
 import unified from 'unified';
 
+/**
+ * @typedef {import('vite').Plugin} Plugin
+ */
+
+/**
+ * A Vite plugin that transforms markdown files into Component Story Format (CSF).
+ *
+ * @returns {Plugin}
+ */
 export function rollupMdToCsfPlugin() {
   return {
     name: 'markdown-to-csf',
@@ -27,6 +37,13 @@ const processor = unified()
   .use(highlight)
   .use(remark2Html, { sanitize: false });
 
+/**
+ * Converts markdown text into a Component Story Format (CSF) file with embedded documentation.
+ * Processes the markdown into HTML and wraps it in a React component for display in Storybook.
+ *
+ * @param {string} markdownText
+ * @returns {string} the CSF code with the markdown text embedded in a react component
+ */
 export function markdownToCsfWithDocsPage(markdownText) {
   const htmlContent = processor().processSync(markdownText).contents;
   const parsedHTML = JSON.stringify(htmlContent);
@@ -52,24 +69,33 @@ export function markdownToCsfWithDocsPage(markdownText) {
 
     /**
      * We export an empty story as "docs" so that it can be considered a "docs only" story
-     * this solution is unofficial & undocumented so it might break some day but it works 
+     * this solution is unofficial & undocumented so it might break some day but it works
      * both with storybook 7 & 8 which should be enough for now.
      * Basically, instead of generating two entries within the menu:
      * - a "Docs" story of type "docs" (yellow icon)
      * - a "My Story Subtitle" (classic story).
      * We get a single "My Story Subtitle" story of type "docs" story (yellow icon).
-    */ 
+    */
     export const docs = {};
   `;
 
   return csfScript;
 }
 
+/**
+ * Extracts metadata from markdown content, including title and subtitle information
+ * from frontmatter YAML and heading nodes.
+ *
+ * @param {string} markdownContent
+ * @returns {{ title: string, subtitle: string }}
+ */
 export function getMetaDataFromMd(markdownContent) {
   const markdownAst = processor.parse(markdownContent);
 
+  // @ts-ignore the AST is not really typed
   const frontmatterNode = markdownAst.children.find((node) => node.type === 'yaml');
 
+  // @ts-ignore the AST is not really typed
   const headingNode = markdownAst.children.find((node) => node.type === 'heading' && node.depth === 1);
   const kind = getKind(frontmatterNode);
   const subtitle = getSubTitle(frontmatterNode, headingNode);
@@ -78,25 +104,46 @@ export function getMetaDataFromMd(markdownContent) {
   return { title, subtitle };
 }
 
+/**
+ * Extracts the subtitle from either the frontmatter YAML or the first heading.
+ * Falls back to 'Untitled' if neither source contains a title.
+ *
+ * @param {any} frontmatterNode
+ * @param {any} headingNode
+ * @returns {string} the extracted subtitle
+ */
 function getSubTitle(frontmatterNode, headingNode) {
   if (frontmatterNode != null) {
     const fmObject = yaml.load(frontmatterNode.value);
+    // @ts-expect-error
     if (fmObject.title != null) {
+      // @ts-expect-error
       return fmObject.title;
     }
   }
 
   if (headingNode != null) {
+    // @ts-expect-error
     return headingNode.children.map((c) => c.value).join('');
   }
 
   return 'Untitled';
 }
 
+/**
+ * Extracts the 'kind' metadata from the frontmatter YAML node.
+ * Returns null if there is no kind specified.
+ *
+ * @param {object|null} frontmatterNode - The frontmatter node containing YAML content
+ * @returns {string|null} The extracted kind value or null if not found
+ */
 function getKind(frontmatterNode) {
   if (frontmatterNode != null) {
+    // @ts-expect-error
     const fmObject = yaml.load(frontmatterNode.value);
+    // @ts-expect-error
     if (fmObject.kind != null) {
+      // @ts-expect-error
       return fmObject.kind;
     }
   }

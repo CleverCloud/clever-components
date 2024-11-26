@@ -1,10 +1,17 @@
 import { setCustomElementsManifest } from '@storybook/web-components';
+// @ts-ignore not worth helping TS understand this is a virtual file since we don't need types for the `customElementManifest`
 import customElementsManifest from '../dist/custom-elements.json';
 import { AutodocsTemplate } from '../src/stories/lib/autodocs-template.jsx';
 import '../src/stories/lib/i18n-control.js';
 
+/**
+ * @typedef {import('@storybook/web-components').Preview} Preview
+ * @typedef {import('@storybook/addon-viewport').ViewportMap} ViewportMap
+ */
+
 setCustomElementsManifest(customElementsManifest);
 
+/** @type {Partial<ViewportMap>} */
 const viewports = {};
 Array.from(new Array(10)).map((_, i) => {
   const w = 350 + i * 100;
@@ -24,7 +31,7 @@ const availableLanguages = [
   { value: 'missing', title: '🤬 Missing' },
 ];
 
-/** @type { import('@storybook/web-components').Preview } */
+/** @type {Preview} */
 const preview = {
   parameters: {
     docs: {
