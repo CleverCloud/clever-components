@@ -1,7 +1,11 @@
 import { setCustomElementsManifest } from '@storybook/web-components';
+// Any CSS file import automagically generates a `<link rel="stylesheet" href="bundledCssFile">` in the story iframe
+import 'github-markdown-css/github-markdown.css';
+import 'highlight.js/styles/vs.css';
 import customElementsManifest from '../dist/custom-elements.json';
 import { AutodocsTemplate } from '../src/stories/lib/autodocs-template.jsx';
 import '../src/stories/lib/i18n-control.js';
+import '../src/styles/default-theme.css';
 
 setCustomElementsManifest(customElementsManifest);
 
