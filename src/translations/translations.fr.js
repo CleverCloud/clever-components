@@ -271,7 +271,7 @@ export const translations = {
     sanitize`Vous pouvez fournir votre propre certificat grâce au <a href="https://api.clever-cloud.com/v2/certificates/new">gestionnaire de certificats Clever Cloud</a>.`,
   'cc-domain-management.certif.heading': `Sécurisez votre application`,
   'cc-domain-management.dns.a.desc': () =>
-    sanitize`<p>Si vous choisissez d'utiliser des enregistrements de type <code>A</code>, vous devrez vous-même assurer leur mise à jour. Pensez à suivre notre <a href="https://developers.clever-cloud.com/changelog/" lang="en">changelog</a> ou à lire la documentation de notre <a href="https://developers.clever-cloud.com/api/v4/#load-balancers" lang="en">API v4</a> pour cela.</p>`,
+    sanitize`<p>Si vous choisissez d'utiliser des enregistrements de type <code>A</code>, par exemple pour un domaine racine (APEX), vous devrez vous-même assurer leur mise à jour. Pensez à suivre notre <a href="https://developers.clever-cloud.com/changelog/" lang="en">changelog</a> ou à lire la documentation de notre <a href="https://developers.clever-cloud.com/api/v4/#load-balancers" lang="en">API v4</a> pour cela.</p>`,
   'cc-domain-management.dns.a.heading': `Enregistrements A`,
   'cc-domain-management.dns.a.label': `Valeurs d'enregistrement A`,
   'cc-domain-management.dns.cname.desc': () =>
@@ -283,7 +283,7 @@ export const translations = {
   'cc-domain-management.dns.documentation.text': `Enregistrements DNS - Documentation`,
   'cc-domain-management.dns.heading': `Configurez vos DNS`,
   'cc-domain-management.dns.info.desc': () =>
-    sanitize`Si vous bénéficiez d'un <span lang="en">load balancer</span> dédié, référez-vous à sa configuration ou contactez le support. Notre équipe pourra également vous aider pour commander un tel service. Pour un domaine APEX ou un sous-domaine disposant déjà d'une zone DNS, référez-vous à notre <a href="https://developers.clever-cloud.com/doc/administrate/domain-names/">documentation</a>.`,
+    sanitize`Si vous bénéficiez d'un <span lang="en">load balancer</span> dédié, référez-vous à sa configuration ou <a href="/ticket-center-choice">contactez le support</a>. Notre équipe pourra également vous aider pour commander un tel service. Pour un domaine sans sous-domaine (APEX) ou un sous-domaine avec sa propre zone DNS, référez-vous à notre <a href="https://developers.clever-cloud.com/doc/administrate/domain-names/">documentation</a>.`,
   'cc-domain-management.dns.info.heading': `Load balancers dédiés et cas spécifiques`,
   'cc-domain-management.dns.loading-error': `Une erreur est survenue pendant le chargement des informations DNS`,
   'cc-domain-management.form.domain.error.contains-path': /** @param {{path: string}} _ */ ({ path }) =>

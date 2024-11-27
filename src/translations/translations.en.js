@@ -260,7 +260,7 @@ export const translations = {
     sanitize`You can provide your own certificate by using the <a href="https://api.clever-cloud.com/v2/certificates/new">Clever Cloud Certificate Manager</a>.`,
   'cc-domain-management.certif.heading': `Secure your application`,
   'cc-domain-management.dns.a.desc': () =>
-    sanitize`<p>If you choose to use <code>A</code> records, you'll need to update them yourself. Follow our <a href="https://developers.clever-cloud.com/changelog/">changelog</a> or check our <a href="https://developers.clever-cloud.com/api/v4/#load-balancers">v4 API documentation</a> for this.</p>`,
+    sanitize`<p>If you choose to use <code>A</code> records, for instance with a root domain (APEX), you'll need to update them yourself. Follow our <a href="https://developers.clever-cloud.com/changelog/">changelog</a> or check our <a href="https://developers.clever-cloud.com/api/v4/#load-balancers">v4 API documentation</a> for this.</p>`,
   'cc-domain-management.dns.a.heading': `A records`,
   'cc-domain-management.dns.a.label': `A Record values`,
   'cc-domain-management.dns.cname.desc': () =>
@@ -273,7 +273,7 @@ export const translations = {
   'cc-domain-management.dns.documentation.text': `DNS records - Documentation`,
   'cc-domain-management.dns.heading': `Configure your DNS`,
   'cc-domain-management.dns.info.desc': () =>
-    sanitize`If you are using a dedicated load balancer, refer to its configuration or contact support. Our team can also help you to order such a service. For APEX domains or subdomains with an existing DNS zone, refer to our <a href="https://developers.clever-cloud.com/doc/administrate/domain-names/">DNS & Domains documentation</a>.`,
+    sanitize`If you are using a dedicated load balancer, refer to its configuration or <a href="/ticket-center-choice">contact support</a>. Our team can also help you to order such a service. For a domain with no subdomains (APEX) or a subdomain with its own DNS zone, refer to our <a href="https://developers.clever-cloud.com/doc/administrate/domain-names/">DNS & Domains documentation</a>.`,
   'cc-domain-management.dns.info.heading': `Dedicated load balancers & specific cases`,
   'cc-domain-management.dns.loading-error': `Something went wrong while loading DNS information`,
   'cc-domain-management.form.domain.error.contains-path': /** @param {{path: string}} _ */ ({ path }) =>
