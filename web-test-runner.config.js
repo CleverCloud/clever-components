@@ -5,6 +5,10 @@ import { chromeLauncher } from '@web/test-runner-chrome';
 import { cemAnalyzerPlugin } from './wds/cem-analyzer-plugin.js';
 import { commonjsPluginWithConfig, esbuildBundlePluginWithConfig } from './wds/wds-common.js';
 
+// sets the language used by the headless browser
+// normally we'd set it through the `chromeLauncher` options but it makes the debug mode crash
+process.env.LANGUAGE = 'en';
+
 export default {
   files: ['test/**/*.test.*', 'src/components/**/*.test.*'],
   filterBrowserLogs: ({ args }) => {
@@ -20,9 +24,6 @@ export default {
     chromeLauncher({
       // Fixes random timeouts with Chrome > 127, see https://github.com/CleverCloud/clever-components/issues/1146 for more info
       concurrency: 1,
-      launchOptions: {
-        env: { LANGUAGE: 'en_US' },
-      },
       async createPage({ context }) {
         const page = await context.newPage();
         // We need that for unit tests working with dates and timezones
