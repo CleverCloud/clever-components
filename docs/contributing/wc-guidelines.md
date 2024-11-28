@@ -96,10 +96,10 @@ To do so, we rely on a prop that is typed to reflect the fact that:
 
 In a `your-component-name.types.d.ts` file, you should define types for your component state following the example below:
 
-```ts 
+```ts
 // this type should be applied to the component prop conveying the state
 // these 3 states types are the most common but feel free to remove or add state types when relevant
-export type MyComponentState = MyComponentStateLoaded | MyComponentStateLoading | MyComponentStateError 
+export type MyComponentState = MyComponentStateLoaded | MyComponentStateLoading | MyComponentStateError
 
 // `loading` and `error` states usually are fairly simple since they have no data
 interface MyComponentStateLoading {
@@ -120,7 +120,7 @@ interface MyComponentStateLoaded {
   ...
 }
 
-// alternatively, you may decide to store data in an object to 
+// alternatively, you may decide to store data in an object to
 // avoid clashes or just because you think it's better this way
 interface MyComponentStateLoaded {
   type: 'loaded';
@@ -145,7 +145,7 @@ The component prop containing the state should be named `state`.
 You need to import the type you defined for this state and apply it to the `state` prop within the component constructor.
 
 Example of a component:
-```ts 
+```ts
 /**
  * @typedef {import('./my-component-name.types.js'.MyComponentState) MyComponentState}
  */
@@ -162,27 +162,27 @@ export class MyComponent extends LitElement {
 
     /* @type {MyComponentState} a short description */
     // usually the initial state is `loading` but feel free to adapt this example
-    this.state = { type: 'loading' }; 
+    this.state = { type: 'loading' };
   }
 
   render () {
     // you should take advantage of the state types to avoid impossible states
     // this also helps typechecking and you get more help from your IDE if you do it right
-    if (this.state === 'loading') {
+    if (this.state.type === 'loading') {
       // this is a simple example, things are trickier when dealing with skeletons
-      return html`<cc-loader></cc-loader>`; 
+      return html`<cc-loader></cc-loader>`;
     }
 
-    if (this.state === 'error') {
+    if (this.state.type === 'error') {
       return html`<cc-notice intent="warning">${i18n('your-warning-translation')}</cc-notice>`;
     }
 
-    if (this.state === 'loaded') {
+    if (this.state.type === 'loaded') {
       // you can pass data to your loaded subRender function
       return this._renderLoaded(...);
     }
   }
-} 
+}
 ```
 
 **Note:**
@@ -198,7 +198,7 @@ For instance when dealing with a parent component which manages a list of items,
 - data to be passed to subcomponents (items data) should be plain data,
 - plain data should be transformed into a `state` by the parent component within its `render` or `subrender` methods before passing it to its subcomponents.
 
-For instance, subcomponents like [cc-article-card](https://github.com/CleverCloud/clever-components/blob/master/src/components/cc-article-card/cc-article-card.js) are only used by [cc-article-list](https://github.com/CleverCloud/clever-components/blob/master/src/components/cc-article-list/cc-article-list.js). 
+For instance, subcomponents like [cc-article-card](https://github.com/CleverCloud/clever-components/blob/master/src/components/cc-article-card/cc-article-card.js) are only used by [cc-article-list](https://github.com/CleverCloud/clever-components/blob/master/src/components/cc-article-list/cc-article-list.js).
 These subcomponents can either be `loaded` or `loading` but their state is actually dictated by a single API call that loads all articles at once.
 
 In such cases:
