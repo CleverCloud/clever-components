@@ -76,7 +76,7 @@ import '../cc-select/cc-select.js';
  */
 
 /**
- * A component displaying an explorer of a kv database.
+ * A component displaying an explorer of a KV database.
  *
  * It offers the ability to:
  *
@@ -85,6 +85,7 @@ import '../cc-select/cc-select.js';
  * * ask for the addition of a key,
  * * ask for the deletion of a key,
  * * show the detail of a key,
+ * * edit the value of a key,
  * * send raw commands to the database using a kind of terminal interface.
  *
  * # Supported data types
