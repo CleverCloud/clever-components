@@ -240,7 +240,7 @@ export class CcKvSetExplorer extends LitElement {
   _renderElement(state, skeleton, index) {
     return html`
       <div class="element">
-        <span class=${classMap({ 'element-value': true, skeleton })}>${state.value}</span>
+        <span class="element-value ${classMap({ skeleton })}">${state.value}</span>
         <div class="element-value-buttons">
           <cc-button
             class="delete-button"
@@ -271,15 +271,15 @@ export class CcKvSetExplorer extends LitElement {
   }
 
   _renderAddForm() {
-    const loading = this.state.type === 'loading';
-    const adding = this.state.type !== 'loading' && this.state.addForm.type === 'adding';
-    const readonly = loading || adding;
+    const isLoading = this.state.type === 'loading';
+    const isAdding = this.state.type !== 'loading' && this.state.addForm.type === 'adding';
+    const isReadonly = isLoading || isAdding;
 
     return html`<form class="add-form" ${ref(this._addFormRef)} ${formSubmit(this._onAddFormSubmit)}>
       <cc-input-text
         name="element"
         label=${i18n('cc-kv-set-explorer.add-form.element-value')}
-        ?readonly=${readonly}
+        ?readonly=${isReadonly}
         ?disabled=${this.disabled}
         inline
         multi
@@ -288,8 +288,8 @@ export class CcKvSetExplorer extends LitElement {
         type="submit"
         a11y-name=${i18n('cc-kv-set-explorer.add-form.submit.a11y')}
         .icon=${iconAdd}
-        ?waiting=${adding}
-        ?disabled=${loading || this.disabled}
+        ?waiting=${isAdding}
+        ?disabled=${isLoading || this.disabled}
         >${i18n('cc-kv-set-explorer.add-form.submit')}</cc-button
       >
     </form>`;
@@ -369,8 +369,8 @@ export class CcKvSetExplorer extends LitElement {
         .add-form {
           border-top: 1px solid var(--cc-color-border-neutral-strong);
           display: flex;
-          gap: 0.5em;
-          padding: 1em;
+          gap: 1em;
+          padding: 0.5em;
         }
 
         .add-form cc-input-text {

@@ -678,11 +678,6 @@ export const translations = {
   'cc-jenkins-info.update.title': `Mises à jour`,
   'cc-jenkins-info.update.up-to-date': `Votre version de Jenkins est à jour.`,
   //#endregion
-  //#region cc-kv-console
-  'cc-kv-console.header': `KV Explorer Console`,
-  'cc-kv-console.shell.prompt': `Ligne de commande`,
-  'cc-kv-console.warning': `Les commandes exécutées dans cette interface sont directement envoyées à la base de données`,
-  //#endregion
   //#region cc-kv-explorer
   'cc-kv-explorer.details.empty': `Sélectionnez une clé pour en récupérer le contenu`,
   'cc-kv-explorer.details.unsupported': `Le type de la clé sélectionnée n'est pas supporté`,
@@ -693,7 +688,7 @@ export const translations = {
   'cc-kv-explorer.error.key-doesnt-exist': `La clé n'existe plus`,
   'cc-kv-explorer.filter.all': `Tous`,
   'cc-kv-explorer.filter.apply': `Appliquer le filtre`,
-  'cc-kv-explorer.filter.by-pattern': `Filtrer par clé`,
+  'cc-kv-explorer.filter.by-pattern': `Filtrer les clés par pattern`,
   'cc-kv-explorer.filter.by-type': `Filtrer par type`,
   'cc-kv-explorer.form.add': `Ajouter`,
   'cc-kv-explorer.form.error.already-used': `Ce nom de clé est déjà utilisé`,
@@ -816,6 +811,11 @@ export const translations = {
   'cc-kv-string-editor.form.save': `Sauvegarder`,
   'cc-kv-string-editor.form.value': `Valeur`,
   'cc-kv-string-editor.success.update-value': `La valeur a été modifiée`,
+  //#endregion
+  //#region cc-kv-terminal
+  'cc-kv-terminal.header': `KV Explorer Terminal`,
+  'cc-kv-terminal.shell.prompt': `Ligne de commande`,
+  'cc-kv-terminal.warning': `Les commandes exécutées dans ce terminal sont directement envoyées à la base de données`,
   //#endregion
   //#region cc-loader
   'cc-loader.a11y-name': `Chargement en cours`,

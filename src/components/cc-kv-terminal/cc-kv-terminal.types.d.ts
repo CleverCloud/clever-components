@@ -1,11 +1,11 @@
-export type CcKvConsoleState = CcKvConsoleStateIdle | CcKvConsoleStateRunning;
+export type CcKvTerminalState = CcKvTerminalStateIdle | CcKvTerminalStateRunning;
 
-export interface CcKvConsoleStateIdle {
+export interface CcKvTerminalStateIdle {
   type: 'idle';
   history: Array<CcKvCommandHistoryEntry>;
 }
 
-export interface CcKvConsoleStateRunning {
+export interface CcKvTerminalStateRunning {
   type: 'running';
   commandLine: string;
   history: Array<CcKvCommandHistoryEntry>;

@@ -326,9 +326,7 @@ export class CcKvListExplorer extends LitElement {
                 ></cc-input-text>
               `
             : ''}
-          ${!isEditing
-            ? html`<span class=${classMap({ 'element-value-span': true, skeleton })}>${state.value}</span>`
-            : ''}
+          ${!isEditing ? html`<span class="element-value-span ${classMap({ skeleton })}">${state.value}</span>` : ''}
 
           <div class="element-value-buttons">${this._renderElementButtons(state, skeleton, isEditing, index)}</div>
         </div>
@@ -423,7 +421,7 @@ export class CcKvListExplorer extends LitElement {
         ?skeleton=${skeleton}
         ?disabled=${this.disabled}
         @cc-button:click=${this._onCopyKeyButtonClick}
-        >${i18n('cc-kv-list-explorer.element.copy', { index: index + 1 })}</cc-button
+        >${i18n('cc-kv-list-explorer.element.copy', { index })}</cc-button
       >
     `;
   }
@@ -434,9 +432,9 @@ export class CcKvListExplorer extends LitElement {
       { label: i18n('cc-kv-list-explorer.add-form.element-position.head'), value: 'head' },
     ];
 
-    const loading = this.state.type === 'loading';
-    const adding = this.state.type !== 'loading' && this.state.addForm.type === 'adding';
-    const readonly = loading || adding;
+    const isLoading = this.state.type === 'loading';
+    const isAdding = this.state.type !== 'loading' && this.state.addForm.type === 'adding';
+    const isReadonly = isLoading || isAdding;
 
     return html`<form class="add-form" ${ref(this._addFormRef)} ${formSubmit(this._onAddFormSubmit)}>
       <cc-select
@@ -451,7 +449,7 @@ export class CcKvListExplorer extends LitElement {
       <cc-input-text
         name="value"
         label=${i18n('cc-kv-list-explorer.add-form.element-value')}
-        ?readonly=${readonly}
+        ?readonly=${isReadonly}
         ?disabled=${this.disabled}
         inline
         multi
@@ -460,8 +458,8 @@ export class CcKvListExplorer extends LitElement {
         type="submit"
         a11y-name=${i18n('cc-kv-list-explorer.add-form.submit.a11y')}
         .icon=${iconAdd}
-        ?waiting=${adding}
-        ?disabled=${loading || this.disabled}
+        ?waiting=${isAdding}
+        ?disabled=${isLoading || this.disabled}
         >${i18n('cc-kv-list-explorer.add-form.submit')}</cc-button
       >
     </form>`;
@@ -561,8 +559,8 @@ export class CcKvListExplorer extends LitElement {
         .add-form {
           border-top: 1px solid var(--cc-color-border-neutral-strong);
           display: flex;
-          gap: 0.5em;
-          padding: 1em;
+          gap: 1em;
+          padding: 0.5em;
         }
 
         .add-form cc-input-text {

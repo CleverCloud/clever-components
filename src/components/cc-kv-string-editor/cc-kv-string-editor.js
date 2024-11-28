@@ -56,8 +56,8 @@ export class CcKvStringEditor extends LitElement {
   }
 
   render() {
-    const loading = this.state.type === 'loading';
-    const saving = this.state.type === 'saving';
+    const isLoading = this.state.type === 'loading';
+    const isSaving = this.state.type === 'saving';
     const value = this.state.type === 'loading' ? '' : this.state.value;
     const isDisabled = this.disabled;
 
@@ -65,19 +65,19 @@ export class CcKvStringEditor extends LitElement {
       <cc-input-text
         name="value"
         label=${i18n('cc-kv-string-editor.form.value')}
-        .skeleton=${loading}
+        .skeleton=${isLoading}
         ?disabled=${isDisabled}
-        ?readonly=${saving}
+        ?readonly=${isSaving}
         clipboard
         multi
         .resetValue=${value}
         .value=${value}
       ></cc-input-text>
       <div class="buttons">
-        <cc-button type="reset" .skeleton=${loading} .disabled=${isDisabled || saving}>
+        <cc-button type="reset" .skeleton=${isLoading} .disabled=${isDisabled || isSaving}>
           ${i18n('cc-kv-string-editor.form.reset')}
         </cc-button>
-        <cc-button type="submit" primary .skeleton=${loading} .disabled=${isDisabled} .waiting=${saving}>
+        <cc-button type="submit" primary .skeleton=${isLoading} .disabled=${isDisabled} .waiting=${isSaving}>
           ${i18n('cc-kv-string-editor.form.save')}
         </cc-button>
       </div>
@@ -90,10 +90,6 @@ export class CcKvStringEditor extends LitElement {
       css`
         :host {
           display: block;
-        }
-
-        form {
-          padding: 1em;
         }
 
         .buttons {

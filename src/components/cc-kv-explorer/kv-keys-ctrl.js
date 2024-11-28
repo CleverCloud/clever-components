@@ -59,7 +59,7 @@ export class KeysController {
 }
 
 /**
- * @extends {KvScanner<CcKvKeyState, {type: CcKvKeyType, match: string}>}
+ * @extends {KvScanner<CcKvKeyState, {type: CcKvKeyType, pattern: string}>}
  */
 export class KvKeysScanner extends KvScanner {
   /**
@@ -73,11 +73,11 @@ export class KvKeysScanner extends KvScanner {
       (it) => {
         return (
           (this._filter?.type == null || it.key.type === this._filter.type) &&
-          (isStringEmpty(this._filter?.match) || matchKvPattern(this._filter.match, it.key.name))
+          (isStringEmpty(this._filter?.pattern) || matchKvPattern(this._filter.pattern, it.key.name))
         );
       },
       async (cursor, count, filter) => {
-        const r = await kvClient.scanKeys({ cursor, count, type: filter?.type, match: filter?.match }, { signal });
+        const r = await kvClient.scanKeys({ cursor, count, type: filter?.type, match: filter?.pattern }, { signal });
         return {
           cursor: r.cursor,
           total: r.total,

@@ -21,13 +21,13 @@ import { i18n } from '../../translations/translation.js';
 import '../cc-badge/cc-badge.js';
 import '../cc-button/cc-button.js';
 import '../cc-input-text/cc-input-text.js';
-import '../cc-kv-console/cc-kv-console.js';
 import '../cc-kv-hash-explorer/cc-kv-hash-explorer.js';
 import { CcKvHashInput } from '../cc-kv-hash-input/cc-kv-hash-input.js';
 import '../cc-kv-list-explorer/cc-kv-list-explorer.js';
 import { CcKvListInput } from '../cc-kv-list-input/cc-kv-list-input.js';
 import '../cc-kv-set-explorer/cc-kv-set-explorer.js';
 import '../cc-kv-string-editor/cc-kv-string-editor.js';
+import '../cc-kv-terminal/cc-kv-terminal.js';
 import '../cc-loader/cc-loader.js';
 import '../cc-notice/cc-notice.js';
 import '../cc-select/cc-select.js';
@@ -36,6 +36,8 @@ import '../cc-select/cc-select.js';
  * @typedef {import('./cc-kv-explorer.types.js').CcKvExplorerState} CcKvExplorerState
  * @typedef {import('./cc-kv-explorer.types.js').CcKvExplorerStateLoaded} CcKvExplorerStateLoaded
  * @typedef {import('./cc-kv-explorer.types.js').CcKvExplorerStateLoadingKeys} CcKvExplorerStateLoadingKeys
+ * @typedef {import('./cc-kv-explorer.types.js').CcKvExplorerStateFiltering} CcKvExplorerStateFiltering
+ * @typedef {import('./cc-kv-explorer.types.js').CcKvExplorerStateRefreshing} CcKvExplorerStateRefreshing
  * @typedef {import('./cc-kv-explorer.types.js').CcKvExplorerDetailState} CcKvExplorerDetailState
  * @typedef {import('./cc-kv-explorer.types.js').CcKvExplorerKeyAddFormState} CcKvExplorerKeyAddFormState
  * @typedef {import('./cc-kv-explorer.types.js').CcKvKeyFilter} CcKvKeyFilter
@@ -50,7 +52,7 @@ import '../cc-select/cc-select.js';
  * @typedef {import('../cc-kv-list-explorer/cc-kv-list-explorer.types.js').CcKvListExplorerState} CcKvListExplorerState
  * @typedef {import('../cc-kv-set-explorer/cc-kv-set-explorer.js').CcKvSetExplorer} CcKvSetExplorer
  * @typedef {import('../cc-kv-set-explorer/cc-kv-set-explorer.types.js').CcKvSetExplorerState} CcKvSetExplorerState
- * @typedef {import('../cc-kv-console/cc-kv-console.types.js').CcKvConsoleState} CcKvConsoleState
+ * @typedef {import('../cc-kv-terminal/cc-kv-terminal.types.d.ts').CcKvTerminalState} CcKvTerminalState
  * @typedef {import('../cc-button/cc-button.js').CcButton} CcButton
  * @typedef {import('../cc-input-text/cc-input-text.js').CcInputText} CcInputText
  * @typedef {import('../cc-select/cc-select.js').CcSelect} CcSelect
@@ -74,7 +76,7 @@ import '../cc-select/cc-select.js';
  */
 
 /**
- * A component displaying an explorer of a kv database.
+ * A component displaying an explorer of a KV database.
  *
  * It offers the ability to:
  *
@@ -83,6 +85,7 @@ import '../cc-select/cc-select.js';
  * * ask for the addition of a key,
  * * ask for the deletion of a key,
  * * show the detail of a key,
+ * * edit the value of a key,
  * * send raw commands to the database using a kind of terminal interface.
  *
  * # Supported data types
@@ -102,7 +105,7 @@ import '../cc-select/cc-select.js';
 export class CcKvExplorer extends LitElement {
   static get properties() {
     return {
-      consoleState: { type: Object, attribute: 'console-state' },
+      terminalState: { type: Object, attribute: 'terminal-state' },
       detailState: { type: Object, attribute: 'detail-state' },
       state: { type: Object },
       supportedTypes: { type: Array, attribute: 'supported-types' },
@@ -113,8 +116,8 @@ export class CcKvExplorer extends LitElement {
   constructor() {
     super();
 
-    /** @type {CcKvConsoleState} */
-    this.consoleState = { type: 'idle', history: [] };
+    /** @type {CcKvTerminalState} */
+    this.terminalState = { type: 'idle', history: [] };
 
     /** @type {CcKvExplorerDetailState} */
     this.detailState = { type: 'hidden' };
@@ -148,6 +151,9 @@ export class CcKvExplorer extends LitElement {
 
     /** @type {CcKvSetExplorerRef} */
     this._setEditor = createRef();
+
+    /** @type {CcKvKeyType | 'all'} */
+    this._filterType = 'all';
 
     new FormErrorFocusController(this, this._addFormRef, () => {
       if (this.detailState.type === 'add') {
@@ -197,7 +203,8 @@ export class CcKvExplorer extends LitElement {
     await this.updateComplete;
     await this._keysRef?.value?.layoutComplete;
     const deleteButton = /** @type {HTMLElement} */ (
-      this.shadowRoot.querySelector(`.delete-key-button[data-index="${index}"]`)
+      this.shadowRoot.querySelector(`.delete-key-button[data-index="${index}"]`) ??
+        this.shadowRoot.querySelector(`.delete-key-button[data-index="${index - 1}"]`)
     );
     if (deleteButton == null) {
       this.focusAddKeyButton();
@@ -256,6 +263,8 @@ export class CcKvExplorer extends LitElement {
         return i18n('cc-kv-explorer.key.type.hash');
       case 'set':
         return i18n('cc-kv-explorer.key.type.set');
+      default:
+        return type;
     }
   }
 
@@ -340,7 +349,11 @@ export class CcKvExplorer extends LitElement {
     }
   }
 
-  async _onTypeFilterChange() {
+  /**
+   * @param {CustomEvent<CcKvKeyType|'all'>} e
+   */
+  async _onTypeFilterChange(e) {
+    this._filterType = e.detail;
     // we need to wait for next update because the `ElementInternals` form data synchronization is done asynchronously (in `updated` stage)
     await this.updateComplete;
     this._filterFormRef.value.requestSubmit();
@@ -352,7 +365,7 @@ export class CcKvExplorer extends LitElement {
   _onFilterFormSubmit(formData) {
     const filter = /** @type {CcKvKeyFilter}*/ ({
       type: formData.keyType,
-      match: formData.match,
+      pattern: formData.pattern,
     });
     dispatchCustomEvent(this, 'filter-change', filter);
   }
@@ -452,10 +465,10 @@ export class CcKvExplorer extends LitElement {
   }
 
   /**
-   * @param {CustomEvent<CcKvConsoleState>} e
+   * @param {CustomEvent<CcKvTerminalState>} e
    */
-  _onConsoleStateChange(e) {
-    this.consoleState = e.detail;
+  _onTerminalStateChange(e) {
+    this.terminalState = e.detail;
   }
 
   /**
@@ -488,22 +501,32 @@ export class CcKvExplorer extends LitElement {
 
     return html`
       <div class="wrapper">
-        ${this._renderFilterBar()}
-        <div class="keys">${this._renderKeys(this.state)}</div>
+        ${this._renderFilterBar(this.state)}
+        <div class="keys">${this._renderKeysHeader(this.state)} ${this._renderKeys(this.state)}</div>
         ${this._renderDetail()}
-        <cc-kv-console-beta
-          class="console"
-          .state=${this.consoleState}
-          @cc-kv-console:state-change=${this._onConsoleStateChange}
-        ></cc-kv-console-beta>
+        <cc-kv-terminal-beta
+          class="terminal"
+          .state=${this.terminalState}
+          @cc-kv-terminal:state-change=${this._onTerminalStateChange}
+        ></cc-kv-terminal-beta>
       </div>
     `;
   }
 
-  _renderFilterBar() {
+  /**
+   * @param {CcKvExplorerStateLoaded | CcKvExplorerStateLoadingKeys | CcKvExplorerStateFiltering| CcKvExplorerStateRefreshing} state
+   * @return {TemplateResult}
+   */
+  _renderFilterBar(state) {
+    const isFetching = state.type === 'loading-keys' || state.type === 'filtering' || state.type === 'refreshing';
+    const isFiltering = state.type === 'filtering';
+
     /** @type {Array<CcKvKeyType | 'all'>} */
     const redisFilters = ['all', ...this.supportedTypes];
-    const kvFilterOptions = redisFilters.map((f) => ({ label: this._getKeyFilterLabel(f), value: f }));
+    const kvFilterOptions = redisFilters
+      // todo: remove this filter and replace by a proper `readonly` property once `<cc-select>` supports it.
+      .filter((f) => !isFetching || f !== this._filterType)
+      .map((f) => ({ label: this._getKeyFilterLabel(f), value: f }));
 
     return html`
       <form class="filter-bar" ${ref(this._filterFormRef)} ${formSubmit(this._onFilterFormSubmit)}>
@@ -516,22 +539,33 @@ export class CcKvExplorer extends LitElement {
           .options=${kvFilterOptions}
           @cc-select:input=${this._onTypeFilterChange}
         ></cc-select>
-        <cc-input-text name="match" inline label=${i18n('cc-kv-explorer.filter.by-pattern')}></cc-input-text>
-        <cc-button type="submit" .icon=${iconFilter} hide-text outlined ?disabled=${this.state.type === 'loading-keys'}
-          >${i18n('cc-kv-explorer.filter.apply')}</cc-button
+        <cc-input-text
+          name="pattern"
+          inline
+          label=${i18n('cc-kv-explorer.filter.by-pattern')}
+          ?readonly=${isFetching}
+        ></cc-input-text>
+        <cc-button
+          type="submit"
+          .icon=${iconFilter}
+          hide-text
+          outlined
+          ?disabled=${isFetching && !isFiltering}
+          ?waiting=${isFiltering}
         >
+          ${i18n('cc-kv-explorer.filter.apply')}
+        </cc-button>
       </form>
     `;
   }
 
   /**
-   * @param {CcKvExplorerStateLoaded | CcKvExplorerStateLoadingKeys} state
+   * @param {CcKvExplorerStateLoaded | CcKvExplorerStateLoadingKeys | CcKvExplorerStateFiltering | CcKvExplorerStateRefreshing} state
    * @return {TemplateResult}
    */
   _renderKeys(state) {
     if (state.type === 'loaded' && state.keys.length === 0) {
       return html`
-        ${this._renderKeysHeader(state)}
         <div class="keys-list-empty">
           ${state.total === 0
             ? html`
@@ -546,18 +580,18 @@ export class CcKvExplorer extends LitElement {
       `;
     }
 
-    const fetching = state.type === 'loading-keys';
+    const isFetching = state.type === 'loading-keys' || state.type === 'filtering' || state.type === 'refreshing';
 
     /** @type {Array<{keyState: CcKvKeyState, skeleton: boolean}>} */
-    let keys = state.keys.map((keyState) => ({ keyState, skeleton: false }));
-    if (fetching) {
+    const keys = state.keys.map((keyState) => ({ keyState, skeleton: false }));
+    if (isFetching) {
       /** @type {Array<{keyState: CcKvKeyState, skeleton: boolean}>} */
       const skeletonKeys = new Array(10).fill(0).map(() => ({
         skeleton: true,
         keyState: { type: 'idle', key: { name: randomString(random(8, 15)), type: randomPick(this.supportedTypes) } },
       }));
 
-      keys = keys.concat(skeletonKeys);
+      keys.push(...skeletonKeys);
     }
 
     /**
@@ -567,7 +601,6 @@ export class CcKvExplorer extends LitElement {
     const getKeyName = (k) => k.keyState.key.name;
 
     return html`
-      ${this._renderKeysHeader(state)}
       <lit-virtualizer
         ${ref(this._keysRef)}
         class="keys-list"
@@ -583,11 +616,13 @@ export class CcKvExplorer extends LitElement {
   }
 
   /**
-   * @param {CcKvExplorerStateLoaded | CcKvExplorerStateLoadingKeys} state
+   * @param {CcKvExplorerStateLoaded | CcKvExplorerStateLoadingKeys | CcKvExplorerStateFiltering | CcKvExplorerStateRefreshing} state
    * @return {TemplateResult}
    */
   _renderKeysHeader(state) {
-    const skeleton = state.type === 'loading-keys';
+    const isFetching = state.type === 'loading-keys' || state.type === 'filtering' || state.type === 'refreshing';
+    const skeleton = state.type === 'loading-keys' || state.type === 'refreshing';
+    const isRefreshing = state.type === 'refreshing';
 
     return html`<div class="keys-header">
       <div>
@@ -608,7 +643,8 @@ export class CcKvExplorer extends LitElement {
         .icon=${iconRefresh}
         hide-text
         outlined
-        ?waiting=${skeleton}
+        ?disabled=${isFetching && !isRefreshing}
+        ?waiting=${isRefreshing}
         @cc-button:click=${this._onRefreshKeysButtonClick}
         >${i18n('cc-kv-explorer.keys.header.refresh')}</cc-button
       >
@@ -623,11 +659,11 @@ export class CcKvExplorer extends LitElement {
    * @return {TemplateResult}
    */
   _renderKey({ keyState, skeleton }, index) {
-    const selected = keyState.type === 'selected';
-    const loading = keyState.type === 'loading';
-    const deleting = keyState.type === 'deleting';
+    const isSelected = keyState.type === 'selected';
+    const isLoading = keyState.type === 'loading';
+    const isDeleting = keyState.type === 'deleting';
     const id = `key-${keyState.key.name}`;
-    const buttonTabindex = selected || loading ? undefined : -1;
+    const buttonTabindex = isSelected || isLoading ? undefined : -1;
 
     return html`<div class="key">
       <input
@@ -636,17 +672,17 @@ export class CcKvExplorer extends LitElement {
         id=${id}
         name="selectedKey"
         .value=${keyState.key.name}
-        .checked=${selected || loading}
+        .checked=${isSelected || isLoading}
         .disabled=${skeleton}
       />
       <label for=${id}>
-        <span class=${classMap({ 'key-name': true, skeleton })}>${keyState.key.name}</span>
+        <span class="key-name ${classMap({ skeleton })}">${keyState.key.name}</span>
         <cc-badge weight="outlined" ?skeleton=${skeleton}>${this._getKeyTypeLabel(keyState.key.type)}</cc-badge>
         <cc-button
           class="delete-key-button"
           tabindex=${ifDefined(buttonTabindex)}
-          ?disabled=${loading || skeleton}
-          ?waiting=${deleting}
+          ?disabled=${isLoading || skeleton}
+          ?waiting=${isDeleting}
           ?skeleton=${skeleton}
           hide-text
           danger
@@ -688,7 +724,7 @@ export class CcKvExplorer extends LitElement {
    */
   _renderDetailAdd(formState) {
     const typeOptions = this.supportedTypes.map((type) => ({ label: this._getKeyTypeLabel(type), value: type }));
-    const saving = formState.type === 'adding';
+    const isSaving = formState.type === 'adding';
 
     return html`<form class="detail-add" ${ref(this._addFormRef)} ${formSubmit(this._onKeyAddFormSubmit)}>
       <div class="add-form-header">
@@ -696,80 +732,80 @@ export class CcKvExplorer extends LitElement {
           name="keyName"
           label=${i18n('cc-kv-explorer.form.key')}
           required
-          ?readonly=${saving}
+          ?readonly=${isSaving}
           .errorMessage=${this._getAddKeyErrorMessage(formState.errors?.keyName)}
         ></cc-input-text>
         <cc-select
           name="KeyType"
           label=${i18n('cc-kv-explorer.form.type')}
           required
-          ?disabled=${saving}
+          ?disabled=${isSaving}
           .options=${typeOptions}
           .value=${this._addFormSelectedType}
           @cc-select:input=${this._onKeyTypeChanged}
         ></cc-select>
       </div>
-      ${this._renderAdd(this._addFormSelectedType, saving)}
+      ${this._renderAdd(this._addFormSelectedType, isSaving)}
       <div class="buttons">
-        <cc-button type="reset" ?disabled=${saving}>${i18n('cc-kv-explorer.form.reset')}</cc-button>
-        <cc-button type="submit" primary ?waiting=${saving}>${i18n('cc-kv-explorer.form.add')}</cc-button>
+        <cc-button type="reset" ?disabled=${isSaving}>${i18n('cc-kv-explorer.form.reset')}</cc-button>
+        <cc-button type="submit" primary ?waiting=${isSaving}>${i18n('cc-kv-explorer.form.add')}</cc-button>
       </div>
     </form>`;
   }
 
   /**
    * @param {CcKvKeyType} type
-   * @param {boolean} saving
+   * @param {boolean} isSaving
    * @return {TemplateResult}
    */
-  _renderAdd(type, saving) {
+  _renderAdd(type, isSaving) {
     switch (type) {
       case 'string':
-        return this._renderAddString(saving);
+        return this._renderAddString(isSaving);
       case 'hash':
-        return this._renderAddHash(saving);
+        return this._renderAddHash(isSaving);
       case 'list':
-        return this._renderAddList(saving);
+        return this._renderAddList(isSaving);
       case 'set':
-        return this._renderAddSet(saving);
+        return this._renderAddSet(isSaving);
     }
   }
 
   /**
-   * @param {boolean} saving
+   * @param {boolean} isSaving
    * @return {TemplateResult}
    */
-  _renderAddString(saving) {
+  _renderAddString(isSaving) {
     return html`<cc-input-text
       name="value"
       label=${i18n('cc-kv-explorer.form.string.value')}
-      ?readonly=${saving}
+      ?readonly=${isSaving}
       multi
     ></cc-input-text>`;
   }
 
   /**
-   * @param {boolean} saving
+   * @param {boolean} isSaving
    * @return {TemplateResult}
    */
-  _renderAddHash(saving) {
-    return html`<cc-kv-hash-input-beta name="value" ?readonly=${saving}></cc-kv-hash-input-beta>`;
+  _renderAddHash(isSaving) {
+    return html`<cc-kv-hash-input-beta name="value" ?readonly=${isSaving}></cc-kv-hash-input-beta>`;
   }
 
   /**
-   * @param {boolean} saving
+   * @param {boolean} isSaving
    * @return {TemplateResult}
    */
-  _renderAddList(saving) {
-    return html`<cc-kv-list-input-beta name="value" ?readonly=${saving}></cc-kv-list-input-beta>`;
+  _renderAddList(isSaving) {
+    return html`<cc-kv-list-input-beta name="value" ?readonly=${isSaving}></cc-kv-list-input-beta>`;
   }
 
   /**
-   * @param {boolean} saving
+   * @param {boolean} isSaving
    * @return {TemplateResult}
    */
-  _renderAddSet(saving) {
-    return html`<cc-kv-list-input-beta name="value" ?disabled=${saving}></cc-kv-list-input-beta>`;
+  _renderAddSet(isSaving) {
+    return html`<cc-kv-list-input-beta name="value" ?disabled=${isSaving}></cc-kv-list-input-beta>`;
   }
 
   /**
@@ -778,8 +814,8 @@ export class CcKvExplorer extends LitElement {
    */
   _renderDetailEdit(key) {
     const keyState = this._getKeyState(key.name);
-    const deleting = keyState === 'deleting';
-    const loading = keyState === 'loading';
+    const isDeleting = keyState === 'deleting';
+    const isLoading = keyState === 'loading';
 
     return html`<div class="detail-edit">
       <div class="edit-header">
@@ -797,14 +833,14 @@ export class CcKvExplorer extends LitElement {
           .icon=${iconDelete}
           outlined
           danger
-          ?disabled=${loading}
-          ?waiting=${deleting}
+          ?disabled=${isLoading}
+          ?waiting=${isDeleting}
           data-key=${key.name}
           @cc-button:click=${this._onDeleteKeyButtonClick}
           >${i18n('cc-kv-explorer.key.header.delete')}</cc-button
         >
       </div>
-      ${this._renderEdit(this.detailState, deleting)}
+      ${this._renderEdit(this.detailState, isDeleting)}
     </div>`;
   }
 
@@ -824,7 +860,8 @@ export class CcKvExplorer extends LitElement {
       case 'edit-set':
         return this._renderEditSet(detailState.editor, disabled);
     }
-    return html`unsupported!`;
+    console.warn('Unsupported type for edition. This should never happen!');
+    return html``;
   }
 
   /**
@@ -833,7 +870,11 @@ export class CcKvExplorer extends LitElement {
    * @return {TemplateResult}
    */
   _renderEditString(state, disabled) {
-    return html`<cc-kv-string-editor-beta .state=${state} ?disabled=${disabled}></cc-kv-string-editor-beta>`;
+    return html`<cc-kv-string-editor-beta
+      class="string-editor"
+      .state=${state}
+      ?disabled=${disabled}
+    ></cc-kv-string-editor-beta>`;
   }
 
   /**
@@ -899,9 +940,9 @@ export class CcKvExplorer extends LitElement {
           display: grid;
           grid-gap: 1em;
           grid-template-areas:
-            'top-bar top-bar'
-            'keys    detail'
-            'console console';
+            'top-bar  top-bar'
+            'keys     detail'
+            'terminal terminal';
           grid-template-columns: minmax(auto, 400px) 1fr;
           grid-template-rows: auto 1fr auto;
           height: 100%;
@@ -910,7 +951,7 @@ export class CcKvExplorer extends LitElement {
         .filter-bar {
           align-items: center;
           display: flex;
-          gap: 0.5em;
+          gap: 1em;
           grid-area: top-bar;
         }
 
@@ -1027,7 +1068,7 @@ export class CcKvExplorer extends LitElement {
 
         .add-form-header {
           display: grid;
-          gap: 0.5em;
+          gap: 0.35em;
           grid-template-columns: 1fr auto;
         }
 
@@ -1054,6 +1095,10 @@ export class CcKvExplorer extends LitElement {
           white-space: nowrap;
         }
 
+        .string-editor {
+          margin: 1em;
+        }
+
         .buttons {
           border-top: 1px solid var(--cc-color-border-neutral);
           display: flex;
@@ -1064,10 +1109,10 @@ export class CcKvExplorer extends LitElement {
           padding-top: 1em;
         }
 
-        .console {
+        .terminal {
           border: 1px solid var(--cc-color-border-neutral, #aaa);
           border-radius: var(--cc-border-radius-default, 0.25em);
-          grid-area: console;
+          grid-area: terminal;
           max-height: 25em;
         }
 

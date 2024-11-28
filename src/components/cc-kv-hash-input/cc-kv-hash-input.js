@@ -113,6 +113,25 @@ export class CcKvHashInput extends CcFormControlElement {
 
   /* endregion */
 
+  /* region Private methods */
+
+  /**
+   * @return {HTMLElement}
+   */
+  _getLastFieldInput() {
+    const all = this.shadowRoot.querySelectorAll('.input-field');
+    return /** @type {HTMLElement} */ (all[all.length - 1]);
+  }
+
+  /**
+   * @param {FocusOptions} [options]
+   */
+  _focusLastFieldInput(options) {
+    this._getLastFieldInput().focus(options);
+  }
+
+  /* endregion */
+
   async _onAdd() {
     this.value = [...this.value, { field: '', value: '' }];
 
@@ -231,21 +250,6 @@ export class CcKvHashInput extends CcFormControlElement {
     `;
   }
 
-  /**
-   * @return {HTMLElement}
-   */
-  _getLastFieldInput() {
-    const all = this.shadowRoot.querySelectorAll('.input-field');
-    return /** @type {HTMLElement} */ (all[all.length - 1]);
-  }
-
-  /**
-   * @param {FocusOptions} [options]
-   */
-  _focusLastFieldInput(options) {
-    this._getLastFieldInput().focus(options);
-  }
-
   static get styles() {
     return [
       // language=CSS
@@ -255,11 +259,9 @@ export class CcKvHashInput extends CcFormControlElement {
         }
 
         .elements {
-          column-gap: 0.5em;
           display: grid;
+          gap: 0.35em;
           grid-template-columns: 1fr 1fr auto auto;
-          padding: 0.25em;
-          row-gap: 0.25em;
         }
 
         .element-last {

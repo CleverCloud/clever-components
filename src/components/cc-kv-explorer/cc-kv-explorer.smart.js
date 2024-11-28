@@ -64,20 +64,20 @@ defineSmartComponent({
     onEvent(
       'cc-kv-explorer:filter-change',
       /** @param { CcKvKeyFilter } filter */
-      async ({ type, match }) => {
+      async ({ type, pattern }) => {
         const filter = {
           type: type === 'all' ? null : type,
-          match: isStringEmpty(match) ? null : match,
+          pattern: isStringEmpty(pattern) ? null : pattern,
         };
 
         kvKeysScanner.setFilter(filter);
-        await fetchKeys({ keys: [] });
+        await fetchKeys({ type: 'filtering', keys: [] });
       },
     );
 
     onEvent('cc-kv-explorer:refresh-keys', async () => {
       kvKeysScanner.reset();
-      await fetchKeys({ keys: [] });
+      await fetchKeys({ type: 'refreshing', keys: [] });
     });
 
     onEvent('cc-kv-explorer:load-more-keys', async () => {
@@ -188,7 +188,7 @@ defineSmartComponent({
       async (keyValue) => {
         updateComponent(
           'detailState',
-          /** @param {CcKvExplorerDetailStateAdd} state*/
+          /** @param {CcKvExplorerDetailStateAdd} state */
           (state) => {
             state.formState.type = 'adding';
           },
@@ -247,7 +247,7 @@ defineSmartComponent({
           if (statusCode === 409) {
             updateComponent(
               'detailState',
-              /** @param {CcKvExplorerDetailStateAdd} state*/
+              /** @param {CcKvExplorerDetailStateAdd} state */
               (state) => {
                 state.formState.type = 'idle';
                 state.formState.errors = { keyName: 'already-used' };
@@ -258,7 +258,7 @@ defineSmartComponent({
 
             updateComponent(
               'detailState',
-              /** @param {CcKvExplorerDetailStateAdd} state*/
+              /** @param {CcKvExplorerDetailStateAdd} state */
               (state) => {
                 state.formState.type = 'idle';
               },
@@ -298,8 +298,8 @@ defineSmartComponent({
 
     onEvent(
       'cc-kv-hash-explorer:filter-change',
-      /** @param {string} match */
-      async (match) => {
+      /** @param {string} pattern */
+      async (pattern) => {
         if (component.detailState.type !== 'edit-hash' || component.detailState.editor.type === 'loading') {
           return;
         }
@@ -309,7 +309,7 @@ defineSmartComponent({
         hashKeyCtrl.updateEditor({ type: 'loading' });
 
         try {
-          hashScanner.setFilter({ keyName: component.detailState.key.name, match });
+          hashScanner.setFilter({ keyName: component.detailState.key.name, pattern });
           await hashScanner.next();
           hashKeyCtrl.updateEditor({ type: 'loaded', elements: hashScanner.elements, addForm });
         } catch (e) {
@@ -544,8 +544,8 @@ defineSmartComponent({
 
     onEvent(
       'cc-kv-set-explorer:filter-change',
-      /** @param {string} match */
-      async (match) => {
+      /** @param {string} pattern */
+      async (pattern) => {
         if (component.detailState.type !== 'edit-set' || component.detailState.editor.type === 'loading') {
           return;
         }
@@ -555,7 +555,7 @@ defineSmartComponent({
         setKeyCtrl.updateEditor({ type: 'loading' });
 
         try {
-          setScanner.setFilter({ keyName: component.detailState.key.name, match });
+          setScanner.setFilter({ keyName: component.detailState.key.name, pattern });
           await setScanner.next();
           setKeyCtrl.updateEditor({ type: 'loaded', elements: setScanner.elements, addForm });
         } catch (e) {
@@ -650,21 +650,21 @@ defineSmartComponent({
     // -- CLI
 
     onEvent(
-      'cc-kv-console:send-command',
+      'cc-kv-terminal:send-command',
       /** @param {string} commandLine */
       async (commandLine) => {
-        updateComponent('consoleState', {
+        updateComponent('terminalState', {
           type: 'running',
           commandLine,
-          history: component.consoleState.history,
+          history: component.terminalState.history,
         });
 
         try {
           const { success, result } = await kvClient.sendCommandLine(commandLine, { signal });
 
-          updateComponent('consoleState', {
+          updateComponent('terminalState', {
             type: 'idle',
-            history: component.consoleState.history.concat({ commandLine, result, success }),
+            history: component.terminalState.history.concat({ commandLine, result, success }),
           });
         } catch (e) {
           console.error(e);
@@ -674,9 +674,9 @@ defineSmartComponent({
             console.error(e);
           }
 
-          updateComponent('consoleState', {
+          updateComponent('terminalState', {
             type: 'idle',
-            history: component.consoleState.history.concat({
+            history: component.terminalState.history.concat({
               commandLine,
               result: [err.responseBody.message],
               success: false,
@@ -705,7 +705,7 @@ defineSmartComponent({
     }
 
     /**
-     * @param {{keys?: Array<CcKvKeyState>, total?: number}} [init]
+     * @param {{type?: 'loading-keys'|'filtering'|'refreshing', keys?: Array<CcKvKeyState>, total?: number}} [init]
      */
     async function fetchKeys(init = {}) {
       /** @type {Array<CcKvKeyState>} */
@@ -718,7 +718,7 @@ defineSmartComponent({
         total = init.total ?? component.state.total;
       }
 
-      keysCtrl.updateState({ type: 'loading-keys', keys: keys ?? [], total: total ?? 0 });
+      keysCtrl.updateState({ type: init.type ?? 'loading-keys', keys: keys ?? [], total: total ?? 0 });
 
       try {
         if (kvKeysScanner.hasMore()) {

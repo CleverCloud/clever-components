@@ -7,6 +7,8 @@ export type CcKvExplorerState =
   | CcKvExplorerStateLoading
   | CcKvExplorerStateError
   | CcKvExplorerStateLoadingKeys
+  | CcKvExplorerStateFiltering
+  | CcKvExplorerStateRefreshing
   | CcKvExplorerStateLoaded;
 
 export interface CcKvExplorerStateLoading {
@@ -23,6 +25,18 @@ export interface CcKvExplorerStateLoadingKeys {
   total: number;
 }
 
+export interface CcKvExplorerStateFiltering {
+  type: 'filtering';
+  keys: Array<CcKvKeyState>;
+  total: number;
+}
+
+export interface CcKvExplorerStateRefreshing {
+  type: 'refreshing';
+  keys: Array<CcKvKeyState>;
+  total: number;
+}
+
 export interface CcKvExplorerStateLoaded {
   type: 'loaded';
   keys: Array<CcKvKeyState>;
@@ -33,30 +47,13 @@ export interface CcKvExplorerStateLoaded {
 
 export type CcKvKeyFilter = {
   type: 'all' | CcKvKeyType;
-  match?: string | null;
+  pattern?: string | null;
 };
 
 //-- key state ---
 
-export type CcKvKeyState = CcKvKeyStateIdle | CcKvKeyStateLoading | CcKvKeyStateSelected | CcKvKeyStateDeleting;
-
-export interface CcKvKeyStateIdle {
-  type: 'idle';
-  key: CcKvKey;
-}
-
-export interface CcKvKeyStateLoading {
-  type: 'loading';
-  key: CcKvKey;
-}
-
-export interface CcKvKeyStateSelected {
-  type: 'selected';
-  key: CcKvKey;
-}
-
-export interface CcKvKeyStateDeleting {
-  type: 'deleting';
+export interface CcKvKeyState {
+  type: 'idle' | 'loading' | 'selected' | 'deleting';
   key: CcKvKey;
 }
 
