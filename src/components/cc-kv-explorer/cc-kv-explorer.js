@@ -858,7 +858,8 @@ export class CcKvExplorer extends LitElement {
       case 'edit-set':
         return this._renderEditSet(detailState.editor, disabled);
     }
-    return html`unsupported!`;
+    console.warn('Unsupported type for edition. This should never happen!');
+    return html``;
   }
 
   /**
