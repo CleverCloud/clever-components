@@ -516,14 +516,14 @@ export class CcKvExplorer extends LitElement {
    * @return {TemplateResult}
    */
   _renderFilterBar(state) {
-    const fetching = state.type === 'loading-keys' || state.type === 'filtering' || state.type === 'refreshing';
-    const filtering = state.type === 'filtering';
+    const isFetching = state.type === 'loading-keys' || state.type === 'filtering' || state.type === 'refreshing';
+    const isFiltering = state.type === 'filtering';
 
     /** @type {Array<CcKvKeyType | 'all'>} */
     const redisFilters = ['all', ...this.supportedTypes];
     const kvFilterOptions = redisFilters
       // todo: remove this filter and replace by a proper `readonly` property once `<cc-select>` supports it.
-      .filter((f) => !fetching || f !== this._filterType)
+      .filter((f) => !isFetching || f !== this._filterType)
       .map((f) => ({ label: this._getKeyFilterLabel(f), value: f }));
 
     return html`
@@ -541,15 +541,15 @@ export class CcKvExplorer extends LitElement {
           name="match"
           inline
           label=${i18n('cc-kv-explorer.filter.by-pattern')}
-          ?readonly=${fetching}
+          ?readonly=${isFetching}
         ></cc-input-text>
         <cc-button
           type="submit"
           .icon=${iconFilter}
           hide-text
           outlined
-          ?disabled=${fetching && !filtering}
-          ?waiting=${filtering}
+          ?disabled=${isFetching && !isFiltering}
+          ?waiting=${isFiltering}
         >
           ${i18n('cc-kv-explorer.filter.apply')}
         </cc-button>
@@ -578,11 +578,11 @@ export class CcKvExplorer extends LitElement {
       `;
     }
 
-    const fetching = state.type === 'loading-keys' || state.type === 'filtering' || state.type === 'refreshing';
+    const isFetching = state.type === 'loading-keys' || state.type === 'filtering' || state.type === 'refreshing';
 
     /** @type {Array<{keyState: CcKvKeyState, skeleton: boolean}>} */
     let keys = state.keys.map((keyState) => ({ keyState, skeleton: false }));
-    if (fetching) {
+    if (isFetching) {
       /** @type {Array<{keyState: CcKvKeyState, skeleton: boolean}>} */
       const skeletonKeys = new Array(10).fill(0).map(() => ({
         skeleton: true,
@@ -618,9 +618,9 @@ export class CcKvExplorer extends LitElement {
    * @return {TemplateResult}
    */
   _renderKeysHeader(state) {
-    const fetching = state.type === 'loading-keys' || state.type === 'filtering' || state.type === 'refreshing';
+    const isFetching = state.type === 'loading-keys' || state.type === 'filtering' || state.type === 'refreshing';
     const skeleton = state.type === 'loading-keys' || state.type === 'refreshing';
-    const refreshing = state.type === 'refreshing';
+    const isRefreshing = state.type === 'refreshing';
 
     return html`<div class="keys-header">
       <div>
@@ -641,8 +641,8 @@ export class CcKvExplorer extends LitElement {
         .icon=${iconRefresh}
         hide-text
         outlined
-        ?disabled=${fetching && !refreshing}
-        ?waiting=${refreshing}
+        ?disabled=${isFetching && !isRefreshing}
+        ?waiting=${isRefreshing}
         @cc-button:click=${this._onRefreshKeysButtonClick}
         >${i18n('cc-kv-explorer.keys.header.refresh')}</cc-button
       >
@@ -722,7 +722,7 @@ export class CcKvExplorer extends LitElement {
    */
   _renderDetailAdd(formState) {
     const typeOptions = this.supportedTypes.map((type) => ({ label: this._getKeyTypeLabel(type), value: type }));
-    const saving = formState.type === 'adding';
+    const isSaving = formState.type === 'adding';
 
     return html`<form class="detail-add" ${ref(this._addFormRef)} ${formSubmit(this._onKeyAddFormSubmit)}>
       <div class="add-form-header">
@@ -730,80 +730,80 @@ export class CcKvExplorer extends LitElement {
           name="keyName"
           label=${i18n('cc-kv-explorer.form.key')}
           required
-          ?readonly=${saving}
+          ?readonly=${isSaving}
           .errorMessage=${this._getAddKeyErrorMessage(formState.errors?.keyName)}
         ></cc-input-text>
         <cc-select
           name="KeyType"
           label=${i18n('cc-kv-explorer.form.type')}
           required
-          ?disabled=${saving}
+          ?disabled=${isSaving}
           .options=${typeOptions}
           .value=${this._addFormSelectedType}
           @cc-select:input=${this._onKeyTypeChanged}
         ></cc-select>
       </div>
-      ${this._renderAdd(this._addFormSelectedType, saving)}
+      ${this._renderAdd(this._addFormSelectedType, isSaving)}
       <div class="buttons">
-        <cc-button type="reset" ?disabled=${saving}>${i18n('cc-kv-explorer.form.reset')}</cc-button>
-        <cc-button type="submit" primary ?waiting=${saving}>${i18n('cc-kv-explorer.form.add')}</cc-button>
+        <cc-button type="reset" ?disabled=${isSaving}>${i18n('cc-kv-explorer.form.reset')}</cc-button>
+        <cc-button type="submit" primary ?waiting=${isSaving}>${i18n('cc-kv-explorer.form.add')}</cc-button>
       </div>
     </form>`;
   }
 
   /**
    * @param {CcKvKeyType} type
-   * @param {boolean} saving
+   * @param {boolean} isSaving
    * @return {TemplateResult}
    */
-  _renderAdd(type, saving) {
+  _renderAdd(type, isSaving) {
     switch (type) {
       case 'string':
-        return this._renderAddString(saving);
+        return this._renderAddString(isSaving);
       case 'hash':
-        return this._renderAddHash(saving);
+        return this._renderAddHash(isSaving);
       case 'list':
-        return this._renderAddList(saving);
+        return this._renderAddList(isSaving);
       case 'set':
-        return this._renderAddSet(saving);
+        return this._renderAddSet(isSaving);
     }
   }
 
   /**
-   * @param {boolean} saving
+   * @param {boolean} isSaving
    * @return {TemplateResult}
    */
-  _renderAddString(saving) {
+  _renderAddString(isSaving) {
     return html`<cc-input-text
       name="value"
       label=${i18n('cc-kv-explorer.form.string.value')}
-      ?readonly=${saving}
+      ?readonly=${isSaving}
       multi
     ></cc-input-text>`;
   }
 
   /**
-   * @param {boolean} saving
+   * @param {boolean} isSaving
    * @return {TemplateResult}
    */
-  _renderAddHash(saving) {
-    return html`<cc-kv-hash-input-beta name="value" ?readonly=${saving}></cc-kv-hash-input-beta>`;
+  _renderAddHash(isSaving) {
+    return html`<cc-kv-hash-input-beta name="value" ?readonly=${isSaving}></cc-kv-hash-input-beta>`;
   }
 
   /**
-   * @param {boolean} saving
+   * @param {boolean} isSaving
    * @return {TemplateResult}
    */
-  _renderAddList(saving) {
-    return html`<cc-kv-list-input-beta name="value" ?readonly=${saving}></cc-kv-list-input-beta>`;
+  _renderAddList(isSaving) {
+    return html`<cc-kv-list-input-beta name="value" ?readonly=${isSaving}></cc-kv-list-input-beta>`;
   }
 
   /**
-   * @param {boolean} saving
+   * @param {boolean} isSaving
    * @return {TemplateResult}
    */
-  _renderAddSet(saving) {
-    return html`<cc-kv-list-input-beta name="value" ?disabled=${saving}></cc-kv-list-input-beta>`;
+  _renderAddSet(isSaving) {
+    return html`<cc-kv-list-input-beta name="value" ?disabled=${isSaving}></cc-kv-list-input-beta>`;
   }
 
   /**
@@ -812,8 +812,8 @@ export class CcKvExplorer extends LitElement {
    */
   _renderDetailEdit(key) {
     const keyState = this._getKeyState(key.name);
-    const deleting = keyState === 'deleting';
-    const loading = keyState === 'loading';
+    const isDeleting = keyState === 'deleting';
+    const isLoading = keyState === 'loading';
 
     return html`<div class="detail-edit">
       <div class="edit-header">
@@ -831,14 +831,14 @@ export class CcKvExplorer extends LitElement {
           .icon=${iconDelete}
           outlined
           danger
-          ?disabled=${loading}
-          ?waiting=${deleting}
+          ?disabled=${isLoading}
+          ?waiting=${isDeleting}
           data-key=${key.name}
           @cc-button:click=${this._onDeleteKeyButtonClick}
           >${i18n('cc-kv-explorer.key.header.delete')}</cc-button
         >
       </div>
-      ${this._renderEdit(this.detailState, deleting)}
+      ${this._renderEdit(this.detailState, isDeleting)}
     </div>`;
   }
 
