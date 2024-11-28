@@ -5,6 +5,26 @@ title: 'Changelog'
 
 # Changelog
 
+## [16.4.0](https://github.com/CleverCloud/clever-components/compare/16.3.1...16.4.0) (2024-11-28)
+
+
+### 🚀 Features
+
+* **cc-domain-management:** make APEX domain DNS config more explicit ([e882e57](https://github.com/CleverCloud/clever-components/commit/e882e5704ab7762e3dc053b8d1148fc2b03fd9bf)), closes [#1231](https://github.com/CleverCloud/clever-components/issues/1231)
+* **cc-kv-explorer:** add `refreshing` and `filtering` states ([db01d63](https://github.com/CleverCloud/clever-components/commit/db01d632642cd3c0b3c117804da6cff1b5a29faf))
+
+
+### 🐛 Bug Fixes
+
+* **cc-kv-explorer:** fix key type label on unsupported types ([bc59008](https://github.com/CleverCloud/clever-components/commit/bc59008fb479139d7260d146b0ce9191b0180b0c))
+* **cc-kv-hash-explorer:** adjust gap between elements of the add form ([55735d4](https://github.com/CleverCloud/clever-components/commit/55735d4f5cdc986c0bb75440d19e8fd848f0a6bc))
+* **cc-kv-hash-input:** adjust gap between elements ([950a2cc](https://github.com/CleverCloud/clever-components/commit/950a2cc86a419fe1e9e3ef7a80136f4cf34016b9))
+* **cc-kv-list-explorer:** adjust gap between elements of the add form ([e60ded5](https://github.com/CleverCloud/clever-components/commit/e60ded5eba9538ac88ac8e8e40f9e899b18bfd42))
+* **cc-kv-list-explorer:** fix copy to clipboard button a11y name ([ee692a6](https://github.com/CleverCloud/clever-components/commit/ee692a667535c0c8aa3574ef555246113d1ad309))
+* **cc-kv-list-input:** adjust gap between elements ([07de28e](https://github.com/CleverCloud/clever-components/commit/07de28e5aca97cc6f8c730e4ff65f080da1a4037))
+* **cc-kv-set-explorer:** adjust gap between elements of the add form ([4956312](https://github.com/CleverCloud/clever-components/commit/49563124c7cf4efde3626b0744f4a42a4769f460))
+* **cc-kv-string-editor:** remove padding around component ([8434e2f](https://github.com/CleverCloud/clever-components/commit/8434e2fa6b7e211314db68dcfb15486c76e4345d))
+
 ## [16.3.1](https://github.com/CleverCloud/clever-components/compare/16.3.0...16.3.1) (2024-11-15)
 
 
