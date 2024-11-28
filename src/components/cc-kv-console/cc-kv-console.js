@@ -1,3 +1,4 @@
+import '@lit-labs/virtualizer';
 import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { createRef, ref } from 'lit/directives/ref.js';
@@ -10,9 +11,12 @@ import '../cc-icon/cc-icon.js';
 
 /**
  * @typedef {import('./cc-kv-console.types.js').CcKvConsoleState} CcKvConsoleState
+ * @typedef {import('./cc-kv-console.types.js').CcKvCommandContentItem} CcKvCommandContentItem
  * @typedef {import('../../lib/events.types.js').GenericEventWithTarget<KeyboardEvent,HTMLInputElement>} HTMLInputKeyboardEvent
  * @typedef {import('lit').PropertyValues<CcKvConsole>} CcKvConsolePropertyValues
  * @typedef {import('lit/directives/ref.js').Ref<HTMLInputElement>} HTMLInputElementRef
+ * @typedef {import('lit/directives/ref.js').Ref<Virtualizer>} VirtualizerRef
+ * @typedef {import('@lit-labs/virtualizer/LitVirtualizer.js').LitVirtualizer} Virtualizer
  */
 
 /**
@@ -52,6 +56,19 @@ export class CcKvConsole extends LitElement {
 
     /** @type {HTMLInputElementRef} */
     this._promptRef = createRef();
+
+    /** @type {VirtualizerRef} */
+    this._contentRef = createRef();
+
+    /** @type {boolean} */
+    this._shouldRestoreFocusToPrompt = false;
+
+    // this is for lit-virtualizer
+    this._elementRender = {
+      /** @param {CcKvCommandContentItem} e */
+      key: (e) => e.id,
+      item: this._renderItem.bind(this),
+    };
   }
 
   /**
@@ -64,12 +81,63 @@ export class CcKvConsole extends LitElement {
   }
 
   /**
+   * @returns {Array<CcKvCommandContentItem>}
+   */
+  _getItems() {
+    /** @type {Array<CcKvCommandContentItem>} */
+    const items = [];
+
+    this.state.history.forEach((historyEntry, cmdIndex) => {
+      const cmdId = `cmd/${cmdIndex}`;
+
+      items.push({
+        id: cmdId,
+        type: 'commandLine',
+        line: historyEntry.commandLine,
+      });
+
+      const resultLength = historyEntry.result.length;
+
+      historyEntry.result.forEach((lineOfResult, resultIndex) => {
+        items.push({
+          id: `${cmdId}/result/${resultIndex}`,
+          type: 'resultLine',
+          line: lineOfResult,
+          success: historyEntry.success,
+          last: resultIndex === resultLength - 1,
+        });
+      });
+    });
+
+    // const isCommandRunning = this.state.type === 'running';
+    // const currentCommandLine = this.state.type === 'running' ? this.state.commandLine : '';
+    //
+    // items.push({
+    //   id: 'prompt',
+    //   type: 'prompt',
+    //   command: currentCommandLine,
+    //   running: isCommandRunning,
+    // });
+    // if (isCommandRunning) {
+    //   items.push({
+    //     id: 'caret',
+    //     type: 'caret',
+    //   });
+    // }
+
+    return items;
+  }
+
+  /**
    * @param {HTMLInputKeyboardEvent} e
    */
   _onShellPromptKeyDown(e) {
     e.stopPropagation();
 
     if (e.key === 'Enter') {
+      // ask for restoring focus on the next update.
+      this._shouldRestoreFocusToPrompt = true;
+
       e.preventDefault();
       this._cmdHistoryIndex = null;
       const commandLine = e.target.value.trim();
@@ -146,18 +214,103 @@ export class CcKvConsole extends LitElement {
     }
   }
 
+  _onScroll(e) {
+    // console.log(e);
+    const scroller = this.shadowRoot.querySelector('.scroller');
+    console.log('after scrollend event');
+    console.log({
+      scrollHeight: scroller.scrollHeight,
+      scrollTop: scroller.scrollTop,
+      diff: scroller.scrollHeight - scroller.scrollTop,
+    });
+  }
+
   /**
    * @param {CcKvConsolePropertyValues} changedProperties
    */
-  updated(changedProperties) {
+  async updated(changedProperties) {
     if (changedProperties.has('state')) {
-      this._promptRef.value?.scrollIntoView();
+      const scroller = this.shadowRoot.querySelector('.scroller');
+      const pixelEnd = this.shadowRoot.querySelector('.pixel-end');
+
+      console.log('updated - before layoutComplete');
+      console.log({
+        scrollHeight: scroller.scrollHeight,
+        scrollTop: scroller.scrollTop,
+        diff: scroller.scrollHeight - scroller.scrollTop,
+      });
+
+      await this._contentRef.value.layoutComplete;
+
+      console.log('updated - after layoutComplete');
+      console.log({
+        scrollHeight: scroller.scrollHeight,
+        scrollTop: scroller.scrollTop,
+        diff: scroller.scrollHeight - scroller.scrollTop,
+      });
+
+      // --- scroll with virtualizer API
+      //
+      // const number = this._getItems().length - 1;
+      // const e = this._contentRef.value.element(number);
+      // if (e) {
+      //   e.scrollIntoView({
+      //     block: 'start',
+      //   });
+      // }
+      // -----------------------
+      // => this removes all items from the DOM ?????
+      // => need an additional scroll from the user mouse to display items again
+      // -----------------------
+
+      // --- scroll the scroller with native API
+      //
+      console.log(`ask scrolling to ${scroller.scrollHeight}`);
+      scroller.scrollTo(0, scroller.scrollHeight);
+      // -----------------------
+      // => this doesnt scroll exactly to the end
+      // -----------------------
+
+      // --- scroll by making prompt scrollIntoView
+      // console.log(`ask to make ${this._promptRef.value} to scrollIntoView`);
+      // this._promptRef.value.scrollIntoView();
+      // -----------------------
+      // => this doesnt scroll exactly to the end (same as above)
+      // -----------------------
+
+      // --- scroll by making .pixel-end scrollIntoView
+      // console.log(`ask to make ${pixelEnd} to scrollIntoView`);
+      // pixelEnd.scrollIntoView();
+      // -----------------------
+      // => this doesnt scroll exactly to the end (same as above)
+      // -----------------------
+
+      // scroller.dispatchEvent(new Event('scrollend'));
+
+      console.log('updated - after scrolling');
+      console.log({
+        scrollHeight: scroller.scrollHeight,
+        scrollTop: scroller.scrollTop,
+        diff: scroller.scrollHeight - scroller.scrollTop,
+      });
+
+      // this._promptRef.value.scrollIntoView();
+      // console.log('updated - after second scrolling');
+      // console.log({
+      //   scrollHeight: scroller.scrollHeight,
+      //   scrollTop: scroller.scrollTop,
+      //   diff: scroller.scrollHeight - scroller.scrollTop,
+      // });
     }
   }
 
   render() {
     const isCommandRunning = this.state.type === 'running';
     const currentCommandLine = this.state.type === 'running' ? this.state.commandLine : '';
+    const items = this._getItems();
+
+    const layout = undefined;
+    // const layout = { pin: { index: items.length - 1, block: 'start' } };
 
     return html`
       <div class="wrapper" @mouseup=${this._onContentMouseUp} @keydown=${this._onShellPromptKeyDown}>
@@ -168,23 +321,17 @@ export class CcKvConsole extends LitElement {
             ${i18n('cc-kv-console.warning')}
           </div>
         </div>
-        <div class="content">
-          ${this.state.history.length > 0
-            ? html`
-                <div aria-live="polite" aria-atomic="true">
-                  ${this.state.history.map(({ commandLine, result, success }) => {
-                    return html`
-                      <div class="history-entry">
-                        <div class="history-entry-command">
-                          <cc-icon .icon=${iconShellPrompt}></cc-icon>${commandLine}
-                        </div>
-                        ${result.map((l) => html`<div class=${classMap({ result: true, error: !success })}>${l}</div>`)}
-                      </div>
-                    `;
-                  })}
-                </div>
-              `
-            : ''}
+        <div class="scroller" @scrollend=${this._onScroll}>
+          <lit-virtualizer
+            class="content"
+            aria-live="polite"
+            aria-atomic="true"
+            ${ref(this._contentRef)}
+            .layout=${layout}
+            .items=${items}
+            .keyFunction=${this._elementRender.key}
+            .renderItem=${this._elementRender.item}
+          ></lit-virtualizer>
           <div class="prompt">
             <cc-icon .icon=${iconShellPrompt}></cc-icon>
             <label class="visually-hidden" for="prompt">${i18n('cc-kv-console.shell.prompt')}</label>
@@ -199,9 +346,40 @@ export class CcKvConsole extends LitElement {
             />
           </div>
           ${isCommandRunning ? html`<div><span class="caret-blink">&nbsp;</span></div>` : ''}
+          <div class="pixel-end"></div>
         </div>
       </div>
     `;
+  }
+
+  /**
+   * @param {CcKvCommandContentItem} item
+   */
+  _renderItem(item) {
+    switch (item.type) {
+      case 'caret':
+        return html`<div><span class="caret-blink">&nbsp;</span></div>`;
+      case 'commandLine':
+        return html`<div class="command"><cc-icon .icon=${iconShellPrompt}></cc-icon>${item.line}</div>`;
+      case 'resultLine': {
+        const clazz = { result: true, error: !item.success, last: item.last };
+        return html`<div class=${classMap(clazz)}>${item.line}</div>`;
+      }
+      case 'prompt':
+        return html`<div class="prompt">
+          <cc-icon .icon=${iconShellPrompt}></cc-icon>
+          <label class="visually-hidden" for="prompt">${i18n('cc-kv-console.shell.prompt')}</label>
+          <input
+            ${ref(this._promptRef)}
+            id="prompt"
+            type="text"
+            autocomplete="false"
+            spellcheck="false"
+            .value=${item.command}
+            ?readonly=${item.running}
+          />
+        </div>`;
+    }
   }
 
   static get styles() {
@@ -219,7 +397,8 @@ export class CcKvConsole extends LitElement {
         }
 
         .wrapper {
-          --shell-gap: 0.5em;
+          --shell-inner-gap: 0em; /* gap between command line and first result line */
+          --shell-gap: 0em; /* gap between result and next command */
 
           background-color: var(--cc-kv-console-color-background);
           color: var(--cc-kv-console-color-foreground);
@@ -254,23 +433,18 @@ export class CcKvConsole extends LitElement {
           gap: 0.5em;
         }
 
-        .content {
-          overflow: auto;
-          padding: 0.5em;
+        .scroller {
+          overflow-x: hidden;
+          overflow-y: auto;
+          /* padding: 0.5em; */
         }
 
-        .history-entry {
-          display: flex;
-          flex-direction: column;
-          gap: 0.2em;
-          padding-bottom: var(--shell-gap);
-        }
-
-        .history-entry-command {
+        .command {
           align-items: center;
           display: flex;
           font-weight: bold;
           gap: 0.2em;
+          margin-bottom: var(--shell-inner-gap);
         }
 
         cc-icon {
@@ -285,6 +459,10 @@ export class CcKvConsole extends LitElement {
 
         .result.error {
           color: var(--cc-kv-console-color-foreground-error);
+        }
+
+        .result.last {
+          margin-bottom: var(--shell-gap);
         }
 
         .prompt {
@@ -325,6 +503,11 @@ export class CcKvConsole extends LitElement {
           50% {
             background-color: var(--cc-kv-console-color-foreground);
           }
+        }
+
+        .pixel-end {
+          height: 1px;
+          width: 1px;
         }
       `,
     ];
