@@ -17,7 +17,11 @@ export interface CcKvCommandHistoryEntry {
   success: boolean;
 }
 
-export type CcKvCommandContentItem = CcKvCommandContentItemCommandLine | CcKvCommandContentItemResultLine;
+export type CcKvCommandContentItem =
+  | CcKvCommandContentItemCommandLine
+  | CcKvCommandContentItemResultLine
+  | CcKvCommandContentItemPrompt
+  | CcKvCommandContentItemCaret;
 
 interface CcKvCommandContentItemCommandLine {
   id: string;
@@ -31,4 +35,16 @@ interface CcKvCommandContentItemResultLine {
   line: string;
   success: boolean;
   last: boolean;
+}
+
+interface CcKvCommandContentItemPrompt {
+  id: string;
+  type: 'prompt';
+  command: string;
+  running: boolean;
+}
+
+interface CcKvCommandContentItemCaret {
+  id: string;
+  type: 'caret';
 }

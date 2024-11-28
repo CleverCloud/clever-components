@@ -109,21 +109,21 @@ export class CcKvConsole extends LitElement {
       });
     });
 
-    const isCommandRunning = this.state.type === 'running';
-    const currentCommandLine = this.state.type === 'running' ? this.state.commandLine : '';
-
-    items.push({
-      id: 'prompt',
-      type: 'prompt',
-      command: currentCommandLine,
-      running: isCommandRunning,
-    });
-    if (isCommandRunning) {
-      items.push({
-        id: 'caret',
-        type: 'caret',
-      });
-    }
+    // const isCommandRunning = this.state.type === 'running';
+    // const currentCommandLine = this.state.type === 'running' ? this.state.commandLine : '';
+    //
+    // items.push({
+    //   id: 'prompt',
+    //   type: 'prompt',
+    //   command: currentCommandLine,
+    //   running: isCommandRunning,
+    // });
+    // if (isCommandRunning) {
+    //   items.push({
+    //     id: 'caret',
+    //     type: 'caret',
+    //   });
+    // }
 
     return items;
   }
@@ -214,26 +214,104 @@ export class CcKvConsole extends LitElement {
     }
   }
 
+  _onScroll(e) {
+    // console.log(e);
+    const scroller = this.shadowRoot.querySelector('.scroller');
+    console.log('after scrollend event');
+    console.log({
+      scrollHeight: scroller.scrollHeight,
+      scrollTop: scroller.scrollTop,
+      diff: scroller.scrollHeight - scroller.scrollTop,
+    });
+  }
+
   /**
    * @param {CcKvConsolePropertyValues} changedProperties
    */
   async updated(changedProperties) {
-    // restores focus only if necessary
     if (changedProperties.has('state')) {
-      await this._contentRef.value?.layoutComplete;
+      const scroller = this.shadowRoot.querySelector('.scroller');
+      const pixelEnd = this.shadowRoot.querySelector('.pixel-end');
 
-      this.shadowRoot.querySelector('.scroller').scrollTo(0, this.shadowRoot.querySelector('.scroller').scrollHeight);
+      console.log('updated - before layoutComplete');
+      console.log({
+        scrollHeight: scroller.scrollHeight,
+        scrollTop: scroller.scrollTop,
+        diff: scroller.scrollHeight - scroller.scrollTop,
+      });
 
-      await this._contentRef.value?.layoutComplete;
-      if (this._shouldRestoreFocusToPrompt) {
-        this._promptRef.value?.focus();
-        // this._shouldRestoreFocusToPrompt = false;
-      }
+      await this._contentRef.value.layoutComplete;
+
+      console.log('updated - after layoutComplete');
+      console.log({
+        scrollHeight: scroller.scrollHeight,
+        scrollTop: scroller.scrollTop,
+        diff: scroller.scrollHeight - scroller.scrollTop,
+      });
+
+      // --- scroll with virtualizer API
+      //
+      // const number = this._getItems().length - 1;
+      // const e = this._contentRef.value.element(number);
+      // if (e) {
+      //   e.scrollIntoView({
+      //     block: 'start',
+      //   });
+      // }
+      // -----------------------
+      // => this removes all items from the DOM ?????
+      // => need an additional scroll from the user mouse to display items again
+      // -----------------------
+
+      // --- scroll the scroller with native API
+      //
+      console.log(`ask scrolling to ${scroller.scrollHeight}`);
+      scroller.scrollTo(0, scroller.scrollHeight);
+      // -----------------------
+      // => this doesnt scroll exactly to the end
+      // -----------------------
+
+      // --- scroll by making prompt scrollIntoView
+      // console.log(`ask to make ${this._promptRef.value} to scrollIntoView`);
+      // this._promptRef.value.scrollIntoView();
+      // -----------------------
+      // => this doesnt scroll exactly to the end (same as above)
+      // -----------------------
+
+      // --- scroll by making .pixel-end scrollIntoView
+      // console.log(`ask to make ${pixelEnd} to scrollIntoView`);
+      // pixelEnd.scrollIntoView();
+      // -----------------------
+      // => this doesnt scroll exactly to the end (same as above)
+      // -----------------------
+
+      // scroller.dispatchEvent(new Event('scrollend'));
+
+      console.log('updated - after scrolling');
+      console.log({
+        scrollHeight: scroller.scrollHeight,
+        scrollTop: scroller.scrollTop,
+        diff: scroller.scrollHeight - scroller.scrollTop,
+      });
+
+      // this._promptRef.value.scrollIntoView();
+      // console.log('updated - after second scrolling');
+      // console.log({
+      //   scrollHeight: scroller.scrollHeight,
+      //   scrollTop: scroller.scrollTop,
+      //   diff: scroller.scrollHeight - scroller.scrollTop,
+      // });
     }
   }
 
   render() {
+    const isCommandRunning = this.state.type === 'running';
+    const currentCommandLine = this.state.type === 'running' ? this.state.commandLine : '';
     const items = this._getItems();
+
+    const layout = undefined;
+    // const layout = { pin: { index: items.length - 1, block: 'start' } };
+
     return html`
       <div class="wrapper" @mouseup=${this._onContentMouseUp} @keydown=${this._onShellPromptKeyDown}>
         <div class="header">
@@ -243,16 +321,32 @@ export class CcKvConsole extends LitElement {
             ${i18n('cc-kv-console.warning')}
           </div>
         </div>
-        <div class="scroller">
+        <div class="scroller" @scrollend=${this._onScroll}>
           <lit-virtualizer
             class="content"
             aria-live="polite"
             aria-atomic="true"
             ${ref(this._contentRef)}
+            .layout=${layout}
             .items=${items}
             .keyFunction=${this._elementRender.key}
             .renderItem=${this._elementRender.item}
           ></lit-virtualizer>
+          <div class="prompt">
+            <cc-icon .icon=${iconShellPrompt}></cc-icon>
+            <label class="visually-hidden" for="prompt">${i18n('cc-kv-console.shell.prompt')}</label>
+            <input
+              ${ref(this._promptRef)}
+              id="prompt"
+              type="text"
+              autocomplete="false"
+              spellcheck="false"
+              .value=${currentCommandLine}
+              ?readonly=${isCommandRunning}
+            />
+          </div>
+          ${isCommandRunning ? html`<div><span class="caret-blink">&nbsp;</span></div>` : ''}
+          <div class="pixel-end"></div>
         </div>
       </div>
     `;
@@ -303,8 +397,8 @@ export class CcKvConsole extends LitElement {
         }
 
         .wrapper {
-          --shell-inner-gap: 0.2em; /* gap between command line and first result line */
-          --shell-gap: 0.5em; /* gap between result and next command */
+          --shell-inner-gap: 0em; /* gap between command line and first result line */
+          --shell-gap: 0em; /* gap between result and next command */
 
           background-color: var(--cc-kv-console-color-background);
           color: var(--cc-kv-console-color-foreground);
@@ -339,12 +433,10 @@ export class CcKvConsole extends LitElement {
           gap: 0.5em;
         }
 
-        .content {
-          margin: 0.5em;
-        }
-
-        .content.overflow {
-          overflow: auto;
+        .scroller {
+          overflow-x: hidden;
+          overflow-y: auto;
+          /* padding: 0.5em; */
         }
 
         .command {
@@ -352,7 +444,7 @@ export class CcKvConsole extends LitElement {
           display: flex;
           font-weight: bold;
           gap: 0.2em;
-          padding-bottom: var(--shell-inner-gap);
+          margin-bottom: var(--shell-inner-gap);
         }
 
         cc-icon {
@@ -370,7 +462,7 @@ export class CcKvConsole extends LitElement {
         }
 
         .result.last {
-          padding-bottom: var(--shell-gap);
+          margin-bottom: var(--shell-gap);
         }
 
         .prompt {
@@ -413,10 +505,9 @@ export class CcKvConsole extends LitElement {
           }
         }
 
-        .scroller {
-          /* max-height: 25em; */
-          overflow-x: hidden;
-          overflow-y: auto;
+        .pixel-end {
+          height: 1px;
+          width: 1px;
         }
       `,
     ];
