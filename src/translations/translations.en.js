@@ -667,11 +667,6 @@ export const translations = {
   'cc-jenkins-info.update.title': `Updates`,
   'cc-jenkins-info.update.up-to-date': `Your Jenkins version is up-to-date.`,
   //#endregion
-  //#region cc-kv-console
-  'cc-kv-console.header': `KV Explorer Console`,
-  'cc-kv-console.shell.prompt': `Command line`,
-  'cc-kv-console.warning': `All commands executed in this CLI are immediately sent to the database`,
-  //#endregion
   //#region cc-kv-explorer
   'cc-kv-explorer.details.empty': `Select a key in the list to get its content`,
   'cc-kv-explorer.details.unsupported': `The selected key type is not supported`,
@@ -805,6 +800,11 @@ export const translations = {
   'cc-kv-string-editor.form.save': `Save`,
   'cc-kv-string-editor.form.value': `Value`,
   'cc-kv-string-editor.success.update-value': `The value has been updated`,
+  //#endregion
+  //#region cc-kv-terminal
+  'cc-kv-terminal.header': `KV Explorer Terminal`,
+  'cc-kv-terminal.shell.prompt': `Command line`,
+  'cc-kv-terminal.warning': `All commands executed in this terminal are immediately sent to the database`,
   //#endregion
   //#region cc-loader
   'cc-loader.a11y-name': `Loading`,

@@ -21,13 +21,13 @@ import { i18n } from '../../translations/translation.js';
 import '../cc-badge/cc-badge.js';
 import '../cc-button/cc-button.js';
 import '../cc-input-text/cc-input-text.js';
-import '../cc-kv-console/cc-kv-console.js';
 import '../cc-kv-hash-explorer/cc-kv-hash-explorer.js';
 import { CcKvHashInput } from '../cc-kv-hash-input/cc-kv-hash-input.js';
 import '../cc-kv-list-explorer/cc-kv-list-explorer.js';
 import { CcKvListInput } from '../cc-kv-list-input/cc-kv-list-input.js';
 import '../cc-kv-set-explorer/cc-kv-set-explorer.js';
 import '../cc-kv-string-editor/cc-kv-string-editor.js';
+import '../cc-kv-terminal/cc-kv-terminal.js';
 import '../cc-loader/cc-loader.js';
 import '../cc-notice/cc-notice.js';
 import '../cc-select/cc-select.js';
@@ -52,7 +52,7 @@ import '../cc-select/cc-select.js';
  * @typedef {import('../cc-kv-list-explorer/cc-kv-list-explorer.types.js').CcKvListExplorerState} CcKvListExplorerState
  * @typedef {import('../cc-kv-set-explorer/cc-kv-set-explorer.js').CcKvSetExplorer} CcKvSetExplorer
  * @typedef {import('../cc-kv-set-explorer/cc-kv-set-explorer.types.js').CcKvSetExplorerState} CcKvSetExplorerState
- * @typedef {import('../cc-kv-console/cc-kv-console.types.js').CcKvConsoleState} CcKvConsoleState
+ * @typedef {import('../cc-kv-terminal/cc-kv-terminal.types.d.ts').CcKvTerminalState} CcKvTerminalState
  * @typedef {import('../cc-button/cc-button.js').CcButton} CcButton
  * @typedef {import('../cc-input-text/cc-input-text.js').CcInputText} CcInputText
  * @typedef {import('../cc-select/cc-select.js').CcSelect} CcSelect
@@ -104,7 +104,7 @@ import '../cc-select/cc-select.js';
 export class CcKvExplorer extends LitElement {
   static get properties() {
     return {
-      consoleState: { type: Object, attribute: 'console-state' },
+      terminalState: { type: Object, attribute: 'terminal-state' },
       detailState: { type: Object, attribute: 'detail-state' },
       state: { type: Object },
       supportedTypes: { type: Array, attribute: 'supported-types' },
@@ -115,8 +115,8 @@ export class CcKvExplorer extends LitElement {
   constructor() {
     super();
 
-    /** @type {CcKvConsoleState} */
-    this.consoleState = { type: 'idle', history: [] };
+    /** @type {CcKvTerminalState} */
+    this.terminalState = { type: 'idle', history: [] };
 
     /** @type {CcKvExplorerDetailState} */
     this.detailState = { type: 'hidden' };
@@ -462,10 +462,10 @@ export class CcKvExplorer extends LitElement {
   }
 
   /**
-   * @param {CustomEvent<CcKvConsoleState>} e
+   * @param {CustomEvent<CcKvTerminalState>} e
    */
-  _onConsoleStateChange(e) {
-    this.consoleState = e.detail;
+  _onTerminalStateChange(e) {
+    this.terminalState = e.detail;
   }
 
   /**
@@ -501,11 +501,11 @@ export class CcKvExplorer extends LitElement {
         ${this._renderFilterBar(this.state)}
         <div class="keys">${this._renderKeysHeader(this.state)} ${this._renderKeys(this.state)}</div>
         ${this._renderDetail()}
-        <cc-kv-console-beta
-          class="console"
-          .state=${this.consoleState}
-          @cc-kv-console:state-change=${this._onConsoleStateChange}
-        ></cc-kv-console-beta>
+        <cc-kv-terminal-beta
+          class="terminal"
+          .state=${this.terminalState}
+          @cc-kv-terminal:state-change=${this._onTerminalStateChange}
+        ></cc-kv-terminal-beta>
       </div>
     `;
   }
@@ -936,9 +936,9 @@ export class CcKvExplorer extends LitElement {
           display: grid;
           grid-gap: 1em;
           grid-template-areas:
-            'top-bar top-bar'
-            'keys    detail'
-            'console console';
+            'top-bar  top-bar'
+            'keys     detail'
+            'terminal terminal';
           grid-template-columns: minmax(auto, 400px) 1fr;
           grid-template-rows: auto 1fr auto;
           height: 100%;
@@ -1105,10 +1105,10 @@ export class CcKvExplorer extends LitElement {
           padding-top: 1em;
         }
 
-        .console {
+        .terminal {
           border: 1px solid var(--cc-color-border-neutral, #aaa);
           border-radius: var(--cc-border-radius-default, 0.25em);
-          grid-area: console;
+          grid-area: terminal;
           max-height: 25em;
         }
 

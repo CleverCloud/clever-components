@@ -9,30 +9,30 @@ import { i18n } from '../../translations/translation.js';
 import '../cc-icon/cc-icon.js';
 
 /**
- * @typedef {import('./cc-kv-console.types.js').CcKvConsoleState} CcKvConsoleState
+ * @typedef {import('./cc-kv-terminal.types.d.ts').CcKvTerminalState} CcKvTerminalState
  * @typedef {import('../../lib/events.types.js').GenericEventWithTarget<KeyboardEvent,HTMLInputElement>} HTMLInputKeyboardEvent
- * @typedef {import('lit').PropertyValues<CcKvConsole>} CcKvConsolePropertyValues
+ * @typedef {import('lit').PropertyValues<CcKvTerminal>} CcKvTerminalPropertyValues
  * @typedef {import('lit/directives/ref.js').Ref<HTMLInputElement>} HTMLInputElementRef
  */
 
 /**
- * A component displaying a console to interact with kv database.
+ * A component displaying a terminal to interact with KV database.
  *
  * The history of commands is kept in memory and users can navigate through history using arrow keys.
  *
- * The `clear` command will clear the console (but not the history of commands).
+ * The `clear` command will clear the terminal (but not the history of commands).
  *
  * @cssdisplay block
  *
- * @fires {CustomEvent<CcKvConsoleState>} cc-kv-console:state-change - Fires whenever the state change internally
- * @fires {CustomEvent<string>} cc-kv-console:send-command - Fires whenever a command is validated
+ * @fires {CustomEvent<CcKvTerminalState>} cc-kv-terminal:state-change - Fires whenever the state change internally
+ * @fires {CustomEvent<string>} cc-kv-terminal:send-command - Fires whenever a command is validated
  *
- * @cssprop {Color} --cc-kv-console-color-background - The background color
- * @cssprop {Color} --cc-kv-console-color-foreground - The foreground color
- * @cssprop {Color} --cc-kv-console-color-foreground-success - The foreground color of the result when command succeeded
- * @cssprop {Color} --cc-kv-console-color-foreground-error - The foreground color of the result when command failed
+ * @cssprop {Color} --cc-kv-terminal-color-background - The background color
+ * @cssprop {Color} --cc-kv-terminal-color-foreground - The foreground color
+ * @cssprop {Color} --cc-kv-terminal-color-foreground-success - The foreground color of the result when command succeeded
+ * @cssprop {Color} --cc-kv-terminal-color-foreground-error - The foreground color of the result when command failed
  */
-export class CcKvConsole extends LitElement {
+export class CcKvTerminal extends LitElement {
   static get properties() {
     return {
       state: { type: Object },
@@ -41,7 +41,7 @@ export class CcKvConsole extends LitElement {
 
   constructor() {
     super();
-    /** @type {CcKvConsoleState} - The state of the component */
+    /** @type {CcKvTerminalState} - The state of the component */
     this.state = { type: 'idle', history: [] };
 
     /** @type {Array<string>} */
@@ -147,7 +147,7 @@ export class CcKvConsole extends LitElement {
   }
 
   /**
-   * @param {CcKvConsolePropertyValues} changedProperties
+   * @param {CcKvTerminalPropertyValues} changedProperties
    */
   updated(changedProperties) {
     if (changedProperties.has('state')) {
@@ -162,10 +162,10 @@ export class CcKvConsole extends LitElement {
     return html`
       <div class="wrapper" @mouseup=${this._onContentMouseUp} @keydown=${this._onShellPromptKeyDown}>
         <div class="header">
-          <div>${i18n('cc-kv-console.header')}</div>
+          <div>${i18n('cc-kv-terminal.header')}</div>
           <div class="header-warning">
             <cc-icon .icon=${iconWarning} a11y-name="${i18n('cc-notice.icon-alt.warning')}"></cc-icon>
-            ${i18n('cc-kv-console.warning')}
+            ${i18n('cc-kv-terminal.warning')}
           </div>
         </div>
         <div class="content">
@@ -187,7 +187,7 @@ export class CcKvConsole extends LitElement {
             : ''}
           <div class="prompt">
             <cc-icon .icon=${iconShellPrompt}></cc-icon>
-            <label class="visually-hidden" for="prompt">${i18n('cc-kv-console.shell.prompt')}</label>
+            <label class="visually-hidden" for="prompt">${i18n('cc-kv-terminal.shell.prompt')}</label>
             <input
               ${ref(this._promptRef)}
               id="prompt"
@@ -210,10 +210,10 @@ export class CcKvConsole extends LitElement {
       // language=CSS
       css`
         :host {
-          --cc-kv-console-color-background: #011627;
-          --cc-kv-console-color-foreground: #d6deeb;
-          --cc-kv-console-color-foreground-success: #82aaff;
-          --cc-kv-console-color-foreground-error: #ef5350;
+          --cc-kv-terminal-color-background: #011627;
+          --cc-kv-terminal-color-foreground: #d6deeb;
+          --cc-kv-terminal-color-foreground-success: #82aaff;
+          --cc-kv-terminal-color-foreground-error: #ef5350;
 
           display: block;
         }
@@ -221,8 +221,8 @@ export class CcKvConsole extends LitElement {
         .wrapper {
           --shell-gap: 0.5em;
 
-          background-color: var(--cc-kv-console-color-background);
-          color: var(--cc-kv-console-color-foreground);
+          background-color: var(--cc-kv-terminal-color-background);
+          color: var(--cc-kv-terminal-color-foreground);
           display: grid;
           font-family: var(--cc-ff-monospace, monospace);
           font-size: 0.75em;
@@ -279,12 +279,12 @@ export class CcKvConsole extends LitElement {
         }
 
         .result {
-          color: var(--cc-kv-console-color-foreground-success);
+          color: var(--cc-kv-terminal-color-foreground-success);
           white-space: pre-wrap;
         }
 
         .result.error {
-          color: var(--cc-kv-console-color-foreground-error);
+          color: var(--cc-kv-terminal-color-foreground-error);
         }
 
         .prompt {
@@ -323,7 +323,7 @@ export class CcKvConsole extends LitElement {
           }
 
           50% {
-            background-color: var(--cc-kv-console-color-foreground);
+            background-color: var(--cc-kv-terminal-color-foreground);
           }
         }
       `,
@@ -331,4 +331,4 @@ export class CcKvConsole extends LitElement {
   }
 }
 
-window.customElements.define('cc-kv-console-beta', CcKvConsole);
+window.customElements.define('cc-kv-terminal-beta', CcKvTerminal);

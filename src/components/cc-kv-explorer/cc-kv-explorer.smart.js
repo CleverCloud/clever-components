@@ -188,7 +188,7 @@ defineSmartComponent({
       async (keyValue) => {
         updateComponent(
           'detailState',
-          /** @param {CcKvExplorerDetailStateAdd} state*/
+          /** @param {CcKvExplorerDetailStateAdd} state */
           (state) => {
             state.formState.type = 'adding';
           },
@@ -247,7 +247,7 @@ defineSmartComponent({
           if (statusCode === 409) {
             updateComponent(
               'detailState',
-              /** @param {CcKvExplorerDetailStateAdd} state*/
+              /** @param {CcKvExplorerDetailStateAdd} state */
               (state) => {
                 state.formState.type = 'idle';
                 state.formState.errors = { keyName: 'already-used' };
@@ -258,7 +258,7 @@ defineSmartComponent({
 
             updateComponent(
               'detailState',
-              /** @param {CcKvExplorerDetailStateAdd} state*/
+              /** @param {CcKvExplorerDetailStateAdd} state */
               (state) => {
                 state.formState.type = 'idle';
               },
@@ -650,21 +650,21 @@ defineSmartComponent({
     // -- CLI
 
     onEvent(
-      'cc-kv-console:send-command',
+      'cc-kv-terminal:send-command',
       /** @param {string} commandLine */
       async (commandLine) => {
-        updateComponent('consoleState', {
+        updateComponent('terminalState', {
           type: 'running',
           commandLine,
-          history: component.consoleState.history,
+          history: component.terminalState.history,
         });
 
         try {
           const { success, result } = await kvClient.sendCommandLine(commandLine, { signal });
 
-          updateComponent('consoleState', {
+          updateComponent('terminalState', {
             type: 'idle',
-            history: component.consoleState.history.concat({ commandLine, result, success }),
+            history: component.terminalState.history.concat({ commandLine, result, success }),
           });
         } catch (e) {
           console.error(e);
@@ -674,9 +674,9 @@ defineSmartComponent({
             console.error(e);
           }
 
-          updateComponent('consoleState', {
+          updateComponent('terminalState', {
             type: 'idle',
-            history: component.consoleState.history.concat({
+            history: component.terminalState.history.concat({
               commandLine,
               result: [err.responseBody.message],
               success: false,

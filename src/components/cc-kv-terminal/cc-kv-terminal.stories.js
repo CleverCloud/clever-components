@@ -1,18 +1,18 @@
 import { makeStory } from '../../stories/lib/make-story.js';
-import './cc-kv-console.js';
+import './cc-kv-terminal.js';
 
 export default {
   tags: ['autodocs'],
-  title: '🚧 Beta/🛠 Kv Explorer/<cc-kv-console-beta>',
-  component: 'cc-kv-console-beta',
+  title: '🚧 Beta/🛠 Kv Explorer/<cc-kv-terminal-beta>',
+  component: 'cc-kv-terminal-beta',
 };
 
 /**
- * @typedef {import('./cc-kv-console.js').CcKvConsole} CcKvConsole
+ * @typedef {import('./cc-kv-terminal.js').CcKvTerminal} CcKvConsole
  */
 
 const conf = {
-  component: 'cc-kv-console-beta',
+  component: 'cc-kv-terminal-beta',
   beta: true,
 };
 
@@ -66,11 +66,11 @@ export const withCommandRunning = makeStory(conf, {
 export const withCustomTheme = makeStory(
   {
     ...conf,
-    css: `cc-kv-console-beta { 
-      --cc-kv-console-color-background: #fafafa;
-      --cc-kv-console-color-foreground: black;
-      --cc-kv-console-color-foreground-success: blue;
-      --cc-kv-console-color-foreground-error: #750000;
+    css: `cc-kv-terminal-beta { 
+      --cc-kv-terminal-color-background: #fafafa;
+      --cc-kv-terminal-color-foreground: black;
+      --cc-kv-terminal-color-foreground-success: blue;
+      --cc-kv-terminal-color-foreground-error: #750000;
     }`,
   },
   {
