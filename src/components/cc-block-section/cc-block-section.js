@@ -32,6 +32,7 @@ export class CcBlockSection extends LitElement {
           background-color: var(--cc-color-bg-default, #fff);
           display: grid;
           grid-gap: 1em;
+          /* margin-inline: 1em; */
         }
 
         /* stylelint-disable-next-line */
@@ -53,6 +54,7 @@ export class CcBlockSection extends LitElement {
           border-top: 1px solid var(--cc-color-border-neutral-weak, #eee);
           margin-top: 1em;
           padding-top: 2em;
+          /* padding: 2em 1em 1em; */
         }
 
         ::slotted([slot='title']) {
