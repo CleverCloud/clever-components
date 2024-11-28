@@ -263,6 +263,8 @@ export class CcKvExplorer extends LitElement {
         return i18n('cc-kv-explorer.key.type.hash');
       case 'set':
         return i18n('cc-kv-explorer.key.type.set');
+      default:
+        return type;
     }
   }
 
