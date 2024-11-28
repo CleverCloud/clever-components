@@ -52,25 +52,8 @@ export type CcKvKeyFilter = {
 
 //-- key state ---
 
-export type CcKvKeyState = CcKvKeyStateIdle | CcKvKeyStateLoading | CcKvKeyStateSelected | CcKvKeyStateDeleting;
-
-export interface CcKvKeyStateIdle {
-  type: 'idle';
-  key: CcKvKey;
-}
-
-export interface CcKvKeyStateLoading {
-  type: 'loading';
-  key: CcKvKey;
-}
-
-export interface CcKvKeyStateSelected {
-  type: 'selected';
-  key: CcKvKey;
-}
-
-export interface CcKvKeyStateDeleting {
-  type: 'deleting';
+export interface CcKvKeyState {
+  type: 'idle' | 'loading' | 'selected' | 'deleting';
   key: CcKvKey;
 }
 
