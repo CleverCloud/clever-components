@@ -47,7 +47,7 @@ export interface CcKvExplorerStateLoaded {
 
 export type CcKvKeyFilter = {
   type: 'all' | CcKvKeyType;
-  match?: string | null;
+  pattern?: string | null;
 };
 
 //-- key state ---

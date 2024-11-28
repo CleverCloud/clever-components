@@ -64,10 +64,10 @@ defineSmartComponent({
     onEvent(
       'cc-kv-explorer:filter-change',
       /** @param { CcKvKeyFilter } filter */
-      async ({ type, match }) => {
+      async ({ type, pattern }) => {
         const filter = {
           type: type === 'all' ? null : type,
-          match: isStringEmpty(match) ? null : match,
+          pattern: isStringEmpty(pattern) ? null : pattern,
         };
 
         kvKeysScanner.setFilter(filter);
@@ -298,8 +298,8 @@ defineSmartComponent({
 
     onEvent(
       'cc-kv-hash-explorer:filter-change',
-      /** @param {string} match */
-      async (match) => {
+      /** @param {string} pattern */
+      async (pattern) => {
         if (component.detailState.type !== 'edit-hash' || component.detailState.editor.type === 'loading') {
           return;
         }
@@ -309,7 +309,7 @@ defineSmartComponent({
         hashKeyCtrl.updateEditor({ type: 'loading' });
 
         try {
-          hashScanner.setFilter({ keyName: component.detailState.key.name, match });
+          hashScanner.setFilter({ keyName: component.detailState.key.name, pattern });
           await hashScanner.next();
           hashKeyCtrl.updateEditor({ type: 'loaded', elements: hashScanner.elements, addForm });
         } catch (e) {
@@ -544,8 +544,8 @@ defineSmartComponent({
 
     onEvent(
       'cc-kv-set-explorer:filter-change',
-      /** @param {string} match */
-      async (match) => {
+      /** @param {string} pattern */
+      async (pattern) => {
         if (component.detailState.type !== 'edit-set' || component.detailState.editor.type === 'loading') {
           return;
         }
@@ -555,7 +555,7 @@ defineSmartComponent({
         setKeyCtrl.updateEditor({ type: 'loading' });
 
         try {
-          setScanner.setFilter({ keyName: component.detailState.key.name, match });
+          setScanner.setFilter({ keyName: component.detailState.key.name, pattern });
           await setScanner.next();
           setKeyCtrl.updateEditor({ type: 'loaded', elements: setScanner.elements, addForm });
         } catch (e) {

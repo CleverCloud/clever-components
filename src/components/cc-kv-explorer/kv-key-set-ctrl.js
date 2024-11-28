@@ -123,7 +123,7 @@ export class KvSetKeyController {
 }
 
 /**
- * @extends {KvScanner<CcKvSetElementState, {keyName: string, match?: string}>}
+ * @extends {KvScanner<CcKvSetElementState, {keyName: string, pattern?: string}>}
  */
 export class KvSetElementsScanner extends KvScanner {
   /**
@@ -134,9 +134,9 @@ export class KvSetElementsScanner extends KvScanner {
   constructor(kvClient, { signal }) {
     super(
       (it) => it.value,
-      (it) => isStringEmpty(this._filter?.match) || matchKvPattern(this._filter.match, it.value),
+      (it) => isStringEmpty(this._filter?.pattern) || matchKvPattern(this._filter.pattern, it.value),
       async (cursor, count, filter) => {
-        const r = await kvClient.scanSet(this._filter.keyName, { cursor, count, match: filter?.match }, { signal });
+        const r = await kvClient.scanSet(this._filter.keyName, { cursor, count, match: filter?.pattern }, { signal });
         return {
           cursor: r.cursor,
           total: r.total,

@@ -123,7 +123,7 @@ export class KvHashKeyController {
 }
 
 /**
- * @extends {KvScanner<CcKvHashElementState, {keyName: string, match?: string}>}
+ * @extends {KvScanner<CcKvHashElementState, {keyName: string, pattern?: string}>}
  */
 export class KvHashElementsScanner extends KvScanner {
   /**
@@ -134,9 +134,9 @@ export class KvHashElementsScanner extends KvScanner {
   constructor(kvClient, { signal }) {
     super(
       (it) => it.field,
-      (it) => isStringEmpty(this._filter?.match) || matchKvPattern(this._filter.match, it.field),
+      (it) => isStringEmpty(this._filter?.pattern) || matchKvPattern(this._filter.pattern, it.field),
       async (cursor, count, filter) => {
-        const r = await kvClient.scanHash(this._filter.keyName, { cursor, count, match: filter?.match }, { signal });
+        const r = await kvClient.scanHash(this._filter.keyName, { cursor, count, match: filter?.pattern }, { signal });
         return {
           cursor: r.cursor,
           total: r.total,

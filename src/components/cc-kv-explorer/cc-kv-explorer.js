@@ -363,7 +363,7 @@ export class CcKvExplorer extends LitElement {
   _onFilterFormSubmit(formData) {
     const filter = /** @type {CcKvKeyFilter}*/ ({
       type: formData.keyType,
-      match: formData.match,
+      pattern: formData.pattern,
     });
     dispatchCustomEvent(this, 'filter-change', filter);
   }
@@ -538,7 +538,7 @@ export class CcKvExplorer extends LitElement {
           @cc-select:input=${this._onTypeFilterChange}
         ></cc-select>
         <cc-input-text
-          name="match"
+          name="pattern"
           inline
           label=${i18n('cc-kv-explorer.filter.by-pattern')}
           ?readonly=${isFetching}
@@ -581,7 +581,7 @@ export class CcKvExplorer extends LitElement {
     const isFetching = state.type === 'loading-keys' || state.type === 'filtering' || state.type === 'refreshing';
 
     /** @type {Array<{keyState: CcKvKeyState, skeleton: boolean}>} */
-    let keys = state.keys.map((keyState) => ({ keyState, skeleton: false }));
+    const keys = state.keys.map((keyState) => ({ keyState, skeleton: false }));
     if (isFetching) {
       /** @type {Array<{keyState: CcKvKeyState, skeleton: boolean}>} */
       const skeletonKeys = new Array(10).fill(0).map(() => ({
@@ -589,7 +589,7 @@ export class CcKvExplorer extends LitElement {
         keyState: { type: 'idle', key: { name: randomString(random(8, 15)), type: randomPick(this.supportedTypes) } },
       }));
 
-      keys = keys.concat(skeletonKeys);
+      keys.push(...skeletonKeys);
     }
 
     /**
