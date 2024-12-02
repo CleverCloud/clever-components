@@ -332,6 +332,11 @@ export class CcBlock extends LitElement {
           padding-block: 0.5em;
         }
 
+        slot[name='content-body'] {
+          display: grid;
+          gap: 1em;
+        }
+
         #content-and-footer {
           display: grid;
           gap: 1em;
