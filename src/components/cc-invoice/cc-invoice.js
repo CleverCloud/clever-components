@@ -61,18 +61,20 @@ export class CcInvoice extends LitElement {
         ${this.state.type !== 'error'
           ? html`
               <div slot="header-right">${ccLink(invoice.downloadUrl, i18n('cc-invoice.download-pdf'), skeleton)}</div>
-              <div slot="content-body" class="info">
-                <em class=${classMap({ skeleton })}>
-                  ${i18n('cc-invoice.info', {
-                    date: invoice.emissionDate,
-                    amount: invoice.amount,
-                    currency: invoice.currency,
-                  })}
-                </em>
+              <div slot="content">
+                <div class="info">
+                  <em class=${classMap({ skeleton })}>
+                    ${i18n('cc-invoice.info', {
+                      date: invoice.emissionDate,
+                      amount: invoice.amount,
+                      currency: invoice.currency,
+                    })}
+                  </em>
+                </div>
+                <cc-html-frame class="frame" ?loading="${skeleton}" iframe-title="${title}">
+                  ${invoice.invoiceHtml != null ? unsafeHTML(`<template>${invoice.invoiceHtml}</template>`) : ''}
+                </cc-html-frame>
               </div>
-              <cc-html-frame slot="content-body" class="frame" ?loading="${skeleton}" iframe-title="${title}">
-                ${invoice.invoiceHtml != null ? unsafeHTML(`<template>${invoice.invoiceHtml}</template>`) : ''}
-              </cc-html-frame>
             `
           : ''}
       </cc-block>
