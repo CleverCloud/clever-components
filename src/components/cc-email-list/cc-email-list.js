@@ -216,7 +216,7 @@ export class CcEmailList extends LitElement {
     const badgeIcon = verified ? iconVerified : iconUnverified;
 
     return html`
-      <cc-block-section slot="content">
+      <cc-block-section slot="content-body">
         <div slot="title">${i18n('cc-email-list.primary.title')}</div>
         <div slot="info">${i18n('cc-email-list.primary.description')}</div>
 
@@ -253,7 +253,7 @@ export class CcEmailList extends LitElement {
     const markingAsPrimary = addresses.some((item) => item.state === 'marking-as-primary');
 
     return html`
-      <cc-block-section slot="content">
+      <cc-block-section slot="content-body">
         <div slot="title">${i18n('cc-email-list.secondary.title')}</div>
         <div slot="info">${i18n('cc-email-list.secondary.description')}</div>
 
