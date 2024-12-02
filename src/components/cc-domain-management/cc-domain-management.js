@@ -317,7 +317,7 @@ export class CcDomainManagement extends LitElement {
         <cc-block>
           <div slot="header-title">${i18n('cc-domain-management.main-heading')}</div>
 
-          <cc-block-section slot="content">
+          <cc-block-section slot="content-body">
             <div class="form-info">
               <p>${i18n('cc-domain-management.form.info.docs')}</p>
               <p>${i18n('cc-domain-management.form.info.cleverapps')}</p>
@@ -325,7 +325,7 @@ export class CcDomainManagement extends LitElement {
             <div>${this._renderForm(this.domainFormState)}</div>
           </cc-block-section>
 
-          <cc-block-section slot="content">
+          <cc-block-section slot="content-body">
             <div slot="title">
               ${i18n('cc-domain-management.list.heading')}
               ${this.domainListState.type === 'loaded'
@@ -368,7 +368,7 @@ export class CcDomainManagement extends LitElement {
 
         <cc-block class="dns-info">
           <div slot="header-title">${i18n('cc-domain-management.dns.heading')}</div>
-          <div slot="content">
+          <div slot="content-body">
             <div class="dns-info__desc">${i18n('cc-domain-management.dns.desc')}</div>
             <cc-notice intent="info" heading="${i18n('cc-domain-management.dns.info.heading')}">
               <div slot="message">
@@ -604,7 +604,7 @@ export class CcDomainManagement extends LitElement {
    */
   _renderDnsInfo(cnameRecord, aRecords) {
     return html`
-      <cc-block-section slot="content">
+      <cc-block-section slot="content-body">
         <div slot="title">${i18n('cc-domain-management.dns.cname.heading')}</div>
         <div slot="info">${i18n('cc-domain-management.dns.cname.desc')}</div>
         <cc-input-text
@@ -615,7 +615,7 @@ export class CcDomainManagement extends LitElement {
           value=${cnameRecord}
         ></cc-input-text>
       </cc-block-section>
-      <cc-block-section slot="content">
+      <cc-block-section slot="content-body">
         <div slot="title">${i18n('cc-domain-management.dns.a.heading')}</div>
         <div slot="info">${i18n('cc-domain-management.dns.a.desc')}</div>
         <div class="a-records">
