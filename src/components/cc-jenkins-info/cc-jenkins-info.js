@@ -52,7 +52,7 @@ export class CcJenkinsInfo extends LitElement {
         <div slot="ribbon">${i18n('cc-jenkins-info.info')}</div>
         <div slot="header" class="info-text">${i18n('cc-jenkins-info.text')}</div>
 
-        <cc-block-section slot="content">
+        <cc-block-section slot="content-body">
           <div slot="title">${i18n('cc-jenkins-info.open-jenkins.title')}</div>
           <div slot="info">${i18n('cc-jenkins-info.open-jenkins.text')}</div>
           <div class="one-line-form">
@@ -66,7 +66,7 @@ export class CcJenkinsInfo extends LitElement {
           </div>
         </cc-block-section>
 
-        <cc-block-section slot="content">
+        <cc-block-section slot="content-body">
           <div slot="title">${i18n('cc-jenkins-info.update.title')}</div>
           <div slot="info">${i18n('cc-jenkins-info.update.text')}</div>
           <div class="one-line-form">
