@@ -57,7 +57,7 @@ export class CcMatomoInfo extends LitElement {
         <div slot="ribbon">${i18n('cc-matomo-info.info')}</div>
         <div slot="header" class="info-text">${i18n('cc-matomo-info.heading')}</div>
 
-        <cc-block-section slot="content">
+        <cc-block-section slot="content-body">
           <div slot="title">${i18n('cc-matomo-info.open-matomo.title')}</div>
           <div slot="info">${i18n('cc-matomo-info.open-matomo.text')}</div>
           <div>
@@ -65,7 +65,7 @@ export class CcMatomoInfo extends LitElement {
           </div>
         </cc-block-section>
 
-        <cc-block-section slot="content">
+        <cc-block-section slot="content-body">
           <div slot="title">${i18n('cc-matomo-info.about.title')}</div>
           <div slot="info">${i18n('cc-matomo-info.about.text')}</div>
           <div class="application-list">
