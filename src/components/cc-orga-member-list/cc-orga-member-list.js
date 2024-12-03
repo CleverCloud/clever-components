@@ -340,7 +340,7 @@ export class CcOrgaMemberList extends LitElement {
 
         ${this.authorisations.invite ? this._renderInviteForm() : ''}
 
-        <cc-block-section slot="content">
+        <cc-block-section slot="content-body">
           <div slot="title" ${ref(this._memberListHeadingRef)} tabindex="-1">
             ${i18n('cc-orga-member-list.list.heading')}
             ${this.members.state === 'loaded'
@@ -381,7 +381,7 @@ export class CcOrgaMemberList extends LitElement {
     const isFormDisabled = this.inviteMemberFormState.type === 'inviting';
 
     return html`
-      <cc-block-section slot="content">
+      <cc-block-section slot="content-body">
         <div slot="title">${i18n('cc-orga-member-list.invite.heading')}</div>
         <p class="info">${i18n('cc-orga-member-list.invite.info')}</p>
 
@@ -481,7 +481,7 @@ export class CcOrgaMemberList extends LitElement {
    */
   _renderDangerZone(members) {
     return html`
-      <cc-block-section slot="content">
+      <cc-block-section slot="content-body">
         <div slot="title" class="danger">${i18n('cc-orga-member-list.leave.heading')}</div>
         <div class="leave">
           <p class="leave__text">${i18n('cc-orga-member-list.leave.text')}</p>

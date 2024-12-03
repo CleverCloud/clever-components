@@ -94,7 +94,7 @@ export class CcGrafanaInfo extends LitElement {
 
         ${isSwitchingGrafanaStatus ? html` <cc-loader slot="overlay"></cc-loader> ` : ''}
 
-        <cc-block-section slot="content">
+        <cc-block-section slot="content-body">
           <div slot="title">${i18n('cc-grafana-info.documentation-title')}</div>
           <div slot="info">${i18n('cc-grafana-info.documentation-description')}</div>
           <div>
@@ -110,7 +110,7 @@ export class CcGrafanaInfo extends LitElement {
 
         ${this.state.type === 'loading'
           ? html`
-              <cc-block-section slot="content">
+              <cc-block-section slot="content-body">
                 <div slot="title">${i18n('cc-grafana-info.loading-title')}</div>
                 <div>
                   <cc-loader></cc-loader>
@@ -120,7 +120,7 @@ export class CcGrafanaInfo extends LitElement {
           : ''}
         ${this.state.type === 'error'
           ? html`
-              <cc-block-section slot="content">
+              <cc-block-section slot="content-body">
                 <div slot="title">${i18n('cc-grafana-info.loading-title')}</div>
                 <cc-notice intent="warning" message="${i18n('cc-grafana-info.error-loading')}"></cc-notice>
               </cc-block-section>
@@ -128,7 +128,7 @@ export class CcGrafanaInfo extends LitElement {
           : ''}
         ${isGrafanaDisabled
           ? html`
-              <cc-block-section slot="content">
+              <cc-block-section slot="content-body">
                 <div slot="title">${i18n('cc-grafana-info.enable-title')}</div>
                 <div slot="info">
                   <p>${i18n('cc-grafana-info.enable-description')}</p>
@@ -148,7 +148,7 @@ export class CcGrafanaInfo extends LitElement {
           : ''}
         ${isGrafanaEnabled
           ? html`
-              <cc-block-section slot="content">
+              <cc-block-section slot="content-body">
                 <div slot="title">${i18n('cc-grafana-info.grafana-link-title')}</div>
                 <div slot="info">
                   <p>${i18n('cc-grafana-info.grafana-link-description')}</p>
@@ -170,7 +170,7 @@ export class CcGrafanaInfo extends LitElement {
                     `}
               </cc-block-section>
 
-              <cc-block-section slot="content">
+              <cc-block-section slot="content-body">
                 <div slot="title">${i18n('cc-grafana-info.reset-title')}</div>
                 <div slot="info">${i18n('cc-grafana-info.reset-description')}</div>
                 <div>
@@ -190,7 +190,7 @@ export class CcGrafanaInfo extends LitElement {
           ? html`
               ${this._getDashboards().map(
                 (item) => html`
-                  <cc-block-section slot="content">
+                  <cc-block-section slot="content-body">
                     <div slot="title">${item.title}</div>
                     <div slot="info">${item.description}</div>
                     <div>
@@ -206,7 +206,7 @@ export class CcGrafanaInfo extends LitElement {
           : ''}
         ${isGrafanaEnabled
           ? html`
-              <cc-block-section slot="content">
+              <cc-block-section slot="content-body">
                 <div slot="title">${i18n('cc-grafana-info.disable-title')}</div>
                 <div slot="info">${i18n('cc-grafana-info.disable-description')}</div>
                 <div>

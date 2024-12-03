@@ -158,7 +158,7 @@ export class CcSshKeyList extends LitElement {
         <div slot="header-title">${i18n('cc-ssh-key-list.title')}</div>
 
         <!-- creation form -->
-        <cc-block-section slot="content">
+        <cc-block-section slot="content-body">
           <div slot="title">${i18n('cc-ssh-key-list.add.title')}</div>
           <div slot="info">${i18n('cc-ssh-key-list.add.info')}</div>
 
@@ -166,7 +166,7 @@ export class CcSshKeyList extends LitElement {
         </cc-block-section>
 
         <!-- personal keys -->
-        <cc-block-section slot="content">
+        <cc-block-section slot="content-body">
           <div slot="title">
             <span>${i18n('cc-ssh-key-list.personal.title')}</span>
             ${this.keyData.state === 'loaded' && this.keyData.personalKeys.length > 2
@@ -194,7 +194,7 @@ export class CcSshKeyList extends LitElement {
         </cc-block-section>
 
         <!-- GitHub keys -->
-        <cc-block-section slot="content">
+        <cc-block-section slot="content-body">
           <div slot="title">
             <span>${i18n('cc-ssh-key-list.github.title')}</span>
             ${this.keyData.state === 'loaded' && this.keyData.isGithubLinked && this.keyData.githubKeys.length > 2

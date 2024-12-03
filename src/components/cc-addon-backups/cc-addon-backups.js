@@ -375,14 +375,14 @@ export class CcAddonBackups extends LitElement {
 
         ${this._displaySectionWithService(providerId)
           ? html`
-              <cc-block-section slot="content">
+              <cc-block-section slot="content-body">
                 <div slot="title">${this._getRestoreWithServiceTitle(providerId)}</div>
                 <div>${this._getRestoreWithServiceDescription(providerId, this._selectedBackup.url)}</div>
               </cc-block-section>
             `
           : ''}
 
-        <cc-block-section slot="content">
+        <cc-block-section slot="content-body">
           <div slot="title">${i18n('cc-addon-backups.restore.manual.title')}</div>
           <div>${this._getManualRestoreDescription(providerId)}</div>
           ${this._selectedBackup.restoreCommand != null
@@ -421,7 +421,7 @@ export class CcAddonBackups extends LitElement {
 
         ${this._displaySectionWithService(providerId)
           ? html`
-              <cc-block-section slot="content">
+              <cc-block-section slot="content-body">
                 <div slot="title">${i18n('cc-addon-backups.delete.with-service.title.es-addon')}</div>
                 <div>
                   ${i18n('cc-addon-backups.delete.with-service.description.es-addon', {
@@ -432,7 +432,7 @@ export class CcAddonBackups extends LitElement {
             `
           : ''}
 
-        <cc-block-section slot="content">
+        <cc-block-section slot="content-body">
           <div slot="title">${i18n('cc-addon-backups.delete.manual.title')}</div>
           <div>${this._getManualDeleteDescription(providerId)}</div>
           <cc-input-text readonly clipboard value="${this._selectedBackup.deleteCommand}"></cc-input-text>

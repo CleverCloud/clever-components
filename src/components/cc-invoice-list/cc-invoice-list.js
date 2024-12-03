@@ -84,12 +84,12 @@ export class CcInvoiceList extends LitElement {
 
     if (this.state.type === 'loading') {
       return this._renderView(html`
-        <cc-block-section slot="content">
+        <cc-block-section slot="content-body">
           <div slot="title">${i18n('cc-invoice-list.pending')}</div>
           <cc-invoice-table></cc-invoice-table>
         </cc-block-section>
 
-        <cc-block-section slot="content">
+        <cc-block-section slot="content-body">
           <div slot="title">${i18n('cc-invoice-list.processed')}</div>
           <cc-invoice-table></cc-invoice-table>
         </cc-block-section>
@@ -125,7 +125,7 @@ export class CcInvoiceList extends LitElement {
     const hasYearSelector = filteredProcessedInvoiceTableState.invoices.length > 0 && yearChoices.length > 1;
 
     return this._renderView(html`
-      <cc-block-section slot="content">
+      <cc-block-section slot="content-body">
         <div slot="title">${i18n('cc-invoice-list.pending')}</div>
         ${pendingInvoicesTableState.invoices.length > 0
           ? html` <cc-invoice-table .state=${pendingInvoicesTableState}></cc-invoice-table> `
@@ -137,14 +137,14 @@ export class CcInvoiceList extends LitElement {
 
       ${processingInvoicesTableState.invoices.length > 0
         ? html`
-            <cc-block-section slot="content">
+            <cc-block-section slot="content-body">
               <div slot="title">${i18n('cc-invoice-list.processing')}</div>
               <cc-invoice-table .state=${processingInvoicesTableState}></cc-invoice-table>
             </cc-block-section>
           `
         : ''}
 
-      <cc-block-section slot="content">
+      <cc-block-section slot="content-body">
         <div slot="title">${i18n('cc-invoice-list.processed')}</div>
         ${hasYearSelector
           ? html`
