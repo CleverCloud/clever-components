@@ -47,7 +47,7 @@ const conf = {
 export const defaultStory = makeStory(conf, {
   items: [
     {
-      title: 'Options for the Elastic Stack',
+      heading: 'Options for the Elastic Stack',
       description: 'Those are the options available for Elastic Stack',
       options: optionsExamples,
     },
@@ -57,7 +57,7 @@ export const defaultStory = makeStory(conf, {
 export const oneOption = makeStory(conf, {
   items: [
     {
-      title: 'Options for the Elastic Stack',
+      heading: 'Options for the Elastic Stack',
       description: 'Those are the options available for Elastic Stack',
       options: [optionsExamples[0]],
     },
