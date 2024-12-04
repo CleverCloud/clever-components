@@ -1,4 +1,5 @@
 import { Timezone } from '../../lib/date/date.types.js';
+import { LogsStreamState } from '../../lib/logs/logs-stream.types.js';
 import { LogsControlPalette } from '../cc-logs-control/cc-logs-control.types.js';
 import { GhostInstance, Instance } from '../cc-logs-instances/cc-logs-instances.types.js';
 import { DateDisplay } from '../cc-logs/date-display.types.js';
@@ -11,16 +12,17 @@ export interface LogsApplicationViewStateErrorInstances {
   type: 'errorInstances';
 }
 
-export interface LogsApplicationViewStateLogs {
-  type: 'connectingLogs' | 'receivingLogs' | 'logStreamPaused' | 'logStreamEnded' | 'errorLogs';
+export interface LogsApplicationViewStateLoaded {
+  type: 'loaded';
+  streamState: LogsStreamState;
   instances: Array<Instance | GhostInstance>;
   selection: Array<string>;
 }
 
 export type LogsApplicationViewState =
   | LogsApplicationViewStateLoadingInstances
-  | LogsApplicationViewStateLogs
-  | LogsApplicationViewStateErrorInstances;
+  | LogsApplicationViewStateErrorInstances
+  | LogsApplicationViewStateLoaded;
 
 export interface LogsApplicationViewOptions {
   'date-display': DateDisplay;
@@ -32,5 +34,3 @@ export interface LogsApplicationViewOptions {
   timezone: Timezone;
   'wrap-lines': boolean;
 }
-
-export type ProgressState = 'none' | 'init' | 'started' | 'waiting' | 'running' | 'paused' | 'completed';

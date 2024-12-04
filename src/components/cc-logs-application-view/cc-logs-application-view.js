@@ -13,8 +13,8 @@ import '../cc-loader/cc-loader.js';
 import '../cc-logs-control/cc-logs-control.js';
 import '../cc-logs-date-range-selector/cc-logs-date-range-selector.js';
 import '../cc-logs-instances/cc-logs-instances.js';
+import { buildLogsLoadingProgressState } from '../cc-logs-loading-progress/cc-logs-loading-progress-state-builder.js';
 import '../cc-logs-loading-progress/cc-logs-loading-progress.js';
-import { LogsLoadingProgressController } from '../cc-logs-loading-progress/logs-loading-progress-ctrl.js';
 import '../cc-logs-message-filter/cc-logs-message-filter.js';
 import '../cc-notice/cc-notice.js';
 import '../cc-toggle/cc-toggle.js';
@@ -50,12 +50,10 @@ const CUSTOM_METADATA_RENDERERS = {
  * @typedef {import('../cc-logs-instances/cc-logs-instances.types.js').LogsInstancesState} LogsInstancesState
  * @typedef {import('./cc-logs-application-view.types.js').LogsApplicationViewState} LogsApplicationViewState
  * @typedef {import('./cc-logs-application-view.types.js').LogsApplicationViewOptions} LogsApplicationViewOptions
- * @typedef {import('./cc-logs-application-view.types.js').ProgressState} ProgressState
  * @typedef {import('../cc-logs/cc-logs.types.js').Log} Log
  * @typedef {import('../cc-logs/cc-logs.types.js').MetadataRenderer} MetadataRenderer
  * @typedef {import('../cc-logs-date-range-selector/cc-logs-date-range-selector.types.js').LogsDateRangeSelection} LogsDateRangeSelection
  * @typedef {import('../cc-logs-date-range-selector/cc-logs-date-range-selector.types.js').LogsDateRangeSelectionChangeEventData} LogsDateRangeSelectionChangeEventData
- * @typedef {import('../cc-logs-loading-progress/cc-logs-loading-progress.types.js').LogsLoadingProgressState} LogsLoadingProgressState
  * @typedef {import('../cc-logs-message-filter/cc-logs-message-filter.types.js').LogsMessageFilterValue} LogsMessageFilterValue
  * @typedef {import('lit/directives/ref.js').Ref<CcLogsControl>} RefCcLogsControl
  * @typedef {import('lit').PropertyValues<CcLogsApplicationView>} CcLogsApplicationViewPropertyValues
@@ -72,7 +70,6 @@ export class CcLogsApplicationView extends LitElement {
       dateRangeSelection: { type: Object, attribute: 'date-range-selection' },
       limit: { type: Number },
       options: { type: Object },
-      overflowWatermarkOffset: { type: Number, attribute: 'overflow-watermark-offset' },
       selectedInstances: { type: Array, attribute: 'selected-instances' },
       state: { type: Object },
       _fullscreen: { type: Boolean, state: true },
@@ -103,9 +100,6 @@ export class CcLogsApplicationView extends LitElement {
       'wrap-lines': false,
     };
 
-    /** @type {number|null} The number of logs before the limit from which the user will be asked to accept or discard logs limit overflow */
-    this.overflowWatermarkOffset = 10;
-
     /** @type {Array<string>} The array of instances ids that should be selected */
     this.selectedInstances = [];
 
@@ -113,8 +107,6 @@ export class CcLogsApplicationView extends LitElement {
     this.state = {
       type: 'loadingInstances',
     };
-
-    this._loadingProgressCtrl = new LogsLoadingProgressController(this);
 
     /** @type {RefCcLogsControl} */
     this._logsRef = createRef();
@@ -139,19 +131,11 @@ export class CcLogsApplicationView extends LitElement {
    * @param {Log[]} logs
    */
   appendLogs(logs) {
-    if (logs == null || logs.length <= 0) {
-      return;
-    }
-
-    if (this.state.type === 'receivingLogs') {
-      this._logsRef.value.appendLogs(logs);
-      this._loadingProgressCtrl.progress(logs);
-    }
+    this._logsRef.value?.appendLogs(logs);
   }
 
   clear() {
     this._logsRef.value?.clear();
-    this._loadingProgressCtrl.reset();
   }
 
   /* endregion */
@@ -162,7 +146,6 @@ export class CcLogsApplicationView extends LitElement {
    * @param {CustomEvent<LogsDateRangeSelectionChangeEventData>} event
    */
   _onDateRangeSelectionChange(event) {
-    this._loadingProgressCtrl.cancel();
     this.dateRangeSelection = event.detail.selection;
   }
 
@@ -175,7 +158,6 @@ export class CcLogsApplicationView extends LitElement {
     }
 
     if (this.dateRangeSelection.type !== 'live') {
-      this._loadingProgressCtrl.cancel();
       dispatchCustomEvent(this, 'instance-selection-change', event.detail);
     } else {
       this.state = {
@@ -215,22 +197,6 @@ export class CcLogsApplicationView extends LitElement {
    * @param {CcLogsApplicationViewPropertyValues} changedProperties
    */
   willUpdate(changedProperties) {
-    const stateTypeHasChanged =
-      changedProperties.has('state') && changedProperties.get('state')?.type !== this.state.type;
-
-    if (stateTypeHasChanged) {
-      if (this.state.type === 'errorLogs') {
-        this._loadingProgressCtrl.reset();
-      } else if (this.state.type === 'connectingLogs') {
-        this._loadingProgressCtrl.init();
-      } else if (this.state.type === 'receivingLogs') {
-        this._loadingProgressCtrl.start();
-      } else if (this.state.type === 'logStreamPaused') {
-        this._loadingProgressCtrl.pause();
-      } else if (this.state.type === 'logStreamEnded') {
-        this._loadingProgressCtrl.complete();
-      }
-    }
     if (changedProperties.has('options')) {
       this._metadataDisplay = {
         instance: {
@@ -301,23 +267,23 @@ export class CcLogsApplicationView extends LitElement {
    * @return {TemplateResult|null}
    */
   _renderLoadingProgress() {
-    const state = this._loadingProgressCtrl.getLoadingProgressState();
+    if (this.state.type === 'loadingInstances' || this.state.type === 'errorInstances') {
+      return null;
+    }
 
+    const state = buildLogsLoadingProgressState(this.state.streamState);
     if (state == null) {
       return null;
     }
 
-    return html`<cc-logs-loading-progress-beta
-      .state=${this._loadingProgressCtrl.getLoadingProgressState()}
-      limit=${this.limit}
-    ></cc-logs-loading-progress-beta>`;
+    return html`<cc-logs-loading-progress-beta .state=${state} limit=${this.limit}></cc-logs-loading-progress-beta>`;
   }
 
   /**
    * @return {TemplateResult}
    */
   _renderLogs() {
-    if (this.state.type === 'errorLogs') {
+    if (this.state.type === 'loaded' && this.state.streamState.type === 'error') {
       return html`
         <div class="center-logs-wrapper">
           <cc-notice slot="header" intent="warning" message=${i18n('cc-logs-application-view.logs.error')}></cc-notice>
@@ -326,10 +292,11 @@ export class CcLogsApplicationView extends LitElement {
     }
 
     const metadataFilter =
-      this.state.type === 'connectingLogs' ||
-      this.state.type === 'receivingLogs' ||
-      this.state.type === 'logStreamEnded' ||
-      this.state.type === 'logStreamPaused'
+      this.state.type === 'loaded' &&
+      (this.state.streamState.type === 'connecting' ||
+        this.state.streamState.type === 'running' ||
+        this.state.streamState.type === 'paused' ||
+        this.state.streamState.type === 'completed')
         ? this.state.selection?.map((instanceId) => {
             return {
               metadata: 'instanceId',
@@ -375,7 +342,9 @@ export class CcLogsApplicationView extends LitElement {
         </div>
       </cc-logs-control-beta>
 
-      ${this._loadingProgressCtrl.state === 'completed' && this._loadingProgressCtrl.value === 0
+      ${this.state.type === 'loaded' &&
+      this.state.streamState.type === 'completed' &&
+      this.state.streamState.progress.value === 0
         ? html`
             <div class="overlay-logs-wrapper">
               <cc-notice
@@ -386,7 +355,8 @@ export class CcLogsApplicationView extends LitElement {
             </div>
           `
         : ''}
-      ${this._loadingProgressCtrl.state === 'init' || this._loadingProgressCtrl.state === 'started'
+      ${this.state.type === 'loaded' &&
+      (this.state.streamState.type === 'idle' || this.state.streamState.type === 'connecting')
         ? html`
             <div class="overlay-logs-wrapper">
               <cc-notice intent="info" no-icon>
@@ -398,7 +368,7 @@ export class CcLogsApplicationView extends LitElement {
             </div>
           `
         : ''}
-      ${this._loadingProgressCtrl.state === 'waiting'
+      ${this.state.type === 'loaded' && this.state.streamState.type === 'waitingForFirstLog'
         ? html`
             <div class="overlay-logs-wrapper">
               <cc-notice
