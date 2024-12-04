@@ -34,5 +34,3 @@ export interface LogsLoadingProgressStateCompleted {
   value: number;
   overflowing: boolean;
 }
-
-export type ProgressState = 'none' | 'init' | 'started' | 'waiting' | 'running' | 'paused' | 'completed';

@@ -1,9 +1,11 @@
+// @ts-expect-error FIXME: remove when clever-client exports types
 import { getAllInstances, getDeployment } from '@clevercloud/client/esm/api/v2/application.js';
+// @ts-expect-error FIXME: remove when clever-client exports types
 import { pickNonNull } from '@clevercloud/client/esm/pick-non-null.js';
+// @ts-expect-error FIXME: remove when clever-client exports types
 import { ApplicationLogStream } from '@clevercloud/client/esm/streams/application-logs.js';
-import { HttpError } from '@clevercloud/client/esm/streams/clever-cloud-sse.js';
-import { Buffer } from '../../lib/buffer.js';
 import { isLive, lastXDays } from '../../lib/date/date-range-utils.js';
+import { LogsStream } from '../../lib/logs/logs-stream.js';
 import { sendToApi } from '../../lib/send-to-api.js';
 import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
 import { unique } from '../../lib/utils.js';
@@ -19,51 +21,16 @@ import './cc-logs-application-view.js';
  * @typedef {import('./cc-logs-application-view.types.js').LogsApplicationViewStateLogs} LogsApplicationViewStateLogs
  * @typedef {import('../cc-logs-date-range-selector/cc-logs-date-range-selector.types.js').LogsDateRangeSelection} LogsDateRangeSelection
  * @typedef {import('../cc-logs-date-range-selector/cc-logs-date-range-selector.types.js').LogsDateRangeSelectionChangeEventData} LogsDateRangeSelectionChangeEventData
+ * @typedef {import('../cc-logs/cc-logs.types.js').Log} Log
+ * @typedef {import('../../lib/send-to-api.types.js').ApiConfig} ApiConfig
  * @typedef {import('../../lib/date/date-range.types.js').DateRange} DateRange
+ * @typedef {import('../../lib/logs/logs-stream.types.js').LogsStreamState} LogsStreamState
  * @typedef {import('./cc-logs-application-view.js').CcLogsApplicationView} CcLogsApplicationView
+ * @typedef {import('../../lib/smart/smart-component.types.js').UpdateComponentCallback<CcLogsApplicationView>} UpdateComponentCallback
  * @typedef {import('../../lib/smart/smart-component.types.js').OnContextUpdateArgs<CcLogsApplicationView>} OnContextUpdateArgs
  */
 
-/**
- * @typedef {Object} View
- * @property {CcLogsApplicationView} component
- * @property {(propertyName: string, newProperty: any|((property:any) => void)) => void} update
- * @property {(state: LogsApplicationViewState|((state: LogsApplicationViewState) => void)) => void} updateState
- */
-
-/**
- * @typedef {Object} ApplicationRef
- * @property {string} ownerId
- * @property {string} applicationId
- */
-
-/**
- * @typedef {Object} LogsStreamParams
- * @property {ApplicationRef} applicationRef
- * @property {string} since
- * @property {string} until
- * @property {Array<string>} instances
- */
-
-/**
- * @typedef {Object} LogsStreamCallbacks
- * @property {() => void} onOpen
- * @property {(log: Object) => void} onLog
- * @property {(error: Error) => void} onFatalError
- * @property {(error: Error) => void} onError
- * @property {(reason: string) => void} onFinish
- */
-
 const INSTANCES_REFRESH_RATE = 2000;
-const LOGS_BUFFER_TIMEOUT = 1000;
-const LOGS_BUFFER_LENGTH = 10;
-const LOGS_THROTTLE_ELEMENTS = 1000;
-const LOGS_THROTTLE_PER_IN_MILLIS = 10;
-
-/**
- * @type {LogsApplicationViewSmartController}
- */
-let controller = null;
 
 defineSmartComponent({
   selector: 'cc-logs-application-view-beta',
@@ -78,25 +45,18 @@ defineSmartComponent({
    * @param {OnContextUpdateArgs} args
    */
   onContextUpdate({ component, context, onEvent, updateComponent, signal }) {
-    signal.onabort = () => {
-      controller?.stopAndClear();
-    };
-
-    controller?.stopAndClear();
-
-    component.overflowWatermarkOffset = LOGS_THROTTLE_PER_IN_MILLIS;
-
     const { apiConfig, ownerId, appId, deploymentId, dateRangeSelection } = context;
 
-    controller = new LogsApplicationViewSmartController(
+    const controller = new LogsApplicationViewSmartController({
       apiConfig,
-      { ownerId, applicationId: appId },
-      {
-        component,
-        update: updateComponent,
-        updateState: (arg) => updateComponent('state', arg),
-      },
-    );
+      ownerId,
+      appId,
+      component,
+      updateComponent,
+    });
+    signal.onabort = () => {
+      controller.clear();
+    };
 
     onEvent(
       'cc-logs-date-range-selector:change',
@@ -122,6 +82,14 @@ defineSmartComponent({
       controller.resume();
     });
 
+    onEvent('cc-logs-loading-progress:accept-overflow', () => {
+      controller.acceptOverflow();
+    });
+
+    onEvent('cc-logs-loading-progress:discard-overflow', () => {
+      controller.discardOverflow();
+    });
+
     if (deploymentId != null) {
       controller.initByDeploymentId(deploymentId);
     } else if (dateRangeSelection != null) {
@@ -132,99 +100,128 @@ defineSmartComponent({
   },
 });
 
-class LogsApplicationViewSmartController {
+/**
+ * @extends {LogsStream<Log>}
+ */
+class LogsApplicationViewSmartController extends LogsStream {
   /**
-   *
-   * @param {Object} apiConfig
-   * @param {ApplicationRef} applicationRef
-   * @param {View} view
+   * @param {object} _
+   * @param {ApiConfig} _.apiConfig
+   * @param {string} _.ownerId
+   * @param {string} _.appId
+   * @param {CcLogsApplicationView} _.component
+   * @param {UpdateComponentCallback} _.updateComponent
    */
-  constructor(apiConfig, applicationRef, view) {
+  constructor({ apiConfig, ownerId, appId, component, updateComponent }) {
+    super(component.limit);
     this._apiConfig = apiConfig;
-    this._applicationRef = applicationRef;
-    this._view = view;
-    this._logsBuffer = new Buffer(this._onLogsBufferFlush.bind(this), {
-      timeout: LOGS_BUFFER_TIMEOUT,
-      length: LOGS_BUFFER_LENGTH,
-    });
-    this._instancesManager = new InstancesManager(
-      new Api(apiConfig, applicationRef),
-      this._onInstancesChanged.bind(this),
-    );
-
+    this._ownerId = ownerId;
+    this._appId = appId;
     /** @type {Array<string>} */
     this._selection = [];
     /** @type {DateRange} */
     this._dateRange = null;
+
+    this._component = component;
+    this._updateComponent = updateComponent;
+    this._instancesManager = new InstancesManager(
+      new Api(apiConfig, ownerId, appId),
+      this._onInstancesChanged.bind(this),
+    );
   }
 
-  openLogsStream() {
-    this._stopAndClearLogs();
+  /**
+   * @param {DateRange} dateRange
+   * @param {number} maxRetryCount
+   * @param {number} throttleElements
+   * @param {number} throttlePerInMilliseconds
+   * @returns {ApplicationLogStream}
+   */
+  _createStream(dateRange, maxRetryCount, throttleElements, throttlePerInMilliseconds) {
+    // This optimization should be done by the API.
+    const optimizedRange = this._optimizeDateRange(dateRange);
 
-    this._view.updateState({
-      type: 'connectingLogs',
+    return new ApplicationLogStream({
+      apiHost: this._apiConfig.API_HOST,
+      tokens: this._apiConfig,
+      ownerId: this._ownerId,
+      appId: this._appId,
+      since: optimizedRange.since,
+      until: optimizedRange.until,
+      instanceId: this._selection,
+      retryConfiguration: { enabled: true, maxRetryCount },
+      throttleElements,
+      throttlePerInMilliseconds,
+    });
+  }
+
+  /**
+   * @param {any} rawLog Raw log coming from API
+   * @returns {Promise<Log>}
+   */
+  async _convertLog(rawLog) {
+    const instance = await this._instancesManager.getOrFetchInstance(rawLog.instanceId);
+
+    return {
+      id: rawLog.id,
+      date: new Date(rawLog.date),
+      message: rawLog.message,
+      metadata: [
+        {
+          name: 'instance',
+          value: isGhostInstance(instance) ? '?' : instance.name,
+        },
+        {
+          name: 'instanceId',
+          value: instance.id,
+        },
+      ],
+    };
+  }
+
+  stop() {
+    super.stop();
+
+    this._component.clear();
+  }
+
+  discardOverflow() {
+    super.discardOverflow();
+    this._updateComponent('dateRangeSelection', {
+      type: 'custom',
+      since: dateRangeSelectionToDateRange(this._component.dateRangeSelection).since,
+      until: this.getLastLogDate().toISOString(),
+    });
+  }
+
+  /**
+   * @param {LogsStreamState} streamState
+   * @protected
+   */
+  _updateStreamState(streamState) {
+    super._updateStreamState(streamState);
+
+    this._updateState({
+      type: 'loaded',
+      streamState,
       instances: this._instancesManager.getInstances(),
       selection: this._selection,
     });
+  }
 
-    // ---- Optimization to be done by the API.
-    const optimizedRange = this._optimizeLogsStreamParameters();
-    // ----
+  /**
+   * @param {Array<Log>} logs
+   * @protected
+   */
+  _appendLogs(logs) {
+    super._appendLogs(logs);
+    this._component.appendLogs(logs);
+  }
 
-    this._logsStream = new LogsStream(
-      this._apiConfig,
-      {
-        applicationRef: this._applicationRef,
-        since: optimizedRange.since,
-        until: optimizedRange.until,
-        instances: this._selection,
-      },
-      {
-        onOpen: () => {
-          this._view.updateState((state) => {
-            state.type = 'receivingLogs';
-          });
-        },
-        onLog: async (log) => {
-          this._logsBuffer.add(await this._convertLog(log));
-        },
-        onFatalError: (e) => {
-          console.error(e);
-
-          if (e instanceof HttpError) {
-            if (e.status === 404) {
-              this._view.updateState({
-                type: 'logStreamEnded',
-                instances: this._instancesManager.getInstances(),
-                selection: this._selection,
-              });
-
-              return;
-            }
-          }
-          this._view.updateState((state) => {
-            state.type = 'errorLogs';
-          });
-        },
-        onError: (e) => {
-          console.error(e);
-          // TODO: tell the component about the instability
-        },
-        onFinish: async (reason) => {
-          console.log(reason);
-          await this._logsBuffer.flush();
-          if (reason !== 'USER_CLOSE') {
-            this._view.updateState({
-              type: 'logStreamEnded',
-              instances: this._instancesManager.getInstances(),
-              selection: this._selection,
-            });
-          }
-        },
-      },
-    );
-
-    this._logsStream.open();
+  clear() {
+    this.stop();
+    this._instancesManager.clear();
+    this._updateState({ type: 'loadingInstances' });
   }
 
   /**
@@ -238,21 +235,17 @@ class LogsApplicationViewSmartController {
   }
 
   /**
-   *
    * @param {string} deploymentId
    */
   initByDeploymentId(deploymentId) {
     // todo: what should we do if deploymentId doesn't exist?
 
-    // clear and close everything
-    this.stopAndClear();
-
     this._instancesManager
       .fetchInstancesByDeployment(deploymentId)
       .then((instances) => {
-        // todo: when instances is empty
         if (instances.length === 0) {
-          this._view.updateState({ type: 'logStreamEnded', instances: [], selection: [] });
+          this._selection = [];
+          this.complete();
           return;
         }
 
@@ -266,7 +259,7 @@ class LogsApplicationViewSmartController {
             since: deployment.creationDate.toISOString(),
           };
 
-          this._view.component.dateRangeSelection = {
+          this._component.dateRangeSelection = {
             type: 'live',
           };
         } else {
@@ -275,7 +268,7 @@ class LogsApplicationViewSmartController {
             until: deployment.endDate.toISOString(),
           };
 
-          this._view.component.dateRangeSelection = {
+          this._component.dateRangeSelection = {
             type: 'custom',
             since: this._dateRange.since,
             until: this._dateRange.until,
@@ -286,18 +279,15 @@ class LogsApplicationViewSmartController {
         this._instancesManager.enabledAutoRefresh(isLive(this._dateRange));
 
         // open the logs stream
-        this.openLogsStream();
+        this.openLogsStream(this._dateRange);
       })
       .catch((e) => {
         console.error(e);
-        this._view.updateState({ type: 'errorInstances' });
+        this._updateState({ type: 'errorInstances' });
       });
   }
 
   initByLastDeployment() {
-    // clear and close everything
-    this.stopAndClear();
-
     // get last 7 days (which means, give me all instances and deployments within the whole log retention period)
     const last7DaysRange = lastXDays(7);
 
@@ -306,11 +296,12 @@ class LogsApplicationViewSmartController {
       .then((instances) => {
         if (instances.length === 0) {
           this._dateRange = last7DaysRange;
-          this._view.component.dateRangeSelection = {
+          this._component.dateRangeSelection = {
             type: 'preset',
             preset: 'last7Days',
           };
-          this._view.updateState({ type: 'logStreamEnded', instances: [], selection: [] });
+          this._selection = [];
+          this.complete();
           return;
         }
 
@@ -319,11 +310,11 @@ class LogsApplicationViewSmartController {
 
         // live mode
         if (isCurrentDeployment(lastDeployment)) {
-          this._view.component.dateRangeSelection = {
+          this._component.dateRangeSelection = {
             type: 'live',
           };
 
-          const liveRange = dateRangeSelectionToDateRange(this._view.component.dateRangeSelection);
+          const liveRange = dateRangeSelectionToDateRange(this._component.dateRangeSelection);
 
           this.init(liveRange, []);
           return;
@@ -331,7 +322,7 @@ class LogsApplicationViewSmartController {
 
         // cold mode with 7 days and last deployment selected.
         this._dateRange = last7DaysRange;
-        this._view.component.dateRangeSelection = {
+        this._component.dateRangeSelection = {
           type: 'preset',
           preset: 'last7Days',
         };
@@ -340,11 +331,11 @@ class LogsApplicationViewSmartController {
         this._selection = lastDeploymentInstances.map((instance) => instance.id);
 
         // open the logs stream
-        this.openLogsStream();
+        this.openLogsStream(this._dateRange);
       })
       .catch((e) => {
         console.error(e);
-        this._view.updateState({ type: 'errorInstances' });
+        this._updateState({ type: 'errorInstances' });
       });
   }
 
@@ -352,11 +343,8 @@ class LogsApplicationViewSmartController {
    * @param {LogsDateRangeSelection} dateRangeSelection
    */
   initByDateRangeSelection(dateRangeSelection) {
-    // clear and close everything
-    this.stopAndClear();
-
-    this._view.component.dateRangeSelection = dateRangeSelection;
-    const dateRange = dateRangeSelectionToDateRange(this._view.component.dateRangeSelection);
+    this._component.dateRangeSelection = dateRangeSelection;
+    const dateRange = dateRangeSelectionToDateRange(this._component.dateRangeSelection);
     this.init(dateRange, []);
   }
 
@@ -365,7 +353,7 @@ class LogsApplicationViewSmartController {
    */
   setNewDateRange(dateRange) {
     // clear and close everything
-    this.stopAndClear();
+    this.clear();
 
     const clearSelection =
       this._dateRange == null ||
@@ -379,7 +367,8 @@ class LogsApplicationViewSmartController {
       .fetchInstances(this._dateRange.since, this._dateRange.until)
       .then((instances) => {
         if (instances.length === 0) {
-          this._view.updateState({ type: 'logStreamEnded', instances: [], selection: [] });
+          this._selection = [];
+          this.complete();
           return;
         }
 
@@ -397,19 +386,19 @@ class LogsApplicationViewSmartController {
         // we automatically select the last deployment
         if (
           this._selection.length === 0 &&
-          this._view.component.dateRangeSelection.type === 'preset' &&
-          this._view.component.dateRangeSelection.preset === 'last7Days'
+          this._component.dateRangeSelection.type === 'preset' &&
+          this._component.dateRangeSelection.preset === 'last7Days'
         ) {
           const lastDeploymentInstances = this._instancesManager.getLastDeploymentInstances();
           this._selection = lastDeploymentInstances.map((instance) => instance.id);
         }
 
         // open the logs stream
-        this.openLogsStream();
+        this.openLogsStream(this._dateRange);
       })
       .catch((e) => {
         console.error(e);
-        this._view.updateState({ type: 'errorInstances' });
+        this._updateState({ type: 'errorInstances' });
       });
   }
 
@@ -420,85 +409,37 @@ class LogsApplicationViewSmartController {
     // store the new selection
     this._selection = selection;
 
-    this.openLogsStream();
+    this.openLogsStream(this._dateRange);
   }
 
-  stopAndClear() {
-    this._stopAndClearLogs();
-    this._stopAndClearInstances();
-  }
-
-  pause() {
-    this._logsStream?.pause();
-    this._view.updateState((state) => {
-      state.type = 'logStreamPaused';
-    });
-  }
-
-  resume() {
-    this._logsStream?.resume();
-    this._view.updateState((state) => {
-      state.type = 'receivingLogs';
-    });
-  }
-
-  _stopAndClearLogs() {
-    this._logsStream?.close();
-    this._logsBuffer.clear();
-    this._view.component.clear();
-  }
-
-  _stopAndClearInstances() {
-    this._instancesManager?.close();
-    this._instancesManager?.clear();
-    this._view.updateState({ type: 'loadingInstances' });
-  }
-
-  _onLogsBufferFlush(logs) {
-    this._view.component.appendLogs(logs);
-  }
-
+  /**
+   * @param {Array<Instance|GhostInstance>} instances
+   */
   _onInstancesChanged(instances) {
-    this._view.updateState((state) => {
+    this._updateState((state) => {
       state.instances = instances;
     });
   }
 
-  async _convertLog(log) {
-    const instance = await this._instancesManager.getOrFetchInstance(log.instanceId);
-
-    return {
-      id: log.id,
-      date: new Date(log.date),
-      message: log.message,
-      metadata: [
-        {
-          name: 'instance',
-          value: instance.ghost ? '?' : instance.name,
-        },
-        {
-          name: 'instanceId',
-          value: instance.id,
-        },
-      ],
-    };
-  }
-
-  _optimizeLogsStreamParameters() {
+  /**
+   * @param {DateRange} dateRange
+   * @returns {DateRange}
+   */
+  _optimizeDateRange(dateRange) {
     // no optimization on live range because instance filtering is done on client side.
-    if (isLive(this._dateRange)) {
-      return this._dateRange;
+    if (isLive(dateRange)) {
+      return dateRange;
     }
 
     // no optimization can be done if no selection
     if (this._selection.length === 0) {
-      return this._dateRange;
+      return dateRange;
     }
     const instances = this._selection.map((id) => this._instancesManager.getInstance(id));
 
     // no optimization can be done as soon as there are some ghost instances in selection
     if (instances.find((i) => isGhostInstance(i)) != null) {
-      return this._dateRange;
+      return dateRange;
     }
 
     const now = new Date().getTime();
@@ -511,13 +452,20 @@ class LogsApplicationViewSmartController {
       .reduce((previous, current) => Math.max(previous, current), -Infinity);
 
     maxUntilInstance = maxUntilInstance === -Infinity ? Infinity : maxUntilInstance;
-    const dateUntilFromDateRange = this._dateRange.until == null ? Infinity : new Date(this._dateRange.until).getTime();
+    const dateUntilFromDateRange = dateRange.until == null ? Infinity : new Date(dateRange.until).getTime();
     const optimizedUntil = Math.min(maxUntilInstance, dateUntilFromDateRange);
 
     return {
-      since: new Date(Math.max(minSinceInstance, new Date(this._dateRange.since).getTime())).toISOString(),
+      since: new Date(Math.max(minSinceInstance, new Date(dateRange.since).getTime())).toISOString(),
       until: optimizedUntil === Infinity ? null : new Date(optimizedUntil).toISOString(),
     };
+  }
+
+  /**
+   * @param {LogsApplicationViewState|((state: LogsApplicationViewState) => void)} state
+   */
+  _updateState(state) {
+    this._updateComponent('state', state);
   }
 }
 
@@ -608,11 +556,8 @@ class InstancesManager {
     return Array.from(this._instancesMap.values());
   }
 
-  close() {
-    this._stopRefresher();
-  }
-
   clear() {
+    this._stopRefresher();
     this._instancesMap.clear();
   }
 
@@ -881,89 +826,15 @@ class DeploymentsManager {
   }
 }
 
-class LogsStream {
-  /**
-   *
-   * @param {Object} apiConfig
-   * @param {LogsStreamParams} params
-   * @param {LogsStreamCallbacks} callbacks
-   */
-  constructor(apiConfig, params, callbacks) {
-    /** @type {ApplicationLogStream} */
-    this._logsStream = null;
-    this._apiConfig = apiConfig;
-    /** @type {LogsStreamParams} */
-    this._params = params;
-    /** @type {LogsStreamCallbacks} */
-    this._callbacks = callbacks;
-  }
-
-  open() {
-    if (this._logsStream != null) {
-      throw new Error('Already opened');
-    }
-
-    this._logsStream = new ApplicationLogStream({
-      apiHost: this._apiConfig.API_HOST,
-      tokens: this._apiConfig,
-      ownerId: this._params.applicationRef.ownerId,
-      appId: this._params.applicationRef.applicationId,
-      since: this._params.since,
-      until: this._params.until,
-      instanceId: this._params.instances,
-      retryConfiguration: {
-        enabled: true,
-        maxRetryCount: 10,
-      },
-      throttleElements: LOGS_THROTTLE_ELEMENTS,
-      throttlePerInMilliseconds: LOGS_THROTTLE_PER_IN_MILLIS,
-    })
-      .on('open', this._callbacks.onOpen)
-      .onLog(this._callbacks.onLog)
-      .on('error', (event) => {
-        // This is not a fatal error, the logs stream will retry.
-        if (this._logsStream.retryCount >= 3) {
-          this._callbacks.onError(event.error);
-        }
-      });
-    this._logsStream
-      .start()
-      .then((e) => {
-        this._callbacks.onFinish(e.reason);
-        this._logsStream = null;
-      })
-      .catch((error) => {
-        this._callbacks.onFatalError(error);
-        this._logsStream = null;
-      });
-  }
-
-  pause() {
-    this._logsStream.pause();
-  }
-
-  resume() {
-    this._logsStream.resume();
-  }
-
-  close() {
-    if (this._logsStream == null) {
-      return;
-    }
-    // todo: reason
-    this._logsStream.close('USER_CLOSE');
-    this._logsStream = null;
-  }
-}
-
 class Api {
   /**
    * @param {ApiConfig} apiConfig
-   * @param {ApplicationRef} applicationRef
+   * @param {string} ownerId
+   * @param {string} appId
    */
-  constructor(apiConfig, applicationRef) {
+  constructor(apiConfig, ownerId, appId) {
     this._apiConfig = apiConfig;
-    this._commonApiPrams = { id: applicationRef.ownerId, appId: applicationRef.applicationId };
+    this._commonApiPrams = { id: ownerId, appId };
   }
 
   fetchDeployment(deploymentId) {
@@ -1039,7 +910,7 @@ function index(objects, key, map) {
 /**
  *
  * @param {Instance | GhostInstance} instance
- * @return {boolean}
+ * @return {instance is GhostInstance}
  */
 function isGhostInstance(instance) {
   return instance.ghost === true;
