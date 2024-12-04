@@ -75,6 +75,19 @@ function formatFlavor(flavor) {
 }
 
 export const translations = {
+  //#region cc-access-logs
+  'cc-access-logs.error': `Une erreur est survenue pendant le chargement des logs`,
+  'cc-access-logs.fullscreen': `Mode plein écran`,
+  'cc-access-logs.fullscreen.exit': `Sortir du mode plein écran`,
+  'cc-access-logs.loading': `Recherche de logs...`,
+  'cc-access-logs.no-logs.message': `Il n'y a aucun log qui correspond aux critères sélectionnés`,
+  'cc-access-logs.no-logs.title': `Aucun log`,
+  'cc-access-logs.options.city': `Afficher la ville`,
+  'cc-access-logs.options.country': `Afficher le pays`,
+  'cc-access-logs.options.ip': `Afficher l'adresse IP`,
+  'cc-access-logs.waiting.message': `Les logs émis par l'application apparaîtront ici`,
+  'cc-access-logs.waiting.title': `Aucun log pour le moment`,
+  //#endregion
   //#region cc-addon-admin
   'cc-addon-admin.admin': `Administration de l'add-on`,
   'cc-addon-admin.danger-zone': `Zone de danger`,

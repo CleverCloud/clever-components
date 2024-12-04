@@ -64,6 +64,19 @@ function formatFlavor(flavor) {
 }
 
 export const translations = {
+  //#region cc-access-logs
+  'cc-access-logs.error': `Something went wrong while loading logs`,
+  'cc-access-logs.fullscreen': `Fullscreen`,
+  'cc-access-logs.fullscreen.exit': `Exit fullscreen`,
+  'cc-access-logs.loading': `Looking for log entries...`,
+  'cc-access-logs.no-logs.message': `There are no logs matching the selected criteria`,
+  'cc-access-logs.no-logs.title': `No logs`,
+  'cc-access-logs.options.city': `Display city`,
+  'cc-access-logs.options.country': `Display country`,
+  'cc-access-logs.options.ip': `Display IP address`,
+  'cc-access-logs.waiting.message': `New log entries emitted by the application will appear here`,
+  'cc-access-logs.waiting.title': `No logs to show right now`,
+  //#endregion
   //#region cc-addon-admin
   'cc-addon-admin.admin': `Add-on administration`,
   'cc-addon-admin.danger-zone': `Danger zone`,
