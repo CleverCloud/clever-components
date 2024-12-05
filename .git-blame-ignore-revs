@@ -1,0 +1,10 @@
+# run `git config blame.ignoreRevsFile .git-blame-ignore-revs` locally to apply
+
+# chore: format all remaining files with the format command
+a166f4f8da4902a37bf7ef9654186c9b6ef442c4
+
+# chore: update source code with Prettier and Stylelint update
+f9fcd572efca5301e44ae348ec5eb2c41b37e931
+
+# refactor: apply the new project file structure
+79f7a4893dfb5194a2fb06d781c67766a5aa9349
