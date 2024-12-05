@@ -494,7 +494,9 @@ export class CcAddonBackups extends LitElement {
         .overlay {
           box-shadow: 0 0 1em rgb(0 0 0 / 40%);
           left: 50%;
+          max-height: 80vh;
           max-width: 50em;
+          overflow: auto;
           padding-inline: 0;
           position: fixed;
           transform: translateX(-50%);
