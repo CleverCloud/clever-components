@@ -1,15 +1,6 @@
 import { makeStory, storyWait } from '../../stories/lib/make-story.js';
 import './cc-addon-linked-apps.smart.js';
 
-/**
- * @typedef {import('./cc-addon-linked-apps.js').CcAddonLinkedApps} CcAddonLinkedApps
- * @typedef {import('./cc-addon-linked-apps.types.js').AddonLinkedAppsStateLoaded} AddonLinkedAppsStateLoaded
- * @typedef {import('./cc-addon-linked-apps.types.js').AddonLinkedAppsStateLoading} AddonLinkedAppsStateLoading
- * @typedef {import('./cc-addon-linked-apps.types.js').AddonLinkedAppsStateError} AddonLinkedAppsStateError
- * @typedef {import('./cc-addon-linked-apps.types.js').LinkedApplication} LinkedApplication
- * @typedef {import('../cc-zone/cc-zone.types.js').ZoneStateLoaded} ZoneStateLoaded
- */
-
 export default {
   tags: ['autodocs'],
   title: '🛠 Addon/<cc-addon-linked-apps>',
@@ -19,6 +10,15 @@ export default {
 const conf = {
   component: 'cc-addon-linked-apps',
 };
+
+/**
+ * @typedef {import('./cc-addon-linked-apps.js').CcAddonLinkedApps} CcAddonLinkedApps
+ * @typedef {import('./cc-addon-linked-apps.types.js').AddonLinkedAppsStateLoaded} AddonLinkedAppsStateLoaded
+ * @typedef {import('./cc-addon-linked-apps.types.js').AddonLinkedAppsStateLoading} AddonLinkedAppsStateLoading
+ * @typedef {import('./cc-addon-linked-apps.types.js').AddonLinkedAppsStateError} AddonLinkedAppsStateError
+ * @typedef {import('./cc-addon-linked-apps.types.js').LinkedApplication} LinkedApplication
+ * @typedef {import('../cc-zone/cc-zone.types.js').ZoneStateLoaded} ZoneStateLoaded
+ */
 
 /** @type {ZoneStateLoaded} */
 const ZONE_PAR = {
