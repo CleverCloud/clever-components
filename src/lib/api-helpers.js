@@ -16,6 +16,7 @@ import { asyncMap } from './utils.js';
 /**
  * @typedef {import('./send-to-api.types.js').ApiConfig} ApiConfig
  * @typedef {import('../components/common.types.js').Invoice} Invoice
+ * @typedef {import('./product.js').PriceSystem} PriceSystem
  */
 
 /**
@@ -131,6 +132,7 @@ function getPaymentUrl(ownerId, invoiceNumber) {
  * GET /v4/billing/price-system
  * @param {object} params
  * @param {String} params.zone_id
+ * @param {String} params.currency
  */
 export function getPriceSystem(params) {
   // no multipath for /self or /organisations/{id}
@@ -138,7 +140,7 @@ export function getPriceSystem(params) {
     method: 'get',
     url: `/v4/billing/price-system`,
     headers: { Accept: 'application/json' },
-    queryParams: pickNonNull(params, ['zone_id']),
+    queryParams: pickNonNull(params, ['zone_id', 'currency']),
     // no body
   });
 }
@@ -146,13 +148,15 @@ export function getPriceSystem(params) {
 /**
  *
  * @param {object} params
+ * @param {ApiConfig} [params.apiConfig]
  * @param {AbortSignal} params.signal
  * @param {string} params.zoneId
- * @return {Promise<*>}
+ * @param {string} params.currency
+ * @return {Promise<PriceSystem>}
  */
-export function fetchPriceSystem({ signal, zoneId }) {
+export function fetchPriceSystem({ apiConfig, signal, zoneId, currency }) {
   // eslint-disable-next-line camelcase
-  return getPriceSystem({ zone_id: zoneId }).then(sendToApi({ signal, cacheDelay: ONE_DAY }));
+  return getPriceSystem({ zone_id: zoneId, currency }).then(sendToApi({ apiConfig, signal, cacheDelay: ONE_DAY }));
 }
 
 // TODO: move to clever-client

@@ -1,15 +1,15 @@
 ---
-kind: '🛠 pricing/<cc-pricing-header>'
+kind: '🛠 pricing/<cc-pricing-estimation>'
 title: '💡 Smart'
 ---
 
-# 💡 Smart `<cc-pricing-header>`
+# 💡 Smart `<cc-pricing-estimation>`
 
 ## ℹ️ Details
 
 <table>
-  <tr><td><strong>Component    </strong> <td><a href="https://www.clever-cloud.com/doc/clever-components/?path=/docs/%F0%9F%9B%A0-pricing-cc-pricing-header--default-story"><code>&lt;cc-pricing-header></code></a>
-  <tr><td><strong>Selector     </strong> <td><code>cc-pricing-header</code>
+  <tr><td><strong>Component    </strong> <td><a href="https://www.clever-cloud.com/doc/clever-components/?path=/docs/%F0%9F%9B%A0-pricing-cc-pricing-estimation--default-story"><code>&lt;cc-pricing-estimation></code></a>
+  <tr><td><strong>Selector     </strong> <td><code>cc-pricing-estimation</code>
   <tr><td><strong>Requires auth</strong> <td>No
 </table>
 
@@ -19,20 +19,25 @@ title: '💡 Smart'
 |-------------|:-----------:|:--------:|----------------------------------------------------------------------------------|------------------------------------------------|
 | `apiConfig` | `ApiConfig` |  Yes     | Object with API configuration (target host)                                      | `{ API_HOST: "https://api.clever-cloud.com" }` |
 | `zoneId`    | `string`    |  No      | Name from [`/v4/products/zones`](https://api.clever-cloud.com/v4/products/zones) | `par`                                          |
+| `currency`  | `string`    |  No      | Currency code for pricing                                                        | `EUR`                                          |
 
 ## 🌐 API endpoints
 
-| Method | Type                 | Cache? |
-|--------|:---------------------|--------|
-| `GET`  | `/v4/products/zones` | 1 day  |
+| Method | Type               | Cache? |
+|--------|:-------------------|:-------|
+| `GET`  | `/v4/price-system` | 1 day  |
 
 ## ⬇️️ Examples
 
 ```html
 <cc-smart-container context='{
-    "zoneId": "mtl",
+  "apiConfig": {
+    API_HOST: ""
+  },
+  "zoneId": "mtl",
+  "currency": "USD"
 }'>
-  <cc-pricing-header></cc-pricing-header>
+  <cc-pricing-estimation></cc-pricing-estimation>
 </cc-smart-container>
 ```
 

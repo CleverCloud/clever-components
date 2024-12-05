@@ -1,5 +1,10 @@
-/* eslint-disable quote-props */
-export const rawPriceSystem = {
+/* eslint-disable */
+/**
+ * @typedef {import("../../components/common.types.js").PriceSystem} PriceSystem
+ */
+
+/** @type {PriceSystem} */
+export const rawPriceSystemEuro = {
   'id': '00000000-0000-4000-0000-000000000000',
   'owner_id': null,
   'zone_id': null,
@@ -1696,5 +1701,2044 @@ export const rawPriceSystem = {
       ],
     },
   ],
-  'runtime_options': [],
 };
+
+
+/** @type {PriceSystem} */
+export const rawPriceSystemDollars = {
+  "zone_id" : "par",
+  "currency" : "USD",
+  "start_date": null,
+  "end_date": null,
+  "runtime" : [
+    {
+      "runtime_policy_id" : "35f60502-1c42-4a32-a877-02ed89f7a813",
+      "source" : "adc",
+      "flavor" : "custom_adc_0e77c36b-b1e2-456b-afce-0e361a6e2d60",
+      "time_unit" : "PT1H",
+      "price" : 0E-20,
+      "slug_id" : "adc.custom_adc_0e77c36b-b1e2-456b-afce-0e361a6e2d60"
+    },
+    {
+      "runtime_policy_id" : "25964eec-f27a-4ec4-b8a2-0cfc52de803f",
+      "source" : "adc",
+      "flavor" : "custom_adc_2bc56d14-3fb8-471d-a502-982c1ad48269",
+      "time_unit" : "PT1H",
+      "price" : 0E-20,
+      "slug_id" : "adc.custom_adc_2bc56d14-3fb8-471d-a502-982c1ad48269"
+    },
+    {
+      "runtime_policy_id" : "0f42e385-2446-4671-9e7b-360f2efb3800",
+      "source" : "adc",
+      "flavor" : "custom_adc_552485cc-d41f-42a7-8b88-d762e04b7e69",
+      "time_unit" : "PT1H",
+      "price" : 0E-20,
+      "slug_id" : "adc.custom_adc_552485cc-d41f-42a7-8b88-d762e04b7e69"
+    },
+    {
+      "runtime_policy_id" : "1e492ec5-5cd3-4fe2-bb33-3e76077a6e62",
+      "source" : "adc",
+      "flavor" : "custom_adc_581b5fe3-4900-460d-8c73-a2928870ee79",
+      "time_unit" : "PT1H",
+      "price" : 0E-20,
+      "slug_id" : "adc.custom_adc_581b5fe3-4900-460d-8c73-a2928870ee79"
+    },
+    {
+      "runtime_policy_id" : "72df5a85-fee4-4e0d-9ff3-b8cd826d5761",
+      "source" : "adc",
+      "flavor" : "custom_adc_62ab89c8-c637-4713-a35f-eb79c719c536",
+      "time_unit" : "PT1H",
+      "price" : 0E-20,
+      "slug_id" : "adc.custom_adc_62ab89c8-c637-4713-a35f-eb79c719c536"
+    },
+    {
+      "runtime_policy_id" : "15d0a007-72d1-4dab-ba79-cd0a6605b3d2",
+      "source" : "adc",
+      "flavor" : "custom_adc_691e2d06-434b-4ffe-b433-b20a165f1ebd",
+      "time_unit" : "PT1H",
+      "price" : 0E-20,
+      "slug_id" : "adc.custom_adc_691e2d06-434b-4ffe-b433-b20a165f1ebd"
+    },
+    {
+      "runtime_policy_id" : "c626ee70-7ca5-4fa3-87dc-a87faacccdea",
+      "source" : "adc",
+      "flavor" : "custom_adc_6c5ff02e-8d75-4f71-9313-18b2406849d2",
+      "time_unit" : "PT1H",
+      "price" : 0E-20,
+      "slug_id" : "adc.custom_adc_6c5ff02e-8d75-4f71-9313-18b2406849d2"
+    },
+    {
+      "runtime_policy_id" : "62b97a8a-dc44-40fa-9794-58e2e48bed58",
+      "source" : "adc",
+      "flavor" : "custom_adc_755cca66-fa5d-4bff-b3f2-e341bfc805d0",
+      "time_unit" : "PT1H",
+      "price" : 0E-20,
+      "slug_id" : "adc.custom_adc_755cca66-fa5d-4bff-b3f2-e341bfc805d0"
+    },
+    {
+      "runtime_policy_id" : "3fa5cec3-f776-40b1-9e79-8d08b6808beb",
+      "source" : "adc",
+      "flavor" : "custom_adc_77e3c852-f365-44df-b799-8da62e3c601a",
+      "time_unit" : "PT1H",
+      "price" : 0E-20,
+      "slug_id" : "adc.custom_adc_77e3c852-f365-44df-b799-8da62e3c601a"
+    },
+    {
+      "runtime_policy_id" : "ec3653b5-a3be-4113-97f9-9b6a4c2b97e5",
+      "source" : "adc",
+      "flavor" : "custom_adc_79d644cf-8704-4332-a550-7067c7b4e4d8",
+      "time_unit" : "PT1H",
+      "price" : 0E-20,
+      "slug_id" : "adc.custom_adc_79d644cf-8704-4332-a550-7067c7b4e4d8"
+    },
+    {
+      "runtime_policy_id" : "49e1ee48-fbcc-4c9b-95bd-9b4c76334193",
+      "source" : "adc",
+      "flavor" : "custom_adc_7c5ee008-7c90-4f54-bc39-e4c6c01f6528",
+      "time_unit" : "PT1H",
+      "price" : 0E-20,
+      "slug_id" : "adc.custom_adc_7c5ee008-7c90-4f54-bc39-e4c6c01f6528"
+    },
+    {
+      "runtime_policy_id" : "5db5eec8-454e-4873-aa6d-cf5a49fe86e0",
+      "source" : "adc",
+      "flavor" : "custom_adc_7c7145d1-c756-4fb8-9a05-fa742678dd09",
+      "time_unit" : "PT1H",
+      "price" : 0E-20,
+      "slug_id" : "adc.custom_adc_7c7145d1-c756-4fb8-9a05-fa742678dd09"
+    },
+    {
+      "runtime_policy_id" : "5eb6a72d-d146-4094-9653-96b25b393af3",
+      "source" : "adc",
+      "flavor" : "custom_adc_85053cd6-aecf-4cc0-935c-4d000545354c",
+      "time_unit" : "PT1H",
+      "price" : 0E-20,
+      "slug_id" : "adc.custom_adc_85053cd6-aecf-4cc0-935c-4d000545354c"
+    },
+    {
+      "runtime_policy_id" : "ce3262e9-9f54-458e-abd6-22e025dec84d",
+      "source" : "adc",
+      "flavor" : "custom_adc_8963bd27-6733-405d-b0b1-75fed5a6e620",
+      "time_unit" : "PT1H",
+      "price" : 0E-20,
+      "slug_id" : "adc.custom_adc_8963bd27-6733-405d-b0b1-75fed5a6e620"
+    },
+    {
+      "runtime_policy_id" : "dd7880ee-ba59-4582-b010-2c6754561dcd",
+      "source" : "adc",
+      "flavor" : "custom_adc_90b76988-9a99-4238-9ffe-788c7b438d1f",
+      "time_unit" : "PT1H",
+      "price" : 0E-20,
+      "slug_id" : "adc.custom_adc_90b76988-9a99-4238-9ffe-788c7b438d1f"
+    },
+    {
+      "runtime_policy_id" : "edf3128d-7fae-4e36-b764-66e2a4cf4a8c",
+      "source" : "adc",
+      "flavor" : "custom_adc_9421ab39-5f54-4577-a87e-8a6067cedd2f",
+      "time_unit" : "PT1H",
+      "price" : 0E-20,
+      "slug_id" : "adc.custom_adc_9421ab39-5f54-4577-a87e-8a6067cedd2f"
+    },
+    {
+      "runtime_policy_id" : "1eede8fc-77d3-4193-9fda-dbbb4a62b728",
+      "source" : "adc",
+      "flavor" : "custom_adc_b14da9e0-2485-49ee-9592-d36d6a141051",
+      "time_unit" : "PT1H",
+      "price" : 0E-20,
+      "slug_id" : "adc.custom_adc_b14da9e0-2485-49ee-9592-d36d6a141051"
+    },
+    {
+      "runtime_policy_id" : "155ab0a1-2a0c-4226-bf4f-94774cdea36d",
+      "source" : "adc",
+      "flavor" : "custom_adc_b2ce4b62-aeab-4709-a5c7-41a63f351fdc",
+      "time_unit" : "PT1H",
+      "price" : 0E-20,
+      "slug_id" : "adc.custom_adc_b2ce4b62-aeab-4709-a5c7-41a63f351fdc"
+    },
+    {
+      "runtime_policy_id" : "ce38163b-e5f5-4ced-a85d-c6e25ffa8531",
+      "source" : "adc",
+      "flavor" : "custom_adc_c8a6a778-392f-456a-82e5-cf69cef06554",
+      "time_unit" : "PT1H",
+      "price" : 0E-20,
+      "slug_id" : "adc.custom_adc_c8a6a778-392f-456a-82e5-cf69cef06554"
+    },
+    {
+      "runtime_policy_id" : "89db7079-b662-4d15-ae74-fd807a66d8c3",
+      "source" : "adc",
+      "flavor" : "custom_adc_cf05ef1e-ee96-4d20-8e70-9ddc5ba861a7",
+      "time_unit" : "PT1H",
+      "price" : 0E-20,
+      "slug_id" : "adc.custom_adc_cf05ef1e-ee96-4d20-8e70-9ddc5ba861a7"
+    },
+    {
+      "runtime_policy_id" : "76f56e81-f943-435d-8e6a-4ad48a081932",
+      "source" : "adc",
+      "flavor" : "custom_adc_da70c817-1eaa-4503-82d3-1678dea0824c",
+      "time_unit" : "PT1H",
+      "price" : 0E-20,
+      "slug_id" : "adc.custom_adc_da70c817-1eaa-4503-82d3-1678dea0824c"
+    },
+    {
+      "runtime_policy_id" : "4c78a945-cb9f-4c50-aa7c-e907cd3205f8",
+      "source" : "adc",
+      "flavor" : "custom_adc_f0930b81-04b0-4e89-adbb-5f70e3eb9666",
+      "time_unit" : "PT1H",
+      "price" : 0E-20,
+      "slug_id" : "adc.custom_adc_f0930b81-04b0-4e89-adbb-5f70e3eb9666"
+    },
+    {
+      "runtime_policy_id" : "ef81ff87-1680-45f0-a0bb-7590fcc7a468",
+      "source" : "adc",
+      "flavor" : "custom_adc_f096ff8b-f0e9-44d6-91c7-a201248080ce",
+      "time_unit" : "PT1H",
+      "price" : 0E-20,
+      "slug_id" : "adc.custom_adc_f096ff8b-f0e9-44d6-91c7-a201248080ce"
+    },
+    {
+      "runtime_policy_id" : "8f993167-c14f-43ec-afa0-100e61f277ae",
+      "source" : "adc",
+      "flavor" : "custom_adc_f0c2e11c-8129-449b-93f3-4e78d3addcd6",
+      "time_unit" : "PT1H",
+      "price" : 0E-20,
+      "slug_id" : "adc.custom_adc_f0c2e11c-8129-449b-93f3-4e78d3addcd6"
+    },
+    {
+      "runtime_policy_id" : "4c9d0033-c513-4efa-bbca-02bafdd3000f",
+      "source" : "adc",
+      "flavor" : "custom_adc_fb7dd069-641e-4eda-9686-f73a36f6f607",
+      "time_unit" : "PT1H",
+      "price" : 0E-20,
+      "slug_id" : "adc.custom_adc_fb7dd069-641e-4eda-9686-f73a36f6f607"
+    },
+    {
+      "runtime_policy_id" : "6b9a90b8-76ae-4073-bb7a-f4731a7b2496",
+      "source" : "apps",
+      "flavor" : "2xl",
+      "time_unit" : "PT1H",
+      "price" : 1.00000000000000000000,
+      "slug_id" : "apps.2XL"
+    },
+    {
+      "runtime_policy_id" : "30a19a82-2ade-4c58-b02a-5d4ae423a56e",
+      "source" : "apps",
+      "flavor" : "3xl",
+      "time_unit" : "PT1H",
+      "price" : 1.33333333333333000000,
+      "slug_id" : "apps.3XL"
+    },
+    {
+      "runtime_policy_id" : "0df5b3c9-3d84-42c8-a792-005c11962ac8",
+      "source" : "apps",
+      "flavor" : "heptapod-runner-2xl",
+      "time_unit" : "PT1H",
+      "price" : 2.75000000000000000000,
+      "slug_id" : "heptapod-runner.2XL"
+    },
+    {
+      "runtime_policy_id" : "ee1ca444-1c87-4ea6-bcd3-3bf062a14ed8",
+      "source" : "apps",
+      "flavor" : "heptapod-runner-3xl",
+      "time_unit" : "PT1H",
+      "price" : 4.00000000000000000000,
+      "slug_id" : "heptapod-runner.3XL"
+    },
+    {
+      "runtime_policy_id" : "180cc859-453c-4fbb-85c5-9246904e4354",
+      "source" : "apps",
+      "flavor" : "heptapod-runner-l",
+      "time_unit" : "PT1H",
+      "price" : 1.25000000000000000000,
+      "slug_id" : "heptapod-runner.L"
+    },
+    {
+      "runtime_policy_id" : "5768b2ba-fdf4-4a1b-9704-61cca8f15c86",
+      "source" : "apps",
+      "flavor" : "heptapod-runner-m",
+      "time_unit" : "PT1H",
+      "price" : 0.83333333333333300000,
+      "slug_id" : "heptapod-runner.M"
+    },
+    {
+      "runtime_policy_id" : "ac1e2731-7f34-4ff8-89bd-379274f70169",
+      "source" : "apps",
+      "flavor" : "heptapod-runner-s",
+      "time_unit" : "PT1H",
+      "price" : 0.41666666666666700000,
+      "slug_id" : "heptapod-runner.S"
+    },
+    {
+      "runtime_policy_id" : "f1899ce6-ef51-4cf9-b4f2-da5257733827",
+      "source" : "apps",
+      "flavor" : "heptapod-runner-xl",
+      "time_unit" : "PT1H",
+      "price" : 1.66666666666667000000,
+      "slug_id" : "heptapod-runner.XL"
+    },
+    {
+      "runtime_policy_id" : "b16bb6a2-9293-4d3a-9161-62c065f7ad71",
+      "source" : "apps",
+      "flavor" : "heptapod-runner-xs",
+      "time_unit" : "PT1H",
+      "price" : 0.16666666666666700000,
+      "slug_id" : "heptapod-runner.XS"
+    },
+    {
+      "runtime_policy_id" : "c0c7c4b5-6957-4dba-a127-7a93550665c1",
+      "source" : "apps",
+      "flavor" : "jenkins-runner-2xl",
+      "time_unit" : "PT1H",
+      "price" : 2.75000000000000000000,
+      "slug_id" : "jenkins-runner.2XL"
+    },
+    {
+      "runtime_policy_id" : "e848845b-a9b9-492b-91db-dabe2751bd82",
+      "source" : "apps",
+      "flavor" : "jenkins-runner-3xl",
+      "time_unit" : "PT1H",
+      "price" : 4.00000000000000000000,
+      "slug_id" : "jenkins-runner.3XL"
+    },
+    {
+      "runtime_policy_id" : "342a2c78-28f1-40a6-9f66-acc76aa0670a",
+      "source" : "apps",
+      "flavor" : "jenkins-runner-l",
+      "time_unit" : "PT1H",
+      "price" : 1.25000000000000000000,
+      "slug_id" : "jenkins-runner.L"
+    },
+    {
+      "runtime_policy_id" : "592fb889-b149-4986-8c5e-bdcdcf542274",
+      "source" : "apps",
+      "flavor" : "jenkins-runner-m",
+      "time_unit" : "PT1H",
+      "price" : 0.83333333333333300000,
+      "slug_id" : "jenkins-runner.M"
+    },
+    {
+      "runtime_policy_id" : "c8c41d5d-f092-46e7-a50e-b1b524c4b26b",
+      "source" : "apps",
+      "flavor" : "jenkins-runner-s",
+      "time_unit" : "PT1H",
+      "price" : 0.41666666666666700000,
+      "slug_id" : "jenkins-runner.S"
+    },
+    {
+      "runtime_policy_id" : "476792e6-67af-471e-a839-973817a19196",
+      "source" : "apps",
+      "flavor" : "jenkins-runner-xl",
+      "time_unit" : "PT1H",
+      "price" : 1.66666666666667000000,
+      "slug_id" : "jenkins-runner.XL"
+    },
+    {
+      "runtime_policy_id" : "ecb79948-04f9-441d-8018-f104ca960121",
+      "source" : "apps",
+      "flavor" : "jenkins-runner-xs",
+      "time_unit" : "PT1H",
+      "price" : 0.16666666666666700000,
+      "slug_id" : "jenkins-runner.XS"
+    },
+    {
+      "runtime_policy_id" : "b79da4de-2fc2-44a7-bac7-b3ad3b13dccc",
+      "source" : "apps",
+      "flavor" : "l",
+      "time_unit" : "PT1H",
+      "price" : 0.31666666666666700000,
+      "slug_id" : "apps.L"
+    },
+    {
+      "runtime_policy_id" : "13b2a1a5-ade9-4486-8a40-ed3480baf737",
+      "source" : "apps",
+      "flavor" : "m",
+      "time_unit" : "PT1H",
+      "price" : 0.15833333333333300000,
+      "slug_id" : "apps.M"
+    },
+    {
+      "runtime_policy_id" : "d619f928-c72e-4ea7-8ea1-3df0f6fc32a3",
+      "source" : "apps",
+      "flavor" : "ml_2xl",
+      "time_unit" : "PT1H",
+      "price" : 2.18747610000000000000,
+      "slug_id" : "apps.ML_2XL"
+    },
+    {
+      "runtime_policy_id" : "625fbb13-8f20-4d04-8e94-e0bc39f2b24c",
+      "source" : "apps",
+      "flavor" : "ml_3xl",
+      "time_unit" : "PT1H",
+      "price" : 2.50001010000000000000,
+      "slug_id" : "apps.ML_3XL"
+    },
+    {
+      "runtime_policy_id" : "40aaa012-fbbc-4ed9-a2fe-f0c4440d7c04",
+      "source" : "apps",
+      "flavor" : "ml_l",
+      "time_unit" : "PT1H",
+      "price" : 1.56249540000000000000,
+      "slug_id" : "apps.ML_L"
+    },
+    {
+      "runtime_policy_id" : "e76eb617-8b72-48f2-b258-963f6af99cd8",
+      "source" : "apps",
+      "flavor" : "ml_m",
+      "time_unit" : "PT1H",
+      "price" : 1.24996140000000000000,
+      "slug_id" : "apps.ML_M"
+    },
+    {
+      "runtime_policy_id" : "62fc27e6-46ec-4831-8ce9-f52650cd058a",
+      "source" : "apps",
+      "flavor" : "ml_s",
+      "time_unit" : "PT1H",
+      "price" : 0.93751470000000000000,
+      "slug_id" : "apps.ML_S"
+    },
+    {
+      "runtime_policy_id" : "19801a9b-0ee8-4629-8fe7-23295c799e9f",
+      "source" : "apps",
+      "flavor" : "ml_xl",
+      "time_unit" : "PT1H",
+      "price" : 1.87502940000000000000,
+      "slug_id" : "apps.ML_XL"
+    },
+    {
+      "runtime_policy_id" : "e18f1c0b-0d2f-4cff-ad41-c73e21d5b092",
+      "source" : "apps",
+      "flavor" : "ml_xs",
+      "time_unit" : "PT1H",
+      "price" : 0.62498070000000000000,
+      "slug_id" : "apps.ML_XS"
+    },
+    {
+      "runtime_policy_id" : "0defdd17-f505-49d3-8208-e691519e52c5",
+      "source" : "apps",
+      "flavor" : "ml_xxl",
+      "time_unit" : "PT1H",
+      "price" : 2.18747610000000000000,
+      "slug_id" : "apps.ML_XXL"
+    },
+    {
+      "runtime_policy_id" : "8269fbdc-cf6a-4af2-b7d4-eaf9f4874903",
+      "source" : "apps",
+      "flavor" : "nano",
+      "time_unit" : "PT1H",
+      "price" : 0.01249999999695000000,
+      "slug_id" : "apps.nano"
+    },
+    {
+      "runtime_policy_id" : "7849eb0f-ef18-45af-9d4a-cec5d0a496aa",
+      "source" : "apps",
+      "flavor" : "pico",
+      "time_unit" : "PT1H",
+      "price" : 0.00937500000426000000,
+      "slug_id" : "apps.pico"
+    },
+    {
+      "runtime_policy_id" : "e4324897-afbd-41a4-aadd-bbf5d3fcc19b",
+      "source" : "apps",
+      "flavor" : "s",
+      "time_unit" : "PT1H",
+      "price" : 0.06666666666666670000,
+      "slug_id" : "apps.S"
+    },
+    {
+      "runtime_policy_id" : "96522f28-c58c-46a0-b5e2-aef7da99fdb0",
+      "source" : "apps",
+      "flavor" : "solo",
+      "time_unit" : "PT1H",
+      "price" : 0.02999628000000000000,
+      "slug_id" : "apps.Solo"
+    },
+    {
+      "runtime_policy_id" : "14112a30-fc95-4805-9900-d88ccf3298d0",
+      "source" : "apps",
+      "flavor" : "xl",
+      "time_unit" : "PT1H",
+      "price" : 0.63333333333333300000,
+      "slug_id" : "apps.XL"
+    },
+    {
+      "runtime_policy_id" : "e85b2fdb-9533-4c06-b090-36094319e5cc",
+      "source" : "apps",
+      "flavor" : "xs",
+      "time_unit" : "PT1H",
+      "price" : 0.03333333333333330000,
+      "slug_id" : "apps.XS"
+    },
+    {
+      "runtime_policy_id" : "6fbeaff9-18a9-4a44-882b-617ef7676b17",
+      "source" : "elasticsearch",
+      "flavor" : "3xl",
+      "time_unit" : "PT1H",
+      "price" : 2.66666666666667000000,
+      "slug_id" : "elasticsearch.3XL"
+    },
+    {
+      "runtime_policy_id" : "088aa0ce-a9f4-46fe-87a9-9e6dfd4137d6",
+      "source" : "elasticsearch",
+      "flavor" : "4xl",
+      "time_unit" : "PT1H",
+      "price" : 5.33333333333333000000,
+      "slug_id" : "elasticsearch.4XL"
+    },
+    {
+      "runtime_policy_id" : "4ed4b0a2-6a2d-4bdf-b770-98a2b59d000e",
+      "source" : "elasticsearch",
+      "flavor" : "5xl",
+      "time_unit" : "PT1H",
+      "price" : 10.66666666666670000000,
+      "slug_id" : "elasticsearch.5XL"
+    },
+    {
+      "runtime_policy_id" : "9fa58ecb-f911-42aa-8c6f-91b94d3d300f",
+      "source" : "elasticsearch",
+      "flavor" : "antman",
+      "time_unit" : "PT1H",
+      "price" : 0.02291666666666670000,
+      "slug_id" : "elasticsearch.ANTMAN"
+    },
+    {
+      "runtime_policy_id" : "7bdbeee8-3816-4b8e-b22f-c891b67ac97f",
+      "source" : "elasticsearch",
+      "flavor" : "blackwidow",
+      "time_unit" : "PT1H",
+      "price" : 0.12500000000000000000,
+      "slug_id" : "elasticsearch.BLACKWIDOW"
+    },
+    {
+      "runtime_policy_id" : "3391e390-5d2d-4588-bddf-fd21bbaaaf8b",
+      "source" : "elasticsearch",
+      "flavor" : "custom_elasticsearch_038ec851-c234-4935-8ab5-983cdb5a78ff",
+      "time_unit" : "PT1H",
+      "price" : 0.02916666666666670000,
+      "slug_id" : "elasticsearch.custom_elasticsearch_038ec851-c234-4935-8ab5-983cdb5a78ff"
+    },
+    {
+      "runtime_policy_id" : "df9ace67-dd90-4872-bd9e-7db53525052e",
+      "source" : "elasticsearch",
+      "flavor" : "fst",
+      "time_unit" : "PT1H",
+      "price" : 0.25000000000000000000,
+      "slug_id" : "elasticsearch.FST"
+    },
+    {
+      "runtime_policy_id" : "453c22c1-552d-43e2-902d-f0639f7743f6",
+      "source" : "elasticsearch",
+      "flavor" : "hulk",
+      "time_unit" : "PT1H",
+      "price" : 0.27083333333333400000,
+      "slug_id" : "elasticsearch.HULK"
+    },
+    {
+      "runtime_policy_id" : "eb805aa9-f041-41a1-a480-4d18ebb011f5",
+      "source" : "elasticsearch",
+      "flavor" : "l",
+      "time_unit" : "PT1H",
+      "price" : 0.33333333333333300000,
+      "slug_id" : "elasticsearch.L"
+    },
+    {
+      "runtime_policy_id" : "eebd1bf3-606a-477d-931d-bb8edd2e4363",
+      "source" : "elasticsearch",
+      "flavor" : "m",
+      "time_unit" : "PT1H",
+      "price" : 0.16666666666666700000,
+      "slug_id" : "elasticsearch.M"
+    },
+    {
+      "runtime_policy_id" : "72d83389-1973-4e36-ad49-e8a33810fbbf",
+      "source" : "elasticsearch",
+      "flavor" : "psylocke",
+      "time_unit" : "PT1H",
+      "price" : 0.37500000000000000000,
+      "slug_id" : "elasticsearch.PSYLOCKE"
+    },
+    {
+      "runtime_policy_id" : "e7cef3f0-5af5-4076-ab7f-5cff7678516e",
+      "source" : "elasticsearch",
+      "flavor" : "rocketraccoon",
+      "time_unit" : "PT1H",
+      "price" : 0.07812499500000000000,
+      "slug_id" : "elasticsearch.ROCKETRACCOON"
+    },
+    {
+      "runtime_policy_id" : "0194837a-46e6-4293-a8d8-06155e3f8a96",
+      "source" : "elasticsearch",
+      "flavor" : "s",
+      "time_unit" : "PT1H",
+      "price" : 0.08125000000000000000,
+      "slug_id" : "elasticsearch.S"
+    },
+    {
+      "runtime_policy_id" : "851c9237-b1da-4531-a14d-c05b28071d65",
+      "source" : "elasticsearch",
+      "flavor" : "storm",
+      "time_unit" : "PT1H",
+      "price" : 0.16666666666666600000,
+      "slug_id" : "elasticsearch.STORM"
+    },
+    {
+      "runtime_policy_id" : "685d25ab-92ba-4ae4-87c4-0a70b10d93ac",
+      "source" : "elasticsearch",
+      "flavor" : "thing",
+      "time_unit" : "PT1H",
+      "price" : 0.58333333333333300000,
+      "slug_id" : "elasticsearch.THING"
+    },
+    {
+      "runtime_policy_id" : "27032c93-1613-4e6d-a27a-380d35340403",
+      "source" : "elasticsearch",
+      "flavor" : "xl",
+      "time_unit" : "PT1H",
+      "price" : 0.66666666666666700000,
+      "slug_id" : "elasticsearch.XL"
+    },
+    {
+      "runtime_policy_id" : "7d6d7778-516e-4277-98b7-c67ffe8044ce",
+      "source" : "elasticsearch",
+      "flavor" : "xs",
+      "time_unit" : "PT1H",
+      "price" : 0.03958333333333330000,
+      "slug_id" : "elasticsearch.XS"
+    },
+    {
+      "runtime_policy_id" : "349263d4-5bed-4f90-a629-7df249ba4bae",
+      "source" : "elasticsearch",
+      "flavor" : "xxl",
+      "time_unit" : "PT1H",
+      "price" : 1.33333333333333000000,
+      "slug_id" : "elasticsearch.XXL"
+    },
+    {
+      "runtime_policy_id" : "bec0dee0-8cc4-4f1c-813b-ee83030e7e05",
+      "source" : "elasticsearch",
+      "flavor" : "xxxl",
+      "time_unit" : "PT1H",
+      "price" : 2.66666666666667000000,
+      "slug_id" : "elasticsearch.XXXL"
+    },
+    {
+      "runtime_policy_id" : "988d961f-7727-4bd5-baf9-1ad540e0c4bb",
+      "source" : "es",
+      "flavor" : "3xl",
+      "time_unit" : "PT1H",
+      "price" : 2.66666666666665000000,
+      "slug_id" : "es.3XL"
+    },
+    {
+      "runtime_policy_id" : "419784ce-e4ba-4292-a27e-100271bf6773",
+      "source" : "es",
+      "flavor" : "4xl",
+      "time_unit" : "PT1H",
+      "price" : 5.33333333333333000000,
+      "slug_id" : "es.4XL"
+    },
+    {
+      "runtime_policy_id" : "db352e98-5a82-4a58-88df-68e2fc7d69ce",
+      "source" : "es",
+      "flavor" : "5xl",
+      "time_unit" : "PT1H",
+      "price" : 10.66666666666670000000,
+      "slug_id" : "es.5XL"
+    },
+    {
+      "runtime_policy_id" : "181d688e-16a6-4c2e-82e2-4bbf1340560e",
+      "source" : "es",
+      "flavor" : "l",
+      "time_unit" : "PT1H",
+      "price" : 0.33333333333333300000,
+      "slug_id" : "es.l"
+    },
+    {
+      "runtime_policy_id" : "2a6844e4-d211-4e2c-81d8-72cf68411be9",
+      "source" : "es",
+      "flavor" : "m",
+      "time_unit" : "PT1H",
+      "price" : 0.16666666666666600000,
+      "slug_id" : "es.m"
+    },
+    {
+      "runtime_policy_id" : "7909974b-ae5a-4f36-9ea6-407d6bb7dadf",
+      "source" : "es",
+      "flavor" : "ROCKETRACCOON",
+      "time_unit" : "PT1H",
+      "price" : 0.07812499500000000000,
+      "slug_id" : "es.ROCKETRACCOON"
+    },
+    {
+      "runtime_policy_id" : "5c9ff89b-3341-4011-8d2d-c4e98896eeeb",
+      "source" : "es",
+      "flavor" : "s",
+      "time_unit" : "PT1H",
+      "price" : 0.08124999999999990000,
+      "slug_id" : "es.s"
+    },
+    {
+      "runtime_policy_id" : "c2344624-1954-471f-bf18-4bc67689e7d0",
+      "source" : "es",
+      "flavor" : "xl",
+      "time_unit" : "PT1H",
+      "price" : 0.66666666666666600000,
+      "slug_id" : "es.xl"
+    },
+    {
+      "runtime_policy_id" : "091b0a89-68c9-4719-8dd2-199d02d1e8f7",
+      "source" : "es",
+      "flavor" : "xs",
+      "time_unit" : "PT1H",
+      "price" : 0.03958333333333320000,
+      "slug_id" : "es.xs"
+    },
+    {
+      "runtime_policy_id" : "712bc88d-6b62-4b01-a44f-6d0adb8eca9e",
+      "source" : "es",
+      "flavor" : "xxl",
+      "time_unit" : "PT1H",
+      "price" : 1.33333333333333000000,
+      "slug_id" : "es.xxl"
+    },
+    {
+      "runtime_policy_id" : "ee33396d-6594-4960-81ec-c29cfb9b670c",
+      "source" : "jenkins",
+      "flavor" : "l",
+      "time_unit" : "PT1H",
+      "price" : 0.37500000000000000000,
+      "slug_id" : "jenkins.L"
+    },
+    {
+      "runtime_policy_id" : "e03bfb15-617a-42d2-8fae-48c85fbb8541",
+      "source" : "jenkins",
+      "flavor" : "m",
+      "time_unit" : "PT1H",
+      "price" : 0.18750000000000000000,
+      "slug_id" : "jenkins.M"
+    },
+    {
+      "runtime_policy_id" : "79112d26-0841-416f-a1df-0239cafabf86",
+      "source" : "jenkins",
+      "flavor" : "old_l",
+      "time_unit" : "PT1H",
+      "price" : 0.31250000000000000000,
+      "slug_id" : "jenkins.OLD_L"
+    },
+    {
+      "runtime_policy_id" : "45fd3d18-cbd0-4347-b9dd-ed66cca0aae5",
+      "source" : "jenkins",
+      "flavor" : "old_m",
+      "time_unit" : "PT1H",
+      "price" : 0.16666666666666700000,
+      "slug_id" : "jenkins.OLD_M"
+    },
+    {
+      "runtime_policy_id" : "75ddcf52-6e9f-4ba1-92ce-14f1d4398250",
+      "source" : "jenkins",
+      "flavor" : "old_s",
+      "time_unit" : "PT1H",
+      "price" : 0.02083333333333330000,
+      "slug_id" : "jenkins.OLD_S"
+    },
+    {
+      "runtime_policy_id" : "996b6f01-d281-421e-833a-05a89c690b44",
+      "source" : "jenkins",
+      "flavor" : "old_xl",
+      "time_unit" : "PT1H",
+      "price" : 0.41666666666666700000,
+      "slug_id" : "jenkins.OLD_XL"
+    },
+    {
+      "runtime_policy_id" : "48a68c2b-6805-44ed-a33c-56800c1ca554",
+      "source" : "jenkins",
+      "flavor" : "s",
+      "time_unit" : "PT1H",
+      "price" : 0.09375000000000000000,
+      "slug_id" : "jenkins.S"
+    },
+    {
+      "runtime_policy_id" : "23c8e85d-2f2e-49d6-a4f0-bc3ea690f75d",
+      "source" : "jenkins",
+      "flavor" : "xl",
+      "time_unit" : "PT1H",
+      "price" : 0.75000000000000000000,
+      "slug_id" : "jenkins.XL"
+    },
+    {
+      "runtime_policy_id" : "db370271-c8e1-466c-824c-9dcf824c8494",
+      "source" : "jenkins",
+      "flavor" : "xs",
+      "time_unit" : "PT1H",
+      "price" : 0.04166666666666670000,
+      "slug_id" : "jenkins.XS"
+    },
+    {
+      "runtime_policy_id" : "60ce315a-fb24-4203-813f-beea3fc0d40c",
+      "source" : "kafka",
+      "flavor" : "a_l",
+      "time_unit" : "PT1H",
+      "price" : 1.62499999999999000000,
+      "slug_id" : "kafka.A_L"
+    },
+    {
+      "runtime_policy_id" : "5fb5584c-4fa4-4add-8dfa-4f1bc7034f3a",
+      "source" : "kafka",
+      "flavor" : "a_m",
+      "time_unit" : "PT1H",
+      "price" : 1.50000000000000000000,
+      "slug_id" : "kafka.A_M"
+    },
+    {
+      "runtime_policy_id" : "c59a7067-705b-4980-91d5-e4e0527a93e0",
+      "source" : "kafka",
+      "flavor" : "a_s",
+      "time_unit" : "PT1H",
+      "price" : 1.41666666666667000000,
+      "slug_id" : "kafka.A_S"
+    },
+    {
+      "runtime_policy_id" : "f3a3a080-d6d2-40c0-b9aa-e185d467ed6f",
+      "source" : "kafka",
+      "flavor" : "m",
+      "time_unit" : "PT1H",
+      "price" : 0.27083333333333400000,
+      "slug_id" : "kafka.M"
+    },
+    {
+      "runtime_policy_id" : "4ee03c2a-d062-4eff-95b1-86431bf6bc85",
+      "source" : "kafka",
+      "flavor" : "s",
+      "time_unit" : "PT1H",
+      "price" : 0.23958333333333300000,
+      "slug_id" : "kafka.S"
+    },
+    {
+      "runtime_policy_id" : "e29a8bc6-dfdd-49b0-a6e8-991aa206b88e",
+      "source" : "kafka",
+      "flavor" : "tc_l",
+      "time_unit" : "PT1H",
+      "price" : 1.08333333333333000000,
+      "slug_id" : "kafka.TC_L"
+    },
+    {
+      "runtime_policy_id" : "71d86c5b-5522-466b-b09d-f0e2c35e6ff8",
+      "source" : "kafka",
+      "flavor" : "tc_m",
+      "time_unit" : "PT1H",
+      "price" : 1.00000000000000000000,
+      "slug_id" : "kafka.TC_M"
+    },
+    {
+      "runtime_policy_id" : "9a0207b9-8de6-41b7-ba00-d5f4b61db6da",
+      "source" : "kafka",
+      "flavor" : "tc_s",
+      "time_unit" : "PT1H",
+      "price" : 0.93750000000000000000,
+      "slug_id" : "kafka.TC_S"
+    },
+    {
+      "runtime_policy_id" : "bed3e8cf-1622-400e-9594-58219bb3b163",
+      "source" : "kafka",
+      "flavor" : "tj_l",
+      "time_unit" : "PT1H",
+      "price" : 2.16666666666666000000,
+      "slug_id" : "kafka.TJ_L"
+    },
+    {
+      "runtime_policy_id" : "dba86552-12e6-4172-89fb-31d248dc046e",
+      "source" : "kafka",
+      "flavor" : "tj_m",
+      "time_unit" : "PT1H",
+      "price" : 1.99999999999999000000,
+      "slug_id" : "kafka.TJ_M"
+    },
+    {
+      "runtime_policy_id" : "9bf5f307-41c8-473c-a66a-6655addaedfd",
+      "source" : "kafka",
+      "flavor" : "tj_s",
+      "time_unit" : "PT1H",
+      "price" : 1.91666666666667000000,
+      "slug_id" : "kafka.TJ_S"
+    },
+    {
+      "runtime_policy_id" : "5a13e16c-1e38-4a25-8787-f6896700fb19",
+      "source" : "kafka",
+      "flavor" : "tj_xl",
+      "time_unit" : "PT1H",
+      "price" : 2.35416666666666000000,
+      "slug_id" : "kafka.TJ_XL"
+    },
+    {
+      "runtime_policy_id" : "863b10cf-0e27-4330-a339-da4e69429589",
+      "source" : "kafka",
+      "flavor" : "tm_l",
+      "time_unit" : "PT1H",
+      "price" : 0.31250000000000000000,
+      "slug_id" : "kafka.TM_L"
+    },
+    {
+      "runtime_policy_id" : "2c02161f-2540-4b4d-8e5c-17fa82302c92",
+      "source" : "kafka",
+      "flavor" : "tm_m",
+      "time_unit" : "PT1H",
+      "price" : 0.27083333333333400000,
+      "slug_id" : "kafka.TM_M"
+    },
+    {
+      "runtime_policy_id" : "ad301404-02e3-496e-bdeb-9029fd5b72eb",
+      "source" : "kafka",
+      "flavor" : "tm_s",
+      "time_unit" : "PT1H",
+      "price" : 0.23958333333333300000,
+      "slug_id" : "kafka.TM_S"
+    },
+    {
+      "runtime_policy_id" : "b957a101-2ce8-466d-96f0-51515b33b6fb",
+      "source" : "kafka",
+      "flavor" : "tt_l",
+      "time_unit" : "PT1H",
+      "price" : 0.54166666666666700000,
+      "slug_id" : "kafka.TT_L"
+    },
+    {
+      "runtime_policy_id" : "332140f5-e7f4-4b8f-95a7-d8bfe35aee07",
+      "source" : "kafka",
+      "flavor" : "tt_m",
+      "time_unit" : "PT1H",
+      "price" : 0.49999999999999900000,
+      "slug_id" : "kafka.TT_M"
+    },
+    {
+      "runtime_policy_id" : "5a35eca7-aba0-4234-b40d-d5ada22d93e5",
+      "source" : "kafka",
+      "flavor" : "tt_s",
+      "time_unit" : "PT1H",
+      "price" : 0.46875000000000000000,
+      "slug_id" : "kafka.TT_S"
+    },
+    {
+      "runtime_policy_id" : "04a5a316-6d34-401e-a5a7-3a7b8273dec4",
+      "source" : "mongodb",
+      "flavor" : "biggunnera",
+      "time_unit" : "PT1H",
+      "price" : 0.37500000000000000000,
+      "slug_id" : "mongodb.BIGGUNNERA"
+    },
+    {
+      "runtime_policy_id" : "26376aa9-5dc3-48f5-bfde-915ad486190e",
+      "source" : "mongodb",
+      "flavor" : "gunnera",
+      "time_unit" : "PT1H",
+      "price" : 0.46875000000000000000,
+      "slug_id" : "mongodb.GUNNERA"
+    },
+    {
+      "runtime_policy_id" : "52c15bd1-47ab-4484-a9b0-bad41c6ecc7a",
+      "source" : "mongodb",
+      "flavor" : "hazelnut",
+      "time_unit" : "PT1H",
+      "price" : 0.06250000000000000000,
+      "slug_id" : "mongodb.HAZELNUT"
+    },
+    {
+      "runtime_policy_id" : "53570c8d-5b01-4298-9da2-fcb8ffa155bb",
+      "source" : "mongodb",
+      "flavor" : "l",
+      "time_unit" : "PT1H",
+      "price" : 0.72916666666666700000,
+      "slug_id" : "mongodb.L"
+    },
+    {
+      "runtime_policy_id" : "d9a1ec28-b063-488d-8524-27217cd68eeb",
+      "source" : "mongodb",
+      "flavor" : "l_big",
+      "time_unit" : "PT1H",
+      "price" : 0.62916666666666700000,
+      "slug_id" : "mongodb.L_BIG"
+    },
+    {
+      "runtime_policy_id" : "c2f57b09-343e-4734-8e94-e66b0cf8655d",
+      "source" : "mongodb",
+      "flavor" : "l_med",
+      "time_unit" : "PT1H",
+      "price" : 0.52500000000000000000,
+      "slug_id" : "mongodb.L_MED"
+    },
+    {
+      "runtime_policy_id" : "21f62ac8-d6fe-45e7-badc-580eae5953a6",
+      "source" : "mongodb",
+      "flavor" : "l_sml",
+      "time_unit" : "PT1H",
+      "price" : 0.42083333333333300000,
+      "slug_id" : "mongodb.L_SML"
+    },
+    {
+      "runtime_policy_id" : "27c97c37-7607-48de-8947-953c0efc7a53",
+      "source" : "mongodb",
+      "flavor" : "m_big",
+      "time_unit" : "PT1H",
+      "price" : 0.25833333333333300000,
+      "slug_id" : "mongodb.M_BIG"
+    },
+    {
+      "runtime_policy_id" : "5e666158-3eee-4037-a3d5-de608e7c7419",
+      "source" : "mongodb",
+      "flavor" : "m_hug",
+      "time_unit" : "PT1H",
+      "price" : 0.36250000000000000000,
+      "slug_id" : "mongodb.M_HUG"
+    },
+    {
+      "runtime_policy_id" : "932c7bf6-9a89-4e7f-b1ab-bbc94d0e7726",
+      "source" : "mongodb",
+      "flavor" : "m_med",
+      "time_unit" : "PT1H",
+      "price" : 0.23750000000000000000,
+      "slug_id" : "mongodb.M_MED"
+    },
+    {
+      "runtime_policy_id" : "e82405cc-4ca1-49bd-807e-0c6ebea42b26",
+      "source" : "mongodb",
+      "flavor" : "m_sml",
+      "time_unit" : "PT1H",
+      "price" : 0.20625000000000000000,
+      "slug_id" : "mongodb.M_SML"
+    },
+    {
+      "runtime_policy_id" : "9f3b79fb-7c21-4437-ac00-5126b7e526d4",
+      "source" : "mongodb",
+      "flavor" : "s_big",
+      "time_unit" : "PT1H",
+      "price" : 0.12291666666666700000,
+      "slug_id" : "mongodb.S_BIG"
+    },
+    {
+      "runtime_policy_id" : "a3723262-fce5-42b3-b7eb-948296c67d2b",
+      "source" : "mongodb",
+      "flavor" : "shamrock",
+      "time_unit" : "PT1H",
+      "price" : 0.12500000000000000000,
+      "slug_id" : "mongodb.SHAMROCK"
+    },
+    {
+      "runtime_policy_id" : "3e4c5211-1ebc-4d5b-975f-ad37e2dea6c3",
+      "source" : "mongodb",
+      "flavor" : "s_hug",
+      "time_unit" : "PT1H",
+      "price" : 0.15416666666666700000,
+      "slug_id" : "mongodb.S_HUG"
+    },
+    {
+      "runtime_policy_id" : "b66ec0a7-d20f-47f9-89d2-44f1e97fc7a5",
+      "source" : "mongodb",
+      "flavor" : "s_med",
+      "time_unit" : "PT1H",
+      "price" : 0.10208333333333300000,
+      "slug_id" : "mongodb.S_MED"
+    },
+    {
+      "runtime_policy_id" : "8f4882ce-927a-4fca-a2dd-99cd72e173ce",
+      "source" : "mongodb",
+      "flavor" : "s_sml",
+      "time_unit" : "PT1H",
+      "price" : 0.08645833333333330000,
+      "slug_id" : "mongodb.S_SML"
+    },
+    {
+      "runtime_policy_id" : "f085791a-0ddc-4379-aca0-ee74027cce66",
+      "source" : "mongodb",
+      "flavor" : "vine",
+      "time_unit" : "PT1H",
+      "price" : 0.23437500000000000000,
+      "slug_id" : "mongodb.VINE"
+    },
+    {
+      "runtime_policy_id" : "b7ba1ab6-0ff9-4410-acd1-724ca4aa6651",
+      "source" : "mongodb",
+      "flavor" : "xl_big",
+      "time_unit" : "PT1H",
+      "price" : 1.29166666666667000000,
+      "slug_id" : "mongodb.XL_BIG"
+    },
+    {
+      "runtime_policy_id" : "18bacdce-1ced-457e-9286-08853afb00e9",
+      "source" : "mongodb",
+      "flavor" : "xl_med",
+      "time_unit" : "PT1H",
+      "price" : 1.13541666666667000000,
+      "slug_id" : "mongodb.XL_MED"
+    },
+    {
+      "runtime_policy_id" : "98856d67-7ecb-47e4-8514-83602bb6e53d",
+      "source" : "mongodb",
+      "flavor" : "xl_sml",
+      "time_unit" : "PT1H",
+      "price" : 0.97916666666666700000,
+      "slug_id" : "mongodb.XL_SML"
+    },
+    {
+      "runtime_policy_id" : "8c905e62-b0a4-4073-b1fa-28062ad5222f",
+      "source" : "mongodb",
+      "flavor" : "xs_big",
+      "time_unit" : "PT1H",
+      "price" : 0.06250000000000010000,
+      "slug_id" : "mongodb.XS_BIG"
+    },
+    {
+      "runtime_policy_id" : "d6c1cea2-397f-4863-a0eb-bb600960bd47",
+      "source" : "mongodb",
+      "flavor" : "xs_med",
+      "time_unit" : "PT1H",
+      "price" : 0.04687500000000000000,
+      "slug_id" : "mongodb.XS_MED"
+    },
+    {
+      "runtime_policy_id" : "f7f61278-7816-4a51-bfb8-7437bcb9d557",
+      "source" : "mongodb",
+      "flavor" : "xs_sml",
+      "time_unit" : "PT1H",
+      "price" : 0.03645833333333340000,
+      "slug_id" : "mongodb.XS_SML"
+    },
+    {
+      "runtime_policy_id" : "03c6d922-c5a6-4d4e-9087-dbedde3c8e1c",
+      "source" : "mongodb",
+      "flavor" : "xxl_big",
+      "time_unit" : "PT1H",
+      "price" : 2.33750000000000000000,
+      "slug_id" : "mongodb.XXL_BIG"
+    },
+    {
+      "runtime_policy_id" : "2529d4b7-9015-401f-b682-4b337540ea6f",
+      "source" : "mongodb",
+      "flavor" : "xxl_med",
+      "time_unit" : "PT1H",
+      "price" : 2.23958333333334000000,
+      "slug_id" : "mongodb.XXL_MED"
+    },
+    {
+      "runtime_policy_id" : "26d07ad1-6b48-414e-8c3b-2db545d172db",
+      "source" : "mongodb",
+      "flavor" : "xxl_sml",
+      "time_unit" : "PT1H",
+      "price" : 2.02500000000000000000,
+      "slug_id" : "mongodb.XXL_SML"
+    },
+    {
+      "runtime_policy_id" : "bdfa3eff-5741-4e54-b7de-a408186f1f8c",
+      "source" : "mysql",
+      "flavor" : "l",
+      "time_unit" : "PT1H",
+      "price" : 0.62500000000000100000,
+      "slug_id" : "mysql.L"
+    },
+    {
+      "runtime_policy_id" : "53d68da1-23f5-485f-8a26-ae02f83c6cd7",
+      "source" : "mysql",
+      "flavor" : "l_big",
+      "time_unit" : "PT1H",
+      "price" : 0.54166666666666700000,
+      "slug_id" : "mysql.L_BIG"
+    },
+    {
+      "runtime_policy_id" : "5fb0c754-c7b5-4015-8910-5366ac705316",
+      "source" : "mysql",
+      "flavor" : "l_med",
+      "time_unit" : "PT1H",
+      "price" : 0.50000000000000000000,
+      "slug_id" : "mysql.L_MED"
+    },
+    {
+      "runtime_policy_id" : "33162a91-4b10-400e-b212-b8fe88d5caca",
+      "source" : "mysql",
+      "flavor" : "l_sml",
+      "time_unit" : "PT1H",
+      "price" : 0.45833333333333300000,
+      "slug_id" : "mysql.L_SML"
+    },
+    {
+      "runtime_policy_id" : "2b13fb7b-cb8e-4e3a-8340-7c00e048ad99",
+      "source" : "mysql",
+      "flavor" : "m",
+      "time_unit" : "PT1H",
+      "price" : 0.09375000000000000000,
+      "slug_id" : "mysql.M"
+    },
+    {
+      "runtime_policy_id" : "63b3e26d-c57c-4fa4-b185-812b9df98214",
+      "source" : "mysql",
+      "flavor" : "maj_digital",
+      "time_unit" : "PT1H",
+      "price" : 0E-20,
+      "slug_id" : "mysql.MAJ_DIGITAL"
+    },
+    {
+      "runtime_policy_id" : "3ac250a5-34b5-4023-b227-042c4c1e3b13",
+      "source" : "mysql",
+      "flavor" : "m_big",
+      "time_unit" : "PT1H",
+      "price" : 0.28333333333333300000,
+      "slug_id" : "mysql.M_BIG"
+    },
+    {
+      "runtime_policy_id" : "a3e5f1db-efe0-40cc-a172-9480d6d44fb7",
+      "source" : "mysql",
+      "flavor" : "ml",
+      "time_unit" : "PT1H",
+      "price" : 0.22916666666666700000,
+      "slug_id" : "mysql.ML"
+    },
+    {
+      "runtime_policy_id" : "c90e7350-b862-402b-90cc-4fa628bc1d22",
+      "source" : "mysql",
+      "flavor" : "m_med",
+      "time_unit" : "PT1H",
+      "price" : 0.24166666666666700000,
+      "slug_id" : "mysql.M_MED"
+    },
+    {
+      "runtime_policy_id" : "43b49702-a699-44ca-a4f2-3483947f00e0",
+      "source" : "mysql",
+      "flavor" : "m_sml",
+      "time_unit" : "PT1H",
+      "price" : 0.22083333333333300000,
+      "slug_id" : "mysql.M_SML"
+    },
+    {
+      "runtime_policy_id" : "daa9ceac-0148-4aa6-b423-0453963c7bde",
+      "source" : "mysql",
+      "flavor" : "s",
+      "time_unit" : "PT1H",
+      "price" : 0.03125000000000000000,
+      "slug_id" : "mysql.S"
+    },
+    {
+      "runtime_policy_id" : "533596c6-7f1e-47f7-ac76-4faeb0510881",
+      "source" : "mysql",
+      "flavor" : "s_big",
+      "time_unit" : "PT1H",
+      "price" : 0.11458333333333300000,
+      "slug_id" : "mysql.S_BIG"
+    },
+    {
+      "runtime_policy_id" : "195f418e-dad5-4e85-ae62-53edaa303bf7",
+      "source" : "mysql",
+      "flavor" : "simbiose",
+      "time_unit" : "PT1H",
+      "price" : 0E-20,
+      "slug_id" : "mysql.SIMBIOSE"
+    },
+    {
+      "runtime_policy_id" : "519e23c2-bdac-40d5-bb6f-57de5289a613",
+      "source" : "mysql",
+      "flavor" : "s_med",
+      "time_unit" : "PT1H",
+      "price" : 0.10937500000000000000,
+      "slug_id" : "mysql.S_MED"
+    },
+    {
+      "runtime_policy_id" : "925365d8-015c-40fb-a53c-9a758e0b93fb",
+      "source" : "mysql",
+      "flavor" : "s_sml",
+      "time_unit" : "PT1H",
+      "price" : 0.10416666666666700000,
+      "slug_id" : "mysql.S_SML"
+    },
+    {
+      "runtime_policy_id" : "1ded039e-1325-4e23-b38e-1332ea543a4d",
+      "source" : "mysql",
+      "flavor" : "xl_big",
+      "time_unit" : "PT1H",
+      "price" : 1.23333333333333000000,
+      "slug_id" : "mysql.XL_BIG"
+    },
+    {
+      "runtime_policy_id" : "b37b66a0-7a40-461f-b097-2653f585bec2",
+      "source" : "mysql",
+      "flavor" : "xl_med",
+      "time_unit" : "PT1H",
+      "price" : 1.06666666666667000000,
+      "slug_id" : "mysql.XL_MED"
+    },
+    {
+      "runtime_policy_id" : "c7378a47-c648-4366-a230-1d17cc10fec5",
+      "source" : "mysql",
+      "flavor" : "xl_sml",
+      "time_unit" : "PT1H",
+      "price" : 0.98333333333333300000,
+      "slug_id" : "mysql.XL_SML"
+    },
+    {
+      "runtime_policy_id" : "dc183aad-dec9-4662-b26e-60eb2870f147",
+      "source" : "mysql",
+      "flavor" : "xs_big",
+      "time_unit" : "PT1H",
+      "price" : 0.06250000000000000000,
+      "slug_id" : "mysql.XS_BIG"
+    },
+    {
+      "runtime_policy_id" : "8b85e34b-bdb6-40e6-93c0-ad0efcc7249b",
+      "source" : "mysql",
+      "flavor" : "xs_med",
+      "time_unit" : "PT1H",
+      "price" : 0.05416666666666670000,
+      "slug_id" : "mysql.XS_MED"
+    },
+    {
+      "runtime_policy_id" : "fe08dc57-ee0a-4152-8b62-b00413f3d375",
+      "source" : "mysql",
+      "flavor" : "xs_sml",
+      "time_unit" : "PT1H",
+      "price" : 0.04895833333333330000,
+      "slug_id" : "mysql.XS_SML"
+    },
+    {
+      "runtime_policy_id" : "e97d45b7-dfa7-418f-b733-08c48caa3ba7",
+      "source" : "mysql",
+      "flavor" : "xs_tny",
+      "time_unit" : "PT1H",
+      "price" : 0.03125000000000000000,
+      "slug_id" : "mysql.XS_TNY"
+    },
+    {
+      "runtime_policy_id" : "88f88699-c0f7-4cea-a4d6-c69dd02a13d8",
+      "source" : "mysql",
+      "flavor" : "xxl_big",
+      "time_unit" : "PT1H",
+      "price" : 2.60000000000000000000,
+      "slug_id" : "mysql.XXL_BIG"
+    },
+    {
+      "runtime_policy_id" : "2bcd9198-08b7-4bc3-ac72-a442cb110a12",
+      "source" : "mysql",
+      "flavor" : "xxl_hug",
+      "time_unit" : "PT1H",
+      "price" : 2.93333333333333000000,
+      "slug_id" : "mysql.XXL_HUG"
+    },
+    {
+      "runtime_policy_id" : "8d19562c-ec5e-41a8-878e-ea59afc02d30",
+      "source" : "mysql",
+      "flavor" : "xxl_med",
+      "time_unit" : "PT1H",
+      "price" : 2.26666666666667000000,
+      "slug_id" : "mysql.XXL_MED"
+    },
+    {
+      "runtime_policy_id" : "6474efef-bac1-4975-a661-b75ec06818f5",
+      "source" : "mysql",
+      "flavor" : "xxl_sml",
+      "time_unit" : "PT1H",
+      "price" : 2.10000000000000000000,
+      "slug_id" : "mysql.XXL_SML"
+    },
+    {
+      "runtime_policy_id" : "be2ce473-b554-4801-b943-cb923b3d4f7c",
+      "source" : "mysql",
+      "flavor" : "xxs_big",
+      "time_unit" : "PT1H",
+      "price" : 0.01416666666666670000,
+      "slug_id" : "mysql.XXS_BIG"
+    },
+    {
+      "runtime_policy_id" : "f696e048-5f95-4bed-b58f-8f3e3a483758",
+      "source" : "mysql",
+      "flavor" : "xxs_med",
+      "time_unit" : "PT1H",
+      "price" : 0.01229166666666670000,
+      "slug_id" : "mysql.XXS_MED"
+    },
+    {
+      "runtime_policy_id" : "4cf60085-7637-48b0-ab19-bd0ab8c76f95",
+      "source" : "mysql",
+      "flavor" : "xxs_sml",
+      "time_unit" : "PT1H",
+      "price" : 0.01041666666666670000,
+      "slug_id" : "mysql.XXS_SML"
+    },
+    {
+      "runtime_policy_id" : "dae60bd7-4d12-4557-b280-a5f8092c9426",
+      "source" : "postgresql",
+      "flavor" : "l",
+      "time_unit" : "PT1H",
+      "price" : 0.49999999999999900000,
+      "slug_id" : "postgresql.L"
+    },
+    {
+      "runtime_policy_id" : "ae62b037-aeef-452a-94f1-8d0ae0f110bf",
+      "source" : "postgresql",
+      "flavor" : "l_big",
+      "time_unit" : "PT1H",
+      "price" : 0.45416666666666700000,
+      "slug_id" : "postgresql.L_BIG"
+    },
+    {
+      "runtime_policy_id" : "ac7f1493-edbd-4e2a-a914-8f6575c2cb74",
+      "source" : "postgresql",
+      "flavor" : "l_gnt",
+      "time_unit" : "PT1H",
+      "price" : 0.83333333333333300000,
+      "slug_id" : "postgresql.L_GNT"
+    },
+    {
+      "runtime_policy_id" : "f0173ae3-aaa0-4048-95ee-0771e06770ad",
+      "source" : "postgresql",
+      "flavor" : "lm",
+      "time_unit" : "PT1H",
+      "price" : 0.20833333333333400000,
+      "slug_id" : "postgresql.LM"
+    },
+    {
+      "runtime_policy_id" : "dc988c63-88e2-43d4-9cf4-7517910ab8b0",
+      "source" : "postgresql",
+      "flavor" : "l_med",
+      "time_unit" : "PT1H",
+      "price" : 0.41250000000000000000,
+      "slug_id" : "postgresql.L_MED"
+    },
+    {
+      "runtime_policy_id" : "bb3b7d55-011e-4524-a226-bdea7b6fb9ab",
+      "source" : "postgresql",
+      "flavor" : "l_sml",
+      "time_unit" : "PT1H",
+      "price" : 0.37083333333333300000,
+      "slug_id" : "postgresql.L_SML"
+    },
+    {
+      "runtime_policy_id" : "e2277111-537c-47ef-bac3-3d8cea6146c8",
+      "source" : "postgresql",
+      "flavor" : "m",
+      "time_unit" : "PT1H",
+      "price" : 0.06250000000000010000,
+      "slug_id" : "postgresql.M"
+    },
+    {
+      "runtime_policy_id" : "c994dc62-98db-4306-b0a3-2f56fce042cb",
+      "source" : "postgresql",
+      "flavor" : "m_big",
+      "time_unit" : "PT1H",
+      "price" : 0.24583333333333300000,
+      "slug_id" : "postgresql.M_BIG"
+    },
+    {
+      "runtime_policy_id" : "882eae95-ea27-40f1-90d4-b76a41f9f7bd",
+      "source" : "postgresql",
+      "flavor" : "m_med",
+      "time_unit" : "PT1H",
+      "price" : 0.20416666666666700000,
+      "slug_id" : "postgresql.M_MED"
+    },
+    {
+      "runtime_policy_id" : "430fe379-5c05-46e0-8d2e-3a156ce136de",
+      "source" : "postgresql",
+      "flavor" : "m_sml",
+      "time_unit" : "PT1H",
+      "price" : 0.18333333333333300000,
+      "slug_id" : "postgresql.M_SML"
+    },
+    {
+      "runtime_policy_id" : "1d0346a8-4f1c-491e-af87-84edc8bda823",
+      "source" : "postgresql",
+      "flavor" : "s",
+      "time_unit" : "PT1H",
+      "price" : 0.02083333333333330000,
+      "slug_id" : "postgresql.S"
+    },
+    {
+      "runtime_policy_id" : "e8a2aee2-3ec8-4064-ac5b-ef11dccce248",
+      "source" : "postgresql",
+      "flavor" : "s_big",
+      "time_unit" : "PT1H",
+      "price" : 0.09791666666666670000,
+      "slug_id" : "postgresql.S_BIG"
+    },
+    {
+      "runtime_policy_id" : "ae9551b5-23be-4686-8ac6-505334ee5efe",
+      "source" : "postgresql",
+      "flavor" : "s_hug",
+      "time_unit" : "PT1H",
+      "price" : 0.13333333333333300000,
+      "slug_id" : "postgresql.S_HUG"
+    },
+    {
+      "runtime_policy_id" : "d31e4775-07b8-4599-9b49-cb2af5b9b7b3",
+      "source" : "postgresql",
+      "flavor" : "s_med",
+      "time_unit" : "PT1H",
+      "price" : 0.09166666666666670000,
+      "slug_id" : "postgresql.S_MED"
+    },
+    {
+      "runtime_policy_id" : "4c516573-a311-477d-ba08-04aef2a05d83",
+      "source" : "postgresql",
+      "flavor" : "s_sml",
+      "time_unit" : "PT1H",
+      "price" : 0.08541666666666670000,
+      "slug_id" : "postgresql.S_SML"
+    },
+    {
+      "runtime_policy_id" : "c44ec94f-2a11-4872-b8a5-a8477ed221dd",
+      "source" : "postgresql",
+      "flavor" : "xl",
+      "time_unit" : "PT1H",
+      "price" : 1.45833333333333000000,
+      "slug_id" : "postgresql.XL"
+    },
+    {
+      "runtime_policy_id" : "c14c13ae-e45a-44e3-ba5a-cc3dec8cd641",
+      "source" : "postgresql",
+      "flavor" : "xl_big",
+      "time_unit" : "PT1H",
+      "price" : 1.00000000000000000000,
+      "slug_id" : "postgresql.XL_BIG"
+    },
+    {
+      "runtime_policy_id" : "5dcc1a68-3e2b-44ec-84fe-0e71ff7e9983",
+      "source" : "postgresql",
+      "flavor" : "xl_gnt",
+      "time_unit" : "PT1H",
+      "price" : 1.33333333333333000000,
+      "slug_id" : "postgresql.XL_GNT"
+    },
+    {
+      "runtime_policy_id" : "21c691db-7b16-439b-8445-a5dbaa34743f",
+      "source" : "postgresql",
+      "flavor" : "xl_hug",
+      "time_unit" : "PT1H",
+      "price" : 1.16666666666667000000,
+      "slug_id" : "postgresql.XL_HUG"
+    },
+    {
+      "runtime_policy_id" : "371b310c-2127-428f-b441-2a1a48c17a04",
+      "source" : "postgresql",
+      "flavor" : "xl_med",
+      "time_unit" : "PT1H",
+      "price" : 0.83333333333333300000,
+      "slug_id" : "postgresql.XL_MED"
+    },
+    {
+      "runtime_policy_id" : "999c466c-614c-4878-b72c-774f3d00c819",
+      "source" : "postgresql",
+      "flavor" : "xl_sml",
+      "time_unit" : "PT1H",
+      "price" : 0.75000000000000000000,
+      "slug_id" : "postgresql.XL_SML"
+    },
+    {
+      "runtime_policy_id" : "fcc87349-ac32-49c9-9140-812b467635c6",
+      "source" : "postgresql",
+      "flavor" : "xm",
+      "time_unit" : "PT1H",
+      "price" : 0E-20,
+      "slug_id" : "postgresql.XM"
+    },
+    {
+      "runtime_policy_id" : "b14c9662-d833-41f8-87ac-65d1aea7fe2f",
+      "source" : "postgresql",
+      "flavor" : "xs_big",
+      "time_unit" : "PT1H",
+      "price" : 0.05208333333333330000,
+      "slug_id" : "postgresql.XS_BIG"
+    },
+    {
+      "runtime_policy_id" : "8bcdedb6-a6e3-42c7-8ddd-cd626451767a",
+      "source" : "postgresql",
+      "flavor" : "xs_med",
+      "time_unit" : "PT1H",
+      "price" : 0.04687500000000000000,
+      "slug_id" : "postgresql.XS_MED"
+    },
+    {
+      "runtime_policy_id" : "ece61f87-b1a6-4b7b-91bc-fe50007a1eda",
+      "source" : "postgresql",
+      "flavor" : "xs_sml",
+      "time_unit" : "PT1H",
+      "price" : 0.04062500000000000000,
+      "slug_id" : "postgresql.XS_SML"
+    },
+    {
+      "runtime_policy_id" : "91cc08bc-9194-4eec-b518-209460a667fe",
+      "source" : "postgresql",
+      "flavor" : "xs_tny",
+      "time_unit" : "PT1H",
+      "price" : 0.03125000000000000000,
+      "slug_id" : "postgresql.XS_TNY"
+    },
+    {
+      "runtime_policy_id" : "56304a0a-8295-42c8-9b39-e1b03c1431cf",
+      "source" : "postgresql",
+      "flavor" : "xxl_big",
+      "time_unit" : "PT1H",
+      "price" : 2.08333333333333000000,
+      "slug_id" : "postgresql.XXL_BIG"
+    },
+    {
+      "runtime_policy_id" : "e36dab43-da30-403e-b73e-abc0209ea653",
+      "source" : "postgresql",
+      "flavor" : "xxl_hug",
+      "time_unit" : "PT1H",
+      "price" : 2.41666666666667000000,
+      "slug_id" : "postgresql.XXL_HUG"
+    },
+    {
+      "runtime_policy_id" : "25750c14-f5ba-4ef0-ac6e-cf40973d7c85",
+      "source" : "postgresql",
+      "flavor" : "xxl_med",
+      "time_unit" : "PT1H",
+      "price" : 1.75000000000000000000,
+      "slug_id" : "postgresql.XXL_MED"
+    },
+    {
+      "runtime_policy_id" : "78ebf644-e8e4-46b9-a977-eb4a7d359120",
+      "source" : "postgresql",
+      "flavor" : "xxl_sml",
+      "time_unit" : "PT1H",
+      "price" : 1.58333333333333000000,
+      "slug_id" : "postgresql.XXL_SML"
+    },
+    {
+      "runtime_policy_id" : "50799369-fe66-47bb-b72c-4918483b6fb2",
+      "source" : "postgresql",
+      "flavor" : "xxs_big",
+      "time_unit" : "PT1H",
+      "price" : 0.01604166666666660000,
+      "slug_id" : "postgresql.XXS_BIG"
+    },
+    {
+      "runtime_policy_id" : "f9136500-c019-4d35-926b-d87e84d79265",
+      "source" : "postgresql",
+      "flavor" : "xxs_med",
+      "time_unit" : "PT1H",
+      "price" : 0.01416666666666670000,
+      "slug_id" : "postgresql.XXS_MED"
+    },
+    {
+      "runtime_policy_id" : "bd95ac12-5bf0-4009-863b-41fb40715fc3",
+      "source" : "postgresql",
+      "flavor" : "xxs_sml",
+      "time_unit" : "PT1H",
+      "price" : 0.01093750000000000000,
+      "slug_id" : "postgresql.XXS_SML"
+    },
+    {
+      "runtime_policy_id" : "4bb79d48-af1c-4fff-bcfa-50a4cdd5d487",
+      "source" : "postgresql",
+      "flavor" : "xxxl_big",
+      "time_unit" : "PT1H",
+      "price" : 4.18750000000000000000,
+      "slug_id" : "postgresql.XXXL_BIG"
+    },
+    {
+      "runtime_policy_id" : "2b74228a-5e56-4b81-8e10-2f977d0ef6fc",
+      "source" : "postgresql",
+      "flavor" : "xxxl_med",
+      "time_unit" : "PT1H",
+      "price" : 3.93750000000000000000,
+      "slug_id" : "postgresql.XXXL_MED"
+    },
+    {
+      "runtime_policy_id" : "bf461eaa-885b-435c-b4e1-b45b9878d3a7",
+      "source" : "postgresql",
+      "flavor" : "xxxl_sml",
+      "time_unit" : "PT1H",
+      "price" : 3.60416666666667000000,
+      "slug_id" : "postgresql.XXXL_SML"
+    },
+    {
+      "runtime_policy_id" : "cebc5cd4-ec72-4163-b0b9-302f077271af",
+      "source" : "redis",
+      "flavor" : "custom",
+      "time_unit" : "PT1H",
+      "price" : 1.04166666666667000000,
+      "slug_id" : "redis.CUSTOM"
+    },
+    {
+      "runtime_policy_id" : "90ad73b5-93c9-4ffe-9ebc-4f3881b2ee87",
+      "source" : "redis",
+      "flavor" : "l",
+      "time_unit" : "PT1H",
+      "price" : 0.10845833333333300000,
+      "slug_id" : "redis.L"
+    },
+    {
+      "runtime_policy_id" : "565b8089-41db-4b67-b15c-7e2b804ed1cd",
+      "source" : "redis",
+      "flavor" : "l_mono",
+      "time_unit" : "PT1H",
+      "price" : 0.03958333333333330000,
+      "slug_id" : "redis.l_mono"
+    },
+    {
+      "runtime_policy_id" : "8778ce74-bb2c-4e13-9a64-b7abda29671f",
+      "source" : "redis",
+      "flavor" : "m",
+      "time_unit" : "PT1H",
+      "price" : 0.03335416666666670000,
+      "slug_id" : "redis.M"
+    },
+    {
+      "runtime_policy_id" : "ccee59e8-5ea9-4c83-ae58-997b3d2385b2",
+      "source" : "redis",
+      "flavor" : "m_mono",
+      "time_unit" : "PT1H",
+      "price" : 0.02604166666666670000,
+      "slug_id" : "redis.m_mono"
+    },
+    {
+      "runtime_policy_id" : "b88ce93f-c864-45f0-b7b6-449bbb212752",
+      "source" : "redis",
+      "flavor" : "s",
+      "time_unit" : "PT1H",
+      "price" : 0.02187500000000000000,
+      "slug_id" : "redis.S"
+    },
+    {
+      "runtime_policy_id" : "f99aa16e-bcbe-4d66-888b-bd25bc5fa6e7",
+      "source" : "redis",
+      "flavor" : "s_mono",
+      "time_unit" : "PT1H",
+      "price" : 0.01041666666666670000,
+      "slug_id" : "redis.s_mono"
+    },
+    {
+      "runtime_policy_id" : "b77ac92b-f59a-4323-b6e4-3119ce04b9d1",
+      "source" : "redis",
+      "flavor" : "xl",
+      "time_unit" : "PT1H",
+      "price" : 0.19520833333333300000,
+      "slug_id" : "redis.XL"
+    },
+    {
+      "runtime_policy_id" : "ee3574d2-c7dc-4587-929d-5cd322d08b9f",
+      "source" : "redis",
+      "flavor" : "xl_mono",
+      "time_unit" : "PT1H",
+      "price" : 0.05000000000000000000,
+      "slug_id" : "redis.xl_mono"
+    },
+    {
+      "runtime_policy_id" : "43bb63ca-caad-4fd6-8958-e2a057f11488",
+      "source" : "redis",
+      "flavor" : "xxl",
+      "time_unit" : "PT1H",
+      "price" : 0.47677083333333300000,
+      "slug_id" : "redis.XXL"
+    },
+    {
+      "runtime_policy_id" : "ba65e000-603c-4e91-973a-bf38b7945f1f",
+      "source" : "redis",
+      "flavor" : "xxl_mono",
+      "time_unit" : "PT1H",
+      "price" : 0.11979166666666700000,
+      "slug_id" : "redis.xxl_mono"
+    },
+    {
+      "runtime_policy_id" : "56304c0e-1869-41bb-b3a5-671d5251221c",
+      "source" : "redis",
+      "flavor" : "xxxl",
+      "time_unit" : "PT1H",
+      "price" : 0.62500000000000000000,
+      "slug_id" : "redis.XXXL"
+    },
+    {
+      "runtime_policy_id" : "37b06f98-16a2-4c52-a5ba-6fab55fa139c",
+      "source" : "redis",
+      "flavor" : "xxxl_mono",
+      "time_unit" : "PT1H",
+      "price" : 0.22500000000000000000,
+      "slug_id" : "redis.xxxl_mono"
+    },
+    {
+      "runtime_policy_id" : "fd30d11d-fe7a-4f94-886b-7bca1ac865d6",
+      "source" : "redis",
+      "flavor" : "xxxxl_mono",
+      "time_unit" : "PT1H",
+      "price" : 0.44166666666666700000,
+      "slug_id" : "redis.xxxxl_mono"
+    },
+    {
+      "runtime_policy_id" : "19071456-694a-4bf4-9106-12a26c7792f6",
+      "source" : "adc",
+      "flavor" : "custom_adc_058b7efc-e62d-43de-a5d5-d6c13ac80dd7",
+      "time_unit" : "PT1H",
+      "price" : 0E-20,
+      "slug_id" : "adc.custom_adc_058b7efc-e62d-43de-a5d5-d6c13ac80dd7"
+    }
+  ],
+  "countable" : [
+    {
+      "countable_policy_id" : "5f250960-04ae-4ef0-9dc7-b302c3bf0db0",
+      "service" : "heptapod.public_active_users",
+      "data_unit" : "User",
+      "data_quantity_for_price" : {
+        "secability" : "insecable",
+        "quantity" : 100
+      },
+      "time_interval_for_price" : {
+        "secability" : "insecable",
+        "interval" : "PT720H"
+      },
+      "first_x_free" : 0,
+      "price_plans" : [
+        {
+          "plan_id" : "8d90e40f-646e-4799-a189-c681141cf597",
+          "max_quantity" : 101,
+          "price" : 0E-20
+        },
+        {
+          "plan_id" : "e1348c27-42ef-470f-a9a6-2ba83261cea5",
+          "max_quantity" : null,
+          "price" : 12.00000000000000000000
+        }
+      ]
+    },
+    {
+      "countable_policy_id" : "49a6b6a6-2ebb-4290-8f7a-dbf8ad9c0d2b",
+      "service" : "pulsar_storage_size",
+      "data_unit" : "B",
+      "data_quantity_for_price" : {
+        "secability" : "secable",
+        "quantity" : 1000000000
+      },
+      "time_interval_for_price" : {
+        "secability" : "secable",
+        "interval" : "PT1H"
+      },
+      "first_x_free" : 0,
+      "price_plans" : [
+        {
+          "plan_id" : "0780473c-14b0-4068-9832-42fc6f557c3c",
+          "max_quantity" : 256000000,
+          "price" : 0E-20
+        },
+        {
+          "plan_id" : "484b1a34-b669-4f67-859f-52a94ec51c72",
+          "max_quantity" : 50000000000,
+          "price" : 0.00041666666666666700
+        },
+        {
+          "plan_id" : "1e779463-fb30-4199-bbd2-3b2d2e42e7e9",
+          "max_quantity" : 250000000000,
+          "price" : 0.00031250000000000000
+        },
+        {
+          "plan_id" : "0e14c92d-edda-4689-9316-d6fc9bf5fc13",
+          "max_quantity" : 1000000000000,
+          "price" : 0.00025000000000000000
+        },
+        {
+          "plan_id" : "6a216ec9-5932-46bf-a8ee-629c77ba441f",
+          "max_quantity" : null,
+          "price" : 0.00020833333333333300
+        }
+      ]
+    },
+    {
+      "countable_policy_id" : "6fb475fb-b6ed-4828-b72e-4910824f8b10",
+      "service" : "cellar.storage",
+      "data_unit" : "B",
+      "data_quantity_for_price" : {
+        "secability" : "secable",
+        "quantity" : 1000000000
+      },
+      "time_interval_for_price" : {
+        "secability" : "secable",
+        "interval" : "PT1H"
+      },
+      "first_x_free" : 0,
+      "price_plans" : [
+        {
+          "plan_id" : "f712e3ca-7f8f-4784-8c22-9251066cf2af",
+          "max_quantity" : 100000000,
+          "price" : 0E-20
+        },
+        {
+          "plan_id" : "49fe45f1-981c-4932-832c-f610864059a0",
+          "max_quantity" : 1000000000000,
+          "price" : 0.00004266666666666670
+        },
+        {
+          "plan_id" : "c31f0ed6-6aa0-457a-b7f6-e488b535e501",
+          "max_quantity" : 25000000000000,
+          "price" : 0.00003200000000000000
+        },
+        {
+          "plan_id" : "8fef0a55-ac63-4b62-8a15-f5d36ccaf834",
+          "max_quantity" : null,
+          "price" : 0.00002133333333333330
+        }
+      ]
+    },
+    {
+      "countable_policy_id" : "4217ef39-35f2-40ea-9c9a-98c1c2d35d8d",
+      "service" : "cellar.outbound",
+      "data_unit" : "B",
+      "data_quantity_for_price" : {
+        "secability" : "secable",
+        "quantity" : 1000000000
+      },
+      "time_interval_for_price" : null,
+      "first_x_free" : 0,
+      "price_plans" : [
+        {
+          "plan_id" : "a2a54233-6aa7-4705-a924-8943adbfac63",
+          "max_quantity" : 10000000000000,
+          "price" : 0.13500000000000000000
+        },
+        {
+          "plan_id" : "00d9d207-6354-429f-ae4c-1ed105d15967",
+          "max_quantity" : null,
+          "price" : 0.10500000000000000000
+        }
+      ]
+    },
+    {
+      "countable_policy_id" : "bfc7a3d9-25dd-46a2-be41-05f5d13f0816",
+      "service" : "heptapod.private_active_users",
+      "data_unit" : "User",
+      "data_quantity_for_price" : {
+        "secability" : "insecable",
+        "quantity" : 1
+      },
+      "time_interval_for_price" : {
+        "secability" : "insecable",
+        "interval" : "PT720H"
+      },
+      "first_x_free" : 0,
+      "price_plans" : [
+        {
+          "plan_id" : "4ee22c61-1d9e-4d2a-b714-2bbec3e32a4c",
+          "max_quantity" : null,
+          "price" : 10.50000000000000000000
+        }
+      ]
+    },
+    {
+      "countable_policy_id" : "8a1c20b9-07b1-47bc-807c-65f412945067",
+      "service" : "fsbucket.storage",
+      "data_unit" : "B",
+      "data_quantity_for_price" : {
+        "secability" : "secable",
+        "quantity" : 1000000000
+      },
+      "time_interval_for_price" : {
+        "secability" : "secable",
+        "interval" : "PT1H"
+      },
+      "first_x_free" : 0,
+      "price_plans" : [
+        {
+          "plan_id" : "1d8b8b2e-0552-480f-8b8c-ab2fb04a5786",
+          "max_quantity" : 100000000,
+          "price" : 0E-20
+        },
+        {
+          "plan_id" : "d45b817d-0c67-4ce0-9ada-acf4aa9c46f9",
+          "max_quantity" : null,
+          "price" : 0.00343750000000000000
+        }
+      ]
+    },
+    {
+      "countable_policy_id" : "b889b746-e446-4dce-912a-ea93c4a8a989",
+      "service" : "pulsar_throughput_out",
+      "data_unit" : "B",
+      "data_quantity_for_price" : {
+        "secability" : "secable",
+        "quantity" : 1000000000
+      },
+      "time_interval_for_price" : null,
+      "first_x_free" : 0,
+      "price_plans" : [
+        {
+          "plan_id" : "63689060-6c40-414a-85cf-add1a16c8036",
+          "max_quantity" : 500000000,
+          "price" : 0E-20
+        },
+        {
+          "plan_id" : "d4914efe-0793-45c6-8834-c5f5e3b1c087",
+          "max_quantity" : 100000000000,
+          "price" : 0E-20
+        },
+        {
+          "plan_id" : "cc41a344-b668-400f-aadf-c7389d2d66ee",
+          "max_quantity" : 500000000000,
+          "price" : 0.00004583333333333330
+        },
+        {
+          "plan_id" : "7578a312-d902-4d12-95e3-d763c208bcf1",
+          "max_quantity" : 5000000000000,
+          "price" : 0E-20
+        },
+        {
+          "plan_id" : "048b5682-70ab-4342-9175-e2a1e45ee1f4",
+          "max_quantity" : null,
+          "price" : 0E-20
+        }
+      ]
+    },
+    {
+      "countable_policy_id" : "aa1cc588-7787-48b3-bbe4-7c7c77f41906",
+      "service" : "pulsar_throughput_in",
+      "data_unit" : "B",
+      "data_quantity_for_price" : {
+        "secability" : "secable",
+        "quantity" : 1000000000
+      },
+      "time_interval_for_price" : null,
+      "first_x_free" : 0,
+      "price_plans" : [
+        {
+          "plan_id" : "32c670e4-bd6f-4ae3-801a-a2464cceeabf",
+          "max_quantity" : 500000000,
+          "price" : 0E-20
+        },
+        {
+          "plan_id" : "ef70a987-5740-4f17-8544-cf7e6a4ce985",
+          "max_quantity" : 100000000000,
+          "price" : 0.00166666666666667000
+        },
+        {
+          "plan_id" : "79bfd606-55ce-439f-a17f-317491cf534b",
+          "max_quantity" : 500000000000,
+          "price" : 0.00104166666666667000
+        },
+        {
+          "plan_id" : "ef41c15b-3c57-4ddf-947b-89dde3094180",
+          "max_quantity" : 5000000000000,
+          "price" : 0.00083333333333333300
+        },
+        {
+          "plan_id" : "b9577656-65af-442d-bf02-d70fc56141e6",
+          "max_quantity" : null,
+          "price" : 0.00062500000000000000
+        }
+      ]
+    },
+    {
+      "countable_policy_id" : "cfbf3355-14e7-451e-bf21-a65113f6dd53",
+      "service" : "heptapod.storage",
+      "data_unit" : "B",
+      "data_quantity_for_price" : {
+        "secability" : "secable",
+        "quantity" : 1000000000
+      },
+      "time_interval_for_price" : {
+        "secability" : "secable",
+        "interval" : "PT1H"
+      },
+      "first_x_free" : 0,
+      "price_plans" : [
+        {
+          "plan_id" : "53e1a7c5-99a2-4fb2-9de2-6a645c3eebb6",
+          "max_quantity" : 1000000000,
+          "price" : 0E-20
+        },
+        {
+          "plan_id" : "0b20edef-d26d-4cb7-ac3e-bf99f66b5fd0",
+          "max_quantity" : null,
+          "price" : 0.00004166666666666670
+        }
+      ]
+    }
+  ]
+}

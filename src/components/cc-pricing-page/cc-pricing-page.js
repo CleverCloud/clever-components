@@ -1,8 +1,7 @@
 import { css, html, LitElement } from 'lit';
 
-/** @type {Currency} */
 // FIXME: this code is duplicated across all pricing components (see issue #732 for more details)
-const DEFAULT_CURRENCY = { code: 'EUR', changeRate: 1 };
+const DEFAULT_CURRENCY = 'EUR';
 /** @type {Temporality} */
 // FIXME: this code is duplicated across all pricing components (see issue #732 for more details)
 const DEFAULT_TEMPORALITY = { type: '30-days', digits: 2 };
@@ -11,8 +10,9 @@ const DEFAULT_TEMPORALITY = { type: '30-days', digits: 2 };
  * @typedef {import('../cc-pricing-estimation/cc-pricing-estimation.js').CcPricingEstimation} CcPricingEstimation
  * @typedef {import('../cc-pricing-header/cc-pricing-header.js').CcPricingHeader} CcPricingHeader
  * @typedef {import('../cc-pricing-product/cc-pricing-product.js').CcPricingProduct} CcPricingProduct
- * @typedef {import('../common.types.js').Currency} Currency
- * @typedef {import('./cc-pricing-page.types.js').SelectedPlans} SelectedPlans
+ * @typedef {import('./cc-pricing-page.types.js').SelectedPlansById} SelectedPlansById
+ * @typedef {import('../common.types.js').Plan} Plan
+ * @typedef {import('../common.types.js').ConsumptionPlan} ConsumptionPlan
  * @typedef {import('../common.types.js').Temporality} Temporality
  */
 
@@ -27,6 +27,8 @@ const DEFAULT_TEMPORALITY = { type: '30-days', digits: 2 };
  * To do so, the component relies on a mutation observer that detects slotted pricing components and keeps refs of the corresponding DOM elements.
  * It listens to pricing related events and updates the relevant pricing DOM elements depending on the event.
  *
+ * Make sure to read `Smart` docs for the `cc-pricing-header` / `cc-pricing-estimation` components to understand how all of this work together with smart components.
+ *
  * @cssdisplay block
  *
  * @slot - Use this slot to insert your pricing components and their related content (headings, descriptions, etc.)
@@ -34,7 +36,7 @@ const DEFAULT_TEMPORALITY = { type: '30-days', digits: 2 };
 export class CcPricingPage extends LitElement {
   static get properties() {
     return {
-      selectedCurrency: { type: Object, attribute: 'selected-currency' },
+      selectedCurrency: { type: String, attribute: 'selected-currency' },
       selectedPlans: { type: Object, attribute: 'selected-plans' },
       selectedTemporality: { type: Object, attribute: 'selected-temporality' },
       selectedZoneId: { type: String, attribute: 'selected-zone-id' },
@@ -47,10 +49,10 @@ export class CcPricingPage extends LitElement {
   constructor() {
     super();
 
-    /** @type {Currency} Sets the current selected currency. */
+    /** @type {string} Sets the current selected currency. */
     this.selectedCurrency = DEFAULT_CURRENCY;
 
-    /** @type {SelectedPlans} Sets the current selected plans. */
+    /** @type {SelectedPlansById} Sets the current selected plans. */
     this.selectedPlans = {};
 
     /** @type {Temporality} Sets the current selected temporality. */
@@ -65,12 +67,16 @@ export class CcPricingPage extends LitElement {
     /** @type {CcPricingProduct[]|null} */
     this._productElements = null;
 
-    /** @type {CcPricingEstimation[]|null} */
+    /** @type {CcPricingEstimation|null} */
     this._estimationElement = null;
   }
 
+  /**
+   * @param {Plan|ConsumptionPlan} plan
+   * @returns {string}
+   */
   _getPlanId(plan) {
-    return plan.id ?? `${plan.productName}/${plan.name}`;
+    return `${plan.productName}/${plan.name}`;
   }
 
   /**
@@ -82,6 +88,7 @@ export class CcPricingPage extends LitElement {
     this._estimationElement = this.querySelector('cc-pricing-estimation');
   }
 
+  /** @param {CustomEvent<Plan|ConsumptionPlan>} event */
   _onAddPlan({ detail: plan }) {
     const planId = this._getPlanId(plan);
     if (this.selectedPlans[planId] == null) {
@@ -91,20 +98,24 @@ export class CcPricingPage extends LitElement {
     this.requestUpdate();
   }
 
+  /** @param {CustomEvent<string>} event */
   _onChangeCurrency({ detail: currency }) {
     this.selectedCurrency = currency;
   }
 
+  /** @param {CustomEvent<Temporality>} event */
   _onChangeTemporality({ detail: temporality }) {
     this.selectedTemporality = temporality;
   }
 
+  /** @param {CustomEvent<Plan|ConsumptionPlan>} event */
   _onChangeQuantity({ detail: plan }) {
     const planId = this._getPlanId(plan);
     this.selectedPlans[planId].quantity = plan.quantity;
     this.requestUpdate();
   }
 
+  /** @param {CustomEvent<Plan|ConsumptionPlan>} event */
   _onDeletePlan({ detail: plan }) {
     const planId = this._getPlanId(plan);
     delete this.selectedPlans[planId];

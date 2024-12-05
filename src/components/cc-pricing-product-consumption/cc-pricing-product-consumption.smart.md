@@ -15,37 +15,46 @@ title: '💡 Smart'
 
 ## ⚙️ Params
 
-| Name        | Type        | Details                                                                          | Default |
-|-------------|-------------|----------------------------------------------------------------------------------|---------|
-| `productId` | `string`    | `cellar`, `fsbucket`, `heptapod`, or `pulsar`                                    |         |
-| `zoneId`    | `string`    | Name from [`/v4/products/zones`](https://api.clever-cloud.com/v4/products/zones) | `par`   |
+| Name        | Type        | Required | Details                                                                                          | Default                                         |
+|-------------|-------------|----------|--------------------------------------------------------------------------------------------------|-------------------------------------------------|
+| `apiConfig` | `ApiConfig` | Yes      | Object with API configuration (target host)                                                      | `{ API_HOST: "https://api.clever-cloud.com" }`  |
+| `currency`  | `string`    | No       | Currency code matching the ISO 4217 format                                                       | `EUR`                                           |
+| `productId` | `string`    | Yes      | `cellar`, `fsbucket`, `heptapod`, or `pulsar`                                                    |                                                 |
+| `zoneId`    | `string`    | No       | Name from [`/v4/products/zones`](https://api.clever-cloud.com/v4/products/zones)                 | `par`                                           |
 
 ## 🌐 API endpoints
 
-| Method | Type                               | Cache? |
-|--------|:-----------------------------------|--------|
-| `GET`  | `/v4/billing/price-system?zone_id` | 1 day  |
+| Method | Type                                             | Cache? |
+|--------|--------------------------------------------------|--------|
+| `GET`  | `/v4/billing/price-system?zone_id&currency`      | 1 day  |
 
 ## ⬇️️ Examples
 
 ### Simple Cellar
 
-Simple example for Cellar based on default zone.
+Simple example for Cellar based on default zone and default currency.
 
 ```html
 <cc-smart-container context='{
-    "productId": "cellar" }'>
+  "apiConfig": {
+    API_HOST: ""
+  },
+  "productId":, "cellar",
+}'>
   <cc-pricing-product-consumption></cc-pricing-product-consumption>
 </cc-smart-container>
 ```
 
 ### Simple FS Bucket
 
-Simple example for FS Bucket based on default zone.
+Simple example for FS Bucket based on default zone and default currency.
 
 ```html
 <cc-smart-container context='{
-    "productId": "fsbucket",
+  "apiConfig": {
+    API_HOST: ""
+  },
+  "productId": "fsbucket",
 }'>
   <cc-pricing-product-consumption></cc-pricing-product-consumption>
 </cc-smart-container>
@@ -53,11 +62,14 @@ Simple example for FS Bucket based on default zone.
 
 ### Simple Pulsar
 
-Simple example for FS Bucket based on default zone.
+Simple example for Pulsar based on default zone and default currency.
 
 ```html
 <cc-smart-container context='{
-    "productId": "pulsar",
+  "apiConfig": {
+    API_HOST: ""
+  },
+  "productId": "pulsar",
 }'>
   <cc-pricing-product-consumption></cc-pricing-product-consumption>
 </cc-smart-container>
@@ -65,17 +77,20 @@ Simple example for FS Bucket based on default zone.
 
 ### Simple Heptapod
 
-Simple example for Heptapod based on default zone.
+Simple example for Heptapod based on default zone and default currency.
 
 ```html
 <cc-smart-container context='{
-    "productId": "heptapod",
+  "apiConfig": {
+    API_HOST: ""
+  },
+  "productId": "heptapod",
 }'>
   <cc-pricing-product-consumption></cc-pricing-product-consumption>
 </cc-smart-container>
 ```
 
-### Zone and currency
+### Zone
 
 Simple example for Cellar with custom zone.
 
@@ -83,10 +98,28 @@ NOTE: Prices are the same on all zones right now.
 
 ```html
 <cc-smart-container context='{
-    "productId": "cellar",
-    "zoneId": "rbx",
+  "apiConfig": {
+    API_HOST: ""
+  },
+  "productId": "cellar",
+  "zoneId": "rbx"
 }'>
   <cc-pricing-product-consumption></cc-pricing-product-consumption>
 </cc-smart-container>
 ```
 
+### Currency
+
+Simple example for Cellar with custom currency.
+
+```html
+<cc-smart-container context='{
+  "apiConfig": {
+    API_HOST: ""
+  },
+  "currency": "USD",
+  "productId": "cellar",
+}'>
+  <cc-pricing-product-consumption></cc-pricing-product-consumption>
+</cc-smart-container>
+```

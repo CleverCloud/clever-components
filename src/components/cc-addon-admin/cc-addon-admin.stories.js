@@ -19,7 +19,6 @@ const conf = {
  * @typedef {import('./cc-addon-admin.types.js').AddonAdminStateUpdatingName} AddonAdminStateUpdatingName
  * @typedef {import('./cc-addon-admin.types.js').AddonAdminStateUpdatingTags} AddonAdminStateUpdatingTags
  * @typedef {import('./cc-addon-admin.types.js').AddonAdminStateDeleting} AddonAdminStateDeleting
- * @typedef {import('../common.types.js').Addon} Addon
  */
 
 const addon = {

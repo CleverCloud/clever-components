@@ -1055,6 +1055,7 @@ export const translations = {
   //#region cc-pricing-estimation
   'cc-pricing-estimation.count.label': /** @param {{productCount: number}} _ */ ({ productCount }) =>
     plural(productCount, 'product'),
+  'cc-pricing-estimation.error': `An error occurred while loading pricing details.`,
   'cc-pricing-estimation.estimated-price-name.1000-minutes': `Price (${formatNumber(lang, 1000)} minutes)`,
   'cc-pricing-estimation.estimated-price-name.30-days': () => sanitize`estimated/30&nbsp;days`,
   'cc-pricing-estimation.estimated-price-name.day': `estimated/Day`,
@@ -1066,10 +1067,12 @@ export const translations = {
   'cc-pricing-estimation.feature.custom': /** @param {{featureName: string}} _ */ ({ featureName }) =>
     `${featureName}: `,
   'cc-pricing-estimation.feature.databases': `Databases: `,
+  'cc-pricing-estimation.feature.dedicated': `Dedicated`,
   'cc-pricing-estimation.feature.disk-size': `Disk size: `,
   'cc-pricing-estimation.feature.gpu': `GPUs: `,
   'cc-pricing-estimation.feature.has-logs': `Logs: `,
   'cc-pricing-estimation.feature.has-metrics': `Metrics: `,
+  'cc-pricing-estimation.feature.is-migratable': `Migration tool`,
   'cc-pricing-estimation.feature.max-db-size': `Max DB size: `,
   'cc-pricing-estimation.feature.memory': `RAM: `,
   'cc-pricing-estimation.feature.version': `Version: `,
@@ -1094,11 +1097,11 @@ export const translations = {
     productName,
     planName,
   }) => `Total for ${productName} ${planName}`,
-  'cc-pricing-estimation.price': /** @param {{price: number, code: string, digits: number}} _ */ ({
+  'cc-pricing-estimation.price': /** @param {{price: number, currency: string, digits: number}} _ */ ({
     price,
-    code,
+    currency,
     digits,
-  }) => formatCurrency(lang, price, { currency: code, minimumFractionDigits: digits, maximumFractionDigits: digits }),
+  }) => formatCurrency(lang, price, { currency, minimumFractionDigits: digits, maximumFractionDigits: digits }),
   'cc-pricing-estimation.price-name.1000-minutes': `Price (${formatNumber(lang, 1000)} minutes)`,
   'cc-pricing-estimation.price-name.30-days': () => sanitize`Price/30&nbsp;days`,
   'cc-pricing-estimation.price-name.day': `Price/Day`,
@@ -1153,19 +1156,19 @@ export const translations = {
   'cc-pricing-product.feature.memory': `RAM`,
   'cc-pricing-product.feature.version': `Version`,
   'cc-pricing-product.plan': `Plan`,
-  'cc-pricing-product.price': /** @param {{price: number, code: string, digits: number}} _ */ ({
+  'cc-pricing-product.price': /** @param {{price: number, currency: string, digits: number}} _ */ ({
     price,
-    code,
+    currency,
     digits,
-  }) => formatCurrency(lang, price, { currency: code, minimumFractionDigits: digits, maximumFractionDigits: digits }),
+  }) => formatCurrency(lang, price, { currency, minimumFractionDigits: digits, maximumFractionDigits: digits }),
   'cc-pricing-product.price-name.1000-minutes': `Price (${formatNumber(lang, 1000)} minutes)`,
   'cc-pricing-product.price-name.30-days': () => sanitize`Price/30&nbsp;days`,
   'cc-pricing-product.price-name.day': `Price/Day`,
   'cc-pricing-product.price-name.hour': `Price/Hour`,
   'cc-pricing-product.price-name.minute': `Price/Minute`,
   'cc-pricing-product.price-name.second': `Price/Second`,
-  'cc-pricing-product.type.boolean': /** @param {{boolean: string}} _ */ ({ boolean }) => `${boolean ? 'Yes' : 'No'}`,
-  'cc-pricing-product.type.boolean-shared': /** @param {{shared: string}} _ */ ({ shared }) =>
+  'cc-pricing-product.type.boolean': /** @param {{boolean: boolean}} _ */ ({ boolean }) => `${boolean ? 'Yes' : 'No'}`,
+  'cc-pricing-product.type.boolean-shared': /** @param {{shared: boolean}} _ */ ({ shared }) =>
     `${shared ? 'Shared' : 'Dedicated'}`,
   'cc-pricing-product.type.bytes': /** @param {{bytes: number}} _ */ ({ bytes }) => formatBytes(bytes, 0, 3),
   'cc-pricing-product.type.number': /** @param {{number: number}} _ */ ({ number }) => formatNumber(lang, number),
@@ -1186,25 +1189,25 @@ export const translations = {
     formatNumber(lang, number),
   'cc-pricing-product-consumption.outbound-traffic.label': `traffic out`,
   'cc-pricing-product-consumption.outbound-traffic.title': `Outbound traffic:`,
-  'cc-pricing-product-consumption.price': /** @param {{price: number, code: string}} _ */ ({ price, code }) =>
-    `${formatCurrency(lang, price, { currency: code })}`,
-  'cc-pricing-product-consumption.price-interval.bytes': /** @param {{price: number, code: string}} _ */ ({
+  'cc-pricing-product-consumption.price': /** @param {{price: number, currency: string}} _ */ ({ price, currency }) =>
+    `${formatCurrency(lang, price, { currency })}`,
+  'cc-pricing-product-consumption.price-interval.bytes': /** @param {{price: number, currency: string}} _ */ ({
     price,
-    code,
+    currency,
   }) => {
     const priceInterval = formatCurrency(lang, price, {
       minimumFractionDigits: 3,
       maximumFractionDigits: 3,
-      currency: code,
+      currency,
     });
     const priceOneGigabyte = getUnit(1e9);
     return `${priceInterval} / ${priceOneGigabyte} (30 days)`;
   },
   'cc-pricing-product-consumption.price-interval.free': `FREE`,
   'cc-pricing-product-consumption.price-interval.users':
-    /** @param {{userCount: number, price: number, code: string}} _ */ ({ userCount, price, code }) => {
+    /** @param {{userCount: number, price: number, currency: string}} _ */ ({ userCount, price, currency }) => {
       const users = plural(userCount, 'user');
-      const priceInterval = formatCurrency(lang, price * userCount, { currency: code });
+      const priceInterval = formatCurrency(lang, price * userCount, { currency });
       return `${priceInterval} / ${userCount} ${users} (30 days)`;
     },
   'cc-pricing-product-consumption.private-users.label': `private users`,

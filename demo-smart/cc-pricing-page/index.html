@@ -87,7 +87,7 @@
       import '../../src/components/cc-pricing-product/cc-pricing-product.smart-addon.js';
       import '../../src/components/cc-pricing-product/cc-pricing-product.smart-runtime.js';
       import '../../src/components/cc-pricing-product-consumption/cc-pricing-product-consumption.smart.js';
-      import '../../src/components/cc-pricing-estimation/cc-pricing-estimation.js';
+      import '../../src/components/cc-pricing-estimation/cc-pricing-estimation.smart.js';
       import '../../src/components/cc-pricing-header/cc-pricing-header.smart.js';
 
       addTranslations(lang, translations);
@@ -112,12 +112,12 @@
   </head>
   <body>
     <cc-smart-container
-      context='{ "zoneId": "par", "addonFeatures":["cpu","memory","max-db-size","disk-size","connection-limit","version","databases","has-logs","has-metrics"]}'
+      context='{ "apiConfig": {"API_HOST": "https://api.clever-cloud.com"},"addonFeatures":["cpu","memory","max-db-size","disk-size","connection-limit","version","databases","has-logs","has-metrics"] }'
     >
       <cc-pricing-page>
         <div class="header">
           <cc-pricing-header
-            currencies='[{"code":"EUR","changeRate":1},{"code":"USD","changeRate":1.1717}]'
+            currencies='["EUR", "USD"]'
             temporalities='[{"type":"second","digits":7},{"type":"minute","digits":5},{"type":"hour","digits":3},{"type":"day","digits":2},{"type":"30-days","digits":2}]'
           ></cc-pricing-header>
         </div>
@@ -153,7 +153,7 @@
           </div>
 
           <cc-pricing-estimation
-            currencies='[{"code":"EUR","changeRate":1},{"code":"USD","changeRate":1.1717}]'
+            currencies='["EUR", "USD"]'
             temporalities='[{"type":"second","digits":7},{"type":"minute","digits":5},{"type":"hour","digits":3},{"type":"day","digits":2},{"type":"30-days","digits":2}]'
           ></cc-pricing-estimation>
         </div>

@@ -21,11 +21,6 @@ interface AddonPlan {
   name: string;
 }
 
-interface AddonProvider {
-  name: string;
-  logoUrl: string;
-}
-
 export interface Scalability {
   minFlavor: Flavor;
   maxFlavor: Flavor;
@@ -116,46 +111,66 @@ interface Marker {
   // Additional specific properties for the marker custom element.
 }
 
-interface Currency {
-  code: string;
-  changeRate: number;
-}
-
 interface Plan {
-  productName: string;
+  productName?: string;
   name: string;
   price: number; // price in euros for 1 hour
-  features: Feature[];
-  quantity: number;
+  priceId?: string;
+  features: FormattedFeature[];
+  quantity?: number;
 }
 
-interface Feature {
+interface ConsumptionPlan {
+  productName: string;
+  name: string;
+  price: number;
+  sections: Array<PricingSection>;
+  quantity?: number;
+}
+
+export interface FormattedFeature {
+  // `string & {}` means any string other than the ones listed before. Without this, you get no autocomplete because string and 'toto' overlap.
   code:
     | 'connection-limit'
     | 'cpu'
-    | 'databases'
-    | 'disk-size'
     | 'gpu'
+    | 'is-migratable'
+    | 'databases'
+    | 'dedicated'
+    | 'disk-size'
     | 'has-logs'
     | 'has-metrics'
     | 'max-db-size'
     | 'memory'
-    | 'version';
-  type: 'boolean' | 'shared' | 'bytes' | 'number' | 'runtime' | 'string';
-  value?: number | string; // Only required for a plan feature
+    | 'version'
+    | (string & {});
+  // `string & {}` means any string other than the ones listed before. Without this, you get no autocomplete because string and 'toto' overlap.
+  type: 'boolean' | 'shared' | 'boolean-shared' | 'bytes' | 'number' | 'runtime' | 'number-cpu-runtime' | 'string';
+  value?: number | string | { cpu: number; shared: boolean; nice: number };
   name?: string;
 }
 
-interface PricingSection {
+export interface PricingSection {
   type: SectionType;
+  service:
+    | 'cellar.storage'
+    | 'cellar.outbound'
+    | 'fsbucket.storage'
+    | 'pulsar_storage_size'
+    | 'pulsar_throughput_in'
+    | 'pulsar_throughput_out'
+    | 'heptapod.storage'
+    | 'heptapod.private_active_users'
+    | 'heptapod.public_active_users';
   progressive?: boolean; // defaults to false
   secability?: number; // defaults to 1
   intervals: PricingInterval[];
+  quantity?: number;
 }
 
-interface PricingInterval {
+export interface PricingInterval {
   minRange: number; // byte
-  maxRange: number; // byte
+  maxRange?: number; // byte
   price: number; // "euros / byte / 30 days" or just "euros / byte" for timeless sections like traffic
 }
 
@@ -165,7 +180,7 @@ type ActionType = 'add' | 'none';
 
 interface Temporality {
   type: 'second' | 'minute' | 'hour' | 'day' | '30-days' | '1000-minutes';
-  digits: number; // how many fraction digits to display the price
+  digits?: number; // how many fraction digits to display the price
 }
 
 interface RedirectionNamespace {
@@ -251,4 +266,175 @@ export interface Notification {
 export interface NotificationOptions {
   timeout?: number;
   closeable?: boolean;
+}
+
+// FIXME: this should be provided by the client
+export interface Instance {
+  type: string;
+  version: string;
+  name: string;
+  variant: {
+    id: string;
+    slug: string;
+    name: string;
+    deployType: string;
+    logo: string;
+  };
+  description: string;
+  enabled: boolean;
+  comingSoon: boolean;
+  maxInstances: number;
+  tags: Array<string>;
+  deployments: Array<string>;
+  flavors: Array<{
+    name: string;
+    mem: number;
+    cpus: number;
+    gpus: number;
+    disk: number;
+    price: number;
+    available: boolean;
+    microservice: boolean;
+    machine_learning: boolean;
+    nice: number;
+    price_id: string;
+    memory: {
+      unit: string;
+      value: number;
+      formatted: string;
+    };
+  }>;
+  defaultFlavor: {
+    name: string;
+    mem: number;
+    cpus: number;
+    gpus: number;
+    disk: number;
+    price: number;
+    available: boolean;
+    microservice: boolean;
+    machine_learning: boolean;
+    nice: number;
+    price_id: string;
+    memory: {
+      unit: string;
+      value: number;
+      formatted: string;
+    };
+  };
+  buildFlavor: {
+    name: string;
+    mem: number;
+    cpus: number;
+    gpus: number;
+    disk: number;
+    price: number;
+    available: boolean;
+    microservice: boolean;
+    machine_learning: boolean;
+    nice: number;
+    price_id: string;
+    memory: {
+      unit: string;
+      value: number;
+      formatted: string;
+    };
+  };
+}
+
+// FIXME: this should be provided by the client
+export interface PriceSystem {
+  id?: string;
+  owner_id?: string;
+  start_date: string;
+  end_date: string;
+  zone_id: string;
+  currency: string;
+  runtime: Array<{
+    runtime_policy_id: string;
+    source: string;
+    flavor: string;
+    time_unit: string;
+    price: number;
+    slug_id: string;
+  }>;
+  countable: Array<{
+    countable_policy_id: string;
+    service: string;
+    data_unit: string;
+    data_quantity_for_price: {
+      secability: string;
+      quantity: number;
+    };
+    time_interval_for_price: {
+      secability: string;
+      interval: string;
+    };
+    first_x_free: number;
+    price_plans: Array<{
+      plan_id: string;
+      max_quantity: number;
+      price: number;
+    }>;
+  }>;
+}
+
+export type AddonProvider = Pick<RawAddonProvider, 'name' | 'logoUrl'>;
+
+// FIXME: this should be provided by the client
+export interface RawAddonProvider {
+  id: string;
+  name: string;
+  website: string;
+  supportEmail: string;
+  googlePlusName: string;
+  twitterName: string;
+  analyticsId: string;
+  shortDesc: string;
+  longDesc: string;
+  logoUrl: string;
+  status: string;
+  openInNewTab: boolean;
+  canUpgrade: boolean;
+  regions: Array<string>;
+  plans: {
+    id: string;
+    name: string;
+    slug: string;
+    price: number;
+    price_id: string;
+    features: {
+      name: string;
+      type: 'BOOLEAN' | 'BOOLEAN_SHARED' | 'NUMBER_CPU_RUNTIME' | 'OBJECT' | 'SHARED' | 'BYTES' | 'NUMBER' | 'STRING';
+      value: string;
+      computable_value: string;
+      name_code:
+        | 'connection-limit'
+        | 'cpu'
+        | 'databases'
+        | 'disk-size'
+        | 'has-logs'
+        | 'has-metrics'
+        | 'max-db-size'
+        | 'memory'
+        | 'version'
+        | string;
+    }[];
+    zones: Array<string>;
+  }[];
+  features: {
+    name: string;
+    type: 'BOOLEAN' | 'BOOLEAN_SHARED' | 'SHARED' | 'OBJECT' | 'BYTES' | 'NUMBER' | 'RUNTIME' | 'STRING';
+    name_code:
+      | 'connection-limit'
+      | 'cpu'
+      | 'databases'
+      | 'disk-size'
+      | 'has-logs'
+      | 'has-metrics'
+      | 'max-db-size'
+      | 'memory'
+      | 'version'
+      | string;
+  }[];
 }

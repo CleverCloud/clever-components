@@ -1,15 +1,15 @@
 import { PricingSection, SectionType } from '../common.types.js';
 
 interface PricingProductConsumptionStateLoading {
-  state: 'loading';
+  type: 'loading';
 }
 
 interface PricingProductConsumptionStateError {
-  state: 'error';
+  type: 'error';
 }
 
 interface PricingProductConsumptionStateLoaded {
-  state: 'loaded';
+  type: 'loaded';
   name: string;
   sections: PricingSection[];
 }
@@ -19,10 +19,13 @@ export type PricingProductConsumptionState =
   | PricingProductConsumptionStateError
   | PricingProductConsumptionStateLoaded;
 
-export type SectionStates = {
-  [key in SectionType]: {
-    isClosed: boolean;
-    quantity: number;
-    unitValue: number;
-  };
-};
+export type SectionStates = Partial<
+  Record<
+    SectionType,
+    {
+      isClosed: boolean;
+      quantity: number;
+      unitValue: string;
+    }
+  >
+>;

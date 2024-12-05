@@ -1067,6 +1067,7 @@ export const translations = {
   //#region cc-pricing-estimation
   'cc-pricing-estimation.count.label': /** @param {{productCount: number}} _ */ ({ productCount }) =>
     plural(productCount, 'produit'),
+  'cc-pricing-estimation.error': `Une erreur est survenue pendant le chargement des prix.`,
   'cc-pricing-estimation.estimated-price-name.1000-minutes': `estimé (${formatNumber(lang, 1000)} minutes)`,
   'cc-pricing-estimation.estimated-price-name.30-days': () => sanitize`estimé/30&nbsp;jours`,
   'cc-pricing-estimation.estimated-price-name.day': `estimé/jour`,
@@ -1078,10 +1079,12 @@ export const translations = {
   'cc-pricing-estimation.feature.custom': /** @param {{featureName: string}} _ */ ({ featureName }) =>
     sanitize`${featureName}&nbsp;: `,
   'cc-pricing-estimation.feature.databases': () => sanitize`Bases de données&nbsp;: `,
+  'cc-pricing-estimation.feature.dedicated': `Dédié`,
   'cc-pricing-estimation.feature.disk-size': () => sanitize`Taille du disque&nbsp;: `,
   'cc-pricing-estimation.feature.gpu': () => sanitize`GPUs&nbsp;: `,
   'cc-pricing-estimation.feature.has-logs': () => sanitize`Logs&nbsp;: `,
   'cc-pricing-estimation.feature.has-metrics': () => sanitize`Métriques&nbsp;: `,
+  'cc-pricing-estimation.feature.is-migratable': `Outil de migration`,
   'cc-pricing-estimation.feature.max-db-size': () => sanitize`Taille BDD max&nbsp;: `,
   'cc-pricing-estimation.feature.memory': () => sanitize`RAM&nbsp;: `,
   'cc-pricing-estimation.feature.version': () => sanitize`Version&nbsp;: `,
@@ -1106,13 +1109,13 @@ export const translations = {
     productName,
     planName,
   }) => `Total pour ${productName} ${planName}`,
-  'cc-pricing-estimation.price': /** @param {{price: number, code: string, digits: number}} _ */ ({
+  'cc-pricing-estimation.price': /** @param {{price: number, currency: string, digits: number}} _ */ ({
     price,
-    code,
+    currency,
     digits,
   }) =>
     formatCurrency(lang, price, {
-      currency: code,
+      currency,
       minimumFractionDigits: digits,
       maximumFractionDigits: digits,
     }),
@@ -1170,13 +1173,13 @@ export const translations = {
   'cc-pricing-product.feature.memory': `RAM`,
   'cc-pricing-product.feature.version': `Version`,
   'cc-pricing-product.plan': `Plan`,
-  'cc-pricing-product.price': /** @param {{price: number, code: string, digits: number}} _ */ ({
+  'cc-pricing-product.price': /** @param {{price: number, currency: string, digits: number}} _ */ ({
     price,
-    code,
+    currency,
     digits,
   }) =>
     formatCurrency(lang, price, {
-      currency: code,
+      currency,
       minimumFractionDigits: digits,
       maximumFractionDigits: digits,
     }),
@@ -1208,25 +1211,25 @@ export const translations = {
     formatNumber(lang, number),
   'cc-pricing-product-consumption.outbound-traffic.label': `trafic sortant`,
   'cc-pricing-product-consumption.outbound-traffic.title': `Trafic sortant :`,
-  'cc-pricing-product-consumption.price': /** @param {{price: number, code: string}} _ */ ({ price, code }) =>
-    `${formatCurrency(lang, price, { currency: code })}`,
-  'cc-pricing-product-consumption.price-interval.bytes': /** @param {{price: number, code: string}} _ */ ({
+  'cc-pricing-product-consumption.price': /** @param {{price: number, currency: string}} _ */ ({ price, currency }) =>
+    `${formatCurrency(lang, price, { currency })}`,
+  'cc-pricing-product-consumption.price-interval.bytes': /** @param {{price: number, currency: string}} _ */ ({
     price,
-    code,
+    currency,
   }) => {
     const priceInterval = formatCurrency(lang, price, {
       minimumFractionDigits: 3,
       maximumFractionDigits: 3,
-      currency: code,
+      currency,
     });
     const priceOneGigabyte = getUnit(1e9);
     return `${priceInterval} / ${priceOneGigabyte} (30 jours)`;
   },
   'cc-pricing-product-consumption.price-interval.free': `GRATUIT`,
   'cc-pricing-product-consumption.price-interval.users':
-    /** @param {{userCount: number, price: number, code: string}} _ */ ({ userCount, price, code }) => {
+    /** @param {{userCount: number, price: number, currency: string}} _ */ ({ userCount, price, currency }) => {
       const users = plural(userCount, 'utilisateur');
-      const priceInterval = formatCurrency(lang, price * userCount, { currency: code });
+      const priceInterval = formatCurrency(lang, price * userCount, { currency });
       return `${priceInterval} / ${userCount} ${users} (30 jours)`;
     },
   'cc-pricing-product-consumption.private-users.label': `utilisateurs privés`,
