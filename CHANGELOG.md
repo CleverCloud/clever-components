@@ -5,6 +5,43 @@ title: 'Changelog'
 
 # Changelog
 
+## [17.0.0](https://github.com/CleverCloud/clever-components/compare/16.4.0...17.0.0) (2024-12-05)
+
+
+### ⚠ BREAKING CHANGES
+
+* **cc-tile-metrics:** the following attributes are impacted
+    - `metricsLink` has been renamed to `metrics-link`,
+    - `metricsState` has been renamed to `metrics-state`,
+    - `grafanaLinkState` has been renamed to `grafana-link-state`.
+* **cc-addon-option-form:** rename `title` to `heading`
+* **cc-addon-option:** rename `title` to `heading`
+* **cc-pricing-page:** the component no longer supports hard coded change rate Prices displayed in pricing components are no longer computed based on hard coded change rate. Prices related to the selected currency come from the API priceSytem endpoint.
+* **cc-pricing-estimation:** the component no longer supports hard coded change rate Prices displayed in pricing components are no longer computed based on hard coded change rate. Prices related to the selected currency come from the API priceSytem endpoint. This means the component now has a dedicated smart component ( `cc-pricing-estimation.smart`) to fetch the `priceSystem` corresponding to the selected currency everytime it changes.
+* **cc-pricing-product-consumption:** the component no longer supports hard coded change rate Prices displayed in pricing components are no longer computed based on hard coded change rate. Prices related to the selected currency come from the API priceSytem endpoint. The component also relies on the new `state` prop for data coming from the API.
+* **cc-pricing-product:** the component no longer supports hard coded change rate Prices displayed in pricing components are no longer computed based on hard coded change rate. Prices related to the selected currency come from the API priceSytem endpoint. The component also relies on the new `state` prop for data coming from the API.
+* **cc-pricing-header:** the component no longer supports hard coded change rate Prices displayed in pricing components are no longer computed based on hard coded change rate. Prices related to the selected currency come from the API priceSytem endpoint.
+
+### 🚀 Features
+
+* **cc-pricing-estimation:** init smart & adapt to support priceSystem currency ([a67c3bc](https://github.com/CleverCloud/clever-components/commit/a67c3bc8c8fca6b4a35881d6a1395416473381da)), closes [#1167](https://github.com/CleverCloud/clever-components/issues/1167)
+* **cc-pricing-header:** adapt to support priceSystem currency ([dd173cb](https://github.com/CleverCloud/clever-components/commit/dd173cb4f9bbd3f2fa8966b8dac967dcdbd75d06)), closes [#1167](https://github.com/CleverCloud/clever-components/issues/1167)
+* **cc-pricing-page:** adapt to support priceSystem currency ([0d24ff5](https://github.com/CleverCloud/clever-components/commit/0d24ff5c0cac5823c21eccb82dc4534c1a0acfc8)), closes [#1167](https://github.com/CleverCloud/clever-components/issues/1167)
+* **cc-pricing-product-consumption:** adapt to support priceSystem currency ([181feb6](https://github.com/CleverCloud/clever-components/commit/181feb6f4b75b2adda3ccad016a8be7a6b70cedb)), closes [#1167](https://github.com/CleverCloud/clever-components/issues/1167) [#1176](https://github.com/CleverCloud/clever-components/issues/1176) [#1109](https://github.com/CleverCloud/clever-components/issues/1109)
+* **cc-pricing-product:** adapt to support priceSystem currency ([3316eb8](https://github.com/CleverCloud/clever-components/commit/3316eb84093f919eb542c55de8624df78c95dd71)), closes [#1167](https://github.com/CleverCloud/clever-components/issues/1167) [#1109](https://github.com/CleverCloud/clever-components/issues/1109) [#1174](https://github.com/CleverCloud/clever-components/issues/1174) [#1176](https://github.com/CleverCloud/clever-components/issues/1176)
+
+
+### 🐛 Bug Fixes
+
+* **cc-addon-backups:** make `delete` & `restore` overlays reponsive ([a98945a](https://github.com/CleverCloud/clever-components/commit/a98945a29058d2c86385a82ef7cc04d25021fc64)), closes [#1268](https://github.com/CleverCloud/clever-components/issues/1268)
+* **cc-addon-option-form:** rename `title` to `heading` ([9bbc556](https://github.com/CleverCloud/clever-components/commit/9bbc55657c3357d093a94445ae3d77ec9db369f0)), closes [#1125](https://github.com/CleverCloud/clever-components/issues/1125)
+* **cc-addon-option:** rename `title` to `heading` ([f0a85d3](https://github.com/CleverCloud/clever-components/commit/f0a85d347df7f5219c7725e016a28ea99375860c)), closes [#1125](https://github.com/CleverCloud/clever-components/issues/1125)
+* **cc-block:** add css rules to the `slot name="content-body"` ([c7ac3e9](https://github.com/CleverCloud/clever-components/commit/c7ac3e918aac17ee55727bb59a0b4686e432b41c)), closes [#1259](https://github.com/CleverCloud/clever-components/issues/1259)
+* **cc-domain-management:** restore loader & error message in the DNS config section ([beb7f8a](https://github.com/CleverCloud/clever-components/commit/beb7f8a0b374324b0da74bc4191fc5005c7cc582)), closes [#1261](https://github.com/CleverCloud/clever-components/issues/1261)
+* **cc-pricing-*:** restore currency symbol display inside dropdowns ([89dede5](https://github.com/CleverCloud/clever-components/commit/89dede506e10f8597e66e58553ee1555526b69d6)), closes [#1223](https://github.com/CleverCloud/clever-components/issues/1223)
+* **cc-tile-metrics:** use kebab case for all attributes ([8bff968](https://github.com/CleverCloud/clever-components/commit/8bff968e206a35292a7dcdda845d0106b073558c))
+* **smart components:** allow optional `apiConfig` context params ([23fb6fd](https://github.com/CleverCloud/clever-components/commit/23fb6fd285ffde9c989c2861e0cc9e92b3daf39a)), closes [#1222](https://github.com/CleverCloud/clever-components/issues/1222)
+
 ## [16.4.0](https://github.com/CleverCloud/clever-components/compare/16.3.1...16.4.0) (2024-11-28)
 
 
