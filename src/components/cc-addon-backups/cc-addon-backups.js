@@ -44,7 +44,7 @@ const SKELETON_BACKUPS = {
  *
  * * If the retention is not standard (customized by the user), the `expiresAt` backup property should be nullish
  *
- * @cssdisplay grid
+ * @cssdisplay block
  */
 export class CcAddonBackups extends LitElement {
   static get properties() {
