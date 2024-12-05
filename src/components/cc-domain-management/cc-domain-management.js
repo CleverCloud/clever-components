@@ -377,10 +377,14 @@ export class CcDomainManagement extends LitElement {
             </cc-notice>
           </div>
 
-          ${this.dnsInfoState.type === 'loading' ? html` <cc-loader></cc-loader> ` : ''}
+          ${this.dnsInfoState.type === 'loading' ? html` <cc-loader slot="content-body"></cc-loader> ` : ''}
           ${this.dnsInfoState.type === 'error'
             ? html`
-                <cc-notice intent="warning" message="${i18n('cc-domain-management.dns.loading-error')}"></cc-notice>
+                <cc-notice
+                  intent="warning"
+                  message="${i18n('cc-domain-management.dns.loading-error')}"
+                  slot="content-body"
+                ></cc-notice>
               `
             : ''}
           ${this.dnsInfoState.type === 'loaded'
