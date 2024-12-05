@@ -20,6 +20,16 @@ import { ZONES } from './fixtures/zones.js';
 import { createStoryItem } from './lib/make-story.js';
 
 const BREAKPOINT = 1100;
+/** @type {Array<FormattedFeature['code']>}  **/
+const FEATURES_TO_DISPLAY = [
+  'connection-limit',
+  'cpu',
+  'disk-size',
+  'has-logs',
+  'has-metrics',
+  'max-db-size',
+  'databases',
+];
 
 /**
  * @typedef {import('../components/cc-pricing-page/cc-pricing-page.js').CcPricingPage} CcPricingPage
@@ -32,6 +42,7 @@ const BREAKPOINT = 1100;
  * @typedef {import('../components/cc-pricing-product-consumption/cc-pricing-product-consumption.types.js').PricingProductConsumptionState} PricingProductConsumptionState
  * @typedef {import('../components/common.types.js').PriceSystem} PriceSystem
  * @typedef {import('../components/cc-pricing-estimation/cc-pricing-estimation.types.js').PricingEstimationStateLoaded} PricingEstimationStateLoaded
+ * @typedef {import('../components/common.types.js').FormattedFeature} FormattedFeature
  * @typedef {import('lit/directives/ref.js').Ref<CcPricingEstimation>} RefCcPricingEstimation
  * @typedef {Parameters<typeof getFullProductRuntime>[0]} RuntimeProductId
  * @typedef {Parameters<typeof getFullProductAddon>[0]} AddonProductId
@@ -291,7 +302,7 @@ export class CcPricingPageSandbox extends LitElement {
       stateType === 'loaded'
         ? {
             type: 'loaded',
-            ...getFullProductAddon(addonProductId, null, this._priceSystem),
+            ...getFullProductAddon(addonProductId, FEATURES_TO_DISPLAY, this._priceSystem),
           }
         : { type: stateType };
 
