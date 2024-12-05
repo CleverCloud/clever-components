@@ -32,7 +32,7 @@ i18n.MISSING_TEXT = '🤬🤬🤬🤬🤬';
 function getTranslation(key) {
   try {
     return TRANSLATIONS_MAP[currentLanguage][key];
-  } catch (e) {
+  } catch {
     return null;
   }
 }

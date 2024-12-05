@@ -347,7 +347,7 @@ export class CcLogsApplicationView extends LitElement {
       try {
         parseRegex(this._messageFilter);
         this._messageFilterValid = true;
-      } catch (e) {
+      } catch {
         this._messageFilterValid = false;
       }
     } else {
@@ -1305,6 +1305,7 @@ export class CcLogsApplicationView extends LitElement {
   }
 }
 
+// eslint-disable-next-line wc/tag-name-matches-class
 window.customElements.define('cc-logs-application-view-beta', CcLogsApplicationView);
 
 /**

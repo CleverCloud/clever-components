@@ -26,7 +26,7 @@ defineSmartComponent({
    * @param {AbortSignal} settings.signal
    */
   // @ts-expect-error FIXME: remove once `onContextUpdate` is typed with generics
-  onContextUpdate({ component, context, updateComponent, signal }) {
+  onContextUpdate({ context, updateComponent, signal }) {
     const { apiConfig, addonId } = context;
 
     updateComponent('state', { type: 'loading' });

@@ -105,7 +105,7 @@ export function importMetaUrlAssetsPlugin() {
   return importMetaAssets({
     // Let's assume we don't have import.meta.url assets in our deps to speed up things
     exclude: 'node_modules/**',
-    transform: (svgBuffer, id) => {
+    transform: (svgBuffer) => {
       return svgo.optimize(svgBuffer.toString()).then(({ data }) => data);
     },
   });
@@ -171,7 +171,7 @@ export const manualChunkOptions = (id) => {
 };
 
 export const treeshakeOptions = {
-  moduleSideEffects: (id, external) => {
+  moduleSideEffects: (id) => {
     const relativeId = path.relative(process.cwd(), id);
     const isComponent = /^src\/.+\/cc-[a-z-]+\.js$/.test(relativeId);
     const isEntryPoint = /^src\/[a-z-]+\.js$/.test(relativeId);

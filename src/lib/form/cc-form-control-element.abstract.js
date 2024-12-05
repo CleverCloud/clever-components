@@ -20,6 +20,7 @@ import { combineValidators } from './validation.js';
  *
  * Returns the name of the property that holds the form control value.
  */
+// eslint-disable-next-line wc/define-tag-after-class-definition, wc/file-name-matches-element
 export class CcFormControlElement extends LitElement {
   /**
    * @return {boolean}

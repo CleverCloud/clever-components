@@ -333,7 +333,7 @@ export class CcInputDate extends CcFormControlElement {
     }
     try {
       return parseSimpleDateString(string, this.timezone);
-    } catch (e) {
+    } catch {
       return parseIsoDateString(string);
     }
   }
@@ -394,7 +394,7 @@ export class CcInputDate extends CcFormControlElement {
       }
 
       return dateStateValid(date);
-    } catch (e) {
+    } catch {
       return dateStateNaD(value);
     }
   }
@@ -477,7 +477,7 @@ export class CcInputDate extends CcFormControlElement {
     if (changedProperties.has('min')) {
       try {
         this._minDate = getDateOrParseIso(this.min);
-      } catch (e) {
+      } catch {
         this._minDate = null;
       }
     }
@@ -485,7 +485,7 @@ export class CcInputDate extends CcFormControlElement {
     if (changedProperties.has('max')) {
       try {
         this._maxDate = getDateOrParseIso(this.max);
-      } catch (e) {
+      } catch {
         this._maxDate = null;
       }
     }

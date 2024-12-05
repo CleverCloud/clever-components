@@ -26,7 +26,7 @@ defineSmartComponent({
    * @param {AbortSignal} settings.signal
    */
   // @ts-expect-error FIXME: remove once `onContextUpdate` is type with generics
-  onContextUpdate({ container, component, context, onEvent, updateComponent, signal }) {
+  onContextUpdate({ container, context, onEvent, updateComponent, signal }) {
     const { apiConfig, zoneId = 'par', currency = 'EUR' } = context;
 
     /**
@@ -68,7 +68,6 @@ defineSmartComponent({
  * @returns {Promise<Omit<PricingEstimationStateLoaded, 'type'>>} A promise that resolves to an array of formatted product prices.
  */
 function fetchPrices({ apiConfig, zoneId, currency, signal }) {
-  /* eslint-disable camelcase */
   return fetchPriceSystem({ apiConfig, zoneId, currency, signal }).then((priceSystem) => {
     return formatEstimationPrices(priceSystem);
   });

@@ -26,7 +26,7 @@ import '../cc-toggle/cc-toggle.js';
  *
  * @fires {CustomEvent<MapModeType>} cc-logsmap:mode - Fires the selected mode whenever the toggle changes.
  */
-export class CcLogsMap extends LitElement {
+export class CcLogsmap extends LitElement {
   static get properties() {
     return {
       appName: { type: String, attribute: 'app-name' },
@@ -254,4 +254,4 @@ export class CcLogsMap extends LitElement {
   }
 }
 
-window.customElements.define('cc-logsmap', CcLogsMap);
+window.customElements.define('cc-logsmap', CcLogsmap);

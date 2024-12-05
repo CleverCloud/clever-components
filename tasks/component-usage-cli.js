@@ -1,4 +1,5 @@
 import chalk from 'chalk';
+// eslint-disable-next-line n/no-unsupported-features/node-builtins
 import { parseArgs } from 'node:util';
 import {
   getComponentFiles,
@@ -47,18 +48,18 @@ function reportError(msg) {
 if (values?.help) {
   console.log(`
     Command: npm run components:graph-usage -- --depth number|--all --uses|--used-by global|cc-component
-    --depth (alias -d): Depth of the tree - value: number. 
+    --depth (alias -d): Depth of the tree - value: number.
     --all (alias -a): The depth of tree will be infinity - value: no value.
-    --uses (alias -u): Lists the components that use the component given in value param - value: global for all the components|cc-component for a specific component. 
+    --uses (alias -u): Lists the components that use the component given in value param - value: global for all the components|cc-component for a specific component.
     --used-by : Lists the components needed by the component given in value param - value: global for all the components|cc-component for a specific component.
-    
-    Note: 
+
+    Note:
     * --uses or --used-by must be provided.
     * --uses and --used-by can't be used together
     * --depth and --all can't be used together.
     * The depth of the tree will be:
       * 1 for global by default
-      * Infinity when specifying a component by default 
+      * Infinity when specifying a component by default
   `);
   process.exit(0);
 }

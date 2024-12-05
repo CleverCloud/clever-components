@@ -1,4 +1,3 @@
-/* global globalThis */
 const AUTHORIZED_TAGS = ['STRONG', 'EM', 'CODE', 'A', 'BR', 'P', 'SPAN'];
 
 /**

@@ -8,9 +8,7 @@
  * which must be a template literal (`TemplateLiteral` AST type).
  */
 
-'use strict';
-
-const { getClosestParentFromType, isTranslationFile } = require('./i18n-shared.js');
+import { getClosestParentFromType, isTranslationFile } from './i18n-shared.js';
 
 function report(context, key, callExpressionNode) {
   context.report({
@@ -24,14 +22,15 @@ function report(context, key, callExpressionNode) {
 
       const argument = callExpressionNode.arguments[0];
       if (argument.type === 'TemplateLiteral') {
-        const contents = context.getSourceCode().text.substring(argument.start, argument.end);
+        const contents = context.getSourceCode().text.substring(argument.range[0], argument.range[1]);
         return fixer.replaceText(callExpressionNode, `sanitize${contents}`);
       }
     },
   });
 }
 
-module.exports = {
+/** @type {import('eslint').Rule.RuleModule} */
+export default {
   meta: {
     type: 'problem',
     docs: {
@@ -53,6 +52,7 @@ module.exports = {
       CallExpression(node) {
         if (node.callee.name === 'sanitize') {
           const parentProperty = getClosestParentFromType(node, 'Property');
+
           if (parentProperty != null) {
             report(context, parentProperty.key.value, node);
           }

@@ -45,7 +45,7 @@ export class CcPricingPageSandbox extends LitElement {
     return {
       selectedTemporality: { type: Object, attribute: 'selected-temporality' },
       selectedCurrency: { type: String, attribute: 'selected-currency' },
-      stateType: { type: String },
+      stateType: { type: String, attribute: 'state-type' },
       _estimationPrices: { type: Object, state: true },
     };
   }

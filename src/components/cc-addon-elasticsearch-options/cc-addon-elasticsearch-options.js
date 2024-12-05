@@ -118,11 +118,11 @@ export class CcAddonElasticsearchOptions extends LitElement {
 
   render() {
     const options = this._getFormOptions();
-    const title = i18n('cc-addon-elasticsearch-options.title');
+    const heading = i18n('cc-addon-elasticsearch-options.title');
 
     return html`
       <cc-addon-option-form
-        title="${title}"
+        heading="${heading}"
         .options=${options}
         @cc-addon-option-form:submit="${this._onFormOptionsSubmit}"
       >

@@ -253,4 +253,5 @@ export class CcKvListInput extends CcFormControlElement {
   }
 }
 
+// eslint-disable-next-line wc/tag-name-matches-class
 window.customElements.define('cc-kv-list-input-beta', CcKvListInput);

@@ -5,7 +5,8 @@ import docStoryModule from './resize-controller.md';
 
 const BREAKPOINTS = [200, 300, 400];
 
-class DemoContainer extends LitElement {
+// eslint-disable-next-line wc/file-name-matches-element
+class DemoResizeController extends LitElement {
   constructor() {
     super();
 
@@ -205,7 +206,7 @@ class DemoContainer extends LitElement {
   }
 }
 
-window.customElements.define('demo-container', DemoContainer);
+window.customElements.define('demo-resize-controller', DemoResizeController);
 
 export default {
   title: '🕹️ Controllers/ResizeController',
@@ -230,7 +231,7 @@ export const defaultStory = () => {
       cc-toggle {
         margin-bottom: 1em;
       }
-      
+
       .attributes {
         color: blue;
         font-weight: bold;
@@ -258,7 +259,7 @@ export const defaultStory = () => {
         font-family: monospace;
         white-space: pre;
       }
-      
+
       .color {
         display: inline-block;
         width: 1em;
@@ -267,19 +268,19 @@ export const defaultStory = () => {
         border-radius: var(--cc-border-radius-default, 0.25em);
         vertical-align: middle;
       }
-      
+
       pre {
         padding: 1em;
         background-color: #f5f5f5;
         border-radius: var(--cc-border-radius-default, 0.25em);
       }
 
-      demo-container {
+      demo-resize-controller {
         resize: horizontal;
         overflow: hidden;
       }
     </style>
-    
+
     <div class="button"><cc-toggle legend="Set container width here:" value="125"></cc-toggle></div>
 
     <table>
@@ -289,11 +290,11 @@ export const defaultStory = () => {
       <tr><td><div class="color" style="background-color: deepskyblue"></div>deepskyblue</td><td>300 <= width < 400 </td><td>.container[w-gte-300][w-lt-400] { /* ... */ }</td></tr>
       <tr><td><div class="color" style="background-color: lime"></div>lime              </td><td>400 <= width       </td><td>.container[w-gte-400] { /* ... */ }          </td></tr>
     </table>
-    
+
     <div class="title">The Container uses the <code>ResizeController</code> with <code>breakpoints</code> [200, 300, 400] so <code>w-lt-*</code> and <code>w-gte-*</code> attributes are automatically set/removed like this:</div>
-    <pre>&lt;demo-container <span class="attributes"></span>>Lorem ipsum...&lt;/div></pre>
-    <demo-container style="width: 125px">
-    </demo-container>
+    <pre>&lt;demo-resize-controller <span class="attributes"></span>>Lorem ipsum...&lt;/div></pre>
+    <demo-resize-controller style="width: 125px">
+    </demo-resize-controller>
   `;
 
   storyDom.querySelector('cc-toggle').choices = Array.from(new Array(4)).map((a, i) => {
@@ -302,17 +303,19 @@ export const defaultStory = () => {
   });
 
   storyDom.addEventListener('cc-toggle:input', ({ detail: value }) => {
-    const demoContainer = storyDom.querySelector('demo-container');
+    const demoContainer = storyDom.querySelector('demo-resize-controller');
     demoContainer.style.width = value + 'px';
   });
 
   const mo = new window.MutationObserver(() => {
-    storyDom.querySelector('.attributes').textContent = Array.from(storyDom.querySelector('demo-container').attributes)
+    storyDom.querySelector('.attributes').textContent = Array.from(
+      storyDom.querySelector('demo-resize-controller').attributes,
+    )
       .filter((attr) => attr.name.startsWith('w-'))
       .map((attr) => attr.name + '=""')
       .join(' ');
   });
-  mo.observe(storyDom.querySelector('demo-container'), { attributes: true });
+  mo.observe(storyDom.querySelector('demo-resize-controller'), { attributes: true });
 
   return storyDom;
 };

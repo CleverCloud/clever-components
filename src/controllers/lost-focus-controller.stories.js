@@ -4,6 +4,7 @@ import '../components/cc-button/cc-button.js';
 import { LostFocusController } from './lost-focus-controller.js';
 import docStoryModule from './lost-focus-controller.md';
 
+// eslint-disable-next-line wc/file-name-matches-element
 class MyList extends LitElement {
   static get properties() {
     return {
@@ -81,6 +82,7 @@ export const defaultStory = () => {
     setTimeout(() => storyDom.querySelector('my-list').focus(), 10);
   };
 
+  /* eslint-disable lit/prefer-static-styles */
   const template = html`
     <style>
       .main {
@@ -97,6 +99,7 @@ export const defaultStory = () => {
       <cc-button @cc-button:click=${onReset}>reset</cc-button>
     </div>
   `;
+  /* eslint-enable lit/prefer-static-styles */
 
   render(template, storyDom);
 

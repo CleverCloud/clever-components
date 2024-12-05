@@ -1,11 +1,9 @@
-'use strict';
-
-const {
-  isTranslationFile,
-  isMainTranslationNode,
+import {
   getTranslationProperties,
+  isMainTranslationNode,
   isSanitizeTagFunction,
-} = require('./i18n-shared.js');
+  isTranslationFile,
+} from './i18n-shared.js';
 
 function report(context, key, arrowNode) {
   context.report({
@@ -13,14 +11,15 @@ function report(context, key, arrowNode) {
     messageId: 'paramlessArrow',
     data: { key },
     fix: (fixer) => {
-      const source = context.getSource();
-      const bodyString = source.substring(arrowNode.body.start, arrowNode.body.end);
+      const source = context.sourceCode.getText();
+      const bodyString = source.substring(arrowNode.body.range[0], arrowNode.body.range[1]);
       return fixer.replaceText(arrowNode, bodyString);
     },
   });
 }
 
-module.exports = {
+/** @type {import('eslint').Rule.RuleModule} */
+export default {
   meta: {
     type: 'suggestion',
     docs: {
@@ -37,7 +36,6 @@ module.exports = {
     if (!isTranslationFile(context)) {
       return {};
     }
-
     return {
       ExportNamedDeclaration(node) {
         // Early return for nodes that aren't the one exporting translations
@@ -51,10 +49,6 @@ module.exports = {
           const key = tp.key.value;
 
           if (tp.value.type === 'ArrowFunctionExpression' && tp.value.params.length === 0) {
-            if (tp.value.body.type === 'TemplateLiteral') {
-              report(context, key, tp.value);
-            }
-
             // If it's a paramless arrow function,
             // we must check for the only allowed exception: sanitize tag function:
             // () => sanitize`<em>foo</em>`

@@ -1,31 +1,26 @@
-'use strict';
+import { getTranslationProperties, isMainTranslationNode, isTranslationFile } from './i18n-shared.js';
 
-const {
-  isTranslationFile,
-  isMainTranslationNode,
-  getTranslationProperties,
-  isSanitizeTagFunction,
-} = require('./i18n-shared.js');
+const VALID_TRANSLATION_KEY = /^[a-z]+-[a-z][a-z-]*\.[a-z0-9-.]+$/;
 
-function report(context, key, sanitizeTaggedTemplateNode, contents) {
+function report(context, key, node) {
   context.report({
-    node: sanitizeTaggedTemplateNode,
-    messageId: 'sanitizeWithoutArrow',
+    node,
+    messageId: 'unexpectedTranslationKey',
     data: { key },
-    fix: (fixer) => fixer.insertTextBefore(sanitizeTaggedTemplateNode, '() => '),
   });
 }
 
-module.exports = {
+/** @type {import('eslint').Rule.RuleModule} */
+export default {
   meta: {
-    type: 'problem',
+    type: 'suggestion',
     docs: {
-      description: 'enforce arrow function when using the sanitize tag function',
+      description: 'enforce naming pattern on translation keys',
       category: 'Translation files',
     },
     fixable: 'code',
     messages: {
-      sanitizeWithoutArrow: 'Missing arrow function with sanitize tag function: {{key}}',
+      unexpectedTranslationKey: 'Unexpected translation key pattern: {{key}}',
     },
   },
   create: function (context) {
@@ -46,8 +41,8 @@ module.exports = {
         for (const tp of translationProperties) {
           const key = tp.key.value;
 
-          if (isSanitizeTagFunction(tp.value)) {
-            report(context, key, tp.value);
+          if (key == null || !key.match(VALID_TRANSLATION_KEY)) {
+            report(context, key, tp.key);
           }
         }
       },

@@ -18,7 +18,7 @@ Donec rutrum ante vel dolor bibendum, eu pretium velit gravida</div>
 `;
 
 const optionExample = {
-  title: 'My Option',
+  heading: 'My Option',
   logo: 'https://assets.clever-cloud.com/logos/elasticsearch-kibana.svg',
 };
 

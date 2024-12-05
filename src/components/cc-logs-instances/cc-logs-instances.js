@@ -735,4 +735,5 @@ export class CcLogsInstances extends LitElement {
   }
 }
 
+// eslint-disable-next-line wc/tag-name-matches-class
 window.customElements.define('cc-logs-instances-beta', CcLogsInstances);

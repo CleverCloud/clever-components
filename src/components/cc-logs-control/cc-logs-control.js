@@ -80,11 +80,11 @@ export class CcLogsControl extends LitElement {
       follow: { type: Boolean },
       limit: { type: Number },
       logs: { type: Array },
-      metadataDisplay: { type: Object },
+      metadataDisplay: { type: Object, attribute: 'metadata-display' },
       messageFilter: { type: String, attribute: 'message-filter' },
       messageFilterMode: { type: String, attribute: 'message-filter-mode' },
       metadataFilter: { type: Array, attribute: 'metadata-filter' },
-      metadataRenderers: { type: Object },
+      metadataRenderers: { type: Object, attribute: 'metadata-renderers' },
       palette: { type: String },
       stripAnsi: { type: Boolean, attribute: 'strip-ansi' },
       timezone: { type: String },
@@ -491,4 +491,5 @@ export class CcLogsControl extends LitElement {
   }
 }
 
+// eslint-disable-next-line wc/tag-name-matches-class
 window.customElements.define('cc-logs-control-beta', CcLogsControl);

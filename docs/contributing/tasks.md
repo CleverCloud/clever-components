@@ -119,6 +119,12 @@ This project provides a series of tasks you can run as [npm scripts](https://doc
 
 * Check source files with [ESLint](https://eslint.org/) and fix errors automatically when it's possible.
 
+## `npm run lint:fix`
+
+* Runs the [ESLint config inspector](https://github.com/eslint/config-inspector).
+* The config inspector opens up in a new browser tab but you can access `http://localhost:7777` if it doesn't open automatically.
+* The inspector can be useful to visualize the ESLint config and help troubleshooting.
+
 ## `npm run prepack`
 
 * Run all tasks required before publishing on npm:
@@ -180,13 +186,15 @@ Check the CSS of our components with [Stylelint](https://stylelint.io/) and fix 
 
 * Run all unit tests present in `test` with [Web Test Runner](https://modern-web.dev/docs/test-runner/overview/).
 
-## `npm run test:cem`
+## `npm run test:mocha`
 
-* Run unit tests present in `cem/test` with [Mocha](https://mochajs.org/).
+* Run unit tests present in `test-mocha` with [Mocha](https://mochajs.org/).
+* These tests cannot be run with `wtr` because they rely on Node.js / commonjs APIs.
 
-## `npm run test:cem:watch`
+## `npm run test:mocha:watch`
 
-* Run unit tests present in `cem/test` with [Mocha](https://mochajs.org/) in watch mode.
+* Run unit tests present in `test-mocha` with [Mocha](https://mochajs.org/) in watch mode.
+* These tests cannot be run with `wtr` because they rely on Node.js / commonjs APIs.
 
 ## `npm run test:watch`
 

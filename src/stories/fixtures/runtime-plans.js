@@ -6,7 +6,7 @@ import { rawPriceSystemEuro } from './price-system.js';
  * @typedef {import('../../components/common.types.js').PriceSystem} PriceSystem
  */
 
-/* eslint-disable quote-props, camelcase */
+/* eslint-disable camelcase */
 /** @satisfies {Array<Instance>} */
 const rawInstances = /** @type {const} */ ([
   {
@@ -4650,7 +4650,7 @@ const rawInstances = /** @type {const} */ ([
     },
   },
 ]);
-/* eslint-enable quote-props, camelcase */
+/* eslint-enable camelcase */
 
 /**
  * @param {typeof rawInstances[number]['variant']['slug']} runtimeVariantSlug
