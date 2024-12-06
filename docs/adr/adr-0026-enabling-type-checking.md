@@ -206,11 +206,32 @@ This is a very simple example, the more complex the component gets and the more 
 TODO:
 
 - states ~DONE (exemples à améliorer)
-- rules we have decided to disable => pas super intéressant
 - lit plugin?
-- What it enables within IDE => TODO SECTION REFACTORING
-- What about CI? => Pas grand chose à dire
+- What it enables within IDE => TODO SECTION REFACTORING => en vrai p-e qu'on s'en fout ?
+- What about CI? => Pas grand chose à dire => si, on peut dire qu'on a une stratégie de l'activer partout côté IDE, pour corriger au fur et à mesure l'existant et on active au fur et à mesure côté CI
 - TS with JSDoc vs pure typescript possibilities => Section limits of JSDocs
 - les problèmes des hand authored d.ts => Section limits of `d.ts`
+- le pourquoi on est pas libres de notre version de TypeScript ?
 - stuff we follow with:
   https://tc39.es/proposal-type-annotations/
+
+- Peut-être split en :
+  - TypeChecking
+    - Pure JS,
+    - JSDoc
+    - Type Checking JS files
+      - why type checking
+    - Hand authored `d.ts` files
+    - limits of JSDoc
+    - Why having a pure JS base code is cool (easy dev debug, low config overhead)
+    - Type Checking progressively
+      - enabling in IDEs
+      - adding to CI progressively
+      - TODO: exposing types
+        - stop minifying?
+        - produce `d.ts` files?
+  - Components: avoiding impossible states
+    - legacy (nullish === loading + error boolean),
+    - first rework (why did we switch to `type` + a `state` property :thinking:)
+    - the final shape
+    - exception for UI components, a few blurred lines
