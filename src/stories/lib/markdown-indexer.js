@@ -1,7 +1,7 @@
 import { readFile } from 'fs/promises';
 import { getMetaDataFromMd } from './markdown-to-csf.js';
 
-/** @type {import ('@storybook/types').Indexer} */
+/** @type {import('storybook/internal/types').Indexer} */
 export const markdownIndexer = {
   test: /.md$/,
   createIndex: async (fileName, { makeTitle }) => {
@@ -9,7 +9,7 @@ export const markdownIndexer = {
 
     const { title, subtitle } = getMetaDataFromMd(markdownContent);
 
-    /** @type {import('@storybook/types').IndexInput} */
+    /** @type {import('storybook/internal/types').IndexInput} */
     const indexInput = {
       type: 'docs',
       importPath: fileName,

@@ -1,6 +1,7 @@
 {
   // this file is only used for typechecking with IDEs
   // it enables typechecking everywhere expect within directories listed below
+  "include": [".storybook/**/*.js", "**/*.js"],
   "exclude": ["node_modules", "storybook-static", "dist", "**/*.test.js"],
   "compilerOptions": {
     // Necessary because we use `paths`
