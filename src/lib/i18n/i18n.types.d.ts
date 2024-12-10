@@ -4,7 +4,7 @@ export type Translations = { [key: string]: Translation };
 
 export type Translation = string | TranslateFunction;
 
-export type TranslateFunction = (data: { [key: string]: any }) => Translated;
+export type TranslateFunction = (data: any) => Translated;
 
 export type Translated = string | Node;
 

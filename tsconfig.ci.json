@@ -3,6 +3,7 @@
   // as opposed to the `tsconfig.json` file used for typechecking within IDEs
   // Every file passing typechecking should be added in the `include` array below
   "include": [
+    ".storybook/**/*.js",
     "src/lib/**/*.js",
     "src/components/**/*.js",
     "src/controllers/*.js",

@@ -1,3 +1,13 @@
+/**
+ * @typedef {import('vite').Plugin} Plugin
+ */
+
+/**
+ * A Vite plugin that injects Clever Cloud Authentication tokens.
+ * !! Caution: NEVER USE THIS PLUGIN FOR THE PROD BUILD !!
+ *
+ * @type {Plugin}
+ */
 export const injectAuthForSmartComponentsPlugin = {
   name: 'inject-auth-for-smart-components',
   async transform(code, id) {

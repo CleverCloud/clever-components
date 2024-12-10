@@ -1,3 +1,4 @@
+// @ts-ignore no types available for this dependency
 import { cli } from '@custom-elements-manifest/analyzer/cli.js';
 
 /**
