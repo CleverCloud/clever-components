@@ -31,9 +31,6 @@ The Custom Element Manifest content is formatted and displayed by Storybook.
 
 ## A tiny bit of TypeScript with hand-authored lib files
 
-<!-- TODO: find an example of stuff you cannot do with JSDoc only -->
-<!-- TODO: Non en fait il faut comparer comment on définit une interface via JSDoc vs dans un d.ts -->
-
 `JSDoc` is a great start but when it comes to documenting objects and more complex data structures, you may need some help.
 
 And what better than TypeScript to help you document complex types in JavaScript?
@@ -48,7 +45,7 @@ For instance, take the following `JSDoc`:
  */
 ```
 
-Even for a very simple case like this, this syntax is fairly verbose and the type structure is not obvious.
+Even for a very simple case like this, the type structure is not obvious.
 Within a `d.ts` file, you could go for an interface instead:
 
 ```ts
