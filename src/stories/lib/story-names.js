@@ -1,3 +1,13 @@
+/**
+ * Formats a story name by applying various transformations:
+ * - Capitalizes the first letter
+ * - Adds spaces before numbers
+ * - Converts CSS to uppercase
+ * - Changes "with" phrases to parenthetical format
+ *
+ * @param {string} rawName - The raw story name to format
+ * @returns {string} The formatted story name
+ */
 function formatStoryName(rawName) {
   return (
     rawName[0].toUpperCase() +
@@ -13,6 +23,21 @@ function formatStoryName(rawName) {
   );
 }
 
+/**
+ * Enhances a story name by adding appropriate emoji prefixes based on the story type/state.
+ * Processes special cases and adds visual indicators for different states:
+ * - ⌛ for loading/waiting/skeleton states
+ * - ➕ for adding states
+ * - 📝 for editing states
+ * - 🗑️ for deleting states
+ * - 🕳 for empty states
+ * - 👍 for loaded states
+ * - 📈 for simulation states
+ * - 🔥 for error states
+ *
+ * @param {string} defaultName - The original story name to enhance
+ * @returns {string} The enhanced story name with appropriate prefix
+ */
 export function enhanceStoryName(defaultName) {
   if (defaultName === 'Default Story') {
     return 'Default';
