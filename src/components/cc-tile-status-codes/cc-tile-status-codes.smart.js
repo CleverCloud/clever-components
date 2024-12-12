@@ -62,7 +62,16 @@ async function fetchStatusCodes({ apiConfig, signal, ownerId, appId }) {
   const warpToken = await getWarp10AccessLogsToken({ orgaId: ownerId }).then(
     sendToApi({ apiConfig, signal, cacheDelay: ONE_DAY }),
   );
-  return getStatusCodesFromWarp10({ warpToken, ownerId, appId }).then(
-    sendToWarp({ apiConfig, signal, timeout: THIRTY_SECONDS }),
-  );
+  return getStatusCodesFromWarp10({ warpToken, ownerId, appId })
+    .then(sendToWarp({ apiConfig, signal, timeout: THIRTY_SECONDS }))
+    .then(
+      /* @ts-expect-error - FIXME: data is of type StatusCodesBeta but doesn't include `0` */
+      (data) => {
+        // FIXME: This is temporary until we have a proper API and `0` status codes get removed from the backend response
+        if (data[0] != null) {
+          delete data[0];
+        }
+        return data;
+      },
+    );
 }
