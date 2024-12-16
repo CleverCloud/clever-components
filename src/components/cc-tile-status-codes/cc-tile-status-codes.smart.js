@@ -62,7 +62,15 @@ async function fetchStatusCodes({ apiConfig, signal, ownerId, appId }) {
   const warpToken = await getWarp10AccessLogsToken({ orgaId: ownerId }).then(
     sendToApi({ apiConfig, signal, cacheDelay: ONE_DAY }),
   );
-  return getStatusCodesFromWarp10({ warpToken, ownerId, appId }).then(
-    sendToWarp({ apiConfig, signal, timeout: THIRTY_SECONDS }),
-  );
+  return getStatusCodesFromWarp10({ warpToken, ownerId, appId })
+    .then(sendToWarp({ apiConfig, signal, timeout: THIRTY_SECONDS }))
+    .then((/** @type {Record<string, string>} */ data) => {
+      for (const statusCode in data) {
+        const statusCodeNumber = parseInt(statusCode);
+        if (statusCodeNumber < 100) {
+          delete data[statusCode];
+        }
+      }
+      return data;
+    });
 }
