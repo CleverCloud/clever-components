@@ -49,6 +49,14 @@ export const dataLoaded = makeStory(conf, {
   ],
 });
 
+export const unknownCode = makeStory(conf, {
+  items: [
+    { state: { type: 'loaded', statusCodes: { ...DATA[0], 600: 5000, 700: 10000 } } },
+    { state: { type: 'loaded', statusCodes: { ...DATA[1], 600: 50, 700: 100 } } },
+    { state: { type: 'loaded', statusCodes: { ...DATA[2], 600: 50, 700: 100 } } },
+  ],
+});
+
 export const simulations = makeStory(conf, {
   items: [{}, {}],
   simulations: [

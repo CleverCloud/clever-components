@@ -146,7 +146,10 @@ export class CcTileStatusCodes extends LitElement {
               // Add official english title of the HTTP status code
               title: ([context]) => {
                 const statusCode = this._labels[context.dataIndex];
-                return `HTTP ${statusCode}: ${status.message[statusCode]}`;
+                const statusMessage = status.message[statusCode];
+                return statusMessage != null
+                  ? `HTTP ${statusCode}: ${status.message[statusCode]}`
+                  : `HTTP ${statusCode}`;
               },
               // Display number of requests and percentage
               label: (context) => {
