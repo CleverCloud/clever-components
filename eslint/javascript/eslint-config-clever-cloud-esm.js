@@ -37,7 +37,7 @@ export default {
     'import/no-unresolved': 'off',
     // quite a few false negative with this one
     'import/named': 'off',
-    'import/extensions': 'off',
+    'import/extensions': ['error', 'always'],
     'import/first': 'error',
     'import/newline-after-import': ['error', { count: 1 }],
     'import/no-useless-path-segments': ['error', { noUselessIndex: true }],
