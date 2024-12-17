@@ -1,3 +1,4 @@
+// eslint-disable-next-line import/no-unresolved
 import customElementsManifest from '../../../dist/custom-elements.json';
 import { setLanguage } from '../../lib/i18n/i18n.js';
 import { sequence } from './sequence.js';
