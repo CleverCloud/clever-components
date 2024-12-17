@@ -33,10 +33,9 @@ export default {
     'no-new': 'off',
     'no-unused-vars': ['error', { argsIgnorePattern: '^_', varsIgnorePattern: '^_', ignoreRestSiblings: true }],
     // import plugin
-    // some rules are disabled because TypeScript already handles it
-    'import/no-unresolved': 'off',
     // quite a few false negative with this one
     'import/named': 'off',
+    'import/no-unresolved': 'error',
     'import/extensions': ['error', 'always'],
     'import/first': 'error',
     'import/newline-after-import': ['error', { count: 1 }],
