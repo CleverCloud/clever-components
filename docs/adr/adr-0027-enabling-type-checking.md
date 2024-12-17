@@ -1,7 +1,7 @@
 ---
 kind: '📌 Architecture Decision Records'
 ---
-# ADR 0026: Enabling type checking
+# ADR 0027: Enabling Type Checking
 
 <!-- TODO: change the date -->
 🗓️ 2023-03-.. · ✍️ Florian Sanders
@@ -12,8 +12,8 @@ The Clever Components project is a pure JavaScript project.
 
 From the start, the project was designed with the following in mind:
 
-- components should be able to run within the browser as is, without any build step,
-- the build step is only here to optimize the code of the components.
+- Components should be able to run within the browser as is, without any build step,
+- The build step is only here to optimize the code of the components.
 
 ## JSDoc to document component APIs
 
@@ -72,7 +72,7 @@ These files usually contain types corresponding to properties and data other tha
 
 ## Why Type Checking in the first place?
 
-Even if we already had `JSDoc` comments and `d.ts` files, our codebase was not actually being type checked in our Editors or in CI.
+Even if we already had `JSDoc` comments and `d.ts` files, our codebase was not actually being type checked in our editors or in CI.
 
 At the beginning of the project, public docs were enough, especially for UI components because their APIs were very HTML friendly.
 We mostly handled primitive types, simple arrays and objects and the team was only made of 1 member so basic conventions and linting were enough to avoid most mistakes.
@@ -83,7 +83,7 @@ As the team grew, we gained more resources to work on Type Checking and also mor
 With pure JS and public docs, if you are not the one who produced the code or if you don't remember, you have to read the docs to understand the API, and then you have to remember it while coding.
 As the codebase grows, the number of things you have to keep in mind grows and the chances you make a mistake increase accordingly.
 
-With Type Checking :
+With Type Checking:
 - You can replace long comments with good naming and good types,
 - You get autocomplete as you code,
 - You get errors if you make mistakes,
@@ -97,10 +97,10 @@ First off, using JSDoc doesn't mean we don't use TypeScript.
 We only use the parts of TypeScript we need.
 
 The TypeScript project is composed of many things:
-- a bundler (to some extent),
-- a transpiler,
-- a syntax,
-- a type checker.
+- A bundler (to some extent),
+- A transpiler,
+- A syntax,
+- A type checker.
 
 We prefer having as little adherence to our dependencies as possible and relying on all the features of TypeScript would mean tying our codebase to this tool.
 
@@ -110,9 +110,9 @@ We want our code to run as is within browsers so we don't want any transpiling.
 This is why we only use TypeScript where we think it shines: as a Type Checker and as a syntax when JSDoc is not enough.
 
 For us, this has huge benefits:
-- the code we write today is almost guaranteed to work in the future without any build step,
-- breaking changes in TypeScript only impact our comments and docs, they can never break our codebase,
-- the config for our project feels simpler to manage and maintain.
+- The code we write today is almost guaranteed to work in the future without any build step,
+- Breaking changes in TypeScript only impact our comments and docs, they can never break our codebase,
+- The config for our project feels simpler to manage and maintain.
 
 Just like bundlers, linters, or even automated tests, TypeScript is a developer tool.
 It improves the Developer Experience and the code quality but it has very little to do with what we ship to browsers and users.
@@ -123,11 +123,11 @@ When coding, the code in our editors is exactly the same as the code run within 
 ## Things we don't quite like with the JSDoc syntax
 
 JSDoc's main flaw is that it's fairly verbose.
-Although this is a comprise we're willing to accept, there are a few cases where we'd love to see the syntax improve:
-- importing and using generics with JSDoc is tedious and inconvenient, as pointed out in the following issues
-  - [JSDoc doesnt support generics correctly - issue #56102 - TypeScript repository](https://github.com/microsoft/TypeScript/issues/27387)
-  - [Allow to explicitly pass type parameters via JSDoc - issue #27387 - TypeScript repository](https://github.com/microsoft/TypeScript/issues/27387).
-- importing types with `@typedef` is way too verbose since you can only import one type for each `@typedef`. This has been fixed with the addition of the new `@import` and we're very eager to migrate to it as soon as we can.
+Although this is a compromise we're willing to accept, there are a few cases where we'd love to see the syntax improve:
+- Importing and using generics with JSDoc is tedious and inconvenient, as pointed out in the following issues:
+  - [JSDoc doesn't support generics correctly - issue #56102 - TypeScript repository](https://github.com/microsoft/TypeScript/issues/27387)
+  - [Allow to explicitly pass type parameters via JSDoc - issue #27387 - TypeScript repository](https://github.com/microsoft/TypeScript/issues/27387)
+- Importing types with `@typedef` is way too verbose since you can only import one type for each `@typedef`. This has been fixed with the addition of the new `@import` and we're very eager to migrate to it as soon as we can.
 
 ## Managing the TypeScript version
 
@@ -143,11 +143,11 @@ These tools are able to catch missing imports, unclosed HTML tags, etc. but they
 The strategy was to progressively work on Type Checking when reworking components and add them to the CI type checking one by one.
 
 To do so, here is what we did:
-- reworked our `tsconfig.json` to enable Type Checking in our editors (`"allowJs": true`, `"checkJs": true`),
-  - decided how strict we wanted to be by enabling / disabling specific options,
-- added a `tsconfig.ci.json` to enable Type Checking in CI context,
-  - only files that fully pass type checking, including their dependencies, can be added to the list of files checked in CI,
-  - when we started, only one file could be added to this file.
+- Reworked our `tsconfig.json` to enable Type Checking in our editors (`"allowJs": true`, `"checkJs": true`),
+  - Decided how strict we wanted to be by enabling/disabling specific options,
+- Added a `tsconfig.ci.json` to enable Type Checking in CI context,
+  - Only files that fully pass type checking, including their dependencies, can be added to the list of files checked in CI,
+  - When we started, only one file could be added to this file.
 
 ## Where are we at?
 
@@ -174,11 +174,11 @@ As of this writing, we have managed to fully Type Check most of our components (
   - Currently the Clever Cloud APIs do not really expose types and a proper API documentation. Once they do, our `clever-client.js` project should be able to expose these types so we can rely on them in the components' project.
 - Expose the types in the npm package. This is not trivial and it impacts our bundling process. We have at least two options:
   - Stop minifying the sources we ship and add the `d.ts` files to the package,
-  - generate `d.ts` from our `.js` files like libraries do and add `d.ts` files to the package.
+  - Generate `d.ts` from our `.js` files like libraries do and add `d.ts` files to the package.
 
 ## The wishlist
 
 - Better JSDoc syntax to handle generics:
-  - [JSDoc doesnt support generics correctly - issue #56102 - TypeScript repository](https://github.com/microsoft/TypeScript/issues/27387)
-  - [Allow to explicitly pass type parameters via JSDoc - issue #27387 - TypeScript repository](https://github.com/microsoft/TypeScript/issues/27387).
-- [TC39 - Type Annotations](https://tc39.es/proposal-type-annotations/).
+  - [JSDoc doesn't support generics correctly - issue #56102 - TypeScript repository](https://github.com/microsoft/TypeScript/issues/27387)
+  - [Allow to explicitly pass type parameters via JSDoc - issue #27387 - TypeScript repository](https://github.com/microsoft/TypeScript/issues/27387)
+- [TC39 - Type Annotations](https://tc39.es/proposal-type-annotations/)
