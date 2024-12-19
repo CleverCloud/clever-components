@@ -66,6 +66,7 @@ export default [
       'wds/**/*.js',
       'src/stories/lib/smart-auth-plugin.js',
       'test-mocha/**/*.*js',
+      '.storybook/**/*.js',
     ],
     languageOptions: {
       globals: {
