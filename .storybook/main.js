@@ -1,3 +1,4 @@
+import copy from 'rollup-plugin-copy';
 import generateCem from '../cem/generate-cem-vite-plugin.js';
 import { markdownIndexer } from '../src/stories/lib/markdown-indexer.js';
 import { rollupMdToCsfPlugin } from '../src/stories/lib/markdown-to-csf.js';
@@ -64,7 +65,19 @@ const config = {
 
     if (configType === 'PRODUCTION') {
       customConfig = {
-        plugins: commonPlugins,
+        plugins: [
+          ...commonPlugins,
+          // The clever cloud Storybook static app needs a `.htaccess` at the root of `storybook-static`
+          // @ts-expect-error type error related to the plugin but our usage matches the docs
+          copy({
+            targets: [
+              {
+                src: `.storybook/.htaccess`,
+                dest: config.build.outDir,
+              },
+            ],
+          }),
+        ],
       };
     }
 

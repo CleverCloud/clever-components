@@ -1,0 +1,23 @@
+RewriteEngine On
+
+# If an existing asset or directory is requested, serve it
+RewriteCond %{DOCUMENT_ROOT}%{REQUEST_URI} -f [OR]
+RewriteCond %{DOCUMENT_ROOT}%{REQUEST_URI} -d
+RewriteRule ^ - [L]
+
+# If the requested resource doesn't exist, use index.html
+RewriteRule ^ /index.html
+
+<IfModule mod_headers.c>
+  <FilesMatch "\.(js|html)$">
+    Header set Cache-Control "no-cache"
+  </FilesMatch>
+
+  <FilesMatch "\.(css)$">
+    Header set Cache-Control "max-age=2592000, immutable"
+  </FilesMatch>
+
+  <FilesMatch "\.(svg|woff2)$">
+    Header set Cache-Control "max-age=31536000, immutable"
+  </FilesMatch>
+</IfModule>
