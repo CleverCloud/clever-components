@@ -3,6 +3,7 @@
 import customElementsManifest from '../../../dist/custom-elements.json';
 import { setLanguage } from '../../lib/i18n/i18n.js';
 import { sequence } from './sequence.js';
+import { visualRegressionPlugin } from '@web/test-runner-visual-regression/plugin';
 
 export function makeStory(...configs) {
   const {
@@ -117,6 +118,9 @@ export function makeStory(...configs) {
           accessibility: {
             // a11y tests are enabled by default unless the story contains simulations
             enable: simulations.length === 0,
+          },
+          visualRegression: {
+            enable: simulations.length === 0 && !name.includes('loading') && !name.includes('waiting'),
           },
         };
 

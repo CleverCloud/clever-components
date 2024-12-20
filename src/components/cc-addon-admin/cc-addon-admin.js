@@ -100,6 +100,7 @@ export class CcAddonAdmin extends LitElement {
     return html`
       <cc-block>
         <div slot="header-title">${i18n('cc-addon-admin.admin')}</div>
+        <p>Totoooooo</p>
 
         ${this.state.type === 'error'
           ? html`
