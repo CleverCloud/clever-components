@@ -6,6 +6,7 @@ import { elementUpdated, expect, fixture } from '@open-wc/testing';
 import { setViewport } from '@web/test-runner-commands';
 import { addTranslations } from '../../src/lib/i18n/i18n.js';
 import * as en from '../../src/translations/translations.en.js';
+import { visualDiff } from '@web/test-runner-visual-regression';
 
 /**
  * @typedef {import('./test-stories.types.js').RawStoriesModule} RawStoriesModule
@@ -90,14 +91,17 @@ export const getStories = (importedModule) => {
 export async function testStories(storiesModule) {
   const componentTag = storiesModule.default.component;
   const stories = getStories(storiesModule);
-  const shouldRunTests = stories.some(({ storyFunction }) => storyFunction.parameters.tests.accessibility.enable);
+  const shouldRunTests = stories.some(
+    ({ storyFunction }) =>
+      storyFunction.parameters.tests.accessibility.enable || storyFunction.parameters.tests.visualRegression.enable,
+  );
 
   if (shouldRunTests) {
     describe(`Component: ${componentTag}`, function () {
       stories.forEach(({ storyName, storyFunction }) => {
-        if (storyFunction.parameters.tests.accessibility.enable) {
-          describe(`Story: ${storyName}`, function () {
-            describe(`Desktop: width = ${viewports.desktop.width} height = ${viewports.desktop.height}`, async function () {
+        describe(`Story: ${storyName}`, function () {
+          describe(`Desktop: width = ${viewports.desktop.width} height = ${viewports.desktop.height}`, async function () {
+            if (storyFunction.parameters.tests.accessibility.enable) {
               it('should be accessible', async function () {
                 await setViewport(viewports.desktop);
                 const element = await fixture(storyFunction({}, storyConf));
@@ -108,9 +112,22 @@ export async function testStories(storiesModule) {
                   ignoredRules: storyFunction.parameters.tests.accessibility.ignoredRules,
                 });
               });
-            });
+            }
 
-            describe(`Mobile: width = ${viewports.mobile.width} height = ${viewports.mobile.height}`, async function () {
+            if (storyFunction.parameters.tests.visualRegression.enable) {
+              it('should have no visual regression', async function () {
+                await setViewport(viewports.desktop);
+                const element = await fixture(storyFunction({}, storyConf));
+
+                await elementUpdated(element);
+
+                await visualDiff(element, `${componentTag}-${storyName}-desktop`);
+              });
+            }
+          });
+
+          describe(`Mobile: width = ${viewports.mobile.width} height = ${viewports.mobile.height}`, async function () {
+            if (storyFunction.parameters.tests.accessibility) {
               it('should be accessible', async function () {
                 await setViewport(viewports.mobile);
                 const element = await fixture(storyFunction({}, storyConf));
@@ -121,9 +138,20 @@ export async function testStories(storiesModule) {
                   ignoredRules: storyFunction.parameters.tests.accessibility.ignoredRules,
                 });
               });
-            });
+            }
+
+            if (storyFunction.parameters.tests.visualRegression) {
+              it('should have no visual regression', async function () {
+                await setViewport(viewports.desktop);
+                const element = await fixture(storyFunction({}, storyConf));
+
+                await elementUpdated(element);
+
+                await visualDiff(element, `${componentTag}-${storyName}-mobile`);
+              });
+            }
           });
-        }
+        });
       });
     });
   }
