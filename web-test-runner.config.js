@@ -1,7 +1,7 @@
 import json from '@rollup/plugin-json';
 import { rollupAdapter } from '@web/dev-server-rollup';
 import { defaultReporter, summaryReporter } from '@web/test-runner';
-import { chromeLauncher } from '@web/test-runner-chrome';
+import { playwrightLauncher } from '@web/test-runner-playwright';
 import { visualRegressionPlugin } from '@web/test-runner-visual-regression/plugin';
 import { cemAnalyzerPlugin } from './wds/cem-analyzer-plugin.js';
 import { testStoryPlugin } from './wds/test-story-plugin.js';
@@ -23,14 +23,32 @@ export default {
     return logMessage != null && !logsToExclude.includes(logMessage);
   },
   browsers: [
-    chromeLauncher({
+    playwrightLauncher({
       // Fixes random timeouts with Chrome > 127, see https://github.com/CleverCloud/clever-components/issues/1146 for more info
-      concurrency: 1,
-      async createPage({ context }) {
-        const page = await context.newPage();
-        // We need that for unit tests working with dates and timezones
-        await page.emulateTimezone('Europe/Paris');
-        return page;
+      // concurrency: 1,
+      // async createPage({ context }) {
+      //   const page = await context.newPage();
+      //   // We need that for unit tests working with dates and timezones
+      //   await page.emulateTimezone('Europe/Paris');
+      //   return page;
+      // },
+      product: 'chromium',
+      createBrowserContext({ browser }) {
+        return browser.newContext({ timezoneId: 'Europe/Paris' });
+      },
+    }),
+    playwrightLauncher({
+      // Fixes random timeouts with Chrome > 127, see https://github.com/CleverCloud/clever-components/issues/1146 for more info
+      // concurrency: 1,
+      // async createPage({ context }) {
+      //   const page = await context.newPage();
+      //   // We need that for unit tests working with dates and timezones
+      //   await page.emulateTimezone('Europe/Paris');
+      //   return page;
+      // },
+      product: 'firefox',
+      createBrowserContext({ browser }) {
+        return browser.newContext({ timezoneId: 'Europe/Paris' });
       },
     }),
   ],
