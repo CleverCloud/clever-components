@@ -13,6 +13,7 @@ import { matchKvPattern } from './kv-utils.js';
  * @typedef {import('../cc-kv-set-explorer/cc-kv-set-explorer.types.js').CcKvSetExplorerState} CcKvSetExplorerState
  * @typedef {import('../cc-kv-set-explorer/cc-kv-set-explorer.types.js').CcKvSetExplorerStateLoading} CcKvSetExplorerStateLoading
  * @typedef {import('../cc-kv-set-explorer/cc-kv-set-explorer.types.js').CcKvSetExplorerAddFormState} CcKvSetExplorerAddFormState
+ * @typedef {import('./kv-utils.js').Abortable} Abortable
  * @typedef {import('../common.types.js').ObjectOrFunction<CcKvExplorerDetailState>} CcKvExplorerDetailStateUpdater
  */
 
@@ -25,10 +26,11 @@ export class KvKeyEditorSetCtrl extends KvKeyEditorCtrl {
    * @param {CcKvExplorer} component
    * @param {(stateUpdater: CcKvExplorerDetailStateUpdater) => void} updateDetailState
    * @param {KvClient} kvClient
+   * @param {Abortable} abortable
    */
-  constructor(keyName, component, updateDetailState, kvClient) {
+  constructor(keyName, component, updateDetailState, kvClient, abortable) {
     super(keyName, component, updateDetailState, kvClient);
-    this._scanner = new KvSetElementsScanner(keyName, kvClient);
+    this._scanner = new KvSetElementsScanner(keyName, kvClient, abortable);
   }
 
   /**
@@ -38,12 +40,9 @@ export class KvKeyEditorSetCtrl extends KvKeyEditorCtrl {
     return 'set';
   }
 
-  /**
-   * @param {AbortSignal} [signal]
-   */
-  async load(signal) {
+  async load() {
     this._updateEditorState({ type: 'loading' });
-    await this._scanner.loadMore(signal);
+    await this._scanner.loadMore();
     this._updateEditorState({
       type: 'loaded',
       elements: this._scanner.elements,
@@ -184,9 +183,10 @@ export class KvSetElementsScanner extends KvScanner {
   /**
    * @param {string} keyName
    * @param {KvClient} kvClient
+   * @param {Abortable} abortable
    */
-  constructor(keyName, kvClient) {
-    super();
+  constructor(keyName, kvClient, abortable) {
+    super(abortable);
     this._keyName = keyName;
     this._kvClient = kvClient;
   }
