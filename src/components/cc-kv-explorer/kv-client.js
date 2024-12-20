@@ -16,11 +16,17 @@ import { withOptions } from '@clevercloud/client/esm/with-options.js';
 export class KvClient {
   /**
    * @param {{url: string, backendUrl: string}} apiConfig
-   * @param {AbortSignal} signal
    */
-  constructor(apiConfig, signal) {
+  constructor(apiConfig) {
     this._apiConfig = apiConfig;
-    this._signal = signal;
+    this._abortController = new AbortController();
+  }
+
+  /**
+   * Once this method is called, all other methods will fail with abort error.
+   */
+  close() {
+    this._abortController.abort();
   }
 
   /**
@@ -44,7 +50,7 @@ export class KvClient {
       method: 'post',
       url: `/keys/_scan`,
       body: { cursor, count, type, match },
-    }).then(this.sendToKvProxy());
+    }).then(this._sendToKvProxy());
   }
 
   /**
@@ -56,7 +62,7 @@ export class KvClient {
       method: 'post',
       url: `/key/_delete`,
       body: { key: keyName },
-    }).then(this.sendToKvProxy());
+    }).then(this._sendToKvProxy());
   }
 
   /**
@@ -69,7 +75,7 @@ export class KvClient {
       method: 'post',
       url: `/key/string/_get`,
       body: { key: keyName },
-    }).then(this.sendToKvProxy(signal));
+    }).then(this._sendToKvProxy(signal));
   }
 
   /**
@@ -82,7 +88,7 @@ export class KvClient {
       method: 'post',
       url: `/key/string/_create`,
       body: { key: keyName, value },
-    }).then(this.sendToKvProxy());
+    }).then(this._sendToKvProxy());
   }
 
   /**
@@ -95,7 +101,7 @@ export class KvClient {
       method: 'post',
       url: `/key/string/_update`,
       body: { key: keyName, value },
-    }).then(this.sendToKvProxy());
+    }).then(this._sendToKvProxy());
   }
 
   /**
@@ -108,7 +114,7 @@ export class KvClient {
       method: 'post',
       url: `/key/hash/_create`,
       body: { key: keyName, elements },
-    }).then(this.sendToKvProxy());
+    }).then(this._sendToKvProxy());
   }
 
   /**
@@ -125,7 +131,7 @@ export class KvClient {
       method: 'post',
       url: `/key/hash/_scan`,
       body: { key: keyName, cursor, count, match },
-    }).then(this.sendToKvProxy(signal));
+    }).then(this._sendToKvProxy(signal));
   }
 
   /**
@@ -138,7 +144,7 @@ export class KvClient {
       method: 'post',
       url: `/key/hash/_delete`,
       body: { key: keyName, field },
-    }).then(this.sendToKvProxy());
+    }).then(this._sendToKvProxy());
   }
 
   /**
@@ -152,7 +158,7 @@ export class KvClient {
       method: 'post',
       url: `/key/hash/_set`,
       body: { key: keyName, field, value },
-    }).then(this.sendToKvProxy());
+    }).then(this._sendToKvProxy());
   }
 
   /**
@@ -165,7 +171,7 @@ export class KvClient {
       method: 'post',
       url: `/key/list/_create`,
       body: { key: keyName, elements },
-    }).then(this.sendToKvProxy());
+    }).then(this._sendToKvProxy());
   }
 
   /**
@@ -182,20 +188,21 @@ export class KvClient {
       method: 'post',
       url: `/key/list/_scan`,
       body: { key: keyName, cursor, count, match },
-    }).then(this.sendToKvProxy(signal));
+    }).then(this._sendToKvProxy(signal));
   }
 
   /**
    * @param {string} keyName
    * @param {number} index
+   * @param {AbortSignal} signal
    * @return {Promise<{key: string, index: number, value: string}>}
    */
-  getListElementAt(keyName, index) {
+  getListElementAt(keyName, index, signal) {
     return Promise.resolve({
       method: 'post',
       url: `/key/list/_get`,
       body: { key: keyName, index },
-    }).then(this.sendToKvProxy());
+    }).then(this._sendToKvProxy(signal));
   }
 
   /**
@@ -209,7 +216,7 @@ export class KvClient {
       method: 'post',
       url: `/key/list/_update`,
       body: { key: keyName, index, value },
-    }).then(this.sendToKvProxy());
+    }).then(this._sendToKvProxy());
   }
 
   /**
@@ -223,7 +230,7 @@ export class KvClient {
       method: 'post',
       url: `/key/list/_push`,
       body: { key: keyName, position, value },
-    }).then(this.sendToKvProxy());
+    }).then(this._sendToKvProxy());
   }
 
   /**
@@ -236,7 +243,7 @@ export class KvClient {
       method: 'post',
       url: `/key/set/_create`,
       body: { key: keyName, elements },
-    }).then(this.sendToKvProxy());
+    }).then(this._sendToKvProxy());
   }
 
   /**
@@ -253,7 +260,7 @@ export class KvClient {
       method: 'post',
       url: `/key/set/_scan`,
       body: { key: keyName, cursor, count, match },
-    }).then(this.sendToKvProxy(signal));
+    }).then(this._sendToKvProxy(signal));
   }
 
   /**
@@ -266,7 +273,7 @@ export class KvClient {
       method: 'post',
       url: `/key/set/_delete`,
       body: { key: keyName, element },
-    }).then(this.sendToKvProxy());
+    }).then(this._sendToKvProxy());
   }
 
   /**
@@ -279,7 +286,7 @@ export class KvClient {
       method: 'post',
       url: `/key/set/_set`,
       body: { key: keyName, element },
-    }).then(this.sendToKvProxy());
+    }).then(this._sendToKvProxy());
   }
 
   /**
@@ -291,7 +298,7 @@ export class KvClient {
       method: 'post',
       url: `/command/cli`,
       body: { commandLine },
-    }).then(this.sendToKvProxy());
+    }).then(this._sendToKvProxy());
   }
 
   /**
@@ -304,14 +311,14 @@ export class KvClient {
       method: 'post',
       url: `/command`,
       body: { command, args },
-    }).then(this.sendToKvProxy());
+    }).then(this._sendToKvProxy());
   }
 
   /**
-   * @param {AbortSignal} [signal]
+   * @param {AbortSignal} [localSignal] The signal to be used instead of the global signal attached to this class.
    * @return {(requestParams: any) => Promise<any>}
    */
-  sendToKvProxy(signal) {
+  _sendToKvProxy(localSignal) {
     return (requestParams) => {
       const { url, backendUrl } = this._apiConfig;
       return Promise.resolve(requestParams)
@@ -323,7 +330,7 @@ export class KvClient {
             headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
           };
         })
-        .then(withOptions({ signal: signal ?? this._signal }))
+        .then(withOptions({ signal: localSignal ?? this._abortController.signal }))
         .then(request);
     };
   }

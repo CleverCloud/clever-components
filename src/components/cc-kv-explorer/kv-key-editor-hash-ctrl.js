@@ -13,6 +13,7 @@ import { matchKvPattern } from './kv-utils.js';
  * @typedef {import('../cc-kv-hash-explorer/cc-kv-hash-explorer.types.js').CcKvHashExplorerState} CcKvHashExplorerState
  * @typedef {import('../cc-kv-hash-explorer/cc-kv-hash-explorer.types.js').CcKvHashExplorerStateLoading} CcKvHashExplorerStateLoading
  * @typedef {import('../cc-kv-hash-explorer/cc-kv-hash-explorer.types.js').CcKvHashExplorerAddFormState} CcKvHashExplorerAddFormState
+ * @typedef {import('./kv-utils.js').Abortable} Abortable
  * @typedef {import('../common.types.js').ObjectOrFunction<CcKvExplorerDetailState>} CcKvExplorerDetailStateUpdater
  */
 
@@ -25,10 +26,11 @@ export class KvKeyEditorHashCtrl extends KvKeyEditorCtrl {
    * @param {CcKvExplorer} component
    * @param {(stateUpdater: CcKvExplorerDetailStateUpdater) => void} updateDetailState
    * @param {KvClient} kvClient
+   * @param {Abortable} abortable
    */
-  constructor(keyName, component, updateDetailState, kvClient) {
+  constructor(keyName, component, updateDetailState, kvClient, abortable) {
     super(keyName, component, updateDetailState, kvClient);
-    this._scanner = new KvHashElementsScanner(keyName, kvClient);
+    this._scanner = new KvHashElementsScanner(keyName, kvClient, abortable);
   }
 
   /**
@@ -38,12 +40,9 @@ export class KvKeyEditorHashCtrl extends KvKeyEditorCtrl {
     return 'hash';
   }
 
-  /**
-   * @param {AbortSignal} [signal]
-   */
-  async load(signal) {
+  async load() {
     this._updateEditorState({ type: 'loading' });
-    await this._scanner.loadMore(signal);
+    await this._scanner.loadMore();
     this._updateEditorState({
       type: 'loaded',
       elements: this._scanner.elements,
@@ -200,9 +199,10 @@ export class KvHashElementsScanner extends KvScanner {
   /**
    * @param {string} keyName
    * @param {KvClient} kvClient
+   * @param {Abortable} abortable
    */
-  constructor(keyName, kvClient) {
-    super();
+  constructor(keyName, kvClient, abortable) {
+    super(abortable);
     this._keyName = keyName;
     this._kvClient = kvClient;
   }

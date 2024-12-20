@@ -2,6 +2,7 @@ import { KvKeyEditorHashCtrl } from './kv-key-editor-hash-ctrl.js';
 import { KvKeyEditorListCtrl } from './kv-key-editor-list-ctrl.js';
 import { KvKeyEditorSetCtrl } from './kv-key-editor-set-ctrl.js';
 import { KvKeyEditorStringCtrl } from './kv-key-editor-string-ctrl.js';
+import { Abortable } from './kv-utils.js';
 
 /**
  * @typedef {import('./cc-kv-explorer.js').CcKvExplorer} CcKvExplorer
@@ -27,12 +28,14 @@ export class KvDetailsCtrl {
     this._component = component;
     this._updateDetailState = updateDetailState;
     this._kvClient = kvClient;
-
-    /** @type {AbortController} */
-    this.abortCtrl = null;
+    this._abortable = new Abortable();
 
     /** @type {KvKeyEditorCtrl} */
     this._currentEditorCtrl = null;
+  }
+
+  abort() {
+    this._abortable.abort();
   }
 
   /**
@@ -59,13 +62,10 @@ export class KvDetailsCtrl {
    * @param {CcKvKey} key
    */
   async load(key) {
-    this.abortCtrl?.abort();
-    this.abortCtrl = new AbortController();
-
     this._currentEditorCtrl = this._createKeyEditorCtrl(key.name, key.type);
 
     try {
-      await this._currentEditorCtrl.load(this.abortCtrl.signal);
+      await this._currentEditorCtrl.load();
     } catch (e) {
       if (!(e instanceof DOMException && e.name === 'AbortError')) {
         throw e;
@@ -108,17 +108,42 @@ export class KvDetailsCtrl {
   /**
    * @param {string} keyName
    * @param {CcKvKeyType} type
+   * @return {KvKeyEditorCtrl}
    */
   _createKeyEditorCtrl(keyName, type) {
     switch (type) {
       case 'string':
-        return new KvKeyEditorStringCtrl(keyName, this._component, this._updateDetailState, this._kvClient);
+        return new KvKeyEditorStringCtrl(
+          keyName,
+          this._component,
+          this._updateDetailState,
+          this._kvClient,
+          this._abortable,
+        );
       case 'hash':
-        return new KvKeyEditorHashCtrl(keyName, this._component, this._updateDetailState, this._kvClient);
+        return new KvKeyEditorHashCtrl(
+          keyName,
+          this._component,
+          this._updateDetailState,
+          this._kvClient,
+          this._abortable,
+        );
       case 'list':
-        return new KvKeyEditorListCtrl(keyName, this._component, this._updateDetailState, this._kvClient);
+        return new KvKeyEditorListCtrl(
+          keyName,
+          this._component,
+          this._updateDetailState,
+          this._kvClient,
+          this._abortable,
+        );
       case 'set':
-        return new KvKeyEditorSetCtrl(keyName, this._component, this._updateDetailState, this._kvClient);
+        return new KvKeyEditorSetCtrl(
+          keyName,
+          this._component,
+          this._updateDetailState,
+          this._kvClient,
+          this._abortable,
+        );
     }
   }
 }

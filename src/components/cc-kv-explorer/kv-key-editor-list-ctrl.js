@@ -11,6 +11,7 @@ import { KvScanner } from './kv-scanner.js';
  * @typedef {import('../cc-kv-list-explorer/cc-kv-list-explorer.types.js').CcKvListExplorerState} CcKvListExplorerState
  * @typedef {import('../cc-kv-list-explorer/cc-kv-list-explorer.types.js').CcKvListExplorerStateLoading} CcKvListExplorerStateLoading
  * @typedef {import('../cc-kv-list-explorer/cc-kv-list-explorer.types.js').CcKvListExplorerAddFormState} CcKvListExplorerAddFormState
+ * @typedef {import('./kv-utils.js').Abortable} Abortable
  * @typedef {import('../common.types.js').ObjectOrFunction<CcKvExplorerDetailState>} CcKvExplorerDetailStateUpdater
  */
 
@@ -23,10 +24,11 @@ export class KvKeyEditorListCtrl extends KvKeyEditorCtrl {
    * @param {CcKvExplorer} component
    * @param {(stateUpdater: CcKvExplorerDetailStateUpdater) => void} updateDetailState
    * @param {KvClient} kvClient
+   * @param {Abortable} abortable
    */
-  constructor(keyName, component, updateDetailState, kvClient) {
+  constructor(keyName, component, updateDetailState, kvClient, abortable) {
     super(keyName, component, updateDetailState, kvClient);
-    this._scanner = new KvListElementsScanner(keyName, kvClient);
+    this._scanner = new KvListElementsScanner(keyName, kvClient, abortable);
   }
 
   /**
@@ -36,12 +38,9 @@ export class KvKeyEditorListCtrl extends KvKeyEditorCtrl {
     return 'list';
   }
 
-  /**
-   * @param {AbortSignal} [signal]
-   */
-  async load(signal) {
+  async load() {
     this._updateEditorState({ type: 'loading' });
-    await this._scanner.loadMore(signal);
+    await this._scanner.loadMore();
     this._updateEditorState({
       type: 'loaded',
       elements: this._scanner.elements,
@@ -179,9 +178,10 @@ export class KvListElementsScanner extends KvScanner {
   /**
    * @param {string} keyName
    * @param {KvClient} kvClient
+   * @param {Abortable} abortable
    */
-  constructor(keyName, kvClient) {
-    super();
+  constructor(keyName, kvClient, abortable) {
+    super(abortable);
     this._kvClient = kvClient;
     this._keyName = keyName;
   }
@@ -225,7 +225,7 @@ export class KvListElementsScanner extends KvScanner {
 
     // filtering by index is like getting item at the given index
     try {
-      const element = await this._kvClient.getListElementAt(this._keyName, this._filter.index);
+      const element = await this._kvClient.getListElementAt(this._keyName, this._filter.index, signal);
 
       if (element.value == null) {
         return emptyScanResult();

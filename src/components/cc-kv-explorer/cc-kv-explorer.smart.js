@@ -35,7 +35,7 @@ defineSmartComponent({
 
   /**
    * @param {Object} settings
-   * @param {CcKvExplorer} settings.component
+   * @param {CcKvExplorer} settings.component<
    * @param {{kvApiConfig: {url: string, backendUrl: string}}} settings.context
    * @param {(type: string, listener: (detail: any) => void) => void} settings.onEvent
    * @param {function} settings.updateComponent
@@ -44,7 +44,7 @@ defineSmartComponent({
   // @ts-expect-error FIXME: remove once `onContextUpdate` is typed with generics
   async onContextUpdate({ component, context, onEvent, updateComponent, signal }) {
     const { kvApiConfig } = context;
-    const kvClient = new KvClient(kvApiConfig, signal);
+    const kvClient = new KvClient(kvApiConfig);
 
     const keysCtrl = new KvKeysCtrl(
       component,
@@ -67,6 +67,12 @@ defineSmartComponent({
       },
       kvClient,
     );
+
+    signal.onabort = () => {
+      kvClient.close();
+      keysCtrl.abort();
+      detailsCtrl.abort();
+    };
 
     // -- keys ---
 

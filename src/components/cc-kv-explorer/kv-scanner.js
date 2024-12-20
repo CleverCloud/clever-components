@@ -1,4 +1,8 @@
 /**
+ * @typedef {import('./kv-utils.js').Abortable} Abortable
+ */
+
+/**
  * A generic class that helps in scanning kv entities.
  *
  * * It holds a cursor and a filter so that one can ask for more elements.
@@ -9,10 +13,10 @@
  */
 export class KvScanner {
   /**
-   *
+   * @param {Abortable} abortable
    * @param {function} [onChange]
    */
-  constructor(onChange) {
+  constructor(abortable, onChange) {
     /** @type {Map<string, T>} */
     this._map = new Map();
     /** @type {Array<T>} */
@@ -22,6 +26,7 @@ export class KvScanner {
     /** @type {F} */
     this._filter = null;
 
+    this._abortable = abortable;
     this._onChange = onChange;
   }
 
@@ -165,13 +170,12 @@ export class KvScanner {
   }
 
   /**
-   * @param {AbortSignal} [signal]
    * @param {number} [count]
    * @return {Promise<void>}
    */
-  async loadMore(signal, count = 1000) {
+  async loadMore(count = 1000) {
     if (this.hasMore()) {
-      const f = await this.fetch(count, signal);
+      const f = await this._abortable.run((signal) => this.fetch(count, signal));
       f.elements.forEach((it) => {
         this._map.set(this.getId(it), it);
       });

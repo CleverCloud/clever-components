@@ -1,6 +1,6 @@
 import { isStringEmpty } from '../../lib/utils.js';
 import { KvScanner } from './kv-scanner.js';
-import { matchKvPattern } from './kv-utils.js';
+import { Abortable, matchKvPattern } from './kv-utils.js';
 
 /**
  * @typedef {import('./cc-kv-explorer.js').CcKvExplorer} CcKvExplorer
@@ -23,7 +23,8 @@ export class KvKeysCtrl {
     this._component = component;
     this._updateState = updateState;
     this._kvClient = kvClient;
-    this._scanner = new KvKeysScanner(kvClient, () => {
+    this._abortable = new Abortable();
+    this._scanner = new KvKeysScanner(kvClient, this._abortable, () => {
       const state = this._getViewState();
 
       if (state.type !== 'loaded') {
@@ -39,6 +40,10 @@ export class KvKeysCtrl {
 
     /** @type {CcKvKey} */
     this._selectedKey = null;
+  }
+
+  abort() {
+    this._abortable.abort();
   }
 
   /**
@@ -243,10 +248,11 @@ export class KvKeysCtrl {
 class KvKeysScanner extends KvScanner {
   /**
    * @param {KvClient} kvClient
+   * @param {Abortable} abortable
    * @param {function} onChange
    */
-  constructor(kvClient, onChange) {
-    super(onChange);
+  constructor(kvClient, abortable, onChange) {
+    super(abortable, onChange);
     this._kvClient = kvClient;
   }
 
