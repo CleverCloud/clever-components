@@ -58,28 +58,28 @@ export class KvKeyEditorHashCtrl extends KvKeyEditorCtrl {
     await this._kvClient.createHashKey(keyValue.name, keyValue.elements);
 
     this._scanner.update(keyValue.elements.map((e) => ({ ...e, type: 'idle' })));
-    this._setLoaded();
+    this._updateEditorState({
+      type: 'loaded',
+      elements: this._scanner.elements,
+      addForm: { type: 'idle' },
+    });
   }
 
   /**
    * @param {string} pattern
    */
   async filter(pattern) {
-    if (this._component.detailState.type !== 'edit-hash' || this._component.detailState.editor.type !== 'loaded') {
-      return;
-    }
-    const addForm = this._component.detailState.editor.addForm;
-
-    // todo: we should have a 'filtering' state (a bit like 'loading-more' state)
-    //       this will avoid the necessity to restore the `addForm` state.
-    this._updateEditorState({ type: 'loading' });
+    this._updateEditorState((editor) => (editor.type = 'filtering'));
 
     try {
       this._scanner.setFilter({ pattern });
       await this._scanner.loadMore();
-      this._setLoaded(addForm);
+      this._updateEditor((editor) => {
+        editor.type = 'loaded';
+        editor.elements = this._scanner.elements;
+      });
     } catch (e) {
-      this._setLoaded(addForm);
+      this._updateEditorState((editor) => (editor.type = 'loaded'));
       throw e;
     }
   }
@@ -159,17 +159,6 @@ export class KvKeyEditorHashCtrl extends KvKeyEditorCtrl {
       this._updateAddForm({ type: 'idle' });
       throw e;
     }
-  }
-
-  /**
-   * @param {CcKvHashExplorerAddFormState} addFormState
-   */
-  _setLoaded(addFormState = { type: 'idle' }) {
-    this._updateEditorState({
-      type: 'loaded',
-      elements: this._scanner.elements,
-      addForm: addFormState,
-    });
   }
 
   /**
