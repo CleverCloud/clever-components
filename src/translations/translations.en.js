@@ -1052,6 +1052,12 @@ export const translations = {
   'cc-payment-warning.orga.no-payment-method': `To avoid any suspension of your services and deletion of your data, please add a valid payment method and set it as default.`,
   'cc-payment-warning.orga.no-payment-method.title': `Beware! You don't have any registered payment method`,
   //#endregion
+  //#region cc-plan-configurator
+  'cc-plan-configurator.legend.customize': `Customize your plan`,
+  //#endregion
+  //#region cc-plan-picker
+  'cc-plan-picker.legend': `Select your plan`,
+  //#endregion
   //#region cc-pricing-estimation
   'cc-pricing-estimation.count.label': /** @param {{productCount: number}} _ */ ({ productCount }) =>
     plural(productCount, 'product'),
@@ -1419,7 +1425,7 @@ export const translations = {
     const formattedValue = formatNumber(lang, value);
     return `${formattedValue} ${request} (${formatPercent(lang, percent)})`;
   },
-  //#endregion
+  // #endregion
   //#region cc-toast
   'cc-toast.close': `Close this notification`,
   'cc-toast.icon-alt.danger': `Error`,
