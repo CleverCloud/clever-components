@@ -41,7 +41,7 @@ jobs:
 
       - name: '[Unit tests] Clever components'
         run: npm run test
-      - name: '[Unit tests] Mocha tests (CEM & ESLint custom rules)'
+      - name: '[Unit tests] Mocha tests (CEM, ESLint & Prettier custom rules)'
         run: npm run test:mocha
 
       - name: '[Build] Clever components'
