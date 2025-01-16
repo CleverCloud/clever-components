@@ -10,6 +10,7 @@ export default {
     ...litPlugin.configs['flat/recommended'].rules,
     'lit/attribute-names': 'error',
     'lit/lifecycle-super': 'error',
+    'lit/ban-attributes': ['error', 'checked'],
     'lit/no-classfield-shadowing': 'error',
     'lit/no-invalid-escape-sequences': 'error',
     'lit/no-legacy-imports': 'error',
