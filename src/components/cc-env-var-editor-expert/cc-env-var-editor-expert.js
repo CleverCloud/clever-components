@@ -44,7 +44,7 @@ export class CcEnvVarEditorExpert extends LitElement {
   constructor() {
     super();
 
-    /** @type {boolean} Sets `disabled` attribute on inputs and buttons. */
+    /** @type {boolean} Sets `readonly` attribute on inputs and `disabled` on buttons. */
     this.disabled = false;
 
     /** @type {boolean} Sets `readonly` attribute on main input and hides buttons. */
@@ -145,8 +145,7 @@ export class CcEnvVarEditorExpert extends LitElement {
         multi
         clipboard
         value=${this._variablesAsText}
-        ?disabled=${this.disabled}
-        ?readonly=${this.readonly}
+        ?readonly=${this.readonly || this.disabled}
         ?skeleton=${this._skeleton}
         @cc-input-text:input=${this._onInput}
       ></cc-input-text>
