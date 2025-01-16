@@ -83,7 +83,7 @@ export class FormDemoWithSmartComponent extends LitElement {
           label="Name"
           name="name"
           required
-          ?disabled=${isFormSubmitting}
+          ?readonly=${isFormSubmitting}
           value="${this.formState.values?.name}"
         ></cc-input-text>
         <cc-input-text
@@ -91,7 +91,7 @@ export class FormDemoWithSmartComponent extends LitElement {
           name="email"
           type="email"
           required
-          ?disabled=${isFormSubmitting}
+          ?readonly=${isFormSubmitting}
           value="${this.formState.values?.email}"
           .errorMessage=${this._getErrorMessage(this.formState.errors?.email)}
         >
@@ -114,8 +114,8 @@ export class FormDemoWithSmartComponent extends LitElement {
         form {
           display: flex;
           flex-direction: column;
-          margin-bottom: 2em;
           gap: 0.5em;
+          margin-bottom: 2em;
         }
       `,
     ];
