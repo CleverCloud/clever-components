@@ -87,7 +87,7 @@ export class CcInputText extends CcFormControlElement {
     /** @type {boolean} Adds a copy-to-clipboard button (when not disabled and not skeleton). */
     this.clipboard = false;
 
-    /** @type {boolean} Sets `disabled` attribute on inner native `<input>/<textarea>` element. */
+    /** @type {boolean} Sets `disabled` attribute on inner native `<input>/<textarea>` element. If you want to temporarily disable the input during an API call, use `readonly` instead so that focus is maintained. */
     this.disabled = false;
 
     /** @type {boolean} Sets the `<label>` on the left of the `<input>` element.
@@ -107,7 +107,7 @@ export class CcInputText extends CcFormControlElement {
     /** @type {string} Sets `placeholder` attribute on inner native `<input>/<textarea>` element. */
     this.placeholder = '';
 
-    /** @type {boolean} Sets `readonly` attribute on inner native `<input>/<textarea>` element. */
+    /** @type {boolean} Sets `readonly` attribute on inner native `<input>/<textarea>` element. This should be used during API calls instead of the `disabled` attribute because it maintains focus. */
     this.readonly = false;
 
     /** @type {boolean} Sets required mention inside the `<label>` element. */
@@ -355,7 +355,7 @@ export class CcInputText extends CcFormControlElement {
                 ${this._tagsEnabled && !this.skeleton
                   ? html`
                       <!--
-                We use this to display colored background rectangles behind space separated values. 
+                We use this to display colored background rectangles behind space separated values.
                 This needs to be on the same line and the 2 level parent is important to keep scroll behaviour.
               -->
                       <!-- prettier-ignore -->
