@@ -51,7 +51,7 @@ export class KvKeysCtrl {
    * @param {string} pattern
    */
   async filter(type, pattern) {
-    if (this._getViewState().type !== 'loaded') {
+    if (this._getViewState().type !== 'loaded' && this._getViewState().type !== 'error-keys') {
       return;
     }
 
@@ -65,7 +65,7 @@ export class KvKeysCtrl {
   }
 
   async refresh() {
-    if (this._getViewState().type !== 'loaded') {
+    if (this._getViewState().type !== 'loaded' && this._getViewState().type !== 'error-keys') {
       return;
     }
 
@@ -151,35 +151,33 @@ export class KvKeysCtrl {
    * @param {{type?: 'loading-keys'|'filtering'|'refreshing', keys?: Array<CcKvKeyState>, total?: number}} [init]
    */
   async fetchKeys(init = {}) {
-    /** @type {Array<CcKvKeyState>} */
-    let keys;
-    /** @type {number} */
-    let total;
+    if (this._scanner.hasMore()) {
+      /** @type {Array<CcKvKeyState>} */
+      let keys;
+      /** @type {number} */
+      let total;
 
-    const state = this._getViewState();
+      const state = this._getViewState();
 
-    if (state.type === 'loaded' || state.type === 'loading-keys') {
-      keys = init.keys ?? state.keys;
-      total = init.total ?? state.total;
-    }
+      if (state.type === 'loaded' || state.type === 'loading-keys') {
+        keys = init.keys ?? state.keys;
+        total = init.total ?? state.total;
+      }
 
-    this._updateState({ type: init.type ?? 'loading-keys', keys: keys ?? [], total: total ?? 0 });
+      this._updateState({ type: init.type ?? 'loading-keys', keys: keys ?? [], total: total ?? 0 });
 
-    try {
-      if (this._scanner.hasMore()) {
-        await this._scanner.loadMore();
-        keys = this._scanner.elements;
-        total = this._scanner.total;
+      await this._scanner.loadMore();
+      keys = this._scanner.elements;
+      total = this._scanner.total;
 
-        if (this._selectedKey != null) {
-          const isSelectedKeyAbsent = this._scanner.getElement(this._selectedKey.name) == null;
+      if (this._selectedKey != null) {
+        const isSelectedKeyAbsent = this._scanner.getElement(this._selectedKey.name) == null;
 
-          if (isSelectedKeyAbsent) {
-            this._selectedKey = null;
-          }
+        if (isSelectedKeyAbsent) {
+          this._selectedKey = null;
         }
       }
-    } finally {
+
       if (this._selectedKey != null) {
         const keyNameToSelect = this._selectedKey.name;
         this._selectedKey = null;

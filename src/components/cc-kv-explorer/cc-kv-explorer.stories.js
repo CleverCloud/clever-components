@@ -126,6 +126,54 @@ export const refreshingKeys = makeStory(conf, {
   ],
 });
 
+export const errorLoadingKeys = makeStory(conf, {
+  /** @type {Array<Partial<CcKvExplorer>>} */
+  items: [
+    {
+      state: {
+        type: 'error-keys',
+        action: 'loading',
+      },
+    },
+  ],
+});
+
+export const errorLoadingMoreKeys = makeStory(conf, {
+  /** @type {Array<Partial<CcKvExplorer>>} */
+  items: [
+    {
+      state: {
+        type: 'error-keys',
+        action: 'loading-more',
+      },
+    },
+  ],
+});
+
+export const errorFilteringKeys = makeStory(conf, {
+  /** @type {Array<Partial<CcKvExplorer>>} */
+  items: [
+    {
+      state: {
+        type: 'error-keys',
+        action: 'filtering',
+      },
+    },
+  ],
+});
+
+export const errorRefreshingKeys = makeStory(conf, {
+  /** @type {Array<Partial<CcKvExplorer>>} */
+  items: [
+    {
+      state: {
+        type: 'error-keys',
+        action: 'refreshing',
+      },
+    },
+  ],
+});
+
 export const loadingKeyString = makeStory(conf, {
   /** @type {Array<Partial<CcKvExplorer>>} */
   items: [
