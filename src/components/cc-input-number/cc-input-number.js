@@ -74,7 +74,7 @@ export class CcInputNumber extends CcFormControlElement {
     /** @type {boolean} Sets the control mode with a decrement and increment buttons. */
     this.controls = false;
 
-    /** @type {boolean} Sets `disabled` attribute on inner native `<input>` element. */
+    /** @type {boolean} Sets `disabled` attribute on inner native `<input>` element. If you want to temporarily disable the input during an API call, use `readonly` instead so that focus is maintained. */
     this.disabled = false;
 
     /** @type {boolean} Sets the `<label>` on the left of the `<input>` element.
@@ -94,7 +94,7 @@ export class CcInputNumber extends CcFormControlElement {
     /** @type {number|null} Sets the min range of the `<input>` element. */
     this.min = null;
 
-    /** @type {boolean} Sets `readonly` attribute on inner native `<input>` element. */
+    /** @type {boolean} Sets `readonly` attribute on inner native `<input>` element. This should be used during API calls instead of the `disabled` attribute because it maintains focus. */
     this.readonly = false;
 
     /** @type {boolean} Sets the "required" text inside the label */

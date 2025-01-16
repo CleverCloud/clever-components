@@ -149,7 +149,7 @@ export class CcInputDate extends CcFormControlElement {
   constructor() {
     super();
 
-    /** @type {boolean} Sets `disabled` attribute on inner native `<input>` element. */
+    /** @type {boolean} Sets `disabled` attribute on inner native `<input>` element. If you want to temporarily disable the input during an API call, use `readonly` instead so that focus is maintained. */
     this.disabled = false;
 
     /** @type {boolean} Hides the label visually if `true`. */
@@ -169,7 +169,7 @@ export class CcInputDate extends CcFormControlElement {
     /** @type {string|null} Sets the min date with ISO date format. */
     this.min = null;
 
-    /** @type {boolean} Sets `readonly` attribute on inner native `<input>` element. */
+    /** @type {boolean} Sets `readonly` attribute on inner native `<input>` element. This should be used during API calls instead of the `disabled` attribute because it maintains focus. */
     this.readonly = false;
 
     /** @type {boolean} Sets whether the "required" text inside the label should be displayed. */
