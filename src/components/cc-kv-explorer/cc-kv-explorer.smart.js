@@ -84,7 +84,7 @@ defineSmartComponent({
           await keysCtrl.filter(type, pattern);
         } catch (e) {
           console.error(e);
-          notifyError(i18n('cc-kv-explorer.error.fetch-keys'));
+          updateComponent('state', { type: 'error-keys', action: 'filtering' });
         }
       },
     );
@@ -94,7 +94,7 @@ defineSmartComponent({
         await keysCtrl.refresh();
       } catch (e) {
         console.error(e);
-        notifyError(i18n('cc-kv-explorer.error.fetch-keys'));
+        updateComponent('state', { type: 'error-keys', action: 'refreshing' });
       }
     });
 
@@ -103,7 +103,7 @@ defineSmartComponent({
         await keysCtrl.loadMore();
       } catch (e) {
         console.error(e);
-        notifyError(i18n('cc-kv-explorer.error.fetch-keys'));
+        updateComponent('state', { type: 'error-keys', action: 'loading-more' });
       }
     });
 
@@ -433,7 +433,7 @@ defineSmartComponent({
       }
     } catch (e) {
       console.error(e);
-      notifyError(i18n('cc-kv-explorer.error.fetch-keys'));
+      updateComponent('state', { type: 'error-keys', action: 'loading' });
     }
 
     /**
