@@ -40,7 +40,7 @@ export class CcEnvVarCreate extends LitElement {
   constructor() {
     super();
 
-    /** @type {boolean} Sets `disabled` attribute on inputs and button. */
+    /** @type {boolean} Sets `readonly` attribute on inputs and `disabled` attribute on buttons (to be used during API calls). */
     this.disabled = false;
 
     /** @type {EnvVarValidationMode} Sets the mode of the variables name validation. */
@@ -111,7 +111,7 @@ export class CcEnvVarCreate extends LitElement {
           class="name"
           name="name"
           value=${this._variableName}
-          ?disabled=${this.disabled}
+          ?readonly=${this.disabled}
           @cc-input-text:input=${this._onNameInput}
           @cc-input-text:requestimplicitsubmit=${
             /** @param {CustomEvent<string>} e */
@@ -126,7 +126,7 @@ export class CcEnvVarCreate extends LitElement {
             name="value"
             value=${this._variableValue}
             multi
-            ?disabled=${this.disabled}
+            ?readonly=${this.disabled}
             @cc-input-text:input=${this._onValueInput}
             @cc-input-text:requestimplicitsubmit=${
               /** @param {CustomEvent<string>} e */
