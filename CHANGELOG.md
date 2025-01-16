@@ -5,6 +5,20 @@ title: 'Changelog'
 
 # Changelog
 
+## [17.1.0](https://github.com/CleverCloud/clever-components/compare/17.0.0...17.1.0) (2025-01-16)
+
+
+### 🚀 Features
+
+* **cc-button:** throw error if both `waiting` & `disabled` are `true` ([3a8f191](https://github.com/CleverCloud/clever-components/commit/3a8f191756cdfc47b47313c2bc76969fa371e44f)), closes [#1124](https://github.com/CleverCloud/clever-components/issues/1124)
+
+
+### 🐛 Bug Fixes
+
+* **cc-kv-terminal:** handle huge command history using `lit-virtualizer` ([2b89f01](https://github.com/CleverCloud/clever-components/commit/2b89f019b88a6b6a005c850b63762d1c6a7a66e6))
+* **cc-tile-status-codes.smart:** remove status codes that are below `100` ([6b0b1df](https://github.com/CleverCloud/clever-components/commit/6b0b1df44ec3707a8abf40c148479a5e637a1cef))
+* **cc-tile-status-codes:** fix 6XX..9XX translations ([6e20c39](https://github.com/CleverCloud/clever-components/commit/6e20c39e8d1c826db5bee557241c0e856fb1a817))
+
 ## [17.0.0](https://github.com/CleverCloud/clever-components/compare/16.4.0...17.0.0) (2024-12-05)
 
 
