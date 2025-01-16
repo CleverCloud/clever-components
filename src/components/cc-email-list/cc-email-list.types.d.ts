@@ -1,15 +1,15 @@
 //# region state
 interface EmailListStateLoading {
-  state: 'loading';
+  type: 'loading';
 }
 
 interface EmailListStateError {
-  state: 'error';
+  type: 'error';
 }
 
 interface EmailListStateLoaded {
-  state: 'loaded';
-  value: EmailList;
+  type: 'loaded';
+  emailList: EmailList;
 }
 
 export type EmailListState = EmailListStateLoading | EmailListStateError | EmailListStateLoaded;
@@ -22,11 +22,11 @@ interface EmailList {
 }
 
 export interface PrimaryAddressState extends EmailAddress {
-  state: 'idle' | 'sending-confirmation-email';
+  type: 'idle' | 'sending-confirmation-email';
 }
 
 export interface SecondaryAddressState extends EmailAddress {
-  state: 'idle' | 'marking-as-primary' | 'deleting';
+  type: 'idle' | 'marking-as-primary' | 'deleting';
 }
 
 interface EmailAddress {

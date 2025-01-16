@@ -8,19 +8,20 @@ const SECONDARY_ADDRESS_2 = 'john.doe.holidays@example.com';
 const HUGE_ADDRESS = `john${'.doe'.repeat(30)}@example.com`;
 
 /** @type {PrimaryAddressState} */
-const primaryAddress = { state: 'idle', address: PRIMARY_ADDRESS, verified: true };
+const primaryAddress = { type: 'idle', address: PRIMARY_ADDRESS, verified: true };
 /** @type {PrimaryAddressState} */
-const primaryUnverified = { state: 'idle', address: PRIMARY_ADDRESS, verified: false };
+const primaryUnverified = { type: 'idle', address: PRIMARY_ADDRESS, verified: false };
 /** @type {Array<SecondaryAddressState>} */
 const secondaryAddresses = [
-  { state: 'idle', address: SECONDARY_ADDRESS_1, verified: true },
-  { state: 'idle', address: SECONDARY_ADDRESS_2, verified: true },
+  { type: 'idle', address: SECONDARY_ADDRESS_1, verified: true },
+  { type: 'idle', address: SECONDARY_ADDRESS_2, verified: true },
 ];
 
+/** @type {Partial<CcEmailList>} */
 const baseItem = {
-  emails: {
-    state: 'loaded',
-    value: {
+  emailListState: {
+    type: 'loaded',
+    emailList: {
       primaryAddress,
       secondaryAddresses,
     },
@@ -35,6 +36,7 @@ export default {
 
 /**
  * @typedef {import('./cc-email-list.js').CcEmailList} CcEmailList
+ * @typedef {import('./cc-email-list.types.js').EmailListStateLoaded} EmailsListStateLoaded
  * @typedef {import('./cc-email-list.types.js').PrimaryAddressState} PrimaryAddressState
  * @typedef {import('./cc-email-list.types.js').SecondaryAddressState} SecondaryAddressState
  */
@@ -42,36 +44,41 @@ export default {
 const conf = {
   component: 'cc-email-list',
 };
+
 export const defaultStory = makeStory(conf, {
+  /** @type {Partial<CcEmailList>[]} */
   items: [baseItem],
 });
 
 export const skeleton = makeStory(conf, {
+  /** @type {Partial<CcEmailList>[]} */
   items: [
     {
-      emails: {
-        state: 'loading',
+      emailListState: {
+        type: 'loading',
       },
     },
   ],
 });
 
 export const errorWithLoading = makeStory(conf, {
+  /** @type {Partial<CcEmailList>[]} */
   items: [
     {
-      emails: {
-        state: 'error',
+      emailListState: {
+        type: 'error',
       },
     },
   ],
 });
 
 export const dataLoadedWithUnverifiedPrimaryEmailAddress = makeStory(conf, {
+  /** @type {Partial<CcEmailList>[]} */
   items: [
     {
-      emails: {
-        state: 'loaded',
-        value: {
+      emailListState: {
+        type: 'loaded',
+        emailList: {
           primaryAddress: primaryUnverified,
           secondaryAddresses: [],
         },
@@ -81,15 +88,16 @@ export const dataLoadedWithUnverifiedPrimaryEmailAddress = makeStory(conf, {
 });
 
 export const dataLoadedWithHugeEmail = makeStory(conf, {
+  /** @type {Partial<CcEmailList>[]} */
   items: [
     {
-      emails: {
-        state: 'loaded',
-        value: {
-          primaryAddress: { state: 'idle', address: HUGE_ADDRESS, verified: true },
+      emailListState: {
+        type: 'loaded',
+        emailList: {
+          primaryAddress: { type: 'idle', address: HUGE_ADDRESS, verified: true },
           secondaryAddresses: [
-            { state: 'idle', address: HUGE_ADDRESS, verified: true },
-            { state: 'idle', address: HUGE_ADDRESS, verified: true },
+            { type: 'idle', address: HUGE_ADDRESS, verified: true },
+            { type: 'idle', address: HUGE_ADDRESS, verified: true },
           ],
         },
       },
@@ -98,11 +106,12 @@ export const dataLoadedWithHugeEmail = makeStory(conf, {
 });
 
 export const dataLoadedWithNoSecondaryEmails = makeStory(conf, {
+  /** @type {Partial<CcEmailList>[]} */
   items: [
     {
-      emails: {
-        state: 'loaded',
-        value: {
+      emailListState: {
+        type: 'loaded',
+        emailList: {
           primaryAddress,
           secondaryAddresses: [],
         },
@@ -112,12 +121,13 @@ export const dataLoadedWithNoSecondaryEmails = makeStory(conf, {
 });
 
 export const loadingWithSendingConfirmationEmail = makeStory(conf, {
+  /** @type {Partial<CcEmailList>[]} */
   items: [
     {
-      emails: {
-        state: 'loaded',
-        value: {
-          primaryAddress: { ...primaryUnverified, state: 'sending-confirmation-email' },
+      emailListState: {
+        type: 'loaded',
+        emailList: {
+          primaryAddress: { ...primaryUnverified, type: 'sending-confirmation-email' },
           secondaryAddresses,
         },
       },
@@ -126,27 +136,28 @@ export const loadingWithSendingConfirmationEmail = makeStory(conf, {
 });
 
 export const loadingWithDeletingSecondary = makeStory(conf, {
+  /** @type {Partial<CcEmailList>[]} */
   items: [
     {
-      emails: {
-        state: 'loaded',
-        value: {
+      emailListState: {
+        type: 'loaded',
+        emailList: {
           primaryAddress,
           secondaryAddresses: [
-            { state: 'deleting', address: SECONDARY_ADDRESS_1, verified: true },
-            { state: 'idle', address: SECONDARY_ADDRESS_2, verified: true },
+            { type: 'deleting', address: SECONDARY_ADDRESS_1, verified: true },
+            { type: 'idle', address: SECONDARY_ADDRESS_2, verified: true },
           ],
         },
       },
     },
     {
-      emails: {
-        state: 'loaded',
-        value: {
+      emailListState: {
+        type: 'loaded',
+        emailList: {
           primaryAddress,
           secondaryAddresses: [
-            { state: 'deleting', address: SECONDARY_ADDRESS_1, verified: true },
-            { state: 'deleting', address: SECONDARY_ADDRESS_2, verified: true },
+            { type: 'deleting', address: SECONDARY_ADDRESS_1, verified: true },
+            { type: 'deleting', address: SECONDARY_ADDRESS_2, verified: true },
           ],
         },
       },
@@ -155,15 +166,16 @@ export const loadingWithDeletingSecondary = makeStory(conf, {
 });
 
 export const loadingWithMarkingSecondaryAsPrimary = makeStory(conf, {
+  /** @type {Partial<CcEmailList>[]} */
   items: [
     {
-      emails: {
-        state: 'loaded',
-        value: {
+      emailListState: {
+        type: 'loaded',
+        emailList: {
           primaryAddress,
           secondaryAddresses: [
-            { state: 'marking-as-primary', address: SECONDARY_ADDRESS_1, verified: true },
-            { state: 'idle', address: SECONDARY_ADDRESS_2, verified: true },
+            { type: 'marking-as-primary', address: SECONDARY_ADDRESS_1, verified: true },
+            { type: 'idle', address: SECONDARY_ADDRESS_2, verified: true },
           ],
         },
       },
@@ -172,19 +184,23 @@ export const loadingWithMarkingSecondaryAsPrimary = makeStory(conf, {
 });
 
 export const loadingWithSecondaryEmailIsBeingAdded = makeStory(conf, {
+  /** @type {Partial<CcEmailList>[]} */
   items: [
     {
       ...baseItem,
       addEmailFormState: { type: 'adding' },
     },
   ],
+  /** @param {CcEmailList} component */
   onUpdateComplete: (component) => {
     component._formRef.value.address.value = 'john.doe.extra@example.com';
   },
 });
 
 export const errorWithWhenSecondaryEmailIsEmpty = makeStory(conf, {
+  /** @type {Partial<CcEmailList>[]} */
   items: [baseItem],
+  /** @param {CcEmailList} component */
   onUpdateComplete: (component) => {
     component._formRef.value.address.value = '';
     component._formRef.value.address.validate();
@@ -193,7 +209,9 @@ export const errorWithWhenSecondaryEmailIsEmpty = makeStory(conf, {
 });
 
 export const errorWithWhenSecondaryEmailIsInvalid = makeStory(conf, {
+  /** @type {Partial<CcEmailList>[]} */
   items: [baseItem],
+  /** @param {CcEmailList} component */
   onUpdateComplete: (component) => {
     component._formRef.value.address.value = 'invalid address email';
     component._formRef.value.address.validate();
@@ -202,6 +220,7 @@ export const errorWithWhenSecondaryEmailIsInvalid = makeStory(conf, {
 });
 
 export const errorWithWhenSecondaryEmailIsAlreadyDefined = makeStory(conf, {
+  /** @type {Partial<CcEmailList>[]} */
   items: [
     {
       ...baseItem,
@@ -213,12 +232,14 @@ export const errorWithWhenSecondaryEmailIsAlreadyDefined = makeStory(conf, {
       },
     },
   ],
+  /** @param {CcEmailList} component */
   onUpdateComplete: (component) => {
     component._formRef.value.address.value = SECONDARY_ADDRESS_1;
   },
 });
 
 export const errorWithWhenSecondaryEmailIsUsed = makeStory(conf, {
+  /** @type {Partial<CcEmailList>[]} */
   items: [
     {
       ...baseItem,
@@ -230,6 +251,7 @@ export const errorWithWhenSecondaryEmailIsUsed = makeStory(conf, {
       },
     },
   ],
+  /** @param {CcEmailList} component */
   onUpdateComplete: (component) => {
     component._formRef.value.address.value = 'used-by-another-user@example.com';
   },
