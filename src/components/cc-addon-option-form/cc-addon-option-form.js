@@ -131,12 +131,12 @@ export class CcAddonOptionForm extends LitElement {
           --cc-icon-size: 1.25em;
         }
 
-        /* Temporary workaround for cc-addon-elasticsearch-options because the skeleton parts should only be the <strong> elements but they are nested inside i18n strings */
+        /* FIXME: Temporary workaround for cc-addon-elasticsearch-options because the skeleton parts should only be the <strong> elements but they are nested inside i18n strings */
         .option-warning .skeleton {
           color: var(--cc-color-text-weak);
         }
 
-        /* Temporary workaround for cc-addon-elasticsearch-options because the skeleton parts should only be the <strong> elements but they are nested inside i18n strings */
+        /* FIXME: Temporary workaround for cc-addon-elasticsearch-options because the skeleton parts should only be the <strong> elements but they are nested inside i18n strings */
         .skeleton strong {
           background-color: #bbb;
           color: transparent;
