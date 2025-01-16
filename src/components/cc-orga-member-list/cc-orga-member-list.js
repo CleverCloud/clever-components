@@ -378,7 +378,7 @@ export class CcOrgaMemberList extends LitElement {
   }
 
   _renderInviteForm() {
-    const isFormDisabled = this.inviteMemberFormState.type === 'inviting';
+    const isInviting = this.inviteMemberFormState.type === 'inviting';
 
     return html`
       <cc-block-section slot="content-body">
@@ -393,7 +393,7 @@ export class CcOrgaMemberList extends LitElement {
             type="email"
             .customValidator=${this._memberEmailValidator}
             .customErrorMessages=${this._memberEmailErrorMessages}
-            ?disabled=${isFormDisabled}
+            ?readonly=${isInviting}
           >
             <p slot="help">${i18n('cc-orga-member-list.invite.email.format')}</p>
           </cc-input-text>
@@ -405,12 +405,12 @@ export class CcOrgaMemberList extends LitElement {
             reset-value="DEVELOPER"
             value="DEVELOPER"
             required
-            ?disabled=${isFormDisabled}
+            ?disabled=${isInviting}
           >
           </cc-select>
 
           <div class="submit">
-            <cc-button primary ?waiting=${isFormDisabled} type="submit">
+            <cc-button primary ?waiting=${isInviting} type="submit">
               ${i18n('cc-orga-member-list.invite.submit')}
             </cc-button>
           </div>
@@ -536,7 +536,7 @@ export class CcOrgaMemberList extends LitElement {
           margin: 0.5em 0;
         }
 
-        /* 100 is a weird value but this makes the input grow as much as possible 
+        /* 100 is a weird value but this makes the input grow as much as possible
   without pushing the select to a new line until the input width reaches 18em */
 
         .invite-form cc-input-text {
