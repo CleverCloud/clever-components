@@ -116,7 +116,7 @@ export class CcZonePicker extends CcFormControlElement {
         name="zone"
         .value="${zone.code}"
         ?disabled=${disabled}
-        ?checked="${isZoneSelected}"
+        .checked="${isZoneSelected}"
         id="${zone.code}"
         aria-describedby="${ifDefined(zoneSectionHeaderId)}"
       />
