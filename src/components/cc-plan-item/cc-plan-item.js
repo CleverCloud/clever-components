@@ -80,18 +80,55 @@ export class CcPlanItem extends LitElement {
         :host {
           border: 2px solid var(--cc-color-border-neutral, #eee);
           border-radius: var(--cc-border-radius-default, 0.25em);
-          display: flex;
-          flex-direction: column;
-          overflow: hidden;
+          display: block;
+          /* flex-direction: column;
+          overflow: hidden; */
           position: relative;
         }
 
-        :host .title {
-          flex: 1 1 auto;
+        .title {
+          align-items: center;
+          column-gap: 0.375em;
+          display: inline-flex;
+          flex-wrap: wrap;
+          padding: 1em 1em 0.75em;
         }
 
-        :host .details {
-          flex: 0 0 auto;
+        .name {
+          font-size: 1.25em;
+        }
+
+        .icon-selected {
+          --cc-icon-color: var(--cc-color-bg-primary);
+
+          display: none;
+          position: absolute;
+          right: 0.5em;
+          top: 0.5em;
+        }
+
+        .details {
+          background-color: var(--cc-color-bg-neutral);
+          display: flex;
+          flex-direction: column;
+          gap: 0.25em 0;
+          margin: 0;
+          padding: 0.75em 1em;
+        }
+
+        .detail {
+          display: inline-flex;
+          gap: 0.5em;
+        }
+
+        .detail-icon {
+          align-self: center;
+          color: var(--cc-color-text-weak);
+        }
+
+        .detail-value {
+          color: var(--cc-color-text-weak);
+          font-size: 0.875em;
         }
 
         :host(:hover:not([disabled])) {
@@ -117,7 +154,7 @@ export class CcPlanItem extends LitElement {
         }
 
         :host([selected]) .icon-selected {
-          opacity: 1;
+          display: block;
         }
 
         :host([selected]) .name {
@@ -134,60 +171,6 @@ export class CcPlanItem extends LitElement {
 
         :host([selected]) .detail-value {
           color: var(--cc-color-text-primary-strongest);
-        }
-
-        .title {
-          align-items: center;
-          column-gap: 0.375em;
-          display: inline-flex;
-          flex-wrap: wrap;
-          padding: 1em 1em 0.75em;
-        }
-
-        .name {
-          flex: 0 0 auto;
-          font-size: 1.25em;
-        }
-
-        .decorator {
-          flex: 0 0 auto;
-        }
-
-        .icon-selected {
-          --cc-icon-color: var(--cc-color-bg-primary);
-
-          opacity: 0;
-          position: absolute;
-          right: 0.5em;
-          top: 0.5em;
-        }
-
-        .details {
-          background-color: var(--cc-color-bg-neutral);
-          display: flex;
-          flex-direction: column;
-          gap: 0.5em;
-          margin: 0;
-          padding: 0.75em 1.125em;
-        }
-
-        .detail {
-          align-items: center;
-          display: inline-flex;
-          flex: 0 0 auto;
-          gap: 0.5em;
-          line-height: 1;
-        }
-
-        .detail-icon {
-          color: var(--cc-color-text-weak);
-          flex: 0 0 auto;
-        }
-
-        .detail-value {
-          color: var(--cc-color-text-weak);
-          flex: 1 1 auto;
-          font-size: 0.875em;
         }
       `,
     ];

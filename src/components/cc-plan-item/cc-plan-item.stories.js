@@ -44,6 +44,18 @@ export const defaultStory = makeStory(conf, {
   items: [DEFAULT_ITEM],
 });
 
+export const longName = makeStory(conf, {
+  /** @type {Array<Partial<CcPlanItem>>} */
+  items: [
+    { ...DEFAULT_ITEM, name: 'my very very very long name', style: 'width: 10em' },
+    { ...DEFAULT_ITEM, name: 'my very very very long name', style: 'width: 20em' },
+    { ...DEFAULT_ITEM, name: 'my very very very long name', style: 'width: 30em' },
+    { ...DEFAULT_ITEM, selected: true, name: 'my very very very long name', style: 'width: 10em' },
+    { ...DEFAULT_ITEM, selected: true, name: 'my very very very long name', style: 'width: 20em' },
+    { ...DEFAULT_ITEM, selected: true, name: 'my very very very long name', style: 'width: 30em' },
+  ],
+});
+
 export const withBadge = makeStory(conf, {
   /** @type {Array<Partial<CcPlanItem>>} */
   items: [

@@ -27,6 +27,7 @@ export const defaultStory = makeStory(conf, {
   /** @type {Array<Partial<CcPlanPicker>>} */
   items: [
     {
+      name: 'foobar',
       plans: DEFAULT_PLANS,
       value: 'plan_12',
     },
