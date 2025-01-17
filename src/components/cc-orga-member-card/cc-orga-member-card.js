@@ -28,7 +28,7 @@ const BREAKPOINT_TINY = 350;
 const BREAKPOINTS = [BREAKPOINT_TINY, BREAKPOINT_SMALL, BREAKPOINT_MEDIUM];
 
 /**
- * @typedef {import('./cc-orga-member-card.types.js').Authorisations} Authorisations
+ * @typedef {import('./cc-orga-member-card.types.js').CardAuthorisations} CardAuthorisations
  * @typedef {import('./cc-orga-member-card.types.js').OrgaMemberCardState} OrgaMemberCardState
  * @typedef {import('./cc-orga-member-card.types.js').ToggleEditing} ToggleEditing
  * @typedef {import('./cc-orga-member-card.types.js').UpdateMember} UpdateMember
@@ -64,7 +64,7 @@ export class CcOrgaMemberCard extends LitElement {
   static get properties() {
     return {
       authorisations: { type: Object },
-      member: { type: Object },
+      state: { type: Object },
       _newRole: { type: String, state: true },
     };
   }
@@ -72,15 +72,15 @@ export class CcOrgaMemberCard extends LitElement {
   constructor() {
     super();
 
-    /** @type {Authorisations} Sets the authorisations that control the display of the edit / delete buttons. */
+    /** @type {CardAuthorisations} Sets the authorisations that control the display of the edit / delete buttons. */
     this.authorisations = {
       edit: false,
       delete: false,
     };
 
     /** @type {OrgaMemberCardState} Sets the state and data of the member. */
-    this.member = {
-      state: 'loaded',
+    this.state = {
+      type: 'loaded',
       id: '',
       email: '',
       role: 'DEVELOPER',
@@ -121,8 +121,8 @@ export class CcOrgaMemberCard extends LitElement {
    * The accessible name provides more info than the visible text. It mentions the member being edited / to be edited.
    */
   _getFirstBtnAccessibleName() {
-    const memberIdentity = this.member.name ?? this.member.email;
-    if (this.member.state === 'editing' || this.member.state === 'updating') {
+    const memberIdentity = this.state.name ?? this.state.email;
+    if (this.state.type === 'editing' || this.state.type === 'updating') {
       return i18n('cc-orga-member-card.btn.cancel.accessible-name', { memberIdentity });
     } else {
       return i18n('cc-orga-member-card.btn.edit.accessible-name', { memberIdentity });
@@ -134,12 +134,12 @@ export class CcOrgaMemberCard extends LitElement {
    * The accessible name provides more info than the visible text. It mentions the member to delete if relevant (no need to specify it for the "leave" button).
    */
   _getSecondBtnAccessibleName() {
-    const memberIdentity = this.member.name ?? this.member.email;
-    if (this.member.state === 'editing' || this.member.state === 'updating') {
+    const memberIdentity = this.state.name ?? this.state.email;
+    if (this.state.type === 'editing' || this.state.type === 'updating') {
       return i18n('cc-orga-member-card.btn.validate.accessible-name', { memberIdentity });
     }
 
-    if (this.member.isCurrentUser) {
+    if (this.state.isCurrentUser) {
       return i18n('cc-orga-member-card.btn.leave.accessible-name');
     }
 
@@ -165,7 +165,7 @@ export class CcOrgaMemberCard extends LitElement {
       return 'btn-content-validate';
     }
 
-    if (this.member.isCurrentUser) {
+    if (this.state.isCurrentUser) {
       return 'btn-content-leave';
     }
 
@@ -173,9 +173,9 @@ export class CcOrgaMemberCard extends LitElement {
   }
 
   _onDeleteMember() {
-    const eventName = this.member.isCurrentUser ? 'leave' : 'delete';
+    const eventName = this.state.isCurrentUser ? 'leave' : 'delete';
     // since not every member has set a name, we send either the name or the email to provide context in the toast message
-    dispatchCustomEvent(this, eventName, this.member);
+    dispatchCustomEvent(this, eventName, this.state);
   }
 
   /**
@@ -194,18 +194,18 @@ export class CcOrgaMemberCard extends LitElement {
    * Focus the role `select` element after entering edit mode.
    */
   async _onToggleEdit() {
-    const newState = this.member.state === 'loaded' ? 'editing' : 'loaded';
+    const newState = this.state.type === 'loaded' ? 'editing' : 'loaded';
 
     // switch the component state
-    this.member = {
-      ...this.member,
-      state: newState,
+    this.state = {
+      ...this.state,
+      type: newState,
     };
-    this._newRole = this.member.role;
+    this._newRole = this.state.role;
 
     // warn the `cc-orga-member-list` component so that it closes all other cards.
     dispatchCustomEvent(this, 'toggle-editing', {
-      memberId: this.member.id,
+      memberId: this.state.id,
       newState,
     });
 
@@ -217,47 +217,47 @@ export class CcOrgaMemberCard extends LitElement {
   }
 
   _onUpdateMember() {
-    if (this._newRole === this.member.role) {
+    if (this._newRole === this.state.role) {
       this._onToggleEdit();
       return;
     }
 
     dispatchCustomEvent(this, 'update', {
-      ...this.member,
+      ...this.state,
       newRole: this._newRole,
     });
   }
 
   render() {
-    const waiting = this.member.state === 'updating' || this.member.state === 'deleting';
-    const hasName = this.member.name != null;
-    const hasError = (this.member.state === 'loaded' || this.member.state === 'editing') && this.member.error;
+    const waiting = this.state.type === 'updating' || this.state.type === 'deleting';
+    const hasName = this.state.name != null;
+    const hasError = (this.state.type === 'loaded' || this.state.type === 'editing') && this.state.error;
     const hasAdminRights = this.authorisations.edit && this.authorisations.delete;
 
     return html`
       <div class="wrapper ${classMap({ 'has-actions': hasAdminRights, 'has-error': hasError })}">
-        ${this.member.avatar == null
+        ${this.state.avatar == null
           ? html` <cc-icon class="avatar ${classMap({ waiting })}" .icon=${iconAvatar}></cc-icon> `
-          : html` <cc-img class="avatar ${classMap({ waiting })}" src=${this.member.avatar}></cc-img> `}
-        <div class="identity ${classMap({ waiting })}" title="${ifDefined(this.member.jobTitle ?? undefined)}">
-          ${hasName || this.member.isCurrentUser
+          : html` <cc-img class="avatar ${classMap({ waiting })}" src=${this.state.avatar}></cc-img> `}
+        <div class="identity ${classMap({ waiting })}" title="${ifDefined(this.state.jobTitle ?? undefined)}">
+          ${hasName || this.state.isCurrentUser
             ? html`
                 <p class="name">
-                  ${hasName ? html`<strong>${this.member.name}</strong>` : ''}
-                  ${this.member.isCurrentUser
+                  ${hasName ? html`<strong>${this.state.name}</strong>` : ''}
+                  ${this.state.isCurrentUser
                     ? html` <cc-badge>${i18n('cc-orga-member-card.current-user')}</cc-badge> `
                     : ''}
                 </p>
               `
             : ''}
-          <p class="email">${this.member.email}</p>
+          <p class="email">${this.state.email}</p>
         </div>
 
         ${this._renderStatusArea()} ${hasAdminRights ? this._renderActionBtns(hasError) : ''}
 
-        <!-- 
+        <!--
           a11y: we need the live region to be present within the DOM from the start and insert content dynamically inside it.
-          We have to add a conditional class to the wrapper when it does not contain any message to cancel the gap applied automatically within the grid. 
+          We have to add a conditional class to the wrapper when it does not contain any message to cancel the gap applied automatically within the grid.
          -->
         <div class="error-wrapper ${classMap({ 'out-of-flow': !hasError })}" aria-live="polite" aria-atomic="true">
           ${hasError
@@ -283,8 +283,8 @@ export class CcOrgaMemberCard extends LitElement {
    * - to make sure there is no layout shifts when switching between edit and readonly modes.
    */
   _renderStatusArea() {
-    const isEditing = this.member.state === 'editing' || this.member.state === 'updating';
-    const waiting = this.member.state === 'updating' || this.member.state === 'deleting';
+    const isEditing = this.state.type === 'editing' || this.state.type === 'updating';
+    const waiting = this.state.type === 'updating' || this.state.type === 'deleting';
 
     return html`
       <cc-stretch
@@ -292,13 +292,13 @@ export class CcOrgaMemberCard extends LitElement {
         visible-element-id=${isEditing ? 'status-editing' : 'status-readonly'}
       >
         <div id="status-readonly" class="status__role-mfa">
-          <cc-stretch visible-element-id=${this.member.role}>
+          <cc-stretch visible-element-id=${this.state.role}>
             ${this._getRoleOptions().map(
               (role) => html` <cc-badge id="${role.value}" intent="info" weight="dimmed">${role.label}</cc-badge> `,
             )}
           </cc-stretch>
 
-          <cc-stretch visible-element-id=${this.member.isMfaEnabled ? 'badge-mfa-enabled' : 'badge-mfa-disabled'}>
+          <cc-stretch visible-element-id=${this.state.isMfaEnabled ? 'badge-mfa-enabled' : 'badge-mfa-disabled'}>
             <cc-badge id="badge-mfa-enabled" intent="success" weight="outlined" .icon="${iconCheck}">
               ${i18n('cc-orga-member-card.mfa-enabled')}
             </cc-badge>
@@ -312,9 +312,9 @@ export class CcOrgaMemberCard extends LitElement {
           id="status-editing"
           label="${i18n('cc-orga-member-card.role.label')}"
           .options=${this._getRoleOptions()}
-          .value=${this._newRole ?? this.member.role}
+          .value=${this._newRole ?? this.state.role}
           ?inline=${this._resizeController.width > BREAKPOINT_TINY}
-          ?disabled=${this.member.state === 'updating'}
+          ?disabled=${this.state.type === 'updating'}
           @cc-select:input=${this._onRoleInput}
           ${ref(this._roleRef)}
         >
@@ -331,8 +331,8 @@ export class CcOrgaMemberCard extends LitElement {
    */
   _renderActionBtns(hasError) {
     const isBtnImgOnly = this._resizeController.width >= BREAKPOINT_MEDIUM;
-    const waiting = this.member.state === 'updating' || this.member.state === 'deleting';
-    const isEditing = this.member.state === 'editing' || this.member.state === 'updating';
+    const waiting = this.state.type === 'updating' || this.state.type === 'deleting';
+    const isEditing = this.state.type === 'editing' || this.state.type === 'updating';
     const firstBtnIcon = isEditing ? iconCross : iconPen;
     const secondBtnIcon = isEditing ? iconCheck : iconDelete;
 

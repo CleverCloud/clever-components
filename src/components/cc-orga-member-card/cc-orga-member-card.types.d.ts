@@ -21,21 +21,21 @@ export type OrgaMemberCardState =
   | OrgaMemberCardStateDeleting;
 
 export interface OrgaMemberCardStateLoaded extends OrgaMember {
-  state: 'loaded';
+  type: 'loaded';
   error?: boolean;
 }
 
 export interface OrgaMemberCardStateEditing extends OrgaMember {
-  state: 'editing';
+  type: 'editing';
   error?: boolean;
 }
 
 export interface OrgaMemberCardStateUpdating extends OrgaMember {
-  state: 'updating';
+  type: 'updating';
 }
 
 export interface OrgaMemberCardStateDeleting extends OrgaMember {
-  state: 'deleting';
+  type: 'deleting';
 }
 /*endregion*/
 
@@ -45,7 +45,7 @@ interface ToggleEditing {
   newState: 'editing' | 'loaded';
 }
 
-interface Authorisations {
+interface CardAuthorisations {
   edit: boolean;
   delete: boolean;
 }
