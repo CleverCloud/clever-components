@@ -1,3 +1,4 @@
+/** @type {import('../../components/cc-orga-member-list/cc-orga-member-list.types.js').OrgaMemberListStateLoaded['value']} */
 export default [
   {
     name: 'Cole Boyd',
@@ -6,8 +7,7 @@ export default [
     isMfaEnabled: false,
     isCurrentUser: true,
     role: 'DEVELOPER',
-    newRole: 'DEVELOPER',
-    state: 'loaded',
+    type: 'loaded',
     avatar: 'http://placekitten.com/202/202',
   },
   {
@@ -16,9 +16,9 @@ export default [
     id: 'member2',
     isMfaEnabled: false,
     role: 'ADMIN',
-    newRole: 'ADMIN',
-    state: 'loaded',
+    type: 'loaded',
     avatar: 'http://placekitten.com/202/202',
+    isCurrentUser: false
   },
   {
     name: 'Florence Nicholson',
@@ -26,9 +26,9 @@ export default [
     id: 'member3',
     isMfaEnabled: false,
     role: 'DEVELOPER',
-    newRole: 'DEVELOPER',
-    state: 'loaded',
+    type: 'loaded',
     avatar: 'http://placekitten.com/205/205',
+    isCurrentUser: false
   },
   {
     name: 'Paki Williams',
@@ -36,9 +36,9 @@ export default [
     id: 'member4',
     isMfaEnabled: true,
     role: 'DEVELOPER',
-    newRole: 'DEVELOPER',
-    state: 'loaded',
+    type: 'loaded',
     avatar: 'http://placekitten.com/205/205',
+    isCurrentUser: false
   },
   {
     name: 'Kenyon Calderon',
@@ -46,9 +46,9 @@ export default [
     id: 'member5',
     isMfaEnabled: false,
     role: 'MANAGER',
-    newRole: 'MANAGER',
-    state: 'loaded',
+    type: 'loaded',
     avatar: 'http://placekitten.com/207/207',
+    isCurrentUser: false
   },
   {
     name: 'Dalton Fowler',
@@ -56,9 +56,9 @@ export default [
     id: 'member6',
     isMfaEnabled: false,
     role: 'MANAGER',
-    newRole: 'MANAGER',
-    state: 'loaded',
+    type: 'loaded',
     avatar: 'http://placekitten.com/207/207',
+    isCurrentUser: false
   },
   {
     name: 'Malachi Vinson',
@@ -66,9 +66,9 @@ export default [
     id: 'member7',
     isMfaEnabled: true,
     role: 'ACCOUNTING',
-    newRole: 'ACCOUNTING',
-    state: 'loaded',
+    type: 'loaded',
     avatar: 'http://placekitten.com/202/202',
+    isCurrentUser: false
   },
   {
     name: 'Ahmed Ratliff',
@@ -76,9 +76,9 @@ export default [
     id: 'member8',
     isMfaEnabled: true,
     role: 'ACCOUNTING',
-    newRole: 'ACCOUNTING',
-    state: 'loaded',
+    type: 'loaded',
     avatar: 'http://placekitten.com/202/202',
+    isCurrentUser: false
   },
   {
     name: 'Laith May',
@@ -86,9 +86,9 @@ export default [
     id: 'member9',
     isMfaEnabled: false,
     role: 'ADMIN',
-    newRole: 'ADMIN',
-    state: 'loaded',
+    type: 'loaded',
     avatar: 'http://placekitten.com/205/205',
+    isCurrentUser: false
   },
   {
     name: 'Amity Dean',
@@ -96,9 +96,9 @@ export default [
     id: 'member10',
     isMfaEnabled: false,
     role: 'ADMIN',
-    newRole: 'ADMIN',
-    state: 'loaded',
+    type: 'loaded',
     avatar: 'http://placekitten.com/205/205',
+    isCurrentUser: false
   },
   {
     name: 'Tasha Camacho',
@@ -106,9 +106,9 @@ export default [
     id: 'member11',
     isMfaEnabled: false,
     role: 'DEVELOPER',
-    newRole: 'DEVELOPER',
-    state: 'loaded',
+    type: 'loaded',
     avatar: 'http://placekitten.com/207/207',
+    isCurrentUser: false
   },
   {
     name: 'Dane Freeman',
@@ -116,9 +116,9 @@ export default [
     id: 'member12',
     isMfaEnabled: false,
     role: 'DEVELOPER',
-    newRole: 'DEVELOPER',
-    state: 'loaded',
+    type: 'loaded',
     avatar: 'http://placekitten.com/207/207',
+    isCurrentUser: false
   },
   {
     name: 'Karly Valdez',
@@ -126,9 +126,9 @@ export default [
     id: 'member13',
     isMfaEnabled: false,
     role: 'MANAGER',
-    newRole: 'MANAGER',
-    state: 'loaded',
+    type: 'loaded',
     avatar: 'http://placekitten.com/202/202',
+    isCurrentUser: false
   },
   {
     name: 'Neville Sanders',
@@ -136,9 +136,9 @@ export default [
     id: 'member14',
     isMfaEnabled: true,
     role: 'MANAGER',
-    newRole: 'MANAGER',
-    state: 'loaded',
+    type: 'loaded',
     avatar: 'http://placekitten.com/202/202',
+    isCurrentUser: false
   },
   {
     name: 'Natalie Keith',
@@ -146,9 +146,9 @@ export default [
     id: 'member15',
     isMfaEnabled: true,
     role: 'ACCOUNTING',
-    newRole: 'ACCOUNTING',
-    state: 'loaded',
+    type: 'loaded',
     avatar: 'http://placekitten.com/205/205',
+    isCurrentUser: false
   },
   {
     name: 'Malachi Lloyd',
@@ -156,9 +156,9 @@ export default [
     id: 'member16',
     isMfaEnabled: false,
     role: 'ACCOUNTING',
-    newRole: 'ACCOUNTING',
-    state: 'loaded',
+    type: 'loaded',
     avatar: 'http://placekitten.com/205/205',
+    isCurrentUser: false
   },
   {
     name: 'Brooke Ward',
@@ -166,9 +166,9 @@ export default [
     id: 'member17',
     isMfaEnabled: false,
     role: 'ADMIN',
-    newRole: 'ADMIN',
-    state: 'loaded',
+    type: 'loaded',
     avatar: 'http://placekitten.com/207/207',
+    isCurrentUser: false
   },
   {
     name: 'Roth Bass',
@@ -176,9 +176,9 @@ export default [
     id: 'member18',
     isMfaEnabled: true,
     role: 'ADMIN',
-    newRole: 'ADMIN',
-    state: 'loaded',
+    type: 'loaded',
     avatar: 'http://placekitten.com/207/207',
+    isCurrentUser: false
   },
   {
     name: 'Keaton Stevens',
@@ -186,9 +186,9 @@ export default [
     id: 'member19',
     isMfaEnabled: false,
     role: 'DEVELOPER',
-    newRole: 'DEVELOPER',
-    state: 'loaded',
+    type: 'loaded',
     avatar: 'http://placekitten.com/202/202',
+    isCurrentUser: false
   },
   {
     name: 'Tyrone Blake',
@@ -196,9 +196,9 @@ export default [
     id: 'member20',
     isMfaEnabled: false,
     role: 'DEVELOPER',
-    newRole: 'DEVELOPER',
-    state: 'loaded',
+    type: 'loaded',
     avatar: 'http://placekitten.com/202/202',
+    isCurrentUser: false
   },
   {
     name: 'Kamal Kemp',
@@ -206,9 +206,9 @@ export default [
     id: 'member21',
     isMfaEnabled: false,
     role: 'MANAGER',
-    newRole: 'MANAGER',
-    state: 'loaded',
+    type: 'loaded',
     avatar: 'http://placekitten.com/205/205',
+    isCurrentUser: false
   },
   {
     name: 'Briar Garner',
@@ -216,9 +216,9 @@ export default [
     id: 'member22',
     isMfaEnabled: true,
     role: 'MANAGER',
-    newRole: 'MANAGER',
-    state: 'loaded',
+    type: 'loaded',
     avatar: 'http://placekitten.com/205/205',
+    isCurrentUser: false
   },
   {
     name: 'Herman Nixon',
@@ -226,9 +226,9 @@ export default [
     id: 'member23',
     isMfaEnabled: false,
     role: 'ACCOUNTING',
-    newRole: 'ACCOUNTING',
-    state: 'loaded',
+    type: 'loaded',
     avatar: 'http://placekitten.com/207/207',
+    isCurrentUser: false
   },
   {
     name: 'Kylan Freeman',
@@ -236,9 +236,9 @@ export default [
     id: 'member24',
     isMfaEnabled: false,
     role: 'ACCOUNTING',
-    newRole: 'ACCOUNTING',
-    state: 'loaded',
+    type: 'loaded',
     avatar: 'http://placekitten.com/207/207',
+    isCurrentUser: false
   },
   {
     name: 'Eric Page',
@@ -246,9 +246,9 @@ export default [
     id: 'member25',
     isMfaEnabled: true,
     role: 'ADMIN',
-    newRole: 'ADMIN',
-    state: 'loaded',
+    type: 'loaded',
     avatar: 'http://placekitten.com/202/202',
+    isCurrentUser: false
   },
   {
     name: 'Macaulay Nelson',
@@ -256,9 +256,9 @@ export default [
     id: 'member26',
     isMfaEnabled: true,
     role: 'ADMIN',
-    newRole: 'ADMIN',
-    state: 'loaded',
+    type: 'loaded',
     avatar: 'http://placekitten.com/202/202',
+    isCurrentUser: false
   },
   {
     name: 'Tana Briggs',
@@ -266,9 +266,9 @@ export default [
     id: 'member27',
     isMfaEnabled: false,
     role: 'DEVELOPER',
-    newRole: 'DEVELOPER',
-    state: 'loaded',
+    type: 'loaded',
     avatar: 'http://placekitten.com/205/205',
+    isCurrentUser: false
   },
   {
     name: 'Lois Reynolds',
@@ -276,9 +276,9 @@ export default [
     id: 'member28',
     isMfaEnabled: true,
     role: 'DEVELOPER',
-    newRole: 'DEVELOPER',
-    state: 'loaded',
+    type: 'loaded',
     avatar: 'http://placekitten.com/205/205',
+    isCurrentUser: false
   },
   {
     name: 'Shelby Wall',
@@ -286,9 +286,9 @@ export default [
     id: 'member29',
     isMfaEnabled: true,
     role: 'MANAGER',
-    newRole: 'MANAGER',
-    state: 'loaded',
+    type: 'loaded',
     avatar: 'http://placekitten.com/207/207',
+    isCurrentUser: false
   },
   {
     name: 'Jesse Morris',
@@ -296,9 +296,9 @@ export default [
     id: 'member30',
     isMfaEnabled: false,
     role: 'MANAGER',
-    newRole: 'MANAGER',
-    state: 'loaded',
+    type: 'loaded',
     avatar: 'http://placekitten.com/207/207',
+    isCurrentUser: false
   },
   {
     name: 'Jamalia Fields',
@@ -306,9 +306,9 @@ export default [
     id: 'member31',
     isMfaEnabled: false,
     role: 'ACCOUNTING',
-    newRole: 'ACCOUNTING',
-    state: 'loaded',
+    type: 'loaded',
     avatar: 'http://placekitten.com/202/202',
+    isCurrentUser: false
   },
   {
     name: 'Clayton Welch',
@@ -316,9 +316,9 @@ export default [
     id: 'member32',
     isMfaEnabled: true,
     role: 'ACCOUNTING',
-    newRole: 'ACCOUNTING',
-    state: 'loaded',
+    type: 'loaded',
     avatar: 'http://placekitten.com/202/202',
+    isCurrentUser: false
   },
   {
     name: 'Anthony Webb',
@@ -326,9 +326,9 @@ export default [
     id: 'member33',
     isMfaEnabled: false,
     role: 'ADMIN',
-    newRole: 'ADMIN',
-    state: 'loaded',
+    type: 'loaded',
     avatar: 'http://placekitten.com/205/205',
+    isCurrentUser: false
   },
   {
     name: 'Riley Barr',
@@ -336,9 +336,9 @@ export default [
     id: 'member34',
     isMfaEnabled: false,
     role: 'ADMIN',
-    newRole: 'ADMIN',
-    state: 'loaded',
+    type: 'loaded',
     avatar: 'http://placekitten.com/205/205',
+    isCurrentUser: false
   },
   {
     name: 'Martin Hammond',
@@ -346,9 +346,9 @@ export default [
     id: 'member35',
     isMfaEnabled: false,
     role: 'DEVELOPER',
-    newRole: 'DEVELOPER',
-    state: 'loaded',
+    type: 'loaded',
     avatar: 'http://placekitten.com/207/207',
+    isCurrentUser: false
   },
   {
     name: 'Stone Velasquez',
@@ -356,9 +356,9 @@ export default [
     id: 'member36',
     isMfaEnabled: false,
     role: 'DEVELOPER',
-    newRole: 'DEVELOPER',
-    state: 'loaded',
+    type: 'loaded',
     avatar: 'http://placekitten.com/207/207',
+    isCurrentUser: false
   },
   {
     name: 'Noble Willis',
@@ -366,9 +366,9 @@ export default [
     id: 'member37',
     isMfaEnabled: false,
     role: 'MANAGER',
-    newRole: 'MANAGER',
-    state: 'loaded',
+    type: 'loaded',
     avatar: 'http://placekitten.com/202/202',
+    isCurrentUser: false
   },
   {
     name: 'Gary Moreno',
@@ -376,9 +376,9 @@ export default [
     id: 'member38',
     isMfaEnabled: true,
     role: 'MANAGER',
-    newRole: 'MANAGER',
-    state: 'loaded',
+    type: 'loaded',
     avatar: 'http://placekitten.com/202/202',
+    isCurrentUser: false
   },
   {
     name: 'Bert Campos',
@@ -386,9 +386,9 @@ export default [
     id: 'member39',
     isMfaEnabled: true,
     role: 'ACCOUNTING',
-    newRole: 'ACCOUNTING',
-    state: 'loaded',
+    type: 'loaded',
     avatar: 'http://placekitten.com/205/205',
+    isCurrentUser: false
   },
   {
     name: 'Abbot Garrett',
@@ -396,8 +396,8 @@ export default [
     id: 'member40',
     isMfaEnabled: true,
     role: 'ACCOUNTING',
-    newRole: 'ACCOUNTING',
-    state: 'loaded',
+    type: 'loaded',
     avatar: 'http://placekitten.com/205/205',
+    isCurrentUser: false
   },
 ];
