@@ -34,7 +34,7 @@ const SSH_KEY_DOCUMENTATION = 'https://developers.clever-cloud.com/doc/account/s
  */
 const SKELETON_KEYS = [
   {
-    state: 'idle',
+    type: 'idle',
     name: fakeString(15),
     fingerprint: fakeString(32),
   },
@@ -55,7 +55,7 @@ class SshPublicKeyValidator {
 }
 
 /**
- * @typedef {import('./cc-ssh-key-list.types.js').KeyDataState} KeyDataState
+ * @typedef {import('./cc-ssh-key-list.types.js').SshKeyListState} SshKeyListState
  * @typedef {import('./cc-ssh-key-list.types.js').SshKeyState} SshKeyState
  * @typedef {import('./cc-ssh-key-list.types.js').CreateSshKeyFormState} CreateSshKeyFormState
  * @typedef {import('./cc-ssh-key-list.types.js').NewKey} NewKey
@@ -86,7 +86,7 @@ export class CcSshKeyList extends LitElement {
   static get properties() {
     return {
       createKeyFormState: { type: Object, attribute: false },
-      keyData: { type: Object, attribute: 'key-data' },
+      keyListState: { type: Object, attribute: false },
     };
   }
 
@@ -96,8 +96,8 @@ export class CcSshKeyList extends LitElement {
     /** @type {CreateSshKeyFormState} create key form state. */
     this.createKeyFormState = { type: 'idle' };
 
-    /** @type {KeyDataState} personal and GitHub lists of registered SSH keys. */
-    this.keyData = { state: 'loading' };
+    /** @type {SshKeyListState} personal and GitHub lists of registered SSH keys. */
+    this.keyListState = { type: 'loading' };
 
     /** @type {HTMLFormElementRef} */
     this._createFormRef = createRef();
@@ -141,14 +141,14 @@ export class CcSshKeyList extends LitElement {
   /** @param {SshKeyState} sshKeyState */
   _onDeleteKey(sshKeyState) {
     // removing state property that belongs to internal component implementation
-    const { state, ...sshKey } = sshKeyState;
+    const { type: state, ...sshKey } = sshKeyState;
     dispatchCustomEvent(this, 'delete', sshKey);
   }
 
   /** @param {SshKeyState} sshKeyState */
   _onImportKey(sshKeyState) {
     // removing state property that belongs to internal component implementation
-    const { state, ...sshKey } = sshKeyState;
+    const { type: state, ...sshKey } = sshKeyState;
     dispatchCustomEvent(this, 'import', sshKey);
   }
 
@@ -169,26 +169,26 @@ export class CcSshKeyList extends LitElement {
         <cc-block-section slot="content-body">
           <div slot="title">
             <span>${i18n('cc-ssh-key-list.personal.title')}</span>
-            ${this.keyData.state === 'loaded' && this.keyData.personalKeys.length > 2
-              ? html` <cc-badge circle>${this.keyData.personalKeys.length}</cc-badge> `
+            ${this.keyListState.type === 'loaded' && this.keyListState.personalKeys.length > 2
+              ? html` <cc-badge circle>${this.keyListState.personalKeys.length}</cc-badge> `
               : ''}
           </div>
           <div slot="info">${i18n('cc-ssh-key-list.personal.info')}</div>
 
-          ${this.keyData.state === 'loading' ? html` ${this._renderKeyList('skeleton', SKELETON_KEYS)} ` : ''}
-          ${this.keyData.state === 'loaded'
+          ${this.keyListState.type === 'loading' ? html` ${this._renderKeyList('skeleton', SKELETON_KEYS)} ` : ''}
+          ${this.keyListState.type === 'loaded'
             ? html`
-                ${this.keyData.personalKeys.length === 0
+                ${this.keyListState.personalKeys.length === 0
                   ? html`
                       <p class="info-msg" id="personal-keys-empty-msg" tabindex="-1">
                         ${i18n('cc-ssh-key-list.personal.empty')}
                       </p>
                     `
                   : ''}
-                ${this._renderKeyList('personal', this.keyData.personalKeys)}
+                ${this._renderKeyList('personal', this.keyListState.personalKeys)}
               `
             : ''}
-          ${this.keyData.state === 'error'
+          ${this.keyListState.type === 'error'
             ? html` <cc-notice intent="warning" message="${i18n('cc-ssh-key-list.error.loading')}"></cc-notice> `
             : ''}
         </cc-block-section>
@@ -197,29 +197,31 @@ export class CcSshKeyList extends LitElement {
         <cc-block-section slot="content-body">
           <div slot="title">
             <span>${i18n('cc-ssh-key-list.github.title')}</span>
-            ${this.keyData.state === 'loaded' && this.keyData.isGithubLinked && this.keyData.githubKeys.length > 2
-              ? html` <cc-badge circle>${this.keyData.githubKeys.length}</cc-badge> `
+            ${this.keyListState.type === 'loaded' &&
+            this.keyListState.isGithubLinked &&
+            this.keyListState.githubKeys.length > 2
+              ? html` <cc-badge circle>${this.keyListState.githubKeys.length}</cc-badge> `
               : ''}
           </div>
           <div slot="info">${i18n('cc-ssh-key-list.github.info')}</div>
 
-          ${this.keyData.state === 'loading' ? html` ${this._renderKeyList('skeleton', SKELETON_KEYS)} ` : ''}
-          ${this.keyData.state === 'loaded' && !this.keyData.isGithubLinked
+          ${this.keyListState.type === 'loading' ? html` ${this._renderKeyList('skeleton', SKELETON_KEYS)} ` : ''}
+          ${this.keyListState.type === 'loaded' && !this.keyListState.isGithubLinked
             ? html` <p class="info-msg">${i18n('cc-ssh-key-list.github.unlinked')}</p> `
             : ''}
-          ${this.keyData.state === 'loaded' && this.keyData.isGithubLinked
+          ${this.keyListState.type === 'loaded' && this.keyListState.isGithubLinked
             ? html`
-                ${this.keyData.githubKeys.length === 0
+                ${this.keyListState.githubKeys.length === 0
                   ? html`
                       <p class="info-msg" id="github-keys-empty-msg" tabindex="-1">
                         ${i18n('cc-ssh-key-list.github.empty')}
                       </p>
                     `
                   : ''}
-                ${this._renderKeyList('github', this.keyData.githubKeys)}
+                ${this._renderKeyList('github', this.keyListState.githubKeys)}
               `
             : ''}
-          ${this.keyData.state === 'error'
+          ${this.keyListState.type === 'error'
             ? html` <cc-notice intent="warning" message="${i18n('cc-ssh-key-list.error.loading')}"></cc-notice> `
             : ''}
         </cc-block-section>
@@ -285,7 +287,7 @@ export class CcSshKeyList extends LitElement {
           (key) => key.name,
           (key) => {
             const name = key.name;
-            const isWaiting = !skeleton && key.state !== 'idle';
+            const isWaiting = !skeleton && key.type !== 'idle';
             const classes = {
               'key--personal': type === 'personal',
               'key--github': type === 'github',
