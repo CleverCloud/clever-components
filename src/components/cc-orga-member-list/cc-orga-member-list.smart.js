@@ -75,14 +75,14 @@ defineSmartComponent({
      * @param {string} memberId
      * @param {(orgaMember: OrgaMemberCardState) => void} callback
      */
-    function updateMember(memberId, callback) {
+    function updateMemberState(memberId, callback) {
       updateComponent(
-        'members',
-        /** @param {OrgaMemberListStateLoaded} members */
-        (members) => {
-          const member = members.value.find((member) => member.id === memberId);
-          if (member != null) {
-            callback(member);
+        'memberListState',
+        /** @param {OrgaMemberListStateLoaded} memberListState */
+        (memberListState) => {
+          const memberState = memberListState.memberList.find((member) => member.id === memberId);
+          if (memberState != null) {
+            callback(memberState);
           }
         },
       );
@@ -121,7 +121,7 @@ defineSmartComponent({
     });
 
     onEvent('cc-orga-member-list:update', ({ id, role, newRole, name, email, isCurrentUser }) => {
-      if (component.members.state !== 'loaded') {
+      if (component.memberListState.type !== 'loaded') {
         return;
       }
 
@@ -129,7 +129,7 @@ defineSmartComponent({
        * The API does not prevent Managers from editing Admins yet.
        * We need to check if a Manager tries to edit an Admin and throw an error if that's the case.
        */
-      if (isManagerEditingAdmin(role, component.members.value)) {
+      if (isManagerEditingAdmin(role, component.memberListState.memberList)) {
         notifyError(
           i18n('cc-orga-member-list.error.unauthorised.text'),
           i18n('cc-orga-member-list.error.unauthorised.heading'),
@@ -137,17 +137,25 @@ defineSmartComponent({
         return;
       }
 
-      updateMember(id, (member) => {
-        member.state = 'updating';
-      });
+      updateMemberState(
+        id,
+        /** @param {OrgaMemberCardState} member */
+        (member) => {
+          member.type = 'updating';
+        },
+      );
 
       editMember({ apiConfig, ownerId, id, newRole })
         .then(() => {
           notifySuccess(i18n('cc-orga-member-list.edit.success', { memberIdentity: name ?? email }));
-          updateMember(id, (member) => {
-            member.state = 'loaded';
-            member.role = newRole;
-          });
+          updateMemberState(
+            id,
+            /** @param {OrgaMemberCardState} member */
+            (member) => {
+              member.type = 'loaded';
+              member.role = newRole;
+            },
+          );
 
           if (isCurrentUser) {
             updateAuthorisations(newRole);
@@ -171,26 +179,34 @@ defineSmartComponent({
               notifyError(i18n('cc-orga-member-list.edit.error', { memberIdentity: name ?? email }));
             }
 
-            updateMember(id, (member) => {
-              member.state = 'editing';
-            });
+            updateMemberState(
+              id,
+              /** @param {OrgaMemberCardState} member */
+              (member) => {
+                member.type = 'editing';
+              },
+            );
           },
         );
     });
 
     onEvent('cc-orga-member-card:delete', ({ id, name, email }) => {
-      updateMember(id, (member) => {
-        member.state = 'deleting';
-      });
+      updateMemberState(
+        id,
+        /** @param {OrgaMemberCardState} member */
+        (member) => {
+          member.type = 'deleting';
+        },
+      );
 
       deleteMember({ apiConfig, ownerId, id })
         .then(() => {
           notifySuccess(i18n('cc-orga-member-list.delete.success', { memberIdentity: name ?? email }));
           updateComponent(
-            'members',
-            /** @param {OrgaMemberListStateLoaded} members */
-            (members) => {
-              members.value = members.value.filter((member) => member.id !== id);
+            'memberListState',
+            /** @param {OrgaMemberListStateLoaded} memberListState */
+            (memberListState) => {
+              memberListState.memberList = memberListState.memberList.filter((member) => member.id !== id);
             },
           );
         })
@@ -212,23 +228,31 @@ defineSmartComponent({
               notifyError(i18n('cc-orga-member-list.delete.error', { memberIdentity: name ?? email }));
             }
 
-            updateMember(id, (member) => {
-              member.state = 'loaded';
-            });
+            updateMemberState(
+              id,
+              /** @param {OrgaMemberCardState} member */
+              (member) => {
+                member.type = 'loaded';
+              },
+            );
           },
         );
     });
 
     onEvent('cc-orga-member-list:leave', ({ id }) => {
-      updateMember(id, (member) => {
-        member.state = 'deleting';
-      });
+      updateMemberState(
+        id,
+        /** @param {OrgaMemberCardState} member */
+        (member) => {
+          member.type = 'deleting';
+        },
+      );
 
       updateComponent(
-        'members',
-        /** @param {OrgaMemberListStateLoaded} members */
-        (members) => {
-          members.dangerZoneState = 'leaving';
+        'memberListState',
+        /** @param {OrgaMemberListStateLoaded} memberListState */
+        (memberListState) => {
+          memberListState.dangerZoneState = 'leaving';
         },
       );
 
@@ -236,7 +260,7 @@ defineSmartComponent({
         .then(() => {
           notifySuccess(i18n('cc-orga-member-list.leave.success'));
           updateAuthorisations();
-          updateComponent('members', { state: 'error' });
+          updateComponent('memberListState', { type: 'error' });
           window.dispatchEvent(new Event('orga-member-leave-success'));
         })
         .catch(
@@ -244,14 +268,18 @@ defineSmartComponent({
           (error) => {
             console.error(error);
             notifyError(i18n('cc-orga-member-list.leave.error'));
-            updateMember(id, (member) => {
-              member.state = 'loaded';
-            });
+            updateMemberState(
+              id,
+              /** @param {OrgaMemberCardState} member */
+              (member) => {
+                member.type = 'loaded';
+              },
+            );
             updateComponent(
-              'members',
-              /** @param {OrgaMemberListStateLoaded} members */
-              (members) => {
-                members.dangerZoneState = 'idle';
+              'memberListState',
+              /** @param {OrgaMemberListStateLoaded} memberListState */
+              (memberListState) => {
+                memberListState.dangerZoneState = 'idle';
               },
             );
           },
@@ -262,23 +290,23 @@ defineSmartComponent({
     updateComponent('authorisations', CcOrgaMemberList.INIT_AUTHORISATIONS);
     component.resetInviteMemberForm();
     component.inviteMemberFormState = { type: 'idle' };
-    updateComponent('members', { state: 'loading' });
+    updateComponent('memberListState', { type: 'loading' });
 
     getMemberList({ apiConfig, ownerId, signal })
-      .then((memberList) => {
-        const currentUser = memberList.find((member) => member.isCurrentUser);
+      .then((memberListState) => {
+        const currentUser = memberListState.find((member) => member.isCurrentUser);
 
         updateAuthorisations(currentUser.role);
-        updateComponent('members', {
-          state: 'loaded',
-          value: memberList.map((member) => ({ state: 'loaded', ...member })),
+        updateComponent('memberListState', {
+          type: 'loaded',
+          memberList: memberListState.map((member) => ({ type: 'loaded', ...member })),
           identityFilter: '',
           mfaDisabledOnlyFilter: false,
         });
       })
       .catch((error) => {
         console.error(error);
-        updateComponent('members', { state: 'error' });
+        updateComponent('memberListState', { type: 'error' });
       });
   },
 });
