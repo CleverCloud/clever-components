@@ -11,36 +11,36 @@ export interface CreateSshKeyFormState {
 //#endregion
 
 //#region key lists
-export type KeyDataState =
-  | KeyDataStateLoading
-  | KeyDataStateLoadedAndUnlinked
-  | KeyDataStateLoadedAndLinked
-  | KeyDataStateError;
+export type SshKeyListState =
+  | SshKeyListStateLoading
+  | SshKeyListStateLoadedAndUnlinked
+  | SshKeyListStateLoadedAndLinked
+  | SshKeyListStateError;
 
 // when exchange with API is occurring = loading SSH keys
 // - is the initial state
-interface KeyDataStateLoading {
-  state: 'loading';
+interface SshKeyListStateLoading {
+  type: 'loading';
 }
 
 // when ready to receive user inputs (personal keys only)
-interface KeyDataStateLoadedAndUnlinked {
-  state: 'loaded';
+interface SshKeyListStateLoadedAndUnlinked {
+  type: 'loaded';
   isGithubLinked: false;
   personalKeys: SshKeyState[];
 }
 
 // when ready to receive user inputs (personal keys & GitHub keys)
-interface KeyDataStateLoadedAndLinked {
-  state: 'loaded';
+interface SshKeyListStateLoadedAndLinked {
+  type: 'loaded';
   isGithubLinked: true;
   personalKeys: SshKeyState[];
   githubKeys: SshKeyState[];
 }
 
 // when an error has occurred
-interface KeyDataStateError {
-  state: 'error';
+interface SshKeyListStateError {
+  type: 'error';
 }
 //#endregion
 
@@ -52,6 +52,6 @@ export interface SshKey {
   fingerprint: string;
 }
 interface SshKeyState extends SshKey {
-  state: 'idle' | 'deleting' | 'importing';
+  type: 'idle' | 'deleting' | 'importing';
 }
 //#endregion
