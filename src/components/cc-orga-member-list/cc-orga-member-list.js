@@ -24,7 +24,7 @@ const ORGA_MEMBER_DOCUMENTATION = 'https://developers.clever-cloud.com/doc/accou
 /**
  * @typedef {import('./cc-orga-member-list.types.js').OrgaMemberListState} OrgaMemberListState
  * @typedef {import('./cc-orga-member-list.types.js').OrgaMemberListStateLoaded} OrgaMemberListStateLoaded
- * @typedef {import('./cc-orga-member-list.types.js').Authorisations} Authorisations
+ * @typedef {import('./cc-orga-member-list.types.js').ListAuthorisations} ListAuthorisations
  * @typedef {import('./cc-orga-member-list.types.js').InviteMember} InviteMember
  * @typedef {import('./cc-orga-member-list.types.js').InviteMemberFormState} InviteMemberFormState
  * @typedef {import('../cc-orga-member-card/cc-orga-member-card.types.js').OrgaMemberCardState} OrgaMemberCardState
@@ -62,10 +62,11 @@ export class CcOrgaMemberList extends LitElement {
     return {
       authorisations: { type: Object },
       inviteMemberFormState: { type: Object, attribute: false },
-      members: { type: Object },
+      memberListState: { type: Object, attribute: false },
     };
   }
 
+  /** @returns {ListAuthorisations} */
   static get INIT_AUTHORISATIONS() {
     return {
       invite: false,
@@ -77,14 +78,14 @@ export class CcOrgaMemberList extends LitElement {
   constructor() {
     super();
 
-    /** @type {Authorisations} Sets the authorisations that control the display of the invite form and the edit / delete buttons. */
+    /** @type {ListAuthorisations} Sets the authorisations that control the display of the invite form and the edit / delete buttons. */
     this.authorisations = CcOrgaMemberList.INIT_AUTHORISATIONS;
 
     /** @type {InviteMemberFormState} Invite member form state. */
     this.inviteMemberFormState = { type: 'idle' };
 
     /** @type {OrgaMemberListState} Sets the state of the member list. */
-    this.members = { state: 'loading' };
+    this.memberListState = { type: 'loading' };
 
     /** @type {HTMLFormElementRef} */
     this._inviteMemberFormRef = createRef();
@@ -111,7 +112,8 @@ export class CcOrgaMemberList extends LitElement {
        * @return {Validity}
        */
       validate: (value, _formData) => {
-        const existingEmails = this.members.state === 'loaded' ? this.members.value.map((member) => member.email) : [];
+        const existingEmails =
+          this.memberListState.type === 'loaded' ? this.memberListState.memberList.map((member) => member.email) : [];
 
         return existingEmails.includes(value) ? Validation.invalid('duplicate') : Validation.VALID;
       },
@@ -143,8 +145,8 @@ export class CcOrgaMemberList extends LitElement {
    * @return {OrgaMemberCardState[]} - The list of admins in the organisation. Used to ensure we don't allow deletion of the last admin.
    */
   _getAdminList() {
-    if (this.members.state === 'loaded') {
-      return this.members.value.filter((member) => member.role === 'ADMIN');
+    if (this.memberListState.type === 'loaded') {
+      return this.memberListState.memberList.filter((member) => member.role === 'ADMIN');
     }
     return [];
   }
@@ -202,9 +204,9 @@ export class CcOrgaMemberList extends LitElement {
    * @param {CustomEvent} e
    */
   _onFilterIdentity({ detail: value }) {
-    if (this.members.state === 'loaded') {
-      this.members = {
-        ...this.members,
+    if (this.memberListState.type === 'loaded') {
+      this.memberListState = {
+        ...this.memberListState,
         identityFilter: value,
       };
     }
@@ -217,10 +219,10 @@ export class CcOrgaMemberList extends LitElement {
    * @private
    */
   _onFilterMfaDisabledOnly() {
-    if (this.members.state === 'loaded') {
-      this.members = {
-        ...this.members,
-        mfaDisabledOnlyFilter: !this.members.mfaDisabledOnlyFilter,
+    if (this.memberListState.type === 'loaded') {
+      this.memberListState = {
+        ...this.memberListState,
+        mfaDisabledOnlyFilter: !this.memberListState.mfaDisabledOnlyFilter,
       };
     }
   }
@@ -238,10 +240,10 @@ export class CcOrgaMemberList extends LitElement {
    * @param {CustomEvent} e
    */
   _onLeaveFromCard({ detail: currentUser }) {
-    if (this.members.state === 'loaded' && this.isLastAdmin(currentUser)) {
-      this.members = {
-        ...this.members,
-        value: this.members.value.map((member) => {
+    if (this.memberListState.type === 'loaded' && this.isLastAdmin(currentUser)) {
+      this.memberListState = {
+        ...this.memberListState,
+        memberList: this.memberListState.memberList.map((member) => {
           return member.id === currentUser.id ? { ...member, error: true } : { ...member };
         }),
       };
@@ -251,13 +253,13 @@ export class CcOrgaMemberList extends LitElement {
   }
 
   _onLeaveFromDangerZone() {
-    if (this.members.state === 'loaded') {
-      const currentUser = this.members.value.find((member) => member.isCurrentUser);
+    if (this.memberListState.type === 'loaded') {
+      const currentUser = this.memberListState.memberList.find((member) => member.isCurrentUser);
       const isLastAdminLeaving = this.isLastAdmin(currentUser);
 
       if (isLastAdminLeaving) {
-        this.members = {
-          ...this.members,
+        this.memberListState = {
+          ...this.memberListState,
           dangerZoneState: 'error',
         };
       } else {
@@ -272,10 +274,10 @@ export class CcOrgaMemberList extends LitElement {
   _onUpdateFromCard({ detail: memberToUpdate }) {
     const isLastAdmin = memberToUpdate.isCurrentUser && this.isLastAdmin(memberToUpdate);
 
-    if (this.members.state === 'loaded' && isLastAdmin) {
-      this.members = {
-        ...this.members,
-        value: this.members.value.map((member) => {
+    if (this.memberListState.type === 'loaded' && isLastAdmin) {
+      this.memberListState = {
+        ...this.memberListState,
+        memberList: this.memberListState.memberList.map((member) => {
           return member.id === memberToUpdate.id ? { ...member, error: true } : { ...member };
         }),
       };
@@ -290,11 +292,11 @@ export class CcOrgaMemberList extends LitElement {
    * @param {CustomEvent} e
    */
   _onToggleCardEditing({ detail: { memberId, newState } }) {
-    if (this.members.state === 'loaded') {
-      this.members = {
-        ...this.members,
-        value: this.members.value.map((member) => {
-          return member.id === memberId ? { ...member, state: newState } : { ...member, state: 'loaded' };
+    if (this.memberListState.type === 'loaded') {
+      this.memberListState = {
+        ...this.memberListState,
+        memberList: this.memberListState.memberList.map((member) => {
+          return member.id === memberId ? { ...member, type: newState } : { ...member, type: 'loaded' };
         }),
       };
     }
@@ -306,19 +308,19 @@ export class CcOrgaMemberList extends LitElement {
    * @param {CcOrgaMemberListPropertyValues} changedProperties
    */
   willUpdate(changedProperties) {
-    const updateNotRelatedToMembers = !changedProperties.has('members');
+    const updateNotRelatedToMembers = !changedProperties.has('memberListState');
 
-    if (updateNotRelatedToMembers || this.members.state !== 'loaded') {
+    if (updateNotRelatedToMembers || this.memberListState.type !== 'loaded') {
       return;
     }
 
     const adminList = this._getAdminList();
-    const dangerZoneHasError = this.members.dangerZoneState === 'error';
+    const dangerZoneHasError = this.memberListState.dangerZoneState === 'error';
 
     if (adminList.length > 1) {
-      this.members = {
-        ...this.members,
-        value: this.members.value.map((member) => ({
+      this.memberListState = {
+        ...this.memberListState,
+        memberList: this.memberListState.memberList.map((member) => ({
           ...member,
           error: false,
         })),
@@ -326,8 +328,8 @@ export class CcOrgaMemberList extends LitElement {
     }
 
     if (adminList.length > 1 && dangerZoneHasError) {
-      this.members = {
-        ...this.members,
+      this.memberListState = {
+        ...this.memberListState,
         dangerZoneState: 'idle',
       };
     }
@@ -343,29 +345,29 @@ export class CcOrgaMemberList extends LitElement {
         <cc-block-section slot="content-body">
           <div slot="title" ${ref(this._memberListHeadingRef)} tabindex="-1">
             ${i18n('cc-orga-member-list.list.heading')}
-            ${this.members.state === 'loaded'
+            ${this.memberListState.type === 'loaded'
               ? html`
                   <cc-badge class="member-count" weight="dimmed" intent="neutral" circle
-                    >${this.members.value.length}</cc-badge
+                    >${this.memberListState.memberList.length}</cc-badge
                   >
                 `
               : ''}
           </div>
 
-          ${this.members.state === 'loading' ? html` <cc-loader></cc-loader> ` : ''}
-          ${this.members.state === 'loaded'
+          ${this.memberListState.type === 'loading' ? html` <cc-loader></cc-loader> ` : ''}
+          ${this.memberListState.type === 'loaded'
             ? this._renderMemberList(
-                this.members.value,
-                this.members.identityFilter,
-                this.members.mfaDisabledOnlyFilter,
+                this.memberListState.memberList,
+                this.memberListState.identityFilter,
+                this.memberListState.mfaDisabledOnlyFilter,
               )
             : ''}
-          ${this.members.state === 'error'
+          ${this.memberListState.type === 'error'
             ? html` <cc-notice intent="warning" message="${i18n('cc-orga-member-list.error')}"></cc-notice> `
             : ''}
         </cc-block-section>
 
-        ${this.members.state === 'loaded' ? this._renderDangerZone(this.members) : ''}
+        ${this.memberListState.type === 'loaded' ? this._renderDangerZone(this.memberListState) : ''}
 
         <div slot="footer-right">
           ${ccLink(
@@ -450,15 +452,15 @@ export class CcOrgaMemberList extends LitElement {
       <div class="member-list">
         ${repeat(
           filteredMemberList,
-          (member) => member.id,
-          (member) => html`
+          (memberState) => memberState.id,
+          (memberState) => html`
             <cc-orga-member-card
-              class=${classMap({ editing: member.state === 'editing' })}
+              class=${classMap({ editing: memberState.type === 'editing' })}
               .authorisations=${{
                 edit: this.authorisations.edit,
                 delete: this.authorisations.delete,
               }}
-              .member=${member}
+              .state=${memberState}
               @cc-orga-member-card:leave=${this._onLeaveFromCard}
               @cc-orga-member-card:toggle-editing=${this._onToggleCardEditing}
               @cc-orga-member-card:update=${this._onUpdateFromCard}
