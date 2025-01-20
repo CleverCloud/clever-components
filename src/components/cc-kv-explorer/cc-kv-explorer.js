@@ -38,6 +38,7 @@ import '../cc-select/cc-select.js';
  * @typedef {import('./cc-kv-explorer.types.js').CcKvExplorerStateLoadingKeys} CcKvExplorerStateLoadingKeys
  * @typedef {import('./cc-kv-explorer.types.js').CcKvExplorerStateFiltering} CcKvExplorerStateFiltering
  * @typedef {import('./cc-kv-explorer.types.js').CcKvExplorerStateRefreshing} CcKvExplorerStateRefreshing
+ * @typedef {import('./cc-kv-explorer.types.js').CcKvExplorerStateErrorKeys} CcKvExplorerStateErrorKeys
  * @typedef {import('./cc-kv-explorer.types.js').CcKvExplorerDetailState} CcKvExplorerDetailState
  * @typedef {import('./cc-kv-explorer.types.js').CcKvExplorerKeyAddFormState} CcKvExplorerKeyAddFormState
  * @typedef {import('./cc-kv-explorer.types.js').CcKvKeyFilter} CcKvKeyFilter
@@ -249,6 +250,16 @@ export class CcKvExplorer extends LitElement {
     return null;
   }
 
+  _isLoadingSelectedKey() {
+    return (
+      this.detailState != null &&
+      this.detailState.type !== 'hidden' &&
+      this.detailState.type !== 'unsupported' &&
+      this.detailState.type !== 'add' &&
+      this.detailState.editor.type === 'loading'
+    );
+  }
+
   /**
    * @param {CcKvKeyType} type
    * @return {string}
@@ -278,6 +289,22 @@ export class CcKvExplorer extends LitElement {
         return i18n('cc-kv-explorer.filter.all');
       default:
         return this._getKeyTypeLabel(filter);
+    }
+  }
+
+  /**
+   * @param {CcKvExplorerStateErrorKeys} state
+   */
+  _getErrorKeyMessage(state) {
+    switch (state.action) {
+      case 'loading':
+        return i18n('cc-kv-explorer.error.fetch-keys.loading');
+      case 'loading-more':
+        return i18n('cc-kv-explorer.error.fetch-keys.loading-more');
+      case 'filtering':
+        return i18n('cc-kv-explorer.error.fetch-keys.filtering');
+      case 'refreshing':
+        return i18n('cc-kv-explorer.error.fetch-keys.refreshing');
     }
   }
 
@@ -372,6 +399,21 @@ export class CcKvExplorer extends LitElement {
 
   _onRefreshKeysButtonClick() {
     dispatchCustomEvent(this, 'refresh-keys');
+  }
+
+  _onErrorKeysRetryButtonClick() {
+    if (this.state.type === 'error-keys') {
+      switch (this.state.action) {
+        case 'loading':
+        case 'refreshing':
+        case 'loading-more':
+          dispatchCustomEvent(this, 'refresh-keys');
+          break;
+        case 'filtering':
+          this._filterFormRef.value.requestSubmit();
+          break;
+      }
+    }
   }
 
   /**
@@ -501,9 +543,7 @@ export class CcKvExplorer extends LitElement {
 
     return html`
       <div class="wrapper">
-        ${this._renderFilterBar(this.state)}
-        <div class="keys">${this._renderKeysHeader(this.state)} ${this._renderKeys(this.state)}</div>
-        ${this._renderDetail()}
+        ${this._renderFilterBar(this.state)} ${this._renderKeys(this.state)} ${this._renderDetail()}
         <cc-kv-terminal-beta
           class="terminal"
           .state=${this.terminalState}
@@ -514,18 +554,20 @@ export class CcKvExplorer extends LitElement {
   }
 
   /**
-   * @param {CcKvExplorerStateLoaded | CcKvExplorerStateLoadingKeys | CcKvExplorerStateFiltering| CcKvExplorerStateRefreshing} state
+   * @param {CcKvExplorerStateLoaded | CcKvExplorerStateLoadingKeys | CcKvExplorerStateFiltering| CcKvExplorerStateRefreshing | CcKvExplorerStateErrorKeys} state
    * @return {TemplateResult}
    */
   _renderFilterBar(state) {
+    const isError = state.type === 'error-keys';
     const isFetching = state.type === 'loading-keys' || state.type === 'filtering' || state.type === 'refreshing';
     const isFiltering = state.type === 'filtering';
+    const isReadonly = isError || isFetching;
 
     /** @type {Array<CcKvKeyType | 'all'>} */
     const redisFilters = ['all', ...this.supportedTypes];
     const kvFilterOptions = redisFilters
-      // todo: remove this filter and replace by a proper `readonly` property once `<cc-select>` supports it.
-      .filter((f) => !isFetching || f !== this._filterType)
+      // todo: remove this filter and replace by a proper `readonly` property once `<cc-select>` supports it. (cf https://github.com/CleverCloud/clever-components/issues/1299)
+      .filter((f) => (isReadonly ? f === this._filterType : true))
       .map((f) => ({ label: this._getKeyFilterLabel(f), value: f }));
 
     return html`
@@ -543,14 +585,14 @@ export class CcKvExplorer extends LitElement {
           name="pattern"
           inline
           label=${i18n('cc-kv-explorer.filter.by-pattern')}
-          ?readonly=${isFetching}
+          ?readonly=${isReadonly}
         ></cc-input-text>
         <cc-button
           type="submit"
           .icon=${iconFilter}
           hide-text
           outlined
-          ?disabled=${isFetching && !isFiltering}
+          ?disabled=${isReadonly && !isFiltering}
           ?waiting=${isFiltering}
         >
           ${i18n('cc-kv-explorer.filter.apply')}
@@ -560,10 +602,68 @@ export class CcKvExplorer extends LitElement {
   }
 
   /**
-   * @param {CcKvExplorerStateLoaded | CcKvExplorerStateLoadingKeys | CcKvExplorerStateFiltering | CcKvExplorerStateRefreshing} state
+   * @param {CcKvExplorerStateLoaded | CcKvExplorerStateLoadingKeys | CcKvExplorerStateFiltering | CcKvExplorerStateRefreshing | CcKvExplorerStateErrorKeys} state
    * @return {TemplateResult}
    */
   _renderKeys(state) {
+    if (state.type === 'error-keys') {
+      return html`<div class="keys error">
+        <cc-notice intent="danger">
+          <div slot="message">
+            <span>${this._getErrorKeyMessage(state)}</span>&nbsp;<cc-button
+              link
+              @cc-button:click=${this._onErrorKeysRetryButtonClick}
+              >${i18n('cc-kv-explorer.error.fetch-keys.retry')}</cc-button
+            >
+          </div>
+        </cc-notice>
+      </div>`;
+    }
+
+    return html`<div class="keys">${this._renderKeysHeader(state)} ${this._renderKeysList(state)}</div>`;
+  }
+
+  /**
+   * @param {CcKvExplorerStateLoaded | CcKvExplorerStateLoadingKeys | CcKvExplorerStateFiltering | CcKvExplorerStateRefreshing} state
+   * @return {TemplateResult}
+   */
+  _renderKeysHeader(state) {
+    const isFetching = state.type === 'loading-keys' || state.type === 'filtering' || state.type === 'refreshing';
+    const skeleton = state.type === 'loading-keys' || state.type === 'refreshing';
+    const isRefreshing = state.type === 'refreshing';
+
+    return html`<div class="keys-header">
+      <div>
+        <span class=${classMap({ skeleton })}>
+          ${i18n('cc-kv-explorer.keys.header.total', { total: state.total })}
+        </span>
+      </div>
+
+      <cc-button
+        ${ref(this._addButtonRef)}
+        a11y-name=${i18n('cc-kv-explorer.keys.header.add-key.a11y')}
+        .icon=${iconAdd}
+        primary
+        @cc-button:click=${this._onAddButtonClick}
+        >${i18n('cc-kv-explorer.keys.header.add-key')}</cc-button
+      >
+      <cc-button
+        .icon=${iconRefresh}
+        hide-text
+        outlined
+        ?disabled=${isFetching && !isRefreshing}
+        ?waiting=${isRefreshing}
+        @cc-button:click=${this._onRefreshKeysButtonClick}
+        >${i18n('cc-kv-explorer.keys.header.refresh')}</cc-button
+      >
+    </div>`;
+  }
+
+  /**
+   * @param {CcKvExplorerStateLoaded | CcKvExplorerStateLoadingKeys | CcKvExplorerStateFiltering | CcKvExplorerStateRefreshing} state
+   * @return {TemplateResult}
+   */
+  _renderKeysList(state) {
     if (state.type === 'loaded' && state.keys.length === 0) {
       return html`
         <div class="keys-list-empty">
@@ -616,42 +716,6 @@ export class CcKvExplorer extends LitElement {
   }
 
   /**
-   * @param {CcKvExplorerStateLoaded | CcKvExplorerStateLoadingKeys | CcKvExplorerStateFiltering | CcKvExplorerStateRefreshing} state
-   * @return {TemplateResult}
-   */
-  _renderKeysHeader(state) {
-    const isFetching = state.type === 'loading-keys' || state.type === 'filtering' || state.type === 'refreshing';
-    const skeleton = state.type === 'loading-keys' || state.type === 'refreshing';
-    const isRefreshing = state.type === 'refreshing';
-
-    return html`<div class="keys-header">
-      <div>
-        <span class=${classMap({ skeleton })}>
-          ${i18n('cc-kv-explorer.keys.header.total', { total: state.total })}
-        </span>
-      </div>
-
-      <cc-button
-        ${ref(this._addButtonRef)}
-        a11y-name=${i18n('cc-kv-explorer.keys.header.add-key.a11y')}
-        .icon=${iconAdd}
-        primary
-        @cc-button:click=${this._onAddButtonClick}
-        >${i18n('cc-kv-explorer.keys.header.add-key')}</cc-button
-      >
-      <cc-button
-        .icon=${iconRefresh}
-        hide-text
-        outlined
-        ?disabled=${isFetching && !isRefreshing}
-        ?waiting=${isRefreshing}
-        @cc-button:click=${this._onRefreshKeysButtonClick}
-        >${i18n('cc-kv-explorer.keys.header.refresh')}</cc-button
-      >
-    </div>`;
-  }
-
-  /**
    * @param {object} _
    * @param {CcKvKeyState} _.keyState
    * @param {boolean} _.skeleton
@@ -660,7 +724,7 @@ export class CcKvExplorer extends LitElement {
    */
   _renderKey({ keyState, skeleton }, index) {
     const isSelected = keyState.type === 'selected';
-    const isLoading = keyState.type === 'loading';
+    const isLoading = isSelected && this._isLoadingSelectedKey();
     const isDeleting = keyState.type === 'deleting';
     const id = `key-${keyState.key.name}`;
     const buttonTabindex = isSelected || isLoading ? undefined : -1;
@@ -672,7 +736,7 @@ export class CcKvExplorer extends LitElement {
         id=${id}
         name="selectedKey"
         .value=${keyState.key.name}
-        .checked=${isSelected || isLoading}
+        .checked=${isSelected}
         .disabled=${skeleton}
       />
       <label for=${id}>
@@ -701,7 +765,12 @@ export class CcKvExplorer extends LitElement {
   _renderDetail() {
     switch (this.detailState.type) {
       case 'hidden':
-        if (this.state.type === 'loading' || this.state.type === 'error' || this.state.total === 0) {
+        if (
+          this.state.type === 'loading' ||
+          this.state.type === 'error' ||
+          this.state.type === 'error-keys' ||
+          this.state.total === 0
+        ) {
           return null;
         }
         return html`<div class="detail-empty">
@@ -815,7 +884,7 @@ export class CcKvExplorer extends LitElement {
   _renderDetailEdit(key) {
     const keyState = this._getKeyState(key.name);
     const isDeleting = keyState === 'deleting';
-    const isLoading = keyState === 'loading';
+    const isLoading = this._isLoadingSelectedKey();
 
     return html`<div class="detail-edit">
       <div class="edit-header">
@@ -967,6 +1036,17 @@ export class CcKvExplorer extends LitElement {
           grid-area: keys;
           grid-auto-rows: auto 1fr;
           overflow: hidden;
+        }
+
+        .keys.error {
+          align-items: center;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+        }
+
+        .keys.error cc-button {
+          vertical-align: baseline;
         }
 
         .keys-header {

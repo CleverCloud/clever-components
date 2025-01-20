@@ -126,6 +126,54 @@ export const refreshingKeys = makeStory(conf, {
   ],
 });
 
+export const errorLoadingKeys = makeStory(conf, {
+  /** @type {Array<Partial<CcKvExplorer>>} */
+  items: [
+    {
+      state: {
+        type: 'error-keys',
+        action: 'loading',
+      },
+    },
+  ],
+});
+
+export const errorLoadingMoreKeys = makeStory(conf, {
+  /** @type {Array<Partial<CcKvExplorer>>} */
+  items: [
+    {
+      state: {
+        type: 'error-keys',
+        action: 'loading-more',
+      },
+    },
+  ],
+});
+
+export const errorFilteringKeys = makeStory(conf, {
+  /** @type {Array<Partial<CcKvExplorer>>} */
+  items: [
+    {
+      state: {
+        type: 'error-keys',
+        action: 'filtering',
+      },
+    },
+  ],
+});
+
+export const errorRefreshingKeys = makeStory(conf, {
+  /** @type {Array<Partial<CcKvExplorer>>} */
+  items: [
+    {
+      state: {
+        type: 'error-keys',
+        action: 'refreshing',
+      },
+    },
+  ],
+});
+
 export const loadingKeyString = makeStory(conf, {
   /** @type {Array<Partial<CcKvExplorer>>} */
   items: [
@@ -133,7 +181,7 @@ export const loadingKeyString = makeStory(conf, {
       state: {
         type: 'loaded',
         keys: keyStates.map((keyState) =>
-          keyState.key.name === `key-${KEY_TYPES.indexOf('string') + 1}` ? { ...keyState, type: 'loading' } : keyState,
+          keyState.key.name === `key-${KEY_TYPES.indexOf('string') + 1}` ? { ...keyState, type: 'selected' } : keyState,
         ),
         total: 100,
       },
@@ -156,7 +204,7 @@ export const loadingKeyHash = makeStory(conf, {
       state: {
         type: 'loaded',
         keys: keyStates.map((keyState) =>
-          keyState.key.name === `key-${KEY_TYPES.indexOf('hash') + 1}` ? { ...keyState, type: 'loading' } : keyState,
+          keyState.key.name === `key-${KEY_TYPES.indexOf('hash') + 1}` ? { ...keyState, type: 'selected' } : keyState,
         ),
         total: 100,
       },
@@ -179,7 +227,7 @@ export const loadingKeyList = makeStory(conf, {
       state: {
         type: 'loaded',
         keys: keyStates.map((keyState) =>
-          keyState.key.name === `key-${KEY_TYPES.indexOf('list') + 1}` ? { ...keyState, type: 'loading' } : keyState,
+          keyState.key.name === `key-${KEY_TYPES.indexOf('list') + 1}` ? { ...keyState, type: 'selected' } : keyState,
         ),
         total: 100,
       },
@@ -202,7 +250,7 @@ export const loadingKeySet = makeStory(conf, {
       state: {
         type: 'loaded',
         keys: keyStates.map((keyState) =>
-          keyState.key.name === `key-${KEY_TYPES.indexOf('set') + 1}` ? { ...keyState, type: 'loading' } : keyState,
+          keyState.key.name === `key-${KEY_TYPES.indexOf('set') + 1}` ? { ...keyState, type: 'selected' } : keyState,
         ),
         total: 100,
       },
