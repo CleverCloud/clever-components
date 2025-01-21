@@ -219,11 +219,9 @@ export class CcLogsApplicationView extends LitElement {
     return html`
       <div class=${classMap(overlay)}>
         <div class=${classMap(wrapper)}>
-          <div class="left">
-            ${this._renderDateRangeSelection()} ${this._renderInstances()} ${this._renderLoadingProgress()}
-          </div>
-
+          ${this._renderDateRangeSelection()} ${this._renderInstances()}
           <div class="logs-wrapper">${this._renderLogs()}</div>
+          ${this._renderLoadingProgress()}
         </div>
       </div>
     `;
@@ -232,6 +230,7 @@ export class CcLogsApplicationView extends LitElement {
   _renderDateRangeSelection() {
     return html`
       <cc-logs-date-range-selector-beta
+        class="date-range-selector"
         .value=${this.dateRangeSelection}
         @cc-logs-date-range-selector:change=${this._onDateRangeSelectionChange}
       ></cc-logs-date-range-selector-beta>
@@ -257,8 +256,8 @@ export class CcLogsApplicationView extends LitElement {
     }
 
     return html`<cc-logs-instances-beta
+      class="instances"
       .state=${state}
-      class="cc-logs-instances"
       @cc-logs-instances:selection-change=${this._onInstanceSelectionChange}
     ></cc-logs-instances-beta>`;
   }
@@ -276,7 +275,11 @@ export class CcLogsApplicationView extends LitElement {
       return null;
     }
 
-    return html`<cc-logs-loading-progress-beta .state=${state} limit=${this.limit}></cc-logs-loading-progress-beta>`;
+    return html`<cc-logs-loading-progress-beta
+      class="progress"
+      .state=${state}
+      limit=${this.limit}
+    ></cc-logs-loading-progress-beta>`;
   }
 
   /**
@@ -407,9 +410,15 @@ export class CcLogsApplicationView extends LitElement {
         }
 
         .wrapper {
-          display: flex;
+          display: grid;
           flex: 1;
           gap: 0.5em;
+          grid-auto-columns: 18em 1fr;
+          grid-auto-rows: auto 1fr auto;
+          grid-template-areas:
+            'date-range logs'
+            'instances  logs'
+            'progress   progress';
         }
 
         .wrapper.fullscreen {
@@ -420,23 +429,20 @@ export class CcLogsApplicationView extends LitElement {
           padding: 1em;
         }
 
-        .left {
-          display: flex;
-          flex-direction: column;
-          gap: 0.5em;
-          height: 100%;
-          width: 18em;
+        .date-range-selector {
+          grid-area: date-range;
         }
 
-        .cc-logs-instances {
+        .instances {
           background-color: var(--cc-color-bg-default, #fff);
           border: 1px solid var(--cc-color-border-neutral, #aaa);
           border-radius: var(--cc-border-radius-default, 0.25em);
-          flex: 1;
+          grid-area: instances;
         }
 
         .logs-wrapper {
           flex: 1;
+          grid-area: logs;
           position: relative;
         }
 
@@ -461,6 +467,10 @@ export class CcLogsApplicationView extends LitElement {
           flex-direction: row;
           height: 100%;
           justify-content: center;
+        }
+
+        .progress {
+          grid-area: progress;
         }
 
         .overlay-logs-wrapper {
