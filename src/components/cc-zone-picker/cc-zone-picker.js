@@ -73,7 +73,7 @@ export class CcZonePicker extends CcFormControlElement {
 
   render() {
     return html`
-      <fieldset @change="${this._onZoneSelect}">
+      <fieldset @input="${this._onZoneSelect}">
         <legend>
           <cc-icon class="zone-legend-icon" .icon="${zoneIcon}" size="lg"></cc-icon>
           <span class="zone-legend-text"> ${i18n('cc-zone-picker.legend')} </span>
