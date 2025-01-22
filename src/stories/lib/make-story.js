@@ -1,9 +1,20 @@
 // @ts-ignore not worth helping TS understand this is valid since we don't need to type check this module
-// eslint-disable-next-line import/no-unresolved
+
 import customElementsManifest from '../../../dist/custom-elements.json';
 import { setLanguage } from '../../lib/i18n/i18n.js';
 import { sequence } from './sequence.js';
 
+/**
+ * @typedef {import('./make-story.types.js').MakeStory} MakeStory
+ * @typedef {import('./make-story.types.js').StoryFnCleverComponents<keyof HTMLElementTagNameMap>} StoryFn
+ * @typedef {import('./make-story.types.js').GetSourceCode} GetSourceCode
+ * @typedef {import('./make-story.types.js').CreateStoryItem} CreateStoryItem
+ * @typedef {import('./make-story.types.js').AssignPropsToElement} AssignPropsToElement
+ * @typedef {import('../../components/cc-beta/cc-beta.js').CcBeta} CcBeta
+ * @typedef {import('./custom-elements-manifest.types.js').CustomElementsManifest}
+ */
+
+/** @type {MakeStory} */
 export function makeStory(...configs) {
   const {
     name,
@@ -11,8 +22,8 @@ export function makeStory(...configs) {
     css,
     component,
     dom,
-    items: rawItems = [{}],
-    simulations = [],
+    items: rawItems,
+    simulations,
     argTypes,
     displayMode,
     beta,
@@ -20,8 +31,12 @@ export function makeStory(...configs) {
   } = Object.assign({}, ...configs);
 
   // In some rare conditions, we need to instanciate the items on story rendering (and each time it renders)
-  const items = typeof rawItems === 'function' ? rawItems() : rawItems;
+  const items = (typeof rawItems === 'function' ? rawItems() : rawItems) ?? [];
 
+  /**
+   * @param {HTMLElement} container
+   * @returns {HTMLElement|CcBeta}
+   */
   const betaContainer = (container) => {
     if (beta) {
       import('../../components/cc-beta/cc-beta.js');
@@ -32,6 +47,7 @@ export function makeStory(...configs) {
     return container;
   };
 
+  /** @type {StoryFn} */
   const storyFn = (storyArgs, { globals }) => {
     setLanguage(globals.locale);
 
@@ -45,7 +61,7 @@ export function makeStory(...configs) {
     // If we have some custom CSS we add it in the shadow tree
     if (css != null) {
       const styles = document.createElement('style');
-      styles.innerHTML = css;
+      styles.innerHTML = css.toString();
       shadow.appendChild(styles);
     }
 
@@ -76,16 +92,20 @@ export function makeStory(...configs) {
       }
     });
 
-    // Run the sequence if we have simulations
-    sequence(async (wait) => {
-      for (const { delay, callback } of simulations) {
-        await wait(delay);
-        callback(components);
-      }
-    });
+    if (Array.isArray(simulations)) {
+      sequence(async (wait) => {
+        for (const { delay, callback } of simulations) {
+          await wait(delay);
+          callback(components);
+        }
+      });
+    }
+
+    /** @type {import('./custom-elements-manifest.types.js').CustomElementsManifest} */
+    const cemWithType = customElementsManifest;
 
     // Listen for events and trigger actions
-    customElementsManifest.modules
+    cemWithType.modules
       .flatMap((mod) => mod.declarations)
       .find((declaration) => declaration.tagName === component)
       ?.events?.forEach((e) => {
@@ -99,7 +119,11 @@ export function makeStory(...configs) {
         })?.[1];
 
         if (actionCallback != null) {
-          container.addEventListener(eventName, (e) => actionCallback(JSON.stringify(e.detail)));
+          container.addEventListener(eventName, (e) => {
+            if (e instanceof CustomEvent) {
+              actionCallback(JSON.stringify(e.detail));
+            }
+          });
         }
       });
 
@@ -133,10 +157,21 @@ export function makeStory(...configs) {
   return storyFn;
 }
 
+/**
+ * Normalizes a string by converting it to lowercase and removing hyphens and colons.
+ *
+ * @param {string} text - The text string to normalize
+ * @returns {string} The normalized text string
+ */
 function normalize(text) {
   return text.toLowerCase().replace(/[-:]/g, '');
 }
 
+/**
+ * Generates source code representation of a component.
+ *
+ * @type {GetSourceCode}
+ */
 function getSourceCode(component, items, dom) {
   if (dom != null) {
     const container = document.createElement('div');
@@ -168,6 +203,14 @@ function getSourceCode(component, items, dom) {
     .join('\n');
 }
 
+/**
+ * Formats an array of HTML attributes into a string.
+ * If the total length of attributes is more than 80 characters,
+ * it formats them on separate lines with indentation.
+ *
+ * @param {string[]} attributes - Array of HTML attribute strings to format
+ * @returns {string} Formatted attributes string
+ */
 function formatAttributes(attributes) {
   if (attributes.length === 0) {
     return '';
@@ -181,28 +224,44 @@ function formatAttributes(attributes) {
   }
 }
 
+/** @type {import('./make-story.types.js').StoryWait} */
 export function storyWait(delay, callback) {
   return { delay, callback };
 }
 
+/**
+ * Assigns properties to an HTML element
+ *
+ * @type {AssignPropsToElement}
+ */
 function assignPropsToElement(element, props = {}) {
-  Object.entries(props).forEach(([name, value]) => {
-    if (name === 'style' || name === 'class') {
+  const entries = /** @type {import('../../components/common.types.js').Entries<typeof element>} */ (
+    Object.entries(props)
+  );
+
+  entries.forEach(([name, value]) => {
+    if ((name === 'style' || name === 'class') && typeof value === 'string') {
       element.setAttribute(name, value);
     }
-    if (name === 'children') {
+    if (name === 'children' && typeof value === 'function') {
       value()
-        .map((child) => {
-          if (typeof child === 'string') {
-            const template = document.createElement('template');
-            template.innerHTML = child;
-            return template.content.cloneNode(true);
-          }
-          return child;
-        })
-        .forEach((child) => {
-          element.appendChild(child);
-        });
+        .map(
+          /** @param {Element} child */
+          (child) => {
+            if (typeof child === 'string') {
+              const template = document.createElement('template');
+              template.innerHTML = child;
+              return template.content.cloneNode(true);
+            }
+            return child;
+          },
+        )
+        .forEach(
+          /** @param {Element} child */
+          (child) => {
+            element.appendChild(child);
+          },
+        );
     } else {
       element[name] = value;
     }
@@ -210,6 +269,11 @@ function assignPropsToElement(element, props = {}) {
   return element;
 }
 
+/**
+ * Creates a story item by combining base story properties with custom properties
+ *
+ * @type {CreateStoryItem}
+ */
 export function createStoryItem(storyFn, props = {}, itemIndex = 0) {
   const element = document.createElement(storyFn.component);
   assignPropsToElement(element, storyFn.items[itemIndex]);
