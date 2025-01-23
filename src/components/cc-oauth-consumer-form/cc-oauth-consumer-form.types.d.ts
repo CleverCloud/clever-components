@@ -59,7 +59,7 @@ export interface OAuthConsumerFormStateError {
   type: 'error';
 }
 
-export interface NewOauthConsumer {
+export interface oauthConsumer {
   name: string;
   homePageUrl: string;
   appBaseUrl: string;
@@ -72,3 +72,5 @@ interface Right {
   value: string;
   isEnable: boolean;
 }
+
+export type OAuthConsumerFormContextType = 'create' | 'update';

@@ -1,60 +1,75 @@
-import { create } from '@clevercloud/client/esm/api/v2/oauth-consumer.js';
+import { create, get, remove, update } from '@clevercloud/client/esm/api/v2/oauth-consumer.js';
 import { defineSmartComponent } from '../../lib/define-smart-component.js';
 import { notifyError, notifySuccess } from '../../lib/notifications.js';
 import { sendToApi } from '../../lib/send-to-api.js';
 import '../cc-smart-container/cc-smart-container.js';
 import './cc-oauth-consumer-form.js';
 
-// /**
-//  * @typedef {import('../../lib/send-to-api.types.js').ApiConfig} ApiConfig
-//  * @typedef {import('./cc-oauth-consumer-form.types.js').NewOauthConsumer} NewOauthConsumer
-//  *
-//  */
+/**
+ * @typedef {import('../../lib/send-to-api.types.js').ApiConfig} ApiConfig
+ * @typedef {import('./cc-oauth-consumer-form.types.js').oauthConsumer} OauthConsumer
+ * @typedef {import('./cc-oauth-consumer-form.types.js').OAuthConsumerFormContextType} OAuthConsumerFormContextType
+ * @typedef {import('./cc-oauth-consumer-form.js').CcOauthConsumerForm} CcOauthConsumerForm
+ */
 
-/* defineSmartComponent({
+defineSmartComponent({
   selector: 'cc-oauth-consumer-form',
   params: {
     apiConfig: { type: Object },
     ownerId: { type: String },
-    key: { type: String },
+    // Only needed for the update and delete
+    key: { type: String, optional: true },
+    formContext: { type: String },
   },
-  /!**
+  /**
    * @param {Object} settings
-   * @param {{ apiConfig: ApiConfig, ownerId: string, key: string }} settings.context
+   * @param {{ apiConfig: ApiConfig, ownerId: string, key: string, formContext: 'create' | 'update' }} settings.context
    * @param {function} settings.updateComponent
    * @param {AbortSignal} settings.signal
+   * @param {CcOauthConsumerForm} settings.component
    * @param {(type: string, listener: (detail: any) => void) => void} settings.onEvent
-   *
-   *!/
+   */
   // @ts-expect-error FIXME: remove once `onContextUpdate` is type with generics
-  onContextUpdate({ context, signal, updateComponent, onEvent }) {
-    // Récupérer valeurs actuelles dans le context
-    const { apiConfig, ownerId, key } = context;
-    updateComponent('oauthConsumerFormState', { type: 'loading' });
-    // Récupérer les données de l'API
-    getOauthConsumer({ ownerId, key, apiConfig, signal })
-      .then(
-        /!** @param {NewOauthConsumer} data *!/
-        (data) => {
-          console.log(data);
+  onContextUpdate({ context, signal, updateComponent, onEvent, component }) {
+    const { apiConfig, ownerId, key, formContext } = context;
+    // IF UPDATE
+    if (formContext === 'update') {
+      // Récupérer valeurs actuelles dans le context
+      updateComponent('oauthConsumerFormState', { type: 'loading' });
+      // Récupérer les données de l'API
+      getOauthConsumer({
+        ownerId,
+        key,
+        apiConfig,
+        signal,
+      })
+        .then(
+          /** @param {OauthConsumer} data */
+          (data) => {
+            console.log(data);
+            updateComponent('oauthConsumerFormState', {
+              values: {
+                name: data.name,
+                description: data.description,
+                homePageUrl: data.url,
+                image: data.picture,
+                appBaseUrl: data.baseUrl,
+              },
+              type: 'idle-update',
+            });
+          },
+        )
+        .catch((error) => {
+          console.error(error);
           updateComponent('oauthConsumerFormState', {
-            values: {
-              name: data.name,
-              description: data.description,
-              homePageUrl: data.url,
-              image: data.picture,
-              appBaseUrl: data.baseUrl,
-            },
-            type: 'idle-update',
+            type: 'error',
           });
-        },
-      )
-      .catch((error) => {
-        console.error(error);
-        updateComponent('oauthConsumerFormState', {
-          type: 'error',
         });
-      });
+    }
+    // IF CREATE
+    if (formContext === 'create') {
+      updateComponent('oauthConsumerFormState', { type: 'idle-create' });
+    }
 
     // UPDATE
     // Détecter un submit
@@ -94,13 +109,35 @@ import './cc-oauth-consumer-form.js';
         // Si sucess notif sucess
         .then(() => {
           notifySuccess('oauth consumer supprimé');
+          window.dispatchEvent(new Event('oauth-consumer-delete'));
+          updateComponent('oauthConsumerFormState', (oauthConsumerFormState) => {
+            oauthConsumerFormState.type = 'error';
+          });
         })
         // Si error notif error
         .catch((error) => {
           notifyError('erreur lors de la suppression');
+        });
+    });
+
+    // CREATE
+    onEvent('cc-oauth-consumer-form:create', (data) => {
+      // mettre le composant en creating
+      updateComponent('oauthConsumerFormState', (oauthConsumerFormState) => {
+        oauthConsumerFormState.type = 'creating';
+      });
+      createOauthConsumer({ apiConfig, ownerId, data })
+        .then(() => {
+          notifySuccess('oauth consumer créé');
+          component.resetOauthConsumerForm();
+          window.dispatchEvent(new Event('oauth-consumer-create'));
         })
-        // Repasser le composante en idle-update
+        .catch((error) => {
+          console.error(error);
+          notifyError("erreur lors de la création d'oauth consumer");
+        })
         .finally(() => {
+          // remettre le composant en idle-create
           updateComponent('oauthConsumerFormState', (oauthConsumerFormState) => {
             oauthConsumerFormState.type = 'idle-create';
           });
@@ -109,26 +146,26 @@ import './cc-oauth-consumer-form.js';
   },
 });
 
-/!**
+/**
  * @param {Object} options
  * @param {string} options.ownerId
  * @param {string} options.key
  * @param {ApiConfig} options.apiConfig
  * @param {AbortSignal} options.signal
  * @return {Promise<any>}
- *!/
+ */
 function getOauthConsumer({ ownerId, key, apiConfig, signal }) {
   return get({ id: ownerId, key }).then(sendToApi({ apiConfig, signal }));
 }
 
-/!**
+/**
  * @param {Object} options
  * @param {string} options.ownerId
  * @param {string} options.key
  * @param {ApiConfig} options.apiConfig
- * @param {NewOauthConsumer} options.data
+ * @param {OauthConsumer} options.data
  * @return {Promise<any>}
- *!/
+ */
 function updateOauthConsumer({ ownerId, key, apiConfig, data }) {
   const newData = {
     name: data.name,
@@ -153,89 +190,21 @@ function updateOauthConsumer({ ownerId, key, apiConfig, data }) {
   return update({ id: ownerId, key }, newData).then(sendToApi({ apiConfig }));
 }
 
-/!**
+/**
  * @param {Object} options
  * @param {string} options.ownerId
  * @param {string} options.key
  * @param {ApiConfig} options.apiConfig
- *!/
+ */
 function deleteOauthConsumer({ ownerId, key, apiConfig }) {
   return remove({ id: ownerId, key }).then(sendToApi({ apiConfig }));
-} */
-
-/**
- * @typedef {import('../../lib/send-to-api.js').ApiConfig} ApiConfig
- * @typedef {import('./cc-oauth-consumer-form.types.d.ts').NewOauthConsumer} NewOauthConsumer
- */
-defineSmartComponent({
-  selector: `cc-oauth-consumer-form`,
-  params: {
-    apiConfig: { type: Object },
-    ownerId: { type: String },
-  },
-
-  /**
-   * @param {Object} settings
-   * @param {{ apiConfig: ApiConfig, ownerId: string, key: string }} settings.context
-   * @param {function} settings.updateComponent
-   * @param {(type: string, listener: (detail: any) => void) => void} settings.onEvent
-   */
-  // @ts-expect-error FIXME: remove once `onContextUpdate` is type with generics
-  onContextUpdate({ context, updateComponent, onEvent }) {
-    // récupérer le context
-    const { apiConfig, ownerId } = context;
-    // mettre le composant en skeleton
-    updateComponent('oauthConsumerFormState', { type: 'loading' });
-    // Mettre le composant en idle-create
-    updateComponent('oauthConsumerFormState', { type: 'idle-create' });
-    /*// récupérer les données de l'API
-     // mettre le composant en idle-update
-    getOauthConsumer({ apiConfig, ownerId, key, signal })
-      .then((data) => {
-        updateComponent('oauthConsumerFormState', {
-          type: 'idle-update',
-          values: {
-            name: data.name,
-            homePageUrl: data.url,
-            appBaseUrl: data.baseUrl,
-            description: data.description,
-            image: data.picture,
-            options: data.rights,
-          },
-        });
-      })
-      .catch((error) => {
-        console.error(error);
-      }); */
-    // getter event submit
-    onEvent('cc-oauth-consumer-form:create', (data) => {
-      // mettre le composant en creating
-      updateComponent('oauthConsumerFormState', (oauthConsumerFormState) => {
-        oauthConsumerFormState.type = 'creating';
-      });
-      createOauthConsumer({ apiConfig, ownerId, data })
-        .then(() => {
-          notifySuccess('oauth consumer créé');
-        })
-        .catch((error) => {
-          console.error(error);
-          notifyError("erreur lors de la création d'oauth consumer");
-        })
-        .finally(() => {
-          // remettre le composant en idle-create
-          updateComponent('oauthConsumerFormState', (oauthConsumerFormState) => {
-            oauthConsumerFormState.type = 'idle-create';
-          });
-        });
-    });
-  },
-});
+}
 
 /**
  * @param {Object} options
  * @param {ApiConfig} options.apiConfig
  * @param {string} options.ownerId
- * @param {NewOauthConsumer} options.data
+ * @param {OauthConsumer} options.data
  * @return {*}
  */
 function createOauthConsumer({ apiConfig, ownerId, data }) {

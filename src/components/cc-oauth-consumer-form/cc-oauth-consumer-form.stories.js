@@ -11,9 +11,15 @@ const conf = {
   component: 'cc-oauth-consumer-form',
 };
 
+/**
+ * @typedef {import('./cc-oauth-consumer-form.types.js').OAuthConsumerFormContextType} OAuthConsumerFormContextType
+ */
+
 export const defaultStory = makeStory(conf, {
   items: [
     {
+      /** @type {OAuthConsumerFormContextType} */
+      context: 'create',
       oauthConsumerFormState: {
         type: 'idle-create',
       },
@@ -24,6 +30,8 @@ export const defaultStory = makeStory(conf, {
 export const create = makeStory(conf, {
   items: [
     {
+      /** @type {OAuthConsumerFormContextType} */
+      context: 'create',
       oauthConsumerFormState: {
         type: 'idle-create',
       },
@@ -34,6 +42,8 @@ export const create = makeStory(conf, {
 export const update = makeStory(conf, {
   items: [
     {
+      /** @type {OAuthConsumerFormContextType} */
+      context: 'update',
       oauthConsumerFormState: {
         type: 'idle-update',
       },
@@ -44,6 +54,8 @@ export const update = makeStory(conf, {
 export const creating = makeStory(conf, {
   items: [
     {
+      /** @type {OAuthConsumerFormContextType} */
+      context: 'create',
       oauthConsumerFormState: {
         type: 'creating',
       },
@@ -54,6 +66,8 @@ export const creating = makeStory(conf, {
 export const updating = makeStory(conf, {
   items: [
     {
+      /** @type {OAuthConsumerFormContextType} */
+      context: 'update',
       oauthConsumerFormState: {
         type: 'updating',
       },
@@ -90,5 +104,3 @@ export const deleting = makeStory(conf, {
     },
   ],
 });
-
-export const dataLoaded = makeStory(conf, {});

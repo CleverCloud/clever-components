@@ -1,4 +1,5 @@
 import { css, html, LitElement } from 'lit';
+import { createRef, ref } from 'lit/directives/ref.js';
 import { dispatchCustomEvent } from '../../lib/events.js';
 import { formSubmit } from '../../lib/form/form-submit-directive.js';
 import { linkStyles } from '../../templates/cc-link/cc-link.js';
@@ -10,8 +11,9 @@ import '../cc-notice/cc-notice.js';
 /**
  * @typedef {import('./cc-oauth-consumer-form.types.js').OAuthConsumerFormState} OAuthConsumerFormState
  * @typedef {import('./cc-oauth-consumer-form.types.js').OAuthConsumerFormStateDeleting} OAuthConsumerFormStateDeleting
- * @typedef {import('./cc-oauth-consumer-form.types.js').NewOauthConsumer} NewOauthConsumer
+ * @typedef {import('./cc-oauth-consumer-form.types.js').oauthConsumer} NewOauthConsumer
  * @typedef {import('lit').TemplateResult<1>} TemplateResult
+ * @typedef {import('lit/directives/ref.js').Ref<HTMLFormElement>} HTMLFormElementRef
  * @typedef {import('../../lib/events.types.js').EventWithTarget<HTMLInputElement|HTMLTextAreaElement>} HTMLInputOrTextareaEvent
  * @typedef {import('../../lib/form/form.types.js').FormDataMap} FormDataMap
  */
@@ -33,27 +35,15 @@ export class CcOauthConsumerForm extends LitElement {
 
     /** @type {OAuthConsumerFormState} Sets the state of the component. */
     this.oauthConsumerFormState = { type: 'idle-create' };
+
+    /** @type {HTMLFormElementRef} */
+    this._formRef = createRef();
   }
 
-  // TODO: handle submit of the 2 forms
-  _handleSubmit() {}
+  resetOauthConsumerForm() {
+    this._formRef.value.reset();
+  }
 
-  /**
-   * @param {FormData} formData
-   */
-  /*  _onCreateOauthConsumer(formData) {
-    if (typeof formData.name === 'string' && typeof formData.publicKey === 'string') {
-      const newOauthConsumer = {
-        name: formData.name,
-        homePageUrl: formData.homePageUrl,
-        appBaseUrl: formData.appBaseUrl,
-        description: formData.description,
-        image: formData.image,
-        options: formData.options,
-      };
-      dispatchEvent(this, 'create', newOauthConsumer);
-    }
-  } */
   /**
    * @param {HTMLInputOrTextareaEvent} e
    */
@@ -84,14 +74,18 @@ export class CcOauthConsumerForm extends LitElement {
    */
   _onFormSubmit(data) {
     // TODO: fix to switch between 'idle-create' and 'idle-update'
-    this.oauthConsumerFormState = {
-      type: 'idle-create',
-      values: data,
-    };
     if (this.oauthConsumerFormState.type === 'idle-create') {
+      this.oauthConsumerFormState = {
+        type: 'idle-create',
+        values: data,
+      };
       dispatchCustomEvent(this, 'create', data);
     }
     if (this.oauthConsumerFormState.type === 'idle-update') {
+      this.oauthConsumerFormState = {
+        type: 'idle-update',
+        values: data,
+      };
       dispatchCustomEvent(this, 'update', data);
     }
   }
@@ -116,13 +110,18 @@ export class CcOauthConsumerForm extends LitElement {
 
         ${this.oauthConsumerFormState.type === 'idle-update' ||
         this.oauthConsumerFormState.type === 'updating' ||
-        this.oauthConsumerFormState.type === 'deleting'
+        this.oauthConsumerFormState.type === 'deleting' ||
+        this.oauthConsumerFormState.type === 'loading'
           ? html`${this._renderDangerZone()}`
           : ''}
       </div>
     `;
   }
 
+  /**
+   * @return {TemplateResult}
+   * @private
+   */
   _renderOauthConsumerForm() {
     const isWaiting =
       this.oauthConsumerFormState.type === 'creating' ||
@@ -131,7 +130,7 @@ export class CcOauthConsumerForm extends LitElement {
     const isLoading = this.oauthConsumerFormState.type === 'loading';
 
     return html`
-      <form slot="content" class="oauth-form" ${formSubmit(this._onFormSubmit.bind(this))}>
+      <form slot="content" class="oauth-form" ${formSubmit(this._onFormSubmit.bind(this))} ${ref(this._formRef)}>
         <cc-block-section class="info-block">
           <div slot="title">Informations</div>
 
@@ -194,7 +193,7 @@ export class CcOauthConsumerForm extends LitElement {
                   type="checkbox"
                   name="access"
                   @click=${this._selectAllAccessCheckboxes}
-                  ?disabled=${isWaiting}
+                  ?disabled=${isWaiting || isLoading}
                 />
                 <label for="select-all-access">Access all</label>
               </div>
@@ -205,7 +204,7 @@ export class CcOauthConsumerForm extends LitElement {
                     id="option-access-credit"
                     class="access-checkboxes"
                     name="access-credit"
-                    ?disabled=${isWaiting}
+                    ?disabled=${isWaiting || isLoading}
                   />
                   <label for="option-access-credit">Access my organizations' credit count</label>
                 </div>
@@ -215,7 +214,7 @@ export class CcOauthConsumerForm extends LitElement {
                     id="option-access-organizations"
                     class="access-checkboxes"
                     name="access-organizations"
-                    ?disabled=${isWaiting}
+                    ?disabled=${isWaiting || isLoading}
                   />
                   <label for="option-access-organizations">Access my organizations</label>
                 </div>
@@ -225,7 +224,7 @@ export class CcOauthConsumerForm extends LitElement {
                     id="option-access-information"
                     class="access-checkboxes"
                     name="access-information"
-                    ?disabled=${isWaiting}
+                    ?disabled=${isWaiting || isLoading}
                   />
                   <label for="option-access-information">Access my personal information</label>
                 </div>
@@ -235,7 +234,7 @@ export class CcOauthConsumerForm extends LitElement {
                     id="option-access-consumption"
                     class="access-checkboxes"
                     name="access-consumption"
-                    ?disabled=${isWaiting}
+                    ?disabled=${isWaiting || isLoading}
                   />
                   <label for="option-access-consumption">Access my organizations' consumption statistics</label>
                 </div>
@@ -245,7 +244,7 @@ export class CcOauthConsumerForm extends LitElement {
                     id="access-bills"
                     class="access-checkboxes"
                     name="access-bills"
-                    ?disabled=${isWaiting}
+                    ?disabled=${isWaiting || isLoading}
                   />
                   <label for="option-access-bills">Access my organizations' bills</label>
                 </div>
@@ -258,7 +257,7 @@ export class CcOauthConsumerForm extends LitElement {
                   type="checkbox"
                   name="manage"
                   @click=${this._selectAllManageCheckboxes}
-                  ?disabled=${isWaiting}
+                  ?disabled=${isWaiting || isLoading}
                 />
                 <label for="select-all-manage">Manage all</label>
               </div>
@@ -269,7 +268,7 @@ export class CcOauthConsumerForm extends LitElement {
                     id="option-manage-organizations"
                     class="manage-checkboxes"
                     name="manage-organizations"
-                    ?disabled=${isWaiting}
+                    ?disabled=${isWaiting || isLoading}
                   />
                   <label for="option-manage-organizations">Manage my organizations</label>
                 </div>
@@ -279,7 +278,7 @@ export class CcOauthConsumerForm extends LitElement {
                     id="option-change-password"
                     class="manage-checkboxes"
                     name="change-password"
-                    ?disabled=${isWaiting}
+                    ?disabled=${isWaiting || isLoading}
                   />
                   <label for="option-change-password">Change my password</label>
                 </div>
@@ -289,7 +288,7 @@ export class CcOauthConsumerForm extends LitElement {
                     id="option-manage-applications"
                     class="manage-checkboxes"
                     name="manage-applications"
-                    ?disabled=${isWaiting}
+                    ?disabled=${isWaiting || isLoading}
                   />
                   <label for="option-manage-applications">Manage my organizations' applications</label>
                 </div>
@@ -299,7 +298,7 @@ export class CcOauthConsumerForm extends LitElement {
                     id="option-manage-informations"
                     class="manage-checkboxes"
                     name="manage-informations"
-                    ?disabled=${isWaiting}
+                    ?disabled=${isWaiting || isLoading}
                   />
                   <label for="option-manage-informations">Manage my personal informations</label>
                 </div>
@@ -309,7 +308,7 @@ export class CcOauthConsumerForm extends LitElement {
                     id="option-manage-members"
                     class="manage-checkboxes"
                     name="manage-members"
-                    ?disabled=${isWaiting}
+                    ?disabled=${isWaiting || isLoading}
                   />
                   <label for="option-manage-members">Manage my organizations' members</label>
                 </div>
@@ -319,7 +318,7 @@ export class CcOauthConsumerForm extends LitElement {
                     id="option-manage-ssh-keys"
                     class="manage-checkboxes"
                     name="manage-ssh-keys"
-                    ?disabled=${isWaiting}
+                    ?disabled=${isWaiting || isLoading}
                   />
                   <label for="option-manage-ssh-keys">Manage my ssh keys</label>
                 </div>
@@ -329,7 +328,7 @@ export class CcOauthConsumerForm extends LitElement {
                     id="option-manage-add-ons"
                     class="manage-checkboxes"
                     name="manage-add-ons"
-                    ?disabled=${isWaiting}
+                    ?disabled=${isWaiting || isLoading}
                   />
                   <label for="option-manage-add-ons">Manage my organizations' add-ons</label>
                 </div>
@@ -340,16 +339,34 @@ export class CcOauthConsumerForm extends LitElement {
         <div class="oauth-form-buttons">
           ${this.oauthConsumerFormState.type === 'idle-create' || this.oauthConsumerFormState.type === 'creating'
             ? html`
-                <cc-button danger outlined type="reset" ?waiting=${isWaiting}>Cancel</cc-button>
-                <cc-button primary type="submit" ?waiting="${isWaiting}">Create</cc-button>
+                <cc-button danger outlined type="reset" ?disabled=${isWaiting}>Cancel</cc-button>
+                <cc-button primary type="submit" ?waiting="${this.oauthConsumerFormState.type === 'creating'}"
+                  >Create</cc-button
+                >
               `
             : ''}
           ${this.oauthConsumerFormState.type === 'idle-update' ||
           this.oauthConsumerFormState.type === 'updating' ||
-          this.oauthConsumerFormState.type === 'deleting'
+          this.oauthConsumerFormState.type === 'deleting' ||
+          this.oauthConsumerFormState.type === 'loading'
             ? html`
-                <cc-button simple outlined type="reset" ?waiting=${isWaiting}>Reset Change</cc-button>
-                <cc-button primary type="submit" ?waiting="${isWaiting}">Update</cc-button>
+                <cc-button
+                  simple
+                  outlined
+                  type="reset"
+                  ?disabled=${isWaiting || this.oauthConsumerFormState.type === 'deleting'}
+                  ?skeleton=${isLoading}
+                  >Reset Change</cc-button
+                >
+                <cc-button
+                  primary
+                  type="submit"
+                  ?disabled=${this.oauthConsumerFormState.type !== 'updating' &&
+                  this.oauthConsumerFormState.type === 'deleting'}
+                  ?waiting="${this.oauthConsumerFormState.type === 'updating'}"
+                  ?skeleton=${isLoading}
+                  >Update</cc-button
+                >
               `
             : ''}
         </div>
@@ -357,9 +374,6 @@ export class CcOauthConsumerForm extends LitElement {
     `;
   }
 
-  /**
-   * @param {NewOauthConsumer} oauthConsumer
-   */
   _renderDangerZone(oauthConsumer) {
     const isWaiting =
       this.oauthConsumerFormState.type === 'creating' ||
@@ -379,7 +393,9 @@ export class CcOauthConsumerForm extends LitElement {
           danger
           outlined
           type="submit"
-          ?waiting=${isWaiting}
+          ?disabled=${(isWaiting && this.oauthConsumerFormState.type !== 'deleting') ||
+          this.oauthConsumerFormState.type === 'loading'}
+          ?waiting="${this.oauthConsumerFormState.type === 'deleting'}"
           @cc-button:click=${() => this._onDeleteOauthConsumer(oauthConsumer)}
           >Delete</cc-button
         >
@@ -429,15 +445,20 @@ export class CcOauthConsumerForm extends LitElement {
           justify-content: start;
         }
 
-        #access-options-container {
+        .options-container > div {
           display: flex;
           flex-direction: column;
         }
 
-        #manage-options {
-          display: flex;
-          flex-direction: column;
-        }
+        /* #access-options-container { */
+        /*  display: flex; */
+        /*  flex-direction: column; */
+        /* } */
+
+        /* #manage-options { */
+        /*  display: flex; */
+        /*  flex-direction: column; */
+        /* } */
 
         .select-all-option {
         }
