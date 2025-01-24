@@ -17,6 +17,7 @@ import './cc-tcp-redirection-form.js';
  * @typedef {import('../cc-tcp-redirection-form/cc-tcp-redirection-form.types.js').TcpRedirectionFormStateLoaded} TcpRedirectionFormStateLoaded
  * @typedef {import('../cc-tcp-redirection/cc-tcp-redirection.types.js').TcpRedirectionStateWaiting} TcpRedirectionStateWaiting
  * @typedef {import('../../lib/send-to-api.js').ApiConfig} ApiConfig
+ * @typedef {import('../../lib/smart-component.types.js').OnContextUpdateArgs<CcTcpRedirectionForm>} OnContextUpdateArgs
  * @typedef {[{namespace: string}]} NamespacesApiPayload
  * @typedef {[{namespace: string, port: number}]} RedirectionsApiPayload
  * @typedef {{namespace: string, sourcePort: number | null}} FormattedRedirectionData
@@ -32,14 +33,8 @@ defineSmartComponent({
     appId: { type: String },
   },
   /**
-   * @param {Object} settings
-   * @param {CcTcpRedirectionForm} settings.component
-   * @param {{ apiConfig: ApiConfig, ownerId: string, appId: string }} settings.context
-   * @param {(type: string, listener: (detail: any) => void) => void} settings.onEvent
-   * @param {function} settings.updateComponent
-   * @param {AbortSignal} settings.signal
+   * @param {OnContextUpdateArgs} args
    */
-  // @ts-expect-error FIXME: remove once `onContextUpdate` is typed with generics
   onContextUpdate({ context, onEvent, updateComponent, signal }) {
     const { apiConfig, ownerId, appId } = context;
 

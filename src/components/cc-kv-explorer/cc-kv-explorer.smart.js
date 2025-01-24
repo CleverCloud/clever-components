@@ -25,6 +25,7 @@ import { KvTerminalCtrl } from './kv-terminal-ctrl.js';
  * @typedef {import('./kv-key-editor-list-ctrl.js').KvKeyEditorListCtrl} KvKeyEditorListCtrl
  * @typedef {import('./kv-key-editor-set-ctrl.js').KvKeyEditorSetCtrl} KvKeyEditorSetCtrl
  * @typedef {import('./kv-key-editor-string-ctrl.js').KvKeyEditorStringCtrl} KvKeyEditorStringCtrl
+ * @typedef {import('../../lib/smart-component.types.js').OnContextUpdateArgs<CcKvExplorer>} OnContextUpdateArgs
  */
 
 defineSmartComponent({
@@ -32,16 +33,9 @@ defineSmartComponent({
   params: {
     kvApiConfig: { type: Object },
   },
-
   /**
-   * @param {Object} settings
-   * @param {CcKvExplorer} settings.component<
-   * @param {{kvApiConfig: {url: string, backendUrl: string}}} settings.context
-   * @param {(type: string, listener: (detail: any) => void) => void} settings.onEvent
-   * @param {function} settings.updateComponent
-   * @param {AbortSignal} settings.signal
+   * @param {OnContextUpdateArgs} args
    */
-  // @ts-expect-error FIXME: remove once `onContextUpdate` is typed with generics
   async onContextUpdate({ component, context, onEvent, updateComponent, signal }) {
     const { kvApiConfig } = context;
     const kvClient = new KvClient(kvApiConfig);

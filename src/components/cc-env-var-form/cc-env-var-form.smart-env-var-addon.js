@@ -9,6 +9,7 @@ import './cc-env-var-form.js';
  * @typedef {import('./cc-env-var-form.js').CcEnvVarForm} CcEnvVarForm
  * @typedef {import('../common.types.js').EnvVar} EnvVar
  * @typedef {import('../../lib/send-to-api.js').ApiConfig} ApiConfig
+ * @typedef {import('../../lib/smart-component.types.js').OnContextUpdateArgs<CcEnvVarForm>} OnContextUpdateArgs
  */
 
 defineSmartComponent({
@@ -19,14 +20,8 @@ defineSmartComponent({
     addonId: { type: String },
   },
   /**
-   * @param {Object} settings
-   * @param {CcEnvVarForm} settings.component
-   * @param {{ apiConfig: ApiConfig, ownerId: string, addonId: string }} settings.context
-   * @param {(type: string, listener: (detail: any) => void) => void} settings.onEvent
-   * @param {function} settings.updateComponent
-   * @param {AbortSignal} settings.signal
+   * @param {OnContextUpdateArgs} args
    */
-  // @ts-expect-error FIXME: remove once `onContextUpdate` is typed with generics
   onContextUpdate({ context, updateComponent, signal }) {
     updateComponent('state', { type: 'loading' });
 

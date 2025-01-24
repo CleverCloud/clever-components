@@ -18,6 +18,7 @@ import './cc-grafana-info.js';
  * @typedef {import('./cc-grafana-info.types.js').GrafanaInfoEnabled} GrafanaInfoEnabled
  * @typedef {import('./cc-grafana-info.types.js').GrafanaInfoDisabled} GrafanaInfoDisabled
  * @typedef {import('../../lib/send-to-api.js').ApiConfig} ApiConfig
+ * @typedef {import('../../lib/smart-component.types.js').OnContextUpdateArgs<CcGrafanaInfo>} OnContextUpdateArgs
  */
 
 defineSmartComponent({
@@ -28,14 +29,8 @@ defineSmartComponent({
     grafanaBaseLink: { type: String },
   },
   /**
-   * @param {Object} settings
-   * @param {CcGrafanaInfo} settings.component
-   * @param {{apiConfig: ApiConfig, ownerId: string, grafanaBaseLink: string}} settings.context
-   * @param {(type: string, listener: (detail: any) => void) => void} settings.onEvent
-   * @param {function} settings.updateComponent
-   * @param {AbortSignal} settings.signal
+   * @param {OnContextUpdateArgs} args
    */
-  // @ts-expect-error FIXME: remove once `onContextUpdate` is typed with generics
   onContextUpdate({ context, updateComponent, onEvent, signal }) {
     const { apiConfig, ownerId, grafanaBaseLink } = context;
 

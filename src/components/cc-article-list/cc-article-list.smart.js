@@ -11,6 +11,7 @@ import './cc-article-list.js';
  * @typedef {import('./cc-article-list.js').CcArticleList} CcArticleList
  * @typedef {import('../cc-article-card/cc-article-card.types.js').ArticleCard} ArticleCard
  * @typedef {import('../../lib/send-to-api.js').ApiConfig} ApiConfig
+ * @typedef {import('../../lib/smart-component.types.js').OnContextUpdateArgs<CcArticleList>} OnContextUpdateArgs
  */
 
 const FOUR_HOURS = 1000 * 60 * 60 * 4;
@@ -22,14 +23,8 @@ defineSmartComponent({
     limit: { type: Number },
   },
   /**
-   * @param {Object} settings
-   * @param {CcArticleList} settings.component
-   * @param {{apiConfig: ApiConfig, lang: 'fr'|'en', limit: number}} settings.context
-   * @param {(type: string, listener: (detail: any) => void) => void} settings.onEvent
-   * @param {function} settings.updateComponent
-   * @param {AbortSignal} settings.signal
+   * @param {OnContextUpdateArgs} args
    */
-  // @ts-expect-error FIXME: remove once `onContextUpdate` is typed with generics
   onContextUpdate({ context, updateComponent, signal }) {
     updateComponent('state', { type: 'loading' });
 

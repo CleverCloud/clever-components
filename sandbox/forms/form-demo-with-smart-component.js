@@ -15,6 +15,7 @@ import { updateRootContext } from '../../src/lib/smart-manager.js';
  * @typedef {import('../../src/components/cc-input-text/cc-input-text.js').CcInputText} CcInputText
  * @typedef {import('../../src/lib/form/form.types.js').FormDataMap} FormDataMap
  * @typedef {import('../../src/lib/send-to-api.types.js').ApiConfig} ApiConfig
+ * @typedef {import('../../src/lib/smart-component.types.js').OnContextUpdateArgs<FormDemoWithSmartComponent>} OnContextUpdateArgs
  * @typedef {import('./form-demo-with-smart-component.types.js').FormDemoWithSmartComponentState} FormDemoWithSmartComponentState
  * @typedef {import('lit/directives/ref.js').Ref<HTMLFormElement>} HTMLFormElementRef
  */
@@ -134,12 +135,8 @@ defineSmartComponent({
     fake: { type: String, optional: true },
   },
   /**
-   * @param {Object} settings
-   * @param {FormDemoWithSmartComponent} settings.component
-   * @param {(prop: string, fn: (prop: any) => void) => void} settings.updateComponent
-   * @param {(type: string, listener: (detail: any) => void) => void} settings.onEvent
+   * @param {OnContextUpdateArgs} args
    */
-  // @ts-expect-error FIXME: remove once `onContextUpdate` is typed with generics
   async onContextUpdate({ component, updateComponent, onEvent }) {
     console.log('update context');
     // setting form value from smart
@@ -157,41 +154,29 @@ defineSmartComponent({
        * @param {{name: string, email: string}} data
        */
       (data) => {
-        updateComponent(
-          'formState',
-          /** @param {FormDemoWithSmartComponentState} formState */
-          (formState) => {
-            formState.type = 'submitting';
-          },
-        );
+        updateComponent('formState', (formState) => {
+          formState.type = 'submitting';
+        });
 
         submitForm(data)
           .then(() => {
-            updateComponent(
-              'formState',
-              /** @param {FormDemoWithSmartComponentState} formState */
-              (formState) => {
-                formState.type = 'idle';
-              },
-            );
+            updateComponent('formState', (formState) => {
+              formState.type = 'idle';
+            });
 
             component.resetForm();
             notifySuccess('Done successfully 🎉');
           })
           .catch((error) => {
-            updateComponent(
-              'formState',
-              /** @param {FormDemoWithSmartComponentState} formState */
-              (formState) => {
-                formState.type = 'idle';
+            updateComponent('formState', (formState) => {
+              formState.type = 'idle';
 
-                if (error.message === 'email-used') {
-                  formState.errors = {
-                    email: 'email-used',
-                  };
-                }
-              },
-            );
+              if (error.message === 'email-used') {
+                formState.errors = {
+                  email: 'email-used',
+                };
+              }
+            });
           });
       },
     );
