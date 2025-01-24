@@ -1,37 +1,41 @@
 // @ts-ignore not worth helping TS understand this is valid since we don't need to type check this module
-// eslint-disable-next-line import/no-unresolved
+
 import customElementsManifest from '../../../dist/custom-elements.json';
 import { setLanguage } from '../../lib/i18n/i18n.js';
 import { sequence } from './sequence.js';
 
-export function makeStory(...configs) {
-  const {
-    name,
-    docs,
-    css,
-    component,
-    dom,
-    items: rawItems = [{}],
-    simulations = [],
-    argTypes,
-    displayMode,
-    beta,
-    onUpdateComplete,
-  } = Object.assign({}, ...configs);
+/**
+ * @typedef {import('./custom-elements-manifest.types.js').CustomElementsManifest} CustomElementsManifest
+ * @typedef {import('../../components/cc-beta/cc-beta.js').CcBeta} CcBeta
+ * @typedef {import('@storybook/web-components').StoryFn} StoryFn
+ * @typedef {import('lit').CSSResult} CSSResult
+ */
 
+/**
+ * Creates a story with the given configuration options
+ *
+ * @template {keyof HTMLElementTagNameMap} ComponentTagName
+ *
+ * @param {import('./make-story.types.js').MakeStoryOptions<ComponentTagName>} config The story configuration
+ * @returns {import('./make-story.types.js').AnnotatedStoryFunction<ComponentTagName>} The story function
+ */
+export function makeStory({
+  argTypes,
+  beta,
+  component,
+  css,
+  displayMode,
+  docs,
+  dom,
+  items: rawItems = [],
+  name,
+  onUpdateComplete,
+  simulations = [],
+}) {
   // In some rare conditions, we need to instanciate the items on story rendering (and each time it renders)
   const items = typeof rawItems === 'function' ? rawItems() : rawItems;
 
-  const betaContainer = (container) => {
-    if (beta) {
-      import('../../components/cc-beta/cc-beta.js');
-      const ccBeta = document.createElement('cc-beta');
-      ccBeta.appendChild(container);
-      return ccBeta;
-    }
-    return container;
-  };
-
+  /** @type {import('./make-story.types.js').AnnotatedStoryFunction<ComponentTagName>} */
   const storyFn = (storyArgs, { globals }) => {
     setLanguage(globals.locale);
 
@@ -45,7 +49,7 @@ export function makeStory(...configs) {
     // If we have some custom CSS we add it in the shadow tree
     if (css != null) {
       const styles = document.createElement('style');
-      styles.innerHTML = css;
+      styles.innerHTML = css.toString();
       shadow.appendChild(styles);
     }
 
@@ -54,7 +58,7 @@ export function makeStory(...configs) {
       const wrapper = document.createElement('div');
       shadow.appendChild(wrapper);
       dom(wrapper);
-      return betaContainer(container);
+      return betaContainer(container, beta);
     }
 
     // Setup the components and inject args
@@ -69,7 +73,7 @@ export function makeStory(...configs) {
     });
     components.forEach((c, index) => {
       shadow.appendChild(c);
-      if (onUpdateComplete != null) {
+      if (onUpdateComplete != null && 'updateComplete' in c) {
         c.updateComplete.then(() => {
           onUpdateComplete(c, index);
         });
@@ -85,7 +89,8 @@ export function makeStory(...configs) {
     });
 
     // Listen for events and trigger actions
-    customElementsManifest.modules
+    /** @type {CustomElementsManifest} */
+    (customElementsManifest).modules
       .flatMap((mod) => mod.declarations)
       .find((declaration) => declaration.tagName === component)
       ?.events?.forEach((e) => {
@@ -99,11 +104,15 @@ export function makeStory(...configs) {
         })?.[1];
 
         if (actionCallback != null) {
-          container.addEventListener(eventName, (e) => actionCallback(JSON.stringify(e.detail)));
+          container.addEventListener(eventName, (e) => {
+            if (e instanceof CustomEvent) {
+              actionCallback(JSON.stringify(e.detail));
+            }
+          });
         }
       });
 
-    return betaContainer(container);
+    return betaContainer(container, beta);
   };
 
   // We use the values of the first item for the args
@@ -133,10 +142,27 @@ export function makeStory(...configs) {
   return storyFn;
 }
 
+/**
+ * Normalizes a string by converting it to lowercase and removing hyphens and colons
+ *
+ * @param {string} text - The text to normalize
+ * @returns {string} The normalized text with all lowercase characters and no hyphens or colons
+ */
 function normalize(text) {
   return text.toLowerCase().replace(/[-:]/g, '');
 }
 
+/**
+ * Generates HTML source code for a component based on provided items or DOM
+ *
+ * @template {keyof HTMLElementTagNameMap} ComponentTagName
+ * @template {HTMLElementTagNameMap[ComponentTagName]} Component
+ *
+ * @param {ComponentTagName} component - The component tag name
+ * @param {Partial<Component>[]} items - Array of item objects containing props and innerHTML
+ * @param {((container: HTMLDivElement) => void) | null} dom - Optional function to manipulate container DOM directly
+ * @returns {string} The generated HTML source code
+ */
 function getSourceCode(component, items, dom) {
   if (dom != null) {
     const container = document.createElement('div');
@@ -168,6 +194,11 @@ function getSourceCode(component, items, dom) {
     .join('\n');
 }
 
+/**
+ * Formats an array of HTML attributes into a string
+ * @param {string[]} attributes - Array of HTML attribute strings
+ * @returns {string} Formatted string of attributes, either inline or multiline depending on length
+ */
 function formatAttributes(attributes) {
   if (attributes.length === 0) {
     return '';
@@ -181,28 +212,49 @@ function formatAttributes(attributes) {
   }
 }
 
+/**
+ * Creates a story simulation step with a delay and callback
+ *
+ * @type {import('./make-story.types.js').StoryWait<HTMLElement>}
+ */
 export function storyWait(delay, callback) {
   return { delay, callback };
 }
 
+/**
+ * Assigns properties to a DOM element
+ *
+ * @template {Element} ElementToAssign
+ *
+ * @param {ElementToAssign} element - The DOM element to assign properties to
+ * @param {Partial<ElementToAssign>} props - An object containing properties to assign
+ * @returns {ElementToAssign} The element with assigned properties
+ */
 function assignPropsToElement(element, props = {}) {
-  Object.entries(props).forEach(([name, value]) => {
-    if (name === 'style' || name === 'class') {
+  /** @type {import('../../components/common.types.js').Entries<typeof props>} */
+  (Object.entries(props)).forEach(([name, value]) => {
+    if ((name === 'style' || name === 'class') && typeof value === 'string') {
       element.setAttribute(name, value);
     }
-    if (name === 'children') {
+    if (name === 'children' && typeof value === 'function') {
       value()
-        .map((child) => {
-          if (typeof child === 'string') {
-            const template = document.createElement('template');
-            template.innerHTML = child;
-            return template.content.cloneNode(true);
-          }
-          return child;
-        })
-        .forEach((child) => {
-          element.appendChild(child);
-        });
+        .map(
+          /** @param {Element} child */
+          (child) => {
+            if (typeof child === 'string') {
+              const template = document.createElement('template');
+              template.innerHTML = child;
+              return template.content.cloneNode(true);
+            }
+            return child;
+          },
+        )
+        .forEach(
+          /** @param {Element} child */
+          (child) => {
+            element.appendChild(child);
+          },
+        );
     } else {
       element[name] = value;
     }
@@ -210,9 +262,36 @@ function assignPropsToElement(element, props = {}) {
   return element;
 }
 
+/**
+ * Creates a story item with specified properties and index
+ *
+ * @template {keyof HTMLElementTagNameMap} ComponentTagName
+ * @template {import('./make-story.types.js').AnnotatedStoryFunction<ComponentTagName>} StoryFn
+ *
+ * @param {StoryFn} storyFn - The story function containing component and items
+ * @param {Partial<HTMLElementTagNameMap[ComponentTagName]>} props - Properties to apply to the element
+ * @param {number} itemIndex - Index of the item to create (defaults to 0)
+ * @returns {HTMLElementTagNameMap[ComponentTagName]} The created story item element
+ */
 export function createStoryItem(storyFn, props = {}, itemIndex = 0) {
   const element = document.createElement(storyFn.component);
   assignPropsToElement(element, storyFn.items[itemIndex]);
   assignPropsToElement(element, props);
   return element;
 }
+
+/**
+ * @template {HTMLElement} T
+ * @param {T} container
+ * @param {boolean} isBeta
+ * @returns {T | CcBeta}
+ */
+const betaContainer = (container, isBeta) => {
+  if (isBeta) {
+    import('../../components/cc-beta/cc-beta.js');
+    const ccBeta = document.createElement('cc-beta');
+    ccBeta.appendChild(container);
+    return ccBeta;
+  }
+  return container;
+};

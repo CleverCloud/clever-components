@@ -8,14 +8,14 @@ import { injectAuthForSmartComponentsPlugin } from '../src/stories/lib/smart-aut
 const config = {
   stories: [
     // The Top level Markdown documents
-    '../CONTRIBUTING.md',
-    '../README.md',
+    // '../CONTRIBUTING.md',
+    // '../README.md',
     // The Markdown documents inside docs (excluding "example" components)
-    '../docs/**/!(*example*).md',
+    // '../docs/**/!(*example*).md',
     // The regular CSF stories
-    '../src/**/*.stories.js',
+    '../src/**/cc-domain-management.stories.js',
     // The smart component Markdown docs
-    '../src/**/*smart*.md',
+    // '../src/**/*smart*.md',
   ],
   addons: ['@storybook/addon-links', '@storybook/addon-essentials'],
   framework: {

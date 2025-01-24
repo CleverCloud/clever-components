@@ -78,29 +78,21 @@ It provides several features to improve the whole writing/maintaining stories ex
 Here are the type definitions for the `makeStory` helper function:
 
 ```ts
-function makeStory (...options: Array<MakeStoryOptions>) { /* ... */ }
+function makeStory (MakeStoryOptions) { /* ... */ }
 
-interface MakeStoryOptions {
-  // Set the name of the component
-  component?: string,
-  // Define the properties to set for each instance of the component
-  items?: object[] | (): Array<object>,
-  // Override the automatic name of the story
-  name?: string,
-  // Set a documentation/description for a story
-  docs?: string,
-  // Set some custom CSS for a story
-  css?: string,
-  // Use this instead of `items` if you want to define raw DOM directly
-  dom?: HTMLElement): HTMLElement,
-  // See Present state changes with simulations
-  simulations?: Array<(Array<HTMLElement>): void>,
-  // See Override argument types
-  argTypes?: object,
-  // null => Displays components in a single column with a vertical gap (of 1em)
-  // "flex-wrap" => Displays components next to each other and wrap them on multiple lines when necessary
-  displayMode?: null | "flex-wrap",
-}
+export type MakeStoryOptions<TagName extends keyof HTMLElementTagNameMap = keyof HTMLElementTagNameMap> = {
+  argTypes?: ArgTypes<Component<TagName>>;
+  beta?: boolean;
+  component: TagName;
+  css?: CSSResult | string;
+  displayMode?: 'block' | 'flex-wrap';
+  docs?: string;
+  dom?: (container: HTMLElement) => void;
+  items?: ComponentProps<TagName>[] | (() => ComponentProps<TagName>[]);
+  name?: string;
+  onUpdateComplete?: (component: Component<TagName>, index: number) => void;
+  simulations?: Array<ReturnType<typeof StoryWait<TagName>>>;
+};
 ```
 
 ### Basic usage
@@ -132,7 +124,7 @@ export const secondStory = makeStory({
 });
 ```
 
-If you need those two stories in the same file, you can move common properties to an object and call `makeStory` with multiple arguments:
+If you need those two stories in the same file, you can move common properties to an object and spread it in each story:
 
 ```js
 // Common config
@@ -140,39 +132,17 @@ const conf = {
   component: 'cc-example-component',
 }
 
-export const firstStory = makeStory(conf, {
+export const firstStory = makeStory({
+  ...conf,
   items: [{ one: 'ONE', two: false }],
 });
 
-export const secondStory = makeStory(conf, {
+export const secondStory = makeStory({
+  ...conf,
   items: [
     { one: 'ONE', two: false },
     { one: 'ONE', two: true },
   ],
-});
-```
-
-The `makeStory` function takes as many arguments as you need, they're merged with the last one winning.
-This means this example:
-
-```js
-const confOne = { component: 'cc-example-component' };
-const confTwo = { css: `cc-example-component { margin-botton }`, docs: 'the docs' };
-const confThree = { docs: 'the real docs' };
-
-export const storyWithManyArgs = makeStory(confOne, confTwo, confThree, {
-  items: [{ one: 'ONE', two: false }],
-});
-```
-
-is equivalent to this example:
-
-```js
-export const storyWithOneArg = makeStory({
-  component: 'cc-example-component',
-  css: `cc-example-component { margin-botton }`,
-  docs: 'the real docs',
-  items: [{ one: 'ONE', two: false }],
 });
 ```
 
@@ -324,7 +294,8 @@ In some situations, it's better to override the default limited width of the sto
 You can target the container with `:host` like this:
 
 ```js
-export const storyWithFullWidthContainer = makeStory(conf, {
+export const storyWithFullWidthContainer = makeStory({
+  ...conf,
   // language=CSS
   css: `
     :host {

@@ -22,95 +22,89 @@ export default {
  * @typedef {import('./cc-domain-management.js').CcDomainManagement} CcDomainManagement
  */
 
-const conf = {
+const conf = /** @type {const} */ ({
   component: 'cc-domain-management',
-};
+});
 
-export const defaultStory = makeStory(conf, {
+export const defaultStory = makeStory({
+  ...conf,
   items: [
     {
-      /** @type {DomainManagementListStateLoaded} */
       domainListState: {
         type: 'loaded',
         domains: [...baseDomains.slice(0, 2), ...baseDomains.slice(-1)],
       },
-      /** @type {DomainManagementDnsInfoStateLoaded} */
       dnsInfoState: baseDnsInfo,
     },
   ],
 });
 
-export const dataLoadedWithMoreDomains = makeStory(conf, {
+export const dataLoadedWithMoreDomains = makeStory({
+  ...conf,
   items: [
     {
-      /** @type {DomainManagementListStateLoaded} */
       domainListState: {
         type: 'loaded',
         domains: baseDomains,
       },
-      /** @type {DomainManagementDnsInfoStateLoaded} */
       dnsInfoState: baseDnsInfo,
     },
   ],
 });
 
-export const dataLoadedWithHttpOnlyDomain = makeStory(conf, {
+export const dataLoadedWithHttpOnlyDomain = makeStory({
+  ...conf,
   items: [
     {
-      /** @type {DomainManagementListStateLoaded} */
       domainListState: {
         type: 'loaded',
         domains: [...baseDomains, httpOnlyDomain],
       },
-      /** @type {DomainManagementDnsInfoStateLoaded} */
       dnsInfoState: baseDnsInfo,
     },
   ],
 });
 
-export const dataLoadedWithLongDomains = makeStory(conf, {
+export const dataLoadedWithLongDomains = makeStory({
+  ...conf,
   items: [
     {
-      /** @type {DomainManagementListStateLoaded} */
       domainListState: {
         type: 'loaded',
         domains: [...baseDomains, httpOnlyDomain, ...longBaseDomains],
       },
-      /** @type {DomainManagementDnsInfoStateLoaded} */
       dnsInfoState: baseDnsInfo,
     },
   ],
 });
 
-export const empty = makeStory(conf, {
+export const empty = makeStory({
+  ...conf,
   items: [
     {
-      /** @type {DomainManagementListStateLoaded} */
       domainListState: {
         type: 'loaded',
         domains: [],
       },
-      /** @type {DomainManagementDnsInfoStateLoaded} */
       dnsInfoState: baseDnsInfo,
     },
   ],
 });
 
-export const loading = makeStory(conf, {
+export const loading = makeStory({
+  ...conf,
   items: [
     {
-      /** @type {DomainManagementListStateLoading} */
       domainListState: { type: 'loading' },
-      /** @type {DomainManagementDnsInfoStateLoading} */
       dnsInfoState: { type: 'loading' },
     },
   ],
 });
 
-export const waitingWithAdding = makeStory(conf, {
+export const waitingWithAdding = makeStory({
+  ...conf,
   items: [
     {
-      /** @type {DomainManagementFormStateAdding} */
       domainFormState: {
         type: 'adding',
         hostname: {
@@ -120,21 +114,19 @@ export const waitingWithAdding = makeStory(conf, {
           value: '/api',
         },
       },
-      /** @type {DomainManagementListStateLoaded} */
       domainListState: {
         type: 'loaded',
         domains: baseDomains,
       },
-      /** @type {DomainManagementDnsInfoStateLoaded} */
       dnsInfoState: baseDnsInfo,
     },
   ],
 });
 
-export const waitingWithDeleting = makeStory(conf, {
+export const waitingWithDeleting = makeStory({
+  ...conf,
   items: [
     {
-      /** @type {DomainManagementListStateLoaded} */
       domainListState: {
         type: 'loaded',
         domains: baseDomains.map((domain, index) => {
@@ -149,16 +141,15 @@ export const waitingWithDeleting = makeStory(conf, {
           return domain;
         }),
       },
-      /** @type {DomainManagementDnsInfoStateLoaded} */
       dnsInfoState: baseDnsInfo,
     },
   ],
 });
 
-export const waitingWithMarkingAsPrimary = makeStory(conf, {
+export const waitingWithMarkingAsPrimary = makeStory({
+  ...conf,
   items: [
     {
-      /** @type {DomainManagementListStateLoaded} */
       domainListState: {
         type: 'loaded',
         domains: baseDomains.map((domain, index) => {
@@ -173,27 +164,25 @@ export const waitingWithMarkingAsPrimary = makeStory(conf, {
           return domain;
         }),
       },
-      /** @type {DomainManagementDnsInfoStateLoaded} */
       dnsInfoState: baseDnsInfo,
     },
   ],
 });
 
-export const error = makeStory(conf, {
+export const error = makeStory({
+  ...conf,
   items: [
     {
-      /** @type {DomainManagementListStateError} */
       domainListState: { type: 'error' },
-      /** @type {DomainManagementDnsInfoStateError} */
       dnsInfoState: { type: 'error' },
     },
   ],
 });
 
-export const errorWithEmpty = makeStory(conf, {
+export const errorWithEmpty = makeStory({
+  ...conf,
   items: [
     {
-      /** @type {DomainManagementFormStateIdle} */
       domainFormState: {
         type: 'idle',
         hostname: {
@@ -204,21 +193,19 @@ export const errorWithEmpty = makeStory(conf, {
           value: '',
         },
       },
-      /** @type {DomainManagementListStateLoaded} */
       domainListState: {
         type: 'loaded',
         domains: baseDomains,
       },
-      /** @type {DomainManagementDnsInfoStateLoaded} */
       dnsInfoState: baseDnsInfo,
     },
   ],
 });
 
-export const errorWithPathWithinDomain = makeStory(conf, {
+export const errorWithPathWithinDomain = makeStory({
+  ...conf,
   items: [
     {
-      /** @type {DomainManagementFormStateIdle} */
       domainFormState: {
         type: 'idle',
         hostname: {
@@ -228,26 +215,23 @@ export const errorWithPathWithinDomain = makeStory(conf, {
           value: '',
         },
       },
-      /** @type {DomainManagementListStateLoaded} */
       domainListState: {
         type: 'loaded',
         domains: baseDomains,
       },
-      /** @type {DomainManagementDnsInfoStateLoaded} */
       dnsInfoState: baseDnsInfo,
     },
   ],
-  /** @type {(component: CcDomainManagement) => void} */
   onUpdateComplete: (component) => {
     // this is temporary, when we move to Element Internals, the component will expose its form anyway
     component.shadowRoot.querySelector('form').requestSubmit();
   },
 });
 
-export const errorWithInvalidDomain = makeStory(conf, {
+export const errorWithInvalidDomain = makeStory({
+  ...conf,
   items: [
     {
-      /** @type {DomainManagementFormStateIdle} */
       domainFormState: {
         type: 'idle',
         hostname: {
@@ -258,21 +242,19 @@ export const errorWithInvalidDomain = makeStory(conf, {
           value: '',
         },
       },
-      /** @type {DomainManagementListStateLoaded} */
       domainListState: {
         type: 'loaded',
         domains: baseDomains,
       },
-      /** @type {DomainManagementDnsInfoStateLoaded} */
       dnsInfoState: baseDnsInfo,
     },
   ],
 });
 
-export const errorWithInvalidWildcard = makeStory(conf, {
+export const errorWithInvalidWildcard = makeStory({
+  ...conf,
   items: [
     {
-      /** @type {DomainManagementFormStateIdle} */
       domainFormState: {
         type: 'idle',
         hostname: {
@@ -283,77 +265,77 @@ export const errorWithInvalidWildcard = makeStory(conf, {
           value: '',
         },
       },
-      /** @type {DomainManagementListStateLoaded} */
       domainListState: {
         type: 'loaded',
         domains: baseDomains,
       },
-      /** @type {DomainManagementDnsInfoStateLoaded} */
       dnsInfoState: baseDnsInfo,
     },
   ],
 });
 
-export const simulationsWithAddingSuccess = makeStory(conf, {
+const storyWaitTyped = /** @type {import('../../stories/lib/make-story.types.js').StoryWait<CcDomainManagement>} */ (
+  storyWait
+);
+
+export const simulationsWithAddingSuccess = makeStory({
+  ...conf,
   items: [{}],
   simulations: [
-    storyWait(
-      2000,
-      /** @param {CcDomainManagement[]} components */
-      ([component]) => {
+    {
+      delay: 2000,
+      callback: ([component]) => {
         component.domainListState = {
           type: 'loaded',
           domains: baseDomains,
         };
         component.dnsInfoState = baseDnsInfo;
       },
-    ),
-    storyWait(
-      1000,
-      /** @param {CcDomainManagement[]} components */
-      ([component]) => {
+    },
+    {
+      delay: 1000,
+      callback: ([component]) => {
         component.domainFormState = {
           type: 'idle',
           hostname: { value: 'example.com' },
           pathPrefix: { value: '' },
         };
       },
-    ),
-    storyWait(
-      1000,
-      /** @param {CcDomainManagement[]} components */
-      ([component]) => {
+    },
+    {
+      delay: 1000,
+      callback: ([component]) => {
         component.domainFormState = {
           type: 'idle',
           hostname: { value: 'example.com' },
           pathPrefix: { value: '/api' },
         };
       },
-    ),
-    storyWait(
-      1000,
-      /** @param {CcDomainManagement[]} components */
-      ([component]) => {
+    },
+    {
+      delay: 1000,
+      callback: ([component]) => {
         component.domainFormState = {
           type: 'adding',
           hostname: { value: 'example.com' },
           pathPrefix: { value: '/api/v2' },
         };
       },
-    ),
-    storyWait(
-      1000,
-      /** @param {(CcDomainManagement & { domainListState: DomainManagementListStateLoaded })[]} components */
-      ([component]) => {
+    },
+    {
+      delay: 1000,
+      callback: ([component]) => {
         component.domainFormState = {
           type: 'idle',
           hostname: { value: '' },
           pathPrefix: { value: '' },
         };
+
+        const domainListState = /** @type {DomainManagementListStateLoaded} */ (component.domainListState);
         component.domainListState = {
-          ...component.domainListState,
+          ...domainListState,
           domains: [
-            ...component.domainListState.domains,
+            ...domainListState.domains,
             {
               id: 'm53xpmuw4ra',
               type: 'idle',
@@ -365,49 +347,47 @@ export const simulationsWithAddingSuccess = makeStory(conf, {
           ],
         };
       },
-    ),
+    },
   ],
 });
 
-export const simulationsWithLoadingSuccess = makeStory(conf, {
+export const simulationsWithLoadingSuccess = makeStory({
+  ...conf,
   items: [{}],
   simulations: [
-    storyWait(
-      2000,
-      /** @param {CcDomainManagement[]} components */
-      ([component]) => {
+    {
+      delay: 2000,
+      callback: ([component]) => {
         component.domainListState = {
           type: 'loaded',
           domains: baseDomains,
         };
       },
-    ),
-    storyWait(
-      1000,
-      /** @param {CcDomainManagement[]} components */
-      ([component]) => {
+    },
+    {
+      delay: 1000,
+      callback: ([component]) => {
         component.dnsInfoState = baseDnsInfo;
       },
-    ),
+    },
   ],
 });
 
-export const simulationsWithLoadingError = makeStory(conf, {
+export const simulationsWithLoadingError = makeStory({
+  ...conf,
   items: [{}],
   simulations: [
-    storyWait(
-      2000,
-      /** @param {CcDomainManagement[]} components */
-      ([component]) => {
+    {
+      delay: 2000,
+      callback: ([component]) => {
         component.domainListState = { type: 'error' };
       },
-    ),
-    storyWait(
-      1000,
-      /** @param {CcDomainManagement[]} components */
-      ([component]) => {
+    },
+    {
+      delay: 1000,
+      callback: ([component]) => {
         component.dnsInfoState = { type: 'error' };
       },
-    ),
+    },
   ],
 });

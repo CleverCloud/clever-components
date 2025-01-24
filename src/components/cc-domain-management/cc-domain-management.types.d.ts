@@ -1,3 +1,5 @@
+import { CcDomainManagement } from './cc-domain-management.js';
+
 export type DomainManagementFormState = DomainManagementFormStateIdle | DomainManagementFormStateAdding;
 
 interface DomainManagementFormStateIdle {
@@ -92,4 +94,10 @@ interface DomainManagementDnsInfoStateLoading {
 
 interface DomainManagementDnsInfoStateError {
   type: 'error';
+}
+
+declare global {
+  interface HTMLElementTagNameMap {
+    'cc-domain-management': CcDomainManagement;
+  }
 }
