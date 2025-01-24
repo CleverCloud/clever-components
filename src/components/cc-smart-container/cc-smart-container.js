@@ -16,7 +16,6 @@ defineSmartComponentCore({
    * @param {CcSmartContainer} component
    * @param {SmartContext} context
    */
-  // @ts-expect-error FIXME: remove once `onContextUpdate` is typed with generics
   onContextUpdate(_, component, context) {
     if (component instanceof CcSmartContainer) {
       component.parentContext = context;

@@ -1,27 +1,35 @@
 import { COMPONENTS, CURRENT_CONTEXT, LAST_CONTEXT, META } from './smart-symbols.js';
 
+interface SmartContainerComponentsMap<T extends SmartComponent>
+  extends Map<SmartComponentCoreDefinition<T>, Array<SmartComponent>> {
+  get<K extends T>(k: SmartComponentCoreDefinition<K>): Array<K> | undefined;
+  set<K extends T>(key: SmartComponentCoreDefinition<K>, value: Array<K>): this;
+  has<K extends T>(k: SmartComponentCoreDefinition<K>): boolean;
+  delete<K extends T>(k: SmartComponentCoreDefinition<K>): boolean;
+}
+
 export interface SmartContainer extends Element {
-  [COMPONENTS]?: Map<SmartComponentCoreDefinition, Array<SmartComponent>>;
+  [COMPONENTS]?: SmartContainerComponentsMap<SmartComponent>;
   [CURRENT_CONTEXT]?: SmartContext;
 }
 
 export interface SmartComponent extends Element {
   [LAST_CONTEXT]?: SmartContext;
-  [META]?: Map<SmartComponentDefinition, { abortController?: AbortController }>;
+  [META]?: Map<SmartComponentDefinition<this>, { abortController?: AbortController }>;
 }
 
-export interface SmartComponentCoreDefinition {
+export interface SmartComponentCoreDefinition<T extends SmartComponent> {
   selector: string;
   params?: Record<string, SmartDefinitionParam>;
-  onConnect?: (container: SmartContainer, component: SmartComponent) => void;
-  onContextUpdate?: (container: SmartContainer, component: SmartComponent, context: SmartContext) => void;
-  onDisconnect?: (container: SmartContainer, component: SmartComponent) => void;
+  onConnect?: (container: SmartContainer, component: T) => void;
+  onContextUpdate?: (container: SmartContainer, component: T, context: SmartContext) => void;
+  onDisconnect?: (container: SmartContainer, component: T) => void;
 }
 
-export interface SmartComponentDefinition {
+export interface SmartComponentDefinition<C extends SmartComponent> {
   selector: string;
   params: Record<string, SmartDefinitionParam>;
-  onContextUpdate: (args: OnContextUpdateArgs) => void | Promise<void>;
+  onContextUpdate: (args: OnContextUpdateArgs<C>) => void | Promise<void>;
 }
 
 export interface SmartDefinitionParam<TypeHint = unknown> {
@@ -33,15 +41,18 @@ export type SmartContext = Record<string, any>;
 
 export type OnEventCallback = (type: string, listener: (detail: any) => void) => void;
 
-export type UpdateComponentCallback<T = unknown> = (propertyName: string, property: CallbackOrObject<T>) => void;
+export type UpdateComponentCallback<C extends SmartComponent> = <P extends keyof C, V extends C[P]>(
+  propertyName: P,
+  property: CallbackOrObject<V>,
+) => void;
 
-export interface OnContextUpdateArgs {
+export interface OnContextUpdateArgs<C extends SmartComponent> {
   container: SmartContainer;
-  component: SmartComponent;
+  component: C;
   context: SmartContext;
   signal: AbortSignal;
   onEvent: OnEventCallback;
-  updateComponent: UpdateComponentCallback;
+  updateComponent: UpdateComponentCallback<C>;
 }
 
-export type CallbackOrObject<T = unknown> = T | ((property: T) => void);
+export type CallbackOrObject<T> = T | ((property: T) => void);

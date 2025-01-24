@@ -4,9 +4,13 @@ import { objectEquals } from './utils.js';
 /**
  * @typedef {import('./smart-component.types.js').SmartContainer} SmartContainer
  * @typedef {import('./smart-component.types.js').SmartComponent} SmartComponent
- * @typedef {import('./smart-component.types.js').SmartComponentCoreDefinition} SmartComponentCoreDefinition
  * @typedef {import('./smart-component.types.js').SmartContext} SmartContext
  * @typedef {import('./smart-component.types.js').SmartDefinitionParam} SmartDefinitionParam
+ */
+
+/**
+ * @typedef {import('./smart-component.types.js').SmartComponentCoreDefinition<T>} SmartComponentCoreDefinition
+ * @template {SmartComponent} T
  */
 
 // In the global space of this module (for any module importing it), we maintain:
@@ -26,7 +30,7 @@ let rootContext = {};
 /** @type {Set<SmartContainer>} */
 const smartContainers = new Set();
 
-/** @type {Set<SmartComponentCoreDefinition>} */
+/** @type {Set<SmartComponentCoreDefinition<any>>} */
 const smartComponentDefinitions = new Set();
 
 /**
@@ -59,8 +63,9 @@ export function observeContainer(container, signal) {
 }
 
 /**
- * @param {SmartComponentCoreDefinition} definition
+ * @param {SmartComponentCoreDefinition<T>} definition
  * @param {AbortSignal} [signal]
+ * @template {SmartComponent} T
  */
 export function defineSmartComponentCore(definition, signal) {
   smartComponentDefinitions.add(definition);
@@ -85,11 +90,11 @@ export function defineSmartComponentCore(definition, signal) {
 }
 
 function updateEverything() {
-  /** @type {Array<[SmartContainer, SmartComponentCoreDefinition, SmartComponent]>} */
+  /** @type {Array<[SmartContainer, SmartComponentCoreDefinition<SmartComponent>, SmartComponent]>} */
   const allDisconnectedComponents = [];
-  /** @type {Array<[SmartContainer, SmartComponentCoreDefinition, SmartComponent]>} */
+  /** @type {Array<[SmartContainer, SmartComponentCoreDefinition<SmartComponent>, SmartComponent]>} */
   const allConnectedComponents = [];
-  /** @type {Array<[SmartContainer, SmartComponentCoreDefinition, SmartComponent]>} */
+  /** @type {Array<[SmartContainer, SmartComponentCoreDefinition<SmartComponent>, SmartComponent]>} */
   const allIdleComponents = [];
 
   smartContainers.forEach((container) => {
@@ -150,8 +155,9 @@ export function updateRootContext(context) {
 
 /**
  * @param {SmartContainer} container
- * @param {SmartComponentCoreDefinition} definition
- * @param {SmartComponent} component
+ * @param {SmartComponentCoreDefinition<T>} definition
+ * @param {T} component
+ * @template {SmartComponent} T
  */
 function connectComponent(container, definition, component) {
   component[LAST_CONTEXT] = {};
@@ -160,8 +166,9 @@ function connectComponent(container, definition, component) {
 
 /**
  * @param {SmartContainer} container
- * @param {SmartComponentCoreDefinition} definition
- * @param {SmartComponent} component
+ * @param {SmartComponentCoreDefinition<T>} definition
+ * @param {T} component
+ * @template {SmartComponent} T
  */
 function updateComponentContext(container, definition, component) {
   const currentContext = { ...rootContext, ...container[CURRENT_CONTEXT] };
@@ -175,8 +182,9 @@ function updateComponentContext(container, definition, component) {
 
 /**
  * @param {SmartContainer} container
- * @param {SmartComponentCoreDefinition} definition
- * @param {SmartComponent} component
+ * @param {SmartComponentCoreDefinition<T>} definition
+ * @param {T} component
+ * @template {SmartComponent} T
  */
 function disconnectComponent(container, definition, component) {
   delete component[LAST_CONTEXT];
