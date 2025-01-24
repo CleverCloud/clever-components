@@ -25,19 +25,19 @@ defineSmartComponent({
     const { apiConfig, productId, zoneId = 'par', currency = 'EUR' } = context;
 
     // Reset the component before loading
-    updateComponent('state', { state: 'loading' });
+    updateComponent('state', { type: 'loading' });
 
     fetchProduct({ apiConfig, productId, zoneId, currency, signal })
       .then((product) => {
         updateComponent('state', {
-          name: product.name,
           type: 'loaded',
+          name: product.name,
           sections: product.sections,
         });
       })
       .catch((error) => {
         console.error(error);
-        updateComponent('state', { state: 'error' });
+        updateComponent('state', { type: 'error' });
       });
   },
 });
