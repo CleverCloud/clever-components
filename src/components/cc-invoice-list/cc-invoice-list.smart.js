@@ -7,6 +7,7 @@ import './cc-invoice-list.js';
  * @typedef {import('./cc-invoice-list.js').CcInvoiceList} CcInvoiceList
  * @typedef {import('../common.types.js').Invoice} Invoice
  * @typedef {import('../../lib/send-to-api.types.js').ApiConfig} ApiConfig
+ * @typedef {import('../../lib/smart-component.types.js').OnContextUpdateArgs<CcInvoiceList>} OnContextUpdateArgs
  */
 
 defineSmartComponent({
@@ -16,14 +17,8 @@ defineSmartComponent({
     ownerId: { type: String },
   },
   /**
-   * @param {Object} settings
-   * @param {CcInvoiceList} settings.component
-   * @param {{apiConfig: ApiConfig, ownerId: string }} settings.context
-   * @param {(type: string, listener: (detail: any) => void) => void} settings.onEvent
-   * @param {function} settings.updateComponent
-   * @param {AbortSignal} settings.signal
+   * @param {OnContextUpdateArgs} args
    */
-  // @ts-expect-error FIXME: remove once `onContextUpdate` is type with generics
   onContextUpdate({ context, updateComponent, signal }) {
     updateComponent('state', { type: 'loading' });
 

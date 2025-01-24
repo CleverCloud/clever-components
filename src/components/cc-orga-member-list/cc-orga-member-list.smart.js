@@ -16,12 +16,13 @@ const UNAUTHORISED_ADMIN_ADDITION = 6451;
 const UNAUTHORISED_ADMIN_DELETION = 6452;
 
 /**
- * @typedef {import('../../lib/send-to-api.types.js').ApiConfig} ApiConfig
  * @typedef {import('./cc-orga-member-list.types.js').OrgaMemberListStateLoaded} OrgaMemberListStateLoaded
- * @typedef {import('../cc-orga-member-card/cc-orga-member-card.types.js').OrgaMemberRole} OrgaMemberRole
- * @typedef {import('../cc-orga-member-card/cc-orga-member-card.types.js').OrgaMember} OrgaMember
- * @typedef {import('../cc-orga-member-card/cc-orga-member-card.types.js').OrgaMemberCardState} OrgaMemberCardState
  * @typedef {import('./cc-orga-member-list.types.js').InviteMemberFormState} InviteMemberFormState
+ * @typedef {import('../cc-orga-member-card/cc-orga-member-card.types.js').OrgaMember} OrgaMember
+ * @typedef {import('../cc-orga-member-card/cc-orga-member-card.types.js').OrgaMemberRole} OrgaMemberRole
+ * @typedef {import('../cc-orga-member-card/cc-orga-member-card.types.js').OrgaMemberCardState} OrgaMemberCardState
+ * @typedef {import('../../lib/send-to-api.types.js').ApiConfig} ApiConfig
+ * @typedef {import('../../lib/smart-component.types.js').OnContextUpdateArgs<CcOrgaMemberList>} OnContextUpdateArgs
  */
 
 defineSmartComponent({
@@ -31,14 +32,8 @@ defineSmartComponent({
     ownerId: { type: String },
   },
   /**
-   * @param {Object} settings
-   * @param {CcOrgaMemberList} settings.component
-   * @param {{apiConfig: ApiConfig, ownerId: string}} settings.context
-   * @param {(type: string, listener: (detail: any) => void) => void} settings.onEvent
-   * @param {function} settings.updateComponent
-   * @param {AbortSignal} settings.signal
+   * @param {OnContextUpdateArgs} args
    */
-  // @ts-expect-error FIXME: remove once `onContextUpdate` is typed with generics
   onContextUpdate({ component, context, onEvent, updateComponent, signal }) {
     const { apiConfig, ownerId } = context;
 

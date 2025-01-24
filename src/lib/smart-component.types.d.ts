@@ -11,6 +11,8 @@ interface SmartContainerComponentsMap<T extends SmartComponent>
 export interface SmartContainer extends Element {
   [COMPONENTS]?: SmartContainerComponentsMap<SmartComponent>;
   [CURRENT_CONTEXT]?: SmartContext;
+  context: Object;
+  parentContext: Object;
 }
 
 export interface SmartComponent extends Element {

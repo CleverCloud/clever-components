@@ -13,9 +13,10 @@ import './cc-tile-status-codes.js';
 
 /**
  * @typedef {import('./cc-tile-status-codes.js').CcTileStatusCodes} CcTileStatusCodes
+ * @typedef {import('./cc-tile-status-codes.types.js').StatusCodesData} StatusCodesData
  * @typedef {import('../../lib/send-to-api.types.js').ApiConfig} ApiConfig
  * @typedef {import('../../lib/send-to-api.types.js').Warp10ApiConfig} Warp10ApiConfig
- * @typedef {import('./cc-tile-status-codes.types.js').StatusCodesData} StatusCodesData
+ * @typedef {import('../../lib/smart-component.types.js').OnContextUpdateArgs<CcTileStatusCodes>} OnContextUpdateArgs
  */
 
 defineSmartComponent({
@@ -26,14 +27,8 @@ defineSmartComponent({
     appId: { type: String, optional: true },
   },
   /**
-   * @param {Object} settings
-   * @param {CcTileStatusCodes} settings.component
-   * @param {{ apiConfig: ApiConfig & Warp10ApiConfig, ownerId: string, appId: string }} settings.context
-   * @param {(type: string, listener: (detail: any) => void) => void} settings.onEvent
-   * @param {function} settings.updateComponent
-   * @param {AbortSignal} settings.signal
+   * @param {OnContextUpdateArgs} args
    */
-  // @ts-expect-error FIXME: remove once `onContextUpdate` is typed with generics
   onContextUpdate({ context, updateComponent, signal }) {
     const { apiConfig, ownerId, appId } = context;
 

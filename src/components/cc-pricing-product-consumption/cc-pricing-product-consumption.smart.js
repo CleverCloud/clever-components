@@ -7,6 +7,7 @@ import './cc-pricing-product-consumption.js';
 /**
  * @typedef {import('./cc-pricing-product-consumption.js').CcPricingProductConsumption} CcPricingProductConsumption
  * @typedef {import('../../lib/send-to-api.types.js').ApiConfig} ApiConfig
+ * @typedef {import('../../lib/smart-component.types.js').OnContextUpdateArgs<CcPricingProductConsumption>} OnContextUpdateArgs
  */
 
 defineSmartComponent({
@@ -18,14 +19,8 @@ defineSmartComponent({
     currency: { type: String, optional: true },
   },
   /**
-   * @param {Object} settings
-   * @param {CcPricingProductConsumption} settings.component
-   * @param {{ apiConfig: ApiConfig, productId: string, zoneId?: string, currency?: string }} settings.context
-   * @param {(type: string, listener: (detail: any) => void) => void} settings.onEvent
-   * @param {function} settings.updateComponent
-   * @param {AbortSignal} settings.signal
+   * @param {OnContextUpdateArgs} args
    */
-  // @ts-expect-error FIXME: remove once `onContextUpdate` is typed with generics
   onContextUpdate({ updateComponent, context, signal }) {
     const { apiConfig, productId, zoneId = 'par', currency = 'EUR' } = context;
 

@@ -20,6 +20,7 @@ import { isLive, lastXDays } from './date-range.js';
  * @typedef {import('./cc-logs-application-view.types.js').DateRange} DateRange
  * @typedef {import('./cc-logs-application-view.types.js').DateRangeSelection} DateRangeSelection
  * @typedef {import('./cc-logs-application-view.js').CcLogsApplicationView} CcLogsApplicationView
+ * @typedef {import('../../lib/smart-component.types.js').OnContextUpdateArgs<CcLogsApplicationView>} OnContextUpdateArgs
  */
 
 /**
@@ -73,12 +74,7 @@ defineSmartComponent({
     dateRangeSelection: { type: Object, optional: true },
   },
   /**
-   * @param {Object} args
-   * @param {CcLogsApplicationView} args.component
-   * @param {Object} args.context
-   * @param {any} args.onEvent
-   * @param {any} args.updateComponent
-   * @param {AbortSignal} args.signal
+   * @param {OnContextUpdateArgs} args
    */
   onContextUpdate({ component, context, onEvent, updateComponent, signal }) {
     signal.onabort = () => {

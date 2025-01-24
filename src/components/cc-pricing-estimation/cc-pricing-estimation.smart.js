@@ -8,6 +8,7 @@ import './cc-pricing-estimation.js';
  * @typedef {import('./cc-pricing-estimation.js').CcPricingEstimation} CcPricingEstimation
  * @typedef {import('./cc-pricing-estimation.types.js').PricingEstimationStateLoaded} PricingEstimationStateLoaded
  * @typedef {import('../../lib/send-to-api.types.js').ApiConfig} ApiConfig
+ * @typedef {import('../../lib/smart-component.types.js').OnContextUpdateArgs<CcPricingEstimation>} OnContextUpdateArgs
  */
 
 defineSmartComponent({
@@ -18,14 +19,8 @@ defineSmartComponent({
     currency: { type: String, optional: true },
   },
   /**
-   * @param {Object} settings
-   * @param {CcPricingEstimation} settings.component
-   * @param {{apiConfig: ApiConfig, zoneId?: string, currency?: string }} settings.context
-   * @param {(type: string, listener: (detail: any) => void) => void} settings.onEvent
-   * @param {function} settings.updateComponent
-   * @param {AbortSignal} settings.signal
+   * @param {OnContextUpdateArgs} args
    */
-  // @ts-expect-error FIXME: remove once `onContextUpdate` is type with generics
   onContextUpdate({ container, context, onEvent, updateComponent, signal }) {
     const { apiConfig, zoneId = 'par', currency = 'EUR' } = context;
 

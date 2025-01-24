@@ -10,8 +10,9 @@ import './cc-pricing-header.js';
 /**
  * @typedef {import('./cc-pricing-header.js').CcPricingHeader} CcPricingHeader
  * @typedef {import('./cc-pricing-header.types.js').PricingHeaderStateLoaded} PricingHeaderStateLoaded
- * @typedef {import('../../lib/send-to-api.types.js').ApiConfig} ApiConfig
  * @typedef {import('../common.types.js').Zone} Zone
+ * @typedef {import('../../lib/send-to-api.types.js').ApiConfig} ApiConfig
+ * @typedef {import('../../lib/smart-component.types.js').OnContextUpdateArgs<CcPricingHeader>} OnContextUpdateArgs
  */
 
 defineSmartComponent({
@@ -21,14 +22,8 @@ defineSmartComponent({
     zoneId: { type: String, optional: true },
   },
   /**
-   * @param {Object} settings
-   * @param {CcPricingHeader} settings.component
-   * @param {{apiConfig: ApiConfig, zoneId?: string }} settings.context
-   * @param {(type: string, listener: (detail: any) => void) => void} settings.onEvent
-   * @param {function} settings.updateComponent
-   * @param {AbortSignal} settings.signal
+   * @param {OnContextUpdateArgs} args
    */
-  // @ts-expect-error FIXME: remove once `onContextUpdate` is type with generics
   onContextUpdate({ container, component, context, onEvent, updateComponent, signal }) {
     const { apiConfig, zoneId = 'par' } = context;
 

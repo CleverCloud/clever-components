@@ -15,6 +15,7 @@ import './cc-email-list.js';
  * @typedef {import('./cc-email-list.types.js').AddEmailFormState} AddEmailFormState
  * @typedef {import('./cc-email-list.types.js').AddEmailError} AddEmailError
  * @typedef {import('../../lib/send-to-api.types.js').ApiConfig} ApiConfig
+ * @typedef {import('../../lib/smart-component.types.js').OnContextUpdateArgs<CcEmailList>} OnContextUpdateArgs
  */
 
 defineSmartComponent({
@@ -23,14 +24,8 @@ defineSmartComponent({
     apiConfig: { type: Object },
   },
   /**
-   * @param {Object} settings
-   * @param {CcEmailList} settings.component
-   * @param {{apiConfig: ApiConfig}} settings.context
-   * @param {(type: string, listener: (detail: any) => void) => void} settings.onEvent
-   * @param {function} settings.updateComponent
-   * @param {AbortSignal} settings.signal
+   * @param {OnContextUpdateArgs} args
    */
-  // @ts-expect-error FIXME: remove once `onContextUpdate` is type with generics
   onContextUpdate({ component, context, onEvent, updateComponent, signal }) {
     updateComponent('emails', { state: 'loading' });
     updateComponent('addEmailFormState', { state: 'idle' });

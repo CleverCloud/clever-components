@@ -16,6 +16,7 @@ import { CcDomainManagement } from './cc-domain-management.js';
  * @typedef {import('./cc-domain-management.types.js').DomainState} DomainState
  * @typedef {import('./cc-domain-management.types.js').DomainInfo} DomainInfo
  * @typedef {import('../../lib/send-to-api.js').ApiConfig} ApiConfig
+ * @typedef {import('../../lib/smart-component.types.js').OnContextUpdateArgs<CcDomainManagement>} OnContextUpdateArgs
  * @typedef {{ fqdn: string }} RawDomainFromApi
  * @typedef {Omit<DomainInfo, 'isPrimary'>} DomainInfoWithoutIsPrimary
  */
@@ -28,15 +29,8 @@ defineSmartComponent({
     ownerId: { type: String },
   },
   /**
-   *
-   * @param {Object} settings
-   * @param {CcDomainManagement} settings.component
-   * @param {{ apiConfig: ApiConfig, appId: string, ownerId: string }} settings.context
-   * @param {(type: string, listener: (detail: any) => void) => void} settings.onEvent
-   * @param {function} settings.updateComponent
-   * @param {AbortSignal} settings.signal
+   * @param {OnContextUpdateArgs} args
    */
-  // @ts-expect-error FIXME: remove once `onContextUpdate` is type with generics
   onContextUpdate({ context, onEvent, updateComponent, signal }) {
     const { apiConfig, appId, ownerId } = context;
 

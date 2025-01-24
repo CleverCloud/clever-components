@@ -12,9 +12,10 @@ import './cc-pricing-product.js';
 /**
  * @typedef {import('./cc-pricing-product.js').CcPricingProduct} CcPricingProduct
  * @typedef {import('./cc-pricing-product.types.js').PricingProductStateLoaded} PricingProductStateLoaded
- * @typedef {import('../../lib/send-to-api.types.js').ApiConfig} ApiConfig
  * @typedef {import('../common.types.js').Zone} Zone
  * @typedef {import('../common.types.js').Instance} Instance
+ * @typedef {import('../../lib/send-to-api.types.js').ApiConfig} ApiConfig
+ * @typedef {import('../../lib/smart-component.types.js').OnContextUpdateArgs<CcPricingProduct>} OnContextUpdateArgs
  */
 
 defineSmartComponent({
@@ -26,14 +27,8 @@ defineSmartComponent({
     currency: { type: String, optional: true },
   },
   /**
-   * @param {Object} settings
-   * @param {CcPricingProduct} settings.component
-   * @param {{apiConfig: ApiConfig, productId: string, zoneId?: string, currency?: string }} settings.context
-   * @param {(type: string, listener: (detail: any) => void) => void} settings.onEvent
-   * @param {Function} settings.updateComponent
-   * @param {AbortSignal} settings.signal
+   * @param {OnContextUpdateArgs} args
    */
-  // @ts-expect-error FIXME: remove once `onContextUpdate` is type with generics
   onContextUpdate({ context, updateComponent, signal }) {
     const { apiConfig, productId, zoneId = 'par', currency = 'EUR' } = context;
 

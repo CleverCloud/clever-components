@@ -21,6 +21,7 @@ import './cc-ssh-key-list.js';
  * @typedef {import('./cc-ssh-key-list.types.js').KeyDataStateLoadedAndUnlinked} KeyDataStateLoadedAndUnlinked
  * @typedef {import('./cc-ssh-key-list.types.js').KeyDataStateLoadedAndLinked} KeyDataStateLoadedAndLinked
  * @typedef {import('../../lib/send-to-api.types.js').ApiConfig} ApiConfig
+ * @typedef {import('../../lib/smart-component.types.js').OnContextUpdateArgs<CcSshKeyList>} OnContextUpdateArgs
  */
 
 defineSmartComponent({
@@ -29,15 +30,8 @@ defineSmartComponent({
     apiConfig: { type: Object },
   },
   /**
-   *
-   * @param {Object} settings
-   * @param {CcSshKeyList} settings.component
-   * @param {{apiConfig: ApiConfig}} settings.context
-   * @param {(type: string, listener: (detail: any) => void) => void} settings.onEvent
-   * @param {function} settings.updateComponent
-   * @param {AbortSignal} settings.signal
+   * @param {OnContextUpdateArgs} args
    */
-  // @ts-expect-error FIXME: remove once `onContextUpdate` is type with generics
   onContextUpdate({ component, context, onEvent, updateComponent, signal }) {
     const { apiConfig } = context;
 
