@@ -1,13 +1,16 @@
 import json from '@rollup/plugin-json';
 import { rollupAdapter } from '@web/dev-server-rollup';
-import { defaultReporter, summaryReporter } from '@web/test-runner';
-import { playwrightLauncher } from '@web/test-runner-playwright';
+import { chromeLauncher, defaultReporter, summaryReporter } from '@web/test-runner';
 import { visualRegressionPlugin } from '@web/test-runner-visual-regression/plugin';
 import { Buffer } from 'buffer';
+import { globSync } from 'tinyglobby';
 import { CellarClient } from './tasks/cellar-client.js';
+import { getCurrentBranch } from './tasks/git-utils.js';
 import { cemAnalyzerPlugin } from './wds/cem-analyzer-plugin.js';
 import { testStoryPlugin } from './wds/test-story-plugin.js';
 import { commonjsPluginWithConfig, esbuildBundlePluginWithConfig } from './wds/wds-common.js';
+
+const MASTER_BRANCH_NAME = 'master';
 
 // sets the language used by the headless browser
 // normally we'd set it through the `chromeLauncher` options but it makes the debug mode crash
@@ -20,7 +23,7 @@ const cellar = new CellarClient({
 });
 
 export default {
-  files: ['test/**/*.test.*', 'src/components/**/*.test.*', 'src/components/**/*.stories.js'],
+  files: ['test/**/*.test.*', 'src/components/**/*.test.*'],
   filterBrowserLogs: ({ args }) => {
     const logsToExclude = [
       'Lit is in dev mode. Not recommended for production! See https://lit.dev/msg/dev-mode for more information.',
@@ -31,32 +34,14 @@ export default {
     return logMessage != null && !logsToExclude.includes(logMessage);
   },
   browsers: [
-    playwrightLauncher({
+    chromeLauncher({
       // Fixes random timeouts with Chrome > 127, see https://github.com/CleverCloud/clever-components/issues/1146 for more info
-      // concurrency: 1,
-      // async createPage({ context }) {
-      //   const page = await context.newPage();
-      //   // We need that for unit tests working with dates and timezones
-      //   await page.emulateTimezone('Europe/Paris');
-      //   return page;
-      // },
-      product: 'chromium',
-      createBrowserContext({ browser }) {
-        return browser.newContext({ timezoneId: 'Europe/Paris' });
-      },
-    }),
-    playwrightLauncher({
-      // Fixes random timeouts with Chrome > 127, see https://github.com/CleverCloud/clever-components/issues/1146 for more info
-      // concurrency: 1,
-      // async createPage({ context }) {
-      //   const page = await context.newPage();
-      //   // We need that for unit tests working with dates and timezones
-      //   await page.emulateTimezone('Europe/Paris');
-      //   return page;
-      // },
-      product: 'firefox',
-      createBrowserContext({ browser }) {
-        return browser.newContext({ timezoneId: 'Europe/Paris' });
+      concurrency: 1,
+      async createPage({ context }) {
+        const page = await context.newPage();
+        //   // We need that for unit tests working with dates and timezones
+        await page.emulateTimezone('Europe/Paris');
+        return page;
       },
     }),
   ],
@@ -85,6 +70,23 @@ export default {
       </head>
     </html>
   `,
+  groups: [
+    {
+      name: 'stories',
+      files: 'src/components/**/*.stories.js',
+    },
+    {
+      name: 'visual',
+      files: 'src/components/**/cc-addon-admin.stories.js',
+    },
+    ...globSync('src/components/**/*.stories.js').map((path) => {
+      const groupName = path.match(/^.*\/(?<fileName>.*)\.stories\.js/).groups.fileName;
+      return {
+        name: groupName,
+        files: path,
+      };
+    }),
+  ],
   plugins: [
     cemAnalyzerPlugin,
     rollupAdapter(json()),
@@ -97,8 +99,12 @@ export default {
         // if we get it from baseline same branch, it means we have added new visuals
         // we can probably set some env var so that CI lists impacted components in a comment for review?
         // if not found => search for baseline master
-        const fileBuffer = await cellar
-          .getImage({ key: name + '.png' })
+        const branchName = getCurrentBranch();
+        const cellarKeyForCurrentBranch = `${branchName}/${name}.png`;
+        const cellarKeyForMaster = `${MASTER_BRANCH_NAME}/${name}.png`;
+
+        const fileBufferFromCurrentBranch = await cellar
+          .getImage({ key: cellarKeyForCurrentBranch })
           .then((response) => {
             return new Promise((resolve, reject) => {
               const data = [];
@@ -108,36 +114,57 @@ export default {
             });
           })
           .catch((err) => {
-            console.log('error', name, err);
+            // TODO proper error filtering (some are ok to be silenced but others are not?)
+            console.log('error getting baseline', cellarKeyForCurrentBranch, err);
           });
 
-        return fileBuffer;
+        const fileBufferFromMaster = await cellar
+          .getImage({ key: cellarKeyForMaster })
+          .then((response) => {
+            return new Promise((resolve, reject) => {
+              const data = [];
+              response.Body.on('data', (chunk) => data.push(chunk));
+              response.Body.on('end', () => resolve(Buffer.concat(data)));
+              response.Body.on('error', reject);
+            });
+          })
+          .catch((err) => {
+            // TODO proper error filtering (some are ok to be silenced but others are not?)
+            console.log('error getting baseline', cellarKeyForMaster, err);
+          });
+
+        // TODO: if we get it from current branch, it means we have a new baseline and there are new visuals so we should probably set some env var so that CI lists impacted components in a comment for review?
+
+        return fileBufferFromCurrentBranch || fileBufferFromMaster;
       },
       async saveBaseline({ content, name }) {
         console.log('saving new baseline', name);
-        // should save in current branch
+        const branchName = getCurrentBranch();
+        const cellarKey = `${branchName}/${name}.png`;
         await cellar
           .putObject({
-            key: name + '.png',
+            key: cellarKey,
             body: content,
           })
           .catch((err) => {
-            console.log('failed to save', err);
+            console.log('failed to save baseline', cellarKey, err);
           });
       },
       async saveDiff({ content, name }) {
+        const branchName = getCurrentBranch();
         // should save to cellar + locally but only if failed?
         // if name split `/` [1] === 'failed' then we should also save locally for review?
+        const cellarKey = `${branchName}/${name}.png`;
         await cellar
           .putObject({
-            key: name + '.png',
+            key: cellarKey,
             body: content,
           })
           .then((response) => {
-            console.log('saved diff');
+            console.log('saved diff', cellarKey, name);
           })
           .catch((err) => {
-            console.log('failed to DIFF', err);
+            console.log('failed to save DIFF', name, err);
           });
       },
       saveFailed({ filePath, content, baseDir, name }) {
