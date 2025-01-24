@@ -28,7 +28,7 @@ defineSmartComponent({
    */
   onContextUpdate({ component, context, onEvent, updateComponent, signal }) {
     updateComponent('emails', { state: 'loading' });
-    updateComponent('addEmailFormState', { state: 'idle' });
+    updateComponent('addEmailFormState', { type: 'idle' });
     component.resetAddEmailForm();
 
     const api = getApi(context.apiConfig, signal);
