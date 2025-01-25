@@ -13,6 +13,12 @@ export default {
 
 const conf = {
   component: 'cc-header-app',
+  tests: {
+    accessibility: {
+      enable: true,
+      ignoredRules: ['color-contrast'],
+    },
+  },
 };
 
 /**

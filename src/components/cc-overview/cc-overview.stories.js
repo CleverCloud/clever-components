@@ -20,6 +20,12 @@ export default {
 
 const conf = {
   component: 'cc-overview',
+  tests: {
+    accessibility: {
+      enable: true,
+      ignoredRules: ['color-contrast'],
+    },
+  },
   displayMode: 'blocks',
   // language=CSS
   css: `
@@ -29,7 +35,7 @@ const conf = {
     cc-overview {
       min-height: 750px;
     }
-    
+
     cc-tile-metrics {
       max-width: 100% !important;
     }
