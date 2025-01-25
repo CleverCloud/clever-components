@@ -15,6 +15,7 @@ export default {
     const logsToExclude = [
       'Lit is in dev mode. Not recommended for production! See https://lit.dev/msg/dev-mode for more information.',
       'Multiple versions of Lit loaded. Loading multiple versions is not recommended. See https://lit.dev/msg/multiple-versions for more information.',
+      'ResizeObserver loop completed with undelivered notifications.',
     ];
     const logMessage = args[0];
 
