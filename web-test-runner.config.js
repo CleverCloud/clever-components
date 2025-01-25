@@ -21,6 +21,9 @@ export default {
 
     return logMessage != null && !logsToExclude.includes(logMessage);
   },
+  nodeResolve: {
+    exportConditions: ['production', 'default'],
+  },
   browsers: [
     chromeLauncher({
       // Fixes random timeouts with Chrome > 127, see https://github.com/CleverCloud/clever-components/issues/1146 for more info
@@ -33,7 +36,6 @@ export default {
       },
     }),
   ],
-  nodeResolve: true,
   mimeTypes: {
     '**/*.json': 'js',
   },
@@ -72,6 +74,9 @@ export default {
       <head>
         <link rel="stylesheet" href="src/styles/default-theme.css" >
         <script type="module" src="${testFramework}"></script>
+        <script>
+          window.process = {env: { NODE_ENV: "production" }}
+        </script>
       </head>
     </html>
   `,
