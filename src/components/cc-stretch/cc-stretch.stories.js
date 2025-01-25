@@ -11,16 +11,22 @@ export default {
 
 const conf = {
   component: 'cc-stretch',
+  tests: {
+    accessibility: {
+      enable: true,
+      ignoredRules: ['duplicate-id'],
+    },
+  },
   // language=CSS
   css: `
     h1 {
       font-size: 1.2em;
     }
-    
+
     h2 {
       font-size: 1em;
     }
-    
+
     .showcase-controls {
       display: flex;
       flex-wrap: wrap;
@@ -28,11 +34,11 @@ const conf = {
       padding: 1em;
       background-color: var(--cc-color-bg-neutral);
     }
-    
+
     cc-stretch {
       border: 0.3em solid red;
     }
-    
+
     cc-toggle {
       margin-bottom: 1.5em;
       margin-right: 1em;
@@ -46,14 +52,14 @@ const conf = {
     p {
       margin: 0;
     }
-    
+
     .showcase-container {
       display: flex;
       flex-wrap: wrap;
       gap: 1em;
       margin-top: 1em;
     }
-    
+
     .test-container {
       border: 0.06em solid blue;
     }

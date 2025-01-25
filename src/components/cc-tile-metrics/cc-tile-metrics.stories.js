@@ -103,6 +103,12 @@ export const defaultStory = makeStory(conf, {
 });
 
 export const loading = makeStory(conf, {
+  tests: {
+    accessibility: {
+      enable: true,
+      ignoredRules: ['color-contrast'],
+    },
+  },
   /** @type {{ metricsState: TileMetricsStateLoading, grafanaLinkState: TileMetricsGrafanaLinkStateLoading, style?: string }[]} */
   items: baseItems.map((item) => ({
     ...item,
