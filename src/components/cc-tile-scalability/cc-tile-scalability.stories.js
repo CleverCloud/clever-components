@@ -9,6 +9,12 @@ export default {
 
 const conf = {
   component: 'cc-tile-scalability',
+  tests: {
+    accessibility: {
+      enable: true,
+      ignoredRules: ['color-contrast'],
+    },
+  },
   displayMode: 'flex-wrap',
   // language=CSS
   css: `
