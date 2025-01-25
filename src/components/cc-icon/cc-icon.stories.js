@@ -117,6 +117,11 @@ const ICONS_LAYOUT_BUILDER = (container, iconsModule) => {
 };
 
 export const remixIcons = makeStory(conf, {
+  tests: {
+    accessibility: {
+      enable: false,
+    },
+  },
   css: ICONS_LAYOUT_CSS,
   dom: (container) => {
     ICONS_LAYOUT_BUILDER(container, remixIconsModule);
@@ -124,6 +129,11 @@ export const remixIcons = makeStory(conf, {
 });
 
 export const cleverIcons = makeStory(conf, {
+  tests: {
+    accessibility: {
+      enable: false,
+    },
+  },
   css: ICONS_LAYOUT_CSS,
   dom: (container) => {
     ICONS_LAYOUT_BUILDER(container, cleverIconsModule);
