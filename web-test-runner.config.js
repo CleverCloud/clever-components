@@ -1,8 +1,8 @@
 import json from '@rollup/plugin-json';
 import { rollupAdapter } from '@web/dev-server-rollup';
-import { defaultReporter, summaryReporter } from '@web/test-runner';
-import { chromeLauncher } from '@web/test-runner-chrome';
+import { chromeLauncher, defaultReporter, summaryReporter } from '@web/test-runner';
 import { cemAnalyzerPlugin } from './wds/cem-analyzer-plugin.js';
+import { testStoriesPlugin } from './wds/test-stories-plugin.js';
 import { commonjsPluginWithConfig, esbuildBundlePluginWithConfig } from './wds/wds-common.js';
 
 // sets the language used by the headless browser
@@ -10,7 +10,7 @@ import { commonjsPluginWithConfig, esbuildBundlePluginWithConfig } from './wds/w
 process.env.LANGUAGE = 'en';
 
 export default {
-  files: ['test/**/*.test.*', 'src/components/**/*.test.*'],
+  files: ['test/**/*.test.*', 'src/components/**/*.test.*', 'src/components/**/*.stories.js'],
   filterBrowserLogs: ({ args }) => {
     const logsToExclude = [
       'Lit is in dev mode. Not recommended for production! See https://lit.dev/msg/dev-mode for more information.',
@@ -57,5 +57,11 @@ export default {
       </head>
     </html>
   `,
-  plugins: [cemAnalyzerPlugin, rollupAdapter(json()), esbuildBundlePluginWithConfig, commonjsPluginWithConfig],
+  plugins: [
+    cemAnalyzerPlugin,
+    rollupAdapter(json()),
+    esbuildBundlePluginWithConfig,
+    commonjsPluginWithConfig,
+    testStoriesPlugin,
+  ],
 };
