@@ -1,89 +1,294 @@
 import { isStringEmpty } from '../../lib/utils.js';
 import { KvScanner } from './kv-scanner.js';
-import { matchKvPattern } from './kv-utils.js';
+import { Abortable, matchKvPattern } from './kv-utils.js';
 
 /**
  * @typedef {import('./cc-kv-explorer.js').CcKvExplorer} CcKvExplorer
  * @typedef {import('./cc-kv-explorer.types.js').CcKvExplorerState} CcKvExplorerState
  * @typedef {import('./cc-kv-explorer.types.js').CcKvExplorerStateLoaded} CcKvExplorerStateLoaded
+ * @typedef {import('./cc-kv-explorer.types.js').CcKvKey} CcKvKey
  * @typedef {import('./cc-kv-explorer.types.js').CcKvKeyType} CcKvKeyType
  * @typedef {import('./cc-kv-explorer.types.js').CcKvKeyState} CcKvKeyState
  * @typedef {import('./kv-client.js').KvClient} KvClient
+ * @typedef {import('../common.types.js').ObjectOrFunction<CcKvExplorerState>} CcKvExplorerStateUpdater
  */
 
-/**
- * Controller for keys
- */
-export class KeysController {
+export class KvKeysCtrl {
   /**
    * @param {CcKvExplorer} component
-   * @param {function} updateComponent
-   * @param {KvKeysScanner} kvKeysScanner
+   * @param {(stateUpdater: CcKvExplorerStateUpdater) => void} updateState
+   * @param {KvClient} kvClient
    */
-  constructor(component, updateComponent, kvKeysScanner) {
-    this.component = component;
-    this.updateComponent = updateComponent;
-    this._kvKeysScanner = kvKeysScanner;
+  constructor(component, updateState, kvClient) {
+    this._component = component;
+    this._updateState = updateState;
+    this._kvClient = kvClient;
+    this._abortable = new Abortable();
+    this._scanner = new KvKeysScanner(kvClient, this._abortable, () => {
+      const state = this._getViewState();
+
+      if (state.type !== 'loaded') {
+        return;
+      }
+
+      this._updateState({
+        type: state.type,
+        keys: this._scanner.elements,
+        total: this._scanner.total,
+      });
+    });
+
+    /** @type {CcKvKey} */
+    this._selectedKey = null;
+  }
+
+  abort() {
+    this._abortable.abort();
   }
 
   /**
-   * @param {T|((state: T) => void)} updater
-   * @template {CcKvExplorerState} T
+   * @param {CcKvKeyType|('all')} type
+   * @param {string} pattern
    */
-  updateState(updater) {
-    this.updateComponent('state', updater);
+  async filter(type, pattern) {
+    if (this._getViewState().type !== 'loaded' && this._getViewState().type !== 'error-keys') {
+      return;
+    }
+
+    const filter = {
+      type: type === 'all' ? null : type,
+      pattern: isStringEmpty(pattern) ? null : pattern,
+    };
+
+    this._scanner.setFilter(filter);
+    await this.fetchKeys({ type: 'filtering', keys: [] });
+  }
+
+  async refresh() {
+    if (this._getViewState().type !== 'loaded' && this._getViewState().type !== 'error-keys') {
+      return;
+    }
+
+    this._scanner.reset();
+    await this.fetchKeys({ type: 'refreshing', keys: [] });
+  }
+
+  async loadMore() {
+    if (this._getViewState().type !== 'loaded') {
+      return;
+    }
+
+    await this.fetchKeys();
+  }
+
+  /**
+   * @param {CcKvKey} key
+   * @return {boolean}
+   */
+  select(key) {
+    if (this._getViewState().type !== 'loaded') {
+      return false;
+    }
+
+    this._updateKeyState(key.name, 'selected');
+
+    return true;
+  }
+
+  clearSelection() {
+    if (this._selectedKey != null) {
+      this._updateKeyState(this._selectedKey.name, 'idle');
+    }
+  }
+
+  /**
+   * @param {string} keyName
+   */
+  async delete(keyName) {
+    const state = this._getViewState();
+
+    if (state.type !== 'loaded') {
+      return;
+    }
+
+    const originalKeyState = this._scanner.getElement(keyName);
+
+    this._updateKeyState(keyName, 'deleting');
+
+    try {
+      await this._kvClient.deleteKey(keyName);
+      const deletedKeyIndex = this._scanner.delete(keyName);
+      if (this._selectedKey?.name === keyName) {
+        this._selectedKey = null;
+      }
+
+      await this._component.focusAfterDeleteKeyAt(deletedKeyIndex);
+    } catch (e) {
+      this._updateKeyState(keyName, originalKeyState.type);
+      throw e;
+    }
+  }
+
+  /**
+   * @param {CcKvKey} key
+   */
+  add(key) {
+    const state = this._getViewState();
+
+    if (!this._isLoadedState(state)) {
+      return;
+    }
+
+    this.clearSelection();
+
+    /** @type {CcKvKeyState} */
+    const keyState = { type: 'selected', key };
+    this._scanner.update([keyState]);
+    this._selectedKey = key;
+  }
+
+  /**
+   * @param {{type?: 'loading-keys'|'filtering'|'refreshing', keys?: Array<CcKvKeyState>, total?: number}} [init]
+   */
+  async fetchKeys(init = {}) {
+    if (this._scanner.hasMore()) {
+      /** @type {Array<CcKvKeyState>} */
+      let keys;
+      /** @type {number} */
+      let total;
+
+      const state = this._getViewState();
+
+      if (state.type === 'loaded' || state.type === 'loading-keys') {
+        keys = init.keys ?? state.keys;
+        total = init.total ?? state.total;
+      }
+
+      this._updateState({ type: init.type ?? 'loading-keys', keys: keys ?? [], total: total ?? 0 });
+
+      await this._scanner.loadMore();
+      keys = this._scanner.elements;
+      total = this._scanner.total;
+
+      if (this._selectedKey != null) {
+        const isSelectedKeyAbsent = this._scanner.getElement(this._selectedKey.name) == null;
+
+        if (isSelectedKeyAbsent) {
+          this._selectedKey = null;
+        }
+      }
+
+      if (this._selectedKey != null) {
+        const keyNameToSelect = this._selectedKey.name;
+        this._selectedKey = null;
+        this._updateKeyState(keyNameToSelect, 'selected');
+      }
+
+      this._updateState({ type: 'loaded', keys, total });
+    }
+  }
+
+  /**
+   * @param {string} keyName
+   */
+  onKeyNotFound(keyName) {
+    this._updateKeyState(keyName, 'idle');
+  }
+
+  _getViewState() {
+    return this._component.state;
   }
 
   /**
    * @param {string} key
-   * @param {'idle'|'loading'|'selected'|'deleting'} newState
+   * @param {CcKvKeyState['type']} newState
    */
-  updateKeyState(key, newState) {
-    this.updateState(
-      /** @param {CcKvExplorerStateLoaded} state */
-      (state) => {
-        const toUpdate = state.keys.find((k) => k.key.name === key);
-        if (toUpdate != null) {
-          toUpdate.type = newState;
-        }
-      },
-    );
+  _updateKeyState(key, newState) {
+    const keyStateToUpdate = this._scanner.getElement(key);
 
-    if (this.component.state.type === 'loaded' || this.component.state.type === 'loading-keys') {
-      const toUpdate = this.component.state.keys.find((k) => k.key.name === key);
-      if (toUpdate != null) {
-        this._kvKeysScanner.update([toUpdate]);
+    if (keyStateToUpdate != null) {
+      /** @type {CcKvKeyState} */
+      const updatedKeyState = { ...keyStateToUpdate, type: newState };
+
+      const toUpdate = [updatedKeyState];
+
+      // deselection
+      if (newState !== 'selected' && key === this._selectedKey?.name) {
+        this._selectedKey = null;
       }
+
+      // new selection
+      if (newState === 'selected' && this._selectedKey != null && key !== this._selectedKey.name) {
+        toUpdate.push({ type: 'idle', key: this._selectedKey });
+      }
+
+      if (newState === 'selected') {
+        this._selectedKey = keyStateToUpdate.key;
+      }
+
+      this._scanner.update(toUpdate);
     }
+  }
+
+  /**
+   *
+   * @param {CcKvExplorerState} state
+   * @return {state is CcKvExplorerStateLoaded}
+   */
+  _isLoadedState(state) {
+    return state.type === 'loaded' || state.type === 'loading-keys';
   }
 }
 
 /**
  * @extends {KvScanner<CcKvKeyState, {type: CcKvKeyType, pattern: string}>}
  */
-export class KvKeysScanner extends KvScanner {
+class KvKeysScanner extends KvScanner {
   /**
    * @param {KvClient} kvClient
-   * @param {object} _
-   * @param {AbortSignal} [_.signal]
+   * @param {Abortable} abortable
+   * @param {function} onChange
    */
-  constructor(kvClient, { signal }) {
-    super(
-      (it) => it.key.name,
-      (it) => {
-        return (
-          (this._filter?.type == null || it.key.type === this._filter.type) &&
-          (isStringEmpty(this._filter?.pattern) || matchKvPattern(this._filter.pattern, it.key.name))
-        );
-      },
-      async (cursor, count, filter) => {
-        const r = await kvClient.scanKeys({ cursor, count, type: filter?.type, match: filter?.pattern }, { signal });
-        return {
-          cursor: r.cursor,
-          total: r.total,
-          elements: r.keys.map((key) => ({ type: 'idle', key })),
-        };
-      },
+  constructor(kvClient, abortable, onChange) {
+    super(abortable, onChange);
+    this._kvClient = kvClient;
+  }
+
+  /**
+   * @param {CcKvKeyState} item
+   * @returns {string}
+   */
+  getId(item) {
+    return item.key.name;
+  }
+
+  /**
+   * @param {CcKvKeyState} item
+   * @returns {boolean}
+   */
+  matchFilter(item) {
+    return (
+      (this._filter?.type == null || item.key.type === this._filter.type) &&
+      (isStringEmpty(this._filter?.pattern) || matchKvPattern(this._filter.pattern, item.key.name))
     );
+  }
+
+  /**
+   * @param {number} count
+   * @param {AbortSignal} [_signal]
+   * @return {Promise<{cursor: number, total: number, elements: Array<CcKvKeyState>}>}
+   */
+  async fetch(count, _signal) {
+    const r = await this._kvClient.scanKeys({
+      cursor: this._cursor,
+      count,
+      type: this._filter?.type,
+      match: this._filter?.pattern,
+    });
+    return {
+      cursor: r.cursor,
+      total: r.total,
+      elements: r.keys.map((key) => ({ type: 'idle', key })),
+    };
   }
 }

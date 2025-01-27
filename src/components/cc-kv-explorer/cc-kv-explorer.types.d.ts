@@ -9,7 +9,8 @@ export type CcKvExplorerState =
   | CcKvExplorerStateLoadingKeys
   | CcKvExplorerStateFiltering
   | CcKvExplorerStateRefreshing
-  | CcKvExplorerStateLoaded;
+  | CcKvExplorerStateLoaded
+  | CcKvExplorerStateErrorKeys;
 
 export interface CcKvExplorerStateLoading {
   type: 'loading';
@@ -43,6 +44,11 @@ export interface CcKvExplorerStateLoaded {
   total: number;
 }
 
+export interface CcKvExplorerStateErrorKeys {
+  type: 'error-keys';
+  action: 'loading' | 'loading-more' | 'filtering' | 'refreshing';
+}
+
 //-- filter ---
 
 export type CcKvKeyFilter = {
@@ -53,7 +59,7 @@ export type CcKvKeyFilter = {
 //-- key state ---
 
 export interface CcKvKeyState {
-  type: 'idle' | 'loading' | 'selected' | 'deleting';
+  type: 'idle' | 'selected' | 'deleting';
   key: CcKvKey;
 }
 
