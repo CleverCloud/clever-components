@@ -30,7 +30,7 @@ defineSmartComponent({
   onContextUpdate({ context, updateComponent, signal }) {
     const { apiConfig, ownerId, appId, grafanaBaseLink, consoleGrafanaLink } = context;
 
-    updateComponent('state', { type: 'loading' });
+    updateComponent('metricsState', { type: 'loading' });
 
     fetchMetrics({ apiConfig, ownerId, appId, signal })
       .then(({ cpuMetrics, memMetrics }) => {
