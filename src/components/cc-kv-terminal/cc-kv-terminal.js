@@ -229,9 +229,17 @@ export class CcKvTerminal extends LitElement {
    */
   async updated(changedProperties) {
     if (changedProperties.has('state') && this.state.type === 'idle') {
-      await this._scrollToBottom();
-      // don't ask me why, but we really need to call it twice to make sure it really scrolls to the bottom
-      await this._scrollToBottom();
+      try {
+        await this._scrollToBottom();
+        // don't ask me why, but we really need to call it twice to make sure it really scrolls to the bottom
+        await this._scrollToBottom();
+      } catch (error) {
+        // only catch `disconnected` errors that happen when the component is dismounted before the scrolling takes place
+        // https://github.com/CleverCloud/clever-components/issues/1311
+        if (error !== 'disconnected') {
+          throw error;
+        }
+      }
     }
   }
 
