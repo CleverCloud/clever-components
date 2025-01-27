@@ -11,6 +11,7 @@ import './cc-tcp-redirection-form.js';
 
 /**
  * @typedef {import('./cc-tcp-redirection-form.js').CcTcpRedirectionForm} CcTcpRedirectionForm
+ * @typedef {import('../cc-tcp-redirection/cc-tcp-redirection.types.js').TcpRedirection} TcpRedirection
  * @typedef {import('../cc-tcp-redirection/cc-tcp-redirection.types.js').TcpRedirectionState} TcpRedirectionState
  * @typedef {import('../cc-tcp-redirection/cc-tcp-redirection.types.js').TcpRedirectionStateLoaded} TcpRedirectionStateLoaded
  * @typedef {import('../cc-tcp-redirection-form/cc-tcp-redirection-form.types.js').TcpRedirectionFormState} TcpRedirectionFormState
@@ -20,7 +21,6 @@ import './cc-tcp-redirection-form.js';
  * @typedef {import('../../lib/smart-component.types.js').OnContextUpdateArgs<CcTcpRedirectionForm>} OnContextUpdateArgs
  * @typedef {[{namespace: string}]} NamespacesApiPayload
  * @typedef {[{namespace: string, port: number}]} RedirectionsApiPayload
- * @typedef {{namespace: string, sourcePort: number | null}} FormattedRedirectionData
  */
 
 const PUBLIC_NAMESPACES = ['default', 'cleverapps'];
@@ -131,7 +131,7 @@ defineSmartComponent({
  * @param {AbortSignal} settings.signal
  * @param {string} settings.ownerId
  * @param {string} settings.appId
- * @returns {Promise<FormattedRedirectionData[]>}
+ * @returns {Promise<TcpRedirection[]>}
  */
 async function fetchTcpRedirectionsAndNamespaces({ apiConfig, signal, ownerId, appId }) {
   return Promise.all([
