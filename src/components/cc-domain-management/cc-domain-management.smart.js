@@ -1,10 +1,10 @@
 // prettier-ignore
 // @ts-expect-error FIXME: remove when clever-client exports types
 import { addDomain,getAllDomains,getFavouriteDomain as getPrimaryDomain,markFavouriteDomain as markPrimaryDomain,removeDomain,unmarkFavouriteDomain as unmarkPrimaryDomain,} from '@clevercloud/client/esm/api/v2/application.js';
-import { defineSmartComponent } from '../../lib/define-smart-component.js';
 import { getHostWithWildcard, isTestDomain, parseDomain } from '../../lib/domain.js';
 import { notify, notifyError, notifySuccess } from '../../lib/notifications.js';
 import { sendToApi } from '../../lib/send-to-api.js';
+import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-smart-container/cc-smart-container.js';
 import { CcDomainManagement } from './cc-domain-management.js';
@@ -16,7 +16,7 @@ import { CcDomainManagement } from './cc-domain-management.js';
  * @typedef {import('./cc-domain-management.types.js').DomainState} DomainState
  * @typedef {import('./cc-domain-management.types.js').DomainInfo} DomainInfo
  * @typedef {import('../../lib/send-to-api.js').ApiConfig} ApiConfig
- * @typedef {import('../../lib/smart-component.types.js').OnContextUpdateArgs<CcDomainManagement>} OnContextUpdateArgs
+ * @typedef {import('../../lib/smart/smart-component.types.d.ts').OnContextUpdateArgs<CcDomainManagement>} OnContextUpdateArgs
  * @typedef {{ fqdn: string }} RawDomainFromApi
  * @typedef {Omit<DomainInfo, 'isPrimary'>} DomainInfoWithoutIsPrimary
  */

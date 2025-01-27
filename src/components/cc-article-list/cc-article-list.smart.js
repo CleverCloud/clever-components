@@ -2,7 +2,7 @@
 import { request } from '@clevercloud/client/esm/request.fetch.js';
 // @ts-expect-error FIXME: remove when clever-client exports types
 import { withCache } from '@clevercloud/client/esm/with-cache.js';
-import { defineSmartComponent } from '../../lib/define-smart-component.js';
+import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
 import { parseRssFeed } from '../../lib/xml-parser.js';
 import '../cc-smart-container/cc-smart-container.js';
 import './cc-article-list.js';
@@ -11,7 +11,7 @@ import './cc-article-list.js';
  * @typedef {import('./cc-article-list.js').CcArticleList} CcArticleList
  * @typedef {import('../cc-article-card/cc-article-card.types.js').ArticleCard} ArticleCard
  * @typedef {import('../../lib/send-to-api.js').ApiConfig} ApiConfig
- * @typedef {import('../../lib/smart-component.types.js').OnContextUpdateArgs<CcArticleList>} OnContextUpdateArgs
+ * @typedef {import('../../lib/smart/smart-component.types.d.ts').OnContextUpdateArgs<CcArticleList>} OnContextUpdateArgs
  */
 
 const FOUR_HOURS = 1000 * 60 * 60 * 4;

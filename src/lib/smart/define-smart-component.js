@@ -1,16 +1,16 @@
-import { produce } from './immer.js';
+import { produce } from '../immer.js';
 import { defineSmartComponentCore } from './smart-manager.js';
 import { META } from './smart-symbols.js';
 
 /**
- * @typedef {import('./smart-component.types.js').SmartContainer} SmartContainer
- * @typedef {import('./smart-component.types.js').SmartComponent} SmartComponent
- * @typedef {import('./smart-component.types.js').SmartContext} SmartContext
- * @typedef {import('./smart-component.types.js').OnEventCallback} OnEventCallback
+ * @typedef {import('./smart-component.types.d.ts').SmartContainer} SmartContainer
+ * @typedef {import('./smart-component.types.d.ts').SmartComponent} SmartComponent
+ * @typedef {import('./smart-component.types.d.ts').SmartContext} SmartContext
+ * @typedef {import('./smart-component.types.d.ts').OnEventCallback} OnEventCallback
  */
 
 /**
- * @param {import('./smart-component.types.js').SmartComponentDefinition<T>} definition
+ * @param {import('./smart-component.types.d.ts').SmartComponentDefinition<T>} definition
  * @template {SmartComponent} T
  */
 export function defineSmartComponent(definition) {
@@ -91,7 +91,7 @@ export function defineSmartComponent(definition) {
         { signal },
       );
 
-      /** @type {import('./smart-component.types.js').UpdateComponentCallback<T>} */
+      /** @type {import('./smart-component.types.d.ts').UpdateComponentCallback<T>} */
       function updateComponent(propertyName, property) {
         /** @type {UpdateComponentEvent<T>} */
         const event = new UpdateComponentEvent(propertyName, property);
@@ -117,7 +117,7 @@ export function defineSmartComponent(definition) {
 class UpdateComponentEvent extends Event {
   /**
    * @param {keyof C} propertyName
-   * @param {import('./smart-component.types.js').CallbackOrObject<any>} property
+   * @param {import('./smart-component.types.d.ts').CallbackOrObject<any>} property
    */
   constructor(propertyName, property) {
     super('update-component');

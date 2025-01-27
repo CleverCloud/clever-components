@@ -44,7 +44,7 @@ export const injectAuthForSmartComponentsPlugin = {
     if (isSmartStory) {
       // language=JavaScript
       code = `
-        import { updateRootContext } from '../../lib/smart-manager.js';
+        import { updateRootContext } from '../../lib/smart/smart-manager.js';
         import '${id.replace('.md', '.js')}';
 
         ${code}

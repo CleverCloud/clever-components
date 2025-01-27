@@ -4,8 +4,8 @@ import { getLinkedApplications } from '@clevercloud/client/esm/api/v2/addon.js';
 import { getAllZones } from '@clevercloud/client/esm/api/v4/product.js';
 // @ts-expect-error FIXME: remove when clever-client exports types
 import { ONE_DAY } from '@clevercloud/client/esm/with-cache.js';
-import { defineSmartComponent } from '../../lib/define-smart-component.js';
 import { sendToApi } from '../../lib/send-to-api.js';
+import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
 import '../cc-smart-container/cc-smart-container.js';
 import './cc-addon-linked-apps.js';
 
@@ -15,7 +15,7 @@ import './cc-addon-linked-apps.js';
  * @typedef {import('./cc-addon-linked-apps.types.js').LinkedApplication} LinkedApplication
  * @typedef {import('../common.types.js').Zone} Zone
  * @typedef {import('../../lib/send-to-api.js').ApiConfig} ApiConfig
- * @typedef {import('../../lib/smart-component.types.js').OnContextUpdateArgs<CcAddonLinkedApps>} OnContextUpdateArgs
+ * @typedef {import('../../lib/smart/smart-component.types.d.ts').OnContextUpdateArgs<CcAddonLinkedApps>} OnContextUpdateArgs
  * @typedef {{ variant: { logo: string, name: string }}} Instance
  * @typedef {{ name: string, instance: Instance, id: string, zone: string }} RawApp
  */

@@ -1,5 +1,5 @@
 import { fetchInvoice, fetchInvoiceHtml } from '../../lib/api-helpers.js';
-import { defineSmartComponent } from '../../lib/define-smart-component.js';
+import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
 import '../cc-smart-container/cc-smart-container.js';
 import './cc-invoice.js';
 
@@ -7,7 +7,7 @@ import './cc-invoice.js';
  * @typedef {import('./cc-invoice.js').CcInvoice} CcInvoice
  * @typedef {import('../common.types.js').Invoice} Invoice
  * @typedef {import('../../lib/send-to-api.js').ApiConfig} ApiConfig
- * @typedef {import('../../lib/smart-component.types.js').OnContextUpdateArgs<CcInvoice>} OnContextUpdateArgs
+ * @typedef {import('../../lib/smart/smart-component.types.d.ts').OnContextUpdateArgs<CcInvoice>} OnContextUpdateArgs
  */
 
 defineSmartComponent({

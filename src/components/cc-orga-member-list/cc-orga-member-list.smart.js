@@ -3,9 +3,9 @@
 import { addMember,getAllMembers,removeMemeber as removeMember,updateMember,} from '@clevercloud/client/esm/api/v2/organisation.js';
 // @ts-expect-error FIXME: remove when clever-client exports types
 import { getId } from '@clevercloud/client/esm/api/v2/user.js';
-import { defineSmartComponent } from '../../lib/define-smart-component.js';
 import { notifyError, notifySuccess } from '../../lib/notifications.js';
 import { sendToApi } from '../../lib/send-to-api.js';
+import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-smart-container/cc-smart-container.js';
 import { CcOrgaMemberList } from './cc-orga-member-list.js';
@@ -22,7 +22,7 @@ const UNAUTHORISED_ADMIN_DELETION = 6452;
  * @typedef {import('../cc-orga-member-card/cc-orga-member-card.types.js').OrgaMemberRole} OrgaMemberRole
  * @typedef {import('../cc-orga-member-card/cc-orga-member-card.types.js').OrgaMemberCardState} OrgaMemberCardState
  * @typedef {import('../../lib/send-to-api.types.js').ApiConfig} ApiConfig
- * @typedef {import('../../lib/smart-component.types.js').OnContextUpdateArgs<CcOrgaMemberList>} OnContextUpdateArgs
+ * @typedef {import('../../lib/smart/smart-component.types.d.ts').OnContextUpdateArgs<CcOrgaMemberList>} OnContextUpdateArgs
  */
 
 defineSmartComponent({
