@@ -1,6 +1,6 @@
 import { fetchPriceSystem } from '../../lib/api-helpers.js';
-import { defineSmartComponent } from '../../lib/define-smart-component.js';
 import { formatEstimationPrices } from '../../lib/product.js';
+import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
 import '../cc-smart-container/cc-smart-container.js';
 import './cc-pricing-estimation.js';
 
@@ -8,7 +8,7 @@ import './cc-pricing-estimation.js';
  * @typedef {import('./cc-pricing-estimation.js').CcPricingEstimation} CcPricingEstimation
  * @typedef {import('./cc-pricing-estimation.types.js').PricingEstimationStateLoaded} PricingEstimationStateLoaded
  * @typedef {import('../../lib/send-to-api.types.js').ApiConfig} ApiConfig
- * @typedef {import('../../lib/smart-component.types.js').OnContextUpdateArgs<CcPricingEstimation>} OnContextUpdateArgs
+ * @typedef {import('../../lib/smart/smart-component.types.d.ts').OnContextUpdateArgs<CcPricingEstimation>} OnContextUpdateArgs
  */
 
 defineSmartComponent({

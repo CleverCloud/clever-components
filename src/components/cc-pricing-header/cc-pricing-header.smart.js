@@ -2,8 +2,8 @@
 import { getAllZones } from '@clevercloud/client/esm/api/v4/product.js';
 // @ts-expect-error FIXME: remove when clever-client exports types
 import { ONE_DAY } from '@clevercloud/client/esm/with-cache.js';
-import { defineSmartComponent } from '../../lib/define-smart-component.js';
 import { sendToApi } from '../../lib/send-to-api.js';
+import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
 import '../cc-smart-container/cc-smart-container.js';
 import './cc-pricing-header.js';
 
@@ -12,7 +12,7 @@ import './cc-pricing-header.js';
  * @typedef {import('./cc-pricing-header.types.js').PricingHeaderStateLoaded} PricingHeaderStateLoaded
  * @typedef {import('../common.types.js').Zone} Zone
  * @typedef {import('../../lib/send-to-api.types.js').ApiConfig} ApiConfig
- * @typedef {import('../../lib/smart-component.types.js').OnContextUpdateArgs<CcPricingHeader>} OnContextUpdateArgs
+ * @typedef {import('../../lib/smart/smart-component.types.d.ts').OnContextUpdateArgs<CcPricingHeader>} OnContextUpdateArgs
  */
 
 defineSmartComponent({

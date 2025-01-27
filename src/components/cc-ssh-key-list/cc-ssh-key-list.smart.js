@@ -7,9 +7,9 @@ import { get as getUser } from '@clevercloud/client/esm/api/v2/organisation.js';
 import { todo_addSshKey as addSshKey,todo_getSshKeys as getSshKeys,todo_removeSshKey as removeSshKey } from '@clevercloud/client/esm/api/v2/user.js';
 // @ts-expect-error FIXME: remove when clever-client exports types
 import { ONE_DAY } from '@clevercloud/client/esm/with-cache.js';
-import { defineSmartComponent } from '../../lib/define-smart-component.js';
 import { notifyError, notifySuccess } from '../../lib/notifications.js';
 import { sendToApi } from '../../lib/send-to-api.js';
+import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-smart-container/cc-smart-container.js';
 import './cc-ssh-key-list.js';
@@ -21,7 +21,7 @@ import './cc-ssh-key-list.js';
  * @typedef {import('./cc-ssh-key-list.types.js').KeyDataStateLoadedAndUnlinked} KeyDataStateLoadedAndUnlinked
  * @typedef {import('./cc-ssh-key-list.types.js').KeyDataStateLoadedAndLinked} KeyDataStateLoadedAndLinked
  * @typedef {import('../../lib/send-to-api.types.js').ApiConfig} ApiConfig
- * @typedef {import('../../lib/smart-component.types.js').OnContextUpdateArgs<CcSshKeyList>} OnContextUpdateArgs
+ * @typedef {import('../../lib/smart/smart-component.types.d.ts').OnContextUpdateArgs<CcSshKeyList>} OnContextUpdateArgs
  */
 
 defineSmartComponent({

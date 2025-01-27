@@ -1,8 +1,8 @@
 // @ts-expect-error FIXME: remove when clever-client exports types
 import { get as getAddon } from '@clevercloud/client/esm/api/v2/addon.js';
-import { defineSmartComponent } from '../../lib/define-smart-component.js';
 import { notifyError, notifySuccess } from '../../lib/notifications.js';
 import { sendToApi } from '../../lib/send-to-api.js';
+import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-smart-container/cc-smart-container.js';
 import './cc-env-var-form.js';
@@ -15,7 +15,7 @@ import './cc-env-var-form.js';
  * @typedef {import('../common.types.js').EnvVar} EnvVar
  * @typedef {import('../common.types.js').Addon} Addon
  * @typedef {import('../../lib/send-to-api.js').ApiConfig} ApiConfig
- * @typedef {import('../../lib/smart-component.types.js').OnContextUpdateArgs<CcEnvVarForm>} OnContextUpdateArgs
+ * @typedef {import('../../lib/smart/smart-component.types.d.ts').OnContextUpdateArgs<CcEnvVarForm>} OnContextUpdateArgs
  */
 
 defineSmartComponent({

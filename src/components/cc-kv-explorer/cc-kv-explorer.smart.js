@@ -1,5 +1,5 @@
-import { defineSmartComponent } from '../../lib/define-smart-component.js';
 import { notifyError, notifySuccess } from '../../lib/notifications.js';
+import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-smart-container/cc-smart-container.js';
 import './cc-kv-explorer.js';
@@ -25,7 +25,7 @@ import { KvTerminalCtrl } from './kv-terminal-ctrl.js';
  * @typedef {import('./kv-key-editor-list-ctrl.js').KvKeyEditorListCtrl} KvKeyEditorListCtrl
  * @typedef {import('./kv-key-editor-set-ctrl.js').KvKeyEditorSetCtrl} KvKeyEditorSetCtrl
  * @typedef {import('./kv-key-editor-string-ctrl.js').KvKeyEditorStringCtrl} KvKeyEditorStringCtrl
- * @typedef {import('../../lib/smart-component.types.js').OnContextUpdateArgs<CcKvExplorer>} OnContextUpdateArgs
+ * @typedef {import('../../lib/smart/smart-component.types.d.ts').OnContextUpdateArgs<CcKvExplorer>} OnContextUpdateArgs
  */
 
 defineSmartComponent({
