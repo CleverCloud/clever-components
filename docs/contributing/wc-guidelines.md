@@ -259,6 +259,66 @@ For instance, if one of the items within the list may be set to `waiting`, then 
 
 A good example of such case is [cc-tcp-redirection-form](https://github.com/CleverCloud/clever-components/blob/master/src/components/cc-tcp-redirection-form/cc-tcp-redirection-form.js) and [cc-tcp-redirection](https://github.com/CleverCloud/clever-components/blob/master/src/components/cc-tcp-redirection/cc-tcp-redirection.js).
 
+## What to do with components during API calls and when to use `disabled`
+
+Different attributes should be used depending on whether you want to temporarily disable a component during an API call or permanently disable it.
+
+### During API calls
+
+For form controls (except buttons):
+- Use `readonly` attribute to temporarily disable the control while preserving focus
+
+Example:
+```html
+<cc-input-text readonly>
+<cc-select readonly>
+```
+
+For buttons:
+- Use `waiting` attribute to indicate an ongoing API call
+
+Example:
+```html
+<cc-button waiting>
+```
+
+### For permanent disability
+
+Use `disabled` attribute when a control should be:
+
+- Permanently disabled
+- Not participating in form validation
+- Completely non-interactive
+
+Example:
+```html
+<cc-input-text disabled>
+<cc-button disabled>
+```
+
+### Important notes
+
+- Never use both `waiting` and `disabled` simultaneously on buttons (will throw an error)
+- Using `disabled`:
+  - Removes the element from tab order
+  - Prevents focus
+  - Excludes from form validation
+- Using `readonly`:
+  - Preserves focus behavior
+  - Still allows interaction but prevents changes
+  - Better for temporary states during API calls
+- Using `waiting`:
+  - Specific to buttons
+  - Indicates an ongoing action
+  - Preserves focus behavior
+  - Prevents triggering new actions
+
+Use the attribute that matches your intent:
+
+- `readonly` for temporary API call states on form controls
+- `waiting` for temporary API call states on buttons
+- `disabled` only for permanent disability states
+
 ## How to choose icons?
 
 By default, try to use icons that are parts of the Remix Icon library which is embedded in the main package.
