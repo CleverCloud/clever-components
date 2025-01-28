@@ -186,6 +186,16 @@ Check the CSS of our components with [Stylelint](https://stylelint.io/) and fix 
 
 * Run all unit tests present in `test` with [Web Test Runner](https://modern-web.dev/docs/test-runner/overview/).
 
+## `npm run test:group`
+
+* Run tests for a specific group with Web Test Runner
+* Groups available:
+  * `unit` - Runs all unit tests from test/**/*.test.*
+  * Individual component groups in format:
+    * `stories:${componentName}` - Run tests for a component's stories
+    * `test:${componentName}` - Run tests for a component's test file
+* Usage: `npm run test:group <group-name>`
+
 ## `npm run test:mocha`
 
 * Run unit tests present in `test-mocha` with [Mocha](https://mochajs.org/).
@@ -199,6 +209,12 @@ Check the CSS of our components with [Stylelint](https://stylelint.io/) and fix 
 ## `npm run test:watch`
 
 * Run all unit tests present in `test` with [Web Test Runner](https://modern-web.dev/docs/test-runner/overview/) in watch mode.
+
+## `npm run test:watch:group`
+
+* Run tests for a specific group with Web Test Runner in watch mode
+* Takes same group parameters as `test:group` command
+* Usage: `npm run test:watch:group <group-name>`
 
 ## `npm run typecheck`
 
