@@ -134,7 +134,7 @@ export class CcAddonAdmin extends LitElement {
           <cc-input-text
             label="${i18n('cc-addon-admin.input.name')}"
             ?skeleton=${isSkeleton}
-            ?disabled=${isFormDisabled}
+            ?readonly=${isFormDisabled}
             .value=${this._name}
             @cc-input-text:input=${this._onNameInput}
             @cc-input-text:requestimplicitsubmit=${this._onNameSubmit}
@@ -157,7 +157,7 @@ export class CcAddonAdmin extends LitElement {
           <cc-input-text
             label="${i18n('cc-addon-admin.input.tags')}"
             ?skeleton=${isSkeleton}
-            ?disabled=${isFormDisabled}
+            ?readonly=${isFormDisabled}
             .tags=${this._tags}
             placeholder="${i18n('cc-addon-admin.tags-empty')}"
             @cc-input-text:tags=${this._onTagsInput}

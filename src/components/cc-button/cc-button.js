@@ -97,7 +97,7 @@ export class CcButton extends LitElement {
     /** @type {number|null} If set, enables delay mechanism and defined the number of seconds before the `cc-button:click` event is actually fired. */
     this.delay = null;
 
-    /** @type {boolean} Sets `disabled` attribute on inner native `<button>` element. */
+    /** @type {boolean} Sets `disabled` attribute on inner native `<button>` element. Do not use this during API calls, use `waiting` instead. */
     this.disabled = false;
 
     /** @type {boolean} If set, the button will look like a link. */

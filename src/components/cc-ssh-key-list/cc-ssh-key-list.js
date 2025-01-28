@@ -244,7 +244,7 @@ export class CcSshKeyList extends LitElement {
       <form class="create-form" ${ref(this._createFormRef)} ${formSubmit(this._onCreateKey.bind(this))}>
         <cc-input-text
           name="name"
-          ?disabled=${isCreating}
+          ?readonly=${isCreating}
           class="create-form__name"
           label=${i18n('cc-ssh-key-list.add.name')}
           required
@@ -253,7 +253,7 @@ export class CcSshKeyList extends LitElement {
         </cc-input-text>
         <cc-input-text
           name="publicKey"
-          ?disabled=${isCreating}
+          ?readonly=${isCreating}
           class="create-form__public-key"
           label=${i18n('cc-ssh-key-list.add.public-key')}
           required
