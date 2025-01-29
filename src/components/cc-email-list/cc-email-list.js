@@ -29,7 +29,7 @@ import '../cc-notice/cc-notice.js';
 
 /** @type {PrimaryAddressState} */
 const SKELETON_PRIMARY_EMAIL = {
-  state: 'idle',
+  type: 'idle',
   address: fakeString(35),
   verified: false,
 };
@@ -88,7 +88,7 @@ export class CcEmailList extends LitElement {
   static get properties() {
     return {
       addEmailFormState: { type: Object, attribute: false },
-      emails: { type: Object },
+      emailListState: { type: Object, attribute: false },
     };
   }
 
@@ -99,7 +99,7 @@ export class CcEmailList extends LitElement {
     this.addEmailFormState = { type: 'idle' };
 
     /** @type {EmailListState} State of the component. */
-    this.emails = { state: 'loading' };
+    this.emailListState = { type: 'loading' };
 
     /** @type {CcInputTextRef} */
     this._addressInputRef = createRef();
@@ -133,8 +133,8 @@ export class CcEmailList extends LitElement {
   }
 
   _onSendConfirmationEmail() {
-    if (this.emails.state === 'loaded') {
-      dispatchCustomEvent(this, 'send-confirmation-email', this.emails.value.primaryAddress.address);
+    if (this.emailListState.type === 'loaded') {
+      dispatchCustomEvent(this, 'send-confirmation-email', this.emailListState.emailList.primaryAddress.address);
     }
   }
 
@@ -181,19 +181,19 @@ export class CcEmailList extends LitElement {
       <cc-block>
         <div slot="header-title">${i18n('cc-email-list.title')}</div>
 
-        ${this.emails.state === 'loading'
+        ${this.emailListState.type === 'loading'
           ? html`
               ${this._renderPrimarySection(SKELETON_PRIMARY_EMAIL, true)}
               ${this._renderSecondarySection(SKELETON_SECONDARY_EMAILS)}
             `
           : ''}
-        ${this.emails.state === 'loaded'
+        ${this.emailListState.type === 'loaded'
           ? html`
-              ${this._renderPrimarySection(this.emails.value.primaryAddress)}
-              ${this._renderSecondarySection(this.emails.value.secondaryAddresses)}
+              ${this._renderPrimarySection(this.emailListState.emailList.primaryAddress)}
+              ${this._renderSecondarySection(this.emailListState.emailList.secondaryAddresses)}
             `
           : ''}
-        ${this.emails.state === 'error'
+        ${this.emailListState.type === 'error'
           ? html`
               <cc-notice slot="content" intent="warning" message="${i18n('cc-email-list.loading.error')}"></cc-notice>
             `
@@ -233,7 +233,7 @@ export class CcEmailList extends LitElement {
           ? html`
               <cc-button
                 @cc-button:click=${this._onSendConfirmationEmail}
-                ?waiting=${primaryAddressState.state === 'sending-confirmation-email'}
+                ?waiting=${primaryAddressState.type === 'sending-confirmation-email'}
                 link
               >
                 ${i18n('cc-email-list.primary.action.resend-confirmation-email')}
@@ -250,7 +250,7 @@ export class CcEmailList extends LitElement {
    */
   _renderSecondarySection(secondaryAddressStates) {
     const addresses = [...secondaryAddressStates].sort(sortBy('address'));
-    const isOneRowMarkingPrimary = addresses.some((item) => item.state === 'marking-as-primary');
+    const isOneRowMarkingPrimary = addresses.some((item) => item.type === 'marking-as-primary');
 
     return html`
       <cc-block-section slot="content-body">
@@ -259,8 +259,8 @@ export class CcEmailList extends LitElement {
 
         <ul class="secondary-addresses">
           ${addresses.map((secondaryAddress) => {
-            const isBusy = secondaryAddress.state === 'marking-as-primary' || secondaryAddress.state === 'deleting';
-            const isDisabled = (isOneRowMarkingPrimary || isBusy) && secondaryAddress.state !== 'marking-as-primary';
+            const isBusy = secondaryAddress.type === 'marking-as-primary' || secondaryAddress.type === 'deleting';
+            const isDisabled = (isOneRowMarkingPrimary || isBusy) && secondaryAddress.type !== 'marking-as-primary';
 
             return html`
               <li class="address-line secondary">
@@ -271,7 +271,7 @@ export class CcEmailList extends LitElement {
                 <div class="buttons">
                   <cc-button
                     @cc-button:click=${() => this._onMarkAsPrimary(secondaryAddress.address)}
-                    ?waiting="${secondaryAddress.state === 'marking-as-primary'}"
+                    ?waiting="${secondaryAddress.type === 'marking-as-primary'}"
                     ?disabled="${isDisabled}"
                     a11y-name="${i18n('cc-email-list.secondary.action.mark-as-primary.accessible-name', {
                       address: secondaryAddress.address,
@@ -285,8 +285,8 @@ export class CcEmailList extends LitElement {
                     outlined
                     .icon=${iconDelete}
                     @cc-button:click=${() => this._onDelete(secondaryAddress.address)}
-                    ?waiting="${secondaryAddress.state === 'deleting'}"
-                    ?disabled="${isBusy && secondaryAddress.state !== 'deleting'}"
+                    ?waiting="${secondaryAddress.type === 'deleting'}"
+                    ?disabled="${isBusy && secondaryAddress.type !== 'deleting'}"
                     a11y-name="${i18n('cc-email-list.secondary.action.delete.accessible-name', {
                       address: secondaryAddress.address,
                     })}"
