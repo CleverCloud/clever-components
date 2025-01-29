@@ -3,8 +3,8 @@ import { pickNonNull } from '@clevercloud/client/esm/pick-non-null.js';
 import { ApplicationLogStream } from '@clevercloud/client/esm/streams/application-logs.js';
 import { HttpError } from '@clevercloud/client/esm/streams/clever-cloud-sse.js';
 import { Buffer } from '../../lib/buffer.js';
-import { defineSmartComponent } from '../../lib/define-smart-component.js';
 import { sendToApi } from '../../lib/send-to-api.js';
+import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
 import { unique } from '../../lib/utils.js';
 import '../cc-smart-container/cc-smart-container.js';
 import './cc-logs-application-view.js';
@@ -20,6 +20,7 @@ import { isLive, lastXDays } from './date-range.js';
  * @typedef {import('./cc-logs-application-view.types.js').DateRange} DateRange
  * @typedef {import('./cc-logs-application-view.types.js').DateRangeSelection} DateRangeSelection
  * @typedef {import('./cc-logs-application-view.js').CcLogsApplicationView} CcLogsApplicationView
+ * @typedef {import('../../lib/smart/smart-component.types.d.ts').OnContextUpdateArgs<CcLogsApplicationView>} OnContextUpdateArgs
  */
 
 /**
@@ -73,12 +74,7 @@ defineSmartComponent({
     dateRangeSelection: { type: Object, optional: true },
   },
   /**
-   * @param {Object} args
-   * @param {CcLogsApplicationView} args.component
-   * @param {Object} args.context
-   * @param {any} args.onEvent
-   * @param {any} args.updateComponent
-   * @param {AbortSignal} args.signal
+   * @param {OnContextUpdateArgs} args
    */
   onContextUpdate({ component, context, onEvent, updateComponent, signal }) {
     signal.onabort = () => {

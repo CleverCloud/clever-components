@@ -1,5 +1,5 @@
 import { fetchInvoice, fetchInvoiceHtml } from '../../lib/api-helpers.js';
-import { defineSmartComponent } from '../../lib/define-smart-component.js';
+import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
 import '../cc-smart-container/cc-smart-container.js';
 import './cc-invoice.js';
 
@@ -7,6 +7,7 @@ import './cc-invoice.js';
  * @typedef {import('./cc-invoice.js').CcInvoice} CcInvoice
  * @typedef {import('../common.types.js').Invoice} Invoice
  * @typedef {import('../../lib/send-to-api.js').ApiConfig} ApiConfig
+ * @typedef {import('../../lib/smart/smart-component.types.d.ts').OnContextUpdateArgs<CcInvoice>} OnContextUpdateArgs
  */
 
 defineSmartComponent({
@@ -17,14 +18,8 @@ defineSmartComponent({
     invoiceNumber: { type: String },
   },
   /**
-   * @param {Object} settings
-   * @param {CcInvoice} settings.component
-   * @param {{apiConfig: ApiConfig, ownerId: string, invoiceNumber: string}} settings.context
-   * @param {(type: string, listener: (detail: any) => void) => void} settings.onEvent
-   * @param {function} settings.updateComponent
-   * @param {AbortSignal} settings.signal
+   * @param {OnContextUpdateArgs} args
    */
-  // @ts-expect-error FIXME: remove once `onContextUpdate` is typed with generics
   onContextUpdate({ context, updateComponent, signal }) {
     const { apiConfig, ownerId, invoiceNumber } = context;
 

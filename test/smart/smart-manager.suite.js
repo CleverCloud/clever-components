@@ -1,7 +1,7 @@
 import { expect } from '@bundled-es-modules/chai';
 import { stub as rawStub } from 'hanbi';
 import '../../src/components/cc-smart-container/cc-smart-container.js';
-import { defineSmartComponentCore, updateRootContext } from '../../src/lib/smart-manager.js';
+import { defineSmartComponentCore, updateRootContext } from '../../src/lib/smart/smart-manager.js';
 
 // hanbi should have a chained API IMO
 function stub(fn) {

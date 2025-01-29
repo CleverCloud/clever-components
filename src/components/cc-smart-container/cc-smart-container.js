@@ -1,10 +1,10 @@
 import { css, html, LitElement } from 'lit';
-import { defineSmartComponentCore, observeContainer, updateContext } from '../../lib/smart-manager.js';
+import { defineSmartComponentCore, observeContainer, updateContext } from '../../lib/smart/smart-manager.js';
 
 /**
- * @typedef {import('../../lib/smart-component.types.js').SmartContainer} SmartContainer
- * @typedef {import('../../lib/smart-component.types.js').SmartContext} SmartContext
- * @typedef {import('../../lib/smart-component.types.js').SmartComponent} SmartComponent
+ * @typedef {import('../../lib/smart/smart-component.types.d.ts').SmartContainer} SmartContainer
+ * @typedef {import('../../lib/smart/smart-component.types.d.ts').SmartContext} SmartContext
+ * @typedef {import('../../lib/smart/smart-component.types.d.ts').SmartComponent} SmartComponent
  * @typedef {import('lit').PropertyValues<CcSmartContainer>} CcSmartContainerPropertyValues
  */
 
@@ -16,7 +16,6 @@ defineSmartComponentCore({
    * @param {CcSmartContainer} component
    * @param {SmartContext} context
    */
-  // @ts-expect-error FIXME: remove once `onContextUpdate` is typed with generics
   onContextUpdate(_, component, context) {
     if (component instanceof CcSmartContainer) {
       component.parentContext = context;

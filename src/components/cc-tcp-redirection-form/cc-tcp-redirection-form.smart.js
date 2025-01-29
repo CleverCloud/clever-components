@@ -2,24 +2,25 @@
 import { addTcpRedir, getTcpRedirs, removeTcpRedir } from '@clevercloud/client/esm/api/v2/application.js';
 // @ts-expect-error FIXME: remove when clever-client exports types
 import { getNamespaces } from '@clevercloud/client/esm/api/v2/organisation.js';
-import { defineSmartComponent } from '../../lib/define-smart-component.js';
 import { notifyError, notifySuccess } from '../../lib/notifications.js';
 import { sendToApi } from '../../lib/send-to-api.js';
+import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-smart-container/cc-smart-container.js';
 import './cc-tcp-redirection-form.js';
 
 /**
  * @typedef {import('./cc-tcp-redirection-form.js').CcTcpRedirectionForm} CcTcpRedirectionForm
+ * @typedef {import('../cc-tcp-redirection/cc-tcp-redirection.types.js').TcpRedirection} TcpRedirection
  * @typedef {import('../cc-tcp-redirection/cc-tcp-redirection.types.js').TcpRedirectionState} TcpRedirectionState
  * @typedef {import('../cc-tcp-redirection/cc-tcp-redirection.types.js').TcpRedirectionStateLoaded} TcpRedirectionStateLoaded
  * @typedef {import('../cc-tcp-redirection-form/cc-tcp-redirection-form.types.js').TcpRedirectionFormState} TcpRedirectionFormState
  * @typedef {import('../cc-tcp-redirection-form/cc-tcp-redirection-form.types.js').TcpRedirectionFormStateLoaded} TcpRedirectionFormStateLoaded
  * @typedef {import('../cc-tcp-redirection/cc-tcp-redirection.types.js').TcpRedirectionStateWaiting} TcpRedirectionStateWaiting
  * @typedef {import('../../lib/send-to-api.js').ApiConfig} ApiConfig
+ * @typedef {import('../../lib/smart/smart-component.types.d.ts').OnContextUpdateArgs<CcTcpRedirectionForm>} OnContextUpdateArgs
  * @typedef {[{namespace: string}]} NamespacesApiPayload
  * @typedef {[{namespace: string, port: number}]} RedirectionsApiPayload
- * @typedef {{namespace: string, sourcePort: number | null}} FormattedRedirectionData
  */
 
 const PUBLIC_NAMESPACES = ['default', 'cleverapps'];
@@ -32,14 +33,8 @@ defineSmartComponent({
     appId: { type: String },
   },
   /**
-   * @param {Object} settings
-   * @param {CcTcpRedirectionForm} settings.component
-   * @param {{ apiConfig: ApiConfig, ownerId: string, appId: string }} settings.context
-   * @param {(type: string, listener: (detail: any) => void) => void} settings.onEvent
-   * @param {function} settings.updateComponent
-   * @param {AbortSignal} settings.signal
+   * @param {OnContextUpdateArgs} args
    */
-  // @ts-expect-error FIXME: remove once `onContextUpdate` is typed with generics
   onContextUpdate({ context, onEvent, updateComponent, signal }) {
     const { apiConfig, ownerId, appId } = context;
 
@@ -136,7 +131,7 @@ defineSmartComponent({
  * @param {AbortSignal} settings.signal
  * @param {string} settings.ownerId
  * @param {string} settings.appId
- * @returns {Promise<FormattedRedirectionData[]>}
+ * @returns {Promise<TcpRedirection[]>}
  */
 async function fetchTcpRedirectionsAndNamespaces({ apiConfig, signal, ownerId, appId }) {
   return Promise.all([

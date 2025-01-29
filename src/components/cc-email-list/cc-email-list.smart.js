@@ -1,9 +1,9 @@
 // prettier-ignore
 // @ts-expect-error FIXME: remove when clever-client exports types
 import { todo_addEmailAddress as addEmailAddress,todo_getEmailAddresses as getEmailAddresses,todo_removeEmailAddress as removeEmailAddress,todo_getConfirmationEmail as sendConfirmationEmail,} from '@clevercloud/client/esm/api/v2/user.js';
-import { defineSmartComponent } from '../../lib/define-smart-component.js';
 import { notify, notifyError, notifySuccess } from '../../lib/notifications.js';
 import { sendToApi } from '../../lib/send-to-api.js';
+import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-smart-container/cc-smart-container.js';
 import './cc-email-list.js';
@@ -15,6 +15,7 @@ import './cc-email-list.js';
  * @typedef {import('./cc-email-list.types.js').AddEmailFormState} AddEmailFormState
  * @typedef {import('./cc-email-list.types.js').AddEmailError} AddEmailError
  * @typedef {import('../../lib/send-to-api.types.js').ApiConfig} ApiConfig
+ * @typedef {import('../../lib/smart/smart-component.types.d.ts').OnContextUpdateArgs<CcEmailList>} OnContextUpdateArgs
  */
 
 defineSmartComponent({
@@ -23,17 +24,11 @@ defineSmartComponent({
     apiConfig: { type: Object },
   },
   /**
-   * @param {Object} settings
-   * @param {CcEmailList} settings.component
-   * @param {{apiConfig: ApiConfig}} settings.context
-   * @param {(type: string, listener: (detail: any) => void) => void} settings.onEvent
-   * @param {function} settings.updateComponent
-   * @param {AbortSignal} settings.signal
+   * @param {OnContextUpdateArgs} args
    */
-  // @ts-expect-error FIXME: remove once `onContextUpdate` is type with generics
   onContextUpdate({ component, context, onEvent, updateComponent, signal }) {
     updateComponent('emails', { state: 'loading' });
-    updateComponent('addEmailFormState', { state: 'idle' });
+    updateComponent('addEmailFormState', { type: 'idle' });
     component.resetAddEmailForm();
 
     const api = getApi(context.apiConfig, signal);

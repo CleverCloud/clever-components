@@ -3,9 +3,9 @@ import { getAllExposedEnvVars, updateAllExposedEnvVars } from '@clevercloud/clie
 // @ts-expect-error FIXME: remove when clever-client exports types
 import { toNameValueObject } from '@clevercloud/client/esm/utils/env-vars.js';
 import { fetchApp } from '../../lib/api-helpers.js';
-import { defineSmartComponent } from '../../lib/define-smart-component.js';
 import { notifyError, notifySuccess } from '../../lib/notifications.js';
 import { sendToApi } from '../../lib/send-to-api.js';
+import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-smart-container/cc-smart-container.js';
 import './cc-env-var-form.js';
@@ -17,6 +17,7 @@ import './cc-env-var-form.js';
  * @typedef {import('./cc-env-var-form.types.js').EnvVarFormStateSaving} EnvVarFormStateSaving
  * @typedef {import('../common.types.js').EnvVar} EnvVar
  * @typedef {import('../../lib/send-to-api.js').ApiConfig} ApiConfig
+ * @typedef {import('../../lib/smart/smart-component.types.d.ts').OnContextUpdateArgs<CcEnvVarForm>} OnContextUpdateArgs
  */
 
 defineSmartComponent({
@@ -27,14 +28,8 @@ defineSmartComponent({
     appId: { type: String },
   },
   /**
-   * @param {Object} settings
-   * @param {CcEnvVarForm} settings.component
-   * @param {{ apiConfig: ApiConfig, ownerId: string, appId: string }} settings.context
-   * @param {(type: string, listener: (detail: any) => void) => void} settings.onEvent
-   * @param {function} settings.updateComponent
-   * @param {AbortSignal} settings.signal
+   * @param {OnContextUpdateArgs} args
    */
-  // @ts-expect-error FIXME: remove once `onContextUpdate` is typed with generics
   onContextUpdate({ context, onEvent, updateComponent, signal }) {
     updateComponent('state', { type: 'loading' });
 

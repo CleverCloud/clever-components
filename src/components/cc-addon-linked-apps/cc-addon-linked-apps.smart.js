@@ -4,19 +4,20 @@ import { getLinkedApplications } from '@clevercloud/client/esm/api/v2/addon.js';
 import { getAllZones } from '@clevercloud/client/esm/api/v4/product.js';
 // @ts-expect-error FIXME: remove when clever-client exports types
 import { ONE_DAY } from '@clevercloud/client/esm/with-cache.js';
-import { defineSmartComponent } from '../../lib/define-smart-component.js';
 import { sendToApi } from '../../lib/send-to-api.js';
+import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
 import '../cc-smart-container/cc-smart-container.js';
 import './cc-addon-linked-apps.js';
 
 /**
- * @typedef {import('../common.types.js').Zone} Zone
- * @typedef {import('./cc-addon-linked-apps.types.js').LinkedApplication} LinkedApplication
+ * @typedef {import('./cc-addon-linked-apps.js').CcAddonLinkedApps} CcAddonLinkedApps
  * @typedef {import('./cc-addon-linked-apps.types.js').AddonLinkedAppsStateLoaded} AddonLinkedAppsStateLoaded
+ * @typedef {import('./cc-addon-linked-apps.types.js').LinkedApplication} LinkedApplication
+ * @typedef {import('../common.types.js').Zone} Zone
+ * @typedef {import('../../lib/send-to-api.js').ApiConfig} ApiConfig
+ * @typedef {import('../../lib/smart/smart-component.types.d.ts').OnContextUpdateArgs<CcAddonLinkedApps>} OnContextUpdateArgs
  * @typedef {{ variant: { logo: string, name: string }}} Instance
  * @typedef {{ name: string, instance: Instance, id: string, zone: string }} RawApp
- * @typedef {import('./cc-addon-linked-apps.js').CcAddonLinkedApps} CcAddonLinkedApps
- * @typedef {import('../../lib/send-to-api.js').ApiConfig} ApiConfig
  */
 
 defineSmartComponent({
@@ -27,15 +28,8 @@ defineSmartComponent({
     addonId: { type: String },
   },
   /**
-   *
-   * @param {Object} settings
-   * @param {CcAddonLinkedApps} settings.component
-   * @param {{apiConfig: ApiConfig, ownerId: string, addonId: string }} settings.context
-   * @param {(type: string, listener: (detail: any) => void) => void} settings.onEvent
-   * @param {function} settings.updateComponent
-   * @param {AbortSignal} settings.signal
+   * @param {OnContextUpdateArgs} args
    */
-  // @ts-expect-error FIXME: remove once `onContextUpdate` is typed with generics
   onContextUpdate({ context, updateComponent, signal }) {
     updateComponent('state', { type: 'loading' });
 

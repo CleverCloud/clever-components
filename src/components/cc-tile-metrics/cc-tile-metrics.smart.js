@@ -1,6 +1,6 @@
 import { getAppMetrics, getGrafanaOrganisation } from '../../lib/api-helpers.js';
-import { defineSmartComponent } from '../../lib/define-smart-component.js';
 import { sendToApi } from '../../lib/send-to-api.js';
+import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
 import '../cc-smart-container/cc-smart-container.js';
 import './cc-tile-metrics.js';
 
@@ -10,6 +10,7 @@ import './cc-tile-metrics.js';
  * @typedef {import('./cc-tile-metrics.types.js').MetricsData} MetricsData
  * @typedef {import('./cc-tile-metrics.types.js').Metric} Metric
  * @typedef {import('../../lib/send-to-api.types.js').ApiConfig} ApiConfig
+ * @typedef {import('../../lib/smart/smart-component.types.d.ts').OnContextUpdateArgs<CcTileMetrics>} OnContextUpdateArgs
  */
 
 const NUMBER_OF_POINTS = 24;
@@ -24,19 +25,12 @@ defineSmartComponent({
     grafanaBaseLink: { type: String },
   },
   /**
-   *
-   * @param {Object} settings
-   * @param {CcTileMetrics} settings.component
-   * @param {{apiConfig: ApiConfig, ownerId: string, appId: string, grafanaBaseLink: string, consoleGrafanaLink: string }} settings.context
-   * @param {(type: string, listener: (detail: any) => void) => void} settings.onEvent
-   * @param {function} settings.updateComponent
-   * @param {AbortSignal} settings.signal
+   * @param {OnContextUpdateArgs} args
    */
-  // @ts-expect-error FIXME: remove once `onContextUpdate` is typed with generics
   onContextUpdate({ context, updateComponent, signal }) {
     const { apiConfig, ownerId, appId, grafanaBaseLink, consoleGrafanaLink } = context;
 
-    updateComponent('state', { type: 'loading' });
+    updateComponent('metricsState', { type: 'loading' });
 
     fetchMetrics({ apiConfig, ownerId, appId, signal })
       .then(({ cpuMetrics, memMetrics }) => {

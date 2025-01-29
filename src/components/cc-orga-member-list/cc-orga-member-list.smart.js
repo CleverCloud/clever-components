@@ -3,9 +3,9 @@
 import { addMember,getAllMembers,removeMemeber as removeMember,updateMember,} from '@clevercloud/client/esm/api/v2/organisation.js';
 // @ts-expect-error FIXME: remove when clever-client exports types
 import { getId } from '@clevercloud/client/esm/api/v2/user.js';
-import { defineSmartComponent } from '../../lib/define-smart-component.js';
 import { notifyError, notifySuccess } from '../../lib/notifications.js';
 import { sendToApi } from '../../lib/send-to-api.js';
+import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-smart-container/cc-smart-container.js';
 import { CcOrgaMemberList } from './cc-orga-member-list.js';
@@ -16,12 +16,13 @@ const UNAUTHORISED_ADMIN_ADDITION = 6451;
 const UNAUTHORISED_ADMIN_DELETION = 6452;
 
 /**
- * @typedef {import('../../lib/send-to-api.types.js').ApiConfig} ApiConfig
  * @typedef {import('./cc-orga-member-list.types.js').OrgaMemberListStateLoaded} OrgaMemberListStateLoaded
- * @typedef {import('../cc-orga-member-card/cc-orga-member-card.types.js').OrgaMemberRole} OrgaMemberRole
- * @typedef {import('../cc-orga-member-card/cc-orga-member-card.types.js').OrgaMember} OrgaMember
- * @typedef {import('../cc-orga-member-card/cc-orga-member-card.types.js').OrgaMemberCardState} OrgaMemberCardState
  * @typedef {import('./cc-orga-member-list.types.js').InviteMemberFormState} InviteMemberFormState
+ * @typedef {import('../cc-orga-member-card/cc-orga-member-card.types.js').OrgaMember} OrgaMember
+ * @typedef {import('../cc-orga-member-card/cc-orga-member-card.types.js').OrgaMemberRole} OrgaMemberRole
+ * @typedef {import('../cc-orga-member-card/cc-orga-member-card.types.js').OrgaMemberCardState} OrgaMemberCardState
+ * @typedef {import('../../lib/send-to-api.types.js').ApiConfig} ApiConfig
+ * @typedef {import('../../lib/smart/smart-component.types.d.ts').OnContextUpdateArgs<CcOrgaMemberList>} OnContextUpdateArgs
  */
 
 defineSmartComponent({
@@ -31,14 +32,8 @@ defineSmartComponent({
     ownerId: { type: String },
   },
   /**
-   * @param {Object} settings
-   * @param {CcOrgaMemberList} settings.component
-   * @param {{apiConfig: ApiConfig, ownerId: string}} settings.context
-   * @param {(type: string, listener: (detail: any) => void) => void} settings.onEvent
-   * @param {function} settings.updateComponent
-   * @param {AbortSignal} settings.signal
+   * @param {OnContextUpdateArgs} args
    */
-  // @ts-expect-error FIXME: remove once `onContextUpdate` is typed with generics
   onContextUpdate({ component, context, onEvent, updateComponent, signal }) {
     const { apiConfig, ownerId } = context;
 
@@ -274,6 +269,7 @@ defineSmartComponent({
           value: memberList.map((member) => ({ state: 'loaded', ...member })),
           identityFilter: '',
           mfaDisabledOnlyFilter: false,
+          dangerZoneState: 'idle',
         });
       })
       .catch((error) => {

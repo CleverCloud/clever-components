@@ -1,7 +1,7 @@
 // @ts-expect-error FIXME: remove when clever-client exports types
 import { getAddon, getJenkinsUpdates } from '@clevercloud/client/esm/api/v4/addon-providers.js';
-import { defineSmartComponent } from '../../lib/define-smart-component.js';
 import { sendToApi } from '../../lib/send-to-api.js';
+import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
 import '../cc-smart-container/cc-smart-container.js';
 import './cc-jenkins-info.js';
 
@@ -9,6 +9,7 @@ import './cc-jenkins-info.js';
  * @typedef {import('./cc-jenkins-info.js').CcJenkinsInfo} CcJenkinsInfo
  * @typedef {import('./cc-jenkins-info.types.js').JenkinsInfoStateLoaded} JenkinsInfoStateLoaded
  * @typedef {import('../../lib/send-to-api.js').ApiConfig} ApiConfig
+ * @typedef {import('../../lib/smart/smart-component.types.d.ts').OnContextUpdateArgs<CcJenkinsInfo>} OnContextUpdateArgs
  */
 
 defineSmartComponent({
@@ -18,14 +19,8 @@ defineSmartComponent({
     addonId: { type: String },
   },
   /**
-   * @param {Object} settings
-   * @param {CcJenkinsInfo} settings.component
-   * @param {{ apiConfig: ApiConfig, ownerId: string, addonId: string }} settings.context
-   * @param {(type: string, listener: (detail: any) => void) => void} settings.onEvent
-   * @param {function} settings.updateComponent
-   * @param {AbortSignal} settings.signal
+   * @param {OnContextUpdateArgs} args
    */
-  // @ts-expect-error FIXME: remove once `onContextUpdate` is typed with generics
   onContextUpdate({ context, updateComponent, signal }) {
     const { apiConfig, addonId } = context;
 

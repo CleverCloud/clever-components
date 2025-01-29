@@ -4,9 +4,9 @@ import {
   getGrafanaOrganisation,
   resetGrafanaOrganisation,
 } from '../../lib/api-helpers.js';
-import { defineSmartComponent } from '../../lib/define-smart-component.js';
 import { notifyError, notifySuccess } from '../../lib/notifications.js';
 import { sendToApi } from '../../lib/send-to-api.js';
+import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-smart-container/cc-smart-container.js';
 import './cc-grafana-info.js';
@@ -18,6 +18,7 @@ import './cc-grafana-info.js';
  * @typedef {import('./cc-grafana-info.types.js').GrafanaInfoEnabled} GrafanaInfoEnabled
  * @typedef {import('./cc-grafana-info.types.js').GrafanaInfoDisabled} GrafanaInfoDisabled
  * @typedef {import('../../lib/send-to-api.js').ApiConfig} ApiConfig
+ * @typedef {import('../../lib/smart/smart-component.types.d.ts').OnContextUpdateArgs<CcGrafanaInfo>} OnContextUpdateArgs
  */
 
 defineSmartComponent({
@@ -28,14 +29,8 @@ defineSmartComponent({
     grafanaBaseLink: { type: String },
   },
   /**
-   * @param {Object} settings
-   * @param {CcGrafanaInfo} settings.component
-   * @param {{apiConfig: ApiConfig, ownerId: string, grafanaBaseLink: string}} settings.context
-   * @param {(type: string, listener: (detail: any) => void) => void} settings.onEvent
-   * @param {function} settings.updateComponent
-   * @param {AbortSignal} settings.signal
+   * @param {OnContextUpdateArgs} args
    */
-  // @ts-expect-error FIXME: remove once `onContextUpdate` is typed with generics
   onContextUpdate({ context, updateComponent, onEvent, signal }) {
     const { apiConfig, ownerId, grafanaBaseLink } = context;
 
