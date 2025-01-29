@@ -20,7 +20,7 @@ import { isLive, lastXDays } from './date-range.js';
  * @typedef {import('./cc-logs-application-view.types.js').DateRange} DateRange
  * @typedef {import('./cc-logs-application-view.types.js').DateRangeSelection} DateRangeSelection
  * @typedef {import('./cc-logs-application-view.js').CcLogsApplicationView} CcLogsApplicationView
- * @typedef {import('../../lib/smart/smart-component.types.d.ts').OnContextUpdateArgs<CcLogsApplicationView>} OnContextUpdateArgs
+ * @typedef {import('../../lib/smart/smart-component.types.js').OnContextUpdateArgs<CcLogsApplicationView>} OnContextUpdateArgs
  */
 
 /**

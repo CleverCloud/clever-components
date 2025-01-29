@@ -18,7 +18,7 @@ import './cc-tcp-redirection-form.js';
  * @typedef {import('../cc-tcp-redirection-form/cc-tcp-redirection-form.types.js').TcpRedirectionFormStateLoaded} TcpRedirectionFormStateLoaded
  * @typedef {import('../cc-tcp-redirection/cc-tcp-redirection.types.js').TcpRedirectionStateWaiting} TcpRedirectionStateWaiting
  * @typedef {import('../../lib/send-to-api.js').ApiConfig} ApiConfig
- * @typedef {import('../../lib/smart/smart-component.types.d.ts').OnContextUpdateArgs<CcTcpRedirectionForm>} OnContextUpdateArgs
+ * @typedef {import('../../lib/smart/smart-component.types.js').OnContextUpdateArgs<CcTcpRedirectionForm>} OnContextUpdateArgs
  * @typedef {[{namespace: string}]} NamespacesApiPayload
  * @typedef {[{namespace: string, port: number}]} RedirectionsApiPayload
  */

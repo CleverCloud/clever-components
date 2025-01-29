@@ -7,7 +7,7 @@ import './cc-pricing-product-consumption.js';
 /**
  * @typedef {import('./cc-pricing-product-consumption.js').CcPricingProductConsumption} CcPricingProductConsumption
  * @typedef {import('../../lib/send-to-api.types.js').ApiConfig} ApiConfig
- * @typedef {import('../../lib/smart/smart-component.types.d.ts').OnContextUpdateArgs<CcPricingProductConsumption>} OnContextUpdateArgs
+ * @typedef {import('../../lib/smart/smart-component.types.js').OnContextUpdateArgs<CcPricingProductConsumption>} OnContextUpdateArgs
  */
 
 defineSmartComponent({

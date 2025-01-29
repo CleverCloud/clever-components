@@ -7,7 +7,7 @@ import './cc-invoice.js';
  * @typedef {import('./cc-invoice.js').CcInvoice} CcInvoice
  * @typedef {import('../common.types.js').Invoice} Invoice
  * @typedef {import('../../lib/send-to-api.js').ApiConfig} ApiConfig
- * @typedef {import('../../lib/smart/smart-component.types.d.ts').OnContextUpdateArgs<CcInvoice>} OnContextUpdateArgs
+ * @typedef {import('../../lib/smart/smart-component.types.js').OnContextUpdateArgs<CcInvoice>} OnContextUpdateArgs
  */
 
 defineSmartComponent({

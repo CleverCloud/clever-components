@@ -10,7 +10,7 @@ import './cc-tile-metrics.js';
  * @typedef {import('./cc-tile-metrics.types.js').MetricsData} MetricsData
  * @typedef {import('./cc-tile-metrics.types.js').Metric} Metric
  * @typedef {import('../../lib/send-to-api.types.js').ApiConfig} ApiConfig
- * @typedef {import('../../lib/smart/smart-component.types.d.ts').OnContextUpdateArgs<CcTileMetrics>} OnContextUpdateArgs
+ * @typedef {import('../../lib/smart/smart-component.types.js').OnContextUpdateArgs<CcTileMetrics>} OnContextUpdateArgs
  */
 
 const NUMBER_OF_POINTS = 24;

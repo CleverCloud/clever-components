@@ -9,7 +9,7 @@ import './cc-env-var-form.js';
  * @typedef {import('./cc-env-var-form.js').CcEnvVarForm} CcEnvVarForm
  * @typedef {import('../common.types.js').EnvVar} EnvVar
  * @typedef {import('../../lib/send-to-api.js').ApiConfig} ApiConfig
- * @typedef {import('../../lib/smart/smart-component.types.d.ts').OnContextUpdateArgs<CcEnvVarForm>} OnContextUpdateArgs
+ * @typedef {import('../../lib/smart/smart-component.types.js').OnContextUpdateArgs<CcEnvVarForm>} OnContextUpdateArgs
  */
 
 defineSmartComponent({
