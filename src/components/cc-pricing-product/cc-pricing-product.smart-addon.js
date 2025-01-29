@@ -17,7 +17,7 @@ import './cc-pricing-product.js';
  * @typedef {import('../common.types.js').Zone} Zone
  * @typedef {import('../common.types.js').Instance} Instance
  * @typedef {import('../../lib/send-to-api.types.js').ApiConfig} ApiConfig
- * @typedef {import('../../lib/smart/smart-component.types.d.ts').OnContextUpdateArgs<CcPricingProduct>} OnContextUpdateArgs
+ * @typedef {import('../../lib/smart/smart-component.types.js').OnContextUpdateArgs<CcPricingProduct>} OnContextUpdateArgs
  */
 
 defineSmartComponent({

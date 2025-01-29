@@ -15,7 +15,7 @@ import './cc-email-list.js';
  * @typedef {import('./cc-email-list.types.js').AddEmailFormState} AddEmailFormState
  * @typedef {import('./cc-email-list.types.js').AddEmailError} AddEmailError
  * @typedef {import('../../lib/send-to-api.types.js').ApiConfig} ApiConfig
- * @typedef {import('../../lib/smart/smart-component.types.d.ts').OnContextUpdateArgs<CcEmailList>} OnContextUpdateArgs
+ * @typedef {import('../../lib/smart/smart-component.types.js').OnContextUpdateArgs<CcEmailList>} OnContextUpdateArgs
  */
 
 defineSmartComponent({

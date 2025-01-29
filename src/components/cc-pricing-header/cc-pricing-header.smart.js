@@ -12,7 +12,7 @@ import './cc-pricing-header.js';
  * @typedef {import('./cc-pricing-header.types.js').PricingHeaderStateLoaded} PricingHeaderStateLoaded
  * @typedef {import('../common.types.js').Zone} Zone
  * @typedef {import('../../lib/send-to-api.types.js').ApiConfig} ApiConfig
- * @typedef {import('../../lib/smart/smart-component.types.d.ts').OnContextUpdateArgs<CcPricingHeader>} OnContextUpdateArgs
+ * @typedef {import('../../lib/smart/smart-component.types.js').OnContextUpdateArgs<CcPricingHeader>} OnContextUpdateArgs
  */
 
 defineSmartComponent({

@@ -15,7 +15,7 @@ import './cc-addon-linked-apps.js';
  * @typedef {import('./cc-addon-linked-apps.types.js').LinkedApplication} LinkedApplication
  * @typedef {import('../common.types.js').Zone} Zone
  * @typedef {import('../../lib/send-to-api.js').ApiConfig} ApiConfig
- * @typedef {import('../../lib/smart/smart-component.types.d.ts').OnContextUpdateArgs<CcAddonLinkedApps>} OnContextUpdateArgs
+ * @typedef {import('../../lib/smart/smart-component.types.js').OnContextUpdateArgs<CcAddonLinkedApps>} OnContextUpdateArgs
  * @typedef {{ variant: { logo: string, name: string }}} Instance
  * @typedef {{ name: string, instance: Instance, id: string, zone: string }} RawApp
  */

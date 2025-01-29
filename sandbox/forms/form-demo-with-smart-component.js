@@ -15,7 +15,7 @@ import { updateRootContext } from '../../src/lib/smart/smart-manager.js';
  * @typedef {import('../../src/components/cc-input-text/cc-input-text.js').CcInputText} CcInputText
  * @typedef {import('../../src/lib/form/form.types.js').FormDataMap} FormDataMap
  * @typedef {import('../../src/lib/send-to-api.types.js').ApiConfig} ApiConfig
- * @typedef {import('../../src/lib/smart/smart-component.types.d.ts').OnContextUpdateArgs<FormDemoWithSmartComponent>} OnContextUpdateArgs
+ * @typedef {import('../../src/lib/smart/smart-component.types.js').OnContextUpdateArgs<FormDemoWithSmartComponent>} OnContextUpdateArgs
  * @typedef {import('./form-demo-with-smart-component.types.js').FormDemoWithSmartComponentState} FormDemoWithSmartComponentState
  * @typedef {import('lit/directives/ref.js').Ref<HTMLFormElement>} HTMLFormElementRef
  */

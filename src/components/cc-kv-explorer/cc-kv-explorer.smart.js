@@ -25,7 +25,7 @@ import { KvTerminalCtrl } from './kv-terminal-ctrl.js';
  * @typedef {import('./kv-key-editor-list-ctrl.js').KvKeyEditorListCtrl} KvKeyEditorListCtrl
  * @typedef {import('./kv-key-editor-set-ctrl.js').KvKeyEditorSetCtrl} KvKeyEditorSetCtrl
  * @typedef {import('./kv-key-editor-string-ctrl.js').KvKeyEditorStringCtrl} KvKeyEditorStringCtrl
- * @typedef {import('../../lib/smart/smart-component.types.d.ts').OnContextUpdateArgs<CcKvExplorer>} OnContextUpdateArgs
+ * @typedef {import('../../lib/smart/smart-component.types.js').OnContextUpdateArgs<CcKvExplorer>} OnContextUpdateArgs
  */
 
 defineSmartComponent({

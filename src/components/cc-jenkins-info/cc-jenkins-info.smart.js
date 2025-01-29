@@ -9,7 +9,7 @@ import './cc-jenkins-info.js';
  * @typedef {import('./cc-jenkins-info.js').CcJenkinsInfo} CcJenkinsInfo
  * @typedef {import('./cc-jenkins-info.types.js').JenkinsInfoStateLoaded} JenkinsInfoStateLoaded
  * @typedef {import('../../lib/send-to-api.js').ApiConfig} ApiConfig
- * @typedef {import('../../lib/smart/smart-component.types.d.ts').OnContextUpdateArgs<CcJenkinsInfo>} OnContextUpdateArgs
+ * @typedef {import('../../lib/smart/smart-component.types.js').OnContextUpdateArgs<CcJenkinsInfo>} OnContextUpdateArgs
  */
 
 defineSmartComponent({

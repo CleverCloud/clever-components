@@ -16,7 +16,7 @@ import './cc-tile-status-codes.js';
  * @typedef {import('./cc-tile-status-codes.types.js').StatusCodesData} StatusCodesData
  * @typedef {import('../../lib/send-to-api.types.js').ApiConfig} ApiConfig
  * @typedef {import('../../lib/send-to-api.types.js').Warp10ApiConfig} Warp10ApiConfig
- * @typedef {import('../../lib/smart/smart-component.types.d.ts').OnContextUpdateArgs<CcTileStatusCodes>} OnContextUpdateArgs
+ * @typedef {import('../../lib/smart/smart-component.types.js').OnContextUpdateArgs<CcTileStatusCodes>} OnContextUpdateArgs
  */
 
 defineSmartComponent({

@@ -11,7 +11,7 @@ import './cc-article-list.js';
  * @typedef {import('./cc-article-list.js').CcArticleList} CcArticleList
  * @typedef {import('../cc-article-card/cc-article-card.types.js').ArticleCard} ArticleCard
  * @typedef {import('../../lib/send-to-api.js').ApiConfig} ApiConfig
- * @typedef {import('../../lib/smart/smart-component.types.d.ts').OnContextUpdateArgs<CcArticleList>} OnContextUpdateArgs
+ * @typedef {import('../../lib/smart/smart-component.types.js').OnContextUpdateArgs<CcArticleList>} OnContextUpdateArgs
  */
 
 const FOUR_HOURS = 1000 * 60 * 60 * 4;

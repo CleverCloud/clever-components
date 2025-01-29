@@ -16,7 +16,7 @@ import { CcDomainManagement } from './cc-domain-management.js';
  * @typedef {import('./cc-domain-management.types.js').DomainState} DomainState
  * @typedef {import('./cc-domain-management.types.js').DomainInfo} DomainInfo
  * @typedef {import('../../lib/send-to-api.js').ApiConfig} ApiConfig
- * @typedef {import('../../lib/smart/smart-component.types.d.ts').OnContextUpdateArgs<CcDomainManagement>} OnContextUpdateArgs
+ * @typedef {import('../../lib/smart/smart-component.types.js').OnContextUpdateArgs<CcDomainManagement>} OnContextUpdateArgs
  * @typedef {{ fqdn: string }} RawDomainFromApi
  * @typedef {Omit<DomainInfo, 'isPrimary'>} DomainInfoWithoutIsPrimary
  */
