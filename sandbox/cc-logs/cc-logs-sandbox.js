@@ -49,17 +49,17 @@ class CcLogsSandbox extends LitElement {
   static get properties() {
     return {
       _dateDisplay: { type: String, state: true },
-      _rate: { type: Number, state: true },
+      _filterIps: { type: Array, state: true },
+      _filterLevels: { type: Array, state: true },
       _follow: { type: Boolean, state: true },
       _limit: { type: Number, state: true },
       _palette: { type: String, state: true },
+      _rate: { type: Number, state: true },
+      _started: { type: Boolean, state: true },
+      _stripAnsi: { type: Boolean, state: true },
       _timezone: { type: String, state: true },
       _useCustomMetadataRenderers: { type: Boolean, state: true },
       _wrapLines: { type: Boolean, state: true },
-      _stripAnsi: { type: Boolean, state: true },
-      _filterIps: { type: Array, state: true },
-      _filterLevels: { type: Array, state: true },
-      _started: { type: Boolean, state: true },
     };
   }
 

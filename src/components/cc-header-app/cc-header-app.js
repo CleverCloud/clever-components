@@ -73,8 +73,8 @@ const SKELETON_APP_INFO = {
 export class CcHeaderApp extends LitElement {
   static get properties() {
     return {
-      state: { type: Object },
       disableButtons: { type: Boolean, attribute: 'disable-buttons', reflect: true },
+      state: { type: Object },
       _lastUserAction: { type: String, state: true },
     };
   }

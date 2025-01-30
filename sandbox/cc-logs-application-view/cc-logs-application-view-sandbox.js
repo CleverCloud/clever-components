@@ -20,8 +20,8 @@ const DATE_RANGE_SELECTION_OPTIONS = [
 class CcLogsApplicationViewSandbox extends LitElement {
   static get properties() {
     return {
-      _ownerId: { type: String, state: true },
       _applicationId: { type: String, state: true },
+      _ownerId: { type: String, state: true },
     };
   }
 

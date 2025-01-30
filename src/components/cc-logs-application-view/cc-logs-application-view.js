@@ -100,13 +100,13 @@ export class CcLogsApplicationView extends LitElement {
       overflowWatermarkOffset: { type: Number, attribute: 'overflow-watermark-offset' },
       selectedInstances: { type: Array, attribute: 'selected-instances' },
       state: { type: Object },
-      _selectedDateRangeMenuEntry: { type: String, state: true },
-      _dateRangeValidation: { type: Object, state: true },
       _customDateRange: { type: Object, state: true },
-      _overflowDecision: { type: String, state: true },
+      _dateRangeValidation: { type: Object, state: true },
+      _fullscreen: { type: Boolean, state: true },
       _messageFilter: { type: String, state: true },
       _messageFilterMode: { type: String, state: true },
-      _fullscreen: { type: Boolean, state: true },
+      _overflowDecision: { type: String, state: true },
+      _selectedDateRangeMenuEntry: { type: String, state: true },
     };
   }
 

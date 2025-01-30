@@ -50,15 +50,15 @@ export class CcExampleComponent extends LitElement {
 
   static get properties() {
     return {
-      // Simple public properties/attributes
-      one: { type: String },
-      two: { type: Boolean },
-      three: { type: Array },
-      // If the property is multiple words and thus camelCase, you can force the default linked attribute to be kebab-case like this:
-      fooBarBaz: { type: String, attribute: 'foo-bar-baz' },
       // Setting `reflect: true` will automatically update the attribute value when the property is changed.
       // This way, if you use a CSS attribute selector like this `:host([enabled])`, you can have your styles react to property changes.
       enabled: { type: Boolean, reflect: true },
+      // If the property is multiple words and thus camelCase, you can force the default linked attribute to be kebab-case like this:
+      fooBarBaz: { type: String, attribute: 'foo-bar-baz' },
+      // Simple public properties/attributes
+      one: { type: String },
+      three: { type: Array },
+      two: { type: Boolean },
       // Private properties are prefixed with `_`
       // If it's described here, a change will trigger render().
       // Use state: true for private properties.

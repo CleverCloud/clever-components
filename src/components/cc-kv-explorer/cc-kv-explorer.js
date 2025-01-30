@@ -106,10 +106,10 @@ import '../cc-select/cc-select.js';
 export class CcKvExplorer extends LitElement {
   static get properties() {
     return {
-      terminalState: { type: Object, attribute: 'terminal-state' },
       detailState: { type: Object, attribute: 'detail-state' },
       state: { type: Object },
       supportedTypes: { type: Array, attribute: 'supported-types' },
+      terminalState: { type: Object, attribute: 'terminal-state' },
       _addFormSelectedType: { type: String, state: true },
     };
   }

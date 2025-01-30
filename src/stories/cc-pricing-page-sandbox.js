@@ -54,8 +54,8 @@ const FEATURES_TO_DISPLAY = [
 export class CcPricingPageSandbox extends LitElement {
   static get properties() {
     return {
-      selectedTemporality: { type: Object, attribute: 'selected-temporality' },
       selectedCurrency: { type: String, attribute: 'selected-currency' },
+      selectedTemporality: { type: Object, attribute: 'selected-temporality' },
       stateType: { type: String, attribute: 'state-type' },
       _estimationPrices: { type: Object, state: true },
     };
