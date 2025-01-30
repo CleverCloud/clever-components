@@ -25,29 +25,29 @@ import '../cc-notice/cc-notice.js';
  */
 
 const OAUTH_CONSUMER_RIGHTS = [
-  { name: 'access_organisations', label: 'label for access_organisations', section: 'access' },
-  { name: 'access_organisations_bills', label: 'label for access_organisations_bills', section: 'access' },
+  { name: 'access_organisations', label: 'access_organisations', section: 'access' },
+  { name: 'access_organisations_bills', label: 'access_organisations_bills', section: 'access' },
   {
     name: 'access_organisations_consumption_statistics',
-    label: 'label for access_organisations_consumption_statistics',
+    label: 'access_organisations_consumption_statistics',
     section: 'access',
   },
   {
     name: 'access_organisations_credit_count',
-    label: 'label for access_organisations_credit_count',
+    label: 'access_organisations_credit_count',
     section: 'access',
   },
-  { name: 'access_personal_information', label: 'label for access_personal_information', section: 'access' },
-  { name: 'manage_organisations', label: 'label for manage_organisations', section: 'manage' },
+  { name: 'access_personal_information', label: 'access_personal_information', section: 'access' },
+  { name: 'manage_organisations', label: 'manage_organisations', section: 'manage' },
   {
     name: 'manage_organisations_applications',
-    label: 'label for manage_organisations_applications',
+    label: 'manage_organisations_applications',
     section: 'manage',
   },
-  { name: 'manage_organisations_members', label: 'label for manage_organisations_members', section: 'manage' },
-  { name: 'manage_organisations_services', label: 'label for manage_organisations_services', section: 'manage' },
-  { name: 'manage_personal_information', label: 'label for manage_personal_information', section: 'manage' },
-  { name: 'manage_ssh_keys', label: 'label for manage_ssh_keys', section: 'manage' },
+  { name: 'manage_organisations_members', label: 'manage_organisations_members', section: 'manage' },
+  { name: 'manage_organisations_services', label: 'manage_organisations_services', section: 'manage' },
+  { name: 'manage_personal_information', label: 'manage_personal_information', section: 'manage' },
+  { name: 'manage_ssh_keys', label: 'manage_ssh_keys', section: 'manage' },
 ];
 
 const URL_VALIDATOR = {
@@ -197,6 +197,20 @@ export class CcOauthConsumerForm extends LitElement {
 
   firstUpdated() {
     this._validateCheckboxGroup();
+  }
+
+  /**
+   * @param {string} label
+   * @param {string} name
+   * @returns {string|null}
+   */
+  _getLabel(label, name) {
+    switch (label) {
+      case 'access':
+        return 'access-${right.name}';
+      case 'manage':
+        return 'manage-${right.name}';
+    }
   }
 
   render() {
@@ -444,9 +458,9 @@ export class CcOauthConsumerForm extends LitElement {
       css`
         /* region global */
 
-        :invalid {
+        /* :invalid {
           border: solid 2px red;
-        }
+        } */
 
         :host {
           display: block;
