@@ -2,6 +2,10 @@ import { css, html, LitElement } from 'lit';
 import { createRef, ref } from 'lit/directives/ref.js';
 import { dispatchCustomEvent } from '../../lib/events.js';
 import { formSubmit } from '../../lib/form/form-submit-directive.js';
+import { getFormDataMap } from '../../lib/form/form-utils.js';
+import { Validation } from '../../lib/form/validation.js';
+import { i18n } from '../../lib/i18n/i18n.js';
+import { accessibilityStyles } from '../../styles/accessibility.js';
 import { linkStyles } from '../../templates/cc-link/cc-link.js';
 import '../cc-block-section/cc-block-section.js';
 import '../cc-block/cc-block.js';
@@ -9,24 +13,68 @@ import '../cc-input-text/cc-input-text.js';
 import '../cc-notice/cc-notice.js';
 
 /**
- * @typedef {import('./cc-oauth-consumer-form.types.js').OAuthConsumerFormState} OAuthConsumerFormState
- * @typedef {import('./cc-oauth-consumer-form.types.js').OAuthConsumerFormStateDeleting} OAuthConsumerFormStateDeleting
- * @typedef {import('./cc-oauth-consumer-form.types.js').oauthConsumer} NewOauthConsumer
+ * @typedef {import('./cc-oauth-consumer-form.types.js').OauthConsumerFormState} OAuthConsumerFormState
+ * @typedef {import('./cc-oauth-consumer-form.types.js').OauthConsumerFormStateDeleting} OAuthConsumerFormStateDeleting
+ * @typedef {import('./cc-oauth-consumer-form.types.js').OauthConsumer} OauthConsumer
+ * @typedef {import('./cc-oauth-consumer-form.types.js').OauthConsumerRight} OauthConsumerRight
  * @typedef {import('lit').TemplateResult<1>} TemplateResult
  * @typedef {import('lit/directives/ref.js').Ref<HTMLFormElement>} HTMLFormElementRef
  * @typedef {import('../../lib/events.types.js').EventWithTarget<HTMLInputElement|HTMLTextAreaElement>} HTMLInputOrTextareaEvent
  * @typedef {import('../../lib/form/form.types.js').FormDataMap} FormDataMap
+ * @typedef {import('../../lib/form/validation.types.js').Validity} Validity
  */
 
+const OAUTH_CONSUMER_RIGHTS = [
+  { name: 'access_organisations', label: 'label for access_organisations', section: 'access' },
+  { name: 'access_organisations_bills', label: 'label for access_organisations_bills', section: 'access' },
+  {
+    name: 'access_organisations_consumption_statistics',
+    label: 'label for access_organisations_consumption_statistics',
+    section: 'access',
+  },
+  {
+    name: 'access_organisations_credit_count',
+    label: 'label for access_organisations_credit_count',
+    section: 'access',
+  },
+  { name: 'access_personal_information', label: 'label for access_personal_information', section: 'access' },
+  { name: 'manage_organisations', label: 'label for manage_organisations', section: 'manage' },
+  {
+    name: 'manage_organisations_applications',
+    label: 'label for manage_organisations_applications',
+    section: 'manage',
+  },
+  { name: 'manage_organisations_members', label: 'label for manage_organisations_members', section: 'manage' },
+  { name: 'manage_organisations_services', label: 'label for manage_organisations_services', section: 'manage' },
+  { name: 'manage_personal_information', label: 'label for manage_personal_information', section: 'manage' },
+  { name: 'manage_ssh_keys', label: 'label for manage_ssh_keys', section: 'manage' },
+];
+
+const URL_VALIDATOR = {
+  /**
+   * @param {string} value
+   * @return {Validity}
+   */
+  validate: (value) => {
+    try {
+      new URL(value);
+      return Validation.VALID;
+    } catch (error) {
+      return Validation.invalid('invalidUrl');
+    }
+  },
+};
+
 /**
- * @fires {CustomEvent<NewOauthConsumer>} cc-oauth-consumer-form:create - Fires when clicking the creation form submit button.
- * @fires {CustomEvent<NewOauthConsumer>} cc-oauth-consumer-form:update - Fires when clicking the update form submit button.
- * @fires {CustomEvent<OAuthConsumerFormStateDeleting>} cc-oauth-consumer-form:delete - Fires whenever the delete button is clicked.
+ * @fires {CustomEvent<OauthConsumer>} cc-oauth-consumer-form:create - Fires when clicking the creation form submit button.
+ * @fires {CustomEvent<OauthConsumer>} cc-oauth-consumer-form:update - Fires when clicking the update form submit button.
+ * @fires {CustomEvent} cc-oauth-consumer-form:delete - Fires whenever the delete button is clicked.
  */
 export class CcOauthConsumerForm extends LitElement {
   static get properties() {
     return {
       oauthConsumerFormState: { type: Object, attribute: false },
+      _hasCheckboxGroupError: { type: Boolean, state: true },
     };
   }
 
@@ -38,6 +86,10 @@ export class CcOauthConsumerForm extends LitElement {
 
     /** @type {HTMLFormElementRef} */
     this._formRef = createRef();
+
+    this._customErrorMessages = { invalidUrl: i18n('cc-oauth-consumer-form.url.error.message') };
+
+    this.hasCheckboxGroupError = false;
   }
 
   resetOauthConsumerForm() {
@@ -50,12 +102,10 @@ export class CcOauthConsumerForm extends LitElement {
   _selectAllAccessCheckboxes(e) {
     const selectAllCheckbox = e.target;
     const checkboxes = this.shadowRoot.querySelectorAll('.access-checkboxes');
+    /** @type  */
     checkboxes.forEach((checkbox) => {
       checkbox.checked = selectAllCheckbox.checked;
     });
-    // for (let i = 0; i < checkboxes.length; i++) {
-    //   checkboxes[i].checked = true;
-    // }
   }
 
   /**
@@ -73,26 +123,80 @@ export class CcOauthConsumerForm extends LitElement {
    * @param {FormDataMap} data
    */
   _onFormSubmit(data) {
-    // TODO: fix to switch between 'idle-create' and 'idle-update'
+    this._hasCheckboxGroupError = false;
+    const oauthConsumer = {
+      name: data.name,
+      homePageUrl: data.homePageUrl,
+      appBaseUrl: data.appBaseUrl,
+      description: data.description,
+      image: data.image,
+      rights: Object.fromEntries(
+        OAUTH_CONSUMER_RIGHTS.map((right) => {
+          return [right.name, data?.manage?.includes(right.name) || data?.access?.includes(right.name)];
+        }),
+      ),
+    };
+
     if (this.oauthConsumerFormState.type === 'idle-create') {
       this.oauthConsumerFormState = {
         type: 'idle-create',
-        values: data,
+        ...oauthConsumer,
       };
-      dispatchCustomEvent(this, 'create', data);
+      dispatchCustomEvent(this, 'create', oauthConsumer);
     }
     if (this.oauthConsumerFormState.type === 'idle-update') {
       this.oauthConsumerFormState = {
         type: 'idle-update',
-        values: data,
+        ...oauthConsumer,
       };
-      dispatchCustomEvent(this, 'update', data);
+      dispatchCustomEvent(this, 'update', oauthConsumer);
     }
   }
 
   /** @param {OAuthConsumerFormStateDeleting} oauthConsumer */
   _onDeleteOauthConsumer(oauthConsumer) {
     dispatchCustomEvent(this, 'delete', oauthConsumer);
+  }
+
+  _validateCheckboxGroup() {
+    const data = getFormDataMap(this._formRef.value);
+    console.log(data);
+    if (data.access == null && data.manage == null) {
+      console.log('erreur');
+      const selection1 = this.shadowRoot.querySelector('#access-options-container input[type="checkbox"][name]');
+      const selection2 = this.shadowRoot.querySelector('#manage-options-container input[type="checkbox"][name]');
+
+      selection1.setCustomValidity('error');
+      selection2.setCustomValidity('error');
+    } else {
+      const selection1 = this.shadowRoot.querySelector('#access-options-container input[type="checkbox"][name]');
+      const selection2 = this.shadowRoot.querySelector('#manage-options-container input[type="checkbox"][name]');
+
+      selection1.setCustomValidity('');
+      selection2.setCustomValidity('');
+
+      console.log('ok');
+    }
+  }
+
+  _onFormInvalid(validationResult) {
+    console.log(validationResult);
+
+    const isCheckboxGroupValid = validationResult.every(({ name, validity }) => {
+      console.log(name);
+      console.log(validity);
+      return (name !== 'access' && name !== 'manage') || validity.valid;
+    });
+    if (isCheckboxGroupValid) {
+      this._hasCheckboxGroupError = false;
+    } else {
+      this._hasCheckboxGroupError = true;
+    }
+    console.log(isCheckboxGroupValid);
+  }
+
+  firstUpdated() {
+    this._validateCheckboxGroup();
   }
 
   render() {
@@ -130,7 +234,12 @@ export class CcOauthConsumerForm extends LitElement {
     const isLoading = this.oauthConsumerFormState.type === 'loading';
 
     return html`
-      <form slot="content" class="oauth-form" ${formSubmit(this._onFormSubmit.bind(this))} ${ref(this._formRef)}>
+      <form
+        slot="content"
+        class="oauth-form"
+        ${formSubmit(this._onFormSubmit.bind(this), this._onFormInvalid.bind(this))}
+        ${ref(this._formRef)}
+      >
         <cc-block-section class="info-block">
           <div slot="title">Informations</div>
 
@@ -141,7 +250,7 @@ export class CcOauthConsumerForm extends LitElement {
             placeholder="No value yet..."
             ?readonly=${isWaiting}
             ?skeleton=${isLoading}
-            .value=${this.oauthConsumerFormState?.values?.name}
+            .value=${this.oauthConsumerFormState?.name}
           ></cc-input-text>
           <cc-input-text
             name="homePageUrl"
@@ -150,7 +259,9 @@ export class CcOauthConsumerForm extends LitElement {
             placeholder="No value yet..."
             ?readonly=${isWaiting}
             ?skeleton=${isLoading}
-            .value=${this.oauthConsumerFormState?.values?.homePageUrl}
+            .value=${this.oauthConsumerFormState?.homePageUrl}
+            .customValidator=${URL_VALIDATOR}
+            .customErrorMessages=${this._customErrorMessages}
           ></cc-input-text>
           <cc-input-text
             name="appBaseUrl"
@@ -159,7 +270,9 @@ export class CcOauthConsumerForm extends LitElement {
             placeholder="No value yet..."
             ?readonly=${isWaiting}
             ?skeleton=${isLoading}
-            .value=${this.oauthConsumerFormState?.values?.appBaseUrl}
+            .value=${this.oauthConsumerFormState?.appBaseUrl}
+            .customValidator=${URL_VALIDATOR}
+            .customErrorMessages=${this._customErrorMessages}
           ></cc-input-text>
           <cc-input-text
             name="description"
@@ -169,7 +282,7 @@ export class CcOauthConsumerForm extends LitElement {
             multi
             ?readonly=${isWaiting}
             ?skeleton=${isLoading}
-            .value=${this.oauthConsumerFormState?.values?.description}
+            .value=${this.oauthConsumerFormState?.description}
           ></cc-input-text>
           <cc-input-text
             name="image"
@@ -178,163 +291,44 @@ export class CcOauthConsumerForm extends LitElement {
             placeholder="No value yet..."
             ?readonly=${isWaiting}
             ?skeleton=${isLoading}
-            .value=${this.oauthConsumerFormState?.values?.image}
+            .value=${this.oauthConsumerFormState?.image}
+            .customValidator=${URL_VALIDATOR}
+            .customErrorMessages=${this._customErrorMessages}
           ></cc-input-text>
         </cc-block-section>
 
         <cc-block-section class="auth-block">
-          <div slot="title">Authorisations</div>
+          <fieldset tabindex="-1" class="options-container">
+            <legend slot="title">Authorisations</legend>
+            <div class="error-message">${this._hasCheckboxGroupError ? 'erreur' : ''}</div>
 
-          <div class="options-container">
-            <div id="access-options-container">
+            <fieldset id="access-options-container" @input="${this._validateCheckboxGroup}">
+              <legend class="visually-hidden">Access</legend>
               <div class="select-all-option">
                 <input
                   id="select-all-access"
                   type="checkbox"
-                  name="access"
-                  @click=${this._selectAllAccessCheckboxes}
                   ?disabled=${isWaiting || isLoading}
+                  @click=${this._selectAllAccessCheckboxes}
                 />
                 <label for="select-all-access">Access all</label>
               </div>
-              <div class="access-options">
-                <div>
-                  <input
-                    type="checkbox"
-                    id="option-access-credit"
-                    class="access-checkboxes"
-                    name="access-credit"
-                    ?disabled=${isWaiting || isLoading}
-                  />
-                  <label for="option-access-credit">Access my organizations' credit count</label>
-                </div>
-                <div>
-                  <input
-                    type="checkbox"
-                    id="option-access-organizations"
-                    class="access-checkboxes"
-                    name="access-organizations"
-                    ?disabled=${isWaiting || isLoading}
-                  />
-                  <label for="option-access-organizations">Access my organizations</label>
-                </div>
-                <div>
-                  <input
-                    type="checkbox"
-                    id="option-access-information"
-                    class="access-checkboxes"
-                    name="access-information"
-                    ?disabled=${isWaiting || isLoading}
-                  />
-                  <label for="option-access-information">Access my personal information</label>
-                </div>
-                <div>
-                  <input
-                    type="checkbox"
-                    id="option-access-consumption"
-                    class="access-checkboxes"
-                    name="access-consumption"
-                    ?disabled=${isWaiting || isLoading}
-                  />
-                  <label for="option-access-consumption">Access my organizations' consumption statistics</label>
-                </div>
-                <div>
-                  <input
-                    type="checkbox"
-                    id="access-bills"
-                    class="access-checkboxes"
-                    name="access-bills"
-                    ?disabled=${isWaiting || isLoading}
-                  />
-                  <label for="option-access-bills">Access my organizations' bills</label>
-                </div>
-              </div>
-            </div>
-            <div id="manage-options-container">
+              <div class="access-options">${this._renderRightsSection('access')}</div>
+            </fieldset>
+            <fieldset id="manage-options-container">
+              <legend class="visually-hidden">Manage</legend>
               <div class="select-all-option">
                 <input
                   id="select-all-manage"
                   type="checkbox"
-                  name="manage"
-                  @click=${this._selectAllManageCheckboxes}
                   ?disabled=${isWaiting || isLoading}
+                  @click=${this._selectAllManageCheckboxes}
                 />
                 <label for="select-all-manage">Manage all</label>
               </div>
-              <div class="manage-options">
-                <div>
-                  <input
-                    type="checkbox"
-                    id="option-manage-organizations"
-                    class="manage-checkboxes"
-                    name="manage-organizations"
-                    ?disabled=${isWaiting || isLoading}
-                  />
-                  <label for="option-manage-organizations">Manage my organizations</label>
-                </div>
-                <div>
-                  <input
-                    type="checkbox"
-                    id="option-change-password"
-                    class="manage-checkboxes"
-                    name="change-password"
-                    ?disabled=${isWaiting || isLoading}
-                  />
-                  <label for="option-change-password">Change my password</label>
-                </div>
-                <div>
-                  <input
-                    type="checkbox"
-                    id="option-manage-applications"
-                    class="manage-checkboxes"
-                    name="manage-applications"
-                    ?disabled=${isWaiting || isLoading}
-                  />
-                  <label for="option-manage-applications">Manage my organizations' applications</label>
-                </div>
-                <div>
-                  <input
-                    type="checkbox"
-                    id="option-manage-informations"
-                    class="manage-checkboxes"
-                    name="manage-informations"
-                    ?disabled=${isWaiting || isLoading}
-                  />
-                  <label for="option-manage-informations">Manage my personal informations</label>
-                </div>
-                <div>
-                  <input
-                    type="checkbox"
-                    id="option-manage-members"
-                    class="manage-checkboxes"
-                    name="manage-members"
-                    ?disabled=${isWaiting || isLoading}
-                  />
-                  <label for="option-manage-members">Manage my organizations' members</label>
-                </div>
-                <div>
-                  <input
-                    type="checkbox"
-                    id="option-manage-ssh-keys"
-                    class="manage-checkboxes"
-                    name="manage-ssh-keys"
-                    ?disabled=${isWaiting || isLoading}
-                  />
-                  <label for="option-manage-ssh-keys">Manage my ssh keys</label>
-                </div>
-                <div>
-                  <input
-                    type="checkbox"
-                    id="option-manage-add-ons"
-                    class="manage-checkboxes"
-                    name="manage-add-ons"
-                    ?disabled=${isWaiting || isLoading}
-                  />
-                  <label for="option-manage-add-ons">Manage my organizations' add-ons</label>
-                </div>
-              </div>
-            </div>
-          </div>
+              <div class="manage-options">${this._renderRightsSection('manage')}</div>
+            </fieldset>
+          </fieldset>
         </cc-block-section>
         <div class="oauth-form-buttons">
           ${this.oauthConsumerFormState.type === 'idle-create' || this.oauthConsumerFormState.type === 'creating'
@@ -403,12 +397,56 @@ export class CcOauthConsumerForm extends LitElement {
     `;
   }
 
+  /**
+   * @param {'access' | 'manage'} section
+   */
+  _renderRightsSection(section) {
+    const isWaiting =
+      this.oauthConsumerFormState.type === 'creating' ||
+      this.oauthConsumerFormState.type === 'updating' ||
+      this.oauthConsumerFormState.type === 'deleting';
+    const isLoading = this.oauthConsumerFormState.type === 'loading';
+    const isUpdateMode =
+      this.oauthConsumerFormState.type === 'idle-update' ||
+      this.oauthConsumerFormState.type === 'updating' ||
+      this.oauthConsumerFormState.type === 'deleting' ||
+      this.oauthConsumerFormState.type === 'loading';
+
+    return OAUTH_CONSUMER_RIGHTS.filter((right) => {
+      return right.section === section;
+    }).map((right) => {
+      const isChecked =
+        isUpdateMode &&
+        (this.oauthConsumerFormState?.rights?.find((stateRight) => stateRight.name === right.name)?.isEnabled ?? false);
+      return html`
+        <div>
+          <input
+            type="checkbox"
+            id="checkbox-right-${right.name}"
+            class="${section}-checkboxes"
+            name="${section}"
+            ?disabled=${isWaiting || isLoading}
+            .checked="${isChecked}"
+            .value="${right.name}"
+          />
+          <!-- TODO: getLabel with switch (see cc-domain-management getErrorMessage)  -->
+          <label for="checkbox-right-${right.name}">${right.label}</label>
+        </div>
+      `;
+    });
+  }
+
   static get styles() {
     return [
       linkStyles,
+      accessibilityStyles,
       // language=CSS
       css`
         /* region global */
+
+        :invalid {
+          border: solid 2px red;
+        }
 
         :host {
           display: block;

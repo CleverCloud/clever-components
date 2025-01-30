@@ -951,7 +951,7 @@ export const translations = {
   `,
   'cc-matomo-info.about.title': `À propos`,
   'cc-matomo-info.documentation.text': `Matomo - Documentation`,
-  'cc-matomo-info.error': `Une erreur est survenue pendant le chargement des informations de l'add-on.`,
+  'cc-matomo-info.error': `An error occured while fetching the information about this add-on.`,
   'cc-matomo-info.heading': `Cet add-on Matomo inclut toutes les dépendances nécessaires à son bon fonctionnement.`,
   'cc-matomo-info.info': `Info`,
   'cc-matomo-info.link.mysql': `Accéder à l'add-on MySQL`,
@@ -971,6 +971,9 @@ export const translations = {
   //#region cc-order-summary
   'cc-order-summary.create': `Créer`,
   'cc-order-summary.title': `Récapitulatif de commande`,
+  //#endregion
+  //#region cc-oauth-consumer-form
+  'cc-oauth-consumer-form.url.error.message': `Saisissez une url valide. Exemple: https://example.com`,
   //#endregion
   //#region cc-orga-member-card
   'cc-orga-member-card.btn.cancel.accessible-name': /** @param {{memberIdentity: string}} _ */ ({ memberIdentity }) =>

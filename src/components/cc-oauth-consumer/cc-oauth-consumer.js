@@ -1,6 +1,8 @@
 import { css, html, LitElement } from 'lit';
+import { ccLink } from '../../templates/cc-link/cc-link.js';
 import '../cc-block-section/cc-block-section.js';
 import '../cc-block/cc-block.js';
+import '../cc-input-text/cc-input-text.js';
 import '../cc-notice/cc-notice.js';
 
 const SKELETON_OAUTH_CONSUMER_INFO = {
@@ -44,6 +46,7 @@ export class CcOauthConsumer extends LitElement {
     return html`
       <div class="wrapper">
         <cc-block>
+          <div slot="header-icon"></div>
           <div slot="header-title">oAuth Consumer</div>
           <div slot="content">
             Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium architecto consectetur eius eum nulla
@@ -53,27 +56,49 @@ export class CcOauthConsumer extends LitElement {
         </cc-block>
 
         <cc-block>
-          <cc-block-section slot="content-body">
+          <cc-block-section slot="content-body" class="access-block">
             <div slot="title">Access</div>
             <div class="access-url">
-              <div>App base</div>
-              <div>url ${oauthConsumerInfo.appBaseUrl}</div>
-              <div>Home page url</div>
-              <div>${oauthConsumerInfo.homePageUrl}</div>
+              <div class="base-url">
+                <p>App base</p>
+                <div>${ccLink(oauthConsumerInfo.appBaseUrl, oauthConsumerInfo.appBaseUrl)}</div>
+              </div>
+              <div class="home-url">
+                <p>Home page url</p>
+                <div>${ccLink(oauthConsumerInfo.homePageUrl, oauthConsumerInfo.homePageUrl)}</div>
+              </div>
             </div>
             <div class="oauth-credits">
-              <div>Key</div>
-              <div>${oauthConsumerInfo.key}</div>
-              <div>Secret</div>
-              <div>${oauthConsumerInfo.secret}</div>
+              <div class="key">
+                <cc-input-text label="Key" readonly clipboard value=${oauthConsumerInfo.key}></cc-input-text>
+              </div>
+              <div class="secret">
+                <cc-input-text
+                  label="Secret"
+                  readonly
+                  secret
+                  clipboard
+                  value=${oauthConsumerInfo.secret}
+                ></cc-input-text>
+              </div>
             </div>
           </cc-block-section>
-          <cc-block-section slot="content-body">
+          <cc-block-section slot="content-body" class="auth-block">
             <div slot="title">Authorizations</div>
+            ${this._renderOptions}
           </cc-block-section>
         </cc-block>
       </div>
     `;
+  }
+
+  _renderOptions() {
+    const checkboxes = this.state.type === 'loaded' ? this.state.options : '';
+    checkboxes.forEach((checkbox) => {
+      this.state.type === 'loaded'
+        ? html` <input type="checkbox" id="${this.state.options.values}" name="${this.state.options.values}" /> `
+        : '';
+    });
   }
 
   static get styles() {
@@ -89,6 +114,51 @@ export class CcOauthConsumer extends LitElement {
           display: flex;
           flex-direction: column;
           gap: 1.5em;
+        }
+
+        /* region Access */
+        .access-block {
+          margin-inline: 2em;
+        }
+
+        .access-url {
+          display: flex;
+          flex-direction: row;
+          flex-wrap: wrap;
+          gap: 1em;
+          justify-content: start;
+        }
+
+        .access-url > div {
+          display: grid;
+        }
+
+        /* .base-url {
+          display: grid;
+          gap: 0.5em;
+        }
+
+        .home-url {
+          display: grid;
+          gap: 0.5em;
+        } */
+
+        .oauth-credits {
+          display: flex;
+          flex-direction: row;
+          flex-wrap: wrap;
+          gap: 2em;
+          justify-content: start;
+        }
+
+        .oauth-credits > div {
+          display: grid;
+          gap: 0.5em;
+        }
+
+        /* region Authorizations */
+        .auth-block {
+          margin-inline: 2em;
         }
       `,
     ];

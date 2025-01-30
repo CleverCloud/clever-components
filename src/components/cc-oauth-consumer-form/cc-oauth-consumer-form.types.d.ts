@@ -1,76 +1,50 @@
-export type OAuthConsumerFormState =
-  | OAuthConsumerFormStateIdleCreate
-  | OAuthConsumerFormStateCreating
-  | OAuthConsumerFormStateIdleUpdate
-  | OAuthConsumerFormStateUpdating
-  | OAuthConsumerFormStateDeleting
-  | OAuthConsumerFormLoading
-  | OAuthConsumerFormStateError;
+export type OauthConsumerFormState =
+  | OauthConsumerFormStateIdleCreate
+  | OauthConsumerFormStateCreating
+  | OauthConsumerFormStateIdleUpdate
+  | OauthConsumerFormStateUpdating
+  | OauthConsumerFormStateDeleting
+  | OauthConsumerFormStateLoading
+  | OauthConsumerFormStateError;
 
-export interface OAuthConsumerFormStateIdleCreate {
+export interface OauthConsumerFormStateIdleCreate {
   type: 'idle-create';
 }
 
-export interface OAuthConsumerFormStateCreating {
+export interface OauthConsumerFormStateCreating {
   type: 'creating';
 }
 
-export interface OAuthConsumerFormStateIdleUpdate {
+export interface OauthConsumerFormStateIdleUpdate extends OauthConsumer {
   type: 'idle-update';
-  values?: {
-    name: string;
-    homePageUrl: string;
-    appBaseUrl: string;
-    description: string;
-    image: string;
-    rights: Array<Right>;
-  };
 }
 
-export interface OAuthConsumerFormStateUpdating {
+export interface OauthConsumerFormStateUpdating extends OauthConsumer {
   type: 'updating';
-  values?: {
-    name: string;
-    homePageUrl: string;
-    appBaseUrl: string;
-    description: string;
-    image: string;
-    rights: Array<Right>;
-  };
 }
 
-export interface OAuthConsumerFormStateDeleting {
+export interface OauthConsumerFormStateDeleting extends OauthConsumer {
   type: 'deleting';
-  values?: {
-    name: string;
-    homePageUrl: string;
-    appBaseUrl: string;
-    description: string;
-    image: string;
-    rights: Array<Right>;
-  };
 }
 
-export interface OAuthConsumerFormLoading {
+export interface OauthConsumerFormStateLoading {
   type: 'loading';
 }
 
-export interface OAuthConsumerFormStateError {
+export interface OauthConsumerFormStateError {
   type: 'error';
 }
 
-export interface oauthConsumer {
+export interface OauthConsumer {
   name: string;
   homePageUrl: string;
   appBaseUrl: string;
   description: string;
   image: string;
-  rights: Array<Right>;
+  rights: Array<OauthConsumerRight>;
 }
 
-interface Right {
-  value: string;
-  isEnable: boolean;
+export interface OauthConsumerRight {
+  name: string;
+  isEnabled: boolean;
 }
-
-export type OAuthConsumerFormContextType = 'create' | 'update';

@@ -956,6 +956,9 @@ export const translations = {
   'cc-notice.icon-alt.success': `Success`,
   'cc-notice.icon-alt.warning': `Warning`,
   //#endregion
+  //#region cc-oauth-consumer-form
+  'cc-oauth-consumer-form.url.error.message': `Enter a valid url. Example: https://example.com`,
+  //#endregion
   //#region cc-order-summary
   'cc-order-summary.create': `Create`,
   'cc-order-summary.title': `Order summary`,
