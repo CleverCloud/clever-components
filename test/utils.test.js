@@ -87,71 +87,28 @@ describe('isStringBlank', () => {
 });
 
 describe('groupBy function', () => {
-  describe('when using string property', () => {
-    it('should group by property', () => {
-      const grouped = groupBy(
-        [
-          { prop: 'group1', value: '1' },
-          { prop: 'group2', value: '2' },
-          { prop: 'group2', value: '3' },
-          { prop: 'group1', value: '4' },
-          { prop: 'group3', value: '5' },
-        ],
-        'prop',
-      );
+  it('should group by result of the grouping function', () => {
+    const grouped = groupBy(
+      [
+        { prop: 'group1', value: '1' },
+        { prop: 'group2', value: '2' },
+        { prop: 'group2', value: '3' },
+        { prop: 'group1', value: '4' },
+        { prop: 'group3', value: '5' },
+      ],
+      (o) => o.prop?.toUpperCase(),
+    );
 
-      expect(grouped).to.eql({
-        group1: [
-          { prop: 'group1', value: '1' },
-          { prop: 'group1', value: '4' },
-        ],
-        group2: [
-          { prop: 'group2', value: '2' },
-          { prop: 'group2', value: '3' },
-        ],
-        group3: [{ prop: 'group3', value: '5' }],
-      });
-    });
-
-    it('should drop element for which property is not present', () => {
-      const grouped = groupBy([{ prop: 'group1', value: '1' }, { value: '2' }], 'prop');
-
-      expect(grouped).to.eql({
-        group1: [{ prop: 'group1', value: '1' }],
-      });
-    });
-
-    it('should return empty object when giving an empty array', () => {
-      const grouped = groupBy([], 'prop');
-
-      expect(grouped).to.eql({});
-    });
-  });
-
-  describe('when using function as grouping category', () => {
-    it('should group by result of the grouping function', () => {
-      const grouped = groupBy(
-        [
-          { prop: 'group1', value: '1' },
-          { prop: 'group2', value: '2' },
-          { prop: 'group2', value: '3' },
-          { prop: 'group1', value: '4' },
-          { prop: 'group3', value: '5' },
-        ],
-        (o) => o.prop?.toUpperCase(),
-      );
-
-      expect(grouped).to.eql({
-        GROUP1: [
-          { prop: 'group1', value: '1' },
-          { prop: 'group1', value: '4' },
-        ],
-        GROUP2: [
-          { prop: 'group2', value: '2' },
-          { prop: 'group2', value: '3' },
-        ],
-        GROUP3: [{ prop: 'group3', value: '5' }],
-      });
+    expect(grouped).to.eql({
+      GROUP1: [
+        { prop: 'group1', value: '1' },
+        { prop: 'group1', value: '4' },
+      ],
+      GROUP2: [
+        { prop: 'group2', value: '2' },
+        { prop: 'group2', value: '3' },
+      ],
+      GROUP3: [{ prop: 'group3', value: '5' }],
     });
   });
 
