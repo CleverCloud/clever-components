@@ -384,6 +384,7 @@ export class CcKvTerminal extends LitElement {
           align-items: center;
           display: flex;
           gap: 0.2em;
+          position: relative;
         }
 
         .prompt input {
