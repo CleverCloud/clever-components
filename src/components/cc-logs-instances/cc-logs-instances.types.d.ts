@@ -41,6 +41,7 @@ export type InstanceState =
 export type InstanceKind = 'BUILD' | 'RUN';
 
 export interface Instance {
+  ghost: false;
   id: string;
   name: string;
   index: number;

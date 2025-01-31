@@ -60,6 +60,14 @@ const DEPLOYMENT_WIP_STATES = ['QUEUED', 'WORK_IN_PROGRESS'];
 
 /**
  * @typedef {import('./cc-logs-instances.types.js').LogsInstancesState} LogsInstancesState
+ * @typedef {import('./cc-logs-instances.types.js').DeploymentState} DeploymentState
+ * @typedef {import('./cc-logs-instances.types.js').Deployment} Deployment
+ * @typedef {import('./cc-logs-instances.types.js').InstanceState} InstanceState
+ * @typedef {import('./cc-logs-instances.types.js').Instance} Instance
+ * @typedef {import('./cc-logs-instances.types.js').GhostInstance} GhostInstance
+ * @typedef {import('../common.types.js').IconModel} IconModel
+ * @typedef {import('../../lib/events.types.js').EventWithTarget<HTMLInputElement>} HTMLInputElementEvent
+ * @typedef {import('../../lib/i18n/i18n.types.js').Translated} Translated
  */
 
 /**
@@ -88,25 +96,42 @@ export class CcLogsInstances extends LitElement {
     };
   }
 
+  /**
+   * @param {string} instanceId
+   * @returns {boolean}
+   */
   _isSelected(instanceId) {
     return this.state.state === 'loaded' && this.state.selection != null && this.state.selection.includes(instanceId);
   }
 
-  _onInstanceClick(e) {
-    const instanceId = e.target.id;
-    if (this._isSelected(instanceId)) {
-      this.state = {
-        ...this.state,
-        selection: this.state.selection.filter((i) => i !== instanceId),
-      };
-    } else {
-      this.state = {
-        ...this.state,
-        selection: [...(this.state.selection ?? []), instanceId],
-      };
-    }
+  /**
+   * @param {Array<Instance|GhostInstance>} instances
+   * @return {{ghostInstances: Array<GhostInstance>, realInstances: Array<Instance>}}
+   */
+  _splitGhostInstances(instances) {
+    return groupBy(instances, (instance) => (instance.ghost ? 'ghostInstances' : 'realInstances'));
+  }
 
-    dispatchCustomEvent(this, 'selection-change', this.state.selection);
+  /**
+   * @param {HTMLInputElementEvent} e
+   */
+  _onInstanceClick(e) {
+    if (this.state.state === 'loaded') {
+      const instanceId = e.target.id;
+      if (this._isSelected(instanceId)) {
+        this.state = {
+          ...this.state,
+          selection: this.state.selection.filter((i) => i !== instanceId),
+        };
+      } else {
+        this.state = {
+          ...this.state,
+          selection: [...(this.state.selection ?? []), instanceId],
+        };
+      }
+
+      dispatchCustomEvent(this, 'selection-change', this.state.selection);
+    }
   }
 
   render() {
@@ -137,9 +162,7 @@ export class CcLogsInstances extends LitElement {
    * @param {Array<Instance|GhostInstance>} instances
    */
   _renderColdMode(instances) {
-    const { ghost: ghostInstances, real: realInstances } = groupBy(instances, (instance) =>
-      instance.ghost ? 'ghost' : 'real',
-    );
+    const { ghostInstances, realInstances } = this._splitGhostInstances(instances);
 
     return html`
       <fieldset class="section section--cold">
@@ -147,7 +170,7 @@ export class CcLogsInstances extends LitElement {
           title: i18n('cc-logs-instances.cold.header'),
         })}
         ${realInstances?.length > 0
-          ? this._renderInstancesGroupedByDeployment(instances, false)
+          ? this._renderInstancesGroupedByDeployment(realInstances)
           : html`<div class="empty">${i18n('cc-logs-instances.cold.empty')}</div>`}
       </fieldset>
       ${this._renderGhostInstances(ghostInstances)}
@@ -167,9 +190,7 @@ export class CcLogsInstances extends LitElement {
     /** @type {Array<Instance>} */
     const deletedInstances = [];
 
-    const { ghost: ghostInstances, real: realInstances } = groupBy(instances, (instance) =>
-      instance.ghost ? 'ghost' : 'real',
-    );
+    const { ghostInstances, realInstances } = this._splitGhostInstances(instances);
 
     (realInstances || []).sort(INSTANCE_SORT_ORDER).forEach((instance) => {
       if (DEPLOYMENT_WIP_STATES.includes(instance.deployment.state)) {
@@ -272,7 +293,7 @@ export class CcLogsInstances extends LitElement {
           title: i18n('cc-logs-instances.deleted.header'),
           icon: iconHeaderDeleted,
         })}
-        ${this._renderInstancesGroupedByDeployment(instances, false)}
+        ${this._renderInstancesGroupedByDeployment(instances)}
       </fieldset>
     `;
   }
@@ -314,6 +335,9 @@ export class CcLogsInstances extends LitElement {
     `;
   }
 
+  /**
+   * @param {{title: Translated, icon?: IconModel, commit?: string}} args
+   */
   _renderHeader({ title, icon, commit }) {
     return html`
       <legend class="section-header">
@@ -326,9 +350,8 @@ export class CcLogsInstances extends LitElement {
 
   /**
    * @param {Array<Instance>} instances
-   * @param {boolean} renderState
    */
-  _renderInstancesGroupedByDeployment(instances, renderState) {
+  _renderInstancesGroupedByDeployment(instances) {
     const groups = groupBy(instances, (instance) => instance.deployment?.id);
 
     return html`
@@ -343,7 +366,7 @@ export class CcLogsInstances extends LitElement {
             ({ instances }) => html`
               <fieldset class="deployment">
                 ${this._renderDeploymentDetails(instances[0].deployment)}
-                <div class="instances">${this._renderInstances(instances, renderState)}</div>
+                <div class="instances">${this._renderInstances(instances, false)}</div>
               </fieldset>
             `,
           )}
@@ -433,6 +456,8 @@ export class CcLogsInstances extends LitElement {
         class: 'deployment-state--cancelled',
       };
     }
+
+    return null;
   }
 
   /**
@@ -481,7 +506,6 @@ export class CcLogsInstances extends LitElement {
   }
 
   /**
-   *
    * @param {Instance} instance
    */
   _renderInstanceState(instance) {
@@ -495,12 +519,18 @@ export class CcLogsInstances extends LitElement {
     `;
   }
 
+  /**
+   * @param {string} commit
+   */
   _renderCommit(commit) {
     return html` <span class="commit" title=${i18n('cc-logs-instances.commit.title', { commit })}>
       ${commit.substring(0, 7)}
     </span>`;
   }
 
+  /**
+   * @param {Instance} instance
+   */
   _renderInstanceIndex(instance) {
     const title =
       instance.kind === 'BUILD'
