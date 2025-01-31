@@ -79,17 +79,15 @@ export function sortBy(propertyName, desc = false) {
 }
 
 /**
- * @template {Object<string, any>} T
  * @param {Array<T>} array
- * @param {string|((value: T) => string)} key
- * @return {Object<string, Array<T>>}
+ * @param {(value: T) => V} keyProvider
+ * @return {Object<V, Array<T>>}
+ * @template {Object} T
+ * @template {string} V
  */
-export function groupBy(array, key) {
-  /** @type {Object<string, Array<T>>} */
+export function groupBy(array, keyProvider) {
+  /** @type {Object<V, Array<T>>} */
   const groups = {};
-
-  /** @type {string|((value: T) => string)} */
-  const keyProvider = typeof key === 'string' ? (value) => value[key] : key;
 
   for (const value of array) {
     const prop = keyProvider(value);
