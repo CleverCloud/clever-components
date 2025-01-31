@@ -8,7 +8,6 @@ export const accessibilityStyles = css`
     height: 1px;
     overflow: hidden;
     position: absolute;
-    top: 0; /* this fixes a bug in Chrome when this style is used into a grid element (and has overflow) */
     white-space: nowrap;
     width: 1px;
   }
