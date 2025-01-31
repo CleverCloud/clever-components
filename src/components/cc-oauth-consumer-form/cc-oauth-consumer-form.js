@@ -87,7 +87,7 @@ export class CcOauthConsumerForm extends LitElement {
     /** @type {HTMLFormElementRef} */
     this._formRef = createRef();
 
-    this._customErrorMessages = { invalidUrl: i18n('cc-oauth-consumer-form.url.error.message') };
+    this._customErrorMessages = { invalidUrl: i18n('cc-oauth-consumer-form.info.url.error.message') };
 
     this.hasCheckboxGroupError = false;
   }
@@ -102,7 +102,7 @@ export class CcOauthConsumerForm extends LitElement {
   _selectAllAccessCheckboxes(e) {
     const selectAllCheckbox = e.target;
     const checkboxes = this.shadowRoot.querySelectorAll('.access-checkboxes');
-    /** @type  */
+    /** @type */
     checkboxes.forEach((checkbox) => {
       checkbox.checked = selectAllCheckbox.checked;
     });
@@ -200,16 +200,33 @@ export class CcOauthConsumerForm extends LitElement {
   }
 
   /**
-   * @param {string} label
-   * @param {string} name
-   * @returns {string|null}
+   * @param {string|null} label
+   * @returns {string|Node}
    */
-  _getLabel(label, name) {
+  _getLabel(label) {
     switch (label) {
-      case 'access':
-        return 'access-${right.name}';
-      case 'manage':
-        return 'manage-${right.name}';
+      case 'access_organisations':
+        return i18n('cc-oauth-consumer-form.auth.access.option.access-organisations');
+      case 'access_organisations_bills':
+        return i18n('cc-oauth-consumer-form.auth.access.option.access-organisations-bills');
+      case 'access_organisations_consumption_statistics':
+        return i18n('cc-oauth-consumer-form.auth.access.option.access-organisations-consumption-statistics');
+      case 'access_organisations_credit_count':
+        return i18n('cc-oauth-consumer-form.auth.access.option.access-organisations-credit-count');
+      case 'access_personal_information':
+        return i18n('cc-oauth-consumer-form.auth.access.option.access-personal-information');
+      case 'manage_organisations':
+        return i18n('cc-oauth-consumer-form.auth.manage.option.manage-organisations');
+      case 'manage_organisations_applications':
+        return i18n('cc-oauth-consumer-form.auth.manage.option.manage-organisations-applications');
+      case 'manage_organisations_members':
+        return i18n('cc-oauth-consumer-form.auth.manage.option.manage-organisations-members');
+      case 'manage_organisations_services':
+        return i18n('cc-oauth-consumer-form.auth.manage.option.manage-organisations-services');
+      case 'manage_personal_information':
+        return i18n('cc-oauth-consumer-form.auth.manage.option.manage-personal-information');
+      case 'manage_ssh_keys':
+        return i18n('cc-oauth-consumer-form.auth.manage.option.manage-ssh-keys');
     }
   }
 
@@ -255,22 +272,22 @@ export class CcOauthConsumerForm extends LitElement {
         ${ref(this._formRef)}
       >
         <cc-block-section class="info-block">
-          <div slot="title">Informations</div>
+          <div slot="title">${i18n('cc-oauth-consumer-form.info.title')}</div>
 
           <cc-input-text
             name="name"
-            label="Name"
+            label="${i18n('cc-oauth-consumer-form.info.name.label')}"
             required
-            placeholder="No value yet..."
+            placeholder="${i18n('cc-oauth-consumer-form.info.place-holder')}"
             ?readonly=${isWaiting}
             ?skeleton=${isLoading}
             .value=${this.oauthConsumerFormState?.name}
           ></cc-input-text>
           <cc-input-text
             name="homePageUrl"
-            label="Home page url"
+            label="${i18n('cc-oauth-consumer-form.info.homepage-url.label')}"
             required
-            placeholder="No value yet..."
+            placeholder="${i18n('cc-oauth-consumer-form.info.place-holder')}"
             ?readonly=${isWaiting}
             ?skeleton=${isLoading}
             .value=${this.oauthConsumerFormState?.homePageUrl}
@@ -279,9 +296,9 @@ export class CcOauthConsumerForm extends LitElement {
           ></cc-input-text>
           <cc-input-text
             name="appBaseUrl"
-            label="App base url"
+            label="${i18n('cc-oauth-consumer-form.info.base-url.label')}"
             required
-            placeholder="No value yet..."
+            placeholder="${i18n('cc-oauth-consumer-form.info.place-holder')}"
             ?readonly=${isWaiting}
             ?skeleton=${isLoading}
             .value=${this.oauthConsumerFormState?.appBaseUrl}
@@ -290,9 +307,9 @@ export class CcOauthConsumerForm extends LitElement {
           ></cc-input-text>
           <cc-input-text
             name="description"
-            label="Description"
+            label="${i18n('cc-oauth-consumer-form.info.description.label')}"
             required
-            placeholder="No value yet..."
+            placeholder="${i18n('cc-oauth-consumer-form.info.place-holder')}"
             multi
             ?readonly=${isWaiting}
             ?skeleton=${isLoading}
@@ -300,9 +317,9 @@ export class CcOauthConsumerForm extends LitElement {
           ></cc-input-text>
           <cc-input-text
             name="image"
-            label="Image"
+            label="${i18n('cc-oauth-consumer-form.info.image.label')}"
             required
-            placeholder="No value yet..."
+            placeholder="${i18n('cc-oauth-consumer-form.info.place-holder')}"
             ?readonly=${isWaiting}
             ?skeleton=${isLoading}
             .value=${this.oauthConsumerFormState?.image}
@@ -313,11 +330,11 @@ export class CcOauthConsumerForm extends LitElement {
 
         <cc-block-section class="auth-block">
           <fieldset tabindex="-1" class="options-container">
-            <legend slot="title">Authorisations</legend>
+            <legend slot="title">${i18n('cc-oauth-consumer-form.auth.title')}</legend>
             <div class="error-message">${this._hasCheckboxGroupError ? 'erreur' : ''}</div>
 
             <fieldset id="access-options-container" @input="${this._validateCheckboxGroup}">
-              <legend class="visually-hidden">Access</legend>
+              <legend class="visually-hidden">${i18n('cc-oauth-consumer-form.auth.legend.access')}</legend>
               <div class="select-all-option">
                 <input
                   id="select-all-access"
@@ -325,12 +342,12 @@ export class CcOauthConsumerForm extends LitElement {
                   ?disabled=${isWaiting || isLoading}
                   @click=${this._selectAllAccessCheckboxes}
                 />
-                <label for="select-all-access">Access all</label>
+                <label for="select-all-access">${i18n('cc-oauth-consumer-form.auth.access.select-all')}</label>
               </div>
               <div class="access-options">${this._renderRightsSection('access')}</div>
             </fieldset>
             <fieldset id="manage-options-container">
-              <legend class="visually-hidden">Manage</legend>
+              <legend class="visually-hidden">${i18n('cc-oauth-consumer-form.auth.legend.manage')}</legend>
               <div class="select-all-option">
                 <input
                   id="select-all-manage"
@@ -338,7 +355,7 @@ export class CcOauthConsumerForm extends LitElement {
                   ?disabled=${isWaiting || isLoading}
                   @click=${this._selectAllManageCheckboxes}
                 />
-                <label for="select-all-manage">Manage all</label>
+                <label for="select-all-manage">${i18n('cc-oauth-consumer-form.auth.manage.select-all')}</label>
               </div>
               <div class="manage-options">${this._renderRightsSection('manage')}</div>
             </fieldset>
@@ -347,9 +364,11 @@ export class CcOauthConsumerForm extends LitElement {
         <div class="oauth-form-buttons">
           ${this.oauthConsumerFormState.type === 'idle-create' || this.oauthConsumerFormState.type === 'creating'
             ? html`
-                <cc-button danger outlined type="reset" ?disabled=${isWaiting}>Cancel</cc-button>
+                <cc-button danger outlined type="reset" ?disabled=${isWaiting}
+                  >${i18n('cc-oauth-consumer-form.button.cancel')}</cc-button
+                >
                 <cc-button primary type="submit" ?waiting="${this.oauthConsumerFormState.type === 'creating'}"
-                  >Create</cc-button
+                  >${i18n('cc-oauth-consumer-form.button.create')}</cc-button
                 >
               `
             : ''}
@@ -364,7 +383,7 @@ export class CcOauthConsumerForm extends LitElement {
                   type="reset"
                   ?disabled=${isWaiting || this.oauthConsumerFormState.type === 'deleting'}
                   ?skeleton=${isLoading}
-                  >Reset Change</cc-button
+                  >${i18n('cc-oauth-consumer-form.button.reset')}</cc-button
                 >
                 <cc-button
                   primary
@@ -373,7 +392,7 @@ export class CcOauthConsumerForm extends LitElement {
                   this.oauthConsumerFormState.type === 'deleting'}
                   ?waiting="${this.oauthConsumerFormState.type === 'updating'}"
                   ?skeleton=${isLoading}
-                  >Update</cc-button
+                  >${i18n('cc-oauth-consumer-form.button.update')}</cc-button
                 >
               `
             : ''}
@@ -405,7 +424,7 @@ export class CcOauthConsumerForm extends LitElement {
           this.oauthConsumerFormState.type === 'loading'}
           ?waiting="${this.oauthConsumerFormState.type === 'deleting'}"
           @cc-button:click=${() => this._onDeleteOauthConsumer(oauthConsumer)}
-          >Delete</cc-button
+          >${i18n('cc-oauth-consumer-form.button.delete')}</cc-button
         >
       </cc-block>
     `;
@@ -444,7 +463,7 @@ export class CcOauthConsumerForm extends LitElement {
             .value="${right.name}"
           />
           <!-- TODO: getLabel with switch (see cc-domain-management getErrorMessage)  -->
-          <label for="checkbox-right-${right.name}">${right.label}</label>
+          <label for="checkbox-right-${right.name}">${this._getLabel(right.label)}</label>
         </div>
       `;
     });
