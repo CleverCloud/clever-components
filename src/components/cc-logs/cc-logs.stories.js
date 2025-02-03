@@ -13,12 +13,18 @@ export default {
   component: 'cc-logs-beta',
 };
 
+/**
+ * @typedef {import('./cc-logs.js').CcLogs} CcLogs
+ * @typedef {import('./cc-logs.types.js').Log} Log
+ */
+
 const conf = {
   component: 'cc-logs-beta',
   beta: true,
 };
 
 export const defaultStory = makeStory(conf, {
+  /** @type {Array<Partial<CcLogs>>} */
   items: [
     {
       logs: createFakeLogs(5),
@@ -27,6 +33,7 @@ export const defaultStory = makeStory(conf, {
 });
 
 export const dataLoadedWithWrapLines = makeStory(conf, {
+  /** @type {Array<Partial<CcLogs>>} */
   items: [
     {
       logs: createFakeLogs(5, { longMessage: true }),
@@ -36,6 +43,7 @@ export const dataLoadedWithWrapLines = makeStory(conf, {
 });
 
 export const dataLoadedWithCustomMetadataRenderer = makeStory(conf, {
+  /** @type {Array<Partial<CcLogs>>} */
   items: [
     {
       logs: createFakeLogs(5),
@@ -53,6 +61,7 @@ const HIDDEN_METADATA_RENDERERS = {
   },
 };
 export const dataLoadedWithHiddenMetadata = makeStory(conf, {
+  /** @type {Array<Partial<CcLogs>>} */
   items: [
     {
       logs: createFakeLogs(5),
@@ -62,6 +71,7 @@ export const dataLoadedWithHiddenMetadata = makeStory(conf, {
 });
 
 export const dataLoadedWithManyMetadata = makeStory(conf, {
+  /** @type {Array<Partial<CcLogs>>} */
   items: [
     {
       logs: createFakeLogs(5, { manyMetadata: true }),
@@ -70,6 +80,7 @@ export const dataLoadedWithManyMetadata = makeStory(conf, {
 });
 
 export const dataLoadedWithManyMetadataWithWrapLines = makeStory(conf, {
+  /** @type {Array<Partial<CcLogs>>} */
   items: [
     {
       logs: createFakeLogs(5, { manyMetadata: true }),
@@ -79,6 +90,7 @@ export const dataLoadedWithManyMetadataWithWrapLines = makeStory(conf, {
 });
 
 export const dataLoadedWithNoTimestamp = makeStory(conf, {
+  /** @type {Array<Partial<CcLogs>>} */
   items: [
     {
       logs: createFakeLogs(5),
@@ -88,6 +100,7 @@ export const dataLoadedWithNoTimestamp = makeStory(conf, {
 });
 
 export const dataLoadedWithTimestampIsoTimeOnly = makeStory(conf, {
+  /** @type {Array<Partial<CcLogs>>} */
   items: [
     {
       logs: createFakeLogs(5),
@@ -97,6 +110,7 @@ export const dataLoadedWithTimestampIsoTimeOnly = makeStory(conf, {
 });
 
 export const dataLoadedWithTimestampShortDateTime = makeStory(conf, {
+  /** @type {Array<Partial<CcLogs>>} */
   items: [
     {
       logs: createFakeLogs(5),
@@ -106,6 +120,7 @@ export const dataLoadedWithTimestampShortDateTime = makeStory(conf, {
 });
 
 export const dataLoadedWithTimestampShortTimeOnly = makeStory(conf, {
+  /** @type {Array<Partial<CcLogs>>} */
   items: [
     {
       logs: createFakeLogs(5),
@@ -115,6 +130,7 @@ export const dataLoadedWithTimestampShortTimeOnly = makeStory(conf, {
 });
 
 export const dataLoadedWithTimezoneLocal = makeStory(conf, {
+  /** @type {Array<Partial<CcLogs>>} */
   items: [
     {
       logs: createFakeLogs(5),
@@ -124,6 +140,7 @@ export const dataLoadedWithTimezoneLocal = makeStory(conf, {
 });
 
 export const dataLoadedWithAnsiMessage = makeStory(conf, {
+  /** @type {Array<Partial<CcLogs>>} */
   items: [
     {
       logs: createFakeLogs(5, { ansi: true }),
@@ -132,6 +149,7 @@ export const dataLoadedWithAnsiMessage = makeStory(conf, {
 });
 
 export const dataLoadedWithAnsiMessageAndStripAnsiActivated = makeStory(conf, {
+  /** @type {Array<Partial<CcLogs>>} */
   items: [
     {
       logs: createFakeLogs(5, { ansi: true }),
@@ -141,13 +159,14 @@ export const dataLoadedWithAnsiMessageAndStripAnsiActivated = makeStory(conf, {
 });
 
 export const dataLoadedWithAsciiArt = makeStory(conf, {
+  /** @type {Array<Partial<CcLogs>>} */
   items: [
     {
       logs: [
-        { id: `1`, date: new Date(), message: ` _  _  ____  __    __     __  ` },
-        { id: `2`, date: new Date(), message: `/ )( \\(  __)(  )  (  )   /  \\` },
-        { id: `3`, date: new Date(), message: `) __ ( ) _) / (_/\\/ (_/\\(  O )` },
-        { id: `4`, date: new Date(), message: `\\_)(_/(____)\\____/\\____/ \\__/` },
+        { id: `1`, date: new Date(), message: ` _  _  ____  __    __     __  `, metadata: [] },
+        { id: `2`, date: new Date(), message: `/ )( \\(  __)(  )  (  )   /  \\`, metadata: [] },
+        { id: `3`, date: new Date(), message: `) __ ( ) _) / (_/\\/ (_/\\(  O )`, metadata: [] },
+        { id: `4`, date: new Date(), message: `\\_)(_/(____)\\____/\\____/ \\__/`, metadata: [] },
       ],
       stripAnsi: true,
     },
