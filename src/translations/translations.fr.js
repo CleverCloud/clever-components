@@ -923,6 +923,23 @@ export const translations = {
   'cc-logs-instances.running.header': `Instances démarrées`,
   'cc-logs-instances.stopping.header': `Instances arrêtées`,
   //#endregion
+  //#region cc-logs-loading-progress
+  'cc-logs-loading-progress.progress.loaded': `Logs chargés : 100%`,
+  'cc-logs-loading-progress.progress.loading': /** @param {{percent: number}} _ */ ({ percent }) =>
+    `Chargement des logs : ${formatPercent(lang, percent)}`,
+  'cc-logs-loading-progress.progress.loading.live': `Chargement en temps réel...`,
+  'cc-logs-loading-progress.progress.message': /** @param {{count: number}} _ */ ({ count }) =>
+    `${formatNumber(lang, count)} logs chargés`,
+  'cc-logs-loading-progress.progress.overflow.continue': `Continuer`,
+  'cc-logs-loading-progress.progress.overflow.message': /** @param {{limit: number}} _ */ ({ limit }) =>
+    `Pour assurer de bonnes performances, seuls les ${formatNumber(lang, limit)} derniers logs sont visible.`,
+  'cc-logs-loading-progress.progress.overflow.message.almost': /** @param {{limit: number}} _ */ ({ limit }) =>
+    `Vous allez atteindre ${formatNumber(lang, limit)} logs chargés. Que voulez-vous faire ?`,
+  'cc-logs-loading-progress.progress.overflow.stop': `Arrêter`,
+  'cc-logs-loading-progress.progress.overflow.title': `Volume important`,
+  'cc-logs-loading-progress.progress.pause': `Mettre en pause`,
+  'cc-logs-loading-progress.progress.resume': `Reprendre`,
+  //#endregion
   //#region cc-logs-message-filter
   'cc-logs-message-filter.bad-format': `Regex invalide`,
   'cc-logs-message-filter.label': `Filtrer`,
