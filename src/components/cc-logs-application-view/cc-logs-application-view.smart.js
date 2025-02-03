@@ -14,18 +14,19 @@ import '../cc-smart-container/cc-smart-container.js';
 import './cc-logs-application-view.js';
 
 /**
+ * @typedef {import('./cc-logs-application-view.js').CcLogsApplicationView} CcLogsApplicationView
+ * @typedef {import('./cc-logs-application-view.types.js').LogsApplicationViewState} LogsApplicationViewState
+ * @typedef {import('./cc-logs-application-view.types.js').LogsApplicationViewStateLoaded} LogsApplicationViewStateLoaded
+ * @typedef {import('../cc-logs/cc-logs.types.js').Log} Log
+ * @typedef {import('../cc-logs-date-range-selector/cc-logs-date-range-selector.types.js').LogsDateRangeSelection} LogsDateRangeSelection
+ * @typedef {import('../cc-logs-date-range-selector/cc-logs-date-range-selector.types.js').LogsDateRangeSelectionChangeEventData} LogsDateRangeSelectionChangeEventData
  * @typedef {import('../cc-logs-instances/cc-logs-instances.types.js').Instance} Instance
  * @typedef {import('../cc-logs-instances/cc-logs-instances.types.js').GhostInstance} GhostInstance
  * @typedef {import('../cc-logs-instances/cc-logs-instances.types.js').Deployment} Deployment
- * @typedef {import('./cc-logs-application-view.types.js').LogsApplicationViewState} LogsApplicationViewState
- * @typedef {import('./cc-logs-application-view.types.js').LogsApplicationViewStateLogs} LogsApplicationViewStateLogs
- * @typedef {import('../cc-logs-date-range-selector/cc-logs-date-range-selector.types.js').LogsDateRangeSelection} LogsDateRangeSelection
- * @typedef {import('../cc-logs-date-range-selector/cc-logs-date-range-selector.types.js').LogsDateRangeSelectionChangeEventData} LogsDateRangeSelectionChangeEventData
- * @typedef {import('../cc-logs/cc-logs.types.js').Log} Log
+ * @typedef {import('../cc-logs-instances/cc-logs-instances.types.js').DeploymentState} DeploymentState
  * @typedef {import('../../lib/send-to-api.types.js').ApiConfig} ApiConfig
  * @typedef {import('../../lib/date/date-range.types.js').DateRange} DateRange
  * @typedef {import('../../lib/logs/logs-stream.types.js').LogsStreamState} LogsStreamState
- * @typedef {import('./cc-logs-application-view.js').CcLogsApplicationView} CcLogsApplicationView
  * @typedef {import('../../lib/smart/smart-component.types.js').UpdateComponentCallback<CcLogsApplicationView>} UpdateComponentCallback
  * @typedef {import('../../lib/smart/smart-component.types.js').OnContextUpdateArgs<CcLogsApplicationView>} OnContextUpdateArgs
  */
@@ -276,7 +277,7 @@ class LogsApplicationViewSmartController extends LogsStream {
         }
 
         // enable instance auto-refresh only for live mode
-        this._instancesManager.enabledAutoRefresh(isLive(this._dateRange));
+        this._instancesManager.toggleAutoRefresh(isLive(this._dateRange));
 
         // open the logs stream
         this.openLogsStream(this._dateRange);
@@ -373,7 +374,7 @@ class LogsApplicationViewSmartController extends LogsStream {
         }
 
         // enable instance auto-refresh only for live mode
-        this._instancesManager.enabledAutoRefresh(isLive(this._dateRange));
+        this._instancesManager.toggleAutoRefresh(isLive(this._dateRange));
 
         if (clearSelection) {
           this._selection = [];
@@ -417,7 +418,16 @@ class LogsApplicationViewSmartController extends LogsStream {
    */
   _onInstancesChanged(instances) {
     this._updateState((state) => {
-      state.instances = instances;
+      if (state.type === 'loaded') {
+        state.instances = instances;
+      } else if (state.type === 'loadingInstances') {
+        this._updateState({
+          type: 'loaded',
+          streamState: { type: 'idle' },
+          instances,
+          selection: this._selection,
+        });
+      }
     });
   }
 
@@ -442,12 +452,13 @@ class LogsApplicationViewSmartController extends LogsStream {
       return dateRange;
     }
 
+    const realInstances = /** @type {Array<Instance>} */ (instances);
     const now = new Date().getTime();
 
-    const minSinceInstance = instances
+    const minSinceInstance = realInstances
       .map((i) => i.creationDate.getTime())
       .reduce((previous, current) => Math.min(previous, current), Infinity);
-    let maxUntilInstance = instances
+    let maxUntilInstance = realInstances
       .map((i) => i.deletionDate?.getTime() ?? now)
       .reduce((previous, current) => Math.max(previous, current), -Infinity);
 
@@ -496,6 +507,10 @@ class InstancesManager {
     return instance;
   }
 
+  /**
+   * @param {string} id
+   * @returns {Instance | GhostInstance}
+   */
   getInstance(id) {
     return this._instancesMap.get(id);
   }
@@ -507,6 +522,7 @@ class InstancesManager {
    */
   async fetchInstances(since, until) {
     // Fetch instances that have been alive between the given date range.
+    /** @type {Array<any>} */
     const rawInstances = await this._api.fetchInstances(since, until);
 
     // Fetch all deployments in advance (in an optimized way) instead of letting the instance converter do it one by one
@@ -516,27 +532,29 @@ class InstancesManager {
     const instances = await Promise.all(rawInstances.map((rawInstance) => this._convert(rawInstance)));
 
     // Index them in our map of instances
-    index(instances, 'id', this._instancesMap);
+    index(instances, (i) => i.id, this._instancesMap);
 
     return instances;
   }
 
   /**
    * @param {string} deploymentId
-   * @return {Promise<Array<Instance | GhostInstance>>}
+   * @return {Promise<Array<Instance>>}
    */
   async fetchInstancesByDeployment(deploymentId) {
     // Fetch instances that have been alive between the given date range.
     const rawInstances = await this._api.fetchInstancesByDeployment(deploymentId);
 
     // Fetch all deployments in advance (in an optimized way) instead of letting the instance converter do it one by one
-    await this._deploymentsManager.fetchOrRefreshDeployments(rawInstances.map((instance) => instance.deploymentId));
+    await this._deploymentsManager.fetchOrRefreshDeployments(
+      rawInstances.map((rawInstance) => rawInstance.deploymentId),
+    );
 
     // Convert instances
     const instances = await Promise.all(rawInstances.map((rawInstance) => this._convert(rawInstance)));
 
     // Index them in our map of instances
-    index(instances, 'id', this._instancesMap);
+    index(instances, (i) => i.id, this._instancesMap);
 
     return instances;
   }
@@ -561,7 +579,10 @@ class InstancesManager {
     this._instancesMap.clear();
   }
 
-  enabledAutoRefresh(enable) {
+  /**
+   * @param {boolean} enable
+   */
+  toggleAutoRefresh(enable) {
     if (enable && this._refresher == null) {
       this._startRefresher();
     } else if (!enable && this._refresher != null) {
@@ -569,6 +590,9 @@ class InstancesManager {
     }
   }
 
+  /**
+   * @returns {Array<Instance>}
+   */
   getLastDeploymentInstances() {
     if (this._instancesMap.size === 0) {
       return [];
@@ -576,7 +600,15 @@ class InstancesManager {
 
     const lastDeployment = this._deploymentsManager.getLastDeployment();
 
-    return Array.from(this._instancesMap.values()).filter((instance) => instance.deployment === lastDeployment);
+    /** @type {Array<Instance>} */
+    const instances = [];
+    this._instancesMap.forEach((instance) => {
+      if (!isGhostInstance(instance) && instance.deployment === lastDeployment) {
+        instances.push(instance);
+      }
+    });
+
+    return instances;
   }
 
   _startRefresher() {
@@ -588,7 +620,9 @@ class InstancesManager {
 
       // Fetch all deployments in advance (in an optimized way) instead of letting the instance converter do it one by one
       await this._deploymentsManager.fetchOrRefreshDeployments(
-        instancesToRefresh.map((instance) => instance.deployment.id),
+        instancesToRefresh
+          .map((instance) => (isGhostInstance(instance) ? null : instance.deployment.id))
+          .filter((instance) => instance != null),
       );
 
       // Fetch those instance
@@ -596,7 +630,7 @@ class InstancesManager {
 
       // If at least one has changed, index them all and notify the change by calling the `onChange` callback.
       if (newInstances.some((instance) => this._hasChanged(instance))) {
-        index(newInstances, 'id', this._instancesMap);
+        index(newInstances, (i) => i.id, this._instancesMap);
         this._fireChanged();
       }
     }, INSTANCES_REFRESH_RATE);
@@ -617,7 +651,7 @@ class InstancesManager {
     try {
       rawInstance = await this._api.fetchInstance(id);
     } catch (e) {
-      if (e?.response?.status === 404) {
+      if (getErrorStatusCode(e) === 404) {
         return {
           ghost: true,
           id,
@@ -628,7 +662,7 @@ class InstancesManager {
   }
 
   /**
-   * @param {Object} raw
+   * @param {any} raw
    * @return {Promise<Instance>}
    */
   async _convert(raw) {
@@ -642,6 +676,7 @@ class InstancesManager {
 
     return {
       id: raw.id,
+      ghost: false,
       name: raw.name,
       index: raw.index,
       deployment: deployment,
@@ -669,6 +704,10 @@ class InstancesManager {
 
     if (isGhostInstance(currentInstance)) {
       return !isGhostInstance(newInstance);
+    }
+
+    if (isGhostInstance(newInstance)) {
+      return !isGhostInstance(currentInstance);
     }
 
     return (
@@ -720,7 +759,7 @@ class DeploymentsManager {
     const fetchedDeployments = await Promise.all(idsToFetch.map((id) => this._fetchAndConvert(id)));
 
     // We add them to our deployments map.
-    index(fetchedDeployments, 'id', this._deploymentsMap);
+    index(fetchedDeployments, (d) => d.id, this._deploymentsMap);
   }
 
   getLastDeployment() {
@@ -728,7 +767,10 @@ class DeploymentsManager {
       return null;
     }
 
-    const sortFn = (d1, d2) => {
+    const sortFn = /**
+     * @param {Deployment} d1
+     * @param {Deployment} d2
+     */ (d1, d2) => {
       if (isCurrentDeployment(d1)) {
         return -1;
       }
@@ -748,21 +790,22 @@ class DeploymentsManager {
    */
   async _fetchAndConvert(id) {
     try {
-      return await this._convertV4(await this._api.fetchDeployment(id), 'v4');
+      return await this._convertV4(await this._api.fetchDeployment(id));
     } catch (e) {
       // fallback to API v2. This is to be removed one day.
-      if (e?.response?.status === 404) {
-        return await this._convertV2(await this._api.fetchDeploymentV2(id), 'v2');
+      if (getErrorStatusCode(e) === 404) {
+        return await this._convertV2(await this._api.fetchDeploymentV2(id));
       }
       throw e;
     }
   }
 
   /**
-   * @param {Object} raw
+   * @param {any} raw
    * @return {Deployment}
    */
   _convertV4(raw) {
+    /** @type {Deployment} */
     const result = {
       id: raw.id,
       state: raw.state,
@@ -771,20 +814,23 @@ class DeploymentsManager {
     };
 
     if (result.state === 'SUCCEEDED' || result.state === 'FAILED' || result.state === 'CANCELLED') {
-      result.endDate = new Date(raw.steps.find((s) => s.state === result.state).date);
+      result.endDate = new Date(
+        raw.steps.find(/** @param {any} rawStep */ (rawStep) => rawStep.state === result.state).date,
+      );
     }
 
     return result;
   }
 
   /**
-   * @param {Object} raw
-   * @return {Deployment}
+   * @param {any} raw
+   * @return {Promise<Deployment>}
    */
   async _convertV2(raw) {
     // V2: WIP | OK | CANCELLED | FAIL
     // V4: QUEUED, WORK_IN_PROGRESS, FAILED, CANCELLED and SUCCEEDED.
 
+    /** @type {DeploymentState} */
     let state;
     if (raw.state === 'QUEUED') {
       state = 'QUEUED';
@@ -837,26 +883,47 @@ class Api {
     this._commonApiPrams = { id: ownerId, appId };
   }
 
+  /**
+   * @param {string} deploymentId
+   * @returns {Promise<any>}
+   */
   fetchDeployment(deploymentId) {
     return v4.getDeployment({ ...this._commonApiPrams, deploymentId }).then(sendToApi({ apiConfig: this._apiConfig }));
   }
 
+  /**
+   * @param {string} deploymentId
+   * @returns {Promise<any>}
+   */
   fetchDeploymentV2(deploymentId) {
     return v2.getDeployment({ ...this._commonApiPrams, deploymentId }).then(sendToApi({ apiConfig: this._apiConfig }));
   }
 
+  /**
+   * @param {string} since
+   * @param {string} until
+   * @returns {Promise<Array<any>>}
+   */
   fetchInstances(since, until) {
     return v4
       .getInstances({ ...this._commonApiPrams, limit: 100, since, until })
       .then(sendToApi({ apiConfig: this._apiConfig }));
   }
 
+  /**
+   * @param {string} deploymentId
+   * @returns {Promise<Array<any>>}
+   */
   fetchInstancesByDeployment(deploymentId) {
     return v4
       .getInstances({ ...this._commonApiPrams, limit: 100, deploymentId })
       .then(sendToApi({ apiConfig: this._apiConfig }));
   }
 
+  /**
+   * @param {string} instanceId
+   * @returns {Promise<Array<any>>}
+   */
   fetchInstance(instanceId) {
     return v4.getInstance({ ...this._commonApiPrams, instanceId }).then(sendToApi({ apiConfig: this._apiConfig }));
   }
@@ -865,6 +932,9 @@ class Api {
 // --- APIs ------
 
 const v4 = {
+  /**
+   * @param {{id: string, appId: string, limit?: number, since?: string, until?: string, deploymentId?: string, includeState?: boolean}} params
+   */
   getInstances(params) {
     return Promise.resolve({
       method: 'get',
@@ -873,6 +943,9 @@ const v4 = {
       queryParams: pickNonNull(params, ['limit', 'since', 'until', 'deploymentId', 'includeState']),
     });
   },
+  /**
+   * @param {{id: string, appId: string, instanceId?: string}} params
+   */
   getInstance(params) {
     return Promise.resolve({
       method: 'get',
@@ -880,6 +953,9 @@ const v4 = {
       headers: { Accept: 'application/json' },
     });
   },
+  /**
+   * @param {{id: string, appId: string, deploymentId?: string}} params
+   */
   getDeployment(params) {
     return Promise.resolve({
       method: 'get',
@@ -897,18 +973,19 @@ const v2 = {
 // --- utils ------
 
 /**
- * @param {Array<Object>} objects
- * @param {string} key
- * @param {Map} map
+ * @param {Array<T>} objects
+ * @param {(o: T) => V} key
+ * @param {Map<V, T>} map
+ * @template V
+ * @template T
  */
 function index(objects, key, map) {
   objects.forEach((o) => {
-    map.set(o[key], o);
+    map.set(key(o), o);
   });
 }
 
 /**
- *
  * @param {Instance | GhostInstance} instance
  * @return {instance is GhostInstance}
  */
@@ -916,8 +993,20 @@ function isGhostInstance(instance) {
   return instance.ghost === true;
 }
 
+/**
+ * @param {Deployment} deployment
+ * @returns {boolean}
+ */
 function isCurrentDeployment(deployment) {
   return deployment.state === 'WORK_IN_PROGRESS' || deployment.state === 'QUEUED' || deployment.endDate == null;
+}
+
+/**
+ * @param {{response?: { status: number}}} e
+ * @return {number|null}
+ */
+function getErrorStatusCode(e) {
+  return e.response?.status;
 }
 
 //
