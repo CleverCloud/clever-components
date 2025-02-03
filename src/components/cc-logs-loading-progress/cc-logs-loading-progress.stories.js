@@ -18,9 +18,7 @@ const conf = {
   // language=CSS
   css: `
     cc-logs-loading-progress-beta {
-      height: 18em;
-      width: 18em;
-      margin: 1em;
+      width: 100%;
     }
   `,
 };
@@ -167,8 +165,22 @@ export const completed = makeStory(conf, {
     {
       state: {
         type: 'completed',
-        value: 0,
+        value: 100,
         overflowing: false,
+      },
+      limit: 1000,
+    },
+  ],
+});
+
+export const completedWithOverflowing = makeStory(conf, {
+  /** @type {Array<Partial<CcLogsLoadingProgress>>} */
+  items: [
+    {
+      state: {
+        type: 'completed',
+        value: 10000,
+        overflowing: true,
       },
       limit: 1000,
     },

@@ -897,21 +897,21 @@ export const translations = {
   'cc-logs-instances.stopping.header': `Stopping instances`,
   //#endregion
   //#region cc-logs-loading-progress
-  'cc-logs-loading-progress.progress.loaded': `Logs loaded: 100%`,
-  'cc-logs-loading-progress.progress.loading': /** @param {{percent: number}} _ */ ({ percent }) =>
-    `Loading logs: ${formatPercent(lang, percent)}`,
-  'cc-logs-loading-progress.progress.loading.live': `Fetching realtime...`,
-  'cc-logs-loading-progress.progress.message': /** @param {{count: number}} _ */ ({ count }) =>
-    `${formatNumber(lang, count)} entries loaded`,
-  'cc-logs-loading-progress.progress.overflow.continue': `Continue`,
-  'cc-logs-loading-progress.progress.overflow.message': /** @param {{limit: number}} _ */ ({ limit }) =>
-    `To maintain optimal performance, only the last ${formatNumber(lang, limit)} logs are shown.`,
-  'cc-logs-loading-progress.progress.overflow.message.almost': /** @param {{limit: number}} _ */ ({ limit }) =>
+  'cc-logs-loading-progress.control.pause': `Pause`,
+  'cc-logs-loading-progress.control.resume': `Resume`,
+  'cc-logs-loading-progress.overflow.accept': `Continue`,
+  'cc-logs-loading-progress.overflow.discard': `Stop`,
+  'cc-logs-loading-progress.overflow.info': /** @param {{limit: number}} _ */ ({ limit }) =>
+    `Only the last ${formatNumber(lang, limit)} logs are displayed`,
+  'cc-logs-loading-progress.overflow.warning': /** @param {{limit: number}} _ */ ({ limit }) =>
     `You'll soon reach ${formatNumber(lang, limit)} logs loaded. What do you want to do?`,
-  'cc-logs-loading-progress.progress.overflow.stop': `Stop`,
-  'cc-logs-loading-progress.progress.overflow.title': `Large volume`,
-  'cc-logs-loading-progress.progress.pause': `Pause`,
-  'cc-logs-loading-progress.progress.resume': `Resume`,
+  'cc-logs-loading-progress.progress.indeterminate': /** @param {{count: number}} _ */ ({ count }) =>
+    `${formatNumber(lang, count)} logs loaded`,
+  'cc-logs-loading-progress.progress.none': `No logs loaded`,
+  'cc-logs-loading-progress.progress.percentage': /** @param {{count: number, percent: number}} _ */ ({
+    count,
+    percent,
+  }) => `${formatNumber(lang, count)} logs loaded (${formatPercent(lang, percent)})`,
   //#endregion
   //#region cc-logs-message-filter
   'cc-logs-message-filter.bad-format': `Invalid regex`,
