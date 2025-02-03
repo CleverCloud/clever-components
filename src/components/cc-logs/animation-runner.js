@@ -11,6 +11,7 @@ export class AnimationRunner {
    * @param {(nowTimestamp: number, startTimestamp: number, lastTickTimestamp: number) => boolean} animationCallback
    */
   start(animationCallback) {
+    /** @type {(nowTimestamp: number) => void} */
     this._animation = (nowTimestamp) => {
       const hasTicked = animationCallback(nowTimestamp, this._startTimestamp, this._lastTimestamp);
       if (hasTicked) {

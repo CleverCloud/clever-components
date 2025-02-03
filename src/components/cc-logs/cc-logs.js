@@ -36,8 +36,12 @@ const DEFAULT_METADATA_RENDERING = {
 
 // This style is the default ansi palette plus the ability to be overridden with the css theme.
 const DEFAULT_PALETTE_STYLE = ansiPaletteStyle(
-  Object.fromEntries(
-    Object.entries(defaultPalette).map(([name, color]) => [name, `var(--cc-color-ansi-default-${name}, ${color})`]),
+  // @ts-ignore
+  /** @type {AnsiPalette} */
+  (
+    Object.fromEntries(
+      Object.entries(defaultPalette).map(([name, color]) => [name, `var(--cc-color-ansi-default-${name}, ${color})`]),
+    )
   ),
 );
 
@@ -76,7 +80,10 @@ class TemporaryFunctionDisabler {
  * @typedef {import('./cc-logs.types.js').MetadataRendering} MetadataRendering
  * @typedef {import('./cc-logs.types.js').LogMessageFilterMode} LogMessageFilterMode
  * @typedef {import('./date-display.types.js').DateDisplay} DateDisplay
+ * @typedef {import('../../lib/ansi/ansi.types.js').AnsiPalette} AnsiPalette
  * @typedef {import('../../lib/date/date.types.js').Timezone} Timezone
+ * @typedef {import('../../lib/events.types.js').EventWithTarget<HTMLButtonElement>} HTMLButtonElementEvent
+ * @typedef {import('../../lib/events.types.js').GenericEventWithTarget<MouseEvent>} HTMLElementMouseEvent
  * @typedef {import('@lit-labs/virtualizer/events.js').RangeChangedEvent} RangeChangedEvent
  * @typedef {import('@lit-labs/virtualizer/events.js').VisibilityChangedEvent} VisibilityChangedEvent
  * @typedef {import('@lit-labs/virtualizer/LitVirtualizer.js').LitVirtualizer} Virtualizer
@@ -365,11 +372,11 @@ export class CcLogs extends LitElement {
    * In cases handled programmatically (when moving focus with arrow keys), the focus is already set.
    * But, this is needed when users click on the select button.
    *
-   * @param {FocusEvent & {target: HTMLButtonElement}} e
+   * @param {HTMLButtonElementEvent} e
    */
   _onFocusLog(e) {
     const button = e.target;
-    const logIndex = Number(button.closest(`.log`).dataset.index);
+    const logIndex = Number(/** @type {HTMLElement} */ (button.closest(`.log`)).dataset.index);
     this._logsCtrl.focus(logIndex, false);
   }
 
@@ -390,7 +397,9 @@ export class CcLogs extends LitElement {
       // The element we want to focus may not be in the DOM yet.
       // We may need to wait for the virtualizer to redo its layout before being able to focus the element.
       const tryToFocus = () => {
-        const element = this._logsRef.value.querySelector(`.log[data-index="${logIndex}"] .select_button`);
+        const element = /** @type {HTMLElement} */ (
+          this._logsRef.value.querySelector(`.log[data-index="${logIndex}"] .select_button`)
+        );
         if (element != null) {
           element.focus();
           return true;
@@ -478,12 +487,14 @@ export class CcLogs extends LitElement {
   _onMouseDownGutter(e) {
     // If the mouse down event doesn't come from the button, a text selection can happen.
     // We don't want this!
-    const isInButton = e.composedPath().some((element) => hasClass(element, 'select_button'));
+    const isInButton = e
+      .composedPath()
+      .some((element) => element instanceof HTMLElement && hasClass(element, 'select_button'));
     if (!isInButton) {
       e.preventDefault();
     }
 
-    this._inputCtrl.onMouseDownGutter(e);
+    this._inputCtrl.onMouseDownGutter();
     this._draggedLogIndex = null;
   }
 
@@ -592,7 +603,7 @@ export class CcLogs extends LitElement {
    * It clears the selection when users click on the logs container but not in the gutter area.
    * It also handles triple click: selects the whole log line (including timestamp and metadata)
    *
-   * @param {MouseEvent & {target : HTMLElement}} e
+   * @param {HTMLElementMouseEvent} e
    */
   _onClick(e) {
     if (e.detail === 3) {
@@ -796,9 +807,11 @@ export class CcLogs extends LitElement {
    * @param {CcLogsPropertyValues} _changedProperties
    */
   updated(_changedProperties) {
-    this._horizontalScrollbarHeight = this.wrapLines
-      ? 0
-      : this._logsRef.value.offsetHeight - this._logsRef.value.clientHeight;
+    if (this._logsRef.value != null) {
+      this._horizontalScrollbarHeight = this.wrapLines
+        ? 0
+        : this._logsRef.value.offsetHeight - this._logsRef.value.clientHeight;
+    }
   }
 
   render() {
