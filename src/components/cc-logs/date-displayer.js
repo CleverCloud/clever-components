@@ -3,9 +3,9 @@ import { MemoryCache } from '../../lib/memory-cache.js';
 
 /**
  * @typedef {import('./date-display.types.js').DateDisplay} DateDisplay
- * @typedef {import('../../lib/date-tmp/date.types.js').DateFormattedPart} DateFormattedPart
- * @typedef {import('../../lib/date-tmp/date.types.js').DateFormattedParts} DateFormattedParts
- * @typedef {import('../../lib/date-tmp/date.types.js').Timezone} Timezone
+ * @typedef {import('../../lib/date/date.types.js').DateFormattedPart} DateFormattedPart
+ * @typedef {import('../../lib/date/date.types.js').DateFormattedParts} DateFormattedParts
+ * @typedef {import('../../lib/date/date.types.js').Timezone} Timezone
  */
 
 /** @type {Array<DateFormattedPart>} */
@@ -79,8 +79,9 @@ export class DateDisplayer {
 
   /**
    * @param {Date} date - The date to format
-   * @param {(part: DateFormattedPart, partValue: string) => *} mapper - The function to apply to each part
-   * @return {Array} - The array resulting of the transformation of the given `mapper` on each part
+   * @param {(part: DateFormattedPart, partValue: string) => R} mapper - The function to apply to each part
+   * @return {Array<R>} - The array resulting of the transformation of the given `mapper` on each part
+   * @template R
    */
   formatAndMapParts(date, mapper) {
     if (this.display === 'none') {
@@ -91,12 +92,12 @@ export class DateDisplayer {
 
     return DATE_FORMATTED_PARTS.map((part) => [part, parts[part]])
       .filter(([_, partValue]) => partValue != null)
-      .map(([part, partValue]) => mapper(part, partValue));
+      .map(([part, partValue]) => mapper(/** @type {DateFormattedPart} */ (part), partValue));
   }
 
   /**
    * @param {Date} date - The date to format
-   * @return {DateFormattedParts|{}}
+   * @return {Partial<DateFormattedParts>}
    */
   formatToParts(date) {
     if (this._display === 'none') {
