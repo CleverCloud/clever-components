@@ -7,8 +7,6 @@ import {
 } from '../../assets/cc-remix.icons.js';
 import { dispatchCustomEvent } from '../../lib/events.js';
 import { i18n } from '../../translations/translation.js';
-import '../cc-datetime-relative/cc-datetime-relative.js';
-import '../cc-icon/cc-icon.js';
 import '../cc-loader/cc-loader.js';
 import '../cc-logs-control/cc-logs-control.js';
 import '../cc-logs-date-range-selector/cc-logs-date-range-selector.js';
@@ -17,7 +15,6 @@ import { buildLogsLoadingProgressState } from '../cc-logs-loading-progress/cc-lo
 import '../cc-logs-loading-progress/cc-logs-loading-progress.js';
 import '../cc-logs-message-filter/cc-logs-message-filter.js';
 import '../cc-notice/cc-notice.js';
-import '../cc-toggle/cc-toggle.js';
 
 /** @type {{instanceId: MetadataRenderer, instance: MetadataRenderer}} */
 const CUSTOM_METADATA_RENDERERS = {
