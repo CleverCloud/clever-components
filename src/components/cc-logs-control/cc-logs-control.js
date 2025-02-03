@@ -1,5 +1,4 @@
 import { css, html, LitElement } from 'lit';
-import { classMap } from 'lit/directives/class-map.js';
 import { createRef, ref } from 'lit/directives/ref.js';
 import {
   iconRemixCalendarScheduleLine as dateIcon,
@@ -38,15 +37,20 @@ const PALETTES = {
 };
 
 /**
- * @typedef {import('../cc-logs/date-display.types.js').DateDisplay} DateDisplay
- * @typedef {import('../cc-logs/cc-logs.types.js').Log} Log
- * @typedef {import('../cc-logs/cc-logs.types.js').MetadataFilter} MetadataFilter
- * @typedef {import('../cc-logs/cc-logs.types.js').MetadataRenderer} MetadataRenderer
- * @typedef {import('../cc-logs/cc-logs.types.js').LogMessageFilterMode} LogMessageFilterMode
  * @typedef {import('./cc-logs-control.types.js').LogsMetadataDisplay} LogsMetadataDisplay
  * @typedef {import('./cc-logs-control.types.js').LogsControlPalette} LogsControlPalette
  * @typedef {import('./cc-logs-control.types.js').LogsControlOption} LogsControlOption
+ * @typedef {import('../cc-logs/cc-logs.types.js').LogMessageFilterMode} LogMessageFilterMode
+ * @typedef {import('../cc-logs/date-display.types.js').DateDisplay} DateDisplay
+ * @typedef {import('../cc-logs/cc-logs.js').CcLogs} CcLogs
+ * @typedef {import('../cc-logs/cc-logs.types.js').Log} Log
+ * @typedef {import('../cc-logs/cc-logs.types.js').MetadataFilter} MetadataFilter
+ * @typedef {import('../cc-logs/cc-logs.types.js').MetadataRenderer} MetadataRenderer
  * @typedef {import('../../lib/date/date.types.js').Timezone} Timezone
+ * @typedef {import('../../lib/events.types.js').EventWithTarget<HTMLInputElement>} HTMLInputElementEvent
+ * @typedef {import('../../lib/i18n/i18n.types.js').Translated} Translated
+ * @typedef {import('lit').PropertyValues<CcLogsControl>} PropertyValues
+ * @typedef {import('lit/directives/ref.js').Ref<CcLogs>} CcLogsRef
  */
 
 /**
@@ -134,7 +138,7 @@ export class CcLogsControl extends LitElement {
     /** @type {boolean} Whether to wrap long lines. */
     this.wrapLines = false;
 
-    /** @type {Ref<CcLogs>} */
+    /** @type {CcLogsRef} */
     this._logsRef = createRef();
 
     /** @type {{[key: string]: MetadataRenderer}} The resolved metadata renderers to use for displaying metadata. */
@@ -167,34 +171,52 @@ export class CcLogsControl extends LitElement {
     this._logsRef.value?.scrollToBottom();
   }
 
-  _onPaletteChange({ detail }) {
-    this.palette = detail;
+  /**
+   * @param {CustomEvent<LogsControlPalette>} event
+   */
+  _onPaletteChange(event) {
+    this.palette = event.detail;
     dispatchCustomEvent(this, 'option-change', { name: 'palette', value: this.palette });
   }
 
-  _onStripAnsiChange(e) {
-    this.stripAnsi = e.target.checked;
+  /**
+   * @param {HTMLInputElementEvent} event
+   */
+  _onStripAnsiChange(event) {
+    this.stripAnsi = event.target.checked;
     dispatchCustomEvent(this, 'option-change', { name: 'strip-ansi', value: this.stripAnsi });
   }
 
-  _onWrapLinesChange(e) {
-    this.wrapLines = e.target.checked;
+  /**
+   * @param {HTMLInputElementEvent} event
+   */
+  _onWrapLinesChange(event) {
+    this.wrapLines = event.target.checked;
     dispatchCustomEvent(this, 'option-change', { name: 'wrap-lines', value: this.wrapLines });
   }
 
-  _onDateDisplayChange({ detail }) {
-    this.dateDisplay = detail;
+  /**
+   * @param {CustomEvent<DateDisplay>} event
+   */
+  _onDateDisplayChange(event) {
+    this.dateDisplay = event.detail;
     dispatchCustomEvent(this, 'option-change', { name: 'date-display', value: this.dateDisplay });
   }
 
-  _onTimezoneChange({ detail }) {
-    this.timezone = detail;
+  /**
+   * @param {CustomEvent<Timezone>} event
+   */
+  _onTimezoneChange(event) {
+    this.timezone = event.detail;
     dispatchCustomEvent(this, 'option-change', { name: 'timezone', value: this.timezone });
   }
 
-  _onMetadataChange(e) {
-    const name = e.target.dataset.name;
-    const isHidden = !e.target.checked;
+  /**
+   * @param {HTMLInputElementEvent} event
+   */
+  _onMetadataChange(event) {
+    const name = event.target.dataset.name;
+    const isHidden = !event.target.checked;
     this.metadataDisplay = {
       ...this.metadataDisplay,
       [name]: {
@@ -228,46 +250,42 @@ export class CcLogsControl extends LitElement {
   }
 
   /**
-   *
    * @param {DateDisplay} dateDisplay
-   * @return {string}
+   * @return {Translated}
    */
   _getDateDisplayLabel(dateDisplay) {
-    if (dateDisplay === 'none') {
-      return i18n('cc-logs-control.date-display.none');
-    }
-    if (dateDisplay === 'datetime-iso') {
-      return i18n('cc-logs-control.date-display.datetime-iso');
-    }
-    if (dateDisplay === 'time-iso') {
-      return i18n('cc-logs-control.date-display.time-iso');
-    }
-    if (dateDisplay === 'datetime-short') {
-      return i18n('cc-logs-control.date-display.datetime-short');
-    }
-    if (dateDisplay === 'time-short') {
-      return i18n('cc-logs-control.date-display.time-short');
+    switch (dateDisplay) {
+      case 'datetime-iso':
+        return i18n('cc-logs-control.date-display.datetime-iso');
+      case 'time-iso':
+        return i18n('cc-logs-control.date-display.time-iso');
+      case 'datetime-short':
+        return i18n('cc-logs-control.date-display.datetime-short');
+      case 'time-short':
+        return i18n('cc-logs-control.date-display.time-short');
+      case 'none':
+        return i18n('cc-logs-control.date-display.none');
     }
   }
 
   /**
    *
    * @param {Timezone} timezone
-   * @return {string}
+   * @return {Translated}
    */
   _getTimezoneLabel(timezone) {
-    if (timezone === 'UTC') {
-      return i18n('cc-logs-control.timezone.utc');
-    }
-    if (timezone === 'local') {
-      return i18n('cc-logs-control.timezone.local');
+    switch (timezone) {
+      case 'UTC':
+        return i18n('cc-logs-control.timezone.utc');
+      case 'local':
+        return i18n('cc-logs-control.timezone.local');
     }
   }
 
   /**
    *
    * @param {string} palette
-   * @return {string}
+   * @return {Translated}
    */
   _getPaletteLabel(palette) {
     if (palette === 'default') {
@@ -278,6 +296,9 @@ export class CcLogsControl extends LitElement {
 
   /* endregion */
 
+  /**
+   * @param {PropertyValues} changedProperties
+   */
   willUpdate(changedProperties) {
     if (changedProperties.has('metadataRenderers') || changedProperties.has('metadataDisplay')) {
       this._resolvedMetadataRenderers = this._resolveMetadataRenderers(this.metadataRenderers, this.metadataDisplay);
@@ -395,7 +416,7 @@ export class CcLogsControl extends LitElement {
       <div class="options-group">
         ${metadataDisplayEntries.map(([name, display]) => {
           return html`
-            <label for="metadata-${name}" class=${classMap({ span: display.icon == null })}>
+            <label for="metadata-${name}">
               <input
                 id="metadata-${name}"
                 type="checkbox"

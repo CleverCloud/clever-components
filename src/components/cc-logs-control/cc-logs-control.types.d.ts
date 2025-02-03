@@ -1,5 +1,5 @@
-import { Timezone } from '../../lib/date/date.types';
-import { DateDisplay } from '../cc-logs/date-display.types';
+import { Timezone } from '../../lib/date/date.types.js';
+import { DateDisplay } from '../cc-logs/date-display.types.js';
 
 export type LogsControlPalette = 'default' | 'One Light' | 'Tokyo Night Light' | 'Night Owl' | 'Everblush' | 'Hyoob';
 
