@@ -1,5 +1,11 @@
 import { css, html, LitElement } from 'lit';
-import { iconRemixPauseLine, iconRemixPlayLine } from '../../assets/cc-remix.icons.js';
+import { classMap } from 'lit/directives/class-map.js';
+import {
+  iconRemixInformationFill as iconInfo,
+  iconRemixPauseLine,
+  iconRemixPlayLine,
+  iconRemixAlertFill as iconWarning,
+} from '../../assets/cc-remix.icons.js';
 import { dispatchCustomEvent } from '../../lib/events.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-button/cc-button.js';
@@ -42,20 +48,20 @@ export class CcLogsLoadingProgress extends LitElement {
 
   /* region Private methods */
 
-  _getLoadingProgressTitle() {
-    if (this.state.type === 'idle') {
-      return null;
+  /**
+   * @param {number} value
+   * @param {number|null} percent
+   */
+  _getLoadingProgressMessage(value, percent) {
+    if (value === 0) {
+      return i18n('cc-logs-loading-progress.progress.none');
     }
 
-    if (this.state.type === 'completed') {
-      return i18n('cc-logs-loading-progress.progress.loaded');
+    if (percent == null) {
+      return i18n('cc-logs-loading-progress.progress.indeterminate', { count: value });
     }
 
-    if (this.state.percent == null) {
-      return i18n('cc-logs-loading-progress.progress.loading.live');
-    }
-
-    return i18n('cc-logs-loading-progress.progress.loading', { percent: this.state.percent / 100 });
+    return i18n('cc-logs-loading-progress.progress.percentage', { count: value, percent: percent / 100 });
   }
 
   /* endregion */
@@ -88,90 +94,84 @@ export class CcLogsLoadingProgress extends LitElement {
     const percent = this.state.type === 'completed' ? 100 : this.state.percent;
 
     const shouldAskForOverflowDecision = this.state.type === 'overflowLimitReached';
-    const shouldDisplayPauseResumeControls =
-      !shouldAskForOverflowDecision && (this.state.type === 'running' || this.state.type === 'paused');
     const shouldDisplayOverflowWarning =
-      !shouldAskForOverflowDecision &&
       (this.state.type === 'running' || this.state.type === 'paused' || this.state.type === 'completed') &&
       this.state.overflowing;
 
-    const getPlayPauseButton = () => {
-      if (!shouldDisplayPauseResumeControls) {
-        return null;
-      }
-      if (this.state.type === 'running') {
-        return {
-          icon: iconRemixPauseLine,
-          a11yName: i18n('cc-logs-loading-progress.progress.pause'),
-          onclick: this._onPause,
-        };
-      }
-      if (this.state.type === 'paused') {
-        return {
-          icon: iconRemixPlayLine,
-          a11yName: i18n('cc-logs-loading-progress.progress.resume'),
-          onclick: this._onResume,
-        };
-      }
-      return null;
-    };
-
-    const playPauseButton = getPlayPauseButton();
-
     return html`
-      <div class="wrapper">
-        <div class="heading">
-          <div class="title">${this._getLoadingProgressTitle()}</div>
-
-          ${playPauseButton != null
-            ? html`
-                <cc-button
-                  .icon=${playPauseButton.icon}
-                  hide-text
-                  a11y-name=${playPauseButton.a11yName}
-                  @cc-button:click=${playPauseButton.onclick}
-                ></cc-button>
-              `
-            : ''}
-        </div>
-        ${percent != null
-          ? html`
-              <div class="progress-bar">
-                <div class="progress-bar-track" style="width: ${percent}%;"></div>
-              </div>
-            `
-          : ''}
-        <div class="content">
-          <div>${i18n('cc-logs-loading-progress.progress.message', { count: this.state.value })}</div>
-
-          ${shouldAskForOverflowDecision
-            ? html`
-                <cc-notice intent="info" heading="${i18n('cc-logs-loading-progress.progress.overflow.title')}">
-                  <div slot="message">
-                    ${i18n('cc-logs-loading-progress.progress.overflow.message.almost', { limit: this.limit })}
-                    <div class="overflow-control">
-                      <cc-button link @cc-button:click=${this._onAcceptOverflow}>
-                        ${i18n('cc-logs-loading-progress.progress.overflow.continue')}
-                      </cc-button>
-                      <cc-button link @cc-button:click=${this._onDiscardOverflow}>
-                        ${i18n('cc-logs-loading-progress.progress.overflow.stop')}
-                      </cc-button>
+      <div class="wrapper ${classMap({ warning: shouldAskForOverflowDecision })}">
+        <div class="content inline">
+          ${this._renderPlayPauseButton()}
+          ${
+            shouldAskForOverflowDecision
+              ? html`
+                  <div class="notice warning">
+                    <cc-icon .icon="${iconWarning}" a11y-name="${i18n('cc-notice.icon-alt.warning')}"></cc-icon>
+                    <div class="notice-message">
+                      <div>${i18n('cc-logs-loading-progress.overflow.warning', { limit: this.limit })}</div>
+                      <div class="overflow-buttons">
+                        <cc-button link @cc-button:click=${this._onAcceptOverflow}>
+                          ${i18n('cc-logs-loading-progress.overflow.accept')}
+                        </cc-button>
+                        <cc-button link @cc-button:click=${this._onDiscardOverflow}>
+                          ${i18n('cc-logs-loading-progress.overflow.discard')}
+                        </cc-button>
+                      </div>
                     </div>
                   </div>
-                </cc-notice>
-              `
-            : ''}
-          ${shouldDisplayOverflowWarning
-            ? html`
-                <cc-notice intent="info" no-icon>
-                  <div slot="message">
-                    ${i18n('cc-logs-loading-progress.progress.overflow.message', { limit: this.limit })}
+                `
+              : ''
+          }
+          ${
+            !shouldAskForOverflowDecision
+              ? html`<div class="loading-progress-message">
+                  ${this._getLoadingProgressMessage(this.state.value, percent)}
+                </div>`
+              : ''
+          }
+          ${
+            shouldDisplayOverflowWarning
+              ? html`
+                  <div class="notice info">
+                    <cc-icon .icon="${iconInfo}" a11y-name="${i18n('cc-notice.icon-alt.info')}"></cc-icon>
+                    <div class="notice-message">
+                      ${i18n('cc-logs-loading-progress.overflow.info', { limit: this.limit })}
+                    </div>
                   </div>
-                </cc-notice>
-              `
-            : ''}
+                `
+              : ''
+          }
         </div>
+        ${
+          percent != null
+            ? html`
+                <div class="progress-bar">
+                  <div class="progress-bar-track" style="width: ${percent}%;"></div>
+                </div>
+              `
+            : ''
+        }
       </div>
+    </div>`;
+  }
+
+  _renderPlayPauseButton() {
+    const running = this.state.type === 'running';
+    const paused = this.state.type === 'paused';
+
+    if (!running && !paused) {
+      return null;
+    }
+
+    return html`
+      <cc-button
+        .icon=${running ? iconRemixPauseLine : iconRemixPlayLine}
+        hide-text
+        a11y-name=${running
+          ? i18n('cc-logs-loading-progress.control.pause')
+          : i18n('cc-logs-loading-progress.control.resume')}
+        @cc-button:click=${running ? this._onPause : this._onResume}
+      ></cc-button>
     `;
   }
 
@@ -179,7 +179,6 @@ export class CcLogsLoadingProgress extends LitElement {
     return [
       // language=CSS
       css`
-        /* stylelint-disable no-duplicate-selectors */
         :host {
           display: block;
         }
@@ -190,29 +189,54 @@ export class CcLogsLoadingProgress extends LitElement {
           border-radius: var(--cc-border-radius-default, 0.25em);
         }
 
-        .heading {
-          align-items: center;
-          background-color: var(--cc-color-bg-neutral, #eee);
-          border-top-left-radius: var(--cc-border-radius-default, 0.25em);
-          border-top-right-radius: var(--cc-border-radius-default, 0.25em);
-          display: flex;
-          gap: 0.3em;
-          max-height: 2em;
-          padding: 0.5em;
-        }
-
-        .title {
-          color: var(--cc-color-text-default, #000);
-          flex: 1;
-          font-weight: bold;
+        .wrapper.warning {
+          background-color: var(--cc-color-bg-warning-weaker);
+          border: 1px solid var(--cc-color-border-warning-weak);
         }
 
         .content {
+          align-items: center;
           color: var(--cc-color-text-weak);
           display: flex;
-          flex-direction: column;
-          gap: 1em;
-          padding: 1em;
+          flex-wrap: wrap;
+          gap: 0.5em;
+          height: 1.75em;
+          padding: 0.5em;
+        }
+
+        .overflow-buttons {
+          display: flex;
+          gap: 0.5em;
+        }
+
+        .loading-progress-message {
+          flex: 1;
+        }
+
+        .notice {
+          align-items: center;
+          display: flex;
+          gap: 0.5em;
+        }
+
+        .notice-message {
+          align-items: center;
+          display: flex;
+          flex-wrap: wrap;
+          gap: 0.5em;
+        }
+
+        .notice cc-icon {
+          min-height: 1.5em;
+          min-width: 1.5em;
+        }
+
+        .notice.info cc-icon {
+          --cc-icon-color: var(--cc-color-text-primary);
+        }
+
+        .notice.warning cc-icon {
+          --cc-icon-color: var(--cc-color-text-warning);
         }
 
         .progress-bar {
@@ -225,11 +249,6 @@ export class CcLogsLoadingProgress extends LitElement {
         .progress-bar-track {
           background-color: var(--cc-color-bg-primary);
           height: 100%;
-        }
-
-        .overflow-control {
-          display: flex;
-          gap: 1.5em;
         }
       `,
     ];
