@@ -973,17 +973,3 @@ function isCurrentDeployment(deployment) {
 function getErrorStatusCode(e) {
   return e.response?.status;
 }
-
-//
-// function getDeployments (params) {
-// // "https://api.clever-cloud.com/v4/orchestration/organisations/orga_8b852f0a-1135-4b4f-8eee-a538f538b640/applications/app_4bc68315-c93e-49eb-8086-430314475568/deployments?limit=1"  | jq
-//   const urlBase = `/orchestration/organisations/${params.id}/applications/${params.appId}/deployments`;
-//   return Promise.resolve({
-//     method: 'get',
-//     url: `/v4${urlBase}/applications/${params.appId}/deployments`,
-//     headers: { Accept: 'application/json' },
-//     queryParams: pickNonNull(params, ['limit', 'offset', 'action']),
-//     // no body
-//   });
-//
-// }
