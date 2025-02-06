@@ -5,6 +5,46 @@ title: 'Changelog'
 
 # Changelog
 
+## [17.1.0](https://github.com/CleverCloud/clever-components/compare/17.0.0...17.1.0) (2025-02-06)
+
+
+### 🚀 Features
+
+* **cc-button:** throw error if both `waiting` & `disabled` are `true` ([3a8f191](https://github.com/CleverCloud/clever-components/commit/3a8f191756cdfc47b47313c2bc76969fa371e44f)), closes [#1124](https://github.com/CleverCloud/clever-components/issues/1124)
+* **cc-kv-explorer:** add error state when fetching keys fails ([040431c](https://github.com/CleverCloud/clever-components/commit/040431cf90c62face596c9b31803d8ba482b6795))
+* **cc-kv-hash-explorer:** refine state with `filtering` type ([8fb6198](https://github.com/CleverCloud/clever-components/commit/8fb61988c16e0393ba085c7f00ef9dc06b632e90))
+* **cc-kv-list-explorer:** refine state with `filtering` type ([8b75d78](https://github.com/CleverCloud/clever-components/commit/8b75d78382f937efe4623073991dce37ac143f55))
+* **cc-kv-set-explorer:** refine state with `filtering` type ([4eb3547](https://github.com/CleverCloud/clever-components/commit/4eb3547e19fa58daf6fe927d3b0b6f1d59cd1abe))
+* **cc-plan-item:** init component ([127e92e](https://github.com/CleverCloud/clever-components/commit/127e92efda9d082c1f0cff1585e3f29dec690af0))
+* **cc-plan-picker:** init component ([e262014](https://github.com/CleverCloud/clever-components/commit/e262014d1b6c2478e4e153153e18820073089174))
+* **creation-tunnel:** init order summary component ([1defa80](https://github.com/CleverCloud/clever-components/commit/1defa802e777e17b4a023076d4d31208649479ef))
+
+
+### 🐛 Bug Fixes
+
+* **cc-addon-admin:** avoid focus loss during API calls ([d220b19](https://github.com/CleverCloud/clever-components/commit/d220b19c2d59bdba8048838483c760788b3378d2)), closes [#1102](https://github.com/CleverCloud/clever-components/issues/1102)
+* **cc-domain-management:** avoid focus loss during API calls ([0436033](https://github.com/CleverCloud/clever-components/commit/04360335eb5188c77d6b6334c3bb7269a84426c8)), closes [#1102](https://github.com/CleverCloud/clever-components/issues/1102)
+* **cc-email-list:** avoid focus loss during API calls ([644c04e](https://github.com/CleverCloud/clever-components/commit/644c04ed6b7f4c744678e947e3e4a8eb8f60fa62)), closes [#1102](https://github.com/CleverCloud/clever-components/issues/1102)
+* **cc-email-list:** fix initialization of the `addEmailFormState` property when smart context is updated ([9c87e32](https://github.com/CleverCloud/clever-components/commit/9c87e3279cc3b5ca7f8aa3d28767307221b4de90))
+* **cc-env-var-create:** avoid focus loss during API calls ([044d87d](https://github.com/CleverCloud/clever-components/commit/044d87dea8075f857ae3ffd733009b8dc5c5420f)), closes [#1102](https://github.com/CleverCloud/clever-components/issues/1102)
+* **cc-env-var-editor-expert:** avoid focus loss during API calls ([a2f683a](https://github.com/CleverCloud/clever-components/commit/a2f683ab3d3d4bfb42df8b11689bb153ff2e11a9)), closes [#1102](https://github.com/CleverCloud/clever-components/issues/1102)
+* **cc-kv-explorer:** fix race condition on key details loading using a shared `Semaphore` ([1274365](https://github.com/CleverCloud/clever-components/commit/12743659380fcdf35a3918bcf94320964c35d9f9))
+* **cc-kv-explorer:** fix race condition when changing key selection ([b72fbd0](https://github.com/CleverCloud/clever-components/commit/b72fbd08bcfeba2699a8800c41a386d3a9d4844b))
+* **cc-kv-explorer:** string key value is not reset when changing key ([8483f66](https://github.com/CleverCloud/clever-components/commit/8483f66772e2ccca2bea1577a03c03cd2cd3a410)), closes [#1276](https://github.com/CleverCloud/clever-components/issues/1276)
+* **cc-kv-terminal:** avoid keyboard interaction when command is running ([4fae15b](https://github.com/CleverCloud/clever-components/commit/4fae15bcb0de1ba6574b03c435964d5f66d847d1))
+* **cc-kv-terminal:** handle huge command history using `lit-virtualizer` ([2b89f01](https://github.com/CleverCloud/clever-components/commit/2b89f019b88a6b6a005c850b63762d1c6a7a66e6))
+* **cc-orga-member-list:** avoid focus loss during API calls ([aec0fbb](https://github.com/CleverCloud/clever-components/commit/aec0fbb6b02690f6c675b3178c0d9d21e4bbc26d)), closes [#1102](https://github.com/CleverCloud/clever-components/issues/1102)
+* **cc-pricing-product-consumption:** fix component state handling in smart logic ([27b6afe](https://github.com/CleverCloud/clever-components/commit/27b6afe643fef8a06fb458f7ebacc2d835415b10))
+* **cc-pricing-product-consumption:** fix component state handling in smart logic ([27f20ab](https://github.com/CleverCloud/clever-components/commit/27f20ab64f3a1e0c886d8717b1a5f08bac51727f))
+* **cc-ssh-key-list:** avoid focus loss during API calls ([04777a9](https://github.com/CleverCloud/clever-components/commit/04777a928335258effbb7be7cacf74d701b997d4)), closes [#1102](https://github.com/CleverCloud/clever-components/issues/1102)
+* **cc-tile-metrics:** fix initialization of the `metricsState` property when smart context is updated ([b37c631](https://github.com/CleverCloud/clever-components/commit/b37c63112ed94e71460583cc9ece4a9f8638cdf2))
+* **cc-tile-status-codes.smart:** remove status codes that are below `100` ([6b0b1df](https://github.com/CleverCloud/clever-components/commit/6b0b1df44ec3707a8abf40c148479a5e637a1cef))
+* **cc-tile-status-codes:** fix 6XX..9XX translations ([6e20c39](https://github.com/CleverCloud/clever-components/commit/6e20c39e8d1c826db5bee557241c0e856fb1a817))
+* **cc-zone-picker:** use `[@input](https://github.com/input)` instead of `[@change](https://github.com/change)` for event ([5121a4c](https://github.com/CleverCloud/clever-components/commit/5121a4c2c997f65d473a3cc43ccb5b5edb0281bf))
+* **cc-zone-picker:** use `checked` property instead of attribute ([fc7ac6d](https://github.com/CleverCloud/clever-components/commit/fc7ac6d8cea2a7852eba796e160b34b28063a302)), closes [#1265](https://github.com/CleverCloud/clever-components/issues/1265)
+* fix french Matomo loading error translation ([9468c45](https://github.com/CleverCloud/clever-components/commit/9468c45e08c60f9c25d3864732326d33f3ab3139))
+* revert `top` a11y visually-hidden style ([16c8a6d](https://github.com/CleverCloud/clever-components/commit/16c8a6dccd19d4b3112b8a2b49354916a40e9297))
+
 ## [17.0.0](https://github.com/CleverCloud/clever-components/compare/16.4.0...17.0.0) (2024-12-05)
 
 
