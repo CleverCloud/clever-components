@@ -1,8 +1,11 @@
-import { getAppMetrics, getGrafanaOrganisation } from '../../lib/api-helpers.js';
 import { sendToApi } from '../../lib/send-to-api.js';
 import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
 import '../cc-smart-container/cc-smart-container.js';
 import './cc-tile-metrics.js';
+// @ts-expect-error FIXME: remove when clever-client exports types
+import { getGrafanaOrganisation } from '@clevercloud/client/esm/api/v4/saas.js';
+// @ts-expect-error FIXME: remove when clever-client exports types
+import { getOrganisationApplicationMetrics } from '@clevercloud/client/esm/api/v4/resources.js';
 
 /**
  * @typedef {import('./cc-tile-metrics.js').CcTileMetrics} CcTileMetrics
@@ -72,13 +75,21 @@ defineSmartComponent({
  * @returns {Promise<MetricsData>}
  */
 function fetchMetrics({ apiConfig, ownerId, appId, signal }) {
-  return getAppMetrics({ id: ownerId, appId })
+  return getOrganisationApplicationMetrics({
+    ownerId,
+    resourceId: appId,
+    interval: 'P1D',
+    span: 'PT1H',
+    only: ['cpu', 'mem'],
+  })
     .then(sendToApi({ apiConfig, signal }))
-    .then((metrics) => {
-      const cpuMetrics = extractMetric(metrics, 'cpu');
-      const memMetrics = extractMetric(metrics, 'mem');
-      return { cpuMetrics, memMetrics };
-    });
+    .then(
+      /** @param {RawMetric[]} metrics */ (metrics) => {
+        const cpuMetrics = extractMetric(metrics, 'cpu');
+        const memMetrics = extractMetric(metrics, 'mem');
+        return { cpuMetrics, memMetrics };
+      },
+    );
 }
 
 /**
@@ -109,12 +120,14 @@ function extractMetric(metrics, name) {
 function fetchGrafanaAppLink({ apiConfig, ownerId, appId, grafanaBaseLink, signal }) {
   return getGrafanaOrganisation({ id: ownerId })
     .then(sendToApi({ apiConfig, signal }))
-    .then((grafanaOrg) => {
-      const grafanaLink = new URL('/d/runtime/application-runtime', grafanaBaseLink);
-      grafanaLink.searchParams.set('orgId', grafanaOrg.id);
-      grafanaLink.searchParams.set('var-SELECT_APP', appId);
-      return grafanaLink.toString();
-    });
+    .then(
+      /** @param {{id: string}} grafanaOrg*/ (grafanaOrg) => {
+        const grafanaLink = new URL('/d/runtime/application-runtime', grafanaBaseLink);
+        grafanaLink.searchParams.set('orgId', grafanaOrg.id);
+        grafanaLink.searchParams.set('var-SELECT_APP', appId);
+        return grafanaLink.toString();
+      },
+    );
 }
 
 /**

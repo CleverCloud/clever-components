@@ -1,11 +1,9 @@
 // @ts-expect-error FIXME: remove when clever-client exports types
 import { get as getApp } from '@clevercloud/client/esm/api/v2/application.js';
 // @ts-expect-error FIXME: remove when clever-client exports types
-import { getAllInvoices, getInvoice } from '@clevercloud/client/esm/api/v4/billing.js';
+import { getAllInvoices, getInvoice, getPriceSystem } from '@clevercloud/client/esm/api/v4/billing.js';
 // @ts-expect-error FIXME: remove when clever-client exports types
 import { addOauthHeader } from '@clevercloud/client/esm/oauth.js';
-// @ts-expect-error FIXME: remove when clever-client exports types
-import { pickNonNull } from '@clevercloud/client/esm/pick-non-null.js';
 // @ts-expect-error FIXME: remove when clever-client exports types
 import { prefixUrl } from '@clevercloud/client/esm/prefix-url.js';
 // @ts-expect-error FIXME: remove when clever-client exports types
@@ -127,24 +125,6 @@ function getPaymentUrl(ownerId, invoiceNumber) {
     : `/organisations/${ownerId}/invoices/${invoiceNumber}`;
 }
 
-// TODO: move to clever-client
-/**
- * GET /v4/billing/price-system
- * @param {object} params
- * @param {String} params.zone_id
- * @param {String} params.currency
- */
-export function getPriceSystem(params) {
-  // no multipath for /self or /organisations/{id}
-  return Promise.resolve({
-    method: 'get',
-    url: `/v4/billing/price-system`,
-    headers: { Accept: 'application/json' },
-    queryParams: pickNonNull(params, ['zone_id', 'currency']),
-    // no body
-  });
-}
-
 /**
  *
  * @param {object} params
@@ -157,75 +137,4 @@ export function getPriceSystem(params) {
 export function fetchPriceSystem({ apiConfig, signal, zoneId, currency }) {
   // eslint-disable-next-line camelcase
   return getPriceSystem({ zone_id: zoneId, currency }).then(sendToApi({ apiConfig, signal, cacheDelay: ONE_DAY }));
-}
-
-// TODO: move to clever-client
-// Tmp Grafana API calls
-/**
- * GET /v4/saas/grafana/{id}
- * @param {object} params
- * @param {string} params.id
- */
-export function getGrafanaOrganisation(params) {
-  return Promise.resolve({
-    method: 'get',
-    url: `/v4/saas/grafana/${params.id}`,
-    headers: { Accept: 'application/json' },
-  });
-}
-
-/**
- * POST /v4/saas/grafana/{id}
- * @param {object} params
- * @param {string} params.id
- */
-export function createGrafanaOrganisation(params) {
-  return Promise.resolve({
-    method: 'post',
-    url: `/v4/saas/grafana/${params.id}`,
-    headers: { Accept: 'application/json' },
-  });
-}
-
-/**
- * DELETE /v4/saas/grafana/{id}
- * @param {Object} params
- * @param {string} params.id
- */
-export function deleteGrafanaOrganisation(params) {
-  return Promise.resolve({
-    method: 'delete',
-    url: `/v4/saas/grafana/${params.id}`,
-    headers: { Accept: 'application/json' },
-  });
-}
-
-/**
- * POST /v4/saas/grafana/{id}/reset
- * @param {object} params
- * @param {string} params.id
- */
-export function resetGrafanaOrganisation(params) {
-  return Promise.resolve({
-    method: 'post',
-    url: `/v4/saas/grafana/${params.id}/reset`,
-    headers: { Accept: 'application/json' },
-  });
-}
-
-// TODO: move this to clever client
-/**
- *
- * @param {object} params
- * @param {string} params.id
- * @param {string} params.appId
- * @return {Promise<{headers: {Accept: string}, method: string, url: string}>}
- */
-export function getAppMetrics({ id, appId }) {
-  return Promise.resolve({
-    method: 'get',
-    // TODO: Handle query params properly. (https://github.com/CleverCloud/clever-client.js/issues/76)
-    url: `/v4/stats/organisations/${id}/resources/${appId}/metrics?interval=P1D&span=PT1H&only=cpu&only=mem`,
-    headers: { Accept: 'application/json' },
-  });
 }

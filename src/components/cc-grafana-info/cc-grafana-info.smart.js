@@ -1,15 +1,16 @@
-import {
-  createGrafanaOrganisation,
-  deleteGrafanaOrganisation,
-  getGrafanaOrganisation,
-  resetGrafanaOrganisation,
-} from '../../lib/api-helpers.js';
 import { notifyError, notifySuccess } from '../../lib/notifications.js';
 import { sendToApi } from '../../lib/send-to-api.js';
 import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-smart-container/cc-smart-container.js';
 import './cc-grafana-info.js';
+import {
+  createGrafanaOrganisation,
+  deleteGrafanaOrganisation,
+  getGrafanaOrganisation,
+  resetGrafanaOrganisation,
+  // @ts-expect-error FIXME: remove when clever-client exports types
+} from '@clevercloud/client/esm/api/v4/saas.js';
 
 /**
  * @typedef {import('./cc-grafana-info.js').CcGrafanaInfo} CcGrafanaInfo
@@ -152,20 +153,24 @@ defineSmartComponent({
 function fetchGrafanaOrganisation({ apiConfig, signal, ownerId, grafanaBaseLink }) {
   return getGrafanaOrganisation({ id: ownerId })
     .then(sendToApi({ apiConfig, signal }))
-    .then((exposedVarsObject) => {
-      const grafanaLink = new URL('/d/home/clever-cloud-metrics-home', grafanaBaseLink);
-      grafanaLink.searchParams.set('orgId', exposedVarsObject.id);
-      /** @type {GrafanaInfoEnabled} */
-      const grafanaInfo = { status: 'enabled', link: grafanaLink.toString() };
-      return grafanaInfo;
-    })
-    .catch((error) => {
-      if (error.response?.status === 404 && error.toString().startsWith('Error: Grafana organization not found')) {
-        return { status: 'disabled' };
-      } else {
-        throw error;
-      }
-    });
+    .then(
+      /** @param {{id: string}} exposedVarsObject */ (exposedVarsObject) => {
+        const grafanaLink = new URL('/d/home/clever-cloud-metrics-home', grafanaBaseLink);
+        grafanaLink.searchParams.set('orgId', exposedVarsObject.id);
+        /** @type {GrafanaInfoEnabled} */
+        const grafanaInfo = { status: 'enabled', link: grafanaLink.toString() };
+        return grafanaInfo;
+      },
+    )
+    .catch(
+      /** @param {{response?: {status: number}}} error */ (error) => {
+        if (error.response?.status === 404 && error.toString().startsWith('Error: Grafana organization not found')) {
+          return { status: 'disabled' };
+        } else {
+          throw error;
+        }
+      },
+    );
 }
 
 /**

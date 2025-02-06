@@ -1,9 +1,14 @@
 // @ts-expect-error FIXME: remove when clever-client exports types
-import { getAllInstances, getDeployment } from '@clevercloud/client/esm/api/v2/application.js';
-// @ts-expect-error FIXME: remove when clever-client exports types
-import { pickNonNull } from '@clevercloud/client/esm/pick-non-null.js';
+import { getDeployment as getDeploymentV2 } from '@clevercloud/client/esm/api/v2/application.js';
 // @ts-expect-error FIXME: remove when clever-client exports types
 import { ApplicationLogStream } from '@clevercloud/client/esm/streams/application-logs.js';
+import {
+  getAllApplicationInstances as getApplicationInstancesV4,
+  getInstance as getInstanceV4,
+  // @ts-expect-error FIXME: remove when clever-client exports types
+} from '@clevercloud/client/esm/api/v4/instance.js';
+// @ts-expect-error FIXME: remove when clever-client exports types
+import { getApplicationDeployment as getDeploymentV4 } from '@clevercloud/client/esm/api/v4/deployment.js';
 import { isLive, lastXDays } from '../../lib/date/date-range-utils.js';
 import { LogsStream } from '../../lib/logs/logs-stream.js';
 import { sendToApi } from '../../lib/send-to-api.js';
@@ -880,6 +885,7 @@ class Api {
    */
   constructor(apiConfig, ownerId, appId) {
     this._apiConfig = apiConfig;
+    this._applicationRef = { ownerId, applicationId: appId };
     this._commonApiPrams = { id: ownerId, appId };
   }
 
@@ -888,7 +894,7 @@ class Api {
    * @returns {Promise<any>}
    */
   fetchDeployment(deploymentId) {
-    return v4.getDeployment({ ...this._commonApiPrams, deploymentId }).then(sendToApi({ apiConfig: this._apiConfig }));
+    return getDeploymentV4({ ...this._applicationRef, deploymentId }).then(sendToApi({ apiConfig: this._apiConfig }));
   }
 
   /**
@@ -896,7 +902,7 @@ class Api {
    * @returns {Promise<any>}
    */
   fetchDeploymentV2(deploymentId) {
-    return v2.getDeployment({ ...this._commonApiPrams, deploymentId }).then(sendToApi({ apiConfig: this._apiConfig }));
+    return getDeploymentV2({ ...this._commonApiPrams, deploymentId }).then(sendToApi({ apiConfig: this._apiConfig }));
   }
 
   /**
@@ -905,9 +911,9 @@ class Api {
    * @returns {Promise<Array<any>>}
    */
   fetchInstances(since, until) {
-    return v4
-      .getInstances({ ...this._commonApiPrams, limit: 100, since, until })
-      .then(sendToApi({ apiConfig: this._apiConfig }));
+    return getApplicationInstancesV4({ ...this._applicationRef, limit: 100, since, until }).then(
+      sendToApi({ apiConfig: this._apiConfig }),
+    );
   }
 
   /**
@@ -915,9 +921,9 @@ class Api {
    * @returns {Promise<Array<any>>}
    */
   fetchInstancesByDeployment(deploymentId) {
-    return v4
-      .getInstances({ ...this._commonApiPrams, limit: 100, deploymentId })
-      .then(sendToApi({ apiConfig: this._apiConfig }));
+    return getApplicationInstancesV4({ ...this._applicationRef, limit: 100, deploymentId }).then(
+      sendToApi({ apiConfig: this._apiConfig }),
+    );
   }
 
   /**
@@ -925,50 +931,9 @@ class Api {
    * @returns {Promise<Array<any>>}
    */
   fetchInstance(instanceId) {
-    return v4.getInstance({ ...this._commonApiPrams, instanceId }).then(sendToApi({ apiConfig: this._apiConfig }));
+    return getInstanceV4({ ...this._applicationRef, instanceId }).then(sendToApi({ apiConfig: this._apiConfig }));
   }
 }
-
-// --- APIs ------
-
-const v4 = {
-  /**
-   * @param {{id: string, appId: string, limit?: number, since?: string, until?: string, deploymentId?: string, includeState?: boolean}} params
-   */
-  getInstances(params) {
-    return Promise.resolve({
-      method: 'get',
-      url: `/v4/orchestration/organisations/${params.id}/applications/${params.appId}/instances`,
-      headers: { Accept: 'application/json' },
-      queryParams: pickNonNull(params, ['limit', 'since', 'until', 'deploymentId', 'includeState']),
-    });
-  },
-  /**
-   * @param {{id: string, appId: string, instanceId?: string}} params
-   */
-  getInstance(params) {
-    return Promise.resolve({
-      method: 'get',
-      url: `/v4/orchestration/organisations/${params.id}/applications/${params.appId}/instances/${params.instanceId}`,
-      headers: { Accept: 'application/json' },
-    });
-  },
-  /**
-   * @param {{id: string, appId: string, deploymentId?: string}} params
-   */
-  getDeployment(params) {
-    return Promise.resolve({
-      method: 'get',
-      url: `/v4/orchestration/organisations/${params.id}/applications/${params.appId}/deployments/${params.deploymentId}`,
-      headers: { Accept: 'application/json' },
-    });
-  },
-};
-
-const v2 = {
-  getDeployment: getDeployment,
-  getAllInstances: getAllInstances,
-};
 
 // --- utils ------
 
