@@ -951,7 +951,7 @@ export const translations = {
   `,
   'cc-matomo-info.about.title': `À propos`,
   'cc-matomo-info.documentation.text': `Matomo - Documentation`,
-  'cc-matomo-info.error': `An error occured while fetching the information about this add-on.`,
+  'cc-matomo-info.error': `Une erreur est survenue pendant le chargement des informations de l'add-on.`,
   'cc-matomo-info.heading': `Cet add-on Matomo inclut toutes les dépendances nécessaires à son bon fonctionnement.`,
   'cc-matomo-info.info': `Info`,
   'cc-matomo-info.link.mysql': `Accéder à l'add-on MySQL`,
