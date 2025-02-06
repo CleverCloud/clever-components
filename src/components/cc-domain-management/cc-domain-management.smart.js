@@ -8,6 +8,8 @@ import { defineSmartComponent } from '../../lib/smart/define-smart-component.js'
 import { i18n } from '../../translations/translation.js';
 import '../cc-smart-container/cc-smart-container.js';
 import { CcDomainManagement } from './cc-domain-management.js';
+// @ts-expect-error FIXME: remove when clever-client exports types
+import { getDefaultLoadBalancersDnsInfo } from '@clevercloud/client/esm/api/v4/load-balancers.js';
 
 /**
  * @typedef {import('./cc-domain-management.types.js').DomainManagementFormState} DomainManagementFormState
@@ -317,29 +319,15 @@ function markAsPrimaryDomain({ apiConfig, ownerId, appId, id }) {
 function fetchDnsInfo({ apiConfig, ownerId, appId, signal }) {
   return getDefaultLoadBalancersDnsInfo({ appId, ownerId })
     .then(sendToApi({ apiConfig, signal }))
-    .then((defaultLoadBalancers) => {
-      const defaultLoadBalancerData = defaultLoadBalancers[0];
-      return {
-        cnameRecord: defaultLoadBalancerData?.dns?.cname,
-        aRecords: defaultLoadBalancerData?.dns?.a,
-      };
-    });
-}
-
-/**
- * TODO: move this to Clever Client
- *
- * @param {Object} params
- * @param {string} params.ownerId
- * @param {string} params.appId
- * @returns {Promise<any>}
- */
-function getDefaultLoadBalancersDnsInfo({ appId, ownerId }) {
-  return Promise.resolve({
-    method: 'get',
-    url: `/v4/load-balancers/organisations/${ownerId}/applications/${appId}/load-balancers/default`,
-    headers: { Accept: 'application/json' },
-  });
+    .then(
+      /** @param {Array<{dns?: {cname: string, a: string[]}}>} defaultLoadBalancers */ (defaultLoadBalancers) => {
+        const defaultLoadBalancerData = defaultLoadBalancers[0];
+        return {
+          cnameRecord: defaultLoadBalancerData?.dns?.cname,
+          aRecords: defaultLoadBalancerData?.dns?.a,
+        };
+      },
+    );
 }
 
 /**
