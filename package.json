@@ -53,7 +53,9 @@
     "test:mocha:watch": "mocha --watch test-mocha/**/*.*js",
     "test:watch": "wtr --watch",
     "typecheck": "tsc -p tsconfig.ci.json",
-    "typecheck:stats": "node tasks/typechecking-stats.js"
+    "typecheck:stats": "node tasks/typechecking-stats.js",
+    "e2e:mock-server:start" : "node e2e/mock-server/mock-server-start.js",
+    "e2e:mocks-server:start" : "node e2e/mocks-server/mocks-server-start.js"
   },
   "dependencies": {
     "@clevercloud/client": "^8.2.0",
@@ -128,6 +130,9 @@
     "js-yaml": "^4.1.0",
     "json5": "^1.0.1",
     "lit-analyzer": "2.0.0-pre.3",
+    "mentoss": "^0.4.0",
+    "mockserver-node": "^5.15.0",
+    "@mocks-server/main": "^4.1.0",
     "mime-types": "^2.1.30",
     "mocha": "^10.0.0",
     "postcss-styled-syntax": "^0.7.0",
