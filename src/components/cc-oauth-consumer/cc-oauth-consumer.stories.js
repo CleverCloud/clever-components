@@ -20,8 +20,8 @@ export const defaultStory = makeStory(conf, {
         homePageUrl: 'https://localhost:8080/',
         appBaseUrl: 'https://localhost:8080/',
         description: 'Lorem ipsum odor amet, consectetuer adipiscing elit.',
-        image: 'https://my-image.com/',
-        options: {
+        image: 'https://assets.clever-cloud.com/logos/nodejs.svg',
+        rights: {
           accessOrganisations: true,
           accessOrganisationsBills: true,
           accessOrganisationsConsumptionStatistics: true,
@@ -71,5 +71,3 @@ export const errorStory = makeStory(conf, {
     },
   ],
 });
-
-export const dataLoadedStory = makeStory(conf, {});

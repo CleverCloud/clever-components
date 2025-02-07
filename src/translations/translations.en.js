@@ -972,6 +972,7 @@ export const translations = {
   'cc-oauth-consumer-form.auth.manage.option.manage-personal-information': `Manage my personal informations`,
   'cc-oauth-consumer-form.auth.manage.option.manage-ssh-keys': `Manage my ssh keys`,
   'cc-oauth-consumer-form.auth.manage.select-all': `Manage all`,
+  'cc-oauth-consumer-form.auth.options.error.message': `Select at least one option.`,
   'cc-oauth-consumer-form.auth.title': `Authorizations`,
   'cc-oauth-consumer-form.button.cancel': `Cancel`,
   'cc-oauth-consumer-form.button.create': `Create`,

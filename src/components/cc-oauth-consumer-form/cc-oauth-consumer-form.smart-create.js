@@ -5,6 +5,8 @@ import { defineSmartComponent } from '../../lib/smart/define-smart-component.js'
 import '../cc-smart-container/cc-smart-container.js';
 import './cc-oauth-consumer-form.js';
 
+('../../lib/change-case.js');
+
 /**
  * @typedef {import('../../lib/send-to-api.types.js').ApiConfig} ApiConfig
  * @typedef {import('./cc-oauth-consumer-form.types.js').OauthConsumer} OauthConsumer

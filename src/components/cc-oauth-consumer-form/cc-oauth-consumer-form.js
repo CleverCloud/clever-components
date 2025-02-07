@@ -89,6 +89,7 @@ export class CcOauthConsumerForm extends LitElement {
 
     this._customErrorMessages = { invalidUrl: i18n('cc-oauth-consumer-form.info.url.error.message') };
 
+    /** @type {Boolean} */
     this.hasCheckboxGroupError = false;
   }
 
@@ -102,7 +103,7 @@ export class CcOauthConsumerForm extends LitElement {
   _selectAllAccessCheckboxes(e) {
     const selectAllCheckbox = e.target;
     const checkboxes = this.shadowRoot.querySelectorAll('.access-checkboxes');
-    /** @type */
+    /** @type {HTMLInputElement} */
     checkboxes.forEach((checkbox) => {
       checkbox.checked = selectAllCheckbox.checked;
     });
@@ -160,9 +161,9 @@ export class CcOauthConsumerForm extends LitElement {
 
   _validateCheckboxGroup() {
     const data = getFormDataMap(this._formRef.value);
-    console.log(data);
+    //console.log(data);
     if (data.access == null && data.manage == null) {
-      console.log('erreur');
+      //console.log('erreur');
       const selection1 = this.shadowRoot.querySelector('#access-options-container input[type="checkbox"][name]');
       const selection2 = this.shadowRoot.querySelector('#manage-options-container input[type="checkbox"][name]');
 
@@ -238,7 +239,7 @@ export class CcOauthConsumerForm extends LitElement {
     return html`
       <div class="wrapper">
         <cc-block>
-          <div slot="header-title">New oAuth Consumer</div>
+          <div slot="header-title" class="title">New oAuth Consumer</div>
 
           ${this._renderOauthConsumerForm()}
         </cc-block>
@@ -331,34 +332,37 @@ export class CcOauthConsumerForm extends LitElement {
         <cc-block-section class="auth-block">
           <fieldset tabindex="-1" class="options-container">
             <legend slot="title">${i18n('cc-oauth-consumer-form.auth.title')}</legend>
-            <div class="error-message">${this._hasCheckboxGroupError ? 'erreur' : ''}</div>
-
-            <fieldset id="access-options-container" @input="${this._validateCheckboxGroup}">
-              <legend class="visually-hidden">${i18n('cc-oauth-consumer-form.auth.legend.access')}</legend>
-              <div class="select-all-option">
-                <input
-                  id="select-all-access"
-                  type="checkbox"
-                  ?disabled=${isWaiting || isLoading}
-                  @click=${this._selectAllAccessCheckboxes}
-                />
-                <label for="select-all-access">${i18n('cc-oauth-consumer-form.auth.access.select-all')}</label>
-              </div>
-              <div class="access-options">${this._renderRightsSection('access')}</div>
-            </fieldset>
-            <fieldset id="manage-options-container">
-              <legend class="visually-hidden">${i18n('cc-oauth-consumer-form.auth.legend.manage')}</legend>
-              <div class="select-all-option">
-                <input
-                  id="select-all-manage"
-                  type="checkbox"
-                  ?disabled=${isWaiting || isLoading}
-                  @click=${this._selectAllManageCheckboxes}
-                />
-                <label for="select-all-manage">${i18n('cc-oauth-consumer-form.auth.manage.select-all')}</label>
-              </div>
-              <div class="manage-options">${this._renderRightsSection('manage')}</div>
-            </fieldset>
+            <div class="error-message">
+              ${this._hasCheckboxGroupError ? i18n('cc-oauth-consumer-form.auth.options.error.message') : ''}
+            </div>
+            <div class="checkbox-container">
+              <fieldset id="access-options-container" @input="${this._validateCheckboxGroup}">
+                <legend class="visually-hidden">${i18n('cc-oauth-consumer-form.auth.legend.access')}</legend>
+                <div class="select-all-option">
+                  <input
+                    id="select-all-access"
+                    type="checkbox"
+                    ?disabled=${isWaiting || isLoading}
+                    @click=${this._selectAllAccessCheckboxes}
+                  />
+                  <label for="select-all-access">${i18n('cc-oauth-consumer-form.auth.access.select-all')}</label>
+                </div>
+                <div class="access-options">${this._renderRightsSection('access')}</div>
+              </fieldset>
+              <fieldset id="manage-options-container">
+                <legend class="visually-hidden">${i18n('cc-oauth-consumer-form.auth.legend.manage')}</legend>
+                <div class="select-all-option">
+                  <input
+                    id="select-all-manage"
+                    type="checkbox"
+                    ?disabled=${isWaiting || isLoading}
+                    @click=${this._selectAllManageCheckboxes}
+                  />
+                  <label for="select-all-manage">${i18n('cc-oauth-consumer-form.auth.manage.select-all')}</label>
+                </div>
+                <div class="manage-options">${this._renderRightsSection('manage')}</div>
+              </fieldset>
+            </div>
           </fieldset>
         </cc-block-section>
         <div class="oauth-form-buttons">
@@ -477,13 +481,8 @@ export class CcOauthConsumerForm extends LitElement {
       css`
         /* region global */
 
-        /* :invalid {
-          border: solid 2px red;
-        } */
-
         :host {
           display: block;
-          /* margin-inline: auto; */
         }
 
         .wrapper {
@@ -496,45 +495,53 @@ export class CcOauthConsumerForm extends LitElement {
           margin-inline: 5em;
         }
 
+        .title {
+          padding-left: 7.4em;
+        }
+
         /* region information */
 
         .info-block {
-          padding-inline: 5em;
+          padding-left: 4em;
         }
 
         /* region authorisation */
 
         .auth-block {
-          padding-inline: 5em;
+          padding-left: 3.2em;
         }
 
         .options-container {
+          border: none;
+        }
+
+        .checkbox-container {
           display: flex;
           flex-direction: row;
           flex-wrap: wrap;
-          gap: 2em;
-          justify-content: start;
+          justify-content: space-between;
         }
 
-        .options-container > div {
+        #access-options-container,
+        #manage-options-container {
+          border: none;
           display: flex;
           flex-direction: column;
         }
 
-        /* #access-options-container { */
-        /*  display: flex; */
-        /*  flex-direction: column; */
-        /* } */
-
-        /* #manage-options { */
-        /*  display: flex; */
-        /*  flex-direction: column; */
-        /* } */
+        .error-message {
+          color: var(--cc-color-text-danger);
+          margin: 0.5em 0 0;
+        }
 
         .select-all-option {
+          margin-bottom: 0.2em;
         }
 
         .access-options {
+          display: flex;
+          flex-direction: column;
+          gap: 0.2em;
           margin-left: 1em;
         }
 

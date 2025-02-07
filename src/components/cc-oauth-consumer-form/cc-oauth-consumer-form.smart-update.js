@@ -22,12 +22,10 @@ defineSmartComponent({
    * @param {Object} settings
    * @param {{ apiConfig: ApiConfig, ownerId: string, key: string }} settings.context
    * @param {function} settings.updateComponent
-   * @param {AbortSignal} settings.signal
-   * @param {CcOauthConsumerForm} settings.component
    * @param {(type: string, listener: (detail: any) => void) => void} settings.onEvent
    */
   // @ts-expect-error FIXME: remove once `onContextUpdate` is type with generics
-  onContextUpdate({ context, updateComponent, onEvent, component }) {
+  onContextUpdate({ context, updateComponent, onEvent }) {
     const { apiConfig, ownerId, key } = context;
     const api = new Api(apiConfig, ownerId, key);
 
@@ -105,6 +103,7 @@ class Api {
     this._ownerId = ownerId;
     this._key = key;
   }
+
   /**
    * @return {Promise<any>}
    */

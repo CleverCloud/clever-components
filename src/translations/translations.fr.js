@@ -988,6 +988,7 @@ export const translations = {
   'cc-oauth-consumer-form.auth.manage.option.manage-personal-information': `Gérer mes informations personnelles`,
   'cc-oauth-consumer-form.auth.manage.option.manage-ssh-keys': `Gérer mes clés ssh`,
   'cc-oauth-consumer-form.auth.manage.select-all': `Tout gérer`,
+  'cc-oauth-consumer-form.auth.options.error.message': `Veuillez sélectionner au moins une option.`,
   'cc-oauth-consumer-form.auth.title': `Autorisations`,
   'cc-oauth-consumer-form.button.cancel': `Annuler`,
   'cc-oauth-consumer-form.button.create': `Créer`,
