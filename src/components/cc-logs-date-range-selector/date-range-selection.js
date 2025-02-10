@@ -1,12 +1,12 @@
 /**
- * @typedef {import('./cc-logs-application-view.types.js').DateRange} DateRange
- * @typedef {import('./cc-logs-application-view.types.js').DateRangeSelection} DateRangeSelection
+ * @typedef {import('./cc-logs-date-range-selector.types.js').LogsDateRangeSelection} LogsDateRangeSelection
+ * @typedef {import('../../lib/date/date-range.types.js').DateRange} DateRange
  */
 
-import { getRangeToNow, lastXDays, today, yesterday } from './date-range.js';
+import { getRangeToNow, lastXDays, today, yesterday } from '../../lib/date/date-range-utils.js';
 
 /**
- * @param {DateRangeSelection} dateRangeSelection
+ * @param {LogsDateRangeSelection} dateRangeSelection
  * @return {DateRange}
  */
 export function dateRangeSelectionToDateRange(dateRangeSelection) {
@@ -20,8 +20,8 @@ export function dateRangeSelectionToDateRange(dateRangeSelection) {
       return {
         since: getRangeToNow(1000 * 60 * 10).since,
       };
-    case 'predefined':
-      switch (dateRangeSelection.def) {
+    case 'preset':
+      switch (dateRangeSelection.preset) {
         case 'lastHour':
           return getRangeToNow(1000 * 60 * 60);
         case 'last4Hours':

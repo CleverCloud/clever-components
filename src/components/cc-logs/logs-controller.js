@@ -39,6 +39,9 @@ export class LogsController {
     this._focusedIndex = null;
   }
 
+  /**
+   * @param {number} limit
+   */
   set limit(limit) {
     const isNumber = typeof limit === 'number' && !Number.isNaN(limit);
     const newLimit = isNumber ? limit : Infinity;
@@ -281,13 +284,14 @@ export class LogsController {
   }
 
   /**
-   * @param {{[newLogs]: Array<Log>, [forceFilter]: boolean}} [options={}]
+   * @param {{newLogs?: Array<Log>, forceFilter?: boolean}} [options]
    */
   _updateList(options = {}) {
     const newLogs = options.newLogs ?? [];
     const forceFilter = options.forceFilter ?? false;
 
     let selectionHasChanged = false;
+    /** @type {(log: Log) => void} */
     const removeFromSelection = (log) => {
       selectionHasChanged = this._selection.delete(log) || selectionHasChanged;
     };

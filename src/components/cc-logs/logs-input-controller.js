@@ -21,6 +21,12 @@ const DRAG_ANIMATION_PERIOD_INTERVAL = DRAG_ANIMATION_PERIOD_MS_MAX - DRAG_ANIMA
 const DRAG_ANIMATION_LOG_OFFSET_INTERVAL = DRAG_ANIMATION_LOG_OFFSET_MAX - DRAG_ANIMATION_LOG_OFFSET_MIN;
 
 /**
+ * @typedef {import('./cc-logs.js').CcLogs} CcLogs
+ * @typedef {import('../../lib/events.types.js').GenericEventWithTarget<MouseEvent>} HTMLElementMouseEvent
+ * @typedef {import('../../lib/events.types.js').GenericEventWithTarget<KeyboardEvent>} HTMLElementKeyboardEvent
+ */
+
+/**
  * Controls some of the user interactions that can be done on the cc-logs component.
  */
 export class LogsInputController {
@@ -38,8 +44,8 @@ export class LogsInputController {
     this.onKeyUp = this.onKeyUp.bind(this);
     this.onMouseDownGutter = this.onMouseDownGutter.bind(this);
 
-    this._windowMouseMoveHandler = new EventHandler(window, 'mousemove', (e) => this._onDrag(e));
-    this._windowMouseUpHandler = new EventHandler(window, 'mouseup', (e) => this._onDragStop(e));
+    this._windowMouseMoveHandler = new EventHandler(window, 'mousemove', this._onDrag.bind(this));
+    this._windowMouseUpHandler = new EventHandler(window, 'mouseup', this._onDragStop.bind(this));
 
     this._arrowKeysAnimationRunner = new AnimationRunner();
     this._dragAnimationRunner = new AnimationRunner();
@@ -48,10 +54,16 @@ export class LogsInputController {
       ctrl: false,
       shift: false,
     };
+
+    /** @type {number|null} */
+    this._dragIndex = null;
   }
 
   // region Keyboard navigation
 
+  /**
+   * @param {HTMLElementKeyboardEvent} e
+   */
   onKeyDown(e) {
     if (e.key === 'Escape') {
       this._host._onEscape();
@@ -94,7 +106,7 @@ export class LogsInputController {
     } else if (e.key === 'Enter' || e.key === ' ') {
       // we prevent default because we don't want the native keyboard click simulation to be fired
       e.preventDefault();
-      const logIndex = Number(e.target.closest(`.log`).dataset.index);
+      const logIndex = Number(/** @type {HTMLElement} */ (e.target.closest(`.log`)).dataset.index);
       this._host._onClickLog(logIndex, this._keyModifiers);
     } else if (e.key === 'a' && this._keyModifiers.ctrl) {
       // we prevent default because we don't want the native keyboard "ctrl + a" to be fired
@@ -107,6 +119,9 @@ export class LogsInputController {
     }
   }
 
+  /**
+   * @param {HTMLElementKeyboardEvent} e
+   */
   onKeyUp(e) {
     if (e.key === 'Control' || e.key === 'Meta') {
       this._keyModifiers.ctrl = false;
@@ -117,6 +132,9 @@ export class LogsInputController {
     }
   }
 
+  /**
+   * @param {HTMLElementMouseEvent} e
+   */
   onClick(e) {
     // When a drag stop happens, the mouse is released and Chrome & Safari consider that a click event happened on the container.
     // Firefox doesn't! And we think that a drag movement ending should not be a click.
@@ -126,10 +144,13 @@ export class LogsInputController {
     }
   }
 
+  /**
+   * @param {HTMLElementMouseEvent} e
+   */
   onClickLog(e) {
     // We don't want to pollute the parent click listener
     e.stopPropagation();
-    const logIndex = Number(e.target.closest(`.log`).dataset.index);
+    const logIndex = Number(/** @type {HTMLElement} */ (e.target.closest(`.log`)).dataset.index);
     this._host._onClickLog(logIndex, this._keyModifiers);
   }
 
@@ -144,6 +165,7 @@ export class LogsInputController {
 
   /**
    * Handles the drag movement.
+   * @param {DragEvent} e
    */
   _onDrag(e) {
     // We do not support drag with ctrl and shift key modifiers.
@@ -163,13 +185,15 @@ export class LogsInputController {
       // Find the log right under the mouse if 'inside',
       // or on the same y position if 'left' or 'right'.
       const elementsPath = this._getElementsFromPoint(e, position, distance);
-      const log = elementsPath.find((element) => hasClass(element, 'log'));
+      const log = /** @type {HTMLElement} */ (
+        elementsPath.find((element) => element instanceof HTMLElement && hasClass(element, 'log'))
+      );
 
       const logIndex = Number(log.dataset.index);
       // No need to trigger this._host.onDrag if it's the same index
-      if (this.dragIndex !== logIndex) {
+      if (this._dragIndex !== logIndex) {
         this._host._onDrag({ logIndex }, isFirstDrag);
-        this.dragIndex = logIndex;
+        this._dragIndex = logIndex;
       }
     }
 
@@ -185,7 +209,7 @@ export class LogsInputController {
       );
 
       if (this._dragAnimationRunner.isStopped()) {
-        this._dragAnimationRunner.start((nowTimestamp, startTimestamp, lastTimestamp) => {
+        this._dragAnimationRunner.start((nowTimestamp, _startTimestamp, lastTimestamp) => {
           // Browsers will run `requestAnimationFrame()` as many times as they can per second (depending on the system and what it can handle).
           // We want to run our `this._host._onDrag()` at a slower speed, that's why we use timestamps diffs.
           const shouldTickAnimation = nowTimestamp - lastTimestamp > this._dragAnimationPeriodMs;
@@ -288,7 +312,7 @@ export class LogsInputController {
 
     let reference = referenceElement.offsetParent;
 
-    while (reference != null) {
+    while (reference != null && reference instanceof HTMLElement) {
       offset.left += reference.offsetLeft;
       offset.top += reference.offsetTop;
       reference = reference.offsetParent;

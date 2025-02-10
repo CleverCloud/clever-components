@@ -1,4 +1,5 @@
 import { Timezone } from '../../lib/date/date.types.js';
+import { LogsStreamState } from '../../lib/logs/logs-stream.types.js';
 import { LogsControlPalette } from '../cc-logs-control/cc-logs-control.types.js';
 import { GhostInstance, Instance } from '../cc-logs-instances/cc-logs-instances.types.js';
 import { DateDisplay } from '../cc-logs/date-display.types.js';
@@ -11,51 +12,17 @@ export interface LogsApplicationViewStateErrorInstances {
   type: 'errorInstances';
 }
 
-export interface LogsApplicationViewStateLogs {
-  type: 'connectingLogs' | 'receivingLogs' | 'logStreamPaused' | 'logStreamEnded' | 'errorLogs';
+export interface LogsApplicationViewStateLoaded {
+  type: 'loaded';
+  streamState: LogsStreamState;
   instances: Array<Instance | GhostInstance>;
   selection: Array<string>;
 }
 
 export type LogsApplicationViewState =
   | LogsApplicationViewStateLoadingInstances
-  | LogsApplicationViewStateLogs
-  | LogsApplicationViewStateErrorInstances;
-
-export type DateRange = {
-  since: string;
-  until?: string;
-};
-
-export interface DateRangeSelectionLive {
-  type: 'live';
-}
-
-export type DateRangeSelectionPredefinedDefinition = 'lastHour' | 'last4Hours' | 'last7Days' | 'today' | 'yesterday';
-
-export interface DateRangeSelectionPredefined {
-  type: 'predefined';
-  def: DateRangeSelectionPredefinedDefinition;
-}
-
-export interface DateRangeSelectionCustom {
-  type: 'custom';
-  since: string;
-  until: string;
-}
-
-export type DateRangeSelection = DateRangeSelectionLive | DateRangeSelectionPredefined | DateRangeSelectionCustom;
-
-export type DateRangeSelectionMenuEntry = 'live' | 'custom' | DateRangeSelectionPredefinedDefinition;
-
-export interface Valid {
-  valid: true;
-}
-export interface Invalid {
-  valid: false;
-  code: string;
-}
-export type Validity = Valid | Invalid;
+  | LogsApplicationViewStateErrorInstances
+  | LogsApplicationViewStateLoaded;
 
 export interface LogsApplicationViewOptions {
   'date-display': DateDisplay;
@@ -67,5 +34,3 @@ export interface LogsApplicationViewOptions {
   timezone: Timezone;
   'wrap-lines': boolean;
 }
-
-export type ProgressState = 'none' | 'init' | 'started' | 'waiting' | 'running' | 'paused' | 'completed';

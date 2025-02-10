@@ -75,6 +75,19 @@ function formatFlavor(flavor) {
 }
 
 export const translations = {
+  //#region cc-access-logs
+  'cc-access-logs.error': `Une erreur est survenue pendant le chargement des logs`,
+  'cc-access-logs.fullscreen': `Mode plein écran`,
+  'cc-access-logs.fullscreen.exit': `Sortir du mode plein écran`,
+  'cc-access-logs.loading': `Recherche de logs...`,
+  'cc-access-logs.no-logs.message': `Il n'y a aucun log qui correspond aux critères sélectionnés`,
+  'cc-access-logs.no-logs.title': `Aucun log`,
+  'cc-access-logs.options.city': `Afficher la ville`,
+  'cc-access-logs.options.country': `Afficher le pays`,
+  'cc-access-logs.options.ip': `Afficher l'adresse IP`,
+  'cc-access-logs.waiting.message': `Les logs émis par l'application apparaîtront ici`,
+  'cc-access-logs.waiting.title': `Aucun log pour le moment`,
+  //#endregion
   //#region cc-addon-admin
   'cc-addon-admin.admin': `Administration de l'add-on`,
   'cc-addon-admin.danger-zone': `Zone de danger`,
@@ -832,30 +845,6 @@ export const translations = {
   'cc-logs.unselect-button.label': /** @param {{index: number}} _ */ ({ index }) => `Désélectionner la ligne ${index}`,
   //#endregion
   //#region cc-logs-application-view
-  'cc-logs-application-view.custom-date-range.apply': `Appliquer`,
-  'cc-logs-application-view.custom-date-range.date.bad-input': `Format de date invalide (YYYY-MM-DD HH:mm:ss)`,
-  'cc-logs-application-view.custom-date-range.date.empty': `Veuillez saisir une valeur`,
-  'cc-logs-application-view.custom-date-range.date.range-overflow': /** @param {{max: string}} _ */ ({ max }) =>
-    `La date doit être inférieure à ${max}`,
-  'cc-logs-application-view.custom-date-range.date.range-underflow': /** @param {{min: string}} _ */ ({ min }) =>
-    `La date doit être supérieure à ${min}`,
-  'cc-logs-application-view.custom-date-range.next': `Décaler à l'interval suivant`,
-  'cc-logs-application-view.custom-date-range.previous': `Décaler à l'interval précédent`,
-  'cc-logs-application-view.custom-date-range.since.local': `Début (heure locale)`,
-  'cc-logs-application-view.custom-date-range.since.utc': `Début (UTC)`,
-  'cc-logs-application-view.custom-date-range.until.local': `Fin (heure locale)`,
-  'cc-logs-application-view.custom-date-range.until.utc': `Fin (UTC)`,
-  'cc-logs-application-view.date-selection.custom': `Personnalisé`,
-  'cc-logs-application-view.date-selection.last-4-hours': `4 dernières heures`,
-  'cc-logs-application-view.date-selection.last-7-days': `7 derniers jours`,
-  'cc-logs-application-view.date-selection.last-hour': `Dernière heure`,
-  'cc-logs-application-view.date-selection.live': `Vue en temps réel`,
-  'cc-logs-application-view.date-selection.today': `Aujourd'hui`,
-  'cc-logs-application-view.date-selection.yesterday': `Hier`,
-  'cc-logs-application-view.filter': `Filtrer`,
-  'cc-logs-application-view.filter.bad-format': `Regex invalide`,
-  'cc-logs-application-view.filter.mode.regex': `Filtrer avec une expression régulière`,
-  'cc-logs-application-view.filter.mode.strict': `Filtrer avec une chaîne exacte`,
   'cc-logs-application-view.fullscreen': `Mode plein écran`,
   'cc-logs-application-view.fullscreen.exit': `Sortir du mode plein écran`,
   'cc-logs-application-view.logs.error': `Une erreur est survenue pendant le chargement des logs`,
@@ -865,21 +854,6 @@ export const translations = {
   'cc-logs-application-view.logs.warning.waiting.message': `Les logs émis par l'application apparaîtront ici`,
   'cc-logs-application-view.logs.warning.waiting.title': `Aucun log pour le moment`,
   'cc-logs-application-view.options.display-instance': `Afficher le nom de l'instance`,
-  'cc-logs-application-view.progress.loaded': `Logs chargés : 100%`,
-  'cc-logs-application-view.progress.loading': /** @param {{percent: number}} _ */ ({ percent }) =>
-    `Chargement des logs : ${formatPercent(lang, percent)}`,
-  'cc-logs-application-view.progress.loading.live': `Chargement en temps réel...`,
-  'cc-logs-application-view.progress.message': /** @param {{count: number}} _ */ ({ count }) =>
-    `${formatNumber(lang, count)} logs chargés`,
-  'cc-logs-application-view.progress.overflow.continue': `Continuer`,
-  'cc-logs-application-view.progress.overflow.message': /** @param {{limit: number}} _ */ ({ limit }) =>
-    `Pour assurer de bonnes performances, seuls les ${formatNumber(lang, limit)} derniers logs sont visible.`,
-  'cc-logs-application-view.progress.overflow.message.almost': /** @param {{limit: number}} _ */ ({ limit }) =>
-    `Vous allez atteindre ${formatNumber(lang, limit)} logs chargés. Que voulez-vous faire ?`,
-  'cc-logs-application-view.progress.overflow.stop': `Arrêter`,
-  'cc-logs-application-view.progress.overflow.title': `Volume important`,
-  'cc-logs-application-view.progress.pause': `Mettre en pause`,
-  'cc-logs-application-view.progress.resume': `Reprendre`,
   //#endregion
   //#region cc-logs-control
   'cc-logs-control.date-display': `Format de date`,
@@ -900,6 +874,22 @@ export const translations = {
   'cc-logs-control.timezone.local': `Heure locale`,
   'cc-logs-control.timezone.utc': `UTC`,
   'cc-logs-control.wrap-lines': `Forcer le retour à la ligne`,
+  //#endregion
+  //#region cc-logs-date-range-selector
+  'cc-logs-date-range-selector.custom-date-range.apply': `Appliquer`,
+  'cc-logs-date-range-selector.custom-date-range.next': `Décaler à l'intervalle suivant`,
+  'cc-logs-date-range-selector.custom-date-range.previous': `Décaler à l'intervalle précédent`,
+  'cc-logs-date-range-selector.custom-date-range.since.local': `Début (heure locale)`,
+  'cc-logs-date-range-selector.custom-date-range.since.utc': `Début (UTC)`,
+  'cc-logs-date-range-selector.custom-date-range.until.local': `Fin (heure locale)`,
+  'cc-logs-date-range-selector.custom-date-range.until.utc': `Fin (UTC)`,
+  'cc-logs-date-range-selector.option.custom': `Personnalisé`,
+  'cc-logs-date-range-selector.option.last-4-hours': `4 dernières heures`,
+  'cc-logs-date-range-selector.option.last-7-days': `7 derniers jours`,
+  'cc-logs-date-range-selector.option.last-hour': `Dernière heure`,
+  'cc-logs-date-range-selector.option.live': `Vue en temps réel`,
+  'cc-logs-date-range-selector.option.today': `Aujourd'hui`,
+  'cc-logs-date-range-selector.option.yesterday': `Hier`,
   //#endregion
   //#region cc-logs-instances
   'cc-logs-instances.cold.empty': `Aucune instance`,
@@ -925,6 +915,29 @@ export const translations = {
   'cc-logs-instances.running.empty': `Aucune instance démarrée`,
   'cc-logs-instances.running.header': `Instances démarrées`,
   'cc-logs-instances.stopping.header': `Instances arrêtées`,
+  //#endregion
+  //#region cc-logs-loading-progress
+  'cc-logs-loading-progress.control.pause': `Mettre en pause`,
+  'cc-logs-loading-progress.control.resume': `Reprendre`,
+  'cc-logs-loading-progress.overflow.accept': `Continuer`,
+  'cc-logs-loading-progress.overflow.discard': `Arrêter`,
+  'cc-logs-loading-progress.overflow.info': /** @param {{limit: number}} _ */ ({ limit }) =>
+    `Seuls les ${formatNumber(lang, limit)} derniers logs sont affichés.`,
+  'cc-logs-loading-progress.overflow.warning': /** @param {{limit: number}} _ */ ({ limit }) =>
+    `Vous allez atteindre ${formatNumber(lang, limit)} logs chargés. Que voulez-vous faire ?`,
+  'cc-logs-loading-progress.progress.indeterminate': /** @param {{count: number}} _ */ ({ count }) =>
+    `${formatNumber(lang, count)} logs chargés`,
+  'cc-logs-loading-progress.progress.none': `Aucun log chargé`,
+  'cc-logs-loading-progress.progress.percentage': /** @param {{count: number, percent: number}} _ */ ({
+    count,
+    percent,
+  }) => `${formatNumber(lang, count)} logs chargés (${formatPercent(lang, percent)})`,
+  //#endregion
+  //#region cc-logs-message-filter
+  'cc-logs-message-filter.bad-format': `Regex invalide`,
+  'cc-logs-message-filter.label': `Filtrer`,
+  'cc-logs-message-filter.mode.regex': `Filtrer avec une expression régulière`,
+  'cc-logs-message-filter.mode.strict': `Filtrer avec une chaîne exacte`,
   //#endregion
   //#region cc-logsmap
   'cc-logsmap.legend.heatmap': /** @param {{orgaName: string}} _ */ ({ orgaName }) =>
