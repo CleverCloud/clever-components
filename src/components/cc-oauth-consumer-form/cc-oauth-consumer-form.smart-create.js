@@ -5,12 +5,11 @@ import { defineSmartComponent } from '../../lib/smart/define-smart-component.js'
 import '../cc-smart-container/cc-smart-container.js';
 import './cc-oauth-consumer-form.js';
 
-('../../lib/change-case.js');
-
 /**
  * @typedef {import('../../lib/send-to-api.types.js').ApiConfig} ApiConfig
  * @typedef {import('./cc-oauth-consumer-form.types.js').OauthConsumer} OauthConsumer
  * @typedef {import('./cc-oauth-consumer-form.js').CcOauthConsumerForm} CcOauthConsumerForm
+ * @typedef {import('../../lib/smart/smart-component.types.js').OnContextUpdateArgs<CcOauthConsumerForm>} OnContextUpdateArgs
  */
 
 defineSmartComponent({
@@ -20,12 +19,8 @@ defineSmartComponent({
     ownerId: { type: String },
   },
   /**
-   * @param {Object} settings
-   * @param {{ apiConfig: ApiConfig, ownerId: string }} settings.context
-   * @param {function} settings.updateComponent
-   * @param {(type: string, listener: (detail: any) => void) => void} settings.onEvent
+   * @param {OnContextUpdateArgs} args
    */
-  // @ts-expect-error FIXME: remove once `onContextUpdate` is type with generics
   onContextUpdate({ context, updateComponent, onEvent }) {
     const { apiConfig, ownerId } = context;
     const api = new Api(apiConfig, ownerId);
@@ -54,6 +49,10 @@ defineSmartComponent({
 });
 
 class Api {
+  /**
+   * @param {ApiConfig} apiConfig
+   * @param {String} ownerId
+   */
   constructor(apiConfig, ownerId) {
     this._apiConfig = apiConfig;
     this._ownerId = ownerId;

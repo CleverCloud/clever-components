@@ -4,8 +4,9 @@ import { defineSmartComponent } from '../../lib/smart/define-smart-component.js'
 
 /**
  * @typedef {import('../../lib/send-to-api.types.js').ApiConfig} ApiConfig
- * @typedef {import('./cc-oauth-consumer.types.js').OauthConsumer} OauthConsumer
+ * @typedef {import('./cc-oauth-consumer.types.js').OauthConsumerStateLoaded} OauthConsumerStateLoaded
  * @typedef {import('./cc-oauth-consumer.js').CcOauthConsumer} CcOauthConsumer
+ * @typedef {import('../../lib/smart/smart-component.types.js').OnContextUpdateArgs<CcOauthConsumer>} OnContextUpdateArgs
  */
 
 defineSmartComponent({
@@ -17,37 +18,38 @@ defineSmartComponent({
   },
 
   /**
-   * @param {Object} settings
-   * @param {{ apiConfig: ApiConfig, ownerId: string, key: string }} settings.context
-   * @param {function} settings.updateComponent
+   * @param {OnContextUpdateArgs} args
    */
-  // @ts-expect-error FIXME: remove once `onContextUpdate` is type with generics
   onContextUpdate({ context, updateComponent }) {
     const { apiConfig, ownerId, key } = context;
     const api = new Api(apiConfig, ownerId, key);
 
-    updateComponent('oauthConsumerState', { type: 'loading' });
+    updateComponent('state', { type: 'loading' });
 
     api
       .getOauthConsumer()
+
       .then(
-        /** @param {OauthConsumer} data */
+        /** @param {OauthConsumerStateLoaded} data */
         (data) => {
-          updateComponent('oauthConsumerState', {
+          updateComponent('state', {
+            type: 'loaded',
             name: data.name,
-            description: data.description,
             homePageUrl: data.url,
-            image: data.picture,
             appBaseUrl: data.baseUrl,
+            description: data.description,
+            image: data.picture,
             rights: Object.entries(data.rights).map(([name, isEnabled]) => {
               return { name, isEnabled };
             }),
+            key: data.key,
+            secret: data.secret,
           });
         },
       )
       .catch((error) => {
         console.error(error);
-        updateComponent('oauthConsumerState', {
+        updateComponent('state', {
           type: 'error',
         });
       });
@@ -55,6 +57,11 @@ defineSmartComponent({
 });
 
 class Api {
+  /**
+   * @param {ApiConfig} apiConfig
+   * @param {String} ownerId
+   * @param {String} key
+   */
   constructor(apiConfig, ownerId, key) {
     this._apiConfig = apiConfig;
     this._ownerId = ownerId;

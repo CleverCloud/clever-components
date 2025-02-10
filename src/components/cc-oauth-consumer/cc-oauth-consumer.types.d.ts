@@ -15,23 +15,9 @@ interface OauthConsumerStateLoaded {
   appBaseUrl: string;
   description: string;
   image: string;
-  rights: Array<Right>;
+  rights: Array<OauthConsumerRight>;
   key: string;
   secret: string;
-}
-
-interface Right {
-  value: string;
-  isEnable: boolean;
-}
-
-export interface OauthConsumer {
-  name: string;
-  homePageUrl: string;
-  appBaseUrl: string;
-  description: string;
-  image: string;
-  rights: Array<OauthConsumerRight>;
 }
 
 export interface OauthConsumerRight {
