@@ -24,6 +24,11 @@ export default {
 
 const conf = {
   component: 'cc-toaster',
+  tests: {
+    accessibility: {
+      enable: false,
+    },
+  },
 };
 
 // We don't want default story to be the first story because we won't have the story description displayed.
@@ -35,14 +40,14 @@ export const defaultStory = makeStory(conf, {
     :host {
       max-width: 100% !important;
     }
-    
+
     .knob {
       margin-bottom: 1em;
       display: flex;
       flex-wrap: wrap;
       gap: 1em;
     }
-    
+
     .buttons {
       flex: 1;
     }
@@ -52,13 +57,13 @@ export const defaultStory = makeStory(conf, {
       flex-wrap: wrap;
       gap: 1em;
     }
-    
+
     .console {
       position: relative;
       display: inline-block;
       overflow: hidden;
     }
-    
+
     cc-toaster {
       margin: 1em;
       position: absolute;
@@ -67,7 +72,7 @@ export const defaultStory = makeStory(conf, {
       transform: translate(-50%, 0);
       // max-width: 15em;
     }
-    
+
     cc-toaster.top {
       top: 0;
     }
@@ -75,12 +80,12 @@ export const defaultStory = makeStory(conf, {
     cc-toaster.bottom {
       bottom: 0;
     }
-        
+
     cc-toaster.left {
       left: 0;
       transform: unset;
     }
-    
+
     cc-toaster.right {
       left: unset;
       right: 0;

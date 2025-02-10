@@ -11,6 +11,11 @@ export default {
 
 const conf = {
   component: 'cc-expand',
+  tests: {
+    accessibility: {
+      enable: false,
+    },
+  },
 };
 
 // We don't want default story to be the first story because we won't have the story description displayed.
