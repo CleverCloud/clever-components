@@ -5,6 +5,13 @@ title: 'Changelog'
 
 # Changelog
 
+## [17.1.1](https://github.com/CleverCloud/clever-components/compare/17.1.0...17.1.1) (2025-02-10)
+
+
+### 🐛 Bug Fixes
+
+* move the `smart-manager.js` file back to the build root directory ([a758c27](https://github.com/CleverCloud/clever-components/commit/a758c27066bdf467a84e99b095c80a809cd1a267))
+
 ## [17.1.0](https://github.com/CleverCloud/clever-components/compare/17.0.0...17.1.0) (2025-02-06)
 
 
