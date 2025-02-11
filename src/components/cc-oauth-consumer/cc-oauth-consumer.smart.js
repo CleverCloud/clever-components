@@ -1,6 +1,8 @@
 import { get } from '@clevercloud/client/esm/api/v2/oauth-consumer.js';
 import { sendToApi } from '../../lib/send-to-api.js';
 import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
+import '../cc-smart-container/cc-smart-container.js';
+import './cc-oauth-consumer.js';
 
 /**
  * @typedef {import('../../lib/send-to-api.types.js').ApiConfig} ApiConfig

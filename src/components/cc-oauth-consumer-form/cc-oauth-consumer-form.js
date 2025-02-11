@@ -207,27 +207,27 @@ export class CcOauthConsumerForm extends LitElement {
   _getLabel(label) {
     switch (label) {
       case 'access_organisations':
-        return i18n('cc-oauth-consumer-form.auth.access.option.access-organisations');
+        return i18n('cc-oauth-consumer.auth.access.option.access-organisations');
       case 'access_organisations_bills':
-        return i18n('cc-oauth-consumer-form.auth.access.option.access-organisations-bills');
+        return i18n('cc-oauth-consumer.auth.access.option.access-organisations-bills');
       case 'access_organisations_consumption_statistics':
-        return i18n('cc-oauth-consumer-form.auth.access.option.access-organisations-consumption-statistics');
+        return i18n('cc-oauth-consumer.auth.access.option.access-organisations-consumption-statistics');
       case 'access_organisations_credit_count':
-        return i18n('cc-oauth-consumer-form.auth.access.option.access-organisations-credit-count');
+        return i18n('cc-oauth-consumer.auth.access.option.access-organisations-credit-count');
       case 'access_personal_information':
-        return i18n('cc-oauth-consumer-form.auth.access.option.access-personal-information');
+        return i18n('cc-oauth-consumer.auth.access.option.access-personal-information');
       case 'manage_organisations':
-        return i18n('cc-oauth-consumer-form.auth.manage.option.manage-organisations');
+        return i18n('cc-oauth-consumer.auth.manage.option.manage-organisations');
       case 'manage_organisations_applications':
-        return i18n('cc-oauth-consumer-form.auth.manage.option.manage-organisations-applications');
+        return i18n('cc-oauth-consumer.auth.manage.option.manage-organisations-applications');
       case 'manage_organisations_members':
-        return i18n('cc-oauth-consumer-form.auth.manage.option.manage-organisations-members');
+        return i18n('cc-oauth-consumer.auth.manage.option.manage-organisations-members');
       case 'manage_organisations_services':
-        return i18n('cc-oauth-consumer-form.auth.manage.option.manage-organisations-services');
+        return i18n('cc-oauth-consumer.auth.manage.option.manage-organisations-services');
       case 'manage_personal_information':
-        return i18n('cc-oauth-consumer-form.auth.manage.option.manage-personal-information');
+        return i18n('cc-oauth-consumer.auth.manage.option.manage-personal-information');
       case 'manage_ssh_keys':
-        return i18n('cc-oauth-consumer-form.auth.manage.option.manage-ssh-keys');
+        return i18n('cc-oauth-consumer.auth.manage.option.manage-ssh-keys');
     }
   }
 

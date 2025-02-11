@@ -968,25 +968,31 @@ export const translations = {
   'cc-notice.icon-alt.success': `Succès`,
   'cc-notice.icon-alt.warning': `Avertissement`,
   //#endregion
-  //#region cc-order-summary
-  'cc-order-summary.create': `Créer`,
-  'cc-order-summary.title': `Récapitulatif de commande`,
+  //#region cc-oauth-consumer
+  'cc-oauth-consumer.auth': `Vos autorisations`,
+  'cc-oauth-consumer.auth.access': `Accès`,
+  'cc-oauth-consumer.auth.access.option.access-organisations': `Accéder à mes organisations`,
+  'cc-oauth-consumer.auth.access.option.access-organisations-bills': `Accéder aux factures de mes organisations`,
+  'cc-oauth-consumer.auth.access.option.access-organisations-consumption-statistics': `Accéder aux stats de consommation de mes organisations`,
+  'cc-oauth-consumer.auth.access.option.access-organisations-credit-count': `Accéder au nombre de crédits de mes organisations`,
+  'cc-oauth-consumer.auth.access.option.access-personal-information': `Accéder à mes informations personnelles`,
+  'cc-oauth-consumer.auth.manage': `Gestion`,
+  'cc-oauth-consumer.auth.manage.option.manage-organisations': `Gérer mes organisations`,
+  'cc-oauth-consumer.auth.manage.option.manage-organisations-applications': `Gérer les applications de mes organisations`,
+  'cc-oauth-consumer.auth.manage.option.manage-organisations-members': `Gérer les membres de mes organisations`,
+  'cc-oauth-consumer.auth.manage.option.manage-organisations-services': `Gérer les add-ons de mes organisations`,
+  'cc-oauth-consumer.auth.manage.option.manage-personal-information': `Gérer mes informations personnelles`,
+  'cc-oauth-consumer.auth.manage.option.manage-ssh-keys': `Gérer mes clés ssh`,
+  'cc-oauth-consumer.info.access': `Vos informations d'accès`,
+  'cc-oauth-consumer.info.base-url': `Base url de l'application`,
+  'cc-oauth-consumer.info.homepage-url': `Page d'accueil de l'application`,
+  'cc-oauth-consumer.info.key': `Clé`,
+  'cc-oauth-consumer.info.secret': `Secret`,
   //#endregion
   //#region cc-oauth-consumer-form
-  'cc-oauth-consumer-form.auth.access.option.access-organisations': `Accéder à mes organisations`,
-  'cc-oauth-consumer-form.auth.access.option.access-organisations-bills': `Accéder aux factures de mes organisations`,
-  'cc-oauth-consumer-form.auth.access.option.access-organisations-consumption-statistics': `Accéder aux stats de consommation de mes organisations`,
-  'cc-oauth-consumer-form.auth.access.option.access-organisations-credit-count': `Accéder au nombre de crédits de mes organisations`,
-  'cc-oauth-consumer-form.auth.access.option.access-personal-information': `Accéder à mes informations personnelles`,
   'cc-oauth-consumer-form.auth.access.select-all': `Accéder à tout`,
   'cc-oauth-consumer-form.auth.legend.access': `Accès`,
   'cc-oauth-consumer-form.auth.legend.manage': `Gérer`,
-  'cc-oauth-consumer-form.auth.manage.option.manage-organisations': `Gérer mes organisations`,
-  'cc-oauth-consumer-form.auth.manage.option.manage-organisations-applications': `Gérer les applications de mes organisations`,
-  'cc-oauth-consumer-form.auth.manage.option.manage-organisations-members': `Gérer les membres de mes organisations`,
-  'cc-oauth-consumer-form.auth.manage.option.manage-organisations-services': `Gérer les add-ons de mes organisations`,
-  'cc-oauth-consumer-form.auth.manage.option.manage-personal-information': `Gérer mes informations personnelles`,
-  'cc-oauth-consumer-form.auth.manage.option.manage-ssh-keys': `Gérer mes clés ssh`,
   'cc-oauth-consumer-form.auth.manage.select-all': `Tout gérer`,
   'cc-oauth-consumer-form.auth.options.error.message': `Veuillez sélectionner au moins une option.`,
   'cc-oauth-consumer-form.auth.title': `Autorisations`,
@@ -1004,6 +1010,10 @@ export const translations = {
   'cc-oauth-consumer-form.info.place-holder': `Aucune valeur pour l'instant...`,
   'cc-oauth-consumer-form.info.title': `Informations`,
   'cc-oauth-consumer-form.info.url.error.message': `Saisissez une url valide. Exemple: https://example.com`,
+  //#endregion
+  //#region cc-order-summary
+  'cc-order-summary.create': `Créer`,
+  'cc-order-summary.title': `Récapitulatif de commande`,
   //#endregion
   //#region cc-orga-member-card
   'cc-orga-member-card.btn.cancel.accessible-name': /** @param {{memberIdentity: string}} _ */ ({ memberIdentity }) =>

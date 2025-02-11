@@ -1,28 +1,34 @@
 import { css, html, LitElement } from 'lit';
+import { classMap } from 'lit/directives/class-map.js';
 import { iconRemixCheckLine } from '../../assets/cc-remix.icons.js';
+import { fakeString } from '../../lib/fake-strings.js';
 import { i18n } from '../../lib/i18n/i18n.js';
+import { skeletonStyles } from '../../styles/skeleton.js';
 import { ccLink } from '../../templates/cc-link/cc-link.js';
 import '../cc-badge/cc-badge.js';
 import '../cc-block-section/cc-block-section.js';
 import '../cc-block/cc-block.js';
 import '../cc-icon/cc-icon.js';
+import '../cc-img/cc-img.js';
 import '../cc-input-text/cc-input-text.js';
 import '../cc-notice/cc-notice.js';
-
 /**
  * @type {OauthConsumerRight}
  */
 const SKELETON_RIGHT = {
   name: '??????',
-  isEnabled: false,
+  isEnabled: true,
 };
 
+/**
+ * @type {Partial<OauthConsumerStateLoaded>}
+ */
 const SKELETON_OAUTH_CONSUMER_INFO = {
-  name: '??????????????????????????',
-  homePageUrl: '??????????????????????????',
-  appBaseUrl: '??????????????????????????',
-  description: '??????????????????????????',
-  image: '??????????????????????????',
+  name: fakeString(15),
+  homePageUrl: fakeString(20),
+  appBaseUrl: fakeString(20),
+  description: fakeString(45),
+  image: null,
   rights: [
     SKELETON_RIGHT,
     SKELETON_RIGHT,
@@ -32,8 +38,8 @@ const SKELETON_OAUTH_CONSUMER_INFO = {
     SKELETON_RIGHT,
     SKELETON_RIGHT,
   ],
-  key: '??????????????????????????',
-  secret: '??????????????????????????',
+  key: fakeString(20),
+  secret: fakeString(20),
 };
 
 const OAUTH_CONSUMER_RIGHTS = [
@@ -64,6 +70,7 @@ const OAUTH_CONSUMER_RIGHTS = [
 
 /**
  * @typedef {import('./cc-oauth-consumer.types.js').OauthConsumerState} OauthConsumerState
+ * @typedef {import('./cc-oauth-consumer.types.js').OauthConsumerStateLoaded} OauthConsumerStateLoaded
  * @typedef {import('./cc-oauth-consumer.types.js').OauthConsumerRight} OauthConsumerRight
  *
  */
@@ -92,27 +99,27 @@ export class CcOauthConsumer extends LitElement {
   _getLabel(label) {
     switch (label) {
       case 'access_organisations':
-        return i18n('cc-oauth-consumer-form.auth.access.option.access-organisations');
+        return i18n('cc-oauth-consumer.auth.access.option.access-organisations');
       case 'access_organisations_bills':
-        return i18n('cc-oauth-consumer-form.auth.access.option.access-organisations-bills');
+        return i18n('cc-oauth-consumer.auth.access.option.access-organisations-bills');
       case 'access_organisations_consumption_statistics':
-        return i18n('cc-oauth-consumer-form.auth.access.option.access-organisations-consumption-statistics');
+        return i18n('cc-oauth-consumer.auth.access.option.access-organisations-consumption-statistics');
       case 'access_organisations_credit_count':
-        return i18n('cc-oauth-consumer-form.auth.access.option.access-organisations-credit-count');
+        return i18n('cc-oauth-consumer.auth.access.option.access-organisations-credit-count');
       case 'access_personal_information':
-        return i18n('cc-oauth-consumer-form.auth.access.option.access-personal-information');
+        return i18n('cc-oauth-consumer.auth.access.option.access-personal-information');
       case 'manage_organisations':
-        return i18n('cc-oauth-consumer-form.auth.manage.option.manage-organisations');
+        return i18n('cc-oauth-consumer.auth.manage.option.manage-organisations');
       case 'manage_organisations_applications':
-        return i18n('cc-oauth-consumer-form.auth.manage.option.manage-organisations-applications');
+        return i18n('cc-oauth-consumer.auth.manage.option.manage-organisations-applications');
       case 'manage_organisations_members':
-        return i18n('cc-oauth-consumer-form.auth.manage.option.manage-organisations-members');
+        return i18n('cc-oauth-consumer.auth.manage.option.manage-organisations-members');
       case 'manage_organisations_services':
-        return i18n('cc-oauth-consumer-form.auth.manage.option.manage-organisations-services');
+        return i18n('cc-oauth-consumer.auth.manage.option.manage-organisations-services');
       case 'manage_personal_information':
-        return i18n('cc-oauth-consumer-form.auth.manage.option.manage-personal-information');
+        return i18n('cc-oauth-consumer.auth.manage.option.manage-personal-information');
       case 'manage_ssh_keys':
-        return i18n('cc-oauth-consumer-form.auth.manage.option.manage-ssh-keys');
+        return i18n('cc-oauth-consumer.auth.manage.option.manage-ssh-keys');
     }
   }
 
@@ -126,53 +133,61 @@ export class CcOauthConsumer extends LitElement {
     return html`
       <div class="wrapper">
         <cc-block>
-          <div slot="header-icon"></div>
-          <div slot="header-title">oAuth Consumer</div>
-          <div slot="content">
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium architecto consectetur eius eum nulla
-            obcaecati praesentium qui, voluptatum. Atque delectus enim illo, iusto modi pariatur qui repellendus?
-            Commodi eaque, vitae?
-          </div>
+          <cc-img
+            slot="header-icon"
+            ?skeleton=${skeleton}
+            src=${oauthConsumerInfo.image}
+            a11y-name=${oauthConsumerInfo.name}
+          ></cc-img>
+          <div slot="header-title"><span class="${classMap({ skeleton })}">${oauthConsumerInfo.name}</span></div>
+          <div slot="content"><span class="${classMap({ skeleton })}">${oauthConsumerInfo.description}</span></div>
         </cc-block>
 
         <cc-block>
           <cc-block-section slot="content-body" class="access-block">
-            <div slot="title">Access</div>
+            <div slot="title">${i18n('cc-oauth-consumer.info.access')}</div>
             <div class="access-url">
               <div class="base-url">
-                <p>App base</p>
-                <div>${ccLink(oauthConsumerInfo.appBaseUrl, oauthConsumerInfo.appBaseUrl)}</div>
+                <p>${i18n('cc-oauth-consumer.info.base-url')}</p>
+
+                <div>${ccLink(oauthConsumerInfo.appBaseUrl, oauthConsumerInfo.appBaseUrl, skeleton)}</div>
               </div>
               <div class="home-url">
-                <p>Home page url</p>
-                <div>${ccLink(oauthConsumerInfo.homePageUrl, oauthConsumerInfo.homePageUrl)}</div>
+                <p>${i18n('cc-oauth-consumer.info.homepage-url')}</p>
+                <div>${ccLink(oauthConsumerInfo.homePageUrl, oauthConsumerInfo.homePageUrl, skeleton)}</div>
               </div>
             </div>
             <div class="oauth-credits">
               <div class="key">
-                <cc-input-text label="Key" readonly clipboard value=${oauthConsumerInfo.key}></cc-input-text>
+                <cc-input-text
+                  label="${i18n('cc-oauth-consumer.info.key')}"
+                  readonly
+                  clipboard
+                  value=${oauthConsumerInfo.key}
+                  ?skeleton=${skeleton}
+                ></cc-input-text>
               </div>
               <div class="secret">
                 <cc-input-text
-                  label="Secret"
+                  label="${i18n('cc-oauth-consumer.info.secret')}"
                   readonly
                   secret
                   clipboard
                   value=${oauthConsumerInfo.secret}
+                  ?skeleton=${skeleton}
                 ></cc-input-text>
               </div>
             </div>
           </cc-block-section>
           <cc-block-section slot="content-body" class="auth-block">
-            <div slot="title">Authorizations</div>
-            <!--<cc-badge intent="info" weight="dimmed">Almighty</cc-badge>-->
+            <div slot="title">${i18n('cc-oauth-consumer.auth')}</div>
             <div class="rights-container">
               <div class="access-rights">
-                <div>Access</div>
+                <div>${i18n('cc-oauth-consumer.auth.access')}</div>
                 <div class="rights-section">${this._renderRightsSection('access')}</div>
               </div>
               <div class="manage-rights">
-                <div>Manage</div>
+                <div>${i18n('cc-oauth-consumer.auth.manage')}</div>
                 <div class="rights-section">${this._renderRightsSection('manage')}</div>
               </div>
             </div>
@@ -186,11 +201,12 @@ export class CcOauthConsumer extends LitElement {
    * @param {'access' | 'manage'} section
    */
   _renderRightsSection(section) {
+    const skeleton = this.state.type === 'loading';
     return OAUTH_CONSUMER_RIGHTS.filter((right) => {
       return right.section === section;
     }).map((right) => {
       return html`
-        <div class="right">
+        <div class="right ${classMap({ skeleton })}">
           <cc-icon .icon="${iconRemixCheckLine}"></cc-icon>
           <div>${this._getLabel(right.label)}</div>
         </div>
@@ -200,6 +216,7 @@ export class CcOauthConsumer extends LitElement {
 
   static get styles() {
     return [
+      skeletonStyles,
       // language=CSS
       css`
         :host {
@@ -282,6 +299,10 @@ export class CcOauthConsumer extends LitElement {
         /* region Authorizations */
         .auth-block {
           margin-inline: 2em;
+        }
+
+        .skeleton {
+          background-color: #bbb;
         }
       `,
     ];
