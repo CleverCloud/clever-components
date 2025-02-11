@@ -169,7 +169,7 @@ export const translations = {
   //#region cc-addon-elasticsearch-options
   'cc-addon-elasticsearch-options.additional-cost': () =>
     sanitize`<strong>Activer ces options augmentera votre consommation de crédits.</strong>`,
-  'cc-addon-elasticsearch-options.description': `Cet add-on fait partie de l'offre Suite Elastic qui inclue deux options. Ces options sont déployées comme des applications et seront gérées et mises à jour par Clever Cloud. Elles apparaîtront donc comme des applications habituelles que vous pouvez arrêter, supprimer, scaler comme n'importe quelle autre application.`,
+  'cc-addon-elasticsearch-options.description': `Cet add-on fait partie de l'offre Suite Elastic qui inclue deux options. Ces options sont déployées comme des applications et sont gérées et mises à jour par Clever Cloud. Elles apparaîtront donc comme des applications habituelles que vous pouvez arrêter, supprimer, scaler comme n'importe quelle autre application.`,
   'cc-addon-elasticsearch-options.details.apm': () =>
     sanitize`Elastic APM est un serveur de monitoring de performance applicative pour la Suite Elastic. Déployer cette option permet d'envoyer automatiquement les métriques de toute application liée à cette instance d'add-on Elasticsearch, en supposant que vous utilisez bien l'agent Elastic APM dans les dépendances de vos applications. Retrouvez plus de détails dans <a href="https://www.elastic.co/guide/en/apm/get-started/current/overview.html">la documentation officielle de APM server</a>.`,
   'cc-addon-elasticsearch-options.details.kibana': () =>

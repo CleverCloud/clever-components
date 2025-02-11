@@ -89,7 +89,7 @@ export class CcAddonElasticsearchOptions extends LitElement {
             <span class="options-warning">
               ${i18n('cc-addon-elasticsearch-options.warning.flavor', addonOption.flavor)}
             </span>
-            ${'monthlyCost' in addonOption.flavor
+            ${'monthlyCost' in addonOption.flavor && addonOption.flavor.monthlyCost != null
               ? html`
                   <span class="options-warning">
                     ${i18n('cc-addon-elasticsearch-options.warning.monthly-cost', addonOption.flavor.monthlyCost)}
