@@ -83,12 +83,15 @@ export class CcBadge extends LitElement {
       // language=CSS
       css`
         :host {
+          --border-radius: 1em;
+
+          border-radius: var(--border-radius, 1em);
           display: inline-block;
         }
 
         .cc-badge {
           align-items: center;
-          border-radius: 1em;
+          border-radius: var(--border-radius, 1em);
           display: flex;
           font-size: 0.8em;
           gap: 0.3em;
