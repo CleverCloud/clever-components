@@ -12,7 +12,7 @@ import './cc-oauth-consumer.js';
  */
 
 defineSmartComponent({
-  selector: 'cc-oauth-consumer.js',
+  selector: 'cc-oauth-consumer',
   params: {
     apiConfig: { type: Object },
     ownerId: { type: String },

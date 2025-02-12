@@ -1,5 +1,6 @@
 import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { iconRemixCheckLine } from '../../assets/cc-remix.icons.js';
 import { fakeString } from '../../lib/fake-strings.js';
 import { i18n } from '../../lib/i18n/i18n.js';
@@ -120,6 +121,8 @@ export class CcOauthConsumer extends LitElement {
         return i18n('cc-oauth-consumer.auth.manage.option.manage-personal-information');
       case 'manage_ssh_keys':
         return i18n('cc-oauth-consumer.auth.manage.option.manage-ssh-keys');
+      default:
+        return fakeString(70);
     }
   }
 
@@ -136,7 +139,7 @@ export class CcOauthConsumer extends LitElement {
           <cc-img
             slot="header-icon"
             ?skeleton=${skeleton}
-            src=${oauthConsumerInfo.image}
+            src=${ifDefined(oauthConsumerInfo.image)}
             a11y-name=${oauthConsumerInfo.name}
           ></cc-img>
           <div slot="header-title"><span class="${classMap({ skeleton })}">${oauthConsumerInfo.name}</span></div>
@@ -202,16 +205,19 @@ export class CcOauthConsumer extends LitElement {
    */
   _renderRightsSection(section) {
     const skeleton = this.state.type === 'loading';
-    return OAUTH_CONSUMER_RIGHTS.filter((right) => {
-      return right.section === section;
-    }).map((right) => {
-      return html`
-        <div class="right ${classMap({ skeleton })}">
-          <cc-icon .icon="${iconRemixCheckLine}"></cc-icon>
-          <div>${this._getLabel(right.label)}</div>
-        </div>
-      `;
-    });
+    console.log(this.state.rights);
+    return this.state.rights
+      .filter((right) => {
+        return right.section === section;
+      })
+      .map((right) => {
+        return html`
+          <div class="right ${classMap({ skeleton })}">
+            <cc-icon .icon="${iconRemixCheckLine}"></cc-icon>
+            <div>${this._getLabel(right.label)}</div>
+          </div>
+        `;
+      });
   }
 
   static get styles() {
@@ -228,6 +234,7 @@ export class CcOauthConsumer extends LitElement {
           display: flex;
           flex-direction: column;
           gap: 1.5em;
+          margin-inline: 8em;
         }
 
         .rights-container {
@@ -248,12 +255,13 @@ export class CcOauthConsumer extends LitElement {
         .rights-section {
           display: flex;
           flex-direction: column;
-          gap: 0.2em;
+          gap: 0.5em;
         }
 
         .right {
           display: flex;
           flex-direction: row;
+          gap: 0.5em;
         }
 
         /* region Access */
