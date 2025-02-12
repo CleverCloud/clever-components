@@ -4,9 +4,9 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import { createRef, ref } from 'lit/directives/ref.js';
 import {
   iconRemixAccountCircleFill as iconAvatar,
-  iconRemixDeleteBin_5Fill as iconBin,
   iconRemixCheckFill as iconCheck,
   iconRemixCloseFill as iconCross,
+  iconRemixDeleteBinLine as iconDelete,
   iconRemixErrorWarningFill as iconError,
   iconRemixEditFill as iconPen,
 } from '../../assets/cc-remix.icons.js';
@@ -334,7 +334,7 @@ export class CcOrgaMemberCard extends LitElement {
     const waiting = this.member.state === 'updating' || this.member.state === 'deleting';
     const isEditing = this.member.state === 'editing' || this.member.state === 'updating';
     const firstBtnIcon = isEditing ? iconCross : iconPen;
-    const secondBtnIcon = isEditing ? iconCheck : iconBin;
+    const secondBtnIcon = isEditing ? iconCheck : iconDelete;
 
     return html`
       <div class="actions">
