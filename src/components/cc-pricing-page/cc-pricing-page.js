@@ -40,9 +40,9 @@ export class CcPricingPage extends LitElement {
       selectedPlans: { type: Object, attribute: 'selected-plans' },
       selectedTemporality: { type: Object, attribute: 'selected-temporality' },
       selectedZoneId: { type: String, attribute: 'selected-zone-id' },
+      _estimationElement: { type: Object, state: true },
       _headerElement: { type: Object, state: true },
       _productElements: { type: Array, state: true },
-      _estimationElement: { type: Object, state: true },
     };
   }
 

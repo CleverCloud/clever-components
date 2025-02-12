@@ -49,8 +49,8 @@ export class CcEnvVarForm extends LitElement {
       restartApp: { type: Boolean, attribute: 'restart-app' },
       state: { type: Object },
       _editorsState: { type: Object, state: true },
-      _mode: { type: String, state: true },
       _isPristine: { type: Boolean, state: true },
+      _mode: { type: String, state: true },
     };
   }
 
