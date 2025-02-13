@@ -13,12 +13,14 @@ import '../cc-icon/cc-icon.js';
 import '../cc-img/cc-img.js';
 import '../cc-input-text/cc-input-text.js';
 import '../cc-notice/cc-notice.js';
+
 /**
  * @type {OauthConsumerRight}
  */
 const SKELETON_RIGHT = {
   name: '??????',
   isEnabled: true,
+  section: null,
 };
 
 /**
@@ -43,41 +45,16 @@ const SKELETON_OAUTH_CONSUMER_INFO = {
   secret: fakeString(20),
 };
 
-const OAUTH_CONSUMER_RIGHTS = [
-  { name: 'access_organisations', label: 'access_organisations', section: 'access' },
-  { name: 'access_organisations_bills', label: 'access_organisations_bills', section: 'access' },
-  {
-    name: 'access_organisations_consumption_statistics',
-    label: 'access_organisations_consumption_statistics',
-    section: 'access',
-  },
-  {
-    name: 'access_organisations_credit_count',
-    label: 'access_organisations_credit_count',
-    section: 'access',
-  },
-  { name: 'access_personal_information', label: 'access_personal_information', section: 'access' },
-  { name: 'manage_organisations', label: 'manage_organisations', section: 'manage' },
-  {
-    name: 'manage_organisations_applications',
-    label: 'manage_organisations_applications',
-    section: 'manage',
-  },
-  { name: 'manage_organisations_members', label: 'manage_organisations_members', section: 'manage' },
-  { name: 'manage_organisations_services', label: 'manage_organisations_services', section: 'manage' },
-  { name: 'manage_personal_information', label: 'manage_personal_information', section: 'manage' },
-  { name: 'manage_ssh_keys', label: 'manage_ssh_keys', section: 'manage' },
-];
-
 /**
  * @typedef {import('./cc-oauth-consumer.types.js').OauthConsumerState} OauthConsumerState
  * @typedef {import('./cc-oauth-consumer.types.js').OauthConsumerStateLoaded} OauthConsumerStateLoaded
  * @typedef {import('./cc-oauth-consumer.types.js').OauthConsumerRight} OauthConsumerRight
- *
  */
 
 /**
- * A component doing X and Y (one liner description of your component).
+ * A component displaying Access details and authorizations of a oAuth Consumer.
+ *
+ * @cssdisplay block
  */
 export class CcOauthConsumer extends LitElement {
   static get properties() {
@@ -94,11 +71,11 @@ export class CcOauthConsumer extends LitElement {
   }
 
   /**
-   * @param {string|null} label
+   * @param {string|null} name
    * @returns {string|Node}
    */
-  _getLabel(label) {
-    switch (label) {
+  _getName(name) {
+    switch (name) {
       case 'access_organisations':
         return i18n('cc-oauth-consumer.auth.access.option.access-organisations');
       case 'access_organisations_bills':
@@ -109,6 +86,8 @@ export class CcOauthConsumer extends LitElement {
         return i18n('cc-oauth-consumer.auth.access.option.access-organisations-credit-count');
       case 'access_personal_information':
         return i18n('cc-oauth-consumer.auth.access.option.access-personal-information');
+      case 'change_password':
+        return i18n('cc-oauth-consumer.auth.manage.option.change-password');
       case 'manage_organisations':
         return i18n('cc-oauth-consumer.auth.manage.option.manage-organisations');
       case 'manage_organisations_applications':
@@ -138,9 +117,9 @@ export class CcOauthConsumer extends LitElement {
         <cc-block>
           <cc-img
             slot="header-icon"
-            ?skeleton=${skeleton}
             src=${ifDefined(oauthConsumerInfo.image)}
             a11y-name=${oauthConsumerInfo.name}
+            ?skeleton=${skeleton}
           ></cc-img>
           <div slot="header-title"><span class="${classMap({ skeleton })}">${oauthConsumerInfo.name}</span></div>
           <div slot="content"><span class="${classMap({ skeleton })}">${oauthConsumerInfo.description}</span></div>
@@ -205,16 +184,20 @@ export class CcOauthConsumer extends LitElement {
    */
   _renderRightsSection(section) {
     const skeleton = this.state.type === 'loading';
-    console.log(this.state.rights);
-    return this.state.rights
+    if (this.state.type !== 'loaded') {
+      return [];
+    }
+    const rights = this.state.rights;
+    console.log(rights);
+    return rights
       .filter((right) => {
-        return right.section === section;
+        return right.section === section && right.isEnabled;
       })
       .map((right) => {
         return html`
           <div class="right ${classMap({ skeleton })}">
             <cc-icon .icon="${iconRemixCheckLine}"></cc-icon>
-            <div>${this._getLabel(right.label)}</div>
+            <div>${this._getName(right.name)}</div>
           </div>
         `;
       });
@@ -226,7 +209,6 @@ export class CcOauthConsumer extends LitElement {
       // language=CSS
       css`
         :host {
-          /* You may use another display type but you need to define one. */
           display: block;
         }
 

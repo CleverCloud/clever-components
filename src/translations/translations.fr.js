@@ -977,6 +977,7 @@ export const translations = {
   'cc-oauth-consumer.auth.access.option.access-organisations-credit-count': `Accéder au nombre de crédits de mes organisations`,
   'cc-oauth-consumer.auth.access.option.access-personal-information': `Accéder à mes informations personnelles`,
   'cc-oauth-consumer.auth.manage': `Gestion`,
+  'cc-oauth-consumer.auth.manage.option.change-password': `Changer mon mot de passe`,
   'cc-oauth-consumer.auth.manage.option.manage-organisations': `Gérer mes organisations`,
   'cc-oauth-consumer.auth.manage.option.manage-organisations-applications': `Gérer les applications de mes organisations`,
   'cc-oauth-consumer.auth.manage.option.manage-organisations-members': `Gérer les membres de mes organisations`,

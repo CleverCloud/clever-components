@@ -23,4 +23,5 @@ interface OauthConsumerStateLoaded {
 export interface OauthConsumerRight {
   name: string;
   isEnabled: boolean;
+  section: 'access' | 'manage';
 }

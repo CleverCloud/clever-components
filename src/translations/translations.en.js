@@ -965,6 +965,7 @@ export const translations = {
   'cc-oauth-consumer.auth.access.option.access-organisations-credit-count': `Access my organizations' credit count`,
   'cc-oauth-consumer.auth.access.option.access-personal-information': `Access my personal information`,
   'cc-oauth-consumer.auth.manage': `Manage`,
+  'cc-oauth-consumer.auth.manage.option.change-password': `Change my password`,
   'cc-oauth-consumer.auth.manage.option.manage-organisations': `Manage my organizations`,
   'cc-oauth-consumer.auth.manage.option.manage-organisations-applications': `Manage my organizations' applications`,
   'cc-oauth-consumer.auth.manage.option.manage-organisations-members': `Manage my organizations' members`,

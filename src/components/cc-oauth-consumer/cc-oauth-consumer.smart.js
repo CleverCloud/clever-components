@@ -41,8 +41,8 @@ defineSmartComponent({
             appBaseUrl: data.baseUrl,
             description: data.description,
             image: data.picture,
-            rights: Object.entries(data.rights).map(([name, isEnabled]) => {
-              return { name, isEnabled };
+            rights: Object.entries(data.rights).map(([name, isEnabled, section]) => {
+              return { name, isEnabled, section };
             }),
             key: data.key,
             secret: data.secret,
