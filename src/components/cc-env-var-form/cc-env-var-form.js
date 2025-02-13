@@ -91,6 +91,15 @@ export class CcEnvVarForm extends LitElement {
     this._isPristine = true;
   }
 
+  /**
+   * Whether the form has unsaved variables.
+   *
+   * @return {boolean} True if there are unsaved changes, false otherwise.
+   */
+  get hasUnsavedModifications() {
+    return !this._isPristine;
+  }
+
   _getModes() {
     return [
       { label: i18n('cc-env-var-form.mode.simple'), value: 'SIMPLE' },
