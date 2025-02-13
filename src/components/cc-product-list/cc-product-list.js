@@ -198,13 +198,7 @@ export class CcProductList extends LitElement {
           --cc-color-bg-primary: var(--cc-color-text-primary-strong);
         }
 
-        input[type='radio']:focus-visible + label {
-          /**
-    * FIXME:
-    * remove this once the "border-radius" of the "cc-badge" component is set on its host instead of its wrapper
-    * see https://github.com/CleverCloud/clever-components/issues/990.
-    */
-          border-radius: 1em;
+        input[type='radio']:focus-visible + label cc-badge {
           outline: var(--cc-focus-outline, #000 solid 2px);
           outline-offset: var(--cc-focus-outline-offset, 2px);
         }
