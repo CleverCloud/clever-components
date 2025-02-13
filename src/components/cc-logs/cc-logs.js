@@ -228,6 +228,7 @@ class TemporaryFunctionDisabler {
 export class CcLogs extends LitElement {
   static get properties() {
     return {
+      dateDisplay: { type: String, attribute: 'date-display' },
       follow: { type: Boolean },
       limit: { type: Number },
       logs: { type: Array },
@@ -236,7 +237,6 @@ export class CcLogs extends LitElement {
       metadataFilter: { type: Array, attribute: 'metadata-filter' },
       metadataRenderers: { type: Object, attribute: 'metadata-renderers' },
       stripAnsi: { type: Boolean, attribute: 'strip-ansi' },
-      dateDisplay: { type: String, attribute: 'date-display' },
       timezone: { type: String },
       wrapLines: { type: Boolean, attribute: 'wrap-lines' },
       _horizontalScrollbarHeight: { type: Number, state: true },

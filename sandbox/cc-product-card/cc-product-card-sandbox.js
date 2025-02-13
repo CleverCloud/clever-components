@@ -32,8 +32,8 @@ const API_PRODUCTS_SELECT = [
 export class CcProductCardSandbox extends LitElement {
   static get properties() {
     return {
-      _currentProduct: { type: Object, state: true },
       _componentWidth: { type: Number, state: true },
+      _currentProduct: { type: Object, state: true },
     };
   }
 
