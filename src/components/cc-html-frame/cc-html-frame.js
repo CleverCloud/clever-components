@@ -28,9 +28,9 @@ import '../cc-loader/cc-loader.js';
 export class CcHtmlFrame extends LitElement {
   static get properties() {
     return {
+      iframeTitle: { type: String, attribute: 'iframe-title' },
       loading: { type: Boolean, reflect: true },
       sandbox: { type: String },
-      iframeTitle: { type: String, attribute: 'iframe-title' },
     };
   }
 

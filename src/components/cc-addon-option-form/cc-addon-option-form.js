@@ -25,8 +25,8 @@ import '../cc-button/cc-button.js';
 export class CcAddonOptionForm extends LitElement {
   static get properties() {
     return {
-      options: { type: Array },
       heading: { type: String },
+      options: { type: Array },
     };
   }
 

@@ -33,6 +33,7 @@ export default [
       'src/stories/**/*.js',
       'eslint.config.js',
       'eslint/**/*.*js',
+      'prettier-rules/**/*.js',
       'tasks/**/*.js',
       'rollup/**/*.js',
       'cem/**/*.js',

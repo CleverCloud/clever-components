@@ -26,9 +26,9 @@ export class CcAddonOption extends LitElement {
   static get properties() {
     return {
       enabled: { type: Boolean, reflect: true },
+      heading: { type: String },
       icon: { type: Object },
       logo: { type: String },
-      heading: { type: String },
     };
   }
 

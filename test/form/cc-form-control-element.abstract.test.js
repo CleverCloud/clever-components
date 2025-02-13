@@ -29,8 +29,8 @@ function getCustomElement(inputSettings = {}) {
       static get properties() {
         return {
           ...super.properties,
-          value: { type: String },
           resetValue: { type: String },
+          value: { type: String },
         };
       }
 

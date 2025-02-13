@@ -1,6 +1,6 @@
 {
   "arrowParens": "always",
-  "plugins": ["prettier-plugin-organize-imports"],
+  "plugins": ["prettier-plugin-organize-imports", "./prettier-rules/sort-lit-get-properties.js"],
   "printWidth": 120,
   "tabWidth": 2,
   "singleQuote": true
