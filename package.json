@@ -38,7 +38,7 @@
     "lint": "eslint",
     "lint:fix": "eslint --fix",
     "lint:inspect-config": "eslint --inspect-config",
-    "prepack:prod": "npm run lint && npm run stylelint && npm run components:check-lit && npm run typecheck && npm run components:check-i18n && npm run components:check-type-imports && npm run test && npm run components:build && npm run components:docs",
+    "prepack:prod": "npm run format:check && npm run lint && npm run stylelint && npm run components:check-lit && npm run typecheck && npm run components:check-i18n && npm run components:check-type-imports && npm run test && npm run components:build && npm run components:docs",
     "prepack:dev": "npm run components:build",
     "prepack": "[ \"$DEV\" == \"true\" ] && npm run prepack:dev || npm run prepack:prod",
     "prestorybook:build": "npm run components:docs",
