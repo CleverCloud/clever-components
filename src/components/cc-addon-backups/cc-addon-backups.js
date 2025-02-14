@@ -501,6 +501,8 @@ export class CcAddonBackups extends LitElement {
           position: fixed;
           transform: translateX(-50%);
           width: 90%;
+          /* temporary fix until we rely on the dialog element and the top layer */
+          z-index: 9999;
         }
 
         .overlay-close-btn {
