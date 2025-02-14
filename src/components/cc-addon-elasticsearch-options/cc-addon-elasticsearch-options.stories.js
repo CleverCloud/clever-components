@@ -11,19 +11,38 @@ const conf = {
   component: 'cc-addon-elasticsearch-options',
 };
 
+/**
+ * @typedef {import('./cc-addon-elasticsearch-options.js').CcAddonElasticsearchOptions} CcAddonElasticsearchOptions
+ */
+
 export const defaultStory = makeStory(conf, {
+  /** @type {Partial<CcAddonElasticsearchOptions>[]} */
   items: [
     {
       options: [
         {
           name: 'kibana',
           enabled: false,
-          flavor: { name: 'L', mem: 8192, cpus: 6, gpus: 0, microservice: false, monthlyCost: 144 },
+          flavor: {
+            name: 'L',
+            mem: 8192,
+            cpus: 6,
+            gpus: 0,
+            microservice: false,
+            monthlyCost: { amount: 144, currency: 'EUR' },
+          },
         },
         {
           name: 'apm',
           enabled: false,
-          flavor: { name: 'M', mem: 4096, cpus: 4, gpus: 0, microservice: false, monthlyCost: 72 },
+          flavor: {
+            name: 'M',
+            mem: 4096,
+            cpus: 4,
+            gpus: 0,
+            microservice: false,
+            monthlyCost: { amount: 72, currency: 'EUR' },
+          },
         },
         {
           name: 'encryption',
@@ -34,40 +53,108 @@ export const defaultStory = makeStory(conf, {
   ],
 });
 
-export const noFlavorDetailsYet = makeStory(conf, {
-  items: [
-    {
-      options: [
-        {
-          name: 'kibana',
-          enabled: false,
-        },
-        {
-          name: 'apm',
-          enabled: false,
-        },
-        {
-          name: 'encryption',
-          enabled: false,
-        },
-      ],
-    },
-  ],
-});
-
-export const preselectedKibana = makeStory(conf, {
+export const dataLoadedWithPreselectedKibana = makeStory(conf, {
+  /** @type {Partial<CcAddonElasticsearchOptions>[]} */
   items: [
     {
       options: [
         {
           name: 'kibana',
           enabled: true,
-          flavor: { name: 'L', mem: 8192, cpus: 6, gpus: 0, microservice: false, monthlyCost: 144 },
+          flavor: {
+            name: 'L',
+            mem: 8192,
+            cpus: 6,
+            gpus: 0,
+            microservice: false,
+            monthlyCost: { amount: 144, currency: 'EUR' },
+          },
         },
         {
           name: 'apm',
           enabled: false,
-          flavor: { name: 'M', mem: 4096, cpus: 4, gpus: 0, microservice: false, monthlyCost: 72 },
+          flavor: {
+            name: 'M',
+            mem: 4096,
+            cpus: 4,
+            gpus: 0,
+            microservice: false,
+            monthlyCost: { amount: 72, currency: 'EUR' },
+          },
+        },
+        {
+          name: 'encryption',
+          enabled: false,
+        },
+      ],
+    },
+  ],
+});
+
+export const dataLoadedWithDollars = makeStory(conf, {
+  /** @type {Partial<CcAddonElasticsearchOptions>[]} */
+  items: [
+    {
+      options: [
+        {
+          name: 'kibana',
+          enabled: false,
+          flavor: {
+            name: 'L',
+            mem: 8192,
+            cpus: 6,
+            gpus: 0,
+            microservice: false,
+            monthlyCost: { amount: 144, currency: 'USD' },
+          },
+        },
+        {
+          name: 'apm',
+          enabled: false,
+          flavor: {
+            name: 'M',
+            mem: 4096,
+            cpus: 4,
+            gpus: 0,
+            microservice: false,
+            monthlyCost: { amount: 72, currency: 'USD' },
+          },
+        },
+        {
+          name: 'encryption',
+          enabled: false,
+        },
+      ],
+    },
+  ],
+});
+
+export const dataLoadedWithNoMonthlyCost = makeStory(conf, {
+  /** @type {Partial<CcAddonElasticsearchOptions>[]} */
+  items: [
+    {
+      options: [
+        {
+          name: 'kibana',
+          enabled: false,
+          flavor: {
+            name: 'L',
+            mem: 8192,
+            cpus: 6,
+            gpus: 0,
+            microservice: false,
+          },
+        },
+        {
+          name: 'apm',
+          enabled: false,
+          flavor: {
+            name: 'M',
+            mem: 4096,
+            cpus: 4,
+            gpus: 0,
+            microservice: false,
+          },
         },
         {
           name: 'encryption',
