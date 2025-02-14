@@ -5,6 +5,20 @@ title: 'Changelog'
 
 # Changelog
 
+## [17.2.0](https://github.com/CleverCloud/clever-components/compare/17.1.1...17.2.0) (2025-02-14)
+
+
+### 🚀 Features
+
+* **cc-env-var-form:** add public `hasUnsavedModifications` getter ([5eba26f](https://github.com/CleverCloud/clever-components/commit/5eba26fbb7114163ed9aad4b6e897bd73e800658)), closes [#1327](https://github.com/CleverCloud/clever-components/issues/1327)
+
+
+### 🐛 Bug Fixes
+
+* **cc-badge:** add border-radius on host ([7f5bd71](https://github.com/CleverCloud/clever-components/commit/7f5bd71c7c93091bebba4206f6f197179b36d826)), closes [#990](https://github.com/CleverCloud/clever-components/issues/990)
+* **cc-env-var-form:** change exposed config link ([5f187a4](https://github.com/CleverCloud/clever-components/commit/5f187a4dbc5418bb376d7c2d2a82cc2919663909)), closes [#970](https://github.com/CleverCloud/clever-components/issues/970)
+* **cc-orga-member-card:** change iconBin to iconDelete ([4492ce3](https://github.com/CleverCloud/clever-components/commit/4492ce3ea9e2e56a86ce1ce643b7d41e29a12097)), closes [#1096](https://github.com/CleverCloud/clever-components/issues/1096)
+
 ## [17.1.1](https://github.com/CleverCloud/clever-components/compare/17.1.0...17.1.1) (2025-02-10)
 
 
