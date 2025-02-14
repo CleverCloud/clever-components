@@ -1,5 +1,4 @@
-import { getAllInstances, getDeployment } from '@clevercloud/client/esm/api/v2/application.js';
-import { pickNonNull } from '@clevercloud/client/esm/pick-non-null.js';
+import { getDeployment as getDeploymentV2 } from '@clevercloud/client/esm/api/v2/application.js';
 import { ApplicationLogStream } from '@clevercloud/client/esm/streams/application-logs.js';
 import { HttpError } from '@clevercloud/client/esm/streams/clever-cloud-sse.js';
 import { Buffer } from '../../lib/buffer.js';
@@ -10,6 +9,11 @@ import '../cc-smart-container/cc-smart-container.js';
 import './cc-logs-application-view.js';
 import { dateRangeSelectionToDateRange } from './date-range-selection.js';
 import { isLive, lastXDays } from './date-range.js';
+import {
+  getAllApplicationInstances as getApplicationInstancesV4,
+  getInstance as getInstanceV4
+} from '@clevercloud/client/esm/api/v4/instance.js';
+import { getApplicationDeployment as getDeploymentV4 } from '@clevercloud/client/esm/api/v4/deployment.js';
 
 /**
  * @typedef {import('../cc-logs-instances/cc-logs-instances.types.js').Instance} Instance
@@ -966,61 +970,27 @@ class Api {
   }
 
   fetchDeployment(deploymentId) {
-    return v4.getDeployment({ ...this._commonApiPrams, deploymentId }).then(sendToApi({ apiConfig: this._apiConfig }));
+    return getDeploymentV4({ ...this._commonApiPrams, deploymentId }).then(sendToApi({ apiConfig: this._apiConfig }));
   }
 
   fetchDeploymentV2(deploymentId) {
-    return v2.getDeployment({ ...this._commonApiPrams, deploymentId }).then(sendToApi({ apiConfig: this._apiConfig }));
+    return getDeploymentV2({ ...this._commonApiPrams, deploymentId }).then(sendToApi({ apiConfig: this._apiConfig }));
   }
 
   fetchInstances(since, until) {
-    return v4
-      .getInstances({ ...this._commonApiPrams, limit: 100, since, until })
+    return getApplicationInstancesV4({ ...this._commonApiPrams, limit: 100, since, until })
       .then(sendToApi({ apiConfig: this._apiConfig }));
   }
 
   fetchInstancesByDeployment(deploymentId) {
-    return v4
-      .getInstances({ ...this._commonApiPrams, limit: 100, deploymentId })
+    return getApplicationInstancesV4({ ...this._commonApiPrams, limit: 100, deploymentId })
       .then(sendToApi({ apiConfig: this._apiConfig }));
   }
 
   fetchInstance(instanceId) {
-    return v4.getInstance({ ...this._commonApiPrams, instanceId }).then(sendToApi({ apiConfig: this._apiConfig }));
+    return getInstanceV4({ ...this._commonApiPrams, instanceId }).then(sendToApi({ apiConfig: this._apiConfig }));
   }
 }
-
-// --- APIs ------
-
-const v4 = {
-  getInstances(params) {
-    return Promise.resolve({
-      method: 'get',
-      url: `/v4/orchestration/organisations/${params.id}/applications/${params.appId}/instances`,
-      headers: { Accept: 'application/json' },
-      queryParams: pickNonNull(params, ['limit', 'since', 'until', 'deploymentId', 'includeState']),
-    });
-  },
-  getInstance(params) {
-    return Promise.resolve({
-      method: 'get',
-      url: `/v4/orchestration/organisations/${params.id}/applications/${params.appId}/instances/${params.instanceId}`,
-      headers: { Accept: 'application/json' },
-    });
-  },
-  getDeployment(params) {
-    return Promise.resolve({
-      method: 'get',
-      url: `/v4/orchestration/organisations/${params.id}/applications/${params.appId}/deployments/${params.deploymentId}`,
-      headers: { Accept: 'application/json' },
-    });
-  },
-};
-
-const v2 = {
-  getDeployment: getDeployment,
-  getAllInstances: getAllInstances,
-};
 
 // --- utils ------
 
@@ -1047,17 +1017,3 @@ function isGhostInstance(instance) {
 function isCurrentDeployment(deployment) {
   return deployment.state === 'WORK_IN_PROGRESS' || deployment.state === 'QUEUED' || deployment.endDate == null;
 }
-
-//
-// function getDeployments (params) {
-// // "https://api.clever-cloud.com/v4/orchestration/organisations/orga_8b852f0a-1135-4b4f-8eee-a538f538b640/applications/app_4bc68315-c93e-49eb-8086-430314475568/deployments?limit=1"  | jq
-//   const urlBase = `/orchestration/organisations/${params.id}/applications/${params.appId}/deployments`;
-//   return Promise.resolve({
-//     method: 'get',
-//     url: `/v4${urlBase}/applications/${params.appId}/deployments`,
-//     headers: { Accept: 'application/json' },
-//     queryParams: pickNonNull(params, ['limit', 'offset', 'action']),
-//     // no body
-//   });
-//
-// }

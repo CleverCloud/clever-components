@@ -6,6 +6,8 @@ import { defineSmartComponent } from '../../lib/smart/define-smart-component.js'
 import { i18n } from '../../translations/translation.js';
 import '../cc-smart-container/cc-smart-container.js';
 import './cc-env-var-form.js';
+// @ts-expect-error FIXME: remove when clever-client exports types
+import { getConfigProviderEnv, updateConfigProviderEnv } from '@clevercloud/client/esm/api/v4/addon.js';
 
 /**
  * @typedef {import('./cc-env-var-form.js').CcEnvVarForm} CcEnvVarForm
@@ -124,39 +126,4 @@ async function fetchVariables({ apiConfig, signal, realAddonId }) {
  */
 async function updateVariables({ apiConfig, realAddonId, variables }) {
   return updateConfigProviderEnv({ realAddonId }, variables).then(sendToApi({ apiConfig }));
-}
-
-/**
- * TODO: clever-client
- *
- * @param {object} params
- * @param {string} params.realAddonId
- * @returns {Promise<{ method: 'get', url: string, headers: { Accept: 'application/json' }}>}
- */
-export function getConfigProviderEnv({ realAddonId }) {
-  return Promise.resolve({
-    method: 'get',
-    url: `/v4/addon-providers/config-provider/addons/${realAddonId}/env`,
-    headers: { Accept: 'application/json' },
-    // no query params
-    // no body
-  });
-}
-
-/**
- * TODO: clever-client
- *
- * @param {object} params
- * @param {string} params.realAddonId
- * @param {Array<EnvVar>} body
- * @returns {Promise<{ method: 'put', url: string, headers: { Accept: 'application/json' }, body: Array<EnvVar> }>}
- */
-export function updateConfigProviderEnv({ realAddonId }, body) {
-  return Promise.resolve({
-    method: 'put',
-    url: `/v4/addon-providers/config-provider/addons/${realAddonId}/env`,
-    headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
-    // no query params
-    body,
-  });
 }
