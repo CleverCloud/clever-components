@@ -18,8 +18,8 @@ import './cc-ssh-key-list.js';
  * @typedef {import('./cc-ssh-key-list.js').CcSshKeyList} CcSshKeyList
  * @typedef {import('./cc-ssh-key-list.types.js').SshKey} SshKey
  * @typedef {import('./cc-ssh-key-list.types.js').CreateSshKeyFormState} CreateSshKeyFormState
- * @typedef {import('./cc-ssh-key-list.types.js').KeyDataStateLoadedAndUnlinked} KeyDataStateLoadedAndUnlinked
- * @typedef {import('./cc-ssh-key-list.types.js').KeyDataStateLoadedAndLinked} KeyDataStateLoadedAndLinked
+ * @typedef {import('./cc-ssh-key-list.types.js').SshKeyListStateLoadedAndLinked} SshKeyListStateLoadedAndLinked
+ * @typedef {import('./cc-ssh-key-list.types.js').SshKeyListStateLoadedAndUnlinked} SshKeyListStateLoadedAndUnlinked
  * @typedef {import('../../lib/send-to-api.types.js').ApiConfig} ApiConfig
  * @typedef {import('../../lib/smart/smart-component.types.js').OnContextUpdateArgs<CcSshKeyList>} OnContextUpdateArgs
  */
@@ -38,22 +38,22 @@ defineSmartComponent({
     // Retrieving SSH keys is done in two steps, hidden in the `fetchAllKeys()` implementation:
     // - first, we retrieve the current user information to check if their GitHub account is linked to their main account;
     // - then, we fetch the personal SSH keys and the GitHub keys if needed.
-    // Note: we intentionally show `loading` state only on initial load and not on further actions, to keep a responsive UI.
+    // Note: we intentionally show `loading` type only on initial load and not on further actions, to keep a responsive UI.
     function refreshList() {
       return fetchAllKeys({ apiConfig, signal, cacheDelay: 0 })
         .then(({ isGithubLinked, personalKeys, githubKeys }) => {
-          updateComponent('keyData', {
-            state: 'loaded',
-            // linked (or unlinked) GitHub account state passed to the component
+          updateComponent('keyListState', {
+            type: 'loaded',
+            // linked (or unlinked) GitHub account type passed to the component
             isGithubLinked,
             // internal key states initialization (to `idle`) after API fetch, to separate fetched data from UI infos
-            personalKeys: personalKeys.map((key) => ({ ...key, state: 'idle' })),
-            githubKeys: githubKeys?.map((key) => ({ ...key, state: 'idle' })),
+            personalKeys: personalKeys.map((key) => ({ ...key, type: 'idle' })),
+            githubKeys: githubKeys?.map((key) => ({ ...key, type: 'idle' })),
           });
         })
         .catch((error) => {
           console.error(error);
-          updateComponent('keyData', { state: 'error' });
+          updateComponent('keyListState', { type: 'error' });
         });
     }
 
@@ -79,11 +79,11 @@ defineSmartComponent({
 
     onEvent('cc-ssh-key-list:delete', ({ name }) => {
       updateComponent(
-        'keyData',
-        /** @param {KeyDataStateLoadedAndUnlinked|KeyDataStateLoadedAndLinked} keyData */
-        (keyData) => {
-          const key = keyData.personalKeys.find((key) => key.name === name);
-          key.state = 'deleting';
+        'keyListState',
+        /** @param {SshKeyListStateLoadedAndLinked|SshKeyListStateLoadedAndUnlinked} keyListState */
+        (keyListState) => {
+          const key = keyListState.personalKeys.find((key) => key.name === name);
+          key.type = 'deleting';
         },
       );
 
@@ -96,11 +96,11 @@ defineSmartComponent({
           console.error(error);
           notifyError(error, i18n('cc-ssh-key-list.error.delete', { name }));
           updateComponent(
-            'keyData',
-            /** @param {KeyDataStateLoadedAndUnlinked|KeyDataStateLoadedAndLinked} keyData */
-            (keyData) => {
-              const key = keyData.personalKeys.find((key) => key.name === name);
-              key.state = 'idle';
+            'keyListState',
+            /** @param {SshKeyListStateLoadedAndLinked|SshKeyListStateLoadedAndUnlinked} keyListState */
+            (keyListState) => {
+              const key = keyListState.personalKeys.find((key) => key.name === name);
+              key.type = 'idle';
             },
           );
         });
@@ -108,11 +108,11 @@ defineSmartComponent({
 
     onEvent('cc-ssh-key-list:import', ({ name, key, fingerprint }) => {
       updateComponent(
-        'keyData',
-        /** @param {KeyDataStateLoadedAndLinked} keyData */
-        (keyData) => {
-          const key = keyData.githubKeys.find((key) => key.name === name);
-          key.state = 'importing';
+        'keyListState',
+        /** @param {SshKeyListStateLoadedAndLinked} keyListState */
+        (keyListState) => {
+          const key = keyListState.githubKeys.find((key) => key.name === name);
+          key.type = 'importing';
         },
       );
 
@@ -120,11 +120,11 @@ defineSmartComponent({
         .then(() => {
           notifySuccess(i18n('cc-ssh-key-list.success.import', { name }));
           updateComponent(
-            'keyData',
-            /** @param {KeyDataStateLoadedAndLinked} keyData */
-            (keyData) => {
-              keyData.personalKeys.push({ state: 'idle', name, fingerprint });
-              keyData.githubKeys = keyData.githubKeys.filter((k) => k.name !== name);
+            'keyListState',
+            /** @param {SshKeyListStateLoadedAndLinked} keyListState */
+            (keyListState) => {
+              keyListState.personalKeys.push({ type: 'idle', name, fingerprint });
+              keyListState.githubKeys = keyListState.githubKeys.filter((k) => k.name !== name);
             },
           );
         })
@@ -132,17 +132,17 @@ defineSmartComponent({
           console.error(error);
           notifyError(error, i18n('cc-ssh-key-list.error.import', { name }));
           updateComponent(
-            'keyData',
-            /** @param {KeyDataStateLoadedAndLinked} keyData */
-            (keyData) => {
-              const key = keyData.githubKeys.find((key) => key.name === name);
-              key.state = 'idle';
+            'keyListState',
+            /** @param {SshKeyListStateLoadedAndLinked} keyListState */
+            (keyListState) => {
+              const key = keyListState.githubKeys.find((key) => key.name === name);
+              key.type = 'idle';
             },
           );
         });
     });
 
-    updateComponent('keyData', { state: 'loading' });
+    updateComponent('keyListState', { type: 'loading' });
     component.createKeyFormState = { type: 'idle' };
     component.resetCreateKeyForm();
 
