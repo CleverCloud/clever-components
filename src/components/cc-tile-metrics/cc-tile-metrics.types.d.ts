@@ -33,7 +33,10 @@ export interface MetricsData {
   memMetrics: Metric[];
 }
 
-export type TileMetricsGrafanaLinkState = TileMetricsGrafanaLinkStateLoaded | TileMetricsGrafanaLinkStateLoading;
+export type TileMetricsGrafanaLinkState =
+  | TileMetricsGrafanaLinkStateLoaded
+  | TileMetricsGrafanaLinkStateLoading
+  | TileMetricsGrafanaLinkStateHidden;
 
 export interface TileMetricsGrafanaLinkStateLoaded {
   type: 'loaded';
@@ -42,6 +45,10 @@ export interface TileMetricsGrafanaLinkStateLoaded {
 
 export interface TileMetricsGrafanaLinkStateLoading {
   type: 'loading';
+}
+
+export interface TileMetricsGrafanaLinkStateHidden {
+  type: 'hidden';
 }
 
 // this is what we retrieve directly from the API

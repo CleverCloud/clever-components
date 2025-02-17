@@ -281,7 +281,22 @@ export class CcTileMetrics extends LitElement {
     const cpuColorType = this.metricsState.type === 'loaded' ? this._getColorLegend(lastCpuValue) : SKELETON_COLOR;
     const memColorType = this.metricsState.type === 'loaded' ? this._getColorLegend(lastMemValue) : SKELETON_COLOR;
 
-    const grafanaLink = this.grafanaLinkState.type === 'loaded' ? this.grafanaLinkState.link : null;
+    const links = [];
+    if (this.grafanaLinkState.type === 'loaded') {
+      links.push(
+        ccLink(
+          this.grafanaLinkState.link,
+          i18n('cc-tile-metrics.grafana'),
+          skeleton,
+          i18n('cc-tile-metrics.link-to-grafana'),
+        ),
+      );
+    }
+    if (!isStringEmpty(this.metricsLink)) {
+      links.push(
+        ccLink(this.metricsLink, i18n('cc-tile-metrics.metrics-link'), false, i18n('cc-tile-metrics.link-to-metrics')),
+      );
+    }
 
     const panel = this._getCurrentPanel();
 
@@ -375,26 +390,14 @@ export class CcTileMetrics extends LitElement {
 
       <div class="tile_docs ${classMap({ 'tile--hidden': panel !== 'docs' })}">
         ${i18n('cc-tile-metrics.docs.msg')}
-        <div class="docs-links">
-          <p>${i18n('cc-tile-metrics.docs.more-metrics')}</p>
-          <ul>
-            <li>
-              ${ccLink(grafanaLink, i18n('cc-tile-metrics.grafana'), skeleton, i18n('cc-tile-metrics.link-to-grafana'))}
-            </li>
-            ${!isStringEmpty(this.metricsLink)
-              ? html`
-                  <li>
-                    ${ccLink(
-                      this.metricsLink,
-                      i18n('cc-tile-metrics.metrics-link'),
-                      false,
-                      i18n('cc-tile-metrics.link-to-metrics'),
-                    )}
-                  </li>
-                `
-              : ''}
-          </ul>
-        </div>
+        ${links.length > 0
+          ? html`<div class="docs-links">
+              <p>${i18n('cc-tile-metrics.docs.more-metrics')}</p>
+              <ul>
+                ${links.map((link) => html`<li>${link}</li>`)}
+              </ul>
+            </div>`
+          : ''}
       </div>
     `;
   }
