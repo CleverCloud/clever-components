@@ -455,6 +455,12 @@ export class CcSshKeyList extends LitElement {
         /* region misc */
         /* TODO tokenize border & border-color */
 
+        [slot='info'] {
+          display: grid;
+          gap: 1em;
+          margin-top: 1.5em;
+        }
+
         [slot='info'] code {
           background-color: var(--cc-color-bg-neutral);
           border: 1px solid var(--cc-color-border-neutral-weak, #eee);
@@ -466,6 +472,10 @@ export class CcSshKeyList extends LitElement {
           padding: 0.25em 0.75em;
           white-space: pre-wrap;
           word-break: break-all;
+        }
+
+        [slot='info'] p {
+          margin: 0;
         }
 
         .key--skeleton .skeleton {
