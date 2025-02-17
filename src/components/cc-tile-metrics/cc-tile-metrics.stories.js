@@ -11,31 +11,35 @@ export default {
 const conf = {
   component: 'cc-tile-metrics',
   // language=CSS
-  css: `cc-tile-metrics {
-    margin-bottom: 1em;
-  }`,
+  css: `
+    cc-tile-metrics {
+      margin-bottom: 1em;
+    }
+
+    cc-tile-metrics:nth-of-type(1) {
+      max-width: 23.75em
+    }
+
+    cc-tile-metrics:nth-of-type(2) {
+      max-width: 33.75em
+    }
+  `,
 };
 
 /**
  * @typedef {import('./cc-tile-metrics.js').CcTileMetrics} CcTileMetrics
  * @typedef {import('./cc-tile-metrics.types.js').TileMetricsMetricsStateLoaded} TileMetricsStateLoaded
- * @typedef {import('./cc-tile-metrics.types.js').TileMetricsMetricsStateEmpty} TileMetricsStateEmpty
- * @typedef {import('./cc-tile-metrics.types.js').TileMetricsMetricsStateLoading} TileMetricsStateLoading
- * @typedef {import('./cc-tile-metrics.types.js').TileMetricsMetricsStateError} TileMetricsStateError
- * @typedef {import('./cc-tile-metrics.types.js').TileMetricsGrafanaLinkStateLoaded} TileMetricsGrafanaLinkStateLoaded
- * @typedef {import('./cc-tile-metrics.types.js').TileMetricsGrafanaLinkStateLoading} TileMetricsGrafanaLinkStateLoading
  * @typedef {import('./cc-tile-metrics.types.js').Metric} Metric
  */
 
-/** @type {{ grafanaLinkState: TileMetricsGrafanaLinkStateLoaded, metricsLink: string, style?: string }[]} */
+/** @type {Array<Partial<CcTileMetrics>>} */
 const baseItems = [
   {
     grafanaLinkState: {
       type: 'loaded',
       link: 'https://grafana.example.com/small',
     },
-    metricsLink: 'https://metrics.example.com/small',
-    style: 'max-width: 23.75em',
+    metricsLink: 'https://metrics.example.com',
   },
   {
     grafanaLinkState: {
@@ -43,7 +47,6 @@ const baseItems = [
       link: 'https://grafana.example.com/medium',
     },
     metricsLink: 'https://metrics.example.com/medium',
-    style: 'max-width: 33.75em',
   },
   {
     grafanaLinkState: {
@@ -89,9 +92,9 @@ function addTimestamp(array) {
 }
 
 export const defaultStory = makeStory(conf, {
+  /** @type {Array<Partial<CcTileMetrics>>} */
   items: baseItems.map((item) => ({
     ...item,
-    /** @type {TileMetricsStateLoaded} */
     metricsState: {
       type: 'loaded',
       metricsData: {
@@ -103,7 +106,7 @@ export const defaultStory = makeStory(conf, {
 });
 
 export const loading = makeStory(conf, {
-  /** @type {{ metricsState: TileMetricsStateLoading, grafanaLinkState: TileMetricsGrafanaLinkStateLoading, style?: string }[]} */
+  /** @type {Array<Partial<CcTileMetrics>>} */
   items: baseItems.map((item) => ({
     ...item,
     metricsState: { type: 'loading' },
@@ -112,19 +115,19 @@ export const loading = makeStory(conf, {
 });
 
 export const empty = makeStory(conf, {
-  /** @type {{ metricsState: TileMetricsStateEmpty, style?: string }[]} */
+  /** @type {Array<Partial<CcTileMetrics>>} */
   items: baseItems.map((item) => ({ ...item, metricsState: { type: 'empty' } })),
 });
 
 export const error = makeStory(conf, {
-  /** @type {{ metricsState: TileMetricsStateError, style?: string }[]} */
+  /** @type {Array<Partial<CcTileMetrics>>} */
   items: baseItems.map((item) => ({ ...item, metricsState: { type: 'error' } })),
 });
 
 export const dataLoadedWithHighValues = makeStory(conf, {
+  /** @type {Array<Partial<CcTileMetrics>>} */
   items: baseItems.map((item) => ({
     ...item,
-    /** @type {TileMetricsStateLoaded} */
     metricsState: {
       type: 'loaded',
       metricsData: {
@@ -136,9 +139,9 @@ export const dataLoadedWithHighValues = makeStory(conf, {
 });
 
 export const peaks = makeStory(conf, {
+  /** @type {Array<Partial<CcTileMetrics>>} */
   items: baseItems.map((item) => ({
     ...item,
-    /** @type {TileMetricsStateLoaded} */
     metricsState: {
       type: 'loaded',
       metricsData: {
@@ -156,9 +159,9 @@ export const peaks = makeStory(conf, {
 });
 
 export const linearIncrease = makeStory(conf, {
+  /** @type {Array<Partial<CcTileMetrics>>} */
   items: baseItems.map((item) => ({
     ...item,
-    /** @type {TileMetricsStateLoaded} */
     metricsState: {
       type: 'loaded',
       metricsData: {
@@ -170,9 +173,9 @@ export const linearIncrease = makeStory(conf, {
 });
 
 export const scaleUp = makeStory(conf, {
+  /** @type {Array<Partial<CcTileMetrics>>} */
   items: baseItems.map((item) => ({
     ...item,
-    /** @type {TileMetricsStateLoaded} */
     metricsState: {
       type: 'loaded',
       metricsData: {
@@ -184,9 +187,9 @@ export const scaleUp = makeStory(conf, {
 });
 
 export const scaleDown = makeStory(conf, {
+  /** @type {Array<Partial<CcTileMetrics>>} */
   items: baseItems.map((item) => ({
     ...item,
-    /** @type {TileMetricsStateLoaded} */
     metricsState: {
       type: 'loaded',
       metricsData: {
@@ -198,9 +201,9 @@ export const scaleDown = makeStory(conf, {
 });
 
 export const multipleScaleUp = makeStory(conf, {
+  /** @type {Array<Partial<CcTileMetrics>>} */
   items: baseItems.map((item) => ({
     ...item,
-    /** @type {TileMetricsStateLoaded} */
     metricsState: {
       type: 'loaded',
       metricsData: {
@@ -216,9 +219,9 @@ export const multipleScaleUp = makeStory(conf, {
 });
 
 export const multipleScaleDown = makeStory(conf, {
+  /** @type {Array<Partial<CcTileMetrics>>} */
   items: baseItems.map((item) => ({
     ...item,
-    /** @type {TileMetricsStateLoaded} */
     metricsState: {
       type: 'loaded',
       metricsData: {
@@ -238,9 +241,9 @@ export const multipleScaleDown = makeStory(conf, {
 });
 
 export const bigScaleUp = makeStory(conf, {
+  /** @type {Array<Partial<CcTileMetrics>>} */
   items: baseItems.map((item) => ({
     ...item,
-    /** @type {TileMetricsStateLoaded} */
     metricsState: {
       type: 'loaded',
       metricsData: {
@@ -252,9 +255,9 @@ export const bigScaleUp = makeStory(conf, {
 });
 
 export const bigScaleDown = makeStory(conf, {
+  /** @type {Array<Partial<CcTileMetrics>>} */
   items: baseItems.map((item) => ({
     ...item,
-    /** @type {TileMetricsStateLoaded} */
     metricsState: {
       type: 'loaded',
       metricsData: {
@@ -266,9 +269,9 @@ export const bigScaleDown = makeStory(conf, {
 });
 
 export const appDown = makeStory(conf, {
+  /** @type {Array<Partial<CcTileMetrics>>} */
   items: baseItems.map((item) => ({
     ...item,
-    /** @type {TileMetricsStateLoaded} */
     metricsState: {
       type: 'loaded',
       metricsData: {
@@ -280,6 +283,7 @@ export const appDown = makeStory(conf, {
 });
 
 export const simulationsWithData = makeStory(conf, {
+  /** @type {Array<Partial<CcTileMetrics>>} */
   items: baseItems.map((baseItem) => ({
     ...baseItem,
     metricsState: { type: 'loading' },
