@@ -105,6 +105,52 @@ export const defaultStory = makeStory(conf, {
   })),
 });
 
+export const hiddenGrafanaLink = makeStory(conf, {
+  /** @type {Array<Partial<CcTileMetrics>>} */
+  items: baseItems.map((item) => ({
+    ...item,
+    grafanaLinkState: { type: 'hidden' },
+    metricsState: {
+      type: 'loaded',
+      metricsData: {
+        cpuMetrics: addTimestamp(fakeMetricData(24, 25)),
+        memMetrics: addTimestamp(fakeMetricData(24, 16)),
+      },
+    },
+  })),
+});
+
+export const hiddenMetricsLink = makeStory(conf, {
+  /** @type {Array<Partial<CcTileMetrics>>} */
+  items: baseItems.map((item) => ({
+    ...item,
+    metricsLink: null,
+    metricsState: {
+      type: 'loaded',
+      metricsData: {
+        cpuMetrics: addTimestamp(fakeMetricData(24, 25)),
+        memMetrics: addTimestamp(fakeMetricData(24, 16)),
+      },
+    },
+  })),
+});
+
+export const hiddenGrafanaAndMetricsLink = makeStory(conf, {
+  /** @type {Array<Partial<CcTileMetrics>>} */
+  items: baseItems.map((item) => ({
+    ...item,
+    grafanaLinkState: { type: 'hidden' },
+    metricsLink: null,
+    metricsState: {
+      type: 'loaded',
+      metricsData: {
+        cpuMetrics: addTimestamp(fakeMetricData(24, 25)),
+        memMetrics: addTimestamp(fakeMetricData(24, 16)),
+      },
+    },
+  })),
+});
+
 export const loading = makeStory(conf, {
   /** @type {Array<Partial<CcTileMetrics>>} */
   items: baseItems.map((item) => ({
