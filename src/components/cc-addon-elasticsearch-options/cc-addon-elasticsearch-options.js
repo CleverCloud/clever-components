@@ -11,8 +11,10 @@ const APM_LOGO_URL = 'https://assets.clever-cloud.com/logos/elasticsearch-apm.sv
 /**
  * @typedef {import('../common.types.js').AddonOptionStates} AddonOptionStates
  * @typedef {import('../common.types.js').AddonOption} AddonOption
- * @typedef {import('../common.types.js').ElasticAddonOption} ElasticAddonOption
  * @typedef {import('../common.types.js').AddonOptionWithMetadata} AddonOptionWithMetadata
+ * @typedef {import('../common.types.js').FlavorWithMonthlyCost} FlavorWithMonthlyCost
+ * @typedef {import('../common.types.js').ElasticAddonOption<Flavor | FlavorWithMonthlyCost>} ElasticAddonOption
+ * @typedef {import('../common.types.js').Flavor} Flavor
  */
 
 /**
@@ -42,60 +44,69 @@ export class CcAddonElasticsearchOptions extends LitElement {
   }
 
   /**
-   * @param {ElasticAddonOption} addonOption
-   * @returns {AddonOptionWithMetadata}
+   * Returns the metadata for an Elasticsearch option (APM or Kibana) including title, warning message, details, and logo URL
+   *
+   * @param {ElasticAddonOption['name']} elasticOptionName
+   * @returns {{ title: string, warning: string, details: Node, logo: string }}
    */
-  _getApmOption({ enabled, flavor }) {
-    const description = html`
-      <div class="option-details">${i18n('cc-addon-elasticsearch-options.description.apm')}</div>
-      <div class="option-warning">
-        <cc-icon
-          .icon="${iconAlert}"
-          a11y-name="${i18n('cc-addon-elasticsearch-options.error.icon-a11y-name')}"
-          class="icon-warning"
-        ></cc-icon>
-        <p>
-          ${i18n('cc-addon-elasticsearch-options.warning.apm')}
-          ${flavor != null ? html` ${i18n('cc-addon-elasticsearch-options.warning.apm.details', flavor)} ` : ''}
-        </p>
-      </div>
-    `;
-
-    return {
-      title: 'APM',
-      logo: APM_LOGO_URL,
-      description,
-      enabled,
-      name: 'apm',
-    };
+  _getElasticsearchOptionData(elasticOptionName) {
+    switch (elasticOptionName) {
+      case 'apm':
+        return {
+          title: 'APM',
+          warning: i18n('cc-addon-elasticsearch-options.warning.apm'),
+          details: i18n('cc-addon-elasticsearch-options.details.apm'),
+          logo: APM_LOGO_URL,
+        };
+      case 'kibana':
+        return {
+          title: 'Kibana',
+          warning: i18n('cc-addon-elasticsearch-options.warning.kibana'),
+          details: i18n('cc-addon-elasticsearch-options.details.kibana'),
+          logo: KIBANA_LOGO_URL,
+        };
+    }
   }
 
   /**
    * @param {ElasticAddonOption} addonOption
    * @returns {AddonOptionWithMetadata}
    */
-  _getKibanaOption({ enabled, flavor }) {
+  _getElasticAddonOption(addonOption) {
+    const { title, warning, details, logo } = this._getElasticsearchOptionData(addonOption.name);
+
     const description = html`
-      <div class="option-details">${i18n('cc-addon-elasticsearch-options.description.kibana')}</div>
+      <div class="option-details">${details}</div>
       <div class="option-warning">
         <cc-icon
           .icon="${iconAlert}"
           a11y-name="${i18n('cc-addon-elasticsearch-options.error.icon-a11y-name')}"
           class="icon-warning"
         ></cc-icon>
-        <p>
-          ${i18n('cc-addon-elasticsearch-options.warning.kibana')}
-          ${flavor != null ? html` ${i18n('cc-addon-elasticsearch-options.warning.kibana.details', flavor)} ` : ''}
-        </p>
+        <div>
+          <p>${warning}</p>
+          <p>
+            <span class="options-warning">
+              ${i18n('cc-addon-elasticsearch-options.warning.flavor', addonOption.flavor)}
+            </span>
+            ${'monthlyCost' in addonOption.flavor && addonOption.flavor.monthlyCost != null
+              ? html`
+                  <span class="options-warning">
+                    ${i18n('cc-addon-elasticsearch-options.warning.monthly-cost', addonOption.flavor.monthlyCost)}
+                  </span>
+                `
+              : ''}
+          </p>
+        </div>
       </div>
     `;
 
     return {
-      title: 'Kibana',
-      logo: KIBANA_LOGO_URL,
+      title,
+      logo,
       description,
-      enabled,
-      name: 'kibana',
+      enabled: addonOption.enabled,
+      name: addonOption.name,
     };
   }
 
@@ -104,9 +115,8 @@ export class CcAddonElasticsearchOptions extends LitElement {
       .map((option) => {
         switch (option.name) {
           case 'apm':
-            return this._getApmOption(option);
           case 'kibana':
-            return this._getKibanaOption(option);
+            return this._getElasticAddonOption(option);
           case 'encryption':
             return ccAddonEncryptionAtRestOption(option);
           default:
@@ -117,16 +127,17 @@ export class CcAddonElasticsearchOptions extends LitElement {
   }
 
   render() {
-    const options = this._getFormOptions();
-    const heading = i18n('cc-addon-elasticsearch-options.title');
-
+    const hasMonthlyCost = this.options.some((option) => 'flavor' in option && 'monthlyCost' in option.flavor);
     return html`
       <cc-addon-option-form
-        heading="${heading}"
-        .options=${options}
+        heading="${i18n('cc-addon-elasticsearch-options.title')}"
+        .options=${this._getFormOptions()}
         @cc-addon-option-form:submit="${this._onFormOptionsSubmit}"
       >
-        <div slot="description">${i18n('cc-addon-elasticsearch-options.description')}</div>
+        <div slot="description">
+          ${i18n('cc-addon-elasticsearch-options.description')}
+          ${hasMonthlyCost ? i18n('cc-addon-elasticsearch-options.additional-cost') : ''}
+        </div>
       </cc-addon-option-form>
     `;
   }
