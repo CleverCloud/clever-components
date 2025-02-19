@@ -27,7 +27,7 @@ defineSmartComponent({
    * @param {OnContextUpdateArgs} args
    */
   onContextUpdate({ component, context, onEvent, updateComponent, signal }) {
-    updateComponent('emails', { state: 'loading' });
+    updateComponent('emailListState', { type: 'loading' });
     updateComponent('addEmailFormState', { type: 'idle' });
     component.resetAddEmailForm();
 
@@ -35,14 +35,14 @@ defineSmartComponent({
 
     /**
      * @param {string} address
-     * @param {(state: SecondaryAddressState) => void}callback
+     * @param {(emailListState: SecondaryAddressState) => void} callback
      */
     function updateSecondary(address, callback) {
       updateComponent(
-        'emails',
-        /** @param {EmailListStateLoaded} emails */
-        (emails) => {
-          const secondaryState = emails.value.secondaryAddresses.find((a) => a.address === address);
+        'emailListState',
+        /** @param {EmailListStateLoaded} emailListState */
+        (emailListState) => {
+          const secondaryState = emailListState.emailList.secondaryAddresses.find((a) => a.address === address);
           if (secondaryState != null) {
             callback(secondaryState);
           }
@@ -53,16 +53,16 @@ defineSmartComponent({
     api
       .fetchEmailAddresses()
       .then(({ self, secondary }) => {
-        updateComponent('emails', {
-          state: 'loaded',
-          value: {
+        updateComponent('emailListState', {
+          type: 'loaded',
+          emailList: {
             primaryAddress: {
-              state: 'idle',
+              type: 'idle',
               address: self.email,
               verified: self.emailValidated,
             },
             secondaryAddresses: secondary.map((secondaryAddress) => ({
-              state: 'idle',
+              type: 'idle',
               address: secondaryAddress,
               verified: true,
             })),
@@ -71,15 +71,15 @@ defineSmartComponent({
       })
       .catch((error) => {
         console.error(error);
-        updateComponent('emails', { state: 'error' });
+        updateComponent('emailListState', { type: 'error' });
       });
 
     onEvent('cc-email-list:send-confirmation-email', (address) => {
       updateComponent(
-        'emails',
-        /** @param {EmailListStateLoaded} emails */
-        (emails) => {
-          emails.value.primaryAddress.state = 'sending-confirmation-email';
+        'emailListState',
+        /** @param {EmailListStateLoaded} emailListState */
+        (emailListState) => {
+          emailListState.emailList.primaryAddress.type = 'sending-confirmation-email';
         },
       );
 
@@ -105,10 +105,10 @@ defineSmartComponent({
         )
         .finally(() => {
           updateComponent(
-            'emails',
-            /** @param {EmailListStateLoaded} emails */
-            (emails) => {
-              emails.value.primaryAddress.state = 'idle';
+            'emailListState',
+            /** @param {EmailListStateLoaded} emailListState */
+            (emailListState) => {
+              emailListState.emailList.primaryAddress.type = 'idle';
             },
           );
         });
@@ -117,9 +117,9 @@ defineSmartComponent({
     onEvent('cc-email-list:add', (address) => {
       updateComponent(
         'addEmailFormState',
-        /** @param {AddEmailFormState} state */
-        (state) => {
-          state.type = 'adding';
+        /** @param {AddEmailFormState} emailListState */
+        (emailListState) => {
+          emailListState.type = 'adding';
         },
       );
 
@@ -149,9 +149,9 @@ defineSmartComponent({
             } else {
               updateComponent(
                 'addEmailFormState',
-                /** @param {AddEmailFormState} state */
-                (state) => {
-                  state.errors = {
+                /** @param {AddEmailFormState} emailListState */
+                (emailListState) => {
+                  emailListState.errors = {
                     email: errorCode,
                   };
                 },
@@ -162,9 +162,9 @@ defineSmartComponent({
         .finally(() => {
           updateComponent(
             'addEmailFormState',
-            /** @param {AddEmailFormState} state */
-            (state) => {
-              state.type = 'idle';
+            /** @param {AddEmailFormState} emailListState */
+            (emailListState) => {
+              emailListState.type = 'idle';
             },
           );
         });
@@ -172,7 +172,7 @@ defineSmartComponent({
 
     onEvent('cc-email-list:delete', (address) => {
       updateSecondary(address, (secondaryAddressState) => {
-        secondaryAddressState.state = 'deleting';
+        secondaryAddressState.type = 'deleting';
       });
 
       api
@@ -181,10 +181,12 @@ defineSmartComponent({
           notifySuccess(i18n('cc-email-list.secondary.action.delete.success', { address }));
 
           updateComponent(
-            'emails',
-            /** @param {EmailListStateLoaded} emails */
-            (emails) => {
-              emails.value.secondaryAddresses = emails.value.secondaryAddresses.filter((a) => a.address !== address);
+            'emailListState',
+            /** @param {EmailListStateLoaded} emailListState */
+            (emailListState) => {
+              emailListState.emailList.secondaryAddresses = emailListState.emailList.secondaryAddresses.filter(
+                (a) => a.address !== address,
+              );
             },
           );
         })
@@ -194,7 +196,7 @@ defineSmartComponent({
             console.error(error);
             notifyError(i18n('cc-email-list.secondary.action.delete.error', { address }));
             updateSecondary(address, (secondaryAddressState) => {
-              secondaryAddressState.state = 'idle';
+              secondaryAddressState.type = 'idle';
             });
           },
         );
@@ -202,7 +204,7 @@ defineSmartComponent({
 
     onEvent('cc-email-list:mark-as-primary', (address) => {
       updateSecondary(address, (secondaryAddressState) => {
-        secondaryAddressState.state = 'marking-as-primary';
+        secondaryAddressState.type = 'marking-as-primary';
       });
 
       api
@@ -210,18 +212,18 @@ defineSmartComponent({
         .then(() => {
           notifySuccess(i18n('cc-email-list.secondary.action.mark-as-primary.success', { address }));
 
-          if (component.emails.state === 'loaded') {
-            const primaryAddress = component.emails.value.primaryAddress.address;
+          if (component.emailListState.type === 'loaded') {
+            const primaryAddress = component.emailListState.emailList.primaryAddress.address;
 
             updateComponent(
-              'emails',
-              /** @param {EmailListStateLoaded} emails */
-              (emails) => {
-                emails.value.primaryAddress.address = address;
+              'emailListState',
+              /** @param {EmailListStateLoaded} emailListState */
+              (emailListState) => {
+                emailListState.emailList.primaryAddress.address = address;
               },
             );
             updateSecondary(address, (secondaryAddressState) => {
-              secondaryAddressState.state = 'idle';
+              secondaryAddressState.type = 'idle';
               secondaryAddressState.address = primaryAddress;
             });
           }
@@ -232,7 +234,7 @@ defineSmartComponent({
             console.error(error);
             notifyError(i18n('cc-email-list.secondary.action.mark-as-primary.error', { address }));
             updateSecondary(address, (secondaryAddressState) => {
-              secondaryAddressState.state = 'idle';
+              secondaryAddressState.type = 'idle';
             });
           },
         );
