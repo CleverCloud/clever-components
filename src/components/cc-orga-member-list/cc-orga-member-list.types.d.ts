@@ -3,19 +3,19 @@ import { OrgaMemberCardState } from '../cc-orga-member-card/cc-orga-member-card.
 export type OrgaMemberListState = OrgaMemberListStateLoading | OrgaMemberListStateLoaded | OrgaMemberListStateError;
 
 interface OrgaMemberListStateLoading {
-  state: 'loading';
+  type: 'loading';
 }
 
 interface OrgaMemberListStateLoaded {
-  state: 'loaded';
-  value: OrgaMemberCardState[];
+  type: 'loaded';
+  memberList: OrgaMemberCardState[];
   identityFilter: string;
   mfaDisabledOnlyFilter: boolean;
   dangerZoneState: 'idle' | 'leaving' | 'error';
 }
 
 interface OrgaMemberListStateError {
-  state: 'error';
+  type: 'error';
 }
 
 export interface InviteMember {
@@ -23,7 +23,7 @@ export interface InviteMember {
   role: string;
 }
 
-interface Authorisations {
+interface ListAuthorisations {
   invite: boolean;
   edit: boolean;
   delete: boolean;

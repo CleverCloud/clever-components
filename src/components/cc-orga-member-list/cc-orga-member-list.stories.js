@@ -2,9 +2,10 @@ import longMemberList from '../../stories/fixtures/long-member-list.js';
 import { makeStory, storyWait } from '../../stories/lib/make-story.js';
 import './cc-orga-member-list.js';
 
+/** @type {OrgaMemberListStateLoaded['memberList']} */
 const baseMemberList = [
   {
-    state: 'loaded',
+    type: 'loaded',
     id: 'member1',
     name: 'John Doe',
     isCurrentUser: true,
@@ -14,7 +15,7 @@ const baseMemberList = [
     isMfaEnabled: false,
   },
   {
-    state: 'loaded',
+    type: 'loaded',
     id: 'member2',
     avatar: 'http://placekitten.com/202/202',
     name: 'Jane Doe',
@@ -22,34 +23,39 @@ const baseMemberList = [
     role: 'DEVELOPER',
     email: 'jane.doe@example.com',
     isMfaEnabled: true,
+    isCurrentUser: false,
   },
   {
-    state: 'loaded',
+    type: 'loaded',
     id: 'member3',
     avatar: 'http://placekitten.com/205/205',
     role: 'ACCOUNTING',
     email: 'june.doe@example.com',
     isMfaEnabled: false,
+    isCurrentUser: false,
   },
   {
-    state: 'loaded',
+    type: 'loaded',
     id: 'member4',
     name: 'Veryveryveryveryveryveryveryveryvery long name',
     role: 'MANAGER',
     email: 'very-very-very-long-email-address@very-very-very-very-very-very-very-long.example.com',
     isMfaEnabled: true,
+    isCurrentUser: false,
   },
 ];
+/** @type {Authorisations} */
 const authorisationsAdmin = {
   invite: true,
   edit: true,
   delete: true,
 };
+/** @type {Partial<CcOrgaMemberList>} */
 const baseItem = {
   authorisations: authorisationsAdmin,
-  members: {
-    state: 'loaded',
-    value: baseMemberList,
+  memberListState: {
+    type: 'loaded',
+    memberList: baseMemberList,
     identityFilter: '',
     mfaDisabledOnlyFilter: false,
     dangerZoneState: 'idle',
@@ -64,6 +70,9 @@ export default {
 
 /**
  * @typedef {import('./cc-orga-member-list.js').CcOrgaMemberList} CcOrgaMemberList
+ * @typedef {import('./cc-orga-member-list.types.js').OrgaMemberListStateLoaded} OrgaMemberListStateLoaded
+ * @typedef {import('./cc-orga-member-list.types.js').Authorisations} Authorisations
+ * @typedef {import('../cc-input-text/cc-input-text.js').CcInputText} CcInputText
  */
 
 const conf = {
@@ -71,11 +80,12 @@ const conf = {
 };
 
 export const defaultStory = makeStory(conf, {
+  /** @type {Partial<CcOrgaMemberList>[]} */
   items: [
     {
-      members: {
-        state: 'loaded',
-        value: baseMemberList.map((member) => {
+      memberListState: {
+        type: 'loaded',
+        memberList: baseMemberList.map((member) => {
           return member.isCurrentUser ? { ...member, role: 'DEVELOPER' } : member;
         }),
         identityFilter: '',
@@ -87,23 +97,25 @@ export const defaultStory = makeStory(conf, {
 });
 
 export const loading = makeStory(conf, {
+  /** @type {Partial<CcOrgaMemberList>[]} */
   items: [
     {
-      members: { state: 'loading' },
+      memberListState: { type: 'loading' },
     },
   ],
 });
 
 export const waitingWithLeavingAsSimpleUser = makeStory(conf, {
+  /** @type {Partial<CcOrgaMemberList>[]} */
   items: [
     {
-      members: {
-        state: 'loaded',
-        value: baseMemberList.map((baseMember) => {
+      memberListState: {
+        type: 'loaded',
+        memberList: baseMemberList.map((baseMember) => {
           if (baseMember.isCurrentUser) {
             return {
               ...baseMember,
-              state: 'deleting',
+              type: 'deleting',
               role: 'ACCOUNTING',
             };
           }
@@ -125,16 +137,17 @@ export const waitingWithLeavingAsSimpleUser = makeStory(conf, {
 });
 
 export const waitingWithLeavingAsAdmin = makeStory(conf, {
+  /** @type {Partial<CcOrgaMemberList>[]} */
   items: [
     {
       authorisations: authorisationsAdmin,
-      members: {
-        state: 'loaded',
-        value: baseMemberList.map((baseMember) => {
+      memberListState: {
+        type: 'loaded',
+        memberList: baseMemberList.map((baseMember) => {
           if (baseMember.isCurrentUser) {
             return {
               ...baseMember,
-              state: 'deleting',
+              type: 'deleting',
             };
           }
 
@@ -155,12 +168,13 @@ export const waitingWithLeavingAsAdmin = makeStory(conf, {
 });
 
 export const waitingWithInvitingMember = makeStory(conf, {
+  /** @type {Partial<CcOrgaMemberList>[]} */
   items: [
     {
       authorisations: authorisationsAdmin,
-      members: {
-        state: 'loaded',
-        value: [baseMemberList[0]],
+      memberListState: {
+        type: 'loaded',
+        memberList: [baseMemberList[0]],
         identityFilter: '',
         mfaDisabledOnlyFilter: false,
         dangerZoneState: 'idle',
@@ -168,26 +182,29 @@ export const waitingWithInvitingMember = makeStory(conf, {
       inviteMemberFormState: { type: 'inviting' },
     },
   ],
+  /** @param {CcOrgaMemberList} component */
   onUpdateComplete: (component) => {
     component._inviteMemberFormRef.value.email.value = 'june.doe@example.com';
   },
 });
 
 export const errorWithLoadingMemberList = makeStory(conf, {
+  /** @type {Partial<CcOrgaMemberList>[]} */
   items: [
     {
-      members: { state: 'error' },
+      memberListState: { type: 'error' },
     },
   ],
 });
 
 export const errorWithLeavingFromDangerZoneAsLastAdmin = makeStory(conf, {
+  /** @type {Partial<CcOrgaMemberList>[]} */
   items: [
     {
       authorisations: authorisationsAdmin,
-      members: {
-        state: 'loaded',
-        value: baseMemberList,
+      memberListState: {
+        type: 'loaded',
+        memberList: baseMemberList,
         identityFilter: '',
         mfaDisabledOnlyFilter: false,
         dangerZoneState: 'error',
@@ -197,12 +214,13 @@ export const errorWithLeavingFromDangerZoneAsLastAdmin = makeStory(conf, {
 });
 
 export const errorWithLeavingFromCardAsLastAdmin = makeStory(conf, {
+  /** @type {Partial<CcOrgaMemberList>[]} */
   items: [
     {
       authorisations: authorisationsAdmin,
-      members: {
-        state: 'loaded',
-        value: baseMemberList.map((baseMember) => {
+      memberListState: {
+        type: 'loaded',
+        memberList: baseMemberList.map((baseMember) => {
           if (baseMember.role === 'ADMIN') {
             return {
               ...baseMember,
@@ -220,16 +238,17 @@ export const errorWithLeavingFromCardAsLastAdmin = makeStory(conf, {
 });
 
 export const errorWithEditingYourselfAsLastAdmin = makeStory(conf, {
+  /** @type {Partial<CcOrgaMemberList>[]} */
   items: [
     {
       authorisations: authorisationsAdmin,
-      members: {
-        state: 'loaded',
-        value: baseMemberList.map((baseMember) => {
+      memberListState: {
+        type: 'loaded',
+        memberList: baseMemberList.map((baseMember) => {
           if (baseMember.isCurrentUser) {
             return {
               ...baseMember,
-              state: 'editing',
+              type: 'editing',
               role: 'DEVELOPER',
               error: true,
             };
@@ -245,38 +264,51 @@ export const errorWithEditingYourselfAsLastAdmin = makeStory(conf, {
 });
 
 export const errorWithInviteEmptyEmail = makeStory(conf, {
+  /** @type {Partial<CcOrgaMemberList>[]} */
   items: [baseItem],
+  /** @param {CcOrgaMemberList} component */
   onUpdateComplete: (component) => {
-    component._inviteMemberFormRef.value.email.value = '';
-    component._inviteMemberFormRef.value.email.validate();
-    component._inviteMemberFormRef.value.email.reportInlineValidity();
+    /** @type {CcInputText} */
+    const emailInput = component._inviteMemberFormRef.value.email;
+    emailInput.value = '';
+    emailInput.validate();
+    emailInput.reportInlineValidity();
   },
 });
 
 export const errorWithInviteInvalidEmailFormat = makeStory(conf, {
+  /** @type {Partial<CcOrgaMemberList>[]} */
   items: [baseItem],
+  /** @param {CcOrgaMemberList} component */
   onUpdateComplete: (component) => {
-    component._inviteMemberFormRef.value.email.value = 'jane.doe';
-    component._inviteMemberFormRef.value.email.validate();
-    component._inviteMemberFormRef.value.email.reportInlineValidity();
+    /** @type {CcInputText} */
+    const emailInput = component._inviteMemberFormRef.value.email;
+    emailInput.value = 'jane.doe';
+    emailInput.validate();
+    emailInput.reportInlineValidity();
   },
 });
 
 export const errorWithInviteMemberAlreadyInsideOrganisation = makeStory(conf, {
+  /** @type {Partial<CcOrgaMemberList>[]} */
   items: [baseItem],
+  /** @param {CcOrgaMemberList} component */
   onUpdateComplete: (component) => {
-    component._inviteMemberFormRef.value.email.value = 'june.doe@example.com';
-    component._inviteMemberFormRef.value.email.validate();
-    component._inviteMemberFormRef.value.email.reportInlineValidity();
+    /** @type {CcInputText} */
+    const emailInput = component._inviteMemberFormRef.value.email;
+    emailInput.value = 'june.doe@example.com';
+    emailInput.validate();
+    emailInput.reportInlineValidity();
   },
 });
 
 export const dataLoaded = makeStory(conf, {
+  /** @type {Partial<CcOrgaMemberList>[]} */
   items: [
     {
-      members: {
-        state: 'loaded',
-        value: baseMemberList.map((member) => {
+      memberListState: {
+        type: 'loaded',
+        memberList: baseMemberList.map((member) => {
           if (member.isCurrentUser) {
             return {
               ...member,
@@ -302,12 +334,13 @@ export const dataLoaded = makeStory(conf, {
 });
 
 export const dataLoadedWithCurrentUserAdmin = makeStory(conf, {
+  /** @type {Partial<CcOrgaMemberList>[]} */
   items: [
     {
       authorisations: authorisationsAdmin,
-      members: {
-        state: 'loaded',
-        value: baseMemberList,
+      memberListState: {
+        type: 'loaded',
+        memberList: baseMemberList,
         identityFilter: '',
         mfaDisabledOnlyFilter: false,
         dangerZoneState: 'idle',
@@ -317,20 +350,25 @@ export const dataLoadedWithCurrentUserAdmin = makeStory(conf, {
 });
 
 export const dataLoadedWithInviteFormWithLongEmail = makeStory(conf, {
+  /** @type {Partial<CcOrgaMemberList>[]} */
   items: [baseItem],
+  /** @param {CcOrgaMemberList} component */
   onUpdateComplete: (component) => {
-    component._inviteMemberFormRef.value.email.value =
+    /** @type {CcInputText} */
+    const emailInput = component._inviteMemberFormRef.value.email;
+    emailInput.value =
       'very-very-very-very-very-very-very-very-very-very-very-very-very-very-very-very-very-very-very-very-very-very-long-email-address@very-very-very-very-very-very-very-long.example.com';
   },
 });
 
 export const dataLoadedWithOnlyOneMember = makeStory(conf, {
+  /** @type {Partial<CcOrgaMemberList>[]} */
   items: [
     {
       authorisations: authorisationsAdmin,
-      members: {
-        state: 'loaded',
-        value: [baseMemberList[0]],
+      memberListState: {
+        type: 'loaded',
+        memberList: [baseMemberList[0]],
         identityFilter: '',
         mfaDisabledOnlyFilter: false,
         dangerZoneState: 'idle',
@@ -340,11 +378,12 @@ export const dataLoadedWithOnlyOneMember = makeStory(conf, {
 });
 
 export const dataLoadedWithLongMemberList = makeStory(conf, {
+  /** @type {Partial<CcOrgaMemberList>[]} */
   items: [
     {
-      members: {
-        state: 'loaded',
-        value: longMemberList,
+      memberListState: {
+        type: 'loaded',
+        memberList: longMemberList,
         identityFilter: '',
         mfaDisabledOnlyFilter: false,
         dangerZoneState: 'idle',
@@ -354,12 +393,13 @@ export const dataLoadedWithLongMemberList = makeStory(conf, {
 });
 
 export const dataLoadedWithLongMemberListAndCurrentUserAdmin = makeStory(conf, {
+  /** @type {Partial<CcOrgaMemberList>[]} */
   items: [
     {
       authorisations: authorisationsAdmin,
-      members: {
-        state: 'loaded',
-        value: longMemberList.map((member) => {
+      memberListState: {
+        type: 'loaded',
+        memberList: longMemberList.map((member) => {
           if (member.id === 'member1') {
             return {
               ...member,
@@ -377,12 +417,13 @@ export const dataLoadedWithLongMemberListAndCurrentUserAdmin = makeStory(conf, {
 });
 
 export const dataLoadedWithNameFilter = makeStory(conf, {
+  /** @type {Partial<CcOrgaMemberList>[]} */
   items: [
     {
       authorisations: authorisationsAdmin,
-      members: {
-        state: 'loaded',
-        value: baseMemberList,
+      memberListState: {
+        type: 'loaded',
+        memberList: baseMemberList,
         identityFilter: 'very',
         mfaDisabledOnlyFilter: false,
         dangerZoneState: 'idle',
@@ -392,93 +433,108 @@ export const dataLoadedWithNameFilter = makeStory(conf, {
 });
 
 export const dataLoadedWithTwoFactorAuthDisabledFilter = makeStory(conf, {
+  /** @type {Partial<CcOrgaMemberList>[]} */
   items: [
     {
       authorisations: authorisationsAdmin,
-      members: {
-        state: 'loaded',
-        value: baseMemberList,
+      memberListState: {
+        type: 'loaded',
+        memberList: baseMemberList,
         identityFilter: '',
         mfaDisabledOnlyFilter: true,
+        dangerZoneState: 'idle',
       },
     },
   ],
 });
 
 export const dataLoadedWithNoResultFilters = makeStory(conf, {
+  /** @type {Partial<CcOrgaMemberList>[]} */
   items: [
     {
       authorisations: authorisationsAdmin,
-      members: {
-        state: 'loaded',
-        value: baseMemberList,
+      memberListState: {
+        type: 'loaded',
+        memberList: baseMemberList,
         identityFilter: 'no results',
         mfaDisabledOnlyFilter: true,
+        dangerZoneState: 'idle',
       },
     },
   ],
 });
 
 export const simulationWithLoadingAsSimpleUser = makeStory(conf, {
+  /** @type {Partial<CcOrgaMemberList>[]} */
   items: [
     {
-      members: {
-        state: 'loading',
+      memberListState: {
+        type: 'loading',
       },
     },
   ],
   simulations: [
-    storyWait(1000, ([component]) => {
-      component.members = {
-        ...component.members,
-        state: 'loaded',
-        value: baseMemberList.map((member) => {
-          if (member.isCurrentUser) {
-            return {
-              ...member,
-              role: 'ACCOUNTING',
-            };
-          }
-          return member;
-        }),
-        identityFilter: '',
-        mfaDisabledOnlyFilter: false,
-        dangerZoneState: 'idle',
-      };
-    }),
+    storyWait(
+      1000,
+      /** @param {Array<CcOrgaMemberList>} components */
+      ([component]) => {
+        component.memberListState = {
+          ...component.memberListState,
+          type: 'loaded',
+          memberList: baseMemberList.map((member) => {
+            if (member.isCurrentUser) {
+              return {
+                ...member,
+                role: 'ACCOUNTING',
+              };
+            }
+            return member;
+          }),
+          identityFilter: '',
+          mfaDisabledOnlyFilter: false,
+          dangerZoneState: 'idle',
+        };
+      },
+    ),
   ],
 });
 
 export const simulationWithLoadingAsAdmin = makeStory(conf, {
+  /** @type {Partial<CcOrgaMemberList>[]} */
   items: [
     {
-      members: {
-        state: 'loading',
+      memberListState: {
+        type: 'loading',
       },
     },
   ],
   simulations: [
-    storyWait(1000, ([component]) => {
-      component.authorisations = authorisationsAdmin;
-      component.members = {
-        ...component.members,
-        state: 'loaded',
-        value: baseMemberList,
-        identityFilter: '',
-        mfaDisabledOnlyFilter: false,
-        dangerZoneState: 'idle',
-      };
-    }),
+    storyWait(
+      1000,
+      /** @param {Array<CcOrgaMemberList>} components */
+      ([component]) => {
+        component.authorisations = authorisationsAdmin;
+        component.memberListState = {
+          ...component.memberListState,
+          type: 'loaded',
+          memberList: baseMemberList,
+          identityFilter: '',
+          mfaDisabledOnlyFilter: false,
+          dangerZoneState: 'idle',
+        };
+      },
+    ),
   ],
 });
 
 export const simulationWithInviteMember = makeStory(conf, {
+  /** @type {Partial<CcOrgaMemberList>[]} */
   items: [
     {
       authorisations: authorisationsAdmin,
-      members: {
-        state: 'loaded',
-        value: baseMemberList,
+      memberListState: {
+        type: 'loaded',
+        memberList: baseMemberList,
         identityFilter: '',
         mfaDisabledOnlyFilter: false,
         dangerZoneState: 'idle',
@@ -486,29 +542,50 @@ export const simulationWithInviteMember = makeStory(conf, {
     },
   ],
   simulations: [
-    storyWait(1000, ([component]) => {
-      component._inviteMemberFormRef.value.email.value = 'john.doe@example.com';
-    }),
-    storyWait(1000, ([component]) => {
-      component._inviteMemberFormRef.value.role.value = 'ADMIN';
-    }),
-    storyWait(500, ([component]) => {
-      component.inviteMemberFormState = { type: 'inviting' };
-    }),
-    storyWait(2000, ([component]) => {
-      component.resetInviteMemberForm();
-      component.inviteMemberFormState = { type: 'idle' };
-    }),
+    storyWait(
+      1000,
+      /** @param {Array<CcOrgaMemberList>} components */
+      ([component]) => {
+        /** @type {CcInputText} */
+        const emailInput = component._inviteMemberFormRef.value.querySelector('[name="email"]');
+        emailInput.value = 'john.doe@example.com';
+      },
+    ),
+    storyWait(
+      1000,
+      /** @param {Array<CcOrgaMemberList>} components */
+      ([component]) => {
+        /** @type {CcInputText} */
+        const roleInput = component._inviteMemberFormRef.value.querySelector('[name="role"]');
+        roleInput.value = 'ADMIN';
+      },
+    ),
+    storyWait(
+      500,
+      /** @param {Array<CcOrgaMemberList>} components */
+      ([component]) => {
+        component.inviteMemberFormState = { type: 'inviting' };
+      },
+    ),
+    storyWait(
+      2000,
+      /** @param {Array<CcOrgaMemberList>} components */
+      ([component]) => {
+        component.resetInviteMemberForm();
+        component.inviteMemberFormState = { type: 'idle' };
+      },
+    ),
   ],
 });
 
 export const simulationWithEditMember = makeStory(conf, {
+  /** @type {Partial<CcOrgaMemberList>[]} */
   items: [
     {
       authorisations: authorisationsAdmin,
-      members: {
-        state: 'loaded',
-        value: baseMemberList,
+      memberListState: {
+        type: 'loaded',
+        memberList: baseMemberList,
         identityFilter: '',
         mfaDisabledOnlyFilter: false,
         dangerZoneState: 'idle',
@@ -516,75 +593,92 @@ export const simulationWithEditMember = makeStory(conf, {
     },
   ],
   simulations: [
-    storyWait(2000, ([component]) => {
-      component.members = {
-        ...component.members,
-        value: baseMemberList.map((member) => {
-          if (member.id === 'member2') {
-            return {
-              ...member,
-              state: 'editing',
-            };
-          }
-          return member;
-        }),
-      };
-    }),
-    storyWait(2000, ([component]) => {
-      component.members = {
-        ...component.members,
-        value: baseMemberList.map((member) => {
-          if (member.id === 'member2') {
-            return {
-              ...member,
-              state: 'editing',
-              role: 'ADMIN',
-            };
-          }
-          return member;
-        }),
-      };
-    }),
-    storyWait(2000, ([component]) => {
-      component.members = {
-        ...component.members,
-        value: baseMemberList.map((member) => {
-          if (member.id === 'member2') {
-            return {
-              ...member,
-              state: 'updating',
-              role: 'ADMIN',
-            };
-          }
-          return member;
-        }),
-      };
-    }),
-    storyWait(2000, ([component]) => {
-      component.members = {
-        ...component.members,
-        value: baseMemberList.map((member) => {
-          if (member.id === 'member2') {
-            return {
-              ...member,
-              state: 'loaded',
-              role: 'ADMIN',
-            };
-          }
-          return member;
-        }),
-      };
-    }),
+    storyWait(
+      2000,
+      /** @param {Array<CcOrgaMemberList & { members: { state: OrgaMemberListStateLoaded }}>} components */
+      ([component]) => {
+        component.memberListState = {
+          ...component.memberListState,
+          memberList: baseMemberList.map((member) => {
+            if (member.id === 'member2') {
+              return {
+                ...member,
+                type: 'editing',
+              };
+            }
+            return member;
+          }),
+        };
+      },
+    ),
+    storyWait(
+      2000,
+      /** @param {Array<CcOrgaMemberList & { members: { state: OrgaMemberListStateLoaded }}>} components */
+      ([component]) => {
+        component.memberListState = {
+          ...component.memberListState,
+          memberList: baseMemberList.map((member) => {
+            if (member.id === 'member2') {
+              return {
+                ...member,
+                type: 'editing',
+                role: 'ADMIN',
+              };
+            }
+            return member;
+          }),
+        };
+      },
+    ),
+    storyWait(
+      2000,
+      /** @param {Array<CcOrgaMemberList & { members: { state: OrgaMemberListStateLoaded }}>} components */
+      ([component]) => {
+        component.memberListState = {
+          ...component.memberListState,
+          memberList: baseMemberList.map((member) => {
+            if (member.id === 'member2') {
+              return {
+                ...member,
+                type: 'updating',
+                role: 'ADMIN',
+              };
+            }
+            return member;
+          }),
+        };
+      },
+    ),
+    storyWait(
+      2000,
+      /** @param {Array<CcOrgaMemberList & { members: { state: OrgaMemberListStateLoaded }}>} components */
+      ([component]) => {
+        component.memberListState = {
+          ...component.memberListState,
+          memberList: baseMemberList.map((member) => {
+            if (member.id === 'member2') {
+              return {
+                ...member,
+                type: 'loaded',
+                role: 'ADMIN',
+              };
+            }
+            return member;
+          }),
+        };
+      },
+    ),
   ],
 });
 
 export const simulationWithRemovingMember = makeStory(conf, {
+  /** @type {Partial<CcOrgaMemberList>[]} */
   items: [
     {
       authorisations: authorisationsAdmin,
-      members: {
-        state: 'loaded',
-        value: baseMemberList,
+      memberListState: {
+        type: 'loaded',
+        memberList: baseMemberList,
         identityFilter: '',
         mfaDisabledOnlyFilter: false,
         dangerZoneState: 'idle',
@@ -592,35 +686,44 @@ export const simulationWithRemovingMember = makeStory(conf, {
     },
   ],
   simulations: [
-    storyWait(2000, ([component]) => {
-      component.members = {
-        ...component.members,
-        value: baseMemberList.map((member) => {
-          if (member.id === 'member2') {
-            return {
-              ...member,
-              state: 'deleting',
-            };
-          }
-          return member;
-        }),
-      };
-    }),
-    storyWait(2000, ([component]) => {
-      component.members = {
-        ...component.members,
-        value: baseMemberList.filter((member) => member.id !== 'member2'),
-      };
-    }),
+    storyWait(
+      2000,
+      /** @param {Array<CcOrgaMemberList & { members: { state: OrgaMemberListStateLoaded }}>} components */
+      ([component]) => {
+        component.memberListState = {
+          ...component.memberListState,
+          memberList: baseMemberList.map((member) => {
+            if (member.id === 'member2') {
+              return {
+                ...member,
+                type: 'deleting',
+              };
+            }
+            return member;
+          }),
+        };
+      },
+    ),
+    storyWait(
+      2000,
+      /** @param {Array<CcOrgaMemberList & { members: { state: OrgaMemberListStateLoaded }}>} components */
+      ([component]) => {
+        component.memberListState = {
+          ...component.memberListState,
+          memberList: baseMemberList.filter((member) => member.id !== 'member2'),
+        };
+      },
+    ),
   ],
 });
 
 export const simulationWithLeavingAsSimpleUser = makeStory(conf, {
+  /** @type {Partial<CcOrgaMemberList>[]} */
   items: [
     {
-      members: {
-        state: 'loaded',
-        value: baseMemberList.map((baseMember) => {
+      memberListState: {
+        type: 'loaded',
+        memberList: baseMemberList.map((baseMember) => {
           if (baseMember.id === 'member1') {
             return {
               ...baseMember,
@@ -643,39 +746,44 @@ export const simulationWithLeavingAsSimpleUser = makeStory(conf, {
     },
   ],
   simulations: [
-    storyWait(2000, ([component]) => {
-      component.members = {
-        ...component.members,
-        value: baseMemberList.map((baseMember) => {
-          if (baseMember.id === 'member1') {
-            return {
-              ...baseMember,
-              state: 'deleting',
-              role: 'ACCOUNTING',
-            };
-          }
+    storyWait(
+      2000,
+      /** @param {Array<CcOrgaMemberList & { members: { state: OrgaMemberListStateLoaded }}>} components */
+      ([component]) => {
+        component.memberListState = {
+          ...component.memberListState,
+          memberList: baseMemberList.map((baseMember) => {
+            if (baseMember.id === 'member1') {
+              return {
+                ...baseMember,
+                type: 'deleting',
+                role: 'ACCOUNTING',
+              };
+            }
 
-          if (baseMember.id === 'member2') {
-            return {
-              ...baseMember,
-              role: 'ADMIN',
-            };
-          }
-          return baseMember;
-        }),
-        dangerZoneState: 'leaving',
-      };
-    }),
+            if (baseMember.id === 'member2') {
+              return {
+                ...baseMember,
+                role: 'ADMIN',
+              };
+            }
+            return baseMember;
+          }),
+          dangerZoneState: 'leaving',
+        };
+      },
+    ),
   ],
 });
 
 export const simulationWithLeavingAsAdmin = makeStory(conf, {
+  /** @type {Partial<CcOrgaMemberList>[]} */
   items: [
     {
       authorisations: authorisationsAdmin,
-      members: {
-        state: 'loaded',
-        value: baseMemberList.map((baseMember) => {
+      memberListState: {
+        type: 'loaded',
+        memberList: baseMemberList.map((baseMember) => {
           if (baseMember.id === 'member2') {
             return {
               ...baseMember,
@@ -691,27 +799,31 @@ export const simulationWithLeavingAsAdmin = makeStory(conf, {
     },
   ],
   simulations: [
-    storyWait(2000, ([component]) => {
-      component.members = {
-        ...component.members,
-        value: baseMemberList.map((baseMember) => {
-          if (baseMember.id === 'member1') {
-            return {
-              ...baseMember,
-              state: 'deleting',
-            };
-          }
+    storyWait(
+      2000,
+      /** @param {Array<CcOrgaMemberList & { members: { state: OrgaMemberListStateLoaded }}>} components */
+      ([component]) => {
+        component.memberListState = {
+          ...component.memberListState,
+          memberList: baseMemberList.map((baseMember) => {
+            if (baseMember.id === 'member1') {
+              return {
+                ...baseMember,
+                type: 'deleting',
+              };
+            }
 
-          if (baseMember.id === 'member2') {
-            return {
-              ...baseMember,
-              role: 'ADMIN',
-            };
-          }
-          return baseMember;
-        }),
-        dangerZoneState: 'leaving',
-      };
-    }),
+            if (baseMember.id === 'member2') {
+              return {
+                ...baseMember,
+                role: 'ADMIN',
+              };
+            }
+            return baseMember;
+          }),
+          dangerZoneState: 'leaving',
+        };
+      },
+    ),
   ],
 });

@@ -1,12 +1,12 @@
 import { makeStory, storyWait } from '../../stories/lib/make-story.js';
 import './cc-orga-member-card.js';
 
+/** @type {OrgaMemberCardStateLoaded} */
 const baseMember = {
-  state: 'loaded',
+  type: 'loaded',
   id: 'user_c78e5148-a8c2-4c22-b180-2b88ec531f0a',
   email: 'john.doe@example.com',
   role: 'DEVELOPER',
-  newRole: 'DEVELOPER',
   name: 'John Doe',
   avatar: 'http://placekitten.com/200/200',
   jobTitle: 'Frontend Developer',
@@ -28,25 +28,31 @@ const conf = {
   component: 'cc-orga-member-card',
 };
 
+/**
+ * @typedef {import('./cc-orga-member-card.js').CcOrgaMemberCard} CcOrgaMemberCard
+ * @typedef {import('./cc-orga-member-card.types.js').OrgaMemberCardStateLoaded} OrgaMemberCardStateLoaded
+ */
+
 export const defaultStory = makeStory(conf, {
+  /** @type {Partial<CcOrgaMemberCard>[]} */
   items: [
     {
-      member: baseMember,
+      state: baseMember,
     },
     {
-      member: {
+      state: {
         ...baseMember,
         role: 'ADMIN',
       },
     },
     {
-      member: {
+      state: {
         ...baseMember,
         role: 'MANAGER',
       },
     },
     {
-      member: {
+      state: {
         ...baseMember,
         role: 'ACCOUNTING',
       },
@@ -55,10 +61,12 @@ export const defaultStory = makeStory(conf, {
 });
 
 export const dataLoadedWithEditAndDelete = makeStory(conf, {
+  /** @type {Partial<CcOrgaMemberCard>[]} */
   items: [
     {
-      member: { ...baseMember },
+      state: { ...baseMember },
       authorisations: {
+        invite: true,
         edit: true,
         delete: true,
       },
@@ -67,9 +75,10 @@ export const dataLoadedWithEditAndDelete = makeStory(conf, {
 });
 
 export const dataLoadedWithIsCurrentUser = makeStory(conf, {
+  /** @type {Partial<CcOrgaMemberCard>[]} */
   items: [
     {
-      member: {
+      state: {
         ...baseMember,
         isCurrentUser: true,
       },
@@ -78,9 +87,10 @@ export const dataLoadedWithIsCurrentUser = makeStory(conf, {
 });
 
 export const dataLoadedWithNoName = makeStory(conf, {
+  /** @type {Partial<CcOrgaMemberCard>[]} */
   items: [
     {
-      member: {
+      state: {
         ...baseMember,
         name: '',
       },
@@ -89,9 +99,10 @@ export const dataLoadedWithNoName = makeStory(conf, {
 });
 
 export const dataLoadedWithNoAvatar = makeStory(conf, {
+  /** @type {Partial<CcOrgaMemberCard>[]} */
   items: [
     {
-      member: {
+      state: {
         ...baseMember,
         avatar: null,
       },
@@ -100,9 +111,10 @@ export const dataLoadedWithNoAvatar = makeStory(conf, {
 });
 
 export const dataLoadedWithLongEmail = makeStory(conf, {
+  /** @type {Partial<CcOrgaMemberCard>[]} */
   items: [
     {
-      member: {
+      state: {
         ...baseMember,
         email: longEmail,
         name: longName,
@@ -112,9 +124,10 @@ export const dataLoadedWithLongEmail = makeStory(conf, {
 });
 
 export const dataLoadedWith2faEnabled = makeStory(conf, {
+  /** @type {Partial<CcOrgaMemberCard>[]} */
   items: [
     {
-      member: {
+      state: {
         ...baseMember,
         isMfaEnabled: true,
       },
@@ -123,9 +136,10 @@ export const dataLoadedWith2faEnabled = makeStory(conf, {
 });
 
 export const dataLoadedWithNoNameAndIsCurrentUser = makeStory(conf, {
+  /** @type {Partial<CcOrgaMemberCard>[]} */
   items: [
     {
-      member: {
+      state: {
         ...baseMember,
         name: null,
         isCurrentUser: true,
@@ -135,13 +149,15 @@ export const dataLoadedWithNoNameAndIsCurrentUser = makeStory(conf, {
 });
 
 export const editing = makeStory(conf, {
+  /** @type {Partial<CcOrgaMemberCard>[]} */
   items: [
     {
-      member: {
+      state: {
         ...baseMember,
-        state: 'editing',
+        type: 'editing',
       },
       authorisations: {
+        invite: true,
         edit: true,
         delete: true,
       },
@@ -151,16 +167,18 @@ export const editing = makeStory(conf, {
 
 export const errorWithStateLoaded = makeStory(conf, {
   docs: 'When the user tries to leave while they are the last admin, we display a message.',
+  /** @type {Partial<CcOrgaMemberCard>[]} */
   items: [
     {
-      member: {
+      state: {
         ...baseMember,
-        state: 'loaded',
+        type: 'loaded',
         role: 'ADMIN',
         error: true,
         isCurrentUser: true,
       },
       authorisations: {
+        invite: true,
         edit: true,
         delete: true,
       },
@@ -170,16 +188,18 @@ export const errorWithStateLoaded = makeStory(conf, {
 
 export const errorWithStateEditing = makeStory(conf, {
   docs: 'When the user tries to edit themselves while they are the last admin, we display a message.',
+  /** @type {Partial<CcOrgaMemberCard>[]} */
   items: [
     {
-      member: {
+      state: {
         ...baseMember,
-        state: 'editing',
+        type: 'editing',
         role: 'ADMIN',
         error: true,
         isCurrentUser: true,
       },
       authorisations: {
+        invite: true,
         edit: true,
         delete: true,
       },
@@ -188,13 +208,15 @@ export const errorWithStateEditing = makeStory(conf, {
 });
 
 export const updatingMemberRole = makeStory(conf, {
+  /** @type {Partial<CcOrgaMemberCard>[]} */
   items: [
     {
-      member: {
+      state: {
         ...baseMember,
-        state: 'updating',
+        type: 'updating',
       },
       authorisations: {
+        invite: true,
         edit: true,
         delete: true,
       },
@@ -203,13 +225,15 @@ export const updatingMemberRole = makeStory(conf, {
 });
 
 export const deletingMember = makeStory(conf, {
+  /** @type {Partial<CcOrgaMemberCard>[]} */
   items: [
     {
-      member: {
+      state: {
         ...baseMember,
-        state: 'deleting',
+        type: 'deleting',
       },
       authorisations: {
+        invite: true,
         edit: true,
         delete: true,
       },
@@ -218,37 +242,55 @@ export const deletingMember = makeStory(conf, {
 });
 
 export const simulations = makeStory(conf, {
+  /** @type {Partial<CcOrgaMemberCard>[]} */
   items: [
     {
-      member: baseMember,
+      state: baseMember,
       authorisations: {
+        invite: true,
         edit: true,
         delete: true,
       },
     },
   ],
   simulations: [
-    storyWait(2000, ([component]) => {
-      component.member = {
-        ...component.member,
-        state: 'editing',
-      };
-    }),
-    storyWait(1000, ([component]) => {
-      component._newRole = 'ACCOUNTING';
-    }),
-    storyWait(1000, ([component]) => {
-      component.member = {
-        ...component.member,
-        state: 'updating',
-      };
-    }),
-    storyWait(3000, ([component]) => {
-      component.member = {
-        ...component.member,
-        state: 'loaded',
-        role: 'ACCOUNTING',
-      };
-    }),
+    storyWait(
+      2000,
+      /** @param {Array<CcOrgaMemberCard>} components */
+      ([component]) => {
+        component.state = {
+          ...component.state,
+          type: 'editing',
+        };
+      },
+    ),
+    storyWait(
+      1000,
+      /** @param {Array<CcOrgaMemberCard>} components */
+      ([component]) => {
+        component._newRole = 'ACCOUNTING';
+      },
+    ),
+    storyWait(
+      1000,
+      /** @param {Array<CcOrgaMemberCard>} components */
+      ([component]) => {
+        component.state = {
+          ...component.state,
+          type: 'updating',
+        };
+      },
+    ),
+    storyWait(
+      3000,
+      /** @param {Array<CcOrgaMemberCard>} components */
+      ([component]) => {
+        component.state = {
+          ...component.state,
+          type: 'loaded',
+          role: 'ACCOUNTING',
+        };
+      },
+    ),
   ],
 });
