@@ -21,14 +21,13 @@ defineSmartComponent({
     apiConfig: { type: Object },
     ownerId: { type: String },
     appId: { type: String },
-    consoleGrafanaLink: { type: String },
-    grafanaBaseLink: { type: String },
+    grafanaLink: { type: Object, optional: true },
   },
   /**
    * @param {OnContextUpdateArgs} args
    */
   onContextUpdate({ context, updateComponent, signal }) {
-    const { apiConfig, ownerId, appId, grafanaBaseLink, consoleGrafanaLink } = context;
+    const { apiConfig, ownerId, appId, grafanaLink } = context;
 
     updateComponent('metricsState', { type: 'loading' });
 
@@ -48,14 +47,19 @@ defineSmartComponent({
         updateComponent('metricsState', { type: 'error' });
       });
 
-    fetchGrafanaAppLink({ apiConfig, ownerId, appId, grafanaBaseLink, signal })
-      .then((grafanaAppLink) => {
-        updateComponent('grafanaLinkState', { type: 'loaded', link: grafanaAppLink });
-      })
-      .catch(() => {
-        // If Grafana is not enabled we fallback to the Console Grafana page
-        updateComponent('grafanaLinkState', { type: 'loaded', link: consoleGrafanaLink });
-      });
+    if (grafanaLink == null) {
+      updateComponent('grafanaLinkState', { type: 'hidden' });
+    } else {
+      updateComponent('grafanaLinkState', { type: 'loading' });
+      fetchGrafanaAppLink({ apiConfig, ownerId, appId, grafanaBaseLink: grafanaLink.base, signal })
+        .then((grafanaAppLink) => {
+          updateComponent('grafanaLinkState', { type: 'loaded', link: grafanaAppLink });
+        })
+        .catch(() => {
+          // If Grafana is not enabled we fallback to the Console Grafana page
+          updateComponent('grafanaLinkState', { type: 'loaded', link: grafanaLink.console });
+        });
+    }
   },
 });
 
