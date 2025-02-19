@@ -5,6 +5,67 @@ title: 'Changelog'
 
 # Changelog
 
+## [18.0.0](https://github.com/CleverCloud/clever-components/compare/17.1.1...18.0.0) (2025-02-19)
+
+
+### ⚠ BREAKING CHANGES
+
+* **cc-tile-metrics:** the smart context has changed
+    - `grafanaLink` optional object property has been added,
+    - `consoleGrafanaLink` property has been moved to `grafanaLink.console`,
+    - `grafanaBaseLink` property has been moved to `grafanaLink.base`.
+* **cc-email-list:** the properties have changed
+    - `emails` property has been renamed to `emailListState`,
+    - `emails.state` property has been renamed to `emailListState.type`,
+    - `emails.value` property has been renamed to
+      `emailListState.emailList`,
+    - same logic applies to `secondaryAddressState` where `state` has been
+      renamed to `type`.
+* **cc-ssh-key-list:** the properties have changed
+    - `keyData` property has been renamed to `keyListState`,
+    - `keyData.state` property has been renamed to `keyListState.type`,
+    - same logic applies to `SshKeyState` where `state` has been
+      renamed to `type`.
+* **cc-orga-member-list:** the properties have changed
+    - `members` property has been renamed to `memberListState`,
+    - `members.state` property has been renamed to `memberListState.type`,
+    - `members.value` property has been renamed to
+      `memberListState.memberList`,
+    - same logic applies to `memberList` items where:
+      - `member` has been renamed to `state`,
+      - `member.state` has been renamed to `state.type`.
+* **cc-orga-member-card:** the properties have changed
+    - `member` property has been renamed to `state`,
+    - `member.state` property has been renamed to `state.type`.
+* **cc-addon-elasticsearch-options:** the `monthlyCost` format in `flavor` has changed
+    - `options[number].flavor.monthlyCost` is now an object with two
+      properties:
+        - `currency` like 'EUR' or 'USD',
+        - `amount` for the actual cost number.
+
+### 🚀 Features
+
+* **cc-addon-elasticsearch-options:** support multi-currency & disabled billing ([5d738f9](https://github.com/CleverCloud/clever-components/commit/5d738f90cabbeda24ae3f8e86e5117586064ff49))
+* **cc-env-var-form:** add public `hasUnsavedModifications` getter ([5eba26f](https://github.com/CleverCloud/clever-components/commit/5eba26fbb7114163ed9aad4b6e897bd73e800658)), closes [#1327](https://github.com/CleverCloud/clever-components/issues/1327)
+* **cc-tile-metrics:** add the ability to hide the grafana link ([40078bc](https://github.com/CleverCloud/clever-components/commit/40078bc9744d239dfd4f337c1084f1d453bd1801))
+
+
+### 🐛 Bug Fixes
+
+* **cc-addon-backups:** make sure overlays are displayed on top of everything ([75cdd2d](https://github.com/CleverCloud/clever-components/commit/75cdd2d4e53bb2fe6908bdbb98fd1c3890704521)), closes [#1334](https://github.com/CleverCloud/clever-components/issues/1334)
+* **cc-badge:** add border-radius on host ([7f5bd71](https://github.com/CleverCloud/clever-components/commit/7f5bd71c7c93091bebba4206f6f197179b36d826)), closes [#990](https://github.com/CleverCloud/clever-components/issues/990)
+* **cc-env-var-form:** change exposed config link ([5f187a4](https://github.com/CleverCloud/clever-components/commit/5f187a4dbc5418bb376d7c2d2a82cc2919663909)), closes [#970](https://github.com/CleverCloud/clever-components/issues/970)
+* **cc-orga-member-card:** change iconBin to iconDelete ([4492ce3](https://github.com/CleverCloud/clever-components/commit/4492ce3ea9e2e56a86ce1ce643b7d41e29a12097)), closes [#1096](https://github.com/CleverCloud/clever-components/issues/1096)
+* **cc-ssh-key-list:** reduce spacing below the first section ([d722028](https://github.com/CleverCloud/clever-components/commit/d722028d1d6ca7f4d8fda07a727c50c6c89b1c23)), closes [#1262](https://github.com/CleverCloud/clever-components/issues/1262)
+
+
+### 🛠 Code Refactoring
+
+* **cc-email-list:** rework properties to avoid impossible states ([2f74dd6](https://github.com/CleverCloud/clever-components/commit/2f74dd6b5febab30b8f1c8b02e0a5c716f0afe70)), closes [#1163](https://github.com/CleverCloud/clever-components/issues/1163)
+* **cc-orga-member-card:** rework properties to avoid impossible states ([924a494](https://github.com/CleverCloud/clever-components/commit/924a494def3cf40023c7a13f7a06d080cf4af02d))
+* **cc-orga-member-list:** rework properties to avoid impossible states ([8634aa6](https://github.com/CleverCloud/clever-components/commit/8634aa6dc2b5e91ee8369c0bd3ba2fcb43932b97)), closes [#1164](https://github.com/CleverCloud/clever-components/issues/1164)
+* **cc-ssh-key-list:** rework properties to avoid impossible states ([9d81a3e](https://github.com/CleverCloud/clever-components/commit/9d81a3e9e2c9793089c1d116b71cbc71d18ad95e)), closes [#1165](https://github.com/CleverCloud/clever-components/issues/1165)
+
 ## [17.1.1](https://github.com/CleverCloud/clever-components/compare/17.1.0...17.1.1) (2025-02-10)
 
 
