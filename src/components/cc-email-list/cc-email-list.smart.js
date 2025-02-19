@@ -1,6 +1,8 @@
 // prettier-ignore
 // @ts-expect-error FIXME: remove when clever-client exports types
 import { todo_addEmailAddress as addEmailAddress,todo_getEmailAddresses as getEmailAddresses,todo_removeEmailAddress as removeEmailAddress,todo_getConfirmationEmail as sendConfirmationEmail,} from '@clevercloud/client/esm/api/v2/user.js';
+// @ts-expect-error FIXME: remove when clever-client exports types
+import { get as getSelf } from '@clevercloud/client/esm/api/v2/organisation.js';
 import { notify, notifyError, notifySuccess } from '../../lib/notifications.js';
 import { sendToApi } from '../../lib/send-to-api.js';
 import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
@@ -281,11 +283,7 @@ function getApi(apiConfig, signal) {
      * @return {Promise<{email: string, emailValidated: boolean}>}
      */
     fetchPrimaryEmailAddress() {
-      return Promise.resolve({
-        method: 'get',
-        url: `/v2/self`,
-        headers: { Accept: 'application/json' },
-      }).then(sendToApi({ apiConfig, signal }));
+      return getSelf({}).then(sendToApi({ apiConfig, signal }));
     },
 
     /**

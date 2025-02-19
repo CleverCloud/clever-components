@@ -1,8 +1,9 @@
-import { getAppMetrics, getGrafanaOrganisation } from '../../lib/api-helpers.js';
+import { getAppMetrics } from '../../lib/api-helpers.js';
 import { sendToApi } from '../../lib/send-to-api.js';
 import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
 import '../cc-smart-container/cc-smart-container.js';
 import './cc-tile-metrics.js';
+import { getGrafanaOrganisation } from '@clevercloud/client/esm/api/v4/saas.js';
 
 /**
  * @typedef {import('./cc-tile-metrics.js').CcTileMetrics} CcTileMetrics
