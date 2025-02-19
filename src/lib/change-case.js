@@ -66,3 +66,45 @@ function pascalCaseTransform(input, enableDigitPrefix = true) {
 
   return `${firstChar.toUpperCase()}${lowerChars}`;
 }
+
+/**
+ * snakeCase('string'); //=> 'string'
+ * snakeCase('dot.case'); //=> 'dot_case'
+ * snakeCase('PascalCase'); //=> 'pascal_case'
+ * snakeCase('camelCase'); //=> 'camel_case'
+ * snakeCase('version 1.2.10'); //=> 'version_1_2_10'
+ * @param {String} input
+ * @returns {String}
+ */
+export function snakeCase(input) {
+  return stringToWordArray(input)
+    .map((word) => word.toLowerCase())
+    .join('_');
+}
+
+/**
+ * camelCase('string'); //=> 'string'
+ * camelCase('dot.case'); //=> 'dotCase'
+ * camelCase('PascalCase'); //=> 'pascalCase'
+ * camelCase('snake_case'); //=> 'snakeCase'
+ * camelCase('version 1.2.10'); //=> 'version_1_2_10'
+ * @param {String} input
+ * @returns {String}
+ */
+export function camelCase(input) {
+  return stringToWordArray(input)
+    .map((word, index) => {
+      if (index === 0) {
+        return word.toLowerCase();
+      }
+      const firstChar = word.charAt(0).toUpperCase();
+      const restChars = word.slice(1).toLowerCase();
+
+      if (/^\d/.test(firstChar)) {
+        return `_${firstChar}${restChars}`;
+      }
+
+      return `${firstChar}${restChars}`;
+    })
+    .join('');
+}
