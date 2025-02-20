@@ -2,11 +2,12 @@ import {
   ignoreWindowOnError,
   isResizeObserverLoopErrorMessage,
 } from '@lit-labs/virtualizer/support/resize-observer-errors.js';
-import { elementUpdated, expect, fixture } from '@open-wc/testing';
+import { elementUpdated, expect, fixture, should } from '@open-wc/testing';
 import { setViewport } from '@web/test-runner-commands';
 import { addTranslations } from '../../src/lib/i18n/i18n.js';
 import * as en from '../../src/translations/translations.en.js';
 import { visualDiff } from '@web/test-runner-visual-regression';
+import { STORY_CHANGED } from '@storybook/core-events';
 
 /**
  * @typedef {import('./test-stories.types.js').RawStoriesModule} RawStoriesModule
@@ -67,6 +68,8 @@ setupIgnoreIrrelevantErrors(before, after, (message) => {
   );
 });
 
+const IGNORE_PATTERNS_FOR_VISUAL_REGRESSIONS = ['waiting', 'loading', 'simulation'];
+
 /**
  * Transform the result of an imported module from a story file into an array of story functions that can be used to render every story.
  * The imported module is an object containing every named export (story functions mostly) as well as the default export (metadata about the stories).
@@ -81,11 +84,40 @@ export const getStories = (importedModule) => {
         ([_moduleEntryName, moduleEntryValue]) =>
           typeof moduleEntryValue === 'function' && 'component' in moduleEntryValue,
       )
-      .map(([storyName, storyFunction]) => ({ storyName, storyFunction }))
+      .map(([storyName, storyFunction]) => {
+        const defaultTestsConfig = getDefaultTestsConfig(storyName);
+        storyFunction.parameters.tests = mergeTestsConfig(defaultTestsConfig, storyFunction.parameters.tests);
+
+        return { storyName, storyFunction };
+      })
   );
 
   return filteredStories;
 };
+
+const mergeTestsConfig = (defaults, custom) => {
+  return {
+    accessibility: {
+      ...defaults.accessibility,
+      ...custom?.accessibility,
+    },
+    visualRegressions: {
+      ...defaults.visualRegressions,
+      ...custom?.visualRegressions,
+    },
+  };
+};
+
+const getDefaultTestsConfig = (storyName) => ({
+  accessibility: {
+    enable: !storyName.toLowerCase().includes('simulation'),
+  },
+  visualRegressions: {
+    enable: !IGNORE_PATTERNS_FOR_VISUAL_REGRESSIONS.some((ignorePattern) =>
+      storyName.toLowerCase().includes(ignorePattern),
+    ),
+  },
+});
 
 /** @param {RawStoriesModule} storiesModule */
 export async function testStories(storiesModule) {
@@ -93,65 +125,70 @@ export async function testStories(storiesModule) {
   const stories = getStories(storiesModule);
   const shouldRunTests = stories.some(
     ({ storyFunction }) =>
-      storyFunction.parameters.tests.accessibility.enable || storyFunction.parameters.tests.visualRegression.enable,
+      storyFunction.parameters.tests.accessibility.enable || storyFunction.parameters.tests.visualRegressions.enable,
   );
 
   if (shouldRunTests) {
     describe(`Component: ${componentTag}`, function () {
       stories.forEach(({ storyName, storyFunction }) => {
-        describe(`Story: ${storyName}`, function () {
-          describe(`Desktop: width = ${viewports.desktop.width} height = ${viewports.desktop.height}`, async function () {
-            if (storyFunction.parameters.tests.accessibility.enable) {
-              it('should be accessible', async function () {
-                await setViewport(viewports.desktop);
-                const element = await fixture(storyFunction({}, storyConf));
+        if (
+          storyFunction.parameters.tests.accessibility.enable ||
+          storyFunction.parameters.tests.visualRegressions.enable
+        ) {
+          describe(`Story: ${storyName}`, function () {
+            describe(`Desktop: width = ${viewports.desktop.width} height = ${viewports.desktop.height}`, async function () {
+              if (storyFunction.parameters.tests.accessibility.enable) {
+                it('should be accessible', async function () {
+                  await setViewport(viewports.desktop);
+                  const element = await fixture(storyFunction({}, storyConf));
 
-                await elementUpdated(element);
+                  await elementUpdated(element);
 
-                await expect(element).to.be.accessible({
-                  ignoredRules: storyFunction.parameters.tests.accessibility.ignoredRules,
+                  await expect(element).to.be.accessible({
+                    ignoredRules: storyFunction.parameters.tests.accessibility.ignoredRules,
+                  });
                 });
-              });
-            }
+              }
 
-            if (storyFunction.parameters.tests.visualRegression.enable) {
-              it('should have no visual regression', async function () {
-                await setViewport(viewports.desktop);
-                const element = await fixture(storyFunction({}, storyConf));
+              if (storyFunction.parameters.tests.visualRegressions.enable) {
+                it('should have no visual regression', async function () {
+                  await setViewport(viewports.desktop);
+                  const element = await fixture(storyFunction({}, storyConf));
 
-                await elementUpdated(element);
+                  await elementUpdated(element);
 
-                await visualDiff(element, `${componentTag}-${storyName}-desktop`);
-              });
-            }
-          });
-
-          describe(`Mobile: width = ${viewports.mobile.width} height = ${viewports.mobile.height}`, async function () {
-            if (storyFunction.parameters.tests.accessibility) {
-              it('should be accessible', async function () {
-                await setViewport(viewports.mobile);
-                const element = await fixture(storyFunction({}, storyConf));
-
-                await elementUpdated(element);
-
-                await expect(element).to.be.accessible({
-                  ignoredRules: storyFunction.parameters.tests.accessibility.ignoredRules,
+                  await visualDiff(element, `${componentTag}-${storyName}-desktop`);
                 });
-              });
-            }
+              }
+            });
 
-            if (storyFunction.parameters.tests.visualRegression) {
-              it('should have no visual regression', async function () {
-                await setViewport(viewports.desktop);
-                const element = await fixture(storyFunction({}, storyConf));
+            describe(`Mobile: width = ${viewports.mobile.width} height = ${viewports.mobile.height}`, async function () {
+              if (storyFunction.parameters.tests.accessibility.enable) {
+                it('should be accessible', async function () {
+                  await setViewport(viewports.mobile);
+                  const element = await fixture(storyFunction({}, storyConf));
 
-                await elementUpdated(element);
+                  await elementUpdated(element);
 
-                await visualDiff(element, `${componentTag}-${storyName}-mobile`);
-              });
-            }
+                  await expect(element).to.be.accessible({
+                    ignoredRules: storyFunction.parameters.tests.accessibility.ignoredRules,
+                  });
+                });
+              }
+
+              if (storyFunction.parameters.tests.visualRegressions.enable) {
+                it('should have no visual regression', async function () {
+                  await setViewport(viewports.desktop);
+                  const element = await fixture(storyFunction({}, storyConf));
+
+                  await elementUpdated(element);
+
+                  await visualDiff(element, `${componentTag}-${storyName}-mobile`);
+                });
+              }
+            });
           });
-        });
+        }
       });
     });
   }

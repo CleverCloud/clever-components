@@ -55,7 +55,7 @@
     "stylelint:fix": "stylelint src/components/*/*.js --fix",
     "test": "wtr",
     "test:group": "wtr --group",
-    "test:update-visual-baseline": "wtr --update-visual-baseline",
+    "test:update-visual-baseline": "wtr --update-visual-baseline src/components/**/*.stories.js",
     "test:mocha": "mocha test-mocha/**/*.test.*js",
     "test:mocha:watch": "mocha --watch test-mocha/**/*.*js",
     "test:watch": "wtr --watch",

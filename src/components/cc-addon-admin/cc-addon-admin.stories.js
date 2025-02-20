@@ -160,7 +160,7 @@ export const errorWithLoading = makeStory(conf, {
   ],
 });
 
-export const simulations = makeStory(conf, {
+export const simulationsWithToto = makeStory(conf, {
   tests: {
     visualRegressions: false,
     accessibility: false,
