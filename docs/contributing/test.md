@@ -10,16 +10,14 @@ We use `Web Test Runner` to run tests on some essential parts of our libs and mo
 You can run all tests by using the `npm run test` command.
 This command runs `*.test.js` files from the `test` folder as well as from the `src/components` folder.
 
-<cc-notice intent="info" message="Some components don't have any test files because they are purely made for layout purposes and do not implement any semantics or interactions (`cc-expand` for instance)."></cc-notice>
+## How to manage accessibility tests
 
-## How to create tests for your component?
+Most component story files are tested automatically to check for accessibility issues through Web Test Runner.
+You only need to create test files if you want to test aspects of a component other than its stories.
 
-If you create a new component, you probably need to test it, at least to avoid accessibility issues that could be caught automatically.
+These accessibility tests are managed directly within the story files themselves through configuration options.
 
-To do so, use the `cc-example-component.test.js` template.
-This file already contains the essential code to run accessibility tests on all your component stories.
-
-You may also add your own tests in this file.
+Refer to the [Contributing - Writing Stories](https://www.clever-cloud.com/doc/clever-components/?path=/docs/%F0%9F%91%8B-contributing-writing-stories--docs) docs to learn how to disable tests or rules.
 
 ## How to run tests on a single test file?
 
@@ -27,8 +25,29 @@ You may find that testing everything is too slow and too verbose for your taste,
 
 To do so, you have two solutions:
 
+* use the `npm run test path/to/your/test-file` with the `--watch` option if you want it to run everytime you update the file or its dependencies.
 * use the `npm run test:watch` command and press `F` to enter the `focus` mode. The test runner lists files by number and asks for the number of the file you want to focus on.
-* use the `npx wtr 'path/to/your/test-file'` with the `--watch` option if you want it to run everytime you update the file or its dependencies.
+
+## How to run tests on a specific groups?
+
+We have configured several test groups to help organize and run specific sets of tests:
+
+* `unit` - Runs all unit tests from `test/**/*.test.*`
+* Individual component groups - Each component has its own group named with the following pattern:
+  * `${'stories'|'test'}:${componentName}`
+
+To run tests for a specific group, use:
+
+```bash
+npm run test:group <group-name>
+```
+
+For example:
+* Run all unit tests: `npm run test:group unit`
+* Run test file for a specific component: `npm run test:group test:cc-input-date`
+* Run tests for a specific component story: `npm run test:group stories:cc-input-date`
+
+You can use the same logic with the `npm run test:watch:group` command for development.
 
 ## How to debug with Web Test Runner?
 

@@ -39,6 +39,12 @@ export const defaultStory = makeStory(conf, {
 });
 
 export const loading = makeStory(conf, {
+  tests: {
+    accessibility: {
+      enable: true,
+      ignoredRules: ['scrollable-region-focusable'],
+    },
+  },
   items: [
     {
       /** @type {ZoneInputStateLoading} */
