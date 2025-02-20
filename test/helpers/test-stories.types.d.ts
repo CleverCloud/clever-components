@@ -9,6 +9,9 @@ export type AccessibilityTestOptions = {
       enable: boolean;
       ignoredRules: Array<string>;
     };
+    visualRegressions: {
+      enable: boolean;
+    };
   };
 };
 
