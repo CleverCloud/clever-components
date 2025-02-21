@@ -2,6 +2,7 @@
  * @typedef {import('./clever-config.types.js').OptionSchema} OptionSchema
  * @typedef {import('./clever-config.types.js').Validator} Validator
  * @typedef {import('./clever-config.types.js').RawValue} RawValue
+ * @typedef {import('./clever-config.types.js').ValueSource} ValueSource
  */
 
 /**
@@ -54,12 +55,25 @@ class CleverConfigSchema {
     /** @type {Record<string, any>} */
     const mergedConfig = {};
 
+    const validationErrors = [];
+
     Object.entries(this._sources).forEach(([sourceName, source]) => {
       Object.entries(source).forEach(([optionName, optionValue]) => {
         // TODO: use validators
-        mergedConfig[optionName] = optionValue;
+
+        const validation = this._validators[this._schema[optionName].format].validate(optionValue);
+
+        if (validation.type === 'error') {
+          validationErrors.push({ source, optionName, value: optionValue, validation });
+        } else {
+          mergedConfig[optionName] = { source: sourceName, schema: this._schema[optionName], value: validation.value };
+        }
       });
     });
+
+    if (validationErrors.length > 0) {
+      throw new InvalidValuesError();
+    }
 
     return new CleverConfig(mergedConfig);
   }
@@ -67,19 +81,42 @@ class CleverConfigSchema {
 
 class CleverConfig {
   /**
+   *
+   * @param {Record<string, ValueSource>} values
+   */
+  constructor(values) {
+    /** @type {Record<string, any>} values */
+    this._values = values;
+  }
+
+  /**
    * @param {string} name
    * @returns {any}
    */
-  getValue(name) {}
+  getValue(name) {
+    return this._values[name]?.value;
+  }
 
   /**
-   * @param {Array<string>} [tags]
+   * @param {string} [tag]
    * @returns {Record<string, any>}
    */
-  getAll(tags) {}
+  getAll(tag) {
+    return Object.fromEntries(
+      Object.entries(this._values)
+        .filter(([_, valueSource]) => {
+          return tag == null || (valueSource.schema.tags?.includes(tag) ?? false);
+        })
+        .map(([optionName, valueSource]) => {
+          return [optionName, valueSource.value];
+        }),
+    );
+  }
 
   // le truc au démarrage de la console côté serveur avec les secrets en ***
   debugValues() {}
 }
 
-class InvalidSchemaOrValidatorsError extends Error {}
+export class InvalidSchemaOrValidatorsError extends Error {}
+
+export class InvalidValuesError extends Error {}

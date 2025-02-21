@@ -18,3 +18,9 @@ export type ValidationSuccess = { type: 'success'; value: any };
 export type Doc = string | Record<string, string>;
 
 export type RawValue = string | number | boolean;
+
+export interface ValueSource {
+  source: string;
+  schema: OptionSchema;
+  value: any;
+}
