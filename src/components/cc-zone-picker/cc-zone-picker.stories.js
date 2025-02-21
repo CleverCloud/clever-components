@@ -18,6 +18,22 @@ const conf = {
   component: 'cc-zone-picker',
   // language=CSS
   css: ``,
+  tests: {
+    visualRegressions: {
+      enable: true,
+      imagesToPreload: [
+        'https://assets.clever-cloud.com/flags/fr.svg',
+        'https://assets.clever-cloud.com/flags/pl.svg',
+        'https://assets.clever-cloud.com/flags/au.svg',
+        'https://assets.clever-cloud.com/flags/ca.svg',
+        'https://assets.clever-cloud.com/flags/sg.svg',
+        '/src/stories/assets/cloudtemple.svg',
+        '/src/stories/assets/oracle.svg',
+        '/src/stories/assets/ovh.svg',
+        '/src/stories/assets/scaleway.svg',
+      ],
+    },
+  },
 };
 
 /**

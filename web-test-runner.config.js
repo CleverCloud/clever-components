@@ -31,7 +31,7 @@ export default {
       concurrency: 1,
       async createPage({ context }) {
         const page = await context.newPage();
-        //   // We need that for unit tests working with dates and timezones
+        // We need that for unit tests working with dates and timezones
         await page.emulateTimezone('Europe/Paris');
         return page;
       },
