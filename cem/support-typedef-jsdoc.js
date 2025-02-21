@@ -114,12 +114,10 @@ export default function supportTypedefJsdoc() {
       moduleTypeCache.clear();
 
       const componentName = node.name.escapedText;
-      console.log(`\n⌛ Generating docs for ${componentName}`);
 
       const types = getTypesFromClass(node, ts);
 
       if (types.length === 0) {
-        console.info('✅ Successfully generated documentation.');
         return;
       }
 
@@ -137,7 +135,7 @@ export default function supportTypedefJsdoc() {
 
         // If an import is not correct, warn the plugin user.
         if (typePath == null) {
-          console.warn(`There's a problem with one of your @typedef - ${tag.getText()}`);
+          console.warn(`[${componentName}] - There's a problem with one of your @typedef - ${tag.getText()}`);
           process.exitCode = 1;
           return;
         }
@@ -162,8 +160,6 @@ export default function supportTypedefJsdoc() {
       const declaration = moduleDoc.declarations.find((declaration) => declaration.name === node.name.getText());
 
       declaration.description = declaration.description + '\n\n' + displayText;
-
-      console.info('✅ Successfully generated documentation.');
     },
   };
 }
