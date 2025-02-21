@@ -2,12 +2,11 @@ import {
   ignoreWindowOnError,
   isResizeObserverLoopErrorMessage,
 } from '@lit-labs/virtualizer/support/resize-observer-errors.js';
-import { elementUpdated, expect, fixture, should } from '@open-wc/testing';
+import { elementUpdated, expect, fixture } from '@open-wc/testing';
 import { setViewport } from '@web/test-runner-commands';
 import { addTranslations } from '../../src/lib/i18n/i18n.js';
 import * as en from '../../src/translations/translations.en.js';
 import { visualDiff } from '@web/test-runner-visual-regression';
-import { STORY_CHANGED } from '@storybook/core-events';
 
 /**
  * @typedef {import('./test-stories.types.js').RawStoriesModule} RawStoriesModule
@@ -57,6 +56,20 @@ function setupIgnoreIrrelevantErrors(before, after, messagePredicate) {
     teardown?.();
     teardown = undefined;
   });
+}
+
+async function preloadImages(imagesToPreload) {
+  const preloadPromises = imagesToPreload.map((src) => {
+    return new Promise((resolve, reject) => {
+      const img = new Image();
+      img.onload = () => resolve(`loaded ${src}`);
+      img.onerror = () => reject(`failed to load ${src}`);
+      img.fetchPriority = 'high';
+      img.src = src;
+    });
+  });
+
+  await Promise.all(preloadPromises);
 }
 
 setupIgnoreIrrelevantErrors(before, after, (message) => {
@@ -154,9 +167,13 @@ export async function testStories(storiesModule) {
                 it('should have no visual regression', async function () {
                   await setViewport(viewports.desktop);
                   const element = await fixture(storyFunction({}, storyConf));
+                  const imagesToPreload = storyFunction.parameters.tests.visualRegressions.imagesToPreload;
 
                   await elementUpdated(element);
 
+                  if (imagesToPreload != null && imagesToPreload.length > 0) {
+                    await preloadImages(imagesToPreload);
+                  }
                   await visualDiff(element, `${componentTag}-${storyName}-desktop`);
                 });
               }
@@ -168,7 +185,7 @@ export async function testStories(storiesModule) {
                   await setViewport(viewports.mobile);
                   const element = await fixture(storyFunction({}, storyConf));
 
-                  await elementUpdated(element);
+                  await elementUpdated(element.shadowRoot.querySelector(`${componentTag}`));
 
                   await expect(element).to.be.accessible({
                     ignoredRules: storyFunction.parameters.tests.accessibility.ignoredRules,
@@ -180,8 +197,13 @@ export async function testStories(storiesModule) {
                 it('should have no visual regression', async function () {
                   await setViewport(viewports.desktop);
                   const element = await fixture(storyFunction({}, storyConf));
+                  const imagesToPreload = storyFunction.parameters.tests.visualRegressions.imagesToPreload;
 
                   await elementUpdated(element);
+
+                  if (imagesToPreload != null && imagesToPreload.length > 0) {
+                    await preloadImages(imagesToPreload);
+                  }
 
                   await visualDiff(element, `${componentTag}-${storyName}-mobile`);
                 });

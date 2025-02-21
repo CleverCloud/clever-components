@@ -11,6 +11,7 @@ export type AccessibilityTestOptions = {
     };
     visualRegressions: {
       enable: boolean;
+      imagesToPreload?: Array<string>;
     };
   };
 };
