@@ -4,7 +4,6 @@ export interface OrderSummary {
   logo?: LogoInfos;
   configuration?: Array<ConfigurationItem>;
   submitStatus?: 'disabled' | 'waiting';
-  skeleton: boolean;
 }
 
 export interface LogoInfos {
@@ -15,4 +14,7 @@ export interface LogoInfos {
 export interface ConfigurationItem {
   label: string;
   value: string;
+  a11yLive?: boolean;
+  skeleton?: boolean;
+  skeletonValueOnly?: boolean;
 }

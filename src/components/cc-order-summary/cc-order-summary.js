@@ -1,5 +1,6 @@
 import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { dispatchCustomEvent } from '../../lib/events.js';
 import { isStringBlank, isStringEmpty } from '../../lib/utils.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
@@ -110,16 +111,16 @@ export class CcOrderSummary extends LitElement {
   }
 
   _renderSummaryBody() {
-    const { configuration, skeleton } = this.orderSummary;
-
     return html`<dl class="body">
-      ${configuration?.map((configItem) => {
-        const { label, value } = configItem;
-        return html`<div class="body--item">
+      ${this.orderSummary.configuration?.map((/** @type {ConfigurationItem} */ configItem) => {
+        const { label, value, a11yLive, skeleton, skeletonValueOnly } = configItem;
+        const ariaLive = a11yLive ? 'polite' : null;
+        const ariaAtomic = a11yLive ? 'false' : null;
+        return html`<div class="body--item" aria-live="${ifDefined(ariaLive)}" aria-atomic="${ifDefined(ariaAtomic)}">
           <dt class="body--label">
             <span class="${classMap({ skeleton })}">${label}</span>
           </dt>
-          <dd class="body--value ${classMap({ skeleton })}">
+          <dd class="body--value ${classMap({ skeleton: skeleton || skeletonValueOnly })}">
             <span>${value}</span>
           </dd>
         </div>`;
@@ -136,7 +137,7 @@ export class CcOrderSummary extends LitElement {
           display: block;
         }
 
-        /* region elements > reset */
+        /* region reset */
         dl {
           margin-block: 0;
         }
