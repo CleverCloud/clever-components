@@ -11,7 +11,6 @@ import '../../src/components/cc-button/cc-button.js';
 import '../../src/components/cc-input-number/cc-input-number.js';
 import '../../src/components/cc-logs/cc-logs.js';
 import { DATE_DISPLAYS, TIMEZONES } from '../../src/components/cc-logs/date-displayer.js';
-import { createFakeLog, CUSTOM_METADATA_RENDERERS } from '../../src/components/cc-logs/fake-logs.js';
 import '../../src/components/cc-select/cc-select.js';
 import '../../src/components/cc-toggle/cc-toggle.js';
 import { ansiPaletteStyle } from '../../src/lib/ansi/ansi-palette-style.js';
@@ -22,6 +21,7 @@ import nightOwlPalette from '../../src/lib/ansi/palettes/night-owl.js';
 import oneLightPalette from '../../src/lib/ansi/palettes/one-light.js';
 import tokyoNightLightPalette from '../../src/lib/ansi/palettes/tokyo-night-light.js';
 import { Buffer } from '../../src/lib/buffer.js';
+import { createFakeLog, CUSTOM_METADATA_RENDERERS } from '../../src/stories/fixtures/logs.js';
 import { sandboxStyles } from '../sandbox-styles.js';
 
 const IPS = ['192.168.12.1', '192.168.48.157'];
@@ -343,9 +343,9 @@ class CcLogsSandbox extends LitElement {
         }
 
         #cc-logs {
-          height: 600px;
           border: 1px solid #ddd;
           border-radius: 0.2em;
+          height: 600px;
         }
       `,
     ];
