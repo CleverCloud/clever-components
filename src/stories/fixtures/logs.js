@@ -1,9 +1,9 @@
 import { random, randomPick, range } from '../../lib/utils.js';
 
 /**
- * @typedef {import('./cc-logs.types.js').Log} Log
- * @typedef {import('./cc-logs.types.js').Metadata} Metadata
- * @typedef {import('./cc-logs.types.js').MetadataRenderer} MetadataRenderer
+ * @typedef {import('../../components/cc-logs/cc-logs.types.d.ts').Log} Log
+ * @typedef {import('../../components/cc-logs/cc-logs.types.d.ts').Metadata} Metadata
+ * @typedef {import('../../components/cc-logs/cc-logs.types.d.ts').MetadataRenderer} MetadataRenderer
  */
 
 const LONG_MESSAGE =
