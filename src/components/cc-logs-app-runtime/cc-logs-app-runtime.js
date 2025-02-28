@@ -45,15 +45,15 @@ const CUSTOM_METADATA_RENDERERS = {
  * @typedef {import('../cc-logs-control/cc-logs-control.types.js').LogsControlOption} LogsControlOption
  * @typedef {import('../cc-logs-control/cc-logs-control.types.js').LogsMetadataDisplay} LogsMetadataDisplay
  * @typedef {import('../cc-logs-instances/cc-logs-instances.types.js').LogsInstancesState} LogsInstancesState
- * @typedef {import('./cc-logs-application-view.types.js').LogsApplicationViewState} LogsApplicationViewState
- * @typedef {import('./cc-logs-application-view.types.js').LogsApplicationViewOptions} LogsApplicationViewOptions
+ * @typedef {import('./cc-logs-app-runtime.types.js').LogsAppRuntimeState} LogsAppRuntimeState
+ * @typedef {import('./cc-logs-app-runtime.types.js').LogsAppRuntimeOptions} LogsAppRuntimeOptions
  * @typedef {import('../cc-logs/cc-logs.types.js').Log} Log
  * @typedef {import('../cc-logs/cc-logs.types.js').MetadataRenderer} MetadataRenderer
  * @typedef {import('../cc-logs-date-range-selector/cc-logs-date-range-selector.types.js').LogsDateRangeSelection} LogsDateRangeSelection
  * @typedef {import('../cc-logs-date-range-selector/cc-logs-date-range-selector.types.js').LogsDateRangeSelectionChangeEventData} LogsDateRangeSelectionChangeEventData
  * @typedef {import('../cc-logs-message-filter/cc-logs-message-filter.types.js').LogsMessageFilterValue} LogsMessageFilterValue
  * @typedef {import('lit/directives/ref.js').Ref<CcLogsControl>} RefCcLogsControl
- * @typedef {import('lit').PropertyValues<CcLogsApplicationView>} CcLogsApplicationViewPropertyValues
+ * @typedef {import('lit').PropertyValues<CcLogsAppRuntime>} PropertyValues
  * @typedef {import('lit').TemplateResult<1>} TemplateResult
  */
 
@@ -61,7 +61,7 @@ const CUSTOM_METADATA_RENDERERS = {
  *
  * @beta
  */
-export class CcLogsApplicationView extends LitElement {
+export class CcLogsAppRuntime extends LitElement {
   static get properties() {
     return {
       dateRangeSelection: { type: Object, attribute: 'date-range-selection' },
@@ -85,7 +85,7 @@ export class CcLogsApplicationView extends LitElement {
     /** @type {number|null} The maximum number of logs to display. `null` for no limit. */
     this.limit = 1000;
 
-    /** @type {LogsApplicationViewOptions} The logs options. */
+    /** @type {LogsAppRuntimeOptions} The logs options. */
     this.options = {
       'date-display': 'datetime-iso',
       'metadata-display': {
@@ -100,7 +100,7 @@ export class CcLogsApplicationView extends LitElement {
     /** @type {Array<string>} The array of instances ids that should be selected */
     this.selectedInstances = [];
 
-    /** @type {LogsApplicationViewState} The state of the component */
+    /** @type {LogsAppRuntimeState} The state of the component */
     this.state = {
       type: 'loadingInstances',
     };
@@ -114,7 +114,7 @@ export class CcLogsApplicationView extends LitElement {
     /** @type {{instance: LogsMetadataDisplay}} */
     this._metadataDisplay = {
       instance: {
-        label: i18n('cc-logs-application-view.options.display-instance'),
+        label: i18n('cc-logs-app-runtime.options.display-instance'),
         hidden: !this.options['metadata-display'].instance,
       },
     };
@@ -191,7 +191,7 @@ export class CcLogsApplicationView extends LitElement {
   /* endregion */
 
   /**
-   * @param {CcLogsApplicationViewPropertyValues} changedProperties
+   * @param {PropertyValues} changedProperties
    */
   willUpdate(changedProperties) {
     if (changedProperties.has('options')) {
@@ -286,7 +286,7 @@ export class CcLogsApplicationView extends LitElement {
     if (this.state.type === 'loaded' && this.state.streamState.type === 'error') {
       return html`
         <div class="center-logs-wrapper">
-          <cc-notice slot="header" intent="warning" message=${i18n('cc-logs-application-view.logs.error')}></cc-notice>
+          <cc-notice slot="header" intent="warning" message=${i18n('cc-logs-app-runtime.logs.error')}></cc-notice>
         </div>
       `;
     }
@@ -334,8 +334,8 @@ export class CcLogsApplicationView extends LitElement {
             class="header-fullscreen-button"
             .icon=${this._fullscreen ? fullscreenExitIcon : fullscreenIcon}
             a11y-name=${this._fullscreen
-              ? i18n('cc-logs-application-view.fullscreen.exit')
-              : i18n('cc-logs-application-view.fullscreen')}
+              ? i18n('cc-logs-app-runtime.fullscreen.exit')
+              : i18n('cc-logs-app-runtime.fullscreen')}
             hide-text
             @cc-button:click=${this._onFullscreenToggle}
           ></cc-button>
@@ -349,8 +349,8 @@ export class CcLogsApplicationView extends LitElement {
             <div class="overlay-logs-wrapper">
               <cc-notice
                 intent="info"
-                heading=${i18n('cc-logs-application-view.logs.warning.no-logs.title')}
-                message=${i18n('cc-logs-application-view.logs.warning.no-logs.message')}
+                heading=${i18n('cc-logs-app-runtime.logs.warning.no-logs.title')}
+                message=${i18n('cc-logs-app-runtime.logs.warning.no-logs.message')}
               ></cc-notice>
             </div>
           `
@@ -362,7 +362,7 @@ export class CcLogsApplicationView extends LitElement {
               <cc-notice intent="info" no-icon>
                 <div class="overlay-logs-wrapper--loader" slot="message">
                   <cc-loader></cc-loader>
-                  <span>${i18n('cc-logs-application-view.logs.loading')}</span>
+                  <span>${i18n('cc-logs-app-runtime.logs.loading')}</span>
                 </div>
               </cc-notice>
             </div>
@@ -373,8 +373,8 @@ export class CcLogsApplicationView extends LitElement {
             <div class="overlay-logs-wrapper">
               <cc-notice
                 intent="info"
-                heading=${i18n('cc-logs-application-view.logs.warning.waiting.title')}
-                message=${i18n('cc-logs-application-view.logs.warning.waiting.message')}
+                heading=${i18n('cc-logs-app-runtime.logs.warning.waiting.title')}
+                message=${i18n('cc-logs-app-runtime.logs.warning.waiting.message')}
               ></cc-notice>
             </div>
           `
@@ -493,4 +493,4 @@ export class CcLogsApplicationView extends LitElement {
 }
 
 // eslint-disable-next-line wc/tag-name-matches-class
-window.customElements.define('cc-logs-application-view-beta', CcLogsApplicationView);
+window.customElements.define('cc-logs-app-runtime-beta', CcLogsAppRuntime);

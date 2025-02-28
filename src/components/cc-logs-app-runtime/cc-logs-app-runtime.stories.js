@@ -1,17 +1,17 @@
 import { makeStory } from '../../stories/lib/make-story.js';
-import './cc-logs-application-view.js';
+import './cc-logs-app-runtime.js';
 
 export default {
-  title: '🚧 Beta/🛠 Logs/<cc-logs-application-view-beta>',
-  component: 'cc-logs-application-view-beta',
+  title: '🚧 Beta/🛠 Logs app/<cc-logs-app-runtime-beta>',
+  component: 'cc-logs-app-runtime-beta',
 };
 
 const conf = {
-  component: 'cc-logs-application-view-beta',
+  component: 'cc-logs-app-runtime-beta',
   beta: true,
   // language=CSS
   css: `
-    cc-logs-application-view-beta {
+    cc-logs-app-runtime-beta {
       height: 800px;
     }
   `,

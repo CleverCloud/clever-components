@@ -824,16 +824,16 @@ export const translations = {
   'cc-logs.select-button.label': /** @param {{index: number}} _ */ ({ index }) => `Select the line ${index}`,
   'cc-logs.unselect-button.label': /** @param {{index: number}} _ */ ({ index }) => `Unselect the line ${index}`,
   //#endregion
-  //#region cc-logs-application-view
-  'cc-logs-application-view.fullscreen': `Fullscreen`,
-  'cc-logs-application-view.fullscreen.exit': `Exit fullscreen`,
-  'cc-logs-application-view.logs.error': `Something went wrong while loading logs`,
-  'cc-logs-application-view.logs.loading': `Looking for log entries...`,
-  'cc-logs-application-view.logs.warning.no-logs.message': `There are no logs matching the selected criteria`,
-  'cc-logs-application-view.logs.warning.no-logs.title': `No logs`,
-  'cc-logs-application-view.logs.warning.waiting.message': `New log entries emitted by the application will appear here`,
-  'cc-logs-application-view.logs.warning.waiting.title': `No logs to show right now`,
-  'cc-logs-application-view.options.display-instance': `Display instance name`,
+  //#region cc-logs-app-runtime
+  'cc-logs-app-runtime.fullscreen': `Fullscreen`,
+  'cc-logs-app-runtime.fullscreen.exit': `Exit fullscreen`,
+  'cc-logs-app-runtime.logs.error': `Something went wrong while loading logs`,
+  'cc-logs-app-runtime.logs.loading': `Looking for log entries...`,
+  'cc-logs-app-runtime.logs.warning.no-logs.message': `There are no logs matching the selected criteria`,
+  'cc-logs-app-runtime.logs.warning.no-logs.title': `No logs`,
+  'cc-logs-app-runtime.logs.warning.waiting.message': `New log entries emitted by the application will appear here`,
+  'cc-logs-app-runtime.logs.warning.waiting.title': `No logs to show right now`,
+  'cc-logs-app-runtime.options.display-instance': `Display instance name`,
   //#endregion
   //#region cc-logs-control
   'cc-logs-control.date-display': `Date format`,

@@ -836,16 +836,16 @@ export const translations = {
   'cc-logs.select-button.label': /** @param {{index: number}} _ */ ({ index }) => `Sélectionner la ligne ${index}`,
   'cc-logs.unselect-button.label': /** @param {{index: number}} _ */ ({ index }) => `Désélectionner la ligne ${index}`,
   //#endregion
-  //#region cc-logs-application-view
-  'cc-logs-application-view.fullscreen': `Mode plein écran`,
-  'cc-logs-application-view.fullscreen.exit': `Sortir du mode plein écran`,
-  'cc-logs-application-view.logs.error': `Une erreur est survenue pendant le chargement des logs`,
-  'cc-logs-application-view.logs.loading': `Recherche de logs...`,
-  'cc-logs-application-view.logs.warning.no-logs.message': `Il n'y a aucun log qui correspond aux critères sélectionnés`,
-  'cc-logs-application-view.logs.warning.no-logs.title': `Aucun log`,
-  'cc-logs-application-view.logs.warning.waiting.message': `Les logs émis par l'application apparaîtront ici`,
-  'cc-logs-application-view.logs.warning.waiting.title': `Aucun log pour le moment`,
-  'cc-logs-application-view.options.display-instance': `Afficher le nom de l'instance`,
+  //#region cc-logs-app-runtime
+  'cc-logs-app-runtime.fullscreen': `Mode plein écran`,
+  'cc-logs-app-runtime.fullscreen.exit': `Sortir du mode plein écran`,
+  'cc-logs-app-runtime.logs.error': `Une erreur est survenue pendant le chargement des logs`,
+  'cc-logs-app-runtime.logs.loading': `Recherche de logs...`,
+  'cc-logs-app-runtime.logs.warning.no-logs.message': `Il n'y a aucun log qui correspond aux critères sélectionnés`,
+  'cc-logs-app-runtime.logs.warning.no-logs.title': `Aucun log`,
+  'cc-logs-app-runtime.logs.warning.waiting.message': `Les logs émis par l'application apparaîtront ici`,
+  'cc-logs-app-runtime.logs.warning.waiting.title': `Aucun log pour le moment`,
+  'cc-logs-app-runtime.options.display-instance': `Afficher le nom de l'instance`,
   //#endregion
   //#region cc-logs-control
   'cc-logs-control.date-display': `Format de date`,

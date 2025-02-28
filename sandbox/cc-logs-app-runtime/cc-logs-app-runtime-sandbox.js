@@ -2,8 +2,7 @@ import { css, html, LitElement } from 'lit';
 import { createRef, ref } from 'lit/directives/ref.js';
 import '../../src/components/cc-button/cc-button.js';
 import '../../src/components/cc-input-text/cc-input-text.js';
-import '../../src/components/cc-logs-application-view/cc-logs-application-view.js';
-import '../../src/components/cc-logs-application-view/cc-logs-application-view.smart.js';
+import '../../src/components/cc-logs-app-runtime/cc-logs-app-runtime.smart.js';
 import '../../src/components/cc-select/cc-select.js';
 import { formSubmit } from '../../src/lib/form/form-submit-directive.js';
 import { isStringEmpty } from '../../src/lib/utils.js';
@@ -25,12 +24,12 @@ const INITIAL_APP = 'app_d0969d3a-5317-4e62-91e3-7adfe66acfa4';
 /**
  * @typedef {import('../../src/components/cc-smart-container/cc-smart-container.js').CcSmartContainer} CcSmartContainer
  * @typedef {import('../../src/lib/form/form.types.js').FormDataMap} FormDataMap
- * @typedef {import('lit').PropertyValues<CcLogsApplicationViewSandbox>} PropertyValues
+ * @typedef {import('lit').PropertyValues<CcLogsAppRuntimeSandbox>} PropertyValues
  * @typedef {import('lit/directives/ref.js').Ref<HTMLFormElement>} HTMLFormElementRef
  * @typedef {import('lit/directives/ref.js').Ref<CcSmartContainer>} CcSmartContainerRef
  */
 
-class CcLogsApplicationViewSandbox extends LitElement {
+class CcLogsAppRuntimeSandbox extends LitElement {
   constructor() {
     super();
 
@@ -73,7 +72,7 @@ class CcLogsApplicationViewSandbox extends LitElement {
       </form>
 
       <cc-smart-container ${ref(this._smartContainerRef)}>
-        <cc-logs-application-view-beta class="cc-logs-application-view main"></cc-logs-application-view-beta>
+        <cc-logs-app-runtime-beta class="cc-logs-app-runtime main"></cc-logs-app-runtime-beta>
       </cc-smart-container>
     `;
   }
@@ -102,7 +101,7 @@ class CcLogsApplicationViewSandbox extends LitElement {
           min-height: 0;
         }
 
-        .cc-logs-application-view {
+        .cc-logs-app-runtime {
           flex: 1;
           min-height: 0;
         }
@@ -121,4 +120,4 @@ class CcLogsApplicationViewSandbox extends LitElement {
   }
 }
 
-window.customElements.define('cc-logs-application-view-sandbox', CcLogsApplicationViewSandbox);
+window.customElements.define('cc-logs-app-runtime-sandbox', CcLogsAppRuntimeSandbox);
