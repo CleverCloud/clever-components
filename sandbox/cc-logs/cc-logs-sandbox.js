@@ -24,6 +24,17 @@ import { Buffer } from '../../src/lib/buffer.js';
 import { createFakeLog, CUSTOM_METADATA_RENDERERS } from '../../src/stories/fixtures/logs.js';
 import { sandboxStyles } from '../sandbox-styles.js';
 
+/**
+ * @typedef {import('../../src/components/cc-logs/cc-logs.js').CcLogs} CcLogs
+ * @typedef {import('../../src/components/cc-logs/cc-logs.types.js').MetadataFilter} MetadataFilter
+ * @typedef {import('../../src/components/cc-logs/date-display.types.js').DateDisplay} DateDisplay
+ * @typedef {import('../../src/components/cc-input-number/cc-input-number.js').CcInputNumber} CcInputNumber
+ * @typedef {import('../../src/lib/date/date.types.js').Timezone} Timezone
+ * @typedef {import('../../src/lib/events.types.js').EventWithTarget<CcInputNumber>} CcInputNumberEvent
+ * @typedef {import('lit/directives/ref.js').Ref<CcLogs>} CcLogsRef
+ * @typedef {import('lit').PropertyValues<CcLogsSandbox>} PropertyValues
+ */
+
 const IPS = ['192.168.12.1', '192.168.48.157'];
 const LEVELS = ['INFO', 'WARN', 'DEBUG', 'ERROR'];
 const IP_OPTIONS = IPS.map((d) => ({ label: d, value: d }));
@@ -66,8 +77,11 @@ class CcLogsSandbox extends LitElement {
   constructor() {
     super();
 
+    /** @type {DateDisplay} */
     this._dateDisplay = 'datetime-iso';
+    /** @type {Array<string>} */
     this._filterIps = [];
+    /** @type {Array<string>} */
     this._filterLevels = [];
     this._follow = true;
     this._limit = 50000;
@@ -75,14 +89,15 @@ class CcLogsSandbox extends LitElement {
     this._rate = 1000;
     this._started = false;
     this._stripAnsi = false;
+    /** @type {Timezone} */
     this._timezone = 'UTC';
     this._useCustomMetadataRenderers = false;
     this._wrapLines = false;
-
+    /** @type {Array<MetadataFilter>} */
     this._filter = [];
     this._index = 0;
     this._timer = null;
-    /** @type {Ref<CcLogs>} */
+    /** @type {CcLogsRef} */
     this._logsRef = createRef();
     this._buffer = new Buffer(
       (logs) => {
@@ -111,6 +126,9 @@ class CcLogsSandbox extends LitElement {
     return this._started;
   }
 
+  /**
+   * @param {number} rate
+   */
   _start(rate) {
     if (this._isStarted()) {
       this._stop();
@@ -144,35 +162,56 @@ class CcLogsSandbox extends LitElement {
     this._clear();
   }
 
+  /**
+   * @param {CcInputNumberEvent} e
+   */
   _onLimitChanged(e) {
     this._limit = e.target.value;
   }
 
-  _onRateToggle({ detail }) {
-    this._rate = parseInt(detail);
+  /**
+   * @param {CustomEvent<string>} e
+   */
+  _onRateToggle(e) {
+    this._rate = parseInt(e.detail);
     if (this._isStarted()) {
       this._start(this._rate);
     }
   }
 
-  _onDateDisplayToggle({ detail }) {
-    this._dateDisplay = detail;
+  /**
+   * @param {CustomEvent<DateDisplay>} e
+   */
+  _onDateDisplayToggle(e) {
+    this._dateDisplay = e.detail;
   }
 
-  _onTimezoneToggle({ detail }) {
-    this._timezone = detail;
+  /**
+   * @param {CustomEvent<Timezone>} e
+   */
+  _onTimezoneToggle(e) {
+    this._timezone = e.detail;
   }
 
-  _onPaletteToggle({ detail }) {
-    this._palette = detail;
+  /**
+   * @param {CustomEvent<string>} e
+   */
+  _onPaletteToggle(e) {
+    this._palette = e.detail;
   }
 
-  _onFilterIpsToggle({ detail }) {
-    this._filterIps = detail;
+  /**
+   * @param {CustomEvent<Array<string>>} e
+   */
+  _onFilterIpsToggle(e) {
+    this._filterIps = e.detail;
   }
 
-  _onFilterLevelsToggle({ detail }) {
-    this._filterLevels = detail;
+  /**
+   * @param {CustomEvent<Array<string>>} e
+   */
+  _onFilterLevelsToggle(e) {
+    this._filterLevels = e.detail;
   }
 
   _onWrapLinesSwitched() {
@@ -191,14 +230,20 @@ class CcLogsSandbox extends LitElement {
     this._useCustomMetadataRenderers = !this._useCustomMetadataRenderers;
   }
 
-  _onFollowChange({ detail }) {
-    this._follow = detail;
+  /**
+   * @param {CustomEvent<boolean>} e
+   */
+  _onFollowChange(e) {
+    this._follow = e.detail;
   }
 
   _onScrollToBottomClick() {
     this._logsRef.value.scrollToBottom();
   }
 
+  /**
+   * @param {PropertyValues} changedProperties
+   */
   willUpdate(changedProperties) {
     if (changedProperties.has('_filterLevels') || changedProperties.has('_filterIps')) {
       this._filter = [
@@ -241,7 +286,7 @@ class CcLogsSandbox extends LitElement {
           .dateDisplay=${this._dateDisplay}
           .timezone=${this._timezone}
           .limit=${this._limit}
-          .messageFilter=${this._filter}
+          .metadataFilter=${this._filter}
           .metadataRenderers=${this._useCustomMetadataRenderers ? CUSTOM_METADATA_RENDERERS : null}
           style="${this._palette}"
           ${ref(this._logsRef)}
