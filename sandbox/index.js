@@ -49,7 +49,7 @@ const sandboxes = [
   'cc-ansi-palette',
   'cc-logs',
   'cc-product-card',
-  'cc-logs-application-view',
+  'cc-logs-app-runtime',
   'forms',
   'cc-kv-explorer',
 ];

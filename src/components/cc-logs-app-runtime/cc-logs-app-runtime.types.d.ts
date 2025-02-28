@@ -4,27 +4,27 @@ import { LogsControlPalette } from '../cc-logs-control/cc-logs-control.types.js'
 import { GhostInstance, Instance } from '../cc-logs-instances/cc-logs-instances.types.js';
 import { DateDisplay } from '../cc-logs/date-display.types.js';
 
-export interface LogsApplicationViewStateLoadingInstances {
+export interface LogsAppRuntimeStateLoadingInstances {
   type: 'loadingInstances';
 }
 
-export interface LogsApplicationViewStateErrorInstances {
+export interface LogsAppRuntimeStateErrorInstances {
   type: 'errorInstances';
 }
 
-export interface LogsApplicationViewStateLoaded {
+export interface LogsAppRuntimeStateLoaded {
   type: 'loaded';
   streamState: LogsStreamState;
   instances: Array<Instance | GhostInstance>;
   selection: Array<string>;
 }
 
-export type LogsApplicationViewState =
-  | LogsApplicationViewStateLoadingInstances
-  | LogsApplicationViewStateErrorInstances
-  | LogsApplicationViewStateLoaded;
+export type LogsAppRuntimeState =
+  | LogsAppRuntimeStateLoadingInstances
+  | LogsAppRuntimeStateErrorInstances
+  | LogsAppRuntimeStateLoaded;
 
-export interface LogsApplicationViewOptions {
+export interface LogsAppRuntimeOptions {
   'date-display': DateDisplay;
   'metadata-display': {
     instance: boolean;

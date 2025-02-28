@@ -11,12 +11,12 @@ import { defineSmartComponent } from '../../lib/smart/define-smart-component.js'
 import { unique } from '../../lib/utils.js';
 import { dateRangeSelectionToDateRange } from '../cc-logs-date-range-selector/date-range-selection.js';
 import '../cc-smart-container/cc-smart-container.js';
-import './cc-logs-application-view.js';
+import './cc-logs-app-runtime.js';
 
 /**
- * @typedef {import('./cc-logs-application-view.js').CcLogsApplicationView} CcLogsApplicationView
- * @typedef {import('./cc-logs-application-view.types.js').LogsApplicationViewState} LogsApplicationViewState
- * @typedef {import('./cc-logs-application-view.types.js').LogsApplicationViewStateLoaded} LogsApplicationViewStateLoaded
+ * @typedef {import('./cc-logs-app-runtime.js').CcLogsAppRuntime} CcLogsAppRuntime
+ * @typedef {import('./cc-logs-app-runtime.types.js').LogsAppRuntimeState} LogsAppRuntimeState
+ * @typedef {import('./cc-logs-app-runtime.types.js').LogsAppRuntimeStateLoaded} LogsAppRuntimeStateLoaded
  * @typedef {import('../cc-logs/cc-logs.types.js').Log} Log
  * @typedef {import('../cc-logs-date-range-selector/cc-logs-date-range-selector.types.js').LogsDateRangeSelection} LogsDateRangeSelection
  * @typedef {import('../cc-logs-date-range-selector/cc-logs-date-range-selector.types.js').LogsDateRangeSelectionChangeEventData} LogsDateRangeSelectionChangeEventData
@@ -27,14 +27,14 @@ import './cc-logs-application-view.js';
  * @typedef {import('../../lib/send-to-api.types.js').ApiConfig} ApiConfig
  * @typedef {import('../../lib/date/date-range.types.js').DateRange} DateRange
  * @typedef {import('../../lib/logs/logs-stream.types.js').LogsStreamState} LogsStreamState
- * @typedef {import('../../lib/smart/smart-component.types.js').UpdateComponentCallback<CcLogsApplicationView>} UpdateComponentCallback
- * @typedef {import('../../lib/smart/smart-component.types.js').OnContextUpdateArgs<CcLogsApplicationView>} OnContextUpdateArgs
+ * @typedef {import('../../lib/smart/smart-component.types.js').UpdateComponentCallback<CcLogsAppRuntime>} UpdateComponentCallback
+ * @typedef {import('../../lib/smart/smart-component.types.js').OnContextUpdateArgs<CcLogsAppRuntime>} OnContextUpdateArgs
  */
 
 const INSTANCES_REFRESH_RATE = 2000;
 
 defineSmartComponent({
-  selector: 'cc-logs-application-view-beta',
+  selector: 'cc-logs-app-runtime-beta',
   params: {
     apiConfig: { type: Object },
     ownerId: { type: String },
@@ -48,7 +48,7 @@ defineSmartComponent({
   onContextUpdate({ component, context, onEvent, updateComponent, signal }) {
     const { apiConfig, ownerId, appId, deploymentId, dateRangeSelection } = context;
 
-    const controller = new LogsApplicationViewSmartController({
+    const controller = new SmartController({
       apiConfig,
       ownerId,
       appId,
@@ -68,7 +68,7 @@ defineSmartComponent({
     );
 
     onEvent(
-      'cc-logs-application-view:instance-selection-change',
+      'cc-logs-app-runtime:instance-selection-change',
       /** @param {Array<string>} instances */
       (instances) => {
         controller.setNewInstanceSelection(instances);
@@ -104,13 +104,13 @@ defineSmartComponent({
 /**
  * @extends {LogsStream<Log>}
  */
-class LogsApplicationViewSmartController extends LogsStream {
+class SmartController extends LogsStream {
   /**
    * @param {object} _
    * @param {ApiConfig} _.apiConfig
    * @param {string} _.ownerId
    * @param {string} _.appId
-   * @param {CcLogsApplicationView} _.component
+   * @param {CcLogsAppRuntime} _.component
    * @param {UpdateComponentCallback} _.updateComponent
    */
   constructor({ apiConfig, ownerId, appId, component, updateComponent }) {
@@ -473,7 +473,7 @@ class LogsApplicationViewSmartController extends LogsStream {
   }
 
   /**
-   * @param {LogsApplicationViewState|((state: LogsApplicationViewState) => void)} state
+   * @param {LogsAppRuntimeState|((state: LogsAppRuntimeState) => void)} state
    */
   _updateState(state) {
     this._updateComponent('state', state);
