@@ -241,11 +241,11 @@ class CcLogsSandbox extends LitElement {
           .dateDisplay=${this._dateDisplay}
           .timezone=${this._timezone}
           .limit=${this._limit}
-          .filter=${this._filter}
+          .messageFilter=${this._filter}
           .metadataRenderers=${this._useCustomMetadataRenderers ? CUSTOM_METADATA_RENDERERS : null}
           style="${this._palette}"
           ${ref(this._logsRef)}
-          @cc-logs-beta:followChange=${this._onFollowChange}
+          @cc-logs:followChange=${this._onFollowChange}
         ></cc-logs-beta>
       </div>
 
