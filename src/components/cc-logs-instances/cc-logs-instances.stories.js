@@ -1,58 +1,6 @@
-import { randomString } from '../../lib/utils.js';
 import { makeStory, storyWait } from '../../stories/lib/make-story.js';
+import { createDeployment, createGhostInstance, createInstance } from '../../stories/fixtures/logs-instance.js';
 import './cc-logs-instances.js';
-
-function randomCommit() {
-  return randomString(40, 'abcdef0123456789');
-}
-
-function randomUUID() {
-  const alphabet = '0123456789abcdef';
-  return `${randomString(8, alphabet)}-${randomString(4, alphabet)}-4${randomString(3, alphabet)}-${randomString(4, alphabet)}-${randomString(12, alphabet)}`;
-}
-
-/**
- * @param {number} sinceDay
- * @returns {Date}
- */
-function getDeploymentDate(sinceDay) {
-  return new Date(new Date().getTime() - sinceDay * 24 * 60 * 60 * 1000);
-}
-
-/**
- * @param {Deployment} deployment
- * @param {number} index
- * @param {InstanceKind} kind
- * @param {InstanceState} state
- * @param {string} name
- * @return {Instance}
- */
-function createInstance(deployment, index, kind, state, name) {
-  return {
-    ghost: false,
-    id: randomUUID(),
-    deployment,
-    creationDate: new Date(),
-    index,
-    kind,
-    state,
-    name,
-  };
-}
-
-/**
- * @param {DeploymentState} state
- * @param {number} sinceDay
- * @returns {Deployment}
- */
-function createDeployment(state, sinceDay) {
-  return {
-    id: `deployment_${randomUUID()}`,
-    state,
-    creationDate: getDeploymentDate(sinceDay),
-    commitId: randomCommit(),
-  };
-}
 
 /**
  *
@@ -131,11 +79,7 @@ const ALL_INSTANCES = [
 ];
 
 /** @type {Array<Instance|GhostInstance>} */
-const ALL_INSTANCES_WITH_GHOSTS = [
-  ...ALL_INSTANCES,
-  { id: randomUUID(), ghost: true },
-  { id: randomUUID(), ghost: true },
-];
+const ALL_INSTANCES_WITH_GHOSTS = [...ALL_INSTANCES, createGhostInstance(), createGhostInstance()];
 
 export default {
   tags: ['autodocs'],
@@ -146,11 +90,8 @@ export default {
 /**
  * @typedef {import('./cc-logs-instances.js').CcLogsInstances} CcLogsInstances
  * @typedef {import('./cc-logs-instances.types.js').Instance} Instance
- * @typedef {import('./cc-logs-instances.types.js').InstanceKind} InstanceKind
- * @typedef {import('./cc-logs-instances.types.js').InstanceState} InstanceState
  * @typedef {import('./cc-logs-instances.types.js').GhostInstance} GhostInstance
  * @typedef {import('./cc-logs-instances.types.js').Deployment} Deployment
- * @typedef {import('./cc-logs-instances.types.js').DeploymentState} DeploymentState
  */
 
 const conf = {
