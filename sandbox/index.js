@@ -50,6 +50,7 @@ const sandboxes = [
   'cc-logs',
   'cc-product-card',
   'cc-logs-app-runtime',
+  'cc-logs-app-access',
   'forms',
   'cc-kv-explorer',
 ];

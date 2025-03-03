@@ -836,6 +836,19 @@ export const translations = {
   'cc-logs.select-button.label': /** @param {{index: number}} _ */ ({ index }) => `Sélectionner la ligne ${index}`,
   'cc-logs.unselect-button.label': /** @param {{index: number}} _ */ ({ index }) => `Désélectionner la ligne ${index}`,
   //#endregion
+  //#region cc-logs-app-access
+  'cc-logs-app-access.error': `Une erreur est survenue pendant le chargement des logs`,
+  'cc-logs-app-access.fullscreen': `Mode plein écran`,
+  'cc-logs-app-access.fullscreen.exit': `Sortir du mode plein écran`,
+  'cc-logs-app-access.loading': `Recherche de logs...`,
+  'cc-logs-app-access.no-logs.message': `Aucun log ne correspond aux critères sélectionnés`,
+  'cc-logs-app-access.no-logs.title': `Aucun log`,
+  'cc-logs-app-access.options.city': `Afficher la ville`,
+  'cc-logs-app-access.options.country': `Afficher le pays`,
+  'cc-logs-app-access.options.ip': `Afficher l'adresse IP`,
+  'cc-logs-app-access.waiting.message': `Les logs émis par l'application apparaîtront ici`,
+  'cc-logs-app-access.waiting.title': `Aucun log pour le moment`,
+  //#endregion
   //#region cc-logs-app-runtime
   'cc-logs-app-runtime.fullscreen': `Mode plein écran`,
   'cc-logs-app-runtime.fullscreen.exit': `Sortir du mode plein écran`,
