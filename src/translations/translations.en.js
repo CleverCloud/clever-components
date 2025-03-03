@@ -824,6 +824,19 @@ export const translations = {
   'cc-logs.select-button.label': /** @param {{index: number}} _ */ ({ index }) => `Select the line ${index}`,
   'cc-logs.unselect-button.label': /** @param {{index: number}} _ */ ({ index }) => `Unselect the line ${index}`,
   //#endregion
+  //#region cc-logs-app-access
+  'cc-logs-app-access.error': `Something went wrong while loading logs`,
+  'cc-logs-app-access.fullscreen': `Fullscreen`,
+  'cc-logs-app-access.fullscreen.exit': `Exit fullscreen`,
+  'cc-logs-app-access.loading': `Looking for log entries...`,
+  'cc-logs-app-access.no-logs.message': `There are no logs matching the selected criteria`,
+  'cc-logs-app-access.no-logs.title': `No logs`,
+  'cc-logs-app-access.options.city': `Display city`,
+  'cc-logs-app-access.options.country': `Display country`,
+  'cc-logs-app-access.options.ip': `Display IP address`,
+  'cc-logs-app-access.waiting.message': `New log entries emitted by the application will appear here`,
+  'cc-logs-app-access.waiting.title': `No logs to show right now`,
+  //#endregion
   //#region cc-logs-app-runtime
   'cc-logs-app-runtime.fullscreen': `Fullscreen`,
   'cc-logs-app-runtime.fullscreen.exit': `Exit fullscreen`,
