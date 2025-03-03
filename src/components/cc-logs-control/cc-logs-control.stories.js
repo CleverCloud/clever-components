@@ -2,13 +2,17 @@ import { makeStory } from '../../stories/lib/make-story.js';
 import '../cc-input-text/cc-input-text.js';
 import './cc-logs-control.js';
 
-import { createFakeLogs, CUSTOM_METADATA_RENDERERS } from '../cc-logs/fake-logs.js';
+import { createFakeLogs, CUSTOM_METADATA_RENDERERS } from '../../stories/fixtures/logs.js';
 
 export default {
   tags: ['autodocs'],
   title: '🚧 Beta/🛠 Logs/<cc-logs-control-beta>',
   component: 'cc-logs-control-beta',
 };
+
+/**
+ * @typedef {import('./cc-logs-control.js').CcLogsControl} CcLogsControl
+ */
 
 const conf = {
   component: 'cc-logs-control-beta',
@@ -32,6 +36,7 @@ const metadataDisplay = {
   },
 };
 export const defaultStory = makeStory(conf, {
+  /** @type {Array<Partial<CcLogsControl>>} */
   items: [
     {
       follow: true,
@@ -43,6 +48,7 @@ export const defaultStory = makeStory(conf, {
 });
 
 export const withHeaderSlot = makeStory(conf, {
+  /** @type {Array<Partial<CcLogsControl>>} */
   items: [
     {
       follow: true,
@@ -55,6 +61,7 @@ export const withHeaderSlot = makeStory(conf, {
 });
 
 export const withoutMetadataDisplay = makeStory(conf, {
+  /** @type {Array<Partial<CcLogsControl>>} */
   items: [
     {
       follow: true,
@@ -65,6 +72,7 @@ export const withoutMetadataDisplay = makeStory(conf, {
 });
 
 export const withNonDefaultPalette = makeStory(conf, {
+  /** @type {Array<Partial<CcLogsControl>>} */
   items: [
     {
       follow: true,
@@ -77,6 +85,7 @@ export const withNonDefaultPalette = makeStory(conf, {
 });
 
 export const withNonDefaultStripAnsi = makeStory(conf, {
+  /** @type {Array<Partial<CcLogsControl>>} */
   items: [
     {
       follow: true,
@@ -89,6 +98,7 @@ export const withNonDefaultStripAnsi = makeStory(conf, {
 });
 
 export const withNonDefaultWrapLines = makeStory(conf, {
+  /** @type {Array<Partial<CcLogsControl>>} */
   items: [
     {
       follow: true,
@@ -101,6 +111,7 @@ export const withNonDefaultWrapLines = makeStory(conf, {
 });
 
 export const withNonDefaultTimezone = makeStory(conf, {
+  /** @type {Array<Partial<CcLogsControl>>} */
   items: [
     {
       follow: true,
@@ -113,6 +124,7 @@ export const withNonDefaultTimezone = makeStory(conf, {
 });
 
 export const withNonDefaultDateDisplay = makeStory(conf, {
+  /** @type {Array<Partial<CcLogsControl>>} */
   items: [
     {
       follow: true,

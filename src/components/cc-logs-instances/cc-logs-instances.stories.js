@@ -1,72 +1,6 @@
-import { randomString } from '../../lib/utils.js';
 import { makeStory, storyWait } from '../../stories/lib/make-story.js';
+import { createDeployment, createGhostInstance, createInstance } from '../../stories/fixtures/logs-instance.js';
 import './cc-logs-instances.js';
-
-/**
- * @typedef {import('./cc-logs-instances.types.js').Instance} Instance
- * @typedef {import('./cc-logs-instances.types.js').Deployment} Deployment
- */
-
-function randomCommit() {
-  return randomString(40, 'abcdef0123456789');
-}
-
-function randomUUID() {
-  const alphabet = '0123456789abcdef';
-  return `${randomString(8, alphabet)}-${randomString(4, alphabet)}-4${randomString(3, alphabet)}-${randomString(4, alphabet)}-${randomString(12, alphabet)}`;
-}
-
-function getDeploymentDate(sinceDay) {
-  return new Date(new Date().getTime() - sinceDay * 24 * 60 * 60 * 1000);
-}
-
-export default {
-  tags: ['autodocs'],
-  title: '🚧 Beta/🛠 Logs/<cc-logs-instances-beta>',
-  component: 'cc-logs-instances-beta',
-};
-
-const conf = {
-  component: 'cc-logs-instances-beta',
-  beta: true,
-  css: `
-    cc-logs-instances-beta {
-      width: max-content;
-      border: 1px solid #aaa;
-      max-width: 20em;
-      min-width: 15em;
-      min-height: 30em;
-      max-height: 500px;
-    }
-  `,
-};
-
-/**
- * @type {Instance}
- */
-function createInstance(deployment, index, kind, state, name) {
-  return {
-    id: randomUUID(),
-    deployment,
-    creationDate: new Date(),
-    index,
-    kind,
-    state,
-    name,
-  };
-}
-
-/**
- * @type {Deployment}
- */
-function createDeployment(state, sinceDay) {
-  return {
-    id: `deployment_${randomUUID()}`,
-    state,
-    creationDate: getDeploymentDate(sinceDay),
-    commitId: randomCommit(),
-  };
-}
 
 /**
  *
@@ -144,164 +78,240 @@ const ALL_INSTANCES = [
   ...CANCELLED_DEPLOYMENT,
 ];
 
-const ALL_INSTANCES_WITH_GHOSTS = [
-  ...ALL_INSTANCES,
-  { id: randomUUID(), ghost: true },
-  { id: randomUUID(), ghost: true },
-];
+/** @type {Array<Instance|GhostInstance>} */
+const ALL_INSTANCES_WITH_GHOSTS = [...ALL_INSTANCES, createGhostInstance(), createGhostInstance()];
+
+export default {
+  tags: ['autodocs'],
+  title: '🚧 Beta/🛠 Logs/<cc-logs-instances-beta>',
+  component: 'cc-logs-instances-beta',
+};
+
+/**
+ * @typedef {import('./cc-logs-instances.js').CcLogsInstances} CcLogsInstances
+ * @typedef {import('./cc-logs-instances.types.js').Instance} Instance
+ * @typedef {import('./cc-logs-instances.types.js').GhostInstance} GhostInstance
+ * @typedef {import('./cc-logs-instances.types.js').Deployment} Deployment
+ */
+
+const conf = {
+  component: 'cc-logs-instances-beta',
+  beta: true,
+  css: `
+    cc-logs-instances-beta {
+      width: max-content;
+      border: 1px solid #aaa;
+      max-width: 20em;
+      min-width: 15em;
+      min-height: 30em;
+      max-height: 500px;
+    }
+  `,
+};
 
 export const defaultStory = makeStory(conf, {
-  items: [{ state: { state: 'loaded', instances: ALL_INSTANCES } }],
+  /** @type {Array<Partial<CcLogsInstances>>} */
+  items: [{ state: { state: 'loaded', mode: 'live', selection: [], instances: ALL_INSTANCES } }],
 });
 
 export const loading = makeStory(conf, {
+  /** @type {Array<Partial<CcLogsInstances>>} */
   items: [{ state: { state: 'loading' } }],
 });
 
 export const error = makeStory(conf, {
+  /** @type {Array<Partial<CcLogsInstances>>} */
   items: [{ state: { state: 'error' } }],
 });
 
 export const noInstances = makeStory(conf, {
-  items: [{ state: { state: 'loaded', instances: [] } }],
+  /** @type {Array<Partial<CcLogsInstances>>} */
+  items: [{ state: { state: 'loaded', mode: 'live', selection: [], instances: [] } }],
 });
 
 export const firstDeployment = makeStory(conf, {
-  items: [{ state: { state: 'loaded', instances: DEPLOYING } }],
+  /** @type {Array<Partial<CcLogsInstances>>} */
+  items: [{ state: { state: 'loaded', mode: 'live', selection: [], instances: DEPLOYING } }],
 });
 
 export const runningInstances = makeStory(conf, {
-  items: [{ state: { state: 'loaded', instances: RUNNING } }],
+  /** @type {Array<Partial<CcLogsInstances>>} */
+  items: [{ state: { state: 'loaded', mode: 'live', selection: [], instances: RUNNING } }],
 });
 
 export const scalingDown = makeStory(conf, {
-  items: [{ state: { state: 'loaded', instances: SCALE_DOWN } }],
+  /** @type {Array<Partial<CcLogsInstances>>} */
+  items: [{ state: { state: 'loaded', mode: 'live', selection: [], instances: SCALE_DOWN } }],
 });
 
 export const scalingUp = makeStory(conf, {
-  items: [{ state: { state: 'loaded', instances: SCALE_UP } }],
+  /** @type {Array<Partial<CcLogsInstances>>} */
+  items: [{ state: { state: 'loaded', mode: 'live', selection: [], instances: SCALE_UP } }],
 });
 
 export const applicationStopped = makeStory(conf, {
-  items: [{ state: { state: 'loaded', instances: APPLICATION_STOPPED } }],
+  /** @type {Array<Partial<CcLogsInstances>>} */
+  items: [{ state: { state: 'loaded', mode: 'live', selection: [], instances: APPLICATION_STOPPED } }],
 });
 
 export const failedDeployment = makeStory(conf, {
-  items: [{ state: { state: 'loaded', instances: FAILED_DEPLOYMENT } }],
+  /** @type {Array<Partial<CcLogsInstances>>} */
+  items: [{ state: { state: 'loaded', mode: 'live', selection: [], instances: FAILED_DEPLOYMENT } }],
 });
 
 export const cancelledDeployment = makeStory(conf, {
-  items: [{ state: { state: 'loaded', instances: CANCELLED_DEPLOYMENT } }],
+  /** @type {Array<Partial<CcLogsInstances>>} */
+  items: [{ state: { state: 'loaded', mode: 'live', selection: [], instances: CANCELLED_DEPLOYMENT } }],
 });
 
 export const withGhostInstances = makeStory(conf, {
-  items: [{ state: { state: 'loaded', instances: ALL_INSTANCES_WITH_GHOSTS } }],
+  /** @type {Array<Partial<CcLogsInstances>>} */
+  items: [{ state: { state: 'loaded', mode: 'live', selection: [], instances: ALL_INSTANCES_WITH_GHOSTS } }],
 });
 
 export const coldMode = makeStory(conf, {
-  items: [{ state: { state: 'loaded', instances: ALL_INSTANCES, mode: 'cold' } }],
+  /** @type {Array<Partial<CcLogsInstances>>} */
+  items: [{ state: { state: 'loaded', selection: [], instances: ALL_INSTANCES, mode: 'cold' } }],
 });
 
 export const coldModeWithGhostInstances = makeStory(conf, {
-  items: [{ state: { state: 'loaded', instances: ALL_INSTANCES_WITH_GHOSTS, mode: 'cold' } }],
+  /** @type {Array<Partial<CcLogsInstances>>} */
+  items: [{ state: { state: 'loaded', selection: [], instances: ALL_INSTANCES_WITH_GHOSTS, mode: 'cold' } }],
 });
 
 export const coldModeWithoutInstance = makeStory(conf, {
-  items: [{ state: { state: 'loaded', instances: [], mode: 'cold' } }],
+  /** @type {Array<Partial<CcLogsInstances>>} */
+  items: [{ state: { state: 'loaded', selection: [], instances: [], mode: 'cold' } }],
 });
 
 const SIMULATION_DEPLOYMENT_WIP = createDeployment('WORK_IN_PROGRESS', 0);
+/** @type {Deployment} */
 const SIMULATION_DEPLOYMENT_OK = { ...SIMULATION_DEPLOYMENT_WIP, state: 'SUCCEEDED' };
 const SIMULATION_DEPLOYMENT_WIP_SCALE_UP = createDeployment('WORK_IN_PROGRESS', 0);
+/** @type {Deployment} */
 const SIMULATION_DEPLOYMENT_OK_SCALE_UP = { ...SIMULATION_DEPLOYMENT_WIP_SCALE_UP, state: 'SUCCEEDED' };
 
 export const simulations = makeStory(conf, {
+  /** @type {Array<Partial<CcLogsInstances>>} */
   items: [{ state: { state: 'loading' } }],
   simulations: [
-    storyWait(2000, ([component]) => {
-      const instances = [createInstance(SIMULATION_DEPLOYMENT_WIP, 0, 'BUILD', 'BOOTING', 'Gentle totodile')];
+    storyWait(
+      2000,
+      /** @param {Array<CcLogsInstances>} _ */ ([component]) => {
+        const instances = [createInstance(SIMULATION_DEPLOYMENT_WIP, 0, 'BUILD', 'BOOTING', 'Gentle totodile')];
 
-      component.state = { state: 'loaded', instances };
-    }),
-    storyWait(2000, ([component]) => {
-      const instances = [createInstance(SIMULATION_DEPLOYMENT_WIP, 0, 'BUILD', 'UP', 'Gentle totodile')];
+        component.state = { state: 'loaded', mode: 'live', selection: [], instances };
+      },
+    ),
+    storyWait(
+      2000,
+      /** @param {Array<CcLogsInstances>} _ */ ([component]) => {
+        const instances = [createInstance(SIMULATION_DEPLOYMENT_WIP, 0, 'BUILD', 'UP', 'Gentle totodile')];
 
-      component.state = { state: 'loaded', instances };
-    }),
-    storyWait(2000, ([component]) => {
-      const instances = [
-        createInstance(SIMULATION_DEPLOYMENT_WIP, 0, 'BUILD', 'UP', 'Gentle totodile'),
-        createInstance(SIMULATION_DEPLOYMENT_WIP, 0, 'RUN', 'DEPLOYING', 'Clumsy klink'),
-        createInstance(SIMULATION_DEPLOYMENT_WIP, 1, 'RUN', 'DEPLOYING', 'Crispy slowking'),
-      ];
-      component.state = { state: 'loaded', instances: instances };
-    }),
-    storyWait(2000, ([component]) => {
-      const instances = [
-        createInstance(SIMULATION_DEPLOYMENT_WIP, 0, 'BUILD', 'STOPPING', 'Gentle totodile'),
-        createInstance(SIMULATION_DEPLOYMENT_WIP, 0, 'RUN', 'DEPLOYING', 'Clumsy klink'),
-        createInstance(SIMULATION_DEPLOYMENT_WIP, 1, 'RUN', 'DEPLOYING', 'Crispy slowking'),
-      ];
-      component.state = { state: 'loaded', instances: instances };
-    }),
-    storyWait(2000, ([component]) => {
-      const instances = [
-        createInstance(SIMULATION_DEPLOYMENT_WIP, 0, 'BUILD', 'DELETED', 'Gentle totodile'),
-        createInstance(SIMULATION_DEPLOYMENT_WIP, 0, 'RUN', 'READY', 'Clumsy klink'),
-        createInstance(SIMULATION_DEPLOYMENT_WIP, 1, 'RUN', 'DEPLOYING', 'Crispy slowking'),
-      ];
-      component.state = { state: 'loaded', instances: instances };
-    }),
-    storyWait(2000, ([component]) => {
-      const instances = [
-        createInstance(SIMULATION_DEPLOYMENT_WIP, 0, 'BUILD', 'DELETED', 'Gentle totodile'),
-        createInstance(SIMULATION_DEPLOYMENT_WIP, 0, 'RUN', 'READY', 'Clumsy klink'),
-        createInstance(SIMULATION_DEPLOYMENT_WIP, 1, 'RUN', 'READY', 'Crispy slowking'),
-      ];
-      component.state = { state: 'loaded', instances: instances };
-    }),
-    storyWait(2000, ([component]) => {
-      const instances = [
-        createInstance(SIMULATION_DEPLOYMENT_WIP, 0, 'BUILD', 'DELETED', 'Gentle totodile'),
-        createInstance(SIMULATION_DEPLOYMENT_WIP, 0, 'RUN', 'UP', 'Clumsy klink'),
-        createInstance(SIMULATION_DEPLOYMENT_WIP, 1, 'RUN', 'READY', 'Crispy slowking'),
-      ];
-      component.state = { state: 'loaded', instances: instances };
-    }),
-    storyWait(2000, ([component]) => {
-      const instances = [
-        createInstance(SIMULATION_DEPLOYMENT_OK, 0, 'BUILD', 'DELETED', 'Gentle totodile'),
-        createInstance(SIMULATION_DEPLOYMENT_OK, 0, 'RUN', 'UP', 'Clumsy klink'),
-        createInstance(SIMULATION_DEPLOYMENT_OK, 1, 'RUN', 'UP', 'Crispy slowking'),
-      ];
-      component.state = { state: 'loaded', instances: instances };
-    }),
-    storyWait(2000, ([component]) => {
-      const instances = [
-        createInstance(SIMULATION_DEPLOYMENT_WIP_SCALE_UP, 2, 'RUN', 'DEPLOYING', 'Rapid combee'),
-        createInstance(SIMULATION_DEPLOYMENT_OK, 0, 'BUILD', 'DELETED', 'Gentle totodile'),
-        createInstance(SIMULATION_DEPLOYMENT_OK, 0, 'RUN', 'UP', 'Clumsy klink'),
-        createInstance(SIMULATION_DEPLOYMENT_OK, 1, 'RUN', 'UP', 'Crispy slowking'),
-      ];
-      component.state = { state: 'loaded', instances: instances };
-    }),
-    storyWait(2000, ([component]) => {
-      const instances = [
-        createInstance(SIMULATION_DEPLOYMENT_WIP_SCALE_UP, 2, 'RUN', 'READY', 'Rapid combee'),
-        createInstance(SIMULATION_DEPLOYMENT_OK, 0, 'BUILD', 'DELETED', 'Gentle totodile'),
-        createInstance(SIMULATION_DEPLOYMENT_OK, 0, 'RUN', 'UP', 'Clumsy klink'),
-        createInstance(SIMULATION_DEPLOYMENT_OK, 1, 'RUN', 'UP', 'Crispy slowking'),
-      ];
-      component.state = { state: 'loaded', instances: instances };
-    }),
-    storyWait(2000, ([component]) => {
-      const instances = [
-        createInstance(SIMULATION_DEPLOYMENT_OK, 0, 'BUILD', 'DELETED', 'Gentle totodile'),
-        createInstance(SIMULATION_DEPLOYMENT_OK, 0, 'RUN', 'UP', 'Clumsy klink'),
-        createInstance(SIMULATION_DEPLOYMENT_OK, 1, 'RUN', 'UP', 'Crispy slowking'),
-        createInstance(SIMULATION_DEPLOYMENT_OK_SCALE_UP, 2, 'RUN', 'UP', 'Rapid combee'),
-      ];
-      component.state = { state: 'loaded', instances: instances };
-    }),
+        component.state = { state: 'loaded', mode: 'live', selection: [], instances };
+      },
+    ),
+    storyWait(
+      2000,
+      /** @param {Array<CcLogsInstances>} _ */ ([component]) => {
+        const instances = [
+          createInstance(SIMULATION_DEPLOYMENT_WIP, 0, 'BUILD', 'UP', 'Gentle totodile'),
+          createInstance(SIMULATION_DEPLOYMENT_WIP, 0, 'RUN', 'DEPLOYING', 'Clumsy klink'),
+          createInstance(SIMULATION_DEPLOYMENT_WIP, 1, 'RUN', 'DEPLOYING', 'Crispy slowking'),
+        ];
+        component.state = { state: 'loaded', mode: 'live', selection: [], instances: instances };
+      },
+    ),
+    storyWait(
+      2000,
+      /** @param {Array<CcLogsInstances>} _ */ ([component]) => {
+        const instances = [
+          createInstance(SIMULATION_DEPLOYMENT_WIP, 0, 'BUILD', 'STOPPING', 'Gentle totodile'),
+          createInstance(SIMULATION_DEPLOYMENT_WIP, 0, 'RUN', 'DEPLOYING', 'Clumsy klink'),
+          createInstance(SIMULATION_DEPLOYMENT_WIP, 1, 'RUN', 'DEPLOYING', 'Crispy slowking'),
+        ];
+        component.state = { state: 'loaded', mode: 'live', selection: [], instances: instances };
+      },
+    ),
+    storyWait(
+      2000,
+      /** @param {Array<CcLogsInstances>} _ */ ([component]) => {
+        const instances = [
+          createInstance(SIMULATION_DEPLOYMENT_WIP, 0, 'BUILD', 'DELETED', 'Gentle totodile'),
+          createInstance(SIMULATION_DEPLOYMENT_WIP, 0, 'RUN', 'READY', 'Clumsy klink'),
+          createInstance(SIMULATION_DEPLOYMENT_WIP, 1, 'RUN', 'DEPLOYING', 'Crispy slowking'),
+        ];
+        component.state = { state: 'loaded', mode: 'live', selection: [], instances: instances };
+      },
+    ),
+    storyWait(
+      2000,
+      /** @param {Array<CcLogsInstances>} _ */ ([component]) => {
+        const instances = [
+          createInstance(SIMULATION_DEPLOYMENT_WIP, 0, 'BUILD', 'DELETED', 'Gentle totodile'),
+          createInstance(SIMULATION_DEPLOYMENT_WIP, 0, 'RUN', 'READY', 'Clumsy klink'),
+          createInstance(SIMULATION_DEPLOYMENT_WIP, 1, 'RUN', 'READY', 'Crispy slowking'),
+        ];
+        component.state = { state: 'loaded', mode: 'live', selection: [], instances: instances };
+      },
+    ),
+    storyWait(
+      2000,
+      /** @param {Array<CcLogsInstances>} _ */ ([component]) => {
+        const instances = [
+          createInstance(SIMULATION_DEPLOYMENT_WIP, 0, 'BUILD', 'DELETED', 'Gentle totodile'),
+          createInstance(SIMULATION_DEPLOYMENT_WIP, 0, 'RUN', 'UP', 'Clumsy klink'),
+          createInstance(SIMULATION_DEPLOYMENT_WIP, 1, 'RUN', 'READY', 'Crispy slowking'),
+        ];
+        component.state = { state: 'loaded', mode: 'live', selection: [], instances: instances };
+      },
+    ),
+    storyWait(
+      2000,
+      /** @param {Array<CcLogsInstances>} _ */ ([component]) => {
+        const instances = [
+          createInstance(SIMULATION_DEPLOYMENT_OK, 0, 'BUILD', 'DELETED', 'Gentle totodile'),
+          createInstance(SIMULATION_DEPLOYMENT_OK, 0, 'RUN', 'UP', 'Clumsy klink'),
+          createInstance(SIMULATION_DEPLOYMENT_OK, 1, 'RUN', 'UP', 'Crispy slowking'),
+        ];
+        component.state = { state: 'loaded', mode: 'live', selection: [], instances: instances };
+      },
+    ),
+    storyWait(
+      2000,
+      /** @param {Array<CcLogsInstances>} _ */ ([component]) => {
+        const instances = [
+          createInstance(SIMULATION_DEPLOYMENT_WIP_SCALE_UP, 2, 'RUN', 'DEPLOYING', 'Rapid combee'),
+          createInstance(SIMULATION_DEPLOYMENT_OK, 0, 'BUILD', 'DELETED', 'Gentle totodile'),
+          createInstance(SIMULATION_DEPLOYMENT_OK, 0, 'RUN', 'UP', 'Clumsy klink'),
+          createInstance(SIMULATION_DEPLOYMENT_OK, 1, 'RUN', 'UP', 'Crispy slowking'),
+        ];
+        component.state = { state: 'loaded', mode: 'live', selection: [], instances: instances };
+      },
+    ),
+    storyWait(
+      2000,
+      /** @param {Array<CcLogsInstances>} _ */ ([component]) => {
+        const instances = [
+          createInstance(SIMULATION_DEPLOYMENT_WIP_SCALE_UP, 2, 'RUN', 'READY', 'Rapid combee'),
+          createInstance(SIMULATION_DEPLOYMENT_OK, 0, 'BUILD', 'DELETED', 'Gentle totodile'),
+          createInstance(SIMULATION_DEPLOYMENT_OK, 0, 'RUN', 'UP', 'Clumsy klink'),
+          createInstance(SIMULATION_DEPLOYMENT_OK, 1, 'RUN', 'UP', 'Crispy slowking'),
+        ];
+        component.state = { state: 'loaded', mode: 'live', selection: [], instances: instances };
+      },
+    ),
+    storyWait(
+      2000,
+      /** @param {Array<CcLogsInstances>} _ */ ([component]) => {
+        const instances = [
+          createInstance(SIMULATION_DEPLOYMENT_OK, 0, 'BUILD', 'DELETED', 'Gentle totodile'),
+          createInstance(SIMULATION_DEPLOYMENT_OK, 0, 'RUN', 'UP', 'Clumsy klink'),
+          createInstance(SIMULATION_DEPLOYMENT_OK, 1, 'RUN', 'UP', 'Crispy slowking'),
+          createInstance(SIMULATION_DEPLOYMENT_OK_SCALE_UP, 2, 'RUN', 'UP', 'Rapid combee'),
+        ];
+        component.state = { state: 'loaded', mode: 'live', selection: [], instances: instances };
+      },
+    ),
   ],
 });

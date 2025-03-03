@@ -1,17 +1,12 @@
+import { shiftDateField } from './date-utils.js';
+
 /**
- * @typedef {import('./cc-logs-application-view.types.js').DateRange} DateRange
+ * @typedef {import('./date-range.types.js').DateRange} DateRange
+ * @typedef {import('./date-range.types.js').RawDateRange} RawDateRange
  */
 
 /**
- * @typedef {Object} RawDateRange
- * @property {Date} since
- * @property {Date} [until]
- */
-
-import { shiftDateField } from '../../lib/date/date-utils.js';
-
-/**
- * @param {number} duration
+ * @param {number} duration in milliseconds
  * @return {DateRange}
  */
 export function getRangeToNow(duration) {
@@ -34,28 +29,16 @@ export function isLive(dateRange) {
  * @return {DateRange}
  */
 export function today() {
-  const start = new Date();
-  start.setUTCHours(0);
-  start.setUTCMinutes(0);
-  start.setUTCSeconds(0);
-  start.setUTCMilliseconds(0);
-  return {
-    since: start.toISOString(),
-    until: new Date().toISOString(),
-  };
+  return lastXDays(0);
 }
 
 /**
  * @return {DateRange}
  */
 export function yesterday() {
-  const todayStart = new Date();
-  todayStart.setUTCHours(0);
-  todayStart.setUTCMinutes(0);
-  todayStart.setUTCSeconds(0);
-  todayStart.setUTCMilliseconds(0);
-  const yesterdayStart = new Date(todayStart.getTime() - 86_400_000);
-  const yesterdayEnd = new Date(todayStart.getTime() - 1);
+  const today = todayStart();
+  const yesterdayStart = shiftDateField(today, 'D', -1);
+  const yesterdayEnd = shiftDateField(today, 'S', -1);
 
   return {
     since: yesterdayStart.toISOString(),
@@ -68,11 +51,8 @@ export function yesterday() {
  * @return {DateRange}
  */
 export function lastXDays(numberOfDays) {
-  const start = shiftDateField(new Date(), 'D', -numberOfDays);
-  start.setUTCHours(0);
-  start.setUTCMinutes(0);
-  start.setUTCSeconds(0);
-  start.setUTCMilliseconds(0);
+  const today = todayStart();
+  const start = shiftDateField(today, 'D', -numberOfDays);
   return {
     since: start.toISOString(),
     until: new Date().toISOString(),
@@ -86,10 +66,6 @@ export function lastXDays(numberOfDays) {
  * @return {DateRange}
  */
 export function shiftDateRange(dateRange, direction) {
-  if (isLive(dateRange)) {
-    throw new Error('Cannot shift an unbounded date range');
-  }
-
   return toDateRange(shiftRawDateRange(toRawDateRange(dateRange), direction));
 }
 
@@ -152,4 +128,16 @@ function toDateRange(dateRange) {
     since: dateRange.since.toISOString(),
     until: dateRange.until == null ? null : dateRange.until.toISOString(),
   };
+}
+
+/**
+ * @return {Date} The start of the current day
+ */
+function todayStart() {
+  const todayStart = new Date();
+  todayStart.setUTCHours(0);
+  todayStart.setUTCMinutes(0);
+  todayStart.setUTCSeconds(0);
+  todayStart.setUTCMilliseconds(0);
+  return todayStart;
 }

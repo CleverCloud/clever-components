@@ -15,9 +15,7 @@
     "src/controllers/*.stories.js",
     "src/components/**/*.test.js",
     "src/components/**/*.stories.js",
-    "src/components/cc-grafana-info",
-    "src/components/cc-logs/*",
-    "src/components/cc-logs-*/*"
+    "src/components/cc-grafana-info"
   ],
   "extends": "./tsconfig.json",
   "compilerOptions": {

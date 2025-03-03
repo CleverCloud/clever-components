@@ -824,55 +824,29 @@ export const translations = {
   'cc-logs.select-button.label': /** @param {{index: number}} _ */ ({ index }) => `Select the line ${index}`,
   'cc-logs.unselect-button.label': /** @param {{index: number}} _ */ ({ index }) => `Unselect the line ${index}`,
   //#endregion
-  //#region cc-logs-application-view
-  'cc-logs-application-view.custom-date-range.apply': `Apply`,
-  'cc-logs-application-view.custom-date-range.date.bad-input': `Invalid date format (YYYY-MM-DD HH:mm:ss)`,
-  'cc-logs-application-view.custom-date-range.date.empty': `Please enter a value`,
-  'cc-logs-application-view.custom-date-range.date.range-overflow': /** @param {{max: string}} _ */ ({ max }) =>
-    `Date must be lower than ${max}`,
-  'cc-logs-application-view.custom-date-range.date.range-underflow': /** @param {{min: string}} _ */ ({ min }) =>
-    `Date must be greater than ${min}`,
-  'cc-logs-application-view.custom-date-range.next': `Shift to next range`,
-  'cc-logs-application-view.custom-date-range.previous': `Shift to previous range`,
-  'cc-logs-application-view.custom-date-range.since.local': `Since (local time)`,
-  'cc-logs-application-view.custom-date-range.since.utc': `Since (UTC)`,
-  'cc-logs-application-view.custom-date-range.until.local': `Until (local time)`,
-  'cc-logs-application-view.custom-date-range.until.utc': `Until (UTC)`,
-  'cc-logs-application-view.date-selection.custom': `Custom`,
-  'cc-logs-application-view.date-selection.last-4-hours': `Last 4 hours`,
-  'cc-logs-application-view.date-selection.last-7-days': `Last 7 days`,
-  'cc-logs-application-view.date-selection.last-hour': `Last hour`,
-  'cc-logs-application-view.date-selection.live': `Live view`,
-  'cc-logs-application-view.date-selection.today': `Today`,
-  'cc-logs-application-view.date-selection.yesterday': `Yesterday`,
-  'cc-logs-application-view.filter': `Filter`,
-  'cc-logs-application-view.filter.bad-format': `Invalid regex`,
-  'cc-logs-application-view.filter.mode.regex': `Filter with a regular expression`,
-  'cc-logs-application-view.filter.mode.strict': `Filter with an exact string`,
-  'cc-logs-application-view.fullscreen': `Fullscreen`,
-  'cc-logs-application-view.fullscreen.exit': `Exit fullscreen`,
-  'cc-logs-application-view.logs.error': `Something went wrong while loading logs`,
-  'cc-logs-application-view.logs.loading': `Looking for log entries...`,
-  'cc-logs-application-view.logs.warning.no-logs.message': `There are no logs matching the selected criteria`,
-  'cc-logs-application-view.logs.warning.no-logs.title': `No logs`,
-  'cc-logs-application-view.logs.warning.waiting.message': `New log entries emitted by the application will appear here`,
-  'cc-logs-application-view.logs.warning.waiting.title': `No logs to show right now`,
-  'cc-logs-application-view.options.display-instance': `Display instance name`,
-  'cc-logs-application-view.progress.loaded': `Logs loaded: 100%`,
-  'cc-logs-application-view.progress.loading': /** @param {{percent: number}} _ */ ({ percent }) =>
-    `Loading logs: ${formatPercent(lang, percent)}`,
-  'cc-logs-application-view.progress.loading.live': `Fetching realtime...`,
-  'cc-logs-application-view.progress.message': /** @param {{count: number}} _ */ ({ count }) =>
-    `${formatNumber(lang, count)} entries loaded`,
-  'cc-logs-application-view.progress.overflow.continue': `Continue`,
-  'cc-logs-application-view.progress.overflow.message': /** @param {{limit: number}} _ */ ({ limit }) =>
-    `To maintain optimal performance, only the last ${formatNumber(lang, limit)} logs are shown.`,
-  'cc-logs-application-view.progress.overflow.message.almost': /** @param {{limit: number}} _ */ ({ limit }) =>
-    `You'll soon reach ${formatNumber(lang, limit)} logs loaded. What do you want to do?`,
-  'cc-logs-application-view.progress.overflow.stop': `Stop`,
-  'cc-logs-application-view.progress.overflow.title': `Large volume`,
-  'cc-logs-application-view.progress.pause': `Pause`,
-  'cc-logs-application-view.progress.resume': `Resume`,
+  //#region cc-logs-app-access
+  'cc-logs-app-access.error': `Something went wrong while loading logs`,
+  'cc-logs-app-access.fullscreen': `Fullscreen`,
+  'cc-logs-app-access.fullscreen.exit': `Exit fullscreen`,
+  'cc-logs-app-access.loading': `Looking for log entries...`,
+  'cc-logs-app-access.no-logs.message': `There are no logs matching the selected criteria`,
+  'cc-logs-app-access.no-logs.title': `No logs`,
+  'cc-logs-app-access.options.city': `Display city`,
+  'cc-logs-app-access.options.country': `Display country`,
+  'cc-logs-app-access.options.ip': `Display IP address`,
+  'cc-logs-app-access.waiting.message': `New log entries emitted by the application will appear here`,
+  'cc-logs-app-access.waiting.title': `No logs to show right now`,
+  //#endregion
+  //#region cc-logs-app-runtime
+  'cc-logs-app-runtime.fullscreen': `Fullscreen`,
+  'cc-logs-app-runtime.fullscreen.exit': `Exit fullscreen`,
+  'cc-logs-app-runtime.logs.error': `Something went wrong while loading logs`,
+  'cc-logs-app-runtime.logs.loading': `Looking for log entries...`,
+  'cc-logs-app-runtime.logs.warning.no-logs.message': `There are no logs matching the selected criteria`,
+  'cc-logs-app-runtime.logs.warning.no-logs.title': `No logs`,
+  'cc-logs-app-runtime.logs.warning.waiting.message': `New log entries emitted by the application will appear here`,
+  'cc-logs-app-runtime.logs.warning.waiting.title': `No logs to show right now`,
+  'cc-logs-app-runtime.options.display-instance': `Display instance name`,
   //#endregion
   //#region cc-logs-control
   'cc-logs-control.date-display': `Date format`,
@@ -893,6 +867,22 @@ export const translations = {
   'cc-logs-control.timezone.local': `Local`,
   'cc-logs-control.timezone.utc': `UTC`,
   'cc-logs-control.wrap-lines': `Force lines wrap`,
+  //#endregion
+  //#region cc-logs-date-range-selector
+  'cc-logs-date-range-selector.custom-date-range.apply': `Apply`,
+  'cc-logs-date-range-selector.custom-date-range.next': `Shift to next range`,
+  'cc-logs-date-range-selector.custom-date-range.previous': `Shift to previous range`,
+  'cc-logs-date-range-selector.custom-date-range.since.local': `Since (local time)`,
+  'cc-logs-date-range-selector.custom-date-range.since.utc': `Since (UTC)`,
+  'cc-logs-date-range-selector.custom-date-range.until.local': `Until (local time)`,
+  'cc-logs-date-range-selector.custom-date-range.until.utc': `Until (UTC)`,
+  'cc-logs-date-range-selector.option.custom': `Custom`,
+  'cc-logs-date-range-selector.option.last-4-hours': `Last 4 hours`,
+  'cc-logs-date-range-selector.option.last-7-days': `Last 7 days`,
+  'cc-logs-date-range-selector.option.last-hour': `Last hour`,
+  'cc-logs-date-range-selector.option.live': `Live view`,
+  'cc-logs-date-range-selector.option.today': `Today`,
+  'cc-logs-date-range-selector.option.yesterday': `Yesterday`,
   //#endregion
   //#region cc-logs-instances
   'cc-logs-instances.cold.empty': `No instance`,
@@ -918,6 +908,29 @@ export const translations = {
   'cc-logs-instances.running.empty': `No instance running`,
   'cc-logs-instances.running.header': `Running instances`,
   'cc-logs-instances.stopping.header': `Stopping instances`,
+  //#endregion
+  //#region cc-logs-loading-progress
+  'cc-logs-loading-progress.control.pause': `Pause`,
+  'cc-logs-loading-progress.control.resume': `Resume`,
+  'cc-logs-loading-progress.overflow.accept': `Continue`,
+  'cc-logs-loading-progress.overflow.discard': `Stop`,
+  'cc-logs-loading-progress.overflow.info': /** @param {{limit: number}} _ */ ({ limit }) =>
+    `Only the last ${formatNumber(lang, limit)} logs are displayed`,
+  'cc-logs-loading-progress.overflow.warning': /** @param {{limit: number}} _ */ ({ limit }) =>
+    `You'll soon reach ${formatNumber(lang, limit)} logs loaded. What do you want to do?`,
+  'cc-logs-loading-progress.progress.indeterminate': /** @param {{count: number}} _ */ ({ count }) =>
+    `${formatNumber(lang, count)} logs loaded`,
+  'cc-logs-loading-progress.progress.none': `No logs loaded`,
+  'cc-logs-loading-progress.progress.percentage': /** @param {{count: number, percent: number}} _ */ ({
+    count,
+    percent,
+  }) => `${formatNumber(lang, count)} logs loaded (${formatPercent(lang, percent)})`,
+  //#endregion
+  //#region cc-logs-message-filter
+  'cc-logs-message-filter.bad-format': `Invalid regex`,
+  'cc-logs-message-filter.label': `Filter`,
+  'cc-logs-message-filter.mode.regex': `Filter with a regular expression`,
+  'cc-logs-message-filter.mode.strict': `Filter with an exact string`,
   //#endregion
   //#region cc-logsmap
   'cc-logsmap.legend.heatmap': /** @param {{orgaName: string}} _ */ ({ orgaName }) =>
