@@ -5,6 +5,26 @@ title: 'Changelog'
 
 # Changelog
 
+## [18.1.0](https://github.com/CleverCloud/clever-components/compare/18.0.0...18.1.0) (2025-03-04)
+
+
+### 🚀 Features
+
+* **cc-form-control-element:** add form getter ([d150982](https://github.com/CleverCloud/clever-components/commit/d15098262539581ed5c9e4f4f2c9efb261454636)), closes [#1206](https://github.com/CleverCloud/clever-components/issues/1206)
+* **cc-logs-app-access:** init component ([d3cf10e](https://github.com/CleverCloud/clever-components/commit/d3cf10e38f61f19a919443c32a4784fa0c257f4f))
+* **cc-logs-application-view:** adapt to inline layout of `cc-logs-loading-progress` ([53509f5](https://github.com/CleverCloud/clever-components/commit/53509f5f14cae85f59674fcca9691932c1966177))
+* **cc-logs-date-range-selector:** init component ([09560d0](https://github.com/CleverCloud/clever-components/commit/09560d091e2fff80313f432398fdaf4311a1aa0d)), closes [#1205](https://github.com/CleverCloud/clever-components/issues/1205) [#1021](https://github.com/CleverCloud/clever-components/issues/1021) [#1013](https://github.com/CleverCloud/clever-components/issues/1013)
+* **cc-logs-loading-progress:** init component ([1c5f823](https://github.com/CleverCloud/clever-components/commit/1c5f8236ead7f38ca8551d4a9adcb3c5bc3146ad))
+* **cc-logs-loading-progress:** inline layout ([e6c0fe5](https://github.com/CleverCloud/clever-components/commit/e6c0fe5189347bbc6c0dd806dfbea39a97aef8c5))
+* **cc-logs-message-filter:** init component ([8fc0a2e](https://github.com/CleverCloud/clever-components/commit/8fc0a2e7a648971cb9a282a6c2e4a7427078eb1a))
+* **cc-popover:** add `--cc-popover-padding` css prop ([8b6ca74](https://github.com/CleverCloud/clever-components/commit/8b6ca74a76ed6f82adb5fa12486ae331ae9a72d8)), closes [#1208](https://github.com/CleverCloud/clever-components/issues/1208)
+* **cc-popover:** add disabled property ([0e6c08e](https://github.com/CleverCloud/clever-components/commit/0e6c08ecb1bc2f2f8410ce82b5db31d14fc63edb)), closes [#1207](https://github.com/CleverCloud/clever-components/issues/1207)
+
+
+### 🐛 Bug Fixes
+
+* **cc-logs-sandbox:** fix sandbox ([21be3ba](https://github.com/CleverCloud/clever-components/commit/21be3ba42111a0efab843bb409395e336cf648e1))
+
 ## [18.0.0](https://github.com/CleverCloud/clever-components/compare/17.1.1...18.0.0) (2025-02-19)
 
 
