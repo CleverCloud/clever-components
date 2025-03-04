@@ -1,6 +1,7 @@
 import json from '@rollup/plugin-json';
 import { rollupAdapter } from '@web/dev-server-rollup';
-import { chromeLauncher, defaultReporter, summaryReporter } from '@web/test-runner';
+import { defaultReporter, summaryReporter } from '@web/test-runner';
+import { playwrightLauncher } from '@web/test-runner-playwright';
 import { globSync } from 'tinyglobby';
 import { cemAnalyzerPlugin } from './wds/cem-analyzer-plugin.js';
 import { testStoriesPlugin } from './wds/test-stories-plugin.js';
@@ -25,15 +26,12 @@ export default {
   nodeResolve: {
     exportConditions: ['production', 'default'],
   },
+  concurrentBrowsers: 3,
   browsers: [
-    chromeLauncher({
-      // Fixes random timeouts with Chrome > 127, see https://github.com/CleverCloud/clever-components/issues/1146 for more info
-      concurrency: 1,
-      async createPage({ context }) {
-        const page = await context.newPage();
-        // We need that for unit tests working with dates and timezones
-        await page.emulateTimezone('Europe/Paris');
-        return page;
+    playwrightLauncher({
+      product: 'chromium',
+      createBrowserContext({ browser }) {
+        return browser.newContext({ timezoneId: 'Europe/Paris' });
       },
     }),
   ],

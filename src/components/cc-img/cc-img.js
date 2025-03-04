@@ -125,7 +125,7 @@ export class CcImg extends LitElement {
           opacity: 0;
           position: absolute;
           top: 0;
-          transition: opacity 150ms ease-in-out;
+          /* transition: opacity 150ms ease-in-out; */
         }
 
         .wrapper.loaded img {

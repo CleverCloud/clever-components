@@ -7,6 +7,7 @@
 
 # PR #2
 
+- [ ] add ignores for stories that fail (fix those that we can), list the stories that fail by putting the test output into a file
 - [x] add plugin to run visual tests
 - [x] add visual regression tests in test-stories helper
 - [x] add `update-visuals` command to npm scripts
