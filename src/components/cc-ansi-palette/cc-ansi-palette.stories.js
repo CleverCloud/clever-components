@@ -17,6 +17,11 @@ export default {
 
 const conf = {
   component: 'cc-ansi-palette',
+  tests: {
+    accessibility: {
+      enable: false,
+    },
+  },
 };
 
 export const defaultStory = makeStory(conf, {

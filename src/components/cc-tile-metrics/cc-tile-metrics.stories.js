@@ -152,6 +152,12 @@ export const hiddenGrafanaAndMetricsLink = makeStory(conf, {
 });
 
 export const loading = makeStory(conf, {
+  tests: {
+    accessibility: {
+      enable: true,
+      ignoredRules: ['color-contrast'],
+    },
+  },
   /** @type {Array<Partial<CcTileMetrics>>} */
   items: baseItems.map((item) => ({
     ...item,

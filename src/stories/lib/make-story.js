@@ -17,6 +17,7 @@ export function makeStory(...configs) {
     displayMode,
     beta,
     onUpdateComplete,
+    tests,
   } = Object.assign({}, ...configs);
 
   // In some rare conditions, we need to instanciate the items on story rendering (and each time it renders)
@@ -109,6 +110,16 @@ export function makeStory(...configs) {
   // We use the values of the first item for the args
   storyFn.args = { ...items[0] };
 
+  const testParameters =
+    tests != null
+      ? tests
+      : {
+          accessibility: {
+            // a11y tests are enabled by default unless the story contains simulations
+            enable: simulations.length === 0,
+          },
+        };
+
   storyFn.parameters = {
     docs: {
       description: {
@@ -118,6 +129,7 @@ export function makeStory(...configs) {
         code: getSourceCode(component, items, dom),
       },
     },
+    tests: testParameters,
   };
 
   storyFn.argTypes = argTypes;
@@ -125,6 +137,7 @@ export function makeStory(...configs) {
   storyFn.css = css;
   storyFn.component = component;
   storyFn.items = items;
+  storyFn.tests = testParameters;
 
   if (name != null) {
     storyFn.storyName = name;
