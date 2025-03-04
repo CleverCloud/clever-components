@@ -81,7 +81,7 @@ setupIgnoreIrrelevantErrors(before, after, (message) => {
   );
 });
 
-const IGNORE_PATTERNS_FOR_VISUAL_REGRESSIONS = ['waiting', 'loading', 'simulation'];
+const IGNORE_PATTERNS_FOR_VISUAL_REGRESSIONS = ['waiting', 'loading', 'simulation', 'skeleton'];
 
 /**
  * Transform the result of an imported module from a story file into an array of story functions that can be used to render every story.
