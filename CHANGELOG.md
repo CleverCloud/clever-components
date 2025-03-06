@@ -5,6 +5,13 @@ title: 'Changelog'
 
 # Changelog
 
+## [18.2.0](https://github.com/CleverCloud/clever-components/compare/18.1.0...18.2.0) (2025-03-06)
+
+
+### 🚀 Features
+
+* **cc-block-detail:** init cc-block-detail component ([7584903](https://github.com/CleverCloud/clever-components/commit/75849030a817dd643074dcc3d6d6a0306cfd0c89))
+
 ## [18.1.0](https://github.com/CleverCloud/clever-components/compare/18.0.0...18.1.0) (2025-03-04)
 
 
