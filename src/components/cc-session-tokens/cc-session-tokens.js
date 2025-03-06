@@ -37,6 +37,8 @@ export class CcSessionTokens extends LitElement {
   }
 
   render() {
+    const hasTokens = this.state.type === 'loaded' && this.state.tokens.length > 0;
+
     if (this.state.type === 'error') {
       return html`<cc-notice intent="warning" message="${i18n('cc-session-tokens.error')}"></cc-notice>`;
     }
@@ -44,11 +46,15 @@ export class CcSessionTokens extends LitElement {
     return html`
       <cc-block>
         <div slot="header-title">${i18n('cc-session-tokens.main-heading')}</div>
-        <div slot="header-right">
-          <cc-button danger outlined @cc-button:click=${this._onRevokeAllTokens}
-            >${i18n('cc-session-tokens.revoke-all-tokens')}</cc-button
-          >
-        </div>
+        ${this.state.type === 'loaded' && hasTokens
+          ? html`
+              <div slot="header-right">
+                <cc-button danger outlined @cc-button:click=${this._onRevokeAllTokens}>
+                  ${i18n('cc-session-tokens.revoke-all-tokens')}
+                </cc-button>
+              </div>
+            `
+          : ''}
         <div class="session-tokens-wrapper" slot="content">
           ${this.state.type === 'loading' ? html`<cc-loader></cc-loader>` : ''}
           ${this.state.type === 'loaded'

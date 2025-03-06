@@ -1,5 +1,5 @@
 // @ts-expect-error FIXME: remove when clever-client exports types
-import { getTokens } from '@clevercloud/client/esm/api/v2/user.js';
+import { todo_listSelfTokens as getAllTokens } from '@clevercloud/client/esm/api/v2/user.js';
 import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
 import { sendToApi } from '../../lib/send-to-api.js';
 import '../cc-smart-container/cc-smart-container.js';
@@ -23,26 +23,36 @@ defineSmartComponent({
    */
   onContextUpdate({ container, component, context, onEvent, updateComponent, signal }) {
     const { apiConfig, currentOauthConsumer } = context;
+    const api = new Api(apiConfig, currentOauthConsumer);
 
     updateComponent('state', { type: 'loading' });
-
-    getSessionTokens({ apiConfig, currentOauthConsumer })
-      .then((tokens) => updateComponent('state', { type: 'loaded', tokens }))
-      .catch((error) => updateComponent('state', { type: 'error', error }));
+    console.log('loading session tokens');
+    api
+      .getSessionTokens()
+      .then((tokens) => {
+        updateComponent('state', { type: 'loaded', tokens });
+      })
+      .catch((error) => {
+        updateComponent('state', { type: 'error', error });
+      });
   },
 });
 
 class Api {
+  /**
+   * @param {ApiConfig} apiConfig
+   * @param {string} currentOauthConsumer
+   */
   constructor(apiConfig, currentOauthConsumer) {
     this._apiConfig = apiConfig;
     this._currentOauthConsumer = currentOauthConsumer;
   }
 
   getSessionTokens() {
-    return sendToApi({
-      ...this._apiConfig,
-      method: 'GET',
-      path: `/oauth/consumers/${this._currentOauthConsumer}/tokens`,
-    });
+    return getAllTokens()
+      .then(sendToApi({ apiConfig: this._apiConfig }))
+      .then((tokens) => {
+        console.log(tokens);
+      });
   }
 }
