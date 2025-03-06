@@ -5,6 +5,7 @@ import '../cc-loader/cc-loader.js';
 import '../cc-notice/cc-notice.js';
 import '../cc-block/cc-block.js';
 import '../cc-button/cc-button.js';
+import { dispatchCustomEvent } from '../../lib/events.js';
 
 /**
  * @typedef {import('./cc-session-tokens.types.js').SessionToken} SessionToken
@@ -26,6 +27,15 @@ export class CcSessionTokens extends LitElement {
     this.state = { type: 'loading' };
   }
 
+  /** @param {string} tokenId */
+  _onRevokeToken(tokenId) {
+    dispatchCustomEvent(this, 'delete-token', { tokenId });
+  }
+
+  _onRevokeAllTokens() {
+    dispatchCustomEvent(this, 'revoke-all-tokens');
+  }
+
   render() {
     if (this.state.type === 'error') {
       return html`<cc-notice intent="warning" message="${i18n('cc-session-tokens.error')}"></cc-notice>`;
@@ -35,7 +45,9 @@ export class CcSessionTokens extends LitElement {
       <cc-block>
         <div slot="header-title">${i18n('cc-session-tokens.main-heading')}</div>
         <div slot="header-right">
-          <cc-button danger outlined>${i18n('cc-session-tokens.revoke-all-tokens')}</cc-button>
+          <cc-button danger outlined @cc-button:click=${this._onRevokeAllTokens}
+            >${i18n('cc-session-tokens.revoke-all-tokens')}</cc-button
+          >
         </div>
         <div class="session-tokens-wrapper" slot="content">
           ${this.state.type === 'loading' ? html`<cc-loader></cc-loader>` : ''}
@@ -56,13 +68,20 @@ export class CcSessionTokens extends LitElement {
    * @param {number} index
    * @returns {TemplateResult}
    */
-  _renderToken({ creationDate, expirationDate, lastUsedDate }, index) {
+  _renderToken({ id, creationDate, expirationDate, lastUsedDate }, index) {
     return html`
       <div class="session-token-card">
         <div>${creationDate}</div>
         <div>${expirationDate}</div>
         <div>${lastUsedDate}</div>
-        <cc-button danger outlined hide-text .icon=${iconDelete} circle>
+        <cc-button
+          danger
+          outlined
+          hide-text
+          .icon=${iconDelete}
+          circle
+          @cc-button:click=${() => this._onRevokeToken(id)}
+        >
           ${i18n('cc-session-tokens.revoke-token', { tokenNumber: index })}
         </cc-button>
       </div>
