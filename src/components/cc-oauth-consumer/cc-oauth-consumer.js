@@ -1,0 +1,278 @@
+import { css, html, LitElement } from 'lit';
+import { classMap } from 'lit/directives/class-map.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
+import { iconRemixCheckLine } from '../../assets/cc-remix.icons.js';
+import { fakeString } from '../../lib/fake-strings.js';
+import { i18n } from '../../lib/i18n/i18n.js';
+import { skeletonStyles } from '../../styles/skeleton.js';
+import { ccLink } from '../../templates/cc-link/cc-link.js';
+import '../cc-badge/cc-badge.js';
+import '../cc-block-section/cc-block-section.js';
+import '../cc-block/cc-block.js';
+import '../cc-icon/cc-icon.js';
+import '../cc-img/cc-img.js';
+import '../cc-input-text/cc-input-text.js';
+import '../cc-notice/cc-notice.js';
+
+/**
+ * @type {OauthConsumerRight}
+ */
+const SKELETON_RIGHT = {
+  name: '??????',
+  isEnabled: true,
+  section: null,
+};
+
+/**
+ * @type {Partial<OauthConsumerStateLoaded>}
+ */
+const SKELETON_OAUTH_CONSUMER_INFO = {
+  name: fakeString(15),
+  homePageUrl: fakeString(20),
+  appBaseUrl: fakeString(20),
+  description: fakeString(45),
+  image: null,
+  rights: [
+    SKELETON_RIGHT,
+    SKELETON_RIGHT,
+    SKELETON_RIGHT,
+    SKELETON_RIGHT,
+    SKELETON_RIGHT,
+    SKELETON_RIGHT,
+    SKELETON_RIGHT,
+  ],
+  key: fakeString(20),
+  secret: fakeString(20),
+};
+
+/**
+ * @typedef {import('./cc-oauth-consumer.types.js').OauthConsumerState} OauthConsumerState
+ * @typedef {import('./cc-oauth-consumer.types.js').OauthConsumerStateLoaded} OauthConsumerStateLoaded
+ * @typedef {import('./cc-oauth-consumer.types.js').OauthConsumerRight} OauthConsumerRight
+ */
+
+/**
+ * A component displaying Access details and authorizations of a oAuth Consumer.
+ *
+ * @cssdisplay block
+ */
+export class CcOauthConsumer extends LitElement {
+  static get properties() {
+    return {
+      state: { type: Object },
+    };
+  }
+
+  constructor() {
+    super();
+
+    /** @type {OauthConsumerState} Sets the state of the component. */
+    this.state = { type: 'loading' };
+  }
+
+  /**
+   * @param {string|null} name
+   * @returns {string|Node}
+   */
+  _getName(name) {
+    switch (name) {
+      case 'accessOrganisations':
+        return i18n('cc-oauth-consumer.auth.access.option.access-organisations');
+      case 'accessOrganisationsBills':
+        return i18n('cc-oauth-consumer.auth.access.option.access-organisations-bills');
+      case 'accessOrganisationsConsumptionStatistics':
+        return i18n('cc-oauth-consumer.auth.access.option.access-organisations-consumption-statistics');
+      case 'accessOrganisationsCreditCount':
+        return i18n('cc-oauth-consumer.auth.access.option.access-organisations-credit-count');
+      case 'accessPersonalInformation':
+        return i18n('cc-oauth-consumer.auth.access.option.access-personal-information');
+      case 'changePassword':
+        return i18n('cc-oauth-consumer.auth.manage.option.change-password');
+      case 'manageOrganisations':
+        return i18n('cc-oauth-consumer.auth.manage.option.manage-organisations');
+      case 'manageOrganisationsApplications':
+        return i18n('cc-oauth-consumer.auth.manage.option.manage-organisations-applications');
+      case 'manageOrganisationsMembers':
+        return i18n('cc-oauth-consumer.auth.manage.option.manage-organisations-members');
+      case 'manageOrganisationsServices':
+        return i18n('cc-oauth-consumer.auth.manage.option.manage-organisations-services');
+      case 'managePersonalInformation':
+        return i18n('cc-oauth-consumer.auth.manage.option.manage-personal-information');
+      case 'manageSshKeys':
+        return i18n('cc-oauth-consumer.auth.manage.option.manage-ssh-keys');
+      default:
+        return fakeString(70);
+    }
+  }
+
+  render() {
+    if (this.state.type === 'error') {
+      return html`<cc-notice slot="content" intent="warning" message="error"></cc-notice>`;
+    }
+
+    const skeleton = this.state.type === 'loading';
+    const oauthConsumerInfo = this.state.type === 'loaded' ? this.state : SKELETON_OAUTH_CONSUMER_INFO;
+    return html`
+      <div class="wrapper">
+        <cc-block>
+          <cc-img
+            slot="header-icon"
+            src=${ifDefined(oauthConsumerInfo.image)}
+            a11y-name=${oauthConsumerInfo.name}
+            ?skeleton=${skeleton}
+          ></cc-img>
+          <div slot="header-title"><span class="${classMap({ skeleton })}">${oauthConsumerInfo.name}</span></div>
+          <div slot="content"><span class="${classMap({ skeleton })}">${oauthConsumerInfo.description}</span></div>
+        </cc-block>
+
+        <cc-block>
+          <cc-block-section slot="content-body" class="access-block">
+            <div slot="title">${i18n('cc-oauth-consumer.info.access')}</div>
+            <div class="access-url">
+              <div class="base-url">
+                <p>${i18n('cc-oauth-consumer.info.base-url')}</p>
+
+                <div>${ccLink(oauthConsumerInfo.appBaseUrl, oauthConsumerInfo.appBaseUrl, skeleton)}</div>
+              </div>
+              <div class="home-url">
+                <p>${i18n('cc-oauth-consumer.info.homepage-url')}</p>
+                <div>${ccLink(oauthConsumerInfo.homePageUrl, oauthConsumerInfo.homePageUrl, skeleton)}</div>
+              </div>
+            </div>
+            <div class="access-credits">
+              <div class="key">
+                <cc-input-text
+                  label="${i18n('cc-oauth-consumer.info.key')}"
+                  readonly
+                  clipboard
+                  value=${oauthConsumerInfo.key}
+                  ?skeleton=${skeleton}
+                ></cc-input-text>
+              </div>
+              <div class="secret">
+                <cc-input-text
+                  label="${i18n('cc-oauth-consumer.info.secret')}"
+                  readonly
+                  secret
+                  clipboard
+                  value=${oauthConsumerInfo.secret}
+                  ?skeleton=${skeleton}
+                ></cc-input-text>
+              </div>
+            </div>
+          </cc-block-section>
+          <cc-block-section slot="content-body" class="auth-block">
+            <div slot="title">${i18n('cc-oauth-consumer.auth')}</div>
+            <div class="rights-container">
+              <div class="access-rights">
+                <div>${i18n('cc-oauth-consumer.auth.access')}</div>
+                <div class="rights-section">${this._renderRightsSection('access')}</div>
+              </div>
+              <div class="manage-rights">
+                <div>${i18n('cc-oauth-consumer.auth.manage')}</div>
+                <div class="rights-section">${this._renderRightsSection('manage')}</div>
+              </div>
+            </div>
+          </cc-block-section>
+        </cc-block>
+      </div>
+    `;
+  }
+
+  /**
+   * @param {'access' | 'manage'} section
+   */
+  _renderRightsSection(section) {
+    const skeleton = this.state.type === 'loading';
+    if (this.state.type !== 'loaded') {
+      return [];
+    }
+    const rights = this.state.rights;
+    return rights
+      .filter((right) => {
+        return right.section === section && right.isEnabled;
+      })
+      .map((right) => {
+        return html`
+          <div class="right ${classMap({ skeleton })}">
+            <cc-icon .icon="${iconRemixCheckLine}"></cc-icon>
+            <div>${this._getName(right.name)}</div>
+          </div>
+        `;
+      });
+  }
+
+  static get styles() {
+    return [
+      skeletonStyles,
+      // language=CSS
+      css`
+        :host {
+          display: block;
+        }
+
+        .wrapper {
+          display: flex;
+          flex-direction: column;
+          gap: 1.5em;
+          margin-inline: 8em;
+        }
+
+        /* region Access */
+        .access-block {
+          margin-inline: 2em;
+        }
+
+        .access-url,
+        .access-credits {
+          display: flex;
+          flex-direction: row;
+          flex-wrap: wrap;
+          gap: 1em;
+          justify-content: start;
+        }
+
+        /* end region */
+
+        /* region Authorizations */
+        .auth-block {
+          margin-inline: 2em;
+        }
+
+        .rights-container {
+          display: flex;
+          flex-direction: row;
+          flex-wrap: wrap;
+          gap: 2em;
+        }
+
+        .access-rights,
+        .manage-rights {
+          display: flex;
+          flex-direction: column;
+          gap: 1em;
+        }
+
+        .rights-section {
+          display: flex;
+          flex-direction: column;
+          gap: 0.5em;
+        }
+
+        .right {
+          display: flex;
+          flex-direction: row;
+          gap: 0.5em;
+        }
+
+        /* end region */
+
+        .skeleton {
+          background-color: #bbb;
+        }
+      `,
+    ];
+  }
+}
+
+window.customElements.define('cc-oauth-consumer', CcOauthConsumer);
