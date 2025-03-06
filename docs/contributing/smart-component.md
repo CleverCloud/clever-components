@@ -4,21 +4,47 @@ title: 'Smart Component guidelines'
 ---
 # Smart Component guidelines
 
-Smart components connect UI components with data-fetching logic and API calls. This guide will help you create smart components that handle state management and communicate with backend services.
+Smart components connect UI components with data-fetching logic and API calls.
+This guide helps you create smart components that handle state management and communicate with backend services.
 
 ## Building a Smart Component
 
-### 1. Importing the Lit Component
+### 1. Importing essential Dependencies
 
-Before defining your smart component, import the Lit component that it will connect with:
+Before defining your smart component, import the necessary dependencies for connecting UI components with data-fetching logic:
 
 ```js
 // cc-my-component.smart.js
 import './cc-my-component.js';
+import '../cc-smart-container/cc-smart-container.js';
+import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
+import { sendToApi } from '../../lib/send-to-api.js';
+import { notify, notifyError, notifySuccess } from '../../lib/notifications.js';
 ```
 
-Make sure that the Lit component is imported in your smart component file.
-This way, developers using your smart component only need to import the smart component file, not both the smart and UI components.
+You'll also likely need to import specific API functions from the `@clevercloud/client` package:
+
+```js
+import { someApiFunction } from '@clevercloud/client/esm/api/v2/some-resource.js';
+```
+
+Here's an explanation of the key imports and their purposes:
+- `defineSmartComponent`: Required to register and configure your smart component,
+- `sendToApi`: Handles API requests with proper error management,
+- `notify`, `notifyError`, `notifySuccess`: Provides user feedback through toast notifications,
+- `./cc-my-component.js`: Your Lit component that handles the UI rendering and user interactions. This way, developers using your smart component only need to import the smart component file, not both the smart and UI components or the smart container.
+- `../cc-smart-container/cc-smart-container.js`: The container component that provides context and connects smart components to the application state.
+
+The `cc-smart-container` is a crucial part of the smart component architecture.
+It serves as a context provider that:
+- Manages the configuration context needed by smart components
+- Allows context inheritance through nesting
+- Handles the communication between smart components and their UI counterparts
+- Provides a consistent way to pass API configurations and other parameters
+
+All smart components must be wrapped in a `<cc-smart-container>` element when used in HTML, as shown in the usage examples.
+The container exposes the context to the components through the smart component system, enabling automatic data fetching and state management.
+For more information, please refer to the [Getting Started - Smart Component](https://clever-components.com/docs/getting-started/smart-component).
 
 ### 2. Selector and Context Parameters
 
@@ -88,7 +114,8 @@ onContextUpdate({ component, context, updateComponent, signal }) {
 }
 ```
 
-The `signal` parameter allows proper cleanup when the context changes again. When a new context update occurs, the previous request will be aborted, preventing race conditions with stale data.
+The `signal` parameter allows proper cleanup when the context changes again.
+When a new context update occurs, the previous request will be aborted, preventing race conditions with stale data.
 
 Note:
 [Immer freezes objects](https://immerjs.github.io/immer/freezing/) to ensure immutability.
@@ -157,7 +184,8 @@ Refer to the [cc-toaster component](https://www.clever-cloud.com/doc/clever-comp
 
 ## Smart Component Documentation
 
-Smart components should be documented in a separate `.smart.md` file alongside your component implementation. This documentation helps other developers understand how to use your smart component and what backend services it interacts with.
+Smart components should be documented in a separate `.smart.md` file alongside your component implementation.
+This documentation helps other developers understand how to use your smart component and what backend services it interacts with.
 
 ### Required Sections
 
