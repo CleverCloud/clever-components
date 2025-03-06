@@ -1266,6 +1266,13 @@ export const translations = {
   'cc-select.error.empty': `You must select a value.`,
   'cc-select.required': `required`,
   //#endregion
+  //#region cc-session-tokens
+  'cc-session-tokens.error': `Something went wrong while loading session tokens.`,
+  'cc-session-tokens.main-heading': `Session Tokens`,
+  'cc-session-tokens.revoke-all-tokens': `Revoke all tokens`,
+  'cc-session-tokens.revoke-token': /** @param {{ tokenNumber: number}} _ */ ({ tokenNumber }) =>
+    `Revoke token number ${tokenNumber}`,
+  //#endregion
   //#region cc-ssh-key-list
   'cc-ssh-key-list.add.btn': `Add key`,
   'cc-ssh-key-list.add.info': () =>

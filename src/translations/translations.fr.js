@@ -1289,6 +1289,13 @@ export const translations = {
   'cc-select.error.empty': `Veuillez sélectionner une valeur.`,
   'cc-select.required': `obligatoire`,
   //#endregion
+  //#region cc-session-tokens
+  'cc-session-tokens.error': `Une erreur est survenue pendant le chargement des jetons de session.`,
+  'cc-session-tokens.main-heading': `Tokens de sessions`,
+  'cc-session-tokens.revoke-all-tokens': `Révoquer tous les tokens`,
+  'cc-session-tokens.revoke-token': /** @param {{ tokenNumber: number}} _ */ ({ tokenNumber }) =>
+    `Révoquer le token numéro ${tokenNumber}`,
+  //#endregion
   //#region cc-ssh-key-list
   'cc-ssh-key-list.add.btn': `Ajouter la clé`,
   'cc-ssh-key-list.add.info': () =>
