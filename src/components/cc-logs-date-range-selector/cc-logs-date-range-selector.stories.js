@@ -19,7 +19,6 @@ const conf = {
   css: `
     cc-logs-date-range-selector-beta {
       height: 18em;
-      width: 18em;
       margin: 1em;
     }
   `,
