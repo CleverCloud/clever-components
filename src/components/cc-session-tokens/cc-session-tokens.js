@@ -187,9 +187,14 @@ export class CcSessionTokens extends LitElement {
         padding: 0;
       }
 
+      p {
+        margin: 0;
+      }
+
       .session-tokens-wrapper__list {
         display: grid;
         gap: 1em;
+        margin-top: 2.5em;
       }
 
       .session-token-card {
