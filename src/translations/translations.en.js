@@ -1267,8 +1267,16 @@ export const translations = {
   'cc-select.required': `required`,
   //#endregion
   //#region cc-session-tokens
+  'cc-session-tokens.card.current-session': `Current session`,
+  'cc-session-tokens.card.deadline-approaches': `Deadline approaches`,
+  'cc-session-tokens.card.human-friendly-date': /** @param {{ date: string|number }} _ */ ({ date }) =>
+    formatDatetime(date),
+  'cc-session-tokens.card.label.creation': `Creation: `,
+  'cc-session-tokens.card.label.expiration': `Expiration: `,
+  'cc-session-tokens.card.label.last-used': `Last used: `,
   'cc-session-tokens.error': `Something went wrong while loading session tokens.`,
-  'cc-session-tokens.main-heading': `Session Tokens`,
+  'cc-session-tokens.intro': `Below is a list of all the sessions registered on your account. You may revoke any of them if necessary.`,
+  'cc-session-tokens.main-heading': `Console sessions`,
   'cc-session-tokens.revoke-all-tokens': `Revoke all tokens`,
   'cc-session-tokens.revoke-token': /** @param {{ tokenNumber: number}} _ */ ({ tokenNumber }) =>
     `Revoke token number ${tokenNumber}`,

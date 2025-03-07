@@ -2,7 +2,7 @@ export type SessionTokensState = SessionTokensStateLoaded | SessionTokensStateLo
 
 export interface SessionTokensStateLoaded {
   type: 'loaded';
-  tokens: Array<SessionToken>;
+  tokens: Array<SessionTokenState>;
 }
 
 export interface SessionTokensStateLoading {
@@ -13,9 +13,19 @@ export interface SessionTokensStateError {
   type: 'error';
 }
 
-export interface SessionToken {
+export type SessionTokenState = SessionTokenStateIdle | SessionTokenStateRevoking;
+
+export interface SessionTokenStateIdle extends SessionToken {
+  type: 'idle';
+}
+
+interface SessionTokenStateRevoking extends SessionToken {
+  type: 'revoking';
+}
+
+interface SessionToken {
   id: string;
-  creationDate: Date | string; // Date or string with ISO format with timezone information
-  expirationDate: Date | string; // Date or string with ISO format with timezone information
-  lastUsedDate: Date | string; // Date or string with ISO format with timezone information
+  creationDate: number | string; // timestamp as number or string with ISO format with timezone information
+  expirationDate: number | string; // timestamp as number or string with ISO format with timezone information
+  lastUsedDate: number | string; // timestamp as number or string with ISO format with timezone information
 }

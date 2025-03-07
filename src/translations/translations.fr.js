@@ -1,3 +1,4 @@
+import { format } from '@storybook/blocks';
 import {
   prepareFormatDate,
   prepareFormatDateOnly,
@@ -1290,8 +1291,16 @@ export const translations = {
   'cc-select.required': `obligatoire`,
   //#endregion
   //#region cc-session-tokens
+  'cc-session-tokens.card.current-session': `Session actuelle`,
+  'cc-session-tokens.card.deadline-approaches': `Expire bientôt`,
+  'cc-session-tokens.card.human-friendly-date': /** @param {{ date: string|number }} _ */ ({ date }) =>
+    formatDatetime(date),
+  'cc-session-tokens.card.label.creation': () => sanitize`Création&nbsp;: `,
+  'cc-session-tokens.card.label.expiration': () => sanitize`Expiration&nbsp;: `,
+  'cc-session-tokens.card.label.last-used': () => sanitize`Dernière utilisation&nbsp;: `,
   'cc-session-tokens.error': `Une erreur est survenue pendant le chargement des jetons de session.`,
-  'cc-session-tokens.main-heading': `Tokens de sessions`,
+  'cc-session-tokens.intro': `Ci-dessous figure la liste de toutes les sessions enregistrées pour votre compte. Vous pouvez les révoquer comme vous le souhaitez.`,
+  'cc-session-tokens.main-heading': `Sessions de connexion à la console`,
   'cc-session-tokens.revoke-all-tokens': `Révoquer tous les tokens`,
   'cc-session-tokens.revoke-token': /** @param {{ tokenNumber: number}} _ */ ({ tokenNumber }) =>
     `Révoquer le token numéro ${tokenNumber}`,
