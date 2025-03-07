@@ -1,4 +1,3 @@
-import { format } from '@storybook/blocks';
 import {
   prepareFormatDate,
   prepareFormatDateOnly,

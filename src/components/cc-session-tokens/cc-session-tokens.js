@@ -31,6 +31,7 @@ import '../cc-badge/cc-badge.js';
  *
  * This component allows users to view their active session tokens and revoke individual tokens or all tokens at once.
  *
+ * TODO: fix doc cause details not string
  * @fires {CustomEvent<string>} cc-session-tokens:revoke-token - Dispatched when a user requests to delete a specific token
  * @fires {CustomEvent} cc-session-tokens:revoke-all-tokens - Dispatched when a user requests to revoke all tokens
  */
@@ -117,7 +118,6 @@ export class CcSessionTokens extends LitElement {
           return new Date(tokenB.creationDate).getTime() - new Date(tokenA.creationDate).getTime();
         })
         .map(this._addExpireSoon);
-      console.log(this._sortedAndFormattedTokens);
     }
   }
 
@@ -125,7 +125,15 @@ export class CcSessionTokens extends LitElement {
     const hasTokens = this.state.type === 'loaded' && this.state.tokens.length > 0;
     // TODO: maybe we want individual waiting state for each token when revoking all :thinking:
     const areAllTokensRevoking =
-      this.state.type === 'loaded' && hasTokens && this.state.tokens.every((token) => token.type === 'revoking');
+      this.state.type === 'loaded' &&
+      hasTokens &&
+      // TODO: do we want revoke all tokens to also remove current session and logout user? This is what the API does
+      // => no, let's use the initial approach and call revokeOneToken from the smart on every token except the current session
+      // => should we have a state for revoking all tokens?
+      // a state for revoking all tokens would be better because it would only be triggered when the user explicitly wants to revoke all tokens
+      // while the logic below is triggered when the user removes all tokens by hand fast enough (only likely to happen with 2 tokens current + another)
+      this._sortedAndFormattedTokens.length > 2 &&
+      this._sortedAndFormattedTokens.every((token) => token.type === 'revoking');
 
     if (this.state.type === 'error') {
       return html`<cc-notice intent="warning" message="${i18n('cc-session-tokens.error')}"></cc-notice>`;

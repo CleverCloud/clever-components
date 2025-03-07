@@ -29,6 +29,7 @@ interface SessionToken {
   expirationDate: number | string; // timestamp as number or string with ISO format with timezone information
   lastUsedDate: number | string; // timestamp as number or string with ISO format with timezone information
   isCurrentSession: boolean;
+  // TODO: isCleverTeam
 }
 
 export type SessionTokenStateWitExpiresSoon = SessionTokenState & {
