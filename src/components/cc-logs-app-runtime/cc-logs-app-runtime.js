@@ -216,7 +216,6 @@ export class CcLogsAppRuntime extends LitElement {
     return html`
       <div class=${classMap(overlay)}>
         <div class=${classMap(wrapper)}>
-          ${this._renderDateRangeSelection()} ${this._renderInstances()}
           <div class="logs-wrapper">${this._renderLogs()}</div>
           ${this._renderLoadingProgress()}
         </div>
@@ -254,6 +253,7 @@ export class CcLogsAppRuntime extends LitElement {
 
     return html`<cc-logs-instances-beta
       class="instances"
+      slot="left"
       .state=${state}
       @cc-logs-instances:selection-change=${this._onInstanceSelectionChange}
     ></cc-logs-instances-beta>`;
@@ -324,6 +324,8 @@ export class CcLogsAppRuntime extends LitElement {
         @cc-logs-control:option-change=${this._onLogsOptionChange}
       >
         <div slot="header" class="logs-header">
+          ${this._renderDateRangeSelection()}
+
           <cc-logs-message-filter-beta
             class="logs-message-filter"
             .filter=${this._messageFilter}
@@ -340,6 +342,8 @@ export class CcLogsAppRuntime extends LitElement {
             @cc-button:click=${this._onFullscreenToggle}
           ></cc-button>
         </div>
+
+        ${this._renderInstances()}
       </cc-logs-control-beta>
 
       ${this.state.type === 'loaded' &&
@@ -388,6 +392,8 @@ export class CcLogsAppRuntime extends LitElement {
       css`
         /* stylelint-disable no-duplicate-selectors */
         :host {
+          --instances-width: 20em;
+
           display: block;
         }
 
@@ -407,39 +413,31 @@ export class CcLogsAppRuntime extends LitElement {
         }
 
         .wrapper {
-          display: grid;
+          display: flex;
           flex: 1;
+          flex-direction: column;
           gap: 0.5em;
-          grid-auto-columns: 18em 1fr;
-          grid-auto-rows: auto 1fr auto;
-          grid-template-areas:
-            'date-range logs'
-            'instances  logs'
-            'progress   progress';
         }
 
         .wrapper.fullscreen {
-          background-color: var(--cc-color-bg-default);
-          border: 1px solid var(--cc-color-border-neutral);
-          border-radius: var(--cc-border-radius-default);
+          background-color: var(--cc-color-bg-default, #fff);
+          border: 1px solid var(--cc-color-border-neutral, #aaa);
+          border-radius: var(--cc-border-radius-default, 0.25em);
           margin: 1em;
           padding: 1em;
-        }
-
-        .date-range-selector {
-          grid-area: date-range;
         }
 
         .instances {
           background-color: var(--cc-color-bg-default, #fff);
           border: 1px solid var(--cc-color-border-neutral, #aaa);
           border-radius: var(--cc-border-radius-default, 0.25em);
-          grid-area: instances;
+          width: var(--instances-width);
         }
 
         .logs-wrapper {
           flex: 1;
           grid-area: logs;
+          min-height: 0;
           position: relative;
         }
 
@@ -471,7 +469,7 @@ export class CcLogsAppRuntime extends LitElement {
         }
 
         .overlay-logs-wrapper {
-          left: 50%;
+          left: calc(50% + var(--instances-width) / 2);
           position: absolute;
           top: 50%;
           transform: translate(-50%, -50%);
