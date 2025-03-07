@@ -31,18 +31,32 @@ const conf = {
   `,
 };
 
+const appBaseConfigDatas = [
+  { label: 'Instance count', value: '1' },
+  { label: 'Instance size', value: 'XS' },
+  { label: 'Zone', value: 'Paris (par)' },
+  { label: 'Estimated price for 30 days', value: '16.00€' },
+];
+const appBaseSkeletonConfigDatas = [
+  { label: 'Instance count', value: '1' },
+  { label: 'Instance size', value: 'XS' },
+  { label: 'Zone', value: 'Paris (par)' },
+  { label: 'Estimated price for 30 days', value: '16.00€', skeleton: true },
+];
+const appBaseAriaLiveConfigDatas = [
+  { label: 'Instance count', value: '1' },
+  { label: 'Instance size', value: 'XS' },
+  { label: 'Zone', value: 'Paris (par)' },
+  { label: 'Estimated price for 30 days', value: '16.00€', ariaLive: 'polite' },
+];
+
 const appBaseDatas = {
   name: 'Front-end application',
   logo: {
     url: 'https://assets.clever-cloud.com/logos/nodejs.svg',
     alt: 'NodeJS logo',
   },
-  configuration: [
-    { label: 'Instance count', value: '1' },
-    { label: 'Instance size', value: 'XS' },
-    { label: 'Zone', value: 'Paris (par)' },
-    { label: 'Estimated price for 30 days', value: '16.00€' },
-  ],
+  configuration: appBaseConfigDatas,
   tags: ['A.I.', 'preprod', '   '],
 };
 const appInnerHTML = `
@@ -100,7 +114,26 @@ export const defaultStory = makeStory(conf, {
   ],
 });
 
-export const loadingModes = makeStory(conf, {
+export const skeleton = makeStory(conf, {
+  items: [
+    {
+      orderSummary: {
+        ...appBaseDatas,
+        skeleton: true,
+      },
+      innerHTML: appInnerHTML,
+    },
+    {
+      orderSummary: {
+        ...appBaseDatas,
+        configuration: appBaseSkeletonConfigDatas,
+      },
+      innerHTML: appInnerHTML,
+    },
+  ],
+});
+
+export const waitingAndDisabled = makeStory(conf, {
   items: [
     {
       orderSummary: {
@@ -116,10 +149,15 @@ export const loadingModes = makeStory(conf, {
       },
       innerHTML: appInnerHTML,
     },
+  ],
+});
+
+export const withAriaLive = makeStory(conf, {
+  items: [
     {
       orderSummary: {
         ...appBaseDatas,
-        skeleton: true,
+        configuration: appBaseAriaLiveConfigDatas,
       },
       innerHTML: appInnerHTML,
     },
