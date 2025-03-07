@@ -71,9 +71,11 @@ class CcLogsAppRuntimeSandbox extends LitElement {
         <cc-button type="submit">Apply</cc-button>
       </form>
 
-      <cc-smart-container ${ref(this._smartContainerRef)}>
-        <cc-logs-app-runtime-beta class="cc-logs-app-runtime main"></cc-logs-app-runtime-beta>
-      </cc-smart-container>
+      <div class="main">
+        <cc-smart-container ${ref(this._smartContainerRef)}>
+          <cc-logs-app-runtime-beta class="cc-logs-app-runtime"></cc-logs-app-runtime-beta>
+        </cc-smart-container>
+      </div>
     `;
   }
 
@@ -94,14 +96,15 @@ class CcLogsAppRuntimeSandbox extends LitElement {
           min-height: 0;
         }
 
-        cc-smart-container {
+        .cc-logs-app-runtime {
           display: flex;
           flex: 1;
           flex-direction: column;
           min-height: 0;
         }
 
-        .cc-logs-app-runtime {
+        .main {
+          display: grid;
           flex: 1;
           min-height: 0;
         }
