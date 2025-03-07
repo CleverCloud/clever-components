@@ -16,8 +16,12 @@ import '../cc-icon/cc-icon.js';
 import '../cc-badge/cc-badge.js';
 
 /**
+ */
+
+/**
  * @typedef {import('./cc-session-tokens.types.js').SessionTokenState} SessionTokenState
  * @typedef {import('./cc-session-tokens.types.js').SessionTokensState} SessionTokensState
+ * @typedef {import('./cc-session-tokens.types.js').SessionTokenStateWitExpiresSoon} SessionTokenStateWithExpiresSoon
  * @typedef {import('lit').TemplateResult<1>} TemplateResult
  * @typedef {import('lit').PropertyValues<CcSessionTokens>} CcSessionTokensPropertyValues
  */
@@ -27,13 +31,14 @@ import '../cc-badge/cc-badge.js';
  *
  * This component allows users to view their active session tokens and revoke individual tokens or all tokens at once.
  *
- * @fires {CustomEvent<string>} delete-token - Dispatched when a user requests to delete a specific token
- * @fires {CustomEvent} revoke-all-tokens - Dispatched when a user requests to revoke all tokens
+ * @fires {CustomEvent<string>} cc-session-tokens:revoke-token - Dispatched when a user requests to delete a specific token
+ * @fires {CustomEvent} cc-session-tokens:revoke-all-tokens - Dispatched when a user requests to revoke all tokens
  */
 export class CcSessionTokens extends LitElement {
   static get properties() {
     return {
       state: { type: Object },
+      _sortedAndFormattedTokens: { type: Array, state: true },
     };
   }
 
@@ -42,6 +47,9 @@ export class CcSessionTokens extends LitElement {
 
     /** @type {SessionTokensState} The current state of the session tokens component */
     this.state = { type: 'loading' };
+
+    /** @type {Array<SessionTokenStateWithExpiresSoon>|null} Array of session tokens sorted by creation date with added expiration information */
+    this._sortedAndFormattedTokens = null;
   }
 
   /**
@@ -60,15 +68,55 @@ export class CcSessionTokens extends LitElement {
    * @private
    */
   _onRevokeToken(tokenId) {
-    dispatchCustomEvent(this, 'delete-token', tokenId);
+    dispatchCustomEvent(this, 'revoke-token', tokenId);
+  }
+
+  /**
+   * Adds expiration information to a token based on time remaining
+   *
+   * @param {SessionTokenState} token - The token to process
+   * @returns {SessionTokenStateWithExpiresSoon} The token with added expiration information
+   * @private
+   */
+  _addExpireSoon(token) {
+    const expirationDate = new Date(token.expirationDate);
+    const now = new Date();
+    const daysUntilExpiration = Math.ceil((expirationDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
+
+    // Determine threshold based on total expiration length
+    let thresholdDays;
+    if (daysUntilExpiration <= 7) {
+      thresholdDays = 2; // For short expirations (up to a week), warn at 2 days
+    } else if (daysUntilExpiration <= 30) {
+      thresholdDays = 7; // For medium expirations (up to a month), warn at 7 days
+    } else if (daysUntilExpiration <= 60) {
+      thresholdDays = 10; // For longer expirations (up to 2 months), warn at 10 days
+    } else if (daysUntilExpiration <= 90) {
+      thresholdDays = 20; // For even longer expirations (up to 3 months), warn at 20 days
+    } else {
+      thresholdDays = 30; // For very long expirations, warn at 30 days
+    }
+
+    const expiresSoon = daysUntilExpiration <= thresholdDays;
+    return { ...token, expiresSoon };
   }
 
   /** @param {CcSessionTokensPropertyValues} changedProperties */
   willUpdate(changedProperties) {
     if (changedProperties.has('state') && this.state.type === 'loaded') {
-      this._sortedAndFormattedTokens = this.state.tokens.sort(
-        (tokenA, tokenB) => new Date(tokenA.creationDate).getTime() - new Date(tokenB.creationDate).getTime(),
-      );
+      this._sortedAndFormattedTokens = [...this.state.tokens]
+        .sort((tokenA, tokenB) => {
+          // Current session always comes first
+          if (tokenA.isCurrentSession) {
+            return -1;
+          }
+          if (tokenB.isCurrentSession) {
+            return 1;
+          }
+          // Then sort by creation date (newest first)
+          return new Date(tokenB.creationDate).getTime() - new Date(tokenA.creationDate).getTime();
+        })
+        .map(this._addExpireSoon);
       console.log(this._sortedAndFormattedTokens);
     }
   }
@@ -86,26 +134,30 @@ export class CcSessionTokens extends LitElement {
     return html`
       <cc-block>
         <div slot="header-title">${i18n('cc-session-tokens.main-heading')}</div>
-        ${this.state.type === 'loaded' && hasTokens
-          ? html`
-              <div slot="header-right">
-                <cc-button danger outlined .waiting=${areAllTokensRevoking} @cc-button:click=${this._onRevokeAllTokens}>
-                  ${i18n('cc-session-tokens.revoke-all-tokens')}
-                </cc-button>
-              </div>
-            `
-          : ''}
-        <div class="session-tokens-wrapper" slot="content">
+        <div slot="header-right">
+          <cc-button
+            danger
+            outlined
+            .waiting=${areAllTokensRevoking}
+            ?disabled=${!hasTokens}
+            @cc-button:click=${this._onRevokeAllTokens}
+          >
+            ${i18n('cc-session-tokens.revoke-all-tokens')}
+          </cc-button>
+        </div>
+        <div slot="content">
           <p>${i18n('cc-session-tokens.intro')}</p>
-          ${this.state.type === 'loading' ? html`<cc-loader></cc-loader>` : ''}
-          ${this.state.type === 'loaded'
-            ? html`
-                <!-- TODO: A11Y when we add headings inside cards (User Agent / IP Address or whatever), we should remove the ul / li structure -->
-                <ul class="session-tokens-wrapper__list">
-                  ${this.state.tokens.map((token, index) => this._renderToken(token, index))}
-                </ul>
-              `
-            : ''}
+          <div class="session-tokens-wrapper">
+            ${this.state.type === 'loading' ? html`<cc-loader></cc-loader>` : ''}
+            ${this.state.type === 'loaded'
+              ? html`
+                  <!-- TODO: A11Y when we add headings inside cards (User Agent / IP Address or whatever), we should remove the ul / li structure -->
+                  <ul class="session-tokens-wrapper__list">
+                    ${this._sortedAndFormattedTokens.map((token, index) => this._renderToken(token, index))}
+                  </ul>
+                `
+              : ''}
+          </div>
         </div>
       </cc-block>
     `;
@@ -114,7 +166,7 @@ export class CcSessionTokens extends LitElement {
   /**
    * Renders an individual token card
    *
-   * @param {SessionTokenState} token - The token data to render
+   * @param {SessionTokenStateWithExpiresSoon} token - The token data to render
    * @param {number} index - The index of the token in the list
    * @returns {TemplateResult} The rendered token card
    * @private
@@ -134,41 +186,45 @@ export class CcSessionTokens extends LitElement {
           <div class="session-token-card__info__last-used">
             <dt>
               <cc-icon .icon=${iconLastUsed}></cc-icon>
-              ${i18n('cc-session-tokens.card.label.last-used')}
+              <span>${i18n('cc-session-tokens.card.label.last-used')}</span>
             </dt>
             <dd>${i18n('cc-session-tokens.card.human-friendly-date', { date: lastUsedDate })}</dd>
           </div>
           <div>
             <dt>
               <cc-icon .icon=${iconCreation}></cc-icon>
-              ${i18n('cc-session-tokens.card.label.creation')}
+              <span>${i18n('cc-session-tokens.card.label.creation')}</span>
             </dt>
             <dd>${i18n('cc-session-tokens.card.human-friendly-date', { date: creationDate })}</dd>
           </div>
           <div class="session-token-card__info__expiration">
             <dt>
               <cc-icon .icon=${iconExpiration}></cc-icon>
-              ${i18n('cc-session-tokens.card.label.expiration')}
+              <span>${i18n('cc-session-tokens.card.label.expiration')}</span>
             </dt>
             <dd>
               <span>${i18n('cc-session-tokens.card.human-friendly-date', { date: expirationDate })}</span>
-              ${expiresSoon
-                ? html` <cc-badge intent="warning">${i18n('cc-session-tokens.card.deadline-approaches')}</cc-badge> `
-                : ''}
             </dd>
+            ${expiresSoon
+              ? html` <cc-badge intent="warning">${i18n('cc-session-tokens.card.deadline-approaches')}</cc-badge> `
+              : ''}
           </div>
         </dl>
-        <cc-button
-          danger
-          outlined
-          hide-text
-          .icon=${iconDelete}
-          circle
-          .waiting=${type === 'revoking'}
-          @cc-button:click=${() => this._onRevokeToken(id)}
-        >
-          ${i18n('cc-session-tokens.revoke-token', { tokenNumber: index })}
-        </cc-button>
+        ${!isCurrentSession
+          ? html`
+              <cc-button
+                danger
+                outlined
+                hide-text
+                .icon=${iconDelete}
+                circle
+                .waiting=${type === 'revoking'}
+                @cc-button:click=${() => this._onRevokeToken(id)}
+              >
+                ${i18n('cc-session-tokens.revoke-token', { tokenNumber: index })}
+              </cc-button>
+            `
+          : ''}
       </div>
     `;
   }
@@ -191,26 +247,45 @@ export class CcSessionTokens extends LitElement {
         margin: 0;
       }
 
+      .session-tokens-wrapper {
+        margin-top: 2.5em;
+      }
+
       .session-tokens-wrapper__list {
         display: grid;
-        gap: 1em;
-        margin-top: 2.5em;
+        gap: 1.5em;
       }
 
       .session-token-card {
         align-items: center;
         border: solid 1px var(--cc-color-border-neutral-weak);
         border-radius: var(--cc-border-radius-default);
-        display: flex;
-        flex-wrap: wrap;
+        display: grid;
         gap: 0.5em 1em;
+        grid-template-columns: 1fr auto;
         justify-content: space-between;
         padding: 1em;
       }
 
+      .session-token-card__current-session {
+        --cc-icon-size: 1.2em;
+
+        align-items: center;
+        color: var(--cc-color-text-success);
+        display: flex;
+        font-weight: bold;
+        gap: 0.5em;
+        grid-column: 1 / 2;
+        grid-row: 1 / 2;
+        margin-bottom: 1em;
+        width: 100%;
+      }
+
       .session-token-card__info {
         display: flex;
-        gap: 1.5em;
+        flex-wrap: wrap;
+        gap: 0.5em;
+        grid-column: 1 / 2;
       }
 
       .session-token-card__info__last-used {
@@ -223,26 +298,38 @@ export class CcSessionTokens extends LitElement {
 
       dl div {
         display: flex;
+        flex-wrap: wrap;
         gap: 0.5em;
       }
 
       dt {
+        --line-height: 1.2em;
+        --cc-icon-size: var(--line-height);
+
         align-items: center;
         display: flex;
         gap: 0.5em;
-
-        --cc-icon-size: 1.2em;
+        line-height: var(--line-height);
       }
 
       /* Remove spacing below the font so that it matches dt spacing */
       dd {
         align-items: center;
         display: flex;
+        flex-wrap: wrap;
         gap: 0.5em;
+        min-width: 10.1em;
       }
 
       dd cc-badge {
         font-weight: normal;
+      }
+
+      .session-token-card cc-button {
+        align-self: start;
+        /* TODO: go for named columns */
+        grid-column: 2 / 3;
+        grid-row: 1 / 2;
       }
     `;
   }
