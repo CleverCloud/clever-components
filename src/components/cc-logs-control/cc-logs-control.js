@@ -76,6 +76,7 @@ const PALETTES = {
  * @fires {CustomEvent<LogsControlOption>} cc-logs-control:option-change - Fires a `LogsControlOption` whenever an `option` changes.
  *
  * @slot header - The content of the space on top of the logs block.
+ * @slot left - The content of the space on the left of the logs block.
  */
 export class CcLogsControl extends LitElement {
   static get properties() {
@@ -307,44 +308,49 @@ export class CcLogsControl extends LitElement {
 
   render() {
     return html`
-      <div class="header"><slot name="header"></slot></div>
+      <div class="header">
+        <slot name="header"></slot>
 
-      <cc-button
-        class="header-scroll-button"
-        .icon=${scrollToBottomIcon}
-        a11y-name="${i18n('cc-logs-control.scroll-to-bottom')}"
-        hide-text
-        @cc-button:click=${this._onScrollToBottomButtonClick}
-      ></cc-button>
+        <cc-button
+          class="header--scroll"
+          .icon=${scrollToBottomIcon}
+          a11y-name="${i18n('cc-logs-control.scroll-to-bottom')}"
+          hide-text
+          @cc-button:click=${this._onScrollToBottomButtonClick}
+        ></cc-button>
 
-      <cc-popover
-        class="header-options-popover"
-        .icon=${optionsIcon}
-        a11y-name="${i18n('cc-logs-control.show-logs-options')}"
-        hide-text
-        position="bottom-right"
-      >
-        <div class="options">
-          ${this._renderDisplayOptions()} ${this._renderDateOptions()} ${this._renderMetadataOptions()}
-        </div>
-      </cc-popover>
+        <cc-popover
+          class="header--options"
+          .icon=${optionsIcon}
+          a11y-name="${i18n('cc-logs-control.show-logs-options')}"
+          hide-text
+          position="bottom-right"
+        >
+          <div class="options">
+            ${this._renderDisplayOptions()} ${this._renderDateOptions()} ${this._renderMetadataOptions()}
+          </div>
+        </cc-popover>
+      </div>
 
-      <cc-logs-beta
-        class="logs"
-        ${ref(this._logsRef)}
-        .dateDisplay=${this.dateDisplay}
-        ?follow=${this.follow}
-        .limit=${this.limit}
-        .logs=${this.logs}
-        .messageFilter=${this.messageFilter}
-        .messageFilterMode=${this.messageFilterMode}
-        .metadataFilter=${this.metadataFilter}
-        .metadataRenderers=${this._resolvedMetadataRenderers}
-        ?strip-ansi=${this.stripAnsi}
-        style=${PALETTES[this.palette]}
-        .timezone=${this.timezone}
-        ?wrap-lines=${this.wrapLines}
-      ></cc-logs-beta>
+      <div class="center">
+        <slot name="left"></slot>
+        <cc-logs-beta
+          class="logs"
+          ${ref(this._logsRef)}
+          .dateDisplay=${this.dateDisplay}
+          ?follow=${this.follow}
+          .limit=${this.limit}
+          .logs=${this.logs}
+          .messageFilter=${this.messageFilter}
+          .messageFilterMode=${this.messageFilterMode}
+          .metadataFilter=${this.metadataFilter}
+          .metadataRenderers=${this._resolvedMetadataRenderers}
+          ?strip-ansi=${this.stripAnsi}
+          style=${PALETTES[this.palette]}
+          .timezone=${this.timezone}
+          ?wrap-lines=${this.wrapLines}
+        ></cc-logs-beta>
+      </div>
     `;
   }
 
@@ -437,32 +443,29 @@ export class CcLogsControl extends LitElement {
       // language=CSS
       css`
         :host {
-          align-items: center;
-          column-gap: 0.35em;
           display: grid;
-          grid-template-areas:
-            'header scroll-button options-popover'
-            'logs   logs          logs';
-          grid-template-columns: 1fr auto auto;
-          grid-template-rows: max-content 1fr;
-          row-gap: 0.5em;
+          gap: 0.5em;
+          grid-template-rows:
+            [header] auto
+            [center] 1fr;
         }
 
         .header {
-          grid-area: header;
+          align-items: center;
+          display: flex;
+          gap: 0.35em;
+          justify-content: end;
         }
 
-        .header-scroll-button {
-          grid-area: scroll-button;
-        }
-
-        .header-options-popover {
-          grid-area: options-popover;
+        .center {
+          display: flex;
+          gap: 0.5em;
+          justify-content: stretch;
+          min-height: 0;
         }
 
         .logs {
-          align-self: normal;
-          grid-area: logs;
+          flex: 1;
         }
 
         .options {
