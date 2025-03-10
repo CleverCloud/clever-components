@@ -210,7 +210,7 @@ export class CcLogsDateRangeSelector extends LitElement {
   _onCustomSinceInput(event) {
     this._customDateRange = {
       since: event.detail,
-      until: this._currentDateRange.until,
+      until: this._customDateRange.until,
     };
   }
 
@@ -219,7 +219,7 @@ export class CcLogsDateRangeSelector extends LitElement {
    */
   _onCustomUntilInput(event) {
     this._customDateRange = {
-      since: this._currentDateRange.since,
+      since: this._customDateRange.since,
       until: event.detail,
     };
   }
