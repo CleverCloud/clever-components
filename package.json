@@ -35,6 +35,7 @@
     "components:graph-usage": "node tasks/component-usage-cli.js",
     "format": "prettier . --write",
     "format:check": "prettier . --check",
+    "install-local:client": "(cd ../clever-client.js && DEV=true npm pack) && mv ../clever-client.js/clevercloud-client-*.tgz . && npm i -f ./clevercloud-client-*.tgz",
     "lint": "eslint",
     "lint:fix": "eslint --fix",
     "lint:inspect-config": "eslint --inspect-config",
