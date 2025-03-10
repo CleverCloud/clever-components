@@ -9,7 +9,6 @@ import {
   iconRemixKey_2Fill as iconKey,
 } from '../../assets/cc-remix.icons.js';
 import { LostFocusController } from '../../controllers/lost-focus-controller.js';
-import { dispatchCustomEvent } from '../../lib/events.js';
 import { fakeString } from '../../lib/fake-strings.js';
 import { focusBySelector } from '../../lib/focus-helper.js';
 import { formSubmit } from '../../lib/form/form-submit-directive.js';
@@ -26,6 +25,8 @@ import '../cc-icon/cc-icon.js';
 import '../cc-img/cc-img.js';
 import '../cc-input-text/cc-input-text.js';
 import '../cc-notice/cc-notice.js';
+import { CcSshKeyListCreateEvent, CcSshKeyListDeleteEvent, CcSshKeyListImportEvent } from './cc-ssh-key-list.events.js';
+import { dispatchCustomEvent } from '../../lib/events.js';
 
 const SSH_KEY_DOCUMENTATION = 'https://developers.clever-cloud.com/doc/account/ssh-keys-management/';
 
@@ -134,7 +135,7 @@ export class CcSshKeyList extends LitElement {
         name: formData.name,
         publicKey: formData.publicKey,
       };
-      dispatchCustomEvent(this, 'create', newKey);
+      this.dispatchEvent(new CcSshKeyListCreateEvent(newKey));
     }
   }
 
@@ -142,7 +143,7 @@ export class CcSshKeyList extends LitElement {
   _onDeleteKey(sshKeyState) {
     // removing state property that belongs to internal component implementation
     const { type: state, ...sshKey } = sshKeyState;
-    dispatchCustomEvent(this, 'delete', sshKey);
+    this.dispatchEvent(new CcSshKeyListDeleteEvent({ name: sshKey.name }));
   }
 
   /** @param {SshKeyState} sshKeyState */
@@ -150,6 +151,13 @@ export class CcSshKeyList extends LitElement {
     // removing state property that belongs to internal component implementation
     const { type: state, ...sshKey } = sshKeyState;
     dispatchCustomEvent(this, 'import', sshKey);
+    this.dispatchEvent(
+      new CcSshKeyListImportEvent({
+        name: sshKeyState.name,
+        publicKey: 'oups... something is missing in the SshKeyState for github keys',
+        fingerprint: sshKeyState.fingerprint,
+      }),
+    );
   }
 
   render() {

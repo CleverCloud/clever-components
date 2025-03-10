@@ -13,6 +13,7 @@ import { defineSmartComponent } from '../../lib/smart/define-smart-component.js'
 import { i18n } from '../../translations/translation.js';
 import '../cc-smart-container/cc-smart-container.js';
 import './cc-ssh-key-list.js';
+import { CcSshKeyListCreateEvent, CcSshKeyListDeleteEvent } from './cc-ssh-key-list.events.js';
 
 /**
  * @typedef {import('./cc-ssh-key-list.js').CcSshKeyList} CcSshKeyList
@@ -32,7 +33,7 @@ defineSmartComponent({
   /**
    * @param {OnContextUpdateArgs} args
    */
-  onContextUpdate({ component, context, onEvent, updateComponent, signal }) {
+  onContextUpdate({ component, context, onEvent, onNewEvent, updateComponent, signal }) {
     const { apiConfig } = context;
 
     // Retrieving SSH keys is done in two steps, hidden in the `fetchAllKeys()` implementation:
@@ -57,7 +58,7 @@ defineSmartComponent({
         });
     }
 
-    onEvent('cc-ssh-key-list:create', ({ name, publicKey }) => {
+    onNewEvent(CcSshKeyListCreateEvent, ({ name, publicKey }) => {
       component.createKeyFormState = { type: 'creating' };
 
       addKey({ apiConfig, key: { name: name.trim(), key: publicKey.trim() } })
@@ -77,7 +78,7 @@ defineSmartComponent({
         });
     });
 
-    onEvent('cc-ssh-key-list:delete', ({ name }) => {
+    onNewEvent(CcSshKeyListDeleteEvent, ({ name }) => {
       updateComponent(
         'keyListState',
         /** @param {SshKeyListStateLoadedAndLinked|SshKeyListStateLoadedAndUnlinked} keyListState */

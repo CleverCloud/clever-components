@@ -1,3 +1,4 @@
+import { CcEvent } from '../events.js';
 import { COMPONENTS, CURRENT_CONTEXT, LAST_CONTEXT, META } from './smart-symbols.js';
 
 interface SmartContainerComponentsMap<T extends SmartComponent>
@@ -43,6 +44,11 @@ export type SmartContext = Record<string, any>;
 
 export type OnEventCallback = (type: string, listener: (detail: any) => void) => void;
 
+export type OnNewEventCallback = <D, E extends CcEvent<D>>(
+  eventClass: Clazz<E>,
+  listener: (detail: (typeof event)['detail'], event: InstanceType<typeof eventClass>) => void,
+) => void;
+
 export type UpdateComponentCallback<C extends SmartComponent> = <P extends keyof C, V extends C[P]>(
   propertyName: P,
   property: CallbackOrObject<V>,
@@ -54,7 +60,12 @@ export interface OnContextUpdateArgs<C extends SmartComponent> {
   context: SmartContext;
   signal: AbortSignal;
   onEvent: OnEventCallback;
+  onNewEvent: OnNewEventCallback;
   updateComponent: UpdateComponentCallback<C>;
 }
 
 export type CallbackOrObject<T> = T | ((property: T) => void);
+
+interface Clazz<T> {
+  new (...args: any[]): T;
+}

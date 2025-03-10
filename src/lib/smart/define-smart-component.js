@@ -7,6 +7,7 @@ import { META } from './smart-symbols.js';
  * @typedef {import('./smart-component.types.d.ts').SmartComponent} SmartComponent
  * @typedef {import('./smart-component.types.d.ts').SmartContext} SmartContext
  * @typedef {import('./smart-component.types.d.ts').OnEventCallback} OnEventCallback
+ * @typedef {import('./smart-component.types.d.ts').OnNewEventCallback} OnNewEventCallback
  */
 
 /**
@@ -68,6 +69,18 @@ export function defineSmartComponent(definition) {
         );
       }
 
+      /** @type {OnNewEventCallback} */
+      function onNewEvent(eventClass, listener) {
+        component.addEventListener(
+          // @ts-ignore
+          eventClass.TYPE,
+          (event) => {
+            listener(event.detail, event);
+          },
+          { signal },
+        );
+      }
+
       // Prepare a helper function to update a component (via immer if necessary)
       // We use an even target as an indirection so we can
       // * ask for updates via un event
@@ -98,7 +111,15 @@ export function defineSmartComponent(definition) {
         target.dispatchEvent(event);
       }
 
-      definition.onContextUpdate({ container, component, context, onEvent, updateComponent, signal });
+      definition.onContextUpdate({
+        container,
+        component,
+        context,
+        onEvent,
+        onNewEvent,
+        updateComponent,
+        signal,
+      });
     },
     /**
      * @param {SmartContainer} _container
