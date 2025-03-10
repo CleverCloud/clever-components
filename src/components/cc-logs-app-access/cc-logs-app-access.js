@@ -92,11 +92,14 @@ const CUSTOM_METADATA_RENDERERS = {
 /**
  * A component displaying application access logs.
  *
+ * @cssdisplay block
+ *
  * @beta
  */
 export class CcLogsAppAccess extends LitElement {
   static get properties() {
     return {
+      dateRangeSelection: { type: Object, attribute: 'date-range-selection' },
       limit: { type: Number },
       options: { type: Object },
       state: { type: Object },
@@ -107,6 +110,11 @@ export class CcLogsAppAccess extends LitElement {
 
   constructor() {
     super();
+
+    /** @type {LogsDateRangeSelection} The date range selection. */
+    this.dateRangeSelection = {
+      type: 'live',
+    };
 
     /** @type {number} The maximum number of logs to display. */
     this.limit = 1000;
@@ -178,8 +186,14 @@ export class CcLogsAppAccess extends LitElement {
   /* region Event handlers */
 
   /**
-   * @param {Object} event
-   * @param {LogsControlOption} event.detail
+   * @param {CustomEvent<LogsDateRangeSelectionChangeEventData>} event
+   */
+  _onDateRangeSelectionChange(event) {
+    this.dateRangeSelection = event.detail.selection;
+  }
+
+  /**
+   * @param {CustomEvent<LogsControlOption>} event
    */
   _onLogsOptionChange({ detail }) {
     this.options = {
@@ -261,6 +275,11 @@ export class CcLogsAppAccess extends LitElement {
         @cc-logs-control:option-change=${this._onLogsOptionChange}
       >
         <div slot="header" class="logs-header">
+          <cc-logs-date-range-selector-beta
+            .value=${this.dateRangeSelection}
+            @cc-logs-date-range-selector:change=${this._onDateRangeSelectionChange}
+          ></cc-logs-date-range-selector-beta>
+
           <cc-logs-message-filter-beta
             class="logs-message-filter"
             .filter=${this._messageFilter}
