@@ -6,13 +6,13 @@ import '../cc-smart-container/cc-smart-container.js';
 import './cc-logs-app-access.js';
 
 /**
- * @typedef {import('./cc-logs-app-access.js').CcLogsAppAccess} CcAccessLogs
+ * @typedef {import('./cc-logs-app-access.js').CcLogsAppAccess} CcLogsAppAccess
  * @typedef {import('../cc-logs/cc-logs.types.js').Log} Log
  * @typedef {import('../../lib/date/date-range.types.js').DateRange} DateRange
  * @typedef {import('../../lib/logs/logs-stream.types.js').LogsStreamState} LogsStreamState
  * @typedef {import('../../lib/send-to-api.types.js').ApiConfig} ApiConfig
- * @typedef {import('../../lib/smart/smart-component.types.js').OnContextUpdateArgs<CcAccessLogs>} OnContextUpdateArgs
- * @typedef {import('../../lib/smart/smart-component.types.js').UpdateComponentCallback<CcAccessLogs>} UpdateComponentCallback
+ * @typedef {import('../../lib/smart/smart-component.types.js').OnContextUpdateArgs<CcLogsAppAccess>} OnContextUpdateArgs
+ * @typedef {import('../../lib/smart/smart-component.types.js').UpdateComponentCallback<CcLogsAppAccess>} UpdateComponentCallback
  */
 
 defineSmartComponent({
@@ -68,7 +68,7 @@ class SmartController extends LogsStream {
    * @param {ApiConfig} _.apiConfig
    * @param {string} _.ownerId
    * @param {string} _.appId
-   * @param {CcAccessLogs} _.component
+   * @param {CcLogsAppAccess} _.component
    * @param {UpdateComponentCallback} _.updateComponent
    */
   constructor({ apiConfig, ownerId, appId, component, updateComponent }) {
