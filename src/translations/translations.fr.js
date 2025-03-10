@@ -836,6 +836,16 @@ export const translations = {
   'cc-logs.select-button.label': /** @param {{index: number}} _ */ ({ index }) => `Sélectionner la ligne ${index}`,
   'cc-logs.unselect-button.label': /** @param {{index: number}} _ */ ({ index }) => `Désélectionner la ligne ${index}`,
   //#endregion
+  //#region cc-logs-addon-runtime
+  'cc-logs-addon-runtime.fullscreen': `Mode plein écran`,
+  'cc-logs-addon-runtime.fullscreen.exit': `Sortir du mode plein écran`,
+  'cc-logs-addon-runtime.logs.error': `Une erreur est survenue pendant le chargement des logs`,
+  'cc-logs-addon-runtime.logs.loading': `Recherche de logs...`,
+  'cc-logs-addon-runtime.logs.warning.no-logs.message': `Il n'y a aucun log qui correspond aux critères sélectionnés`,
+  'cc-logs-addon-runtime.logs.warning.no-logs.title': `Aucun log`,
+  'cc-logs-addon-runtime.logs.warning.waiting.message': `Les logs émis par l'add-on apparaîtront ici`,
+  'cc-logs-addon-runtime.logs.warning.waiting.title': `Aucun log pour le moment`,
+  //#endregion
   //#region cc-logs-app-access
   'cc-logs-app-access.error': `Une erreur est survenue pendant le chargement des logs`,
   'cc-logs-app-access.fullscreen': `Mode plein écran`,
