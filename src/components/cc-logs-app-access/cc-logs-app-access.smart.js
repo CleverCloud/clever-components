@@ -4,10 +4,12 @@ import { LogsStream } from '../../lib/logs/logs-stream.js';
 import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
 import '../cc-smart-container/cc-smart-container.js';
 import './cc-logs-app-access.js';
+import { dateRangeSelectionToDateRange } from '../cc-logs-date-range-selector/date-range-selection.js';
 
 /**
  * @typedef {import('./cc-logs-app-access.js').CcLogsAppAccess} CcAccessLogs
  * @typedef {import('../cc-logs/cc-logs.types.js').Log} Log
+ * @typedef {import('../cc-logs-date-range-selector/cc-logs-date-range-selector.types.js').LogsDateRangeSelectionChangeEventData} LogsDateRangeSelectionChangeEventData
  * @typedef {import('../../lib/date/date-range.types.js').DateRange} DateRange
  * @typedef {import('../../lib/logs/logs-stream.types.js').LogsStreamState} LogsStreamState
  * @typedef {import('../../lib/send-to-api.types.js').ApiConfig} ApiConfig
@@ -21,12 +23,17 @@ defineSmartComponent({
     apiConfig: { type: Object },
     ownerId: { type: String },
     appId: { type: String },
+    dateRangeSelection: { type: Object, optional: true },
   },
   /**
    * @param {OnContextUpdateArgs} args
    */
   onContextUpdate({ component, context, onEvent, updateComponent, signal }) {
-    const { apiConfig, ownerId, appId } = context;
+    const { apiConfig, ownerId, appId, dateRangeSelection } = context;
+
+    if (dateRangeSelection != null) {
+      updateComponent('dateRangeSelection', dateRangeSelection);
+    }
 
     const controller = new SmartController({
       apiConfig,
@@ -38,6 +45,14 @@ defineSmartComponent({
     signal.onabort = () => {
       controller.stop();
     };
+
+    onEvent(
+      'cc-logs-date-range-selector:change',
+      /** @param {LogsDateRangeSelectionChangeEventData} eventData */
+      (eventData) => {
+        controller.setNewDateRange(eventData.range);
+      },
+    );
 
     onEvent('cc-logs-loading-progress:pause', () => {
       controller.pause();
@@ -79,21 +94,24 @@ class SmartController extends LogsStream {
     this._appId = appId;
     this._component = component;
     this._updateComponent = updateComponent;
+    this._dateRange = dateRangeSelectionToDateRange(component.dateRangeSelection);
   }
 
   /**
-   * @param {DateRange} _dateRange
+   * @param {DateRange} dateRange
    * @param {number} maxRetryCount
    * @param {number} throttleElements
    * @param {number} throttlePerInMilliseconds
    * @returns {ApplicationAccessLogStream}
    */
-  _createStream(_dateRange, maxRetryCount, throttleElements, throttlePerInMilliseconds) {
+  _createStream(dateRange, maxRetryCount, throttleElements, throttlePerInMilliseconds) {
     return new ApplicationAccessLogStream({
       apiHost: this._apiConfig.API_HOST,
       tokens: this._apiConfig,
       ownerId: this._ownerId,
       appId: this._appId,
+      since: dateRange.since,
+      until: dateRange.until,
       retryConfiguration: { enabled: true, maxRetryCount },
       throttleElements,
       throttlePerInMilliseconds,
@@ -132,8 +150,16 @@ class SmartController extends LogsStream {
     this._component.appendLogs(logs);
   }
 
+  /**
+   * @param {DateRange} dateRange
+   */
+  setNewDateRange(dateRange) {
+    this._dateRange = dateRange;
+    this.init();
+  }
+
   init() {
-    this.openLogsStream({ since: new Date().toISOString() });
+    this.openLogsStream(this._dateRange);
   }
 }
 
