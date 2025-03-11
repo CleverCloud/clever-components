@@ -264,7 +264,8 @@ export class CcPopover extends LitElement {
           box-shadow:
             0 2px 4px rgb(38 38 38 / 25%),
             0 5px 15px rgb(38 38 38 / 25%);
-          overflow: hidden;
+          overflow: clip;
+          overflow-clip-margin: 3px;
           padding: var(--cc-popover-padding, 0.5em);
           position: absolute;
           z-index: var(--cc-popover-z-index, 999);
