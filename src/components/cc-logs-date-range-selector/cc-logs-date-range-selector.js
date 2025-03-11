@@ -11,6 +11,7 @@ import {
 } from '../../assets/cc-remix.icons.js';
 import { isLive, isRightDateRangeAfterNow, shiftDateRange } from '../../lib/date/date-range-utils.js';
 import { dispatchCustomEvent } from '../../lib/events.js';
+import { DateFormatter } from '../../lib/date/date-formatter.js';
 import { formSubmit } from '../../lib/form/form-submit-directive.js';
 import { focusFirstFormControlWithError } from '../../lib/form/form-utils.js';
 import { i18n } from '../../translations/translation.js';
@@ -35,6 +36,7 @@ const OPTIONS = ['live', 'lastHour', 'last4Hours', 'today', 'yesterday', 'last7D
  * @typedef {import('lit/directives/ref.js').Ref<CcPopover>} CcPopoverRef
  * @typedef {import('lit/directives/ref.js').Ref<CcInputDate>} CcInputDateRef
  * @typedef {import('lit').PropertyValues<CcLogsDateRangeSelector>} PropertyValues
+ * @typedef {import('lit').TemplateResult<1>} TemplateResult
  */
 
 /**
@@ -130,29 +132,6 @@ export class CcLogsDateRangeSelector extends LitElement {
   }
 
   /**
-   * @param {LogsDateRangeSelectOption} option
-   * @return {string}
-   */
-  _getOptionLabel(option) {
-    switch (option) {
-      case 'live':
-        return i18n('cc-logs-date-range-selector.option.live');
-      case 'lastHour':
-        return i18n('cc-logs-date-range-selector.option.last-hour');
-      case 'last4Hours':
-        return i18n('cc-logs-date-range-selector.option.last-4-hours');
-      case 'last7Days':
-        return i18n('cc-logs-date-range-selector.option.last-7-days');
-      case 'today':
-        return i18n('cc-logs-date-range-selector.option.today');
-      case 'yesterday':
-        return i18n('cc-logs-date-range-selector.option.yesterday');
-      case 'custom':
-        return i18n('cc-logs-date-range-selector.option.custom');
-    }
-  }
-
-  /**
    * @param {LogsDateRangeSelection} dateRangeSelection
    */
   _applyDateRange(dateRangeSelection) {
@@ -169,26 +148,26 @@ export class CcLogsDateRangeSelector extends LitElement {
    * @param {Event & {target: {dataset: {option: LogsDateRangeSelectOption}}}} event
    */
   _onOptionChange(event) {
-    this._optionSelectorRef.value.close();
-
     /** @type {LogsDateRangeSelectOption} */
     const option = event.target.dataset.option;
 
     if (option === this._selectedOption) {
+      this._optionSelectorRef.value.close();
       return;
     }
 
     this._selectedOption = option;
 
     if (this._selectedOption === 'custom') {
-      this.value = {
-        type: 'custom',
+      this._customDateRange = {
         since: this._currentDateRange.since,
         until: isLive(this._currentDateRange) ? new Date().toISOString() : this._currentDateRange.until,
       };
     } else if (this._selectedOption === 'live') {
+      this._optionSelectorRef.value.close();
       this._applyDateRange({ type: 'live' });
     } else {
+      this._optionSelectorRef.value.close();
       this._applyDateRange({ type: 'preset', preset: this._selectedOption });
     }
   }
@@ -197,6 +176,7 @@ export class CcLogsDateRangeSelector extends LitElement {
    * @param {FormDataMap} formData
    */
   _onCustomDateRangeFormSubmit(formData) {
+    this._optionSelectorRef.value.close();
     this._applyDateRange({
       type: 'custom',
       since: /** @type {string} */ (formData.since),
@@ -257,44 +237,50 @@ export class CcLogsDateRangeSelector extends LitElement {
   }
 
   render() {
+    const currentOptions = this._getOption(this.value);
+
     return html`
       <div class="wrapper">
         <cc-popover
           ${ref(this._optionSelectorRef)}
-          .icon=${this._getOptionIcon(this._selectedOption)}
+          .icon=${this._getOptionIcon(currentOptions)}
           class="options-popover"
           ?disabled=${this.disabled || this.readonly}
         >
           <div slot="button-content" class="options-popover-trigger">
-            <div>${this._getOptionLabel(this._selectedOption)}</div>
+            <div>${this._renderOptionLabel(currentOptions, true)}</div>
             <cc-icon .icon=${iconOptionsToggle}></cc-icon>
           </div>
           <div class="options-popover-content">
-            ${OPTIONS.map((option) => {
-              const isSelected = option === this._selectedOption;
+            <div class="options-popover-content--left">
+              ${OPTIONS.map((option) => {
+                const isSelected = option === this._selectedOption;
 
-              return html`
-                <button
-                  class="option-button"
-                  data-option="${option}"
-                  data-selected="${isSelected}"
-                  @click=${this._onOptionChange}
-                >
-                  <cc-icon .icon=${this._getOptionIcon(option)} data-option="${option}"></cc-icon>
-                  <span data-option="${option}">${this._getOptionLabel(option)}</span>
-                  ${isSelected
-                    ? html`<cc-icon
-                        class="option-button-current"
-                        .icon=${iconOptionSelected}
-                        data-option="${option}"
-                      ></cc-icon>`
-                    : ''}
-                </button>
-              `;
-            })}
+                return html`
+                  <button
+                    class="option-button"
+                    data-option="${option}"
+                    data-selected="${isSelected}"
+                    @click=${this._onOptionChange}
+                  >
+                    <cc-icon .icon=${this._getOptionIcon(option)} data-option="${option}"></cc-icon>
+                    <span data-option="${option}">${this._renderOptionLabel(option, false)}</span>
+                    ${isSelected
+                      ? html`<cc-icon
+                          class="option-button-current"
+                          .icon=${iconOptionSelected}
+                          data-option="${option}"
+                        ></cc-icon>`
+                      : ''}
+                  </button>
+                `;
+              })}
+            </div>
+            ${this._selectedOption === 'custom'
+              ? html`<div class="options-popover-content--right">${this._renderCustomDateRange()}</div>`
+              : ''}
           </div>
         </cc-popover>
-        ${this._renderCustomDateRange()}
       </div>
     `;
   }
@@ -355,12 +341,51 @@ export class CcLogsDateRangeSelector extends LitElement {
             @cc-button:click=${this._onCustomDateRangeShift}
           >
           </cc-button>
-          <cc-button type="submit" ?disabled=${this.readonly || this.disabled}>
+          <cc-button type="submit" ?disabled=${this.readonly || this.disabled} primary>
             ${i18n('cc-logs-date-range-selector.custom-date-range.apply')}
           </cc-button>
         </div>
       </form>
     `;
+  }
+
+  /**
+   * @param {LogsDateRangeSelectOption} option
+   * @param {boolean} withDate
+   * @return {string|TemplateResult}
+   */
+  _renderOptionLabel(option, withDate) {
+    switch (option) {
+      case 'live':
+        return i18n('cc-logs-date-range-selector.option.live');
+      case 'lastHour':
+        return i18n('cc-logs-date-range-selector.option.last-hour');
+      case 'last4Hours':
+        return i18n('cc-logs-date-range-selector.option.last-4-hours');
+      case 'last7Days':
+        return i18n('cc-logs-date-range-selector.option.last-7-days');
+      case 'today':
+        return i18n('cc-logs-date-range-selector.option.today');
+      case 'yesterday':
+        return i18n('cc-logs-date-range-selector.option.yesterday');
+      case 'custom': {
+        if (withDate) {
+          const formatter = new DateFormatter('datetime-short', this.timezone);
+          const since = formatter.format(new Date(this._currentDateRange.since));
+          const until = formatter.format(new Date(this._currentDateRange.until));
+          const dateRange = `[${since} - ${until}]`;
+
+          return html`
+            <div class="options-popover-trigger--with-detail">
+              <span>${i18n('cc-logs-date-range-selector.option.custom')}</span>
+              <span class="date-range">${dateRange}</span>
+            </div>
+          `;
+        }
+
+        return i18n('cc-logs-date-range-selector.option.custom');
+      }
+    }
   }
 
   static get styles() {
@@ -379,9 +404,8 @@ export class CcLogsDateRangeSelector extends LitElement {
         }
 
         .options-popover {
-          --cc-button-font-weight: normal;
-          --cc-button-text-transform: none;
-          --cc-popover-trigger-button-width: 100%;
+          --cc-popover-trigger-button-font-weight: normal;
+          --cc-popover-trigger-button-text-transform: none;
           --cc-popover-padding: 0;
         }
 
@@ -406,9 +430,32 @@ export class CcLogsDateRangeSelector extends LitElement {
           transform: rotate(180deg);
         }
 
+        .options-popover-trigger--with-detail {
+          align-items: center;
+          display: flex;
+          gap: 0.25em;
+        }
+
+        .date-range {
+          color: var(--cc-color-text-weak, #000);
+          font-size: 0.75em;
+        }
+
         .options-popover-content {
           display: flex;
+        }
+
+        .options-popover-content--left {
+          display: flex;
           flex-direction: column;
+        }
+
+        .options-popover-content--right {
+          align-items: center;
+          border-left: 1px solid var(--cc-color-border-neutral, #000);
+          display: flex;
+          margin-left: 1em;
+          padding: 1em;
         }
 
         .option-button {
@@ -424,12 +471,12 @@ export class CcLogsDateRangeSelector extends LitElement {
           justify-items: start;
           margin: 0;
           padding: 0.5em;
+          white-space: nowrap;
         }
 
         .option-button:focus {
           border-radius: var(--cc-border-radius-small, 0.15em);
           outline: var(--cc-focus-outline, #000 solid 2px);
-          outline-offset: var(--cc-focus-outline-offset, 2px);
           z-index: 3;
         }
 
@@ -438,18 +485,19 @@ export class CcLogsDateRangeSelector extends LitElement {
           background-color: var(--cc-color-bg-neutral);
         }
 
+        .option-button[data-selected='false'] {
+          padding-right: 1.5em;
+        }
+
         .option-button-current {
           margin-left: 1em;
         }
 
         .custom-date-range {
-          background-color: var(--cc-color-bg-default, #fff);
-          border: 1px solid var(--cc-color-border-neutral, #aaa);
-          border-radius: var(--cc-border-radius-default, 0.25em);
           display: flex;
           flex-direction: column;
           gap: 0.75em;
-          padding: 0.5em;
+          min-width: max-content;
         }
 
         .custom-date-range-buttons {

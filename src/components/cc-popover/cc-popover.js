@@ -57,6 +57,8 @@ import '../cc-button/cc-button.js';
  * @cssprop {Size} --cc-popover-padding - Sets the padding of the floating area (default 0.5em).
  * @cssprop {Number} --cc-popover-z-index - Sets the z-index of the floating content (defaults: `999`).
  * @cssprop {Width} --cc-popover-trigger-button-width - Sets the width of the trigger button (defaults: `inherit`).
+ * @cssprop {FontWeight} --cc-popover-trigger-button-font-weight - Sets the font-weight CSS property of the trigger button (defaults: `bold`).
+ * @cssprop {TextTransform} --cc-popover-trigger-button-text-transform - Sets the text-transform CSS property of the trigger button (defaults: `uppercase`).
  */
 export class CcPopover extends LitElement {
   static get properties() {
@@ -212,6 +214,7 @@ export class CcPopover extends LitElement {
       <div class="wrapper">
         <cc-button
           ${ref(this._buttonRef)}
+          class="trigger-button"
           .a11yExpanded=${this.isOpen}
           .a11yName=${this.a11yName}
           ?hide-text=${this.hideText}
@@ -247,7 +250,10 @@ export class CcPopover extends LitElement {
           position: relative;
         }
 
-        cc-button {
+        .trigger-button {
+          --cc-button-font-weight: var(--cc-popover-trigger-button-font-weight);
+          --cc-button-text-transform: var(--cc-popover-trigger-button-text-transform);
+
           width: var(--cc-popover-trigger-button-width, inherit);
         }
 
@@ -258,7 +264,8 @@ export class CcPopover extends LitElement {
           box-shadow:
             0 2px 4px rgb(38 38 38 / 25%),
             0 5px 15px rgb(38 38 38 / 25%);
-          overflow: hidden;
+          overflow: clip;
+          overflow-clip-margin: 3px;
           padding: var(--cc-popover-padding, 0.5em);
           position: absolute;
           z-index: var(--cc-popover-z-index, 999);
