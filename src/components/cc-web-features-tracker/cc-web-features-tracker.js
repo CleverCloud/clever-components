@@ -1,22 +1,49 @@
 import { LitElement, html, css } from 'lit';
-import webFeatures from './web-features.json';
+// @ts-ignore
+import webAndBcdFeatures from './web-features.json';
 
 /**
  * Component for web trackers features.
  *
  * @cssdisplay block
  */
-export class CcWebFeaturesTrackers extends LitElement {
+export class CcWebFeaturesTracker extends LitElement {
   static get properties() {
-    return {};
+    return {
+      _features: { type: Array, state: true }
+    };
   }
 
   constructor() {
     super();
   }
 
-  render() {
-    return html``;
+  render () {
+    return html`
+    <table>
+      <thead>
+        <tr>
+          <th>Feature</th>
+          <th>Support</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${webAndBcdFeatures.webFeatures.map(
+          ({ featureId, requiredStatus }) => this._renderFeatureRow(featureId, requiredStatus)
+        )}
+      </tbody>
+    </table>
+    `;
+  }
+
+  _renderFeatureRow(featureId, requiredStatus) {
+
+    return html`
+      <tr>
+        <td>${featureId}</td>
+        <td>${requiredStatus}</td>
+      </tr>
+    `;
   }
 
   static get styles() {
@@ -28,4 +55,4 @@ export class CcWebFeaturesTrackers extends LitElement {
   }
 }
 
-window.customElements.define('cc-web-features-trackers', CcWebFeaturesTrackers);
+window.customElements.define('cc-web-features-tracker', CcWebFeaturesTracker);
