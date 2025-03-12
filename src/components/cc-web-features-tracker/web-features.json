@@ -15,7 +15,7 @@
   ],
   "bcdFeatures": [
     {
-      "featureId": " javascript.classes.private_class_fields",
+      "featureId": "javascript.classes.private_class_fields",
       "requiredStatus": "newly"
     },
     {

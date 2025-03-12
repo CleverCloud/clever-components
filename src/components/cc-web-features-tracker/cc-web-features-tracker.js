@@ -2,6 +2,9 @@ import { LitElement, html, css } from 'lit';
 import { Task } from '@lit/task';
 // @ts-ignore
 import webAndBcdFeatures from './web-features.json';
+import '../cc-loader/cc-loader.js';
+import '../cc-notice/cc-notice.js';
+import { WebView } from 'storybook/internal/preview-api';
 
 /**
  * Component for web trackers features.
@@ -20,26 +23,61 @@ export class CcWebFeaturesTracker extends LitElement {
 
     this._featuresTask = new Task(this, {
       task: async ([], { signal }) => {
-        const webFeaturesUrls = webAndBcdFeatures.webFeatures.map((webFeature) => `https://api.webstatus.dev/v1/features/${webFeature.featureId}`);
+        const webFeaturesUrls = webAndBcdFeatures.webFeatures.map(
+          (webFeature) => `https://api.webstatus.dev/v1/features/${webFeature.featureId}`,
+        );
 
         const bcdResponse = await fetch('https://unpkg.com/@mdn/browser-compat-data/data.json', { signal });
-        const webFeatures = await Promise.all(webFeaturesUrls.map(async (url) => {
-          const response = await fetch(url, { signal });
-          if (!response.ok) { throw new Error(response.status); }
-          return await response.json() ;
-        }));
+        const webFeatures = await Promise.all(
+          webFeaturesUrls.map(async (url) => {
+            const response = await fetch(url, { signal });
+            if (!response.ok) {
+              throw new Error(response.status);
+            }
+            return await response.json();
+          }),
+        );
 
-        if (!bcdResponse.ok) { throw new Error(bcdResponse.status); }
+        if (!bcdResponse.ok) {
+          throw new Error(bcdResponse.status);
+        }
         const bcdData = await bcdResponse.json();
+        const formattedBcd = this._retrieveBcdFeatures(bcdData);
+        console.log(formattedBcd);
 
-        console.log({ webFeatures })
-        console.log({ bcdData })
+        console.log({ webFeatures });
+        console.log({ bcdData });
+        return [...webFeatures, ...formattedBcd];
       },
-      args: () => []
-    })
+      args: () => [],
+    });
+  }
+
+  _retrieveBcdFeatures(rawBcd) {
+    const bcdFeatures = webAndBcdFeatures.bcdFeatures;
+
+    return bcdFeatures.map(({ featureId, requiredStatus }) => {
+      // javascript.classes.private_class_fields
+      const theKey = featureId.split('.');
+      let value = rawBcd;
+      for (const key of theKey) {
+        value = value[key];
+      }
+      return value['__compat'];
+    });
   }
 
   render() {
+    return html`
+      ${this._featuresTask.render({
+        pending: () => html`<cc-loader></cc-loader>`,
+        complete: (formattedFeatures) => this._renderFeaturesTable(formattedFeatures),
+        error: (e) => html`<cc-notice .message="${e}"></cc-notice>`,
+      })}
+    `;
+  }
+
+  _renderFeaturesTable(formattedFeatures) {
     return html`
       <table>
         <thead>
