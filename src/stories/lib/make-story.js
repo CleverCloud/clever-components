@@ -4,7 +4,7 @@ import customElementsManifest from '../../../dist/custom-elements.json';
 import { setLanguage } from '../../lib/i18n/i18n.js';
 import { sequence } from './sequence.js';
 
-export function makeStory(...configs) {
+export function makeStory  (...configs) {
   const {
     name,
     docs,

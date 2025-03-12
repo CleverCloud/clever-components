@@ -3,6 +3,7 @@
 import React from 'react';
 // several docs rely on `cc-notice`
 import '../../components/cc-notice/cc-notice.js';
+import '../../components/cc-web-features-tracker/cc-web-features-tracker.js';
 
 export function MarkdownDocs({ html }) {
   const htmlContent = { __html: html };
