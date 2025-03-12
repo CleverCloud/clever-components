@@ -1,0 +1,34 @@
+{
+  "webFeatures": [
+    {
+      "featureId": "top-level-await",
+      "requiredStatus": "widely"
+    },
+    {
+      "featureId": "subgrid",
+      "requiredStatus": "newly"
+    },
+    {
+      "featureId": "flexbox-gap",
+      "requiredStatus": "widely"
+    }
+  ],
+  "bcdFeatures": [
+    {
+      "featureId": " javascript.classes.private_class_fields",
+      "requiredStatus": "newly"
+    },
+    {
+      "featureId": "javascript.classes.private_class_fields_in",
+      "requiredStatus": "newly"
+    },
+    {
+      "featureId": "javascript.classes.private_class_methods",
+      "requiredStatus": "newly"
+    },
+    {
+      "featureId": "javascript.builtins.Array.toSorted",
+      "requiredStatus": "widely"
+    }
+  ]
+}
