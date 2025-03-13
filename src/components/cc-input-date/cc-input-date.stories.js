@@ -186,8 +186,12 @@ export const customLabelStyle = makeStory(
       --cc-input-label-color: #475569;
       --cc-input-label-font-size: 1.2em;
       --cc-input-label-font-weight: bold;
+      --cc-form-label-gap: 0.5em;
       font-size: 1.25em;
       max-width: 32em;
+    }
+    cc-input-date[inline] {
+      --cc-form-label-gap: 0.75em;
     }
     cc-input-date:nth-of-type(${customBaseItems.length + 'n'}) {
       margin-block-end: 2em;
