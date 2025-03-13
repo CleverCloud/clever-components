@@ -20,6 +20,8 @@ import '../cc-plan-item/cc-plan-item.js';
  * @cssdisplay block
  *
  * @fires {CustomEvent<string>} cc-plan-picker:input - Fires the id of the selected plan
+ *
+ * @cssprop {Size} --cc-form-controls-gap - The vertical space between different form controls (defaults: `2em`).
  */
 export class CcPlanPicker extends CcFormControlElement {
   static get properties() {
@@ -219,6 +221,10 @@ export class CcPlanPicker extends CcFormControlElement {
           border: none;
           margin: 0;
           padding: 0;
+        }
+
+        fieldset + fieldset {
+          margin-block-start: var(--cc-form-controls-gap, 2em);
         }
 
         input[type='radio']:focus-visible + label cc-plan-item {
