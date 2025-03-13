@@ -1467,6 +1467,28 @@ export const translations = {
   'cc-toast.icon-alt.success': `Success`,
   'cc-toast.icon-alt.warning': `Warning`,
   //#endregion
+  //#region cc-token-session-list
+  'cc-token-session-list.card.clever-team': `Clever Cloud Team`,
+  'cc-token-session-list.card.current-session': `Current session`,
+  'cc-token-session-list.card.expires-soon': `Expires soon`,
+  'cc-token-session-list.card.human-friendly-date': /** @param {{ date: Date }} _ */ ({ date }) => formatDatetime(date),
+  'cc-token-session-list.card.label.creation': `Creation: `,
+  'cc-token-session-list.card.label.expiration': `Expiration: `,
+  'cc-token-session-list.card.label.last-used': `Last used: `,
+  'cc-token-session-list.error': `Something went wrong while loading sessions`,
+  'cc-token-session-list.intro': `Below is the list of registered sessions for your account, which you can revoke (except the current session):`,
+  'cc-token-session-list.main-heading': `Console sessions`,
+  'cc-token-session-list.revoke-all-sessions': `Revoke all sessions`,
+  'cc-token-session-list.revoke-all-sessions.error': () =>
+    sanitize`Something went wrong while revoking all sessions.<br>None of your sessions have been revoked`,
+  'cc-token-session-list.revoke-all-sessions.partial-error': () =>
+    sanitize`Something went wrong while revoking all sessions.<br>Only some sessions have been revoked successfully`,
+  'cc-token-session-list.revoke-all-sessions.success': `All sessions have been revoked successfully`,
+  'cc-token-session-list.revoke-session': /** @param {{ tokenNumber: number}} _ */ ({ tokenNumber }) =>
+    `Revoke session ${tokenNumber}`,
+  'cc-token-session-list.revoke-session.error': `Something went wrong while revoking the session`,
+  'cc-token-session-list.revoke-session.success': `The session has been revoked successfully`,
+  //#endregion
   //#region cc-zone
   'cc-zone.country': /** @param {{code: string, name: string}} _ */ ({ code, name }) =>
     getCountryName(lang, code, name),

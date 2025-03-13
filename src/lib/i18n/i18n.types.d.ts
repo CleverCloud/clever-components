@@ -8,7 +8,7 @@ export type TranslateFunction = (data: any) => Translated;
 
 export type Translated = string | Node;
 
-export type DateInput = number | string;
+export type DateInput = number | string | Date;
 
 export type DateFormatter = (dateInput: DateInput) => string;
 
