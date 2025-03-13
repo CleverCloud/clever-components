@@ -1289,6 +1289,29 @@ export const translations = {
   'cc-select.error.empty': `Veuillez sélectionner une valeur.`,
   'cc-select.required': `obligatoire`,
   //#endregion
+  //#region cc-session-tokens
+  'cc-session-tokens.card.clever-team': `Équipe Clever Cloud`,
+  'cc-session-tokens.card.current-session': `Session actuelle`,
+  'cc-session-tokens.card.deadline-approaches': `Expire bientôt`,
+  'cc-session-tokens.card.human-friendly-date': /** @param {{ date: string|number }} _ */ ({ date }) =>
+    formatDatetime(date),
+  'cc-session-tokens.card.label.creation': () => sanitize`Création&nbsp;: `,
+  'cc-session-tokens.card.label.expiration': () => sanitize`Expiration&nbsp;: `,
+  'cc-session-tokens.card.label.last-used': () => sanitize`Dernière utilisation&nbsp;: `,
+  'cc-session-tokens.error': `Une erreur est survenue pendant le chargement des sessions.`,
+  'cc-session-tokens.intro': `Ci-dessous figure la liste de toutes les sessions enregistrées pour votre compte. Vous pouvez les révoquer comme vous le souhaitez.`,
+  'cc-session-tokens.main-heading': `Sessions de connexion à la console`,
+  'cc-session-tokens.revoke-all-tokens': `Révoquer toutes les sessions`,
+  'cc-session-tokens.revoke-all-tokens.error': () =>
+    sanitize`Une erreur est survenue pendant la révocation de toutes les sessions.<br>Aucune session n'a été révoquée.`,
+  'cc-session-tokens.revoke-all-tokens.partial-error': () =>
+    sanitize`Une erreur est survenue pendant la révocation de toutes les sessions.<br>Seules certaines sessions ont été révoquées avec succès.`,
+  'cc-session-tokens.revoke-all-tokens.success': `Toutes les sessions ont été révoquées avec succès.`,
+  'cc-session-tokens.revoke-token': /** @param {{ tokenNumber: number}} _ */ ({ tokenNumber }) =>
+    `Révoquer la session numéro ${tokenNumber}`,
+  'cc-session-tokens.revoke-token.error': `Une erreur est survenue pendant la révocation de la session.`,
+  'cc-session-tokens.revoke-token.success': `La session a été révoquée avec succès.`,
+  //#endregion
   //#region cc-ssh-key-list
   'cc-ssh-key-list.add.btn': `Ajouter la clé`,
   'cc-ssh-key-list.add.info': () =>
