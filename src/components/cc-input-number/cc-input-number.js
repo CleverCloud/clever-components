@@ -37,6 +37,7 @@ import '../cc-icon/cc-icon.js';
  * @fires {CustomEvent<string>} cc-input-number:input - Fires the `value` whenever the `value` changes.
  * @fires {CustomEvent} cc-input-number:requestimplicitsubmit - Fires when enter key is pressed.
  *
+ * @cssprop {Size} --cc-form-label-gap - The space between the label and the control (defaults: `0.35em` or `1em` when inline).
  * @cssprop {Align} --cc-input-number-align - Change the alignment of the number present in the input (defaults: `right`).
  * @cssprop {Color} --cc-input-btn-icon-color - The color for the icon within the +/- buttons (defaults: `#595959`).
  * @cssprop {FontFamily} --cc-input-font-family - The font-family for the input content (defaults: `inherit`).
@@ -339,7 +340,7 @@ export class CcInputNumber extends CcFormControlElement {
         :host([inline]) {
           align-items: baseline;
           display: inline-grid;
-          gap: 0 1em;
+          gap: 0 var(--cc-form-label-gap, 1em);
           grid-auto-rows: min-content;
           grid-template-areas:
             'label input'
@@ -363,7 +364,7 @@ export class CcInputNumber extends CcFormControlElement {
           gap: 2em;
           justify-content: space-between;
           line-height: 1.25em;
-          padding-bottom: 0.35em;
+          padding-block-end: var(--cc-form-label-gap, 0.35em);
         }
 
         label .label-text {
