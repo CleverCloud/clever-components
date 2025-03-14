@@ -986,6 +986,13 @@ export const translations = {
   'cc-notice.icon-alt.success': `Succès`,
   'cc-notice.icon-alt.warning': `Avertissement`,
   //#endregion
+  //#region cc-oauth-tokens
+  'cc-oauth-tokens.empty': `Aucune application tierce liée à votre compte.`,
+  'cc-oauth-tokens.error': `Une erreur est survenue lors du chargement des tokens OAuth.`,
+  'cc-oauth-tokens.intro': `Below is a list of all the applications currently linked and information associated to them. You may revoke any of them if necessary.`,
+  'cc-oauth-tokens.main-heading': `Tokens OAuth`,
+  'cc-oauth-tokens.revoke-all-tokens': `Révoquer tous les tokens`,
+  //#endregion
   //#region cc-order-summary
   'cc-order-summary.create': `Créer`,
   'cc-order-summary.title': `Récapitulatif de commande`,

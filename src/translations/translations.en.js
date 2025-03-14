@@ -974,6 +974,13 @@ export const translations = {
   'cc-notice.icon-alt.success': `Success`,
   'cc-notice.icon-alt.warning': `Warning`,
   //#endregion
+  //#region cc-oauth-tokens
+  'cc-oauth-tokens.empty': `You do not have any third-party applications linked to your account.`,
+  'cc-oauth-tokens.error': `Something went wrong while loading OAuth tokens.`,
+  'cc-oauth-tokens.intro': `Ci-dessous figure la liste des applications tierces liées à votre compte ansi que les informations associées à celles-ci. Vous pouvez les révoquer comme vous le souhaitez.`,
+  'cc-oauth-tokens.main-heading': `OAuth tokens`,
+  'cc-oauth-tokens.revoke-all-tokens': `Revoke all tokens`,
+  //#endregion
   //#region cc-order-summary
   'cc-order-summary.create': `Create`,
   'cc-order-summary.title': `Order summary`,
