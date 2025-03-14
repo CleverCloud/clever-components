@@ -68,6 +68,8 @@ export class CcOauthTokens extends LitElement {
       .empty {
         border: 1px solid var(--cc-color-border-neutral-weak);
         padding: 1em;
+        text-align: center;
+        font-weight: bold;
       }
     `;
   }

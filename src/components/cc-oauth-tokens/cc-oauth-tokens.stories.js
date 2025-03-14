@@ -25,28 +25,36 @@ const baseTokens = [
     id: '1',
     consumerName: 'Github integration',
     creationDate: new Date(Date.now() - 180 * ONE_DAY).toISOString(),
+    expirationDate: new Date(Date.now() + 32 * ONE_DAY).toISOString(), // does not expire soon (32 days)
     lastUsedDate: new Date(Date.now() - 30 * ONE_DAY).toISOString(),
+    imageUrl: 'https://cdn.clever-cloud.com/uploads/2023/08/nodejs.svg'
   },
   {
     type: 'idle',
     id: '2',
     consumerName: 'CI pipeline',
     creationDate: new Date(Date.now() - 90 * ONE_DAY).toISOString(),
+    expirationDate: new Date(Date.now() + 45 * ONE_DAY).toISOString(), // does not expire soon (45 days)
     lastUsedDate: new Date(Date.now() - 7 * ONE_DAY).toISOString(),
+    imageUrl: 'https://cdn.clever-cloud.com/uploads/2023/08/nodejs.svg'
   },
   {
     type: 'idle',
     id: '3',
     consumerName: 'Monitoring tool',
     creationDate: new Date(Date.now() - 240 * ONE_DAY).toISOString(),
+    expirationDate: new Date(Date.now() + 6 * ONE_DAY).toISOString(), // expires soon (6 days)
     lastUsedDate: new Date(Date.now() - 10 * ONE_DAY).toISOString(),
+    imageUrl: 'https://cdn.clever-cloud.com/uploads/2023/08/nodejs.svg'
   },
   {
     type: 'idle',
     id: '4',
     consumerName: 'Deployment script',
     creationDate: new Date(Date.now() - 30 * ONE_DAY).toISOString(),
+    expirationDate: new Date(Date.now() + 2 * ONE_DAY).toISOString(), // expires soon (2 days)
     lastUsedDate: new Date(Date.now() - 2 * ONE_DAY).toISOString(),
+    imageUrl: 'https://cdn.clever-cloud.com/uploads/2023/08/nodejs.svg'
   },
 ];
 
