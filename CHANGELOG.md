@@ -5,6 +5,23 @@ title: 'Changelog'
 
 # Changelog
 
+## [18.2.0](https://github.com/CleverCloud/clever-components/compare/18.1.0...18.2.0) (2025-03-14)
+
+
+### 🚀 Features
+
+* **cc-block-detail:** init cc-block-detail component ([7584903](https://github.com/CleverCloud/clever-components/commit/75849030a817dd643074dcc3d6d6a0306cfd0c89))
+* **cc-logs-control:** add a slot on the left of the logs container ([59fd2c2](https://github.com/CleverCloud/clever-components/commit/59fd2c2082abb73be34aa2259b66f757458b6065))
+* **cc-logs-date-range-selector:** move the custom date range panel inside popover ([1a3b74a](https://github.com/CleverCloud/clever-components/commit/1a3b74aabf46246ce5320cb904c01d80d01f56aa))
+* **cc-order-summary:** improve configuration item implementation ([dbdcf15](https://github.com/CleverCloud/clever-components/commit/dbdcf150804c85f4bc5b4de3a03b7186b0acea5b))
+* **cc-popover:** add 2 new css custom props for the trigger button styling ([3a8376d](https://github.com/CleverCloud/clever-components/commit/3a8376da51be00cb32ec2a4b83dbf95485e528b1))
+* **cc-popover:** make sure focus outline is not clipped ([ac6cfe5](https://github.com/CleverCloud/clever-components/commit/ac6cfe5add7c44a96c6723bd6f33d3f72ef9136f))
+
+
+### 🐛 Bug Fixes
+
+* **cc-logs-date-range-selector:** fix `since` and `until` dates edition ([4c33133](https://github.com/CleverCloud/clever-components/commit/4c331337dabd75aa903a857759b0695ca3ac1292)), closes [#1356](https://github.com/CleverCloud/clever-components/issues/1356)
+
 ## [18.1.0](https://github.com/CleverCloud/clever-components/compare/18.0.0...18.1.0) (2025-03-04)
 
 
