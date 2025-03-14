@@ -1,56 +1,56 @@
-export type SessionTokensState =
-  | SessionTokensStateLoaded
-  | SessionTokensStateLoading
-  | SessionTokensStateError
-  | SessionTokensStateRevokingAllTokens;
+export type OauthTokenListState =
+  | OauthTokenListStateLoaded
+  | OauthTokenListStateLoading
+  | OauthTokenListStateError
+  | OauthTokenListStateRevokingAll;
 
-export interface SessionTokensStateLoaded {
+export interface OauthTokenListStateLoaded {
   type: 'loaded';
-  tokens: Array<SessionTokenState>;
+  tokens: Array<OauthTokenState>;
 }
 
-export interface SessionTokensStateRevokingAllTokens {
+export interface OauthTokenListStateRevokingAll {
   type: 'revoking-all';
-  tokens: Array<SessionTokenStateRevoking | SessionTokenStateCurrent>;
+  tokens: Array<OauthTokenStateRevoking | OauthTokenStateCurrent>;
 }
 
-export interface SessionTokensStateLoading {
+export interface OauthTokenListStateLoading {
   type: 'loading';
 }
 
-export interface SessionTokensStateError {
+export interface OauthTokenListStateError {
   type: 'error';
 }
 
-export type SessionTokenState = SessionTokenStateIdle | SessionTokenStateRevoking | SessionTokenStateCurrent;
+export type OauthTokenState = OauthTokenStateIdle | OauthTokenStateRevoking | OauthTokenStateCurrent;
 
-export interface SessionTokenStateIdle extends SessionToken {
+export interface OauthTokenStateIdle extends OauthToken {
   type: 'idle';
 }
 
-export interface SessionTokenStateCurrent extends SessionToken {
+export interface OauthTokenStateCurrent extends OauthToken {
   type: 'current';
 }
 
-interface SessionTokenStateRevoking extends SessionToken {
+interface OauthTokenStateRevoking extends OauthToken {
   type: 'revoking';
 }
 
-interface SessionToken {
+interface OauthToken {
   id: string;
-  creationDate: number | string; // timestamp as number or string with ISO format with timezone information
-  expirationDate: number | string; // timestamp as number or string with ISO format with timezone information
-  lastUsedDate: number | string; // timestamp as number or string with ISO format with timezone information
-  isCleverTeam: boolean;
+  consumerName: string;
+  creationDate: Date;
+  expirationDate: Date;
+  lastUsedDate: Date;
+  imageUrl: string;
 }
 
-export type SessionTokenStateWithExpirationWarning = SessionTokenState & {
+export type OauthTokenStateWithExpirationWarning = OauthTokenState & {
   isExpirationClose: boolean;
 };
 
 // FIXME: remove when clever-client exposes types
-export type RawSessionTokenData = {
-export type RawTokenData = {
+export type RawOauthTokenData = {
   token: string;
   consumer: {
     name: string;
@@ -92,4 +92,5 @@ export type RawTokenData = {
     manage_ssh_keys: boolean;
   };
   employeeId: string | null;
+  imageUrl: string;
 };

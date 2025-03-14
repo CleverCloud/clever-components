@@ -14,7 +14,7 @@ import { i18n } from '../../translations/translation.js';
  * @typedef {import('./cc-session-tokens.types.js').SessionTokensStateLoaded} SessionTokensStateLoaded
  * @typedef {import('./cc-session-tokens.types.js').SessionTokensStateRevokingAllTokens} SessionTokensStateRevokingAllTokens
  * @typedef {import('./cc-session-tokens.types.js').SessionTokenStateRevoking} SessionTokensStateRevoking
- * @typedef {import('./cc-session-tokens.types.js').RawSessionTokenData} RawSessionTokenData
+ * @typedef {import('./cc-session-tokens.types.js').RawTokenData} RawSessionTokenData
  * @typedef {import('../../lib/send-to-api.types.js').ApiConfig} ApiConfig
  * @typedef {import('../../lib/smart/smart-component.types.js').OnContextUpdateArgs<CcSessionTokens>} OnContextUpdateArgs
  */
