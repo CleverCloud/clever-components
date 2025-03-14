@@ -4,7 +4,7 @@ import { iconRemixArrowRightSLine as iconArrowRight } from '../../assets/cc-remi
 import { hasSlottedChildren } from '../../directives/has-slotted-children.js';
 import { dispatchCustomEvent } from '../../lib/events.js';
 import { isStringEmpty } from '../../lib/utils.js';
-import { linkStyles } from '../../templates/cc-link/cc-link.js';
+import '../cc-link/cc-link.js';
 import '../cc-button/cc-button.js';
 import '../cc-expand/cc-expand.js';
 import '../cc-icon/cc-icon.js';
@@ -156,7 +156,6 @@ export class CcBlock extends LitElement {
   static get styles() {
     return [
       // language=CSS
-      linkStyles,
       css`
         :host {
           background-color: var(--cc-color-bg-default, #fff);

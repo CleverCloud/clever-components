@@ -10,7 +10,7 @@ import '../cc-img/cc-img.js';
 import '../cc-notice/cc-notice.js';
 
 import { skeletonStyles } from '../../styles/skeleton.js';
-import { linkStyles } from '../../templates/cc-link/cc-link.js';
+import '../cc-link/cc-link.js';
 import { i18n } from '../../translations/translation.js';
 
 /**
@@ -182,7 +182,6 @@ export class CcHeaderOrga extends LitElement {
 
   static get styles() {
     return [
-      linkStyles,
       skeletonStyles,
       // language=CSS
       css`

@@ -1,6 +1,6 @@
 import { css, html, LitElement } from 'lit';
 import { accessibilityStyles } from '../../styles/accessibility.js';
-import { linkStyles } from '../../templates/cc-link/cc-link.js';
+import '../cc-link/cc-link.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-badge/cc-badge.js';
 import '../cc-icon/cc-icon.js';
@@ -159,7 +159,6 @@ export class CcProductList extends LitElement {
   static get styles() {
     return [
       accessibilityStyles,
-      linkStyles,
       // language=CSS
       css`
         :host {

@@ -1,6 +1,6 @@
 import { css, html, LitElement } from 'lit';
 import { dispatchCustomEvent } from '../../lib/events.js';
-import { linkStyles } from '../../templates/cc-link/cc-link.js';
+import '../cc-link/cc-link.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-addon-option/cc-addon-option.js';
 import '../cc-block/cc-block.js';
@@ -90,7 +90,6 @@ export class CcAddonOptionForm extends LitElement {
 
   static get styles() {
     return [
-      linkStyles,
       // language=CSS
       css`
         :host {
