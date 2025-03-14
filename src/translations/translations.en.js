@@ -1509,6 +1509,28 @@ export const translations = {
   'cc-token-api-list.revoke-token.error': `Something went wrong while revoking the API token`,
   'cc-token-api-list.revoke-token.success': `The API token has been revoked successfully`,
   //#endregion
+  //#region cc-token-oauth-list
+  'cc-token-oauth-list.card.expires-soon': `Expires soon`,
+  'cc-token-oauth-list.card.human-friendly-date': /** @param {{ date: Date }} _ */ ({ date }) => formatDatetime(date),
+  'cc-token-oauth-list.card.label.creation': `Creation: `,
+  'cc-token-oauth-list.card.label.expiration': `Expiration: `,
+  'cc-token-oauth-list.card.label.last-used': `Last used: `,
+  'cc-token-oauth-list.empty': `You do not have any third-party applications linked to your account`,
+  'cc-token-oauth-list.error': `Something went wrong while loading OAuth tokens`,
+  'cc-token-oauth-list.intro': () =>
+    sanitize`Below is the list of third-party applications linked to your account and their associated information. You may revoke these <a href="https://www.clever-cloud.com/developers/api/howto/#oauth1" title="OAuth tokens - Documentation - new window">OAuth tokens</a> as needed.`,
+  'cc-token-oauth-list.main-heading': `OAuth tokens`,
+  'cc-token-oauth-list.revoke-all-tokens': `Revoke all OAuth tokens`,
+  'cc-token-oauth-list.revoke-all-tokens.error': () =>
+    sanitize`Something went wrong while revoking all OAuth tokens.<br>None of your OAuth tokens have been revoked`,
+  'cc-token-oauth-list.revoke-all-tokens.partial-error': () =>
+    sanitize`Something went wrong while revoking all OAuth tokens.<br>Only some OAuth tokens have been revoked successfully`,
+  'cc-token-oauth-list.revoke-all-tokens.success': `All OAuth tokens have been revoked successfully`,
+  'cc-token-oauth-list.revoke-token': /** @param {{ consumerName: string}} _ */ ({ consumerName }) =>
+    `Revoke OAuth token for ${consumerName}`,
+  'cc-token-oauth-list.revoke-token.error': `Something went wrong while revoking the OAuth token`,
+  'cc-token-oauth-list.revoke-token.success': `The OAuth token has been revoked successfully`,
+  //#endregion
   //#region cc-token-session-list
   'cc-token-session-list.card.clever-team': `Clever Cloud Team`,
   'cc-token-session-list.card.current-session': `Current session`,
