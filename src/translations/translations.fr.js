@@ -996,6 +996,28 @@ export const translations = {
   'cc-notice.icon-alt.success': `Succès`,
   'cc-notice.icon-alt.warning': `Avertissement`,
   //#endregion
+  //#region cc-oauth-token-list
+  'cc-oauth-token-list.card.deadline-approaches': `Expire bientôt`,
+  'cc-oauth-token-list.card.human-friendly-date': /** @param {{ date: string|number }} _ */ ({ date }) =>
+    formatDatetime(date),
+  'cc-oauth-token-list.card.label.creation': () => sanitize`Création&nbsp;: `,
+  'cc-oauth-token-list.card.label.expiration': () => sanitize`Expiration&nbsp;: `,
+  'cc-oauth-token-list.card.label.last-used': () => sanitize`Dernière utilisation&nbsp;: `,
+  'cc-oauth-token-list.empty': `Aucune application tierce liée à votre compte.`,
+  'cc-oauth-token-list.error': `Une erreur est survenue pendant le chargement des tokens OAuth.`,
+  'cc-oauth-token-list.intro': `Ci-dessous figure la liste de tous les tokens OAuth enregistrés pour votre compte. Vous pouvez les révoquer comme vous le souhaitez.`,
+  'cc-oauth-token-list.main-heading': `Tokens OAuth`,
+  'cc-oauth-token-list.revoke-all-tokens': `Révoquer tous les tokens OAuth`,
+  'cc-oauth-token-list.revoke-all-tokens.error': () =>
+    sanitize`Une erreur est survenue pendant la révocation de tous les tokens OAuth.<br>Aucun token OAuth n'a été révoqué.`,
+  'cc-oauth-token-list.revoke-all-tokens.partial-error': () =>
+    sanitize`Une erreur est survenue pendant la révocation de tous les tokens OAuth.<br>Seuls certains tokens OAuth ont été révoqués avec succès.`,
+  'cc-oauth-token-list.revoke-all-tokens.success': `Tous les tokens OAuth ont été révoqués avec succès.`,
+  'cc-oauth-token-list.revoke-token': /** @param {{ consumerName: string}} _ */ ({ consumerName }) =>
+    `Révoquer le token OAuth pour ${consumerName}`,
+  'cc-oauth-token-list.revoke-token.error': `Une erreur est survenue pendant la révocation du token OAuth.`,
+  'cc-oauth-token-list.revoke-token.success': `Le token OAuth a été révoqué avec succès.`,
+  //#endregion
   //#region cc-order-summary
   'cc-order-summary.create': `Créer`,
   'cc-order-summary.title': `Récapitulatif de commande`,

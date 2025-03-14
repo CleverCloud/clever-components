@@ -1,62 +1,56 @@
-export type TokenSessionListState =
-  | TokenSessionListStateLoaded
-  | TokenSessionListStateLoading
-  | TokenSessionListStateError
-  | TokenSessionListStateRevokingAll;
+export type OauthTokenListState =
+  | OauthTokenListStateLoaded
+  | OauthTokenListStateLoading
+  | OauthTokenListStateError
+  | OauthTokenListStateRevokingAll;
 
-export interface TokenSessionListStateLoaded {
+export interface OauthTokenListStateLoaded {
   type: 'loaded';
-  currentSession: CurrentSessionToken;
-  otherSessions?: Array<SessionTokenState> | null;
+  tokens: Array<OauthTokenState>;
 }
 
-export interface TokenSessionListStateRevokingAll {
+export interface OauthTokenListStateRevokingAll {
   type: 'revoking-all';
-  currentSession: CurrentSessionToken;
-  otherSessions?: Array<SessionTokenStateRevoking> | null;
+  tokens: Array<OauthTokenStateRevoking | OauthTokenStateCurrent>;
 }
 
-export interface TokenSessionListStateLoading {
+export interface OauthTokenListStateLoading {
   type: 'loading';
 }
 
-export interface TokenSessionListStateError {
+export interface OauthTokenListStateError {
   type: 'error';
 }
 
-export interface CurrentSessionToken extends SessionToken {
-  isCurrentSession: true;
-}
+export type OauthTokenState = OauthTokenStateIdle | OauthTokenStateRevoking | OauthTokenStateCurrent;
 
-export type SessionTokenState = SessionTokenStateIdle | SessionTokenStateRevoking;
-
-export interface SessionTokenStateIdle extends SessionToken {
+export interface OauthTokenStateIdle extends OauthToken {
   type: 'idle';
-  isCurrentSession: false;
 }
 
-interface SessionTokenStateRevoking extends SessionToken {
+export interface OauthTokenStateCurrent extends OauthToken {
+  type: 'current';
+}
+
+interface OauthTokenStateRevoking extends OauthToken {
   type: 'revoking';
-  isCurrentSession: false;
 }
 
-interface SessionToken {
+interface OauthToken {
   id: string;
+  consumerName: string;
   creationDate: Date;
   expirationDate: Date;
   lastUsedDate: Date;
-  isCleverTeam: boolean;
+  imageUrl: string;
 }
 
+export type OauthTokenStateWithExpirationWarning = OauthTokenState & {
+  isExpirationClose: boolean;
+};
+
 // FIXME: remove when clever-client exposes types
-<<<<<<< HEAD:src/components/cc-token-session-list/cc-token-session-list.types.d.ts
-export interface RawTokenData {
-||||||| parent of dee40a53 (feat(cc-oauth-token-list): init):src/components/cc-session-tokens/cc-session-tokens.types.d.ts
-export type RawSessionTokenData = {
-=======
-export type RawSessionTokenData = {
-export type RawTokenData = {
->>>>>>> dee40a53 (feat(cc-oauth-token-list): init):src/components/cc-session-tokens/cc-session-tokens.types.d.ts
+export type RawOauthTokenData = {
   token: string;
   consumer: {
     name: string;
@@ -98,4 +92,5 @@ export type RawTokenData = {
     manage_ssh_keys: boolean;
   };
   employeeId: string | null;
-}
+  imageUrl: string;
+};

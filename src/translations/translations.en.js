@@ -984,6 +984,27 @@ export const translations = {
   'cc-notice.icon-alt.success': `Success`,
   'cc-notice.icon-alt.warning': `Warning`,
   //#endregion
+  //#region cc-oauth-token-list
+  'cc-oauth-token-list.card.deadline-approaches': `Expiration close`,
+  'cc-oauth-token-list.card.human-friendly-date': /** @param {{ date: Date }} _ */ ({ date }) => formatDatetime(date),
+  'cc-oauth-token-list.card.label.creation': `Creation: `,
+  'cc-oauth-token-list.card.label.expiration': `Expiration: `,
+  'cc-oauth-token-list.card.label.last-used': `Last used: `,
+  'cc-oauth-token-list.empty': `You do not have any third-party applications linked to your account.`,
+  'cc-oauth-token-list.error': `Something went wrong while loading OAuth tokens.`,
+  'cc-oauth-token-list.intro': `Below is the list of third-party applications linked to your account and their associated information. You may revoke these OAuth tokens as needed.`,
+  'cc-oauth-token-list.main-heading': `OAuth tokens`,
+  'cc-oauth-token-list.revoke-all-tokens': `Revoke all OAuth tokens`,
+  'cc-oauth-token-list.revoke-all-tokens.error': () =>
+    sanitize`Something went wrong while revoking all OAuth tokens.<br>None of your OAuth tokens have been revoked.`,
+  'cc-oauth-token-list.revoke-all-tokens.partial-error': () =>
+    sanitize`Something went wrong while revoking all OAuth tokens.<br>Only some OAuth tokens have been revoked successfully.`,
+  'cc-oauth-token-list.revoke-all-tokens.success': `All OAuth tokens have been revoked successfully.`,
+  'cc-oauth-token-list.revoke-token': /** @param {{ consumerName: string}} _ */ ({ consumerName: consumerName }) =>
+    `Revoke OAuth token for ${consumerName}`,
+  'cc-oauth-token-list.revoke-token.error': `Something went wrong while revoking the OAuth token.`,
+  'cc-oauth-token-list.revoke-token.success': `The OAuth token has been revoked successfully.`,
+  //#endregion
   //#region cc-order-summary
   'cc-order-summary.create': `Create`,
   'cc-order-summary.title': `Order summary`,
