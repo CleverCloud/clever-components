@@ -15,11 +15,12 @@ title: '💡 Smart'
 
 ## ⚙️ Params
 
-| Name           |    Type     | Required | Details                                     | Default |
-|----------------|:-----------:|:--------:|---------------------------------------------|---------|
-| `apiConfig`    | `ApiConfig` |   Yes    | Object with API configuration (target host) |         |
-| `ownerId`      |  `string`   |   Yes    | UUID prefixed with `orga_` or `user_`       |         |
-| `appId`        |  `string`   |   Yes    | UUID prefixed with `app_`                   |         |
+| Name                 |           Type           | Required | Details                                     | Default |
+|----------------------|:------------------------:|:--------:|---------------------------------------------|---------|
+| `apiConfig`          |       `ApiConfig`        |   Yes    | Object with API configuration (target host) |         |
+| `ownerId`            |         `string`         |   Yes    | UUID prefixed with `orga_` or `user_`       |         |
+| `appId`              |         `string`         |   Yes    | UUID prefixed with `app_`                   |         |
+| `dateRangeSelection` | `LogsDateRangeSelection` |    No    | Initial date range                          |         |
 
 ```ts
 interface ApiConfig {
@@ -28,6 +29,26 @@ interface ApiConfig {
   API_OAUTH_TOKEN_SECRET: string,
   OAUTH_CONSUMER_KEY: string,
   OAUTH_CONSUMER_SECRET: string,
+}
+
+type LogsDateRangeSelection =
+  | LogsDateRangeSelectionLive
+  | LogsDateRangeSelectionPreset
+  | LogsDateRangeSelectionCustom;
+
+interface LogsDateRangeSelectionLive {
+  type: 'live';
+}
+
+interface LogsDateRangeSelectionPreset {
+  type: 'preset';
+  preset: LogsDateRangePresetType;
+}
+
+interface LogsDateRangeSelectionCustom {
+  type: 'custom';
+  since: string;
+  until: string;
 }
 ```
 
