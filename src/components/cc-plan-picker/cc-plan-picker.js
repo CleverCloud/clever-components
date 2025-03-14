@@ -22,6 +22,8 @@ import '../cc-plan-item/cc-plan-item.js';
  * @fires {CustomEvent<string>} cc-plan-picker:input - Fires the id of the selected plan
  *
  * @cssprop {Size} --cc-form-controls-gap - The vertical space between different form controls (defaults: `2em`).
+ * @cssprop {Size} --cc-form-controls-indent - The horizontal space between the start of the line and the form control without the label (defaults: `34px`).
+ * @cssprop {Size} --cc-form-label-gap - The space between the label and the control (defaults: `0.35em`).
  */
 export class CcPlanPicker extends CcFormControlElement {
   static get properties() {
@@ -215,6 +217,7 @@ export class CcPlanPicker extends CcFormControlElement {
         legend {
           display: flex;
           gap: 0.25em;
+          margin-block-end: var(--cc-form-label-gap, 0.35em);
         }
 
         fieldset {
@@ -250,8 +253,7 @@ export class CcPlanPicker extends CcFormControlElement {
           display: grid;
           gap: 1em;
           grid-template-columns: repeat(auto-fill, minmax(13em, 1fr));
-          margin-block-start: 0.5em;
-          margin-inline-start: 34px;
+          margin-inline-start: var(--cc-form-controls-indent, 34px);
         }
       `,
     ];
