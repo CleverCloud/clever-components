@@ -1,10 +1,10 @@
 import { css, html, LitElement } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
-import { ccLink, linkStyles } from '../../templates/cc-link/cc-link.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-block/cc-block.js';
 import '../cc-img/cc-img.js';
+import '../cc-link/cc-link.js';
 import '../cc-notice/cc-notice.js';
 import '../cc-zone/cc-zone.js';
 
@@ -103,7 +103,9 @@ export class CcAddonLinkedApps extends LitElement {
               title="${ifDefined(linkedApp.variantName)}"
             ></cc-img>
             <div class="details">
-              <span class="name">${ccLink(linkedApp.link, linkedApp.name, skeleton)}</span>
+              <span class="name"
+                ><cc-link href="${linkedApp.link}" ?skeleton="${skeleton}">${linkedApp.name}</cc-link></span
+              >
               <cc-zone mode="small" .state="${this._getZoneState(skeleton, linkedApp.zone)}"></cc-zone>
             </div>
           </div>
@@ -129,7 +131,6 @@ export class CcAddonLinkedApps extends LitElement {
 
   static get styles() {
     return [
-      linkStyles,
       skeletonStyles,
       // language=CSS
       css`

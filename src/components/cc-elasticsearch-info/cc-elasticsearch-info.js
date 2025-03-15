@@ -2,11 +2,11 @@ import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { iconRemixInformationFill as iconInfo } from '../../assets/cc-remix.icons.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
-import { ccLink, linkStyles } from '../../templates/cc-link/cc-link.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-block/cc-block.js';
 import '../cc-icon/cc-icon.js';
 import '../cc-img/cc-img.js';
+import '../cc-link/cc-link.js';
 import '../cc-notice/cc-notice.js';
 
 const ELASTICSEARCH_LOGO_URL = 'https://assets.clever-cloud.com/logos/elastic.svg';
@@ -108,10 +108,9 @@ export class CcElasticsearchInfo extends LitElement {
         <div slot="content" class="link-list">${this._renderLinks(this.state.links, skeleton)}</div>
 
         <div slot="footer-right">
-          ${ccLink(
-            ELASTICSEARCH_DOCUMENTATION,
-            html`<cc-icon .icon="${iconInfo}"></cc-icon> ${i18n('cc-elasticsearch-info.documentation.text')}`,
-          )}
+          <cc-link href="${ELASTICSEARCH_DOCUMENTATION}">
+            <cc-icon .icon="${iconInfo}"></cc-icon> ${i18n('cc-elasticsearch-info.documentation.text')}
+          </cc-link>
         </div>
       </cc-block>
     `;
@@ -126,21 +125,19 @@ export class CcElasticsearchInfo extends LitElement {
   _renderLinks(links, skeleton) {
     const sortedLinks = this._getSortedLinks(links);
 
-    return sortedLinks.map(({ href, type }) =>
-      ccLink(
-        href,
-        html`
+    return sortedLinks.map(
+      ({ href, type }) => html`
+        <cc-link href="${href}">
           <cc-img src="${this._getLogo(type)}"></cc-img>
           <span class="${classMap({ skeleton })}">${this._getLinkText(type)}</span>
-        `,
-      ),
+        </cc-link>
+      `,
     );
   }
 
   static get styles() {
     return [
       skeletonStyles,
-      linkStyles,
       // language=CSS
       css`
         :host {
@@ -153,7 +150,7 @@ export class CcElasticsearchInfo extends LitElement {
           gap: 1em;
         }
 
-        .cc-link {
+        cc-link {
           align-items: center;
           display: flex;
         }

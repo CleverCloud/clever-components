@@ -1,7 +1,7 @@
 import { css, html, LitElement } from 'lit';
 import { iconRemixInformationFill as iconInfo } from '../../assets/cc-remix.icons.js';
 import { dispatchCustomEvent } from '../../lib/events.js';
-import { ccLink, linkStyles } from '../../templates/cc-link/cc-link.js';
+import '../cc-link/cc-link.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-block/cc-block.js';
 import '../cc-button/cc-button.js';
@@ -375,10 +375,9 @@ export class CcEnvVarForm extends LitElement {
           : ''}
 
         <div slot="footer-right">
-          ${ccLink(
-            `${ENV_VAR_DOCUMENTATION}`,
-            html`<cc-icon .icon="${iconInfo}"></cc-icon>${i18n('cc-env-var-form.documentation.text')}`,
-          )}
+          <cc-link href="${ENV_VAR_DOCUMENTATION}">
+            <cc-icon .icon="${iconInfo}"></cc-icon>${i18n('cc-env-var-form.documentation.text')}
+          </cc-link>
         </div>
       </cc-block>
     `;
@@ -386,7 +385,6 @@ export class CcEnvVarForm extends LitElement {
 
   static get styles() {
     return [
-      linkStyles,
       // language=CSS
       css`
         :host {
@@ -422,7 +420,7 @@ export class CcEnvVarForm extends LitElement {
           padding-bottom: 0.5em;
         }
 
-        [slot='footer-right'] .cc-link {
+        [slot='footer-right'] cc-link {
           align-items: center;
           display: flex;
           gap: 0.5em;

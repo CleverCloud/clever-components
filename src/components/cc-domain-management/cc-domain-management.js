@@ -23,13 +23,13 @@ import {
 import { dispatchCustomEvent } from '../../lib/events.js';
 import { focusBySelector } from '../../lib/focus-helper.js';
 import { accessibilityStyles } from '../../styles/accessibility.js';
-import { ccLink, linkStyles } from '../../templates/cc-link/cc-link.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-badge/cc-badge.js';
 import '../cc-block-section/cc-block-section.js';
 import '../cc-block/cc-block.js';
 import '../cc-button/cc-button.js';
 import '../cc-input-text/cc-input-text.js';
+import '../cc-link/cc-link.js';
 import '../cc-loader/cc-loader.js';
 import '../cc-notice/cc-notice.js';
 
@@ -343,10 +343,9 @@ export class CcDomainManagement extends LitElement {
           </cc-block-section>
 
           <div slot="footer-right">
-            ${ccLink(
-              DOMAIN_NAMES_DOCUMENTATION,
-              html`<cc-icon .icon="${iconInfo}"></cc-icon> ${i18n('cc-domain-management.names.documentation.text')}`,
-            )}
+            <cc-link href="${DOMAIN_NAMES_DOCUMENTATION}">
+              <cc-icon .icon="${iconInfo}"></cc-icon> ${i18n('cc-domain-management.names.documentation.text')}
+            </cc-link>
           </div>
         </cc-block>
 
@@ -357,12 +356,11 @@ export class CcDomainManagement extends LitElement {
             <p>${i18n('cc-domain-management.certif.custom')}</p>
           </div>
           <div slot="footer-right">
-            ${ccLink(
-              TLS_CERTIFICATES_DOCUMENTATION,
-              html`<cc-icon .icon="${iconInfo}"></cc-icon> ${i18n(
-                  'cc-domain-management.tls.certificates.documentation.text',
-                )}`,
-            )}
+            <cc-link href="${TLS_CERTIFICATES_DOCUMENTATION}">
+              <cc-icon .icon="${iconInfo}"></cc-icon> ${i18n(
+                'cc-domain-management.tls.certificates.documentation.text',
+              )}
+            </cc-link>
           </div>
         </cc-block>
 
@@ -392,10 +390,9 @@ export class CcDomainManagement extends LitElement {
             : ''}
 
           <div slot="footer-right">
-            ${ccLink(
-              DNS_DOCUMENTATION,
-              html`<cc-icon .icon="${iconInfo}"></cc-icon> ${i18n('cc-domain-management.dns.documentation.text')}`,
-            )}
+            <cc-link href="${DNS_DOCUMENTATION}">
+              <cc-icon .icon="${iconInfo}"></cc-icon> ${i18n('cc-domain-management.dns.documentation.text')}
+            </cc-link>
           </div>
         </cc-block>
       </div>
@@ -637,7 +634,6 @@ export class CcDomainManagement extends LitElement {
   static get styles() {
     return [
       accessibilityStyles,
-      linkStyles,
       css`
         :host {
           display: block;
@@ -852,12 +848,6 @@ export class CcDomainManagement extends LitElement {
         }
 
         /** #endregion */
-
-        [slot='footer-right'] .cc-link {
-          align-items: center;
-          display: flex;
-          gap: 0.5em;
-        }
       `,
     ];
   }

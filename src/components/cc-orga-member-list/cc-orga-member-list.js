@@ -7,13 +7,13 @@ import { LostFocusController } from '../../controllers/lost-focus-controller.js'
 import { dispatchCustomEvent } from '../../lib/events.js';
 import { formSubmit } from '../../lib/form/form-submit-directive.js';
 import { Validation } from '../../lib/form/validation.js';
-import { ccLink, linkStyles } from '../../templates/cc-link/cc-link.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-badge/cc-badge.js';
 import '../cc-block-section/cc-block-section.js';
 import '../cc-block/cc-block.js';
 import '../cc-button/cc-button.js';
 import '../cc-input-text/cc-input-text.js';
+import '../cc-link/cc-link.js';
 import '../cc-loader/cc-loader.js';
 import '../cc-notice/cc-notice.js';
 import { CcOrgaMemberCard } from '../cc-orga-member-card/cc-orga-member-card.js';
@@ -370,10 +370,9 @@ export class CcOrgaMemberList extends LitElement {
         ${this.memberListState.type === 'loaded' ? this._renderDangerZone(this.memberListState) : ''}
 
         <div slot="footer-right">
-          ${ccLink(
-            ORGA_MEMBER_DOCUMENTATION,
-            html`<cc-icon .icon="${iconInfo}"></cc-icon> ${i18n('cc-orga-member-list.documentation.text')}`,
-          )}
+          <cc-link href="${ORGA_MEMBER_DOCUMENTATION}">
+            <cc-icon .icon="${iconInfo}"></cc-icon> ${i18n('cc-orga-member-list.documentation.text')}
+          </cc-link>
         </div>
       </cc-block>
     `;
@@ -517,7 +516,6 @@ export class CcOrgaMemberList extends LitElement {
 
   static get styles() {
     return [
-      linkStyles,
       // language=CSS
       css`
         :host {
@@ -636,7 +634,7 @@ export class CcOrgaMemberList extends LitElement {
         }
         /* endregion */
 
-        [slot='footer-right'] .cc-link {
+        [slot='footer-right'] cc-link {
           align-items: center;
           display: flex;
           gap: 0.5em;

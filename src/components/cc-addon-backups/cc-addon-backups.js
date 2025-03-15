@@ -3,12 +3,12 @@ import { classMap } from 'lit/directives/class-map.js';
 import { iconRemixHistoryLine as iconBackup, iconRemixCloseLine as iconClose } from '../../assets/cc-remix.icons.js';
 import { fakeString } from '../../lib/fake-strings.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
-import { ccLink, linkStyles } from '../../templates/cc-link/cc-link.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-block-section/cc-block-section.js';
 import '../cc-block/cc-block.js';
 import '../cc-button/cc-button.js';
 import '../cc-icon/cc-icon.js';
+import '../cc-link/cc-link.js';
 import '../cc-input-text/cc-input-text.js';
 import '../cc-notice/cc-notice.js';
 
@@ -321,7 +321,9 @@ export class CcAddonBackups extends LitElement {
               <span class="backup-text">
                 <span class="backup-text-details ${classMap({ skeleton })}">${this._getBackupText(backup)}</span>
                 <br />
-                ${ccLink(this._overlayType == null ? backup.url : null, this._getBackupLink(data.providerId), skeleton)}
+                <cc-link href="${this._overlayType == null ? backup.url : null}" ?skeleton="${skeleton}"
+                  >${this._getBackupLink(data.providerId)}</cc-link
+                >
                 <cc-button
                   link
                   ?disabled=${areBtnsDisabled}
@@ -446,7 +448,6 @@ export class CcAddonBackups extends LitElement {
   static get styles() {
     return [
       skeletonStyles,
-      linkStyles,
       // language=CSS
       css`
         :host {
@@ -513,7 +514,7 @@ export class CcAddonBackups extends LitElement {
           filter: blur(5px);
         }
 
-        .cc-link,
+        cc-link,
         cc-button[link] {
           margin-right: 0.5em;
           vertical-align: baseline;

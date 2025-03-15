@@ -1,12 +1,12 @@
 import { css, html, LitElement } from 'lit';
 import { iconRemixInformationFill as iconInfo } from '../../assets/cc-remix.icons.js';
 import { dispatchCustomEvent } from '../../lib/events.js';
-import { ccLink, linkStyles } from '../../templates/cc-link/cc-link.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-block-section/cc-block-section.js';
 import '../cc-block/cc-block.js';
 import '../cc-icon/cc-icon.js';
 import '../cc-img/cc-img.js';
+import '../cc-link/cc-link.js';
 import '../cc-loader/cc-loader.js';
 import '../cc-notice/cc-notice.js';
 
@@ -98,13 +98,10 @@ export class CcGrafanaInfo extends LitElement {
           <div slot="title">${i18n('cc-grafana-info.documentation-title')}</div>
           <div slot="info">${i18n('cc-grafana-info.documentation-description')}</div>
           <div>
-            ${ccLink(
-              GRAFANA_DOCUMENTATION,
-              html`
-                <cc-icon size="lg" .icon=${iconInfo}></cc-icon>
-                <span>${i18n('cc-grafana-info.link.doc')}</span>
-              `,
-            )}
+            <cc-link href="${GRAFANA_DOCUMENTATION}">
+              <cc-icon size="lg" .icon=${iconInfo}></cc-icon>
+              <span>${i18n('cc-grafana-info.link.doc')}</span>
+            </cc-link>
           </div>
         </cc-block-section>
 
@@ -159,13 +156,10 @@ export class CcGrafanaInfo extends LitElement {
                     `
                   : html`
                       <div>
-                        ${ccLink(
-                          this.state.info.link,
-                          html`
-                            <cc-img src="${GRAFANA_LOGO_URL}"></cc-img
-                            ><span>${i18n('cc-grafana-info.link.grafana')}</span>
-                          `,
-                        )}
+                        <cc-link href="${this.state.info.link}">
+                          <cc-img src="${GRAFANA_LOGO_URL}"></cc-img>
+                          <span>${i18n('cc-grafana-info.link.grafana')}</span>
+                        </cc-link>
                       </div>
                     `}
               </cc-block-section>
@@ -194,10 +188,9 @@ export class CcGrafanaInfo extends LitElement {
                     <div slot="title">${item.title}</div>
                     <div slot="info">${item.description}</div>
                     <div>
-                      ${ccLink(
-                        item.url,
-                        html` <img class="dashboard-screenshot" src="${item.url}" alt="${item.alt}" /> `,
-                      )}
+                      <cc-link href="${item.url}">
+                        <img class="dashboard-screenshot" src="${item.url}" alt="${item.alt}" />
+                      </cc-link>
                     </div>
                   </cc-block-section>
                 `,
@@ -225,10 +218,9 @@ export class CcGrafanaInfo extends LitElement {
           : ''}
 
         <div slot="footer-right">
-          ${ccLink(
-            `${GRAFANA_DOCUMENTATION}`,
-            html`<cc-icon .icon="${iconInfo}"></cc-icon> ${i18n('cc-grafana-info.documentation.text')}`,
-          )}
+          <cc-link href="${GRAFANA_DOCUMENTATION}">
+            <cc-icon .icon="${iconInfo}"></cc-icon> ${i18n('cc-grafana-info.documentation.text')}
+          </cc-link>
         </div>
       </cc-block>
     `;
@@ -236,7 +228,6 @@ export class CcGrafanaInfo extends LitElement {
 
   static get styles() {
     return [
-      linkStyles,
       // language=CSS
       css`
         :host {
@@ -256,7 +247,7 @@ export class CcGrafanaInfo extends LitElement {
           margin-right: 0.5em;
         }
 
-        .cc-link {
+        cc-link {
           align-items: center;
           display: inline-flex;
         }
