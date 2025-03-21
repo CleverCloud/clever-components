@@ -1,5 +1,5 @@
 {
-  "webFeatures": [
+  "baselineFeatures": [
     {
       "featureId": "top-level-await",
       "requiredStatus": "widely"
