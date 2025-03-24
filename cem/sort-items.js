@@ -20,7 +20,7 @@ export default function sortItems() {
             declaration.attributes?.sort(sortBy('name'));
             declaration.cssParts?.sort(sortBy('name'));
             declaration.cssProperties?.sort(sortBy('name'));
-            declaration.events?.sort(sortBy('name'));
+            // declaration.events?.sort(sortBy('name'));
             declaration.members?.sort(sortBy('name'));
             declaration.slots?.sort(sortBy('name'));
           }

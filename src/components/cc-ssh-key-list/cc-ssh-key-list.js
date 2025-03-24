@@ -26,7 +26,7 @@ import '../cc-img/cc-img.js';
 import '../cc-input-text/cc-input-text.js';
 import '../cc-notice/cc-notice.js';
 import { CcSshKeyListCreateEvent, CcSshKeyListDeleteEvent, CcSshKeyListImportEvent } from './cc-ssh-key-list.events.js';
-import { dispatchCustomEvent } from '../../lib/events.js';
+import { CcEvent, dispatchCustomEvent } from '../../lib/events.js';
 
 const SSH_KEY_DOCUMENTATION = 'https://developers.clever-cloud.com/doc/account/ssh-keys-management/';
 
@@ -79,7 +79,7 @@ class SshPublicKeyValidator {
  *
  * @cssdisplay block
  *
- * @fires {CustomEvent<NewKey>} cc-ssh-key-list:create - Fires when clicking the creation form submit button.
+ * @fires {CcSshKeyListCreateEvent} cc-ssh-key-list:create - Fires when clicking a personal key deletion button.
  * @fires {CustomEvent<SshKey>} cc-ssh-key-list:delete - Fires when clicking a personal key deletion button.
  * @fires {CustomEvent<SshKey>} cc-ssh-key-list:import - Fires when clicking a GitHub key import button.
  */
@@ -135,6 +135,7 @@ export class CcSshKeyList extends LitElement {
         name: formData.name,
         publicKey: formData.publicKey,
       };
+      /** @ignore */
       this.dispatchEvent(new CcSshKeyListCreateEvent(newKey));
     }
   }

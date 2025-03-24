@@ -1,6 +1,7 @@
 import { CcEvent } from '../../lib/events.js';
 
 /**
+ * foo-event - description
  * @extends {CcEvent<{name: string, publicKey: string}>}
  */
 export class CcSshKeyListCreateEvent extends CcEvent {
