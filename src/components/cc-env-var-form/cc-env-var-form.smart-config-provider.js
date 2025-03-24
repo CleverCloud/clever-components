@@ -61,7 +61,7 @@ defineSmartComponent({
         },
       );
 
-    onEvent('cc-env-var-form:submit', (variables) => {
+    onEvent('cc-env-var-form-submit', (variables) => {
       updateComponent(
         'state',
         /** @param {EnvVarFormState} state */

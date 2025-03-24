@@ -10,13 +10,14 @@ import {
   parseSimpleDateString,
   shiftDateField,
 } from '../../lib/date/date-utils.js';
-import { dispatchCustomEvent } from '../../lib/events.js';
 import { CcFormControlElement } from '../../lib/form/cc-form-control-element.abstract.js';
 import { RequiredValidator, Validation, combineValidators, createValidator } from '../../lib/form/validation.js';
 import { isStringEmpty } from '../../lib/utils.js';
 import { accessibilityStyles } from '../../styles/accessibility.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
 import { i18n } from '../../translations/translation.js';
+import { CcRequestSubmitEvent } from '../common.events.js';
+import { CcDateChangeEvent } from './cc-input-date.events.js';
 
 // This is the date format chosen to format the date displayed to the user.
 const DATE_FORMAT = 'datetime-short';
@@ -113,9 +114,6 @@ function dateStateValid(date) {
  * * When an `errorMessage` is Set, the input is decorated with a red border and a redish focus ring.
  *
  * @cssdisplay inline-block
- *
- * @fires {CustomEvent<string>} cc-input-date:input - Fires the `value` whenever the `value` changes.
- * @fires {CustomEvent} cc-input-date:requestimplicitsubmit - Fires when enter key is pressed.
  *
  * @cssprop {Size} --cc-form-label-gap - The space between the label and the control (defaults: `0.35em` or `1em` when inline).
  * @cssprop {FontFamily} --cc-input-font-family - The font-family for the input content (defaults: `inherit`).
@@ -310,7 +308,7 @@ export class CcInputDate extends CcFormControlElement {
    * @return {Date|null} The current value as Date or null if the value is not a valid date.
    */
   get valueAsDate() {
-    return this._valueState.type === 'valid' ? this._valueState.date ?? null : null;
+    return this._valueState.type === 'valid' ? (this._valueState.date ?? null) : null;
   }
 
   /* endregion */
@@ -370,7 +368,7 @@ export class CcInputDate extends CcFormControlElement {
     this.value = this._valueState.type === 'empty' ? '' : this._valueState.value;
 
     if (dispatchEvent && oldValue !== this.value) {
-      dispatchCustomEvent(this, 'input', this.value);
+      this.dispatchEvent(new CcDateChangeEvent(this.value));
     }
   }
 
@@ -433,12 +431,12 @@ export class CcInputDate extends CcFormControlElement {
     if (e.type === 'keydown' && e.key === 'Enter') {
       e.preventDefault();
       this._internals.form?.requestSubmit();
-      dispatchCustomEvent(this, 'requestimplicitsubmit');
+      this.dispatchEvent(new CcRequestSubmitEvent());
     }
     // Request implicit submit with keypress on enter key
     if (!this.readonly && e.type === 'keypress' && e.key === 'Enter') {
       this._internals.form?.requestSubmit();
-      dispatchCustomEvent(this, 'requestimplicitsubmit');
+      this.dispatchEvent(new CcRequestSubmitEvent());
     }
 
     if (

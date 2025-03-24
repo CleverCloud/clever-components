@@ -11,7 +11,6 @@ import {
   iconRemixEditFill as iconPen,
 } from '../../assets/cc-remix.icons.js';
 import { copyToClipboard } from '../../lib/clipboard.js';
-import { dispatchCustomEvent } from '../../lib/events.js';
 import { fakeString } from '../../lib/fake-strings.js';
 import { formSubmit } from '../../lib/form/form-submit-directive.js';
 import { isStringEmpty, random } from '../../lib/utils.js';
@@ -21,6 +20,13 @@ import '../cc-button/cc-button.js';
 import '../cc-input-text/cc-input-text.js';
 import '../cc-notice/cc-notice.js';
 import '../cc-select/cc-select.js';
+import {
+  CcKvListElementAddEvent,
+  CcKvListElementUpdateEvent,
+  CcKvListExplorerStateChangeEvent,
+  CcKvListFilterChangeEvent,
+  CcKvListLoadMoreEvent,
+} from './cc-kv-list-explorer.events.js';
 
 /** @type {Array<{state: CcKvListElementState, skeleton: boolean}>} */
 const SKELETON_ELEMENTS = Array(5)
@@ -60,12 +66,6 @@ const LOAD_MORE_THRESHOLD = 5;
  * * copy any element value to the clipboard
  *
  * @cssdisplay block
- *
- * @fires {CustomEvent<{position: 'tail'|'head', value: string}>} cc-kv-list-explorer:add-element - Fires whenever the add form is submitted
- * @fires {CustomEvent<number>} cc-kv-list-explorer:filter-change - Fires whenever the filter changes
- * @fires {CustomEvent} cc-kv-list-explorer:load-more-elements - Fires whenever the almost last element becomes visible (after user scroll)
- * @fires {CustomEvent<CcKvListExplorerState>} cc-kv-list-explorer:state-change - Fires whenever the state change internally
- * @fires {CustomEvent<{index: number, value: string}>} cc-kv-list-explorer:update-element - Fires whenever an update button is clicked
  */
 export class CcKvListExplorer extends LitElement {
   static get properties() {
@@ -150,7 +150,7 @@ export class CcKvListExplorer extends LitElement {
       this.state.elements.length > 0 &&
       e.last >= this.state.elements.length - LOAD_MORE_THRESHOLD
     ) {
-      dispatchCustomEvent(this, 'load-more-elements');
+      this.dispatchEvent(new CcKvListLoadMoreEvent());
     }
   }
 
@@ -177,7 +177,7 @@ export class CcKvListExplorer extends LitElement {
       }),
     };
 
-    dispatchCustomEvent(this, 'state-change', this.state);
+    this.dispatchEvent(new CcKvListExplorerStateChangeEvent(this.state));
 
     await this._elementsRef.value.layoutComplete;
     this._editElementValueRef.value.focus();
@@ -203,7 +203,7 @@ export class CcKvListExplorer extends LitElement {
       }),
     };
 
-    dispatchCustomEvent(this, 'state-change', this.state);
+    this.dispatchEvent(new CcKvListExplorerStateChangeEvent(this.state));
   }
 
   /**
@@ -221,7 +221,7 @@ export class CcKvListExplorer extends LitElement {
       return;
     }
     const index = Number(e.target.dataset.index);
-    dispatchCustomEvent(this, 'update-element', { index, value: this._editElementValueRef.value.value });
+    this.dispatchEvent(new CcKvListElementUpdateEvent({ index, value: this._editElementValueRef.value.value }));
   }
 
   /**
@@ -233,7 +233,7 @@ export class CcKvListExplorer extends LitElement {
     }
     const pattern = /** @type {string} */ (formData.pattern);
     const index = isStringEmpty(pattern) ? null : Number(pattern);
-    dispatchCustomEvent(this, 'filter-change', index);
+    this.dispatchEvent(new CcKvListFilterChangeEvent(index));
   }
 
   /**
@@ -245,8 +245,9 @@ export class CcKvListExplorer extends LitElement {
     }
 
     this._addFormPosition = /** @type {'tail'|'head'} */ (formData.position);
+    const value = /** @type {string} */ (formData.value);
 
-    dispatchCustomEvent(this, 'add-element', { position: formData.position, value: formData.value });
+    this.dispatchEvent(new CcKvListElementAddEvent({ position: this._addFormPosition, value }));
   }
 
   render() {
@@ -331,7 +332,7 @@ export class CcKvListExplorer extends LitElement {
                   multi
                   ?skeleton=${skeleton}
                   ?readonly=${state.type === 'updating'}
-                  @cc-input-text:requestimplicitsubmit=${this._onUpdate}
+                  @cc-request-submit=${this._onUpdate}
                 ></cc-input-text>
               `
             : ''}
@@ -402,7 +403,7 @@ export class CcKvListExplorer extends LitElement {
         ?primary=${firstButton.primary}
         ?disabled=${firstButton.disabled || this.disabled}
         ?waiting=${firstButton.waiting}
-        @cc-button:click=${firstButton.onClick}
+        @cc-click=${firstButton.onClick}
       ></cc-button>
       ${secondBtn != null
         ? html`
@@ -418,7 +419,7 @@ export class CcKvListExplorer extends LitElement {
               ?primary=${secondBtn.primary}
               ?disabled=${secondBtn.disabled || this.disabled}
               ?waiting=${secondBtn.waiting}
-              @cc-button:click=${secondBtn.onClick}
+              @cc-click=${secondBtn.onClick}
             ></cc-button>
           `
         : ''}
@@ -429,7 +430,7 @@ export class CcKvListExplorer extends LitElement {
         data-text=${state.value}
         ?skeleton=${skeleton}
         ?disabled=${this.disabled}
-        @cc-button:click=${this._onCopyKeyButtonClick}
+        @cc-click=${this._onCopyKeyButtonClick}
         >${i18n('cc-kv-list-explorer.element.copy', { index })}</cc-button
       >
     `;

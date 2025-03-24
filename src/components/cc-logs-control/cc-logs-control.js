@@ -14,7 +14,6 @@ import hyoobPalette from '../../lib/ansi/palettes/hyoob.js';
 import nightOwlPalette from '../../lib/ansi/palettes/night-owl.js';
 import oneLightPalette from '../../lib/ansi/palettes/one-light.js';
 import tokyoNightLightPalette from '../../lib/ansi/palettes/tokyo-night-light.js';
-import { dispatchCustomEvent } from '../../lib/events.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-button/cc-button.js';
 import '../cc-icon/cc-icon.js';
@@ -23,6 +22,7 @@ import { DATE_DISPLAYS, TIMEZONES } from '../cc-logs/date-displayer.js';
 import '../cc-popover/cc-popover.js';
 import '../cc-select/cc-select.js';
 import '../cc-toggle/cc-toggle.js';
+import { CcLogsOptionChangeEvent } from './cc-logs-control.events.js';
 
 /**
  * @type {{[key in LogsControlPalette]: string}}
@@ -72,8 +72,6 @@ const PALETTES = {
  * Options are encapsulated into a `<cc-popover>` element.
  *
  * @cssdisplay grid
- *
- * @fires {CustomEvent<LogsControlOption>} cc-logs-control:option-change - Fires a `LogsControlOption` whenever an `option` changes.
  *
  * @slot header - The content of the space on top of the logs block.
  * @slot left - The content of the space on the left of the logs block.
@@ -177,7 +175,7 @@ export class CcLogsControl extends LitElement {
    */
   _onPaletteChange(event) {
     this.palette = event.detail;
-    dispatchCustomEvent(this, 'option-change', { name: 'palette', value: this.palette });
+    this.dispatchEvent(new CcLogsOptionChangeEvent({ name: 'palette', value: this.palette }));
   }
 
   /**
@@ -185,7 +183,7 @@ export class CcLogsControl extends LitElement {
    */
   _onStripAnsiChange(event) {
     this.stripAnsi = event.target.checked;
-    dispatchCustomEvent(this, 'option-change', { name: 'strip-ansi', value: this.stripAnsi });
+    this.dispatchEvent(new CcLogsOptionChangeEvent({ name: 'strip-ansi', value: this.stripAnsi }));
   }
 
   /**
@@ -193,7 +191,7 @@ export class CcLogsControl extends LitElement {
    */
   _onWrapLinesChange(event) {
     this.wrapLines = event.target.checked;
-    dispatchCustomEvent(this, 'option-change', { name: 'wrap-lines', value: this.wrapLines });
+    this.dispatchEvent(new CcLogsOptionChangeEvent({ name: 'wrap-lines', value: this.wrapLines }));
   }
 
   /**
@@ -201,7 +199,7 @@ export class CcLogsControl extends LitElement {
    */
   _onDateDisplayChange(event) {
     this.dateDisplay = event.detail;
-    dispatchCustomEvent(this, 'option-change', { name: 'date-display', value: this.dateDisplay });
+    this.dispatchEvent(new CcLogsOptionChangeEvent({ name: 'date-display', value: this.dateDisplay }));
   }
 
   /**
@@ -209,7 +207,7 @@ export class CcLogsControl extends LitElement {
    */
   _onTimezoneChange(event) {
     this.timezone = event.detail;
-    dispatchCustomEvent(this, 'option-change', { name: 'timezone', value: this.timezone });
+    this.dispatchEvent(new CcLogsOptionChangeEvent({ name: 'timezone', value: this.timezone }));
   }
 
   /**
@@ -226,7 +224,7 @@ export class CcLogsControl extends LitElement {
       },
     };
     const eventDetail = Object.fromEntries(Object.entries(this.metadataDisplay).map(([k, v]) => [k, !v.hidden]));
-    dispatchCustomEvent(this, 'option-change', { name: 'metadata-display', value: eventDetail });
+    this.dispatchEvent(new CcLogsOptionChangeEvent({ name: 'metadata-display', value: eventDetail }));
   }
 
   /* endregion */
@@ -316,7 +314,7 @@ export class CcLogsControl extends LitElement {
           .icon=${scrollToBottomIcon}
           a11y-name="${i18n('cc-logs-control.scroll-to-bottom')}"
           hide-text
-          @cc-button:click=${this._onScrollToBottomButtonClick}
+          @cc-click=${this._onScrollToBottomButtonClick}
         ></cc-button>
 
         <cc-popover
@@ -366,7 +364,7 @@ export class CcLogsControl extends LitElement {
           label="${i18n('cc-logs-control.palette')}"
           .options=${PALETTE_CHOICES}
           .value=${this.palette}
-          @cc-select:input=${this._onPaletteChange}
+          @cc-select=${this._onPaletteChange}
         ></cc-select>
 
         <label for="strip-ansi">
@@ -395,14 +393,14 @@ export class CcLogsControl extends LitElement {
           label="${i18n('cc-logs-control.date-display')}"
           .options=${DATE_DISPLAY_CHOICES}
           .value=${this.dateDisplay}
-          @cc-select:input=${this._onDateDisplayChange}
+          @cc-select=${this._onDateDisplayChange}
         ></cc-select>
 
         <cc-select
           label="${i18n('cc-logs-control.timezone')}"
           .options=${TIMEZONE_CHOICES}
           .value=${this.timezone}
-          @cc-select:input=${this._onTimezoneChange}
+          @cc-select=${this._onTimezoneChange}
         ></cc-select>
       </div>
     `;

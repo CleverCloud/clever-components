@@ -4,13 +4,13 @@ import { createRef, ref } from 'lit/directives/ref.js';
 import { repeat } from 'lit/directives/repeat.js';
 import { ResizeController } from '../../controllers/resize-controller.js';
 import { scrollChildIntoParent } from '../../lib/dom.js';
-import { dispatchCustomEvent } from '../../lib/events.js';
 import { PRIVATE_ZONE, sortZones } from '../../lib/zone.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-map-marker-server/cc-map-marker-server.js';
 import '../cc-map/cc-map.js';
 import '../cc-notice/cc-notice.js';
 import '../cc-zone/cc-zone.js';
+import { CcSelectEvent } from '../common.events.js';
 
 const SKELETON_ZONES = new Array(6).fill();
 const BREAKPOINTS = [600];
@@ -33,8 +33,6 @@ const BREAKPOINTS = [600];
  * * Zones are sorted in the list using `tags`. Clever Cloud, then private, then regular alphanumeric sort on the city name.
  *
  * @cssdisplay block
- *
- * @fires {CustomEvent<string>} cc-zone-input:input - Fires the `name` of the selected zone whenever the selection changes.
  */
 export class CcZoneInput extends LitElement {
   static get properties() {
@@ -134,7 +132,7 @@ export class CcZoneInput extends LitElement {
    */
   _onSelect(name) {
     this.selected = name;
-    dispatchCustomEvent(this, 'input', this.selected);
+    this.dispatchEvent(new CcSelectEvent(this.selected));
   }
 
   /** @private */
@@ -232,12 +230,12 @@ export class CcZoneInput extends LitElement {
           center-lat="35"
           .points=${this._points}
           ?loading=${skeleton}
-          @cc-map:marker-click=${
+          @cc-map-marker-click=${
             /** @param {CustomEvent<{ name: string }>} event */
             ({ detail }) => this._onSelect(detail.name)
           }
-          @cc-map:marker-enter=${this._onMarkerHover}
-          @cc-map:marker-leave=${() => this._onMarkerHover()}
+          @cc-map-marker-enter=${this._onMarkerHover}
+          @cc-map-marker-leave=${() => this._onMarkerHover()}
           ${ref(this._ccMapRef)}
           >${this._legend}
         </cc-map>

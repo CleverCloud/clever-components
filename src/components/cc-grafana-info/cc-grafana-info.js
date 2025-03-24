@@ -1,6 +1,5 @@
 import { css, html, LitElement } from 'lit';
 import { iconRemixInformationFill as iconInfo } from '../../assets/cc-remix.icons.js';
-import { dispatchCustomEvent } from '../../lib/events.js';
 import { ccLink, linkStyles } from '../../templates/cc-link/cc-link.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-block-section/cc-block-section.js';
@@ -9,6 +8,7 @@ import '../cc-icon/cc-icon.js';
 import '../cc-img/cc-img.js';
 import '../cc-loader/cc-loader.js';
 import '../cc-notice/cc-notice.js';
+import { CcGrafanaResetEvent, CcGrafanaToggleEvent } from './cc-grafana-info.events.js';
 
 const GRAFANA_LOGO_URL = 'https://assets.clever-cloud.com/logos/grafana.svg';
 const GRAFANA_HOME_SCREEN = 'https://assets.clever-cloud.com/grafana/screens/home.png';
@@ -24,10 +24,6 @@ const GRAFANA_DOCUMENTATION = 'https://www.clever-cloud.com/doc/administrate/met
  * A component to display information about grafana and allow some actions: enable, disable, reset.
  *
  * @cssdisplay block
- *
- * @fires {CustomEvent} cc-grafana-info:enable - Fires when the enable button is clicked.
- * @fires {CustomEvent} cc-grafana-info:disable - Fires when the disable button is clicked.
- * @fires {CustomEvent} cc-grafana-info:reset - Fires when the reset button is clicked.
  */
 export class CcGrafanaInfo extends LitElement {
   static get properties() {
@@ -67,15 +63,15 @@ export class CcGrafanaInfo extends LitElement {
   }
 
   _onEnableSubmit() {
-    dispatchCustomEvent(this, 'enable');
+    this.dispatchEvent(new CcGrafanaToggleEvent({ isEnabled: true }));
   }
 
   _onResetSubmit() {
-    dispatchCustomEvent(this, 'reset');
+    this.dispatchEvent(new CcGrafanaResetEvent());
   }
 
   _onDisableSubmit() {
-    dispatchCustomEvent(this, 'disable');
+    this.dispatchEvent(new CcGrafanaToggleEvent({ isEnabled: false }));
   }
 
   render() {
@@ -138,7 +134,7 @@ export class CcGrafanaInfo extends LitElement {
                     success
                     ?waiting=${isSwitchingGrafanaStatus}
                     ?disabled=${isFormDisabled && !isSwitchingGrafanaStatus}
-                    @cc-button:click=${this._onEnableSubmit}
+                    @cc-click=${this._onEnableSubmit}
                   >
                     ${i18n('cc-grafana-info.enable-title')}
                   </cc-button>
@@ -146,7 +142,7 @@ export class CcGrafanaInfo extends LitElement {
               </cc-block-section>
             `
           : ''}
-        ${isGrafanaEnabled
+        ${this.state.type === 'loaded' && this.state.info.status === 'enabled'
           ? html`
               <cc-block-section slot="content-body">
                 <div slot="title">${i18n('cc-grafana-info.grafana-link-title')}</div>
@@ -178,7 +174,7 @@ export class CcGrafanaInfo extends LitElement {
                     primary
                     ?disabled=${isFormDisabled && !isResetting}
                     ?waiting=${isResetting}
-                    @cc-button:click=${this._onResetSubmit}
+                    @cc-click=${this._onResetSubmit}
                   >
                     ${i18n('cc-grafana-info.reset-title')}
                   </cc-button>
@@ -215,7 +211,7 @@ export class CcGrafanaInfo extends LitElement {
                     danger
                     delay="3"
                     ?disabled=${isFormDisabled && !isSwitchingGrafanaStatus}
-                    @cc-button:click=${this._onDisableSubmit}
+                    @cc-click=${this._onDisableSubmit}
                   >
                     ${i18n('cc-grafana-info.disable-title')}
                   </cc-button>

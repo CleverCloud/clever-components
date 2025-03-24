@@ -4,7 +4,6 @@ import { createRef, ref } from 'lit/directives/ref.js';
 import { repeat } from 'lit/directives/repeat.js';
 import { iconRemixInformationFill as iconInfo } from '../../assets/cc-remix.icons.js';
 import { LostFocusController } from '../../controllers/lost-focus-controller.js';
-import { dispatchCustomEvent } from '../../lib/events.js';
 import { formSubmit } from '../../lib/form/form-submit-directive.js';
 import { Validation } from '../../lib/form/validation.js';
 import { ccLink, linkStyles } from '../../templates/cc-link/cc-link.js';
@@ -16,10 +15,10 @@ import '../cc-button/cc-button.js';
 import '../cc-input-text/cc-input-text.js';
 import '../cc-loader/cc-loader.js';
 import '../cc-notice/cc-notice.js';
+import { CcOrgaMemberLeaveEvent } from '../cc-orga-member-card/cc-orga-member-card.events.js';
 import { CcOrgaMemberCard } from '../cc-orga-member-card/cc-orga-member-card.js';
 import '../cc-select/cc-select.js';
-
-const ORGA_MEMBER_DOCUMENTATION = 'https://developers.clever-cloud.com/doc/account/administrate-organization/';
+import { CcOrgaMemberInviteEvent } from './cc-orga-member-list.events.js';
 
 /**
  * @typedef {import('./cc-orga-member-list.types.js').OrgaMemberListState} OrgaMemberListState
@@ -27,6 +26,8 @@ const ORGA_MEMBER_DOCUMENTATION = 'https://developers.clever-cloud.com/doc/accou
  * @typedef {import('./cc-orga-member-list.types.js').ListAuthorisations} ListAuthorisations
  * @typedef {import('./cc-orga-member-list.types.js').InviteMember} InviteMember
  * @typedef {import('./cc-orga-member-list.types.js').InviteMemberFormState} InviteMemberFormState
+ * @typedef {import('../cc-orga-member-card/cc-orga-member-card.events.js').CcOrgaMemberUpdateEvent} CcOrgaMemberUpdateEvent
+ * @typedef {import('../cc-orga-member-card/cc-orga-member-card.events.js').CcOrgaMemberEditToggleEvent} CcOrgaMemberEditToggleEvent
  * @typedef {import('../cc-orga-member-card/cc-orga-member-card.types.js').OrgaMemberCardState} OrgaMemberCardState
  * @typedef {import('../cc-orga-member-card/cc-orga-member-card.types.js').OrgaMember} OrgaMember
  * @typedef {import('../../lib/form/validation.types.js').Validator} Validator
@@ -51,10 +52,6 @@ const ORGA_MEMBER_DOCUMENTATION = 'https://developers.clever-cloud.com/doc/accou
  *  - The current user may edit the role of members.
  *
  * @cssdisplay block
- *
- * @fires {CustomEvent<InviteMember>} cc-orga-member-list:invite - Fires the `email` and `role` information inside an object whenever the invite button is clicked.
- * @fires {CustomEvent<OrgaMemberCardState>} cc-orga-member-list:leave - Fires when the user clicks on the leave button inside the Danger Zone or inside their own member card.
- * @fires {CustomEvent<OrgaMemberCardState>} cc-orga-member-list:update - Fires when the user validates the editing of a member within a member card, only if the update is not related to the last admin of the org.
  */
 
 export class CcOrgaMemberList extends LitElement {
@@ -232,14 +229,15 @@ export class CcOrgaMemberList extends LitElement {
    */
   _onInviteMember(formData) {
     if (typeof formData.email === 'string' && typeof formData.role === 'string') {
-      dispatchCustomEvent(this, 'invite', { email: formData.email, role: formData.role });
+      this.dispatchEvent(new CcOrgaMemberInviteEvent({ email: formData.email, role: formData.role }));
     }
   }
 
   /**
-   * @param {CustomEvent} e
+   * @param {CcOrgaMemberLeaveEvent} e
    */
-  _onLeaveFromCard({ detail: currentUser }) {
+  _onLeaveFromCard(e) {
+    const { detail: currentUser } = e;
     if (this.memberListState.type === 'loaded' && this.isLastAdmin(currentUser)) {
       this.memberListState = {
         ...this.memberListState,
@@ -247,8 +245,7 @@ export class CcOrgaMemberList extends LitElement {
           return member.id === currentUser.id ? { ...member, error: true } : { ...member };
         }),
       };
-    } else {
-      dispatchCustomEvent(this, 'leave', currentUser);
+      e.stopPropagation();
     }
   }
 
@@ -263,15 +260,16 @@ export class CcOrgaMemberList extends LitElement {
           dangerZoneState: 'error',
         };
       } else {
-        dispatchCustomEvent(this, 'leave', currentUser);
+        this.dispatchEvent(new CcOrgaMemberLeaveEvent(currentUser));
       }
     }
   }
 
   /**
-   * @param {CustomEvent} e
+   * @param {CcOrgaMemberUpdateEvent} e
    */
-  _onUpdateFromCard({ detail: memberToUpdate }) {
+  _onUpdateFromCard(e) {
+    const { detail: memberToUpdate } = e;
     const isLastAdmin = memberToUpdate.isCurrentUser && this.isLastAdmin(memberToUpdate);
 
     if (this.memberListState.type === 'loaded' && isLastAdmin) {
@@ -281,15 +279,14 @@ export class CcOrgaMemberList extends LitElement {
           return member.id === memberToUpdate.id ? { ...member, error: true } : { ...member };
         }),
       };
-    } else {
-      dispatchCustomEvent(this, 'update', memberToUpdate);
+      e.stopPropagation();
     }
   }
 
   /**
    * Close all cards and leave the one that fired the event
    *
-   * @param {CustomEvent} e
+   * @param {CcOrgaMemberEditToggleEvent} e
    */
   _onToggleCardEditing({ detail: { memberId, newState } }) {
     if (this.memberListState.type === 'loaded') {
@@ -371,7 +368,7 @@ export class CcOrgaMemberList extends LitElement {
 
         <div slot="footer-right">
           ${ccLink(
-            ORGA_MEMBER_DOCUMENTATION,
+            'https://developers.clever-cloud.com/doc/account/administrate-organization/',
             html`<cc-icon .icon="${iconInfo}"></cc-icon> ${i18n('cc-orga-member-list.documentation.text')}`,
           )}
         </div>
@@ -436,7 +433,7 @@ export class CcOrgaMemberList extends LitElement {
         <cc-input-text
           label=${i18n('cc-orga-member-list.filter.name')}
           .value=${identityFilter}
-          @cc-input-text:input=${this._onFilterIdentity}
+          @cc-text-change=${this._onFilterIdentity}
         ></cc-input-text>
         <label class="filters__mfa" for="filter-mfa">
           <input
@@ -461,9 +458,9 @@ export class CcOrgaMemberList extends LitElement {
                 delete: this.authorisations.delete,
               }}
               .state=${memberState}
-              @cc-orga-member-card:leave=${this._onLeaveFromCard}
-              @cc-orga-member-card:toggle-editing=${this._onToggleCardEditing}
-              @cc-orga-member-card:update=${this._onUpdateFromCard}
+              @cc-orga-member-leave=${this._onLeaveFromCard}
+              @cc-orga-member-edit-toggle=${this._onToggleCardEditing}
+              @cc-orga-member-update=${this._onUpdateFromCard}
             ></cc-orga-member-card>
           `,
         )}
@@ -490,7 +487,7 @@ export class CcOrgaMemberList extends LitElement {
           <cc-button
             danger
             outlined
-            @cc-button:click=${this._onLeaveFromDangerZone}
+            @cc-click=${this._onLeaveFromDangerZone}
             ?disabled="${members.dangerZoneState === 'error'}"
             ?waiting="${members.dangerZoneState === 'leaving'}"
             >${i18n('cc-orga-member-list.leave.btn')}</cc-button

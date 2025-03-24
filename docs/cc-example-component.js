@@ -39,8 +39,6 @@ const SKELETON_FOOBAR = [{ foo: '???????' }, { foo: '????' }, { foo: '???????' }
  * @prop {Boolean} two - Description for two.
  * @prop {ExampleInterface[]} three - Description for three.
  *
- * @fires {CustomEvent<ExampleInterface>} example-component:event-name - Fires XXX whenever YYY.
- *
  * @slot - The content of the button (text or HTML). If you want an image, please look at the `image` attribute.
  *
  * @cssprop {Color} --cc-loader-color - The color of the animated circle (defaults: `#2653af`).
@@ -197,26 +195,26 @@ export class CcExampleComponent extends LitElement {
 
         /* You may use "regions" to help code editors fold main sections of your styles. It's often needed with responsive and COMMON/BIG/SMALL regions. */
 
-        /*region COMMON*/
+        /* region COMMON */
         .foobar {
           color: red;
         }
 
-        /*endregion*/
+        /* endregion */
 
-        /*region BIG*/
+        /* region BIG */
         .foobar.big {
           color: blue;
         }
 
-        /*endregion*/
+        /* endregion */
 
-        /*region SMALL*/
+        /* region SMALL */
         .foobar.small {
           color: green;
         }
 
-        /*endregion*/
+        /* endregion */
       `,
     ];
   }

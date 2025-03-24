@@ -45,3 +45,12 @@ export interface LogsMetadataDisplay {
   label: string;
   hidden: boolean;
 }
+
+export interface LogsOptions {
+  'date-display': DateDisplay;
+  'metadata-display': Record<string, boolean>;
+  palette: LogsControlPalette;
+  timezone: Timezone;
+  'wrap-lines': boolean;
+  'strip-ansi': boolean;
+}

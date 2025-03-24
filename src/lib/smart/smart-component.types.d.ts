@@ -42,11 +42,16 @@ export interface SmartDefinitionParam<TypeHint = unknown> {
 
 export type SmartContext = Record<string, any>;
 
-export type OnEventCallback = (type: string, listener: (detail: any) => void) => void;
-
-export type OnNewEventCallback = <D, E extends CcEvent<D>>(
-  eventClass: Clazz<E>,
-  listener: (detail: (typeof event)['detail'], event: InstanceType<typeof eventClass>) => void,
+export type OnEventCallback = <
+  E extends {
+    [P in keyof GlobalEventHandlersEventMap]: GlobalEventHandlersEventMap[P] extends CcEvent<any> ? P : never;
+  }[keyof GlobalEventHandlersEventMap],
+>(
+  eventName: E,
+  listener: (
+    detail: GlobalEventHandlersEventMap[E] extends CcEvent<infer D> ? D : never,
+    event: GlobalEventHandlersEventMap[E],
+  ) => void,
 ) => void;
 
 export type UpdateComponentCallback<C extends SmartComponent> = <P extends keyof C, V extends C[P]>(
@@ -60,7 +65,6 @@ export interface OnContextUpdateArgs<C extends SmartComponent> {
   context: SmartContext;
   signal: AbortSignal;
   onEvent: OnEventCallback;
-  onNewEvent: OnNewEventCallback;
   updateComponent: UpdateComponentCallback<C>;
 }
 

@@ -71,175 +71,163 @@ defineSmartComponent({
         updateComponent('dnsInfoState', { type: 'error' });
       });
 
-    onEvent(
-      'cc-domain-management:add',
-      /** @param {{ hostname: string, pathPrefix: string, isWildcard: boolean }} domain */
-      ({ hostname, pathPrefix, isWildcard }) => {
-        const domainWithPathAndWildcard = getHostWithWildcard(hostname + pathPrefix, isWildcard);
-        updateComponent(
-          'domainFormState',
-          /** @param {DomainManagementFormState} domainFormState */
-          (domainFormState) => {
-            domainFormState.type = 'adding';
-          },
-        );
+    onEvent('cc-domain-add', ({ hostname, pathPrefix, isWildcard }) => {
+      const domainWithPathAndWildcard = getHostWithWildcard(hostname + pathPrefix, isWildcard);
+      updateComponent(
+        'domainFormState',
+        /** @param {DomainManagementFormState} domainFormState */
+        (domainFormState) => {
+          domainFormState.type = 'adding';
+        },
+      );
 
-        createNewDomain({ apiConfig, ownerId, appId, hostname, pathPrefix, isWildcard })
-          .then(() => {
-            if (isTestDomain(hostname)) {
-              notifySuccess(i18n('cc-domain-management.form.submit.success', { domain: domainWithPathAndWildcard }));
-            } else {
-              notify({
-                intent: 'info',
-                message: i18n('cc-domain-management.form.submit.success-config', { domain: domainWithPathAndWildcard }),
-                options: {
-                  timeout: 0,
-                  closeable: true,
-                },
-              });
-            }
-            updateComponent('domainFormState', CcDomainManagement.INIT_DOMAIN_FORM_STATE);
+      createNewDomain({ apiConfig, ownerId, appId, hostname, pathPrefix, isWildcard })
+        .then(() => {
+          if (isTestDomain(hostname)) {
+            notifySuccess(i18n('cc-domain-management.form.submit.success', { domain: domainWithPathAndWildcard }));
+          } else {
+            notify({
+              intent: 'info',
+              message: i18n('cc-domain-management.form.submit.success-config', { domain: domainWithPathAndWildcard }),
+              options: {
+                timeout: 0,
+                closeable: true,
+              },
+            });
+          }
+          updateComponent('domainFormState', CcDomainManagement.INIT_DOMAIN_FORM_STATE);
+          updateComponent(
+            'domainListState',
+            /** @param {DomainManagementListStateLoaded} domainListState */
+            (domainListState) => {
+              // TODO: once the API returns actual ids, this should be adapted (either refetch or use the API response)
+              const id = hostname + pathPrefix;
+
+              /** @type {DomainStateIdle} */
+              const newDomain = {
+                id,
+                hostname: hostname,
+                type: 'idle',
+                pathPrefix,
+                isWildcard,
+                isPrimary: false,
+              };
+
+              domainListState.domains.push(newDomain);
+            },
+          );
+        })
+        .catch(
+          /** @param {Error} error */
+          (error) => {
+            console.error(error);
+            const errorCode = convertApiError(error);
+
             updateComponent(
-              'domainListState',
-              /** @param {DomainManagementListStateLoaded} domainListState */
-              (domainListState) => {
-                // TODO: once the API returns actual ids, this should be adapted (either refetch or use the API response)
-                const id = hostname + pathPrefix;
-
-                /** @type {DomainStateIdle} */
-                const newDomain = {
-                  id,
-                  hostname: hostname,
-                  type: 'idle',
-                  pathPrefix,
-                  isWildcard,
-                  isPrimary: false,
-                };
-
-                domainListState.domains.push(newDomain);
+              'domainFormState',
+              /** @param {DomainManagementFormState} domainFormState */
+              (domainFormState) => {
+                domainFormState.type = 'idle';
               },
             );
-          })
-          .catch(
-            /** @param {Error} error */
-            (error) => {
-              console.error(error);
-              const errorCode = convertApiError(error);
 
+            if (errorCode === 'invalid-format') {
               updateComponent(
                 'domainFormState',
                 /** @param {DomainManagementFormState} domainFormState */
                 (domainFormState) => {
-                  domainFormState.type = 'idle';
+                  domainFormState.hostname.error = { code: errorCode };
                 },
-              );
-
-              if (errorCode === 'invalid-format') {
-                updateComponent(
-                  'domainFormState',
-                  /** @param {DomainManagementFormState} domainFormState */
-                  (domainFormState) => {
-                    domainFormState.hostname.error = { code: errorCode };
-                  },
-                );
-                return;
-              }
-
-              if (errorCode === 'already-used') {
-                notifyError(
-                  i18n('cc-domain-management.form.submit.error-duplicate.text', { domain: domainWithPathAndWildcard }),
-                  i18n('cc-domain-management.form.submit.error-duplicate.heading'),
-                );
-                return;
-              }
-
-              notifyError(i18n('cc-domain-management.form.submit.error', { domain: domainWithPathAndWildcard }));
-            },
-          );
-      },
-    );
-
-    onEvent(
-      'cc-domain-management:delete',
-      /** @param {DomainInfo} domain */
-      ({ id, hostname, pathPrefix, isWildcard }) => {
-        const domainWithPathAndWildcard = getHostWithWildcard(hostname + pathPrefix, isWildcard);
-        updateDomain(id, (domainState) => {
-          domainState.type = 'deleting';
-        });
-
-        deleteDomain({ apiConfig, ownerId, appId, id })
-          .then(() => {
-            updateComponent(
-              'domainListState',
-              /** @param {DomainManagementListStateLoaded} domainListState */
-              (domainListState) => {
-                domainListState.domains = domainListState.domains.filter((domain) => domain.id !== id);
-              },
-            );
-            notifySuccess(i18n('cc-domain-management.list.delete.success', { domain: domainWithPathAndWildcard }));
-          })
-          .catch((error) => {
-            console.error(error);
-
-            notifyError(i18n('cc-domain-management.list.delete.error', { domain: domainWithPathAndWildcard }));
-
-            updateDomain(id, (domainState) => {
-              domainState.type = 'idle';
-            });
-          });
-      },
-    );
-
-    onEvent(
-      'cc-domain-management:mark-as-primary',
-      /** @param {DomainInfo}  domain */
-      ({ id, hostname, pathPrefix, isWildcard }) => {
-        const domainWithPathAndWildcard = getHostWithWildcard(hostname + pathPrefix, isWildcard);
-        updateDomain(id, (domainState) => {
-          domainState.type = 'marking-primary';
-        });
-
-        markAsPrimaryDomain({ apiConfig, ownerId, appId, id })
-          .then(() => {
-            updateComponent(
-              'domainListState',
-              /** @param {DomainManagementListStateLoaded} domainListState */
-              (domainListState) => {
-                domainListState.domains = domainListState.domains.map((domainState) => ({
-                  ...domainState,
-                  type: 'idle',
-                  isPrimary: domainState.id === id,
-                }));
-              },
-            );
-
-            // Dispatch event to make the console refresh its UI
-            const primaryChangeEvent = new CustomEvent('domain-management-primary-change', {
-              detail: id,
-            });
-            window.dispatchEvent(primaryChangeEvent);
-
-            notifySuccess(i18n('cc-domain-management.list.primary.success', { domain: domainWithPathAndWildcard }));
-          })
-          .catch((error) => {
-            console.error(error);
-            updateDomain(id, (domainState) => {
-              domainState.type = 'idle';
-            });
-
-            if (error.id === 3004) {
-              notifyError(
-                i18n('cc-domain-management.list.error-not-found.text', { domain: domainWithPathAndWildcard }),
-                i18n('cc-domain-management.list.error-not-found.heading'),
               );
               return;
             }
 
-            notifyError(i18n('cc-domain-management.list.primary.error', { domain: domainWithPathAndWildcard }));
+            if (errorCode === 'already-used') {
+              notifyError(
+                i18n('cc-domain-management.form.submit.error-duplicate.text', { domain: domainWithPathAndWildcard }),
+                i18n('cc-domain-management.form.submit.error-duplicate.heading'),
+              );
+              return;
+            }
+
+            notifyError(i18n('cc-domain-management.form.submit.error', { domain: domainWithPathAndWildcard }));
+          },
+        );
+    });
+
+    onEvent('cc-domain-delete', ({ id, hostname, pathPrefix, isWildcard }) => {
+      const domainWithPathAndWildcard = getHostWithWildcard(hostname + pathPrefix, isWildcard);
+      updateDomain(id, (domainState) => {
+        domainState.type = 'deleting';
+      });
+
+      deleteDomain({ apiConfig, ownerId, appId, id })
+        .then(() => {
+          updateComponent(
+            'domainListState',
+            /** @param {DomainManagementListStateLoaded} domainListState */
+            (domainListState) => {
+              domainListState.domains = domainListState.domains.filter((domain) => domain.id !== id);
+            },
+          );
+          notifySuccess(i18n('cc-domain-management.list.delete.success', { domain: domainWithPathAndWildcard }));
+        })
+        .catch((error) => {
+          console.error(error);
+
+          notifyError(i18n('cc-domain-management.list.delete.error', { domain: domainWithPathAndWildcard }));
+
+          updateDomain(id, (domainState) => {
+            domainState.type = 'idle';
           });
-      },
-    );
+        });
+    });
+
+    onEvent('cc-domain-mark-as-primary', ({ id, hostname, pathPrefix, isWildcard }) => {
+      const domainWithPathAndWildcard = getHostWithWildcard(hostname + pathPrefix, isWildcard);
+      updateDomain(id, (domainState) => {
+        domainState.type = 'marking-primary';
+      });
+
+      markAsPrimaryDomain({ apiConfig, ownerId, appId, id })
+        .then(() => {
+          updateComponent(
+            'domainListState',
+            /** @param {DomainManagementListStateLoaded} domainListState */
+            (domainListState) => {
+              domainListState.domains = domainListState.domains.map((domainState) => ({
+                ...domainState,
+                type: 'idle',
+                isPrimary: domainState.id === id,
+              }));
+            },
+          );
+
+          // Dispatch event to make the console refresh its UI
+          const primaryChangeEvent = new CustomEvent('domain-management-primary-change', {
+            detail: id,
+          });
+          window.dispatchEvent(primaryChangeEvent);
+
+          notifySuccess(i18n('cc-domain-management.list.primary.success', { domain: domainWithPathAndWildcard }));
+        })
+        .catch((error) => {
+          console.error(error);
+          updateDomain(id, (domainState) => {
+            domainState.type = 'idle';
+          });
+
+          if (error.id === 3004) {
+            notifyError(
+              i18n('cc-domain-management.list.error-not-found.text', { domain: domainWithPathAndWildcard }),
+              i18n('cc-domain-management.list.error-not-found.heading'),
+            );
+            return;
+          }
+
+          notifyError(i18n('cc-domain-management.list.primary.error', { domain: domainWithPathAndWildcard }));
+        });
+    });
   },
 });
 

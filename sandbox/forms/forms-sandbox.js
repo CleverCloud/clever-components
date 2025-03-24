@@ -102,7 +102,7 @@ export class FormsSandbox extends LitElement {
           inline
           .options=${DEMO_CHOICES}
           .value=${this._demo}
-          @cc-select:input=${this._onDemoChange}
+          @cc-select=${this._onDemoChange}
         ></cc-select>
       </div>
       <div class="main">
@@ -139,13 +139,13 @@ export class FormsSandbox extends LitElement {
         }
 
         .ctrl {
+          align-items: center;
+          border-bottom: 1px solid #ddd;
           display: flex;
           flex-wrap: wrap;
-          align-items: center;
-          padding-bottom: 1em;
-          border-bottom: 1px solid #ddd;
-          margin-bottom: 1em;
           gap: 0.5em;
+          margin-bottom: 1em;
+          padding-bottom: 1em;
         }
 
         .main {
@@ -160,24 +160,24 @@ export class FormsSandbox extends LitElement {
 
         .event {
           align-self: center;
+          border: 1px solid #ddd;
           display: flex;
           flex-direction: column;
-          border: 1px solid #ddd;
-          width: 25em;
           max-height: 30em;
+          width: 25em;
         }
 
         .event-title {
-          padding: 1em;
           font-family: monospace;
           font-weight: bold;
+          padding: 1em;
         }
 
         pre {
+          background-color: #efefef;
+          margin: 0;
           overflow: auto;
           padding: 1em;
-          margin: 0;
-          background-color: #efefef;
           white-space: pre-wrap;
         }
       `,

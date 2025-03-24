@@ -1,7 +1,8 @@
 import { css, html, LitElement } from 'lit';
 import { createRef, ref } from 'lit/directives/ref.js';
-import { dispatchCustomEvent, EventHandler } from '../../lib/events.js';
+import { EventHandler } from '../../lib/events.js';
 import '../cc-button/cc-button.js';
+import { CcToggleEvent } from '../common.events.js';
 
 /**
  * @typedef {import('../common.types.js').IconModel} IconModel
@@ -20,7 +21,7 @@ import '../cc-button/cc-button.js';
  * ### Button element
  *
  * The `button` is the element that will trigger the display of the floating content.
- * This element is a `<cc-button>`. The `cc-button:click` event will trigger the popover toggle.
+ * This element is a `<cc-button>`. The `cc-click` event will trigger the popover toggle.
  *
  * ### Popover content
  *
@@ -46,8 +47,6 @@ import '../cc-button/cc-button.js';
  * ```
  *
  * @cssdisplay block
- *
- * @fires {CustomEvent} cc-popover:toggle - Fires whenever the popover is opened or closed.
  *
  * @slot - The area containing the content of the popover.
  * @slot button-content - The area containing the button content.
@@ -121,11 +120,11 @@ export class CcPopover extends LitElement {
     let lastOpenedPopover = null;
     this._onCcPopoverOpenHandler = new EventHandler(
       window,
-      'cc-popover:toggle',
-      /** @param {CustomEvent<boolean>} event */ (event) => {
-        const opened = event.detail;
+      'cc-toggle',
+      /** @param {CcToggleEvent} event */ (event) => {
+        const { isOpen } = event.detail;
 
-        if (opened) {
+        if (isOpen) {
           // We cannot use event.target because events that happen in shadow DOM and when caught from outside the shadow DOM,
           // have the host element as the target (and not the real target element inside the shadow DOM).
           const popover = event.composedPath()[0];
@@ -149,7 +148,7 @@ export class CcPopover extends LitElement {
   open() {
     if (!this.isOpen) {
       this.isOpen = true;
-      dispatchCustomEvent(this, 'toggle', true);
+      this.dispatchEvent(new CcToggleEvent({ isOpen: true }));
     }
   }
 
@@ -163,7 +162,7 @@ export class CcPopover extends LitElement {
       if (shouldFocus) {
         this.focus();
       }
-      dispatchCustomEvent(this, 'toggle', false);
+      this.dispatchEvent(new CcToggleEvent({ isOpen: false }));
     }
   }
 
@@ -227,7 +226,7 @@ export class CcPopover extends LitElement {
           ?hide-text=${this.hideText}
           ?disabled=${this.disabled}
           .icon=${this.icon}
-          @cc-button:click=${this.toggle}
+          @cc-click=${this.toggle}
         >
           <slot name="button-content"></slot>
         </cc-button>

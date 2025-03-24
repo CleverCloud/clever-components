@@ -44,7 +44,7 @@ class MyList extends LitElement {
       (item) => {
         return html`
           <div class="item">
-            <cc-button @cc-button:click=${this._onRemove} data-name="${item}">Remove</cc-button>
+            <cc-button @cc-click=${this._onRemove} data-name="${item}">Remove</cc-button>
             <span>${item}</span>
           </div>
         `;
@@ -96,7 +96,7 @@ export const defaultStory = () => {
       <div class="title">Try deleting item and see the focus automatically placed on the next button</div>
       <my-list .items=${items}></my-list>
       <div class="title">Click the button below to reset the list items</div>
-      <cc-button @cc-button:click=${onReset}>reset</cc-button>
+      <cc-button @cc-click=${onReset}>reset</cc-button>
     </div>
   `;
   /* eslint-enable lit/prefer-static-styles */

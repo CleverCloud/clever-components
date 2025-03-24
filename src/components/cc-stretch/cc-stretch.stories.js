@@ -130,13 +130,13 @@ export const defaultStory = makeStory(conf, {
               legend="Visible element ID"
               .choices=${choicesItemIds}
               value=${visibleElementId}
-              @cc-toggle:input=${onVisibleElementIdChange}
+              @cc-select=${onVisibleElementIdChange}
             ></cc-toggle>
             <cc-toggle
               legend="Stretching"
               .choices=${choicesStretching}
               value=${stretching}
-              @cc-toggle:input=${onStretchingChange}
+              @cc-select=${onStretchingChange}
             ></cc-toggle>
           </div>
           <div>
@@ -145,13 +145,13 @@ export const defaultStory = makeStory(conf, {
               legend="--cc-stretch-justify-items"
               value="${justifyCustomProp}"
               .choices=${choices}
-              @cc-toggle:input=${onJustifyCustomPropChange}
+              @cc-select=${onJustifyCustomPropChange}
             ></cc-toggle>
             <cc-toggle
               legend="--cc-stretch-align-items"
               value="${alignCustomProp}"
               .choices=${choices}
-              @cc-toggle:input=${onAlignCustomPropChange}
+              @cc-select=${onAlignCustomPropChange}
             ></cc-toggle>
           </div>
           <p>

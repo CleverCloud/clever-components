@@ -326,7 +326,7 @@ export class CcAddonBackups extends LitElement {
                   link
                   ?disabled=${areBtnsDisabled}
                   ?skeleton=${skeleton}
-                  @cc-button:click=${this._onOpenOverlay('restore', backup)}
+                  @cc-click=${this._onOpenOverlay('restore', backup)}
                 >
                   ${i18n('cc-addon-backups.restore.btn')}
                 </cc-button>
@@ -336,7 +336,7 @@ export class CcAddonBackups extends LitElement {
                         link
                         ?disabled=${areBtnsDisabled}
                         ?skeleton=${skeleton}
-                        @cc-button:click=${this._onOpenOverlay('delete', backup)}
+                        @cc-click=${this._onOpenOverlay('delete', backup)}
                       >
                         ${i18n('cc-addon-backups.delete.btn')}
                       </cc-button>
@@ -368,7 +368,7 @@ export class CcAddonBackups extends LitElement {
             hide-text
             outlined
             primary
-            @cc-button:click=${this._onCloseOverlay}
+            @cc-click=${this._onCloseOverlay}
             >${i18n('cc-addon-backups.close-btn')}</cc-button
           >
         </div>
@@ -414,7 +414,7 @@ export class CcAddonBackups extends LitElement {
             hide-text
             outlined
             primary
-            @cc-button:click=${this._onCloseOverlay}
+            @cc-click=${this._onCloseOverlay}
             >${i18n('cc-addon-backups.close-btn')}</cc-button
           >
         </div>

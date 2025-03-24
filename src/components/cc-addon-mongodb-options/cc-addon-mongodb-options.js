@@ -1,19 +1,19 @@
 import { css, html, LitElement } from 'lit';
-import { dispatchCustomEvent } from '../../lib/events.js';
 import { ccAddonEncryptionAtRestOption } from '../../templates/cc-addon-encryption-at-rest-option/cc-addon-encryption-at-rest-option.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-addon-option-form/cc-addon-option-form.js';
+import { CcAddonMongodbOptionsSubmitEvent } from './cc-addon-mongodb-options.events.js';
 
 /**
+ * @typedef {import('../cc-addon-option-form/cc-addon-option-form.events.js').CcAddonOptionFormSubmitEvent} CcAddonOptionFormSubmitEvent
  * @typedef {import('../common.types.js').AddonOptionStates} AddonOptionStates
  * @typedef {import('../common.types.js').EncryptionAddonOption} EncryptionAddonOption
  */
+
 /**
  * A component that displays the available options of a MongoDB add-on.
  *
  * @cssdisplay block
- *
- * @fires {CustomEvent<AddonOptionStates>} cc-addon-mongodb-options:submit - Fires when the form is submitted.
  */
 export class CcAddonMongodbOptions extends LitElement {
   static get properties() {
@@ -29,9 +29,9 @@ export class CcAddonMongodbOptions extends LitElement {
     this.options = [];
   }
 
-  /** @param {CustomEvent<AddonOptionStates>} event */
+  /** @param {CcAddonOptionFormSubmitEvent} event */
   _onFormOptionsSubmit({ detail }) {
-    dispatchCustomEvent(this, 'submit', detail);
+    this.dispatchEvent(new CcAddonMongodbOptionsSubmitEvent(detail));
   }
 
   _getFormOptions() {
@@ -55,7 +55,7 @@ export class CcAddonMongodbOptions extends LitElement {
       <cc-addon-option-form
         heading="${heading}"
         .options=${options}
-        @cc-addon-option-form:submit="${this._onFormOptionsSubmit}"
+        @cc-addon-option-form-submit="${this._onFormOptionsSubmit}"
       >
         <div slot="description">${i18n('cc-addon-mongodb-options.description')}</div>
       </cc-addon-option-form>

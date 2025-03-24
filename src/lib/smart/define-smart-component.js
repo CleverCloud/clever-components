@@ -3,15 +3,14 @@ import { defineSmartComponentCore } from './smart-manager.js';
 import { META } from './smart-symbols.js';
 
 /**
- * @typedef {import('./smart-component.types.d.ts').SmartContainer} SmartContainer
- * @typedef {import('./smart-component.types.d.ts').SmartComponent} SmartComponent
- * @typedef {import('./smart-component.types.d.ts').SmartContext} SmartContext
- * @typedef {import('./smart-component.types.d.ts').OnEventCallback} OnEventCallback
- * @typedef {import('./smart-component.types.d.ts').OnNewEventCallback} OnNewEventCallback
+ * @typedef {import('./smart-component.types.js').SmartContainer} SmartContainer
+ * @typedef {import('./smart-component.types.js').SmartComponent} SmartComponent
+ * @typedef {import('./smart-component.types.js').SmartContext} SmartContext
+ * @typedef {import('./smart-component.types.js').OnEventCallback} OnEventCallback
  */
 
 /**
- * @param {import('./smart-component.types.d.ts').SmartComponentDefinition<T>} definition
+ * @param {import('./smart-component.types.js').SmartComponentDefinition<T>} definition
  * @template {SmartComponent} T
  */
 export function defineSmartComponent(definition) {
@@ -58,23 +57,11 @@ export function defineSmartComponent(definition) {
       // and make sure they're removed if the signal is aborted
 
       /** @type {OnEventCallback} */
-      function onEvent(type, listener) {
-        // @ts-ignore
+      function onEvent(eventName, listener) {
         component.addEventListener(
-          type,
-          /** @param {CustomEvent} event */ (event) => {
-            listener(event.detail);
-          },
-          { signal },
-        );
-      }
-
-      /** @type {OnNewEventCallback} */
-      function onNewEvent(eventClass, listener) {
-        component.addEventListener(
-          // @ts-ignore
-          eventClass.TYPE,
+          eventName,
           (event) => {
+            // @ts-ignore
             listener(event.detail, event);
           },
           { signal },
@@ -104,7 +91,7 @@ export function defineSmartComponent(definition) {
         { signal },
       );
 
-      /** @type {import('./smart-component.types.d.ts').UpdateComponentCallback<T>} */
+      /** @type {import('./smart-component.types.js').UpdateComponentCallback<T>} */
       function updateComponent(propertyName, property) {
         /** @type {UpdateComponentEvent<T>} */
         const event = new UpdateComponentEvent(propertyName, property);
@@ -116,7 +103,6 @@ export function defineSmartComponent(definition) {
         component,
         context,
         onEvent,
-        onNewEvent,
         updateComponent,
         signal,
       });

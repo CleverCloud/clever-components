@@ -4,7 +4,6 @@ import * as hanbi from 'hanbi';
 import { LitElement, html } from 'lit';
 import { repeat } from 'lit/directives/repeat.js';
 import { LostFocusController } from '../../src/controllers/lost-focus-controller.js';
-import { dispatchCustomEvent } from '../../src/lib/events.js';
 
 describe('lost-focus-controller', () => {
   const ce = defineCE(
@@ -20,7 +19,7 @@ describe('lost-focus-controller', () => {
         this.items = ['1', '2', '3'];
 
         new LostFocusController(this, '.item', (event) => {
-          dispatchCustomEvent(this, 'my-element:lostFocus', event);
+          this.dispatchEvent(new CustomEvent('lostFocus', { detail: event, bubbles: true, composed: true }));
         });
       }
 
@@ -70,7 +69,7 @@ describe('lost-focus-controller', () => {
     const element = await fixture(`<${ce}></${ce}>`);
 
     const spy = hanbi.spy();
-    element.addEventListener('my-element:lostFocus', (e) => spy.handler(e.detail));
+    element.addEventListener('lostFocus', (e) => spy.handler(e.detail));
 
     return { element, spy };
   };

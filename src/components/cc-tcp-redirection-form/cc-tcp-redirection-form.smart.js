@@ -57,57 +57,49 @@ defineSmartComponent({
       );
     }
 
-    onEvent(
-      'cc-tcp-redirection:create',
-      /** @param {Event & { namespace: string }} event */
-      ({ namespace }) => {
-        updateRedirection(namespace, (redirectionState) => {
-          redirectionState.type = 'waiting';
-        });
-        createTcpRedirection({ apiConfig, ownerId, appId, namespace })
-          .then(({ port }) => {
-            notifySuccess(i18n('cc-tcp-redirection-form.create.success', { namespace }));
-            updateRedirection(namespace, (redirectionState) => {
-              redirectionState.type = 'loaded';
-              // @ts-expect-error TypeScript is unable to infer that the state type is 'loaded' because we defined it just above
-              redirectionState.sourcePort = port;
-            });
-          })
-          .catch((error) => {
-            console.error(error);
-            notifyError(i18n('cc-tcp-redirection-form.create.error', { namespace }));
-            updateRedirection(namespace, (redirectionState) => {
-              redirectionState.type = 'loaded';
-            });
+    onEvent('cc-tcp-redirection-create', ({ namespace }) => {
+      updateRedirection(namespace, (redirectionState) => {
+        redirectionState.type = 'waiting';
+      });
+      createTcpRedirection({ apiConfig, ownerId, appId, namespace })
+        .then(({ port }) => {
+          notifySuccess(i18n('cc-tcp-redirection-form.create.success', { namespace }));
+          updateRedirection(namespace, (redirectionState) => {
+            redirectionState.type = 'loaded';
+            // @ts-expect-error TypeScript is unable to infer that the state type is 'loaded' because we defined it just above
+            redirectionState.sourcePort = port;
           });
-      },
-    );
+        })
+        .catch((error) => {
+          console.error(error);
+          notifyError(i18n('cc-tcp-redirection-form.create.error', { namespace }));
+          updateRedirection(namespace, (redirectionState) => {
+            redirectionState.type = 'loaded';
+          });
+        });
+    });
 
-    onEvent(
-      'cc-tcp-redirection:delete',
-      /** @param {Event & { namespace: string, sourcePort: number }} event */
-      ({ namespace, sourcePort }) => {
-        updateRedirection(namespace, (redirectionState) => {
-          redirectionState.type = 'waiting';
-        });
-        deleteTcpRedirection({ apiConfig, ownerId, appId, sourcePort, namespace })
-          .then(() => {
-            notifySuccess(i18n('cc-tcp-redirection-form.delete.success', { namespace }));
-            updateRedirection(namespace, (redirectionState) => {
-              redirectionState.type = 'loaded';
-              // @ts-expect-error TypeScript is unable to infer that the state type is 'loaded' because we defined it just above
-              redirectionState.sourcePort = null;
-            });
-          })
-          .catch((error) => {
-            console.error(error);
-            notifyError(i18n('cc-tcp-redirection-form.delete.error', { namespace }));
-            updateRedirection(namespace, (redirectionState) => {
-              redirectionState.type = 'loaded';
-            });
+    onEvent('cc-tcp-redirection-delete', ({ namespace, sourcePort }) => {
+      updateRedirection(namespace, (redirectionState) => {
+        redirectionState.type = 'waiting';
+      });
+      deleteTcpRedirection({ apiConfig, ownerId, appId, sourcePort, namespace })
+        .then(() => {
+          notifySuccess(i18n('cc-tcp-redirection-form.delete.success', { namespace }));
+          updateRedirection(namespace, (redirectionState) => {
+            redirectionState.type = 'loaded';
+            // @ts-expect-error TypeScript is unable to infer that the state type is 'loaded' because we defined it just above
+            redirectionState.sourcePort = null;
           });
-      },
-    );
+        })
+        .catch((error) => {
+          console.error(error);
+          notifyError(i18n('cc-tcp-redirection-form.delete.error', { namespace }));
+          updateRedirection(namespace, (redirectionState) => {
+            redirectionState.type = 'loaded';
+          });
+        });
+    });
 
     updateComponent('state', { type: 'loading' });
 

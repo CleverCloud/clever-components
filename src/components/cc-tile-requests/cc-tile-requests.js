@@ -258,7 +258,7 @@ export class CcTileRequests extends LitElement {
           hide-text
           outlined
           primary
-          @cc-button:click=${this._onToggleDocs}
+          @cc-click=${this._onToggleDocs}
           >${this._docs ? i18n('cc-tile-requests.close-btn') : i18n('cc-tile-requests.about-btn')}
         </cc-button>
       </div>
