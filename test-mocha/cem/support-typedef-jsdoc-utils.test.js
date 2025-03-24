@@ -12,7 +12,6 @@ import {
   getConstructorNode,
   getTypesFromClass,
   getTypesFromConstructor,
-  getTypesFromEventTags,
 } from '../../cem/support-typedef-jsdoc-utils.js';
 
 const filename = 'test-mocha/cem/fixtures/cc-test-component.js';
@@ -46,19 +45,9 @@ describe('CEM', function () {
   });
 
   describe('getTypesFromClass()', function () {
-    it('should retrieve the types present in the constructor and from event tags', function () {
+    it('should retrieve the types present in the constructor', function () {
       const types = getTypesFromClass(classNode, ts);
-      expect(types).to.have.members([
-        'Foo',
-        'Bar',
-        'TheInterface',
-        'TheType',
-        'TupleFoo',
-        'TupleBar',
-        'CustomEventFoo',
-        'CustomEventBar',
-        'CustomEventBaz',
-      ]);
+      expect(types).to.have.members(['Foo', 'Bar', 'TheInterface', 'TheType', 'TupleFoo', 'TupleBar']);
     });
   });
 
@@ -91,29 +80,6 @@ describe('CEM', function () {
         'TupleBar',
         'PrivateInterface',
       ]);
-    });
-  });
-
-  describe('getTypesFromEventTags()', () => {
-    it('should retrieve the types in event tags', () => {
-      const types = getTypesFromEventTags(classNode, ts);
-      expect(types).to.have.members(['CustomEventFoo', 'CustomEventBar', 'CustomEventBaz']);
-    });
-
-    it('should return an empty array when no jsDoc', () => {
-      const classNode = getClassNodeFromSource(`export class CcTestComponent extends LitElement { constructor() {} }`);
-      const types = getTypesFromEventTags(classNode, ts);
-
-      expect(types).to.be.empty;
-    });
-
-    it('should return an empty array when empty jsDoc', () => {
-      const classNode = getClassNodeFromSource(
-        `/***/\nexport class CcTestComponent extends LitElement { constructor() {} }`,
-      );
-      const types = getTypesFromEventTags(classNode, ts);
-
-      expect(types).to.be.empty;
     });
   });
 

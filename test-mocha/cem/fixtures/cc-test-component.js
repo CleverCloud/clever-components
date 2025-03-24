@@ -8,28 +8,12 @@ import { LitElement } from 'lit';
  * @typedef {import('./cc-test-component.types.js').UnionFoo} TupleFoo
  * @typedef {import('./cc-test-component.types.js').UnionBar} TupleBar
  * @typedef {import('./cc-test-component.types.js').PrivateInterface} PrivateInterface
- * @typedef {import('./cc-test-component.types.js').CustomEventFoo} CustomEventFoo
- * @typedef {import('./cc-test-component.types.js').CustomEventBar} CustomEventBar
  * @tyedef {import('./cc-test-component.types.js').ShouldBeIgnored} ShouldBeIgnored
  * @typedef {import('./common.types.js').Common} Common
  */
 
 /**
  * lorem ipsum...
- *
- * @fires {CustomEvent<CustomEventFoo>} event - A custom event
- * @fires {CustomEvent<CustomEventFoo>} event - Another custom event with same type
- * @fires {CustomEvent<CustomEventBar>} event - Another custom event with another type
- * @fires {CustomEvent<Array<CustomEventBaz>>} event - Another custom event with another type nested into an Array
- * @fires {CustomEvent<String>} event - Should be ignored (String is a built-in type that doesn't need to be described)
- * @fires {CustomEvent<Date>} event - Should be ignored (Date is a built-in type that doesn't need to be described)
- * @fires {CustomEvent<number>} event - Should be ignored (number is primitive)
- * @fires {CustomEvent<string>} event - Should be ignored (string is primitive)
- * @fires {CustomEvent} event - Should be ignored (CustomEvent without generic type)
- * @fires {} event - Should be ignored (empty type defined)
- * @fires event - Should be ignored (no type defined)
- * @fires {CustomType<CustomEventType>} event - Should be ignored (not a CustomEvent type)
- * @evet {CustomEvent<CustomEventType>} event - Should be ignored (wrong tag name)
  */
 // eslint-disable-next-line wc/define-tag-after-class-definition
 export class CcTestComponent extends LitElement {
