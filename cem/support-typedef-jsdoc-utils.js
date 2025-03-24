@@ -8,44 +8,12 @@ export function getTypesFromClass(classNode, ts, retrievePrivate = false) {
   if (constructor != null) {
     types.push(...getTypesFromConstructor(constructor, ts, retrievePrivate));
   }
-  types.push(...getTypesFromEventTags(classNode, ts));
 
   return types;
 }
 
 export function getConstructorNode(classNode, ts) {
   return classNode?.members?.find((member) => member.kind === ts.SyntaxKind.Constructor) ?? null;
-}
-
-export function getTypesFromEventTags(classNode, ts) {
-  const types = new Set();
-
-  const notNull = (o) => o != null;
-
-  // typescript doesn't really support @fires tag, so we need to
-  // - parse the @fires comment manually and extract the event type (we support only CustomEvent<any>)
-  // - create a minimalist JS source with a single statement and with a `@type` JSDoc
-  // - create an AST from this source
-  // - find the types from the JSDoc (here we can re-use the same code as when extracting types from constructor)
-
-  classNode.jsDoc
-    ?.filter((jsDoc) => jsDoc.tags != null)
-    ?.flatMap((jsDoc) => jsDoc.tags)
-    .filter((tag) => tag.tagName.getText() === 'fires')
-    .map((tag) => tag.comment)
-    .filter(notNull)
-    .map((comment) => /\{CustomEvent<(.*)>}/.exec(comment))
-    .filter(notNull)
-    .map((match) => match[1])
-    .map((type) => `/**@type {${type}}*/const foo=null;`)
-    .map((src) => ts.createSourceFile('src', src, ts.ScriptTarget.ES2015, true))
-    .map((ast) => ast.statements[0].jsDoc[0])
-    .flatMap((jsDocNode) => getTypesFromJsDocCommentNode(jsDocNode, ts))
-    .forEach((type) => {
-      types.add(type);
-    });
-
-  return Array.from(types);
 }
 
 export function getTypesFromConstructor(constructorNode, ts, retrievePrivate = false) {
