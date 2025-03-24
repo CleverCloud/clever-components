@@ -7,6 +7,7 @@ import removePrivateMembers from './cem/remove-private-members.js';
 import sortItems from './cem/sort-items.js';
 import supportCssdisplayJsdoc from './cem/support-cssdisplay-jsdoc.js';
 import supportTypedefJsdoc from './cem/support-typedef-jsdoc.js';
+import supportCcEvents from './cem/support-cc-events.js';
 
 // Temporary for now
 fs.mkdirSync('dist', { recursive: true });
@@ -18,6 +19,7 @@ export default {
   // dev: true,
   // watch: true,
   plugins: [
+    supportCcEvents(),
     sortItems(),
     removePrivateMembers(),
     identifyReadonlyMembers(),
