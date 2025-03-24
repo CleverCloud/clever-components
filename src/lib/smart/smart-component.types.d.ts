@@ -44,9 +44,17 @@ export type SmartContext = Record<string, any>;
 
 export type OnEventCallback = (type: string, listener: (detail: any) => void) => void;
 
-export type OnNewEventCallback = <D, E extends CcEvent<D>>(
-  eventClass: Clazz<E>,
-  listener: (detail: (typeof event)['detail'], event: InstanceType<typeof eventClass>) => void,
+export type OnNewEventCallback = <
+  E extends {
+    [P in keyof HTMLElementEventMap]: HTMLElementEventMap[P] extends CcEvent<any> ? P : never;
+  }[keyof HTMLElementEventMap],
+  // E extends keyof HTMLElementEventMap,
+>(
+  eventName: E,
+  listener: (
+    detail: HTMLElementEventMap[E] extends CcEvent<infer D> ? D : never,
+    event: HTMLElementEventMap[E],
+  ) => void,
 ) => void;
 
 export type UpdateComponentCallback<C extends SmartComponent> = <P extends keyof C, V extends C[P]>(

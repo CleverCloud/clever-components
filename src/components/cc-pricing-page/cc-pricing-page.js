@@ -172,13 +172,11 @@ export class CcPricingPage extends LitElement {
   render() {
     return html`
       <slot
-        @cc-pricing-header:change-currency=${this._onChangeCurrency}
-        @cc-pricing-header:change-temporality=${this._onChangeTemporality}
-        @cc-pricing-product:add-plan=${this._onAddPlan}
-        @cc-pricing-estimation:change-quantity=${this._onChangeQuantity}
-        @cc-pricing-estimation:delete-plan=${this._onDeletePlan}
-        @cc-pricing-estimation:change-temporality=${this._onChangeTemporality}
-        @cc-pricing-estimation:change-currency=${this._onChangeCurrency}
+        @cc-pricing-currency-change=${this._onChangeCurrency}
+        @cc-pricing-temporality-change=${this._onChangeTemporality}
+        @cc-pricing-plan-add=${this._onAddPlan}
+        @cc-pricing-quantity-change=${this._onChangeQuantity}
+        @cc-pricing-plan-delete=${this._onDeletePlan}
       ></slot>
     `;
   }

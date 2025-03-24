@@ -15,7 +15,6 @@ import {
   iconRemixPlayCircleLine as iconInstanceRunning,
   iconRemixStopCircleLine as iconInstanceStopping,
 } from '../../assets/cc-remix.icons.js';
-import { dispatchCustomEvent } from '../../lib/events.js';
 import { groupBy } from '../../lib/utils.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-datetime-relative/cc-datetime-relative.js';
@@ -24,6 +23,7 @@ import '../cc-input-text/cc-input-text.js';
 import '../cc-loader/cc-loader.js';
 import '../cc-notice/cc-notice.js';
 import '../cc-toggle/cc-toggle.js';
+import { CcLogsInstancesSelectionChangeEvent } from './cc-logs-instances.events.js';
 
 /**
  * @param {Instance} i1
@@ -66,8 +66,8 @@ const DEPLOYMENT_WIP_STATES = ['QUEUED', 'WORK_IN_PROGRESS'];
  * @typedef {import('./cc-logs-instances.types.js').Instance} Instance
  * @typedef {import('./cc-logs-instances.types.js').GhostInstance} GhostInstance
  * @typedef {import('../common.types.js').IconModel} IconModel
- * @typedef {import('../../lib/events.types.js').EventWithTarget<HTMLInputElement>} HTMLInputElementEvent
  * @typedef {import('../../lib/i18n/i18n.types.js').Translated} Translated
+ * @typedef {Event & {target: HTMLInputElement}} HTMLInputElementEvent
  */
 
 /**
@@ -77,8 +77,6 @@ const DEPLOYMENT_WIP_STATES = ['QUEUED', 'WORK_IN_PROGRESS'];
  * * When using `cold` mode, instances are grouped by deployment.
  *
  * @cssdisplay flex
- *
- * @fires {CustomEvent<Array<string>>} cc-logs-instances:selection-change - Fires whenever the instances selection changes
  */
 export class CcLogsInstances extends LitElement {
   static get properties() {
@@ -116,21 +114,17 @@ export class CcLogsInstances extends LitElement {
    * @param {HTMLInputElementEvent} e
    */
   _onInstanceClick(e) {
-    if (this.state.state === 'loaded') {
-      const instanceId = e.target.id;
-      if (this._isSelected(instanceId)) {
-        this.state = {
-          ...this.state,
-          selection: this.state.selection.filter((i) => i !== instanceId),
-        };
-      } else {
-        this.state = {
-          ...this.state,
-          selection: [...(this.state.selection ?? []), instanceId],
-        };
-      }
+    const instanceId = e.target.value;
+    const checked = e.target.checked;
 
-      dispatchCustomEvent(this, 'selection-change', this.state.selection);
+    if (this.state.state === 'loaded') {
+      this.state = {
+        ...this.state,
+        selection: checked
+          ? [...this.state.selection, instanceId]
+          : this.state.selection.filter((id) => id !== instanceId),
+      };
+      this.dispatchEvent(new CcLogsInstancesSelectionChangeEvent(this.state.selection));
     }
   }
 

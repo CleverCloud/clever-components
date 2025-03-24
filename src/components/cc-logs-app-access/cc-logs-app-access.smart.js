@@ -9,7 +9,6 @@ import './cc-logs-app-access.js';
 /**
  * @typedef {import('./cc-logs-app-access.js').CcLogsAppAccess} CcLogsAppAccess
  * @typedef {import('../cc-logs/cc-logs.types.js').Log} Log
- * @typedef {import('../cc-logs-date-range-selector/cc-logs-date-range-selector.types.js').LogsDateRangeSelectionChangeEventData} LogsDateRangeSelectionChangeEventData
  * @typedef {import('../../lib/date/date-range.types.js').DateRange} DateRange
  * @typedef {import('../../lib/logs/logs-stream.types.js').LogsStreamState} LogsStreamState
  * @typedef {import('../../lib/send-to-api.types.js').ApiConfig} ApiConfig
@@ -28,7 +27,7 @@ defineSmartComponent({
   /**
    * @param {OnContextUpdateArgs} args
    */
-  onContextUpdate({ component, context, onEvent, updateComponent, signal }) {
+  onContextUpdate({ component, context, onNewEvent, updateComponent, signal }) {
     const { apiConfig, ownerId, appId, dateRangeSelection } = context;
 
     if (dateRangeSelection != null) {
@@ -46,27 +45,23 @@ defineSmartComponent({
       controller.stop();
     };
 
-    onEvent(
-      'cc-logs-date-range-selector:change',
-      /** @param {LogsDateRangeSelectionChangeEventData} eventData */
-      (eventData) => {
-        controller.setNewDateRange(eventData.range);
-      },
-    );
+    onNewEvent('cc-logs-date-range-selection-change', ({ range }) => {
+      controller.setNewDateRange(range);
+    });
 
-    onEvent('cc-logs-loading-progress:pause', () => {
+    onNewEvent('cc-logs-loading-pause', () => {
       controller.pause();
     });
 
-    onEvent('cc-logs-loading-progress:resume', () => {
+    onNewEvent('cc-logs-loading-resume', () => {
       controller.resume();
     });
 
-    onEvent('cc-logs-loading-progress:accept-overflow', () => {
+    onNewEvent('cc-logs-loading-overflow-accept', () => {
       controller.acceptOverflow();
     });
 
-    onEvent('cc-logs-loading-progress:discard-overflow', () => {
+    onNewEvent('cc-logs-loading-overflow-discard', () => {
       controller.discardOverflow();
     });
 

@@ -30,7 +30,7 @@ defineSmartComponent({
   /**
    * @param {OnContextUpdateArgs} args
    */
-  onContextUpdate({ context, onEvent, updateComponent, signal }) {
+  onContextUpdate({ context, onNewEvent, updateComponent, signal }) {
     updateComponent('state', { type: 'loading' });
 
     const { apiConfig, ownerId, addonId } = context;
@@ -61,7 +61,7 @@ defineSmartComponent({
         },
       );
 
-    onEvent('cc-env-var-form:submit', (variables) => {
+    onNewEvent('cc-env-var-form-submit', (variables) => {
       updateComponent(
         'state',
         /** @param {EnvVarFormState} state */

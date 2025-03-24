@@ -11,7 +11,6 @@ import {
   iconRemixEditFill as iconPen,
 } from '../../assets/cc-remix.icons.js';
 import { ResizeController } from '../../controllers/resize-controller.js';
-import { dispatchCustomEvent } from '../../lib/events.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-badge/cc-badge.js';
 import '../cc-button/cc-button.js';
@@ -20,6 +19,12 @@ import '../cc-img/cc-img.js';
 import '../cc-notice/cc-notice.js';
 import '../cc-select/cc-select.js';
 import '../cc-stretch/cc-stretch.js';
+import {
+  CcOrgaMemberDeleteEvent,
+  CcOrgaMemberEditToggleEvent,
+  CcOrgaMemberLeaveEvent,
+  CcOrgaMemberUpdateEvent,
+} from './cc-orga-member-card.events.js';
 
 const BREAKPOINT_MEDIUM = 740;
 const BREAKPOINT_SMALL = 580;
@@ -52,13 +57,6 @@ const BREAKPOINTS = [BREAKPOINT_TINY, BREAKPOINT_SMALL, BREAKPOINT_MEDIUM];
  * This component also heavily relies on CSS `grid` and the `ResizeController` to switch from a "table" like design to a card design when the card width shrinks.
  *
  * @cssdisplay block
- *
- * @fires {CustomEvent<ToggleEditing>} cc-orga-member-card:toggle-editing - Fires the `id` of the member related to the card and the new state (`editing` or `loaded`) to specify when card is in edit mode or not.
- * This allows the list component to close all other cards in edit mode to leave only one in edit mode at once.
- * @fires {CustomEvent<OrgaMemberCardState>} cc-orga-member-card:delete - Fires when the user clicks on a remove member button.
- * @fires {CustomEvent<OrgaMemberCardState>} cc-orga-member-card:leave - Fires when the user clicks on a leave button (only possible if `isCurrentUser = true`).
- * We don't fire a delete event so that it can be processed differently by the smart component (leaving the org means the user has to be redirected).
- * @fires {CustomEvent<UpdateMember>} cc-orga-member-card:update - Fires when the user clicks on a validate button after editing member role.
  */
 export class CcOrgaMemberCard extends LitElement {
   static get properties() {
@@ -173,9 +171,12 @@ export class CcOrgaMemberCard extends LitElement {
   }
 
   _onDeleteMember() {
-    const eventName = this.state.isCurrentUser ? 'leave' : 'delete';
     // since not every member has set a name, we send either the name or the email to provide context in the toast message
-    dispatchCustomEvent(this, eventName, this.state);
+    if (this.state.isCurrentUser) {
+      this.dispatchEvent(new CcOrgaMemberLeaveEvent(this.state));
+    } else {
+      this.dispatchEvent(new CcOrgaMemberDeleteEvent(this.state));
+    }
   }
 
   /**
@@ -204,10 +205,12 @@ export class CcOrgaMemberCard extends LitElement {
     this._newRole = this.state.role;
 
     // warn the `cc-orga-member-list` component so that it closes all other cards.
-    dispatchCustomEvent(this, 'toggle-editing', {
-      memberId: this.state.id,
-      newState,
-    });
+    this.dispatchEvent(
+      new CcOrgaMemberEditToggleEvent({
+        memberId: this.state.id,
+        newState,
+      }),
+    );
 
     /* Focus the `<select>` element when entering edit mode */
     if (newState === 'editing') {
@@ -222,10 +225,13 @@ export class CcOrgaMemberCard extends LitElement {
       return;
     }
 
-    dispatchCustomEvent(this, 'update', {
-      ...this.state,
-      newRole: this._newRole,
-    });
+    this.dispatchEvent(
+      new CcOrgaMemberUpdateEvent({
+        ...this.state,
+        type: 'editing', // Ensure the type is 'editing' to match the UpdateMember interface
+        newRole: this._newRole,
+      }),
+    );
   }
 
   render() {
@@ -315,7 +321,7 @@ export class CcOrgaMemberCard extends LitElement {
           .value=${this._newRole ?? this.state.role}
           ?inline=${this._resizeController.width > BREAKPOINT_TINY}
           ?disabled=${this.state.type === 'updating'}
-          @cc-select:input=${this._onRoleInput}
+          @cc-select=${this._onRoleInput}
           ${ref(this._roleRef)}
         >
         </cc-select>
@@ -346,7 +352,7 @@ export class CcOrgaMemberCard extends LitElement {
           ?disabled=${waiting}
           ?hide-text=${isBtnImgOnly}
           a11y-name=${this._getFirstBtnAccessibleName()}
-          @cc-button:click=${this._onToggleEdit}
+          @cc-click=${this._onToggleEdit}
         >
           <cc-stretch visible-element-id=${isEditing ? 'btn-content-cancel' : 'btn-content-edit'}>
             <span id="btn-content-edit">${i18n('cc-orga-member-card.btn.edit.visible-text')}</span>
@@ -364,7 +370,7 @@ export class CcOrgaMemberCard extends LitElement {
           ?hide-text=${isBtnImgOnly}
           ?waiting=${waiting}
           a11y-name=${this._getSecondBtnAccessibleName()}
-          @cc-button:click=${isEditing ? this._onUpdateMember : this._onDeleteMember}
+          @cc-click=${isEditing ? this._onUpdateMember : this._onDeleteMember}
           ${ref(this._deleteButtonRef)}
         >
           <cc-stretch visible-element-id=${this._getSecondBtnVisibleElementId(isEditing)}>

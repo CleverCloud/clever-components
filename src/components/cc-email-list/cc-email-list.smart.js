@@ -28,7 +28,7 @@ defineSmartComponent({
   /**
    * @param {OnContextUpdateArgs} args
    */
-  onContextUpdate({ component, context, onEvent, updateComponent, signal }) {
+  onContextUpdate({ component, context, onNewEvent, updateComponent, signal }) {
     updateComponent('emailListState', { type: 'loading' });
     updateComponent('addEmailFormState', { type: 'idle' });
     component.resetAddEmailForm();
@@ -76,7 +76,7 @@ defineSmartComponent({
         updateComponent('emailListState', { type: 'error' });
       });
 
-    onEvent('cc-email-list:send-confirmation-email', (address) => {
+    onNewEvent('cc-email-send-confirmation', (address) => {
       updateComponent(
         'emailListState',
         /** @param {EmailListStateLoaded} emailListState */
@@ -116,7 +116,7 @@ defineSmartComponent({
         });
     });
 
-    onEvent('cc-email-list:add', (address) => {
+    onNewEvent('cc-email-add', (address) => {
       updateComponent(
         'addEmailFormState',
         /** @param {AddEmailFormState} emailListState */
@@ -172,7 +172,7 @@ defineSmartComponent({
         });
     });
 
-    onEvent('cc-email-list:delete', (address) => {
+    onNewEvent('cc-email-delete', (address) => {
       updateSecondary(address, (secondaryAddressState) => {
         secondaryAddressState.type = 'deleting';
       });
@@ -204,7 +204,7 @@ defineSmartComponent({
         );
     });
 
-    onEvent('cc-email-list:mark-as-primary', (address) => {
+    onNewEvent('cc-email-mark-as-primary', (address) => {
       updateSecondary(address, (secondaryAddressState) => {
         secondaryAddressState.type = 'marking-as-primary';
       });

@@ -70,11 +70,11 @@ export function defineSmartComponent(definition) {
       }
 
       /** @type {OnNewEventCallback} */
-      function onNewEvent(eventClass, listener) {
+      function onNewEvent(eventName, listener) {
         component.addEventListener(
-          // @ts-ignore
-          eventClass.TYPE,
+          eventName,
           (event) => {
+            // @ts-ignore
             listener(event.detail, event);
           },
           { signal },

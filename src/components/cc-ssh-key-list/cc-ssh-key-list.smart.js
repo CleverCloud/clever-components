@@ -33,7 +33,7 @@ defineSmartComponent({
   /**
    * @param {OnContextUpdateArgs} args
    */
-  onContextUpdate({ component, context, onEvent, updateComponent, signal }) {
+  onContextUpdate({ component, context, onNewEvent, updateComponent, signal }) {
     const { apiConfig } = context;
 
     // Retrieving SSH keys is done in two steps, hidden in the `fetchAllKeys()` implementation:
@@ -58,7 +58,7 @@ defineSmartComponent({
         });
     }
 
-    onEvent('cc-ssh-key-list:create', ({ name, publicKey }) => {
+    onNewEvent('cc-ssh-key-create', ({ name, publicKey }) => {
       component.createKeyFormState = { type: 'creating' };
 
       addKey({ apiConfig, key: { name: name.trim(), key: publicKey.trim() } })
@@ -78,7 +78,7 @@ defineSmartComponent({
         });
     });
 
-    onEvent('cc-ssh-key-list:delete', ({ name }) => {
+    onNewEvent('cc-ssh-key-delete', ({ name }) => {
       updateComponent(
         'keyListState',
         /** @param {SshKeyListStateLoadedAndLinked|SshKeyListStateLoadedAndUnlinked} keyListState */
@@ -107,7 +107,7 @@ defineSmartComponent({
         });
     });
 
-    onEvent('cc-ssh-key-list:import', ({ name, key, fingerprint }) => {
+    onNewEvent('cc-ssh-key-import', ({ name, key, fingerprint }) => {
       updateComponent(
         'keyListState',
         /** @param {SshKeyListStateLoadedAndLinked} keyListState */

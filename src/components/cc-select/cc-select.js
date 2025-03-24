@@ -1,10 +1,10 @@
 import { css, html } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { createRef, ref } from 'lit/directives/ref.js';
-import { dispatchCustomEvent } from '../../lib/events.js';
 import { CcFormControlElement } from '../../lib/form/cc-form-control-element.abstract.js';
 import { RequiredValidator } from '../../lib/form/validation.js';
 import { i18n } from '../../translations/translation.js';
+import { CcSelectEvent } from '../common.events.js';
 
 const DEFAULT_ERROR_MESSAGES = {
   get empty() {
@@ -31,8 +31,6 @@ const DEFAULT_ERROR_MESSAGES = {
  *   * Setting a value that does not match any option displays a `<select>` element with no selected value.
  *
  * @cssdisplay inline-block
- *
- * @fires {CustomEvent<string>} cc-select:input - Fires the `value` whenever the `value` changes.
  *
  * @cssprop {Size} --cc-form-label-gap - The space between the label and the control (defaults: `0.35em` or `1em` when inline).
  * @cssprop {Color} --cc-select-label-color - The color for the select's label (defaults: `inherit`).
@@ -154,7 +152,7 @@ export class CcSelect extends CcFormControlElement {
    */
   _onSelectInput(e) {
     this.value = e.target.value;
-    dispatchCustomEvent(this, 'input', this.value);
+    this.dispatchEvent(new CcSelectEvent(this.value));
   }
 
   /**

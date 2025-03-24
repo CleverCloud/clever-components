@@ -21,7 +21,7 @@ defineSmartComponent({
   /**
    * @param {OnContextUpdateArgs} args
    */
-  onContextUpdate({ container, context, onEvent, updateComponent, signal }) {
+  onContextUpdate({ container, context, onNewEvent, updateComponent, signal }) {
     const { apiConfig, zoneId = 'par', currency = 'EUR' } = context;
 
     /**
@@ -32,13 +32,9 @@ defineSmartComponent({
      *
      * For more info, refer to the `Smart` docs about the `cc-pricing-estimation` component in the `Notes` section.
      */
-    onEvent(
-      'cc-pricing-estimation:change-currency',
-      /** @param {string} currency */
-      (currency) => {
-        container.context = { ...container.context, currency };
-      },
-    );
+    onNewEvent('cc-pricing-currency-change', (currency) => {
+      container.context = { ...container.context, currency };
+    });
 
     updateComponent('state', { type: 'loading' });
 

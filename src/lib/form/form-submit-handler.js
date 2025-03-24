@@ -1,4 +1,3 @@
-import { dispatchCustomEvent } from '../events.js';
 import { isStringEmpty } from '../utils.js';
 import {
   focusFirstFormControlWithError,
@@ -6,6 +5,7 @@ import {
   isCcFormControlElement,
   isFormControlElementLike,
 } from './form-utils.js';
+import { CcFormInvalidEvent, CcFormValidEvent } from './form.events.js';
 import { Validation } from './validation.js';
 
 /**
@@ -31,8 +31,6 @@ import { Validation } from './validation.js';
  *
  * @param {SubmitHandlerCallbacks} callbacks
  * @return {((e: HTMLFormElementEvent) => void)}
- * @fires {CustomEvent<FormValidity>} form:invalid - Whenever the form is submitted but some form controls are invalid
- * @fires {CustomEvent<FormDataMap>} form:valid - Whenever the form is submitted and all form controls are valid
  */
 export function formSubmitHandler(callbacks) {
   /**
@@ -65,11 +63,11 @@ export function formSubmitHandler(callbacks) {
     if (isFormValid) {
       const data = getFormDataMap(formElement);
       callbacks.onValid?.(data, formElement);
-      dispatchCustomEvent(formElement, 'valid', data);
+      formElement.dispatchEvent(new CcFormValidEvent(data));
     } else {
       callbacks.onInvalid?.(formValidity, formElement);
       focusFirstFormControlWithError(formElement);
-      dispatchCustomEvent(formElement, 'invalid', formValidity);
+      formElement.dispatchEvent(new CcFormInvalidEvent(formValidity));
     }
   };
 }

@@ -76,12 +76,12 @@ export class CcProductCardSandbox extends LitElement {
           label="API products"
           value="default"
           .options="${API_PRODUCTS_SELECT}"
-          @cc-select:input="${this._onSelect}"
+          @cc-select="${this._onSelect}"
         ></cc-select>
         <cc-input-number
           label="component width (em)"
           value=${this._componentWidth}
-          @cc-input-number:input="${this._onWidthInput}"
+          @cc-number-change="${this._onWidthInput}"
         ></cc-input-number>
       </div>
       <div class="main">
@@ -97,7 +97,7 @@ export class CcProductCardSandbox extends LitElement {
         <cc-input-text
           label="Product details"
           value=${JSON.stringify(this._currentProduct, null, '\t')}
-          @cc-input-text:input="${this._onProductInput}"
+          @cc-text-change="${this._onProductInput}"
           multi
         ></cc-input-text>
       </div>

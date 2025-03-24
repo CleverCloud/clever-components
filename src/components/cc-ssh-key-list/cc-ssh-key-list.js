@@ -9,7 +9,6 @@ import {
   iconRemixKey_2Fill as iconKey,
 } from '../../assets/cc-remix.icons.js';
 import { LostFocusController } from '../../controllers/lost-focus-controller.js';
-import { dispatchCustomEvent } from '../../lib/events.js';
 import { fakeString } from '../../lib/fake-strings.js';
 import { focusBySelector } from '../../lib/focus-helper.js';
 import { formSubmit } from '../../lib/form/form-submit-directive.js';
@@ -26,6 +25,7 @@ import '../cc-icon/cc-icon.js';
 import '../cc-img/cc-img.js';
 import '../cc-input-text/cc-input-text.js';
 import '../cc-notice/cc-notice.js';
+import { CcSshKeyCreateEvent, CcSshKeyDeleteEvent, CcSshKeyImportEvent } from './cc-ssh-key-list.events.js';
 
 const SSH_KEY_DOCUMENTATION = 'https://developers.clever-cloud.com/doc/account/ssh-keys-management/';
 
@@ -78,10 +78,6 @@ class SshPublicKeyValidator {
  * * Finally, displays the list of keys available from GitHub that you can associate with your account.
  *
  * @cssdisplay block
- *
- * @fires {CustomEvent<NewKey>} cc-ssh-key-list:create - Fires when clicking the creation form submit button.
- * @fires {CustomEvent<SshKey>} cc-ssh-key-list:delete - Fires when clicking a personal key deletion button.
- * @fires {CustomEvent<SshKey>} cc-ssh-key-list:import - Fires when clicking a GitHub key import button.
  */
 export class CcSshKeyList extends LitElement {
   static get properties() {
@@ -131,11 +127,7 @@ export class CcSshKeyList extends LitElement {
   _onCreateKey(formData) {
     // trigger key creation if client form validation is successful
     if (typeof formData.name === 'string' && typeof formData.publicKey === 'string') {
-      const newKey = {
-        name: formData.name,
-        publicKey: formData.publicKey,
-      };
-      dispatchCustomEvent(this, 'create', newKey);
+      this.dispatchEvent(new CcSshKeyCreateEvent({ name: formData.name, publicKey: formData.publicKey }));
     }
   }
 
@@ -143,14 +135,14 @@ export class CcSshKeyList extends LitElement {
   _onDeleteKey(sshKeyState) {
     // removing state property that belongs to internal component implementation
     const { type: state, ...sshKey } = sshKeyState;
-    dispatchCustomEvent(this, 'delete', sshKey);
+    this.dispatchEvent(new CcSshKeyDeleteEvent({ name: sshKey.name }));
   }
 
   /** @param {GithubSshKeyState} sshKeyState */
   _onImportKey(sshKeyState) {
     // removing state property that belongs to internal component implementation
     const { type: state, ...sshKey } = sshKeyState;
-    dispatchCustomEvent(this, 'import', sshKey);
+    this.dispatchEvent(new CcSshKeyImportEvent(sshKey));
   }
 
   render() {
@@ -265,7 +257,7 @@ export class CcSshKeyList extends LitElement {
         >
         </cc-input-text>
         <div class="create-form__footer">
-          <cc-button class="create-form__add-btn" primary type="submit" ?waiting=${isCreating}>
+          <cc-button class="create-form__add-btn" primary type="submit" ?waiting=${isCreating} @cc-click=${() => {}}>
             ${i18n('cc-ssh-key-list.add.btn')}
           </cc-button>
         </div>
@@ -310,7 +302,7 @@ export class CcSshKeyList extends LitElement {
                   ${type === 'personal'
                     ? html`
                         <cc-button
-                          @cc-button:click=${() => this._onDeleteKey(key)}
+                          @cc-click=${() => this._onDeleteKey(key)}
                           a11y-name="${i18n('cc-ssh-key-list.personal.delete.a11y', { name })}"
                           class="key__button key__button--personal"
                           .icon="${iconBin}"
@@ -325,7 +317,7 @@ export class CcSshKeyList extends LitElement {
                   ${type === 'github'
                     ? html`
                         <cc-button
-                          @cc-button:click=${() => this._onImportKey(/** @type GithubSshKeyState */ (key))}
+                          @cc-click=${() => this._onImportKey(/** @type GithubSshKeyState */ (key))}
                           a11y-name="${i18n('cc-ssh-key-list.github.import.a11y', { name })}"
                           class="key__button key__button--github"
                           .icon="${iconAdd}"

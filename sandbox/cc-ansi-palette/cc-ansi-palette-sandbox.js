@@ -98,14 +98,14 @@ export class CcAnsiPaletteSandbox extends LitElement {
           inline
           .value=${`${this._type}`}
           .choices=${TYPES}
-          @cc-toggle:input=${this._onTypeToggle}
+          @cc-select=${this._onTypeToggle}
         ></cc-toggle>
         <cc-select
           label="Palette"
           inline
           .options=${this._paletteChoices}
           .value=${this._selectedPaletteName}
-          @cc-select:input=${this._onPaletteToggle}
+          @cc-select=${this._onPaletteToggle}
         ></cc-select>
       </div>
       <cc-ansi-palette

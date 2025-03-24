@@ -13,7 +13,6 @@ import {
 } from '../../assets/cc-remix.icons.js';
 import { LostFocusController } from '../../controllers/lost-focus-controller.js';
 import { copyToClipboard } from '../../lib/clipboard.js';
-import { dispatchCustomEvent } from '../../lib/events.js';
 import { fakeString } from '../../lib/fake-strings.js';
 import { focusBySelector } from '../../lib/focus-helper.js';
 import { formSubmit } from '../../lib/form/form-submit-directive.js';
@@ -23,6 +22,14 @@ import { i18n } from '../../translations/translation.js';
 import '../cc-button/cc-button.js';
 import '../cc-input-text/cc-input-text.js';
 import '../cc-notice/cc-notice.js';
+import {
+  CcKvHashElementAddEvent,
+  CcKvHashElementDeleteEvent,
+  CcKvHashElementUpdateEvent,
+  CcKvHashExplorerStateChangeEvent,
+  CcKvHashFilterChangeEvent,
+  CcKvHashLoadMoreEvent,
+} from './cc-kv-hash-explorer.events.js';
 
 /** @type {Array<{state: CcKvHashElementState, skeleton: boolean}>} */
 const SKELETON_ELEMENTS = Array(5)
@@ -63,13 +70,6 @@ const LOAD_MORE_THRESHOLD = 5;
  * * copy any element value to the clipboard
  *
  * @cssdisplay block
- *
- * @fires {CustomEvent<{field:string, value: string}>} cc-kv-hash-explorer:add-element - Fires whenever the add form is submitted
- * @fires {CustomEvent<string>} cc-kv-hash-explorer:delete-element - Fires whenever a delete button is clicked
- * @fires {CustomEvent<string>} cc-kv-hash-explorer:filter-change - Fires whenever the filter changes
- * @fires {CustomEvent} cc-kv-hash-explorer:load-more-elements - Fires whenever the almost last element become visible (after user scroll)
- * @fires {CustomEvent<CcKvHashExplorerState>} cc-kv-hash-explorer:state-change - Fires whenever the state change internally
- * @fires {CustomEvent<{field:string, value: string}>} cc-kv-hash-explorer:update-element - Fires whenever an update button is clicked
  */
 export class CcKvHashExplorer extends LitElement {
   static get properties() {
@@ -146,7 +146,7 @@ export class CcKvHashExplorer extends LitElement {
       this.state.elements.length > 0 &&
       e.last >= this.state.elements.length - LOAD_MORE_THRESHOLD
     ) {
-      dispatchCustomEvent(this, 'load-more-elements');
+      this.dispatchEvent(new CcKvHashLoadMoreEvent());
     }
   }
 
@@ -173,7 +173,7 @@ export class CcKvHashExplorer extends LitElement {
       }),
     };
 
-    dispatchCustomEvent(this, 'state-change', this.state);
+    this.dispatchEvent(new CcKvHashExplorerStateChangeEvent(this.state));
 
     await this._elementsRef.value.layoutComplete;
     this._editElementValueRef.value.focus();
@@ -199,7 +199,7 @@ export class CcKvHashExplorer extends LitElement {
       }),
     };
 
-    dispatchCustomEvent(this, 'state-change', this.state);
+    this.dispatchEvent(new CcKvHashExplorerStateChangeEvent(this.state));
   }
 
   /**
@@ -210,7 +210,7 @@ export class CcKvHashExplorer extends LitElement {
       return;
     }
     const field = e.target.dataset.field;
-    dispatchCustomEvent(this, 'update-element', { field, value: this._editElementValueRef.value.value });
+    this.dispatchEvent(new CcKvHashElementUpdateEvent({ field, value: this._editElementValueRef.value.value }));
   }
 
   /**
@@ -221,7 +221,7 @@ export class CcKvHashExplorer extends LitElement {
       return;
     }
     const field = e.target.dataset.field;
-    dispatchCustomEvent(this, 'delete-element', field);
+    this.dispatchEvent(new CcKvHashElementDeleteEvent(field));
   }
 
   /**
@@ -239,7 +239,7 @@ export class CcKvHashExplorer extends LitElement {
       return;
     }
     const pattern = /** @type {string} */ (formData.pattern);
-    dispatchCustomEvent(this, 'filter-change', pattern);
+    this.dispatchEvent(new CcKvHashFilterChangeEvent(pattern));
   }
 
   /**
@@ -249,7 +249,9 @@ export class CcKvHashExplorer extends LitElement {
     if (this.state.type === 'loading') {
       return;
     }
-    dispatchCustomEvent(this, 'add-element', { field: formData.field, value: formData.value });
+    const field = /** @type {string} */ (formData.field);
+    const value = /** @type {string} */ (formData.value);
+    this.dispatchEvent(new CcKvHashElementAddEvent({ field, value }));
   }
 
   render() {
@@ -334,7 +336,7 @@ export class CcKvHashExplorer extends LitElement {
                   multi
                   ?skeleton=${skeleton}
                   ?readonly=${state.type === 'updating'}
-                  @cc-input-text:requestimplicitsubmit=${this._onUpdate}
+                  @cc-request-submit=${this._onUpdate}
                 ></cc-input-text>
               `
             : ''}
@@ -415,7 +417,7 @@ export class CcKvHashExplorer extends LitElement {
         ?primary=${firstButton.primary}
         ?disabled=${firstButton.disabled || this.disabled}
         ?waiting=${firstButton.waiting}
-        @cc-button:click=${firstButton.onClick}
+        @cc-click=${firstButton.onClick}
       ></cc-button>
       <cc-button
         class=${secondBtn.class}
@@ -429,7 +431,7 @@ export class CcKvHashExplorer extends LitElement {
         ?primary=${secondBtn.primary}
         ?disabled=${secondBtn.disabled || this.disabled}
         ?waiting=${secondBtn.waiting}
-        @cc-button:click=${secondBtn.onClick}
+        @cc-click=${secondBtn.onClick}
       ></cc-button>
       <cc-button
         .icon=${iconCopy}
@@ -438,7 +440,7 @@ export class CcKvHashExplorer extends LitElement {
         data-text=${state.value}
         ?skeleton=${skeleton}
         ?disabled=${this.disabled}
-        @cc-button:click=${this._onCopyKeyButtonClick}
+        @cc-click=${this._onCopyKeyButtonClick}
         >${i18n('cc-kv-hash-explorer.element.copy', { index })}</cc-button
       >
     `;

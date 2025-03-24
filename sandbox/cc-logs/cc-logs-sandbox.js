@@ -27,6 +27,7 @@ import { sandboxStyles } from '../sandbox-styles.js';
 /**
  * @typedef {import('../../src/components/cc-logs/cc-logs.js').CcLogs} CcLogs
  * @typedef {import('../../src/components/cc-logs/cc-logs.types.js').MetadataFilter} MetadataFilter
+ * @typedef {import('../../src/components/cc-logs/cc-logs.events.js').CcLogsFollowChangeEvent} CcLogsFollowChangeEvent
  * @typedef {import('../../src/components/cc-logs/date-display.types.js').DateDisplay} DateDisplay
  * @typedef {import('../../src/components/cc-input-number/cc-input-number.js').CcInputNumber} CcInputNumber
  * @typedef {import('../../src/lib/date/date.types.js').Timezone} Timezone
@@ -231,10 +232,10 @@ class CcLogsSandbox extends LitElement {
   }
 
   /**
-   * @param {CustomEvent<boolean>} e
+   * @param {CcLogsFollowChangeEvent} e
    */
-  _onFollowChange(e) {
-    this._follow = e.detail;
+  _onFollowChange({ detail }) {
+    this._follow = detail;
   }
 
   _onScrollToBottomClick() {
@@ -256,23 +257,19 @@ class CcLogsSandbox extends LitElement {
   render() {
     return html`
       <div class="ctrl-top">
-        <cc-toggle
-          .value=${`${this._rate}`}
-          @cc-toggle:input=${this._onRateToggle}
-          .choices=${RATE_OPTIONS}
-        ></cc-toggle>
+        <cc-toggle .value=${`${this._rate}`} @cc-select=${this._onRateToggle} .choices=${RATE_OPTIONS}></cc-toggle>
         <cc-button
-          @cc-button:click=${this._onStartStopClick}
+          @cc-click=${this._onStartStopClick}
           ?danger=${this._started}
           ?success=${!this._started}
           .icon=${this._started ? stopIcon : playIcon}
           a11y-name=${this._started ? 'Stop' : 'Start'}
           hide-text
         ></cc-button>
-        <cc-button @cc-button:click=${this._onAddClick} ?primary=${true} ?outlined=${true} .icon=${addIcon}
+        <cc-button @cc-click=${this._onAddClick} ?primary=${true} ?outlined=${true} .icon=${addIcon}
           >Add one log
         </cc-button>
-        <cc-button @cc-button:click=${this._onClearClick} ?danger=${true} ?outlined=${true} .icon=${clearIcon}
+        <cc-button @cc-click=${this._onClearClick} ?danger=${true} ?outlined=${true} .icon=${clearIcon}
           >Clear
         </cc-button>
       </div>
@@ -290,7 +287,7 @@ class CcLogsSandbox extends LitElement {
           .metadataRenderers=${this._useCustomMetadataRenderers ? CUSTOM_METADATA_RENDERERS : null}
           style="${this._palette}"
           ${ref(this._logsRef)}
-          @cc-logs:followChange=${this._onFollowChange}
+          @cc-logs-follow-change=${this._onFollowChange}
         ></cc-logs-beta>
       </div>
 
@@ -313,7 +310,7 @@ class CcLogsSandbox extends LitElement {
         <cc-select
           label="ANSI Palette"
           .value=${this._palette}
-          @cc-select:input=${this._onPaletteToggle}
+          @cc-select=${this._onPaletteToggle}
           .options=${PALETTE_OPTIONS}
         >
           <p slot="help">You can change the ANSI color palette</p>
@@ -327,7 +324,7 @@ class CcLogsSandbox extends LitElement {
         <cc-select
           label="Date display"
           .value=${this._dateDisplay}
-          @cc-select:input=${this._onDateDisplayToggle}
+          @cc-select=${this._onDateDisplayToggle}
           .options=${DATE_DISPLAY_OPTIONS}
         >
           <p slot="help">You can change the date format</p>
@@ -336,14 +333,14 @@ class CcLogsSandbox extends LitElement {
         <cc-toggle
           legend="Timezone"
           .value=${this._timezone}
-          @cc-toggle:input=${this._onTimezoneToggle}
+          @cc-select=${this._onTimezoneToggle}
           .choices=${ZONE_OPTIONS}
           inline
         ></cc-toggle>
 
         <cc-input-number
           @blur=${this._onLimitChanged}
-          @cc-input-number:requestimplicitsubmit=${this._onLimitChanged}
+          @cc-request-submit=${this._onLimitChanged}
           .value=${this._limit}
           label="Limit"
           min="0"
@@ -354,23 +351,21 @@ class CcLogsSandbox extends LitElement {
         <cc-toggle
           legend="Filtered IP"
           .multipleValues=${this._filterIps}
-          @cc-toggle:input-multiple=${this._onFilterIpsToggle}
+          @cc-multi-select=${this._onFilterIpsToggle}
           .choices=${IP_OPTIONS}
         ></cc-toggle>
 
         <cc-toggle
           legend="Filtered Log Level"
           .multipleValues=${this._filterLevels}
-          @cc-toggle:input-multiple=${this._onFilterLevelsToggle}
+          @cc-multi-select=${this._onFilterLevelsToggle}
           .choices=${LEVEL_OPTIONS}
         ></cc-toggle>
 
         <div class="spacer"></div>
 
         <div>
-          <cc-button @cc-button:click=${this._onScrollToBottomClick} .icon=${scrollToBottomIcon}
-            >Scroll to bottom</cc-button
-          >
+          <cc-button @cc-click=${this._onScrollToBottomClick} .icon=${scrollToBottomIcon}>Scroll to bottom</cc-button>
         </div>
         <label for="follow">
           <input id="follow" type="checkbox" @change=${this._onFollowSwitched} .checked=${this._follow} /> Follow

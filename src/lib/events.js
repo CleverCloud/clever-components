@@ -92,9 +92,43 @@ export class EventHandler {
 export class CcEvent extends CustomEvent {
   /**
    * @param {string} type
-   * @param {D} detail
+   * @param {D} [detail]
    */
   constructor(type, detail) {
     super(type, { detail, bubbles: true, composed: true });
   }
+
+  // this makes CcEvent unique for Typescript
+  get ccEvent() {
+    return true;
+  }
+}
+
+/**
+ * Adds an event listener for a CcEvent where the callback receives the event detail as the first parameter
+ * and the event object as the second parameter.
+ *
+ * @template D - The detail type
+ *
+ * @param {EventTarget} target - The target to add the event listener to
+ * @param {string} eventType - The event type to listen for
+ * @param {(detail: D, event: CustomEvent<D>) => void} callback - The callback function
+ * @param {boolean|AddEventListenerOptions} [options] - The event listener options
+ * @returns {() => void} A function to remove the event listener
+ */
+export function onEvent(target, eventType, callback, options) {
+  /**
+   * @param {Event} event
+   */
+  const handler = (event) => {
+    // Cast event to CustomEvent<D> since we know it's a custom event
+    const customEvent = /** @type {CustomEvent<D>} */ (event);
+    callback(customEvent.detail, customEvent);
+  };
+
+  target.addEventListener(eventType, handler, options);
+
+  return () => {
+    target.removeEventListener(eventType, handler, options);
+  };
 }

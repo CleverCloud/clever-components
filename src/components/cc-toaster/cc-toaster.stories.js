@@ -186,7 +186,7 @@ export const defaultStory = makeStory(conf, {
         ?success="${intent === 'success'}"
         ?warning="${intent === 'warning'}"
         ?danger="${intent === 'danger'}"
-        @cc-button:click=${onClick}
+        @cc-click=${onClick}
       >
         ${intent}
       </cc-button>`;
@@ -213,7 +213,7 @@ export const defaultStory = makeStory(conf, {
               <cc-input-number
                 label="Maximum number of toasts that can be displayed at a time"
                 value=${maxToasts}
-                @cc-input-number:input=${onMaxToastChanged}
+                @cc-number-change=${onMaxToastChanged}
               ></cc-input-number>
             </div>
             <div slot="content">
@@ -221,7 +221,7 @@ export const defaultStory = makeStory(conf, {
                 legend="Position"
                 value=${position}
                 .choices=${positions}
-                @cc-toggle:input=${onPositionChanged}
+                @cc-select=${onPositionChanged}
               ></cc-toggle>
             </div>
             <div slot="content">
@@ -229,14 +229,14 @@ export const defaultStory = makeStory(conf, {
                 legend="Kind of animation to be played when the toast appears"
                 value=${animation}
                 .choices=${animations}
-                @cc-toggle:input=${onAnimationChanged}
+                @cc-select=${onAnimationChanged}
               ></cc-toggle>
             </div>
             <div slot="content">
               <cc-input-number
                 value=${timeout}
                 label="Time before the toast is automatically dismissed (0 for infinite time)"
-                @cc-input-number:input=${onTimeoutChanged}
+                @cc-number-change=${onTimeoutChanged}
               ></cc-input-number>
             </div>
             <div slot="content">

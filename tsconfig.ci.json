@@ -9,7 +9,8 @@
     "src/controllers/*.js",
     "src/templates/*.js",
     "src/translations/**/*.js",
-    "tasks/typechecking-stats.js"
+    "tasks/typechecking-stats.js",
+    "src/lib/events.global.types.d.ts"
   ],
   "exclude": [
     "src/controllers/*.stories.js",

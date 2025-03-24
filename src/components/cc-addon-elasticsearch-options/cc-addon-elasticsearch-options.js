@@ -1,14 +1,15 @@
 import { css, html, LitElement } from 'lit';
 import { iconRemixAlertFill as iconAlert } from '../../assets/cc-remix.icons.js';
-import { dispatchCustomEvent } from '../../lib/events.js';
 import { ccAddonEncryptionAtRestOption } from '../../templates/cc-addon-encryption-at-rest-option/cc-addon-encryption-at-rest-option.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-addon-option-form/cc-addon-option-form.js';
+import { CcAddonElasticsearchOptionsSubmitEvent } from './cc-addon-elasticsearch-options.events.js';
 
 const KIBANA_LOGO_URL = 'https://assets.clever-cloud.com/logos/elasticsearch-kibana.svg';
 const APM_LOGO_URL = 'https://assets.clever-cloud.com/logos/elasticsearch-apm.svg';
 
 /**
+ * @typedef {import('../cc-addon-option-form/cc-addon-option-form.events.js').CcAddonOptionFormSubmitEvent} CcAddonOptionFormSubmitEvent
  * @typedef {import('../common.types.js').AddonOptionStates} AddonOptionStates
  * @typedef {import('../common.types.js').AddonOption} AddonOption
  * @typedef {import('../common.types.js').AddonOptionWithMetadata} AddonOptionWithMetadata
@@ -21,8 +22,6 @@ const APM_LOGO_URL = 'https://assets.clever-cloud.com/logos/elasticsearch-apm.sv
  * A component that displays the available options of an elasticsearch add-on.
  *
  * @cssdisplay block
- *
- * @fires {CustomEvent<AddonOptionStates>} cc-addon-elasticsearch-options:submit - Fires when the form is submitted.
  */
 export class CcAddonElasticsearchOptions extends LitElement {
   static get properties() {
@@ -38,9 +37,9 @@ export class CcAddonElasticsearchOptions extends LitElement {
     this.options = [];
   }
 
-  /** @param {CustomEvent<AddonOptionStates>} event */
+  /** @param {CcAddonOptionFormSubmitEvent} event */
   _onFormOptionsSubmit({ detail }) {
-    dispatchCustomEvent(this, 'submit', detail);
+    this.dispatchEvent(new CcAddonElasticsearchOptionsSubmitEvent(detail));
   }
 
   /**
@@ -132,7 +131,7 @@ export class CcAddonElasticsearchOptions extends LitElement {
       <cc-addon-option-form
         heading="${i18n('cc-addon-elasticsearch-options.title')}"
         .options=${this._getFormOptions()}
-        @cc-addon-option-form:submit="${this._onFormOptionsSubmit}"
+        @cc-addon-option-form-submit="${this._onFormOptionsSubmit}"
       >
         <div slot="description">
           ${i18n('cc-addon-elasticsearch-options.description')}
