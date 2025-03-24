@@ -289,4 +289,15 @@
    */
   --cc-opacity-when-disabled: 0.65;
   /*endregion*/
+
+  /*region Form*/
+  /* vertical space between different form controls */
+  --cc-form-controls-gap: 2em;
+
+  /* horizontal space between the start of the line and the form control, label excluded */
+  --cc-form-controls-indent: 34px;
+
+  /* space between a label and its control */
+  --cc-form-label-gap: 0.35em;
+  /*endregion*/
 }

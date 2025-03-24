@@ -113,6 +113,14 @@ As our design tokens only exist (for now) as CSS values, keys will be listed as 
 | `--cc-border-radius-default` | `0.25em`       |
 | `--cc-border-radius-small`   | `0.15em`       |
 
+### Form decisions
+
+| Key                         | Default value |
+|:----------------------------|:--------------|
+| `--cc-form-controls-gap`    | `2em`         |
+| `--cc-form-controls-indent` | `34px`        |
+| `--cc-form-label-gap`       | `0.35em`      |
+
 ### Miscellaneous
 
 | Key                          | Default value |
