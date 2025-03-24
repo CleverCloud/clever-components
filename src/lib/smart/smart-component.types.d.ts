@@ -42,7 +42,20 @@ export interface SmartDefinitionParam<TypeHint = unknown> {
 
 export type SmartContext = Record<string, any>;
 
-export type OnEventCallback = (type: string, listener: (detail: any) => void) => void;
+export type OnEventCallback = <
+  ThisEventType extends keyof HTMLElementEventMap | keyof DocumentEventMap | keyof WindowEventMap,
+>(
+  type: ThisEventType,
+  listener: (event: EventFromEventType<ThisEventType>) => void,
+) => void;
+
+type EventFromEventType<ThisEventType> = ThisEventType extends keyof HTMLElementEventMap
+  ? HTMLElementEventMap[ThisEventType]
+  : ThisEventType extends keyof DocumentEventMap
+    ? DocumentEventMap[ThisEventType]
+    : ThisEventType extends keyof WindowEventMap
+      ? WindowEventMap[ThisEventType]
+      : never;
 
 export type OnNewEventCallback = <D, E extends CcEvent<D>>(
   eventClass: Clazz<E>,

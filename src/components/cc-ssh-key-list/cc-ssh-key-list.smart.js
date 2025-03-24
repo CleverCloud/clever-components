@@ -58,6 +58,10 @@ defineSmartComponent({
         });
     }
 
+    onEvent('cc-ssh-key-list-create', (test) => {
+      console.log(test.detail.name);
+    });
+
     onNewEvent(CcSshKeyListCreateEvent, ({ name, publicKey }) => {
       component.createKeyFormState = { type: 'creating' };
 

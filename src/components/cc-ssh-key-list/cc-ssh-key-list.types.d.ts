@@ -1,3 +1,5 @@
+import { CcSshKeyList } from './cc-ssh-key-list.js';
+
 //#region creation form
 export interface NewKey {
   name: string;
@@ -55,3 +57,15 @@ interface SshKeyState extends SshKey {
   type: 'idle' | 'deleting' | 'importing';
 }
 //#endregion
+
+declare global {
+  interface HTMLElementEventMap {
+    'cc-ssh-key-list-create': CustomEvent<NewKey>;
+    'cc-ssh-key-list-delete': CustomEvent<SshKey>;
+    'cc-ssh-key-list-import': CustomEvent<SshKey>;
+  }
+
+  interface HTMLElementTagNameMap {
+    'cc-ssh-key-list': CcSshKeyList;
+  }
+}

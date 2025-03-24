@@ -79,8 +79,7 @@ class SshPublicKeyValidator {
  *
  * @cssdisplay block
  *
- * @fires {CcSshKeyListCreateEvent} cc-ssh-key-list:create - Fires when clicking a personal key deletion button.
- * @fires {CustomEvent<SshKey>} cc-ssh-key-list:delete - Fires when clicking a personal key deletion button.
+ * @fires {CustomEvent<SshKey>} cc-ssh-key-list-delete - Fires when clicking a personal key deletion button.
  * @fires {CustomEvent<SshKey>} cc-ssh-key-list:import - Fires when clicking a GitHub key import button.
  */
 export class CcSshKeyList extends LitElement {
@@ -135,9 +134,23 @@ export class CcSshKeyList extends LitElement {
         name: formData.name,
         publicKey: formData.publicKey,
       };
-      /** @ignore */
-      this.dispatchEvent(new CcSshKeyListCreateEvent(newKey));
+
+      /** @type {HTMLElementEventMap['cc-ssh-key-list-create']} */
+      const MyEvent = new CustomEvent('cc-ssh-key-list-create', {
+        detail: newKey,
+      });
+      /** @type {CustomEvent<NewKey>} foo-event - description */
+      this.dispatchEvent(MyEvent);
     }
+  }
+
+  fire() {
+    /** @type {HTMLElementEventMap['cc-ssh-key-list-create']} */
+    const MyEvent = new CustomEvent('cc-ssh-key-list-create', {
+      detail: { name: 'toto', publicKey: 'tutu' },
+    });
+    /** @type {CustomEvent<NewKey>} foo-event - description */
+    this.dispatchEvent(MyEvent);
   }
 
   /** @param {SshKeyState} sshKeyState */
