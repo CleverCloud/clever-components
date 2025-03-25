@@ -73,7 +73,7 @@ defineSmartComponent({
     );
 
     onEvent(
-      'cc-logs-app-runtime:instance-selection-change',
+      'cc-logs-instances:selection-change',
       /** @param {Array<string>} instances */
       (instances) => {
         controller.setNewInstanceSelection(instances);
@@ -127,7 +127,7 @@ class SmartController extends LogsStream {
     this._selection = [];
     /** @type {DateRange} */
     this._dateRange = null;
-
+    /** @type {CcLogsAppRuntime} */
     this._component = component;
     this._updateComponent = updateComponent;
     this._instancesManager = new InstancesManager(
@@ -415,7 +415,17 @@ class SmartController extends LogsStream {
     // store the new selection
     this._selection = selection;
 
-    this.openLogsStream(this._dateRange);
+    if (isLive(this._dateRange)) {
+      // in live mode, we just change the component state
+      this._updateState((state) => {
+        if (state.type === 'loaded') {
+          state.selection = selection;
+        }
+      });
+    } else {
+      // otherwise, we start a fresh new stream
+      this.openLogsStream(this._dateRange);
+    }
   }
 
   /**
