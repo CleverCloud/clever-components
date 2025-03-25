@@ -826,20 +826,23 @@ export class CcLogs extends LitElement {
         : null;
 
     /**
-     * @param {Log} it
+     * @param {Log} log
      * @return {string}
      */
-    function keyFunction(it) {
-      return it.id;
+    function keyFunction(log) {
+      return log?.id;
     }
 
     /**
-     * @param {Log} item
+     * @param {Log} log
      * @param {number} index
      * @return {TemplateResult}
      */
-    const renderItem = (item, index) => {
-      return this._renderLog(item, index);
+    const renderItem = (log, index) => {
+      if (log == null) {
+        return null;
+      }
+      return this._renderLog(log, index);
     };
 
     return html`
