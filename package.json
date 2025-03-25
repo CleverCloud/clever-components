@@ -35,6 +35,7 @@
     "components:graph-usage": "node tasks/component-usage-cli.js",
     "format": "prettier . --write",
     "format:check": "prettier . --check",
+    "install-local:client": "(cd ../clever-client.js && DEV=true npm pack) && mv ../clever-client.js/clevercloud-client-*.tgz . && npm i -f ./clevercloud-client-*.tgz",
     "lint": "eslint",
     "lint:fix": "eslint --fix",
     "lint:inspect-config": "eslint --inspect-config",
@@ -60,7 +61,7 @@
     "typecheck:stats": "node tasks/typechecking-stats.js"
   },
   "dependencies": {
-    "@clevercloud/client": "^9.2.1",
+    "@clevercloud/client": "^10.0.0",
     "@lit-labs/motion": "^1.0.7",
     "@lit-labs/virtualizer": "^2.0.14",
     "@shoelace-style/shoelace": "^2.18.0",
