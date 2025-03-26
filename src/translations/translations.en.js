@@ -234,6 +234,23 @@ export const translations = {
     formatNumber(lang, ratio, { minimumFractionDigits: 2, maximumFractionDigits: 2 }).padStart(5, '0'),
   'cc-ansi-palette.selected': /** @param {{color: string}} _ */ ({ color }) => `Selected background: ${color}`,
   //#endregion
+  //#region cc-api-token-list
+  'cc-api-token-list.card.deadline-approaches': `Expiration close`,
+  'cc-api-token-list.card.human-friendly-date': /** @param {{ date: Date }} _ */ ({ date }) => formatDatetime(date),
+  'cc-api-token-list.card.label.creation': `Creation: `,
+  'cc-api-token-list.card.label.description': `Description: `,
+  'cc-api-token-list.card.label.expiration': `Expiration: `,
+  'cc-api-token-list.card.label.ip': `Created from IP: `,
+  'cc-api-token-list.card.label.name': `Name: `,
+  'cc-api-token-list.create-token': `Create new token`,
+  'cc-api-token-list.empty': `You do not have any API tokens.`,
+  'cc-api-token-list.error': `Something went wrong while loading API tokens.`,
+  'cc-api-token-list.intro': `Below is the list of API tokens registered on your account. You may revoke any of them if necessary.`,
+  'cc-api-token-list.main-heading': `API tokens`,
+  'cc-api-token-list.revoke-token': /** @param {{ name: string}} _ */ ({ name }) => `Revoke API token - ${name}`,
+  'cc-api-token-list.revoke-token.error': `Something went wrong while revoking the API token.`,
+  'cc-api-token-list.revoke-token.success': `The API token has been revoked successfully.`,
+  //#endregion
   //#region cc-article-card
   'cc-article-card.date': /** @param {{date: string}} _ */ ({ date }) => formatDateOnly(date),
   //#endregion
