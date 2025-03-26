@@ -9,14 +9,11 @@ import '../cc-block/cc-block.js';
 import '../cc-button/cc-button.js';
 import '../cc-icon/cc-icon.js';
 import '../cc-badge/cc-badge.js';
-import '../cc-empty/cc-empty.js';
 import {
   iconRemixDeleteBinLine as iconDelete,
-  iconRemixHistoryLine as iconLastUsed,
   iconRemixCalendar_2Fill as iconCreation,
   iconRemixAlertLine as iconExpiration,
   iconRemixInformationLine as iconDescription,
-  iconRemixComputerLine as iconIp,
 } from '../../assets/cc-remix.icons.js';
 
 /**
@@ -88,7 +85,7 @@ export class CcApiTokenList extends LitElement {
 
     return html`
       <cc-block>
-        <div slot="header-title">${i18n('cc-api-token-list.title')}</div>
+        <div slot="header-title">${i18n('cc-api-token-list.main-heading')}</div>
         <div slot="header-right">
           <cc-button primary outlined @cc-button:click=${this._onCreateToken}>
             ${i18n('cc-api-token-list.create-token')}
@@ -99,7 +96,7 @@ export class CcApiTokenList extends LitElement {
           <div class="api-tokens-wrapper">
             ${this.state.type === 'loading' ? html`<cc-loader></cc-loader>` : ''}
             ${this.state.type === 'loaded' && this._tokensWithExpirationInfo?.length === 0
-              ? html`<cc-empty>${i18n('cc-api-token-list.empty')}</cc-empty>`
+              ? html`<div class="empty-state">${i18n('cc-api-token-list.empty')}</div>`
               : ''}
             ${this.state.type === 'loaded' && this._tokensWithExpirationInfo?.length > 0
               ? html`
@@ -121,7 +118,7 @@ export class CcApiTokenList extends LitElement {
    * @returns {import('lit').TemplateResult} The rendered token card
    * @private
    */
-  _renderTokenCard({ type, apiTokenId, name, description, creationDate, expirationDate, ip, isExpirationClose }) {
+  _renderTokenCard({ type, id, name, description, creationDate, expirationDate, lastUsedDate, isExpirationClose }) {
     const isRevoking = type === 'revoking';
 
     return html`
@@ -165,17 +162,6 @@ export class CcApiTokenList extends LitElement {
               <span>${i18n('cc-api-token-list.card.human-friendly-date', { date: expirationDate })}</span>
             </dd>
           </div>
-          ${ip
-            ? html`
-                <div>
-                  <dt>
-                    <cc-icon .icon=${iconIp}></cc-icon>
-                    <span>${i18n('cc-api-token-list.card.label.ip')}</span>
-                  </dt>
-                  <dd>${ip}</dd>
-                </div>
-              `
-            : ''}
         </dl>
         <cc-button
           class="api-token-card__action-revoke"
@@ -185,9 +171,9 @@ export class CcApiTokenList extends LitElement {
           .icon=${iconDelete}
           circle
           ?waiting=${isRevoking}
-          @cc-button:click=${() => this._onRevokeToken(apiTokenId)}
+          @cc-button:click=${() => this._onRevokeToken(id)}
         >
-          ${i18n('cc-api-token-list.revoke-token')}
+          ${i18n('cc-api-token-list.revoke-token', { name })}
         </cc-button>
       </li>
     `;
@@ -301,15 +287,13 @@ export class CcApiTokenList extends LitElement {
         gap: 1.5em;
       }
 
-      @media (max-width: 730px) {
-        .api-token-card {
-          grid-template-columns: [card-start info-start] 1fr [info-end actions-start] max-content [actions-end card-end];
-        }
+      :host([w-lt-730]) .api-token-card {
+        grid-template-columns: [card-start info-start] 1fr [info-end actions-start] max-content [actions-end card-end];
+      }
 
-        .api-token-card__info div {
-          display: grid;
-          row-gap: 0.5em;
-        }
+      :host([w-lt-730]) .api-token-card__info div {
+        display: grid;
+        row-gap: 0.5em;
       }
 
       @supports (grid-template-columns: subgrid) {
@@ -329,14 +313,12 @@ export class CcApiTokenList extends LitElement {
           grid-template-columns: subgrid;
         }
 
-        @media (max-width: 730px) {
-          .api-tokens-wrapper__list {
-            grid-template-columns: [card-start info-start] 1fr [info-end actions-start] auto [actions-end card-end];
-          }
+        :host([w-lt-730]) .api-tokens-wrapper__list {
+          grid-template-columns: [card-start info-start] 1fr [info-end actions-start] auto [actions-end card-end];
+        }
 
-          .api-token-card__info div {
-            display: flex;
-          }
+        :host([w-lt-730]) .api-token-card__info div {
+          display: flex;
         }
       }
     `;

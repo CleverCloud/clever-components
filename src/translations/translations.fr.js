@@ -245,6 +245,25 @@ export const translations = {
     formatNumber(lang, ratio, { minimumFractionDigits: 2, maximumFractionDigits: 2 }).padStart(5, '0'),
   'cc-ansi-palette.selected': /** @param {{color: string}} _ */ ({ color }) => `Sélection: ${color}`,
   //#endregion
+  //#region cc-api-token-list
+  'cc-api-token-list.card.deadline-approaches': `Expire bientôt`,
+  'cc-api-token-list.card.human-friendly-date': /** @param {{ date: string|number }} _ */ ({ date }) =>
+    formatDatetime(date),
+  'cc-api-token-list.card.label.creation': () => sanitize`Création&nbsp;: `,
+  'cc-api-token-list.card.label.description': () => sanitize`Description&nbsp;: `,
+  'cc-api-token-list.card.label.expiration': () => sanitize`Expiration&nbsp;: `,
+  'cc-api-token-list.card.label.ip': () => sanitize`IP&nbsp;: `,
+  'cc-api-token-list.card.label.name': () => sanitize`Nom&nbsp;: `,
+  'cc-api-token-list.create-token': `Créer un nouveau token`,
+  'cc-api-token-list.empty': `Vous n'avez aucun token API. Créez-en un en cliquant sur le bouton ci-dessus.`,
+  'cc-api-token-list.error': `Une erreur est survenue pendant le chargement des tokens API.`,
+  'cc-api-token-list.intro': `Ci-dessous figure la liste de tous vos tokens API. Vous pouvez les révoquer individuellement.`,
+  'cc-api-token-list.main-heading': `Tokens API`,
+  'cc-api-token-list.revoke-token': /** @param {{ tokenName: string}} _ */ ({ tokenName }) =>
+    `Révoquer le token API "${tokenName}"`,
+  'cc-api-token-list.revoke-token.error': `Une erreur est survenue pendant la révocation du token API.`,
+  'cc-api-token-list.revoke-token.success': `Le token API a été révoqué avec succès.`,
+  //#endregion
   //#region cc-article-card
   'cc-article-card.date': /** @param {{date: string}} _ */ ({ date }) => formatDateOnly(date),
   //#endregion
