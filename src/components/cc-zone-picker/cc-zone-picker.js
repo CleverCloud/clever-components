@@ -23,6 +23,9 @@ import { dispatchCustomEvent } from '../../lib/events.js';
  * @cssdisplay block
  *
  * @fires {CustomEvent<string>} cc-zone-picker:input - Fires the zone code when a zone has been selected.
+ *
+ * @cssprop {Size} --cc-form-controls-indent - The horizontal space between the start of the line and the form control without the label (defaults: `34px`).
+ * @cssprop {Size} --cc-form-label-gap - The space between the label and the control (defaults: `0.35em`).
  */
 export class CcZonePicker extends CcFormControlElement {
   static get properties() {
@@ -141,21 +144,19 @@ export class CcZonePicker extends CcFormControlElement {
       css`
         :host {
           display: block;
-          /* We have to use px value because we change font-size value and we need the same margin for every other elements */
-          --fixed-margin: 34px;
         }
 
         legend {
           display: flex;
           gap: 0.25em;
+          margin-block-end: var(--cc-form-label-gap, 0.35em);
         }
 
         .form-controls {
           display: grid;
           gap: 1em;
           grid-template-columns: repeat(auto-fill, minmax(12.5em, 1fr));
-          margin-block-start: 0.5em;
-          margin-inline-start: var(--fixed-margin);
+          margin-inline-start: var(--cc-form-controls-indent, 34px);
         }
 
         .zone-legend-icon {
@@ -175,12 +176,12 @@ export class CcZonePicker extends CcFormControlElement {
           color: var(--cc-color-text-primary-strongest);
           font-family: var(--cc-ff-form-legend), inherit;
           font-size: 1.15em;
-          margin-block-start: 1em;
-          margin-inline-start: var(--fixed-margin);
+          margin-block-end: 0.25em;
+          margin-inline-start: var(--cc-form-controls-indent, 34px);
         }
 
         .form-controls + .zone-section-title {
-          margin-block-start: 2em;
+          margin-block-start: 1.5em;
         }
 
         fieldset {

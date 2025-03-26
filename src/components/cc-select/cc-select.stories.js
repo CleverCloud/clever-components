@@ -222,8 +222,12 @@ export const customLabelStyle = makeStory(
       --cc-select-label-color: #475569;
       --cc-select-label-font-size: 1.2em;
       --cc-select-label-font-weight: bold;
+      --cc-form-label-gap: 0.5em;
       font-size: 1.25em;
       max-width: 32em;
+    }
+    cc-select[inline] {
+      --cc-form-label-gap: 0.75em;
     }
     cc-select:nth-of-type(${customBaseItems.length + 'n'}) {
       margin-block-end: 2em;

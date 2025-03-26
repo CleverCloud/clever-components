@@ -214,7 +214,7 @@ Here you can see a series of toolbar examples using CSS custom propreties of the
 
 * \`--cc-toggle-color\` to change the main color
 * \`--cc-toggle-img-filter\` so we can tweak the color of the image from default \`#6999d3\` to gray or white.
-* \`--cc-toggle-img-filter-selected\` so we can tweak the color of the image from default \`#6999d3\` to gray or white. 
+* \`--cc-toggle-img-filter-selected\` so we can tweak the color of the image from default \`#6999d3\` to gray or white.
   `,
   // language=CSS
   css:
@@ -259,7 +259,11 @@ export const customLegendStyle = makeStory(
       --cc-toggle-legend-color: #475569;
       --cc-toggle-legend-font-size: 1.2em;
       --cc-toggle-legend-font-weight: bold;
+      --cc-form-label-gap: 0.5em;
       font-size: 1.25em;
+    }
+    cc-toggle[inline] {
+      --cc-form-label-gap: 0.75em;
     }
     cc-toggle:nth-of-type(${normalAndSubtleItems.length + 'n'}) {
       margin-block-end: 2em;

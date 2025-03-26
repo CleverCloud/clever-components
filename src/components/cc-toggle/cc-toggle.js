@@ -34,6 +34,7 @@ import { dispatchCustomEvent } from '../../lib/events.js';
  * @fires {CustomEvent<string>} cc-toggle:input - Fires the selected `value` whenever the selected `value` changes (single mode only).
  * @fires {CustomEvent<string[]>} cc-toggle:input-multiple - Fires the selected `multipleValues` whenever the selected `multipleValues` changes (single mode only).
  *
+ * @cssprop {Size} --cc-form-label-gap - The space between the label and the control (defaults: `0.35em` or `1em` when inline).
  * @cssprop {BorderRadius} --cc-toggle-border-radius - Sets the value of the border radius CSS property (defaults: `0.15em`).
  * @cssprop {Color} --cc-toggle-color - The main color of the toggle (defaults: `#334252`). It must be defined directly on the element.
  * @cssprop {FontWeight} --cc-toggle-font-weight - Sets the value of the font weight CSS property (defaults: `bold`).
@@ -179,13 +180,13 @@ export class CcToggle extends LitElement {
         .group {
           display: flex;
           flex-direction: column;
-          gap: 0.35em;
+          row-gap: var(--cc-form-label-gap, 0.35em);
         }
 
         :host([inline]) .group {
           align-items: center;
+          column-gap: var(--cc-form-label-gap, 1em);
           flex-direction: row;
-          gap: 1em;
         }
 
         #legend {
