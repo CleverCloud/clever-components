@@ -1,18 +1,40 @@
+export type FeatureStatus = 'widely' | 'newly' | 'limited';
+
 export interface WebFeatures {
-  baselineFeatures: Feature[];
-  bcdFeatures: Feature[];
+  baselineFeatures: FeatureJson[];
+  bcdFeatures: FeatureJson[];
 }
 
-export interface Feature {
+export interface FeatureJson {
   featureId: string;
   requiredStatus: 'widely' | 'newly';
+}
+
+export interface FormattedFeature {
+  featureName: string;
+  currentStatus: FeatureStatus;
+  requiredStatus: 'widely' | 'newly';
+  canBeUsed: boolean;
+  chromeSupport: BrowserSupported | BrowserUnsupported;
+  firefoxSupport: BrowserSupported | BrowserUnsupported;
+  safariSupport: BrowserSupported | BrowserUnsupported;
+}
+
+export interface BrowserSupported {
+  isSupported: true;
+  version: string;
+  releaseDate: Date;
+}
+
+export interface BrowserUnsupported {
+  isSupported: false;
 }
 
 export interface BaselineFeatureData {
   baseline: {
     high_date: string;
     low_date: string;
-    status: string;
+    status: 'widely' | 'newly' | 'limited';
   };
   browser_implementations: {
     chrome: {
@@ -59,7 +81,7 @@ export interface BcdFeatureCompatInfo {
   };
   support: {
     chrome?: {
-      version_added?: string | false | null;
+      version_added: string | false;
       version_removed?: string;
       notes?: string;
       prefix?: string;
@@ -83,8 +105,10 @@ export interface BcdFeatureCompatInfo {
   };
 }
 
-type BcdBrowserCompatInfo = {
-  [Key in 'chrome' | 'firefox' | 'safari']: {
+type Browser = 'chrome' | 'firefox' | 'safari';
+
+export type BcdBrowserInfo = {
+  [Key in Browser]: {
     name: string;
     type: string;
     accepts_flags: boolean;

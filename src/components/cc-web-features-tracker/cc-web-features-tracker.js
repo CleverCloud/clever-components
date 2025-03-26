@@ -5,13 +5,6 @@ import untypedWebFeatures from './web-features.json';
 import '../cc-loader/cc-loader.js';
 import '../cc-notice/cc-notice.js';
 
-// TODO:
-// - if browser.version_added === false => KO do not use this feature (need to check for each browser) => limited
-// - if browser.version_added === string (e.g: '40') => need to check if newly or widely (with _getStatusFromBcd)
-// - do this for each browser to get the status of each one,
-// - if 1 of browser has newly => newly
-// - else => widely
-
 /** @type {WebFeatures} */
 const webFeatures = untypedWebFeatures;
 
@@ -19,6 +12,12 @@ const webFeatures = untypedWebFeatures;
  * @typedef {import('./cc-web-features.types.js').WebFeatures} WebFeatures
  * @typedef {import('./cc-web-features.types.js').BaselineFeatureData} BaselineFeatureData
  * @typedef {import('./cc-web-features.types.js').BcdFeatureCompatInfo} BcdFeatureCompatInfo
+ * @typedef {import('./cc-web-features.types.js').BcdBrowserInfo} BcdBrowserInfo
+ * @typedef {import('./cc-web-features.types.js').FormattedFeature} FormattedFeature
+ * @typedef {import('./cc-web-features.types.js').Browser} Browser
+ * @typedef {import('./cc-web-features.types.js').BrowserUnsupported} BrowserUnsupported
+ * @typedef {import('./cc-web-features.types.js').BrowserSupported} BrowserSupported
+ * @typedef {import('./cc-web-features.types.js').FeatureStatus} FeatureStatus
  */
 
 /**
@@ -28,9 +27,7 @@ const webFeatures = untypedWebFeatures;
  */
 export class CcWebFeaturesTracker extends LitElement {
   static get properties() {
-    return {
-      // _features: { type: Array, state: true },
-    };
+    return {};
   }
 
   constructor() {
@@ -58,20 +55,157 @@ export class CcWebFeaturesTracker extends LitElement {
           throw new Error(bcdResponse.status.toString());
         }
         const bcdData = await bcdResponse.json();
+        const bcdBrowserInfos = bcdData.browsers;
         const rawBcdFeatures = this._retrieveBcdFeatures(bcdData);
+        const formattedBcdFeatures = this._formatBcdFeatures(rawBcdFeatures, bcdBrowserInfos);
+        const formattedBaselinesFeatures = this._formatBaselineFeatures(rawBaselineFeatures);
 
-        /*
-         * {featureId, status}[]
-         * Do we put all the infos for the component here?
-         */
-        return [...rawBaselineFeatures, ...rawBcdFeatures];
+        return [...formattedBaselinesFeatures, ...formattedBcdFeatures];
       },
       args: () => [],
     });
   }
 
-  _getStatusFromBcd(browser, version, browsersInfos) {
-    const releaseDate = new Date(browsersInfos[browser][version].release_date);
+  /**
+   *
+   * @param {BaselineFeatureData[]} rawBaselineFeatures
+   * @returns {Array<FormattedFeature>}
+   */
+  _formatBaselineFeatures(rawBaselineFeatures) {
+    const formattedFeatures = rawBaselineFeatures.map((baselineFeature) => {
+      const currentStatus = baselineFeature.baseline.status;
+      const requiredStatus = webFeatures.baselineFeatures.find(
+        (webFeature) => webFeature.featureId === baselineFeature.feature_id,
+      ).requiredStatus;
+
+      return {
+        featureName: baselineFeature.name,
+        currentStatus,
+        requiredStatus,
+        canBeUsed: this._getCanBeUsedStatus(currentStatus, requiredStatus),
+        chromeSupport: this._computeBaselineFeatureStatus('chrome', baselineFeature),
+        firefoxSupport: this._computeBaselineFeatureStatus('firefox', baselineFeature),
+        safariSupport: this._computeBaselineFeatureStatus('safari', baselineFeature),
+      };
+    });
+
+    return formattedFeatures;
+  }
+
+  /**
+   * Format BCD features into FormattedFeature[]
+   * @param {Array<BcdFeatureCompatInfo & { id: string }>} rawBcdFeatures
+   * @param {BcdBrowserInfo} bcdBrowserInfos
+   * @returns {Array<FormattedFeature>}
+   */
+  _formatBcdFeatures(rawBcdFeatures, bcdBrowserInfos) {
+    const formattedFeatures = rawBcdFeatures.map((rawBcdFeature) => {
+      const supportedBrowsers = {
+        chrome: this._computeBcdFeatureStatus('chrome', rawBcdFeature, bcdBrowserInfos),
+        firefox: this._computeBcdFeatureStatus('firefox', rawBcdFeature, bcdBrowserInfos),
+        safari: this._computeBcdFeatureStatus('safari', rawBcdFeature, bcdBrowserInfos),
+      };
+      const supportedBrowsersAsArray = Object.values(supportedBrowsers);
+
+      const requiredStatus = webFeatures.bcdFeatures.find(
+        (webFeature) => webFeature.featureId === rawBcdFeature.id,
+      ).requiredStatus;
+      const currentStatus = this._getCurrentStatus(supportedBrowsersAsArray);
+
+      /** @type {FormattedFeature} */
+      const formattedFeature = {
+        featureName: rawBcdFeature.description ?? rawBcdFeature.id,
+        currentStatus,
+        requiredStatus,
+        canBeUsed: this._getCanBeUsedStatus(currentStatus, requiredStatus),
+        chromeSupport: supportedBrowsers.chrome,
+        firefoxSupport: supportedBrowsers.firefox,
+        safariSupport: supportedBrowsers.safari,
+      };
+      return formattedFeature;
+    });
+
+    return formattedFeatures;
+  }
+
+  /**
+   * @param {FeatureStatus} currentStatus
+   * @param {'newly' | 'widely'} requiredStatus
+   * @returns
+   */
+  _getCanBeUsedStatus(currentStatus, requiredStatus) {
+    if (currentStatus === 'widely') {
+      return true;
+    }
+
+    return currentStatus === requiredStatus;
+  }
+
+  /**
+   *
+   * @param {Array<BrowserSupported|BrowserUnsupported>} supportedBrowsers
+   * @returns {FeatureStatus}
+   */
+  _getCurrentStatus(supportedBrowsers) {
+    const isLimited = supportedBrowsers.some((browser) => !browser.isSupported);
+
+    if (isLimited) {
+      return 'limited';
+    }
+
+    const isWidely = supportedBrowsers.every(
+      (browser) => browser.isSupported && this._getStatusFromBcd(browser.releaseDate),
+    );
+
+    return isWidely ? 'widely' : 'newly';
+  }
+
+  /**
+   * @param {Browser} browser
+   * @param {BaselineFeatureData} rawBaselineFeature
+   * @returns {BrowserSupported | BrowserUnsupported}
+   */
+  _computeBaselineFeatureStatus(browser, rawBaselineFeature) {
+    const browserImplementation = rawBaselineFeature.browser_implementations?.[browser];
+    if (browserImplementation == null) {
+      return { isSupported: false };
+    }
+
+    return {
+      isSupported: true,
+      version: browserImplementation.version,
+      releaseDate: new Date(browserImplementation.date),
+    };
+  }
+
+  /**
+   *
+   * @param {Browser} browser
+   * @param {BcdFeatureCompatInfo & { id: string }} rawBcdFeature
+   * @param {BcdBrowserInfo} browserInfos
+   * @returns {BrowserSupported|BrowserUnsupported}
+   */
+  _computeBcdFeatureStatus(browser, rawBcdFeature, browserInfos) {
+    const rawBrowserSupport = rawBcdFeature.support[browser].version_added;
+
+    if (rawBrowserSupport === false) {
+      return { isSupported: false };
+    }
+
+    return {
+      isSupported: true,
+      version: rawBrowserSupport,
+      releaseDate: new Date(browserInfos[browser].releases[rawBrowserSupport].release_date),
+    };
+  }
+
+  /**
+   * @TODO: rename this helper
+   *
+   * @param {Date} releaseDate
+   * @returns {boolean}
+   */
+  _getStatusFromBcd(releaseDate) {
     const now = Date.now();
     const twoYearsAndHalf = new Date();
     twoYearsAndHalf.setFullYear(twoYearsAndHalf.getFullYear() - 2);
@@ -83,7 +217,7 @@ export class CcWebFeaturesTracker extends LitElement {
   /**
    *
    * @param {Object} rawBcd
-   * @returns {Array<BcdFeatureCompatInfo>}
+   * @returns {Array<BcdFeatureCompatInfo & { id: string }>}
    */
   _retrieveBcdFeatures(rawBcd) {
     const bcdFeatures = webFeatures.bcdFeatures;
@@ -95,7 +229,7 @@ export class CcWebFeaturesTracker extends LitElement {
       for (const key of theKey) {
         value = value[key];
       }
-      return value['__compat'];
+      return { id: featureId, ...value['__compat'] };
     });
   }
 
@@ -109,31 +243,49 @@ export class CcWebFeaturesTracker extends LitElement {
     `;
   }
 
+  /**
+   * @param {readonly FormattedFeature[]} formattedFeatures
+   */
   _renderFeaturesTable(formattedFeatures) {
     return html`
       <table>
         <thead>
           <tr>
-            <th>Feature Id</th>
             <th>Feature</th>
+            <th>Required Status</th>
             <th>Current Baseline</th>
             <th>Can be used in Clever Components</th>
+            <th>Chrome Support</th>
+            <th>Firefox Support</th>
+            <th>Safari Support</th>
           </tr>
         </thead>
         <tbody>
-          ${webFeatures.baselineFeatures.map(({ featureId, requiredStatus }) =>
-            this._renderFeatureRow(featureId, requiredStatus),
-          )}
+          ${formattedFeatures.map((formattedFeature) => this._renderFeatureRow(formattedFeature))}
         </tbody>
       </table>
     `;
   }
 
-  _renderFeatureRow(featureId, requiredStatus) {
+  /** @param {FormattedFeature} _ */
+  _renderFeatureRow({
+    requiredStatus,
+    canBeUsed,
+    chromeSupport,
+    currentStatus,
+    featureName,
+    firefoxSupport,
+    safariSupport,
+  }) {
     return html`
       <tr>
-        <td>${featureId}</td>
+        <td>${featureName}</td>
         <td>${requiredStatus}</td>
+        <td>${currentStatus}</td>
+        <td>${canBeUsed}</td>
+        <td>${chromeSupport.isSupported}</td>
+        <td>${firefoxSupport.isSupported}</td>
+        <td>${safariSupport.isSupported}</td>
       </tr>
     `;
   }
