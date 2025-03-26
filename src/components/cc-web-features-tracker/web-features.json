@@ -11,6 +11,10 @@
     {
       "featureId": "flexbox-gap",
       "requiredStatus": "widely"
+    },
+    {
+      "featureId": "masonry",
+      "requiredStatus": "newly"
     }
   ],
   "bcdFeatures": [
@@ -29,6 +33,10 @@
     {
       "featureId": "javascript.builtins.Array.toSorted",
       "requiredStatus": "widely"
+    },
+    {
+      "featureId": "api.Document.startViewTransition",
+      "requiredStatus": "newly"
     }
   ]
 }
