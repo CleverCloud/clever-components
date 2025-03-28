@@ -1,15 +1,15 @@
 ---
-kind: '🛠 Profile/<cc-session-tokens>'
+kind: '🛠 Profile/<cc-token-session-list>'
 title: '💡 Smart'
 ---
 
-# 💡 Smart `<cc-session-tokens>`
+# 💡 Smart `<cc-token-session-list>`
 
 ## ℹ️ Details
 
 <table>
-  <tr><td><strong>Component    </strong> <td><a href="https://www.clever-cloud.com/doc/clever-components/?path=/docs/🛠-profile-cc-session-tokens--default-story"><code>&lt;cc-session-tokens&gt;</code></a>
-  <tr><td><strong>Selector     </strong> <td><code>cc-session-tokens</code>
+  <tr><td><strong>Component    </strong> <td><a href="https://www.clever-cloud.com/doc/clever-components/?path=/docs/🛠-profile-cc-token-session-list--default-story"><code>&lt;cc-token-session-list&gt;</code></a>
+  <tr><td><strong>Selector     </strong> <td><code>cc-token-session-list</code>
   <tr><td><strong>Requires auth</strong> <td>Yes
 </table>
 
@@ -46,6 +46,6 @@ interface ApiConfig {
       OAUTH_CONSUMER_SECRET: "",
     }
 }'>
-    <cc-session-tokens></cc-session-tokens>
+    <cc-token-session-list></cc-token-session-list>
 <cc-smart-container>
 ```
