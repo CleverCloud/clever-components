@@ -1,55 +1,55 @@
-export type SessionTokensState =
-  | SessionTokensStateLoaded
-  | SessionTokensStateLoading
-  | SessionTokensStateError
-  | SessionTokensStateRevokingAllTokens;
+export type TokenSessionListState =
+  | TokenSessionListStateLoaded
+  | TokenSessionListStateLoading
+  | TokenSessionListStateError
+  | TokenSessionListStateRevokingAll;
 
-export interface SessionTokensStateLoaded {
+export interface TokenSessionListStateLoaded {
   type: 'loaded';
-  tokens: Array<SessionTokenState>;
+  currentSession: CurrentSessionToken;
+  otherSessions?: Array<SessionTokenState> | null;
 }
 
-export interface SessionTokensStateRevokingAllTokens {
+export interface TokenSessionListStateRevokingAll {
   type: 'revoking-all';
-  tokens: Array<SessionTokenStateRevoking | SessionTokenStateCurrent>;
+  currentSession: CurrentSessionToken;
+  otherSessions?: Array<SessionTokenStateRevoking> | null;
 }
 
-export interface SessionTokensStateLoading {
+export interface TokenSessionListStateLoading {
   type: 'loading';
 }
 
-export interface SessionTokensStateError {
+export interface TokenSessionListStateError {
   type: 'error';
 }
 
-export type SessionTokenState = SessionTokenStateIdle | SessionTokenStateRevoking | SessionTokenStateCurrent;
+export interface CurrentSessionToken extends SessionToken {
+  isCurrentSession: true;
+}
+
+export type SessionTokenState = SessionTokenStateIdle | SessionTokenStateRevoking;
 
 export interface SessionTokenStateIdle extends SessionToken {
   type: 'idle';
-}
-
-export interface SessionTokenStateCurrent extends SessionToken {
-  type: 'current';
+  isCurrentSession: false;
 }
 
 interface SessionTokenStateRevoking extends SessionToken {
   type: 'revoking';
+  isCurrentSession: false;
 }
 
 interface SessionToken {
   id: string;
-  creationDate: number | string; // timestamp as number or string with ISO format with timezone information
-  expirationDate: number | string; // timestamp as number or string with ISO format with timezone information
-  lastUsedDate: number | string; // timestamp as number or string with ISO format with timezone information
+  creationDate: Date;
+  expirationDate: Date;
+  lastUsedDate: Date;
   isCleverTeam: boolean;
 }
 
-export type SessionTokenStateWithExpirationWarning = SessionTokenState & {
-  isExpirationClose: boolean;
-};
-
 // FIXME: remove when clever-client exposes types
-export type RawSessionTokenData = {
+export interface RawSessionTokenData {
   token: string;
   consumer: {
     name: string;
@@ -91,4 +91,4 @@ export type RawSessionTokenData = {
     manage_ssh_keys: boolean;
   };
   employeeId: string | null;
-};
+}

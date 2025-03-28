@@ -1,47 +1,46 @@
-import { LitElement, html, css } from 'lit';
+import { LitElement, css, html } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
-import { i18n } from '../../translations/translation.js';
-import { dispatchCustomEvent } from '../../lib/events.js';
-import { ResizeController } from '../../controllers/resize-controller.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
+import { createRef, ref } from 'lit/directives/ref.js';
 import {
-  iconRemixDeleteBinLine as iconDelete,
-  iconRemixHistoryLine as iconLastUsed,
   iconRemixCalendar_2Fill as iconCreation,
-  iconRemixAlertLine as iconExpiration,
   iconRemixRadioButtonLine as iconCurrentSession,
+  iconRemixDeleteBinLine as iconDelete,
+  iconRemixAlertLine as iconExpiration,
+  iconRemixHistoryLine as iconLastUsed,
 } from '../../assets/cc-remix.icons.js';
-import '../cc-loader/cc-loader.js';
-import '../cc-notice/cc-notice.js';
+import { LostFocusController } from '../../controllers/lost-focus-controller.js';
+import { ResizeController } from '../../controllers/resize-controller.js';
+import { dispatchCustomEvent } from '../../lib/events.js';
+import { isExpirationClose } from '../../lib/tokens.js';
+import { i18n } from '../../translations/translation.js';
+import '../cc-badge/cc-badge.js';
 import '../cc-block/cc-block.js';
 import '../cc-button/cc-button.js';
 import '../cc-icon/cc-icon.js';
-import '../cc-badge/cc-badge.js';
-import { LostFocusController } from '../../controllers/lost-focus-controller.js';
-import { ifDefined } from 'lit/directives/if-defined.js';
-import { createRef, ref } from 'lit/directives/ref.js';
-import { isExpirationClose } from '../../lib/utils.js';
+import '../cc-loader/cc-loader.js';
+import '../cc-notice/cc-notice.js';
 
 /**
- * @typedef {import('./cc-session-tokens.types.js').SessionTokenState} SessionTokenState
- * @typedef {import('./cc-session-tokens.types.js').SessionTokensState} SessionTokensState
- * @typedef {import('./cc-session-tokens.types.js').SessionTokenStateWithExpirationWarning} SessionTokenStateWithExpirationWarning
+ * @typedef {import('./cc-token-session-list.types.js').SessionTokenState} SessionTokenState
+ * @typedef {import('./cc-token-session-list.types.js').TokenSessionListState} TokenSessionListState
+ * @typedef {import('./cc-token-session-list.types.js').CurrentSessionToken} CurrentSessionToken
  * @typedef {import('lit').TemplateResult<1>} TemplateResult
- * @typedef {import('lit').PropertyValues<CcSessionTokens>} CcSessionTokensPropertyValues
+ * @typedef {import('lit').PropertyValues<CcTokenSessionList>} CcSessionTokensPropertyValues
  * @typedef {import('lit/directives/ref.js').Ref<HTMLLIElement>} RefHTMLLIElement
  */
 
 /**
- * A web component that displays and manages user session tokens.
+ * A component that displays and manages user sessions.
  *
- * This component allows users to view their active session tokens and revoke individual tokens or all tokens at once.
- * It displays information about each token including creation date, last used date, and expiration date.
- * Tokens are displayed in a list with the current session token always appearing first, followed by other tokens
- * sorted by creation date (newest first).
+ * This component allows users to view their active session and revoke individual tokens or all tokens at once.
+ * It displays information about each session including creation date, last used date, and expiration date.
+ * Sessions are displayed in a list sorted by creation date (newest first).
  *
- * @fires {CustomEvent<void>} cc-session-tokens:revoke-all-tokens - Dispatched when a user requests to revoke all tokens
- * @fires {CustomEvent<string>} cc-session-tokens:revoke-token - Dispatched when a user requests to revoke a specific token, with the token ID as payload
+ * @fires {CustomEvent<void>} cc-token-session-list:revoke-all-sessions - Dispatched when a user requests to revoke all tokens
+ * @fires {CustomEvent<string>} cc-token-session-list:revoke-session - Dispatched when a user requests to revoke a specific token, with the token ID as payload
  */
-export class CcSessionTokens extends LitElement {
+export class CcTokenSessionList extends LitElement {
   static get properties() {
     return {
       state: { type: Object },
@@ -52,10 +51,10 @@ export class CcSessionTokens extends LitElement {
   constructor() {
     super();
 
-    /** @type {SessionTokensState} The current state of the component */
+    /** @type {TokenSessionListState} The current state of the component */
     this.state = { type: 'loading' };
 
-    /** @type {Array<SessionTokenStateWithExpirationWarning>|null} Array of session tokens sorted by creation date with added expiration information */
+    /** @type {Array<CurrentSessionToken|SessionTokenState>|null} Array of session tokens sorted by creation date with added expiration information */
     this._sortedAndFormattedTokens = null;
 
     /** @type {RefHTMLLIElement} */
@@ -73,7 +72,7 @@ export class CcSessionTokens extends LitElement {
       }
     });
 
-    new LostFocusController(this, '.revoke-all-tokens-button', () => {
+    new LostFocusController(this, '.revoke-all-sessions-button', () => {
       this._currentSessionCardRef.value?.focus();
     });
   }
@@ -84,7 +83,7 @@ export class CcSessionTokens extends LitElement {
    * @private
    */
   _onRevokeAllTokens() {
-    dispatchCustomEvent(this, 'revoke-all-tokens');
+    dispatchCustomEvent(this, 'revoke-all-sessions');
   }
 
   /**
@@ -94,69 +93,55 @@ export class CcSessionTokens extends LitElement {
    * @private
    */
   _onRevokeToken(tokenId) {
-    dispatchCustomEvent(this, 'revoke-token', tokenId);
-  }
-
-  /** @param {CcSessionTokensPropertyValues} changedProperties */
-  willUpdate(changedProperties) {
-    if (changedProperties.has('state') && (this.state.type === 'loaded' || this.state.type === 'revoking-all')) {
-      this._sortedAndFormattedTokens = [...this.state.tokens]
-        .sort((tokenA, tokenB) => {
-          // Current session always comes first
-          if (tokenA.type === 'current') {
-            return -1;
-          }
-          if (tokenB.type === 'current') {
-            return 1;
-          }
-          // Then sort by creation date (newest first)
-          return new Date(tokenB.creationDate).getTime() - new Date(tokenA.creationDate).getTime();
-        })
-        .map((token) => ({
-          ...token,
-          isExpirationClose: isExpirationClose({
-            creationDate: token.creationDate,
-            expirationDate: token.expirationDate,
-          }),
-        }));
-    }
+    dispatchCustomEvent(this, 'revoke-session', tokenId);
   }
 
   render() {
-    const hasTokens =
-      (this.state.type === 'loaded' || this.state.type === 'revoking-all') && this.state.tokens.length > 1;
-
     if (this.state.type === 'error') {
-      return html`<cc-notice intent="warning" message="${i18n('cc-session-tokens.error')}"></cc-notice>`;
+      return html`<cc-notice intent="warning" message="${i18n('cc-token-session-list.error')}"></cc-notice>`;
     }
+
+    const hasTokens =
+      (this.state.type === 'loaded' || this.state.type === 'revoking-all') &&
+      this.state.otherSessions != null &&
+      this.state.otherSessions.length > 0;
+
+    const sortedAndFormattedTokens =
+      this.state.type === 'loaded' || this.state.type === 'revoking-all'
+        ? [this.state.currentSession, ...(this.state.otherSessions ?? [])]
+            .sort((tokenA, tokenB) => tokenB.creationDate.getTime() - tokenA.creationDate.getTime())
+            .map((token) => ({
+              ...token,
+            }))
+        : [];
 
     return html`
       <cc-block>
-        <div slot="header-title">${i18n('cc-session-tokens.main-heading')}</div>
+        <div slot="header-title">${i18n('cc-token-session-list.main-heading')}</div>
         <div slot="header-right">
           ${hasTokens
             ? html`
                 <cc-button
-                  class="revoke-all-tokens-button"
+                  class="revoke-all-sessions-button"
                   danger
                   outlined
                   ?waiting=${this.state.type === 'revoking-all'}
                   @cc-button:click=${this._onRevokeAllTokens}
                 >
-                  ${i18n('cc-session-tokens.revoke-all-tokens')}
+                  ${i18n('cc-token-session-list.revoke-all-sessions')}
                 </cc-button>
               `
             : ''}
         </div>
         <div slot="content">
-          <p>${i18n('cc-session-tokens.intro')}</p>
+          <p>${i18n('cc-token-session-list.intro')}</p>
           <div class="session-tokens-wrapper">
             ${this.state.type === 'loading' ? html`<cc-loader></cc-loader>` : ''}
             ${this.state.type === 'loaded' || this.state.type === 'revoking-all'
               ? html`
                   <!-- TODO: A11Y when we add headings inside cards (User Agent / IP Address or whatever), we should remove the ul / li structure -->
                   <ul class="session-tokens-wrapper__list">
-                    ${this._sortedAndFormattedTokens.map((token, index) => this._renderTokenCard(token, index))}
+                    ${sortedAndFormattedTokens.map((token, index) => this._renderTokenCard(token, index))}
                   </ul>
                 `
               : ''}
@@ -169,50 +154,56 @@ export class CcSessionTokens extends LitElement {
   /**
    * Renders an individual token card
    *
-   * @param {SessionTokenStateWithExpirationWarning} token - The token data to render
+   * @param {SessionTokenState|CurrentSessionToken} token - The token data to render
    * @param {number} index - The index of the token in the list
    * @returns {TemplateResult} The rendered token card
    * @private
    */
-  _renderTokenCard({ type, id, creationDate, expirationDate, lastUsedDate, isExpirationClose, isCleverTeam }, index) {
-    const isCurrentSession = type === 'current';
+  _renderTokenCard(token, index) {
+    const { id, creationDate, expirationDate, lastUsedDate, isCleverTeam, isCurrentSession } = token;
+    const isRevoking = 'type' in token && token.type === 'revoking';
     const tabIndex = isCurrentSession ? -1 : null;
+    const hasExpirationWarning = isExpirationClose({
+      creationDate: token.creationDate,
+      expirationDate: token.expirationDate,
+    });
+
     return html`
       <li
         class="session-token-card"
         tabindex=${ifDefined(tabIndex)}
         ${isCurrentSession ? ref(this._currentSessionCardRef) : ''}
       >
-        ${isCurrentSession || isCleverTeam || isExpirationClose
+        ${isCurrentSession || isCleverTeam || hasExpirationWarning
           ? this._renderCardHeader({
               isCurrentSession,
               isCleverTeam,
-              isExpirationClose,
-              isRevoking: type === 'revoking',
+              hasExpirationWarning,
+              isRevoking,
             })
           : ''}
-        <dl class="session-token-card__info ${classMap({ 'is-revoking': type === 'revoking' })}">
+        <dl class="session-token-card__info ${classMap({ 'is-revoking': isRevoking })}">
           <div class="session-token-card__info__last-used">
             <dt>
               <cc-icon .icon=${iconLastUsed}></cc-icon>
-              <span>${i18n('cc-session-tokens.card.label.last-used')}</span>
+              <span>${i18n('cc-token-session-list.card.label.last-used')}</span>
             </dt>
-            <dd>${i18n('cc-session-tokens.card.human-friendly-date', { date: lastUsedDate })}</dd>
+            <dd>${i18n('cc-token-session-list.card.human-friendly-date', { date: lastUsedDate })}</dd>
           </div>
           <div>
             <dt>
               <cc-icon .icon=${iconCreation}></cc-icon>
-              <span>${i18n('cc-session-tokens.card.label.creation')}</span>
+              <span>${i18n('cc-token-session-list.card.label.creation')}</span>
             </dt>
-            <dd>${i18n('cc-session-tokens.card.human-friendly-date', { date: creationDate })}</dd>
+            <dd>${i18n('cc-token-session-list.card.human-friendly-date', { date: creationDate })}</dd>
           </div>
           <div class="session-token-card__info__expiration">
             <dt>
               <cc-icon .icon=${iconExpiration}></cc-icon>
-              <span>${i18n('cc-session-tokens.card.label.expiration')}</span>
+              <span>${i18n('cc-token-session-list.card.label.expiration')}</span>
             </dt>
             <dd>
-              <span>${i18n('cc-session-tokens.card.human-friendly-date', { date: expirationDate })}</span>
+              <span>${i18n('cc-token-session-list.card.human-friendly-date', { date: expirationDate })}</span>
             </dd>
           </div>
         </dl>
@@ -225,10 +216,10 @@ export class CcSessionTokens extends LitElement {
                 hide-text
                 .icon=${iconDelete}
                 circle
-                ?waiting=${type === 'revoking'}
+                ?waiting=${isRevoking}
                 @cc-button:click=${() => this._onRevokeToken(id)}
               >
-                ${i18n('cc-session-tokens.revoke-token', { tokenNumber: index + 1 })}
+                ${i18n('cc-token-session-list.revoke-session', { tokenNumber: index + 1 })}
               </cc-button>
             `
           : ''}
@@ -236,21 +227,23 @@ export class CcSessionTokens extends LitElement {
     `;
   }
 
-  /** @param {{ isCleverTeam: boolean, isExpirationClose: boolean, isCurrentSession: boolean, isRevoking: boolean }} params */
-  _renderCardHeader({ isCurrentSession, isCleverTeam, isExpirationClose, isRevoking }) {
+  /** @param {{ isCleverTeam: boolean, hasExpirationWarning: boolean, isCurrentSession: boolean, isRevoking: boolean }} params */
+  _renderCardHeader({ isCurrentSession, isCleverTeam, hasExpirationWarning, isRevoking }) {
     return html`
       <div class="session-token-card__header ${classMap({ 'is-revoking': isRevoking })}">
         ${isCurrentSession
           ? html`
               <div class="session-token-card__header__current-session">
                 <cc-icon .icon=${iconCurrentSession}></cc-icon>
-                <span>${i18n('cc-session-tokens.card.current-session')}</span>
+                <span>${i18n('cc-token-session-list.card.current-session')}</span>
               </div>
             `
           : ''}
-        ${isCleverTeam ? html` <cc-badge intent="info">${i18n('cc-session-tokens.card.clever-team')}</cc-badge> ` : ''}
-        ${!isCleverTeam && isExpirationClose
-          ? html` <cc-badge intent="warning">${i18n('cc-session-tokens.card.deadline-approaches')}</cc-badge> `
+        ${isCleverTeam
+          ? html` <cc-badge intent="info">${i18n('cc-token-session-list.card.clever-team')}</cc-badge> `
+          : ''}
+        ${!isCleverTeam && hasExpirationWarning
+          ? html` <cc-badge intent="warning">${i18n('cc-token-session-list.card.deadline-approaches')}</cc-badge> `
           : ''}
       </div>
     `;
@@ -426,4 +419,4 @@ export class CcSessionTokens extends LitElement {
   }
 }
 
-customElements.define('cc-session-tokens', CcSessionTokens);
+customElements.define('cc-token-session-list', CcTokenSessionList);
