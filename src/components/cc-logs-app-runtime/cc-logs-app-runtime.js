@@ -147,24 +147,6 @@ export class CcLogsAppRuntime extends LitElement {
   }
 
   /**
-   * @param {CustomEvent<Array<string>>} event
-   */
-  _onInstanceSelectionChange(event) {
-    if (this.state.type === 'errorInstances' || this.state.type === 'loadingInstances') {
-      return;
-    }
-
-    if (this.dateRangeSelection.type !== 'live') {
-      dispatchCustomEvent(this, 'instance-selection-change', event.detail);
-    } else {
-      this.state = {
-        ...this.state,
-        selection: event.detail,
-      };
-    }
-  }
-
-  /**
    * @param {Object} event
    * @param {LogsControlOption} event.detail
    */
@@ -251,12 +233,7 @@ export class CcLogsAppRuntime extends LitElement {
       };
     }
 
-    return html`<cc-logs-instances-beta
-      class="instances"
-      slot="left"
-      .state=${state}
-      @cc-logs-instances:selection-change=${this._onInstanceSelectionChange}
-    ></cc-logs-instances-beta>`;
+    return html`<cc-logs-instances-beta class="instances" slot="left" .state=${state}></cc-logs-instances-beta>`;
   }
 
   /**
