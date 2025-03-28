@@ -14,6 +14,7 @@ import { buildLogsLoadingProgressState } from '../cc-logs-loading-progress/cc-lo
 import '../cc-logs-loading-progress/cc-logs-loading-progress.js';
 import '../cc-logs-message-filter/cc-logs-message-filter.js';
 import '../cc-notice/cc-notice.js';
+import { dispatchCustomEvent } from '../../lib/events.js';
 
 /**
  * @typedef {import('./cc-logs-addon-runtime.types.js').LogsAddonRuntimeState} LogsAddonRuntimeState
@@ -33,6 +34,8 @@ import '../cc-notice/cc-notice.js';
  * A component displaying addon runtime logs.
  *
  * @cssdisplay block
+ *
+ * @fires {CustomEvent<LogsAddonRuntimeOptions>} cc-logs-addon-runtime:options-change - Fires when the options changed
  *
  * @beta
  */
@@ -118,6 +121,8 @@ export class CcLogsAddonRuntime extends LitElement {
       ...this.options,
       [detail.name]: detail.value,
     };
+
+    dispatchCustomEvent(this, 'options-change', this.options);
   }
 
   _onFullscreenToggle() {
