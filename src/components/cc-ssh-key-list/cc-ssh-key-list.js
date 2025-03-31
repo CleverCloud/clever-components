@@ -57,6 +57,7 @@ class SshPublicKeyValidator {
 /**
  * @typedef {import('./cc-ssh-key-list.types.js').SshKeyListState} SshKeyListState
  * @typedef {import('./cc-ssh-key-list.types.js').SshKeyState} SshKeyState
+ * @typedef {import('./cc-ssh-key-list.types.js').GithubSshKeyState} GithubSshKeyState
  * @typedef {import('./cc-ssh-key-list.types.js').CreateSshKeyFormState} CreateSshKeyFormState
  * @typedef {import('./cc-ssh-key-list.types.js').NewKey} NewKey
  * @typedef {import('./cc-ssh-key-list.types.js').SshKey} SshKey
@@ -138,14 +139,14 @@ export class CcSshKeyList extends LitElement {
     }
   }
 
-  /** @param {SshKeyState} sshKeyState */
+  /** @param {SshKeyState|GithubSshKeyState} sshKeyState */
   _onDeleteKey(sshKeyState) {
     // removing state property that belongs to internal component implementation
     const { type: state, ...sshKey } = sshKeyState;
     dispatchCustomEvent(this, 'delete', sshKey);
   }
 
-  /** @param {SshKeyState} sshKeyState */
+  /** @param {GithubSshKeyState} sshKeyState */
   _onImportKey(sshKeyState) {
     // removing state property that belongs to internal component implementation
     const { type: state, ...sshKey } = sshKeyState;
@@ -274,7 +275,7 @@ export class CcSshKeyList extends LitElement {
 
   /**
    * @param {"personal"|"github"|"skeleton"} type
-   * @param {SshKeyState[]} keys
+   * @param {SshKeyState[]|GithubSshKeyState[]} keys
    * @return {TemplateResult}
    */
   _renderKeyList(type, keys) {
@@ -324,7 +325,7 @@ export class CcSshKeyList extends LitElement {
                   ${type === 'github'
                     ? html`
                         <cc-button
-                          @cc-button:click=${() => this._onImportKey(key)}
+                          @cc-button:click=${() => this._onImportKey(/** @type GithubSshKeyState */ (key))}
                           a11y-name="${i18n('cc-ssh-key-list.github.import.a11y', { name })}"
                           class="key__button key__button--github"
                           .icon="${iconAdd}"
