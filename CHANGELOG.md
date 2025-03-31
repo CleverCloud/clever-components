@@ -5,6 +5,37 @@ title: 'Changelog'
 
 # Changelog
 
+## [18.2.0](https://github.com/CleverCloud/clever-components/compare/18.1.0...18.2.0) (2025-03-31)
+
+
+### 🚀 Features
+
+* **cc-block-detail:** init cc-block-detail component ([7584903](https://github.com/CleverCloud/clever-components/commit/75849030a817dd643074dcc3d6d6a0306cfd0c89))
+* **cc-input-date:** add `--cc-form-label-gap` CSS custom property ([f553e29](https://github.com/CleverCloud/clever-components/commit/f553e29d95941f7944128a4b5900e5ba20f3ec8c)), closes [#1362](https://github.com/CleverCloud/clever-components/issues/1362)
+* **cc-input-number:** add `--cc-form-label-gap` CSS custom property ([09f49d6](https://github.com/CleverCloud/clever-components/commit/09f49d602ce2c0f6d3697e45d5d3f091ef77800c)), closes [#1362](https://github.com/CleverCloud/clever-components/issues/1362)
+* **cc-input-text:** add `--cc-form-label-gap` CSS custom property ([a6bb3ac](https://github.com/CleverCloud/clever-components/commit/a6bb3ace5787083bbc9b56ceb5b659fd4e107ace)), closes [#1362](https://github.com/CleverCloud/clever-components/issues/1362)
+* **cc-logs-addon-runtime:** dispatch `cc-logs-addon-runtime:options-change` event ([f150ba8](https://github.com/CleverCloud/clever-components/commit/f150ba8370de31aff14b4f3e1871e44b69d9eeba))
+* **cc-logs-addon-runtime:** init component ([822cd9f](https://github.com/CleverCloud/clever-components/commit/822cd9fefd7e1ad5471bc7a2c8a88e2adcc3ce26))
+* **cc-logs-app-access:** add date range selector ([c04621e](https://github.com/CleverCloud/clever-components/commit/c04621e906511735a9d9408a587f1a873ba686db))
+* **cc-logs-control:** add a slot on the left of the logs container ([59fd2c2](https://github.com/CleverCloud/clever-components/commit/59fd2c2082abb73be34aa2259b66f757458b6065))
+* **cc-logs-date-range-selector:** move the custom date range panel inside popover ([1a3b74a](https://github.com/CleverCloud/clever-components/commit/1a3b74aabf46246ce5320cb904c01d80d01f56aa))
+* **cc-order-summary:** improve configuration item implementation ([dbdcf15](https://github.com/CleverCloud/clever-components/commit/dbdcf150804c85f4bc5b4de3a03b7186b0acea5b))
+* **cc-plan-picker:** add some CSS custom properties ([383568c](https://github.com/CleverCloud/clever-components/commit/383568c9d5928b56b74eaeedf62c3adcb89fc485)), closes [#1362](https://github.com/CleverCloud/clever-components/issues/1362)
+* **cc-popover:** add 2 new css custom props for the trigger button styling ([3a8376d](https://github.com/CleverCloud/clever-components/commit/3a8376da51be00cb32ec2a4b83dbf95485e528b1))
+* **cc-popover:** make sure focus outline is not clipped ([ac6cfe5](https://github.com/CleverCloud/clever-components/commit/ac6cfe5add7c44a96c6723bd6f33d3f72ef9136f))
+* **cc-select:** add `--cc-form-label-gap` CSS custom property ([182e9e0](https://github.com/CleverCloud/clever-components/commit/182e9e0366e721efd329f665690bd2546ef3291e)), closes [#1362](https://github.com/CleverCloud/clever-components/issues/1362)
+* **cc-toggle:** add `--cc-form-label-gap` CSS custom property ([a53bf8f](https://github.com/CleverCloud/clever-components/commit/a53bf8f610fa8dd3594a751a2e52f0de996710e4)), closes [#1362](https://github.com/CleverCloud/clever-components/issues/1362)
+* **cc-zone-picker:** add some CSS custom properties ([5e175ea](https://github.com/CleverCloud/clever-components/commit/5e175ea153be9f739b3fa87ee7881d28d48b7a39)), closes [#1362](https://github.com/CleverCloud/clever-components/issues/1362)
+* **tokens:** add form related design tokens ([73b7eb1](https://github.com/CleverCloud/clever-components/commit/73b7eb156200175184d60fa14a07d411f2e01677))
+
+
+### 🐛 Bug Fixes
+
+* **cc-logs-app-runtime:** fix instance selection in live mode ([2730792](https://github.com/CleverCloud/clever-components/commit/2730792bd9162b37ccaea9e8f8658c9c147b7db9)), closes [#1366](https://github.com/CleverCloud/clever-components/issues/1366)
+* **cc-logs-date-range-selector:** fix `since` and `until` dates edition ([4c33133](https://github.com/CleverCloud/clever-components/commit/4c331337dabd75aa903a857759b0695ca3ac1292)), closes [#1356](https://github.com/CleverCloud/clever-components/issues/1356)
+* **cc-logs:** fix case where lit virtualizer requests to render a `null` item ([32a7f14](https://github.com/CleverCloud/clever-components/commit/32a7f143945000e40b8c8aab91a69e56f360b90a))
+* **cc-plan-picker:** add gap between plans and related plans ([c138283](https://github.com/CleverCloud/clever-components/commit/c138283f6e2539993b0418aac85f4ce8d787f38f)), closes [#1362](https://github.com/CleverCloud/clever-components/issues/1362)
+
 ## [18.1.0](https://github.com/CleverCloud/clever-components/compare/18.0.0...18.1.0) (2025-03-04)
 
 
