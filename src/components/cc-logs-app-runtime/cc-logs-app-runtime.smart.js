@@ -2,13 +2,11 @@
 import { getDeployment as getDeploymentV2 } from '@clevercloud/client/esm/api/v2/application.js';
 // @ts-expect-error FIXME: remove when clever-client exports types
 import { ApplicationLogStream } from '@clevercloud/client/esm/streams/application-logs.js';
-import {
-  getAllApplicationInstances as getApplicationInstancesV4,
-  getInstance as getInstanceV4,
-  // @ts-expect-error FIXME: remove when clever-client exports types
-} from '@clevercloud/client/esm/api/v4/instance.js';
 // @ts-expect-error FIXME: remove when clever-client exports types
 import { getApplicationDeployment as getDeploymentV4 } from '@clevercloud/client/esm/api/v4/deployment.js';
+// prettier-ignore
+// @ts-expect-error FIXME: remove when clever-client exports types
+import { getAllApplicationInstances as getApplicationInstancesV4,getInstance as getInstanceV4 } from '@clevercloud/client/esm/api/v4/instance.js';
 import { isLive, lastXDays } from '../../lib/date/date-range-utils.js';
 import { LogsStream } from '../../lib/logs/logs-stream.js';
 import { sendToApi } from '../../lib/send-to-api.js';

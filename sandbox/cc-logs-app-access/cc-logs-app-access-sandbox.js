@@ -1,8 +1,8 @@
 import { css, html, LitElement } from 'lit';
 import { createRef, ref } from 'lit/directives/ref.js';
-import '../../src/components/cc-logs-app-access/cc-logs-app-access.smart.js';
 import '../../src/components/cc-button/cc-button.js';
 import '../../src/components/cc-input-text/cc-input-text.js';
+import '../../src/components/cc-logs-app-access/cc-logs-app-access.smart.js';
 import '../../src/components/cc-select/cc-select.js';
 import { formSubmit } from '../../src/lib/form/form-submit-directive.js';
 import { sandboxStyles } from '../sandbox-styles.js';

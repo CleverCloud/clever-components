@@ -1,5 +1,5 @@
-import { makeStory, storyWait } from '../../stories/lib/make-story.js';
 import { createDeployment, createGhostInstance, createInstance } from '../../stories/fixtures/logs-instance.js';
+import { makeStory, storyWait } from '../../stories/lib/make-story.js';
 import './cc-logs-instances.js';
 
 /**

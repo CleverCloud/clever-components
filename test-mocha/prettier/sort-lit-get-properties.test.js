@@ -1,7 +1,7 @@
 import { expect } from 'chai';
+import dedent from 'dedent';
 import { describe } from 'mocha';
 import { format } from 'prettier';
-import dedent from 'dedent';
 
 describe('Prettier sort props from "static get properties()"', () => {
   it('should sort properties properly', async () => {

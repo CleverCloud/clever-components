@@ -1,7 +1,7 @@
-import { makeStory } from '../../stories/lib/make-story.js';
-import './cc-logs-app-runtime.js';
 import { randomPick } from '../../lib/utils.js';
 import { createDeployment, createInstance } from '../../stories/fixtures/logs-instance.js';
+import { makeStory } from '../../stories/lib/make-story.js';
+import './cc-logs-app-runtime.js';
 
 export default {
   tags: ['autodocs'],
