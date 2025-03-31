@@ -47,8 +47,7 @@ import '../cc-button/cc-button.js';
  *
  * @cssdisplay block
  *
- * @fires {CustomEvent} cc-popover:open - Fires whenever the popover is opened.
- * @fires {CustomEvent} cc-popover:close - Fires whenever the popover is closed.
+ * @fires {CustomEvent} cc-popover:toggle - Fires whenever the popover is opened or closed.
  *
  * @slot - The area containing the content of the popover.
  * @slot button-content - The area containing the button content.
@@ -120,18 +119,26 @@ export class CcPopover extends LitElement {
     // Opening a popover must close the last opened popover.
     /** @type {CcPopover} */
     let lastOpenedPopover = null;
-    this._onCcPopoverOpenHandler = new EventHandler(window, 'cc-popover:open', (event) => {
-      // We cannot use event.target because events that happen in shadow DOM and when caught from outside the shadow DOM,
-      // have the host element as the target (and not the real target element inside the shadow DOM).
-      const popover = event.composedPath()[0];
+    this._onCcPopoverOpenHandler = new EventHandler(
+      window,
+      'cc-popover:toggle',
+      /** @param {CustomEvent<boolean>} event */ (event) => {
+        const opened = event.detail;
 
-      if (popover !== this && popover instanceof CcPopover) {
-        lastOpenedPopover = popover;
-      } else {
-        lastOpenedPopover?.close(false);
-        lastOpenedPopover = null;
-      }
-    });
+        if (opened) {
+          // We cannot use event.target because events that happen in shadow DOM and when caught from outside the shadow DOM,
+          // have the host element as the target (and not the real target element inside the shadow DOM).
+          const popover = event.composedPath()[0];
+
+          if (popover !== this && popover instanceof CcPopover) {
+            lastOpenedPopover = popover;
+          } else {
+            lastOpenedPopover?.close(false);
+            lastOpenedPopover = null;
+          }
+        }
+      },
+    );
   }
 
   // region Public methods
@@ -142,7 +149,7 @@ export class CcPopover extends LitElement {
   open() {
     if (!this.isOpen) {
       this.isOpen = true;
-      dispatchCustomEvent(this, 'open');
+      dispatchCustomEvent(this, 'toggle', true);
     }
   }
 
@@ -156,7 +163,7 @@ export class CcPopover extends LitElement {
       if (shouldFocus) {
         this.focus();
       }
-      dispatchCustomEvent(this, 'close');
+      dispatchCustomEvent(this, 'toggle', false);
     }
   }
 
