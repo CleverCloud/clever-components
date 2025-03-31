@@ -29,7 +29,7 @@ const SKELETON_VARIABLES = [
  *
  * @cssdisplay block
  *
- * @fires {CustomEvent<EnvVar[]>} cc-env-var-editor-json:change - Fires the new list of variables whenever something changes in the list.
+ * @fires {CustomEvent<EnvVar[]>} cc-env-var-editor:change - Fires the new list of variables whenever something changes in the list.
  */
 export class CcEnvVarEditorJson extends LitElement {
   static get properties() {
@@ -132,7 +132,7 @@ export class CcEnvVarEditorJson extends LitElement {
       ({ type }) => type === ERROR_TYPES.INVALID_JSON || type === ERROR_TYPES.INVALID_JSON_FORMAT,
     );
     if (!hasJsonError) {
-      dispatchCustomEvent(this, 'change', variables);
+      dispatchCustomEvent(this, 'cc-env-var-editor:change', variables);
     }
   }
 

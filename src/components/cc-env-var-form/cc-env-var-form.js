@@ -317,13 +317,12 @@ export class CcEnvVarForm extends LitElement {
           <slot class="description">${this._description}</slot>
         </div>
 
-        <div slot="content-body">
+        <div slot="content-body" @cc-env-var-editor:change=${this._onChange}>
           <cc-env-var-editor-simple
             ?hidden=${this._mode !== 'SIMPLE'}
             .state=${this._editorsState}
             ?disabled=${isEditorDisabled}
             ?readonly=${this.readonly}
-            @cc-env-var-editor-simple:change=${this._onChange}
             @cc-input-text:requestimplicitsubmit=${this._onRequestSubmit(isFormDisabled)}
           ></cc-env-var-editor-simple>
 
@@ -332,7 +331,6 @@ export class CcEnvVarForm extends LitElement {
             .state=${this._editorsState}
             ?disabled=${isEditorDisabled}
             ?readonly=${this.readonly}
-            @cc-env-var-editor-expert:change=${this._onChange}
             @cc-input-text:requestimplicitsubmit=${this._onRequestSubmit(isFormDisabled)}
           ></cc-env-var-editor-expert>
 
@@ -341,7 +339,6 @@ export class CcEnvVarForm extends LitElement {
             .state=${this._editorsState}
             ?disabled=${isEditorDisabled}
             ?readonly=${this.readonly}
-            @cc-env-var-editor-json:change=${this._onChange}
             @cc-input-text:requestimplicitsubmit=${this._onRequestSubmit(isFormDisabled)}
           ></cc-env-var-editor-json>
         </div>

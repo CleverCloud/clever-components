@@ -24,7 +24,7 @@ const SKELETON_VARIABLES = [
  *
  * @cssdisplay grid / none (with `[hidden]`)
  *
- * @fires {CustomEvent<EnvVar[]>} cc-env-var-editor-simple:change - Fires the new list of variables whenever something changes in the list.
+ * @fires {CustomEvent<EnvVar[]>} cc-env-var-editor:change - Fires the new list of variables whenever something changes in the list.
  */
 export class CcEnvVarEditorSimple extends LitElement {
   static get properties() {
@@ -60,7 +60,7 @@ export class CcEnvVarEditorSimple extends LitElement {
       ...this.state,
       variables,
     };
-    dispatchCustomEvent(this, 'change', variables);
+    dispatchCustomEvent(this, 'cc-env-var-editor:change', variables);
   }
 
   /** @param {CustomEvent<EnvVar>} event */

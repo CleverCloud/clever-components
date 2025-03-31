@@ -27,7 +27,7 @@ const SKELETON_VARIABLES = [
  *
  * @cssdisplay block / none (with `[hidden]`)
  *
- * @fires {CustomEvent<EnvVar[]>} cc-env-var-editor-expert:change - Fires the new list of variables whenever something changes in the list.
+ * @fires {CustomEvent<EnvVar[]>} cc-env-var-editor:change - Fires the new list of variables whenever something changes in the list.
  */
 export class CcEnvVarEditorExpert extends LitElement {
   static get properties() {
@@ -122,7 +122,7 @@ export class CcEnvVarEditorExpert extends LitElement {
     this._variablesAsText = value;
     const { variables, errors } = parseRaw(value, { mode: this.state.validationMode });
     this._setErrors(errors);
-    dispatchCustomEvent(this, 'change', variables);
+    dispatchCustomEvent(this, 'cc-env-var-editor:change', variables);
   }
 
   /** @param {CcEnvVarEditorExpertPropertyValues} changedProperties */
