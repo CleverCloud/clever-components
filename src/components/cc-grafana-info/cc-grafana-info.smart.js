@@ -1,16 +1,15 @@
+import {
+  createGrafanaOrganisation,
+  deleteGrafanaOrganisation,
+  getGrafanaOrganisation,
+  resetGrafanaOrganisation,
+} from '@clevercloud/client/esm/api/v4/saas.js';
 import { notifyError, notifySuccess } from '../../lib/notifications.js';
 import { sendToApi } from '../../lib/send-to-api.js';
 import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-smart-container/cc-smart-container.js';
 import './cc-grafana-info.js';
-import {
-  createGrafanaOrganisation,
-  deleteGrafanaOrganisation,
-  getGrafanaOrganisation,
-  resetGrafanaOrganisation,
-  // @ts-expect-error FIXME: remove when clever-client exports types
-} from '@clevercloud/client/esm/api/v4/saas.js';
 
 /**
  * @typedef {import('./cc-grafana-info.js').CcGrafanaInfo} CcGrafanaInfo

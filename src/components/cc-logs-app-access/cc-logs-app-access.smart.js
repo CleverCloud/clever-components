@@ -2,9 +2,9 @@
 import { ApplicationAccessLogStream } from '@clevercloud/client/esm/streams/access-logs.js';
 import { LogsStream } from '../../lib/logs/logs-stream.js';
 import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
+import { dateRangeSelectionToDateRange } from '../cc-logs-date-range-selector/date-range-selection.js';
 import '../cc-smart-container/cc-smart-container.js';
 import './cc-logs-app-access.js';
-import { dateRangeSelectionToDateRange } from '../cc-logs-date-range-selector/date-range-selection.js';
 
 /**
  * @typedef {import('./cc-logs-app-access.js').CcLogsAppAccess} CcLogsAppAccess

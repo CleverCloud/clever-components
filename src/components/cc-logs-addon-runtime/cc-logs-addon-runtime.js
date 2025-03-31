@@ -5,6 +5,7 @@ import {
   iconRemixFullscreenExitLine as fullscreenExitIcon,
   iconRemixFullscreenLine as fullscreenIcon,
 } from '../../assets/cc-remix.icons.js';
+import { dispatchCustomEvent } from '../../lib/events.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-loader/cc-loader.js';
 import '../cc-logs-control/cc-logs-control.js';
@@ -14,7 +15,6 @@ import { buildLogsLoadingProgressState } from '../cc-logs-loading-progress/cc-lo
 import '../cc-logs-loading-progress/cc-logs-loading-progress.js';
 import '../cc-logs-message-filter/cc-logs-message-filter.js';
 import '../cc-notice/cc-notice.js';
-import { dispatchCustomEvent } from '../../lib/events.js';
 
 /**
  * @typedef {import('./cc-logs-addon-runtime.types.js').LogsAddonRuntimeState} LogsAddonRuntimeState

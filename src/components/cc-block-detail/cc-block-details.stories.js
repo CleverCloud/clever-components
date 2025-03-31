@@ -1,6 +1,6 @@
 import { makeStory } from '../../stories/lib/make-story.js';
-import './cc-block-details.js';
 import '../cc-block/cc-block.js';
+import './cc-block-details.js';
 
 export default {
   tags: ['autodocs'],
