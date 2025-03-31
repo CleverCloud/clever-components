@@ -35,7 +35,7 @@ interface SshKeyListStateLoadedAndLinked {
   type: 'loaded';
   isGithubLinked: true;
   personalKeys: SshKeyState[];
-  githubKeys: SshKeyState[];
+  githubKeys: GithubSshKeyState[];
 }
 
 // when an error has occurred
@@ -52,6 +52,13 @@ export interface SshKey {
   fingerprint: string;
 }
 interface SshKeyState extends SshKey {
-  type: 'idle' | 'deleting' | 'importing';
+  type: 'idle' | 'deleting';
+}
+
+export interface GithubSshKey extends SshKey {
+  key: string;
+}
+interface GithubSshKeyState extends GithubSshKey {
+  type: 'idle' | 'importing';
 }
 //#endregion

@@ -17,6 +17,7 @@ import './cc-ssh-key-list.js';
 /**
  * @typedef {import('./cc-ssh-key-list.js').CcSshKeyList} CcSshKeyList
  * @typedef {import('./cc-ssh-key-list.types.js').SshKey} SshKey
+ * @typedef {import('./cc-ssh-key-list.types.js').GithubSshKey} GithubSshKey
  * @typedef {import('./cc-ssh-key-list.types.js').CreateSshKeyFormState} CreateSshKeyFormState
  * @typedef {import('./cc-ssh-key-list.types.js').SshKeyListStateLoadedAndLinked} SshKeyListStateLoadedAndLinked
  * @typedef {import('./cc-ssh-key-list.types.js').SshKeyListStateLoadedAndUnlinked} SshKeyListStateLoadedAndUnlinked
@@ -158,7 +159,7 @@ defineSmartComponent({
  * @return {Promise<{
  *   isGithubLinked: boolean,
  *   personalKeys: Array<SshKey>,
- *   githubKeys: Array<SshKey>,
+ *   githubKeys: Array<GithubSshKey>,
  * }>}
  */
 async function fetchAllKeys({ apiConfig, signal, cacheDelay }) {
