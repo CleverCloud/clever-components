@@ -1,24 +1,24 @@
 import { makeStory, storyWait } from '../../stories/lib/make-story.js';
-import './cc-api-token-list.js';
+import './cc-token-api-list.js';
 
 export default {
   tags: ['autodocs'],
-  title: '🛠 Profile/<cc-api-token-list>',
-  component: 'cc-api-token-list',
+  title: '🛠 Profile/<cc-token-api-list>',
+  component: 'cc-token-api-list',
 };
 
 /**
- * @typedef {import('./cc-api-token-list.js').CcApiTokenList} CcApiTokenList
- * @typedef {import('./cc-api-token-list.types.js').ApiTokenState} ApiTokenState
+ * @typedef {import('./cc-token-api-list.js').CcTokenApiList} CcTokenApiList
+ * @typedef {import('./cc-token-api-list.types.js').TokenApiState} TokenApiState
  */
 
 const conf = {
-  component: 'cc-api-token-list',
+  component: 'cc-token-api-list',
 };
 
 const ONE_DAY = 24 * 60 * 60 * 1000;
 
-/** @type {Array<ApiTokenState>} */
+/** @type {Array<TokenApiState>} */
 const baseTokens = [
   {
     type: 'idle',
@@ -54,7 +54,7 @@ const baseTokens = [
 ];
 
 export const defaultStory = makeStory(conf, {
-  /** @type {Partial<CcApiTokenList>[]} */
+  /** @type {Partial<CcTokenApiList>[]} */
   items: [
     {
       state: {
@@ -66,7 +66,7 @@ export const defaultStory = makeStory(conf, {
 });
 
 export const loading = makeStory(conf, {
-  /** @type {Partial<CcApiTokenList>[]} */
+  /** @type {Partial<CcTokenApiList>[]} */
   items: [
     {
       state: { type: 'loading' },
@@ -75,7 +75,7 @@ export const loading = makeStory(conf, {
 });
 
 export const error = makeStory(conf, {
-  /** @type {Partial<CcApiTokenList>[]} */
+  /** @type {Partial<CcTokenApiList>[]} */
   items: [
     {
       state: { type: 'error' },
@@ -84,7 +84,7 @@ export const error = makeStory(conf, {
 });
 
 export const empty = makeStory(conf, {
-  /** @type {Partial<CcApiTokenList>[]} */
+  /** @type {Partial<CcTokenApiList>[]} */
   items: [
     {
       state: {
@@ -96,7 +96,7 @@ export const empty = makeStory(conf, {
 });
 
 export const waitingWithRevokingOneToken = makeStory(conf, {
-  /** @type {Partial<CcApiTokenList>[]} */
+  /** @type {Partial<CcTokenApiList>[]} */
   items: [
     {
       state: {
@@ -117,12 +117,12 @@ export const waitingWithRevokingOneToken = makeStory(conf, {
 });
 
 export const simulationsWithLoadingSuccess = makeStory(conf, {
-  /** @type {Partial<CcApiTokenList>[]} */
+  /** @type {Partial<CcTokenApiList>[]} */
   items: [{ state: { type: 'loading' } }],
   simulations: [
     storyWait(
       2000,
-      /** @param {CcApiTokenList[]} components */
+      /** @param {CcTokenApiList[]} components */
       ([component]) => {
         component.state = {
           type: 'loaded',
@@ -134,12 +134,12 @@ export const simulationsWithLoadingSuccess = makeStory(conf, {
 });
 
 export const simulationsWithLoadingError = makeStory(conf, {
-  /** @type {Partial<CcApiTokenList>[]} */
+  /** @type {Partial<CcTokenApiList>[]} */
   items: [{ state: { type: 'loading' } }],
   simulations: [
     storyWait(
       2000,
-      /** @param {CcApiTokenList[]} components */
+      /** @param {CcTokenApiList[]} components */
       ([component]) => {
         component.state = {
           type: 'error',
@@ -150,7 +150,7 @@ export const simulationsWithLoadingError = makeStory(conf, {
 });
 
 export const simulationsWithRevokingToken = makeStory(conf, {
-  /** @type {Partial<CcApiTokenList>[]} */
+  /** @type {Partial<CcTokenApiList>[]} */
   items: [
     {
       state: {
@@ -162,7 +162,7 @@ export const simulationsWithRevokingToken = makeStory(conf, {
   simulations: [
     storyWait(
       1000,
-      /** @param {CcApiTokenList[]} components */
+      /** @param {CcTokenApiList[]} components */
       ([component]) => {
         component.state = {
           type: 'loaded',
@@ -180,7 +180,7 @@ export const simulationsWithRevokingToken = makeStory(conf, {
     ),
     storyWait(
       3000,
-      /** @param {CcApiTokenList[]} components */
+      /** @param {CcTokenApiList[]} components */
       ([component]) => {
         component.state = {
           type: 'loaded',
