@@ -1500,6 +1500,7 @@ export const translations = {
   'cc-token-api-list.card.label.expiration': () => sanitize`Expiration&nbsp;: `,
   'cc-token-api-list.card.label.ip': () => sanitize`IP&nbsp;: `,
   'cc-token-api-list.card.label.name': () => sanitize`Nom&nbsp;: `,
+  'cc-token-api-list.card.token-id-icon.a11y-name': `Identifiant du token d'API`,
   'cc-token-api-list.create-token': `Créer un nouveau token`,
   'cc-token-api-list.empty': `Vous n'avez aucun token API. Créez-en un en cliquant sur le bouton ci-dessus.`,
   'cc-token-api-list.error': `Une erreur est survenue pendant le chargement des tokens API.`,

@@ -1475,6 +1475,7 @@ export const translations = {
   'cc-token-api-list.card.label.expiration': `Expiration: `,
   'cc-token-api-list.card.label.ip': `Created from IP: `,
   'cc-token-api-list.card.label.name': `Name: `,
+  'cc-token-api-list.card.token-id-icon.a11y-name': `API token Identifier`,
   'cc-token-api-list.create-token': `Create new token`,
   'cc-token-api-list.empty': `You have not created any token yet or you no have any active token. Go ahead and create a new API token.`,
   'cc-token-api-list.error': `Something went wrong while loading API tokens.`,
