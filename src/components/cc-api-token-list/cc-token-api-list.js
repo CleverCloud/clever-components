@@ -1,49 +1,44 @@
-import { html, LitElement, css } from 'lit';
+import { LitElement, css, html } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
-import { i18n } from '../../translations/translation.js';
+import {
+  iconRemixCalendar_2Fill as iconCreation,
+  iconRemixDeleteBinLine as iconDelete,
+  iconRemixInformationLine as iconDescription,
+  iconRemixAlertLine as iconExpiration,
+} from '../../assets/cc-remix.icons.js';
 import { dispatchCustomEvent } from '../../lib/events.js';
-import { isExpirationClose } from '../../lib/utils.js';
-import '../cc-loader/cc-loader.js';
-import '../cc-notice/cc-notice.js';
+import { i18n } from '../../translations/translation.js';
+import '../cc-badge/cc-badge.js';
 import '../cc-block/cc-block.js';
 import '../cc-button/cc-button.js';
 import '../cc-icon/cc-icon.js';
-import '../cc-badge/cc-badge.js';
-import {
-  iconRemixDeleteBinLine as iconDelete,
-  iconRemixCalendar_2Fill as iconCreation,
-  iconRemixAlertLine as iconExpiration,
-  iconRemixInformationLine as iconDescription,
-} from '../../assets/cc-remix.icons.js';
+import '../cc-loader/cc-loader.js';
+import '../cc-notice/cc-notice.js';
 
 /**
- * @typedef {import('./cc-api-token-list.types.js').ApiTokenState} ApiTokenState
- * @typedef {import('./cc-api-token-list.types.js').ApiTokensState} ApiTokensState
- * @typedef {import('./cc-api-token-list.types.js').ApiTokenStateWithExpirationWarning} ApiTokenStateWithExpirationWarning
+ * @typedef {import('./cc-token-api-list.types.js').TokenApiState} TokenApiState
+ * @typedef {import('./cc-token-api-list.types.js').TokenApiListState} TokenApiListState
+ * @typedef {import('./cc-token-api-list.types.js').TokenApiStateWithExpirationWarning} TokenApiStateWithExpirationWarning
  */
 
 /**
  * A component to display and manage API tokens
  *
- * @fires {CustomEvent<string>} cc-api-token-list:revoke-token - Dispatched when a user requests to revoke a specific token
- * @fires {CustomEvent<void>} cc-api-token-list:create-token - Dispatched when a user clicks on the create token button
+ * @fires {CustomEvent<string>} cc-token-api-list:revoke-token - Dispatched when a user requests to revoke a specific token
+ * @fires {CustomEvent<void>} cc-token-api-list:create-token - Dispatched when a user clicks on the create token button
  */
-export class CcApiTokenList extends LitElement {
+export class CcTokenApiList extends LitElement {
   static get properties() {
     return {
       state: { type: Object },
-      _tokensWithExpirationInfo: { type: Array, state: true },
     };
   }
 
   constructor() {
     super();
 
-    /** @type {ApiTokensState} */
+    /** @type {TokenApiListState} */
     this.state = { type: 'loading' };
-
-    /** @type {Array<ApiTokenStateWithExpirationWarning>|null} */
-    this._tokensWithExpirationInfo = null;
   }
 
   /**
@@ -65,38 +60,25 @@ export class CcApiTokenList extends LitElement {
     dispatchCustomEvent(this, 'create-token');
   }
 
-  /** @param {import('lit').PropertyValues<this>} changedProperties */
-  willUpdate(changedProperties) {
-    if (changedProperties.has('state') && this.state.type === 'loaded') {
-      this._tokensWithExpirationInfo = this.state.tokens.map((token) => ({
-        ...token,
-        isExpirationClose: isExpirationClose({
-          creationDate: token.creationDate,
-          expirationDate: token.expirationDate,
-        }),
-      }));
-    }
-  }
-
   render() {
     if (this.state.type === 'error') {
-      return html`<cc-notice intent="warning" message="${i18n('cc-api-token-list.error')}"></cc-notice>`;
+      return html`<cc-notice intent="warning" message="${i18n('cc-token-api-list.error')}"></cc-notice>`;
     }
 
     return html`
       <cc-block>
-        <div slot="header-title">${i18n('cc-api-token-list.main-heading')}</div>
+        <div slot="header-title">${i18n('cc-token-api-list.main-heading')}</div>
         <div slot="header-right">
           <cc-button primary outlined @cc-button:click=${this._onCreateToken}>
-            ${i18n('cc-api-token-list.create-token')}
+            ${i18n('cc-token-api-list.create-token')}
           </cc-button>
         </div>
         <div slot="content">
-          <p>${i18n('cc-api-token-list.intro')}</p>
+          <p>${i18n('cc-token-api-list.intro')}</p>
           <div class="api-tokens-wrapper">
             ${this.state.type === 'loading' ? html`<cc-loader></cc-loader>` : ''}
             ${this.state.type === 'loaded' && this._tokensWithExpirationInfo?.length === 0
-              ? html`<div class="empty-state">${i18n('cc-api-token-list.empty')}</div>`
+              ? html`<div class="empty-state">${i18n('cc-token-api-list.empty')}</div>`
               : ''}
             ${this.state.type === 'loaded' && this._tokensWithExpirationInfo?.length > 0
               ? html`
@@ -114,7 +96,7 @@ export class CcApiTokenList extends LitElement {
   /**
    * Renders an individual token card
    *
-   * @param {ApiTokenStateWithExpirationWarning} token - The token data to render
+   * @param {TokenApiStateWithExpirationWarning} token - The token data to render
    * @returns {import('lit').TemplateResult} The rendered token card
    * @private
    */
@@ -126,13 +108,13 @@ export class CcApiTokenList extends LitElement {
         ${isExpirationClose
           ? html`
               <div class="api-token-card__header ${classMap({ 'is-revoking': isRevoking })}">
-                <cc-badge intent="warning">${i18n('cc-api-token-list.card.deadline-approaches')}</cc-badge>
+                <cc-badge intent="warning">${i18n('cc-token-api-list.card.deadline-approaches')}</cc-badge>
               </div>
             `
           : ''}
         <dl class="api-token-card__info ${classMap({ 'is-revoking': isRevoking })}">
           <div class="api-token-card__info__name">
-            <dt>${i18n('cc-api-token-list.card.label.name')}</dt>
+            <dt>${i18n('cc-token-api-list.card.label.name')}</dt>
             <dd>${name}</dd>
           </div>
           ${description
@@ -140,7 +122,7 @@ export class CcApiTokenList extends LitElement {
                 <div class="api-token-card__info__description">
                   <dt>
                     <cc-icon .icon=${iconDescription}></cc-icon>
-                    <span>${i18n('cc-api-token-list.card.label.description')}</span>
+                    <span>${i18n('cc-token-api-list.card.label.description')}</span>
                   </dt>
                   <dd>${description}</dd>
                 </div>
@@ -149,17 +131,17 @@ export class CcApiTokenList extends LitElement {
           <div>
             <dt>
               <cc-icon .icon=${iconCreation}></cc-icon>
-              <span>${i18n('cc-api-token-list.card.label.creation')}</span>
+              <span>${i18n('cc-token-api-list.card.label.creation')}</span>
             </dt>
-            <dd>${i18n('cc-api-token-list.card.human-friendly-date', { date: creationDate })}</dd>
+            <dd>${i18n('cc-token-api-list.card.human-friendly-date', { date: creationDate })}</dd>
           </div>
           <div class="api-token-card__info__expiration">
             <dt>
               <cc-icon .icon=${iconExpiration}></cc-icon>
-              <span>${i18n('cc-api-token-list.card.label.expiration')}</span>
+              <span>${i18n('cc-token-api-list.card.label.expiration')}</span>
             </dt>
             <dd>
-              <span>${i18n('cc-api-token-list.card.human-friendly-date', { date: expirationDate })}</span>
+              <span>${i18n('cc-token-api-list.card.human-friendly-date', { date: expirationDate })}</span>
             </dd>
           </div>
         </dl>
@@ -173,7 +155,7 @@ export class CcApiTokenList extends LitElement {
           ?waiting=${isRevoking}
           @cc-button:click=${() => this._onRevokeToken(id)}
         >
-          ${i18n('cc-api-token-list.revoke-token', { name })}
+          ${i18n('cc-token-api-list.revoke-token', { name })}
         </cc-button>
       </li>
     `;
@@ -246,8 +228,8 @@ export class CcApiTokenList extends LitElement {
       }
 
       .api-token-card__info__name {
-        font-weight: bold;
         font-size: 1.1em;
+        font-weight: bold;
       }
 
       .api-token-card__info__description {
@@ -325,4 +307,4 @@ export class CcApiTokenList extends LitElement {
   }
 }
 
-customElements.define('cc-api-token-list', CcApiTokenList);
+customElements.define('cc-token-api-list', CcTokenApiList);
