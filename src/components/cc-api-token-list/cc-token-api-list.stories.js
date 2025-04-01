@@ -25,31 +25,31 @@ const baseTokens = [
     id: '1',
     name: 'CI Pipeline',
     description: 'Used for automated deployments',
-    creationDate: new Date(Date.now() - 30 * ONE_DAY).toISOString(),
-    expirationDate: new Date(Date.now() + 60 * ONE_DAY).toISOString(),
+    creationDate: new Date(Date.now() - 30 * ONE_DAY),
+    expirationDate: new Date(Date.now() + 60 * ONE_DAY),
   },
   {
     type: 'idle',
     id: '2',
     name: 'Monitoring Script',
     description: 'For status checks and alerts',
-    creationDate: new Date(Date.now() - 15 * ONE_DAY).toISOString(),
-    expirationDate: new Date(Date.now() + 5 * ONE_DAY).toISOString(), // expires soon (5 days)
+    creationDate: new Date(Date.now() - 15 * ONE_DAY),
+    expirationDate: new Date(Date.now() + 5 * ONE_DAY), // expires soon (5 days)
   },
   {
     type: 'idle',
     id: '3',
     name: 'Backup Service',
-    creationDate: new Date(Date.now() - 60 * ONE_DAY).toISOString(),
-    expirationDate: new Date(Date.now() + 30 * ONE_DAY).toISOString(),
+    creationDate: new Date(Date.now() - 60 * ONE_DAY),
+    expirationDate: new Date(Date.now() + 30 * ONE_DAY),
   },
   {
     type: 'idle',
     id: '4',
     name: 'Dev Environment',
     description: 'Local development testing',
-    creationDate: new Date(Date.now() - 10 * ONE_DAY).toISOString(),
-    expirationDate: new Date(Date.now() + 2 * ONE_DAY).toISOString(), // expires very soon (2 days)
+    creationDate: new Date(Date.now() - 10 * ONE_DAY),
+    expirationDate: new Date(Date.now() + 2 * ONE_DAY), // expires very soon (2 days)
   },
 ];
 

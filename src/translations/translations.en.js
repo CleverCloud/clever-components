@@ -1497,7 +1497,7 @@ export const translations = {
   'cc-token-api-list.card.label.ip': `Created from IP: `,
   'cc-token-api-list.card.label.name': `Name: `,
   'cc-token-api-list.create-token': `Create new token`,
-  'cc-token-api-list.empty': `You do not have any API tokens.`,
+  'cc-token-api-list.empty': `You have not created any token yet or you no have any active token. Go ahead and create a new API token.`,
   'cc-token-api-list.error': `Something went wrong while loading API tokens.`,
   'cc-token-api-list.intro': `Below is the list of API tokens registered on your account. You may revoke any of them if necessary.`,
   'cc-token-api-list.main-heading': `API tokens`,
