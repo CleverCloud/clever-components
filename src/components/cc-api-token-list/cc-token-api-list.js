@@ -1,10 +1,14 @@
 import { LitElement, css, html } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
+import { createRef, ref } from 'lit/directives/ref.js';
 import {
   iconRemixCalendar_2Fill as iconCreation,
   iconRemixDeleteBinLine as iconDelete,
   iconRemixAlertLine as iconExpiration,
+  iconRemixInformationLine as iconTokenId,
 } from '../../assets/cc-remix.icons.js';
+import { LostFocusController } from '../../controllers/lost-focus-controller.js';
+import { ResizeController } from '../../controllers/resize-controller.js';
 import { dispatchCustomEvent } from '../../lib/events.js';
 import { isExpirationClose } from '../../lib/tokens.js';
 import { i18n } from '../../translations/translation.js';
@@ -18,6 +22,7 @@ import '../cc-notice/cc-notice.js';
 /**
  * @typedef {import('./cc-token-api-list.types.js').TokenApiState} TokenApiState
  * @typedef {import('./cc-token-api-list.types.js').TokenApiListState} TokenApiListState
+ * @typedef {import('lit/directives/ref.js').Ref<HTMLAnchorElement>} RefHTMLAnchorElement
  */
 
 /**
@@ -29,19 +34,34 @@ import '../cc-notice/cc-notice.js';
 export class CcTokenApiList extends LitElement {
   static get properties() {
     return {
-      state: { type: Object },
       createApiTokenHref: { type: String, attribute: 'create-api-token-href' },
+      state: { type: Object },
     };
   }
 
   constructor() {
     super();
 
+    /** @type {string|null} the URL leading to the API token creation screen */
+    this.createApiTokenHref = null;
+
     /** @type {TokenApiListState} */
     this.state = { type: 'loading' };
 
-    /** @type {string|null} the URL leading to the API token creation screen */
-    this.createApiTokenHref = null;
+    /** @type {RefHTMLAnchorElement} */
+    this._createApiTokenLinkWhenEmptyRef = createRef();
+
+    new ResizeController(this, {
+      widthBreakpoints: [995, 730],
+    });
+
+    new LostFocusController(this, '.api-token-card__action-revoke', ({ suggestedElement }) => {
+      if (suggestedElement instanceof HTMLElement) {
+        suggestedElement.focus();
+      } else {
+        this._createApiTokenLinkWhenEmptyRef.value?.focus();
+      }
+    });
   }
 
   /**
@@ -54,43 +74,43 @@ export class CcTokenApiList extends LitElement {
     dispatchCustomEvent(this, 'revoke-token', tokenId);
   }
 
-  /**
-   * Handles the creation of a new token
-   *
-   * @private
-   */
-  _onCreateToken() {
-    dispatchCustomEvent(this, 'create-token');
-  }
-
   render() {
     if (this.state.type === 'error') {
       return html`<cc-notice intent="warning" message="${i18n('cc-token-api-list.error')}"></cc-notice>`;
     }
 
-    const hasTokens =
-      (this.state.type === 'loaded' || this.state.type === 'revoking-all') && this.state.tokens.length > 0;
+    const isEmpty = this.state.type === 'loaded' && this.state.tokens.length === 0;
 
     const sortedTokens =
-      this.state.type === 'loaded' || this.state.type === 'revoking-all'
+      this.state.type === 'loaded'
         ? [...this.state.tokens].sort((tokenA, tokenB) => tokenB.creationDate.getTime() - tokenA.creationDate.getTime())
         : [];
 
     return html`
       <cc-block>
         <div slot="header-title">${i18n('cc-token-api-list.main-heading')}</div>
-        <div slot="header-right">
-          <a class="create-token-cta" href="${this.createApiTokenHref}"> ${i18n('cc-token-api-list.create-token')} </a>
-        </div>
+        ${!isEmpty
+          ? html`
+              <div slot="header-right">
+                <a class="create-token-cta" href="${this.createApiTokenHref}">
+                  ${i18n('cc-token-api-list.create-token')}
+                </a>
+              </div>
+            `
+          : ''}
         <div slot="content">
           <p>${i18n('cc-token-api-list.intro')}</p>
           <div class="api-tokens-wrapper">
             ${this.state.type === 'loading' ? html`<cc-loader></cc-loader>` : ''}
-            ${this.state.type === 'loaded' && sortedTokens?.length === 0
+            ${isEmpty
               ? html`
                   <div class="empty">
                     ${i18n('cc-token-api-list.empty')}
-                    <a class="create-token-cta" href="${this.createApiTokenHref}">
+                    <a
+                      class="create-token-cta"
+                      href="${this.createApiTokenHref}"
+                      ${ref(this._createApiTokenLinkWhenEmptyRef)}
+                    >
                       ${i18n('cc-token-api-list.create-token')}
                     </a>
                   </div>
@@ -113,7 +133,6 @@ export class CcTokenApiList extends LitElement {
    * Renders an individual token card
    *
    * @param {TokenApiState} token - The token data to render
-   * @returns {import('lit').TemplateResult} The rendered token card
    * @private
    */
   _renderTokenCard({ type, id, name, description, creationDate, expirationDate }) {
@@ -121,15 +140,19 @@ export class CcTokenApiList extends LitElement {
     const isRevoking = type === 'revoking';
 
     return html`
-      <div class="api-token-card">
-        <div class="api-token-card__header ${classMap({ 'is-revoking': isRevoking })}">
+      <div class="api-token-card ${classMap({ 'is-revoking': isRevoking })}">
+        <div class="api-token-card__header">
           <div class="api-token-card__header__name">${name}</div>
           ${hasExpirationWarning
             ? html` <cc-badge intent="warning">${i18n('cc-token-api-list.card.deadline-approaches')}</cc-badge> `
             : ''}
         </div>
         ${description != null ? html` <p class="api-token-card__description">${description}</p> ` : ''}
-        <dl class="api-token-card__info ${classMap({ 'is-revoking': isRevoking })}">
+        <div class="api-token-card__id">
+          <cc-icon .icon="${iconTokenId}"></cc-icon>
+          <span>${id}</span>
+        </div>
+        <dl class="api-token-card__info">
           <div>
             <dt>
               <cc-icon .icon=${iconCreation}></cc-icon>
@@ -187,7 +210,16 @@ export class CcTokenApiList extends LitElement {
         margin: 0;
       }
 
-      .is-revoking {
+      .empty {
+        border: 1px solid var(--cc-color-border-neutral-weak);
+        padding: 1em;
+        display: grid;
+        justify-items: center;
+        font-weight: bold;
+        gap: 1.5em;
+      }
+
+      .is-revoking > *:not(cc-button) {
         opacity: var(--cc-opacity-when-disabled, 0.65);
       }
 
@@ -229,6 +261,7 @@ export class CcTokenApiList extends LitElement {
         display: grid;
         grid-template-columns: [card-start info-start] 1fr [info-end actions-start] max-content [actions-end card-end];
         padding: 1em;
+        gap: 1em;
       }
 
       .api-token-card__header {
@@ -239,12 +272,26 @@ export class CcTokenApiList extends LitElement {
         display: flex;
         flex-wrap: wrap;
         grid-column: info-start / info-end;
-        margin-bottom: 1em;
         row-gap: 0.5em;
+      }
+
+      .api-token-card__header__name {
+        font-weight: bold;
+      }
+
+      .api-token-card__id {
+        display: flex;
+        gap: 0.5em;
+        grid-column: info-start / info-end;
       }
 
       .api-token-card__description {
         grid-column: info-start / info-end;
+        margin: 0;
+      }
+
+      .api-token-card__id cc-icon {
+        flex: 0 0 auto;
       }
 
       .api-token-card__info {
@@ -258,15 +305,6 @@ export class CcTokenApiList extends LitElement {
         display: flex;
         flex-wrap: wrap;
         gap: 0.5em;
-      }
-
-      .api-token-card__info__name {
-        font-size: 1.1em;
-        font-weight: bold;
-      }
-
-      .api-token-card__info__description {
-        font-style: italic;
       }
 
       .api-token-card__info__expiration {
@@ -313,7 +351,7 @@ export class CcTokenApiList extends LitElement {
 
       @supports (grid-template-columns: subgrid) {
         .api-tokens-wrapper__list {
-          grid-template-columns: [card-start info-start] max-content max-content [info-end actions-start] auto [actions-end card-end];
+          grid-template-columns: [card-start info-start] max-content 1fr [info-end actions-start] auto [actions-end card-end];
         }
 
         .api-token-card {
