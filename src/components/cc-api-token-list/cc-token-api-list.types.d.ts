@@ -2,7 +2,7 @@ export type TokenApiListState =
   | TokenApiListStateLoading
   | TokenApiListStateError
   | TokenApiListStateLoaded
-  | TokenApiListStateCreating;
+  | TokenApiListStateRevokingAll;
 
 export interface TokenApiListStateLoading {
   type: 'loading';
@@ -17,8 +17,9 @@ export interface TokenApiListStateLoaded {
   tokens: TokenApiState[];
 }
 
-export interface TokenApiListStateCreating {
-  type: 'creating';
+export interface TokenApiListStateRevokingAll {
+  type: 'revoking-all';
+  tokens: TokenApiStateRevoking[];
 }
 
 export type TokenApiState = TokenApiStateIdle | TokenApiStateRevoking;
@@ -33,12 +34,8 @@ export interface TokenApiStateRevoking extends ApiToken {
 
 export interface ApiToken {
   id: string;
-  creationDate: string;
-  expirationDate: string;
+  creationDate: Date;
+  expirationDate: Date;
   name: string;
   description?: string;
 }
-
-export type TokenApiStateWithExpirationWarning = TokenApiState & {
-  isExpirationClose: boolean;
-};
