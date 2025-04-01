@@ -26,10 +26,14 @@ import '../cc-notice/cc-notice.js';
  */
 
 /**
- * A component to display and manage API tokens
+ * A component to display and manage API tokens.
+ *
+ * This component provides a user interface to view, create, and revoke API tokens.
+ * It displays token information including name, description, ID, creation date,
+ * and expiration date. It supports different states (loading, error, empty, loaded)
+ * and provides responsive design that adapts to different screen sizes.
  *
  * @fires {CustomEvent<string>} cc-token-api-list:revoke-token - Dispatched when a user requests to revoke a specific token
- * @fires {CustomEvent<void>} cc-token-api-list:create-token - Dispatched when a user clicks on the create token button
  */
 export class CcTokenApiList extends LitElement {
   static get properties() {
@@ -149,7 +153,7 @@ export class CcTokenApiList extends LitElement {
         </div>
         ${description != null ? html` <p class="api-token-card__description">${description}</p> ` : ''}
         <div class="api-token-card__id">
-          <cc-icon .icon="${iconTokenId}"></cc-icon>
+          <cc-icon .icon="${iconTokenId}" a11y-name=${i18n('cc-token-api-list.card.token-id-icon.a11y-name')}></cc-icon>
           <span>${id}</span>
         </div>
         <dl class="api-token-card__info">
