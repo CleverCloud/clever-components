@@ -1,8 +1,4 @@
-export type TokenApiListState =
-  | TokenApiListStateLoading
-  | TokenApiListStateError
-  | TokenApiListStateLoaded
-  | TokenApiListStateRevokingAll;
+export type TokenApiListState = TokenApiListStateLoading | TokenApiListStateError | TokenApiListStateLoaded;
 
 export interface TokenApiListStateLoading {
   type: 'loading';
@@ -15,11 +11,6 @@ export interface TokenApiListStateError {
 export interface TokenApiListStateLoaded {
   type: 'loaded';
   tokens: TokenApiState[];
-}
-
-export interface TokenApiListStateRevokingAll {
-  type: 'revoking-all';
-  tokens: TokenApiStateRevoking[];
 }
 
 export type TokenApiState = TokenApiStateIdle | TokenApiStateRevoking;

@@ -22,7 +22,7 @@ const ONE_DAY = 24 * 60 * 60 * 1000;
 const baseTokens = [
   {
     type: 'idle',
-    id: '1',
+    id: 'fake_api_token_bd367d99-5e42-4934-9b50-40a4a6d01766',
     name: 'CI Pipeline',
     description: 'Used for automated deployments',
     creationDate: new Date(Date.now() - 30 * ONE_DAY),
@@ -30,7 +30,7 @@ const baseTokens = [
   },
   {
     type: 'idle',
-    id: '2',
+    id: 'fake_api_token_a6c89d22-3ef7-49f1-b2dc-5792e478a7c9',
     name: 'Monitoring Script',
     description: 'For status checks and alerts',
     creationDate: new Date(Date.now() - 15 * ONE_DAY),
@@ -38,14 +38,16 @@ const baseTokens = [
   },
   {
     type: 'idle',
-    id: '3',
+    id: 'fake_api_token_c723f1e5-3d8a-4d1b-a8e5-46d6f75c8a32',
     name: 'Backup Service',
+    description:
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla facilisi. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Phasellus fringilla lectus vel magna pulvinar, in finibus nulla ultricies. Suspendisse potenti. Maecenas nec lacus vel nisl convallis feugiat in sit amet massa.',
     creationDate: new Date(Date.now() - 60 * ONE_DAY),
     expirationDate: new Date(Date.now() + 30 * ONE_DAY),
   },
   {
     type: 'idle',
-    id: '4',
+    id: 'fake_api_token_f8e51b94-8107-4d59-a716-923895d78d04',
     name: 'Dev Environment',
     description: 'Local development testing',
     creationDate: new Date(Date.now() - 10 * ONE_DAY),
