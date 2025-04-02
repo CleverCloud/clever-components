@@ -1467,6 +1467,7 @@ export const translations = {
   'cc-toast.icon-alt.success': `Success`,
   'cc-toast.icon-alt.warning': `Warning`,
   //#endregion
+  'cc-token-api-creation-form.main-heading': 'Create a new API Token'
   //#region cc-token-api-list
   'cc-token-api-list.card.deadline-approaches': `Expiration close`,
   'cc-token-api-list.card.human-friendly-date': /** @param {{ date: Date }} _ */ ({ date }) => formatDatetime(date),
