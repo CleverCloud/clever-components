@@ -10,7 +10,7 @@ export default {
 /**
  * @typedef {import('./cc-token-session-list.js').CcTokenSessionList} CcTokenSessionList
  * @typedef {import('./cc-token-session-list.types.js').SessionTokenStateIdle} SessionTokenStateIdle
- * @typedef {import('./cc-token-session-list.types.js').CurrentSessionToken} CurrentSessionToken
+ * @typedef {import('./cc-token-session-list.types.js').SessionToken} SessionToken
  */
 
 const conf = {
@@ -19,9 +19,8 @@ const conf = {
 
 const ONE_DAY = 24 * 60 * 60 * 1000;
 
-/** @type {CurrentSessionToken} */
+/** @type {SessionToken} */
 const currentSession = {
-  isCurrentSession: true,
   id: '2',
   creationDate: new Date(Date.now() - 89 * ONE_DAY), // medium-aged token (90 days old)
   expirationDate: new Date(Date.now() + 32 * ONE_DAY), // does not expire soon (32 days)
@@ -38,7 +37,6 @@ const otherSessions = [
     expirationDate: new Date(Date.now() + 32 * ONE_DAY), // does not expire soon (32 days)
     lastUsedDate: new Date(Date.now() - 30 * ONE_DAY), // 30 days ago
     isCleverTeam: false,
-    isCurrentSession: false,
   },
   {
     type: 'idle',
@@ -47,7 +45,6 @@ const otherSessions = [
     expirationDate: new Date(Date.now() + 6 * ONE_DAY), // expires soon (6 days)
     lastUsedDate: new Date(Date.now() - 10 * ONE_DAY), // 10 days ago
     isCleverTeam: false,
-    isCurrentSession: false,
   },
   {
     type: 'idle',
@@ -56,7 +53,6 @@ const otherSessions = [
     expirationDate: new Date(Date.now() + 2 * ONE_DAY), // expires soon (2 days)
     lastUsedDate: new Date(Date.now() - 2 * ONE_DAY), // very recent use (2 days ago)
     isCleverTeam: false,
-    isCurrentSession: false,
   },
   {
     type: 'idle',
@@ -65,7 +61,6 @@ const otherSessions = [
     expirationDate: new Date(Date.now() + 45 * ONE_DAY), // does not expire soon (45 days)
     lastUsedDate: new Date(Date.now() - 1 * ONE_DAY), // very recent use (1 day ago)
     isCleverTeam: false,
-    isCurrentSession: false,
   },
   {
     type: 'idle',
@@ -74,7 +69,6 @@ const otherSessions = [
     expirationDate: new Date(Date.now() + 6 * 60 * 60 * 1000), // expires soon (0.25 days)
     lastUsedDate: new Date(Date.now() - 5 * ONE_DAY), // recent use (5 days ago)
     isCleverTeam: true,
-    isCurrentSession: false,
   },
 ];
 
@@ -84,8 +78,8 @@ export const defaultStory = makeStory(conf, {
     {
       state: {
         type: 'loaded',
-        currentSession,
-        otherSessions,
+        currentSessionToken: currentSession,
+        otherSessionTokens: otherSessions,
       },
     },
   ],
@@ -107,8 +101,8 @@ export const waitingWithRevokingOneToken = makeStory(conf, {
     {
       state: {
         type: 'loaded',
-        currentSession,
-        otherSessions: otherSessions.map((token, index) => {
+        currentSessionToken: currentSession,
+        otherSessionTokens: otherSessions.map((token, index) => {
           if (index === 3) {
             return {
               ...token,
@@ -129,8 +123,8 @@ export const waitingWithRevokingAllTokens = makeStory(conf, {
     {
       state: {
         type: 'revoking-all',
-        currentSession,
-        otherSessions: otherSessions.map((token) => ({
+        currentSessionToken: currentSession,
+        otherSessionTokens: otherSessions.map((token) => ({
           ...token,
           type: 'revoking',
         })),
@@ -145,7 +139,8 @@ export const dataLoadedWithOnlyCurrentSession = makeStory(conf, {
     {
       state: {
         type: 'loaded',
-        currentSession,
+        currentSessionToken: currentSession,
+        otherSessionTokens: [],
       },
     },
   ],
@@ -157,11 +152,11 @@ export const dataLoadedWithCleverTeamAsCurrentSession = makeStory(conf, {
     {
       state: {
         type: 'loaded',
-        currentSession: {
+        currentSessionToken: {
           ...currentSession,
           isCleverTeam: true,
         },
-        otherSessions,
+        otherSessionTokens: otherSessions,
       },
     },
   ],
@@ -173,10 +168,10 @@ export const dataLoadedWithCleverTeamAndExpirationCloseNoVisibleWarning = makeSt
     {
       state: {
         type: 'loaded',
-        currentSession: {
+        currentSessionToken: {
           ...currentSession,
         },
-        otherSessions: otherSessions.map((session) => {
+        otherSessionTokens: otherSessions.map((session) => {
           if (session.isCleverTeam) {
             return {
               ...session,
@@ -197,12 +192,12 @@ export const dataLoadedWithCleverTeamAsCurrentSessionAndExpirationCloseNoVisible
     {
       state: {
         type: 'loaded',
-        currentSession: {
+        currentSessionToken: {
           ...currentSession,
           isCleverTeam: true,
           expirationDate: new Date(Date.now() + 6 * ONE_DAY), // expires soon (6 days)
         },
-        otherSessions,
+        otherSessionTokens: otherSessions,
       },
     },
   ],
@@ -218,8 +213,8 @@ export const simulationsWithLoadingSuccess = makeStory(conf, {
       ([component]) => {
         component.state = {
           type: 'loaded',
-          currentSession,
-          otherSessions,
+          currentSessionToken: currentSession,
+          otherSessionTokens: otherSessions,
         };
       },
     ),
@@ -248,8 +243,8 @@ export const simulationsWithRevokingToken = makeStory(conf, {
     {
       state: {
         type: 'loaded',
-        currentSession,
-        otherSessions,
+        currentSessionToken: currentSession,
+        otherSessionTokens: otherSessions,
       },
     },
   ],
@@ -260,8 +255,8 @@ export const simulationsWithRevokingToken = makeStory(conf, {
       ([component]) => {
         component.state = {
           type: 'loaded',
-          currentSession,
-          otherSessions: otherSessions.map((token, index) => {
+          currentSessionToken: currentSession,
+          otherSessionTokens: otherSessions.map((token, index) => {
             if (index === 3) {
               return {
                 ...token,
@@ -279,8 +274,8 @@ export const simulationsWithRevokingToken = makeStory(conf, {
       ([component]) => {
         component.state = {
           type: 'loaded',
-          currentSession,
-          otherSessions: otherSessions.filter((_, index) => index !== 3),
+          currentSessionToken: currentSession,
+          otherSessionTokens: otherSessions.filter((_, index) => index !== 3),
         };
       },
     ),
@@ -293,8 +288,8 @@ export const simulationsWithRevokingAllTokens = makeStory(conf, {
     {
       state: {
         type: 'loaded',
-        currentSession,
-        otherSessions,
+        currentSessionToken: currentSession,
+        otherSessionTokens: otherSessions,
       },
     },
   ],
@@ -305,8 +300,8 @@ export const simulationsWithRevokingAllTokens = makeStory(conf, {
       ([component]) => {
         component.state = {
           type: 'revoking-all',
-          currentSession,
-          otherSessions: otherSessions.map((token) => ({
+          currentSessionToken: currentSession,
+          otherSessionTokens: otherSessions.map((token) => ({
             ...token,
             type: 'revoking',
           })),
@@ -319,7 +314,8 @@ export const simulationsWithRevokingAllTokens = makeStory(conf, {
       ([component]) => {
         component.state = {
           type: 'loaded',
-          currentSession,
+          currentSessionToken: currentSession,
+          otherSessionTokens: [],
         };
       },
     ),

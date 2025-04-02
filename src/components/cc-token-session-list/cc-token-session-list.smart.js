@@ -9,15 +9,15 @@ import '../cc-smart-container/cc-smart-container.js';
 import './cc-token-session-list.js';
 
 /**
- * @typedef {import('./cc-token-session-list.js').CcTokenSessionList} CcSessionTokens
+ * @typedef {import('./cc-token-session-list.js').CcTokenSessionList} CcTokenSessionList
+ * @typedef {import('./cc-token-session-list.types.js').SessionToken} SessionToken
  * @typedef {import('./cc-token-session-list.types.js').SessionTokenState} SessionTokenState
  * @typedef {import('./cc-token-session-list.types.js').SessionTokenStateIdle} SessionTokenStateIdle
  * @typedef {import('./cc-token-session-list.types.js').TokenSessionListStateLoaded} TokenSessionListStateLoaded
  * @typedef {import('./cc-token-session-list.types.js').TokenSessionListStateRevokingAll} TokenSessionListStateRevokingAll
- * @typedef {import('./cc-token-session-list.types.js').CurrentSessionToken} CurrentSessionToken
  * @typedef {import('./cc-token-session-list.types.js').RawTokenData} RawTokenData
  * @typedef {import('../../lib/send-to-api.types.js').ApiConfig} ApiConfig
- * @typedef {import('../../lib/smart/smart-component.types.js').OnContextUpdateArgs<CcSessionTokens>} OnContextUpdateArgs
+ * @typedef {import('../../lib/smart/smart-component.types.js').OnContextUpdateArgs<CcTokenSessionList>} OnContextUpdateArgs
  */
 
 defineSmartComponent({
@@ -33,15 +33,15 @@ defineSmartComponent({
     /**
      * Updates a single session token
      *
-     * @param {string} tokenId The ID of the token to update
+     * @param {string} sessionTokenId The ID of the token to update
      * @param {function(SessionTokenState): void} callback A callback function to execute with the updated token
      */
-    function updateOneToken(tokenId, callback) {
+    function updateOneToken(sessionTokenId, callback) {
       updateComponent(
         'state',
         /** @param {TokenSessionListStateLoaded} state */
         (state) => {
-          const sessionTokenToUpdate = state.otherSessions.find((token) => token.id === tokenId);
+          const sessionTokenToUpdate = state.otherSessionTokens.find((token) => token.id === sessionTokenId);
 
           if (sessionTokenToUpdate != null) {
             callback(sessionTokenToUpdate);
@@ -55,34 +55,24 @@ defineSmartComponent({
     api
       .getSessionTokens()
       .then((tokens) => {
-        const rawCurrentToken = tokens.find((token) => token.token === apiConfig.API_OAUTH_TOKEN);
-        /** @type {CurrentSessionToken} */
-        const currentSession = {
-          id: rawCurrentToken.token,
-          isCleverTeam: rawCurrentToken.employeeId != null,
-          creationDate: new Date(rawCurrentToken.creationDate),
-          expirationDate: new Date(rawCurrentToken.expirationDate),
-          lastUsedDate: new Date(rawCurrentToken.lastUtilisation),
-          isCurrentSession: true,
-        };
+        const currentSessionToken = tokens.find((token) => token.id === apiConfig.API_OAUTH_TOKEN);
 
-        const otherSessions = tokens
-          .filter((token) => token.token !== apiConfig.API_OAUTH_TOKEN)
+        const otherSessionTokens = tokens
+          .filter((token) => token.id !== apiConfig.API_OAUTH_TOKEN)
           .map((token) => {
             /** @type {SessionTokenStateIdle} */
             const formattedToken = {
               type: 'idle',
-              id: token.token,
-              isCleverTeam: token.employeeId != null,
-              creationDate: new Date(token.creationDate),
-              expirationDate: new Date(token.expirationDate),
-              lastUsedDate: new Date(token.lastUtilisation),
-              isCurrentSession: false,
+              ...token,
             };
             return formattedToken;
           });
 
-        updateComponent('state', { type: 'loaded', currentSession, otherSessions });
+        updateComponent('state', {
+          type: 'loaded',
+          currentSessionToken,
+          otherSessionTokens,
+        });
       })
       .catch((error) => {
         console.error(error);
@@ -90,28 +80,28 @@ defineSmartComponent({
       });
 
     onEvent(
-      'cc-token-session-list:revoke-session',
-      /** @param {string} tokenId */
-      (tokenId) => {
-        updateOneToken(tokenId, (sessionTokenState) => {
+      'cc-token-session-list:revoke-session-tokens',
+      /** @param {string} sessionTokenId */
+      (sessionTokenId) => {
+        updateOneToken(sessionTokenId, (sessionTokenState) => {
           sessionTokenState.type = 'revoking';
         });
 
         api
-          .revokeSessionToken(tokenId)
+          .revokeSessionToken(sessionTokenId)
           .then(() => {
             updateComponent(
               'state',
               /** @param {TokenSessionListStateLoaded} state */
               (state) => {
-                state.otherSessions = state.otherSessions.filter((token) => token.id !== tokenId);
+                state.otherSessionTokens = state.otherSessionTokens.filter((token) => token.id !== sessionTokenId);
               },
             );
             notifySuccess(i18n('cc-token-session-list.revoke-session.success'));
           })
           .catch((error) => {
             console.error(error);
-            updateOneToken(tokenId, (sessionTokenState) => {
+            updateOneToken(sessionTokenId, (sessionTokenState) => {
               sessionTokenState.type = 'idle';
             });
             notifyError(i18n('cc-token-session-list.revoke-session.error'));
@@ -119,7 +109,7 @@ defineSmartComponent({
       },
     );
 
-    onEvent('cc-token-session-list:revoke-all-sessions', () => {
+    onEvent('cc-token-session-list:revoke-all-session-tokens', () => {
       updateComponent(
         'state',
         /** @param {TokenSessionListStateLoaded} state */
@@ -127,18 +117,18 @@ defineSmartComponent({
           /** @type {TokenSessionListStateRevokingAll} */ ({
             ...state,
             type: 'revoking-all',
-            otherSessions: state.otherSessions.map((token) => ({ ...token, type: 'revoking' })),
+            otherSessionTokens: state.otherSessionTokens.map((token) => ({ ...token, type: 'revoking' })),
           }),
       );
 
-      const tokens = /** @type {TokenSessionListStateLoaded} */ (component.state).otherSessions;
+      const tokens = /** @type {TokenSessionListStateLoaded} */ (component.state).otherSessionTokens;
 
       api.revokeAllSessionTokens(tokens).then(({ remainingTokens, errors, revokedTokens }) => {
         updateComponent('state', (state) => {
           state.type = 'loaded';
 
           /** @type {TokenSessionListStateLoaded} */
-          (state).otherSessions = remainingTokens.map((token) => ({
+          (state).otherSessionTokens = remainingTokens.map((token) => ({
             ...token,
             type: 'idle',
           }));
@@ -167,7 +157,7 @@ class Api {
   /**
    * Fetches and formats session tokens
    *
-   * @returns {Promise<RawTokenData[]>} A promise that resolves to an array of formatted session tokens
+   * @returns {Promise<SessionToken[]>} A promise that resolves to an array of formatted session tokens
    */
   getSessionTokens() {
     return getAllTokens()
@@ -175,9 +165,19 @@ class Api {
       .then(
         /** @param {Array<RawTokenData>} tokens */
         (tokens) => {
-          const filteredTokens = tokens.filter(
-            (token) => token.consumer.key === this._apiConfig.OAUTH_CONSUMER_KEY || token.employeeId != null,
-          );
+          const filteredTokens = tokens
+            .filter((token) => token.consumer.key === this._apiConfig.OAUTH_CONSUMER_KEY || token.employeeId != null)
+            .map((token) => {
+              /** @type {SessionToken} */
+              const formattedToken = {
+                id: token.token,
+                isCleverTeam: token.employeeId != null,
+                creationDate: new Date(token.creationDate),
+                expirationDate: new Date(token.expirationDate),
+                lastUsedDate: new Date(token.lastUtilisation),
+              };
+              return formattedToken;
+            });
 
           return filteredTokens;
         },
@@ -187,11 +187,11 @@ class Api {
   /**
    * Revokes a session token
    *
-   * @param {string} tokenId - The ID of the token to revoke
+   * @param {string} sessionTokenId - The ID of the token to revoke
    * @returns {Promise<void>} A promise that resolves when the token is revoked
    */
-  revokeSessionToken(tokenId) {
-    return revokeToken({ token: tokenId }).then(sendToApi({ apiConfig: this._apiConfig }));
+  revokeSessionToken(sessionTokenId) {
+    return revokeToken({ token: sessionTokenId }).then(sendToApi({ apiConfig: this._apiConfig }));
   }
 
   /**
@@ -208,11 +208,7 @@ class Api {
     let revokedTokens = [];
 
     return Promise.allSettled(
-      tokensToRevoke.map((token) =>
-        revokeToken({ token: token.id })
-          .then(sendToApi({ apiConfig: this._apiConfig }))
-          .then(() => token.id),
-      ),
+      tokensToRevoke.map((token) => this.revokeSessionToken(token.id).then(() => token.id)),
     ).then(
       /** @param {PromiseSettledResult<string>[]} results */
       (results) => {

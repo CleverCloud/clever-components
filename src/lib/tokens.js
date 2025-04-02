@@ -46,9 +46,9 @@ export function isExpirationClose({ creationDate, expirationDate }, thresholds =
   );
 
   // Find the first threshold that applies to this token's lifetime
-  const thresholdToApply = sortedThresholds.find(
-    (threshold) => totalTokenLifetimeInDays <= threshold.maxApplicableTokenLifetimeInDays,
-  );
+  const thresholdToApply = sortedThresholds.find((threshold) => {
+    return totalTokenLifetimeInDays <= threshold.maxApplicableTokenLifetimeInDays;
+  });
 
   // If no matching threshold found, use the one with the highest max days as fallback
   const highestThreshold = sortedThresholds[sortedThresholds.length - 1];

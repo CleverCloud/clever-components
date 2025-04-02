@@ -24,7 +24,7 @@ import '../cc-notice/cc-notice.js';
 /**
  * @typedef {import('./cc-token-session-list.types.js').SessionTokenState} SessionTokenState
  * @typedef {import('./cc-token-session-list.types.js').TokenSessionListState} TokenSessionListState
- * @typedef {import('./cc-token-session-list.types.js').CurrentSessionToken} CurrentSessionToken
+ * @typedef {import('./cc-token-session-list.types.js').SessionToken} SessionToken
  * @typedef {import('lit').TemplateResult<1>} TemplateResult
  * @typedef {import('lit').PropertyValues<CcTokenSessionList>} CcSessionTokensPropertyValues
  * @typedef {import('lit/directives/ref.js').Ref<HTMLLIElement>} RefHTMLLIElement
@@ -37,14 +37,13 @@ import '../cc-notice/cc-notice.js';
  * It displays information about each session including creation date, last used date, and expiration date.
  * Sessions are displayed in a list sorted by creation date (newest first).
  *
- * @fires {CustomEvent<void>} cc-token-session-list:revoke-all-sessions - Dispatched when a user requests to revoke all tokens
- * @fires {CustomEvent<string>} cc-token-session-list:revoke-session - Dispatched when a user requests to revoke a specific token, with the token ID as payload
+ * @fires {CustomEvent<void>} cc-token-session-list:revoke-all-session-tokens - Dispatched when a user requests to revoke all tokens
+ * @fires {CustomEvent<string>} cc-token-session-list:revoke-session-token - Dispatched when a user requests to revoke a specific token, with the token ID as payload
  */
 export class CcTokenSessionList extends LitElement {
   static get properties() {
     return {
       state: { type: Object },
-      _sortedAndFormattedTokens: { type: Array, state: true },
     };
   }
 
@@ -53,9 +52,6 @@ export class CcTokenSessionList extends LitElement {
 
     /** @type {TokenSessionListState} The current state of the component */
     this.state = { type: 'loading' };
-
-    /** @type {Array<CurrentSessionToken|SessionTokenState>|null} Array of session tokens sorted by creation date with added expiration information */
-    this._sortedAndFormattedTokens = null;
 
     /** @type {RefHTMLLIElement} */
     this._currentSessionCardRef = createRef();
@@ -78,12 +74,24 @@ export class CcTokenSessionList extends LitElement {
   }
 
   /**
+   * @param {string} tokenId
+   * @return {boolean}
+   * @private
+   */
+  _isCurrentSessionToken(tokenId) {
+    if (this.state.type === 'loading' || this.state.type === 'error') {
+      return false;
+    }
+    return this.state.currentSessionToken.id === tokenId;
+  }
+
+  /**
    * Handles the revocation of all tokens
    *
    * @private
    */
   _onRevokeAllTokens() {
-    dispatchCustomEvent(this, 'revoke-all-sessions');
+    dispatchCustomEvent(this, 'revoke-all-session-tokens');
   }
 
   /**
@@ -93,7 +101,7 @@ export class CcTokenSessionList extends LitElement {
    * @private
    */
   _onRevokeToken(tokenId) {
-    dispatchCustomEvent(this, 'revoke-session', tokenId);
+    dispatchCustomEvent(this, 'revoke-session-token', tokenId);
   }
 
   render() {
@@ -102,13 +110,11 @@ export class CcTokenSessionList extends LitElement {
     }
 
     const hasTokens =
-      (this.state.type === 'loaded' || this.state.type === 'revoking-all') &&
-      this.state.otherSessions != null &&
-      this.state.otherSessions.length > 0;
+      (this.state.type === 'loaded' || this.state.type === 'revoking-all') && this.state.otherSessionTokens.length > 0;
 
-    const sortedSessions =
+    const sortedSessionTokens =
       this.state.type === 'loaded' || this.state.type === 'revoking-all'
-        ? [this.state.currentSession, ...(this.state.otherSessions ?? [])].sort(
+        ? [this.state.currentSessionToken, ...this.state.otherSessionTokens].sort(
             (tokenA, tokenB) => tokenB.creationDate.getTime() - tokenA.creationDate.getTime(),
           )
         : [];
@@ -139,7 +145,7 @@ export class CcTokenSessionList extends LitElement {
               ? html`
                   <!-- TODO: A11Y when we add headings inside cards (User Agent / IP Address or whatever), we should remove the ul / li structure -->
                   <ul class="session-tokens-wrapper__list">
-                    ${sortedSessions.map((token, index) => this._renderTokenCard(token, index))}
+                    ${sortedSessionTokens.map((token, index) => this._renderTokenCard(token, index))}
                   </ul>
                 `
               : ''}
@@ -152,13 +158,14 @@ export class CcTokenSessionList extends LitElement {
   /**
    * Renders an individual token card
    *
-   * @param {SessionTokenState|CurrentSessionToken} token - The token data to render
+   * @param {SessionTokenState|SessionToken} token - The token data to render
    * @param {number} index - The index of the token in the list
    * @returns {TemplateResult} The rendered token card
    * @private
    */
   _renderTokenCard(token, index) {
-    const { id, creationDate, expirationDate, lastUsedDate, isCleverTeam, isCurrentSession } = token;
+    const { id, creationDate, expirationDate, lastUsedDate, isCleverTeam } = token;
+    const isCurrentSession = this._isCurrentSessionToken(id);
     const isRevoking = 'type' in token && token.type === 'revoking';
     const tabIndex = isCurrentSession ? -1 : null;
     const hasExpirationWarning = isExpirationClose({
@@ -179,22 +186,22 @@ export class CcTokenSessionList extends LitElement {
               hasExpirationWarning,
             })
           : ''}
-        <dl class="session-token-card__info">
-          <div class="session-token-card__info__last-used">
+        <dl class="session-token-card__info-list">
+          <div class="session-token-card__info-list__item session-token-card__info-list__item--italic">
             <dt>
               <cc-icon .icon=${iconLastUsed}></cc-icon>
               <span>${i18n('cc-token-session-list.card.label.last-used')}</span>
             </dt>
             <dd>${i18n('cc-token-session-list.card.human-friendly-date', { date: lastUsedDate })}</dd>
           </div>
-          <div>
+          <div class="session-token-card__info-list__item">
             <dt>
               <cc-icon .icon=${iconCreation}></cc-icon>
               <span>${i18n('cc-token-session-list.card.label.creation')}</span>
             </dt>
             <dd>${i18n('cc-token-session-list.card.human-friendly-date', { date: creationDate })}</dd>
           </div>
-          <div class="session-token-card__info__expiration">
+          <div class="session-token-card__info-list__item session-token-card__info-list__item--bold">
             <dt>
               <cc-icon .icon=${iconExpiration}></cc-icon>
               <span>${i18n('cc-token-session-list.card.label.expiration')}</span>
@@ -270,7 +277,7 @@ export class CcTokenSessionList extends LitElement {
         margin: 0;
       }
 
-      .is-revoking > *:not(cc-button) {
+      .is-revoking > :not(cc-button) {
         opacity: var(--cc-opacity-when-disabled, 0.65);
       }
 
@@ -284,13 +291,41 @@ export class CcTokenSessionList extends LitElement {
         margin-top: 2.5em;
       }
 
+      .session-tokens-wrapper__list {
+        display: grid;
+        gap: 1.5em;
+      }
+
+      @supports (grid-template-columns: subgrid) {
+        .session-tokens-wrapper__list {
+          grid-template-columns: [card-start info-start] max-content max-content 1fr [info-end actions-start] auto [actions-end card-end];
+        }
+
+        :host([w-lt-995]) .session-tokens-wrapper__list {
+          grid-template-columns: [card-start info-start] 1fr 1fr 1fr [info-end actions-start] auto [actions-end card-end];
+        }
+
+        :host([w-lt-730]) .session-tokens-wrapper__list {
+          grid-template-columns: [card-start info-start] 1fr [info-end actions-start] auto [actions-end card-end];
+        }
+      }
+
       .session-token-card {
         align-items: center;
         border: solid 1px var(--cc-color-border-neutral-weak, #e6e6e6);
         border-radius: var(--cc-border-radius-default, 0.25em);
+        column-gap: 1em;
         display: grid;
         grid-template-columns: [card-start info-start] 1fr [info-end actions-start] max-content [actions-end card-end];
         padding: 1em;
+      }
+
+      @supports (grid-template-columns: subgrid) {
+        .session-token-card {
+          display: grid;
+          grid-column: card-start / card-end;
+          grid-template-columns: subgrid;
+        }
       }
 
       .session-token-card__header {
@@ -313,20 +348,51 @@ export class CcTokenSessionList extends LitElement {
         gap: 0.5em;
       }
 
-      .session-token-card__info {
+      .session-token-card__info-list {
         display: flex;
         gap: 1em;
         grid-column: info-start / info-end;
       }
 
-      .session-token-card__info div {
+      :host([w-lt-730]) .session-token-card__info-list {
+        display: grid;
+        row-gap: 0.5em;
+      }
+
+      @supports (grid-template-columns: subgrid) {
+        .session-token-card__info-list {
+          display: grid;
+          grid-column: info-start / info-end;
+          grid-template-columns: subgrid;
+        }
+
+        :host([w-lt-730]) .session-token-card__info-list {
+          row-gap: 0.5em;
+        }
+      }
+
+      .session-token-card__info-list__item {
         display: flex;
         flex-wrap: wrap;
         gap: 0.5em;
       }
 
-      .session-token-card__info__last-used {
+      @supports (grid-template-columns: subgrid) {
+        :host([w-lt-995]) .session-token-card__info-list__item {
+          display: grid;
+        }
+
+        :host([w-lt-730]) .session-token-card__info-list__item {
+          display: flex;
+        }
+      }
+
+      .session-token-card__info-list__item--italic {
         font-style: italic;
+      }
+
+      .session-token-card__info-list__item--bold {
+        font-weight: bold;
       }
 
       dt {
@@ -351,58 +417,6 @@ export class CcTokenSessionList extends LitElement {
         grid-column: actions-start / actions-end;
         grid-row: 1 / -1;
         justify-self: end;
-      }
-
-      .session-tokens-wrapper__list {
-        display: grid;
-        gap: 1.5em;
-      }
-
-      :host([w-lt-730]) .session-token-card {
-        grid-template-columns: [card-start info-start] 1fr [info-end actions-start] max-content [actions-end card-end];
-      }
-
-      :host([w-lt-730]) .session-token-card__info {
-        display: grid;
-        row-gap: 0.5em;
-      }
-
-      @supports (grid-template-columns: subgrid) {
-        .session-tokens-wrapper__list {
-          grid-template-columns: [card-start info-start] max-content max-content max-content [info-end actions-start] auto [actions-end card-end];
-        }
-
-        .session-token-card {
-          display: grid;
-          grid-column: card-start / card-end;
-          grid-template-columns: subgrid;
-        }
-
-        .session-token-card__info {
-          display: grid;
-          grid-column: info-start / info-end;
-          grid-template-columns: subgrid;
-        }
-
-        :host([w-lt-995]) .session-tokens-wrapper__list {
-          grid-template-columns: [card-start info-start] 1fr 1fr 1fr [info-end actions-start] auto [actions-end card-end];
-        }
-
-        :host([w-lt-995]) .session-token-card__info div {
-          display: grid;
-        }
-
-        :host([w-lt-730]) .session-tokens-wrapper__list {
-          grid-template-columns: [card-start info-start] 1fr [info-end actions-start] auto [actions-end card-end];
-        }
-
-        :host([w-lt-730]) .session-token-card__info {
-          row-gap: 0.5em;
-        }
-
-        :host([w-lt-730]) .session-token-card__info div {
-          display: flex;
-        }
       }
     `;
   }
