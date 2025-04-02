@@ -7,13 +7,13 @@ export type TokenSessionListState =
 export interface TokenSessionListStateLoaded {
   type: 'loaded';
   currentSession: CurrentSessionToken;
-  otherSessions?: Array<SessionTokenState> | null;
+  otherSessions: Array<SessionTokenState>;
 }
 
 export interface TokenSessionListStateRevokingAll {
   type: 'revoking-all';
   currentSession: CurrentSessionToken;
-  otherSessions?: Array<SessionTokenStateRevoking> | null;
+  otherSessions: Array<SessionTokenStateRevoking>;
 }
 
 export interface TokenSessionListStateLoading {

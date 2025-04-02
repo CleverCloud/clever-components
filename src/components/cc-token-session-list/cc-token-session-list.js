@@ -102,13 +102,11 @@ export class CcTokenSessionList extends LitElement {
     }
 
     const hasTokens =
-      (this.state.type === 'loaded' || this.state.type === 'revoking-all') &&
-      this.state.otherSessions != null &&
-      this.state.otherSessions.length > 0;
+      (this.state.type === 'loaded' || this.state.type === 'revoking-all') && this.state.otherSessions.length > 0;
 
     const sortedSessions =
       this.state.type === 'loaded' || this.state.type === 'revoking-all'
-        ? [this.state.currentSession, ...(this.state.otherSessions ?? [])].sort(
+        ? [this.state.currentSession, ...this.state.otherSessions].sort(
             (tokenA, tokenB) => tokenB.creationDate.getTime() - tokenA.creationDate.getTime(),
           )
         : [];
