@@ -1488,7 +1488,11 @@ export const translations = {
   'cc-toast.icon-alt.success': `Success`,
   'cc-toast.icon-alt.warning': `Warning`,
   //#endregion
-  'cc-token-api-creation-form.main-heading': 'Create a new API Token'
+  //#region cc-token-api-creation-form
+  'cc-token-api-creation-form.config-step.description': `Use this form to generate a new API token, which will allow you to securely and selectively authorize applications to access your services.`,
+  'cc-token-api-creation-form.config-step.main-heading': `Create a new API Token`,
+  'cc-token-api-creation-form.error': `Something went wrong while loading information about your account`,
+  //#endregion
   //#region cc-token-api-list
   'cc-token-api-list.card.deadline-approaches': `Expiration close`,
   'cc-token-api-list.card.human-friendly-date': /** @param {{ date: Date }} _ */ ({ date }) => formatDatetime(date),

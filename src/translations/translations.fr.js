@@ -1513,6 +1513,11 @@ export const translations = {
   'cc-toast.icon-alt.success': `Succès`,
   'cc-toast.icon-alt.warning': `Avertissement`,
   //#endregion
+  //#region cc-token-api-creation-form
+  'cc-token-api-creation-form.config-step.description': `Utilisez ce formulaire pour générer un nouveau token d'API. Ce token vous permettra d'autoriser des applications à intéragir avec vos services de façon sécurisée.`,
+  'cc-token-api-creation-form.config-step.main-heading': `Créer un nouveau token d'API`,
+  'cc-token-api-creation-form.error': `Une erreur est survenue lors du chargement des informations liées votre compte`,
+  //#endregion
   //#region cc-token-api-list
   'cc-token-api-list.card.deadline-approaches': `Expire bientôt`,
   'cc-token-api-list.card.human-friendly-date': /** @param {{ date: string|number }} _ */ ({ date }) =>

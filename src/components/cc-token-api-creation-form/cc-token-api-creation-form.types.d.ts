@@ -1,7 +1,8 @@
 export type TokenApiCreationFormState =
   | TokenApiCreationFormStateIdle
   | TokenApiCreationFormStateCreating
-  | TokenApiCreationFormStateLoading;
+  | TokenApiCreationFormStateLoading
+  | TokenApiCreationFormStateError;
 
 export interface TokenApiCreationFormStateIdle {
   type: 'idle';
@@ -17,4 +18,8 @@ export interface TokenApiCreationFormStateLoading {
   type: 'loading';
 }
 
-export type CreationStep = 'config' | 'validate' | 'copy';
+export interface TokenApiCreationFormStateError {
+  type: 'error';
+}
+
+export type TokenApiCreationStep = 'config' | 'validate' | 'copy';
