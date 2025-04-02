@@ -288,7 +288,7 @@ export class CcOauthConsumerForm extends LitElement {
             placeholder="${i18n('cc-oauth-consumer-form.info.place-holder')}"
             ?readonly=${isWaiting}
             ?skeleton=${isLoading}
-            .value=${this.state?.homePageUrl}
+            .value=${this.state?.url}
             .customValidator=${URL_VALIDATOR}
             .customErrorMessages=${this._customErrorMessages}
           ></cc-input-text>
@@ -299,7 +299,7 @@ export class CcOauthConsumerForm extends LitElement {
             placeholder="${i18n('cc-oauth-consumer-form.info.place-holder')}"
             ?readonly=${isWaiting}
             ?skeleton=${isLoading}
-            .value=${this.state?.appBaseUrl}
+            .value=${this.state?.baseUrl}
             .customValidator=${URL_VALIDATOR}
             .customErrorMessages=${this._customErrorMessages}
           ></cc-input-text>
@@ -320,7 +320,7 @@ export class CcOauthConsumerForm extends LitElement {
             placeholder="${i18n('cc-oauth-consumer-form.info.place-holder')}"
             ?readonly=${isWaiting}
             ?skeleton=${isLoading}
-            .value=${this.state?.image}
+            .value=${this.state?.picture}
             .customValidator=${URL_VALIDATOR}
             .customErrorMessages=${this._customErrorMessages}
           ></cc-input-text>
