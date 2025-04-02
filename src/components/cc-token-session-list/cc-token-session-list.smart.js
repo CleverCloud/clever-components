@@ -55,27 +55,15 @@ defineSmartComponent({
     api
       .getSessionTokens()
       .then((tokens) => {
-        const rawCurrentToken = tokens.find((token) => token.token === apiConfig.API_OAUTH_TOKEN);
-        /** @type {SessionToken} */
-        const currentSession = {
-          id: rawCurrentToken.token,
-          isCleverTeam: rawCurrentToken.employeeId != null,
-          creationDate: new Date(rawCurrentToken.creationDate),
-          expirationDate: new Date(rawCurrentToken.expirationDate),
-          lastUsedDate: new Date(rawCurrentToken.lastUtilisation),
-        };
+        const currentSession = tokens.find((token) => token.id === apiConfig.API_OAUTH_TOKEN);
 
         const otherSessions = tokens
-          .filter((token) => token.token !== apiConfig.API_OAUTH_TOKEN)
+          .filter((token) => token.id !== apiConfig.API_OAUTH_TOKEN)
           .map((token) => {
             /** @type {SessionTokenStateIdle} */
             const formattedToken = {
               type: 'idle',
-              id: token.token,
-              isCleverTeam: token.employeeId != null,
-              creationDate: new Date(token.creationDate),
-              expirationDate: new Date(token.expirationDate),
-              lastUsedDate: new Date(token.lastUtilisation),
+              ...token,
             };
             return formattedToken;
           });
@@ -165,7 +153,7 @@ class Api {
   /**
    * Fetches and formats session tokens
    *
-   * @returns {Promise<RawTokenData[]>} A promise that resolves to an array of formatted session tokens
+   * @returns {Promise<SessionToken[]>} A promise that resolves to an array of formatted session tokens
    */
   getSessionTokens() {
     return getAllTokens()
@@ -173,9 +161,19 @@ class Api {
       .then(
         /** @param {Array<RawTokenData>} tokens */
         (tokens) => {
-          const filteredTokens = tokens.filter(
-            (token) => token.consumer.key === this._apiConfig.OAUTH_CONSUMER_KEY || token.employeeId != null,
-          );
+          const filteredTokens = tokens
+            .filter((token) => token.consumer.key === this._apiConfig.OAUTH_CONSUMER_KEY || token.employeeId != null)
+            .map((token) => {
+              /** @type {SessionToken} */
+              const formattedToken = {
+                id: token.token,
+                isCleverTeam: token.employeeId != null,
+                creationDate: new Date(token.creationDate),
+                expirationDate: new Date(token.expirationDate),
+                lastUsedDate: new Date(token.lastUtilisation),
+              };
+              return formattedToken;
+            });
 
           return filteredTokens;
         },

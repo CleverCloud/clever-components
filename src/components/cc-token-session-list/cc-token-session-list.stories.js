@@ -10,7 +10,7 @@ export default {
 /**
  * @typedef {import('./cc-token-session-list.js').CcTokenSessionList} CcTokenSessionList
  * @typedef {import('./cc-token-session-list.types.js').SessionTokenStateIdle} SessionTokenStateIdle
- * @typedef {import('./cc-token-session-list.types.js').CurrentSessionToken} CurrentSessionToken
+ * @typedef {import('./cc-token-session-list.types.js').SessionToken} SessionToken
  */
 
 const conf = {
@@ -19,9 +19,8 @@ const conf = {
 
 const ONE_DAY = 24 * 60 * 60 * 1000;
 
-/** @type {CurrentSessionToken} */
+/** @type {SessionToken} */
 const currentSession = {
-  isCurrentSession: true,
   id: '2',
   creationDate: new Date(Date.now() - 89 * ONE_DAY), // medium-aged token (90 days old)
   expirationDate: new Date(Date.now() + 32 * ONE_DAY), // does not expire soon (32 days)
@@ -38,7 +37,6 @@ const otherSessions = [
     expirationDate: new Date(Date.now() + 32 * ONE_DAY), // does not expire soon (32 days)
     lastUsedDate: new Date(Date.now() - 30 * ONE_DAY), // 30 days ago
     isCleverTeam: false,
-    isCurrentSession: false,
   },
   {
     type: 'idle',
@@ -47,7 +45,6 @@ const otherSessions = [
     expirationDate: new Date(Date.now() + 6 * ONE_DAY), // expires soon (6 days)
     lastUsedDate: new Date(Date.now() - 10 * ONE_DAY), // 10 days ago
     isCleverTeam: false,
-    isCurrentSession: false,
   },
   {
     type: 'idle',
@@ -56,7 +53,6 @@ const otherSessions = [
     expirationDate: new Date(Date.now() + 2 * ONE_DAY), // expires soon (2 days)
     lastUsedDate: new Date(Date.now() - 2 * ONE_DAY), // very recent use (2 days ago)
     isCleverTeam: false,
-    isCurrentSession: false,
   },
   {
     type: 'idle',
@@ -65,7 +61,6 @@ const otherSessions = [
     expirationDate: new Date(Date.now() + 45 * ONE_DAY), // does not expire soon (45 days)
     lastUsedDate: new Date(Date.now() - 1 * ONE_DAY), // very recent use (1 day ago)
     isCleverTeam: false,
-    isCurrentSession: false,
   },
   {
     type: 'idle',
@@ -74,7 +69,6 @@ const otherSessions = [
     expirationDate: new Date(Date.now() + 6 * 60 * 60 * 1000), // expires soon (0.25 days)
     lastUsedDate: new Date(Date.now() - 5 * ONE_DAY), // recent use (5 days ago)
     isCleverTeam: true,
-    isCurrentSession: false,
   },
 ];
 
@@ -146,6 +140,7 @@ export const dataLoadedWithOnlyCurrentSession = makeStory(conf, {
       state: {
         type: 'loaded',
         currentSession,
+        otherSessions: [],
       },
     },
   ],
@@ -320,6 +315,7 @@ export const simulationsWithRevokingAllTokens = makeStory(conf, {
         component.state = {
           type: 'loaded',
           currentSession,
+          otherSessions: [],
         };
       },
     ),
