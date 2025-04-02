@@ -1,6 +1,6 @@
 // @ts-expect-error FIXME: remove when clever-client exports types
-import { get, remove, update } from '@clevercloud/client/esm/api/v2/oauth-consumer.js';
-import { notifyError, notifySuccess } from '../../lib/notifications.js';
+import { get as getOauthConsumer, getSecret, remove, update } from '@clevercloud/client/esm/api/v2/oauth-consumer.js';
+import { camelCase } from '../../lib/change-case.js';
 import { sendToApi } from '../../lib/send-to-api.js';
 import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
 import '../cc-smart-container/cc-smart-container.js';
@@ -9,6 +9,8 @@ import './cc-oauth-consumer-form.js';
 /**
  * @typedef {import('../../lib/send-to-api.types.js').ApiConfig} ApiConfig
  * @typedef {import('./cc-oauth-consumer-form.types.js').OauthConsumer} OauthConsumer
+ * @typedef {import('./cc-oauth-consumer-form.types.js').OauthConsumerFormStateIdleUpdate} OauthConsumerFormStateIdleUpdate
+ *
  * @typedef {import('./cc-oauth-consumer-form.js').CcOauthConsumerForm} CcOauthConsumerForm
  * @typedef {import('../../lib/smart/smart-component.types.js').OnContextUpdateArgs<CcOauthConsumerForm>} OnContextUpdateArgs
  */
@@ -27,36 +29,52 @@ defineSmartComponent({
     const { apiConfig, ownerId, key } = context;
     const api = new Api(apiConfig, ownerId, key);
 
-    updateComponent('oauthConsumerFormState', { type: 'loading' });
+    updateComponent('state', { type: 'loading' });
 
-    api
-      .getOauthConsumer()
-      .then(
-        /** @param {OauthConsumer} data */
-        (data) => {
-          updateComponent('oauthConsumerFormState', {
-            name: data.name,
-            description: data.description,
-            homePageUrl: data.url,
-            image: data.picture,
-            appBaseUrl: data.baseUrl,
-            rights: Object.entries(data.rights).map(([name, isEnabled]) => {
-              return { name, isEnabled };
+    Promise.all([api.getOauthConsumer(), api.getSecret()])
+      .then(([data, secretData]) => {
+        const rights = {
+          almighty: false,
+          accessOrganisations: false,
+          accessOrganisationsBills: false,
+          accessOrganisationsConsumptionStatistics: false,
+          accessOrganisationsCreditCount: false,
+          accessPersonalInformation: false,
+          manageOrganisations: false,
+          manageOrganisationsApplications: false,
+          manageOrganisationsMembers: false,
+          manageOrganisationsServices: false,
+          managePersonalInformation: false,
+          manageSshKeys: false,
+          ...Object.fromEntries(
+            Object.entries(data.rights).map(([name, isEnabled]) => {
+              const camelCaseName = camelCase(name);
+              return [camelCaseName, isEnabled];
             }),
-            type: 'idle-update',
-          });
-        },
-      )
+          ),
+        };
+        updateComponent('state', {
+          type: 'idle-update',
+          name: data.name,
+          url: data.url,
+          baseUrl: data.baseUrl,
+          description: data.description,
+          picture: data.picture,
+          rights,
+          key: data.key,
+          secret: secretData.secret,
+        });
+      })
       .catch((error) => {
         console.error(error);
-        updateComponent('oauthConsumerFormState', {
+        updateComponent('state', {
           type: 'error',
         });
       });
 
-    onEvent('cc-oauth-consumer-form:update', (data) => {
-      updateComponent('oauthConsumerFormState', (oauthConsumerFormState) => {
-        oauthConsumerFormState.type = 'updating';
+    /* onEvent('cc-oauth-consumer-form:update', (data) => {
+      updateComponent('state', (state) => {
+        state.type = 'updating';
       });
       api
         .updateOauthConsumer(data)
@@ -68,15 +86,15 @@ defineSmartComponent({
           notifyError("erreur pendant l'update");
         })
         .finally(() => {
-          updateComponent('oauthConsumerFormState', (oauthConsumerFormState) => {
-            oauthConsumerFormState.type = 'idle-update';
+          updateComponent('state', (state) => {
+            state.type = 'idle-update';
           });
         });
-    });
+    }); */
 
-    onEvent('cc-oauth-consumer-form:delete', (data) => {
-      updateComponent('oauthConsumerFormState', (oauthConsumerFormState) => {
-        oauthConsumerFormState.type = 'deleting';
+    /* onEvent('cc-oauth-consumer-form:delete', () => {
+      updateComponent('state', (state) => {
+        state.type = 'deleting';
       });
       api
         .deleteOauthConsumer()
@@ -87,11 +105,11 @@ defineSmartComponent({
         .catch((error) => {
           console.error(error);
           notifyError('erreur lors de la suppression');
-          updateComponent('oauthConsumerFormState', (oauthConsumerFormState) => {
-            oauthConsumerFormState.type = 'idle-update';
+          updateComponent('state', (state) => {
+            state.type = 'idle-update';
           });
         });
-    });
+    }); */
   },
 });
 
@@ -108,10 +126,17 @@ class Api {
   }
 
   /**
-   * @return {Promise<any>}
+   * @return {Promise<OauthConsumerFormStateIdleUpdate>}
    */
   getOauthConsumer() {
-    return get({ id: this._ownerId, key: this._key }).then(sendToApi({ apiConfig: this._apiConfig }));
+    return getOauthConsumer({ id: this._ownerId, key: this._key }).then(sendToApi({ apiConfig: this._apiConfig }));
+  }
+
+  /**
+   * @return {Promise<{secret: string}>}
+   */
+  getSecret() {
+    return getSecret({ id: this._ownerId, key: this._key }).then(sendToApi({ apiConfig: this._apiConfig }));
   }
 
   /**
@@ -121,10 +146,10 @@ class Api {
   updateOauthConsumer(data) {
     const updatedOauthConsumer = {
       name: data.name,
+      url: data.url,
+      baseUrl: data.baseUrl,
       description: data.description,
-      url: data.homePageUrl,
-      picture: data.image,
-      baseUrl: data.appBaseUrl,
+      picture: data.picture,
       rights: data.rights,
     };
     return update({ id: this._ownerId, key: this._key }, updatedOauthConsumer).then(

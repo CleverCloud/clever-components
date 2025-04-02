@@ -26,11 +26,11 @@ defineSmartComponent({
     const { apiConfig, ownerId } = context;
     const api = new Api(apiConfig, ownerId);
 
-    updateComponent('oauthConsumerFormState', { type: 'idle-create' });
+    updateComponent('state', { type: 'idle-create' });
 
     onEvent('cc-oauth-consumer-form:create', (data) => {
-      updateComponent('oauthConsumerFormState', (oauthConsumerFormState) => {
-        oauthConsumerFormState.type = 'creating';
+      updateComponent('state', (state) => {
+        state.type = 'creating';
       });
       api
         .createOauthConsumer(data)
@@ -41,8 +41,8 @@ defineSmartComponent({
         .catch((error) => {
           console.error(error);
           notifyError("erreur lors de la création d'oauth consumer");
-          updateComponent('oauthConsumerFormState', (oauthConsumerFormState) => {
-            oauthConsumerFormState.type = 'idle-create';
+          updateComponent('state', (state) => {
+            state.type = 'idle-create';
           });
         });
     });

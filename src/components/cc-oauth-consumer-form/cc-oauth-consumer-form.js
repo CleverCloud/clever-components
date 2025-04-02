@@ -16,7 +16,6 @@ import '../cc-notice/cc-notice.js';
  * @typedef {import('./cc-oauth-consumer-form.types.js').OauthConsumerFormState} OAuthConsumerFormState
  * @typedef {import('./cc-oauth-consumer-form.types.js').OauthConsumerFormStateDeleting} OAuthConsumerFormStateDeleting
  * @typedef {import('./cc-oauth-consumer-form.types.js').OauthConsumer} OauthConsumer
- * @typedef {import('./cc-oauth-consumer-form.types.js').OauthConsumerRight} OauthConsumerRight
  * @typedef {import('lit').TemplateResult<1>} TemplateResult
  * @typedef {import('lit/directives/ref.js').Ref<HTMLFormElement>} HTMLFormElementRef
  * @typedef {import('../../lib/events.types.js').EventWithTarget<HTMLInputElement|HTMLTextAreaElement>} HTMLInputOrTextareaEvent
@@ -73,7 +72,7 @@ const URL_VALIDATOR = {
 export class CcOauthConsumerForm extends LitElement {
   static get properties() {
     return {
-      oauthConsumerFormState: { type: Object, attribute: false },
+      state: { type: Object, attribute: false },
       _hasCheckboxGroupError: { type: Boolean, state: true },
     };
   }
@@ -82,7 +81,7 @@ export class CcOauthConsumerForm extends LitElement {
     super();
 
     /** @type {OAuthConsumerFormState} Sets the state of the component. */
-    this.oauthConsumerFormState = { type: 'idle-create' };
+    this.state = { type: 'idle-create' };
 
     /** @type {HTMLFormElementRef} */
     this._formRef = createRef();
@@ -138,15 +137,15 @@ export class CcOauthConsumerForm extends LitElement {
       ),
     };
 
-    if (this.oauthConsumerFormState.type === 'idle-create') {
-      this.oauthConsumerFormState = {
+    if (this.state.type === 'idle-create') {
+      this.state = {
         type: 'idle-create',
         ...oauthConsumer,
       };
       dispatchCustomEvent(this, 'create', oauthConsumer);
     }
-    if (this.oauthConsumerFormState.type === 'idle-update') {
-      this.oauthConsumerFormState = {
+    if (this.state.type === 'idle-update') {
+      this.state = {
         type: 'idle-update',
         ...oauthConsumer,
       };
@@ -207,32 +206,32 @@ export class CcOauthConsumerForm extends LitElement {
   _getLabel(label) {
     switch (label) {
       case 'access_organisations':
-        return i18n('cc-oauth-consumer.auth.access.option.access-organisations');
+        return i18n('cc-oauth-consumer-info.rights.access-organisations');
       case 'access_organisations_bills':
-        return i18n('cc-oauth-consumer.auth.access.option.access-organisations-bills');
+        return i18n('cc-oauth-consumer-info.rights.access-organisations-bills');
       case 'access_organisations_consumption_statistics':
-        return i18n('cc-oauth-consumer.auth.access.option.access-organisations-consumption-statistics');
+        return i18n('cc-oauth-consumer-info.rights.access-organisations-consumption-statistics');
       case 'access_organisations_credit_count':
-        return i18n('cc-oauth-consumer.auth.access.option.access-organisations-credit-count');
+        return i18n('cc-oauth-consumer-info.rights.access-organisations-credit-count');
       case 'access_personal_information':
-        return i18n('cc-oauth-consumer.auth.access.option.access-personal-information');
+        return i18n('cc-oauth-consumer-info.rights.access-personal-information');
       case 'manage_organisations':
-        return i18n('cc-oauth-consumer.auth.manage.option.manage-organisations');
+        return i18n('cc-oauth-consumer-info.rights.manage-organisations');
       case 'manage_organisations_applications':
-        return i18n('cc-oauth-consumer.auth.manage.option.manage-organisations-applications');
+        return i18n('cc-oauth-consumer-info.rights.manage-organisations-applications');
       case 'manage_organisations_members':
-        return i18n('cc-oauth-consumer.auth.manage.option.manage-organisations-members');
+        return i18n('cc-oauth-consumer-info.rights.manage-organisations-members');
       case 'manage_organisations_services':
-        return i18n('cc-oauth-consumer.auth.manage.option.manage-organisations-services');
+        return i18n('cc-oauth-consumer-info.rights.manage-organisations-services');
       case 'manage_personal_information':
-        return i18n('cc-oauth-consumer.auth.manage.option.manage-personal-information');
+        return i18n('cc-oauth-consumer-info.rights.manage-personal-information');
       case 'manage_ssh_keys':
-        return i18n('cc-oauth-consumer.auth.manage.option.manage-ssh-keys');
+        return i18n('cc-oauth-consumer-info.rights.manage-ssh-keys');
     }
   }
 
   render() {
-    if (this.oauthConsumerFormState.type === 'error') {
+    if (this.state.type === 'error') {
       return html` <cc-notice slot="content" intent="warning" message="error"></cc-notice> `;
     }
 
@@ -244,10 +243,10 @@ export class CcOauthConsumerForm extends LitElement {
           ${this._renderOauthConsumerForm()}
         </cc-block>
 
-        ${this.oauthConsumerFormState.type === 'idle-update' ||
-        this.oauthConsumerFormState.type === 'updating' ||
-        this.oauthConsumerFormState.type === 'deleting' ||
-        this.oauthConsumerFormState.type === 'loading'
+        ${this.state.type === 'idle-update' ||
+        this.state.type === 'updating' ||
+        this.state.type === 'deleting' ||
+        this.state.type === 'loading'
           ? html`${this._renderDangerZone()}`
           : ''}
       </div>
@@ -260,10 +259,8 @@ export class CcOauthConsumerForm extends LitElement {
    */
   _renderOauthConsumerForm() {
     const isWaiting =
-      this.oauthConsumerFormState.type === 'creating' ||
-      this.oauthConsumerFormState.type === 'updating' ||
-      this.oauthConsumerFormState.type === 'deleting';
-    const isLoading = this.oauthConsumerFormState.type === 'loading';
+      this.state.type === 'creating' || this.state.type === 'updating' || this.state.type === 'deleting';
+    const isLoading = this.state.type === 'loading';
 
     return html`
       <form
@@ -282,7 +279,7 @@ export class CcOauthConsumerForm extends LitElement {
             placeholder="${i18n('cc-oauth-consumer-form.info.place-holder')}"
             ?readonly=${isWaiting}
             ?skeleton=${isLoading}
-            .value=${this.oauthConsumerFormState?.name}
+            .value=${this.state?.name}
           ></cc-input-text>
           <cc-input-text
             name="homePageUrl"
@@ -291,7 +288,7 @@ export class CcOauthConsumerForm extends LitElement {
             placeholder="${i18n('cc-oauth-consumer-form.info.place-holder')}"
             ?readonly=${isWaiting}
             ?skeleton=${isLoading}
-            .value=${this.oauthConsumerFormState?.homePageUrl}
+            .value=${this.state?.homePageUrl}
             .customValidator=${URL_VALIDATOR}
             .customErrorMessages=${this._customErrorMessages}
           ></cc-input-text>
@@ -302,7 +299,7 @@ export class CcOauthConsumerForm extends LitElement {
             placeholder="${i18n('cc-oauth-consumer-form.info.place-holder')}"
             ?readonly=${isWaiting}
             ?skeleton=${isLoading}
-            .value=${this.oauthConsumerFormState?.appBaseUrl}
+            .value=${this.state?.appBaseUrl}
             .customValidator=${URL_VALIDATOR}
             .customErrorMessages=${this._customErrorMessages}
           ></cc-input-text>
@@ -314,7 +311,7 @@ export class CcOauthConsumerForm extends LitElement {
             multi
             ?readonly=${isWaiting}
             ?skeleton=${isLoading}
-            .value=${this.oauthConsumerFormState?.description}
+            .value=${this.state?.description}
           ></cc-input-text>
           <cc-input-text
             name="image"
@@ -323,7 +320,7 @@ export class CcOauthConsumerForm extends LitElement {
             placeholder="${i18n('cc-oauth-consumer-form.info.place-holder')}"
             ?readonly=${isWaiting}
             ?skeleton=${isLoading}
-            .value=${this.oauthConsumerFormState?.image}
+            .value=${this.state?.image}
             .customValidator=${URL_VALIDATOR}
             .customErrorMessages=${this._customErrorMessages}
           ></cc-input-text>
@@ -366,35 +363,34 @@ export class CcOauthConsumerForm extends LitElement {
           </fieldset>
         </cc-block-section>
         <div class="oauth-form-buttons">
-          ${this.oauthConsumerFormState.type === 'idle-create' || this.oauthConsumerFormState.type === 'creating'
+          ${this.state.type === 'idle-create' || this.state.type === 'creating'
             ? html`
                 <cc-button danger outlined type="reset" ?disabled=${isWaiting}
                   >${i18n('cc-oauth-consumer-form.button.cancel')}</cc-button
                 >
-                <cc-button primary type="submit" ?waiting="${this.oauthConsumerFormState.type === 'creating'}"
+                <cc-button primary type="submit" ?waiting="${this.state.type === 'creating'}"
                   >${i18n('cc-oauth-consumer-form.button.create')}</cc-button
                 >
               `
             : ''}
-          ${this.oauthConsumerFormState.type === 'idle-update' ||
-          this.oauthConsumerFormState.type === 'updating' ||
-          this.oauthConsumerFormState.type === 'deleting' ||
-          this.oauthConsumerFormState.type === 'loading'
+          ${this.state.type === 'idle-update' ||
+          this.state.type === 'updating' ||
+          this.state.type === 'deleting' ||
+          this.state.type === 'loading'
             ? html`
                 <cc-button
                   simple
                   outlined
                   type="reset"
-                  ?disabled=${isWaiting || this.oauthConsumerFormState.type === 'deleting'}
+                  ?disabled=${isWaiting || this.state.type === 'deleting'}
                   ?skeleton=${isLoading}
                   >${i18n('cc-oauth-consumer-form.button.reset')}</cc-button
                 >
                 <cc-button
                   primary
                   type="submit"
-                  ?disabled=${this.oauthConsumerFormState.type !== 'updating' &&
-                  this.oauthConsumerFormState.type === 'deleting'}
-                  ?waiting="${this.oauthConsumerFormState.type === 'updating'}"
+                  ?disabled=${this.state.type !== 'updating' && this.state.type === 'deleting'}
+                  ?waiting="${this.state.type === 'updating'}"
                   ?skeleton=${isLoading}
                   >${i18n('cc-oauth-consumer-form.button.update')}</cc-button
                 >
@@ -407,9 +403,7 @@ export class CcOauthConsumerForm extends LitElement {
 
   _renderDangerZone(oauthConsumer) {
     const isWaiting =
-      this.oauthConsumerFormState.type === 'creating' ||
-      this.oauthConsumerFormState.type === 'updating' ||
-      this.oauthConsumerFormState.type === 'deleting';
+      this.state.type === 'creating' || this.state.type === 'updating' || this.state.type === 'deleting';
     return html`
       <cc-block class="danger-zone-block">
         <div slot="header-title" class="danger-title">Danger Zone</div>
@@ -424,9 +418,8 @@ export class CcOauthConsumerForm extends LitElement {
           danger
           outlined
           type="submit"
-          ?disabled=${(isWaiting && this.oauthConsumerFormState.type !== 'deleting') ||
-          this.oauthConsumerFormState.type === 'loading'}
-          ?waiting="${this.oauthConsumerFormState.type === 'deleting'}"
+          ?disabled=${(isWaiting && this.state.type !== 'deleting') || this.state.type === 'loading'}
+          ?waiting="${this.state.type === 'deleting'}"
           @cc-button:click=${() => this._onDeleteOauthConsumer(oauthConsumer)}
           >${i18n('cc-oauth-consumer-form.button.delete')}</cc-button
         >
@@ -439,22 +432,19 @@ export class CcOauthConsumerForm extends LitElement {
    */
   _renderRightsSection(section) {
     const isWaiting =
-      this.oauthConsumerFormState.type === 'creating' ||
-      this.oauthConsumerFormState.type === 'updating' ||
-      this.oauthConsumerFormState.type === 'deleting';
-    const isLoading = this.oauthConsumerFormState.type === 'loading';
+      this.state.type === 'creating' || this.state.type === 'updating' || this.state.type === 'deleting';
+    const isLoading = this.state.type === 'loading';
     const isUpdateMode =
-      this.oauthConsumerFormState.type === 'idle-update' ||
-      this.oauthConsumerFormState.type === 'updating' ||
-      this.oauthConsumerFormState.type === 'deleting' ||
-      this.oauthConsumerFormState.type === 'loading';
+      this.state.type === 'idle-update' ||
+      this.state.type === 'updating' ||
+      this.state.type === 'deleting' ||
+      this.state.type === 'loading';
 
     return OAUTH_CONSUMER_RIGHTS.filter((right) => {
       return right.section === section;
     }).map((right) => {
       const isChecked =
-        isUpdateMode &&
-        (this.oauthConsumerFormState?.rights?.find((stateRight) => stateRight.name === right.name)?.isEnabled ?? false);
+        isUpdateMode && (this.state?.rights?.find((stateRight) => stateRight.name === right.name)?.isEnabled ?? false);
       return html`
         <div>
           <input

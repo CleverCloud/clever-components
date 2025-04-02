@@ -20,7 +20,7 @@ export const defaultStory = makeStory(conf, {
     {
       /** @type {OAuthConsumerFormContextType} */
       context: 'create',
-      oauthConsumerFormState: {
+      state: {
         type: 'idle-create',
       },
     },
@@ -32,7 +32,7 @@ export const create = makeStory(conf, {
     {
       /** @type {OAuthConsumerFormContextType} */
       context: 'create',
-      oauthConsumerFormState: {
+      state: {
         type: 'idle-create',
       },
     },
@@ -44,7 +44,7 @@ export const update = makeStory(conf, {
     {
       /** @type {OAuthConsumerFormContextType} */
       context: 'update',
-      oauthConsumerFormState: {
+      state: {
         type: 'idle-update',
         name: 'my-oauth-consumer',
         homePageUrl: 'http://example.com',
@@ -75,7 +75,7 @@ export const creating = makeStory(conf, {
     {
       /** @type {OAuthConsumerFormContextType} */
       context: 'create',
-      oauthConsumerFormState: {
+      state: {
         type: 'creating',
       },
     },
@@ -87,7 +87,7 @@ export const updating = makeStory(conf, {
     {
       /** @type {OAuthConsumerFormContextType} */
       context: 'update',
-      oauthConsumerFormState: {
+      state: {
         type: 'updating',
       },
     },
@@ -97,7 +97,7 @@ export const updating = makeStory(conf, {
 export const loading = makeStory(conf, {
   items: [
     {
-      oauthConsumerFormState: {
+      state: {
         type: 'loading',
       },
     },
@@ -107,7 +107,7 @@ export const loading = makeStory(conf, {
 export const error = makeStory(conf, {
   items: [
     {
-      oauthConsumerFormState: {
+      state: {
         type: 'error',
       },
     },
@@ -117,7 +117,7 @@ export const error = makeStory(conf, {
 export const deleting = makeStory(conf, {
   items: [
     {
-      oauthConsumerFormState: {
+      state: {
         type: 'deleting',
       },
     },

@@ -984,6 +984,28 @@ export const translations = {
   'cc-notice.icon-alt.success': `Success`,
   'cc-notice.icon-alt.warning': `Warning`,
   //#endregion
+  //#region cc-oauth-consumer-form
+  'cc-oauth-consumer-form.auth.access.select-all': `Access all`,
+  'cc-oauth-consumer-form.auth.legend.access': `Access`,
+  'cc-oauth-consumer-form.auth.legend.manage': `Manage`,
+  'cc-oauth-consumer-form.auth.manage.select-all': `Manage all`,
+  'cc-oauth-consumer-form.auth.options.error.message': `Please select at least one option.`,
+  'cc-oauth-consumer-form.auth.title': `Authorization`,
+  'cc-oauth-consumer-form.button.cancel': `Cancel`,
+  'cc-oauth-consumer-form.button.create': `Create`,
+  'cc-oauth-consumer-form.button.delete': `Delete`,
+  'cc-oauth-consumer-form.button.reset': `Cancel`,
+  'cc-oauth-consumer-form.button.update': `Update`,
+  'cc-oauth-consumer-form.danger-zone': `Danger zone`,
+  'cc-oauth-consumer-form.info.base-url.label': `Application base url`,
+  'cc-oauth-consumer-form.info.description.label': `Description of your application`,
+  'cc-oauth-consumer-form.info.homepage-url.label': `Application homepage url`,
+  'cc-oauth-consumer-form.info.image.label': `Application's picture`,
+  'cc-oauth-consumer-form.info.name.label': `Application's name`,
+  'cc-oauth-consumer-form.info.place-holder': `No value yet...`,
+  'cc-oauth-consumer-form.info.title': `Informations`,
+  'cc-oauth-consumer-form.info.url.error.message': `Enter valid url. Example: https://example.com`,
+  //#endregion
   //#region cc-oauth-consumer-info
   'cc-oauth-consumer-info.access.title': `Configuration details`,
   'cc-oauth-consumer-info.error': `Something went wrong while loading OAuth consumer info`,

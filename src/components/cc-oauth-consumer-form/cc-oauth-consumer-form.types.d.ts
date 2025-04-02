@@ -1,3 +1,29 @@
+export interface OauthConsumer {
+  name: string;
+  url: string;
+  baseUrl: string;
+  description: string;
+  picture: string;
+  rights: OauthConsumerRights;
+  key: string;
+  secret: string;
+}
+
+export type OauthConsumerRights = {
+  almighty: boolean;
+  accessOrganisations: boolean;
+  accessOrganisationsBills: boolean;
+  accessOrganisationsConsumptionStatistics: boolean;
+  accessOrganisationsCreditCount: boolean;
+  accessPersonalInformation: boolean;
+  manageOrganisations: boolean;
+  manageOrganisationsApplications: boolean;
+  manageOrganisationsMembers: boolean;
+  manageOrganisationsServices: boolean;
+  managePersonalInformation: boolean;
+  manageSshKeys: boolean;
+};
+
 export type OauthConsumerFormState =
   | OauthConsumerFormStateIdleCreate
   | OauthConsumerFormStateCreating
@@ -33,18 +59,4 @@ export interface OauthConsumerFormStateLoading {
 
 export interface OauthConsumerFormStateError {
   type: 'error';
-}
-
-export interface OauthConsumer {
-  name: string;
-  homePageUrl: string;
-  appBaseUrl: string;
-  description: string;
-  image: string;
-  rights: Array<OauthConsumerRight>;
-}
-
-export interface OauthConsumerRight {
-  name: string;
-  isEnabled: boolean;
 }
