@@ -326,8 +326,8 @@ export class CcWebFeaturesTracker extends LitElement {
         <thead>
           <tr>
             <th>Feature</th>
-            <th>Baseline</th>
             <th>Can be used</th>
+            <th>Baseline</th>
             <th>Chrome</th>
             <th>Firefox</th>
             <th>Safari</th>
@@ -355,6 +355,18 @@ export class CcWebFeaturesTracker extends LitElement {
       <tr>
         <td>${featureName}</td>
         <td>
+          <div class="can-be-used">
+            ${canBeUsed ? 'Yes' : 'No'}
+            ${isProgressiveEnhancement && currentStatus === 'newly'
+              ? html`<cc-icon
+                  .icon=${iconWarning}
+                  a11y-name="Progressive enhancement only"
+                  title="Progressive enhancement only"
+                ></cc-icon>`
+              : ''}
+          </div>
+        </td>
+        <td>
           <div class="current-status">
             <img
               class="current-status__icon"
@@ -363,18 +375,6 @@ export class CcWebFeaturesTracker extends LitElement {
               title=${this._tableDisplayMode === 'compact' ? alt : ''}
             />
             <span>${this._tableDisplayMode === 'detailed' ? alt : ''}</span>
-          </div>
-        </td>
-        <td>
-          <div class="can-be-used">
-            ${canBeUsed ? 'Yes' : 'No'}
-            ${isProgressiveEnhancement && canBeUsed
-              ? html`<cc-icon
-                  .icon=${iconWarning}
-                  a11y-name="Progressive enhancement only"
-                  title="Progressive enhancement only"
-                ></cc-icon>`
-              : ''}
           </div>
         </td>
         <td>${this._renderBrowserSupport(chromeSupport)}</td>
@@ -444,8 +444,8 @@ export class CcWebFeaturesTracker extends LitElement {
 
       table {
         border-collapse: collapse;
-        overflow: hidden;
         border-radius: var(--cc-border-radius-small, 0.15em);
+        overflow: hidden;
         width: 100%;
       }
 
@@ -470,14 +470,14 @@ export class CcWebFeaturesTracker extends LitElement {
       }
 
       .current-status {
+        align-items: center;
         display: flex;
         gap: 0.5em;
-        align-items: center;
       }
 
       .current-status__icon {
-        width: auto;
         height: 1.5em;
+        width: auto;
       }
 
       .supported {
@@ -502,9 +502,9 @@ export class CcWebFeaturesTracker extends LitElement {
       }
 
       .browser-support p {
+        align-items: center;
         display: flex;
         gap: 0.5em;
-        align-items: center;
       }
     `;
   }
