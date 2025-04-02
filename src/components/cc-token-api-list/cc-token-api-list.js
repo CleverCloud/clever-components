@@ -11,6 +11,7 @@ import { LostFocusController } from '../../controllers/lost-focus-controller.js'
 import { ResizeController } from '../../controllers/resize-controller.js';
 import { dispatchCustomEvent } from '../../lib/events.js';
 import { isExpirationClose } from '../../lib/tokens.js';
+import { isStringEmpty } from '../../lib/utils.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-badge/cc-badge.js';
 import '../cc-block/cc-block.js';
@@ -151,7 +152,7 @@ export class CcTokenApiList extends LitElement {
             ? html` <cc-badge intent="warning">${i18n('cc-token-api-list.card.deadline-approaches')}</cc-badge> `
             : ''}
         </div>
-        ${description != null ? html` <p class="api-token-card__description">${description}</p> ` : ''}
+        ${!isStringEmpty(description) ? html` <p class="api-token-card__description">${description}</p> ` : ''}
         <div class="api-token-card__id">
           <cc-icon .icon="${iconTokenId}" a11y-name=${i18n('cc-token-api-list.card.token-id-icon.a11y-name')}></cc-icon>
           <span>${id}</span>
@@ -216,11 +217,11 @@ export class CcTokenApiList extends LitElement {
 
       .empty {
         border: 1px solid var(--cc-color-border-neutral-weak);
-        padding: 1em;
         display: grid;
-        justify-items: center;
         font-weight: bold;
         gap: 1.5em;
+        justify-items: center;
+        padding: 1em;
       }
 
       .is-revoking > *:not(cc-button) {
@@ -228,18 +229,18 @@ export class CcTokenApiList extends LitElement {
       }
 
       .create-token-cta {
-        display: flex;
         align-items: center;
-        color: var(--cc-color-text-primary, #000);
-        text-decoration: none;
         background-color: var(--cc-color-bg-default, #fff);
         /* FIXME: we should have token for primary border? */
         border: 1px solid var(--cc-color-bg-primary);
         border-radius: var(--cc-button-border-radius, 0.15em);
+        color: var(--cc-color-text-primary, #000);
         cursor: pointer;
+        display: flex;
         font-weight: var(--cc-button-font-weight, bold);
         min-height: 2em;
         padding: 0 0.5em;
+        text-decoration: none;
         /* used to absolutely position the <progress> */
         text-transform: var(--cc-button-text-transform, uppercase);
         user-select: none;
@@ -263,9 +264,9 @@ export class CcTokenApiList extends LitElement {
         border: solid 1px var(--cc-color-border-neutral-weak, #e6e6e6);
         border-radius: var(--cc-border-radius-default, 0.25em);
         display: grid;
+        gap: 1em;
         grid-template-columns: [card-start info-start] 1fr [info-end actions-start] max-content [actions-end card-end];
         padding: 1em;
-        gap: 1em;
       }
 
       .api-token-card__header {
