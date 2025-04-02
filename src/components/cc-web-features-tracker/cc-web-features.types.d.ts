@@ -7,13 +7,13 @@ export interface WebFeatures {
 
 export interface FeatureJson {
   featureId: string;
-  requiredStatus: 'widely' | 'newly';
+  isProgressiveEnhancement: boolean;
 }
 
 export interface FormattedFeature {
   featureName: string;
   currentStatus: FeatureStatus;
-  requiredStatus: 'widely' | 'newly';
+  isProgressiveEnhancement: boolean;
   canBeUsed: boolean;
   chromeSupport: BrowserSupported | BrowserUnsupported;
   firefoxSupport: BrowserSupported | BrowserUnsupported;

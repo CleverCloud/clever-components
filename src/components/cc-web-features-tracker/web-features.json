@@ -2,41 +2,41 @@
   "baselineFeatures": [
     {
       "featureId": "top-level-await",
-      "requiredStatus": "widely"
+      "isProgressiveEnhancement": false
     },
     {
       "featureId": "subgrid",
-      "requiredStatus": "newly"
+      "isProgressiveEnhancement": true
     },
     {
       "featureId": "flexbox-gap",
-      "requiredStatus": "widely"
+      "isProgressiveEnhancement": false
     },
     {
       "featureId": "masonry",
-      "requiredStatus": "newly"
+      "isProgressiveEnhancement": true
     }
   ],
   "bcdFeatures": [
     {
       "featureId": "javascript.classes.private_class_fields",
-      "requiredStatus": "newly"
+      "isProgressiveEnhancement": true
     },
     {
       "featureId": "javascript.classes.private_class_fields_in",
-      "requiredStatus": "newly"
+      "isProgressiveEnhancement": true
     },
     {
       "featureId": "javascript.classes.private_class_methods",
-      "requiredStatus": "newly"
+      "isProgressiveEnhancement": true
     },
     {
       "featureId": "javascript.builtins.Array.toSorted",
-      "requiredStatus": "widely"
+      "isProgressiveEnhancement": false
     },
     {
       "featureId": "api.Document.startViewTransition",
-      "requiredStatus": "newly"
+      "isProgressiveEnhancement": true
     }
   ]
 }
