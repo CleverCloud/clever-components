@@ -24,7 +24,7 @@ import '../cc-notice/cc-notice.js';
 /**
  * @typedef {import('./cc-token-session-list.types.js').SessionTokenState} SessionTokenState
  * @typedef {import('./cc-token-session-list.types.js').TokenSessionListState} TokenSessionListState
- * @typedef {import('./cc-token-session-list.types.js').CurrentSessionToken} CurrentSessionToken
+ * @typedef {import('./cc-token-session-list.types.js').SessionToken} SessionToken
  * @typedef {import('lit').TemplateResult<1>} TemplateResult
  * @typedef {import('lit').PropertyValues<CcTokenSessionList>} CcSessionTokensPropertyValues
  * @typedef {import('lit/directives/ref.js').Ref<HTMLLIElement>} RefHTMLLIElement
@@ -44,7 +44,6 @@ export class CcTokenSessionList extends LitElement {
   static get properties() {
     return {
       state: { type: Object },
-      _sortedAndFormattedTokens: { type: Array, state: true },
     };
   }
 
@@ -53,9 +52,6 @@ export class CcTokenSessionList extends LitElement {
 
     /** @type {TokenSessionListState} The current state of the component */
     this.state = { type: 'loading' };
-
-    /** @type {Array<CurrentSessionToken|SessionTokenState>|null} Array of session tokens sorted by creation date with added expiration information */
-    this._sortedAndFormattedTokens = null;
 
     /** @type {RefHTMLLIElement} */
     this._currentSessionCardRef = createRef();
@@ -75,6 +71,18 @@ export class CcTokenSessionList extends LitElement {
     new LostFocusController(this, '.revoke-all-sessions-button', () => {
       this._currentSessionCardRef.value?.focus();
     });
+  }
+
+  /**
+   * @param {string} tokenId
+   * @return {boolean}
+   * @private
+   */
+  _isCurrentSession(tokenId) {
+    if (this.state.type === 'loading' || this.state.type === 'error') {
+      return false;
+    }
+    return this.state.currentSession.id === tokenId;
   }
 
   /**
@@ -150,13 +158,14 @@ export class CcTokenSessionList extends LitElement {
   /**
    * Renders an individual token card
    *
-   * @param {SessionTokenState|CurrentSessionToken} token - The token data to render
+   * @param {SessionTokenState|SessionToken} token - The token data to render
    * @param {number} index - The index of the token in the list
    * @returns {TemplateResult} The rendered token card
    * @private
    */
   _renderTokenCard(token, index) {
-    const { id, creationDate, expirationDate, lastUsedDate, isCleverTeam, isCurrentSession } = token;
+    const { id, creationDate, expirationDate, lastUsedDate, isCleverTeam } = token;
+    const isCurrentSession = this._isCurrentSession(id);
     const isRevoking = 'type' in token && token.type === 'revoking';
     const tabIndex = isCurrentSession ? -1 : null;
     const hasExpirationWarning = isExpirationClose({

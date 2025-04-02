@@ -9,15 +9,15 @@ import '../cc-smart-container/cc-smart-container.js';
 import './cc-token-session-list.js';
 
 /**
- * @typedef {import('./cc-token-session-list.js').CcTokenSessionList} CcSessionTokens
+ * @typedef {import('./cc-token-session-list.js').CcTokenSessionList} CcTokenSessionList
+ * @typedef {import('./cc-token-session-list.types.js').SessionToken} SessionToken
  * @typedef {import('./cc-token-session-list.types.js').SessionTokenState} SessionTokenState
  * @typedef {import('./cc-token-session-list.types.js').SessionTokenStateIdle} SessionTokenStateIdle
  * @typedef {import('./cc-token-session-list.types.js').TokenSessionListStateLoaded} TokenSessionListStateLoaded
  * @typedef {import('./cc-token-session-list.types.js').TokenSessionListStateRevokingAll} TokenSessionListStateRevokingAll
- * @typedef {import('./cc-token-session-list.types.js').CurrentSessionToken} CurrentSessionToken
  * @typedef {import('./cc-token-session-list.types.js').RawTokenData} RawTokenData
  * @typedef {import('../../lib/send-to-api.types.js').ApiConfig} ApiConfig
- * @typedef {import('../../lib/smart/smart-component.types.js').OnContextUpdateArgs<CcSessionTokens>} OnContextUpdateArgs
+ * @typedef {import('../../lib/smart/smart-component.types.js').OnContextUpdateArgs<CcTokenSessionList>} OnContextUpdateArgs
  */
 
 defineSmartComponent({
@@ -56,14 +56,13 @@ defineSmartComponent({
       .getSessionTokens()
       .then((tokens) => {
         const rawCurrentToken = tokens.find((token) => token.token === apiConfig.API_OAUTH_TOKEN);
-        /** @type {CurrentSessionToken} */
+        /** @type {SessionToken} */
         const currentSession = {
           id: rawCurrentToken.token,
           isCleverTeam: rawCurrentToken.employeeId != null,
           creationDate: new Date(rawCurrentToken.creationDate),
           expirationDate: new Date(rawCurrentToken.expirationDate),
           lastUsedDate: new Date(rawCurrentToken.lastUtilisation),
-          isCurrentSession: true,
         };
 
         const otherSessions = tokens
@@ -77,7 +76,6 @@ defineSmartComponent({
               creationDate: new Date(token.creationDate),
               expirationDate: new Date(token.expirationDate),
               lastUsedDate: new Date(token.lastUtilisation),
-              isCurrentSession: false,
             };
             return formattedToken;
           });

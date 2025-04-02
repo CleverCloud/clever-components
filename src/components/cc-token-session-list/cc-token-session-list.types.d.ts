@@ -6,13 +6,13 @@ export type TokenSessionListState =
 
 export interface TokenSessionListStateLoaded {
   type: 'loaded';
-  currentSession: CurrentSessionToken;
+  currentSession: SessionToken;
   otherSessions: Array<SessionTokenState>;
 }
 
 export interface TokenSessionListStateRevokingAll {
   type: 'revoking-all';
-  currentSession: CurrentSessionToken;
+  currentSession: SessionToken;
   otherSessions: Array<SessionTokenStateRevoking>;
 }
 
@@ -24,20 +24,14 @@ export interface TokenSessionListStateError {
   type: 'error';
 }
 
-export interface CurrentSessionToken extends SessionToken {
-  isCurrentSession: true;
-}
-
 export type SessionTokenState = SessionTokenStateIdle | SessionTokenStateRevoking;
 
 export interface SessionTokenStateIdle extends SessionToken {
   type: 'idle';
-  isCurrentSession: false;
 }
 
 interface SessionTokenStateRevoking extends SessionToken {
   type: 'revoking';
-  isCurrentSession: false;
 }
 
 interface SessionToken {
