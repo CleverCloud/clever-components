@@ -15,8 +15,8 @@ const oAuthConsumerData = {
   state: {
     type: 'loaded',
     name: 'My OAuth Consumer',
-    url: 'https://localhost:8080/',
-    baseUrl: 'https://localhost:8080/',
+    url: 'https://www.example.com/home',
+    baseUrl: 'https://www.example.com',
     description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit.',
     picture: 'https://assets.clever-cloud.com/infra/clever-cloud-square.svg',
     rights: {
@@ -70,8 +70,8 @@ export const WaitingStory = makeStory(conf, {
       state: {
         type: 'waiting',
         name: 'My OAuth Consumer',
-        url: 'https://localhost:8080/',
-        baseUrl: 'https://localhost:8080/',
+        url: 'https://www.example.com/home',
+        baseUrl: 'https://www.example.com',
         description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit.',
         picture: 'https://assets.clever-cloud.com/infra/clever-cloud-square.svg',
         rights: {
@@ -117,8 +117,8 @@ export const dataLoadedStoryWithLongDescription = makeStory(conf, {
       state: {
         type: 'loaded',
         name: 'My OAuth Consumer',
-        url: 'https://localhost:8080/',
-        baseUrl: 'https://localhost:8080/',
+        url: 'https://www.example.com/home',
+        baseUrl: 'https://www.example.com',
         description:
           'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
         picture: 'https://assets.clever-cloud.com/infra/clever-cloud-square.svg',
@@ -182,8 +182,8 @@ export const dataLoadedWithAlmightyStory = makeStory(conf, {
       state: {
         type: 'loaded',
         name: 'My OAuth Consumer',
-        url: 'https://localhost:8080/',
-        baseUrl: 'https://localhost:8080/',
+        url: 'https://www.example.com/home',
+        baseUrl: 'https://www.example.com',
         description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit.',
         picture: 'https://assets.clever-cloud.com/infra/clever-cloud-square.svg',
         rights: {
