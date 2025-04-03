@@ -9,6 +9,7 @@ import '../cc-select/cc-select.js';
 /**
  * @typedef {import('./cc-token-api-creation-form.types.js').TokenApiCreationFormState} TokenApiCreationFormState
  * @typedef {import('./cc-token-api-creation-form.types.js').TokenApiCreationStep} TokenApiCreationStep
+ * @typedef {import('../cc-select/cc-select.js').CcSelect} CcSelect
  */
 
 export class CcTokenApiCreationForm extends LitElement {
@@ -57,6 +58,30 @@ export class CcTokenApiCreationForm extends LitElement {
       case 'copy':
         return i18n('cc-token-api-creation-form.copy-step.description');
     }
+  }
+
+  /** @returns {CcSelect['options']} */
+  _getExpirationDurationOptions() {
+    return [
+      {
+        label: i18n('cc-token-api-creation-form.config-step.expiration-duration.label.seven-days'),
+        value: 'seven-days',
+      },
+      {
+        label: i18n('cc-token-api-creation-form.config-step.expiration-duration.label.thirty-days'),
+        value: 'thirty-days',
+      },
+      {
+        label: i18n('cc-token-api-creation-form.config-step.expiration-duration.label.sixty-days'),
+        value: 'sixty-days',
+      },
+      {
+        label: i18n('cc-token-api-creation-form.config-step.expiration-duration.label.ninety-days'),
+        value: 'ninety-days',
+      },
+      { label: i18n('cc-token-api-creation-form.config-step.expiration-duration.label.one-year'), value: 'one-year' },
+      { label: i18n('cc-token-api-creation-form.config-step.expiration-duration.label.custom'), value: 'custom' },
+    ];
   }
 
   /**
@@ -135,6 +160,7 @@ export class CcTokenApiCreationForm extends LitElement {
         <cc-select
           label="${i18n('cc-token-api-creation-form.config-step.form.label.expiration-duration')}"
           name="expiration-duration"
+          .options=${this._getExpirationDurationOptions}
         >
         </cc-select>
       </form>

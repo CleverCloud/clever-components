@@ -1515,6 +1515,12 @@ export const translations = {
   //#endregion
   //#region cc-token-api-creation-form
   'cc-token-api-creation-form.config-step.description': `Utilisez ce formulaire pour générer un nouveau token d'API. Ce token vous permettra d'autoriser des applications à intéragir avec vos services de façon sécurisée.`,
+  'cc-token-api-creation-form.config-step.expiration-duration.label.custom': `Personnalisé`,
+  'cc-token-api-creation-form.config-step.expiration-duration.label.ninety-days': `90 jours`,
+  'cc-token-api-creation-form.config-step.expiration-duration.label.one-year': `1 an`,
+  'cc-token-api-creation-form.config-step.expiration-duration.label.seven-days': `7 jours`,
+  'cc-token-api-creation-form.config-step.expiration-duration.label.sixty-days': `60 jours`,
+  'cc-token-api-creation-form.config-step.expiration-duration.label.thirty-days': `30 jours`,
   'cc-token-api-creation-form.config-step.form.label.desc': `Description`,
   'cc-token-api-creation-form.config-step.form.label.expiration-duration': `Durée avant expiration`,
   'cc-token-api-creation-form.config-step.form.label.name': `Nom du token`,
