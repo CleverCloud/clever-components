@@ -1515,8 +1515,16 @@ export const translations = {
   //#endregion
   //#region cc-token-api-creation-form
   'cc-token-api-creation-form.config-step.description': `Utilisez ce formulaire pour générer un nouveau token d'API. Ce token vous permettra d'autoriser des applications à intéragir avec vos services de façon sécurisée.`,
+  'cc-token-api-creation-form.config-step.form.label.desc': `Description`,
+  'cc-token-api-creation-form.config-step.form.label.expiration-duration': `Durée avant expiration`,
+  'cc-token-api-creation-form.config-step.form.label.name': `Nom du token`,
   'cc-token-api-creation-form.config-step.main-heading': `Créer un nouveau token d'API`,
+  'cc-token-api-creation-form.config-step.nav.name': `Configuration`,
+  'cc-token-api-creation-form.copy-step.description': `Félicitations, votre token est maintenant créé ! Voici la clé à conserver pour pouvoir l'utiliser. Elle vous permettra d'autoriser de façon sécurisée et sélective des applications à accéder à vos services`,
+  'cc-token-api-creation-form.copy-step.nav.name': `Récupération du Token`,
   'cc-token-api-creation-form.error': `Une erreur est survenue lors du chargement des informations liées votre compte`,
+  'cc-token-api-creation-form.validation-step.description': `Finalisez et confirmez votre nouveau token d'API en vous authentifiant.`,
+  'cc-token-api-creation-form.validation-step.nav.name': `Validation`,
   //#endregion
   //#region cc-token-api-list
   'cc-token-api-list.card.deadline-approaches': `Expire bientôt`,
