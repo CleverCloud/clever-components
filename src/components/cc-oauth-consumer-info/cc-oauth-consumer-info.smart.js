@@ -94,7 +94,28 @@ class Api {
   }
 
   /**
-   * @return {Promise<OauthConsumerInfoStateLoaded>}
+   * @return {Promise<{
+   * name: string,
+   * description: string,
+   * key: string,
+   * url: string,
+   * picture: string,
+   * baseUrl: string,
+   * rights: {
+   * almighty: boolean,
+   * access_organisations: boolean,
+   * manage_organisations: boolean,
+   * manage_organisations_services: boolean,
+   * manage_organisations_applications: boolean,
+   * manage_organisations_members: boolean,
+   * access_organisations_bills: boolean,
+   * access_organisations_credit_count: boolean,
+   * access_organisations_consumption_statistics: boolean,
+   * access_personal_information: boolean,
+   * manage_personal_information: boolean,
+   * manage_ssh_keys: boolean
+   * }
+   * }>}
    */
   getOauthConsumer() {
     return getOauthConsumer({ id: this._ownerId, key: this._key }).then(sendToApi({ apiConfig: this._apiConfig }));
@@ -107,6 +128,30 @@ class Api {
     return getSecret({ id: this._ownerId, key: this._key }).then(sendToApi({ apiConfig: this._apiConfig }));
   }
 
+  /**
+   * @return {Promise<[{name: string,
+   * description: string,
+   * key: string,
+   * url: string,
+   * picture: string,
+   * baseUrl: string,
+   * rights: { almighty: boolean,
+   * access_organisations: boolean,
+   * manage_organisations: boolean,
+   * manage_organisations_services: boolean,
+   * manage_organisations_applications: boolean,
+   * manage_organisations_members: boolean,
+   * access_organisations_bills: boolean,
+   * access_organisations_credit_count: boolean,
+   * access_organisations_consumption_statistics: boolean,
+   * access_personal_information: boolean,
+   * manage_personal_information: boolean,
+   * manage_ssh_keys: boolean
+   * }
+   * }, {
+   * secret: string
+   * }]>}
+   */
   getOauthConsumerWithSecret() {
     return Promise.all([this.getOauthConsumer(), this.getSecret()]);
   }

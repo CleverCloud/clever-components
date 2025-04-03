@@ -232,7 +232,7 @@ export class CcOauthConsumerInfo extends LitElement {
 
         .header-wrapper {
           display: grid;
-          gap: 0.5em;
+          gap: 0.5em 1em;
           grid-template-areas:
             'logo name link'
             'logo description link';
