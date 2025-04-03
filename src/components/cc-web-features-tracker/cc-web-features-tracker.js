@@ -7,34 +7,31 @@ import {
   iconRemixHashtag as iconVersion,
   iconRemixCalendarLine as iconDate,
 } from '../../assets/cc-remix.icons.js';
-// @ts-ignore
-import untypedWebFeatures from './web-features.json';
+import {
+  iconCleverBaselineLimited as iconBaselineLimited,
+  iconCleverBaselineNewly as iconBaselineNewly,
+  iconCleverBaselineWidely as iconBaselineWidely,
+} from '../../assets/cc-clever.icons.js';
 import '../cc-loader/cc-loader.js';
 import '../cc-notice/cc-notice.js';
 import '../cc-icon/cc-icon.js';
 import '../cc-toggle/cc-toggle.js';
 
-const baselineLimitedSvg = new URL('../../assets/baseline-limited.svg', import.meta.url);
-const baselineNewlySvg = new URL('../../assets/baseline-newly.svg', import.meta.url);
-const baselineWidelySvg = new URL('../../assets/baseline-widely.svg', import.meta.url);
-
 // TODO: finir style filtres & toggles
 // TODO: doc contrib
 // TODO: doc utilisation de ce composant / tableau
 
-/** @type {WebFeatures} */
-const webFeatures = untypedWebFeatures;
-
 /**
  * @typedef {import('./cc-web-features.types.js').WebFeatures} WebFeatures
  * @typedef {import('./cc-web-features.types.js').BaselineFeatureData} BaselineFeatureData
- * @typedef {import('./cc-web-features.types.js').BcdFeatureCompatInfo} BcdFeatureCompatInfom
+ * @typedef {import('./cc-web-features.types.js').BcdFeatureCompatInfo} BcdFeatureCompatInfo
  * @typedef {import('./cc-web-features.types.js').BcdBrowserInfo} BcdBrowserInfo
  * @typedef {import('./cc-web-features.types.js').FormattedFeature} FormattedFeature
  * @typedef {import('./cc-web-features.types.js').Browser} Browser
  * @typedef {import('./cc-web-features.types.js').BrowserUnsupported} BrowserUnsupported
  * @typedef {import('./cc-web-features.types.js').BrowserSupported} BrowserSupported
  * @typedef {import('./cc-web-features.types.js').FeatureStatus} FeatureStatus
+ * @typedef {import('./cc-web-features.types.js').FeaturesListSource} FeaturesListSource
  * @typedef {import('../cc-toggle/cc-toggle.js').CcToggle} CcToggle
  * @typedef {import('../../lib/events.types.js').EventWithTarget<CcToggle & { value: 'all' | 'can-be-used' }>} EventWithTargetCcToggleFeatureFilter
  * @typedef {import('../../lib/events.types.js').EventWithTarget<CcToggle & { value: 'compact' | 'detailed' }>} EventWithTargetCcToggleDisplayMode
@@ -48,6 +45,7 @@ const webFeatures = untypedWebFeatures;
 export class CcWebFeaturesTracker extends LitElement {
   static get properties() {
     return {
+      featureListSource: { type: Object, attribute: 'feature-list-source' },
       _tableDisplayMode: { type: String, state: true },
       _tableFeatureFilter: { type: String, state: true },
     };
@@ -56,8 +54,46 @@ export class CcWebFeaturesTracker extends LitElement {
   constructor() {
     super();
 
-    this._featuresTask = new Task(this, {
-      task: async ([], { signal }) => {
+    /** @type {FeaturesListSource} */
+    this.featureListSource = null;
+
+    /** @type {'all'|'can-be-used'} */
+    this._tableFeatureFilter = 'all';
+
+    /** @type {'compact'|'detailed'} */
+    this._tableDisplayMode = 'compact';
+
+    this._featuresTask = this._initializeFeaturesTask();
+  }
+
+  _initializeFeaturesTask() {
+    return new Task(this, {
+      task: async ([featureListSource], { signal }) => {
+        /** @type {WebFeatures} */
+        let webFeatures;
+
+        switch (featureListSource.type) {
+          case 'direct':
+            webFeatures = featureListSource.data;
+            break;
+          case 'url':
+            const sourceResponse = await fetch(featureListSource.url, { signal });
+            if (!sourceResponse.ok) {
+              throw new Error(`Failed to fetch features: ${sourceResponse.status}`);
+            }
+            webFeatures = await sourceResponse.json();
+            break;
+          case 'json-as-string':
+            try {
+              const jsonString = featureListSource.jsonString;
+              webFeatures = JSON.parse(jsonString);
+            } catch (error) {
+              const message = error instanceof Error ? error.message : '';
+              throw new Error(`Failed to parse JSON string: ${message}`);
+            }
+            break;
+        }
+
         const baselineFeaturesUrl = webFeatures.baselineFeatures.map(
           (baselineFeature) => `https://api.webstatus.dev/v1/features/${baselineFeature.featureId}`,
         );
@@ -79,28 +115,23 @@ export class CcWebFeaturesTracker extends LitElement {
         }
         const bcdData = await bcdResponse.json();
         const bcdBrowserInfos = bcdData.browsers;
-        const rawBcdFeatures = this._retrieveBcdFeatures(bcdData);
-        const formattedBcdFeatures = this._formatBcdFeatures(rawBcdFeatures, bcdBrowserInfos);
-        const formattedBaselinesFeatures = this._formatBaselineFeatures(rawBaselineFeatures);
+        const rawBcdFeatures = this._retrieveBcdFeatures(bcdData, webFeatures);
+        const formattedBcdFeatures = this._formatBcdFeatures(rawBcdFeatures, bcdBrowserInfos, webFeatures);
+        const formattedBaselinesFeatures = this._formatBaselineFeatures(rawBaselineFeatures, webFeatures);
 
         return [...formattedBaselinesFeatures, ...formattedBcdFeatures];
       },
-      args: () => [],
+      args: () => [this.featureListSource],
     });
-
-    /** @type {'all'|'can-be-used'} */
-    this._tableFeatureFilter = 'all';
-
-    /** @type {'compact'|'detailed'} */
-    this._tableDisplayMode = 'compact';
   }
 
   /**
    *
    * @param {Object} rawBcd
+   * @param {WebFeatures} webFeatures
    * @returns {Array<BcdFeatureCompatInfo & { id: string }>}
    */
-  _retrieveBcdFeatures(rawBcd) {
+  _retrieveBcdFeatures(rawBcd, webFeatures) {
     const bcdFeatures = webFeatures.bcdFeatures;
 
     return bcdFeatures.map(({ featureId }) => {
@@ -119,9 +150,10 @@ export class CcWebFeaturesTracker extends LitElement {
   /**
    *
    * @param {BaselineFeatureData[]} rawBaselineFeatures
+   * @param {WebFeatures} webFeatures
    * @returns {Array<FormattedFeature>}
    */
-  _formatBaselineFeatures(rawBaselineFeatures) {
+  _formatBaselineFeatures(rawBaselineFeatures, webFeatures) {
     const formattedFeatures = rawBaselineFeatures.map((baselineFeature) => {
       const currentStatus = baselineFeature.baseline.status;
       const isProgressiveEnhancement = webFeatures.baselineFeatures.find(
@@ -146,9 +178,10 @@ export class CcWebFeaturesTracker extends LitElement {
    * Format BCD features into FormattedFeature[]
    * @param {Array<BcdFeatureCompatInfo & { id: string }>} rawBcdFeatures
    * @param {BcdBrowserInfo} bcdBrowserInfos
+   * @param {WebFeatures} webFeatures
    * @returns {Array<FormattedFeature>}
    */
-  _formatBcdFeatures(rawBcdFeatures, bcdBrowserInfos) {
+  _formatBcdFeatures(rawBcdFeatures, bcdBrowserInfos, webFeatures) {
     const formattedFeatures = rawBcdFeatures.map((rawBcdFeature) => {
       const supportedBrowsers = {
         chrome: this._getBcdBrowserSupport('chrome', rawBcdFeature, bcdBrowserInfos),
@@ -282,11 +315,11 @@ export class CcWebFeaturesTracker extends LitElement {
   _getBaselineSvg(status) {
     switch (status) {
       case 'widely':
-        return { src: baselineWidelySvg.href, alt: 'Widely supported' };
+        return { icon: iconBaselineWidely, alt: 'Widely supported' };
       case 'newly':
-        return { src: baselineNewlySvg.href, alt: 'Newly supported' };
+        return { icon: iconBaselineNewly, alt: 'Newly supported' };
       case 'limited':
-        return { src: baselineLimitedSvg.href, alt: 'Limited availability' };
+        return { icon: iconBaselineLimited, alt: 'Limited availability' };
     }
   }
 
@@ -372,7 +405,7 @@ export class CcWebFeaturesTracker extends LitElement {
     firefoxSupport,
     safariSupport,
   }) {
-    const { alt, src } = this._getBaselineSvg(currentStatus);
+    const { icon: baselineIcon, alt } = this._getBaselineSvg(currentStatus);
     return html`
       <tr>
         <td>${featureName}</td>
@@ -390,12 +423,12 @@ export class CcWebFeaturesTracker extends LitElement {
         </td>
         <td>
           <div class="current-status">
-            <img
+            <cc-icon
               class="current-status__icon"
-              src="${src}"
-              alt=${this._tableDisplayMode === 'compact' ? alt : ''}
+              .icon=${baselineIcon}
+              a11y-name=${this._tableDisplayMode === 'compact' ? alt : ''}
               title=${this._tableDisplayMode === 'compact' ? alt : ''}
-            />
+            ></cc-icon>
             <span>${this._tableDisplayMode === 'detailed' ? alt : ''}</span>
           </div>
         </td>

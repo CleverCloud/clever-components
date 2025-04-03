@@ -3,7 +3,6 @@ kind: '👋 Contributing'
 title: 'Browser support'
 ---
 
-<cc-web-features-tracker></cc-web-features-tracker>
 
 # Browser support
 

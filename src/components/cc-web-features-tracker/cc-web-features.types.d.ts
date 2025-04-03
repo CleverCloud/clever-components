@@ -5,6 +5,11 @@ export interface WebFeatures {
   bcdFeatures: FeatureJson[];
 }
 
+export type FeaturesListSource =
+  | { type: 'direct'; data: WebFeatures }
+  | { type: 'url'; url: URL }
+  | { type: 'json-as-string'; jsonString: string };
+
 export interface FeatureJson {
   featureId: string;
   isProgressiveEnhancement: boolean;

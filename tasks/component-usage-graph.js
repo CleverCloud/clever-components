@@ -39,6 +39,7 @@ export async function getComponentsGraph() {
     for (const imported of imports) {
       const importerRelative = path.relative(process.cwd(), importerFilePath);
       const importerRelativeDir = path.dirname(importerRelative);
+      console.log(importerRelativeDir, imported);
       const sourceRelative = path.join(importerRelativeDir, imported.n);
 
       if (!componentsGraph.hasNode(importerRelative)) {
