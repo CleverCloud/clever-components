@@ -73,8 +73,8 @@ function pascalCaseTransform(input, enableDigitPrefix = true) {
  * camelCase('PascalCase'); //=> 'pascalCase'
  * camelCase('snake_case'); //=> 'snakeCase'
  * camelCase('version 1.2.10'); //=> 'version_1_2_10'
- * @param {String} input
- * @returns {String}
+ * @param {string} input
+ * @returns {string}
  */
 export function camelCase(input) {
   return stringToWordArray(input)

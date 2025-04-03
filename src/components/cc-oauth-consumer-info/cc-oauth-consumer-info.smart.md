@@ -1,5 +1,5 @@
 ---
-kind: '🛠 OAuth Consumer Info/<cc-oauth-consumer-info>'
+kind: '🛠 OAuth Consumer/<cc-oauth-consumer-info>'
 title: '💡 Smart'
 ---
 # 💡 Smart `<cc-oauth-consumer-info>`
@@ -7,7 +7,7 @@ title: '💡 Smart'
 ## ℹ️ Details
 
 <table>
-<tr><td><strong>Component    </strong> <td><a href=""><code>&lt;cc-oauth-consumer-info&gt;</code></a>
+<tr><td><strong>Component    </strong> <td><a href="https://www.clever-cloud.com/doc/clever-components/?path=/story/🛠-oauth-consumer-cc-oauth-consumer-info--default-story"><code>&lt;cc-oauth-consumer-info&gt;</code></a>
 <tr><td><strong>Selector     </strong> <td><code>cc-oauth-consumer-info</code>
 <tr><td><strong>Requires auth</strong> <td>Yes
 </table>

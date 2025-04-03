@@ -3,13 +3,12 @@ import { classMap } from 'lit/directives/class-map.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { iconRemixCheckLine, iconRemixCloseLine, iconRemixInformationFill } from '../../assets/cc-remix.icons.js';
 import { fakeString } from '../../lib/fake-strings.js';
-import { i18n } from '../../lib/i18n/i18n.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
 import { ccLink, linkStyles } from '../../templates/cc-link/cc-link.js';
+import { i18n } from '../../translations/translation.js';
 import '../cc-badge/cc-badge.js';
 import '../cc-block-section/cc-block-section.js';
 import '../cc-block/cc-block.js';
-import '../cc-button/cc-button.js';
 import '../cc-icon/cc-icon.js';
 import '../cc-img/cc-img.js';
 import '../cc-input-text/cc-input-text.js';
@@ -27,6 +26,25 @@ const SKELETON_OAUTH_CONSUMER_INFO = {
   secret: fakeString(20),
 };
 
+/** @type {Array<keyof OauthConsumerRights & `access${string}`>} */
+const ACCESS_RIGHT_KEYS = [
+  'accessOrganisations',
+  'accessOrganisationsBills',
+  'accessOrganisationsConsumptionStatistics',
+  'accessOrganisationsCreditCount',
+  'accessPersonalInformation',
+];
+
+/** @type {Array<keyof OauthConsumerRights & `manage${string}`>} */
+const MANAGE_RIGHT_KEYS = [
+  'manageOrganisations',
+  'manageOrganisationsApplications',
+  'manageOrganisationsMembers',
+  'manageOrganisationsServices',
+  'managePersonalInformation',
+  'manageSshKeys',
+];
+
 /**
  * @typedef {import('./cc-oauth-consumer-info.types.js').OauthConsumerInfoState} OauthConsumerInfoState
  * @typedef {import('./cc-oauth-consumer-info.types.js').OauthConsumerInfoStateLoaded} OauthConsumerInfoStateLoaded
@@ -42,6 +60,7 @@ export class CcOauthConsumerInfo extends LitElement {
   static get properties() {
     return {
       state: { type: Object },
+      editInfoHref: { type: String, attribute: 'edit-info-href' },
     };
   }
 
@@ -50,10 +69,13 @@ export class CcOauthConsumerInfo extends LitElement {
 
     /** @type {OauthConsumerInfoState} Sets the state of the component. */
     this.state = { type: 'loading' };
+
+    /** @type {string|null} Link to navigate to the edition screen. */
+    this.editInfoHref = null;
   }
 
   /**
-   * @param {string|null} name
+   * @param {keyof OauthConsumerRights} name
    * @returns {string|Node}
    */
   _getName(name) {
@@ -101,23 +123,16 @@ export class CcOauthConsumerInfo extends LitElement {
       <div class="wrapper">
         <cc-block>
           <div slot="content" class="header-wrapper">
-            <cc-img
-              class="header-logo"
-              a11y-name=${ifDefined(oauthConsumerInfo.name)}
-              ?skeleton=${skeleton}
-              src=${ifDefined(oauthConsumerInfo.picture)}
-            ></cc-img>
+            <cc-img class="header-logo" ?skeleton=${skeleton} src=${ifDefined(oauthConsumerInfo.picture)}></cc-img>
             <div class="header-name">
               <span class="${classMap({ skeleton })}">${oauthConsumerInfo.name}</span>
             </div>
             <div class="header-description">
               <span class="${classMap({ skeleton })}">${oauthConsumerInfo.description}</span>
             </div>
-            <div class="modify-button">
-              <cc-button primary type="submit" ?skeleton="${skeleton}" ?waiting=${this.state.type === 'waiting'}
-                >${i18n('cc-oauth-consumer-info.rights.edit')}</cc-button
-              >
-            </div>
+            <a class="edit-link ${classMap({ skeleton })}" href="${this.editInfoHref}"
+              >${i18n('cc-oauth-consumer-info.rights.edit')}</a
+            >
           </div>
         </cc-block>
 
@@ -160,8 +175,8 @@ export class CcOauthConsumerInfo extends LitElement {
               ${oauthConsumerInfo.rights?.almighty
                 ? html`
                     <cc-badge id="badge-almighty" intent="info" weight="dimmed" .icon=${iconRemixInformationFill}
-                      >${i18n('cc-oauth-consumer-info.rights.almighty')}</cc-badge
-                    >
+                      >${i18n('cc-oauth-consumer-info.rights.almighty')}
+                    </cc-badge>
                   `
                 : ''}
             </div>
@@ -169,20 +184,11 @@ export class CcOauthConsumerInfo extends LitElement {
             <div class="rights-container">
               <div class="access-rights">
                 <div class="rights-title">${i18n('cc-oauth-consumer-info.rights-title.access')}</div>
-                <div class="rights-section">
-                  ${this._renderRight('accessOrganisations')} ${this._renderRight('accessOrganisationsBills')}
-                  ${this._renderRight('accessOrganisationsConsumptionStatistics')}
-                  ${this._renderRight('accessOrganisationsCreditCount')}
-                  ${this._renderRight('accessPersonalInformation')}
-                </div>
+                <div class="rights-section">${ACCESS_RIGHT_KEYS.map((key) => this._renderRight(key))}</div>
               </div>
               <div class="manage-rights">
                 <div class="rights-title">${i18n('cc-oauth-consumer-info.rights-title.manage')}</div>
-                <div class="rights-section">
-                  ${this._renderRight('manageOrganisations')} ${this._renderRight('manageOrganisationsApplications')}
-                  ${this._renderRight('manageOrganisationsMembers')} ${this._renderRight('manageOrganisationsServices')}
-                  ${this._renderRight('managePersonalInformation')} ${this._renderRight('manageSshKeys')}
-                </div>
+                <div class="rights-section">${MANAGE_RIGHT_KEYS.map((key) => this._renderRight(key))}</div>
               </div>
             </div>
           </cc-block-section>
@@ -195,12 +201,9 @@ export class CcOauthConsumerInfo extends LitElement {
    * @param {keyof OauthConsumerRights} rightName
    */
   _renderRight(rightName) {
-    const icon =
-      this.state.type === 'loaded' || this.state.type === 'waiting'
-        ? this.state.rights[rightName]
-          ? iconRemixCheckLine
-          : iconRemixCloseLine
-        : iconRemixCloseLine;
+    const isRightEnabled =
+      this.state.type === 'loaded' || this.state.type === 'waiting' ? this.state.rights[rightName] : false;
+    const icon = isRightEnabled ? iconRemixCheckLine : iconRemixCloseLine;
     return html`
       <div class="right">
         <cc-icon .icon="${icon}" ?skeleton="${this.state.type === 'loading'}"></cc-icon>
@@ -231,8 +234,8 @@ export class CcOauthConsumerInfo extends LitElement {
           display: grid;
           gap: 0.5em;
           grid-template-areas:
-            'logo name button'
-            'logo description button';
+            'logo name link'
+            'logo description link';
           grid-template-columns: auto 1fr auto;
         }
 
@@ -253,9 +256,32 @@ export class CcOauthConsumerInfo extends LitElement {
           grid-area: description;
         }
 
-        .modify-button {
+        .edit-link {
+          align-items: center;
           align-self: center;
-          grid-area: button;
+          background-color: var(--cc-color-bg-primary, #3569aaff);
+          border: 1px solid var(--cc-color-bg-primary, #3569aaff);
+          border-radius: var(--cc-button-border-radius, 0.15em);
+          color: var(--cc-color-text-inverted, #fff);
+          cursor: pointer;
+          display: flex;
+          font-weight: var(--cc-button-font-weight, bold);
+          grid-area: link;
+          justify-content: center;
+          min-height: 2em;
+          padding: 0 0.5em;
+          text-decoration: none;
+          text-transform: var(--cc-button-text-transform, uppercase);
+          user-select: none;
+        }
+
+        .edit-link:hover {
+          box-shadow: 0 1px 3px rgb(0 0 0 / 40%);
+        }
+
+        .edit-link:focus {
+          outline: var(--cc-focus-outline);
+          outline-offset: var(--cc-focus-outline-offset, 2px);
         }
 
         /* end region */
@@ -306,9 +332,9 @@ export class CcOauthConsumerInfo extends LitElement {
 
         .access-rights,
         .manage-rights {
+          align-content: baseline;
           display: grid;
           gap: 1em;
-          grid-auto-rows: min-content;
         }
 
         .rights-title {
@@ -334,7 +360,7 @@ export class CcOauthConsumerInfo extends LitElement {
             grid-template-areas:
               'logo name'
               'logo description'
-              'button button';
+              'link link';
             grid-template-columns: auto 1fr;
           }
 
@@ -350,12 +376,8 @@ export class CcOauthConsumerInfo extends LitElement {
               'logo'
               'name'
               'description'
-              'button';
+              'link';
             grid-template-columns: 1fr;
-          }
-
-          cc-button {
-            width: 100%;
           }
         }
 
@@ -382,6 +404,8 @@ export class CcOauthConsumerInfo extends LitElement {
 
         .skeleton {
           background-color: #bbb;
+          border-color: #777;
+          color: transparent;
         }
       `,
     ];
