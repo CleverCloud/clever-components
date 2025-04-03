@@ -14,6 +14,22 @@ import './cc-oauth-consumer-info.js';
  * @typedef {import('../../lib/smart/smart-component.types.js').OnContextUpdateArgs<CcOauthConsumerInfo>} OnContextUpdateArgs
  */
 
+/** @type {OauthConsumerRights} */
+const DISABLED_RIGHTS_BY_DEFAULT = {
+  almighty: false,
+  accessOrganisations: false,
+  accessOrganisationsBills: false,
+  accessOrganisationsConsumptionStatistics: false,
+  accessOrganisationsCreditCount: false,
+  accessPersonalInformation: false,
+  manageOrganisations: false,
+  manageOrganisationsApplications: false,
+  manageOrganisationsMembers: false,
+  manageOrganisationsServices: false,
+  managePersonalInformation: false,
+  manageSshKeys: false,
+};
+
 defineSmartComponent({
   selector: 'cc-oauth-consumer-info',
   params: {
@@ -31,27 +47,18 @@ defineSmartComponent({
 
     updateComponent('state', { type: 'loading' });
 
-    Promise.all([api.getOauthConsumer(), api.getSecret()])
+    api
+      .getOauthConsumerWithSecret()
       .then(([data, secretData]) => {
+        const rightsFromApiData = Object.fromEntries(
+          Object.entries(data.rights).map(([name, isEnabled]) => {
+            const camelCaseName = camelCase(name);
+            return [camelCaseName, isEnabled];
+          }),
+        );
         const rights = {
-          almighty: false,
-          accessOrganisations: false,
-          accessOrganisationsBills: false,
-          accessOrganisationsConsumptionStatistics: false,
-          accessOrganisationsCreditCount: false,
-          accessPersonalInformation: false,
-          manageOrganisations: false,
-          manageOrganisationsApplications: false,
-          manageOrganisationsMembers: false,
-          manageOrganisationsServices: false,
-          managePersonalInformation: false,
-          manageSshKeys: false,
-          ...Object.fromEntries(
-            Object.entries(data.rights).map(([name, isEnabled]) => {
-              const camelCaseName = camelCase(name);
-              return [camelCaseName, isEnabled];
-            }),
-          ),
+          ...DISABLED_RIGHTS_BY_DEFAULT,
+          ...rightsFromApiData,
         };
         updateComponent('state', {
           type: 'loaded',
@@ -98,5 +105,9 @@ class Api {
    */
   getSecret() {
     return getSecret({ id: this._ownerId, key: this._key }).then(sendToApi({ apiConfig: this._apiConfig }));
+  }
+
+  getOauthConsumerWithSecret() {
+    return Promise.all([this.getOauthConsumer(), this.getSecret()]);
   }
 }
