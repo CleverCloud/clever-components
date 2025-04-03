@@ -133,9 +133,9 @@ export class CcWebFeaturesTracker extends LitElement {
         currentStatus,
         isProgressiveEnhancement,
         canBeUsed: this._getCanBeUsedStatus({ currentStatus, isProgressiveEnhancement }),
-        chromeSupport: this._computeBaselineFeatureStatus('chrome', baselineFeature),
-        firefoxSupport: this._computeBaselineFeatureStatus('firefox', baselineFeature),
-        safariSupport: this._computeBaselineFeatureStatus('safari', baselineFeature),
+        chromeSupport: this._getBaselineFeatureStatus('chrome', baselineFeature),
+        firefoxSupport: this._getBaselineFeatureStatus('firefox', baselineFeature),
+        safariSupport: this._getBaselineFeatureStatus('safari', baselineFeature),
       };
     });
 
@@ -151,16 +151,16 @@ export class CcWebFeaturesTracker extends LitElement {
   _formatBcdFeatures(rawBcdFeatures, bcdBrowserInfos) {
     const formattedFeatures = rawBcdFeatures.map((rawBcdFeature) => {
       const supportedBrowsers = {
-        chrome: this._computeBcdFeatureStatus('chrome', rawBcdFeature, bcdBrowserInfos),
-        firefox: this._computeBcdFeatureStatus('firefox', rawBcdFeature, bcdBrowserInfos),
-        safari: this._computeBcdFeatureStatus('safari', rawBcdFeature, bcdBrowserInfos),
+        chrome: this._getBcdBrowserSupport('chrome', rawBcdFeature, bcdBrowserInfos),
+        firefox: this._getBcdBrowserSupport('firefox', rawBcdFeature, bcdBrowserInfos),
+        safari: this._getBcdBrowserSupport('safari', rawBcdFeature, bcdBrowserInfos),
       };
       const supportedBrowsersAsArray = Object.values(supportedBrowsers);
 
       const isProgressiveEnhancement = webFeatures.bcdFeatures.find(
         (webFeature) => webFeature.featureId === rawBcdFeature.id,
       ).isProgressiveEnhancement;
-      const currentStatus = this._getCurrentStatus(supportedBrowsersAsArray);
+      const currentStatus = this._getBcdFeatureCurrentStatus(supportedBrowsersAsArray);
 
       /** @type {FormattedFeature} */
       const formattedFeature = {
@@ -193,11 +193,58 @@ export class CcWebFeaturesTracker extends LitElement {
   }
 
   /**
-   *
-   * @param {Array<BrowserSupported|BrowserUnsupported>} supportedBrowsers
-   * @returns {FeatureStatus}
+   * @param {Browser} browser
+   * @param {BaselineFeatureData} rawBaselineFeature
+   * @returns {BrowserSupported | BrowserUnsupported}
    */
-  _getCurrentStatus(supportedBrowsers) {
+  _getBaselineFeatureStatus(browser, rawBaselineFeature) {
+    const browserImplementation = rawBaselineFeature.browser_implementations?.[browser];
+    if (browserImplementation == null) {
+      return { isSupported: false };
+    }
+
+    return {
+      isSupported: true,
+      version: browserImplementation.version,
+      releaseDate: new Date(browserImplementation.date),
+    };
+  }
+
+  /**
+   *
+   * @param {Browser} browser
+   * @param {BcdFeatureCompatInfo & { id: string }} rawBcdFeature
+   * @param {BcdBrowserInfo} browserInfos
+   * @returns {BrowserSupported|BrowserUnsupported}
+   */
+  _getBcdBrowserSupport(browser, rawBcdFeature, browserInfos) {
+    const browserVersion = rawBcdFeature.support[browser].version_added;
+
+    // when a feature has not been implemented in a browser, `version_added` is `false`
+    if (browserVersion === false) {
+      return { isSupported: false };
+    }
+
+    return {
+      isSupported: true,
+      version: browserVersion,
+      releaseDate: new Date(browserInfos[browser].releases[browserVersion].release_date),
+    };
+  }
+
+  /**
+   * Determines the current support status of a web feature based on browser support data.
+   * Only used for BCD features since baseline feature already come with this data.
+   *
+   * This method examines an array of browser support objects and categorizes the feature as:
+   * - 'limited': When at least one browser doesn't support the feature
+   * - 'widely': When all browsers support the feature and the release date is old enough (2.5+ years)
+   * - 'newly': When all browsers support the feature but it was released recently
+   *
+   * @param {Array<BrowserSupported|BrowserUnsupported>} supportedBrowsers - Array of browser support information objects
+   * @returns {FeatureStatus} The feature's support status ('limited', 'widely', or 'newly')
+   */
+  _getBcdFeatureCurrentStatus(supportedBrowsers) {
     const isLimited = supportedBrowsers.some((browser) => !browser.isSupported);
 
     if (isLimited) {
@@ -230,52 +277,17 @@ export class CcWebFeaturesTracker extends LitElement {
   }
 
   /**
-   * @param {Browser} browser
-   * @param {BaselineFeatureData} rawBaselineFeature
-   * @returns {BrowserSupported | BrowserUnsupported}
+   * @param {FeatureStatus} status
    */
-  _computeBaselineFeatureStatus(browser, rawBaselineFeature) {
-    const browserImplementation = rawBaselineFeature.browser_implementations?.[browser];
-    if (browserImplementation == null) {
-      return { isSupported: false };
+  _getBaselineSvg(status) {
+    switch (status) {
+      case 'widely':
+        return { src: baselineWidelySvg.href, alt: 'Widely supported' };
+      case 'newly':
+        return { src: baselineNewlySvg.href, alt: 'Newly supported' };
+      case 'limited':
+        return { src: baselineLimitedSvg.href, alt: 'Limited availability' };
     }
-
-    return {
-      isSupported: true,
-      version: browserImplementation.version,
-      releaseDate: new Date(browserImplementation.date),
-    };
-  }
-
-  /**
-   *
-   * @param {Browser} browser
-   * @param {BcdFeatureCompatInfo & { id: string }} rawBcdFeature
-   * @param {BcdBrowserInfo} browserInfos
-   * @returns {BrowserSupported|BrowserUnsupported}
-   */
-  _computeBcdFeatureStatus(browser, rawBcdFeature, browserInfos) {
-    const rawBrowserSupport = rawBcdFeature.support[browser].version_added;
-
-    if (rawBrowserSupport === false) {
-      return { isSupported: false };
-    }
-
-    return {
-      isSupported: true,
-      version: rawBrowserSupport,
-      releaseDate: new Date(browserInfos[browser].releases[rawBrowserSupport].release_date),
-    };
-  }
-
-  render() {
-    return html`
-      ${this._featuresTask.render({
-        pending: () => html`<cc-loader></cc-loader>`,
-        complete: (formattedFeatures) => this._renderFeaturesTable(formattedFeatures),
-        error: (e) => html`<cc-notice .message="${e}"></cc-notice>`,
-      })}
-    `;
   }
 
   /** @param {EventWithTargetCcToggleFeatureFilter} event */
@@ -286,6 +298,16 @@ export class CcWebFeaturesTracker extends LitElement {
   /** @param {EventWithTargetCcToggleDisplayMode} event */
   _onDisplayModeChange(event) {
     this._tableDisplayMode = event.target.value;
+  }
+
+  render() {
+    return html`
+      ${this._featuresTask.render({
+        pending: () => html`<cc-loader></cc-loader>`,
+        complete: (formattedFeatures) => this._renderFeaturesTable(formattedFeatures),
+        error: (e) => html`<cc-notice .message="${e}"></cc-notice>`,
+      })}
+    `;
   }
 
   /**
@@ -382,20 +404,6 @@ export class CcWebFeaturesTracker extends LitElement {
         <td>${this._renderBrowserSupport(safariSupport)}</td>
       </tr>
     `;
-  }
-
-  /**
-   * @param {FeatureStatus} status
-   */
-  _getBaselineSvg(status) {
-    switch (status) {
-      case 'widely':
-        return { src: baselineWidelySvg.href, alt: 'Widely supported' };
-      case 'newly':
-        return { src: baselineNewlySvg.href, alt: 'Newly supported' };
-      case 'limited':
-        return { src: baselineLimitedSvg.href, alt: 'Limited availability' };
-    }
   }
 
   /**
