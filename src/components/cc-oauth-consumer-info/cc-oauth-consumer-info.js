@@ -139,7 +139,7 @@ export class CcOauthConsumerInfo extends LitElement {
         <cc-block>
           <div slot="header-title">${i18n('cc-oauth-consumer-info.info.title')}</div>
           <cc-block-section slot="content-body">
-            <div slot="title">${i18n('cc-oauth-consumer-info.access.title')}</div>
+            <div slot="title" class="access-title">${i18n('cc-oauth-consumer-info.access.title')}</div>
             <p class="description">${i18n('cc-oauth-consumer-info.info.description')}</p>
             <dl class="access-grid">
               <div>
@@ -289,6 +289,10 @@ export class CcOauthConsumerInfo extends LitElement {
 
         /* region Access */
 
+        .access-title {
+          font-size: 1.1em;
+        }
+
         .description {
           margin-top: 0;
         }
@@ -328,6 +332,7 @@ export class CcOauthConsumerInfo extends LitElement {
 
         .auth-title {
           flex: 1 1 0;
+          font-size: 1.1em;
           font-weight: bold;
         }
 

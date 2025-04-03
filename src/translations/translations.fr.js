@@ -998,7 +998,7 @@ export const translations = {
   //#endregion
   //#region cc-oauth-consumer-info
   'cc-oauth-consumer-info.access.title': `Détails de configuration`,
-  'cc-oauth-consumer-info.error': `Une erreur est survenue pendant le chargement des informations du consumer OAuth .`,
+  'cc-oauth-consumer-info.error': `Une erreur est survenue pendant le chargement des informations du consumer OAuth.`,
   'cc-oauth-consumer-info.info.base-url': `URL de base de l'application`,
   'cc-oauth-consumer-info.info.description': `Votre application est configurée pour ces URLs et a besoin des informations d'identification suivantes pour utiliser le consumer :`,
   'cc-oauth-consumer-info.info.homepage-url': `Page d'accueil de l'application`,
