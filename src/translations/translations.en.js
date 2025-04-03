@@ -1469,8 +1469,16 @@ export const translations = {
   //#endregion
   //#region cc-token-api-creation-form
   'cc-token-api-creation-form.config-step.description': `Use this form to generate a new API token, which will allow you to securely and selectively authorize applications to access your services.`,
+  'cc-token-api-creation-form.config-step.form.label.desc': `Token name`,
+  'cc-token-api-creation-form.config-step.form.label.expiration-duration': `Expiration duration`,
+  'cc-token-api-creation-form.config-step.form.label.name': `Name`,
   'cc-token-api-creation-form.config-step.main-heading': `Create a new API Token`,
+  'cc-token-api-creation-form.config-step.nav.name': `Configuration`,
+  'cc-token-api-creation-form.copy-step.description': `Congratulations, your token is now created! Here is the key to keep so that you can use it. It will allow you to securely and selectively authorize applications to access your services`,
+  'cc-token-api-creation-form.copy-step.nav.name': `Copy Token`,
   'cc-token-api-creation-form.error': `Something went wrong while loading information about your account`,
+  'cc-token-api-creation-form.validation-step.description': `Finalise and confirm your new API Token by authenticating yourself.`,
+  'cc-token-api-creation-form.validation-step.nav.name': `Validation`,
   //#endregion
   //#region cc-token-api-list
   'cc-token-api-list.card.deadline-approaches': `Expiration close`,
