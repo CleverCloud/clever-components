@@ -17,6 +17,7 @@ export class CcTokenApiCreationForm extends LitElement {
     return {
       state: { type: Object },
       _activeStep: { type: String, state: true },
+      _isExpirationDateActive: { type: Boolean, state: true },
     };
   }
 
@@ -28,6 +29,9 @@ export class CcTokenApiCreationForm extends LitElement {
 
     /** @type {TokenApiCreationStep} */
     this._activeStep = 'config';
+
+    /** @type {boolean} */
+    this._isExpirationDateActive = false;
   }
 
   /**
@@ -163,6 +167,13 @@ export class CcTokenApiCreationForm extends LitElement {
           .options=${this._getExpirationDurationOptions}
         >
         </cc-select>
+        <cc-input-text
+          label="${i18n('cc-token-api-creation-form.config-step.form.label.expiration-date')}"
+          name="expiration-date"
+          ?required=${this._isExpirationDateActive}
+          value=${}
+        ></cc-input-text>
+        <cc-input-text></cc-input-text>
       </form>
     `;
   }
