@@ -2,20 +2,17 @@ import { makeStory } from '../../stories/lib/make-story.js';
 import './cc-oauth-consumer-info.js';
 
 /**
- * @typedef {import('./cc-oauth-consumer-info.js').CcOauthConsumerInfo} CcOauthConsumerInfo
  * @typedef {import('./cc-oauth-consumer-info.types.js').OauthConsumerInfoStateLoading} OauthConsumerInfoStateLoading
- * @typedef {import('./cc-oauth-consumer-info.types.js').OauthConsumerInfoStateWaiting} OauthConsumerInfoStateWaiting
  * @typedef {import('./cc-oauth-consumer-info.types.js').OauthConsumerInfoStateError} OauthConsumerInfoStateError
  * @typedef {import('./cc-oauth-consumer-info.types.js').OauthConsumerInfoStateLoaded} OauthConsumerInfoStateLoaded
- * @typedef {import('./cc-oauth-consumer-info.types.js').OauthConsumerRights} OauthConsumerRights
  */
 
 /** @type {OauthConsumerInfoStateLoaded} */
 const oAuthConsumerData = {
   type: 'loaded',
   name: 'My OAuth Consumer',
-  url: 'https://localhost:8080/',
-  baseUrl: 'https://localhost:8080/',
+  url: 'https://www.example.com/home',
+  baseUrl: 'https://www.example.com',
   description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit.',
   picture: 'https://assets.clever-cloud.com/infra/clever-cloud-square.svg',
   rights: {

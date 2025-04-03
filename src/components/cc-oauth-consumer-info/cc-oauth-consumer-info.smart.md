@@ -34,8 +34,8 @@ interface ApiConfig {
 
 | Method | URL                                       | Cache?  |
 |--------|-------------------------------------------|---------|
-| `GET`  | `/v2${urlBase}/consumers/${key}`          | Default |
-| `GET`  | `/v2${urlBase}/consumers/${key}/secret`   | Default |
+| `GET`  | `/v2/organisations/${ownerId}/consumers/${key}`          | Default |
+| `GET`  | `/v2/organisations/${ownerId}/consumers/${key}/secret`   | Default |
 
 ## ⬇️️ Examples
 
