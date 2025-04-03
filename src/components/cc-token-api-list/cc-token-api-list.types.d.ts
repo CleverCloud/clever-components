@@ -10,7 +10,7 @@ export interface TokenApiListStateError {
 
 export interface TokenApiListStateLoaded {
   type: 'loaded';
-  tokens: TokenApiState[];
+  apiTokens: TokenApiState[];
 }
 
 export type TokenApiState = TokenApiStateIdle | TokenApiStateRevoking;

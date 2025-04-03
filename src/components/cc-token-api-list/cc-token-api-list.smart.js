@@ -81,7 +81,7 @@ defineSmartComponent({
         'state',
         /** @param {TokenApiListStateLoaded} state */
         (state) => {
-          const apiTokenToUpdate = state.tokens.find((token) => token.id === tokenId);
+          const apiTokenToUpdate = state.apiTokens.find((token) => token.id === tokenId);
 
           if (apiTokenToUpdate != null) {
             callback(apiTokenToUpdate);
@@ -107,7 +107,7 @@ defineSmartComponent({
           };
           return formattedToken;
         });
-        updateComponent('state', { type: 'loaded', tokens: formattedTokens });
+        updateComponent('state', { type: 'loaded', apiTokens: formattedTokens });
       })
       .catch((error) => {
         console.error(error);
@@ -126,7 +126,7 @@ defineSmartComponent({
             'state',
             /** @param {TokenApiListStateLoaded} state */
             (state) => {
-              state.tokens = state.tokens.filter((token) => token.id !== apiTokenId);
+              state.apiTokens = state.apiTokens.filter((token) => token.id !== apiTokenId);
             },
           );
           notifySuccess(i18n('cc-token-api-list.revoke-token.success'));
