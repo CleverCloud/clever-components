@@ -1521,15 +1521,29 @@ export const translations = {
   'cc-token-api-creation-form.config-step.expiration-duration.label.seven-days': `7 jours`,
   'cc-token-api-creation-form.config-step.expiration-duration.label.sixty-days': `60 jours`,
   'cc-token-api-creation-form.config-step.expiration-duration.label.thirty-days': `30 jours`,
+  'cc-token-api-creation-form.config-step.form.api-token-list-link': `Retour à la liste des tokens d'API`,
+  'cc-token-api-creation-form.config-step.form.button.label.create': `Créer`,
+  'cc-token-api-creation-form.config-step.form.button.label.validate': `Valider`,
+  'cc-token-api-creation-form.config-step.form.expiration-date.invalid': /** @param {{ date: string }} _ */ ({
+    date,
+  }) => sanitize`Saisissez une date et une heure valide.<br>Par exemple&nbsp;: ${date}`,
+  'cc-token-api-creation-form.config-step.form.expiration-date.range-underflow': /** @param {{ date: string }} _ */ ({
+    date,
+  }) =>
+    sanitize`La date d'expiration doit être au moins 15 minutes après l'heure actuelle.<br>Par exemple&nbsp;: ${date}`,
   'cc-token-api-creation-form.config-step.form.label.desc': `Description`,
+  'cc-token-api-creation-form.config-step.form.label.expiration-date': `Date d'expiration`,
   'cc-token-api-creation-form.config-step.form.label.expiration-duration': `Durée avant expiration`,
+  'cc-token-api-creation-form.config-step.form.label.mfa': `Code 2FA`,
   'cc-token-api-creation-form.config-step.form.label.name': `Nom du token`,
+  'cc-token-api-creation-form.config-step.form.label.password': `Mot de passe`,
   'cc-token-api-creation-form.config-step.main-heading': `Créer un nouveau token d'API`,
   'cc-token-api-creation-form.config-step.nav.name': `Configuration`,
   'cc-token-api-creation-form.copy-step.description': `Félicitations, votre token est maintenant créé ! Voici la clé à conserver pour pouvoir l'utiliser. Elle vous permettra d'autoriser de façon sécurisée et sélective des applications à accéder à vos services`,
   'cc-token-api-creation-form.copy-step.nav.name': `Récupération du Token`,
   'cc-token-api-creation-form.error': `Une erreur est survenue lors du chargement des informations liées votre compte`,
   'cc-token-api-creation-form.validation-step.description': `Finalisez et confirmez votre nouveau token d'API en vous authentifiant.`,
+  'cc-token-api-creation-form.validation-step.main-heading': `Confirmez votre identité`,
   'cc-token-api-creation-form.validation-step.nav.name': `Validation`,
   //#endregion
   //#region cc-token-api-list
