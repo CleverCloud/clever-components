@@ -998,13 +998,12 @@ export const translations = {
   //#endregion
   //#region cc-oauth-consumer-info
   'cc-oauth-consumer-info.access.title': `Détails de configuration`,
-  'cc-oauth-consumer-info.error': `Une erreur est survenue pendant le chargement des informations du consumer OAuth.`,
+  'cc-oauth-consumer-info.error': `Une erreur est survenue pendant le chargement des informations du consumer OAuth`,
   'cc-oauth-consumer-info.info.base-url': `URL de base de l'application`,
   'cc-oauth-consumer-info.info.description': `Votre application est configurée pour ces URLs et a besoin des informations d'identification suivantes pour utiliser le consumer :`,
   'cc-oauth-consumer-info.info.homepage-url': `Page d'accueil de l'application`,
   'cc-oauth-consumer-info.info.key': `Clé`,
   'cc-oauth-consumer-info.info.secret': `Secret`,
-  'cc-oauth-consumer-info.info.title': `À propos de votre consumer OAuth`,
   'cc-oauth-consumer-info.rights-title.access': `Droits d'accès :`,
   'cc-oauth-consumer-info.rights-title.manage': `Droits de gestion :`,
   'cc-oauth-consumer-info.rights.access-organisations': `Organisations`,
@@ -1013,7 +1012,7 @@ export const translations = {
   'cc-oauth-consumer-info.rights.access-organisations-credit-count': `Nombre de crédits des organisations`,
   'cc-oauth-consumer-info.rights.access-personal-information': `Informations personnelles`,
   'cc-oauth-consumer-info.rights.almighty': `Almighty`,
-  'cc-oauth-consumer-info.rights.description': `Votre consumer demandera aux utilisateurs d'accorder les droits suivants :`,
+  'cc-oauth-consumer-info.rights.description': `Le consumer demandera l’accès aux droits suivants :`,
   'cc-oauth-consumer-info.rights.edit': `Éditer les informations`,
   'cc-oauth-consumer-info.rights.manage-organisations': `Organisations`,
   'cc-oauth-consumer-info.rights.manage-organisations-applications': `Applications des organisations`,
