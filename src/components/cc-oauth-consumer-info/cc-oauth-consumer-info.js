@@ -137,7 +137,6 @@ export class CcOauthConsumerInfo extends LitElement {
         </cc-block>
 
         <cc-block>
-          <div slot="header-title">${i18n('cc-oauth-consumer-info.info.title')}</div>
           <cc-block-section slot="content-body">
             <div slot="title" class="access-title">${i18n('cc-oauth-consumer-info.access.title')}</div>
             <p class="description">${i18n('cc-oauth-consumer-info.info.description')}</p>
