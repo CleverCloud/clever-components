@@ -23,3 +23,5 @@ export interface TokenApiCreationFormStateError {
 }
 
 export type TokenApiCreationStep = 'config' | 'validate' | 'copy';
+
+export type ExpirationDuration = 'seven-days' | 'thirty-days' | 'sixty-days' | 'ninety-days' | 'one-year' | 'custom';
