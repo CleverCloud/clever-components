@@ -7,16 +7,17 @@ import {
   iconRemixHashtag as iconVersion,
   iconRemixCalendarLine as iconDate,
 } from '../../assets/cc-remix.icons.js';
+import {
+  iconCleverBaselineNewly as iconBaselineNewly,
+  iconCleverBaselineWidely as iconBaselineWidely,
+  iconCleverBaselineLimited as iconBaselineLimited,
+} from '../../assets/cc-clever.icons.js';
 // @ts-ignore
 import untypedWebFeatures from './web-features.json';
 import '../cc-loader/cc-loader.js';
 import '../cc-notice/cc-notice.js';
 import '../cc-icon/cc-icon.js';
 import '../cc-toggle/cc-toggle.js';
-
-const baselineLimitedSvg = new URL('../../assets/baseline-limited.svg', import.meta.url);
-const baselineNewlySvg = new URL('../../assets/baseline-newly.svg', import.meta.url);
-const baselineWidelySvg = new URL('../../assets/baseline-widely.svg', import.meta.url);
 
 // TODO: finir style filtres & toggles
 // TODO: doc contrib
@@ -28,7 +29,7 @@ const webFeatures = untypedWebFeatures;
 /**
  * @typedef {import('./cc-web-features.types.js').WebFeatures} WebFeatures
  * @typedef {import('./cc-web-features.types.js').BaselineFeatureData} BaselineFeatureData
- * @typedef {import('./cc-web-features.types.js').BcdFeatureCompatInfo} BcdFeatureCompatInfom
+ * @typedef {import('./cc-web-features.types.js').BcdFeatureCompatInfo} BcdFeatureCompatInfo
  * @typedef {import('./cc-web-features.types.js').BcdBrowserInfo} BcdBrowserInfo
  * @typedef {import('./cc-web-features.types.js').FormattedFeature} FormattedFeature
  * @typedef {import('./cc-web-features.types.js').Browser} Browser
@@ -279,14 +280,14 @@ export class CcWebFeaturesTracker extends LitElement {
   /**
    * @param {FeatureStatus} status
    */
-  _getBaselineSvg(status) {
+  _getBaselineIcon(status) {
     switch (status) {
       case 'widely':
-        return { src: baselineWidelySvg.href, alt: 'Widely supported' };
+        return { icon: iconBaselineWidely, a11yName: 'Widely supported' };
       case 'newly':
-        return { src: baselineNewlySvg.href, alt: 'Newly supported' };
+        return { icon: iconBaselineNewly, a11yName: 'Newly supported' };
       case 'limited':
-        return { src: baselineLimitedSvg.href, alt: 'Limited availability' };
+        return { icon: iconBaselineLimited, a11yName: 'Limited availability' };
     }
   }
 
@@ -372,7 +373,7 @@ export class CcWebFeaturesTracker extends LitElement {
     firefoxSupport,
     safariSupport,
   }) {
-    const { alt, src } = this._getBaselineSvg(currentStatus);
+    const { a11yName, icon: baselineIcon } = this._getBaselineIcon(currentStatus);
     return html`
       <tr>
         <td>${featureName}</td>
@@ -390,13 +391,13 @@ export class CcWebFeaturesTracker extends LitElement {
         </td>
         <td>
           <div class="current-status">
-            <img
+            <cc-icon
               class="current-status__icon"
-              src="${src}"
-              alt=${this._tableDisplayMode === 'compact' ? alt : ''}
-              title=${this._tableDisplayMode === 'compact' ? alt : ''}
-            />
-            <span>${this._tableDisplayMode === 'detailed' ? alt : ''}</span>
+              .icon="${baselineIcon}"
+              a11y-name=${this._tableDisplayMode === 'compact' ? a11yName : ''}
+              title=${this._tableDisplayMode === 'compact' ? a11yName : ''}
+            ></cc-icon>
+            <span>${this._tableDisplayMode === 'detailed' ? a11yName : ''}</span>
           </div>
         </td>
         <td>${this._renderBrowserSupport(chromeSupport)}</td>
