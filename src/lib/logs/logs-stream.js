@@ -10,7 +10,8 @@ const BUFFER_TIMEOUT = 1000;
 const BUFFER_SIZE = 10;
 const LOGS_THROTTLE_ELEMENTS = 1000;
 const MAX_RETRY_COUNT = 10;
-const WAITING_TIMEOUT = 2000;
+const WAITING_TIMEOUT_LIVE = 2000;
+const WAITING_TIMEOUT_COLD = 8000;
 
 /**
  * @typedef {import('./logs-stream.types.js').AbstractLog} AbstractLog
@@ -44,11 +45,13 @@ export class LogsStream {
   #streamState;
   /** @type {Timer} */
   #waitingTimer;
+  /** @type {{live: number, cold: number}} */
+  #waitingTimeout;
 
   /**
    * @param {number} limit
    * @param {object} [config]
-   * @param {number} [config.waitingTimeout]
+   * @param {{live?: number, cold?: number}} [config.waitingTimeout]
    */
   constructor(limit, { waitingTimeout } = {}) {
     // The buffer receives logs so that we can append them by batch instead of one by one
@@ -66,7 +69,10 @@ export class LogsStream {
     // This timer sets the state to `waitingForFirstLog` when no logs have been received since a certain amount of time.
     // It is started once the connection to the SSE is established
     // It is closed once the first log is received. And also when asked to stop or complete.
-    this.#waitingTimer = new Timer(this.#onWaitingForFirstLog.bind(this), waitingTimeout ?? WAITING_TIMEOUT);
+    this.#waitingTimer = new Timer(this.#onWaitingForFirstLog.bind(this));
+
+    // waiting timeout
+    this.#waitingTimeout = { live: WAITING_TIMEOUT_LIVE, cold: WAITING_TIMEOUT_COLD, ...(waitingTimeout ?? {}) };
   }
 
   // -- Abstract methods ------
@@ -241,8 +247,8 @@ export class LogsStream {
     // stream opening can occur after connecting or after resuming.
     // we start only when after connecting
     if (this.#streamState.type === 'connecting') {
-      this.#waitingTimer.start();
       this.#progress.start(dateRange);
+      this.#waitingTimer.start(this.#progress.isLive() ? this.#waitingTimeout.live : this.#waitingTimeout.cold);
     }
   }
 
@@ -358,21 +364,22 @@ class Timer {
 
   /**
    * @param {() => void} callback
-   * @param {number} timeout
    */
-  constructor(callback, timeout) {
+  constructor(callback) {
     this._callback = callback;
-    this._timeout = timeout;
   }
 
-  start() {
+  /**
+   * @param {number} timeout
+   */
+  start(timeout) {
     if (this.#id != null) {
       stop();
     }
     this.#id = setTimeout(() => {
       this._callback();
       this.#id = null;
-    }, this._timeout);
+    }, timeout);
   }
 
   stop() {
