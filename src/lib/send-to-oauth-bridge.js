@@ -21,7 +21,7 @@ import { dispatchCustomEvent } from './events.js';
  * @param {number} [params.timeout]
  * @returns {(requestParams: RequestInit) => Promise<any>}
  */
-export function sendToAuthBridge({ apiConfig, signal, cacheDelay, timeout }) {
+export function sendToOauthBridge({ apiConfig, signal, cacheDelay, timeout }) {
   return (requestParams) => {
     const cacheParams = { ...apiConfig, ...requestParams };
     return withCache(cacheParams, cacheDelay, () => {

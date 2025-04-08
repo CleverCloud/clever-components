@@ -1,5 +1,5 @@
 import { notifyError, notifySuccess } from '../../lib/notifications.js';
-import { sendToAuthBridge } from '../../lib/send-to-oauth-bridge.js';
+import { sendToOauthBridge } from '../../lib/send-to-oauth-bridge.js';
 import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-smart-container/cc-smart-container.js';
@@ -15,8 +15,6 @@ import './cc-token-api-list.js';
  * @typedef {import('../../lib/send-to-api.types.js').ApiConfig} ApiConfig
  */
 
-console.log('SMART FILE IMPORTED');
-
 defineSmartComponent({
   selector: 'cc-token-api-list',
   params: {
@@ -24,7 +22,6 @@ defineSmartComponent({
   },
   /** @param {OnContextUpdateArgs} args */
   onContextUpdate({ context, onEvent, updateComponent }) {
-    console.log('context update triggered');
     const { apiConfig } = context;
     const api = new Api(apiConfig);
 
@@ -100,7 +97,6 @@ defineSmartComponent({
   },
 });
 
-console.log('parsing right before Api class declaration');
 class Api {
   /** @param {ApiConfig} apiConfig */
   constructor(apiConfig) {
@@ -126,7 +122,7 @@ class Api {
 
   /** @returns {Promise<RawApiToken[]>} */
   getApiTokens() {
-    return this._listApiTokens().then(sendToAuthBridge({ apiConfig: this._apiConfig }));
+    return this._listApiTokens().then(sendToOauthBridge({ apiConfig: this._apiConfig }));
   }
 
   /**
@@ -134,6 +130,6 @@ class Api {
    * @returns {Promise<void>}
    */
   revokeApiToken(apiTokenId) {
-    return this._deleteApiToken(apiTokenId).then(sendToAuthBridge({ apiConfig: this._apiConfig }));
+    return this._deleteApiToken(apiTokenId).then(sendToOauthBridge({ apiConfig: this._apiConfig }));
   }
 }
