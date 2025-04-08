@@ -69,7 +69,8 @@ export function observeContainer(container, signal) {
  */
 export function defineSmartComponentCore(definition, signal) {
   smartComponentDefinitions.add(definition);
-  updateEverything();
+  // TODO: decide if we want to keep that and comment if we do
+  setTimeout(updateEverything, 0);
 
   if (signal != null) {
     signal.addEventListener(

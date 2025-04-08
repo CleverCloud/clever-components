@@ -1518,7 +1518,12 @@ export const translations = {
   'cc-token-api-creation-form.config-step.main-heading': `Créer un nouveau token d'API`,
   'cc-token-api-creation-form.config-step.nav.name': `Configuration`,
   'cc-token-api-creation-form.copy-step.description': `Félicitations, votre token est maintenant créé ! Voici la clé à conserver pour pouvoir l'utiliser. Elle vous permettra d'autoriser de façon sécurisée et sélective des applications à accéder à vos services`,
+  'cc-token-api-creation-form.copy-step.form.label.token': `Votre token`,
+  'cc-token-api-creation-form.copy-step.link.api-token-list': `Go to the token list`,
+  'cc-token-api-creation-form.copy-step.main-heading': `Your API token is now created`,
   'cc-token-api-creation-form.copy-step.nav.name': `Récupération du Token`,
+  'cc-token-api-creation-form.copy-step.notice.message': () =>
+    sanitize`Attention&nbsp;: Pour des raisons de sécurité, cette clé API ne sera affichée qu'une seule fois. Assurez-vous de la copier et de la conserver dans un endroit sûr dès maintenant. Après sa création, vous ne pourrez plus la récupérer. Si vous perdez cette clé, vous devrez en créer une nouvelle.`,
   'cc-token-api-creation-form.error': `Une erreur est survenue lors du chargement des informations liées votre compte`,
   'cc-token-api-creation-form.validation-step.description': `Finalisez et confirmez votre nouveau token d'API en vous authentifiant.`,
   'cc-token-api-creation-form.validation-step.main-heading': `Confirmez votre identité`,

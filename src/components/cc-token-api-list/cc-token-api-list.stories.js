@@ -61,7 +61,7 @@ export const defaultStory = makeStory(conf, {
     {
       state: {
         type: 'loaded',
-        tokens: baseTokens,
+        apiTokens: baseTokens,
       },
     },
   ],
@@ -91,7 +91,7 @@ export const empty = makeStory(conf, {
     {
       state: {
         type: 'loaded',
-        tokens: [],
+        apiTokens: [],
       },
     },
   ],
@@ -103,7 +103,7 @@ export const waitingWithRevokingOneToken = makeStory(conf, {
     {
       state: {
         type: 'loaded',
-        tokens: baseTokens.map((token, index) => {
+        apiTokens: baseTokens.map((token, index) => {
           if (index === 2) {
             return {
               ...token,
@@ -128,7 +128,7 @@ export const simulationsWithLoadingSuccess = makeStory(conf, {
       ([component]) => {
         component.state = {
           type: 'loaded',
-          tokens: baseTokens,
+          apiTokens: baseTokens,
         };
       },
     ),
@@ -157,7 +157,7 @@ export const simulationsWithRevokingToken = makeStory(conf, {
     {
       state: {
         type: 'loaded',
-        tokens: baseTokens,
+        apiTokens: baseTokens,
       },
     },
   ],
@@ -168,7 +168,7 @@ export const simulationsWithRevokingToken = makeStory(conf, {
       ([component]) => {
         component.state = {
           type: 'loaded',
-          tokens: baseTokens.map((token, index) => {
+          apiTokens: baseTokens.map((token, index) => {
             if (index === 1) {
               return {
                 ...token,
@@ -186,7 +186,7 @@ export const simulationsWithRevokingToken = makeStory(conf, {
       ([component]) => {
         component.state = {
           type: 'loaded',
-          tokens: baseTokens.filter((_, index) => index !== 1),
+          apiTokens: baseTokens.filter((_, index) => index !== 1),
         };
       },
     ),

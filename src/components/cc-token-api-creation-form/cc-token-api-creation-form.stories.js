@@ -48,3 +48,28 @@ export const error = makeStory(conf, {
     },
   ],
 });
+
+// TODO: we would need to expose values (password & mfa) + rely on private property
+export const waitingWithCreatingToken = makeStory(conf, {
+  /** @type {Partial<CcTokenApiCreationForm>[]} */
+  items: [
+    {
+      state: {
+        type: 'creating',
+        isMfaEnabled: true,
+      },
+    },
+  ],
+});
+
+export const dataLoadedWithApiTokenCreated = makeStory(conf, {
+  /** @type {Partial<CcTokenApiCreationForm>[]} */
+  items: [
+    {
+      state: {
+        type: 'created',
+        token: 'this-is-my-super-secret-token-that-should-be-copied',
+      },
+    },
+  ],
+});

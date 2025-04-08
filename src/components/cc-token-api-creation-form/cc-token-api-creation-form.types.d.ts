@@ -1,6 +1,7 @@
 export type TokenApiCreationFormState =
   | TokenApiCreationFormStateIdle
   | TokenApiCreationFormStateCreating
+  | TokenApiCreationFormStateCreated
   | TokenApiCreationFormStateLoading
   | TokenApiCreationFormStateError;
 
@@ -12,6 +13,11 @@ export interface TokenApiCreationFormStateIdle {
 export interface TokenApiCreationFormStateCreating {
   type: 'creating';
   isMfaEnabled: boolean;
+}
+
+export interface TokenApiCreationFormStateCreated {
+  type: 'created';
+  token: string;
 }
 
 export interface TokenApiCreationFormStateLoading {

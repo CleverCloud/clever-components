@@ -3,6 +3,11 @@ kind: '🛠 Profile/<cc-token-api-list>'
 title: '💡 Smart'
 ---
 
+
+<cc-smart-container>
+    <cc-token-api-list></cc-token-api-list>
+<cc-smart-container>
+
 # 💡 Smart `<cc-token-api-list>`
 
 ## ℹ️ Details
