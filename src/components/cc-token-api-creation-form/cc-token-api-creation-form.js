@@ -156,6 +156,8 @@ export class CcTokenApiCreationForm extends LitElement {
     return expirationDate;
   }
 
+  _getPasswordAndMfaErrorMessage() {}
+
   /**
    * @param {TokenApiCreationStep} step
    * @returns {(event: Event) => void}
@@ -175,7 +177,16 @@ export class CcTokenApiCreationForm extends LitElement {
 
   /** @param {FormDataMap} formData */
   _onValidateFormSubmit(formData) {
-    console.log(formData, this._configFormData);
+    if (this.state.type !== 'idle') {
+      return;
+    }
+
+    // clean up potential error messages related to credentials
+    this.state = {
+      ...this.state,
+      hasCredentialsError: false,
+    };
+
     dispatchCustomEvent(this, 'api-key-create', {
       name: this._configFormData.name,
       description: this._configFormData.description,
@@ -219,6 +230,7 @@ export class CcTokenApiCreationForm extends LitElement {
               activeStep: this._activeStep,
               isMfaEnabled: this.state.isMfaEnabled,
               isWaiting: this.state.type === 'creating',
+              hasCredentialsError: this.state.hasCredentialsError,
             })
           : ''}
         ${this.state.type === 'created' ? this._renderCopyStep(this.state.token) : ''}
@@ -273,8 +285,15 @@ export class CcTokenApiCreationForm extends LitElement {
    * @param {TokenApiCreationStep} options.activeStep - The currently active step.
    * @param {boolean} options.isMfaEnabled - Whether Multi-Factor Authentication is enabled for the user.
    * @param {boolean} options.isWaiting - Whether the form is currently waiting for an operation to complete.
+   * @param {boolean} options.isWaiting - Whether the form is currently waiting for an operation to complete.
+   * @param {boolean} options.hasCredentialsError -
    */
-  _renderForm({ activeStep, isMfaEnabled, isWaiting }) {
+  _renderForm({ activeStep, isMfaEnabled, isWaiting, hasCredentialsError }) {
+    // TODO: discuss error handling with Marion (maybe a message at the top could be better for such cases)
+    const passwordAndMfaErrorMessage = hasCredentialsError
+      ? i18n('cc-token-api-creation-form.validation-step.form.error.credentials')
+      : null;
+
     // TODO: focus when active step changes (may be done in willUpdate)
     return html`
       <form
@@ -320,17 +339,19 @@ export class CcTokenApiCreationForm extends LitElement {
       <!-- TODO: handle submit to dispatch for smart -->
       <form slot="content" ?hidden=${activeStep !== 'validate'} ${formSubmit(this._onValidateFormSubmit.bind(this))}>
         <cc-input-text
-          label="${i18n('cc-token-api-creation-form.config-step.form.label.password')}"
+          label="${i18n('cc-token-api-creation-form.validation-step.form.label.password')}"
           name="password"
+          .errorMessage=${passwordAndMfaErrorMessage}
           required
           secret
         ></cc-input-text>
         ${isMfaEnabled
           ? html`
               <cc-input-text
-                label="${i18n('cc-token-api-creation-form.config-step.form.label.mfa')}"
+                label="${i18n('cc-token-api-creation-form.validation-step.form.label.mfa')}"
                 name="mfa-code"
                 required
+                .errorMessage=${passwordAndMfaErrorMessage}
               ></cc-input-text>
             `
           : ''}

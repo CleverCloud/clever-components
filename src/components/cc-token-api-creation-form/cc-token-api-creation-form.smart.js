@@ -1,6 +1,7 @@
+// @ts-expect-error FIXME: remove when clever-client exports types
 import { get as getSelf } from '@clevercloud/client/esm/api/v2/organisation.js';
 import { sendToApi } from '../../lib/send-to-api.js';
-import { sendToOauthBridge } from '../../lib/send-to-oauth-bridge.js';
+import { sendToAuthBridge } from '../../lib/send-to-oauth-bridge.js';
 import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
 import '../cc-smart-container/cc-smart-container.js';
 import './cc-token-api-creation-form.js';
@@ -17,25 +18,39 @@ defineSmartComponent({
     apiConfig: { type: Object },
   },
   /** @param {OnContextUpdateArgs} args */
-  onContextUpdate({ container, component, context, onEvent, updateComponent, signal }) {
+  onContextUpdate({ context, onEvent, updateComponent }) {
     const { apiConfig } = context;
     const api = new Api(apiConfig);
 
+    // TODO: reset form
     updateComponent('state', { type: 'loading' });
     api.getUserInfo().then(({ isMfaEnabled }) => {
-      updateComponent('state', { type: 'idle', isMfaEnabled });
+      updateComponent('state', { type: 'idle', isMfaEnabled, hasCredentialsError: false });
     });
 
     onEvent('cc-token-api-creation-form:api-key-create', ({ name, description, expirationDate, password, mfaCode }) => {
-      api.createApiToken({ name, description, expirationDate, password, mfaCode });
-      // .then((token) => {
-      //   // TODO: toast
-      //   updateComponent('state', { type: 'created', token });
-      // })
-      // .catch((error) => {
-      //   console.error(error);
-      //   // TODO: toast
-      // });
+      updateComponent('state', (state) => {
+        state.type = 'creating';
+      });
+
+      api
+        .createApiToken({ name, description, expirationDate, password, mfaCode })
+        .then((token) => {
+          // TODO: toast
+          updateComponent('state', { type: 'created', token });
+        })
+        .catch(
+          /** @param {Error & { response: Response }} error */
+          (error) => {
+            if (error.response.status === 401) {
+              // TODO: add error message below Password & MFA
+              updateComponent('state', { type: 'idle', isMfaEnabled: true, hasCredentialsError: true });
+            }
+
+            // else, idle + toast?
+            // TODO: toast
+          },
+        );
     });
   },
 });
@@ -56,7 +71,6 @@ class Api {
    * @param {string} options.expirationDate
    * @param {string} options.password
    * @param {string} options.mfaCode
-   * @returns {Promise<RequestInit>}
    */
   _prepareCreateApiTokenRequest({ name, description, expirationDate, password, mfaCode }) {
     return Promise.resolve({
@@ -74,22 +88,17 @@ class Api {
    * @param {string} options.expirationDate
    * @param {string} options.password
    * @param {string} options.mfaCode
-   * @returns
    */
   createApiToken({ name, description, expirationDate, password, mfaCode }) {
-    this._prepareCreateApiTokenRequest({
+    return this._prepareCreateApiTokenRequest({
       password,
       mfaCode,
       name,
       description,
       expirationDate,
     })
-      .then(sendToOauthBridge({ apiConfig: this._apiConfig }))
-      .then((response) => {
-        // Handle response
-        console.log(response);
-        return response;
-      });
+      .then(sendToAuthBridge({ apiConfig: this._apiConfig }))
+      .then(({ apiToken }) => apiToken);
   }
 
   /** @returns {Promise<{ isMfaEnabled: boolean }>} */
@@ -99,13 +108,6 @@ class Api {
       .then((user) => {
         this._userEmail = user.email;
         return { isMfaEnabled: user.preferredMFA === 'TOTP' };
-      });
-  }
-}
-};
-      });
-  }
-}
       });
   }
 }

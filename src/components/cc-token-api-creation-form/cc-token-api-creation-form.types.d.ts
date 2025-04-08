@@ -8,11 +8,13 @@ export type TokenApiCreationFormState =
 export interface TokenApiCreationFormStateIdle {
   type: 'idle';
   isMfaEnabled: boolean;
+  hasCredentialsError: boolean;
 }
 
 export interface TokenApiCreationFormStateCreating {
   type: 'creating';
   isMfaEnabled: boolean;
+  hasCredentialsError: false;
 }
 
 export interface TokenApiCreationFormStateCreated {
