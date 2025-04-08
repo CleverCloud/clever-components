@@ -19,9 +19,9 @@ import { dispatchCustomEvent } from './events.js';
  * @param {AbortSignal} [params.signal]
  * @param {number} [params.cacheDelay]
  * @param {number} [params.timeout]
- * @returns {(requestParams: RequestInit) => Promise<any>}
+ * @returns {(requestParams: any) => Promise<any>}
  */
-export function sendToOauthBridge({ apiConfig, signal, cacheDelay, timeout }) {
+export function sendToAuthBridge({ apiConfig, signal, cacheDelay, timeout }) {
   return (requestParams) => {
     const cacheParams = { ...apiConfig, ...requestParams };
     return withCache(cacheParams, cacheDelay, () => {
@@ -44,7 +44,7 @@ export function sendToOauthBridge({ apiConfig, signal, cacheDelay, timeout }) {
 
 /**
  * @param {Omit<ApiConfig, 'API_HOST'>} tokens
- * @returns {(requestParams: RequestInit) => RequestInit}
+ * @returns {(requestParams: any) => any}
  */
 export function addOauthHeaderPlaintext(tokens) {
   return function (requestParams) {

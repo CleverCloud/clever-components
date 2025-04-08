@@ -175,9 +175,13 @@ export class CcTokenApiCreationForm extends LitElement {
 
   /** @param {FormDataMap} formData */
   _onValidateFormSubmit(formData) {
+    console.log(formData, this._configFormData);
     dispatchCustomEvent(this, 'api-key-create', {
-      ...this._configFormData,
-      ...formData,
+      name: this._configFormData.name,
+      description: this._configFormData.description,
+      expirationDate: this._configFormData['expiration-date'],
+      password: formData.password,
+      mfaCode: formData['mfa-code'],
     });
   }
 
@@ -286,7 +290,7 @@ export class CcTokenApiCreationForm extends LitElement {
         ></cc-input-text>
         <cc-input-text
           label="${i18n('cc-token-api-creation-form.config-step.form.label.desc')}"
-          name="desc"
+          name="description"
         ></cc-input-text>
         <cc-select
           label="${i18n('cc-token-api-creation-form.config-step.form.label.expiration-duration')}"
@@ -316,16 +320,16 @@ export class CcTokenApiCreationForm extends LitElement {
       <!-- TODO: handle submit to dispatch for smart -->
       <form slot="content" ?hidden=${activeStep !== 'validate'} ${formSubmit(this._onValidateFormSubmit.bind(this))}>
         <cc-input-text
-          type="password"
           label="${i18n('cc-token-api-creation-form.config-step.form.label.password')}"
           name="password"
           required
+          secret
         ></cc-input-text>
         ${isMfaEnabled
           ? html`
               <cc-input-text
                 label="${i18n('cc-token-api-creation-form.config-step.form.label.mfa')}"
-                name="mfa"
+                name="mfa-code"
                 required
               ></cc-input-text>
             `

@@ -1,5 +1,5 @@
 import { notifyError, notifySuccess } from '../../lib/notifications.js';
-import { sendToOauthBridge } from '../../lib/send-to-oauth-bridge.js';
+import { sendToAuthBridge } from '../../lib/send-to-oauth-bridge.js';
 import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-smart-container/cc-smart-container.js';
@@ -122,7 +122,7 @@ class Api {
 
   /** @returns {Promise<RawApiToken[]>} */
   getApiTokens() {
-    return this._listApiTokens().then(sendToOauthBridge({ apiConfig: this._apiConfig }));
+    return this._listApiTokens().then(sendToAuthBridge({ apiConfig: this._apiConfig }));
   }
 
   /**
@@ -130,6 +130,6 @@ class Api {
    * @returns {Promise<void>}
    */
   revokeApiToken(apiTokenId) {
-    return this._deleteApiToken(apiTokenId).then(sendToOauthBridge({ apiConfig: this._apiConfig }));
+    return this._deleteApiToken(apiTokenId).then(sendToAuthBridge({ apiConfig: this._apiConfig }));
   }
 }
