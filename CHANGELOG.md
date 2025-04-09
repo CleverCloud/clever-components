@@ -5,6 +5,15 @@ title: 'Changelog'
 
 # Changelog
 
+## [18.3.0](https://github.com/CleverCloud/clever-components/compare/18.2.0...18.3.0) (2025-04-09)
+
+
+### 🚀 Features
+
+* **cc-addon-linked-apps:** update zones API call with `ownerId` ([1797718](https://github.com/CleverCloud/clever-components/commit/17977184b370213c82f9bf1d15c9eca8a88fdef4))
+* **cc-logs-*:** set a longer timeout for first log in cold mode ([e751fc4](https://github.com/CleverCloud/clever-components/commit/e751fc484093535f5f2ef138d11434eccb06087b))
+* **cc-token-session-list:** init ([b294142](https://github.com/CleverCloud/clever-components/commit/b2941425e17d382d0ef64fba4a71c3ce802201ba)), closes [#1360](https://github.com/CleverCloud/clever-components/issues/1360)
+
 ## [18.2.0](https://github.com/CleverCloud/clever-components/compare/18.1.0...18.2.0) (2025-03-31)
 
 
