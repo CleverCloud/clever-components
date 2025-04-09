@@ -10,6 +10,7 @@ import './cc-oauth-consumer-info.js';
  * @typedef {import('./cc-oauth-consumer-info.js').CcOauthConsumerInfo} CcOauthConsumerInfo
  * @typedef {import('./cc-oauth-consumer-info.types.js').OauthConsumerInfoStateLoaded} OauthConsumerInfoStateLoaded
  * @typedef {import('./cc-oauth-consumer-info.types.js').OauthConsumerRights} OauthConsumerRights
+ * @typedef {import('./cc-oauth-consumer-info.types.js').RawOauthConsumer} RawOauthConsumer
  * @typedef {import('../../lib/send-to-api.types.js').ApiConfig} ApiConfig
  * @typedef {import('../../lib/smart/smart-component.types.js').OnContextUpdateArgs<CcOauthConsumerInfo>} OnContextUpdateArgs
  */
@@ -94,28 +95,7 @@ class Api {
   }
 
   /**
-   * @return {Promise<{
-   * name: string,
-   * description: string,
-   * key: string,
-   * url: string,
-   * picture: string,
-   * baseUrl: string,
-   * rights: {
-   * almighty: boolean,
-   * access_organisations: boolean,
-   * manage_organisations: boolean,
-   * manage_organisations_services: boolean,
-   * manage_organisations_applications: boolean,
-   * manage_organisations_members: boolean,
-   * access_organisations_bills: boolean,
-   * access_organisations_credit_count: boolean,
-   * access_organisations_consumption_statistics: boolean,
-   * access_personal_information: boolean,
-   * manage_personal_information: boolean,
-   * manage_ssh_keys: boolean
-   * }
-   * }>}
+   * @return {Promise<RawOauthConsumer>}
    */
   getOauthConsumer() {
     return getOauthConsumer({ id: this._ownerId, key: this._key }).then(sendToApi({ apiConfig: this._apiConfig }));
@@ -129,28 +109,7 @@ class Api {
   }
 
   /**
-   * @return {Promise<[{name: string,
-   * description: string,
-   * key: string,
-   * url: string,
-   * picture: string,
-   * baseUrl: string,
-   * rights: { almighty: boolean,
-   * access_organisations: boolean,
-   * manage_organisations: boolean,
-   * manage_organisations_services: boolean,
-   * manage_organisations_applications: boolean,
-   * manage_organisations_members: boolean,
-   * access_organisations_bills: boolean,
-   * access_organisations_credit_count: boolean,
-   * access_organisations_consumption_statistics: boolean,
-   * access_personal_information: boolean,
-   * manage_personal_information: boolean,
-   * manage_ssh_keys: boolean
-   * }
-   * }, {
-   * secret: string
-   * }]>}
+   * @return {Promise<[RawOauthConsumer, {secret: string}]>}
    */
   getOauthConsumerWithSecret() {
     return Promise.all([this.getOauthConsumer(), this.getSecret()]);

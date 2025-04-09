@@ -45,3 +45,14 @@ export interface OauthConsumerInfoStateWaiting extends OauthConsumer {
 export interface OauthConsumerInfoStateError {
   type: 'error';
 }
+
+// this is what we retrieve directly from the API
+export interface RawOauthConsumer {
+  name: string;
+  description: string;
+  key: string;
+  url: string;
+  picture: string;
+  baseUrl: string;
+  rights: OauthConsumerRights;
+}
