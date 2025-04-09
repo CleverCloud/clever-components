@@ -13,7 +13,7 @@ class FakeLogsStream extends LogsStream {
    * @param {number} [waitingTimeout]
    */
   constructor(waitingTimeout) {
-    super(100, { waitingTimeout });
+    super(100, { waitingTimeout: { live: waitingTimeout, cold: waitingTimeout } });
     this._spies = {
       createStream: hanbi.spy(),
       updateStreamState: hanbi.spy(),
