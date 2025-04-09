@@ -1491,6 +1491,30 @@ export const translations = {
   'cc-toast.icon-alt.success': `Succès`,
   'cc-toast.icon-alt.warning': `Avertissement`,
   //#endregion
+  //#region cc-token-session-list
+  'cc-token-session-list.card.clever-team': `Équipe Clever Cloud`,
+  'cc-token-session-list.card.current-session': `Session actuelle`,
+  'cc-token-session-list.card.expires-soon': `Expire bientôt`,
+  'cc-token-session-list.card.human-friendly-date': /** @param {{ date: string|number }} _ */ ({ date }) =>
+    formatDatetime(date),
+  'cc-token-session-list.card.label.creation': () => sanitize`Création&nbsp;: `,
+  'cc-token-session-list.card.label.expiration': () => sanitize`Expiration&nbsp;: `,
+  'cc-token-session-list.card.label.last-used': () => sanitize`Dernière utilisation&nbsp;: `,
+  'cc-token-session-list.error': `Une erreur est survenue pendant le chargement des sessions`,
+  'cc-token-session-list.intro': () =>
+    sanitize`Ci-dessous la liste des sessions enregistrées pour votre compte, que vous pouvez révoquer (excepté celle en cours)&nbsp;:`,
+  'cc-token-session-list.main-heading': `Sessions de connexion à la Console`,
+  'cc-token-session-list.revoke-all-sessions': `Révoquer toutes les sessions`,
+  'cc-token-session-list.revoke-all-sessions.error': () =>
+    sanitize`Une erreur est survenue pendant la révocation de toutes les sessions.<br>Aucune session n'a été révoquée`,
+  'cc-token-session-list.revoke-all-sessions.partial-error': () =>
+    sanitize`Une erreur est survenue pendant la révocation de toutes les sessions.<br>Seules certaines sessions ont été révoquées avec succès`,
+  'cc-token-session-list.revoke-all-sessions.success': `Toutes les sessions ont été révoquées avec succès`,
+  'cc-token-session-list.revoke-session': /** @param {{ tokenNumber: number}} _ */ ({ tokenNumber }) =>
+    `Révoquer la session ${tokenNumber}`,
+  'cc-token-session-list.revoke-session.error': `Une erreur est survenue pendant la révocation de la session`,
+  'cc-token-session-list.revoke-session.success': `La session a été révoquée avec succès`,
+  //#endregion
   //#region cc-zone
   'cc-zone.country': /** @param {{code: string, name: string}} _ */ ({ code, name }) =>
     getCountryName(lang, code, name),
