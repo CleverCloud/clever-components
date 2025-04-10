@@ -1,24 +1,27 @@
-import { LitElement, html, css } from 'lit';
 import { Task } from '@lit/task';
+import { LitElement, css, html } from 'lit';
 import {
-  iconRemixAlertFill as iconWarning,
+  iconCleverBaselineLimited as iconBaselineLimited,
+  iconCleverBaselineNewly as iconBaselineNewly,
+  iconCleverBaselineWidely as iconBaselineWidely,
+} from '../../assets/cc-clever.icons.js';
+import {
+  iconRemixCalendarLine as iconDate,
   iconRemixCheckFill as iconSupported,
   iconRemixCloseFill as iconUnsupported,
   iconRemixHashtag as iconVersion,
-  iconRemixCalendarLine as iconDate,
+  iconRemixAlertFill as iconWarning,
 } from '../../assets/cc-remix.icons.js';
-import {
-  iconCleverBaselineNewly as iconBaselineNewly,
-  iconCleverBaselineWidely as iconBaselineWidely,
-  iconCleverBaselineLimited as iconBaselineLimited,
-} from '../../assets/cc-clever.icons.js';
 // @ts-ignore
-import untypedWebFeatures from './web-features.json';
+import '../cc-icon/cc-icon.js';
 import '../cc-loader/cc-loader.js';
 import '../cc-notice/cc-notice.js';
-import '../cc-icon/cc-icon.js';
 import '../cc-toggle/cc-toggle.js';
+import untypedWebFeatures from './web-features.json';
 
+// TODO: prop json
+// TODO: utitliser import type
+// TODO: smart & supprimer lit-task
 // TODO: finir style filtres & toggles
 // TODO: doc contrib
 // TODO: doc utilisation de ce composant / tableau
