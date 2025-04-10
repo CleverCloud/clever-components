@@ -1491,6 +1491,25 @@ export const translations = {
   'cc-toast.icon-alt.success': `Succès`,
   'cc-toast.icon-alt.warning': `Avertissement`,
   //#endregion
+  //#region cc-token-api-list
+  'cc-token-api-list.card.expires-soon': `Expire bientôt`,
+  'cc-token-api-list.card.human-friendly-date': /** @param {{ date: string|number }} _ */ ({ date }) =>
+    formatDatetime(date),
+  'cc-token-api-list.card.label.creation': () => sanitize`Création&nbsp;: `,
+  'cc-token-api-list.card.label.expiration': () => sanitize`Expiration&nbsp;: `,
+  'cc-token-api-list.card.token-id-icon.a11y-name': `Identifiant du token d'API`,
+  'cc-token-api-list.create-token': `Créer un nouveau token`,
+  'cc-token-api-list.empty': () =>
+    sanitize`Vous n'avez aucun token API. Cliquez sur le bouton ci-dessous pour créer un nouveau token&nbsp;:`,
+  'cc-token-api-list.error': `Une erreur est survenue pendant le chargement des tokens d'API`,
+  'cc-token-api-list.intro': () =>
+    sanitize`Ci-dessous la liste de tous vos tokens d'API, que vous pouvez révoquer individuellement&nbsp;:`,
+  'cc-token-api-list.main-heading': `Tokens d'API`,
+  'cc-token-api-list.revoke-token': /** @param {{ tokenName: string}} _ */ ({ tokenName }) =>
+    `Révoquer le token API "${tokenName}"`,
+  'cc-token-api-list.revoke-token.error': `Une erreur est survenue pendant la révocation du token d'API`,
+  'cc-token-api-list.revoke-token.success': `Le token d'API a été révoqué avec succès`,
+  //#endregion
   //#region cc-token-session-list
   'cc-token-session-list.card.clever-team': `Équipe Clever Cloud`,
   'cc-token-session-list.card.current-session': `Session actuelle`,
