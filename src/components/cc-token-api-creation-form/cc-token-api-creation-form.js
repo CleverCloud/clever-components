@@ -328,9 +328,9 @@ export class CcTokenApiCreationForm extends LitElement {
             .value="${this._expirationDuration}"
             @cc-select:input=${this._onExpirationDurationInput}
           >
-            ${this._isExpirationDateActive
-              ? html`<p slot="help">Specify the expiration date using the next form control</p>`
-              : ''}
+            <p slot="help" ?hidden=${!this._isExpirationDateActive}>
+              Specify the expiration date using the next form control
+            </p>
           </cc-select>
           <cc-input-date
             label="${i18n('cc-token-api-creation-form.config-step.form.label.expiration-date')}"
@@ -341,7 +341,12 @@ export class CcTokenApiCreationForm extends LitElement {
             .min="${new Date(Date.now() + 15 * 60 * 1000)}"
             .customErrorMessages=${this._expirationDateErrorMessages}
           >
-            <p slot="help">${i18n('cc-token-api-creation-form.config-step.form.label.expiration-date.min')}</p>
+            ${this._isExpirationDateActive
+              ? html`
+                  <p slot="help">${i18n('cc-token-api-creation-form.config-step.form.help.expiration-date.min')}</p>
+                `
+              : ''}
+            <p slot="help">${i18n('cc-token-api-creation-form.config-step.form.help.expiration-date.format')}</p>
           </cc-input-date>
         </div>
         <div class="form__actions">
@@ -439,11 +444,12 @@ export class CcTokenApiCreationForm extends LitElement {
         position: relative;
       }
 
+      /* TODO: switch to border */
       .creation-steps-nav__step-item::before {
         background-color: currentcolor;
-        border-radius: 20px;
+        border-radius: 40px;
         content: '';
-        height: 2px;
+        height: 3px;
         left: 0;
         position: absolute;
         top: 0;
@@ -451,7 +457,6 @@ export class CcTokenApiCreationForm extends LitElement {
       }
 
       .creation-steps-nav__step-item a {
-        color: var(--cc-color-text);
         text-decoration: none;
       }
 
@@ -472,8 +477,7 @@ export class CcTokenApiCreationForm extends LitElement {
 
       .form__expiration cc-input-date,
       .form__expiration cc-select {
-        /* TODO: auto or 18em & shrink? */
-        flex: 1 0 0;
+        flex: 1 1 18em;
       }
 
       .form__actions {

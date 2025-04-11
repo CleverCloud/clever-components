@@ -1509,9 +1509,11 @@ export const translations = {
     date,
   }) =>
     sanitize`La date d'expiration doit être au moins 15 minutes après l'heure actuelle.<br>Par exemple&nbsp;: ${date}`,
+  'cc-token-api-creation-form.config-step.form.help.expiration-date.format': () =>
+    sanitize`Format&nbsp;: AAAA-MM-JJ HH:MM:SS`,
+  'cc-token-api-creation-form.config-step.form.help.expiration-date.min': `Au moins 15 minutes à partir de maintenant`,
   'cc-token-api-creation-form.config-step.form.label.desc': `Description`,
-  'cc-token-api-creation-form.config-step.form.label.expiration-date': `Date d'expiration (YYYY-MM-DD HH:MM:SS)`,
-  'cc-token-api-creation-form.config-step.form.label.expiration-date.min': `Au moins 15 minutes à partir de maintenant`,
+  'cc-token-api-creation-form.config-step.form.label.expiration-date': `Date d'expiration`,
   'cc-token-api-creation-form.config-step.form.label.expiration-duration': `Durée avant expiration`,
   'cc-token-api-creation-form.config-step.form.label.name': `Nom du token`,
   'cc-token-api-creation-form.config-step.main-heading': `Créer un nouveau token d'API`,
