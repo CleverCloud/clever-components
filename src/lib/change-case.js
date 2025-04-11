@@ -66,3 +66,30 @@ function pascalCaseTransform(input, enableDigitPrefix = true) {
 
   return `${firstChar.toUpperCase()}${lowerChars}`;
 }
+
+/**
+ * camelCase('string'); //=> 'string'
+ * camelCase('dot.case'); //=> 'dotCase'
+ * camelCase('PascalCase'); //=> 'pascalCase'
+ * camelCase('snake_case'); //=> 'snakeCase'
+ * camelCase('version 1.2.10'); //=> 'version_1_2_10'
+ * @param {string} input
+ * @returns {string}
+ */
+export function camelCase(input) {
+  return stringToWordArray(input)
+    .map((word, index) => {
+      if (index === 0) {
+        return word.toLowerCase();
+      }
+      const firstChar = word.charAt(0).toUpperCase();
+      const restChars = word.slice(1).toLowerCase();
+
+      if (/^\d/.test(firstChar)) {
+        return `_${firstChar}${restChars}`;
+      }
+
+      return `${firstChar}${restChars}`;
+    })
+    .join('');
+}
