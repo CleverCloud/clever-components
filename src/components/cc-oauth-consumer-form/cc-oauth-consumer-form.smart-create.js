@@ -1,5 +1,6 @@
 // @ts-expect-error FIXME: remove when clever-client exports types
 import { create } from '@clevercloud/client/esm/api/v2/oauth-consumer.js';
+import { snakeCase } from '../../lib/change-case.js';
 import { notifyError, notifySuccess } from '../../lib/notifications.js';
 import { sendToApi } from '../../lib/send-to-api.js';
 import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
@@ -30,6 +31,7 @@ defineSmartComponent({
 
     onEvent('cc-oauth-consumer-form:create', (data) => {
       updateComponent('state', (state) => {
+        // console.log('le composant passent en creating');
         state.type = 'creating';
       });
       api
@@ -66,22 +68,28 @@ class Api {
   createOauthConsumer(data) {
     const newOauthConsumer = {
       name: data.name,
-      url: data.homePageUrl,
-      baseUrl: data.appBaseUrl,
+      url: data.url,
+      baseUrl: data.baseUrl,
       description: data.description,
-      picture: data.image,
+      picture: data.picture,
       rights: {
-        access_organisations: data.rights.access_organisations,
-        manage_organisations: data.rights.manage_organisations,
-        manage_organisations_services: data.rights.manage_organisations_services,
-        manage_organisations_applications: data.rights.manage_organisations_applications,
-        manage_organisations_members: data.rights.manage_organisations_members,
-        access_organisations_bills: data.rights.access_organisations_bills,
-        access_organisations_credit_count: data.rights.access_organisations_credit_count,
-        access_organisations_consumption_statistics: data.rights.access_organisations_consumption_statistics,
-        access_personal_information: data.rights.access_personal_information,
-        manage_personal_information: data.rights.manage_personal_information,
-        manage_ssh_keys: data.rights.manage_ssh_keys,
+        access_organisations: data.rights.accessOrganisations,
+        manage_organisations: data.rights.manageOrganisations,
+        manage_organisations_services: data.rights.manageOrganisationsServices,
+        manage_organisations_applications: data.rights.manageOrganisationsApplications,
+        manage_organisations_members: data.rights.manageOrganisationsMembers,
+        access_organisations_bills: data.rights.accessOrganisationsBills,
+        access_organisations_credit_count: data.rights.accessOrganisationsCreditCount,
+        access_organisations_consumption_statistics: data.rights.accessOrganisationsConsumptionStatistics,
+        access_personal_information: data.rights.accessPersonalInformation,
+        manage_personal_information: data.rights.managePersonalInformation,
+        manage_ssh_keys: data.rights.manageSshKeys,
+        ...Object.fromEntries(
+          Object.entries(data.rights).map(([name, isEnabled]) => {
+            const snakeCaseName = snakeCase(name);
+            return [snakeCaseName, isEnabled];
+          }),
+        ),
       },
     };
     console.log(data);

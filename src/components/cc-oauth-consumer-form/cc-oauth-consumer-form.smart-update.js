@@ -1,6 +1,7 @@
 // @ts-expect-error FIXME: remove when clever-client exports types
 import { get as getOauthConsumer, getSecret, remove, update } from '@clevercloud/client/esm/api/v2/oauth-consumer.js';
-import { camelCase } from '../../lib/change-case.js';
+import { camelCase, snakeCase } from '../../lib/change-case.js';
+import { notifyError, notifySuccess } from '../../lib/notifications.js';
 import { sendToApi } from '../../lib/send-to-api.js';
 import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
 import '../cc-smart-container/cc-smart-container.js';
@@ -10,7 +11,7 @@ import './cc-oauth-consumer-form.js';
  * @typedef {import('../../lib/send-to-api.types.js').ApiConfig} ApiConfig
  * @typedef {import('./cc-oauth-consumer-form.types.js').OauthConsumer} OauthConsumer
  * @typedef {import('./cc-oauth-consumer-form.types.js').OauthConsumerFormStateIdleUpdate} OauthConsumerFormStateIdleUpdate
- *
+ * @typedef {import('./cc-oauth-consumer-form.types.js').RawUpdatedOauthConsumer} RawUpdatedOauthConsumer
  * @typedef {import('./cc-oauth-consumer-form.js').CcOauthConsumerForm} CcOauthConsumerForm
  * @typedef {import('../../lib/smart/smart-component.types.js').OnContextUpdateArgs<CcOauthConsumerForm>} OnContextUpdateArgs
  */
@@ -72,7 +73,7 @@ defineSmartComponent({
         });
       });
 
-    /* onEvent('cc-oauth-consumer-form:update', (data) => {
+    onEvent('cc-oauth-consumer-form:update', (data) => {
       updateComponent('state', (state) => {
         state.type = 'updating';
       });
@@ -90,9 +91,9 @@ defineSmartComponent({
             state.type = 'idle-update';
           });
         });
-    }); */
+    });
 
-    /* onEvent('cc-oauth-consumer-form:delete', () => {
+    onEvent('cc-oauth-consumer-form:delete', () => {
       updateComponent('state', (state) => {
         state.type = 'deleting';
       });
@@ -109,7 +110,7 @@ defineSmartComponent({
             state.type = 'idle-update';
           });
         });
-    }); */
+    });
   },
 });
 
@@ -140,17 +141,37 @@ class Api {
   }
 
   /**
-   * @param {OauthConsumer} data
+   * @param {RawUpdatedOauthConsumer} data
    * @return {Promise<any>}
    */
   updateOauthConsumer(data) {
+    const rights = {
+      almighty: false,
+      access_organisations: false,
+      access_organisations_bills: false,
+      access_organisations_consumption_statistics: false,
+      access_organisations_credit_count: false,
+      access_personal_information: false,
+      manage_organisations: false,
+      manage_organisations_applications: false,
+      manage_organisations_members: false,
+      manage_organisations_services: false,
+      manage_personal_information: false,
+      manage_ssh_keys: false,
+      ...Object.fromEntries(
+        Object.entries(data.rights).map(([name, isEnabled]) => {
+          const snakeCaseName = snakeCase(name);
+          return [snakeCaseName, isEnabled];
+        }),
+      ),
+    };
     const updatedOauthConsumer = {
       name: data.name,
       url: data.url,
       baseUrl: data.baseUrl,
       description: data.description,
       picture: data.picture,
-      rights: data.rights,
+      rights,
     };
     return update({ id: this._ownerId, key: this._key }, updatedOauthConsumer).then(
       sendToApi({ apiConfig: this._apiConfig }),

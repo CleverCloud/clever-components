@@ -12,14 +12,45 @@ const conf = {
 };
 
 /**
- * @typedef {import('./cc-oauth-consumer-form.types.js').OAuthConsumerFormContextType} OAuthConsumerFormContextType
+ * @typedef {import('./cc-oauth-consumer-form.types.js').OauthConsumerFormStateIdleCreate} OauthConsumerFormStateIdleCreate
+ * @typedef {import('./cc-oauth-consumer-form.types.js').OauthConsumer} OauthConsumer
+ * @typedef {import('./cc-oauth-consumer-form.types.js').OauthConsumerFormStateUpdating} OauthConsumerFormStateUpdating
+ * @typedef {import('./cc-oauth-consumer-form.types.js').OauthConsumerFormStateCreating} OauthConsumerFormStateCreating
+ * @typedef {import('./cc-oauth-consumer-form.types.js').OauthConsumerFormStateIdleUpdate} OauthConsumerFormStateIdleUpdate
+ * @typedef {import('./cc-oauth-consumer-form.types.js').OauthConsumerFormStateLoading} OauthConsumerFormStateLoading
+ * @typedef {import('./cc-oauth-consumer-form.types.js').OauthConsumerFormStateError} OauthConsumerFormStateError
+ * @typedef {import('./cc-oauth-consumer-form.types.js').OauthConsumerFormStateDeleting} OauthConsumerFormStateDeleting
  */
+
+/** @type {OauthConsumer} */
+const oAuthConsumerData = {
+  name: 'My OAuth Consumer',
+  url: 'https://www.example.com/home',
+  baseUrl: 'https://www.example.com',
+  description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit.',
+  picture: 'https://assets.clever-cloud.com/infra/clever-cloud-square.svg',
+  rights: {
+    almighty: false,
+    accessOrganisations: true,
+    accessOrganisationsBills: false,
+    accessOrganisationsConsumptionStatistics: true,
+    accessOrganisationsCreditCount: true,
+    accessPersonalInformation: false,
+    manageOrganisations: true,
+    manageOrganisationsApplications: true,
+    manageOrganisationsMembers: false,
+    manageOrganisationsServices: false,
+    managePersonalInformation: true,
+    manageSshKeys: true,
+  },
+  key: 'hF6N73B2b6Tvp1rDxp',
+  secret: 'zKod6jV82SCKdG1gfY',
+};
 
 export const defaultStory = makeStory(conf, {
   items: [
     {
-      /** @type {OAuthConsumerFormContextType} */
-      context: 'create',
+      /** @type {OauthConsumerFormStateIdleCreate} */
       state: {
         type: 'idle-create',
       },
@@ -30,8 +61,7 @@ export const defaultStory = makeStory(conf, {
 export const create = makeStory(conf, {
   items: [
     {
-      /** @type {OAuthConsumerFormContextType} */
-      context: 'create',
+      /** @type {OauthConsumerFormStateIdleCreate} */
       state: {
         type: 'idle-create',
       },
@@ -42,29 +72,10 @@ export const create = makeStory(conf, {
 export const update = makeStory(conf, {
   items: [
     {
-      /** @type {OAuthConsumerFormContextType} */
-      context: 'update',
+      /** @type {OauthConsumerFormStateIdleUpdate} */
       state: {
         type: 'idle-update',
-        name: 'my-oauth-consumer',
-        homePageUrl: 'http://example.com',
-        appBaseUrl: 'http://example.com/oauth',
-        description:
-          'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab accusantium, assumenda beatae cumque eaque eos error eveniet id illum iure laboriosam maxime natus nisi obcaecati pariatur possimus reprehenderit sint tempora.',
-        image: 'http://example.com/logo.jpg',
-        rights: [
-          { name: 'access_organisations', isEnabled: true },
-          { name: 'access_organisations_bills', isEnabled: false },
-          { name: 'access_organisations_consumption_statistics', isEnabled: true },
-          { name: 'access_organisations_credit_count', isEnabled: true },
-          { name: 'access_personal_information', isEnabled: true },
-          { name: 'manage_organisations', isEnabled: true },
-          { name: 'manage_organisations_applications', isEnabled: true },
-          { name: 'manage_organisations_members', isEnabled: false },
-          { name: 'manage_organisations_services', isEnabled: true },
-          { name: 'manage_personal_information', isEnabled: true },
-          { name: 'manage_ssh_keys', isEnabled: true },
-        ],
+        ...oAuthConsumerData,
       },
     },
   ],
@@ -73,10 +84,10 @@ export const update = makeStory(conf, {
 export const creating = makeStory(conf, {
   items: [
     {
-      /** @type {OAuthConsumerFormContextType} */
-      context: 'create',
+      /** @type {OauthConsumerFormStateCreating} */
       state: {
         type: 'creating',
+        ...oAuthConsumerData,
       },
     },
   ],
@@ -85,10 +96,10 @@ export const creating = makeStory(conf, {
 export const updating = makeStory(conf, {
   items: [
     {
-      /** @type {OAuthConsumerFormContextType} */
-      context: 'update',
+      /** @type {OauthConsumerFormStateUpdating} */
       state: {
         type: 'updating',
+        ...oAuthConsumerData,
       },
     },
   ],
@@ -97,6 +108,7 @@ export const updating = makeStory(conf, {
 export const loading = makeStory(conf, {
   items: [
     {
+      /** @type {OauthConsumerFormStateLoading} */
       state: {
         type: 'loading',
       },
@@ -107,6 +119,7 @@ export const loading = makeStory(conf, {
 export const error = makeStory(conf, {
   items: [
     {
+      /** @type {OauthConsumerFormStateError} */
       state: {
         type: 'error',
       },
@@ -117,8 +130,10 @@ export const error = makeStory(conf, {
 export const deleting = makeStory(conf, {
   items: [
     {
+      /** @type {OauthConsumerFormStateDeleting} */
       state: {
         type: 'deleting',
+        ...oAuthConsumerData,
       },
     },
   ],

@@ -10,7 +10,7 @@ export interface OauthConsumer {
 }
 
 export type OauthConsumerRights = {
-  almighty: boolean;
+  almighty: boolean; // nouvelle propriété, définie à false par défaut
   accessOrganisations: boolean;
   accessOrganisationsBills: boolean;
   accessOrganisationsConsumptionStatistics: boolean;
@@ -37,7 +37,7 @@ export interface OauthConsumerFormStateIdleCreate {
   type: 'idle-create';
 }
 
-export interface OauthConsumerFormStateCreating {
+export interface OauthConsumerFormStateCreating extends OauthConsumer {
   type: 'creating';
 }
 
@@ -59,4 +59,14 @@ export interface OauthConsumerFormStateLoading {
 
 export interface OauthConsumerFormStateError {
   type: 'error';
+}
+
+// this is what we retrieve directly from the API
+export interface RawUpdatedOauthConsumer {
+  name: string;
+  description: string;
+  url: string;
+  picture: string;
+  baseUrl: string;
+  rights: OauthConsumerRights;
 }

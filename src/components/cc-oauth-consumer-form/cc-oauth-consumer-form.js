@@ -16,6 +16,8 @@ import '../cc-notice/cc-notice.js';
  * @typedef {import('./cc-oauth-consumer-form.types.js').OauthConsumerFormState} OAuthConsumerFormState
  * @typedef {import('./cc-oauth-consumer-form.types.js').OauthConsumerFormStateDeleting} OAuthConsumerFormStateDeleting
  * @typedef {import('./cc-oauth-consumer-form.types.js').OauthConsumer} OauthConsumer
+ * @typedef {import('./cc-oauth-consumer-form.types.js').OauthConsumerRights} OauthConsumerRights
+ * @typedef {import('./cc-oauth-consumer-form.types.js').RawUpdatedOauthConsumer} RawUpdatedOauthConsumer
  * @typedef {import('lit').TemplateResult<1>} TemplateResult
  * @typedef {import('lit/directives/ref.js').Ref<HTMLFormElement>} HTMLFormElementRef
  * @typedef {import('../../lib/events.types.js').EventWithTarget<HTMLInputElement|HTMLTextAreaElement>} HTMLInputOrTextareaEvent
@@ -23,31 +25,31 @@ import '../cc-notice/cc-notice.js';
  * @typedef {import('../../lib/form/validation.types.js').Validity} Validity
  */
 
-const OAUTH_CONSUMER_RIGHTS = [
-  { name: 'access_organisations', label: 'access_organisations', section: 'access' },
-  { name: 'access_organisations_bills', label: 'access_organisations_bills', section: 'access' },
-  {
-    name: 'access_organisations_consumption_statistics',
-    label: 'access_organisations_consumption_statistics',
-    section: 'access',
-  },
-  {
-    name: 'access_organisations_credit_count',
-    label: 'access_organisations_credit_count',
-    section: 'access',
-  },
-  { name: 'access_personal_information', label: 'access_personal_information', section: 'access' },
-  { name: 'manage_organisations', label: 'manage_organisations', section: 'manage' },
-  {
-    name: 'manage_organisations_applications',
-    label: 'manage_organisations_applications',
-    section: 'manage',
-  },
-  { name: 'manage_organisations_members', label: 'manage_organisations_members', section: 'manage' },
-  { name: 'manage_organisations_services', label: 'manage_organisations_services', section: 'manage' },
-  { name: 'manage_personal_information', label: 'manage_personal_information', section: 'manage' },
-  { name: 'manage_ssh_keys', label: 'manage_ssh_keys', section: 'manage' },
-];
+// const OAUTH_CONSUMER_RIGHTS = [
+//   { name: 'access_organisations', label: 'access_organisations', section: 'access' },
+//   { name: 'access_organisations_bills', label: 'access_organisations_bills', section: 'access' },
+//   {
+//     name: 'access_organisations_consumption_statistics',
+//     label: 'access_organisations_consumption_statistics',
+//     section: 'access',
+//   },
+//   {
+//     name: 'access_organisations_credit_count',
+//     label: 'access_organisations_credit_count',
+//     section: 'access',
+//   },
+//   { name: 'access_personal_information', label: 'access_personal_information', section: 'access' },
+//   { name: 'manage_organisations', label: 'manage_organisations', section: 'manage' },
+//   {
+//     name: 'manage_organisations_applications',
+//     label: 'manage_organisations_applications',
+//     section: 'manage',
+//   },
+//   { name: 'manage_organisations_members', label: 'manage_organisations_members', section: 'manage' },
+//   { name: 'manage_organisations_services', label: 'manage_organisations_services', section: 'manage' },
+//   { name: 'manage_personal_information', label: 'manage_personal_information', section: 'manage' },
+//   { name: 'manage_ssh_keys', label: 'manage_ssh_keys', section: 'manage' },
+// ];
 
 const URL_VALIDATOR = {
   /**
@@ -101,7 +103,7 @@ export class CcOauthConsumerForm extends LitElement {
    */
   _selectAllAccessCheckboxes(e) {
     const selectAllCheckbox = e.target;
-    const checkboxes = this.shadowRoot.querySelectorAll('.access-checkboxes');
+    const checkboxes = this.shadowRoot.querySelectorAll('.access-rights-section .right');
     /** @type {HTMLInputElement} */
     checkboxes.forEach((checkbox) => {
       checkbox.checked = selectAllCheckbox.checked;
@@ -113,37 +115,69 @@ export class CcOauthConsumerForm extends LitElement {
    */
   _selectAllManageCheckboxes(e) {
     const selectAllCheckbox = e.target;
-    const checkboxes = this.shadowRoot.querySelectorAll('.manage-checkboxes');
+    const checkboxes = this.shadowRoot.querySelectorAll('.manage-rights-section .right');
     checkboxes.forEach((checkbox) => {
       checkbox.checked = selectAllCheckbox.checked;
     });
   }
 
   /**
-   * @param {FormDataMap} data
+   *  @param {Object} data -
+   *  * @param {string} data.name
+   *  * @param {string} data.url
+   *  * @param {string} data.baseUrl
+   *  * @param {string} data.description
+   *  * @param {string} data.picture
+   *  * @param {Object.<string, boolean>} data.rights
    */
   _onFormSubmit(data) {
     this._hasCheckboxGroupError = false;
+
+    /** @type {OauthConsumerRights} */
+    const defaultRights = {
+      almighty: false,
+      accessOrganisations: false,
+      accessOrganisationsBills: false,
+      accessOrganisationsConsumptionStatistics: false,
+      accessOrganisationsCreditCount: false,
+      accessPersonalInformation: false,
+      manageOrganisations: false,
+      manageOrganisationsApplications: false,
+      manageOrganisationsMembers: false,
+      manageOrganisationsServices: false,
+      managePersonalInformation: false,
+      manageSshKeys: false,
+    };
+
+    /** @type {OauthConsumerRights} */
+    const rights = Object.fromEntries(
+      Object.entries(defaultRights).map(([key, defaultValue]) => {
+        const checkboxValue = data.rights?.[key];
+        const isChecked = checkboxValue === true;
+        return [key, isChecked ? true : defaultValue];
+      }),
+    );
+
+    /** @type {RawUpdatedOauthConsumer} */
     const oauthConsumer = {
       name: data.name,
-      homePageUrl: data.homePageUrl,
-      appBaseUrl: data.appBaseUrl,
+      url: data.url,
+      baseUrl: data.baseUrl,
       description: data.description,
-      image: data.image,
-      rights: Object.fromEntries(
-        OAUTH_CONSUMER_RIGHTS.map((right) => {
-          return [right.name, data?.manage?.includes(right.name) || data?.access?.includes(right.name)];
-        }),
-      ),
+      picture: data.picture,
+      rights,
     };
 
     if (this.state.type === 'idle-create') {
       this.state = {
         type: 'idle-create',
         ...oauthConsumer,
+        key: this.state.key,
+        secret: this.state.secret,
       };
       dispatchCustomEvent(this, 'create', oauthConsumer);
     }
+
     if (this.state.type === 'idle-update') {
       this.state = {
         type: 'idle-update',
@@ -161,27 +195,22 @@ export class CcOauthConsumerForm extends LitElement {
   _validateCheckboxGroup() {
     const data = getFormDataMap(this._formRef.value);
     //console.log(data);
-    if (data.access == null && data.manage == null) {
-      //console.log('erreur');
-      const selection1 = this.shadowRoot.querySelector('#access-options-container input[type="checkbox"][name]');
-      const selection2 = this.shadowRoot.querySelector('#manage-options-container input[type="checkbox"][name]');
+    const hasCheckedBox = Object.keys(data).some((key) => key.startsWith('access') || key.startsWith('manage'));
 
+    //console.log('erreur');
+    const selection1 = this.shadowRoot.querySelector('#access-options-container input[type="checkbox"][name]');
+    const selection2 = this.shadowRoot.querySelector('#manage-options-container input[type="checkbox"][name]');
+
+    if (!hasCheckedBox) {
       selection1.setCustomValidity('error');
       selection2.setCustomValidity('error');
     } else {
-      const selection1 = this.shadowRoot.querySelector('#access-options-container input[type="checkbox"][name]');
-      const selection2 = this.shadowRoot.querySelector('#manage-options-container input[type="checkbox"][name]');
-
       selection1.setCustomValidity('');
       selection2.setCustomValidity('');
-
-      console.log('ok');
     }
   }
 
   _onFormInvalid(validationResult) {
-    console.log(validationResult);
-
     const isCheckboxGroupValid = validationResult.every(({ name, validity }) => {
       console.log(name);
       console.log(validity);
@@ -200,32 +229,32 @@ export class CcOauthConsumerForm extends LitElement {
   }
 
   /**
-   * @param {string|null} label
+   * @param {keyof OauthConsumerRights} name
    * @returns {string|Node}
    */
-  _getLabel(label) {
-    switch (label) {
-      case 'access_organisations':
+  _getName(name) {
+    switch (name) {
+      case 'accessOrganisations':
         return i18n('cc-oauth-consumer-info.rights.access-organisations');
-      case 'access_organisations_bills':
+      case 'accessOrganisationsBills':
         return i18n('cc-oauth-consumer-info.rights.access-organisations-bills');
-      case 'access_organisations_consumption_statistics':
+      case 'accessOrganisationsConsumptionStatistics':
         return i18n('cc-oauth-consumer-info.rights.access-organisations-consumption-statistics');
-      case 'access_organisations_credit_count':
+      case 'accessOrganisationsCreditCount':
         return i18n('cc-oauth-consumer-info.rights.access-organisations-credit-count');
-      case 'access_personal_information':
+      case 'accessPersonalInformation':
         return i18n('cc-oauth-consumer-info.rights.access-personal-information');
-      case 'manage_organisations':
+      case 'manageOrganisations':
         return i18n('cc-oauth-consumer-info.rights.manage-organisations');
-      case 'manage_organisations_applications':
+      case 'manageOrganisationsApplications':
         return i18n('cc-oauth-consumer-info.rights.manage-organisations-applications');
-      case 'manage_organisations_members':
+      case 'manageOrganisationsMembers':
         return i18n('cc-oauth-consumer-info.rights.manage-organisations-members');
-      case 'manage_organisations_services':
+      case 'manageOrganisationsServices':
         return i18n('cc-oauth-consumer-info.rights.manage-organisations-services');
-      case 'manage_personal_information':
+      case 'managePersonalInformation':
         return i18n('cc-oauth-consumer-info.rights.manage-personal-information');
-      case 'manage_ssh_keys':
+      case 'manageSshKeys':
         return i18n('cc-oauth-consumer-info.rights.manage-ssh-keys');
     }
   }
@@ -282,7 +311,7 @@ export class CcOauthConsumerForm extends LitElement {
             .value=${this.state?.name}
           ></cc-input-text>
           <cc-input-text
-            name="homePageUrl"
+            name="url"
             label="${i18n('cc-oauth-consumer-form.info.homepage-url.label')}"
             required
             placeholder="${i18n('cc-oauth-consumer-form.info.place-holder')}"
@@ -293,7 +322,7 @@ export class CcOauthConsumerForm extends LitElement {
             .customErrorMessages=${this._customErrorMessages}
           ></cc-input-text>
           <cc-input-text
-            name="appBaseUrl"
+            name="baseUrl"
             label="${i18n('cc-oauth-consumer-form.info.base-url.label')}"
             required
             placeholder="${i18n('cc-oauth-consumer-form.info.place-holder')}"
@@ -314,7 +343,7 @@ export class CcOauthConsumerForm extends LitElement {
             .value=${this.state?.description}
           ></cc-input-text>
           <cc-input-text
-            name="image"
+            name="picture"
             label="${i18n('cc-oauth-consumer-form.info.image.label')}"
             required
             placeholder="${i18n('cc-oauth-consumer-form.info.place-holder')}"
@@ -344,7 +373,12 @@ export class CcOauthConsumerForm extends LitElement {
                   />
                   <label for="select-all-access">${i18n('cc-oauth-consumer-form.auth.access.select-all')}</label>
                 </div>
-                <div class="access-options">${this._renderRightsSection('access')}</div>
+                <div class="access-rights-section">
+                  ${this._renderRight('accessOrganisations')} ${this._renderRight('accessOrganisationsBills')}
+                  ${this._renderRight('accessOrganisationsConsumptionStatistics')}
+                  ${this._renderRight('accessOrganisationsCreditCount')}
+                  ${this._renderRight('accessPersonalInformation')}
+                </div>
               </fieldset>
               <fieldset id="manage-options-container">
                 <legend class="visually-hidden">${i18n('cc-oauth-consumer-form.auth.legend.manage')}</legend>
@@ -357,7 +391,11 @@ export class CcOauthConsumerForm extends LitElement {
                   />
                   <label for="select-all-manage">${i18n('cc-oauth-consumer-form.auth.manage.select-all')}</label>
                 </div>
-                <div class="manage-options">${this._renderRightsSection('manage')}</div>
+                <div class="manage-rights-section">
+                  ${this._renderRight('manageOrganisations')} ${this._renderRight('manageOrganisationsApplications')}
+                  ${this._renderRight('manageOrganisationsMembers')} ${this._renderRight('manageOrganisationsServices')}
+                  ${this._renderRight('managePersonalInformation')} ${this._renderRight('manageSshKeys')}
+                </div>
               </fieldset>
             </div>
           </fieldset>
@@ -401,6 +439,7 @@ export class CcOauthConsumerForm extends LitElement {
     `;
   }
 
+  /** @param {OauthConsumer} oauthConsumer */
   _renderDangerZone(oauthConsumer) {
     const isWaiting =
       this.state.type === 'creating' || this.state.type === 'updating' || this.state.type === 'deleting';
@@ -428,39 +467,34 @@ export class CcOauthConsumerForm extends LitElement {
   }
 
   /**
-   * @param {'access' | 'manage'} section
+   * @param {keyof OauthConsumerRights} rightName
    */
-  _renderRightsSection(section) {
+  _renderRight(rightName) {
     const isWaiting =
       this.state.type === 'creating' || this.state.type === 'updating' || this.state.type === 'deleting';
     const isLoading = this.state.type === 'loading';
-    const isUpdateMode =
-      this.state.type === 'idle-update' ||
-      this.state.type === 'updating' ||
-      this.state.type === 'deleting' ||
-      this.state.type === 'loading';
 
-    return OAUTH_CONSUMER_RIGHTS.filter((right) => {
-      return right.section === section;
-    }).map((right) => {
-      const isChecked =
-        isUpdateMode && (this.state?.rights?.find((stateRight) => stateRight.name === right.name)?.isEnabled ?? false);
-      return html`
-        <div>
-          <input
-            type="checkbox"
-            id="checkbox-right-${right.name}"
-            class="${section}-checkboxes"
-            name="${section}"
-            ?disabled=${isWaiting || isLoading}
-            .checked="${isChecked}"
-            .value="${right.name}"
-          />
-          <!-- TODO: getLabel with switch (see cc-domain-management getErrorMessage)  -->
-          <label for="checkbox-right-${right.name}">${this._getLabel(right.label)}</label>
-        </div>
-      `;
-    });
+    const isChecked =
+      (this.state.type === 'idle-update' ||
+        this.state.type === 'updating' ||
+        this.state.type === 'creating' ||
+        this.state.type === 'deleting') &&
+      this.state.rights?.[rightName] === true;
+
+    return html`
+      <div>
+        <input
+          type="checkbox"
+          id="checkbox-right-${rightName}"
+          class="right"
+          name="${rightName}"
+          ?disabled=${isWaiting || isLoading}
+          .checked="${isChecked}"
+          .value="${rightName}"
+        />
+        <label for="checkbox-right-${rightName}">${this._getName(rightName)}</label>
+      </div>
+    `;
   }
 
   static get styles() {
@@ -528,7 +562,8 @@ export class CcOauthConsumerForm extends LitElement {
           margin-bottom: 0.2em;
         }
 
-        .access-options {
+        .access-rights-section,
+        .manage-rights-section {
           display: flex;
           flex-direction: column;
           gap: 0.2em;
