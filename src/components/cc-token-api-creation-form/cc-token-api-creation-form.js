@@ -1,6 +1,7 @@
 import { LitElement, css, html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { createRef, ref } from 'lit/directives/ref.js';
+import { iconRemixArrowRightCircleLine as iconActiveStep } from '../../assets/cc-remix.icons.js';
 import { dispatchCustomEvent } from '../../lib/events.js';
 import { formSubmit } from '../../lib/form/form-submit-directive.js';
 import { i18n } from '../../translations/translation.js';
@@ -262,10 +263,11 @@ export class CcTokenApiCreationForm extends LitElement {
     // TODO: improve, not very readable
     return html`
       <nav role="navigation" aria-label="TODO: find a name">
-        <ul>
+        <ul class="creation-steps-nav">
           ${steps.map(
             (step) => html`
               <li aria-current="${ifDefined(step.isActive ? 'step' : null)}">
+                ${step.isActive ? html`<cc-icon .icon=${iconActiveStep}></cc-icon>` : ''}
                 ${activeStep === 'validate' && step.name === 'config'
                   ? html`<a href="#" @click="${this._onNavItemClick(step.name)}"> ${step.text} </a>`
                   : ''}
@@ -390,6 +392,38 @@ export class CcTokenApiCreationForm extends LitElement {
     return css`
       :host {
         display: block;
+      }
+
+      p {
+        margin: 0;
+      }
+
+      .creation-steps-nav {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+
+      .creation-steps-nav {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1em;
+      }
+
+      .creation-steps-nav li {
+        display: flex;
+        align-items: center;
+        gap: 0.5em;
+        padding-block: 1em;
+      }
+
+      .creation-steps-nav li a {
+        text-decoration: none;
+        color: var(--cc-color-text);
+      }
+
+      [aria-current='step'] {
+        color: var(--cc-color-text-primary);
       }
     `;
   }
