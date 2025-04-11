@@ -1,4 +1,5 @@
 import { LitElement, css, html } from 'lit';
+import { classMap } from 'lit/directives/class-map.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { createRef, ref } from 'lit/directives/ref.js';
 import { iconRemixArrowRightCircleLine as iconActiveStep } from '../../assets/cc-remix.icons.js';
@@ -223,18 +224,20 @@ export class CcTokenApiCreationForm extends LitElement {
     return html`
       <cc-block>
         <div slot="header-title">${this._getMainHeading(this._activeStep)}</div>
-        <p slot="content">${i18n('cc-token-api-creation-form.config-step.description')}</p>
-        <div slot="content">${this._renderStepsNav(this._activeStep)}</div>
-        ${this.state.type === 'loading' ? html` <cc-loader slot="content"></cc-loader> ` : ''}
-        ${this.state.type === 'idle' || this.state.type === 'creating'
-          ? this._renderForm({
-              activeStep: this._activeStep,
-              isMfaEnabled: this.state.isMfaEnabled,
-              isWaiting: this.state.type === 'creating',
-              hasCredentialsError: this.state.hasCredentialsError,
-            })
-          : ''}
-        ${this.state.type === 'created' ? this._renderCopyStep(this.state.token) : ''}
+        <div slot="content">
+          <p class="block-intro">${i18n('cc-token-api-creation-form.config-step.description')}</p>
+          ${this._renderStepsNav(this._activeStep)}
+          ${this.state.type === 'loading' ? html` <cc-loader></cc-loader> ` : ''}
+          ${this.state.type === 'idle' || this.state.type === 'creating'
+            ? this._renderForm({
+                activeStep: this._activeStep,
+                isMfaEnabled: this.state.isMfaEnabled,
+                isWaiting: this.state.type === 'creating',
+                hasCredentialsError: this.state.hasCredentialsError,
+              })
+            : ''}
+          ${this.state.type === 'created' ? this._renderCopyStep(this.state.token) : ''}
+        </div>
       </cc-block>
     `;
   }
@@ -266,7 +269,12 @@ export class CcTokenApiCreationForm extends LitElement {
         <ul class="creation-steps-nav">
           ${steps.map(
             (step) => html`
-              <li aria-current="${ifDefined(step.isActive ? 'step' : null)}">
+              <li
+                class="creation-steps-nav__step-item ${classMap({
+                  'creation-steps-nav__step-item--active': step.isActive,
+                })}"
+                aria-current="${ifDefined(step.isActive ? 'step' : null)}"
+              >
                 ${step.isActive ? html`<cc-icon .icon=${iconActiveStep}></cc-icon>` : ''}
                 ${activeStep === 'validate' && step.name === 'config'
                   ? html`<a href="#" @click="${this._onNavItemClick(step.name)}"> ${step.text} </a>`
@@ -299,7 +307,6 @@ export class CcTokenApiCreationForm extends LitElement {
     // TODO: focus when active step changes (may be done in willUpdate)
     return html`
       <form
-        slot="content"
         ?hidden=${activeStep !== 'config'}
         ${formSubmit(this._onConfigFormSubmit.bind(this))}
         ${ref(this._configFormRef)}
@@ -313,33 +320,41 @@ export class CcTokenApiCreationForm extends LitElement {
           label="${i18n('cc-token-api-creation-form.config-step.form.label.desc')}"
           name="description"
         ></cc-input-text>
-        <cc-select
-          label="${i18n('cc-token-api-creation-form.config-step.form.label.expiration-duration')}"
-          name="expiration-duration"
-          .options=${this._getExpirationDurationOptions()}
-          .value="${this._expirationDuration}"
-          @cc-select:input=${this._onExpirationDurationInput}
-        >
-        </cc-select>
-        <cc-input-date
-          label="${i18n('cc-token-api-creation-form.config-step.form.label.expiration-date')}"
-          name="expiration-date"
-          ?required=${this._isExpirationDateActive}
-          ?readonly=${!this._isExpirationDateActive}
-          .value="${this._expirationDate}"
-          .min="${new Date(Date.now() + 15 * 60 * 1000)}"
-          .customErrorMessages=${this._expirationDateErrorMessages}
-        ></cc-input-date>
-        <a href="${this.apiTokenListHref}">
-          ${i18n('cc-token-api-creation-form.config-step.form.api-token-list-link')}
-        </a>
-        <cc-button primary outlined type="submit">
-          ${i18n('cc-token-api-creation-form.config-step.form.button.label.create')}
-        </cc-button>
+        <div class="form__expiration">
+          <cc-select
+            label="${i18n('cc-token-api-creation-form.config-step.form.label.expiration-duration')}"
+            name="expiration-duration"
+            .options=${this._getExpirationDurationOptions()}
+            .value="${this._expirationDuration}"
+            @cc-select:input=${this._onExpirationDurationInput}
+          >
+            ${this._isExpirationDateActive
+              ? html`<p slot="help">Specify the expiration date using the next form control</p>`
+              : ''}
+          </cc-select>
+          <cc-input-date
+            label="${i18n('cc-token-api-creation-form.config-step.form.label.expiration-date')}"
+            name="expiration-date"
+            ?required=${this._isExpirationDateActive}
+            ?readonly=${!this._isExpirationDateActive}
+            .value="${this._expirationDate}"
+            .min="${new Date(Date.now() + 15 * 60 * 1000)}"
+            .customErrorMessages=${this._expirationDateErrorMessages}
+          >
+            <p slot="help">${i18n('cc-token-api-creation-form.config-step.form.label.expiration-date.min')}</p>
+          </cc-input-date>
+        </div>
+        <div class="form__actions">
+          <a href="${this.apiTokenListHref}">
+            ${i18n('cc-token-api-creation-form.config-step.form.api-token-list-link')}
+          </a>
+          <cc-button primary type="submit">
+            ${i18n('cc-token-api-creation-form.config-step.form.button.label.create')}
+          </cc-button>
+        </div>
       </form>
 
-      <!-- TODO: handle submit to dispatch for smart -->
-      <form slot="content" ?hidden=${activeStep !== 'validate'} ${formSubmit(this._onValidateFormSubmit.bind(this))}>
+      <form ?hidden=${activeStep !== 'validate'} ${formSubmit(this._onValidateFormSubmit.bind(this))}>
         <cc-input-text
           label="${i18n('cc-token-api-creation-form.validation-step.form.label.password')}"
           name="password"
@@ -358,12 +373,14 @@ export class CcTokenApiCreationForm extends LitElement {
             `
           : ''}
 
-        <a @click=${() => this._onNavItemClick('config')} href="#">
-          ${i18n('cc-token-api-creation-form.config-step.form.api-token-list-link')}
-        </a>
-        <cc-button primary outlined type="submit" ?waiting=${isWaiting}>
-          ${i18n('cc-token-api-creation-form.config-step.form.button.label.validate')}
-        </cc-button>
+        <div class="form__actions">
+          <a @click=${() => this._onNavItemClick('config')} href="#">
+            ${i18n('cc-token-api-creation-form.config-step.form.api-token-list-link')}
+          </a>
+          <cc-button primary type="submit" ?waiting=${isWaiting}>
+            ${i18n('cc-token-api-creation-form.config-step.form.button.label.validate')}
+          </cc-button>
+        </div>
       </form>
     `;
   }
@@ -371,7 +388,7 @@ export class CcTokenApiCreationForm extends LitElement {
   /** @param {string} token */
   _renderCopyStep(token) {
     return html`
-      <div class="copy-step-wrapper" slot="content">
+      <div class="copy-step-wrapper">
         <cc-input-text
           label="${i18n('cc-token-api-creation-form.copy-step.form.label.token')}"
           name="token"
@@ -394,36 +411,77 @@ export class CcTokenApiCreationForm extends LitElement {
         display: block;
       }
 
-      p {
-        margin: 0;
+      /* TODO: won't work for mobile */
+      cc-block {
+        padding: 2em 3em;
       }
 
-      .creation-steps-nav {
-        list-style: none;
-        padding: 0;
+      .block-intro {
         margin: 0;
       }
 
       .creation-steps-nav {
         display: flex;
         flex-wrap: wrap;
+        gap: 2em;
+        list-style: none;
+        margin: 0;
+        margin-block: 2em;
+        padding: 0;
+      }
+
+      .creation-steps-nav__step-item {
+        color: var(--cc-color-text-weak);
+        display: flex;
+        flex: 1 1 auto;
+        gap: 0.5em;
+        padding-block: 1em;
+        position: relative;
+      }
+
+      .creation-steps-nav__step-item::before {
+        background-color: currentcolor;
+        border-radius: 20px;
+        content: '';
+        height: 2px;
+        left: 0;
+        position: absolute;
+        top: 0;
+        width: 100%;
+      }
+
+      .creation-steps-nav__step-item a {
+        color: var(--cc-color-text);
+        text-decoration: none;
+      }
+
+      .creation-steps-nav__step-item--active {
+        color: var(--cc-color-text-primary);
+      }
+
+      form:not([hidden]) {
+        display: grid;
         gap: 1em;
       }
 
-      .creation-steps-nav li {
+      .form__expiration {
         display: flex;
+        flex-wrap: wrap;
+        gap: 1.5em;
+      }
+
+      .form__expiration cc-input-date,
+      .form__expiration cc-select {
+        /* TODO: auto or 18em & shrink? */
+        flex: 1 0 0;
+      }
+
+      .form__actions {
         align-items: center;
-        gap: 0.5em;
-        padding-block: 1em;
-      }
-
-      .creation-steps-nav li a {
-        text-decoration: none;
-        color: var(--cc-color-text);
-      }
-
-      [aria-current='step'] {
-        color: var(--cc-color-text-primary);
+        display: flex;
+        gap: 1.5em;
+        justify-content: flex-end;
+        margin-top: 2em;
       }
     `;
   }
