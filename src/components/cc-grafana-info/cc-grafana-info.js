@@ -146,7 +146,7 @@ export class CcGrafanaInfo extends LitElement {
               </cc-block-section>
             `
           : ''}
-        ${isGrafanaEnabled
+        ${this.state.type === 'loaded' && this.state.info.status === 'enabled'
           ? html`
               <cc-block-section slot="content-body">
                 <div slot="title">${i18n('cc-grafana-info.grafana-link-title')}</div>
