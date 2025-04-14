@@ -1,11 +1,11 @@
 import { css, html, LitElement } from 'lit';
-import { dispatchCustomEvent } from '../../lib/events.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-block-section/cc-block-section.js';
 import '../cc-block/cc-block.js';
 import '../cc-input-text/cc-input-text.js';
 import '../cc-loader/cc-loader.js';
 import '../cc-notice/cc-notice.js';
+import { CcAddonDeleteEvent, CcAddonNameChangeEvent, CcAddonTagsChangeEvent } from './cc-addon-admin.events.js';
 
 /**
  * @typedef {import('./cc-addon-admin.types.js').AddonAdminState} AddonAdminState
@@ -20,10 +20,6 @@ import '../cc-notice/cc-notice.js';
  * A component displaying the admin interface of an add-on to edit its name or delete the add-on.
  *
  * @cssdisplay block
- *
- * @fires {CustomEvent} cc-addon-admin:delete-addon - Fires when the delete button is clicked.
- * @fires {CustomEvent<string>} cc-addon-admin:update-name - Fires the new name of the add-on when update name button is clicked.
- * @fires {CustomEvent<string[]>} cc-addon-admin:update-tags - Fires the new list of tags when update tags button is clicked.
  */
 export class CcAddonAdmin extends LitElement {
   static get properties() {
@@ -57,7 +53,7 @@ export class CcAddonAdmin extends LitElement {
 
   /** @private */
   _onDeleteSubmit() {
-    dispatchCustomEvent(this, 'delete-addon');
+    this.dispatchEvent(new CcAddonDeleteEvent());
   }
 
   /**
@@ -70,7 +66,7 @@ export class CcAddonAdmin extends LitElement {
 
   /** @private */
   _onNameSubmit() {
-    dispatchCustomEvent(this, 'update-name', { name: this._name });
+    this.dispatchEvent(new CcAddonNameChangeEvent({ name: this._name }));
   }
 
   /**
@@ -83,7 +79,7 @@ export class CcAddonAdmin extends LitElement {
 
   /** @private */
   _onTagsSubmit() {
-    dispatchCustomEvent(this, 'update-tags', { tags: this._tags });
+    this.dispatchEvent(new CcAddonTagsChangeEvent({ tags: this._tags }));
   }
 
   /**
