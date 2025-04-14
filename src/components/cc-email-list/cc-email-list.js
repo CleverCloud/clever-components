@@ -11,7 +11,6 @@ import {
   iconRemixCheckboxCircleFill as iconVerified,
 } from '../../assets/cc-remix.icons.js';
 import { LostFocusController } from '../../controllers/lost-focus-controller.js';
-import { dispatchCustomEvent } from '../../lib/events.js';
 import { fakeString } from '../../lib/fake-strings.js';
 import { focusBySelector } from '../../lib/focus-helper.js';
 import { FormErrorFocusController } from '../../lib/form/form-error-focus-controller.js';
@@ -26,6 +25,12 @@ import '../cc-button/cc-button.js';
 import '../cc-icon/cc-icon.js';
 import '../cc-input-text/cc-input-text.js';
 import '../cc-notice/cc-notice.js';
+import {
+  CcEmailAddEvent,
+  CcEmailDeleteEvent,
+  CcEmailMarkAsPrimaryEvent,
+  CcEmailSendConfirmationEvent,
+} from './cc-email-list.events.js';
 
 /** @type {PrimaryAddressState} */
 const SKELETON_PRIMARY_EMAIL = {
@@ -67,7 +72,7 @@ const SKELETON_SECONDARY_EMAILS = [];
  *
  * * The component is responsible for validating the secondary email address entered by the user.
  * * This validation is triggered whenever the add button is clicked.
- * * If the validation doesn't succeed, an error message is displayed below the text input. Otherwise, the custom event `cc-email-list:add` is fired.
+ * * If the validation doesn't succeed, an error message is displayed below the text input. Otherwise, the event `cc-email-add` is fired.
  * * The validation handles only two cases:
  *   - the input is empty
  *   - the input is not a valid email address.
@@ -78,11 +83,6 @@ const SKELETON_SECONDARY_EMAILS = [];
  * * Unlike secondary email address deletion, marking as primary is exclusive: Only one email address can be marked as primary at a time.
  *
  * @cssdisplay block
- *
- * @fires {CustomEvent<string>} cc-email-list:add - Fires whenever the add button is clicked. If the validation doesn't succeed, the event is not fired.
- * @fires {CustomEvent<string>} cc-email-list:send-confirmation-email - Fires whenever the send confirmation email link is clicked.
- * @fires {CustomEvent<string>} cc-email-list:delete - Fires whenever the delete button is clicked.
- * @fires {CustomEvent<string>} cc-email-list:mark-as-primary - Fires whenever the 'mark as primary' button is clicked.
  */
 export class CcEmailList extends LitElement {
   static get properties() {
@@ -134,7 +134,7 @@ export class CcEmailList extends LitElement {
 
   _onSendConfirmationEmail() {
     if (this.emailListState.type === 'loaded') {
-      dispatchCustomEvent(this, 'send-confirmation-email', this.emailListState.emailList.primaryAddress.address);
+      this.dispatchEvent(new CcEmailSendConfirmationEvent(this.emailListState.emailList.primaryAddress.address));
     }
   }
 
@@ -142,14 +142,14 @@ export class CcEmailList extends LitElement {
    * @param {string} address
    */
   _onDelete(address) {
-    dispatchCustomEvent(this, 'delete', address);
+    this.dispatchEvent(new CcEmailDeleteEvent(address));
   }
 
   /**
    * @param {string} address
    */
   _onMarkAsPrimary(address) {
-    dispatchCustomEvent(this, 'mark-as-primary', address);
+    this.dispatchEvent(new CcEmailMarkAsPrimaryEvent(address));
   }
 
   /**
@@ -157,7 +157,8 @@ export class CcEmailList extends LitElement {
    */
   _onAddFormSubmit(formData) {
     this.addEmailFormState = { ...this.addEmailFormState, errors: null };
-    dispatchCustomEvent(this, 'add', formData.address);
+    const address = String(formData.address);
+    this.dispatchEvent(new CcEmailAddEvent(address));
   }
 
   /**
