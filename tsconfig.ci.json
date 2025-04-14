@@ -14,8 +14,7 @@
   "exclude": [
     "src/controllers/*.stories.js",
     "src/components/**/*.test.js",
-    "src/components/**/*.stories.js",
-    "src/components/cc-grafana-info"
+    "src/components/**/*.stories.js"
   ],
   "extends": "./tsconfig.json",
   "compilerOptions": {
