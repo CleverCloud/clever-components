@@ -344,7 +344,6 @@ export class CcEnvVarForm extends LitElement {
             .state=${this._editorsState}
             ?disabled=${isEditorDisabled}
             ?readonly=${this.readonly}
-            @cc-env-var-editor-json:change=${this._onChange}
             @cc-input-text:requestimplicitsubmit=${this._onRequestSubmit(isFormDisabled)}
           ></cc-env-var-editor-json>
         </div>
