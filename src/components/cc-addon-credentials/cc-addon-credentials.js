@@ -9,8 +9,9 @@ import '../cc-notice/cc-notice.js';
 
 /**
  * @typedef {import('./cc-addon-credentials.types.js').Credential} Credential
- * @typedef {import('../cc-block/cc-block.types.js').BlockToggleState} BlockToggleState
  * @typedef {import('./cc-addon-credentials.types.js').AddonType} AddonType
+ * @typedef {import('../cc-block/cc-block.types.js').BlockToggleState} BlockToggleState
+ * @typedef {import('../common.events.js').CcToggleEvent} CcToggleEvent
  */
 
 /**
@@ -92,19 +93,15 @@ export class CcAddonCredentials extends LitElement {
     }
   }
 
-  /** @param {CustomEvent<'open'|'close'>} event */
-  _onToggleChange({ detail: value }) {
-    this.toggle = value;
+  /** @param {CcToggleEvent} event */
+  _onToggleChange({ detail: isOpen }) {
+    this.toggle = isOpen ? 'open' : 'close';
     dispatchCustomEvent(this, 'toggle-change', this.toggle);
   }
 
   render() {
     return html`
-      <cc-block
-        image=${ifDefined(this.image ?? undefined)}
-        toggle=${this.toggle}
-        @cc-block:toggle-change=${this._onToggleChange}
-      >
+      <cc-block image=${ifDefined(this.image ?? undefined)} toggle=${this.toggle} @cc-toggle=${this._onToggleChange}>
         <div slot="header-title">${i18n('cc-addon-credentials.title', { name: this.name })}</div>
 
         ${!this.error
