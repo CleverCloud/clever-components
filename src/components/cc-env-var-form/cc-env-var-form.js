@@ -1,6 +1,5 @@
 import { css, html, LitElement } from 'lit';
 import { iconRemixInformationFill as iconInfo } from '../../assets/cc-remix.icons.js';
-import { dispatchCustomEvent } from '../../lib/events.js';
 import { ccLink, linkStyles } from '../../templates/cc-link/cc-link.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-block/cc-block.js';
@@ -9,8 +8,10 @@ import '../cc-env-var-editor-expert/cc-env-var-editor-expert.js';
 import '../cc-env-var-editor-json/cc-env-var-editor-json.js';
 import '../cc-env-var-editor-simple/cc-env-var-editor-simple.js';
 import '../cc-expand/cc-expand.js';
+import { CcApplicationRestartEvent } from '../cc-header-app/cc-header-app.events.js';
 import '../cc-notice/cc-notice.js';
 import '../cc-toggle/cc-toggle.js';
+import { CcEnvVarFormSubmitEvent } from './cc-env-var-form.events.js';
 
 const ENV_VAR_DOCUMENTATION = 'https://developers.clever-cloud.com/doc/reference/reference-environment-variables/';
 
@@ -33,9 +34,6 @@ const ENV_VAR_DOCUMENTATION = 'https://developers.clever-cloud.com/doc/reference
  * * You can also set a context to get the appropriate heading and description (with translations).
  *
  * @cssdisplay block
- *
- * @fires {CustomEvent} cc-env-var-form:restart-app - Fires whenever the restart app button is clicked.
- * @fires {CustomEvent<EnvVar[]>} cc-env-var-form:submit - Fires the new list of variables whenever the submit button is clicked.
  *
  * @slot - Sets custom HTML description.
  */
@@ -230,7 +228,7 @@ export class CcEnvVarForm extends LitElement {
     const cleanVariables = this._currentVariables
       .filter(({ isDeleted }) => !isDeleted)
       .map(({ name, value }) => ({ name, value }));
-    dispatchCustomEvent(this, 'submit', cleanVariables);
+    this.dispatchEvent(new CcEnvVarFormSubmitEvent(cleanVariables));
   }
 
   /** @param {boolean} isFormDisabled */
@@ -358,7 +356,7 @@ export class CcEnvVarForm extends LitElement {
 
                 ${this.restartApp
                   ? html`
-                      <cc-button @cc-button:click=${() => dispatchCustomEvent(this, 'restart-app')}
+                      <cc-button @cc-button:click=${() => this.dispatchEvent(new CcApplicationRestartEvent())}
                         >${i18n('cc-env-var-form.restart-app')}</cc-button
                       >
                     `
