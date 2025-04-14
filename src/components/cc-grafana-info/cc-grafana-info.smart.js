@@ -1,9 +1,6 @@
-import {
-  createGrafanaOrganisation,
-  deleteGrafanaOrganisation,
-  getGrafanaOrganisation,
-  resetGrafanaOrganisation,
-} from '@clevercloud/client/esm/api/v4/saas.js';
+// prettier-ignore
+// @ts-ignore
+import { createGrafanaOrganisation,deleteGrafanaOrganisation,getGrafanaOrganisation,resetGrafanaOrganisation,} from '@clevercloud/client/esm/api/v4/saas.js';
 import { notifyError, notifySuccess } from '../../lib/notifications.js';
 import { sendToApi } from '../../lib/send-to-api.js';
 import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
@@ -47,7 +44,7 @@ defineSmartComponent({
         });
     }
 
-    onEvent('cc-grafana-info:reset', () => {
+    onEvent('cc-grafana-reset', () => {
       updateComponent(
         'state',
         /** @param {GrafanaInfoStateLoaded & { info: GrafanaInfoEnabled | GrafanaInfoDisabled }} state */
@@ -73,68 +70,50 @@ defineSmartComponent({
         });
     });
 
-    onEvent('cc-grafana-info:disable', () => {
+    onEvent('cc-grafana-toggle', ({ isEnabled }) => {
       updateComponent(
         'state',
         /** @param {GrafanaInfoStateLoaded & { info: GrafanaInfoEnabled | GrafanaInfoDisabled }} state */
         (state) => {
-          state.info.action = 'disabling';
+          state.info.action = isEnabled ? 'enabling' : 'disabling';
         },
       );
 
-      disableGrafanaOrganisation({ apiConfig, ownerId })
-        .then(() => {
-          updateComponent(
-            'state',
-            /** @param {GrafanaInfoStateLoaded & { info: GrafanaInfoEnabled | GrafanaInfoDisabled }} state */
-            (state) => {
-              state.info = { status: 'disabled' };
-            },
-          );
-          notifySuccess(i18n('cc-grafana-info.disable.success'));
-        })
-        .catch((error) => {
-          console.error(error);
-          notifyError(i18n('cc-grafana-info.disable.error'));
-        })
-        .finally(() => {
-          updateComponent(
-            'state',
-            /** @param {GrafanaInfoStateLoaded & { info: GrafanaInfoEnabled | GrafanaInfoDisabled }} state */
-            (state) => {
-              state.info.action = null;
-            },
-          );
-        });
-    });
+      const promise = isEnabled
+        ? enableGrafanaOrganisation({ apiConfig, ownerId })
+            .then(() => {
+              fetch();
+              notifySuccess(i18n('cc-grafana-info.enable.success'));
+            })
+            .catch((error) => {
+              console.error(error);
+              notifyError(i18n('cc-grafana-info.enable.error'));
+            })
+        : disableGrafanaOrganisation({ apiConfig, ownerId })
+            .then(() => {
+              updateComponent(
+                'state',
+                /** @param {GrafanaInfoStateLoaded & { info: GrafanaInfoEnabled | GrafanaInfoDisabled }} state */
+                (state) => {
+                  state.info = { status: 'disabled' };
+                },
+              );
+              notifySuccess(i18n('cc-grafana-info.disable.success'));
+            })
+            .catch((error) => {
+              console.error(error);
+              notifyError(i18n('cc-grafana-info.disable.error'));
+            });
 
-    onEvent('cc-grafana-info:enable', () => {
-      updateComponent(
-        'state',
-        /** @param {GrafanaInfoStateLoaded & { info: GrafanaInfoEnabled | GrafanaInfoDisabled }} state */
-        (state) => {
-          state.info.action = 'enabling';
-        },
-      );
-
-      enableGrafanaOrganisation({ apiConfig, ownerId })
-        .then(() => {
-          fetch();
-          notifySuccess(i18n('cc-grafana-info.enable.success'));
-        })
-        .catch((error) => {
-          console.error(error);
-          notifyError(i18n('cc-grafana-info.enable.error'));
-        })
-        .finally(() => {
-          updateComponent(
-            'state',
-            /** @param {GrafanaInfoStateLoaded & { info: GrafanaInfoEnabled | GrafanaInfoDisabled }} state */
-            (state) => {
-              state.info.action = null;
-            },
-          );
-        });
+      promise.finally(() => {
+        updateComponent(
+          'state',
+          /** @param {GrafanaInfoStateLoaded & { info: GrafanaInfoEnabled | GrafanaInfoDisabled }} state */
+          (state) => {
+            state.info.action = null;
+          },
+        );
+      });
     });
 
     fetch();
