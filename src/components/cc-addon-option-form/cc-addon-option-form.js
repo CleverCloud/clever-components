@@ -1,10 +1,10 @@
 import { css, html, LitElement } from 'lit';
-import { dispatchCustomEvent } from '../../lib/events.js';
 import { linkStyles } from '../../templates/cc-link/cc-link.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-addon-option/cc-addon-option.js';
 import '../cc-block/cc-block.js';
 import '../cc-button/cc-button.js';
+import { CcAddonOptionFormSubmitEvent } from './cc-addon-option-form.events.js';
 
 /**
  * @typedef {import('../cc-addon-option/cc-addon-option.js').CcAddonOption} CcAddonOption
@@ -18,8 +18,6 @@ import '../cc-button/cc-button.js';
  * A component that displays a form of `<cc-addon-option>`.
  *
  * @cssdisplay block
- *
- * @fires {CustomEvent<AddonOptionStates>} cc-addon-option-form:submit - Fires when the form is submitted.
  *
  * @slot description - The description of the add-on and available options.
  */
@@ -52,7 +50,7 @@ export class CcAddonOptionForm extends LitElement {
       }
     });
 
-    dispatchCustomEvent(this, 'submit', this._optionsStates);
+    this.dispatchEvent(new CcAddonOptionFormSubmitEvent(this._optionsStates));
   }
 
   /** @param {string} optionName */
