@@ -1,6 +1,5 @@
 import { css, html, LitElement } from 'lit';
 import { iconRemixAlertFill as iconAlert } from '../../assets/cc-remix.icons.js';
-import { dispatchCustomEvent } from '../../lib/events.js';
 import { ccAddonEncryptionAtRestOption } from '../../templates/cc-addon-encryption-at-rest-option/cc-addon-encryption-at-rest-option.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-addon-option-form/cc-addon-option-form.js';
@@ -9,7 +8,6 @@ const KIBANA_LOGO_URL = 'https://assets.clever-cloud.com/logos/elasticsearch-kib
 const APM_LOGO_URL = 'https://assets.clever-cloud.com/logos/elasticsearch-apm.svg';
 
 /**
- * @typedef {import('../common.types.js').AddonOptionStates} AddonOptionStates
  * @typedef {import('../common.types.js').AddonOption} AddonOption
  * @typedef {import('../common.types.js').AddonOptionWithMetadata} AddonOptionWithMetadata
  * @typedef {import('../common.types.js').FlavorWithMonthlyCost} FlavorWithMonthlyCost
@@ -21,8 +19,6 @@ const APM_LOGO_URL = 'https://assets.clever-cloud.com/logos/elasticsearch-apm.sv
  * A component that displays the available options of an elasticsearch add-on.
  *
  * @cssdisplay block
- *
- * @fires {CustomEvent<AddonOptionStates>} cc-addon-elasticsearch-options:submit - Fires when the form is submitted.
  */
 export class CcAddonElasticsearchOptions extends LitElement {
   static get properties() {
@@ -36,11 +32,6 @@ export class CcAddonElasticsearchOptions extends LitElement {
 
     /** @type {Array<AddonOption>} List of options for this add-on. */
     this.options = [];
-  }
-
-  /** @param {CustomEvent<AddonOptionStates>} event */
-  _onFormOptionsSubmit({ detail }) {
-    dispatchCustomEvent(this, 'submit', detail);
   }
 
   /**
@@ -127,13 +118,12 @@ export class CcAddonElasticsearchOptions extends LitElement {
   }
 
   render() {
+    const options = this._getFormOptions();
+    const heading = i18n('cc-addon-elasticsearch-options.title');
     const hasMonthlyCost = this.options.some((option) => 'flavor' in option && 'monthlyCost' in option.flavor);
+
     return html`
-      <cc-addon-option-form
-        heading="${i18n('cc-addon-elasticsearch-options.title')}"
-        .options=${this._getFormOptions()}
-        @cc-addon-option-form:submit="${this._onFormOptionsSubmit}"
-      >
+      <cc-addon-option-form heading="${heading}" .options=${options}>
         <div slot="description">
           ${i18n('cc-addon-elasticsearch-options.description')}
           ${hasMonthlyCost ? i18n('cc-addon-elasticsearch-options.additional-cost') : ''}
