@@ -8,6 +8,7 @@ import '../cc-button/cc-button.js';
 
 /**
  * @typedef {import('../cc-addon-option/cc-addon-option.js').CcAddonOption} CcAddonOption
+ * @typedef {import('../cc-addon-option/cc-addon-option.events.js').CcAddonOptionChangeEvent} CcAddonOptionChangeEvent
  * @typedef {import('../common.types.js').AddonOptionStates} AddonOptionStates
  * @typedef {import('../common.types.js').AddonOption} AddonOption
  * @typedef {import('../common.types.js').AddonOptionWithMetadata} AddonOptionWithMetadata
@@ -55,8 +56,8 @@ export class CcAddonOptionForm extends LitElement {
   }
 
   /** @param {string} optionName */
-  _onOptionToggle(optionName) {
-    /** @param {CustomEvent<boolean>} e */
+  _onOptionChange(optionName) {
+    /** @param {CcAddonOptionChangeEvent} e */
     return (e) => {
       this._optionsStates[optionName] = e.detail;
     };
@@ -75,7 +76,7 @@ export class CcAddonOptionForm extends LitElement {
               .icon="${option.icon}"
               logo="${option.logo}"
               ?enabled=${enabled}
-              @cc-addon-option:input=${this._onOptionToggle(option.name)}
+              @cc-addon-option-change=${this._onOptionChange(option.name)}
             >
               ${option.description}
             </cc-addon-option>`;
