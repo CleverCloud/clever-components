@@ -1,3 +1,4 @@
+import { CcEvent } from '../events.js';
 import { COMPONENTS, CURRENT_CONTEXT, LAST_CONTEXT, META } from './smart-symbols.js';
 
 interface SmartContainerComponentsMap<T extends SmartComponent>
@@ -41,7 +42,17 @@ export interface SmartDefinitionParam<TypeHint = unknown> {
 
 export type SmartContext = Record<string, any>;
 
-export type OnEventCallback = (type: string, listener: (detail: any) => void) => void;
+type GlobalCcEvent = {
+  [P in keyof GlobalEventHandlersEventMap]: GlobalEventHandlersEventMap[P] extends CcEvent<any> ? P : never;
+}[keyof GlobalEventHandlersEventMap];
+
+export type OnEventCallback = <E extends GlobalCcEvent>(
+  eventName: E,
+  listener: (
+    detail: GlobalEventHandlersEventMap[E] extends CcEvent<infer D> ? D : never,
+    event: GlobalEventHandlersEventMap[E],
+  ) => void,
+) => void;
 
 export type UpdateComponentCallback<C extends SmartComponent> = <P extends keyof C, V extends C[P]>(
   propertyName: P,
