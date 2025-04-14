@@ -1,6 +1,5 @@
 import { css, html, LitElement } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { dispatchCustomEvent } from '../../lib/events.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-block/cc-block.js';
@@ -22,8 +21,6 @@ import '../cc-notice/cc-notice.js';
  * * When the `value` of a credential is nullish, a skeleton UI pattern is displayed (loading hint).
  *
  * @cssdisplay block
- *
- * @fires {CustomEvent<'open'|'close'>} cc-addon-credentials:toggle-change - Fires toggle state whenever it changes.
  */
 export class CcAddonCredentials extends LitElement {
   static get properties() {
@@ -96,7 +93,6 @@ export class CcAddonCredentials extends LitElement {
   /** @param {CcToggleEvent} event */
   _onToggleChange({ detail: isOpen }) {
     this.toggle = isOpen ? 'open' : 'close';
-    dispatchCustomEvent(this, 'toggle-change', this.toggle);
   }
 
   render() {
