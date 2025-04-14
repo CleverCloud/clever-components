@@ -9,6 +9,7 @@ import {
 } from '../../assets/cc-remix.icons.js';
 import { dispatchCustomEvent } from '../../lib/events.js';
 import { formSubmit } from '../../lib/form/form-submit-directive.js';
+import { linkStyles } from '../../templates/cc-link/cc-link.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-block-detail/cc-block-details.js';
 import '../cc-block/cc-block.js';
@@ -212,6 +213,7 @@ export class CcTokenApiCreationForm extends LitElement {
     }
 
     this._isExpirationDateActive = value === 'custom';
+    console.log('expiration date input');
   }
 
   /** @param {CcTokenApiCreationFormPropertyValues} changedProperties */
@@ -230,8 +232,8 @@ export class CcTokenApiCreationForm extends LitElement {
       <cc-block>
         <div slot="header-title">${this._getMainHeading(this._activeStep)}</div>
         <div slot="content">
-          <p class="block-intro">${i18n('cc-token-api-creation-form.config-step.description')}</p>
-          ${this._renderStepsNav(this._activeStep)}
+          <p class="block-intro">${this._getDescription(this._activeStep)}</p>
+          ${this._renderStepsNav({ activeStep: this._activeStep, isWaiting: this.state.type === 'creating' })}
           ${this.state.type === 'loading' ? html` <cc-loader></cc-loader> ` : ''}
           ${this.state.type === 'idle' || this.state.type === 'creating'
             ? this._renderForm({
@@ -245,25 +247,30 @@ export class CcTokenApiCreationForm extends LitElement {
         </div>
         <cc-block-details slot="footer-left">
           <div slot="button-text">Command line</div>
-          <a slot="link" href="https://www.clever-cloud.com/developers/api/howto/#api-tokens"
-            >See documentation <cc-icon .icon=${iconLink}></cc-icon
-          ></a>
+          <a slot="link" href="https://www.clever-cloud.com/developers/api/howto/#api-tokens">
+            <span class="cc-link">${i18n('cc-token-api-creation-form.link.doc')}</span>
+            <cc-icon .icon=${iconLink}></cc-icon>
+          </a>
           <div slot="content">TODO: CLI command doc</div>
         </cc-block-details>
       </cc-block>
     `;
   }
 
-  /** @param {TokenApiCreationStep} activeStep */
-  _renderStepsNav(activeStep) {
+  /**
+   * @param {object} _
+   * @param {TokenApiCreationStep} _.activeStep
+   * @param {boolean} _.isWaiting
+   */
+  _renderStepsNav({ activeStep, isWaiting }) {
     // TODO: should only be clickable when step === "validate"
     const steps = /** @type {const} */ ([
       {
         name: 'config',
         text: i18n('cc-token-api-creation-form.config-step.nav.name'),
         isActive: activeStep === 'config',
-        isClickable: activeStep === 'validate',
-        isDone: activeStep === 'validate',
+        isClickable: activeStep === 'validate' && !isWaiting,
+        isDone: activeStep !== 'config',
       },
       {
         name: 'validate',
@@ -327,6 +334,7 @@ export class CcTokenApiCreationForm extends LitElement {
     // TODO: focus when active step changes (may be done in willUpdate)
     return html`
       <form
+        name="config-form"
         ?hidden=${activeStep !== 'config'}
         ${formSubmit(this._onConfigFormSubmit.bind(this))}
         ${ref(this._configFormRef)}
@@ -379,10 +387,15 @@ export class CcTokenApiCreationForm extends LitElement {
         </div>
       </form>
 
-      <form ?hidden=${activeStep !== 'validate'} ${formSubmit(this._onValidateFormSubmit.bind(this))}>
+      <form
+        name="validation-form"
+        ?hidden=${activeStep !== 'validate'}
+        ${formSubmit(this._onValidateFormSubmit.bind(this))}
+      >
         <cc-input-text
           label="${i18n('cc-token-api-creation-form.validation-step.form.label.password')}"
           name="password"
+          ?readonly=${isWaiting}
           .errorMessage=${passwordAndMfaErrorMessage}
           required
           secret
@@ -392,6 +405,7 @@ export class CcTokenApiCreationForm extends LitElement {
               <cc-input-text
                 label="${i18n('cc-token-api-creation-form.validation-step.form.label.mfa')}"
                 name="mfa-code"
+                ?readonly=${isWaiting}
                 required
                 .errorMessage=${passwordAndMfaErrorMessage}
               ></cc-input-text>
@@ -399,9 +413,16 @@ export class CcTokenApiCreationForm extends LitElement {
           : ''}
 
         <div class="form__actions">
-          <a @click=${() => this._onNavItemClick('config')} href="#">
-            ${i18n('cc-token-api-creation-form.config-step.form.api-token-list-link')}
-          </a>
+          ${isWaiting
+            ? html`<span>${i18n('cc-token-api-creation-form.config-step.form.api-token-list-link')}</span>`
+            : ''}
+          ${!isWaiting
+            ? html`
+                <a @click=${() => this._onNavItemClick('config')} href="#">
+                  ${i18n('cc-token-api-creation-form.config-step.form.api-token-list-link')}
+                </a>
+              `
+            : ''}
           <cc-button primary type="submit" ?waiting=${isWaiting}>
             ${i18n('cc-token-api-creation-form.config-step.form.button.label.validate')}
           </cc-button>
@@ -431,103 +452,125 @@ export class CcTokenApiCreationForm extends LitElement {
   }
 
   static get styles() {
-    return css`
-      :host {
-        display: block;
-      }
+    return [
+      linkStyles,
+      css`
+        :host {
+          display: block;
+        }
 
-      /* TODO: won't work for mobile */
-      cc-block {
-        padding-top: 2em;
-      }
+        /* TODO: won't work for mobile */
+        cc-block {
+          padding-top: 2em;
+        }
 
-      /* TODO: won't work for mobile */
-      cc-block > [slot='content'] {
-        padding-bottom: 2em;
-      }
+        /* TODO: won't work for mobile */
+        cc-block > [slot='content'] {
+          padding-bottom: 2em;
+          padding-inline: 3em;
+        }
 
-      /* TODO: won't work for mobile */
-      cc-block > [slot='content'],
-      [slot='header-title'] {
-        padding-inline: 3em;
-      }
+        /* TODO: won't work for mobile */
+        [slot='header-title'] {
+          padding-inline: 1.5em;
+        }
 
-      .block-intro {
-        margin: 0;
-      }
+        [slot='link'] {
+          --cc-icon-color: var(--cc-color-text-primary-highlight);
 
-      .creation-steps-nav {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 2em;
-        list-style: none;
-        margin: 0;
-        margin-block: 2em;
-        padding: 0;
-      }
+          text-decoration: none;
+        }
 
-      .creation-steps-nav__step-item {
-        --cc-icon-size: 1.3em;
+        .cc-link {
+          text-decoration: underline;
+        }
 
-        align-items: center;
-        color: var(--cc-color-text-weak);
-        display: flex;
-        flex: 1 1 auto;
-        gap: 0.5em;
-        line-height: 1.3em;
-        padding-block: 1em;
-        position: relative;
-      }
+        .block-intro {
+          margin: 0;
+        }
 
-      /* TODO: switch to border */
-      .creation-steps-nav__step-item::before {
-        background-color: currentcolor;
-        border-radius: 40px;
-        content: '';
-        height: 3px;
-        left: 0;
-        position: absolute;
-        top: 0;
-        width: 100%;
-      }
+        .creation-steps-nav {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 2em;
+          list-style: none;
+          margin: 0;
+          margin-block: 2em;
+          padding: 0;
+        }
 
-      .creation-steps-nav__step-item a {
-        color: inherit;
-        text-decoration: none;
-      }
+        .creation-steps-nav__step-item {
+          --cc-icon-size: 1.3em;
 
-      .creation-steps-nav__step-item--active {
-        color: var(--cc-color-text-primary);
-      }
+          align-items: center;
+          color: var(--cc-color-text-weak);
+          display: flex;
+          flex: 1 1 auto;
+          gap: 0.5em;
+          line-height: 1.3em;
+          padding-block: 1em;
+          position: relative;
+        }
 
-      .creation-steps-nav__step-item--done {
-        color: var(--cc-color-text-success);
-      }
+        /* TODO: switch to border */
+        .creation-steps-nav__step-item::before {
+          background-color: currentcolor;
+          border-radius: 40px;
+          content: '';
+          height: 3px;
+          left: 0;
+          position: absolute;
+          top: 0;
+          width: 100%;
+        }
 
-      form:not([hidden]) {
-        display: grid;
-        gap: 1em;
-      }
+        .creation-steps-nav__step-item a {
+          color: inherit;
+          text-decoration: none;
+        }
 
-      .form__expiration {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 1.5em;
-      }
+        .creation-steps-nav__step-item--active {
+          color: var(--cc-color-text-primary);
+        }
 
-      .form__expiration cc-input-date,
-      .form__expiration cc-select {
-        flex: 1 1 18em;
-      }
+        .creation-steps-nav__step-item--done {
+          color: var(--cc-color-text-success);
+        }
 
-      .form__actions {
-        align-items: center;
-        display: flex;
-        gap: 1.5em;
-        justify-content: flex-end;
-        margin-top: 2em;
-      }
-    `;
+        form:not([hidden]) {
+          display: grid;
+          gap: 1.5em;
+        }
+
+        .form__expiration {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 1.5em;
+        }
+
+        .form__expiration cc-input-date,
+        .form__expiration cc-select {
+          flex: 1 1 18em;
+        }
+
+        .form__actions {
+          align-items: center;
+          display: flex;
+          gap: 1.5em;
+          justify-content: flex-end;
+          margin-top: 2em;
+        }
+
+        .copy-step-wrapper {
+          display: grid;
+          gap: 2.5em;
+        }
+
+        .token-list-link-cta {
+          justify-self: flex-end;
+        }
+      `,
+    ];
   }
 }
 

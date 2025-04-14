@@ -1468,7 +1468,7 @@ export const translations = {
   'cc-toast.icon-alt.warning': `Warning`,
   //#endregion
   //#region cc-token-api-creation-form
-  'cc-token-api-creation-form.config-step.description': `Use this form to generate a new API token, which will allow you to securely and selectively authorize applications to access your services.`,
+  'cc-token-api-creation-form.config-step.description': `Use this form to generate a new API token, which will allow you to securely and selectively authorize applications to access your services`,
   'cc-token-api-creation-form.config-step.expiration-duration.label.custom': `Custom`,
   'cc-token-api-creation-form.config-step.expiration-duration.label.ninety-days': `90 days`,
   'cc-token-api-creation-form.config-step.expiration-duration.label.one-year': `1 year`,
@@ -1499,7 +1499,8 @@ export const translations = {
   'cc-token-api-creation-form.copy-step.nav.name': `Copy Token`,
   'cc-token-api-creation-form.copy-step.notice.message': `Warning: For security reasons, this API key will only be shown once. Make sure to copy and store it in a secure place now. After creation, you will not be able to retrieve it again. If you lose this key, you will need to create a new token.`,
   'cc-token-api-creation-form.error': `Something went wrong while loading information about your account`,
-  'cc-token-api-creation-form.validation-step.description': `Finalise and confirm your new API Token by authenticating yourself.`,
+  'cc-token-api-creation-form.link.doc': `API tokens - Documentation`,
+  'cc-token-api-creation-form.validation-step.description': `Finalise and confirm your new API Token by authenticating yourself`,
   'cc-token-api-creation-form.validation-step.form.error.credentials': `Incorrect password or 2FA code`,
   'cc-token-api-creation-form.validation-step.form.label.mfa': `2FA code`,
   'cc-token-api-creation-form.validation-step.form.label.password': `Password`,

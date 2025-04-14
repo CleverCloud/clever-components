@@ -1526,6 +1526,7 @@ export const translations = {
   'cc-token-api-creation-form.copy-step.notice.message': () =>
     sanitize`Attention&nbsp;: Pour des raisons de sécurité, cette clé API ne sera affichée qu'une seule fois. Assurez-vous de la copier et de la conserver dans un endroit sûr dès maintenant. Après sa création, vous ne pourrez plus la récupérer. Si vous perdez cette clé, vous devrez en créer une nouvelle.`,
   'cc-token-api-creation-form.error': `Une erreur est survenue lors du chargement des informations liées votre compte`,
+  'cc-token-api-creation-form.link.doc': `Tokens d'API - Documentation`,
   'cc-token-api-creation-form.validation-step.description': `Finalisez et confirmez votre nouveau token d'API en vous authentifiant.`,
   'cc-token-api-creation-form.validation-step.form.error.credentials': `Mot de passe ou code 2FA incorrect`,
   'cc-token-api-creation-form.validation-step.form.label.mfa': `Code 2FA`,
