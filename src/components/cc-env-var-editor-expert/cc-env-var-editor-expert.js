@@ -1,9 +1,9 @@
 // @ts-expect-error FIXME: remove when clever-client exports types
 import { ERROR_TYPES, parseRaw, toNameEqualsValueString } from '@clevercloud/client/esm/utils/env-vars.js';
 import { LitElement, css, html } from 'lit';
-import { dispatchCustomEvent } from '../../lib/events.js';
 import { linkStyles } from '../../templates/cc-link/cc-link.js';
 import { i18n } from '../../translations/translation.js';
+import { CcEnvChangeEvent } from '../cc-env-var-form/cc-env-var-form.events.js';
 import '../cc-input-text/cc-input-text.js';
 import '../cc-notice/cc-notice.js';
 
@@ -26,8 +26,6 @@ const SKELETON_VARIABLES = [
  * A high level environment variable editor to create/edit/delete all variables at once as a big string (properly parsed with validation and error messages).
  *
  * @cssdisplay block / none (with `[hidden]`)
- *
- * @fires {CustomEvent<EnvVar[]>} cc-env-var-editor-expert:change - Fires the new list of variables whenever something changes in the list.
  */
 export class CcEnvVarEditorExpert extends LitElement {
   static get properties() {
@@ -122,7 +120,7 @@ export class CcEnvVarEditorExpert extends LitElement {
     this._variablesAsText = value;
     const { variables, errors } = parseRaw(value, { mode: this.state.validationMode });
     this._setErrors(errors);
-    dispatchCustomEvent(this, 'change', variables);
+    this.dispatchEvent(new CcEnvChangeEvent(variables));
   }
 
   /** @param {CcEnvVarEditorExpertPropertyValues} changedProperties */
