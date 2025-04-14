@@ -1,9 +1,9 @@
 import { css, html, LitElement } from 'lit';
-import { dispatchCustomEvent } from '../../lib/events.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-icon/cc-icon.js';
 import '../cc-img/cc-img.js';
 import '../cc-toggle/cc-toggle.js';
+import { CcAddonOptionChangeEvent } from './cc-addon-option.events.js';
 
 /**
  * @typedef {import('../common.types.js').IconModel} IconModel
@@ -17,8 +17,6 @@ import '../cc-toggle/cc-toggle.js';
  * * If you want to display a warning in the option, add the `option-warning` class to an HTML element. It will be displayed with a custom color and in italic.
  *
  * @cssdisplay grid
- *
- * @fires {CustomEvent<boolean>} cc-addon-option:input - Fires when the option is enabled or disabled.
  *
  * @slot - The content of the option's description (text or HTML).
  */
@@ -51,7 +49,7 @@ export class CcAddonOption extends LitElement {
   /** @param {CustomEvent<'DISABLED'|'ENABLED'>} event */
   _onToggleOption({ detail: enabled }) {
     this.enabled = enabled === 'ENABLED';
-    dispatchCustomEvent(this, 'input', this.enabled);
+    this.dispatchEvent(new CcAddonOptionChangeEvent(this.enabled));
   }
 
   render() {
