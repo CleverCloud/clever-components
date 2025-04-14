@@ -17,6 +17,7 @@ const SKELETON_VARIABLES = [
 /**
  * @typedef {import('../common.types.js').EnvVarEditorState} EnvVarEditorState
  * @typedef {import('../common.types.js').EnvVar} EnvVar
+ * @typedef {import('../cc-env-var-create/cc-env-var-create.events.js').CcEnvVarCreateEvent} CcEnvVarCreateEvent
  * @typedef {import('../cc-env-var-input/cc-env-var-input.events.js').CcEnvVarChangeEvent} CcEnvVarChangeEvent
  * @typedef {import('../cc-env-var-input/cc-env-var-input.events.js').CcEnvVarDeleteEvent} CcEnvVarDeleteEvent
  * @typedef {import('../cc-env-var-input/cc-env-var-input.events.js').CcEnvVarKeepEvent} CcEnvVarKeepEvent
@@ -66,7 +67,7 @@ export class CcEnvVarEditorSimple extends LitElement {
     dispatchCustomEvent(this, 'change', variables);
   }
 
-  /** @param {CustomEvent<EnvVar>} event */
+  /** @param {CcEnvVarCreateEvent} event */
   _onCreate({ detail: newVar }) {
     if (this.state.type === 'loading') {
       return;
@@ -131,7 +132,7 @@ export class CcEnvVarEditorSimple extends LitElement {
               ?disabled=${skeleton || this.disabled}
               .validationMode=${validationMode}
               .variablesNames=${variablesNames}
-              @cc-env-var-create:create=${this._onCreate}
+              @cc-env-var-create=${this._onCreate}
             ></cc-env-var-create>
           `
         : ''}
