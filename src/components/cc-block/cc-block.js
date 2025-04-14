@@ -2,13 +2,13 @@ import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { iconRemixArrowRightSLine as iconArrowRight } from '../../assets/cc-remix.icons.js';
 import { hasSlottedChildren } from '../../directives/has-slotted-children.js';
-import { dispatchCustomEvent } from '../../lib/events.js';
 import { isStringEmpty } from '../../lib/utils.js';
 import { linkStyles } from '../../templates/cc-link/cc-link.js';
 import '../cc-button/cc-button.js';
 import '../cc-expand/cc-expand.js';
 import '../cc-icon/cc-icon.js';
 import '../cc-img/cc-img.js';
+import { CcToggleEvent } from '../common.events.js';
 
 /**
  * @typedef {import('../common.types.js').IconModel} IconModel
@@ -23,8 +23,6 @@ import '../cc-img/cc-img.js';
  * * The content-body section is wrapped in a `<cc-expand>` so variation of this section height will be animated.
  *
  * @cssdisplay block
- *
- * @fires {CustomEvent<'open'|'close'>} cc-block:toggle-change - Fires toggle state whenever it changes.
  *
  * @slot ribbon - The ribbon in the top left corner.
  * @slot header - A zone dedicated to header content.
@@ -71,7 +69,7 @@ export class CcBlock extends LitElement {
     } else if (this.toggle === 'open') {
       this.toggle = 'close';
     }
-    dispatchCustomEvent(this, 'toggle-change', this.toggle);
+    this.dispatchEvent(new CcToggleEvent({ isOpen: this.toggle === 'open' }));
   }
 
   render() {
