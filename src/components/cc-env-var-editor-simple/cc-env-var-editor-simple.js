@@ -17,6 +17,9 @@ const SKELETON_VARIABLES = [
 /**
  * @typedef {import('../common.types.js').EnvVarEditorState} EnvVarEditorState
  * @typedef {import('../common.types.js').EnvVar} EnvVar
+ * @typedef {import('../cc-env-var-input/cc-env-var-input.events.js').CcEnvVarChangeEvent} CcEnvVarChangeEvent
+ * @typedef {import('../cc-env-var-input/cc-env-var-input.events.js').CcEnvVarDeleteEvent} CcEnvVarDeleteEvent
+ * @typedef {import('../cc-env-var-input/cc-env-var-input.events.js').CcEnvVarKeepEvent} CcEnvVarKeepEvent
  */
 
 /**
@@ -72,8 +75,8 @@ export class CcEnvVarEditorSimple extends LitElement {
     this._changeVariables([...this.state.variables, newVar]);
   }
 
-  /** @param {CustomEvent<EnvVar>} event */
-  _onInput({ detail: editedVar }) {
+  /** @param {CcEnvVarChangeEvent} event */
+  _onChange({ detail: editedVar }) {
     if (this.state.type === 'loading') {
       return;
     }
@@ -85,7 +88,7 @@ export class CcEnvVarEditorSimple extends LitElement {
     );
   }
 
-  /** @param {CustomEvent<EnvVar>} event */
+  /** @param {CcEnvVarDeleteEvent} event */
   _onDelete({ detail: deletedVar }) {
     if (this.state.type === 'loading') {
       return;
@@ -102,7 +105,7 @@ export class CcEnvVarEditorSimple extends LitElement {
     );
   }
 
-  /** @param {CustomEvent<EnvVar>} event */
+  /** @param {CcEnvVarKeepEvent} event */
   _onKeep({ detail: keptVar }) {
     if (this.state.type === 'loading') {
       return;
@@ -148,9 +151,9 @@ export class CcEnvVarEditorSimple extends LitElement {
             ?skeleton=${skeleton}
             ?disabled=${this.disabled}
             ?readonly=${this.readonly}
-            @cc-env-var-input:input=${this._onInput}
-            @cc-env-var-input:delete=${this._onDelete}
-            @cc-env-var-input:keep=${this._onKeep}
+            @cc-env-var-change=${this._onChange}
+            @cc-env-var-delete=${this._onDelete}
+            @cc-env-var-keep=${this._onKeep}
           ></cc-env-var-input>
         `,
       )}

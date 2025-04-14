@@ -1,10 +1,10 @@
 import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
-import { dispatchCustomEvent } from '../../lib/events.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-button/cc-button.js';
 import '../cc-input-text/cc-input-text.js';
+import { CcEnvVarChangeEvent, CcEnvVarDeleteEvent, CcEnvVarKeepEvent } from './cc-env-var-input.events.js';
 
 /**
  * @typedef {import('./cc-env-var-input.types.js').EnvVarName} EnvVarName
@@ -15,10 +15,6 @@ import '../cc-input-text/cc-input-text.js';
  * A small input to manipulate an environment variable.
  *
  * @cssdisplay block
- *
- * @fires {CustomEvent<EnvVarName>} cc-env-var-input:delete - Fires a variable name whenever the delete button is clicked.
- * @fires {CustomEvent<EnvVar>} cc-env-var-input:input - Fires a variable whenever its value changes.
- * @fires {CustomEvent<EnvVarName>} cc-env-var-input:keep - Fires a variable name whenever the keep button is clicked.
  */
 export class CcEnvVarInput extends LitElement {
   static get properties() {
@@ -52,7 +48,7 @@ export class CcEnvVarInput extends LitElement {
     /** @type {string|null} Sets the name of the environment variable. */
     this.name = null;
 
-    /** @type {boolean}  Declares the variable as "new" (compared to server side state). */
+    /** @type {boolean} Declares the variable as "new" (compared to server side state). */
     this.new = false;
 
     /** @type {boolean} Sets `readonly` attribute on input and hides button. */
@@ -68,15 +64,15 @@ export class CcEnvVarInput extends LitElement {
   /** @param {CustomEvent<string>} event */
   _onInput({ detail: value }) {
     this.value = value;
-    dispatchCustomEvent(this, 'input', { name: this.name, value: this.value });
+    this.dispatchEvent(new CcEnvVarChangeEvent({ name: this.name, value: this.value }));
   }
 
   _onDelete() {
-    dispatchCustomEvent(this, 'delete', { name: this.name });
+    this.dispatchEvent(new CcEnvVarDeleteEvent({ name: this.name }));
   }
 
   _onKeep() {
-    dispatchCustomEvent(this, 'keep', { name: this.name });
+    this.dispatchEvent(new CcEnvVarKeepEvent({ name: this.name }));
   }
 
   render() {
