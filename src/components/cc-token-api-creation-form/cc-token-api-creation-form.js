@@ -2,10 +2,15 @@ import { LitElement, css, html } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { createRef, ref } from 'lit/directives/ref.js';
-import { iconRemixArrowRightCircleLine as iconActiveStep } from '../../assets/cc-remix.icons.js';
+import {
+  iconRemixArrowRightCircleLine as iconActiveStep,
+  iconRemixCheckboxCircleLine as iconDoneStep,
+  iconRemixLogoutBoxRLine as iconLink,
+} from '../../assets/cc-remix.icons.js';
 import { dispatchCustomEvent } from '../../lib/events.js';
 import { formSubmit } from '../../lib/form/form-submit-directive.js';
 import { i18n } from '../../translations/translation.js';
+import '../cc-block-detail/cc-block-details.js';
 import '../cc-block/cc-block.js';
 import '../cc-input-date/cc-input-date.js';
 import '../cc-input-text/cc-input-text.js';
@@ -238,6 +243,13 @@ export class CcTokenApiCreationForm extends LitElement {
             : ''}
           ${this.state.type === 'created' ? this._renderCopyStep(this.state.token) : ''}
         </div>
+        <cc-block-details slot="footer-left">
+          <div slot="button-text">Command line</div>
+          <a slot="link" href="https://www.clever-cloud.com/developers/api/howto/#api-tokens"
+            >See documentation <cc-icon .icon=${iconLink}></cc-icon
+          ></a>
+          <div slot="content">TODO: CLI command doc</div>
+        </cc-block-details>
       </cc-block>
     `;
   }
@@ -250,16 +262,22 @@ export class CcTokenApiCreationForm extends LitElement {
         name: 'config',
         text: i18n('cc-token-api-creation-form.config-step.nav.name'),
         isActive: activeStep === 'config',
+        isClickable: activeStep === 'validate',
+        isDone: activeStep === 'validate',
       },
       {
         name: 'validate',
         text: i18n('cc-token-api-creation-form.validation-step.nav.name'),
         isActive: activeStep === 'validate',
+        isClickable: false,
+        isDone: activeStep === 'copy',
       },
       {
         name: 'copy',
         text: i18n('cc-token-api-creation-form.copy-step.nav.name'),
         isActive: activeStep === 'copy',
+        isClickable: false,
+        isDone: false,
       },
     ]);
 
@@ -272,14 +290,16 @@ export class CcTokenApiCreationForm extends LitElement {
               <li
                 class="creation-steps-nav__step-item ${classMap({
                   'creation-steps-nav__step-item--active': step.isActive,
+                  'creation-steps-nav__step-item--done': step.isDone,
                 })}"
                 aria-current="${ifDefined(step.isActive ? 'step' : null)}"
               >
-                ${step.isActive ? html`<cc-icon .icon=${iconActiveStep}></cc-icon>` : ''}
-                ${activeStep === 'validate' && step.name === 'config'
+                ${step.isActive ? html`<cc-icon .icon=${iconActiveStep} size="lg"></cc-icon>` : ''}
+                ${step.isDone ? html`<cc-icon .icon=${iconDoneStep} size="lg"></cc-icon>` : ''}
+                ${step.isClickable
                   ? html`<a href="#" @click="${this._onNavItemClick(step.name)}"> ${step.text} </a>`
                   : ''}
-                ${activeStep !== 'validate' || step.name !== 'config' ? html`<span>${step.text}</span>` : ''}
+                ${!step.isClickable ? html`<span>${step.text}</span>` : ''}
               </li>
             `,
           )}
@@ -418,7 +438,18 @@ export class CcTokenApiCreationForm extends LitElement {
 
       /* TODO: won't work for mobile */
       cc-block {
-        padding: 2em 3em;
+        padding-top: 2em;
+      }
+
+      /* TODO: won't work for mobile */
+      cc-block > [slot='content'] {
+        padding-bottom: 2em;
+      }
+
+      /* TODO: won't work for mobile */
+      cc-block > [slot='content'],
+      [slot='header-title'] {
+        padding-inline: 3em;
       }
 
       .block-intro {
@@ -436,10 +467,14 @@ export class CcTokenApiCreationForm extends LitElement {
       }
 
       .creation-steps-nav__step-item {
+        --cc-icon-size: 1.3em;
+
+        align-items: center;
         color: var(--cc-color-text-weak);
         display: flex;
         flex: 1 1 auto;
         gap: 0.5em;
+        line-height: 1.3em;
         padding-block: 1em;
         position: relative;
       }
@@ -457,11 +492,16 @@ export class CcTokenApiCreationForm extends LitElement {
       }
 
       .creation-steps-nav__step-item a {
+        color: inherit;
         text-decoration: none;
       }
 
       .creation-steps-nav__step-item--active {
         color: var(--cc-color-text-primary);
+      }
+
+      .creation-steps-nav__step-item--done {
+        color: var(--cc-color-text-success);
       }
 
       form:not([hidden]) {
