@@ -20,7 +20,6 @@ import {
   parseDomain,
   sortDomains,
 } from '../../lib/domain.js';
-import { dispatchCustomEvent } from '../../lib/events.js';
 import { focusBySelector } from '../../lib/focus-helper.js';
 import { accessibilityStyles } from '../../styles/accessibility.js';
 import { ccLink, linkStyles } from '../../templates/cc-link/cc-link.js';
@@ -32,6 +31,7 @@ import '../cc-button/cc-button.js';
 import '../cc-input-text/cc-input-text.js';
 import '../cc-loader/cc-loader.js';
 import '../cc-notice/cc-notice.js';
+import { CcDomainAddEvent, CcDomainDeleteEvent, CcDomainMarkAsPrimaryEvent } from './cc-domain-management.events.js';
 
 const DOMAIN_NAMES_DOCUMENTATION =
   'https://developers.clever-cloud.com/doc/administrate/domain-names/#using-a-cleverappsio-free-domain-with-built-in-ssl';
@@ -47,20 +47,16 @@ const DNS_DOCUMENTATION = 'https://developers.clever-cloud.com/doc/administrate/
  * @typedef {import('./cc-domain-management.types.js').DomainInfo} DomainInfo
  * @typedef {import('./cc-domain-management.types.js').FormError} FormError
  * @typedef {import('../cc-input-text/cc-input-text.js').CcInputText} CcInputText
+ * @typedef {import('lit').PropertyValues<CcDomainManagement>} CcDomainManagementPropertyValues
  * @typedef {import('lit').TemplateResult<1>} TemplateResult
  * @typedef {import('lit/directives/ref.js').Ref<CcInputText>} RefCcInputText
  * @typedef {import('lit/directives/ref.js').Ref<HTMLParagraphElement>} RefHTMLParagraphElement
- * @typedef {import('lit').PropertyValues<CcDomainManagement>} CcDomainManagementPropertyValues
  */
 
 /**
  * A component to manage domains associated to an application.
  *
  * @cssdisplay block
- *
- * @fires {CustomEvent<{ hostname: string, pathPrefix: string }>} cc-domain-management:add - Fires when clicking the "Add a domain" button.
- * @fires {CustomEvent<DomainInfo>} cc-domain-management:mark-as-primary - Fires when clicking a "mark as primary" button.
- * @fires {CustomEvent<DomainInfo>} cc-domain-management:delete - Fires when clicking a "delete" button.
  */
 export class CcDomainManagement extends LitElement {
   static get properties() {
@@ -235,23 +231,33 @@ export class CcDomainManagement extends LitElement {
     // we do this to strip off unwanted parts like query parameters for instance
     const { hostname, pathname, isWildcard } = parseDomain(hostnameValue + pathPrefixValue);
 
-    dispatchCustomEvent(this, 'add', {
-      hostname,
-      pathPrefix: pathname,
-      isWildcard,
-    });
+    this.dispatchEvent(new CcDomainAddEvent({ hostname, pathPrefix: pathname, isWildcard }));
   }
 
-  /** @param {FormattedDomainInfo} domainInfo */
-  _onMarkPrimary(domainInfo) {
-    const { id, hostname, pathPrefix, isWildcard, isPrimary } = domainInfo;
-    return () => dispatchCustomEvent(this, 'mark-as-primary', { id, hostname, pathPrefix, isWildcard, isPrimary });
+  /** @param {FormattedDomainInfo} formattedDomainInfo */
+  _onMarkPrimary(formattedDomainInfo) {
+    /** @type {DomainInfo} */
+    const domainInfo = {
+      id: formattedDomainInfo.id,
+      hostname: formattedDomainInfo.hostname,
+      pathPrefix: formattedDomainInfo.pathPrefix,
+      isWildcard: formattedDomainInfo.isWildcard,
+      isPrimary: formattedDomainInfo.isPrimary,
+    };
+    return () => this.dispatchEvent(new CcDomainMarkAsPrimaryEvent(domainInfo));
   }
 
-  /** @param {FormattedDomainInfo} domainInfo */
-  _onDelete(domainInfo) {
-    const { id, hostname, pathPrefix, isWildcard, isPrimary } = domainInfo;
-    return () => dispatchCustomEvent(this, 'delete', { id, hostname, pathPrefix, isWildcard, isPrimary });
+  /** @param {FormattedDomainInfo} formattedDomainInfo */
+  _onDelete(formattedDomainInfo) {
+    /** @type {DomainInfo} */
+    const domainInfo = {
+      id: formattedDomainInfo.id,
+      hostname: formattedDomainInfo.hostname,
+      pathPrefix: formattedDomainInfo.pathPrefix,
+      isWildcard: formattedDomainInfo.isWildcard,
+      isPrimary: formattedDomainInfo.isPrimary,
+    };
+    return () => this.dispatchEvent(new CcDomainDeleteEvent(domainInfo));
   }
 
   /** @param {CustomEvent<string>} event */
