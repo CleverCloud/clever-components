@@ -1,15 +1,13 @@
 import { css, html, LitElement } from 'lit';
 import { iconRemixArrowDownSLine as iconArrowDown } from '../../assets/cc-remix.icons.js';
-import { dispatchCustomEvent } from '../../lib/events.js';
 import '../cc-icon/cc-icon.js';
+import { CcToggleEvent } from '../common.events.js';
 
 /**
  * A display component with mostly HTML+CSS and an open/close toggle feature organized with slots to display information such as CLI commands.
  * The main purpose is to be used with a cc-block.
  *
  * @cssdisplay block
- *
- * @fires {CustomEvent<boolean>} cc-block-details:is-open-change - Fires is-open state whenever it changes.
  *
  * @slot button-text - The title of the tab. Try to only use text.
  * @slot link - A zone dedicated to link, for example to documentation.
@@ -32,7 +30,7 @@ export class CcBlockDetails extends LitElement {
 
   _onClickToggle() {
     this.isOpen = !this.isOpen;
-    dispatchCustomEvent(this, 'is-open-change', !this.isOpen);
+    this.dispatchEvent(new CcToggleEvent({ isOpen: this.isOpen }));
   }
 
   render() {
