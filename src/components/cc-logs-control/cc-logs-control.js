@@ -39,7 +39,7 @@ const PALETTES = {
 /**
  * @typedef {import('./cc-logs-control.types.js').LogsMetadataDisplay} LogsMetadataDisplay
  * @typedef {import('./cc-logs-control.types.js').LogsControlPalette} LogsControlPalette
- * @typedef {import('./cc-logs-control.types.js').LogsControlOption} LogsControlOption
+ * @typedef {import('./cc-logs-control.types.js').LogsOptions} LogsOptions
  * @typedef {import('../cc-logs/cc-logs.types.js').LogMessageFilterMode} LogMessageFilterMode
  * @typedef {import('../cc-logs/date-display.types.js').DateDisplay} DateDisplay
  * @typedef {import('../cc-logs/cc-logs.js').CcLogs} CcLogs
@@ -436,6 +436,23 @@ export class CcLogsControl extends LitElement {
         })}
       </div>
     `;
+  }
+
+  /**
+   * @return {LogsOptions}
+   */
+  _getOptions() {
+    const metadataDisplayOption = Object.fromEntries(
+      Object.entries(this.metadataDisplay).map(([k, v]) => [k, !v.hidden]),
+    );
+    return {
+      'date-display': this.dateDisplay,
+      'metadata-display': metadataDisplayOption,
+      palette: this.palette,
+      timezone: this.timezone,
+      'wrap-lines': this.wrapLines,
+      'strip-ansi': this.stripAnsi,
+    };
   }
 
   static get styles() {
