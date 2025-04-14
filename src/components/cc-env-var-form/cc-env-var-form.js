@@ -18,6 +18,7 @@ const ENV_VAR_DOCUMENTATION = 'https://developers.clever-cloud.com/doc/reference
  * @typedef {import('./cc-env-var-form.types.js').EnvVarFormContextType} EnvVarFormContextType
  * @typedef {import('./cc-env-var-form.types.js').EnvVarFormState} EnvVarFormState
  * @typedef {import('./cc-env-var-form.types.js').EnvVarFormMode} EnvVarFormMode
+ * @typedef {import('./cc-env-var-form.events.js').CcEnvChangeEvent} CcEnvChangeEvent
  * @typedef {import('../common.types.js').EnvVarEditorState} EnvVarEditorState
  * @typedef {import('../common.types.js').EnvVar} EnvVar
  * @typedef {import('lit').PropertyValues<CcEnvVarForm>} CcEnvVarFormPropertyValues
@@ -143,7 +144,7 @@ export class CcEnvVarForm extends LitElement {
     }
   }
 
-  /** @param {CustomEvent<EnvVar[]>} event */
+  /** @param {CcEnvChangeEvent} event */
   _onChange({ detail: changedVariables }) {
     if (this.state.type === 'loading' || this.state.type === 'error') {
       return;
@@ -317,13 +318,15 @@ export class CcEnvVarForm extends LitElement {
           <slot class="description">${this._description}</slot>
         </div>
 
-        <div slot="content-body">
+        <div
+          slot="content-body"
+          @cc-env-change=${this._onChange}
+        >
           <cc-env-var-editor-simple
             ?hidden=${this._mode !== 'SIMPLE'}
             .state=${this._editorsState}
             ?disabled=${isEditorDisabled}
             ?readonly=${this.readonly}
-            @cc-env-var-editor-simple:change=${this._onChange}
             @cc-input-text:requestimplicitsubmit=${this._onRequestSubmit(isFormDisabled)}
           ></cc-env-var-editor-simple>
 
