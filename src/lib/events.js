@@ -84,3 +84,22 @@ export class EventHandler {
     return true;
   }
 }
+
+/**
+ * @extends {CustomEvent<D>}
+ * @template D detail
+ */
+export class CcEvent extends CustomEvent {
+  /**
+   * @param {string} type
+   * @param {D} [detail]
+   */
+  constructor(type, detail) {
+    super(type, { detail, bubbles: true, composed: true });
+  }
+
+  // this makes CcEvent unique for Typescript
+  get ccEvent() {
+    return true;
+  }
+}
