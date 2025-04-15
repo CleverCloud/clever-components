@@ -9,6 +9,12 @@ export default {
 
 const conf = {
   component: 'cc-zone',
+  // language=CSS
+  css: `
+    cc-zone {
+      align-self: start;
+    }
+  `,
 };
 
 /**
@@ -43,7 +49,7 @@ const zoneWithInfra = {
 };
 
 /** @type {ZoneStateLoaded} */
-const zonePrivate = {
+const zoneWithDisplayName = {
   type: 'loaded',
   name: 'acme-corp',
   displayName: 'ACME Corp',
@@ -52,7 +58,7 @@ const zonePrivate = {
   city: 'Berlin',
   lat: 52.52,
   lon: 13.39,
-  tags: ['region:eu', 'scope:private'],
+  tags: ['region:eu', 'infra:clever-cloud'],
 };
 
 /** @type {ZoneStateLoaded} */
@@ -90,15 +96,15 @@ const zoneWithManyTags = {
 
 export const defaultStory = makeStory(conf, {
   /** @type {{ state: ZoneStateLoaded, mode?: ZoneModeType }[]} */
-  items: [{ state: zoneDefault }, { state: zoneDefault, mode: 'small' }, { state: zoneDefault, mode: 'small-infra' }],
+  items: [{ state: zoneDefault }, { state: zoneDefault, mode: 'small-infra' }, { state: zoneDefault, mode: 'small' }],
 });
 
 export const loading = makeStory(conf, {
   /** @type {{ state: ZoneStateLoading, mode?: ZoneModeType }[]} */
   items: [
     { state: { type: 'loading' } },
-    { state: { type: 'loading' }, mode: 'small' },
     { state: { type: 'loading' }, mode: 'small-infra' },
+    { state: { type: 'loading' }, mode: 'small' },
   ],
 });
 
@@ -108,22 +114,26 @@ export const dataLoadedWithInfra = makeStory(conf, {
   /** @type {{ state: ZoneStateLoaded, mode?: ZoneModeType }[]} */
   items: [
     { state: zoneWithInfra },
-    { state: zoneWithInfra, mode: 'small' },
     { state: zoneWithInfra, mode: 'small-infra' },
+    { state: zoneWithInfra, mode: 'small' },
   ],
 });
 
-export const dataLoadedWithPrivate = makeStory(conf, {
+export const dataLoadedWithDisplayName = makeStory(conf, {
   /** @type {{ state: ZoneStateLoaded, mode?: ZoneModeType }[]} */
-  items: [{ state: zonePrivate }, { state: zonePrivate, mode: 'small' }, { state: zonePrivate, mode: 'small-infra' }],
+  items: [
+    { state: zoneWithDisplayName },
+    { state: zoneWithDisplayName, mode: 'small-infra' },
+    { state: zoneWithDisplayName, mode: 'small' },
+  ],
 });
 
 export const dataLoadedWithNoTags = makeStory(conf, {
   /** @type {{ state: ZoneStateLoaded, mode?: ZoneModeType }[]} */
   items: [
     { state: zoneWithoutTags },
-    { state: zoneWithoutTags, mode: 'small' },
     { state: zoneWithoutTags, mode: 'small-infra' },
+    { state: zoneWithoutTags, mode: 'small' },
   ],
 });
 
@@ -131,8 +141,8 @@ export const dataLoadedWithManyTags = makeStory(conf, {
   /** @type {{ state: ZoneStateLoaded, mode?: ZoneModeType }[]} */
   items: [
     { state: zoneWithManyTags },
-    { state: zoneWithManyTags, mode: 'small' },
     { state: zoneWithManyTags, mode: 'small-infra' },
+    { state: zoneWithManyTags, mode: 'small' },
   ],
 });
 

@@ -17,8 +17,6 @@ const SKELETON_ZONE = {
   tags: ['????????', '????????????'],
 };
 
-const PRIVATE_ZONE = 'scope:private';
-
 /**
  * @typedef {import('./cc-zone.types.js').ZoneState} ZoneState
  * @typedef {import('./cc-zone.types.js').ZoneStateLoaded} ZoneStateLoaded
@@ -32,7 +30,7 @@ const PRIVATE_ZONE = 'scope:private';
  * ## Details
  *
  * * When a tag prefixed with `infra:` is used, the corresponding logo is displayed.
- * * When the `scope:private` tag is used, the optional `displayName` of the zone will be used instead of the City + Country.
+ * * When it's defined, the `displayName` of the zone will be used instead of the City + Country.
  * * If the browser supports it, the `countryCode` will be used to display a translated version of the country's name.
  *
  * @cssdisplay flex
@@ -82,15 +80,20 @@ export class CcZone extends LitElement {
    * @private
    */
   static _getTextParts(zone) {
-    if (zone.tags.includes(PRIVATE_ZONE) && zone.displayName != null) {
-      return { title: zone.displayName };
-    }
+    const title = zone.displayName ?? zone.city;
+    const subtitle =
+      zone.displayName == null
+        ? i18n('cc-zone.country', {
+            code: zone.countryCode,
+            name: zone.country,
+          })
+        : null;
 
     const infraTag = zone.tags.find((t) => t.startsWith('infra:'));
     const infraSlug = infraTag?.split(':')[1] ?? null;
     return {
-      title: zone.city,
-      subtitle: i18n('cc-zone.country', { code: zone.countryCode, name: zone.country }),
+      title,
+      subtitle,
       infra: infraSlug,
     };
   }
