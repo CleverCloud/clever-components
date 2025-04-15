@@ -79,7 +79,7 @@ const CUSTOM_METADATA_RENDERERS = {
  * @typedef {import('../cc-logs-control/cc-logs-control.types.js').LogsOptions} LogsOptions
  * @typedef {import('../cc-logs-control/cc-logs-control.types.js').LogsMetadataDisplay} LogsMetadataDisplay
  * @typedef {import('../cc-logs-date-range-selector/cc-logs-date-range-selector.types.js').LogsDateRangeSelection} LogsDateRangeSelection
- * @typedef {import('../cc-logs-date-range-selector/cc-logs-date-range-selector.types.js').LogsDateRangeSelectionChangeEventData} LogsDateRangeSelectionChangeEventData
+ * @typedef {import('../cc-logs-date-range-selector/cc-logs-date-range-selector.events.js').CcLogsDateRangeSelectionChangeEvent} CcLogsDateRangeSelectionChangeEvent
  * @typedef {import('../cc-logs-instances/cc-logs-instances.types.js').LogsInstancesState} LogsInstancesState
  * @typedef {import('../cc-logs-message-filter/cc-logs-message-filter.types.js').LogsMessageFilterValue} LogsMessageFilterValue
  * @typedef {import('lit/directives/ref.js').Ref<CcLogsControl>} CcLogsControlRef
@@ -185,7 +185,7 @@ export class CcLogsAppAccess extends LitElement {
   /* region Event handlers */
 
   /**
-   * @param {CustomEvent<LogsDateRangeSelectionChangeEventData>} event
+   * @param {CcLogsDateRangeSelectionChangeEvent} event
    */
   _onDateRangeSelectionChange(event) {
     this.dateRangeSelection = event.detail.selection;
@@ -263,7 +263,7 @@ export class CcLogsAppAccess extends LitElement {
         <div slot="header" class="logs-header">
           <cc-logs-date-range-selector-beta
             .value=${this.dateRangeSelection}
-            @cc-logs-date-range-selector:change=${this._onDateRangeSelectionChange}
+            @cc-logs-date-range-selection-change=${this._onDateRangeSelectionChange}
           ></cc-logs-date-range-selector-beta>
 
           <cc-logs-message-filter-beta

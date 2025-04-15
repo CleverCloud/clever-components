@@ -9,7 +9,6 @@ import './cc-logs-addon-runtime.js';
 /**
  * @typedef {import('./cc-logs-addon-runtime.js').CcLogsAddonRuntime} CcLogsAddonRuntime
  * @typedef {import('../cc-logs/cc-logs.types.js').Log} Log
- * @typedef {import('../cc-logs-date-range-selector/cc-logs-date-range-selector.types.js').LogsDateRangeSelectionChangeEventData} LogsDateRangeSelectionChangeEventData
  * @typedef {import('../../lib/send-to-api.types.js').ApiConfig} ApiConfig
  * @typedef {import('../../lib/date/date-range.types.js').DateRange} DateRange
  * @typedef {import('../../lib/logs/logs-stream.types.js').LogsStreamState} LogsStreamState
@@ -46,13 +45,9 @@ defineSmartComponent({
       controller.stop();
     };
 
-    onEvent(
-      'cc-logs-date-range-selector:change',
-      /** @param {LogsDateRangeSelectionChangeEventData} eventData */
-      (eventData) => {
-        controller.setNewDateRange(eventData.range);
-      },
-    );
+    onEvent('cc-logs-date-range-selection-change', ({ range }) => {
+      controller.setNewDateRange(range);
+    });
 
     onEvent('cc-logs-loading-progress:pause', () => {
       controller.pause();
