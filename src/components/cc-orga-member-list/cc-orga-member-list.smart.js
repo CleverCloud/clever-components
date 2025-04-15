@@ -115,7 +115,7 @@ defineSmartComponent({
         });
     });
 
-    onEvent('cc-orga-member-list:update', ({ id, role, newRole, name, email, isCurrentUser }) => {
+    onEvent('cc-orga-member-update', ({ id, role, newRole, name, email, isCurrentUser }) => {
       if (component.memberListState.type !== 'loaded') {
         return;
       }
@@ -185,7 +185,7 @@ defineSmartComponent({
         );
     });
 
-    onEvent('cc-orga-member-card:delete', ({ id, name, email }) => {
+    onEvent('cc-orga-member-delete', ({ id, name, email }) => {
       updateMemberState(
         id,
         /** @param {OrgaMemberCardState} member */
@@ -234,7 +234,7 @@ defineSmartComponent({
         );
     });
 
-    onEvent('cc-orga-member-list:leave', ({ id }) => {
+    onEvent('cc-orga-member-leave', ({ id }) => {
       updateMemberState(
         id,
         /** @param {OrgaMemberCardState} member */
