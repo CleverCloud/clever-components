@@ -52,6 +52,7 @@ import '../cc-select/cc-select.js';
  * @typedef {import('../cc-kv-hash-explorer/cc-kv-hash-explorer.events.js').CcKvHashExplorerStateChangeEvent} CcKvHashExplorerStateChangeEvent
  * @typedef {import('../cc-kv-list-explorer/cc-kv-list-explorer.js').CcKvListExplorer} CcKvListExplorer
  * @typedef {import('../cc-kv-list-explorer/cc-kv-list-explorer.types.js').CcKvListExplorerState} CcKvListExplorerState
+ * @typedef {import('../cc-kv-list-explorer/cc-kv-list-explorer.events.js').CcKvListExplorerStateChangeEvent} CcKvListExplorerStateChangeEvent
  * @typedef {import('../cc-kv-set-explorer/cc-kv-set-explorer.js').CcKvSetExplorer} CcKvSetExplorer
  * @typedef {import('../cc-kv-set-explorer/cc-kv-set-explorer.types.js').CcKvSetExplorerState} CcKvSetExplorerState
  * @typedef {import('../cc-kv-terminal/cc-kv-terminal.types.d.ts').CcKvTerminalState} CcKvTerminalState
@@ -496,7 +497,7 @@ export class CcKvExplorer extends LitElement {
   }
 
   /**
-   * @param {CustomEvent<CcKvListExplorerState>} e
+   * @param {CcKvListExplorerStateChangeEvent} e
    */
   _onListEditorStateChange(e) {
     if (this.detailState.type === 'edit-list') {
@@ -971,7 +972,7 @@ export class CcKvExplorer extends LitElement {
       ${ref(this._listEditor)}
       .state=${state}
       ?disabled=${disabled}
-      @cc-kv-list-explorer:state-change=${this._onListEditorStateChange}
+      @cc-kv-list-explorer-state-change=${this._onListEditorStateChange}
     ></cc-kv-list-explorer-beta>`;
   }
 
