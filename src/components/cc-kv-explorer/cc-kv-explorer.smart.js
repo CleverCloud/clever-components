@@ -353,13 +353,9 @@ defineSmartComponent({
 
     // -- CLI
 
-    onEvent(
-      'cc-kv-terminal:send-command',
-      /** @param {string} commandLine */
-      async (commandLine) => {
-        await terminalCtrl.runCommandLine(commandLine);
-      },
-    );
+    onEvent('cc-kv-command-execute', async (commandLine) => {
+      await terminalCtrl.runCommandLine(commandLine);
+    });
 
     // -- init ---
 
