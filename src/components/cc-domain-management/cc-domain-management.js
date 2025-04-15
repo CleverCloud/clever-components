@@ -260,7 +260,7 @@ export class CcDomainManagement extends LitElement {
     return () => this.dispatchEvent(new CcDomainDeleteEvent(domainInfo));
   }
 
-  /** @param {CustomEvent<string>} event */
+  /** @param {CcInputEvent} event */
   _onDomainInput({ detail: value }) {
     if (this.domainFormState.type !== 'idle') {
       return;
@@ -275,7 +275,7 @@ export class CcDomainManagement extends LitElement {
     };
   }
 
-  /** @param {CustomEvent<string>} event */
+  /** @param {CcInputEvent} event */
   _onPathPrefixInput({ detail: value }) {
     // add "/" at the beginning in case the user forgot to type it
     if (value.length > 0 && !value.startsWith('/')) {
@@ -426,7 +426,7 @@ export class CcDomainManagement extends LitElement {
             ?readonly="${isAdding}"
             .errorMessage=${this._getErrorMessage(domain.error)}
             ${ref(this._domainInputRef)}
-            @cc-input-text:input=${this._onDomainInput}
+            @cc-input=${this._onDomainInput}
             @paste=${this._onDomainPaste}
           >
             <p slot="help">${i18n('cc-domain-management.form.domain.help')}</p>
@@ -436,7 +436,7 @@ export class CcDomainManagement extends LitElement {
             label="${i18n('cc-domain-management.form.path.label')}"
             .value="${pathPrefix.value}"
             ?readonly="${isAdding}"
-            @cc-input-text:input=${this._onPathPrefixInput}
+            @cc-input=${this._onPathPrefixInput}
           >
             <p slot="help">${i18n('cc-domain-management.form.path.help')}</p>
           </cc-input-text>

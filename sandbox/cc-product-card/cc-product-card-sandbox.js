@@ -66,6 +66,9 @@ export class CcProductCardSandbox extends LitElement {
     };
   }
 
+  /**
+   * @param {CcInputEvent} event
+   */
   _onProductInput({ detail: product }) {
     const parsedProduct = JSON.parse(product);
     if (parsedProduct != null) {
@@ -108,7 +111,7 @@ export class CcProductCardSandbox extends LitElement {
         <cc-input-text
           label="Product details"
           value=${JSON.stringify(this._currentProduct, null, '\t')}
-          @cc-input-text:input="${this._onProductInput}"
+          @cc-input="${this._onProductInput}"
           multi
         ></cc-input-text>
       </div>

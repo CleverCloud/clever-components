@@ -52,8 +52,7 @@ export class CcProductList extends LitElement {
   }
 
   /**
-   * @param {Object} event
-   * @param {string} event.detail
+   * @param {CcInputEvent} event
    */
   _onSearchInput({ detail: value }) {
     this.textFilter = value;
@@ -83,7 +82,7 @@ export class CcProductList extends LitElement {
         <cc-input-text
           label="${i18n('cc-product-list.search-label')}"
           value="${this.textFilter ?? ''}"
-          @cc-input-text:input="${this._onSearchInput}"
+          @cc-input="${this._onSearchInput}"
         ></cc-input-text>
         <fieldset class="category-filter">
           <legend class="visually-hidden">${i18n('cc-product-list.filter-category-legend')}</legend>

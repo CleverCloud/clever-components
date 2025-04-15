@@ -63,7 +63,7 @@ export class CcLogsMessageFilter extends LitElement {
   /* region Event handlers */
 
   /**
-   * @param {CustomEvent<string>} event
+   * @param {CcInputEvent} event
    */
   _onTextFilterInput(event) {
     this.filter = { value: event.detail, mode: this.filter.mode };
@@ -112,7 +112,7 @@ export class CcLogsMessageFilter extends LitElement {
           label=${i18n('cc-logs-message-filter.label')}
           .value=${this.filter.value}
           inline
-          @cc-input-text:input=${this._onTextFilterInput}
+          @cc-input=${this._onTextFilterInput}
         >
         </cc-input-text>
 

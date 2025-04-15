@@ -111,7 +111,7 @@ export class CcEnvVarEditorExpert extends LitElement {
     });
   }
 
-  /** @param {CustomEvent<string>} event */
+  /** @param {CcInputEvent} event */
   _onInput({ detail: value }) {
     if (this.state.type === 'loading') {
       return;
@@ -145,7 +145,7 @@ export class CcEnvVarEditorExpert extends LitElement {
         value=${this._variablesAsText}
         ?readonly=${this.readonly || this.disabled}
         ?skeleton=${this._skeleton}
-        @cc-input-text:input=${this._onInput}
+        @cc-input=${this._onInput}
       ></cc-input-text>
 
       ${this._errors.length > 0

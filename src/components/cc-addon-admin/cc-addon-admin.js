@@ -12,6 +12,7 @@ import { CcAddonDeleteEvent, CcAddonNameChangeEvent, CcAddonTagsChangeEvent } fr
  * @typedef {import('./cc-addon-admin.types.js').AddonAdminStateLoaded} AddonAdminStateLoaded
  * @typedef {import('./cc-addon-admin.types.js').AddonAdminStateLoading} AddonAdminStateLoading
  * @typedef {import('./cc-addon-admin.types.js').AddonAdminStateSaving} AddonAdminStateSaving
+ * @typedef {import('../cc-input-text/cc-input-text.events.js').CcTagsChangeEvent} CcTagsChangeEvent
  * @typedef {import('lit').PropertyValues<CcAddonAdmin>} CcAddonAdminPropertyValues
  * @typedef {import('lit').TemplateResult<1>} TemplateResult
  */
@@ -57,7 +58,7 @@ export class CcAddonAdmin extends LitElement {
   }
 
   /**
-   * @param {{ detail: string }} event
+   * @param {CcInputEvent} event
    * @private
    */
   _onNameInput({ detail: name }) {
@@ -70,7 +71,7 @@ export class CcAddonAdmin extends LitElement {
   }
 
   /**
-   * @param {{ detail: string[] }} event
+   * @param {CcTagsChangeEvent} event
    * @private
    */
   _onTagsInput({ detail: tags }) {
@@ -132,8 +133,8 @@ export class CcAddonAdmin extends LitElement {
             ?skeleton=${isSkeleton}
             ?readonly=${isFormDisabled}
             .value=${this._name}
-            @cc-input-text:input=${this._onNameInput}
-            @cc-input-text:requestimplicitsubmit=${this._onNameSubmit}
+            @cc-input=${this._onNameInput}
+            @cc-request-submit=${this._onNameSubmit}
           ></cc-input-text>
           <cc-button
             primary
@@ -156,8 +157,8 @@ export class CcAddonAdmin extends LitElement {
             ?readonly=${isFormDisabled}
             .tags=${this._tags}
             placeholder="${i18n('cc-addon-admin.tags-empty')}"
-            @cc-input-text:tags=${this._onTagsInput}
-            @cc-input-text:requestimplicitsubmit=${this._onTagsSubmit}
+            @cc-tags-change=${this._onTagsInput}
+            @cc-request-submit=${this._onTagsSubmit}
           ></cc-input-text>
           <cc-button
             primary

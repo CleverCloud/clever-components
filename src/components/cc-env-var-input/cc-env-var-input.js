@@ -61,7 +61,7 @@ export class CcEnvVarInput extends LitElement {
     this.value = '';
   }
 
-  /** @param {CustomEvent<string>} event */
+  /** @param {CcInputEvent} event */
   _onInput({ detail: value }) {
     this.value = value;
     this.dispatchEvent(new CcEnvVarChangeEvent({ name: this.name, value: this.value }));
@@ -99,7 +99,7 @@ export class CcEnvVarInput extends LitElement {
             ?skeleton=${this.skeleton}
             ?readonly=${this.readonly}
             placeholder=${i18n('cc-env-var-input.value-placeholder')}
-            @cc-input-text:input=${this._onInput}
+            @cc-input=${this._onInput}
           ></cc-input-text>
 
           ${!this.readonly
