@@ -1504,6 +1504,7 @@ export const translations = {
   'cc-token-api-creation-form.error': `Something went wrong while loading information about your account`,
   'cc-token-api-creation-form.link.doc': `API tokens - Documentation`,
   'cc-token-api-creation-form.validation-step.description': `Finalise and confirm your new API Token by authenticating yourself`,
+  'cc-token-api-creation-form.validation-step.form.api-token-list-link': `Back to the configuration step`,
   'cc-token-api-creation-form.validation-step.form.error.credentials': `Incorrect password or 2FA code`,
   'cc-token-api-creation-form.validation-step.form.label.mfa': `2FA code`,
   'cc-token-api-creation-form.validation-step.form.label.password': `Password`,

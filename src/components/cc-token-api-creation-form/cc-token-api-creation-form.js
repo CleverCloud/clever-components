@@ -5,7 +5,8 @@ import { createRef, ref } from 'lit/directives/ref.js';
 import {
   iconRemixArrowRightCircleLine as iconActiveStep,
   iconRemixCheckboxCircleLine as iconDoneStep,
-  iconRemixLogoutBoxRLine as iconLink,
+  iconRemixLogoutBoxRLine as iconExternalLink,
+  iconRemixArrowLeftLine as iconGoBack,
 } from '../../assets/cc-remix.icons.js';
 import { shiftDateField } from '../../lib/date/date-utils.js';
 import { dispatchCustomEvent } from '../../lib/events.js';
@@ -173,8 +174,10 @@ export class CcTokenApiCreationForm extends LitElement {
    * @returns {(event: Event) => void}
    */
   _onNavItemClick(step) {
+    console.log('Nav item clicked!!');
     return (event) => {
       event.preventDefault();
+      console.log('Nav item clicked');
       this._activeStep = step;
     };
   }
@@ -251,7 +254,7 @@ export class CcTokenApiCreationForm extends LitElement {
           <div slot="button-text">Command line</div>
           <a slot="link" href="https://www.clever-cloud.com/developers/api/howto/#api-tokens">
             <span class="cc-link">${i18n('cc-token-api-creation-form.link.doc')}</span>
-            <cc-icon .icon=${iconLink}></cc-icon>
+            <cc-icon .icon=${iconExternalLink}></cc-icon>
           </a>
           <div slot="content">TODO: CLI command doc</div>
         </cc-block-details>
@@ -292,7 +295,7 @@ export class CcTokenApiCreationForm extends LitElement {
     // TODO: improve, not very readable
     return html`
       <nav role="navigation" aria-label="TODO: find a name">
-        <ul class="creation-steps-nav">
+        <ol class="creation-steps-nav">
           ${steps.map(
             (step) => html`
               <li
@@ -305,13 +308,13 @@ export class CcTokenApiCreationForm extends LitElement {
                 ${step.isActive ? html`<cc-icon .icon=${iconActiveStep} size="lg"></cc-icon>` : ''}
                 ${step.isDone ? html`<cc-icon .icon=${iconDoneStep} size="lg"></cc-icon>` : ''}
                 ${step.isClickable
-                  ? html`<a href="#" @click="${this._onNavItemClick(step.name)}"> ${step.text} </a>`
+                  ? html`<a @click="${this._onNavItemClick(step.name)}" href="#">${step.text}</a>`
                   : ''}
                 ${!step.isClickable ? html`<span>${step.text}</span>` : ''}
               </li>
             `,
           )}
-        </ul>
+        </ol>
       </nav>
     `;
   }
@@ -380,8 +383,9 @@ export class CcTokenApiCreationForm extends LitElement {
           </cc-input-date>
         </div>
         <div class="form__actions">
-          <a href="${this.apiTokenListHref}">
-            ${i18n('cc-token-api-creation-form.config-step.form.api-token-list-link')}
+          <a href="${this.apiTokenListHref}" class="go-back-link">
+            <cc-icon .icon=${iconGoBack}></cc-icon>
+            <span>${i18n('cc-token-api-creation-form.config-step.form.api-token-list-link')}</span>
           </a>
           <cc-button primary type="submit">
             ${i18n('cc-token-api-creation-form.config-step.form.button.label.create')}
@@ -416,12 +420,18 @@ export class CcTokenApiCreationForm extends LitElement {
 
         <div class="form__actions">
           ${isWaiting
-            ? html`<span>${i18n('cc-token-api-creation-form.config-step.form.api-token-list-link')}</span>`
+            ? html`
+                <div class="go-back-link">
+                  <cc-icon .icon=${iconGoBack}></cc-icon>
+                  <span>${i18n('cc-token-api-creation-form.validation-step.form.api-token-list-link')}</span>
+                </div>
+              `
             : ''}
           ${!isWaiting
             ? html`
-                <a @click=${() => this._onNavItemClick('config')} href="#">
-                  ${i18n('cc-token-api-creation-form.config-step.form.api-token-list-link')}
+                <a class="go-back-link" @click="${this._onNavItemClick('config')}" tabindex="0" role="link">
+                  <cc-icon .icon=${iconGoBack}></cc-icon>
+                  <span>${i18n('cc-token-api-creation-form.validation-step.form.api-token-list-link')}</span>
                 </a>
               `
             : ''}
@@ -570,6 +580,15 @@ export class CcTokenApiCreationForm extends LitElement {
 
         .token-list-link-cta {
           justify-self: flex-end;
+        }
+
+        .go-back-link {
+          display: flex;
+          align-items: center;
+          gap: 0.5em;
+          color: var(--cc-color-text-weak);
+          cursor: pointer;
+          text-decoration: underline;
         }
       `,
     ];
