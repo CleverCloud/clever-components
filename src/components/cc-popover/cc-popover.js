@@ -1,7 +1,8 @@
 import { css, html, LitElement } from 'lit';
 import { createRef, ref } from 'lit/directives/ref.js';
-import { dispatchCustomEvent, EventHandler } from '../../lib/events.js';
+import { EventHandler } from '../../lib/events.js';
 import '../cc-button/cc-button.js';
+import { CcToggleEvent } from '../common.events.js';
 
 /**
  * @typedef {import('../common.types.js').IconModel} IconModel
@@ -46,9 +47,6 @@ import '../cc-button/cc-button.js';
  * ```
  *
  * @cssdisplay block
- *
- * @fires {CustomEvent} cc-popover:open - Fires whenever the popover is opened.
- * @fires {CustomEvent} cc-popover:close - Fires whenever the popover is closed.
  *
  * @slot - The area containing the content of the popover.
  * @slot button-content - The area containing the button content.
@@ -120,18 +118,25 @@ export class CcPopover extends LitElement {
     // Opening a popover must close the last opened popover.
     /** @type {CcPopover} */
     let lastOpenedPopover = null;
-    this._onCcPopoverOpenHandler = new EventHandler(window, 'cc-popover:open', (event) => {
-      // We cannot use event.target because events that happen in shadow DOM and when caught from outside the shadow DOM,
-      // have the host element as the target (and not the real target element inside the shadow DOM).
-      const popover = event.composedPath()[0];
+    this._onCcPopoverOpenHandler = new EventHandler(
+      window,
+      'cc-toggle',
+      /** @param {CcToggleEvent} event */ (event) => {
+        const { isOpen } = event.detail;
 
-      if (popover !== this && popover instanceof CcPopover) {
-        lastOpenedPopover = popover;
-      } else {
-        lastOpenedPopover?.close(false);
-        lastOpenedPopover = null;
-      }
-    });
+        if (isOpen) {
+          // We cannot use event.target because of events retargeting when bubbling through shadow DOM.
+          const popover = event.composedPath()[0];
+
+          if (popover !== this && popover instanceof CcPopover) {
+            lastOpenedPopover = popover;
+          } else {
+            lastOpenedPopover?.close(false);
+            lastOpenedPopover = null;
+          }
+        }
+      },
+    );
   }
 
   // region Public methods
@@ -142,7 +147,7 @@ export class CcPopover extends LitElement {
   open() {
     if (!this.isOpen) {
       this.isOpen = true;
-      dispatchCustomEvent(this, 'open');
+      this.dispatchEvent(new CcToggleEvent({ isOpen: true }));
     }
   }
 
@@ -156,7 +161,7 @@ export class CcPopover extends LitElement {
       if (shouldFocus) {
         this.focus();
       }
-      dispatchCustomEvent(this, 'close');
+      this.dispatchEvent(new CcToggleEvent({ isOpen: false }));
     }
   }
 
