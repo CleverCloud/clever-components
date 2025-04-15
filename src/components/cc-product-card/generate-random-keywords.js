@@ -1,10 +1,14 @@
 import { randomString } from '../../lib/utils.js';
 
 /**
+ * @typedef {import('./cc-product-card.types.js').Keyword} Keyword
+ */
+
+/**
  * Returns a list of random keywords.
  *
  * @param {number} number
- * @returns {Array<{value: string, hidden: boolean}>}
+ * @returns {Array<Keyword>}
  */
 export function generateRandomKeywords(number) {
   const keywords = [{ value: 'hidden', hidden: true }];

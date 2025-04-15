@@ -9,6 +9,10 @@ import '../../src/components/cc-select/cc-select.js';
 import '../../src/components/cc-toggle/cc-toggle.js';
 import { sandboxStyles } from '../sandbox-styles.js';
 
+/**
+ * @typedef {import('../../src/components/cc-product-card/cc-product-card.types.js').Keyword} Keyword
+ */
+
 const DEFAULT_PRODUCT = {
   iconUrl: 'https://placekitten.com/202/202',
   name: 'My product',
@@ -40,6 +44,7 @@ export class CcProductCardSandbox extends LitElement {
   constructor() {
     super();
 
+    /** @type {{iconUrl: string, name: string, description: string, keywords?: Array<Keyword>}} */
     this._currentProduct = DEFAULT_PRODUCT;
     this._componentWidth = 20;
   }
