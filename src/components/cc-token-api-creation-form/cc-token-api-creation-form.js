@@ -429,7 +429,7 @@ export class CcTokenApiCreationForm extends LitElement {
             : ''}
           ${!isWaiting
             ? html`
-                <a class="go-back-link" @click="${this._onNavItemClick('config')}" tabindex="0" role="link">
+                <a class="go-back-link" @click="${this._onNavItemClick('config')}" href="#">
                   <cc-icon .icon=${iconGoBack}></cc-icon>
                   <span>${i18n('cc-token-api-creation-form.validation-step.form.api-token-list-link')}</span>
                 </a>
@@ -457,7 +457,7 @@ export class CcTokenApiCreationForm extends LitElement {
         ></cc-input-text>
         <cc-notice intent="warning" .message=${i18n('cc-token-api-creation-form.copy-step.notice.message')}></cc-notice>
         <a class="token-list-link-cta" href="${this.apiTokenListHref}">
-          ${i18n('cc-token-api-creation-form.copy-step.link.api-token-list')}
+          <span>${i18n('cc-token-api-creation-form.copy-step.link.api-token-list')}</span>
         </a>
       </div>
     `;
@@ -579,15 +579,33 @@ export class CcTokenApiCreationForm extends LitElement {
         }
 
         .token-list-link-cta {
+          align-items: center;
+          background-color: var(--cc-color-bg-primary, #fff);
+          border: 1px solid var(--cc-color-bg-primary);
+          border-radius: var(--cc-button-border-radius, 0.15em);
+          box-sizing: border-box;
+          color: var(--cc-color-text-inverted, #fff);
+          cursor: pointer;
+          display: flex;
+          font-weight: var(--cc-button-font-weight, bold);
           justify-self: flex-end;
+          min-height: 2em;
+          padding: 0 0.5em;
+          text-decoration: none;
+          text-transform: var(--cc-button-text-transform, uppercase);
+          user-select: none;
+        }
+
+        .token-list-link-cta span {
+          font-size: 0.85em;
         }
 
         .go-back-link {
-          display: flex;
           align-items: center;
-          gap: 0.5em;
           color: var(--cc-color-text-weak);
           cursor: pointer;
+          display: flex;
+          gap: 0.5em;
           text-decoration: underline;
         }
       `,
