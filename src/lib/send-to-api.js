@@ -10,7 +10,7 @@ import { request } from '@clevercloud/client/esm/request.fetch.js';
 import { withCache } from '@clevercloud/client/esm/with-cache.js';
 // @ts-expect-error FIXME: remove when clever-client exports types
 import { withOptions } from '@clevercloud/client/esm/with-options.js';
-import { dispatchCustomEvent } from './events.js';
+import { CcApiErrorEvent } from './send-to-api.events.js';
 
 /**
  * @typedef {import('./send-to-api.types.js').ApiConfig} ApiConfig
@@ -36,7 +36,7 @@ export function sendToApi({ apiConfig, signal, cacheDelay, timeout }) {
         .then(withOptions({ signal, timeout }))
         .then(request)
         .catch((error) => {
-          dispatchCustomEvent(window, 'cc-api:error', error);
+          window.dispatchEvent(new CcApiErrorEvent(error));
           throw error;
         });
     });
