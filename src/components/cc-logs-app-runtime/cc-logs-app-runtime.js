@@ -49,6 +49,7 @@ const CUSTOM_METADATA_RENDERERS = {
  * @typedef {import('../cc-logs-date-range-selector/cc-logs-date-range-selector.events.js').CcLogsDateRangeSelectionChangeEvent} CcLogsDateRangeSelectionChangeEvent
  * @typedef {import('../cc-logs-instances/cc-logs-instances.types.js').LogsInstancesState} LogsInstancesState
  * @typedef {import('../cc-logs-message-filter/cc-logs-message-filter.types.js').LogsMessageFilterValue} LogsMessageFilterValue
+ * @typedef {import('../cc-logs-message-filter/cc-logs-message-filter.events.js').CcLogsMessageFilterChangeEvent} CcLogsMessageFilterChangeEvent
  * @typedef {import('../common.types.js').IconModel} IconModel
  * @typedef {import('lit/directives/ref.js').Ref<CcLogsControl>} RefCcLogsControl
  * @typedef {import('lit').PropertyValues<CcLogsAppRuntime>} PropertyValues
@@ -149,10 +150,10 @@ export class CcLogsAppRuntime extends LitElement {
   }
 
   /**
-   * @param {CustomEvent<LogsMessageFilterValue>} event
+   * @param {CcLogsMessageFilterChangeEvent} event
    */
-  _onMessageFilterInput(event) {
-    this._messageFilter = event.detail;
+  _onMessageFilterChange({ detail }) {
+    this._messageFilter = detail;
   }
 
   /* endregion */
@@ -284,7 +285,7 @@ export class CcLogsAppRuntime extends LitElement {
           <cc-logs-message-filter-beta
             class="logs-message-filter"
             .filter=${this._messageFilter}
-            @cc-logs-message-filter:input=${this._onMessageFilterInput}
+            @cc-logs-message-filter-change=${this._onMessageFilterChange}
           ></cc-logs-message-filter-beta>
 
           <cc-button

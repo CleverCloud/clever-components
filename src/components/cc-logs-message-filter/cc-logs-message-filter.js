@@ -1,9 +1,9 @@
 import { css, html, LitElement } from 'lit';
-import { dispatchCustomEvent } from '../../lib/events.js';
 import { parseRegex } from '../../lib/regex-parse.js';
 import { isStringEmpty } from '../../lib/utils.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-input-text/cc-input-text.js';
+import { CcLogsMessageFilterChangeEvent } from './cc-logs-message-filter.events.js';
 
 /**
  * @typedef {import('./cc-logs-message-filter.types.js').LogsMessageFilterValue} LogsMessageFilterValue
@@ -20,8 +20,6 @@ import '../cc-input-text/cc-input-text.js';
  * * `loose`: Filter with case-insensitive contain
  * * `strict`: Filter with an exact string
  * * `regex`: Filter with a regular expression
- *
- * @fires {CustomEvent<LogsMessageFilterValue>} cc-logs-message-filter:input - Fires when the value changes.
  *
  * @beta
  */
@@ -70,7 +68,7 @@ export class CcLogsMessageFilter extends LitElement {
   _onTextFilterInput(event) {
     this.filter = { value: event.detail, mode: this.filter.mode };
 
-    dispatchCustomEvent(this, 'input', this.filter);
+    this.dispatchEvent(new CcLogsMessageFilterChangeEvent(this.filter));
   }
 
   /**
@@ -89,7 +87,7 @@ export class CcLogsMessageFilter extends LitElement {
 
     this.filter = { value: this.filter.value, mode: newMode };
 
-    dispatchCustomEvent(this, 'input', this.filter);
+    this.dispatchEvent(new CcLogsMessageFilterChangeEvent(this.filter));
   }
 
   /**
