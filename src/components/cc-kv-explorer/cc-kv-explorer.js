@@ -11,7 +11,6 @@ import {
   iconRemixRefreshLine as iconRefresh,
 } from '../../assets/cc-remix.icons.js';
 import { copyToClipboard } from '../../lib/clipboard.js';
-import { dispatchCustomEvent } from '../../lib/events.js';
 import { FormErrorFocusController } from '../../lib/form/form-error-focus-controller.js';
 import { formSubmit } from '../../lib/form/form-submit-directive.js';
 import { random, randomPick, randomString } from '../../lib/utils.js';
@@ -31,6 +30,14 @@ import '../cc-kv-terminal/cc-kv-terminal.js';
 import '../cc-loader/cc-loader.js';
 import '../cc-notice/cc-notice.js';
 import '../cc-select/cc-select.js';
+import {
+  CcKvKeyAddEvent,
+  CcKvKeyDeleteEvent,
+  CcKvKeyFilterChangeEvent,
+  CcKvKeysRefreshEvent,
+  CcKvLoadMoreKeysEvent,
+  CcKvSelectedKeyChangeEvent,
+} from './cc-kv-explorer.events.js';
 
 /**
  * @typedef {import('./cc-kv-explorer.types.js').CcKvExplorerState} CcKvExplorerState
@@ -98,13 +105,6 @@ import '../cc-select/cc-select.js';
  * But one can reduce the supported types with the `supportedTypes` property.
  *
  * @cssdisplay block
- *
- * @fires {CustomEvent<CcKvKeyValue>} cc-kv-explorer:add-key - Fires whenever the add form is submitted
- * @fires {CustomEvent<string>} cc-kv-explorer:delete-key - Fires whenever a delete button is clicked
- * @fires {CustomEvent<CcKvKeyFilter>} cc-kv-explorer:filter-change - Fires whenever the filter changes
- * @fires {CustomEvent} cc-kv-explorer:load-more-keys - Fires whenever the keys panel scroll position comes close to the last key
- * @fires {CustomEvent} cc-kv-explorer:refresh-keys - Fires whenever the refresh keys button is clicked
- * @fires {CustomEvent<CcKvKey>} cc-kv-explorer:selected-key-change - Fires whenever the selected key changes
  */
 export class CcKvExplorer extends LitElement {
   static get properties() {
@@ -356,7 +356,7 @@ export class CcKvExplorer extends LitElement {
   _onVisibilityChanged(e) {
     if (this.state.type === 'loaded') {
       if (e.last >= this.state.keys.length - 5) {
-        dispatchCustomEvent(this, 'load-more-keys');
+        this.dispatchEvent(new CcKvLoadMoreKeysEvent());
       }
     }
   }
@@ -373,7 +373,7 @@ export class CcKvExplorer extends LitElement {
     const keyState = this._findKeyState(keyName);
 
     if (this.supportedTypes.includes(keyState.key.type)) {
-      dispatchCustomEvent(this, 'selected-key-change', keyState.key);
+      this.dispatchEvent(new CcKvSelectedKeyChangeEvent(keyState.key));
     } else {
       this.detailState = { type: 'unsupported', key: keyState.key };
     }
@@ -397,11 +397,11 @@ export class CcKvExplorer extends LitElement {
       type: formData.keyType,
       pattern: formData.pattern,
     });
-    dispatchCustomEvent(this, 'filter-change', filter);
+    this.dispatchEvent(new CcKvKeyFilterChangeEvent(filter));
   }
 
   _onRefreshKeysButtonClick() {
-    dispatchCustomEvent(this, 'refresh-keys');
+    this.dispatchEvent(new CcKvKeysRefreshEvent());
   }
 
   _onErrorKeysRetryButtonClick() {
@@ -410,7 +410,7 @@ export class CcKvExplorer extends LitElement {
         case 'loading':
         case 'refreshing':
         case 'loading-more':
-          dispatchCustomEvent(this, 'refresh-keys');
+          this.dispatchEvent(new CcKvKeysRefreshEvent());
           break;
         case 'filtering':
           this._filterFormRef.value.requestSubmit();
@@ -430,7 +430,7 @@ export class CcKvExplorer extends LitElement {
    * @param {EventWithTarget} e
    */
   _onDeleteKeyButtonClick(e) {
-    dispatchCustomEvent(this, 'delete-key', e.target.dataset.key);
+    this.dispatchEvent(new CcKvKeyDeleteEvent(e.target.dataset.key));
   }
 
   /**
@@ -452,28 +452,36 @@ export class CcKvExplorer extends LitElement {
 
     switch (type) {
       case 'string':
-        dispatchCustomEvent(this, 'add-key', { name, type: 'string', value: formData.value });
+        this.dispatchEvent(
+          new CcKvKeyAddEvent({ name, type: 'string', value: /** @type {string} */ (formData.value) }),
+        );
         break;
       case 'hash':
-        dispatchCustomEvent(this, 'add-key', {
-          name,
-          type: 'hash',
-          elements: CcKvHashInput.decodeFormData(formData, 'value'),
-        });
+        this.dispatchEvent(
+          new CcKvKeyAddEvent({
+            name,
+            type: 'hash',
+            elements: CcKvHashInput.decodeFormData(formData, 'value'),
+          }),
+        );
         break;
       case 'list':
-        dispatchCustomEvent(this, 'add-key', {
-          name,
-          type: 'list',
-          elements: CcKvListInput.decodeFormData(formData, 'value'),
-        });
+        this.dispatchEvent(
+          new CcKvKeyAddEvent({
+            name,
+            type: 'list',
+            elements: CcKvListInput.decodeFormData(formData, 'value'),
+          }),
+        );
         break;
       case 'set':
-        dispatchCustomEvent(this, 'add-key', {
-          name,
-          type: 'set',
-          elements: CcKvListInput.decodeFormData(formData, 'value'),
-        });
+        this.dispatchEvent(
+          new CcKvKeyAddEvent({
+            name,
+            type: 'set',
+            elements: CcKvListInput.decodeFormData(formData, 'value'),
+          }),
+        );
         break;
     }
   }
@@ -561,10 +569,9 @@ export class CcKvExplorer extends LitElement {
    * @return {TemplateResult}
    */
   _renderFilterBar(state) {
-    const isError = state.type === 'error-keys';
     const isFetching = state.type === 'loading-keys' || state.type === 'filtering' || state.type === 'refreshing';
     const isFiltering = state.type === 'filtering';
-    const isReadonly = isError || isFetching;
+    const isReadonly = isFetching;
 
     /** @type {Array<CcKvKeyType | 'all'>} */
     const redisFilters = ['all', ...this.supportedTypes];
@@ -632,8 +639,8 @@ export class CcKvExplorer extends LitElement {
    */
   _renderKeysHeader(state) {
     const isFetching = state.type === 'loading-keys' || state.type === 'filtering' || state.type === 'refreshing';
-    const skeleton = state.type === 'loading-keys' || state.type === 'refreshing';
     const isRefreshing = state.type === 'refreshing';
+    const skeleton = state.type === 'loading-keys' || state.type === 'refreshing';
 
     return html`<div class="keys-header">
       <div>
