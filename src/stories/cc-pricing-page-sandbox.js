@@ -37,6 +37,7 @@ const FEATURES_TO_DISPLAY = [
  * @typedef {import('../components/common.types.js').Temporality} Temporality
  * @typedef {import('../components/cc-pricing-estimation/cc-pricing-estimation.js').CcPricingEstimation} CcPricingEstimation
  * @typedef {import('../components/cc-pricing-estimation/cc-pricing-estimation.types.js').PricingEstimationState} PricingEstimationState
+ * @typedef {import('../components/cc-pricing-page/cc-pricing-page.events.js').CcPricingCurrencyChangeEvent} CcPricingCurrencyChangeEvent
  * @typedef {import('../components/cc-pricing-product/cc-pricing-product.types.js').PricingProductState} PricingProductState
  * @typedef {import('../components/cc-pricing-product-consumption/cc-pricing-product-consumption.types.js').PricingProductConsumptionStateLoaded} PricingProductConsumptionStateLoaded
  * @typedef {import('../components/cc-pricing-product-consumption/cc-pricing-product-consumption.types.js').PricingProductConsumptionState} PricingProductConsumptionState
@@ -160,9 +161,9 @@ export class CcPricingPageSandbox extends LitElement {
     }
   }
 
-  /** @param {CustomEvent<typeof this._currencies[number]>} event */
+  /** @param {CcPricingCurrencyChangeEvent} event */
   _onCurrencyChange({ detail: currency }) {
-    this.selectedCurrency = currency;
+    this.selectedCurrency = /** @type {typeof this._currencies[number]} */ (currency);
   }
 
   /** @param {CcPricingPageSandboxPropertyValues} changedProperties */
@@ -268,7 +269,7 @@ export class CcPricingPageSandbox extends LitElement {
         .currencies=${this._currencies}
         .temporalities=${this._temporalities}
         ?is-toggle-enabled=${isToggleEnabled}
-        @cc-pricing-estimation:change-currency=${this._onCurrencyChange}
+        @cc-pricing-currency-change=${this._onCurrencyChange}
       ></cc-pricing-estimation>
     `;
   }
