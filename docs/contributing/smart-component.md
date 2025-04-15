@@ -126,12 +126,12 @@ The `updateComponent` function provides the safest way to update component state
 ### 4. Reacting to UI events and updating remote data through API calls
 
 The `onEvent` helper simplifies event handling by wrapping `addEventListener` under the hood.
-It listens for CustomEvents dispatched by the UI component and provides direct access to the event payload (`event.detail`):
+It listens for Events dispatched by the UI component and provides direct access to the event payload (`event.detail`):
 
 ```js
 // cc-my-component.smart.js
 onContextUpdate({ component, context, onEvent, updateComponent }) {
-  onEvent('cc-my-component:save', (detail) => {
+  onEvent('cc-my-event', (detail) => {
     updateComponent('state', (state) => {
       state.saving = true;
     });
@@ -153,7 +153,7 @@ onContextUpdate({ component, context, onEvent, updateComponent }) {
 }
 ```
 
-When called, `onEvent` automatically attaches an event listener to the component that extracts the CustomEvent detail and passes it directly to your callback function.
+When called, `onEvent` automatically attaches an event listener to the component that extracts the event detail and passes it directly to your callback function.
 The event listener is also automatically cleaned up when the context changes or the component is disconnected, thanks to AbortSignal integration.
 This means you don't need to manually manage event listener lifecycles.
 
