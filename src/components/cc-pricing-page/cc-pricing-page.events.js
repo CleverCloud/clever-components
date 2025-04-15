@@ -65,3 +65,18 @@ export class CcPricingPlanDeleteEvent extends CcEvent {
     super(CcPricingPlanDeleteEvent.TYPE, detail);
   }
 }
+
+/**
+ * Dispatched when the pricing zone changes.
+ * @extends {CcEvent<string>}
+ */
+export class CcPricingZoneChangeEvent extends CcEvent {
+  static TYPE = 'cc-pricing-zone-change';
+
+  /**
+   * @param {string} detail
+   */
+  constructor(detail) {
+    super(CcPricingZoneChangeEvent.TYPE, detail);
+  }
+}
