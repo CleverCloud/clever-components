@@ -176,8 +176,6 @@ export class CcPricingPage extends LitElement {
   render() {
     return html`
       <slot
-        @cc-pricing-header:change-currency=${this._onChangeCurrency}
-        @cc-pricing-header:change-temporality=${this._onChangeTemporality}
         @cc-pricing-product:add-plan=${this._onAddPlan}
         @cc-pricing-quantity-change=${this._onChangeQuantity}
         @cc-pricing-plan-delete=${this._onDeletePlan}

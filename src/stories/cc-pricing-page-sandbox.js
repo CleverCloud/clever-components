@@ -242,7 +242,7 @@ export class CcPricingPageSandbox extends LitElement {
         .currencies=${this._currencies}
         .temporalities=${this._temporalities}
         selected-zone-id="par"
-        @cc-pricing-header:change-currency=${this._onCurrencyChange}
+        @cc-pricing-currency-change=${this._onCurrencyChange}
       ></cc-pricing-header>
     `;
   }

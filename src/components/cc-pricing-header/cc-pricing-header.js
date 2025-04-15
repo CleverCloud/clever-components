@@ -4,7 +4,6 @@ import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { iconRemixArrowDownSLine as iconArrowDown } from '../../assets/cc-remix.icons.js';
-import { dispatchCustomEvent } from '../../lib/events.js';
 import { getCurrencySymbol } from '../../lib/utils.js';
 import { sortZones } from '../../lib/zone.js';
 import { shoelaceStyles } from '../../styles/shoelace.js';
@@ -12,6 +11,11 @@ import { skeletonStyles } from '../../styles/skeleton.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-icon/cc-icon.js';
 import '../cc-notice/cc-notice.js';
+import {
+  CcPricingCurrencyChangeEvent,
+  CcPricingTemporalityChangeEvent,
+  CcPricingZoneChangeEvent,
+} from '../cc-pricing-page/cc-pricing-page.events.js';
 import { CcZone } from '../cc-zone/cc-zone.js';
 
 // FIXME: this code is duplicated across all pricing components (see issue #732 for more details)
@@ -22,20 +26,16 @@ const DEFAULT_CURRENCY = 'EUR';
 const DEFAULT_TEMPORALITY = { type: '30-days', digits: 2 };
 
 /**
- * @typedef {import('../common.types.js').Temporality} Temporality
  * @typedef {import('./cc-pricing-header.types.js').PricingHeaderState} PricingHeaderState
- * @typedef {import('@shoelace-style/shoelace').SlSelect} SlSelect
+ * @typedef {import('../common.types.js').Temporality} Temporality
  * @typedef {import('../../lib/events.types.js').EventWithTarget<SlSelect>} SlSelectEvent
+ * @typedef {import('@shoelace-style/shoelace').SlSelect} SlSelect
  */
 
 /**
  * A component that allows the selection of a temporality, a currency and a zone.
  *
  * @cssdisplay block
- *
- * @fires {CustomEvent<string>} cc-pricing-header:change-currency - Fires the `currency` whenever the currency selection changes.
- * @fires {CustomEvent<Temporality>} cc-pricing-header:change-temporality - Fires the `temporality` whenever the temporality selection changes.
- * @fires {CustomEvent<string>} cc-pricing-header:change-zone - Fires the `zoneId` (zone name) whenever the zone selection changes.
  *
  * @cssprop {Color} --cc-pricing-hovered-color - Sets the text color used on hover (defaults: `purple`).
  */
@@ -98,35 +98,35 @@ export class CcPricingHeader extends LitElement {
 
   /**
    * Retrieves the currency corresponding to the selected currency code.
-   * Dispatches a `cc-pricing-header:change-currency` event with the currency as its payload.
+   * Dispatches a `cc-pricing-currency-change` event with the currency as its payload.
    *
    * @param {SlSelectEvent} e - the event that called this method
    */
   _onCurrencyChange(e) {
     this.selectedCurrency = /** @type {string} */ (e.target.value);
-    dispatchCustomEvent(this, 'change-currency', this.selectedCurrency);
+    this.dispatchEvent(new CcPricingCurrencyChangeEvent(this.selectedCurrency));
   }
 
   /**
    * Retrieves the temporality corresponding to the selected temporality type.
-   * Dispatches a `cc-pricing-header:change-temporality` event with the temporality as its payload.
+   * Dispatches a `cc-pricing-temporality-change` event with the temporality as its payload.
    *
    * @param {SlSelectEvent} e - the event that called this method
    */
   _onTemporalityChange(e) {
     const temporality = this.temporalities.find((t) => t.type === e.target.value);
-    dispatchCustomEvent(this, 'change-temporality', temporality);
+    this.dispatchEvent(new CcPricingTemporalityChangeEvent(temporality));
   }
 
   /**
    * Retrieves the zone id from the event payload.
-   * Dispatches a `cc-pricing-header:change-zone` event with the zone id as its payload.
+   * Dispatches a `cc-pricing-zone-change` event with the zone id as its payload.
    *
    * @param {SlSelectEvent} e - the event that called this method
    */
   _onZoneChange(e) {
-    const zoneId = e.target.value;
-    dispatchCustomEvent(this, 'change-zone', zoneId);
+    const zoneId = /** @type {string} */ (e.target.value);
+    this.dispatchEvent(new CcPricingZoneChangeEvent(zoneId));
   }
 
   render() {
