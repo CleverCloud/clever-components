@@ -55,7 +55,8 @@ import '../cc-select/cc-select.js';
  * @typedef {import('../cc-kv-list-explorer/cc-kv-list-explorer.events.js').CcKvListExplorerStateChangeEvent} CcKvListExplorerStateChangeEvent
  * @typedef {import('../cc-kv-set-explorer/cc-kv-set-explorer.js').CcKvSetExplorer} CcKvSetExplorer
  * @typedef {import('../cc-kv-set-explorer/cc-kv-set-explorer.types.js').CcKvSetExplorerState} CcKvSetExplorerState
- * @typedef {import('../cc-kv-terminal/cc-kv-terminal.types.d.ts').CcKvTerminalState} CcKvTerminalState
+ * @typedef {import('../cc-kv-terminal/cc-kv-terminal.types.js').CcKvTerminalState} CcKvTerminalState
+ * @typedef {import('../cc-kv-terminal/cc-kv-terminal.events.js').CcKvTerminalStateChangeEvent} CcKvTerminalStateChangeEvent
  * @typedef {import('../cc-button/cc-button.js').CcButton} CcButton
  * @typedef {import('../cc-input-text/cc-input-text.js').CcInputText} CcInputText
  * @typedef {import('../cc-select/cc-select.js').CcSelect} CcSelect
@@ -509,7 +510,7 @@ export class CcKvExplorer extends LitElement {
   }
 
   /**
-   * @param {CustomEvent<CcKvTerminalState>} e
+   * @param {CcKvTerminalStateChangeEvent} e
    */
   _onTerminalStateChange(e) {
     this.terminalState = e.detail;
@@ -549,7 +550,7 @@ export class CcKvExplorer extends LitElement {
         <cc-kv-terminal-beta
           class="terminal"
           .state=${this.terminalState}
-          @cc-kv-terminal:state-change=${this._onTerminalStateChange}
+          @cc-kv-terminal-state-change=${this._onTerminalStateChange}
         ></cc-kv-terminal-beta>
       </div>
     `;
