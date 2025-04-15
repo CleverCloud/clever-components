@@ -58,7 +58,7 @@ defineSmartComponent({
         });
     }
 
-    onEvent('cc-ssh-key-list:create', ({ name, publicKey }) => {
+    onEvent('cc-ssh-key-create', ({ name, publicKey }) => {
       component.createKeyFormState = { type: 'creating' };
 
       addKey({ apiConfig, key: { name: name.trim(), key: publicKey.trim() } })
@@ -78,7 +78,7 @@ defineSmartComponent({
         });
     });
 
-    onEvent('cc-ssh-key-list:delete', ({ name }) => {
+    onEvent('cc-ssh-key-delete', ({ name }) => {
       updateComponent(
         'keyListState',
         /** @param {SshKeyListStateLoadedAndLinked|SshKeyListStateLoadedAndUnlinked} keyListState */
@@ -107,7 +107,7 @@ defineSmartComponent({
         });
     });
 
-    onEvent('cc-ssh-key-list:import', ({ name, key, fingerprint }) => {
+    onEvent('cc-ssh-key-import', ({ name, key, fingerprint }) => {
       updateComponent(
         'keyListState',
         /** @param {SshKeyListStateLoadedAndLinked} keyListState */
