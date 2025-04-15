@@ -20,6 +20,8 @@ const BREAKPOINTS = [600];
  * @typedef {import('./cc-zone-input.types.js').ZoneInputPoint} ZoneInputPoint
  * @typedef {import('./cc-zone-input.types.js').ZonePointMarkerState} ZonePointMarkerState
  * @typedef {import('../cc-map/cc-map.js').CcMap} CcMap
+ * @typedef {import('../cc-map/cc-map.events.js').CcMapMarkerEnterEvent} CcMapMarkerEnterEvent
+ * @typedef {import('../cc-map/cc-map.events.js').CcMapMarkerClickEvent} CcMapMarkerClickEvent
  * @typedef {import('../common.types.js').Zone} Zone
  * @typedef {import('lit/directives/ref.js').Ref<CcMap>} CcMapRef
  * @typedef {import('lit').PropertyValues<CcZoneInput>} CcZoneInputPropertyValues
@@ -118,14 +120,30 @@ export class CcZoneInput extends LitElement {
   }
 
   /**
-   * @param {CustomEvent<{ name: string }>} [event]
+   * @param {CcMapMarkerEnterEvent} event
    * @private
    */
-  _onMarkerHover(event) {
-    const name = event?.detail?.name;
-    this._hovered = name;
+  _onMarkerEnter(event) {
+    this._hovered = event.detail.name;
     this._updatePoints();
     this._scrollChildIntoParent(this._hovered || this.selected);
+  }
+
+  /**
+   * @private
+   */
+  _onMarkerLeave() {
+    this._hovered = null;
+    this._updatePoints();
+    this._scrollChildIntoParent(this._hovered || this.selected);
+  }
+
+  /**
+   * @param {CcMapMarkerClickEvent} event
+   * @private
+   */
+  _onMarkerClick(event) {
+    this._onSelect(event.detail.name);
   }
 
   /**
@@ -232,12 +250,9 @@ export class CcZoneInput extends LitElement {
           center-lat="35"
           .points=${this._points}
           ?loading=${skeleton}
-          @cc-map:marker-click=${
-            /** @param {CustomEvent<{ name: string }>} event */
-            ({ detail }) => this._onSelect(detail.name)
-          }
-          @cc-map:marker-enter=${this._onMarkerHover}
-          @cc-map:marker-leave=${() => this._onMarkerHover()}
+          @cc-map-marker-click=${this._onMarkerClick}
+          @cc-map-marker-enter=${this._onMarkerEnter}
+          @cc-map-marker-leave=${this._onMarkerLeave}
           ${ref(this._ccMapRef)}
           >${this._legend}
         </cc-map>
