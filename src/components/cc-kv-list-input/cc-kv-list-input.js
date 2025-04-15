@@ -188,8 +188,8 @@ export class CcKvListInput extends CcFormControlElement {
         ?disabled=${this.disabled}
         ?readonly=${this.readonly}
         multi
-        @cc-input-text:input=${this._onValueInput}
-        @cc-input-text:requestimplicitsubmit=${this._onAdd}
+        @cc-input=${this._onValueInput}
+        @cc-request-submit=${this._onAdd}
       ></cc-input-text>
 
       ${!isAlone

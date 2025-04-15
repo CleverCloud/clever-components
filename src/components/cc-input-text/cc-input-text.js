@@ -8,7 +8,6 @@ import {
   iconRemixEyeOffLine as iconEyeClosed,
   iconRemixEyeLine as iconEyeOpen,
 } from '../../assets/cc-remix.icons.js';
-import { dispatchCustomEvent } from '../../lib/events.js';
 import { CcFormControlElement } from '../../lib/form/cc-form-control-element.abstract.js';
 import { EmailValidator, RequiredValidator, combineValidators } from '../../lib/form/validation.js';
 import { arrayEquals } from '../../lib/utils.js';
@@ -16,6 +15,8 @@ import { accessibilityStyles } from '../../styles/accessibility.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-icon/cc-icon.js';
+import { CcInputEvent, CcRequestSubmitEvent } from '../common.events.js';
+import { CcTagsChangeEvent } from './cc-input-text.events.js';
 
 const TAG_SEPARATOR = ' ';
 
@@ -41,10 +42,6 @@ const TAG_SEPARATOR = ' ';
  * * When an `errorMessage` is set, the input is decorated with a red border and a redish focus ring.
  *
  * @cssdisplay inline-block / block (with `[multi]`)
- *
- * @fires {CustomEvent<string>} cc-input-text:input - Fires the `value` whenever the `value` changes.
- * @fires {CustomEvent} cc-input-text:requestimplicitsubmit - Fires when enter key is pressed in simple mode, in tags mode or when ctrl+enter is pressed in multi mode.
- * @fires {CustomEvent<string[]>} cc-input-text:tags - Fires an array of tags whenever the `value` changes (separated by spaces).
  *
  * @cssprop {Size} --cc-form-label-gap - The space between the label and the control (defaults: `0.35em` or `1em` when inline).
  * @cssprop {Color} --cc-input-btn-icon-color - The color for the icon within the clipboard/secret button (defaults: `#595959`).
@@ -269,9 +266,9 @@ export class CcInputText extends CcFormControlElement {
     }
     this.value = e.target.value;
 
-    dispatchCustomEvent(this, 'input', this.value);
+    this.dispatchEvent(new CcInputEvent(this.value));
     if (this._tagsEnabled) {
-      dispatchCustomEvent(this, 'tags', this.tags);
+      this.dispatchEvent(new CcTagsChangeEvent(this.tags));
     }
   }
 
@@ -308,13 +305,13 @@ export class CcInputText extends CcFormControlElement {
     if (this._tagsEnabled && e.type === 'keydown' && e.key === 'Enter') {
       e.preventDefault();
       this._internals.form?.requestSubmit();
-      dispatchCustomEvent(this, 'requestimplicitsubmit');
+      this.dispatchEvent(new CcRequestSubmitEvent());
     }
     // Request implicit submit with keypress on enter key
     if (!this.readonly && e.type === 'keypress' && e.key === 'Enter') {
       if (!this.multi || (this.multi && e.ctrlKey)) {
         this._internals.form?.requestSubmit();
-        dispatchCustomEvent(this, 'requestimplicitsubmit');
+        this.dispatchEvent(new CcRequestSubmitEvent());
       }
     }
   }

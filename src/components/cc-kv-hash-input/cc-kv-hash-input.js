@@ -203,8 +203,8 @@ export class CcKvHashInput extends CcFormControlElement {
           data-index=${index}
           ?disabled=${this.disabled}
           ?readonly=${this.readonly}
-          @cc-input-text:input=${this._onFieldInput}
-          @cc-input-text:requestimplicitsubmit=${this._onAdd}
+          @cc-input=${this._onFieldInput}
+          @cc-request-submit=${this._onAdd}
         ></cc-input-text>
         <cc-input-text
           label=${i18n('cc-kv-hash-input.element.value-input')}
@@ -214,8 +214,8 @@ export class CcKvHashInput extends CcFormControlElement {
           ?disabled=${this.disabled}
           ?readonly=${this.readonly}
           multi
-          @cc-input-text:input=${this._onValueInput}
-          @cc-input-text:requestimplicitsubmit=${this._onAdd}
+          @cc-input=${this._onValueInput}
+          @cc-request-submit=${this._onAdd}
         ></cc-input-text>
 
         ${!isAlone

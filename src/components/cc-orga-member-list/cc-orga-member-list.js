@@ -198,7 +198,7 @@ export class CcOrgaMemberList extends LitElement {
    * This modifies the `members` prop, triggering a new render.
    * Everytime there is a new render, the list is filtered based on the filter values from the `member` prop.
    *
-   * @param {CustomEvent} e
+   * @param {CcInputEvent} e
    */
   _onFilterIdentity({ detail: value }) {
     if (this.memberListState.type === 'loaded') {
@@ -447,7 +447,7 @@ export class CcOrgaMemberList extends LitElement {
         <cc-input-text
           label=${i18n('cc-orga-member-list.filter.name')}
           .value=${identityFilter}
-          @cc-input-text:input=${this._onFilterIdentity}
+          @cc-input=${this._onFilterIdentity}
         ></cc-input-text>
         <label class="filters__mfa" for="filter-mfa">
           <input
