@@ -65,13 +65,9 @@ defineSmartComponent({
       controller.setNewDateRange(range);
     });
 
-    onEvent(
-      'cc-logs-instances:selection-change',
-      /** @param {Array<string>} instances */
-      (instances) => {
-        controller.setNewInstanceSelection(instances);
-      },
-    );
+    onEvent('cc-logs-instances-selection-change', (instances) => {
+      controller.setNewInstanceSelection(instances);
+    });
 
     onEvent('cc-logs-loading-pause', () => {
       controller.pause();
