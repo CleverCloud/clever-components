@@ -6,10 +6,15 @@ import {
   iconRemixPlayLine,
   iconRemixAlertFill as iconWarning,
 } from '../../assets/cc-remix.icons.js';
-import { dispatchCustomEvent } from '../../lib/events.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-button/cc-button.js';
 import '../cc-icon/cc-icon.js';
+import {
+  CcLogsLoadingOverflowAcceptEvent,
+  CcLogsLoadingOverflowDiscardEvent,
+  CcLogsLoadingPauseEvent,
+  CcLogsLoadingResumeEvent,
+} from './cc-logs-loading-progress.events.js';
 
 /**
  * @typedef {import('./cc-logs-loading-progress.types.js').LogsLoadingProgressState} LogsLoadingProgressState
@@ -18,11 +23,6 @@ import '../cc-icon/cc-icon.js';
 
 /**
  * A component that displays the logs loading progress.
- *
- * @fires {CustomEvent<void>} cc-logs-loading-progress:pause - Fires when the pause button is clicked.
- * @fires {CustomEvent<void>} cc-logs-loading-progress:resume - Fires when the resume button is clicked.
- * @fires {CustomEvent<void>} cc-logs-loading-progress:accept-overflow - Fires when the accept overflow button is clicked.
- * @fires {CustomEvent<void>} cc-logs-loading-progress:discard-overflow - Fires when the discard overflow button is clicked.
  *
  * @beta
  */
@@ -69,19 +69,19 @@ export class CcLogsLoadingProgress extends LitElement {
   /* region Event handlers */
 
   _onPause() {
-    dispatchCustomEvent(this, 'pause');
+    this.dispatchEvent(new CcLogsLoadingPauseEvent());
   }
 
   _onResume() {
-    dispatchCustomEvent(this, 'resume');
+    this.dispatchEvent(new CcLogsLoadingResumeEvent());
   }
 
   _onAcceptOverflow() {
-    dispatchCustomEvent(this, 'accept-overflow');
+    this.dispatchEvent(new CcLogsLoadingOverflowAcceptEvent());
   }
 
   _onDiscardOverflow() {
-    dispatchCustomEvent(this, 'discard-overflow');
+    this.dispatchEvent(new CcLogsLoadingOverflowDiscardEvent());
   }
 
   /* endregion */
