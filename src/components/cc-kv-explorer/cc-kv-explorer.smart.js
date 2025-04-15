@@ -300,23 +300,19 @@ defineSmartComponent({
 
     // -- set ---
 
-    onEvent(
-      'cc-kv-set-explorer:filter-change',
-      /** @param {string} pattern */
-      async (pattern) => {
-        const editorCtrl = /** @type {KvKeyEditorSetCtrl} */ (detailsCtrl.editorCtrl);
+    onEvent('cc-kv-set-filter-change', async (pattern) => {
+      const editorCtrl = /** @type {KvKeyEditorSetCtrl} */ (detailsCtrl.editorCtrl);
 
-        try {
-          await editorCtrl.filter(pattern);
-        } catch (e) {
-          checkIfKeyNotFoundOrElse(e, () => {
-            notifyError(i18n('cc-kv-set-explorer.error.apply-filter'));
-          });
-        }
-      },
-    );
+      try {
+        await editorCtrl.filter(pattern);
+      } catch (e) {
+        checkIfKeyNotFoundOrElse(e, () => {
+          notifyError(i18n('cc-kv-set-explorer.error.apply-filter'));
+        });
+      }
+    });
 
-    onEvent('cc-kv-set-explorer:load-more-elements', async () => {
+    onEvent('cc-kv-set-load-more', async () => {
       const editorCtrl = /** @type {KvKeyEditorSetCtrl} */ (detailsCtrl.editorCtrl);
 
       try {
@@ -328,44 +324,36 @@ defineSmartComponent({
       }
     });
 
-    onEvent(
-      'cc-kv-set-explorer:delete-element',
-      /** @param {string} element */
-      async (element) => {
-        const editorCtrl = /** @type {KvKeyEditorSetCtrl} */ (detailsCtrl.editorCtrl);
+    onEvent('cc-kv-set-element-delete', async (element) => {
+      const editorCtrl = /** @type {KvKeyEditorSetCtrl} */ (detailsCtrl.editorCtrl);
 
-        try {
-          await editorCtrl.deleteElement(element);
-          notifySuccess(i18n('cc-kv-set-explorer.success.element-delete'));
-        } catch (e) {
-          checkIfKeyNotFoundOrElse(e, () => {
-            notifyError(i18n('cc-kv-set-explorer.error.element-delete'));
-          });
+      try {
+        await editorCtrl.deleteElement(element);
+        notifySuccess(i18n('cc-kv-set-explorer.success.element-delete'));
+      } catch (e) {
+        checkIfKeyNotFoundOrElse(e, () => {
+          notifyError(i18n('cc-kv-set-explorer.error.element-delete'));
+        });
+      }
+    });
+
+    onEvent('cc-kv-set-element-add', async (element) => {
+      const editorCtrl = /** @type {KvKeyEditorSetCtrl} */ (detailsCtrl.editorCtrl);
+
+      try {
+        const added = await editorCtrl.addElement(element);
+
+        if (added) {
+          notifySuccess(i18n('cc-kv-set-explorer.success.element-add'));
+        } else {
+          notifySuccess(i18n('cc-kv-set-explorer.success.element-already-exist'));
         }
-      },
-    );
-
-    onEvent(
-      'cc-kv-set-explorer:add-element',
-      /** @param {string} element */
-      async (element) => {
-        const editorCtrl = /** @type {KvKeyEditorSetCtrl} */ (detailsCtrl.editorCtrl);
-
-        try {
-          const added = await editorCtrl.addElement(element);
-
-          if (added) {
-            notifySuccess(i18n('cc-kv-set-explorer.success.element-add'));
-          } else {
-            notifySuccess(i18n('cc-kv-set-explorer.success.element-already-exist'));
-          }
-        } catch (e) {
-          checkIfKeyNotFoundOrElse(e, () => {
-            notifyError(i18n('cc-kv-set-explorer.error.element-add'));
-          });
-        }
-      },
-    );
+      } catch (e) {
+        checkIfKeyNotFoundOrElse(e, () => {
+          notifyError(i18n('cc-kv-set-explorer.error.element-add'));
+        });
+      }
+    });
 
     // -- CLI
 
