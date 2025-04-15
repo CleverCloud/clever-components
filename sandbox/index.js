@@ -32,7 +32,7 @@ languageToggle.choices = [
 ];
 languageToggle.legend = 'Language';
 languageToggle.value = currentLang;
-languageToggle.addEventListener('cc-toggle:input', ({ detail }) => {
+languageToggle.addEventListener('cc-select', ({ detail }) => {
   localStorage.setItem('cc-component-lang', detail);
   setLanguage(detail);
   window.location.reload();
