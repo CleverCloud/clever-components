@@ -1,4 +1,4 @@
-import { OrgaMemberCardState } from '../cc-orga-member-card/cc-orga-member-card.types.js';
+import { OrgaMemberCardState, OrgaMemberRole } from '../cc-orga-member-card/cc-orga-member-card.types.js';
 
 export type OrgaMemberListState = OrgaMemberListStateLoading | OrgaMemberListStateLoaded | OrgaMemberListStateError;
 
@@ -20,7 +20,7 @@ interface OrgaMemberListStateError {
 
 export interface InviteMember {
   email: string;
-  role: string;
+  role: OrgaMemberRole;
 }
 
 interface ListAuthorisations {
