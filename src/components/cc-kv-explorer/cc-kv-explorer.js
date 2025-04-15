@@ -380,7 +380,7 @@ export class CcKvExplorer extends LitElement {
   }
 
   /**
-   * @param {CustomEvent<CcKvKeyType|'all'>} e
+   * @param {CcSelectEvent<CcKvKeyType|'all'>} e
    */
   async _onTypeFilterChange(e) {
     this._filterType = e.detail;
@@ -420,7 +420,7 @@ export class CcKvExplorer extends LitElement {
   }
 
   /**
-   * @param {CustomEvent<CcKvKeyType>} event
+   * @param {CcSelectEvent<CcKvKeyType>} event
    */
   _onKeyTypeChanged({ detail }) {
     this._addFormSelectedType = detail;
@@ -589,7 +589,7 @@ export class CcKvExplorer extends LitElement {
           value="all"
           reset-value="all"
           .options=${kvFilterOptions}
-          @cc-select:input=${this._onTypeFilterChange}
+          @cc-select=${this._onTypeFilterChange}
         ></cc-select>
         <cc-input-text
           name="pattern"
@@ -821,7 +821,7 @@ export class CcKvExplorer extends LitElement {
           ?disabled=${isSaving}
           .options=${typeOptions}
           .value=${this._addFormSelectedType}
-          @cc-select:input=${this._onKeyTypeChanged}
+          @cc-select=${this._onKeyTypeChanged}
         ></cc-select>
       </div>
       ${this._renderAdd(this._addFormSelectedType, isSaving)}

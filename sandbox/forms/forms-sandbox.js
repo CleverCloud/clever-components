@@ -40,7 +40,7 @@ export class FormsSandbox extends LitElement {
   }
 
   /**
-   * @param {CustomEvent} e
+   * @param {CcSelectEvent} e
    */
   _onDemoChange({ detail }) {
     this._loadDemo(detail);
@@ -104,7 +104,7 @@ export class FormsSandbox extends LitElement {
           inline
           .options=${DEMO_CHOICES}
           .value=${this._demo}
-          @cc-select:input=${this._onDemoChange}
+          @cc-select=${this._onDemoChange}
         ></cc-select>
       </div>
       <div class="main">

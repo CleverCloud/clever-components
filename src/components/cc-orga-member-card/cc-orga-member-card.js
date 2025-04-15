@@ -201,9 +201,9 @@ export class CcOrgaMemberCard extends LitElement {
    * Update the newRole value when the select changes value.
    * We need to do this because we want to be able to reset the newRole when the user toggles the edit mode. (cancel editing)
    *
-   * @param {CustomEvent<OrgaMemberRole>} event
+   * @param {CcSelectEvent<OrgaMemberRole>} event
    */
-  _onRoleInput({ detail: value }) {
+  _onRoleChange({ detail: value }) {
     this._newRole = value;
   }
 
@@ -339,7 +339,7 @@ export class CcOrgaMemberCard extends LitElement {
           .value=${this._newRole ?? this.state.role}
           ?inline=${this._resizeController.width > BREAKPOINT_TINY}
           ?disabled=${this.state.type === 'updating'}
-          @cc-select:input=${this._onRoleInput}
+          @cc-select=${this._onRoleChange}
           ${ref(this._roleRef)}
         >
         </cc-select>

@@ -60,6 +60,9 @@ export class CcAnsiPaletteSandbox extends LitElement {
     this._type = detail;
   }
 
+  /**
+   * @param {CcSelectEvent} event
+   */
   _onPaletteToggle({ detail }) {
     this._selectedPaletteName = detail;
     console.log(this._selectedPaletteName);
@@ -108,7 +111,7 @@ export class CcAnsiPaletteSandbox extends LitElement {
           inline
           .options=${this._paletteChoices}
           .value=${this._selectedPaletteName}
-          @cc-select:input=${this._onPaletteToggle}
+          @cc-select=${this._onPaletteToggle}
         ></cc-select>
       </div>
       <cc-ansi-palette

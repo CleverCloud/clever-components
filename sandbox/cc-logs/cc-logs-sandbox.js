@@ -181,9 +181,9 @@ class CcLogsSandbox extends LitElement {
   }
 
   /**
-   * @param {CustomEvent<DateDisplay>} e
+   * @param {CcSelectEvent<DateDisplay>} e
    */
-  _onDateDisplayToggle(e) {
+  _onDateDisplayChange(e) {
     this._dateDisplay = e.detail;
   }
 
@@ -195,9 +195,9 @@ class CcLogsSandbox extends LitElement {
   }
 
   /**
-   * @param {CustomEvent<string>} e
+   * @param {CcSelectEvent<string>} e
    */
-  _onPaletteToggle(e) {
+  _onPaletteChange(e) {
     this._palette = e.detail;
   }
 
@@ -310,7 +310,7 @@ class CcLogsSandbox extends LitElement {
         <cc-select
           label="ANSI Palette"
           .value=${this._palette}
-          @cc-select:input=${this._onPaletteToggle}
+          @cc-select=${this._onPaletteChange}
           .options=${PALETTE_OPTIONS}
         >
           <p slot="help">You can change the ANSI color palette</p>
@@ -324,7 +324,7 @@ class CcLogsSandbox extends LitElement {
         <cc-select
           label="Date display"
           .value=${this._dateDisplay}
-          @cc-select:input=${this._onDateDisplayToggle}
+          @cc-select=${this._onDateDisplayChange}
           .options=${DATE_DISPLAY_OPTIONS}
         >
           <p slot="help">You can change the date format</p>
