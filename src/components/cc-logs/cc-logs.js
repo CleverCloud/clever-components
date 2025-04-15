@@ -12,7 +12,6 @@ import { ansiStyles, ansiToLit, stripAnsi } from '../../lib/ansi/ansi.js';
 import defaultPalette from '../../lib/ansi/palettes/default.js';
 import { copyToClipboard, prepareLinesOfCodeForClipboard } from '../../lib/clipboard.js';
 import { hasClass } from '../../lib/dom.js';
-import { dispatchCustomEvent } from '../../lib/events.js';
 import { notifySuccess } from '../../lib/notifications.js';
 import { isStringEmpty } from '../../lib/utils.js';
 import { i18n } from '../../translations/translation.js';
@@ -21,6 +20,7 @@ import '../cc-button/cc-button.js';
 import '../cc-icon/cc-icon.js';
 import '../cc-loader/cc-loader.js';
 import '../cc-notice/cc-notice.js';
+import { CcLogsFollowChangeEvent } from './cc-logs.events.js';
 import { DateDisplayer } from './date-displayer.js';
 import { LogsController } from './logs-controller.js';
 import { LogsInputController } from './logs-input-controller.js';
@@ -124,7 +124,7 @@ class TemporaryFunctionDisabler {
  * The follow property gives the ability to force the scroll to bottom while logs are added to the component.
  * This property still allows users to scroll up to stop following logs.
  * The follow behavior is automatically reactivated everytime users scroll to the bottom.
- * The `cc-logs:followChange` event is fired whenever the follow property changes because of a user interaction.
+ * The `cc-logs-follow-change` event is fired whenever the follow property changes because of a user interaction.
  *
  * ## Selection
  *
@@ -208,8 +208,6 @@ class TemporaryFunctionDisabler {
  * On the contrary, the component is fully compatible with keyboard only navigation. For more information see the `Keyboard navigation` section.
  *
  * @cssdisplay block
- *
- * @fires {CustomEvent} cc-logs:followChange - Fires whenever the follow changed because of a user interaction
  *
  * @cssprop {Color} --cc-color-ansi-foreground - The foreground color
  * @cssprop {Color} --cc-color-ansi-background - The background color
@@ -620,7 +618,7 @@ export class CcLogs extends LitElement {
   }
 
   /**
-   * This function is called by `this._logsCtrl` whenever the selection has changed.
+   * This function is called by `this._logsCtrl` whenever the selection changes.
    *
    * It forces follow to stop.
    */
@@ -733,7 +731,7 @@ export class CcLogs extends LitElement {
     const oldFollow = this.follow;
     this.follow = follow;
     if (oldFollow !== this.follow) {
-      dispatchCustomEvent(this, 'followChange', this.follow);
+      this.dispatchEvent(new CcLogsFollowChangeEvent(this.follow));
     }
   }
 
