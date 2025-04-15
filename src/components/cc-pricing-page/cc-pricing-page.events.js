@@ -3,6 +3,8 @@ import { CcEvent } from '../../lib/events.js';
 /**
  * @typedef {import('../cc-pricing-estimation/cc-pricing-estimation.types.js').CountablePlanWithQuantity} CountablePlanWithQuantity
  * @typedef {import('../cc-pricing-estimation/cc-pricing-estimation.types.js').RuntimePlanWithQuantity} RuntimePlanWithQuantity
+ * @typedef {import('../common.types.js').ConsumptionPlan} ConsumptionPlan
+ * @typedef {import('../common.types.js').Plan} Plan
  * @typedef {import('../common.types.js').Temporality} Temporality
  */
 
@@ -78,5 +80,20 @@ export class CcPricingZoneChangeEvent extends CcEvent {
    */
   constructor(detail) {
     super(CcPricingZoneChangeEvent.TYPE, detail);
+  }
+}
+
+/**
+ * Dispatched when a pricing plan is added.
+ * @extends {CcEvent<Plan|ConsumptionPlan>}
+ */
+export class CcPricingPlanAddEvent extends CcEvent {
+  static TYPE = 'cc-pricing-plan-add';
+
+  /**
+   * @param {Plan|ConsumptionPlan} detail
+   */
+  constructor(detail) {
+    super(CcPricingPlanAddEvent.TYPE, detail);
   }
 }
