@@ -42,6 +42,9 @@ jobs:
       - name: '[Code quality] Check i18n'
         run: npm run components:check-i18n
 
+      - name: '[Code Generation] Check global events map'
+        run: npm run components:events-map-check
+
       - name: '[Unit tests] Clever components'
         run: npm run test
       - name: '[Unit tests] Mocha tests (CEM, ESLint & Prettier custom rules)'
