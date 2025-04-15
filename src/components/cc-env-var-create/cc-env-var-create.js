@@ -60,12 +60,12 @@ export class CcEnvVarCreate extends LitElement {
     this._variableValue = '';
   }
 
-  /** @param {CustomEvent<string>} event */
+  /** @param {CcInputEvent} event */
   _onNameInput({ detail: value }) {
     this._variableName = value;
   }
 
-  /** @param {CustomEvent<string>} event */
+  /** @param {CcInputEvent} event */
   _onValueInput({ detail: value }) {
     this._variableValue = value;
   }
@@ -112,9 +112,9 @@ export class CcEnvVarCreate extends LitElement {
           name="name"
           value=${this._variableName}
           ?readonly=${this.disabled}
-          @cc-input-text:input=${this._onNameInput}
-          @cc-input-text:requestimplicitsubmit=${
-            /** @param {CustomEvent<string>} e */
+          @cc-input=${this._onNameInput}
+          @cc-request-submit=${
+            /** @param {Event} e */
             (e) => this._onRequestSubmit(e, hasErrors)
           }
         ></cc-input-text>
@@ -127,9 +127,9 @@ export class CcEnvVarCreate extends LitElement {
             value=${this._variableValue}
             multi
             ?readonly=${this.disabled}
-            @cc-input-text:input=${this._onValueInput}
-            @cc-input-text:requestimplicitsubmit=${
-              /** @param {CustomEvent<string>} e */
+            @cc-input=${this._onValueInput}
+            @cc-request-submit=${
+              /** @param {Event} e */
               (e) => this._onRequestSubmit(e, hasErrors)
             }
           ></cc-input-text>

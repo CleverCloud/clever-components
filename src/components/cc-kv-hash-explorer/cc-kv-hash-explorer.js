@@ -332,7 +332,7 @@ export class CcKvHashExplorer extends LitElement {
                   multi
                   ?skeleton=${skeleton}
                   ?readonly=${state.type === 'updating'}
-                  @cc-input-text:requestimplicitsubmit=${this._onUpdate}
+                  @cc-request-submit=${this._onUpdate}
                 ></cc-input-text>
               `
             : ''}

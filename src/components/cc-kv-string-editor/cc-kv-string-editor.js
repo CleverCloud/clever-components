@@ -47,7 +47,7 @@ export class CcKvStringEditor extends LitElement {
   }
 
   /**
-   * @param {CustomEvent<string>} event
+   * @param {CcInputEvent} event
    */
   _onValueInput(event) {
     this._value = event.detail;
@@ -89,7 +89,7 @@ export class CcKvStringEditor extends LitElement {
         multi
         .resetValue=${this._value}
         .value=${this._value}
-        @cc-input-text:input=${this._onValueInput}
+        @cc-input=${this._onValueInput}
       ></cc-input-text>
       <div class="buttons">
         <cc-button type="reset" .skeleton=${isLoading} .disabled=${isDisabled || isSaving}>
