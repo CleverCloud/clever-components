@@ -14,7 +14,6 @@ import hyoobPalette from '../../lib/ansi/palettes/hyoob.js';
 import nightOwlPalette from '../../lib/ansi/palettes/night-owl.js';
 import oneLightPalette from '../../lib/ansi/palettes/one-light.js';
 import tokyoNightLightPalette from '../../lib/ansi/palettes/tokyo-night-light.js';
-import { dispatchCustomEvent } from '../../lib/events.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-button/cc-button.js';
 import '../cc-icon/cc-icon.js';
@@ -23,6 +22,7 @@ import { DATE_DISPLAYS, TIMEZONES } from '../cc-logs/date-displayer.js';
 import '../cc-popover/cc-popover.js';
 import '../cc-select/cc-select.js';
 import '../cc-toggle/cc-toggle.js';
+import { CcLogsOptionsChangeEvent } from './cc-logs-control.events.js';
 
 /**
  * @type {{[key in LogsControlPalette]: string}}
@@ -72,8 +72,6 @@ const PALETTES = {
  * Options are encapsulated into a `<cc-popover>` element.
  *
  * @cssdisplay grid
- *
- * @fires {CustomEvent<LogsControlOption>} cc-logs-control:option-change - Fires a `LogsControlOption` whenever an `option` changes.
  *
  * @slot header - The content of the space on top of the logs block.
  * @slot left - The content of the space on the left of the logs block.
@@ -177,7 +175,7 @@ export class CcLogsControl extends LitElement {
    */
   _onPaletteChange(event) {
     this.palette = event.detail;
-    dispatchCustomEvent(this, 'option-change', { name: 'palette', value: this.palette });
+    this.dispatchEvent(new CcLogsOptionsChangeEvent({ name: 'palette', options: this._getOptions() }));
   }
 
   /**
@@ -185,7 +183,7 @@ export class CcLogsControl extends LitElement {
    */
   _onStripAnsiChange(event) {
     this.stripAnsi = event.target.checked;
-    dispatchCustomEvent(this, 'option-change', { name: 'strip-ansi', value: this.stripAnsi });
+    this.dispatchEvent(new CcLogsOptionsChangeEvent({ name: 'strip-ansi', options: this._getOptions() }));
   }
 
   /**
@@ -193,7 +191,7 @@ export class CcLogsControl extends LitElement {
    */
   _onWrapLinesChange(event) {
     this.wrapLines = event.target.checked;
-    dispatchCustomEvent(this, 'option-change', { name: 'wrap-lines', value: this.wrapLines });
+    this.dispatchEvent(new CcLogsOptionsChangeEvent({ name: 'wrap-lines', options: this._getOptions() }));
   }
 
   /**
@@ -201,7 +199,7 @@ export class CcLogsControl extends LitElement {
    */
   _onDateDisplayChange(event) {
     this.dateDisplay = event.detail;
-    dispatchCustomEvent(this, 'option-change', { name: 'date-display', value: this.dateDisplay });
+    this.dispatchEvent(new CcLogsOptionsChangeEvent({ name: 'date-display', options: this._getOptions() }));
   }
 
   /**
@@ -209,7 +207,7 @@ export class CcLogsControl extends LitElement {
    */
   _onTimezoneChange(event) {
     this.timezone = event.detail;
-    dispatchCustomEvent(this, 'option-change', { name: 'timezone', value: this.timezone });
+    this.dispatchEvent(new CcLogsOptionsChangeEvent({ name: 'timezone', options: this._getOptions() }));
   }
 
   /**
@@ -225,8 +223,7 @@ export class CcLogsControl extends LitElement {
         hidden: isHidden,
       },
     };
-    const eventDetail = Object.fromEntries(Object.entries(this.metadataDisplay).map(([k, v]) => [k, !v.hidden]));
-    dispatchCustomEvent(this, 'option-change', { name: 'metadata-display', value: eventDetail });
+    this.dispatchEvent(new CcLogsOptionsChangeEvent({ name: 'metadata-display', options: this._getOptions() }));
   }
 
   /* endregion */
