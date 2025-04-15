@@ -115,7 +115,7 @@ At some point, smart components need to trigger some notifications when somethin
 For details on smart components, you can check [this introduction to smart components](https://www.clever-cloud.com/doc/clever-components/?path=/docs/🏡-getting-started-smart-components--docs).
 
 We based our integration on DOM events:
-The smart components dispatch `cc:notify` [custom events](https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent) like this:
+The smart components dispatch `cc-notify` event like this:
 
 ```javascript
 const toast = {
@@ -123,16 +123,16 @@ const toast = {
   intent: 'danger',
 };
 
-node.dispatchEvent(new CustomEvent('cc:notify', {detail: toast, bubbles: true, composed: true }));
+node.dispatchEvent(new CcNotifyEvent(toast));
 ```
 
 At this point, nothing really happens.
 It's up to developers who integrate the smart components in their application to listen to those events and react by displaying a toast like explained before:
 
 ```javascript
-document.addEventListener('cc:notify', (event) => {
+document.addEventListener('cc-notify', (event) => {
   document.querySelector('cc-toaster').show(event.detail);
 });
 ```
 
-Notice how we use the `detail` property of the `CustomEvent` instance to pass the notification to be displayed by the `cc-toaster`.
+Notice how we use the `detail` property of the `CcNotifyEvent` instance to pass the notification to be displayed by the `cc-toaster`.
