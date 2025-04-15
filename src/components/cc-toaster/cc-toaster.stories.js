@@ -153,20 +153,26 @@ export const defaultStory = makeStory(conf, {
       value,
     }));
 
-    const onAnimationChanged = ({ detail: animation }) => {
+    /**
+     * @param {CcSelectEvent} event
+     */
+    function onAnimationChanged({ detail: animation }) {
       options = { ...options, animation };
       refresh();
-    };
+    }
 
     const positions = ['top', 'top-left', 'top-right', 'bottom', 'bottom-left', 'bottom-right'].map((value) => ({
       label: value,
       value,
     }));
 
-    const onPositionChanged = ({ detail: position }) => {
+    /**
+     * @param {CcSelectEvent} event
+     */
+    function onPositionChanged({ detail: position }) {
       options = { ...options, position };
       refresh();
-    };
+    }
 
     const onCloseableChanged = () => {
       options = { ...options, closeable: !options.closeable };
@@ -221,7 +227,7 @@ export const defaultStory = makeStory(conf, {
                 legend="Position"
                 value=${position}
                 .choices=${positions}
-                @cc-toggle:input=${onPositionChanged}
+                @cc-select=${onPositionChanged}
               ></cc-toggle>
             </div>
             <div slot="content">
@@ -229,7 +235,7 @@ export const defaultStory = makeStory(conf, {
                 legend="Kind of animation to be played when the toast appears"
                 value=${animation}
                 .choices=${animations}
-                @cc-toggle:input=${onAnimationChanged}
+                @cc-select=${onAnimationChanged}
               ></cc-toggle>
             </div>
             <div slot="content">

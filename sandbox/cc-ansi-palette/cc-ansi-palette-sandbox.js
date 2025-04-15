@@ -53,6 +53,9 @@ export class CcAnsiPaletteSandbox extends LitElement {
     return this._palettes[this._selectedPaletteName];
   }
 
+  /**
+   * @param {CcSelectEvent<'light'|'dark'>} event
+   */
   _onTypeToggle({ detail }) {
     this._type = detail;
   }
@@ -98,7 +101,7 @@ export class CcAnsiPaletteSandbox extends LitElement {
           inline
           .value=${`${this._type}`}
           .choices=${TYPES}
-          @cc-toggle:input=${this._onTypeToggle}
+          @cc-select=${this._onTypeToggle}
         ></cc-toggle>
         <cc-select
           label="Palette"

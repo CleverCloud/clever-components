@@ -311,7 +311,7 @@ export class CcPricingProductConsumption extends LitElement {
    * @param {SectionType} type - the type of the section to update
    */
   _onToggleUnit(type) {
-    /** @param {CustomEvent<string>} e */
+    /** @param {CcSelectEvent} e */
     return (e) => {
       this._sectionStates[type].unitValue = e.detail;
       this._updateSimulatorQuantity(type);
@@ -473,7 +473,7 @@ export class CcPricingProductConsumption extends LitElement {
           class="input-unit"
           value=${unitValue}
           .choices=${this._getUnits()}
-          @cc-toggle:input=${this._onToggleUnit(type)}
+          @cc-select=${this._onToggleUnit(type)}
         ></cc-toggle>
       `;
     } else {

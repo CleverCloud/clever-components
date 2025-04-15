@@ -302,7 +302,7 @@ export const defaultStory = () => {
     return { label: width + 'px', value: width };
   });
 
-  storyDom.addEventListener('cc-toggle:input', ({ detail: value }) => {
+  storyDom.addEventListener('cc-select', ({ detail: value }) => {
     const demoContainer = storyDom.querySelector('demo-resize-controller');
     demoContainer.style.width = value + 'px';
   });

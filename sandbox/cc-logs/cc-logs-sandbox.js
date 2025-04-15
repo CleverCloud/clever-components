@@ -171,9 +171,9 @@ class CcLogsSandbox extends LitElement {
   }
 
   /**
-   * @param {CustomEvent<string>} e
+   * @param {CcSelectEvent<string>} e
    */
-  _onRateToggle(e) {
+  _onRateChange(e) {
     this._rate = parseInt(e.detail);
     if (this._isStarted()) {
       this._start(this._rate);
@@ -188,9 +188,9 @@ class CcLogsSandbox extends LitElement {
   }
 
   /**
-   * @param {CustomEvent<Timezone>} e
+   * @param {CcSelectEvent<Timezone>} e
    */
-  _onTimezoneToggle(e) {
+  _onTimezoneChange(e) {
     this._timezone = e.detail;
   }
 
@@ -202,14 +202,14 @@ class CcLogsSandbox extends LitElement {
   }
 
   /**
-   * @param {CustomEvent<Array<string>>} e
+   * @param {CcMultiSelectEvent<string>} e
    */
   _onFilterIpsToggle(e) {
     this._filterIps = e.detail;
   }
 
   /**
-   * @param {CustomEvent<Array<string>>} e
+   * @param {CcMultiSelectEvent<string>} e
    */
   _onFilterLevelsToggle(e) {
     this._filterLevels = e.detail;
@@ -257,11 +257,7 @@ class CcLogsSandbox extends LitElement {
   render() {
     return html`
       <div class="ctrl-top">
-        <cc-toggle
-          .value=${`${this._rate}`}
-          @cc-toggle:input=${this._onRateToggle}
-          .choices=${RATE_OPTIONS}
-        ></cc-toggle>
+        <cc-toggle .value=${`${this._rate}`} @cc-select=${this._onRateChange} .choices=${RATE_OPTIONS}></cc-toggle>
         <cc-button
           @cc-button:click=${this._onStartStopClick}
           ?danger=${this._started}
@@ -337,7 +333,7 @@ class CcLogsSandbox extends LitElement {
         <cc-toggle
           legend="Timezone"
           .value=${this._timezone}
-          @cc-toggle:input=${this._onTimezoneToggle}
+          @cc-select=${this._onTimezoneChange}
           .choices=${ZONE_OPTIONS}
           inline
         ></cc-toggle>
@@ -355,14 +351,14 @@ class CcLogsSandbox extends LitElement {
         <cc-toggle
           legend="Filtered IP"
           .multipleValues=${this._filterIps}
-          @cc-toggle:input-multiple=${this._onFilterIpsToggle}
+          @cc-multi-select=${this._onFilterIpsToggle}
           .choices=${IP_OPTIONS}
         ></cc-toggle>
 
         <cc-toggle
           legend="Filtered Log Level"
           .multipleValues=${this._filterLevels}
-          @cc-toggle:input-multiple=${this._onFilterLevelsToggle}
+          @cc-multi-select=${this._onFilterLevelsToggle}
           .choices=${LEVEL_OPTIONS}
         ></cc-toggle>
 

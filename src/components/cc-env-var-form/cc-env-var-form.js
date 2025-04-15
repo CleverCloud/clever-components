@@ -190,7 +190,7 @@ export class CcEnvVarForm extends LitElement {
     }
   }
 
-  /** @param {CustomEvent<EnvVarFormMode>} event */
+  /** @param {CcSelectEvent<EnvVarFormMode>} event */
   _onToggleMode({ detail: mode }) {
     if (this.state.type === 'error' || this.state.type === 'loading') {
       return;
@@ -308,7 +308,7 @@ export class CcEnvVarForm extends LitElement {
             value=${this._mode}
             .choices=${this._getModes()}
             ?disabled=${isEditorDisabled}
-            @cc-toggle:input=${this._onToggleMode}
+            @cc-select=${this._onToggleMode}
           ></cc-toggle>
         </div>
 

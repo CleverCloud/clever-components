@@ -169,7 +169,7 @@ export class CcLogsmap extends LitElement {
       : i18n('cc-logsmap.legend.heatmap.app', { appName: this.appName });
   }
 
-  /** @param {CustomEvent<MapModeType>} event */
+  /** @param {CcSelectEvent<MapModeType>} event */
   _onModeChange({ detail: mode }) {
     this.mode = mode;
     this.dispatchEvent(new CcLogsmapModeChangeEvent(this.mode));
@@ -179,7 +179,7 @@ export class CcLogsmap extends LitElement {
     const modes = this._getModes();
     return html`
       ${modes.length > 1
-        ? html` <cc-toggle .choices=${modes} value=${this.mode} @cc-toggle:input=${this._onModeChange}></cc-toggle> `
+        ? html` <cc-toggle .choices=${modes} value=${this.mode} @cc-select=${this._onModeChange}></cc-toggle> `
         : ''}
       <cc-map
         center-lat=${this.centerLat}
