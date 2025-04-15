@@ -4,13 +4,13 @@ import {
   iconRemixForbid_2Line as iconRedirectionOff,
   iconRemixLoginCircleFill as iconRedirectionOn,
 } from '../../assets/cc-remix.icons.js';
-import { dispatchCustomEvent } from '../../lib/events.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
 import { waitingStyles } from '../../styles/waiting.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-button/cc-button.js';
 import '../cc-icon/cc-icon.js';
 import '../cc-loader/cc-loader.js';
+import { CcTcpRedirectionCreateEvent, CcTcpRedirectionDeleteEvent } from './cc-tcp-redirection.events.js';
 
 /** @type {TcpRedirection} */
 const SKELETON_REDIRECTION = { namespace: 'default', isPrivate: false };
@@ -28,9 +28,6 @@ const SKELETON_REDIRECTION = { namespace: 'default', isPrivate: false };
  * A small form to create or delete a TCP redirection.
  *
  * @cssdisplay block
- *
- * @fires {CustomEvent<CreateTcpRedirection>} cc-tcp-redirection:create - Fires a redirection namespace whenever the create button is clicked.
- * @fires {CustomEvent<DeleteTcpRedirection>} cc-tcp-redirection:delete - Fires a redirection whenever the delete button is clicked.
  */
 export class CcTcpRedirection extends LitElement {
   static get properties() {
@@ -98,7 +95,7 @@ export class CcTcpRedirection extends LitElement {
   _onCreate() {
     if (this._isStateLoadedOrWaiting(this.state)) {
       const { namespace } = this.state;
-      dispatchCustomEvent(this, 'create', { namespace });
+      this.dispatchEvent(new CcTcpRedirectionCreateEvent({ namespace }));
     }
   }
 
@@ -106,7 +103,7 @@ export class CcTcpRedirection extends LitElement {
   _onDelete() {
     if (this._isStateLoadedOrWaiting(this.state)) {
       const { namespace, sourcePort } = this.state;
-      dispatchCustomEvent(this, 'delete', { namespace, sourcePort });
+      this.dispatchEvent(new CcTcpRedirectionDeleteEvent({ namespace, sourcePort }));
     }
   }
 
