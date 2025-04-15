@@ -5,6 +5,14 @@ title: 'Changelog'
 
 # Changelog
 
+## [18.4.0](https://github.com/CleverCloud/clever-components/compare/18.3.0...18.4.0) (2025-04-15)
+
+
+### 🚀 Features
+
+* **cc-oauth-consumer-info:** init component ([8016150](https://github.com/CleverCloud/clever-components/commit/80161505e43811978f24045d734a69f14c2bbf65))
+* **cc-zone:** use diplayName when it's defined ([da9b0a7](https://github.com/CleverCloud/clever-components/commit/da9b0a79f71db8e95810ce14ab882988c0502b1a))
+
 ## [18.3.0](https://github.com/CleverCloud/clever-components/compare/18.2.0...18.3.0) (2025-04-09)
 
 
