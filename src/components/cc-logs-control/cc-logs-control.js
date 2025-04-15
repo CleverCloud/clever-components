@@ -313,7 +313,7 @@ export class CcLogsControl extends LitElement {
           .icon=${scrollToBottomIcon}
           a11y-name="${i18n('cc-logs-control.scroll-to-bottom')}"
           hide-text
-          @cc-button:click=${this._onScrollToBottomButtonClick}
+          @cc-click=${this._onScrollToBottomButtonClick}
         ></cc-button>
 
         <cc-popover

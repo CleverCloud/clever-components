@@ -21,7 +21,7 @@ import { CcToggleEvent } from '../common.events.js';
  * ### Button element
  *
  * The `button` is the element that will trigger the display of the floating content.
- * This element is a `<cc-button>`. The `cc-button:click` event will trigger the popover toggle.
+ * This element is a `<cc-button>`. The `cc-click` event will trigger the popover toggle.
  *
  * ### Popover content
  *
@@ -225,7 +225,7 @@ export class CcPopover extends LitElement {
           ?hide-text=${this.hideText}
           ?disabled=${this.disabled}
           .icon=${this.icon}
-          @cc-button:click=${this.toggle}
+          @cc-click=${this.toggle}
         >
           <slot name="button-content"></slot>
         </cc-button>

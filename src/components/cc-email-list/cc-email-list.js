@@ -233,7 +233,7 @@ export class CcEmailList extends LitElement {
         ${shouldDisplayResendConfirmationEmail
           ? html`
               <cc-button
-                @cc-button:click=${this._onSendConfirmationEmail}
+                @cc-click=${this._onSendConfirmationEmail}
                 ?waiting=${primaryAddressState.type === 'sending-confirmation-email'}
                 link
               >
@@ -271,7 +271,7 @@ export class CcEmailList extends LitElement {
                 </div>
                 <div class="buttons">
                   <cc-button
-                    @cc-button:click=${() => this._onMarkAsPrimary(secondaryAddress.address)}
+                    @cc-click=${() => this._onMarkAsPrimary(secondaryAddress.address)}
                     ?waiting="${secondaryAddress.type === 'marking-as-primary'}"
                     ?disabled="${isDisabled}"
                     a11y-name="${i18n('cc-email-list.secondary.action.mark-as-primary.accessible-name', {
@@ -285,7 +285,7 @@ export class CcEmailList extends LitElement {
                     danger
                     outlined
                     .icon=${iconDelete}
-                    @cc-button:click=${() => this._onDelete(secondaryAddress.address)}
+                    @cc-click=${() => this._onDelete(secondaryAddress.address)}
                     ?waiting="${secondaryAddress.type === 'deleting'}"
                     ?disabled="${isBusy && secondaryAddress.type !== 'deleting'}"
                     a11y-name="${i18n('cc-email-list.secondary.action.delete.accessible-name', {

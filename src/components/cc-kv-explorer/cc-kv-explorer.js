@@ -622,7 +622,7 @@ export class CcKvExplorer extends LitElement {
           <div slot="message">
             <span>${this._getErrorKeyMessage(state)}</span>&nbsp;<cc-button
               link
-              @cc-button:click=${this._onErrorKeysRetryButtonClick}
+              @cc-click=${this._onErrorKeysRetryButtonClick}
               >${i18n('cc-kv-explorer.error.fetch-keys.retry')}</cc-button
             >
           </div>
@@ -654,7 +654,7 @@ export class CcKvExplorer extends LitElement {
         a11y-name=${i18n('cc-kv-explorer.keys.header.add-key.a11y')}
         .icon=${iconAdd}
         primary
-        @cc-button:click=${this._onAddButtonClick}
+        @cc-click=${this._onAddButtonClick}
         >${i18n('cc-kv-explorer.keys.header.add-key')}</cc-button
       >
       <cc-button
@@ -663,7 +663,7 @@ export class CcKvExplorer extends LitElement {
         outlined
         ?disabled=${isFetching && !isRefreshing}
         ?waiting=${isRefreshing}
-        @cc-button:click=${this._onRefreshKeysButtonClick}
+        @cc-click=${this._onRefreshKeysButtonClick}
         >${i18n('cc-kv-explorer.keys.header.refresh')}</cc-button
       >
     </div>`;
@@ -680,7 +680,7 @@ export class CcKvExplorer extends LitElement {
           ${state.total === 0
             ? html`
                 <p>${i18n('cc-kv-explorer.keys.empty')}</p>
-                <cc-button @cc-button:click=${this._onAddButtonClick}>
+                <cc-button @cc-click=${this._onAddButtonClick}>
                   ${i18n('cc-kv-explorer.keys.empty.create-key')}
                 </cc-button>
               `
@@ -766,7 +766,7 @@ export class CcKvExplorer extends LitElement {
           .icon=${iconDelete}
           data-key=${keyState.key.name}
           data-index=${index}
-          @cc-button:click=${this._onDeleteKeyButtonClick}
+          @cc-click=${this._onDeleteKeyButtonClick}
         ></cc-button>
       </label>
     </div>`;
@@ -900,12 +900,7 @@ export class CcKvExplorer extends LitElement {
       <div class="edit-header">
         <cc-badge weight="outlined">${this._getKeyTypeLabel(key.type)}</cc-badge>
         <div class="edit-header-key-name">${key.name}</div>
-        <cc-button
-          .icon=${iconCopy}
-          outlined
-          hide-text
-          data-key=${key.name}
-          @cc-button:click=${this._onCopyKeyButtonClick}
+        <cc-button .icon=${iconCopy} outlined hide-text data-key=${key.name} @cc-click=${this._onCopyKeyButtonClick}
           >${i18n('cc-kv-explorer.key.header.copy')}</cc-button
         >
         <cc-button
@@ -915,7 +910,7 @@ export class CcKvExplorer extends LitElement {
           ?disabled=${isLoading}
           ?waiting=${isDeleting}
           data-key=${key.name}
-          @cc-button:click=${this._onDeleteKeyButtonClick}
+          @cc-click=${this._onDeleteKeyButtonClick}
           >${i18n('cc-kv-explorer.key.header.delete')}</cc-button
         >
       </div>

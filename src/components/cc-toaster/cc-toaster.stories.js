@@ -198,7 +198,7 @@ export const defaultStory = makeStory(conf, {
         ?success="${intent === 'success'}"
         ?warning="${intent === 'warning'}"
         ?danger="${intent === 'danger'}"
-        @cc-button:click=${onClick}
+        @cc-click=${onClick}
       >
         ${intent}
       </cc-button>`;

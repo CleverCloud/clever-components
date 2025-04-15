@@ -74,3 +74,15 @@ export class CcRequestSubmitEvent extends CcEvent {
     super(CcRequestSubmitEvent.TYPE);
   }
 }
+
+/**
+ * Dispatched when a clickable element is clicked.
+ * @extends {CcEvent<void>}
+ */
+export class CcClickEvent extends CcEvent {
+  static TYPE = 'cc-click';
+
+  constructor() {
+    super(CcClickEvent.TYPE);
+  }
+}

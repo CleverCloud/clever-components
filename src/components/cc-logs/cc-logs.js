@@ -864,7 +864,7 @@ export class CcLogs extends LitElement {
           @wheel=${this._onWheel}
         ></lit-virtualizer>
         ${!this._logsCtrl.isSelectionEmpty()
-          ? html` <cc-button class="copy_button" .icon=${iconCopy} @cc-button:click=${this._onCopySelectionToClipboard}>
+          ? html` <cc-button class="copy_button" .icon=${iconCopy} @cc-click=${this._onCopySelectionToClipboard}>
               ${i18n('cc-logs.copy')}
             </cc-button>`
           : null}

@@ -259,17 +259,17 @@ class CcLogsSandbox extends LitElement {
       <div class="ctrl-top">
         <cc-toggle .value=${`${this._rate}`} @cc-select=${this._onRateChange} .choices=${RATE_OPTIONS}></cc-toggle>
         <cc-button
-          @cc-button:click=${this._onStartStopClick}
+          @cc-click=${this._onStartStopClick}
           ?danger=${this._started}
           ?success=${!this._started}
           .icon=${this._started ? stopIcon : playIcon}
           a11y-name=${this._started ? 'Stop' : 'Start'}
           hide-text
         ></cc-button>
-        <cc-button @cc-button:click=${this._onAddClick} ?primary=${true} ?outlined=${true} .icon=${addIcon}
+        <cc-button @cc-click=${this._onAddClick} ?primary=${true} ?outlined=${true} .icon=${addIcon}
           >Add one log
         </cc-button>
-        <cc-button @cc-button:click=${this._onClearClick} ?danger=${true} ?outlined=${true} .icon=${clearIcon}
+        <cc-button @cc-click=${this._onClearClick} ?danger=${true} ?outlined=${true} .icon=${clearIcon}
           >Clear
         </cc-button>
       </div>
@@ -365,9 +365,7 @@ class CcLogsSandbox extends LitElement {
         <div class="spacer"></div>
 
         <div>
-          <cc-button @cc-button:click=${this._onScrollToBottomClick} .icon=${scrollToBottomIcon}
-            >Scroll to bottom</cc-button
-          >
+          <cc-button @cc-click=${this._onScrollToBottomClick} .icon=${scrollToBottomIcon}>Scroll to bottom</cc-button>
         </div>
         <label for="follow">
           <input id="follow" type="checkbox" @change=${this._onFollowSwitched} .checked=${this._follow} /> Follow

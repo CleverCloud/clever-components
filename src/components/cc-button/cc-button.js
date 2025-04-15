@@ -1,11 +1,11 @@
 import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { dispatchCustomEvent } from '../../lib/events.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
 import { linkStyles } from '../../templates/cc-link/cc-link.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-icon/cc-icon.js';
+import { CcClickEvent } from '../common.events.js';
 
 /**
  * @typedef {import('../common.types.js').IconModel} IconModel
@@ -31,16 +31,14 @@ import '../cc-icon/cc-icon.js';
  *
  * ## Delay mechanism
  *
- * * When `delay` is set, `cc-button:click` events are not fired immediately.
+ * * When `delay` is set, `cc-click` events are not fired immediately.
  * * They are fired after the number of seconds set with `delay`.
  * * During this `delay`, the user is presented a "click to cancel" label.
- * * If the user clicks on "click to cancel", the `cc-button:click` event is not fired.
- * * If the button `disabled` mode is set during the delay, the `cc-button:click` event is not fired.
+ * * If the user clicks on "click to cancel", the `cc-click` event is not fired.
+ * * If the button `disabled` mode is set during the delay, the `cc-click` event is not fired.
  * * If you set `delay=0`, the button will have the same width as other buttons with delay, but the event will be triggered instantly.
  *
  * @cssdisplay inline-block
- *
- * @fires {CustomEvent} cc-button:click - Fires whenever the button is clicked.<br>If `delay` is set, fires after the specified `delay` (in seconds).
  *
  * @slot - The content of the button (text or HTML). If you want an image, please look at the `image` attribute.
  * @cssprop {BorderRadius} --cc-button-border-radius - Sets the value of the border radius CSS property (defaults: `0.15em`).
@@ -94,7 +92,7 @@ export class CcButton extends LitElement {
     /** @type {boolean} Sets button UI _mode_ to danger. */
     this.danger = false;
 
-    /** @type {number|null} If set, enables delay mechanism and defined the number of seconds before the `cc-button:click` event is actually fired. */
+    /** @type {number|null} If set, enables delay mechanism and defined the number of seconds before the `cc-click` event is actually fired. */
     this.delay = null;
 
     /** @type {boolean} Sets `disabled` attribute on inner native `<button>` element. Do not use this during API calls, use `waiting` instead. */
@@ -186,7 +184,7 @@ export class CcButton extends LitElement {
   /**
    * We tried to reuse native clicks from the inner <button>
    * but it's not that simple since adding @click on <cc-button> with lit-html also catches clicks on the custom element itself
-   * That's why we emit custom "cc-button:click"
+   * That's why we emit custom "cc-click"
    * It's also easier to handle for the delay mechanism
    *
    * @param {ButtonClickEvent} e
@@ -209,7 +207,8 @@ export class CcButton extends LitElement {
       if (this.type === 'reset') {
         this._internals.form?.reset();
       }
-      dispatchCustomEvent(this, 'click');
+
+      this.dispatchEvent(new CcClickEvent());
       return;
     }
 
@@ -225,7 +224,7 @@ export class CcButton extends LitElement {
         if (this.type === 'reset') {
           this._internals.form?.reset();
         }
-        dispatchCustomEvent(this, 'click');
+        this.dispatchEvent(new CcClickEvent());
         this._cancelMode = false;
       }, this.delay * 1000);
     }

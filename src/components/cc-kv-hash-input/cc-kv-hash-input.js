@@ -229,7 +229,7 @@ export class CcKvHashInput extends CcFormControlElement {
                 hide-text
                 danger
                 outlined
-                @cc-button:click=${this._onDelete}
+                @cc-click=${this._onDelete}
               ></cc-button>
             `
           : ''}
@@ -242,7 +242,7 @@ export class CcKvHashInput extends CcFormControlElement {
                 ?disabled=${this.disabled || this.readonly}
                 hide-text
                 outlined
-                @cc-button:click=${this._onAdd}
+                @cc-click=${this._onAdd}
               ></cc-button>
             `
           : html`<div></div>`}

@@ -346,7 +346,7 @@ export class CcEnvVarForm extends LitElement {
         ${!this.readonly
           ? html`
               <div slot="content-footer" class="button-bar">
-                <cc-button ?disabled="${isSaving}" @cc-button:click=${() => this._resetForm(this._initVariables)}
+                <cc-button ?disabled="${isSaving}" @cc-click=${() => this._resetForm(this._initVariables)}
                   >${i18n('cc-env-var-form.reset')}</cc-button
                 >
 
@@ -354,7 +354,7 @@ export class CcEnvVarForm extends LitElement {
 
                 ${this.restartApp
                   ? html`
-                      <cc-button @cc-button:click=${() => this.dispatchEvent(new CcApplicationRestartEvent())}
+                      <cc-button @cc-click=${() => this.dispatchEvent(new CcApplicationRestartEvent())}
                         >${i18n('cc-env-var-form.restart-app')}</cc-button
                       >
                     `
@@ -364,7 +364,7 @@ export class CcEnvVarForm extends LitElement {
                   success
                   ?disabled=${isFormDisabled && !isSaving}
                   ?waiting="${isSaving}"
-                  @cc-button:click=${this._onUpdateForm}
+                  @cc-click=${this._onUpdateForm}
                   >${i18n('cc-env-var-form.update')}</cc-button
                 >
               </div>

@@ -417,7 +417,7 @@ export class CcKvHashExplorer extends LitElement {
         ?primary=${firstButton.primary}
         ?disabled=${firstButton.disabled || this.disabled}
         ?waiting=${firstButton.waiting}
-        @cc-button:click=${firstButton.onClick}
+        @cc-click=${firstButton.onClick}
       ></cc-button>
       <cc-button
         class=${secondBtn.class}
@@ -431,7 +431,7 @@ export class CcKvHashExplorer extends LitElement {
         ?primary=${secondBtn.primary}
         ?disabled=${secondBtn.disabled || this.disabled}
         ?waiting=${secondBtn.waiting}
-        @cc-button:click=${secondBtn.onClick}
+        @cc-click=${secondBtn.onClick}
       ></cc-button>
       <cc-button
         .icon=${iconCopy}
@@ -440,7 +440,7 @@ export class CcKvHashExplorer extends LitElement {
         data-text=${state.value}
         ?skeleton=${skeleton}
         ?disabled=${this.disabled}
-        @cc-button:click=${this._onCopyKeyButtonClick}
+        @cc-click=${this._onCopyKeyButtonClick}
         >${i18n('cc-kv-hash-explorer.element.copy', { index })}</cc-button
       >
     `;

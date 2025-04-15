@@ -302,7 +302,7 @@ export class CcSshKeyList extends LitElement {
                   ${type === 'personal'
                     ? html`
                         <cc-button
-                          @cc-button:click=${() => this._onDeleteKey(key)}
+                          @cc-click=${() => this._onDeleteKey(key)}
                           a11y-name="${i18n('cc-ssh-key-list.personal.delete.a11y', { name })}"
                           class="key__button key__button--personal"
                           .icon="${iconBin}"
@@ -317,7 +317,7 @@ export class CcSshKeyList extends LitElement {
                   ${type === 'github'
                     ? html`
                         <cc-button
-                          @cc-button:click=${() => this._onImportKey(/** @type GithubSshKeyState */ (key))}
+                          @cc-click=${() => this._onImportKey(/** @type GithubSshKeyState */ (key))}
                           a11y-name="${i18n('cc-ssh-key-list.github.import.a11y', { name })}"
                           class="key__button key__button--github"
                           .icon="${iconAdd}"
