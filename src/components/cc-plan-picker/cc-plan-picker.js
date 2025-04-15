@@ -1,10 +1,10 @@
 import { css, html } from 'lit';
 import { iconRemixServerLine as labelIcon } from '../../assets/cc-remix.icons.js';
-import { dispatchCustomEvent } from '../../lib/events.js';
 import { CcFormControlElement } from '../../lib/form/cc-form-control-element.abstract.js';
 import { i18n } from '../../lib/i18n/i18n.js';
 import { accessibilityStyles } from '../../styles/accessibility.js';
 import '../cc-plan-item/cc-plan-item.js';
+import { CcSelectEvent } from '../common.events.js';
 
 /**
  * @typedef {import('lit').PropertyValues<CcPlanPicker>} CcPlanPickerPropertyValues
@@ -18,8 +18,6 @@ import '../cc-plan-item/cc-plan-item.js';
  * A form control element component that allows you to select a plan from a list of plans and refine your choice in a sub picker if needed
  *
  * @cssdisplay block
- *
- * @fires {CustomEvent<string>} cc-plan-picker:input - Fires the id of the selected plan
  *
  * @cssprop {Size} --cc-form-controls-gap - The vertical space between different form controls (defaults: `2em`).
  * @cssprop {Size} --cc-form-controls-indent - The horizontal space between the start of the line and the form control without the label (defaults: `34px`).
@@ -111,7 +109,7 @@ export class CcPlanPicker extends CcFormControlElement {
       this._currentRelatedPlans = [];
     }
 
-    dispatchCustomEvent(this, 'input', this.value);
+    this.dispatchEvent(new CcSelectEvent(this.value));
   }
 
   /**
@@ -120,7 +118,7 @@ export class CcPlanPicker extends CcFormControlElement {
    */
   _onChangeRelatedPlan(e) {
     this.value = e.target.value;
-    dispatchCustomEvent(this, 'input', this.value);
+    this.dispatchEvent(new CcSelectEvent(this.value));
   }
 
   /**
