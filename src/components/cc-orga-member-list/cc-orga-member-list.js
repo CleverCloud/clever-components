@@ -27,6 +27,8 @@ const ORGA_MEMBER_DOCUMENTATION = 'https://developers.clever-cloud.com/doc/accou
  * @typedef {import('./cc-orga-member-list.types.js').ListAuthorisations} ListAuthorisations
  * @typedef {import('./cc-orga-member-list.types.js').InviteMember} InviteMember
  * @typedef {import('./cc-orga-member-list.types.js').InviteMemberFormState} InviteMemberFormState
+ * @typedef {import('../cc-orga-member-card/cc-orga-member-card.events.js').CcOrgaMemberUpdateEvent} CcOrgaMemberUpdateEvent
+ * @typedef {import('../cc-orga-member-card/cc-orga-member-card.events.js').CcOrgaMemberEditToggleEvent} CcOrgaMemberEditToggleEvent
  * @typedef {import('../cc-orga-member-card/cc-orga-member-card.types.js').OrgaMemberCardState} OrgaMemberCardState
  * @typedef {import('../cc-orga-member-card/cc-orga-member-card.types.js').OrgaMember} OrgaMember
  * @typedef {import('../../lib/form/validation.types.js').Validator} Validator
@@ -237,7 +239,7 @@ export class CcOrgaMemberList extends LitElement {
   }
 
   /**
-   * @param {CustomEvent} e
+   * @param {CcOrgaMemberLeaveEvent} e
    */
   _onLeaveFromCard({ detail: currentUser }) {
     if (this.memberListState.type === 'loaded' && this.isLastAdmin(currentUser)) {
@@ -269,7 +271,7 @@ export class CcOrgaMemberList extends LitElement {
   }
 
   /**
-   * @param {CustomEvent} e
+   * @param {CcOrgaMemberUpdateEvent} e
    */
   _onUpdateFromCard({ detail: memberToUpdate }) {
     const isLastAdmin = memberToUpdate.isCurrentUser && this.isLastAdmin(memberToUpdate);
@@ -289,7 +291,7 @@ export class CcOrgaMemberList extends LitElement {
   /**
    * Close all cards and leave the one that fired the event
    *
-   * @param {CustomEvent} e
+   * @param {CcOrgaMemberEditToggleEvent} e
    */
   _onToggleCardEditing({ detail: { memberId, newState } }) {
     if (this.memberListState.type === 'loaded') {
@@ -461,9 +463,9 @@ export class CcOrgaMemberList extends LitElement {
                 delete: this.authorisations.delete,
               }}
               .state=${memberState}
-              @cc-orga-member-card:leave=${this._onLeaveFromCard}
-              @cc-orga-member-card:toggle-editing=${this._onToggleCardEditing}
-              @cc-orga-member-card:update=${this._onUpdateFromCard}
+              @cc-orga-member-leave=${this._onLeaveFromCard}
+              @cc-orga-member-edit-toggle=${this._onToggleCardEditing}
+              @cc-orga-member-update=${this._onUpdateFromCard}
             ></cc-orga-member-card>
           `,
         )}

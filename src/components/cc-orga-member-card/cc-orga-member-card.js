@@ -11,7 +11,6 @@ import {
   iconRemixEditFill as iconPen,
 } from '../../assets/cc-remix.icons.js';
 import { ResizeController } from '../../controllers/resize-controller.js';
-import { dispatchCustomEvent } from '../../lib/events.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-badge/cc-badge.js';
 import '../cc-button/cc-button.js';
@@ -20,6 +19,12 @@ import '../cc-img/cc-img.js';
 import '../cc-notice/cc-notice.js';
 import '../cc-select/cc-select.js';
 import '../cc-stretch/cc-stretch.js';
+import {
+  CcOrgaMemberDeleteEvent,
+  CcOrgaMemberEditToggleEvent,
+  CcOrgaMemberLeaveEvent,
+  CcOrgaMemberUpdateEvent,
+} from './cc-orga-member-card.events.js';
 
 const BREAKPOINT_MEDIUM = 740;
 const BREAKPOINT_SMALL = 580;
@@ -31,7 +36,7 @@ const BREAKPOINTS = [BREAKPOINT_TINY, BREAKPOINT_SMALL, BREAKPOINT_MEDIUM];
  * @typedef {import('./cc-orga-member-card.types.js').CardAuthorisations} CardAuthorisations
  * @typedef {import('./cc-orga-member-card.types.js').OrgaMemberCardState} OrgaMemberCardState
  * @typedef {import('./cc-orga-member-card.types.js').ToggleEditing} ToggleEditing
- * @typedef {import('./cc-orga-member-card.types.js').UpdateMember} UpdateMember
+ * @typedef {import('./cc-orga-member-card.types.js').OrgaMember} OrgaMember
  * @typedef {import('./cc-orga-member-card.types.js').OrgaMemberRole} OrgaMemberRole
  * @typedef {import('../cc-button/cc-button.js').CcButton} CcButton
  * @typedef {import('../cc-select/cc-select.js').CcSelect} CcSelect
@@ -52,13 +57,6 @@ const BREAKPOINTS = [BREAKPOINT_TINY, BREAKPOINT_SMALL, BREAKPOINT_MEDIUM];
  * This component also heavily relies on CSS `grid` and the `ResizeController` to switch from a "table" like design to a card design when the card width shrinks.
  *
  * @cssdisplay block
- *
- * @fires {CustomEvent<ToggleEditing>} cc-orga-member-card:toggle-editing - Fires the `id` of the member related to the card and the new state (`editing` or `loaded`) to specify when card is in edit mode or not.
- * This allows the list component to close all other cards in edit mode to leave only one in edit mode at once.
- * @fires {CustomEvent<OrgaMemberCardState>} cc-orga-member-card:delete - Fires when the user clicks on a remove member button.
- * @fires {CustomEvent<OrgaMemberCardState>} cc-orga-member-card:leave - Fires when the user clicks on a leave button (only possible if `isCurrentUser = true`).
- * We don't fire a delete event so that it can be processed differently by the smart component (leaving the org means the user has to be redirected).
- * @fires {CustomEvent<UpdateMember>} cc-orga-member-card:update - Fires when the user clicks on a validate button after editing member role.
  */
 export class CcOrgaMemberCard extends LitElement {
   static get properties() {
@@ -172,10 +170,30 @@ export class CcOrgaMemberCard extends LitElement {
     return 'btn-content-delete';
   }
 
+  /**
+   * @returns {OrgaMember}
+   * @private
+   */
+  _getOrgaMember() {
+    return {
+      id: this.state.id,
+      email: this.state.email,
+      role: this.state.role,
+      name: this.state.name,
+      avatar: this.state.avatar,
+      jobTitle: this.state.jobTitle,
+      isMfaEnabled: this.state.isMfaEnabled,
+      isCurrentUser: this.state.isCurrentUser,
+    };
+  }
+
   _onDeleteMember() {
-    const eventName = this.state.isCurrentUser ? 'leave' : 'delete';
     // since not every member has set a name, we send either the name or the email to provide context in the toast message
-    dispatchCustomEvent(this, eventName, this.state);
+    if (this.state.isCurrentUser) {
+      this.dispatchEvent(new CcOrgaMemberLeaveEvent(this._getOrgaMember()));
+    } else {
+      this.dispatchEvent(new CcOrgaMemberDeleteEvent(this._getOrgaMember()));
+    }
   }
 
   /**
@@ -204,10 +222,12 @@ export class CcOrgaMemberCard extends LitElement {
     this._newRole = this.state.role;
 
     // warn the `cc-orga-member-list` component so that it closes all other cards.
-    dispatchCustomEvent(this, 'toggle-editing', {
-      memberId: this.state.id,
-      newState,
-    });
+    this.dispatchEvent(
+      new CcOrgaMemberEditToggleEvent({
+        memberId: this.state.id,
+        newState,
+      }),
+    );
 
     /* Focus the `<select>` element when entering edit mode */
     if (newState === 'editing') {
@@ -222,10 +242,19 @@ export class CcOrgaMemberCard extends LitElement {
       return;
     }
 
-    dispatchCustomEvent(this, 'update', {
-      ...this.state,
-      newRole: this._newRole,
-    });
+    this.dispatchEvent(
+      new CcOrgaMemberUpdateEvent({
+        id: this.state.id,
+        email: this.state.email,
+        role: this.state.role,
+        name: this.state.name,
+        avatar: this.state.avatar,
+        jobTitle: this.state.jobTitle,
+        isMfaEnabled: this.state.isMfaEnabled,
+        isCurrentUser: this.state.isCurrentUser,
+        newRole: this._newRole,
+      }),
+    );
   }
 
   render() {
