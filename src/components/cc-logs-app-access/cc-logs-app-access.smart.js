@@ -49,19 +49,19 @@ defineSmartComponent({
       controller.setNewDateRange(range);
     });
 
-    onEvent('cc-logs-loading-progress:pause', () => {
+    onEvent('cc-logs-loading-pause', () => {
       controller.pause();
     });
 
-    onEvent('cc-logs-loading-progress:resume', () => {
+    onEvent('cc-logs-loading-resume', () => {
       controller.resume();
     });
 
-    onEvent('cc-logs-loading-progress:accept-overflow', () => {
+    onEvent('cc-logs-loading-overflow-accept', () => {
       controller.acceptOverflow();
     });
 
-    onEvent('cc-logs-loading-progress:discard-overflow', () => {
+    onEvent('cc-logs-loading-overflow-discard', () => {
       controller.discardOverflow();
     });
 
