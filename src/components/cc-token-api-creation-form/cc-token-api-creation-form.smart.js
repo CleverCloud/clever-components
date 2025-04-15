@@ -24,9 +24,15 @@ defineSmartComponent({
 
     // TODO: reset form
     updateComponent('state', { type: 'loading' });
-    api.getUserInfo().then(({ isMfaEnabled }) => {
-      updateComponent('state', { type: 'idle', isMfaEnabled, hasCredentialsError: false });
-    });
+    api
+      .getUserInfo()
+      .then(({ isMfaEnabled }) => {
+        updateComponent('state', { type: 'idle', isMfaEnabled, hasCredentialsError: false });
+      })
+      .catch((error) => {
+        console.error(error);
+        updateComponent('state', { type: 'error' });
+      });
 
     onEvent('cc-token-api-creation-form:api-key-create', ({ name, description, expirationDate, password, mfaCode }) => {
       updateComponent('state', (state) => {

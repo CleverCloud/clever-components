@@ -7,6 +7,7 @@ import {
   iconRemixCheckboxCircleLine as iconDoneStep,
   iconRemixLogoutBoxRLine as iconLink,
 } from '../../assets/cc-remix.icons.js';
+import { shiftDateField } from '../../lib/date/date-utils.js';
 import { dispatchCustomEvent } from '../../lib/events.js';
 import { formSubmit } from '../../lib/form/form-submit-directive.js';
 import { linkStyles } from '../../templates/cc-link/cc-link.js';
@@ -63,10 +64,13 @@ export class CcTokenApiCreationForm extends LitElement {
 
     this._expirationDateErrorMessages = {
       badInput: i18n('cc-token-api-creation-form.config-step.form.expiration-date.invalid', {
-        date: new Date(Date.now() + 31536000000).toISOString().replace('T', ' ').substring(0, 19),
+        date: shiftDateField(new Date(Date.now()), 'Y', 1).toISOString().replace('T', ' ').substring(0, 19),
       }),
       rangeUnderflow: i18n('cc-token-api-creation-form.config-step.form.expiration-date.range-underflow', {
-        date: new Date(Date.now() + 30 * 60 * 1000).toISOString().replace('T', ' ').substring(0, 19),
+        date: shiftDateField(new Date(Date.now()), 'm', 30).toISOString().replace('T', ' ').substring(0, 19),
+      }),
+      rangeOverflow: i18n('cc-token-api-creation-form.config-step.form.expiration-date.range-overflow', {
+        date: shiftDateField(new Date(Date.now()), 'Y', 1).toISOString().replace('T', ' ').substring(0, 19),
       }),
     };
 
@@ -164,8 +168,6 @@ export class CcTokenApiCreationForm extends LitElement {
     return expirationDate;
   }
 
-  _getPasswordAndMfaErrorMessage() {}
-
   /**
    * @param {TokenApiCreationStep} step
    * @returns {(event: Event) => void}
@@ -213,7 +215,6 @@ export class CcTokenApiCreationForm extends LitElement {
     }
 
     this._isExpirationDateActive = value === 'custom';
-    console.log('expiration date input');
   }
 
   /** @param {CcTokenApiCreationFormPropertyValues} changedProperties */
@@ -228,6 +229,7 @@ export class CcTokenApiCreationForm extends LitElement {
       return html`<cc-notice intent="warning" message="${i18n('cc-token-api-creation-form.error')}"></cc-notice>`;
     }
 
+    // TODO: i18n CLI
     return html`
       <cc-block>
         <div slot="header-title">${this._getMainHeading(this._activeStep)}</div>
@@ -263,7 +265,6 @@ export class CcTokenApiCreationForm extends LitElement {
    * @param {boolean} _.isWaiting
    */
   _renderStepsNav({ activeStep, isWaiting }) {
-    // TODO: should only be clickable when step === "validate"
     const steps = /** @type {const} */ ([
       {
         name: 'config',
@@ -366,12 +367,13 @@ export class CcTokenApiCreationForm extends LitElement {
             ?required=${this._isExpirationDateActive}
             ?readonly=${!this._isExpirationDateActive}
             .value="${this._expirationDate}"
-            .min="${new Date(Date.now() + 15 * 60 * 1000)}"
+            .min="${shiftDateField(new Date(Date.now()), 'm', 15)}"
+            .max="${shiftDateField(new Date(Date.now()), 'Y', 1)}"
             .customErrorMessages=${this._expirationDateErrorMessages}
           >
             ${this._isExpirationDateActive
               ? html`
-                  <p slot="help">${i18n('cc-token-api-creation-form.config-step.form.help.expiration-date.min')}</p>
+                  <p slot="help">${i18n('cc-token-api-creation-form.config-step.form.help.expiration-date.min-max')}</p>
                 `
               : ''}
             <p slot="help">${i18n('cc-token-api-creation-form.config-step.form.help.expiration-date.format')}</p>

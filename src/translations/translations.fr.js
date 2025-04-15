@@ -1505,13 +1505,16 @@ export const translations = {
   'cc-token-api-creation-form.config-step.form.expiration-date.invalid': /** @param {{ date: string }} _ */ ({
     date,
   }) => sanitize`Saisissez une date et une heure valide.<br>Par exemple&nbsp;: ${date}`,
+  'cc-token-api-creation-form.config-step.form.expiration-date.range-overflow': /** @param {{ date: string }} _ */ ({
+    date,
+  }) => sanitize`La date d'expiration doit être moins d'un an à partir de maintenant.<br>Par exemple&nbsp;: ${date}`,
   'cc-token-api-creation-form.config-step.form.expiration-date.range-underflow': /** @param {{ date: string }} _ */ ({
     date,
   }) =>
-    sanitize`La date d'expiration doit être au moins 15 minutes après l'heure actuelle.<br>Par exemple&nbsp;: ${date}`,
+    sanitize`La date d'expiration doit être au moins 15 minutes à partir de maintenant.<br>Par exemple&nbsp;: ${date}`,
   'cc-token-api-creation-form.config-step.form.help.expiration-date.format': () =>
     sanitize`Format&nbsp;: AAAA-MM-JJ HH:MM:SS`,
-  'cc-token-api-creation-form.config-step.form.help.expiration-date.min': `Au moins 15 minutes à partir de maintenant`,
+  'cc-token-api-creation-form.config-step.form.help.expiration-date.min-max': `Au moins 15 minutes et jusqu'à 1 an à partir de maintenant`,
   'cc-token-api-creation-form.config-step.form.label.desc': `Description`,
   'cc-token-api-creation-form.config-step.form.label.expiration-date': `Date d'expiration`,
   'cc-token-api-creation-form.config-step.form.label.expiration-duration': `Durée avant expiration`,

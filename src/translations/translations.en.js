@@ -1481,11 +1481,14 @@ export const translations = {
   'cc-token-api-creation-form.config-step.form.expiration-date.invalid': /** @param {{ date: string }} _ */ ({
     date,
   }) => sanitize`Enter a valid date and time.<br>For instance: ${date}`,
+  'cc-token-api-creation-form.config-step.form.expiration-date.range-overflow': /** @param {{ date: string }} _ */ ({
+    date,
+  }) => sanitize`The expiration date must be less than 1 year from now.<br>For instance: ${date}`,
   'cc-token-api-creation-form.config-step.form.expiration-date.range-underflow': /** @param {{ date: string }} _ */ ({
     date,
   }) => sanitize`The expiration date must be at least 15 minutes from now.<br>For instance: ${date}`,
   'cc-token-api-creation-form.config-step.form.help.expiration-date.format': `Format: YYYY-MM-DD HH:MM:SS`,
-  'cc-token-api-creation-form.config-step.form.help.expiration-date.min': `Must be at least 15 minutes from now`,
+  'cc-token-api-creation-form.config-step.form.help.expiration-date.min-max': `Must be at least 15 minutes and up to 1 year from now`,
   'cc-token-api-creation-form.config-step.form.label.desc': `Description`,
   'cc-token-api-creation-form.config-step.form.label.expiration-date': `Expiration date`,
   'cc-token-api-creation-form.config-step.form.label.expiration-duration': `Expiration duration`,
