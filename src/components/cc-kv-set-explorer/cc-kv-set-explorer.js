@@ -10,7 +10,6 @@ import {
 } from '../../assets/cc-remix.icons.js';
 import { LostFocusController } from '../../controllers/lost-focus-controller.js';
 import { copyToClipboard } from '../../lib/clipboard.js';
-import { dispatchCustomEvent } from '../../lib/events.js';
 import { fakeString } from '../../lib/fake-strings.js';
 import { focusBySelector } from '../../lib/focus-helper.js';
 import { formSubmit } from '../../lib/form/form-submit-directive.js';
@@ -20,6 +19,12 @@ import { i18n } from '../../translations/translation.js';
 import '../cc-button/cc-button.js';
 import '../cc-input-text/cc-input-text.js';
 import '../cc-notice/cc-notice.js';
+import {
+  CcKvSetElementAddEvent,
+  CcKvSetElementDeleteEvent,
+  CcKvSetFilterChangeEvent,
+  CcKvSetLoadMoreEvent,
+} from './cc-kv-set-explorer.events.js';
 
 /** @type {Array<{state: CcKvSetElementState, skeleton: boolean}>} */
 const SKELETON_ELEMENTS = Array(5)
@@ -33,7 +38,6 @@ const LOAD_MORE_THRESHOLD = 5;
  * @typedef {import('./cc-kv-set-explorer.types.js').CcKvSetExplorerState} CcKvSetExplorerState
  * @typedef {import('./cc-kv-set-explorer.types.js').CcKvSetElementState} CcKvSetElementState
  * @typedef {import('../../lib/events.types.js').EventWithTarget} EventWithTarget
- * @typedef {import('../../lib/form/form.types.js').FormDataMap} FormDataMap
  * @typedef {import('lit').TemplateResult<1>} TemplateResult
  * @typedef {import('lit/directives/ref.js').Ref<HTMLFormElement>} HTMLFormElementRef
  * @typedef {import('lit/directives/ref.js').Ref<Virtualizer>} VirtualizerRef
@@ -54,11 +58,6 @@ const LOAD_MORE_THRESHOLD = 5;
  * * copy any element value to the clipboard
  *
  * @cssdisplay block
- *
- * @fires {CustomEvent<string>} cc-kv-set-explorer:add-element - Fires whenever the add form is submitted
- * @fires {CustomEvent<string>} cc-kv-set-explorer:delete-element - Fires whenever a delete button is clicked
- * @fires {CustomEvent<string>} cc-kv-set-explorer:filter-change - Fires whenever the filter changes
- * @fires {CustomEvent} cc-kv-set-explorer:load-more-elements - Fires whenever the almost last element becomes visible (after user scroll)
  */
 export class CcKvSetExplorer extends LitElement {
   static get properties() {
@@ -144,7 +143,7 @@ export class CcKvSetExplorer extends LitElement {
       this.state.elements.length > 0 &&
       e.last >= this.state.elements.length - LOAD_MORE_THRESHOLD
     ) {
-      dispatchCustomEvent(this, 'load-more-elements');
+      this.dispatchEvent(new CcKvSetLoadMoreEvent());
     }
   }
 
@@ -157,29 +156,28 @@ export class CcKvSetExplorer extends LitElement {
     }
 
     const element = e.target.dataset.element;
-    dispatchCustomEvent(this, 'delete-element', element);
+    this.dispatchEvent(new CcKvSetElementDeleteEvent(element));
   }
 
   /**
-   * @param {FormDataMap} formData
+   * @param {{pattern: string}} formData
    */
   _onFilterFormSubmit(formData) {
     if (this.state.type === 'loading') {
       return;
     }
-    const pattern = /** @type {string} */ (formData.pattern);
-    dispatchCustomEvent(this, 'filter-change', pattern);
+    this.dispatchEvent(new CcKvSetFilterChangeEvent(formData.pattern));
   }
 
   /**
-   * @param {FormDataMap} formData
+   * @param {{element: string}} formData
    */
   _onAddFormSubmit(formData) {
     if (this.state.type === 'loading') {
       return;
     }
 
-    dispatchCustomEvent(this, 'add-element', formData.element);
+    this.dispatchEvent(new CcKvSetElementAddEvent(formData.element));
   }
 
   /**
