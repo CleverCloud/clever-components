@@ -1,9 +1,9 @@
 import { css, html, LitElement } from 'lit';
-import { dispatchCustomEvent } from '../../lib/events.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-map-marker-dot/cc-map-marker-dot.js';
 import '../cc-map/cc-map.js';
 import '../cc-toggle/cc-toggle.js';
+import { CcLogsmapModeChangeEvent } from './cc-logsmap.events.js';
 
 /**
  * @typedef {import('./cc-logsmap.types.js').PointsOptions} PointsOptions
@@ -23,8 +23,6 @@ import '../cc-toggle/cc-toggle.js';
  * * The component has a default height of 15em and a default width 20em but this can be overridden with CSS.
  *
  * @cssdisplay block
- *
- * @fires {CustomEvent<MapModeType>} cc-logsmap:mode - Fires the selected mode whenever the toggle changes.
  */
 export class CcLogsmap extends LitElement {
   static get properties() {
@@ -171,6 +169,12 @@ export class CcLogsmap extends LitElement {
       : i18n('cc-logsmap.legend.heatmap.app', { appName: this.appName });
   }
 
+  /** @param {CustomEvent<MapModeType>} event */
+  _onModeChange({ detail: mode }) {
+    this.mode = mode;
+    this.dispatchEvent(new CcLogsmapModeChangeEvent(this.mode));
+  }
+
   render() {
     const modes = this._getModes();
     return html`
@@ -189,12 +193,6 @@ export class CcLogsmap extends LitElement {
         >${this._getLegend()}
       </cc-map>
     `;
-  }
-
-  /** @param {CustomEvent<MapModeType>} event */
-  _onModeChange({ detail: mode }) {
-    this.mode = mode;
-    dispatchCustomEvent(this, 'mode', this.mode);
   }
 
   static get styles() {
