@@ -260,7 +260,7 @@ export class CcKvSetExplorer extends LitElement {
             danger
             ?disabled=${this.disabled}
             ?waiting=${state.type === 'deleting'}
-            @cc-button:click=${this._onDeleteElement}
+            @cc-click=${this._onDeleteElement}
           ></cc-button>
           <cc-button
             .icon=${iconCopy}
@@ -269,7 +269,7 @@ export class CcKvSetExplorer extends LitElement {
             data-text=${state.value}
             ?skeleton=${skeleton}
             ?disabled=${this.disabled}
-            @cc-button:click=${this._onCopyKeyButtonClick}
+            @cc-click=${this._onCopyKeyButtonClick}
             >${i18n('cc-kv-set-explorer.element.copy', { index })}</cc-button
           >
         </div>

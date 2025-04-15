@@ -328,7 +328,7 @@ export class CcLogsDateRangeSelector extends LitElement {
             a11y-name=${i18n('cc-logs-date-range-selector.custom-date-range.previous')}
             data-direction="left"
             ?disabled=${this.readonly || this.disabled}
-            @cc-button:click=${this._onCustomDateRangeShift}
+            @cc-click=${this._onCustomDateRangeShift}
           >
           </cc-button>
           <cc-button
@@ -337,7 +337,7 @@ export class CcLogsDateRangeSelector extends LitElement {
             a11y-name=${i18n('cc-logs-date-range-selector.custom-date-range.next')}
             data-direction="right"
             ?disabled=${this.readonly || this.disabled || nextDisabled}
-            @cc-button:click=${this._onCustomDateRangeShift}
+            @cc-click=${this._onCustomDateRangeShift}
           >
           </cc-button>
           <cc-button type="submit" ?disabled=${this.readonly || this.disabled} primary>

@@ -154,7 +154,7 @@ export class CcTcpRedirection extends LitElement {
             ?danger=${isRedirectionDefined}
             delay=${isRedirectionDefined ? 3 : 0}
             ?primary=${!isRedirectionDefined}
-            @cc-button:click=${isRedirectionDefined ? this._onDelete : this._onCreate}
+            @cc-click=${isRedirectionDefined ? this._onDelete : this._onCreate}
           >
             ${this._getButtonText(sourcePort)}
           </cc-button>

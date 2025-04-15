@@ -110,10 +110,10 @@ export class CcLogsLoadingProgress extends LitElement {
                     <div class="notice-message">
                       <div>${i18n('cc-logs-loading-progress.overflow.warning', { limit: this.limit })}</div>
                       <div class="overflow-buttons">
-                        <cc-button link @cc-button:click=${this._onAcceptOverflow}>
+                        <cc-button link @cc-click=${this._onAcceptOverflow}>
                           ${i18n('cc-logs-loading-progress.overflow.accept')}
                         </cc-button>
-                        <cc-button link @cc-button:click=${this._onDiscardOverflow}>
+                        <cc-button link @cc-click=${this._onDiscardOverflow}>
                           ${i18n('cc-logs-loading-progress.overflow.discard')}
                         </cc-button>
                       </div>
@@ -170,7 +170,7 @@ export class CcLogsLoadingProgress extends LitElement {
         a11y-name=${running
           ? i18n('cc-logs-loading-progress.control.pause')
           : i18n('cc-logs-loading-progress.control.resume')}
-        @cc-button:click=${running ? this._onPause : this._onResume}
+        @cc-click=${running ? this._onPause : this._onResume}
       ></cc-button>
     `;
   }

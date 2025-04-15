@@ -46,7 +46,7 @@ class CcKvExplorerSandbox extends LitElement {
     return html`
       <div class="ctrl-top">
         <cc-input-text ${ref(this._kvUrlInputRef)} inline label="KV URL" value=${this._kvUrl}></cc-input-text>
-        <cc-button .icon=${iconExplore} @cc-button:click=${this._onRedisUrlChange}>Explore</cc-button>
+        <cc-button .icon=${iconExplore} @cc-click=${this._onRedisUrlChange}>Explore</cc-button>
       </div>
 
       <cc-smart-container .context=${context}>

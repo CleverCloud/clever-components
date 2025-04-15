@@ -396,7 +396,7 @@ export class CcPricingProductConsumption extends LitElement {
                 <cc-button
                   .icon=${iconPlus}
                   ?disabled=${someNullishIntervals || everyQuantityAtZero}
-                  @cc-button:click=${this._onAddPlan}
+                  @cc-click=${this._onAddPlan}
                 >
                   ${i18n('cc-pricing-product-consumption.add')}
                 </cc-button>
