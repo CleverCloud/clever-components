@@ -35,3 +35,18 @@ export class CcFormValidEvent extends CcEvent {
     super(CcFormValidEvent.TYPE, detail);
   }
 }
+
+/**
+ * Dispatched when the `errorMessage` property of a form control element changes.
+ * @extends {CcEvent<ErrorMessage|null>}
+ */
+export class CcErrorMessageChangeEvent extends CcEvent {
+  static TYPE = 'cc-error-message-change';
+
+  /**
+   * @param {ErrorMessage|null} detail
+   */
+  constructor(detail) {
+    super(CcErrorMessageChangeEvent.TYPE, detail);
+  }
+}
