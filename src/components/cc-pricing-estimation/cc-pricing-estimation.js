@@ -10,7 +10,6 @@ import {
   iconRemixSubtractLine as iconSubtract,
 } from '../../assets/cc-remix.icons.js';
 import { LostFocusController } from '../../controllers/lost-focus-controller.js';
-import { dispatchCustomEvent } from '../../lib/events.js';
 import { PricingConsumptionSimulator } from '../../lib/pricing.js';
 import { getCurrencySymbol } from '../../lib/utils.js';
 import { accessibilityStyles } from '../../styles/accessibility.js';
@@ -20,6 +19,12 @@ import { i18n } from '../../translations/translation.js';
 import '../cc-badge/cc-badge.js';
 import '../cc-icon/cc-icon.js';
 import '../cc-notice/cc-notice.js';
+import {
+  CcPricingCurrencyChangeEvent,
+  CcPricingPlanDeleteEvent,
+  CcPricingQuantityChangeEvent,
+  CcPricingTemporalityChangeEvent,
+} from '../cc-pricing-page/cc-pricing-page.events.js';
 
 /** @type {Record<FormattedFeature['code'], () => string|Node>} */
 const FEATURES_I18N = {
@@ -68,11 +73,6 @@ const DEFAULT_TEMPORALITY = { type: '30-days', digits: 2 };
  * Custom products cannot be added to the estimation because the `cc-pricing-estimation` cannot determine their price based on the selected currency.
  *
  * @cssdisplay block
- *
- * @fires {CustomEvent<RuntimePlanWithQuantity|CountablePlanWithQuantity>} cc-pricing-estimation:change-quantity - Fires the plan with a modified quantity whenever the quantity on the input changes.
- * @fires {CustomEvent<string>} cc-pricing-estimation:change-currency - Fires the `currency` whenever the currency selection changes.
- * @fires {CustomEvent<Temporality>} cc-pricing-estimation:change-temporality - Fires the `temporality` whenever the temporality selection changes.
- * @fires {CustomEvent<RuntimePlanWithQuantity|CountablePlanWithQuantity>} cc-pricing-estimation:delete-plan - Fires the plan whenever a delete button is clicked or when the quantity reaches 0.
  *
  * @slot footer - Content at the bottom of the component. Typically used to insert links and call to action elements.
  * @cssprop {Background} --cc-pricing-estimation-counter-bg - Sets the background (color or gradient) of the product counter (defaults: `var(--cc-color-bg-strong)`).
@@ -334,17 +334,17 @@ export class CcPricingEstimation extends LitElement {
   }
 
   /**
-   * Dispatches a `cc-pricing-estimation:change-currency` event with the currency as payload.
+   * Dispatches a `cc-pricing-currency-change` event with the currency as payload.
    *
    * @param {SlSelectEvent} e - the event that called this method
    */
   _onCurrencyChange(e) {
-    dispatchCustomEvent(this, 'change-currency', e.target.value);
+    this.dispatchEvent(new CcPricingCurrencyChangeEvent(/** @type {string} */ (e.target.value)));
   }
 
   /**
-   * Dispatches a `cc-pricing-estimation:change-quantity` event with the plan which quantity has been reduced by 1.
-   * If quantity = 0, dispatches a `cc-pricing-estimation:delete-plan` instead with the plan as payload.
+   * Dispatches a `cc-pricing-quantity-change` event with the plan which quantity has been reduced by 1.
+   * If quantity = 0, dispatches a `cc-pricing-plan-delete` instead with the plan as payload.
    *
    * @param {CountablePlanWithQuantity|RuntimePlanWithQuantity} plan - the plan to modify
    */
@@ -352,39 +352,39 @@ export class CcPricingEstimation extends LitElement {
     const quantity = plan.quantity - 1;
 
     if (quantity > 0) {
-      dispatchCustomEvent(this, 'change-quantity', { ...plan, quantity });
+      this.dispatchEvent(new CcPricingQuantityChangeEvent({ ...plan, quantity }));
     } else {
-      dispatchCustomEvent(this, 'delete-plan', plan);
+      this.dispatchEvent(new CcPricingPlanDeleteEvent(plan));
     }
   }
 
   /**
-   * Dispatches a `cc-pricing-estimation:delete-plan` event with the plan as its payload
+   * Dispatches a `cc-pricing-plan-delete` event with the plan as its payload
    *
    * @param {CountablePlanWithQuantity|RuntimePlanWithQuantity} plan - the plan to delete
    */
   _onDeletePlan(plan) {
-    dispatchCustomEvent(this, 'delete-plan', plan);
+    this.dispatchEvent(new CcPricingPlanDeleteEvent(plan));
   }
 
   /**
-   * Dispatches a `cc-pricing-estimation:change-quantity` event with the plan which quantity has been increased by 1.
+   * Dispatches a `cc-pricing-quantity-change` event with the plan which quantity has been increased by 1.
    *
    * @param {CountablePlanWithQuantity|RuntimePlanWithQuantity} plan - the plan to modify
    */
   _onIncreaseQuantity(plan) {
     const quantity = plan.quantity + 1;
-    dispatchCustomEvent(this, 'change-quantity', { ...plan, quantity });
+    this.dispatchEvent(new CcPricingQuantityChangeEvent({ ...plan, quantity }));
   }
 
   /**
-   * Dispatches a `cc-pricing-estimation:change-temporality` event with the selected temporality as its payload.
+   * Dispatches a `cc-pricing-temporality-change` event with the selected temporality as its payload.
    *
    * @param {SlSelectEvent} e - the event that called this method
    */
   _onTemporalityChange(e) {
     const temporality = this.temporalities.find((t) => t.type === e.target.value);
-    dispatchCustomEvent(this, 'change-temporality', temporality);
+    this.dispatchEvent(new CcPricingTemporalityChangeEvent(temporality));
   }
 
   /**
