@@ -79,37 +79,33 @@ defineSmartComponent({
         updateComponent('state', { type: 'error' });
       });
 
-    onEvent(
-      'cc-token-session-list:revoke-session-token',
-      /** @param {string} sessionTokenId */
-      (sessionTokenId) => {
-        updateOneToken(sessionTokenId, (sessionTokenState) => {
-          sessionTokenState.type = 'revoking';
-        });
+    onEvent('cc-token-revoke', (sessionTokenId) => {
+      updateOneToken(sessionTokenId, (sessionTokenState) => {
+        sessionTokenState.type = 'revoking';
+      });
 
-        api
-          .revokeSessionToken(sessionTokenId)
-          .then(() => {
-            updateComponent(
-              'state',
-              /** @param {TokenSessionListStateLoaded} state */
-              (state) => {
-                state.otherSessionTokens = state.otherSessionTokens.filter((token) => token.id !== sessionTokenId);
-              },
-            );
-            notifySuccess(i18n('cc-token-session-list.revoke-session.success'));
-          })
-          .catch((error) => {
-            console.error(error);
-            updateOneToken(sessionTokenId, (sessionTokenState) => {
-              sessionTokenState.type = 'idle';
-            });
-            notifyError(i18n('cc-token-session-list.revoke-session.error'));
+      api
+        .revokeSessionToken(sessionTokenId)
+        .then(() => {
+          updateComponent(
+            'state',
+            /** @param {TokenSessionListStateLoaded} state */
+            (state) => {
+              state.otherSessionTokens = state.otherSessionTokens.filter((token) => token.id !== sessionTokenId);
+            },
+          );
+          notifySuccess(i18n('cc-token-session-list.revoke-session.success'));
+        })
+        .catch((error) => {
+          console.error(error);
+          updateOneToken(sessionTokenId, (sessionTokenState) => {
+            sessionTokenState.type = 'idle';
           });
-      },
-    );
+          notifyError(i18n('cc-token-session-list.revoke-session.error'));
+        });
+    });
 
-    onEvent('cc-token-session-list:revoke-all-session-tokens', () => {
+    onEvent('cc-tokens-revoke-all', () => {
       updateComponent(
         'state',
         /** @param {TokenSessionListStateLoaded} state */
