@@ -64,3 +64,8 @@ export interface CcKvListExplorerAddFormStateIdle {
 export interface CcKvListExplorerAddFormStateAdding {
   type: 'adding';
 }
+
+export interface CcKvListElementAddDetail {
+  position: 'tail' | 'head';
+  value: string;
+}
