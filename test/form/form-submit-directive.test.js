@@ -27,10 +27,10 @@ async function spyElement(formContent) {
 
   const validEventSpy = hanbi.spy();
   const invalidEventSpy = hanbi.spy();
-  element.addEventListener('form:valid', (e) => {
+  element.addEventListener('cc-form-valid', (e) => {
     validEventSpy.handler(e.detail);
   });
-  element.addEventListener('form:invalid', (e) => {
+  element.addEventListener('cc-form-invalid', (e) => {
     invalidEventSpy.handler(e.detail);
   });
 
@@ -73,7 +73,7 @@ describe('FormSubmitDirective', () => {
       <button type="submit">button</button>
     `;
 
-    it('should call onInvalid callback and fire form:invalid event when form is invalid', async () => {
+    it('should call onInvalid callback and fire cc-form-invalid event when form is invalid', async () => {
       const spy = await spyElement(formContent);
 
       await spy.submit();
@@ -155,7 +155,7 @@ describe('FormSubmitDirective', () => {
       expect(spy.activeElement).to.equal(spy.formElement.querySelector('input[name=input5]'));
     });
 
-    it('should call onValid callback and fire form:valid event when form is valid', async () => {
+    it('should call onValid callback and fire cc-form-valid event when form is valid', async () => {
       const spy = await spyElement(formContent);
       spy.formElement.querySelector('input[name=input1]').value = `value for input1`;
       spy.formElement.querySelector('input[name=input3]').value = `value for input3`;

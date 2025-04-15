@@ -4,7 +4,7 @@ import '../../src/components/cc-button/cc-button.js';
 import '../../src/components/cc-input-text/cc-input-text.js';
 import '../../src/components/cc-notice/cc-notice.js';
 import '../../src/components/cc-smart-container/cc-smart-container.js';
-import { dispatchCustomEvent } from '../../src/lib/events.js';
+import { CcEvent } from '../../src/lib/events.js';
 import { FormErrorFocusController } from '../../src/lib/form/form-error-focus-controller.js';
 import { formSubmit } from '../../src/lib/form/form-submit-directive.js';
 import { notifySuccess } from '../../src/lib/notifications.js';
@@ -55,7 +55,7 @@ export class FormDemoWithSmartComponent extends LitElement {
       },
     };
 
-    dispatchCustomEvent(this, 'submit-form', formData);
+    this.dispatchEvent(new CcEvent('submit-form', formData));
   }
 
   /**
@@ -149,7 +149,8 @@ defineSmartComponent({
     };
 
     onEvent(
-      'form-demo-with-smart-component:submit-form',
+      // @ts-ignore
+      'submit-form',
       /**
        * @param {{name: string, email: string}} data
        */
