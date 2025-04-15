@@ -27,6 +27,7 @@ import { sandboxStyles } from '../sandbox-styles.js';
 /**
  * @typedef {import('../../src/components/cc-logs/cc-logs.js').CcLogs} CcLogs
  * @typedef {import('../../src/components/cc-logs/cc-logs.types.js').MetadataFilter} MetadataFilter
+ * @typedef {import('../../src/components/cc-logs/cc-logs.events.js').CcLogsFollowChangeEvent} CcLogsFollowChangeEvent
  * @typedef {import('../../src/components/cc-logs/date-display.types.js').DateDisplay} DateDisplay
  * @typedef {import('../../src/components/cc-input-number/cc-input-number.js').CcInputNumber} CcInputNumber
  * @typedef {import('../../src/lib/date/date.types.js').Timezone} Timezone
@@ -231,10 +232,10 @@ class CcLogsSandbox extends LitElement {
   }
 
   /**
-   * @param {CustomEvent<boolean>} e
+   * @param {CcLogsFollowChangeEvent} e
    */
-  _onFollowChange(e) {
-    this._follow = e.detail;
+  _onFollowChange({ detail }) {
+    this._follow = detail;
   }
 
   _onScrollToBottomClick() {
@@ -290,7 +291,7 @@ class CcLogsSandbox extends LitElement {
           .metadataRenderers=${this._useCustomMetadataRenderers ? CUSTOM_METADATA_RENDERERS : null}
           style="${this._palette}"
           ${ref(this._logsRef)}
-          @cc-logs:followChange=${this._onFollowChange}
+          @cc-logs-follow-change=${this._onFollowChange}
         ></cc-logs-beta>
       </div>
 
