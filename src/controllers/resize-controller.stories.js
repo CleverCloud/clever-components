@@ -133,8 +133,8 @@ class DemoResizeController extends LitElement {
       // Language CSS
       css`
         :host {
-          display: block;
           box-sizing: border-box;
+          display: block;
           padding: 1em;
         }
 
@@ -155,41 +155,41 @@ class DemoResizeController extends LitElement {
         }
 
         .wrapper {
+          background-color: #eee;
           padding: 0.5em;
-          background-color: #eeec;
         }
 
         code {
-          padding: 0.3em;
           background-color: #585858;
           color: #fff;
           font-weight: bold;
+          padding: 0.3em;
         }
 
         table {
-          width: 100%;
           border-collapse: collapse;
+          width: 100%;
         }
 
         td,
         th {
-          padding: 0.5em;
           border: solid 1px grey;
+          padding: 0.5em;
         }
 
         dd,
         dt {
-          padding: 0;
           margin: 0;
+          padding: 0;
         }
 
         dl {
           display: flex;
           flex-direction: column;
           flex-wrap: wrap;
-          padding: 0;
           gap: 0.5em;
           margin-block: 1em;
+          padding: 0;
         }
 
         dl div {
