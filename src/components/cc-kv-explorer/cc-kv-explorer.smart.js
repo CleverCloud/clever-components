@@ -157,23 +157,19 @@ defineSmartComponent({
 
     // -- string ---
 
-    onEvent(
-      'cc-kv-string-editor:update-value',
-      /** @param {string} value */
-      async (value) => {
-        const editorCtrl = /** @type {KvKeyEditorStringCtrl} */ (detailsCtrl.editorCtrl);
+    onEvent('cc-kv-string-value-update', async (value) => {
+      const editorCtrl = /** @type {KvKeyEditorStringCtrl} */ (detailsCtrl.editorCtrl);
 
-        try {
-          await editorCtrl.save(value);
+      try {
+        await editorCtrl.save(value);
 
-          notifySuccess(i18n('cc-kv-string-editor.success.update-value'));
-        } catch (e) {
-          checkIfKeyNotFoundOrElse(e, () => {
-            notifyError(i18n('cc-kv-string-editor.error.update-value'));
-          });
-        }
-      },
-    );
+        notifySuccess(i18n('cc-kv-string-editor.success.update-value'));
+      } catch (e) {
+        checkIfKeyNotFoundOrElse(e, () => {
+          notifyError(i18n('cc-kv-string-editor.error.update-value'));
+        });
+      }
+    });
 
     // -- hash ---
 
