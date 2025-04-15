@@ -7,9 +7,9 @@ import {
   iconRemixCheckboxCircleFill as iconSuccess,
   iconRemixAlertFill as iconWarning,
 } from '../../assets/cc-remix.icons.js';
-import { dispatchCustomEvent } from '../../lib/events.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-icon/cc-icon.js';
+import { CcNoticeDismissEvent } from './cc-notice.events.js';
 
 /**
  * @typedef {import('./cc-notice.types.js').NoticeIntent} NoticeIntent
@@ -25,8 +25,6 @@ import '../cc-icon/cc-icon.js';
  *
  * @slot icon - Icon slot to override the default one provided.
  * @slot message - Message slot to override the message if you want more than just a short text.
- *
- * @fires {CustomEvent} cc-notice:dismiss - Fires to inform that the notice should be dismissed.
  */
 export class CcNotice extends LitElement {
   static get properties() {
@@ -87,7 +85,11 @@ export class CcNotice extends LitElement {
   }
 
   _onCloseButtonClick() {
-    dispatchCustomEvent(this, 'dismiss');
+    this._onDismiss();
+  }
+
+  _onDismiss() {
+    this.dispatchEvent(new CcNoticeDismissEvent());
   }
 
   render() {
