@@ -4,7 +4,6 @@ import { createRef, ref } from 'lit/directives/ref.js';
 import { repeat } from 'lit/directives/repeat.js';
 import { iconRemixInformationFill as iconInfo } from '../../assets/cc-remix.icons.js';
 import { LostFocusController } from '../../controllers/lost-focus-controller.js';
-import { dispatchCustomEvent } from '../../lib/events.js';
 import { formSubmit } from '../../lib/form/form-submit-directive.js';
 import { Validation } from '../../lib/form/validation.js';
 import { ccLink, linkStyles } from '../../templates/cc-link/cc-link.js';
@@ -16,8 +15,10 @@ import '../cc-button/cc-button.js';
 import '../cc-input-text/cc-input-text.js';
 import '../cc-loader/cc-loader.js';
 import '../cc-notice/cc-notice.js';
+import { CcOrgaMemberLeaveEvent } from '../cc-orga-member-card/cc-orga-member-card.events.js';
 import { CcOrgaMemberCard } from '../cc-orga-member-card/cc-orga-member-card.js';
 import '../cc-select/cc-select.js';
+import { CcOrgaMemberInviteEvent } from './cc-orga-member-list.events.js';
 
 const ORGA_MEMBER_DOCUMENTATION = 'https://developers.clever-cloud.com/doc/account/administrate-organization/';
 
@@ -25,15 +26,14 @@ const ORGA_MEMBER_DOCUMENTATION = 'https://developers.clever-cloud.com/doc/accou
  * @typedef {import('./cc-orga-member-list.types.js').OrgaMemberListState} OrgaMemberListState
  * @typedef {import('./cc-orga-member-list.types.js').OrgaMemberListStateLoaded} OrgaMemberListStateLoaded
  * @typedef {import('./cc-orga-member-list.types.js').ListAuthorisations} ListAuthorisations
- * @typedef {import('./cc-orga-member-list.types.js').InviteMember} InviteMember
  * @typedef {import('./cc-orga-member-list.types.js').InviteMemberFormState} InviteMemberFormState
  * @typedef {import('../cc-orga-member-card/cc-orga-member-card.events.js').CcOrgaMemberUpdateEvent} CcOrgaMemberUpdateEvent
  * @typedef {import('../cc-orga-member-card/cc-orga-member-card.events.js').CcOrgaMemberEditToggleEvent} CcOrgaMemberEditToggleEvent
  * @typedef {import('../cc-orga-member-card/cc-orga-member-card.types.js').OrgaMemberCardState} OrgaMemberCardState
  * @typedef {import('../cc-orga-member-card/cc-orga-member-card.types.js').OrgaMember} OrgaMember
+ * @typedef {import('../cc-orga-member-card/cc-orga-member-card.types.js').OrgaMemberRole} OrgaMemberRole
  * @typedef {import('../../lib/form/validation.types.js').Validator} Validator
  * @typedef {import('../../lib/form/validation.types.js').Validity} Validity
- * @typedef {import('../../lib/form/form.types.js').FormDataMap} FormDataMap
  * @typedef {import('../cc-input-text/cc-input-text.js').CcInputText} CcInputText
  * @typedef {import('lit').TemplateResult<1>} TemplateResult
  * @typedef {import('lit').PropertyValues<CcOrgaMemberList>} CcOrgaMemberListPropertyValues
@@ -53,12 +53,7 @@ const ORGA_MEMBER_DOCUMENTATION = 'https://developers.clever-cloud.com/doc/accou
  *  - The current user may edit the role of members.
  *
  * @cssdisplay block
- *
- * @fires {CustomEvent<InviteMember>} cc-orga-member-list:invite - Fires the `email` and `role` information inside an object whenever the invite button is clicked.
- * @fires {CustomEvent<OrgaMemberCardState>} cc-orga-member-list:leave - Fires when the user clicks on the leave button inside the Danger Zone or inside their own member card.
- * @fires {CustomEvent<OrgaMemberCardState>} cc-orga-member-list:update - Fires when the user validates the editing of a member within a member card, only if the update is not related to the last admin of the org.
  */
-
 export class CcOrgaMemberList extends LitElement {
   static get properties() {
     return {
@@ -230,18 +225,22 @@ export class CcOrgaMemberList extends LitElement {
   }
 
   /**
-   * @param {FormDataMap} formData
+   * @param {{email: string, role: OrgaMemberRole}} formData
    */
   _onInviteMember(formData) {
-    if (typeof formData.email === 'string' && typeof formData.role === 'string') {
-      dispatchCustomEvent(this, 'invite', { email: formData.email, role: formData.role });
-    }
+    this.dispatchEvent(
+      new CcOrgaMemberInviteEvent({
+        email: formData.email,
+        role: formData.role,
+      }),
+    );
   }
 
   /**
    * @param {CcOrgaMemberLeaveEvent} e
    */
-  _onLeaveFromCard({ detail: currentUser }) {
+  _onLeaveFromCard(e) {
+    const { detail: currentUser } = e;
     if (this.memberListState.type === 'loaded' && this.isLastAdmin(currentUser)) {
       this.memberListState = {
         ...this.memberListState,
@@ -249,8 +248,7 @@ export class CcOrgaMemberList extends LitElement {
           return member.id === currentUser.id ? { ...member, error: true } : { ...member };
         }),
       };
-    } else {
-      dispatchCustomEvent(this, 'leave', currentUser);
+      e.stopPropagation();
     }
   }
 
@@ -265,7 +263,18 @@ export class CcOrgaMemberList extends LitElement {
           dangerZoneState: 'error',
         };
       } else {
-        dispatchCustomEvent(this, 'leave', currentUser);
+        this.dispatchEvent(
+          new CcOrgaMemberLeaveEvent({
+            id: currentUser.id,
+            email: currentUser.email,
+            role: currentUser.role,
+            name: currentUser.name,
+            avatar: currentUser.avatar,
+            jobTitle: currentUser.jobTitle,
+            isMfaEnabled: currentUser.isMfaEnabled,
+            isCurrentUser: currentUser.isCurrentUser,
+          }),
+        );
       }
     }
   }
@@ -273,7 +282,8 @@ export class CcOrgaMemberList extends LitElement {
   /**
    * @param {CcOrgaMemberUpdateEvent} e
    */
-  _onUpdateFromCard({ detail: memberToUpdate }) {
+  _onUpdateFromCard(e) {
+    const { detail: memberToUpdate } = e;
     const isLastAdmin = memberToUpdate.isCurrentUser && this.isLastAdmin(memberToUpdate);
 
     if (this.memberListState.type === 'loaded' && isLastAdmin) {
@@ -283,8 +293,7 @@ export class CcOrgaMemberList extends LitElement {
           return member.id === memberToUpdate.id ? { ...member, error: true } : { ...member };
         }),
       };
-    } else {
-      dispatchCustomEvent(this, 'update', memberToUpdate);
+      e.stopPropagation();
     }
   }
 
