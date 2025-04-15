@@ -185,7 +185,7 @@ export class CcLogsDateRangeSelector extends LitElement {
   }
 
   /**
-   * @param {CustomEvent<string>} event
+   * @param {CcInputEvent} event
    */
   _onCustomSinceInput(event) {
     this._customDateRange = {
@@ -195,7 +195,7 @@ export class CcLogsDateRangeSelector extends LitElement {
   }
 
   /**
-   * @param {CustomEvent<string>} event
+   * @param {CcInputEvent} event
    */
   _onCustomUntilInput(event) {
     this._customDateRange = {
@@ -306,7 +306,7 @@ export class CcLogsDateRangeSelector extends LitElement {
           timezone=${this.timezone}
           .max=${this._customDateRange.until}
           .value=${this._customDateRange.since}
-          @cc-input-date:input=${this._onCustomSinceInput}
+          @cc-input=${this._onCustomSinceInput}
         ></cc-input-date>
         <cc-input-date
           ${ref(this._customDateRangeRefs.until)}
@@ -320,7 +320,7 @@ export class CcLogsDateRangeSelector extends LitElement {
           timezone=${this.timezone}
           .min=${this._customDateRange.since}
           .value=${this._customDateRange.until}
-          @cc-input-date:input=${this._onCustomUntilInput}
+          @cc-input=${this._onCustomUntilInput}
         ></cc-input-date>
         <div class="custom-date-range-buttons">
           <cc-button
