@@ -81,7 +81,7 @@ export class CcAddonOptionForm extends LitElement {
           })}
         </div>
         <div slot="content-footer" class="button-bar">
-          <cc-button primary @cc-button:click=${this._onSubmit}> ${i18n('cc-addon-option-form.confirm')} </cc-button>
+          <cc-button primary @cc-click=${this._onSubmit}> ${i18n('cc-addon-option-form.confirm')} </cc-button>
         </div>
       </cc-block>
     `;

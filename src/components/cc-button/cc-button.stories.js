@@ -69,11 +69,11 @@ export const delay = makeStory(conf, {
   docs: `
 \`<cc-button>\` have a delay mechanism:
  
- * When \`delay\` is set, \`cc-button:click\` events are not fired immediately.
+ * When \`delay\` is set, \`cc-click\` events are not fired immediately.
  * They are fired after the number of seconds set with \`delay\`.
  * During this \`delay\`, the user is presented a "click to cancel" label.
- * If the user clicks on "click to cancel", the \`cc-button:click\` event is not fired.
- * If the \`disabled\` mode is set during the delay, the \`cc-button:click\` event is not fired.
+ * If the user clicks on "click to cancel", the \`cc-click\` event is not fired.
+ * If the \`disabled\` mode is set during the delay, the \`cc-click\` event is not fired.
   `,
   items: baseItems.map((p) => ({ ...p, delay: 3 })),
 });
@@ -88,11 +88,11 @@ export const delayAndOutlined = makeStory(conf, {
 });
 
 export const delayAndDisabled = makeStory(conf, {
-  docs: `If the \`disabled\` mode is set during the delay, the \`cc-button:click\` event is not fired.`,
+  docs: `If the \`disabled\` mode is set during the delay, the \`cc-click\` event is not fired.`,
   items: [{ delay: 3, innerHTML: 'With delay' }, { innerHTML: 'Toggle disabled on other button' }],
   simulations: [
     storyWait(0, ([withDelay, toggle]) => {
-      toggle.addEventListener('cc-button:click', () => {
+      toggle.addEventListener('cc-click', () => {
         withDelay.disabled = !withDelay.disabled;
       });
     }),

@@ -233,7 +233,7 @@ export class CcTileStatusCodes extends LitElement {
           hide-text
           outlined
           primary
-          @cc-button:click=${this._onToggleDocs}
+          @cc-click=${this._onToggleDocs}
           >${this._docs ? i18n('cc-tile-status-codes.close-btn') : i18n('cc-tile-status-codes.about-btn')}
         </cc-button>
       </div>

@@ -127,7 +127,7 @@ export class CcTokenSessionList extends LitElement {
                   danger
                   outlined
                   ?waiting=${this.state.type === 'revoking-all'}
-                  @cc-button:click=${this._onRevokeAllTokens}
+                  @cc-click=${this._onRevokeAllTokens}
                 >
                   ${i18n('cc-token-session-list.revoke-all-sessions')}
                 </cc-button>
@@ -218,7 +218,7 @@ export class CcTokenSessionList extends LitElement {
                 .icon=${iconDelete}
                 circle
                 ?waiting=${isRevoking}
-                @cc-button:click=${() => this._onRevokeToken(id)}
+                @cc-click=${() => this._onRevokeToken(id)}
               >
                 ${i18n('cc-token-session-list.revoke-session', { tokenNumber: index + 1 })}
               </cc-button>

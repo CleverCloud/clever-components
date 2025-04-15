@@ -580,7 +580,7 @@ export class CcDomainManagement extends LitElement {
                   .icon=${iconPrimary}
                   hide-text
                   circle
-                  @cc-button:click=${this._onMarkPrimary(domainInfo)}
+                  @cc-click=${this._onMarkPrimary(domainInfo)}
                 >
                   ${i18n('cc-domain-management.list.btn.primary.text')}
                 </cc-button>
@@ -596,7 +596,7 @@ export class CcDomainManagement extends LitElement {
             .icon=${iconDelete}
             hide-text
             circle
-            @cc-button:click=${this._onDelete(domainInfo)}
+            @cc-click=${this._onDelete(domainInfo)}
           >
             ${i18n('cc-domain-management.list.btn.delete.text')}
           </cc-button>

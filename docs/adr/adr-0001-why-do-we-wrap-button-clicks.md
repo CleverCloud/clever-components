@@ -2,11 +2,11 @@
 kind: '📌 Architecture Decision Records'
 ---
 
-# ADR 0001: Why do we wrap `<button>` clicks in a custom event `cc-button:click`?
+# ADR 0001: Why do we wrap `<button>` clicks in a custom event `cc-click`?
 
 🗓️ 2019-10-01 · ✍️ Hubert Sablonnière
 
-This ADR tries to explain why we moved from just letting native clicks bubble to a custom event named `cc-button:click`.
+This ADR tries to explain why we moved from just letting native clicks bubble to a custom event named `cc-click`.
 
 ## Context?
 
@@ -22,4 +22,4 @@ That's why we first decided to just let the inner native element `<button>` fire
 
 ## Solution?
 
-* All users of this `<cc-button>` need to listen to `cc-button:click` instead of `click` and everything will be fine.
+* All users of this `<cc-button>` need to listen to `cc-click` instead of `click` and everything will be fine.

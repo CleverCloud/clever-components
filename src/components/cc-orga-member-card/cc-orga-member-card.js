@@ -375,7 +375,7 @@ export class CcOrgaMemberCard extends LitElement {
           ?disabled=${waiting}
           ?hide-text=${isBtnImgOnly}
           a11y-name=${this._getFirstBtnAccessibleName()}
-          @cc-button:click=${this._onToggleEdit}
+          @cc-click=${this._onToggleEdit}
         >
           <cc-stretch visible-element-id=${isEditing ? 'btn-content-cancel' : 'btn-content-edit'}>
             <span id="btn-content-edit">${i18n('cc-orga-member-card.btn.edit.visible-text')}</span>
@@ -393,7 +393,7 @@ export class CcOrgaMemberCard extends LitElement {
           ?hide-text=${isBtnImgOnly}
           ?waiting=${waiting}
           a11y-name=${this._getSecondBtnAccessibleName()}
-          @cc-button:click=${isEditing ? this._onUpdateMember : this._onDeleteMember}
+          @cc-click=${isEditing ? this._onUpdateMember : this._onDeleteMember}
           ${ref(this._deleteButtonRef)}
         >
           <cc-stretch visible-element-id=${this._getSecondBtnVisibleElementId(isEditing)}>

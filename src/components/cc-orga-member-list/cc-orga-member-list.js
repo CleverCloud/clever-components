@@ -501,7 +501,7 @@ export class CcOrgaMemberList extends LitElement {
           <cc-button
             danger
             outlined
-            @cc-button:click=${this._onLeaveFromDangerZone}
+            @cc-click=${this._onLeaveFromDangerZone}
             ?disabled="${members.dangerZoneState === 'error'}"
             ?waiting="${members.dangerZoneState === 'leaving'}"
             >${i18n('cc-orga-member-list.leave.btn')}</cc-button

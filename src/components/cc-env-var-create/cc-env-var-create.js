@@ -134,7 +134,7 @@ export class CcEnvVarCreate extends LitElement {
             }
           ></cc-input-text>
 
-          <cc-button primary ?disabled=${hasErrors || this.disabled} @cc-button:click=${this._onSubmit}
+          <cc-button primary ?disabled=${hasErrors || this.disabled} @cc-click=${this._onSubmit}
             >${i18n('cc-env-var-create.create-button')}
           </cc-button>
         </div>

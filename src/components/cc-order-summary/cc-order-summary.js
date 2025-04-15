@@ -77,7 +77,7 @@ export class CcOrderSummary extends LitElement {
           primary
           ?waiting=${waiting}
           ?disabled=${disabled && !waiting}
-          @cc-button:click=${this._onCreateClick}
+          @cc-click=${this._onCreateClick}
         >
           ${i18n('cc-order-summary.create')}
         </cc-button>

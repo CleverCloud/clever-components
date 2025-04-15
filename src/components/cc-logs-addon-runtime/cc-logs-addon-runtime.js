@@ -197,7 +197,7 @@ export class CcLogsAddonRuntime extends LitElement {
               ? i18n('cc-logs-addon-runtime.fullscreen.exit')
               : i18n('cc-logs-addon-runtime.fullscreen')}
             hide-text
-            @cc-button:click=${this._onFullscreenToggle}
+            @cc-click=${this._onFullscreenToggle}
           ></cc-button>
         </div>
       </cc-logs-control-beta>
