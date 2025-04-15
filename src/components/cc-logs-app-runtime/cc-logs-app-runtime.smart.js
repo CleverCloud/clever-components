@@ -22,7 +22,6 @@ import './cc-logs-app-runtime.js';
  * @typedef {import('./cc-logs-app-runtime.types.js').LogsAppRuntimeStateLoaded} LogsAppRuntimeStateLoaded
  * @typedef {import('../cc-logs/cc-logs.types.js').Log} Log
  * @typedef {import('../cc-logs-date-range-selector/cc-logs-date-range-selector.types.js').LogsDateRangeSelection} LogsDateRangeSelection
- * @typedef {import('../cc-logs-date-range-selector/cc-logs-date-range-selector.types.js').LogsDateRangeSelectionChangeEventData} LogsDateRangeSelectionChangeEventData
  * @typedef {import('../cc-logs-instances/cc-logs-instances.types.js').Instance} Instance
  * @typedef {import('../cc-logs-instances/cc-logs-instances.types.js').GhostInstance} GhostInstance
  * @typedef {import('../cc-logs-instances/cc-logs-instances.types.js').Deployment} Deployment
@@ -62,13 +61,9 @@ defineSmartComponent({
       controller.clear();
     };
 
-    onEvent(
-      'cc-logs-date-range-selector:change',
-      /** @param {LogsDateRangeSelectionChangeEventData} eventData */
-      (eventData) => {
-        controller.setNewDateRange(eventData.range);
-      },
-    );
+    onEvent('cc-logs-date-range-selection-change', ({ range }) => {
+      controller.setNewDateRange(range);
+    });
 
     onEvent(
       'cc-logs-instances:selection-change',

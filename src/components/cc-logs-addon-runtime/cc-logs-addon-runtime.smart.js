@@ -46,13 +46,9 @@ defineSmartComponent({
       controller.stop();
     };
 
-    onEvent(
-      'cc-logs-date-range-selector:change',
-      /** @param {LogsDateRangeSelectionChangeEventData} eventData */
-      (eventData) => {
-        controller.setNewDateRange(eventData.range);
-      },
-    );
+    onEvent('cc-logs-date-range-selection-change', ({ range }) => {
+      controller.setNewDateRange(range);
+    });
 
     onEvent('cc-logs-loading-progress:pause', () => {
       controller.pause();
