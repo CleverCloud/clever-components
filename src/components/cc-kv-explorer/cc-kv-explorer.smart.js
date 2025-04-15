@@ -177,23 +177,19 @@ defineSmartComponent({
 
     // -- hash ---
 
-    onEvent(
-      'cc-kv-hash-explorer:filter-change',
-      /** @param {string} pattern */
-      async (pattern) => {
-        const editorCtrl = /** @type {KvKeyEditorHashCtrl} */ (detailsCtrl.editorCtrl);
+    onEvent('cc-kv-hash-filter-change', async (pattern) => {
+      const editorCtrl = /** @type {KvKeyEditorHashCtrl} */ (detailsCtrl.editorCtrl);
 
-        try {
-          await editorCtrl.filter(pattern);
-        } catch (e) {
-          checkIfKeyNotFoundOrElse(e, () => {
-            notifyError(i18n('cc-kv-hash-explorer.error.apply-filter'));
-          });
-        }
-      },
-    );
+      try {
+        await editorCtrl.filter(pattern);
+      } catch (e) {
+        checkIfKeyNotFoundOrElse(e, () => {
+          notifyError(i18n('cc-kv-hash-explorer.error.apply-filter'));
+        });
+      }
+    });
 
-    onEvent('cc-kv-hash-explorer:load-more-elements', async () => {
+    onEvent('cc-kv-hash-load-more', async () => {
       const editorCtrl = /** @type {KvKeyEditorHashCtrl} */ (detailsCtrl.editorCtrl);
 
       try {
@@ -205,61 +201,49 @@ defineSmartComponent({
       }
     });
 
-    onEvent(
-      'cc-kv-hash-explorer:delete-element',
-      /** @param {string} field */
-      async (field) => {
-        const editorCtrl = /** @type {KvKeyEditorHashCtrl} */ (detailsCtrl.editorCtrl);
+    onEvent('cc-kv-hash-element-delete', async (field) => {
+      const editorCtrl = /** @type {KvKeyEditorHashCtrl} */ (detailsCtrl.editorCtrl);
 
-        try {
-          await editorCtrl.deleteElement(field);
-          notifySuccess(i18n('cc-kv-hash-explorer.success.element-delete'));
-        } catch (e) {
-          checkIfKeyNotFoundOrElse(e, () => {
-            notifyError(i18n('cc-kv-hash-explorer.error.element-delete'));
-          });
-        }
-      },
-    );
+      try {
+        await editorCtrl.deleteElement(field);
+        notifySuccess(i18n('cc-kv-hash-explorer.success.element-delete'));
+      } catch (e) {
+        checkIfKeyNotFoundOrElse(e, () => {
+          notifyError(i18n('cc-kv-hash-explorer.error.element-delete'));
+        });
+      }
+    });
 
-    onEvent(
-      'cc-kv-hash-explorer:update-element',
-      /** @param {{field: string, value: string}} element */
-      async ({ field, value }) => {
-        const editorCtrl = /** @type {KvKeyEditorHashCtrl} */ (detailsCtrl.editorCtrl);
+    onEvent('cc-kv-hash-element-update', async ({ field, value }) => {
+      const editorCtrl = /** @type {KvKeyEditorHashCtrl} */ (detailsCtrl.editorCtrl);
 
-        try {
-          await editorCtrl.updateElement(field, value);
+      try {
+        await editorCtrl.updateElement(field, value);
+        notifySuccess(i18n('cc-kv-hash-explorer.success.element-update'));
+      } catch (e) {
+        checkIfKeyNotFoundOrElse(e, () => {
+          notifyError(i18n('cc-kv-hash-explorer.error.element-update'));
+        });
+      }
+    });
+
+    onEvent('cc-kv-hash-element-add', async ({ field, value }) => {
+      const editorCtrl = /** @type {KvKeyEditorHashCtrl} */ (detailsCtrl.editorCtrl);
+
+      try {
+        const added = await editorCtrl.addElement(field, value);
+
+        if (added) {
+          notifySuccess(i18n('cc-kv-hash-explorer.success.element-add'));
+        } else {
           notifySuccess(i18n('cc-kv-hash-explorer.success.element-update'));
-        } catch (e) {
-          checkIfKeyNotFoundOrElse(e, () => {
-            notifyError(i18n('cc-kv-hash-explorer.error.element-update'));
-          });
         }
-      },
-    );
-
-    onEvent(
-      'cc-kv-hash-explorer:add-element',
-      /** @param {{field: string, value: string}} element */
-      async ({ field, value }) => {
-        const editorCtrl = /** @type {KvKeyEditorHashCtrl} */ (detailsCtrl.editorCtrl);
-
-        try {
-          const added = await editorCtrl.addElement(field, value);
-
-          if (added) {
-            notifySuccess(i18n('cc-kv-hash-explorer.success.element-add'));
-          } else {
-            notifySuccess(i18n('cc-kv-hash-explorer.success.element-update'));
-          }
-        } catch (e) {
-          checkIfKeyNotFoundOrElse(e, () => {
-            notifyError(i18n('cc-kv-hash-explorer.error.element-add'));
-          });
-        }
-      },
-    );
+      } catch (e) {
+        checkIfKeyNotFoundOrElse(e, () => {
+          notifyError(i18n('cc-kv-hash-explorer.error.element-add'));
+        });
+      }
+    });
 
     // -- list
 

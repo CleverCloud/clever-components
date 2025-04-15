@@ -49,6 +49,7 @@ import '../cc-select/cc-select.js';
  * @typedef {import('../cc-kv-string-editor/cc-kv-string-editor.types.js').CcKvKeyStringEditorState} CcKvKeyStringEditorState
  * @typedef {import('../cc-kv-hash-explorer/cc-kv-hash-explorer.js').CcKvHashExplorer} CcKvHashExplorer
  * @typedef {import('../cc-kv-hash-explorer/cc-kv-hash-explorer.types.js').CcKvHashExplorerState} CcKvHashExplorerState
+ * @typedef {import('../cc-kv-hash-explorer/cc-kv-hash-explorer.events.js').CcKvHashExplorerStateChangeEvent} CcKvHashExplorerStateChangeEvent
  * @typedef {import('../cc-kv-list-explorer/cc-kv-list-explorer.js').CcKvListExplorer} CcKvListExplorer
  * @typedef {import('../cc-kv-list-explorer/cc-kv-list-explorer.types.js').CcKvListExplorerState} CcKvListExplorerState
  * @typedef {import('../cc-kv-set-explorer/cc-kv-set-explorer.js').CcKvSetExplorer} CcKvSetExplorer
@@ -483,7 +484,7 @@ export class CcKvExplorer extends LitElement {
   }
 
   /**
-   * @param {CustomEvent<CcKvHashExplorerState>} e
+   * @param {CcKvHashExplorerStateChangeEvent} e
    */
   _onHashEditorStateChange(e) {
     if (this.detailState.type === 'edit-hash') {
@@ -956,7 +957,7 @@ export class CcKvExplorer extends LitElement {
       ${ref(this._hashEditor)}
       .state=${state}
       ?disabled=${disabled}
-      @cc-kv-hash-explorer:state-change=${this._onHashEditorStateChange}
+      @cc-kv-hash-explorer-state-change=${this._onHashEditorStateChange}
     ></cc-kv-hash-explorer-beta>`;
   }
 
