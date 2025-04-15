@@ -49,6 +49,9 @@ export class CcProductCardSandbox extends LitElement {
     this._componentWidth = 20;
   }
 
+  /**
+   * @param {CcSelectEvent} event
+   */
   _onSelect({ detail: productName }) {
     if (productName === 'default') {
       this._currentProduct = DEFAULT_PRODUCT;
@@ -81,7 +84,7 @@ export class CcProductCardSandbox extends LitElement {
           label="API products"
           value="default"
           .options="${API_PRODUCTS_SELECT}"
-          @cc-select:input="${this._onSelect}"
+          @cc-select="${this._onSelect}"
         ></cc-select>
         <cc-input-number
           label="component width (em)"

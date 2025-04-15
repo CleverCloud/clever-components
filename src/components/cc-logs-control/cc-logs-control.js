@@ -171,7 +171,7 @@ export class CcLogsControl extends LitElement {
   }
 
   /**
-   * @param {CustomEvent<LogsControlPalette>} event
+   * @param {CcSelectEvent<LogsControlPalette>} event
    */
   _onPaletteChange(event) {
     this.palette = event.detail;
@@ -195,7 +195,7 @@ export class CcLogsControl extends LitElement {
   }
 
   /**
-   * @param {CustomEvent<DateDisplay>} event
+   * @param {CcSelectEvent<DateDisplay>} event
    */
   _onDateDisplayChange(event) {
     this.dateDisplay = event.detail;
@@ -203,7 +203,7 @@ export class CcLogsControl extends LitElement {
   }
 
   /**
-   * @param {CustomEvent<Timezone>} event
+   * @param {CcSelectEvent<Timezone>} event
    */
   _onTimezoneChange(event) {
     this.timezone = event.detail;
@@ -363,7 +363,7 @@ export class CcLogsControl extends LitElement {
           label="${i18n('cc-logs-control.palette')}"
           .options=${PALETTE_CHOICES}
           .value=${this.palette}
-          @cc-select:input=${this._onPaletteChange}
+          @cc-select=${this._onPaletteChange}
         ></cc-select>
 
         <label for="strip-ansi">
@@ -392,14 +392,14 @@ export class CcLogsControl extends LitElement {
           label="${i18n('cc-logs-control.date-display')}"
           .options=${DATE_DISPLAY_CHOICES}
           .value=${this.dateDisplay}
-          @cc-select:input=${this._onDateDisplayChange}
+          @cc-select=${this._onDateDisplayChange}
         ></cc-select>
 
         <cc-select
           label="${i18n('cc-logs-control.timezone')}"
           .options=${TIMEZONE_CHOICES}
           .value=${this.timezone}
-          @cc-select:input=${this._onTimezoneChange}
+          @cc-select=${this._onTimezoneChange}
         ></cc-select>
       </div>
     `;

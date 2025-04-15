@@ -160,7 +160,7 @@ export class CcInvoiceList extends LitElement {
                 .options=${yearChoices}
                 value=${yearFilter}
                 inline
-                @cc-select:input=${this._onYearFilterValue}
+                @cc-select=${this._onYearFilterValue}
               ></cc-select>
             `
           : ''}
