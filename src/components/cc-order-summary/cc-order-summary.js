@@ -1,13 +1,13 @@
 import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { dispatchCustomEvent } from '../../lib/events.js';
 import { isStringBlank, isStringEmpty } from '../../lib/utils.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-badge/cc-badge.js';
 import '../cc-button/cc-button.js';
 import '../cc-img/cc-img.js';
+import { CcProductCreateEvent } from './cc-order-summary.events.js';
 
 /**
  * @typedef {import('./cc-order-summary.types.js').ConfigurationItem} ConfigurationItem
@@ -25,8 +25,6 @@ import '../cc-img/cc-img.js';
  * - a list of details for additional information.
  *
  * @cssdisplay block
- *
- * @fires {CustomEvent} cc-order-summary:create - Fires when the create button is clicked.
  *
  * @cssprop {FontSize} --cc-order-summary-detail-font-size - The font-size for the list of details (defaults: `0.825em`).
  * @cssprop {FontWeight} --cc-order-summary-font-weight - Sets the value of the font weight CSS property (defaults: `600`).
@@ -49,7 +47,7 @@ export class CcOrderSummary extends LitElement {
   }
 
   _onCreateClick() {
-    dispatchCustomEvent(this, 'create');
+    this.dispatchEvent(new CcProductCreateEvent());
   }
 
   render() {
