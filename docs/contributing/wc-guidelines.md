@@ -12,7 +12,6 @@ Here are different rules we want any contributor to follow regarding how we writ
 * Don't forget to document your component's public API (properties, attributes, methods, events, slots, CSS custom props...)
 * Your component should be UI only and NOT COUPLED with where the data comes from
 * Don't forget to init your property default values in the constructor (see ['cc-example-component' constructor](https://github.com/CleverCloud/clever-components/blob/master/docs/cc-example-component.js#L76))
-* Use the [`dispatchCustomEvent` helper](https://github.com/CleverCloud/clever-components/blob/9c8b046d21a734159b007646f042eb8053297168/src/lib/events.js) and try to emit your value directly on `detail` ([see 'cc-pricing-estimation' _onChangeQuantity method](https://github.com/CleverCloud/clever-components/blob/master/src/pricing/cc-pricing-estimation.js#L83))
 * In the data I/O, prefer array of objects (instead of object literals) for collections
 * Always name your event handlers "_onSomething"
 * Try to sort your CSS sources in each selector (alphabetically) (enforced by the linter)
@@ -258,6 +257,61 @@ An exception should be made when subcomponents may be set to states that are not
 For instance, if one of the items within the list may be set to `waiting`, then its state should be exposed by the parent component so it can be manipulated from outside.
 
 A good example of such case is [cc-tcp-redirection-form](https://github.com/CleverCloud/clever-components/blob/master/src/components/cc-tcp-redirection-form/cc-tcp-redirection-form.js) and [cc-tcp-redirection](https://github.com/CleverCloud/clever-components/blob/master/src/components/cc-tcp-redirection/cc-tcp-redirection.js).
+
+## How to deal with events
+
+
+### Event definition structure
+
+- Every component's events **must** be defined in a dedicated file ending with `.events.js` (e.g., `cc-component-name.events.js`),
+- Every event **must** be a subclass of `CcEvent` class,
+- Each event class should have a static `TYPE` property defining the event name,
+- Event name **must** be prefixed with `cc-`,
+- Event name **must** be in kebab case,
+- Every event **must** be properly documented with JSDoc
+
+### Event class implementation
+
+Here's how to implement an event class correctly:
+
+```js
+import { CcEvent } from '../../lib/events.js';
+
+/**
+ * Dispatched when something happens in the component.
+ * @extends {CcEvent<EventDetailType>}
+ */
+export class CcComponentNameSomethingEvent extends CcEvent {
+  static TYPE = 'cc-something-happen';
+
+  /**
+   * @param {EventDetailType} detail
+   */
+  constructor(detail) {
+    super(CcComponentNameSomethingEvent.TYPE, detail);
+  }
+}
+```
+
+### Event documentation requirements
+
+Events must be properly documented:
+
+- Include a clear description of when and why the event is dispatched,
+- Always use the `@extends` JSDoc tag to specify the `detail` property type,
+- Document the constructor parameter with the proper type.
+
+### Synchronizing the events map
+
+After creating or modifying events:
+
+- Run the `components:events-map-generate` npm task to synchronize the global event map:
+
+```
+npm run components:events-map-generate
+```
+
+This task updates the global events map.
 
 ## What to do with components during API calls and when to use `disabled`
 
