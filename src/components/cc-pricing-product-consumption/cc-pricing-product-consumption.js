@@ -296,7 +296,7 @@ export class CcPricingProductConsumption extends LitElement {
    * @param {SectionType} type - the type of the section to update
    */
   _onInputValue(type) {
-    /** @param {CustomEvent<number>} e */
+    /** @param {CcInputEvent<number>} e */
     return (e) => {
       this._sectionStates[type].quantity = isNaN(e.detail) ? 0 : e.detail;
       this._updateSimulatorQuantity(type);
@@ -466,7 +466,7 @@ export class CcPricingProductConsumption extends LitElement {
           class="input-quantity"
           value=${quantity}
           min="0"
-          @cc-input-number:input=${this._onInputValue(type)}
+          @cc-input=${this._onInputValue(type)}
         ></cc-input-number>
         <cc-toggle
           legend=${i18n('cc-pricing-product-consumption.unit')}
@@ -483,7 +483,7 @@ export class CcPricingProductConsumption extends LitElement {
           class="input-quantity"
           value=${quantity}
           min="0"
-          @cc-input-number:input=${this._onInputValue(type)}
+          @cc-input=${this._onInputValue(type)}
         ></cc-input-number>
       `;
     }
