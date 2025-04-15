@@ -340,7 +340,7 @@ class CcLogsSandbox extends LitElement {
 
         <cc-input-number
           @blur=${this._onLimitChanged}
-          @cc-input-number:requestimplicitsubmit=${this._onLimitChanged}
+          @cc-request-submit=${this._onLimitChanged}
           .value=${this._limit}
           label="Limit"
           min="0"

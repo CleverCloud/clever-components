@@ -73,6 +73,9 @@ export class CcProductCardSandbox extends LitElement {
     }
   }
 
+  /**
+   * @param {CcInputEvent<number>} event
+   */
   _onWidthInput({ detail: width }) {
     this._componentWidth = width;
   }
@@ -89,7 +92,7 @@ export class CcProductCardSandbox extends LitElement {
         <cc-input-number
           label="component width (em)"
           value=${this._componentWidth}
-          @cc-input-number:input="${this._onWidthInput}"
+          @cc-input="${this._onWidthInput}"
         ></cc-input-number>
       </div>
       <div class="main">
