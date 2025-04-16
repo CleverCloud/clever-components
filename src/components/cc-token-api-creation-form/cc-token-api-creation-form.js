@@ -23,7 +23,7 @@ import '../cc-notice/cc-notice.js';
 import '../cc-select/cc-select.js';
 
 const DEFAULT_EXPIRATION_DURATION = 'one-year';
-const USER_TIMEZONE = Intl.DateTimeFormat().resolvedOptions().timeZone;
+const dateFormatter = new DateFormatter('datetime-iso', 'local');
 
 /**
  * @typedef {import('./cc-token-api-creation-form.types.js').TokenApiCreationFormState} TokenApiCreationFormState
@@ -67,13 +67,13 @@ export class CcTokenApiCreationForm extends LitElement {
 
     this._expirationDateErrorMessages = {
       badInput: i18n('cc-token-api-creation-form.config-step.form.expiration-date.invalid', {
-        date: this._dateFormatter.format(shiftDateField(new Date(Date.now()), 'Y', 1)),
+        date: dateFormatter.format(shiftDateField(new Date(Date.now()), 'Y', 1)),
       }),
       rangeUnderflow: i18n('cc-token-api-creation-form.config-step.form.expiration-date.range-underflow', {
-        date: this._dateFormatter.format(shiftDateField(new Date(Date.now()), 'm', 30)),
+        date: dateFormatter.format(shiftDateField(new Date(Date.now()), 'm', 30)),
       }),
       rangeOverflow: i18n('cc-token-api-creation-form.config-step.form.expiration-date.range-overflow', {
-        date: this._dateFormatter.format(shiftDateField(new Date(Date.now()), 'Y', 1)),
+        date: dateFormatter.format(shiftDateField(new Date(Date.now()), 'Y', 1)),
       }),
     };
 
@@ -85,9 +85,6 @@ export class CcTokenApiCreationForm extends LitElement {
 
     /** @type {boolean} */
     this._isExpirationDateActive = false;
-
-    /** @type {DateFormatter} */
-    this._dateFormatter = new DateFormatter('datetime-iso', 'local');
   }
 
   /**
@@ -226,10 +223,6 @@ export class CcTokenApiCreationForm extends LitElement {
   }
 
   render() {
-    if (this.state.type === 'error') {
-      return html`<cc-notice intent="warning" message="${i18n('cc-token-api-creation-form.error')}"></cc-notice>`;
-    }
-
     // TODO: i18n CLI
     return html`
       <cc-block>
@@ -237,6 +230,9 @@ export class CcTokenApiCreationForm extends LitElement {
         <div slot="content">
           <p class="block-intro">${this._getDescription(this._activeStep)}</p>
           ${this._renderStepsNav({ activeStep: this._activeStep, isWaiting: this.state.type === 'creating' })}
+          ${this.state.type === 'error'
+            ? html`<cc-notice intent="warning" message="${i18n('cc-token-api-creation-form.error')}"></cc-notice>`
+            : ''}
           ${this.state.type === 'loading' ? html` <cc-loader></cc-loader> ` : ''}
           ${this.state.type === 'idle' || this.state.type === 'creating'
             ? this._renderForm({
@@ -326,9 +322,6 @@ export class CcTokenApiCreationForm extends LitElement {
    * @param {boolean} options.hasCredentialsError -
    */
   _renderForm({ activeStep, isMfaEnabled, isWaiting, hasCredentialsError }) {
-    const credentialsErrorMessage = isMfaEnabled
-      ? i18n('cc-token-api-creation-form.validation-step.form.error.credentials.with-mfa')
-      : i18n('cc-token-api-creation-form.validation-step.form.error.credentials.password-only');
     // TODO: discuss error handling with Marion (maybe a message at the top could be better for such cases)
     // TODO: focus when active step changes (may be done in willUpdate)
     // TODO: focus when error message is set (credentials)
@@ -370,7 +363,7 @@ export class CcTokenApiCreationForm extends LitElement {
             .min="${shiftDateField(new Date(Date.now()), 'm', 15)}"
             .max="${shiftDateField(new Date(Date.now()), 'Y', 1)}"
             .customErrorMessages=${this._expirationDateErrorMessages}
-            timezone="${USER_TIMEZONE}"
+            timezone="local"
           >
             ${this._isExpirationDateActive
               ? html`
@@ -396,8 +389,14 @@ export class CcTokenApiCreationForm extends LitElement {
         ?hidden=${activeStep !== 'validate'}
         ${formSubmit(this._onValidateFormSubmit.bind(this))}
       >
-        ${hasCredentialsError
-          ? html` <cc-notice intent="danger" message="${credentialsErrorMessage}" tabindex="-1"></cc-notice> `
+        ${hasCredentialsError && isMfaEnabled
+          ? html`
+              <cc-notice
+                intent="danger"
+                message="${i18n('cc-token-api-creation-form.validation-step.form.error.credentials.with-mfa')}"
+                tabindex="-1"
+              ></cc-notice>
+            `
           : ''}
         <cc-input-text
           label="${i18n('cc-token-api-creation-form.validation-step.form.label.password')}"
@@ -405,6 +404,9 @@ export class CcTokenApiCreationForm extends LitElement {
           ?readonly=${isWaiting}
           required
           secret
+          .errorMessage=${!isMfaEnabled && hasCredentialsError
+            ? i18n('cc-token-api-creation-form.validation-step.form.error.credentials.password-only')
+            : null}
         ></cc-input-text>
         ${isMfaEnabled
           ? html`
@@ -446,6 +448,7 @@ export class CcTokenApiCreationForm extends LitElement {
   _renderCopyStep(token) {
     return html`
       <div class="copy-step-wrapper">
+        <cc-notice intent="warning" .message=${i18n('cc-token-api-creation-form.copy-step.notice.message')}></cc-notice>
         <cc-input-text
           label="${i18n('cc-token-api-creation-form.copy-step.form.label.token')}"
           name="token"
@@ -454,7 +457,6 @@ export class CcTokenApiCreationForm extends LitElement {
           clipboard
           value=${token}
         ></cc-input-text>
-        <cc-notice intent="warning" .message=${i18n('cc-token-api-creation-form.copy-step.notice.message')}></cc-notice>
         <a class="token-list-link-cta" href="${this.apiTokenListHref}">
           <span>${i18n('cc-token-api-creation-form.copy-step.link.api-token-list')}</span>
         </a>
@@ -574,7 +576,11 @@ export class CcTokenApiCreationForm extends LitElement {
 
         .copy-step-wrapper {
           display: grid;
-          gap: 2.5em;
+          gap: 1.5em;
+        }
+
+        .copy-step-wrapper cc-input-text {
+          order: -1;
         }
 
         .token-list-link-cta {
@@ -605,7 +611,7 @@ export class CcTokenApiCreationForm extends LitElement {
           cursor: pointer;
           display: flex;
           gap: 0.5em;
-          text-decoration: underline;
+          text-decoration: none;
         }
       `,
     ];
