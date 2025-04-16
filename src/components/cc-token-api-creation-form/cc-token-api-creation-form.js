@@ -370,7 +370,7 @@ export class CcTokenApiCreationForm extends LitElement {
             .min="${shiftDateField(new Date(Date.now()), 'm', 15)}"
             .max="${shiftDateField(new Date(Date.now()), 'Y', 1)}"
             .customErrorMessages=${this._expirationDateErrorMessages}
-            timezone="local"
+            timezone="${USER_TIMEZONE}"
           >
             ${this._isExpirationDateActive
               ? html`
