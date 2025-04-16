@@ -8,6 +8,7 @@ import {
   iconRemixLogoutBoxRLine as iconExternalLink,
   iconRemixArrowLeftLine as iconGoBack,
 } from '../../assets/cc-remix.icons.js';
+import { DateFormatter } from '../../lib/date/date-formatter.js';
 import { shiftDateField } from '../../lib/date/date-utils.js';
 import { dispatchCustomEvent } from '../../lib/events.js';
 import { formSubmit } from '../../lib/form/form-submit-directive.js';
@@ -22,6 +23,7 @@ import '../cc-notice/cc-notice.js';
 import '../cc-select/cc-select.js';
 
 const DEFAULT_EXPIRATION_DURATION = 'one-year';
+const USER_TIMEZONE = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
 /**
  * @typedef {import('./cc-token-api-creation-form.types.js').TokenApiCreationFormState} TokenApiCreationFormState
@@ -65,13 +67,13 @@ export class CcTokenApiCreationForm extends LitElement {
 
     this._expirationDateErrorMessages = {
       badInput: i18n('cc-token-api-creation-form.config-step.form.expiration-date.invalid', {
-        date: shiftDateField(new Date(Date.now()), 'Y', 1).toISOString().replace('T', ' ').substring(0, 19),
+        date: this._dateFormatter.format(shiftDateField(new Date(Date.now()), 'Y', 1)),
       }),
       rangeUnderflow: i18n('cc-token-api-creation-form.config-step.form.expiration-date.range-underflow', {
-        date: shiftDateField(new Date(Date.now()), 'm', 30).toISOString().replace('T', ' ').substring(0, 19),
+        date: this._dateFormatter.format(shiftDateField(new Date(Date.now()), 'm', 30)),
       }),
       rangeOverflow: i18n('cc-token-api-creation-form.config-step.form.expiration-date.range-overflow', {
-        date: shiftDateField(new Date(Date.now()), 'Y', 1).toISOString().replace('T', ' ').substring(0, 19),
+        date: this._dateFormatter.format(shiftDateField(new Date(Date.now()), 'Y', 1)),
       }),
     };
 
@@ -83,6 +85,9 @@ export class CcTokenApiCreationForm extends LitElement {
 
     /** @type {boolean} */
     this._isExpirationDateActive = false;
+
+    /** @type {DateFormatter} */
+    this._dateFormatter = new DateFormatter('datetime-iso', 'local');
   }
 
   /**
@@ -365,6 +370,7 @@ export class CcTokenApiCreationForm extends LitElement {
             .min="${shiftDateField(new Date(Date.now()), 'm', 15)}"
             .max="${shiftDateField(new Date(Date.now()), 'Y', 1)}"
             .customErrorMessages=${this._expirationDateErrorMessages}
+            timezone="local"
           >
             ${this._isExpirationDateActive
               ? html`
