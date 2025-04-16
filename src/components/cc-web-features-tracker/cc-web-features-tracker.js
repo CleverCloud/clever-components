@@ -1,4 +1,3 @@
-import { Task } from '@lit/task';
 import { LitElement, css, html } from 'lit';
 import {
   iconCleverBaselineLimited as iconBaselineLimited,
@@ -12,33 +11,22 @@ import {
   iconRemixHashtag as iconVersion,
   iconRemixAlertFill as iconWarning,
 } from '../../assets/cc-remix.icons.js';
-// @ts-ignore
+import { dispatchCustomEvent } from '../../lib/events.js';
 import '../cc-icon/cc-icon.js';
 import '../cc-loader/cc-loader.js';
 import '../cc-notice/cc-notice.js';
 import '../cc-toggle/cc-toggle.js';
-import untypedWebFeatures from './web-features.json';
 
-// TODO: prop json
-// TODO: utitliser import type
-// TODO: smart & supprimer lit-task
 // TODO: finir style filtres & toggles
 // TODO: doc contrib
 // TODO: doc utilisation de ce composant / tableau
 
-/** @type {WebFeatures} */
-const webFeatures = untypedWebFeatures;
-
 /**
- * @typedef {import('./cc-web-features.types.js').WebFeatures} WebFeatures
- * @typedef {import('./cc-web-features.types.js').BaselineFeatureData} BaselineFeatureData
- * @typedef {import('./cc-web-features.types.js').BcdFeatureCompatInfo} BcdFeatureCompatInfo
- * @typedef {import('./cc-web-features.types.js').BcdBrowserInfo} BcdBrowserInfo
- * @typedef {import('./cc-web-features.types.js').FormattedFeature} FormattedFeature
- * @typedef {import('./cc-web-features.types.js').Browser} Browser
- * @typedef {import('./cc-web-features.types.js').BrowserUnsupported} BrowserUnsupported
- * @typedef {import('./cc-web-features.types.js').BrowserSupported} BrowserSupported
- * @typedef {import('./cc-web-features.types.js').FeatureStatus} FeatureStatus
+ * @typedef {import('./cc-web-features-tracker.types.js').WebFeaturesTrackerState} WebFeaturesTrackerState
+ * @typedef {import('./cc-web-features-tracker.types.js').FeatureStatus} FeatureStatus
+ * @typedef {import('./cc-web-features-tracker.types.js').FormattedFeature} FormattedFeature
+ * @typedef {import('./cc-web-features-tracker.types.js').BrowserSupported} BrowserSupported
+ * @typedef {import('./cc-web-features-tracker.types.js').BrowserUnsupported} BrowserUnsupported
  * @typedef {import('../cc-toggle/cc-toggle.js').CcToggle} CcToggle
  * @typedef {import('../../lib/events.types.js').EventWithTarget<CcToggle & { value: 'all' | 'can-be-used' }>} EventWithTargetCcToggleFeatureFilter
  * @typedef {import('../../lib/events.types.js').EventWithTarget<CcToggle & { value: 'compact' | 'detailed' }>} EventWithTargetCcToggleDisplayMode
@@ -48,236 +36,30 @@ const webFeatures = untypedWebFeatures;
  * Component to display web tracked features.
  *
  * @cssdisplay block
+ *
+ * @fires {CustomEvent<{ displayControl: boolean, value: 'all' | 'can-be-used' }>} table-feature-filter-change
+ * @fires {CustomEvent<{ displayControl: boolean, value: 'compact' | 'detailed' }>} table-display-mode-change
  */
 export class CcWebFeaturesTracker extends LitElement {
   static get properties() {
     return {
-      _tableDisplayMode: { type: String, state: true },
-      _tableFeatureFilter: { type: String, state: true },
+      state: { type: Object },
+      tableDisplayMode: { type: Object, state: true },
+      tableFeatureFilter: { type: Object, state: true },
     };
   }
 
   constructor() {
     super();
 
-    this._featuresTask = new Task(this, {
-      task: async ([], { signal }) => {
-        const baselineFeaturesUrl = webFeatures.baselineFeatures.map(
-          (baselineFeature) => `https://api.webstatus.dev/v1/features/${baselineFeature.featureId}`,
-        );
+    /** @type {WebFeaturesTrackerState} */
+    this.state = { type: 'loading' };
 
-        const bcdResponse = await fetch('https://unpkg.com/@mdn/browser-compat-data/data.json', { signal });
-        /** @type {BaselineFeatureData[]} */
-        const rawBaselineFeatures = await Promise.all(
-          baselineFeaturesUrl.map(async (url) => {
-            const response = await fetch(url, { signal });
-            if (!response.ok) {
-              throw new Error(response.status.toString());
-            }
-            return await response.json();
-          }),
-        );
+    /** @type {{ displayControl: boolean, value: 'all' | 'can-be-used' }} */
+    this.tableFeatureFilter = { displayControl: true, value: 'all' };
 
-        if (!bcdResponse.ok) {
-          throw new Error(bcdResponse.status.toString());
-        }
-        const bcdData = await bcdResponse.json();
-        const bcdBrowserInfos = bcdData.browsers;
-        const rawBcdFeatures = this._retrieveBcdFeatures(bcdData);
-        const formattedBcdFeatures = this._formatBcdFeatures(rawBcdFeatures, bcdBrowserInfos);
-        const formattedBaselinesFeatures = this._formatBaselineFeatures(rawBaselineFeatures);
-
-        return [...formattedBaselinesFeatures, ...formattedBcdFeatures];
-      },
-      args: () => [],
-    });
-
-    /** @type {'all'|'can-be-used'} */
-    this._tableFeatureFilter = 'all';
-
-    /** @type {'compact'|'detailed'} */
-    this._tableDisplayMode = 'compact';
-  }
-
-  /**
-   *
-   * @param {Object} rawBcd
-   * @returns {Array<BcdFeatureCompatInfo & { id: string }>}
-   */
-  _retrieveBcdFeatures(rawBcd) {
-    const bcdFeatures = webFeatures.bcdFeatures;
-
-    return bcdFeatures.map(({ featureId }) => {
-      // example: javascript.classes.private_class_fields
-      const theKey = featureId.split('.');
-      let value = rawBcd;
-      for (const key of theKey) {
-        // @ts-ignore
-        value = value[key];
-      }
-      // @ts-ignore
-      return { id: featureId, ...value['__compat'] };
-    });
-  }
-
-  /**
-   *
-   * @param {BaselineFeatureData[]} rawBaselineFeatures
-   * @returns {Array<FormattedFeature>}
-   */
-  _formatBaselineFeatures(rawBaselineFeatures) {
-    const formattedFeatures = rawBaselineFeatures.map((baselineFeature) => {
-      const currentStatus = baselineFeature.baseline.status;
-      const isProgressiveEnhancement = webFeatures.baselineFeatures.find(
-        (webFeature) => webFeature.featureId === baselineFeature.feature_id,
-      ).isProgressiveEnhancement;
-
-      return {
-        featureName: baselineFeature.name,
-        currentStatus,
-        isProgressiveEnhancement,
-        canBeUsed: this._getCanBeUsedStatus({ currentStatus, isProgressiveEnhancement }),
-        chromeSupport: this._getBaselineFeatureStatus('chrome', baselineFeature),
-        firefoxSupport: this._getBaselineFeatureStatus('firefox', baselineFeature),
-        safariSupport: this._getBaselineFeatureStatus('safari', baselineFeature),
-      };
-    });
-
-    return formattedFeatures;
-  }
-
-  /**
-   * Format BCD features into FormattedFeature[]
-   * @param {Array<BcdFeatureCompatInfo & { id: string }>} rawBcdFeatures
-   * @param {BcdBrowserInfo} bcdBrowserInfos
-   * @returns {Array<FormattedFeature>}
-   */
-  _formatBcdFeatures(rawBcdFeatures, bcdBrowserInfos) {
-    const formattedFeatures = rawBcdFeatures.map((rawBcdFeature) => {
-      const supportedBrowsers = {
-        chrome: this._getBcdBrowserSupport('chrome', rawBcdFeature, bcdBrowserInfos),
-        firefox: this._getBcdBrowserSupport('firefox', rawBcdFeature, bcdBrowserInfos),
-        safari: this._getBcdBrowserSupport('safari', rawBcdFeature, bcdBrowserInfos),
-      };
-      const supportedBrowsersAsArray = Object.values(supportedBrowsers);
-
-      const isProgressiveEnhancement = webFeatures.bcdFeatures.find(
-        (webFeature) => webFeature.featureId === rawBcdFeature.id,
-      ).isProgressiveEnhancement;
-      const currentStatus = this._getBcdFeatureCurrentStatus(supportedBrowsersAsArray);
-
-      /** @type {FormattedFeature} */
-      const formattedFeature = {
-        featureName: rawBcdFeature.description ?? rawBcdFeature.id,
-        currentStatus,
-        isProgressiveEnhancement: isProgressiveEnhancement,
-        canBeUsed: this._getCanBeUsedStatus({ currentStatus, isProgressiveEnhancement }),
-        chromeSupport: supportedBrowsers.chrome,
-        firefoxSupport: supportedBrowsers.firefox,
-        safariSupport: supportedBrowsers.safari,
-      };
-      return formattedFeature;
-    });
-
-    return formattedFeatures;
-  }
-
-  /**
-   * @param {{ currentStatus: FeatureStatus, isProgressiveEnhancement: boolean }} params
-   * @returns {boolean}
-   */
-  _getCanBeUsedStatus({ currentStatus, isProgressiveEnhancement }) {
-    // Widely supported features can always be used
-    if (currentStatus === 'widely') {
-      return true;
-    }
-
-    // Progressive enhancement features can be used if they're newly supported
-    return isProgressiveEnhancement && currentStatus === 'newly';
-  }
-
-  /**
-   * @param {Browser} browser
-   * @param {BaselineFeatureData} rawBaselineFeature
-   * @returns {BrowserSupported | BrowserUnsupported}
-   */
-  _getBaselineFeatureStatus(browser, rawBaselineFeature) {
-    const browserImplementation = rawBaselineFeature.browser_implementations?.[browser];
-    if (browserImplementation == null) {
-      return { isSupported: false };
-    }
-
-    return {
-      isSupported: true,
-      version: browserImplementation.version,
-      releaseDate: new Date(browserImplementation.date),
-    };
-  }
-
-  /**
-   *
-   * @param {Browser} browser
-   * @param {BcdFeatureCompatInfo & { id: string }} rawBcdFeature
-   * @param {BcdBrowserInfo} browserInfos
-   * @returns {BrowserSupported|BrowserUnsupported}
-   */
-  _getBcdBrowserSupport(browser, rawBcdFeature, browserInfos) {
-    const browserVersion = rawBcdFeature.support[browser].version_added;
-
-    // when a feature has not been implemented in a browser, `version_added` is `false`
-    if (browserVersion === false) {
-      return { isSupported: false };
-    }
-
-    return {
-      isSupported: true,
-      version: browserVersion,
-      releaseDate: new Date(browserInfos[browser].releases[browserVersion].release_date),
-    };
-  }
-
-  /**
-   * Determines the current support status of a web feature based on browser support data.
-   * Only used for BCD features since baseline feature already come with this data.
-   *
-   * This method examines an array of browser support objects and categorizes the feature as:
-   * - 'limited': When at least one browser doesn't support the feature
-   * - 'widely': When all browsers support the feature and the release date is old enough (2.5+ years)
-   * - 'newly': When all browsers support the feature but it was released recently
-   *
-   * @param {Array<BrowserSupported|BrowserUnsupported>} supportedBrowsers - Array of browser support information objects
-   * @returns {FeatureStatus} The feature's support status ('limited', 'widely', or 'newly')
-   */
-  _getBcdFeatureCurrentStatus(supportedBrowsers) {
-    const isLimited = supportedBrowsers.some((browser) => !browser.isSupported);
-
-    if (isLimited) {
-      return 'limited';
-    }
-
-    const isWidely = supportedBrowsers.every(
-      (browser) => browser.isSupported && this._isOldEnoughToBeWidelySupported(browser.releaseDate),
-    );
-
-    return isWidely ? 'widely' : 'newly';
-  }
-
-  /**
-   * Determines if a feature's release date is old enough to be considered widely supported.
-   * Checks if the release date is at least 2.5 years old.
-   * BCD doesn't specify the baseline status so we need this helper to compute the baseline ourselves based on
-   * browser version release dates.
-   *
-   * @param {Date} releaseDate - The date when the feature was released
-   * @returns {boolean} - True if the feature was released more than 2.5 years ago
-   */
-  _isOldEnoughToBeWidelySupported(releaseDate) {
-    const now = Date.now();
-    const twoYearsAndHalf = new Date();
-    twoYearsAndHalf.setFullYear(twoYearsAndHalf.getFullYear() - 2);
-    twoYearsAndHalf.setMonth(twoYearsAndHalf.getMonth() - 6);
-
-    return now - releaseDate.getTime() >= now - twoYearsAndHalf.getTime();
+    /** @type {{ displayControl: boolean, value: 'compact' | 'detailed' }} */
+    this.tableDisplayMode = { displayControl: true, value: 'compact' };
   }
 
   /**
@@ -296,27 +78,33 @@ export class CcWebFeaturesTracker extends LitElement {
 
   /** @param {EventWithTargetCcToggleFeatureFilter} event */
   _onFeatureFilterChange(event) {
-    this._tableFeatureFilter = event.target.value;
+    this.tableFeatureFilter = { ...this.tableFeatureFilter, value: event.target.value };
+    dispatchCustomEvent(this, 'table-feature-filter-change', this.tableFeatureFilter);
   }
 
   /** @param {EventWithTargetCcToggleDisplayMode} event */
   _onDisplayModeChange(event) {
-    this._tableDisplayMode = event.target.value;
+    this.tableDisplayMode = { ...this.tableDisplayMode, value: event.target.value };
+    dispatchCustomEvent(this, 'table-display-mode-change', this.tableDisplayMode);
   }
 
   render() {
-    return html`
-      ${this._featuresTask.render({
-        pending: () => html`<cc-loader></cc-loader>`,
-        complete: (formattedFeatures) => this._renderFeaturesTable(formattedFeatures),
-        error: (e) => html`<cc-notice .message="${e}"></cc-notice>`,
-      })}
-    `;
+    if (this.state.type === 'loading') {
+      return html`<cc-loader></cc-loader>`;
+    }
+
+    if (this.state.type === 'error') {
+      return html`<cc-notice intent="warning" message="Something went wrong while retrieving data"></cc-notice>`;
+    }
+
+    if (this.state.webFeatures.length === 0) {
+      return html`<div class="empty"><p>No Web Features to track</p></div>`;
+    }
+
+    return this._renderFeaturesTable(this.state.webFeatures);
   }
 
-  /**
-   * @param {readonly FormattedFeature[]} formattedFeatures
-   */
+  /** @param {FormattedFeature[]} formattedFeatures */
   _renderFeaturesTable(formattedFeatures) {
     const filterFeatureChoices = [
       { label: 'All features', value: 'all' },
@@ -328,26 +116,45 @@ export class CcWebFeaturesTracker extends LitElement {
     ];
 
     const filteredFeatures =
-      this._tableFeatureFilter === 'all'
+      this.tableFeatureFilter.value === 'all'
         ? formattedFeatures
         : formattedFeatures.filter((formattedFeature) => formattedFeature.canBeUsed);
 
+    const hasCanBeUsedAsProgressive = formattedFeatures.some(
+      (feature) => feature.isProgressiveEnhancement && feature.canBeUsed,
+    );
+    const hasTableControls = this.tableFeatureFilter.displayControl || this.tableDisplayMode.displayControl;
+
     return html`
-      <div class="">
-        <cc-toggle
-          .choices=${filterFeatureChoices}
-          .value="${this._tableFeatureFilter}"
-          @cc-toggle:input=${this._onFeatureFilterChange}
-        ></cc-toggle>
-        <cc-toggle
-          .choices=${displayModeChoices}
-          .value="${this._tableDisplayMode}"
-          @cc-toggle:input=${this._onDisplayModeChange}
-        ></cc-toggle>
-      </div>
-      <cc-notice intent="warning">
-        <div slot="message">Features with the warning icons should be used for progressive enhancement only</div>
-      </cc-notice>
+      ${hasCanBeUsedAsProgressive
+        ? html`<cc-notice intent="warning">
+            <div slot="message">Features with the warning icons should be used for progressive enhancement only</div>
+          </cc-notice>`
+        : ''}
+      ${hasTableControls
+        ? html`
+            <div class="table-controls">
+              ${this.tableFeatureFilter.displayControl
+                ? html`
+                    <cc-toggle
+                      .choices=${filterFeatureChoices}
+                      .value="${this.tableFeatureFilter.value}"
+                      @cc-toggle:input=${this._onFeatureFilterChange}
+                    ></cc-toggle>
+                  `
+                : ''}
+              ${this.tableDisplayMode.displayControl
+                ? html`
+                    <cc-toggle
+                      .choices=${displayModeChoices}
+                      .value="${this.tableDisplayMode.value}"
+                      @cc-toggle:input=${this._onDisplayModeChange}
+                    ></cc-toggle>
+                  `
+                : ''}
+            </div>
+          `
+        : ''}
       <table>
         <thead>
           <tr>
@@ -397,10 +204,10 @@ export class CcWebFeaturesTracker extends LitElement {
             <cc-icon
               class="current-status__icon"
               .icon="${baselineIcon}"
-              a11y-name=${this._tableDisplayMode === 'compact' ? a11yName : ''}
-              title=${this._tableDisplayMode === 'compact' ? a11yName : ''}
+              a11y-name=${this.tableDisplayMode.value === 'compact' ? a11yName : ''}
+              title=${this.tableDisplayMode.value === 'compact' ? a11yName : ''}
             ></cc-icon>
-            <span>${this._tableDisplayMode === 'detailed' ? a11yName : ''}</span>
+            <span>${this.tableDisplayMode.value === 'detailed' ? a11yName : ''}</span>
           </div>
         </td>
         <td>${this._renderBrowserSupport(chromeSupport)}</td>
@@ -410,9 +217,7 @@ export class CcWebFeaturesTracker extends LitElement {
     `;
   }
 
-  /**
-   * @param {BrowserSupported|BrowserUnsupported} browserSupport
-   */
+  /** @param {BrowserSupported|BrowserUnsupported} browserSupport */
   _renderBrowserSupport(browserSupport) {
     const className = browserSupport.isSupported ? 'supported' : 'unsupported';
     return html`
@@ -422,7 +227,7 @@ export class CcWebFeaturesTracker extends LitElement {
           class=${className}
           size="lg"
         ></cc-icon>
-        ${browserSupport.isSupported && this._tableDisplayMode === 'detailed'
+        ${browserSupport.isSupported && this.tableDisplayMode.value === 'detailed'
           ? html`
               <p><cc-icon .icon=${iconVersion} size="md"></cc-icon> <span>${browserSupport.version}</span></p>
               <p>
@@ -443,15 +248,24 @@ export class CcWebFeaturesTracker extends LitElement {
   static get styles() {
     return css`
       :host {
-        display: block;
+        display: grid;
+        gap: 1em;
       }
 
       p {
         margin: 0;
       }
 
-      cc-notice {
-        margin-bottom: 1em;
+      .empty {
+        border: solid 1px var(--cc-color-border-neutral-weak, #eee);
+        padding: 2em;
+        text-align: center;
+      }
+
+      .table-controls {
+        display: flex;
+        gap: 1em;
+        flex-wrap: wrap;
       }
 
       table {

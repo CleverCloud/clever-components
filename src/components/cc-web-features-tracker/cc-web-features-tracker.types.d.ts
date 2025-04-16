@@ -1,3 +1,21 @@
+export type WebFeaturesTrackerState =
+  | WebFeaturesTrackerStateLoaded
+  | WebFeaturesTrackerStateLoading
+  | WebFeaturesTrackerStateError;
+
+export interface WebFeaturesTrackerStateLoaded {
+  type: 'loaded';
+  webFeatures: FormattedFeature[];
+}
+
+export interface WebFeaturesTrackerStateLoading {
+  type: 'loading';
+}
+
+export interface WebFeaturesTrackerStateError {
+  type: 'error';
+}
+
 export type FeatureStatus = 'widely' | 'newly' | 'limited';
 
 export interface WebFeatures {

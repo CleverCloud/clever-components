@@ -4,14 +4,14 @@ import React from 'react';
 // several docs rely on `cc-notice`
 import '../../components/cc-notice/cc-notice.js';
 import '../../components/cc-web-features-tracker/cc-web-features-tracker.smart.js';
-import webFeaturesAsJson from '../../components/cc-web-features-tracker/web-features.json';
+import trackedWebFeatures from '../../components/cc-web-features-tracker/web-features.json';
 import { updateRootContext } from '../../lib/smart/smart-manager.js';
 
 export function MarkdownDocs({ html }) {
   const htmlContent = { __html: html };
 
   React.useEffect(() => {
-    updateRootContext({ webFeaturesAsJson });
+    updateRootContext({ trackedWebFeatures });
   }, []);
 
   return (

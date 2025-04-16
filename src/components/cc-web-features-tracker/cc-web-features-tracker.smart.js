@@ -6,47 +6,66 @@ import './cc-web-features-tracker.js';
  * @typedef {import('./cc-web-features-tracker.js').CcWebFeaturesTracker} CcWebFeaturesTracker
  * @typedef {import('../../lib/smart/smart-component.types.js').OnContextUpdateArgs<CcWebFeaturesTracker>} OnContextUpdateArgs
  * @typedef {import('../../lib/send-to-api.types.js').ApiConfig} ApiConfig
- * @typedef {import('./cc-web-features.types.js').WebFeatures} WebFeatures
- * @typedef {import('./cc-web-features.types.js').BcdFeatureCompatInfo} BcdFeatureCompatInfo
- * @typedef {import('./cc-web-features.types.js').BcdBrowserInfo} BcdBrowserInfo
- * @typedef {import('./cc-web-features.types.js').BaselineFeatureData} BaselineFeatureData
+ * @typedef {import('./cc-web-features-tracker.types.js').WebFeatures} WebFeatures
+ * @typedef {import('./cc-web-features-tracker.types.js').BcdFeatureCompatInfo} BcdFeatureCompatInfo
+ * @typedef {import('./cc-web-features-tracker.types.js').BcdBrowserInfo} BcdBrowserInfo
+ * @typedef {import('./cc-web-features-tracker.types.js').BaselineFeatureData} BaselineFeatureData
+ * @typedef {import('./cc-web-features-tracker.types.js').FormattedFeature} FormattedFeature
+ * @typedef {import('./cc-web-features-tracker.types.js').Browser} Browser
+ * @typedef {import('./cc-web-features-tracker.types.js').BrowserSupported} BrowserSupported
+ * @typedef {import('./cc-web-features-tracker.types.js').BrowserUnsupported} BrowserUnsupported
+ * @typedef {import('./cc-web-features-tracker.types.js').FeatureStatus} FeatureStatus
  */
 
-console.log('smart file loaded');
 defineSmartComponent({
   selector: 'cc-web-features-tracker',
   params: {
-    webFeaturesAsJson: { type: Object },
+    trackedWebFeatures: { type: Object },
   },
   /** @param {OnContextUpdateArgs} args */
-  // @ts-expect-error FIXME: remove once `onContextUpdate` is type with generics
-  onContextUpdate({ container, component, context, onEvent, updateComponent, signal }) {
-    const { webFeaturesAsJson } = context;
+  onContextUpdate({ context, updateComponent, signal }) {
+    const { trackedWebFeatures } = context;
 
-    // TODO: error if JSON is not correct
+    const api = new Api(trackedWebFeatures, signal);
 
-    const api = new Api(webFeaturesAsJson, signal);
-    // Si on a pas le web features (erreur)
-    // updateComponent => erreur
+    updateComponent('state', { type: 'loading' });
 
-    // Soit on a le web features =>
+    api
+      .getWebFeaturesData()
+      .then(({ rawBaselineFeatures, rawBcdFeatures, bcdBrowserInfos }) => {
+        const formatter = new FeatureFormatter({
+          trackedWebFeatures,
+          rawBcdFeatures,
+          rawBaselineFeatures,
+          bcdBrowserInfos,
+        });
 
-    // get json from path
-    api.getWebFeaturesData().then((rawWebFeaturesData) => console.log(rawWebFeaturesData));
+        updateComponent('state', {
+          type: 'loaded',
+          webFeatures: formatter.getFormattedFeatures(),
+        });
+      })
+      .catch((error) => {
+        console.error(error);
+        updateComponent('state', { type: 'error' });
+      });
   },
 });
 
 class Api {
   /** @type {WebFeatures} webFeatures*/
-  #webFeatures;
+  #trackedWebFeatures;
+
+  /** @type {AbortSignal} signal */
+  #signal;
 
   /**
-   * @param {WebFeatures} webFeatures
+   * @param {WebFeatures} trackedWebFeatures
    * @param {AbortSignal} signal
    */
-  constructor(webFeatures, signal) {
-    this.#webFeatures = webFeatures;
-    this._signal = signal;
+  constructor(trackedWebFeatures, signal) {
+    this.#trackedWebFeatures = trackedWebFeatures;
+    this.#signal = signal;
   }
 
   /**
@@ -55,7 +74,7 @@ class Api {
    * @returns {Promise<{bcdBrowserInfos: BcdBrowserInfo, rawBcdFeatures: Array<BcdFeatureCompatInfo & { id: string }>}>} Object containing browser info and feature compatibility data
    */
   async #fetchBcd() {
-    const bcdResponse = await fetch('https://unpkg.com/@mdn/browser-compat-data/data.json', { signal: this._signal });
+    const bcdResponse = await fetch('https://unpkg.com/@mdn/browser-compat-data/data.json', { signal: this.#signal });
     if (!bcdResponse.ok) {
       throw new Error(bcdResponse.status.toString());
     }
@@ -73,7 +92,7 @@ class Api {
    * @returns {Array<BcdFeatureCompatInfo & { id: string }>}
    */
   #retrieveBcdFeatures(rawBcd) {
-    const bcdFeatures = this.#webFeatures.bcdFeatures;
+    const bcdFeatures = this.#trackedWebFeatures.bcdFeatures;
 
     return bcdFeatures.map(({ featureId }) => {
       // example: javascript.classes.private_class_fields
@@ -90,12 +109,12 @@ class Api {
 
   /** @returns {Promise<BaselineFeatureData[]>} */
   #fetchBaseline() {
-    const baselineFeaturesUrl = this.#webFeatures.baselineFeatures.map(
+    const baselineFeaturesUrl = this.#trackedWebFeatures.baselineFeatures.map(
       (baselineFeature) => `https://api.webstatus.dev/v1/features/${baselineFeature.featureId}`,
     );
     return Promise.all(
       baselineFeaturesUrl.map((url) =>
-        fetch(url, { signal: this._signal }).then((response) => {
+        fetch(url, { signal: this.#signal }).then((response) => {
           if (response.ok) {
             return response.json();
           }
@@ -109,5 +128,200 @@ class Api {
     const { bcdBrowserInfos, rawBcdFeatures } = await this.#fetchBcd();
     const rawBaselineFeatures = await this.#fetchBaseline();
     return { bcdBrowserInfos, rawBcdFeatures, rawBaselineFeatures };
+  }
+}
+
+class FeatureFormatter {
+  /** @type {WebFeatures} */
+  #trackedWebFeatures;
+
+  /** @type {BaselineFeatureData[]} */
+  #rawBaselineFeatures;
+
+  /** @type {Array<BcdFeatureCompatInfo & { id: string }>} */
+  #rawBcdFeatures;
+
+  /** @type {BcdBrowserInfo} */
+  #bcdBrowserInfos;
+
+  /**
+   *
+   * @param {object} _
+   * @param {WebFeatures} _.trackedWebFeatures
+   * @param {BaselineFeatureData[]} _.rawBaselineFeatures
+   * @param {Array<BcdFeatureCompatInfo & { id: string }>} _.rawBcdFeatures
+   * @param {BcdBrowserInfo} _.bcdBrowserInfos
+   */
+  constructor({ trackedWebFeatures, rawBaselineFeatures, rawBcdFeatures, bcdBrowserInfos }) {
+    this.#trackedWebFeatures = trackedWebFeatures;
+    this.#rawBaselineFeatures = rawBaselineFeatures;
+    this.#rawBcdFeatures = rawBcdFeatures;
+    this.#bcdBrowserInfos = bcdBrowserInfos;
+  }
+
+  getFormattedFeatures() {
+    const formattedBaselineFeatures = this.#formatBaselineFeatures(this.#rawBaselineFeatures);
+    const formattedBcdFeatures = this.#formatBcdFeatures(this.#rawBcdFeatures, this.#bcdBrowserInfos);
+    return [...formattedBaselineFeatures, ...formattedBcdFeatures];
+  }
+
+  /**
+   *
+   * @param {BaselineFeatureData[]} rawBaselineFeatures
+   * @returns {Array<FormattedFeature>}
+   */
+  #formatBaselineFeatures(rawBaselineFeatures) {
+    const formattedFeatures = rawBaselineFeatures.map((baselineFeature) => {
+      const currentStatus = baselineFeature.baseline.status;
+      const isProgressiveEnhancement = this.#trackedWebFeatures.baselineFeatures.find(
+        (webFeature) => webFeature.featureId === baselineFeature.feature_id,
+      ).isProgressiveEnhancement;
+
+      return {
+        featureName: baselineFeature.name,
+        currentStatus,
+        isProgressiveEnhancement,
+        canBeUsed: this.#getCanBeUsedStatus({ currentStatus, isProgressiveEnhancement }),
+        chromeSupport: this.#getBaselineFeatureStatus('chrome', baselineFeature),
+        firefoxSupport: this.#getBaselineFeatureStatus('firefox', baselineFeature),
+        safariSupport: this.#getBaselineFeatureStatus('safari', baselineFeature),
+      };
+    });
+
+    return formattedFeatures;
+  }
+
+  /**
+   * Format BCD features into FormattedFeature[]
+   * @param {Array<BcdFeatureCompatInfo & { id: string }>} rawBcdFeatures
+   * @param {BcdBrowserInfo} bcdBrowserInfos
+   * @returns {Array<FormattedFeature>}
+   */
+  #formatBcdFeatures(rawBcdFeatures, bcdBrowserInfos) {
+    const formattedFeatures = rawBcdFeatures.map((rawBcdFeature) => {
+      const supportedBrowsers = {
+        chrome: this.#getBcdBrowserSupport('chrome', rawBcdFeature, bcdBrowserInfos),
+        firefox: this.#getBcdBrowserSupport('firefox', rawBcdFeature, bcdBrowserInfos),
+        safari: this.#getBcdBrowserSupport('safari', rawBcdFeature, bcdBrowserInfos),
+      };
+      const supportedBrowsersAsArray = Object.values(supportedBrowsers);
+
+      const isProgressiveEnhancement = this.#trackedWebFeatures.bcdFeatures.find(
+        (webFeature) => webFeature.featureId === rawBcdFeature.id,
+      ).isProgressiveEnhancement;
+      const currentStatus = this.#getBcdFeatureCurrentStatus(supportedBrowsersAsArray);
+
+      /** @type {FormattedFeature} */
+      const formattedFeature = {
+        featureName: rawBcdFeature.description ?? rawBcdFeature.id,
+        currentStatus,
+        isProgressiveEnhancement: isProgressiveEnhancement,
+        canBeUsed: this.#getCanBeUsedStatus({ currentStatus, isProgressiveEnhancement }),
+        chromeSupport: supportedBrowsers.chrome,
+        firefoxSupport: supportedBrowsers.firefox,
+        safariSupport: supportedBrowsers.safari,
+      };
+      return formattedFeature;
+    });
+
+    return formattedFeatures;
+  }
+
+  /**
+   * @param {{ currentStatus: FeatureStatus, isProgressiveEnhancement: boolean }} params
+   * @returns {boolean}
+   */
+  #getCanBeUsedStatus({ currentStatus, isProgressiveEnhancement }) {
+    // Widely supported features can always be used
+    if (currentStatus === 'widely') {
+      return true;
+    }
+
+    // Progressive enhancement features can be used if they're newly supported
+    return isProgressiveEnhancement && currentStatus === 'newly';
+  }
+
+  /**
+   * @param {Browser} browser
+   * @param {BaselineFeatureData} rawBaselineFeature
+   * @returns {BrowserSupported | BrowserUnsupported}
+   */
+  #getBaselineFeatureStatus(browser, rawBaselineFeature) {
+    const browserImplementation = rawBaselineFeature.browser_implementations?.[browser];
+    if (browserImplementation == null) {
+      return { isSupported: false };
+    }
+
+    return {
+      isSupported: true,
+      version: browserImplementation.version,
+      releaseDate: new Date(browserImplementation.date),
+    };
+  }
+
+  /**
+   *
+   * @param {Browser} browser
+   * @param {BcdFeatureCompatInfo & { id: string }} rawBcdFeature
+   * @param {BcdBrowserInfo} browserInfos
+   * @returns {BrowserSupported|BrowserUnsupported}
+   */
+  #getBcdBrowserSupport(browser, rawBcdFeature, browserInfos) {
+    const browserVersion = rawBcdFeature.support[browser].version_added;
+
+    // when a feature has not been implemented in a browser, `version_added` is `false`
+    if (browserVersion === false) {
+      return { isSupported: false };
+    }
+
+    return {
+      isSupported: true,
+      version: browserVersion,
+      releaseDate: new Date(browserInfos[browser].releases[browserVersion].release_date),
+    };
+  }
+
+  /**
+   * Determines the current support status of a web feature based on browser support data.
+   * Only used for BCD features since baseline feature already come with this data.
+   *
+   * This method examines an array of browser support objects and categorizes the feature as:
+   * - 'limited': When at least one browser doesn't support the feature
+   * - 'widely': When all browsers support the feature and the release date is old enough (2.5+ years)
+   * - 'newly': When all browsers support the feature but it was released recently
+   *
+   * @param {Array<BrowserSupported|BrowserUnsupported>} supportedBrowsers - Array of browser support information objects
+   * @returns {FeatureStatus} The feature's support status ('limited', 'widely', or 'newly')
+   */
+  #getBcdFeatureCurrentStatus(supportedBrowsers) {
+    const isLimited = supportedBrowsers.some((browser) => !browser.isSupported);
+
+    if (isLimited) {
+      return 'limited';
+    }
+
+    const isWidely = supportedBrowsers.every(
+      (browser) => browser.isSupported && this.#isOldEnoughToBeWidelySupported(browser.releaseDate),
+    );
+
+    return isWidely ? 'widely' : 'newly';
+  }
+
+  /**
+   * Determines if a feature's release date is old enough to be considered widely supported.
+   * Checks if the release date is at least 2.5 years old.
+   * BCD doesn't specify the baseline status so we need this helper to compute the baseline ourselves based on
+   * browser version release dates.
+   *
+   * @param {Date} releaseDate - The date when the feature was released
+   * @returns {boolean} - True if the feature was released more than 2.5 years ago
+   */
+  #isOldEnoughToBeWidelySupported(releaseDate) {
+    const now = Date.now();
+    const twoYearsAndHalf = new Date();
+    twoYearsAndHalf.setFullYear(twoYearsAndHalf.getFullYear() - 2);
+    twoYearsAndHalf.setMonth(twoYearsAndHalf.getMonth() - 6);
+
+    return now - releaseDate.getTime() >= now - twoYearsAndHalf.getTime();
   }
 }
