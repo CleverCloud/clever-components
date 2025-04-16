@@ -234,15 +234,9 @@ export class CcTokenApiCreationForm extends LitElement {
             ? html`<cc-notice intent="warning" message="${i18n('cc-token-api-creation-form.error')}"></cc-notice>`
             : ''}
           ${this.state.type === 'loading' ? html` <cc-loader></cc-loader> ` : ''}
-          ${this.state.type === 'idle' || this.state.type === 'creating'
-            ? this._renderForm({
-                activeStep: this._activeStep,
-                isMfaEnabled: this.state.isMfaEnabled,
-                isWaiting: this.state.type === 'creating',
-                hasCredentialsError: this.state.hasCredentialsError,
-              })
+          ${this.state.type === 'idle' || this.state.type === 'creating' || this.state.type === 'created'
+            ? this._renderLoaded(this.state, this._activeStep)
             : ''}
-          ${this.state.type === 'created' ? this._renderCopyStep(this.state.token) : ''}
         </div>
         <cc-block-details slot="footer-left">
           <div slot="button-text">Command line</div>
@@ -312,24 +306,45 @@ export class CcTokenApiCreationForm extends LitElement {
   }
 
   /**
-   * Renders the correct form based on the active step.
-   *
-   * @param {object} options - Rendering options.
-   * @param {TokenApiCreationStep} options.activeStep - The currently active step.
-   * @param {boolean} options.isMfaEnabled - Whether Multi-Factor Authentication is enabled for the user.
-   * @param {boolean} options.isWaiting - Whether the form is currently waiting for an operation to complete.
-   * @param {boolean} options.isWaiting - Whether the form is currently waiting for an operation to complete.
-   * @param {boolean} options.hasCredentialsError -
+   * @param {TokenApiCreationFormState} state
+   * @param {TokenApiCreationStep} activeStep
    */
-  _renderForm({ activeStep, isMfaEnabled, isWaiting, hasCredentialsError }) {
+  _renderLoaded(state, activeStep) {
     // TODO: discuss error handling with Marion (maybe a message at the top could be better for such cases)
     // TODO: focus when active step changes (may be done in willUpdate)
     // TODO: focus when error message is set (credentials)
     // TODO: xplain why we use hidden forms (animation (if no display:none) & formData no need to restore so no need for moving all of these to state)
     return html`
+      <div class="step-content-slides">
+        <div class="step-content ${classMap({ 'step-content--out-left': activeStep !== 'config' })}">
+          ${state.type === 'idle' || state.type === 'creating' ? this._renderConfigurationForm() : ''}
+        </div>
+        <div
+          class="step-content ${classMap({
+            'step-content--out-left': activeStep === 'copy',
+            'step-content--out-right': activeStep === 'config',
+          })}"
+        >
+          ${state.type === 'idle' || state.type === 'creating'
+            ? this._renderValidationForm({
+                isMfaEnabled: state.isMfaEnabled,
+                isWaiting: state.type === 'creating',
+                hasCredentialsError: state.hasCredentialsError,
+              })
+            : ''}
+        </div>
+        <div class="step-content ${classMap({ 'step-content--out-right': activeStep !== 'copy' })}">
+          ${state.type === 'created' ? this._renderCopyStep(state.token) : ''}
+        </div>
+      </div>
+    `;
+  }
+
+  _renderConfigurationForm() {
+    return html`
       <form
         name="config-form"
-        ?hidden=${activeStep !== 'config'}
+        class="form"
         ${formSubmit(this._onConfigFormSubmit.bind(this))}
         ${ref(this._configFormRef)}
       >
@@ -379,16 +394,22 @@ export class CcTokenApiCreationForm extends LitElement {
             <span>${i18n('cc-token-api-creation-form.config-step.form.api-token-list-link')}</span>
           </a>
           <cc-button primary type="submit">
-            ${i18n('cc-token-api-creation-form.config-step.form.button.label.create')}
+            ${i18n('cc-token-api-creation-form.config-step.form.button.label.continue')}
           </cc-button>
         </div>
       </form>
+    `;
+  }
 
-      <form
-        name="validation-form"
-        ?hidden=${activeStep !== 'validate'}
-        ${formSubmit(this._onValidateFormSubmit.bind(this))}
-      >
+  /**
+   * @param {object} options - Rendering options.
+   * @param {boolean} options.isMfaEnabled - Whether Multi-Factor Authentication is enabled for the user.
+   * @param {boolean} options.isWaiting - Whether the form is currently waiting for an operation to complete.
+   * @param {boolean} options.hasCredentialsError -
+   */
+  _renderValidationForm({ isMfaEnabled, isWaiting, hasCredentialsError }) {
+    return html`
+      <form name="validation-form" class="form" ${formSubmit(this._onValidateFormSubmit.bind(this))}>
         ${hasCredentialsError && isMfaEnabled
           ? html`
               <cc-notice
@@ -437,7 +458,7 @@ export class CcTokenApiCreationForm extends LitElement {
               `
             : ''}
           <cc-button primary type="submit" ?waiting=${isWaiting}>
-            ${i18n('cc-token-api-creation-form.config-step.form.button.label.validate')}
+            ${i18n('cc-token-api-creation-form.config-step.form.button.label.create')}
           </cc-button>
         </div>
       </form>
@@ -470,6 +491,8 @@ export class CcTokenApiCreationForm extends LitElement {
       css`
         :host {
           display: block;
+          --form-transition-duration: 300ms;
+          --form-transition-timing: ease-in-out;
         }
 
         /* TODO: won't work for mobile */
@@ -550,9 +573,33 @@ export class CcTokenApiCreationForm extends LitElement {
           color: var(--cc-color-text-success);
         }
 
-        form:not([hidden]) {
+        .step-content {
+          display: block;
+          visibility: visible;
+          transform: translateX(0);
+          transition: all 0.3s ease-in-out;
+        }
+
+        .step-content--out-left {
+          visibility: hidden;
+          transform: translateX(-100%);
+          transition: all 0.3s ease-in-out;
+        }
+
+        .step-content--out-right {
+          visibility: hidden;
+          transform: translateX(100%);
+          transition: all 0.3s ease-in-out;
+        }
+
+        .form {
           display: grid;
           gap: 1.5em;
+        }
+
+        .form--hidden {
+          visibility: hidden;
+          transform: translateX(100%);
         }
 
         .form__expiration {

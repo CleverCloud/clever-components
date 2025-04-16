@@ -1476,8 +1476,8 @@ export const translations = {
   'cc-token-api-creation-form.config-step.expiration-duration.label.sixty-days': `60 days`,
   'cc-token-api-creation-form.config-step.expiration-duration.label.thirty-days': `30 days`,
   'cc-token-api-creation-form.config-step.form.api-token-list-link': `Back to the list of API tokens`,
+  'cc-token-api-creation-form.config-step.form.button.label.continue': `Continue`,
   'cc-token-api-creation-form.config-step.form.button.label.create': `Create`,
-  'cc-token-api-creation-form.config-step.form.button.label.validate': `Validate`,
   'cc-token-api-creation-form.config-step.form.expiration-date.invalid': /** @param {{ date: string }} _ */ ({
     date,
   }) => sanitize`Enter a valid date and time.<br>For instance: ${date}`,

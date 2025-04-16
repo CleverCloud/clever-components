@@ -1500,8 +1500,8 @@ export const translations = {
   'cc-token-api-creation-form.config-step.expiration-duration.label.sixty-days': `60 jours`,
   'cc-token-api-creation-form.config-step.expiration-duration.label.thirty-days': `30 jours`,
   'cc-token-api-creation-form.config-step.form.api-token-list-link': `Retour à la liste des tokens d'API`,
+  'cc-token-api-creation-form.config-step.form.button.label.continue': `Continuer`,
   'cc-token-api-creation-form.config-step.form.button.label.create': `Créer`,
-  'cc-token-api-creation-form.config-step.form.button.label.validate': `Valider`,
   'cc-token-api-creation-form.config-step.form.expiration-date.invalid': /** @param {{ date: string }} _ */ ({
     date,
   }) => sanitize`Saisissez une date et une heure valide.<br>Par exemple&nbsp;: ${date}`,

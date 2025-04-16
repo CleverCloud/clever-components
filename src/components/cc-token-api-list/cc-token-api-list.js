@@ -233,7 +233,6 @@ export class CcTokenApiList extends LitElement {
       .create-token-cta {
         align-items: center;
         background-color: var(--cc-color-bg-default, #fff);
-        /* FIXME: we should have token for primary border? */
         border: 1px solid var(--cc-color-bg-primary);
         border-radius: var(--cc-button-border-radius, 0.15em);
         color: var(--cc-color-text-primary, #000);
@@ -243,7 +242,6 @@ export class CcTokenApiList extends LitElement {
         min-height: 2em;
         padding: 0 0.5em;
         text-decoration: none;
-        /* used to absolutely position the <progress> */
         text-transform: var(--cc-button-text-transform, uppercase);
         user-select: none;
       }
