@@ -165,21 +165,14 @@ export class CcTokenApiCreationForm extends LitElement {
     }
 
     const now = new Date();
-    const expirationDate = new Date(now.getTime() + durationAsNumberOfDays * 24 * 60 * 60 * 1000);
+    const expirationDate = shiftDateField(now, 'D', durationAsNumberOfDays);
     return expirationDate;
   }
 
-  /**
-   * @param {TokenApiCreationStep} step
-   * @returns {(event: Event) => void}
-   */
-  _onNavItemClick(step) {
-    console.log('Nav item clicked!!');
-    return (event) => {
-      event.preventDefault();
-      console.log('Nav item clicked');
-      this._activeStep = step;
-    };
+  /** @param {Event} event */
+  _onConfigLinkClick(event) {
+    event.preventDefault();
+    this._activeStep = 'config';
   }
 
   /** @param {FormDataMap} formData */
@@ -307,9 +300,7 @@ export class CcTokenApiCreationForm extends LitElement {
               >
                 ${step.isActive ? html`<cc-icon .icon=${iconActiveStep} size="lg"></cc-icon>` : ''}
                 ${step.isDone ? html`<cc-icon .icon=${iconDoneStep} size="lg"></cc-icon>` : ''}
-                ${step.isClickable
-                  ? html`<a @click="${this._onNavItemClick(step.name)}" href="#">${step.text}</a>`
-                  : ''}
+                ${step.isClickable ? html`<a @click="${this._onConfigLinkClick}" href="#">${step.text}</a>` : ''}
                 ${!step.isClickable ? html`<span>${step.text}</span>` : ''}
               </li>
             `,
@@ -330,12 +321,13 @@ export class CcTokenApiCreationForm extends LitElement {
    * @param {boolean} options.hasCredentialsError -
    */
   _renderForm({ activeStep, isMfaEnabled, isWaiting, hasCredentialsError }) {
+    const credentialsErrorMessage = isMfaEnabled
+      ? i18n('cc-token-api-creation-form.validation-step.form.error.credentials.with-mfa')
+      : i18n('cc-token-api-creation-form.validation-step.form.error.credentials.password-only');
     // TODO: discuss error handling with Marion (maybe a message at the top could be better for such cases)
-    const passwordAndMfaErrorMessage = hasCredentialsError
-      ? i18n('cc-token-api-creation-form.validation-step.form.error.credentials')
-      : null;
-
     // TODO: focus when active step changes (may be done in willUpdate)
+    // TODO: focus when error message is set (credentials)
+    // TODO: xplain why we use hidden forms (animation (if no display:none) & formData no need to restore so no need for moving all of these to state)
     return html`
       <form
         name="config-form"
@@ -360,9 +352,9 @@ export class CcTokenApiCreationForm extends LitElement {
             .value="${this._expirationDuration}"
             @cc-select:input=${this._onExpirationDurationInput}
           >
-            <p slot="help" ?hidden=${!this._isExpirationDateActive}>
-              Specify the expiration date using the next form control
-            </p>
+            ${this._isExpirationDateActive
+              ? html`<p slot="help">Specify the expiration date using the next form control</p>`
+              : ''}
           </cc-select>
           <cc-input-date
             label="${i18n('cc-token-api-creation-form.config-step.form.label.expiration-date')}"
@@ -398,11 +390,13 @@ export class CcTokenApiCreationForm extends LitElement {
         ?hidden=${activeStep !== 'validate'}
         ${formSubmit(this._onValidateFormSubmit.bind(this))}
       >
+        ${hasCredentialsError
+          ? html` <cc-notice intent="danger" message="${credentialsErrorMessage}" tabindex="-1"></cc-notice> `
+          : ''}
         <cc-input-text
           label="${i18n('cc-token-api-creation-form.validation-step.form.label.password')}"
           name="password"
           ?readonly=${isWaiting}
-          .errorMessage=${passwordAndMfaErrorMessage}
           required
           secret
         ></cc-input-text>
@@ -413,7 +407,6 @@ export class CcTokenApiCreationForm extends LitElement {
                 name="mfa-code"
                 ?readonly=${isWaiting}
                 required
-                .errorMessage=${passwordAndMfaErrorMessage}
               ></cc-input-text>
             `
           : ''}
@@ -429,7 +422,7 @@ export class CcTokenApiCreationForm extends LitElement {
             : ''}
           ${!isWaiting
             ? html`
-                <a class="go-back-link" @click="${this._onNavItemClick('config')}" href="#">
+                <a class="go-back-link" @click="${this._onConfigLinkClick}" href="#">
                   <cc-icon .icon=${iconGoBack}></cc-icon>
                   <span>${i18n('cc-token-api-creation-form.validation-step.form.api-token-list-link')}</span>
                 </a>

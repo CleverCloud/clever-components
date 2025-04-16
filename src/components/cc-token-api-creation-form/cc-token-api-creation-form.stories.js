@@ -254,6 +254,8 @@ export const errorWithValidationStepInvalidCredentials = makeStory(conf, {
   onUpdateComplete: (component) => {
     getFormControl(component, 'name').value = 'My token Name';
     getForm(component, 'config').requestSubmit();
+    getFormControl(component, 'password').value = 'my-fake-secret-password';
+    getFormControl(component, 'mfa').value = 'AAAAAA';
   },
 });
 
@@ -272,6 +274,7 @@ export const errorWithValidationStepInvalidCredentialsAndMfaDisabled = makeStory
   onUpdateComplete: (component) => {
     getFormControl(component, 'name').value = 'My token Name';
     getForm(component, 'config').requestSubmit();
+    getFormControl(component, 'password').value = 'my-fake-secret-password';
   },
 });
 
