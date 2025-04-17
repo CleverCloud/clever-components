@@ -18,7 +18,7 @@ defineSmartComponent({
     apiConfig: { type: Object },
   },
   /** @param {OnContextUpdateArgs} args */
-  onContextUpdate({ context, onEvent, updateComponent }) {
+  onContextUpdate({ component, context, onEvent, updateComponent }) {
     const { apiConfig } = context;
     const api = new Api(apiConfig);
 
@@ -48,10 +48,15 @@ defineSmartComponent({
         .catch(
           /** @param {Error & { response: Response }} error */
           (error) => {
-            if (error.response.status === 401) {
-              // TODO: add error message below Password & MFA
-              updateComponent('state', { type: 'idle', isMfaEnabled: true, hasCredentialsError: true });
-            }
+            // TODO: remove
+            updateComponent('state', {
+              type: 'created',
+              token: 'toto',
+            });
+            // if (error.response.status === 401) {
+            //   // TODO: add error message below Password & MFA
+            //   updateComponent('state', { type: 'idle', isMfaEnabled: true, hasCredentialsError: true });
+            // }
 
             // else, idle + toast?
             // TODO: toast

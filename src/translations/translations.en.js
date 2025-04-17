@@ -1495,7 +1495,7 @@ export const translations = {
   'cc-token-api-creation-form.config-step.form.label.name': `Name`,
   'cc-token-api-creation-form.config-step.main-heading': `Create a new API Token`,
   'cc-token-api-creation-form.config-step.nav.name': `Configuration`,
-  'cc-token-api-creation-form.copy-step.description': `Congratulations, your token is now created! Here is the key to keep so that you can use it. It will allow you to securely and selectively authorize applications to access your services`,
+  'cc-token-api-creation-form.copy-step.description': `Congratulations, your token is now created!`,
   'cc-token-api-creation-form.copy-step.form.label.token': `Your token`,
   'cc-token-api-creation-form.copy-step.link.api-token-list': `Go to the token list`,
   'cc-token-api-creation-form.copy-step.main-heading': `Your API token is now created`,

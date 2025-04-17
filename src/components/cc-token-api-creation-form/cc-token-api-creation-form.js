@@ -85,6 +85,11 @@ export class CcTokenApiCreationForm extends LitElement {
 
     /** @type {boolean} */
     this._isExpirationDateActive = false;
+
+    /** @type {boolean} */
+    this._isMfaEnabled = false;
+
+    this._stepsContentRef = createRef();
   }
 
   /**
@@ -220,10 +225,24 @@ export class CcTokenApiCreationForm extends LitElement {
     if (changedProperties.has('state') && this.state.type === 'created') {
       this._activeStep = 'copy';
     }
+
+    if (changedProperties.has('state') && this.state.type === 'idle') {
+      this._isMfaEnabled = this.state.isMfaEnabled;
+    }
+  }
+
+  updated() {
+    this._stepsContentRef?.value?.addEventListener('transitionend', (e) => {
+      if (e.propertyName === 'transform') {
+        this._stepsContentRef.value.querySelector('.steps-content__step-item--active cc-input-text').focus();
+      }
+    });
   }
 
   render() {
-    // TODO: i18n CLI
+    const hasCredentialsError = this.state.type === 'idle' ? this.state.hasCredentialsError : false;
+    const token = this.state.type === 'created' ? this.state.token : 'fake-secret-token';
+
     return html`
       <cc-block>
         <div slot="header-title">${this._getMainHeading(this._activeStep)}</div>
@@ -235,7 +254,13 @@ export class CcTokenApiCreationForm extends LitElement {
             : ''}
           ${this.state.type === 'loading' ? html` <cc-loader></cc-loader> ` : ''}
           ${this.state.type === 'idle' || this.state.type === 'creating' || this.state.type === 'created'
-            ? this._renderLoaded(this.state, this._activeStep)
+            ? this._renderLoaded({
+                isMfaEnabled: this._isMfaEnabled,
+                isWaiting: this.state.type === 'creating',
+                hasCredentialsError,
+                activeStep: this._activeStep,
+                token,
+              })
             : ''}
         </div>
         <cc-block-details slot="footer-left">
@@ -306,35 +331,45 @@ export class CcTokenApiCreationForm extends LitElement {
   }
 
   /**
-   * @param {TokenApiCreationFormState} state
-   * @param {TokenApiCreationStep} activeStep
+   * @param {object} _
+   * @param {boolean} _.isMfaEnabled
+   * @param {boolean} _.isWaiting
+   * @param {boolean} _.hasCredentialsError
+   * @param {string} _.token
+   * @param {TokenApiCreationStep} _.activeStep
    */
-  _renderLoaded(state, activeStep) {
+  _renderLoaded({ isMfaEnabled, isWaiting, hasCredentialsError, token, activeStep }) {
     // TODO: discuss error handling with Marion (maybe a message at the top could be better for such cases)
     // TODO: focus when active step changes (may be done in willUpdate)
     // TODO: focus when error message is set (credentials)
     // TODO: xplain why we use hidden forms (animation (if no display:none) & formData no need to restore so no need for moving all of these to state)
     return html`
-      <div class="step-content-slides">
-        <div class="step-content ${classMap({ 'step-content--out-left': activeStep !== 'config' })}">
-          ${state.type === 'idle' || state.type === 'creating' ? this._renderConfigurationForm() : ''}
-        </div>
+      <div class="steps-content" ${ref(this._stepsContentRef)}>
         <div
-          class="step-content ${classMap({
-            'step-content--out-left': activeStep === 'copy',
-            'step-content--out-right': activeStep === 'config',
+          class="steps-content__step-item ${classMap({
+            'steps-content__step-item--out-left': activeStep !== 'config',
           })}"
         >
-          ${state.type === 'idle' || state.type === 'creating'
-            ? this._renderValidationForm({
-                isMfaEnabled: state.isMfaEnabled,
-                isWaiting: state.type === 'creating',
-                hasCredentialsError: state.hasCredentialsError,
-              })
-            : ''}
+          ${this._renderConfigurationForm()}
         </div>
-        <div class="step-content ${classMap({ 'step-content--out-right': activeStep !== 'copy' })}">
-          ${state.type === 'created' ? this._renderCopyStep(state.token) : ''}
+        <div
+          class="steps-content__step-item ${classMap({
+            'steps-content__step-item--out-right': activeStep === 'config',
+            'steps-content__step-item--out-left': activeStep === 'copy',
+          })}"
+        >
+          ${this._renderValidationForm({
+            isMfaEnabled,
+            isWaiting,
+            hasCredentialsError,
+          })}
+        </div>
+        <div
+          class="steps-content__step-item ${classMap({
+            'steps-content__step-item--out-right': activeStep !== 'copy',
+          })}"
+        >
+          ${this._renderCopyStep(token)}
         </div>
       </div>
     `;
@@ -491,6 +526,9 @@ export class CcTokenApiCreationForm extends LitElement {
       css`
         :host {
           display: block;
+          /* stylelint-disable-next-line property-no-unknown */
+          interpolate-size: allow-keywords;
+
           --form-transition-duration: 300ms;
           --form-transition-timing: ease-in-out;
         }
@@ -546,6 +584,7 @@ export class CcTokenApiCreationForm extends LitElement {
           line-height: 1.3em;
           padding-block: 1em;
           position: relative;
+          transition: all 0.3s ease-in-out;
         }
 
         /* TODO: switch to border */
@@ -557,6 +596,7 @@ export class CcTokenApiCreationForm extends LitElement {
           left: 0;
           position: absolute;
           top: 0;
+          transition: all 0.3s ease-in-out;
           width: 100%;
         }
 
@@ -567,39 +607,59 @@ export class CcTokenApiCreationForm extends LitElement {
 
         .creation-steps-nav__step-item--active {
           color: var(--cc-color-text-primary);
+          transition: all 0.3s ease-in-out;
         }
 
         .creation-steps-nav__step-item--done {
           color: var(--cc-color-text-success);
+          transition: all 0.3s ease-in-out;
         }
 
-        .step-content {
+        .steps-content {
+          display: grid;
+          grid-template-areas: 'step';
+        }
+
+        .steps-content__step-item {
           display: block;
-          visibility: visible;
+          grid-area: step;
+          height: auto;
+          opacity: 1;
           transform: translateX(0);
-          transition: all 0.3s ease-in-out;
+          transition:
+            transform 0.3s ease-in-out,
+            opacity 0.3s ease-in-out,
+            height 0.3s ease-in-out;
+          visibility: visible;
         }
 
-        .step-content--out-left {
+        .steps-content__step-item--out-left {
+          height: 0;
+          opacity: 0;
+          transform: translateX(-110%);
+          transition:
+            transform 0.3s ease-in-out,
+            opacity 0.3s ease-in-out,
+            height 0.3s ease-in-out 0.3s,
+            visibility 0.3s ease-in-out 0.3s;
           visibility: hidden;
-          transform: translateX(-100%);
-          transition: all 0.3s ease-in-out;
         }
 
-        .step-content--out-right {
+        .steps-content__step-item--out-right {
+          height: 0;
+          opacity: 0;
+          transform: translateX(110%);
+          transition:
+            transform 0.3s ease-in-out,
+            opacity 0.3s ease-in-out,
+            height 0.3s ease-in-out 0.3s,
+            visibility 0.3s ease-in-out 0.3s;
           visibility: hidden;
-          transform: translateX(100%);
-          transition: all 0.3s ease-in-out;
         }
 
         .form {
           display: grid;
           gap: 1.5em;
-        }
-
-        .form--hidden {
-          visibility: hidden;
-          transform: translateX(100%);
         }
 
         .form__expiration {
