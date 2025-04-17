@@ -29,6 +29,7 @@ const conf = {
 export const defaultStory = makeStory(conf, {
   items: [
     {
+      appId: 'app_a5a437c5-b9c7-41c2-97f3-fc6432a72ec0',
       /** @type {DomainManagementListStateLoaded} */
       domainListState: {
         type: 'loaded',
