@@ -1,38 +1,19 @@
-import { dispatchCustomEvent } from '../../lib/events.js';
+import { DateFormatter } from '../../lib/date/date-formatter.js';
+import { shiftDateField } from '../../lib/date/date-utils.js';
 import { makeStory, storyWait } from '../../stories/lib/make-story.js';
 import './cc-token-api-creation-form.js';
 
-/**
- * @param {CcTokenApiCreationForm} component
- * @param {'duration'|'date'|'name'|'password'|'mfa'} formControlName
- */
-function getFormControl(component, formControlName) {
-  switch (formControlName) {
-    case 'duration':
-      return /** @type {CcSelect} */ (component.shadowRoot.querySelector('[name="expiration-duration"]'));
-    case 'date':
-      return /** @type {CcInputDate} */ (component.shadowRoot.querySelector('[name="expiration-date"]'));
-    case 'name':
-      return /** @type {CcInputText} */ (component.shadowRoot.querySelector('[name="name"]'));
-    case 'password':
-      return /** @type {CcInputText} */ (component.shadowRoot.querySelector('[name="password"]'));
-    case 'mfa':
-      return /** @type {CcInputText} */ (component.shadowRoot.querySelector('[name="mfa-code"]'));
-  }
-}
+const dateFormatter = new DateFormatter('datetime-iso', 'local');
+const TODAY = new Date(Date.now());
 
 /**
  * @param {CcTokenApiCreationForm} component
- * @param {'config'|'validation'} formName
+ * @param {'configuration-form'|'validation-form'} formName
+ * @returns {HTMLFormElement}
  */
-function getForm(component, formName) {
-  switch (formName) {
-    case 'config':
-      return /** @type {HTMLFormElement} */ (component.shadowRoot.querySelector('form[name="config-form"]'));
-    case 'validation':
-      return /** @type {HTMLFormElement} */ (component.shadowRoot.querySelector('form[name="validation-form"]'));
-  }
-}
+const getForm = function (component, formName) {
+  return component.shadowRoot.querySelector(`form[name=${formName}]`);
+};
 
 export default {
   tags: ['autodocs'],
@@ -57,9 +38,9 @@ export const defaultStory = makeStory(conf, {
   items: [
     {
       state: {
-        type: 'idle',
+        type: 'loaded',
+        activeStep: 'configuration',
         isMfaEnabled: true,
-        hasCredentialsError: false,
       },
     },
   ],
@@ -81,16 +62,12 @@ export const dataLoadedWithValidationStep = makeStory(conf, {
   items: [
     {
       state: {
-        type: 'idle',
+        type: 'loaded',
+        activeStep: 'validation',
         isMfaEnabled: true,
-        hasCredentialsError: false,
       },
     },
   ],
-  onUpdateComplete: (component) => {
-    getFormControl(component, 'name').value = 'My token Name';
-    getForm(component, 'config').requestSubmit();
-  },
 });
 
 export const dataLoadedWithApiTokenCreated = makeStory(conf, {
@@ -98,8 +75,10 @@ export const dataLoadedWithApiTokenCreated = makeStory(conf, {
   items: [
     {
       state: {
-        type: 'created',
+        type: 'loaded',
+        activeStep: 'created',
         token: 'this-is-my-super-secret-token-that-should-be-copied',
+        isMfaEnabled: true,
       },
     },
   ],
@@ -110,18 +89,13 @@ export const waitingWithCreatingToken = makeStory(conf, {
   items: [
     {
       state: {
-        type: 'creating',
+        type: 'loaded',
+        activeStep: 'validation',
+        isWaiting: true,
         isMfaEnabled: true,
-        hasCredentialsError: false,
       },
     },
   ],
-  onUpdateComplete: (component) => {
-    getFormControl(component, 'name').value = 'My token Name';
-    getForm(component, 'config').requestSubmit();
-    getFormControl(component, 'password').value = 'my-fake-secret-password';
-    getFormControl(component, 'mfa').value = '294386';
-  },
 });
 
 export const errorWithLoading = makeStory(conf, {
@@ -140,20 +114,15 @@ export const errorWithConfigStepEmptyFormControls = makeStory(conf, {
   items: [
     {
       state: {
-        type: 'idle',
+        type: 'loaded',
+        activeStep: 'configuration',
         isMfaEnabled: true,
-        hasCredentialsError: false,
       },
     },
   ],
+  /** @param {CcTokenApiCreationForm} component */
   onUpdateComplete: (component) => {
-    const expirationDurationElement = getFormControl(component, 'duration');
-    expirationDurationElement.value = 'custom';
-    dispatchCustomEvent(expirationDurationElement, 'input', 'custom');
-    expirationDurationElement.updateComplete.then(() => {
-      getFormControl(component, 'date').value = '';
-      getForm(component, 'config').requestSubmit();
-    });
+    getForm(component, 'configuration-form').requestSubmit();
   },
 });
 
@@ -162,21 +131,20 @@ export const errorWithConfigStepInvalidDateFormat = makeStory(conf, {
   items: [
     {
       state: {
-        type: 'idle',
+        type: 'loaded',
+        values: {
+          name: 'My API token name',
+          expirationDuration: 'custom',
+          expirationDate: 'toto',
+        },
+        activeStep: 'configuration',
         isMfaEnabled: true,
-        hasCredentialsError: false,
       },
     },
   ],
-  onUpdateComplete: async (component) => {
-    const expirationDurationElement = getFormControl(component, 'duration');
-    const expirationDateElement = getFormControl(component, 'date');
-    expirationDurationElement.value = 'custom';
-    dispatchCustomEvent(expirationDurationElement, 'input', expirationDurationElement.value);
-    await expirationDurationElement.updateComplete;
-    expirationDateElement.value = 'toto';
-    await expirationDateElement.updateComplete;
-    getForm(component, 'config').requestSubmit();
+  /** @param {CcTokenApiCreationForm} component */
+  onUpdateComplete: (component) => {
+    getForm(component, 'configuration-form').requestSubmit();
   },
 });
 
@@ -185,22 +153,42 @@ export const errorWithConfigStepDateMin = makeStory(conf, {
   items: [
     {
       state: {
-        type: 'idle',
+        type: 'loaded',
+        activeStep: 'configuration',
+        values: {
+          name: 'My API token name',
+          expirationDuration: 'custom',
+          expirationDate: '2023-12-01 14:02:03',
+        },
         isMfaEnabled: true,
-        hasCredentialsError: false,
       },
     },
   ],
-  onUpdateComplete: async (component) => {
-    getFormControl(component, 'name').value = 'My token name';
-    const expirationDurationElement = getFormControl(component, 'duration');
-    const expirationDateElement = getFormControl(component, 'date');
-    expirationDurationElement.value = 'custom';
-    dispatchCustomEvent(expirationDurationElement, 'input', expirationDurationElement.value);
-    await expirationDurationElement.updateComplete;
-    expirationDateElement.value = '2023-12-01 14:02:03';
-    await expirationDateElement.updateComplete;
-    getForm(component, 'config').requestSubmit();
+  /** @param {CcTokenApiCreationForm} component */
+  onUpdateComplete: (component) => {
+    getForm(component, 'configuration-form').requestSubmit();
+  },
+});
+
+export const errorWithConfigStepDateMax = makeStory(conf, {
+  /** @type {Partial<CcTokenApiCreationForm>[]} */
+  items: [
+    {
+      state: {
+        type: 'loaded',
+        activeStep: 'configuration',
+        values: {
+          name: 'My API token name',
+          expirationDuration: 'custom',
+          expirationDate: dateFormatter.format(shiftDateField(TODAY, 'Y', 2)),
+        },
+        isMfaEnabled: true,
+      },
+    },
+  ],
+  /** @param {CcTokenApiCreationForm} component */
+  onUpdateComplete: (component) => {
+    getForm(component, 'configuration-form').requestSubmit();
   },
 });
 
@@ -209,16 +197,15 @@ export const errorWithValidationStepEmptyFormControls = makeStory(conf, {
   items: [
     {
       state: {
-        type: 'idle',
+        type: 'loaded',
+        activeStep: 'validation',
         isMfaEnabled: true,
-        hasCredentialsError: false,
       },
     },
   ],
+  /** @param {CcTokenApiCreationForm} component */
   onUpdateComplete: (component) => {
-    getFormControl(component, 'name').value = 'My token Name';
-    getForm(component, 'config').requestSubmit();
-    getForm(component, 'validation').requestSubmit();
+    getForm(component, 'validation-form').requestSubmit();
   },
 });
 
@@ -227,54 +214,51 @@ export const errorWithValidationStepEmptyFormControlsAndMfaDisabled = makeStory(
   items: [
     {
       state: {
-        type: 'idle',
+        type: 'loaded',
+        activeStep: 'validation',
         isMfaEnabled: false,
-        hasCredentialsError: false,
       },
     },
   ],
+  /** @param {CcTokenApiCreationForm} component */
   onUpdateComplete: (component) => {
-    getFormControl(component, 'name').value = 'My token Name';
-    getForm(component, 'config').requestSubmit();
-    getForm(component, 'validation').requestSubmit();
+    getForm(component, 'validation-form').requestSubmit();
   },
 });
 
-export const errorWithValidationStepInvalidCredentials = makeStory(conf, {
+export const errorWithValidationStepInvalidPassword = makeStory(conf, {
   /** @type {Partial<CcTokenApiCreationForm>[]} */
   items: [
     {
       state: {
-        type: 'idle',
+        type: 'loaded',
+        activeStep: 'validation',
         isMfaEnabled: true,
-        hasCredentialsError: true,
+        credentialsError: 'password',
       },
     },
   ],
+  /** @param {CcTokenApiCreationForm} component */
   onUpdateComplete: (component) => {
-    getFormControl(component, 'name').value = 'My token Name';
-    getForm(component, 'config').requestSubmit();
-    getFormControl(component, 'password').value = 'my-fake-secret-password';
-    getFormControl(component, 'mfa').value = 'AAAAAA';
+    getForm(component, 'validation-form').requestSubmit();
   },
 });
 
-// TODO: proper error message specific to this story
-export const errorWithValidationStepInvalidCredentialsAndMfaDisabled = makeStory(conf, {
+export const errorWithValidationStepInvalid2faCode = makeStory(conf, {
   /** @type {Partial<CcTokenApiCreationForm>[]} */
   items: [
     {
       state: {
-        type: 'idle',
-        isMfaEnabled: false,
-        hasCredentialsError: true,
+        type: 'loaded',
+        activeStep: 'validation',
+        isMfaEnabled: true,
+        credentialsError: 'mfaCode',
       },
     },
   ],
+  /** @param {CcTokenApiCreationForm} component */
   onUpdateComplete: (component) => {
-    getFormControl(component, 'name').value = 'My token Name';
-    getForm(component, 'config').requestSubmit();
-    getFormControl(component, 'password').value = 'my-fake-secret-password';
+    getForm(component, 'validation-form').requestSubmit();
   },
 });
 
@@ -287,9 +271,9 @@ export const simulationLoadingSuccess = makeStory(conf, {
       /** @param {CcTokenApiCreationForm[]} components */
       ([component]) => {
         component.state = {
-          type: 'idle',
+          type: 'loaded',
+          activeStep: 'configuration',
           isMfaEnabled: true,
-          hasCredentialsError: false,
         };
       },
     ),
@@ -317,9 +301,9 @@ export const simulationsCreatingWithSuccess = makeStory(conf, {
   items: [
     {
       state: {
-        type: 'idle',
+        type: 'loaded',
+        activeStep: 'configuration',
         isMfaEnabled: true,
-        hasCredentialsError: false,
       },
     },
   ],
@@ -328,46 +312,13 @@ export const simulationsCreatingWithSuccess = makeStory(conf, {
       2000,
       /** @param {CcTokenApiCreationForm[]} components */
       ([component]) => {
-        getFormControl(component, 'name').value = 'My API Token';
-      },
-    ),
-    storyWait(
-      2000,
-      /** @param {CcTokenApiCreationForm[]} components */
-      ([component]) => {
-        getFormControl(component, 'duration').value = 'thirty-days';
-        dispatchCustomEvent(getFormControl(component, 'duration'), 'input', 'thirty-days');
-      },
-    ),
-    storyWait(
-      2000,
-      /** @param {CcTokenApiCreationForm[]} components */
-      ([component]) => {
-        getForm(component, 'config').requestSubmit();
-      },
-    ),
-    storyWait(
-      2000,
-      /** @param {CcTokenApiCreationForm[]} components */
-      ([component]) => {
-        getFormControl(component, 'password').value = 'my-secret-password';
-      },
-    ),
-    storyWait(
-      2000,
-      /** @param {CcTokenApiCreationForm[]} components */
-      ([component]) => {
-        getFormControl(component, 'mfa').value = '123456';
-      },
-    ),
-    storyWait(
-      2000,
-      /** @param {CcTokenApiCreationForm[]} components */
-      ([component]) => {
         component.state = {
-          type: 'creating',
+          type: 'loaded',
+          activeStep: 'configuration',
           isMfaEnabled: true,
-          hasCredentialsError: false,
+          values: {
+            name: 'My Token',
+          },
         };
       },
     ),
@@ -376,8 +327,111 @@ export const simulationsCreatingWithSuccess = makeStory(conf, {
       /** @param {CcTokenApiCreationForm[]} components */
       ([component]) => {
         component.state = {
-          type: 'created',
-          token: 'simulated-secret-token-mfa-enabled-12345',
+          type: 'loaded',
+          activeStep: 'configuration',
+          isMfaEnabled: true,
+          values: {
+            name: 'My Token',
+            description: 'My Token Description',
+          },
+        };
+      },
+    ),
+    storyWait(
+      2000,
+      /** @param {CcTokenApiCreationForm[]} components */
+      ([component]) => {
+        component.state = {
+          type: 'loaded',
+          activeStep: 'configuration',
+          isMfaEnabled: true,
+          values: {
+            name: 'My Token',
+            description: 'My Token Description',
+            expirationDuration: 'seven-days',
+          },
+        };
+      },
+    ),
+    storyWait(
+      2000,
+      /** @param {CcTokenApiCreationForm[]} components */
+      ([component]) => {
+        component.state = {
+          type: 'loaded',
+          activeStep: 'validation',
+          isMfaEnabled: true,
+          values: {
+            name: 'My Token',
+            description: 'My Token Description',
+            expirationDuration: 'seven-days',
+          },
+        };
+      },
+    ),
+    storyWait(
+      2000,
+      /** @param {CcTokenApiCreationForm[]} components */
+      ([component]) => {
+        component.state = {
+          type: 'loaded',
+          activeStep: 'validation',
+          isMfaEnabled: true,
+          values: {
+            name: 'My Token',
+            description: 'My Token Description',
+            expirationDuration: 'seven-days',
+            password: 'my-secret-password',
+          },
+        };
+      },
+    ),
+    storyWait(
+      2000,
+      /** @param {CcTokenApiCreationForm[]} components */
+      ([component]) => {
+        component.state = {
+          type: 'loaded',
+          activeStep: 'validation',
+          isMfaEnabled: true,
+          values: {
+            name: 'My Token',
+            description: 'My Token Description',
+            expirationDuration: 'seven-days',
+            password: 'my-secret-password',
+            mfaCode: '259384',
+          },
+        };
+      },
+    ),
+    storyWait(
+      2000,
+      /** @param {(CcTokenApiCreationForm & { type: 'loaded', activeStep: 'validation' })[]} components */
+      ([component]) => {
+        getForm(component, 'validation-form').requestSubmit();
+        component.state = {
+          type: 'creating',
+          activeStep: 'validation',
+          values: {
+            name: 'My Token',
+            description: 'My Token Description',
+            expirationDuration: 'seven-days',
+            password: 'my-secret-password',
+            mfaCode: '259384',
+          },
+          isMfaEnabled: true,
+        };
+      },
+    ),
+    storyWait(
+      2000,
+      /** @param {CcTokenApiCreationForm[]} components */
+      ([component]) => {
+        component.state = {
+          type: 'loaded',
+          activeStep: 'created',
+          isMfaEnabled: true,
+          token: 'my-fake-secret-token',
         };
       },
     ),
@@ -389,9 +443,9 @@ export const simulationWithAllPossibleFormErrors = makeStory(conf, {
   items: [
     {
       state: {
-        type: 'idle',
+        type: 'loaded',
+        activeStep: 'configuration',
         isMfaEnabled: true,
-        hasCredentialsError: false,
       },
     },
   ],
@@ -400,93 +454,13 @@ export const simulationWithAllPossibleFormErrors = makeStory(conf, {
       2000,
       /** @param {CcTokenApiCreationForm[]} components */
       ([component]) => {
-        const expirationDurationElement = getFormControl(component, 'duration');
-        expirationDurationElement.value = 'custom';
-        dispatchCustomEvent(expirationDurationElement, 'input', expirationDurationElement.value);
-      },
-    ),
-    storyWait(
-      2000,
-      /** @param {CcTokenApiCreationForm[]} components */
-      ([component]) => {
-        getFormControl(component, 'date').value = '';
-      },
-    ),
-    storyWait(
-      2000,
-      /** @param {CcTokenApiCreationForm[]} components */
-      ([component]) => {
-        getForm(component, 'config').requestSubmit();
-      },
-    ),
-    storyWait(
-      2000,
-      /** @param {CcTokenApiCreationForm[]} components */
-      ([component]) => {
-        getFormControl(component, 'name').value = 'My Corrected Token';
-        getFormControl(component, 'date').value = 'invalid format';
-      },
-    ),
-    storyWait(
-      2000,
-      /** @param {CcTokenApiCreationForm[]} components */
-      ([component]) => {
-        getForm(component, 'config').requestSubmit();
-      },
-    ),
-    storyWait(
-      2000,
-      /** @param {CcTokenApiCreationForm[]} components */
-      ([component]) => {
-        getFormControl(component, 'date').value = '2023-12-20 14:00:00';
-      },
-    ),
-    storyWait(
-      2000,
-      /** @param {CcTokenApiCreationForm[]} components */
-      ([component]) => {
-        getForm(component, 'config').requestSubmit();
-      },
-    ),
-    storyWait(
-      2000,
-      /** @param {CcTokenApiCreationForm[]} components */
-      ([component]) => {
-        const expirationDurationElement = getFormControl(component, 'duration');
-        expirationDurationElement.value = 'one-year';
-        dispatchCustomEvent(expirationDurationElement, 'input', expirationDurationElement.value);
-      },
-    ),
-    storyWait(
-      2000,
-      /** @param {CcTokenApiCreationForm[]} components */
-      ([component]) => {
-        getForm(component, 'config').requestSubmit();
-      },
-    ),
-    storyWait(
-      2000,
-      /** @param {CcTokenApiCreationForm[]} components */
-      ([component]) => {
-        getForm(component, 'validation').requestSubmit();
-      },
-    ),
-    storyWait(
-      2000,
-      /** @param {CcTokenApiCreationForm[]} components */
-      ([component]) => {
-        getFormControl(component, 'password').value = 'my-fake-secret-password';
-        getFormControl(component, 'mfa').value = 'AAAAAAA';
-      },
-    ),
-    storyWait(
-      2000,
-      /** @param {CcTokenApiCreationForm[]} components */
-      ([component]) => {
         component.state = {
-          type: 'creating',
+          type: 'loaded',
+          activeStep: 'configuration',
+          values: {
+            expirationDuration: 'custom',
+          },
           isMfaEnabled: true,
-          hasCredentialsError: false,
         };
       },
     ),
@@ -495,9 +469,253 @@ export const simulationWithAllPossibleFormErrors = makeStory(conf, {
       /** @param {CcTokenApiCreationForm[]} components */
       ([component]) => {
         component.state = {
-          type: 'idle',
+          type: 'loaded',
+          activeStep: 'configuration',
+          values: {
+            expirationDuration: 'custom',
+            expirationDate: '',
+          },
           isMfaEnabled: true,
-          hasCredentialsError: true,
+        };
+      },
+    ),
+    storyWait(
+      2000,
+      /** @param {CcTokenApiCreationForm[]} components */
+      ([component]) => {
+        getForm(component, 'configuration-form').requestSubmit();
+      },
+    ),
+    storyWait(
+      2000,
+      /** @param {CcTokenApiCreationForm[]} components */
+      ([component]) => {
+        component.state = {
+          type: 'loaded',
+          activeStep: 'configuration',
+          values: {
+            name: 'My API token name',
+            expirationDuration: 'custom',
+            expirationDate: 'invalid format',
+          },
+          isMfaEnabled: true,
+        };
+      },
+    ),
+    storyWait(
+      2000,
+      /** @param {CcTokenApiCreationForm[]} components */
+      ([component]) => {
+        getForm(component, 'configuration-form').requestSubmit();
+      },
+    ),
+    storyWait(
+      2000,
+      /** @param {CcTokenApiCreationForm[]} components */
+      ([component]) => {
+        component.state = {
+          type: 'loaded',
+          activeStep: 'configuration',
+          values: {
+            name: 'My API token name',
+            expirationDuration: 'custom',
+            expirationDate: '2023-12-20 14:00:00',
+          },
+          isMfaEnabled: true,
+        };
+      },
+    ),
+    storyWait(
+      2000,
+      /** @param {CcTokenApiCreationForm[]} components */
+      ([component]) => {
+        getForm(component, 'configuration-form').requestSubmit();
+      },
+    ),
+    storyWait(
+      2000,
+      /** @param {CcTokenApiCreationForm[]} components */
+      ([component]) => {
+        component.state = {
+          type: 'loaded',
+          activeStep: 'configuration',
+          values: {
+            name: 'My API token name',
+            expirationDuration: 'custom',
+            expirationDate: dateFormatter.format(shiftDateField(TODAY, 'Y', 2)),
+          },
+          isMfaEnabled: true,
+        };
+      },
+    ),
+    storyWait(
+      2000,
+      /** @param {CcTokenApiCreationForm[]} components */
+      ([component]) => {
+        getForm(component, 'configuration-form').requestSubmit();
+      },
+    ),
+    storyWait(
+      2000,
+      /** @param {CcTokenApiCreationForm[]} components */
+      ([component]) => {
+        component.state = {
+          type: 'loaded',
+          activeStep: 'configuration',
+          values: {
+            name: 'My API token name',
+            expirationDuration: 'one-year',
+          },
+          isMfaEnabled: true,
+        };
+      },
+    ),
+    storyWait(
+      2000,
+      /** @param {CcTokenApiCreationForm[]} components */
+      ([component]) => {
+        getForm(component, 'configuration-form').requestSubmit();
+        component.state = {
+          type: 'loaded',
+          activeStep: 'validation',
+          values: {
+            name: 'My API token name',
+            expirationDuration: 'one-year',
+          },
+          isMfaEnabled: true,
+        };
+      },
+    ),
+    storyWait(
+      2000,
+      /** @param {CcTokenApiCreationForm[]} components */
+      ([component]) => {
+        component.state = {
+          type: 'loaded',
+          activeStep: 'validation',
+          values: {
+            name: 'My API token name',
+            expirationDuration: 'one-year',
+            password: 'my-fake-secret-password',
+            mfaCode: 'AAAAAAA',
+          },
+          isMfaEnabled: true,
+        };
+      },
+    ),
+    storyWait(
+      2000,
+      /** @param {CcTokenApiCreationForm[]} components */
+      ([component]) => {
+        component.state = {
+          type: 'creating',
+          activeStep: 'validation',
+          values: {
+            name: 'My API token name',
+            expirationDuration: 'one-year',
+            password: 'my-fake-secret-password',
+            mfaCode: 'AAAAAAA',
+          },
+          isMfaEnabled: true,
+        };
+      },
+    ),
+    storyWait(
+      2000,
+      /** @param {CcTokenApiCreationForm[]} components */
+      ([component]) => {
+        component.state = {
+          type: 'loaded',
+          activeStep: 'validation',
+          values: {
+            name: 'My API token name',
+            expirationDuration: 'one-year',
+            password: 'my-fake-secret-password',
+            mfaCode: 'AAAAAAA',
+          },
+          credentialsError: 'password',
+          isMfaEnabled: true,
+        };
+      },
+    ),
+    storyWait(
+      2000,
+      /** @param {CcTokenApiCreationForm[]} components */
+      ([component]) => {
+        component.state = {
+          type: 'creating',
+          activeStep: 'validation',
+          values: {
+            name: 'My API token name',
+            expirationDuration: 'one-year',
+            password: 'my-fake-secret-password-corrected',
+            mfaCode: 'AAAAAAA',
+          },
+          isMfaEnabled: true,
+        };
+      },
+    ),
+    storyWait(
+      2000,
+      /** @param {CcTokenApiCreationForm[]} components */
+      ([component]) => {
+        component.state = {
+          type: 'loaded',
+          activeStep: 'validation',
+          values: {
+            name: 'My API token name',
+            expirationDuration: 'one-year',
+            password: 'my-fake-secret-password-corrected',
+            mfaCode: 'AAAAAAA',
+          },
+          isMfaEnabled: true,
+          credentialsError: 'mfaCode',
+        };
+      },
+    ),
+    storyWait(
+      2000,
+      /** @param {CcTokenApiCreationForm[]} components */
+      ([component]) => {
+        component.state = {
+          type: 'creating',
+          activeStep: 'validation',
+          values: {
+            name: 'My API token name',
+            expirationDuration: 'one-year',
+            password: 'my-fake-secret-password-corrected',
+            mfaCode: 'AAAAAAA',
+          },
+          isMfaEnabled: true,
+        };
+      },
+    ),
+    storyWait(
+      2000,
+      /** @param {CcTokenApiCreationForm[]} components */
+      ([component]) => {
+        component.state = {
+          type: 'loaded',
+          activeStep: 'validation',
+          values: {
+            name: 'My API token name',
+            expirationDuration: 'one-year',
+            password: 'my-fake-secret-password-corrected',
+            mfaCode: '293832',
+          },
+          isMfaEnabled: true,
+        };
+      },
+    ),
+    storyWait(
+      2000,
+      /** @param {CcTokenApiCreationForm[]} components */
+      ([component]) => {
+        component.state = {
+          type: 'loaded',
+          activeStep: 'created',
+          isMfaEnabled: true,
+          token: 'my-fake-secret-token',
         };
       },
     ),

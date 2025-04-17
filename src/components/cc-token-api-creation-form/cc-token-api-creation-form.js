@@ -27,7 +27,8 @@ const dateFormatter = new DateFormatter('datetime-iso', 'local');
 
 /**
  * @typedef {import('./cc-token-api-creation-form.types.js').TokenApiCreationFormState} TokenApiCreationFormState
- * @typedef {import('./cc-token-api-creation-form.types.js').TokenApiCreationStep} TokenApiCreationStep
+ * @typedef {import('./cc-token-api-creation-form.types.js').TokenApiCreationFormStateLoaded} TokenApiCreationFormStateLoaded
+ * @typedef {import('./cc-token-api-creation-form.types.js').TokenApiCreationFormStateLoadedValidation} TokenApiCreationFormStateLoadedValidation
  * @typedef {import('./cc-token-api-creation-form.types.js').ExpirationDuration} ExpirationDuration
  * @typedef {import('../cc-select/cc-select.js').CcSelect} CcSelect
  * @typedef {import('../../lib/form/form.types.js').FormDataMap} FormDataMap
@@ -35,12 +36,25 @@ const dateFormatter = new DateFormatter('datetime-iso', 'local');
  * @typedef {import('lit/directives/ref.js').Ref<HTMLFormElement>} HTMLFormElementRef
  */
 
+/**
+ * A component that provides a multi-step form for creating API tokens.
+ *
+ * This component guides users through a three-step process:
+ * 1. Configuration - Set token name, description, and expiration date
+ * 2. Validation - Authenticate with password and MFA (if enabled)
+ * 3. Copy - View and copy the newly created token
+ *
+ * The component manages state transitions, form validation, and visual feedback
+ * throughout the token creation process.
+ *
+ * @fires {CustomEvent<'configuration'|'validate'>} cc-token-api-creation-form:step-change - When a step navigation occurs
+ * @fires {CustomEvent<{name: string, description?: string, expirationDate: string, password: string, mfaCode?: string}>} cc-token-api-creation-form:api-key-create - When the API token creation is requested
+ */
 export class CcTokenApiCreationForm extends LitElement {
   static get properties() {
     return {
       apiTokenListHref: { type: String, attribute: 'api-token-list-href' },
       state: { type: Object },
-      _activeStep: { type: String, state: true },
       _expirationDate: { type: Object, state: true },
       _expirationDuration: { type: String, state: true },
       _isExpirationDateActive: { type: Boolean, state: true },
@@ -56,13 +70,10 @@ export class CcTokenApiCreationForm extends LitElement {
     /** @type {TokenApiCreationFormState} Sets the state of the component. */
     this.state = { type: 'loading' };
 
-    /** @type {TokenApiCreationStep} */
-    this._activeStep = 'config';
-
     /** @type {HTMLFormElementRef} */
     this._configFormRef = createRef();
 
-    /** @type {FormDataMap|null} */
+    /** @type {{ name: string, description?: string, 'expiration-duration': ExpirationDuration, 'expiration-date': string }|null} */
     this._configFormData = null;
 
     this._expirationDateErrorMessages = {
@@ -93,32 +104,36 @@ export class CcTokenApiCreationForm extends LitElement {
   }
 
   /**
-   * @param {TokenApiCreationStep} activeStep
+   * @param {TokenApiCreationFormStateLoaded['activeStep']} activeStep
    * @returns {string}
    */
   _getMainHeading(activeStep) {
     switch (activeStep) {
-      case 'config':
+      case 'configuration':
         return i18n('cc-token-api-creation-form.config-step.main-heading');
-      case 'validate':
+      case 'validation':
         return i18n('cc-token-api-creation-form.validation-step.main-heading');
-      case 'copy':
+      case 'created':
         return i18n('cc-token-api-creation-form.copy-step.main-heading');
+      default:
+        return null;
     }
   }
 
   /**
-   * @param {TokenApiCreationStep} activeStep
+   * @param {TokenApiCreationFormStateLoaded['activeStep']} activeStep
    * @returns {string}
    */
   _getDescription(activeStep) {
     switch (activeStep) {
-      case 'config':
+      case 'configuration':
         return i18n('cc-token-api-creation-form.config-step.description');
-      case 'validate':
+      case 'validation':
         return i18n('cc-token-api-creation-form.validation-step.description');
-      case 'copy':
+      case 'created':
         return i18n('cc-token-api-creation-form.copy-step.description');
+      default:
+        return null;
     }
   }
 
@@ -179,56 +194,59 @@ export class CcTokenApiCreationForm extends LitElement {
   /** @param {Event} event */
   _onConfigLinkClick(event) {
     event.preventDefault();
-    this._activeStep = 'config';
+    dispatchCustomEvent(this, 'step-change', 'configuration');
   }
 
-  /** @param {FormDataMap} formData */
+  /** @param {{ name: string, description?: string, 'expiration-duration': ExpirationDuration, 'expiration-date': string }} formData */
   _onConfigFormSubmit(formData) {
     this._configFormData = formData;
-    this._activeStep = 'validate';
+    dispatchCustomEvent(this, 'step-change', 'validate');
   }
 
-  /** @param {FormDataMap} formData */
+  /** @param {{ password: string, 'mfa-code': string}} formData */
   _onValidateFormSubmit(formData) {
-    if (this.state.type !== 'idle') {
+    if (this.state.type !== 'loaded' || this.state.activeStep !== 'validation') {
       return;
     }
 
     // clean up potential error messages related to credentials
     this.state = {
       ...this.state,
-      hasCredentialsError: false,
+      values: {
+        name: this._configFormData.name,
+        description: this._configFormData.description,
+        expirationDuration: this._configFormData['expiration-duration'],
+        expirationDate: this._configFormData['expiration-date'],
+        password: formData.password,
+        mfaCode: formData['mfa-code'],
+      },
+      credentialsError: null,
     };
 
+    // TODO: change to camelCase
     dispatchCustomEvent(this, 'api-key-create', {
-      name: this._configFormData.name,
-      description: this._configFormData.description,
-      expirationDate: this._configFormData['expiration-date'],
-      password: formData.password,
-      mfaCode: formData['mfa-code'],
+      name: this.state.values.name,
+      description: this.state.values.description,
+      expirationDate: this.state.values.expirationDate,
+      password: this.state.values.password,
+      mfaCode: this.state.values.mfaCode,
     });
   }
 
   /** @param {CustomEvent<ExpirationDuration>} event */
   _onExpirationDurationInput({ detail: value }) {
-    this._expirationDuration = value;
-
-    if (value !== 'custom') {
-      this._expirationDate = this._getExpirationDate(value);
-    }
-
+    this.state.values.expirationDuration = value;
     this._isExpirationDateActive = value === 'custom';
   }
 
   /** @param {CcTokenApiCreationFormPropertyValues} changedProperties */
   willUpdate(changedProperties) {
-    if (changedProperties.has('state') && this.state.type === 'created') {
-      this._activeStep = 'copy';
+    if (changedProperties.has('state') && this.state.type === 'loaded') {
+      this.state.values.expirationDate = this._getExpirationDate(this.state.values.expirationDuration);
     }
-
-    if (changedProperties.has('state') && this.state.type === 'idle') {
-      this._isMfaEnabled = this.state.isMfaEnabled;
-    }
+    // if (changedProperties.has('state') && this.state.type === 'idle') {
+    //   this._isMfaEnabled = this.state.isMfaEnabled;
+    // }
   }
 
   updated() {
@@ -240,25 +258,30 @@ export class CcTokenApiCreationForm extends LitElement {
   }
 
   render() {
-    const hasCredentialsError = this.state.type === 'idle' ? this.state.hasCredentialsError : false;
-    const token = this.state.type === 'created' ? this.state.token : 'fake-secret-token';
+    const activeStep =
+      this.state.type === 'loaded' || this.state.type === 'creating' ? this.state.activeStep : 'configuration';
+    const isMfaEnabled =
+      this.state.type === 'loaded' || this.state.type === 'creating' ? this.state.isMfaEnabled : true;
+    const credentialsError =
+      this.state.type === 'loaded' && this.state.activeStep === 'validation' ? this.state.credentialsError : null;
+    const token = this.state.type === 'loaded' && this.state.activeStep === 'created' ? this.state.token : '';
 
     return html`
       <cc-block>
-        <div slot="header-title">${this._getMainHeading(this._activeStep)}</div>
+        <div slot="header-title">${this._getMainHeading(activeStep)}</div>
         <div slot="content">
-          <p class="block-intro">${this._getDescription(this._activeStep)}</p>
-          ${this._renderStepsNav({ activeStep: this._activeStep, isWaiting: this.state.type === 'creating' })}
+          <p class="block-intro">${this._getDescription(activeStep)}</p>
+          ${this._renderStepsNav(activeStep)}
           ${this.state.type === 'error'
             ? html`<cc-notice intent="warning" message="${i18n('cc-token-api-creation-form.error')}"></cc-notice>`
             : ''}
-          ${this.state.type === 'loading' ? html` <cc-loader></cc-loader> ` : ''}
-          ${this.state.type === 'idle' || this.state.type === 'creating' || this.state.type === 'created'
-            ? this._renderLoaded({
-                isMfaEnabled: this._isMfaEnabled,
+          ${this.state.type !== 'error'
+            ? this._renderMainContent({
+                skeleton: this.state.type === 'loading',
+                activeStep,
+                isMfaEnabled,
                 isWaiting: this.state.type === 'creating',
-                hasCredentialsError,
-                activeStep: this._activeStep,
+                credentialsError,
                 token,
               })
             : ''}
@@ -276,30 +299,28 @@ export class CcTokenApiCreationForm extends LitElement {
   }
 
   /**
-   * @param {object} _
-   * @param {TokenApiCreationStep} _.activeStep
-   * @param {boolean} _.isWaiting
+   * @param {TokenApiCreationFormStateLoaded['activeStep']} activeStep
    */
-  _renderStepsNav({ activeStep, isWaiting }) {
+  _renderStepsNav(activeStep) {
     const steps = /** @type {const} */ ([
       {
         name: 'config',
         text: i18n('cc-token-api-creation-form.config-step.nav.name'),
-        isActive: activeStep === 'config',
-        isClickable: activeStep === 'validate' && !isWaiting,
-        isDone: activeStep !== 'config',
+        isActive: activeStep === 'configuration',
+        isClickable: activeStep === 'validation',
+        isDone: activeStep !== 'configuration',
       },
       {
         name: 'validate',
         text: i18n('cc-token-api-creation-form.validation-step.nav.name'),
-        isActive: activeStep === 'validate',
+        isActive: activeStep === 'validation',
         isClickable: false,
-        isDone: activeStep === 'copy',
+        isDone: activeStep === 'created',
       },
       {
         name: 'copy',
         text: i18n('cc-token-api-creation-form.copy-step.nav.name'),
-        isActive: activeStep === 'copy',
+        isActive: activeStep === 'created',
         isClickable: false,
         isDone: false,
       },
@@ -332,14 +353,14 @@ export class CcTokenApiCreationForm extends LitElement {
 
   /**
    * @param {object} _
+   * @param {boolean} _.skeleton
+   * @param {TokenApiCreationFormStateLoaded['activeStep']} _.activeStep
    * @param {boolean} _.isMfaEnabled
    * @param {boolean} _.isWaiting
-   * @param {boolean} _.hasCredentialsError
+   * @param {TokenApiCreationFormStateLoadedValidation['credentialsError']} _.credentialsError
    * @param {string} _.token
-   * @param {TokenApiCreationStep} _.activeStep
    */
-  _renderLoaded({ isMfaEnabled, isWaiting, hasCredentialsError, token, activeStep }) {
-    // TODO: discuss error handling with Marion (maybe a message at the top could be better for such cases)
+  _renderMainContent({ skeleton, activeStep, isMfaEnabled, isWaiting, credentialsError, token }) {
     // TODO: focus when active step changes (may be done in willUpdate)
     // TODO: focus when error message is set (credentials)
     // TODO: xplain why we use hidden forms (animation (if no display:none) & formData no need to restore so no need for moving all of these to state)
@@ -347,26 +368,26 @@ export class CcTokenApiCreationForm extends LitElement {
       <div class="steps-content" ${ref(this._stepsContentRef)}>
         <div
           class="steps-content__step-item ${classMap({
-            'steps-content__step-item--out-left': activeStep !== 'config',
+            'steps-content__step-item--out-left': activeStep !== 'configuration',
           })}"
         >
-          ${this._renderConfigurationForm()}
+          ${this._renderConfigurationForm(skeleton)}
         </div>
         <div
           class="steps-content__step-item ${classMap({
-            'steps-content__step-item--out-right': activeStep === 'config',
-            'steps-content__step-item--out-left': activeStep === 'copy',
+            'steps-content__step-item--out-right': activeStep === 'configuration',
+            'steps-content__step-item--out-left': activeStep === 'created',
           })}"
         >
           ${this._renderValidationForm({
             isMfaEnabled,
             isWaiting,
-            hasCredentialsError,
+            credentialsError: credentialsError,
           })}
         </div>
         <div
           class="steps-content__step-item ${classMap({
-            'steps-content__step-item--out-right': activeStep !== 'copy',
+            'steps-content__step-item--out-right': activeStep !== 'created',
           })}"
         >
           ${this._renderCopyStep(token)}
@@ -375,10 +396,11 @@ export class CcTokenApiCreationForm extends LitElement {
     `;
   }
 
-  _renderConfigurationForm() {
+  /** @param {boolean} skeleton */
+  _renderConfigurationForm(skeleton) {
     return html`
       <form
-        name="config-form"
+        name="configuration-form"
         class="form"
         ${formSubmit(this._onConfigFormSubmit.bind(this))}
         ${ref(this._configFormRef)}
@@ -386,11 +408,15 @@ export class CcTokenApiCreationForm extends LitElement {
         <cc-input-text
           label="${i18n('cc-token-api-creation-form.config-step.form.label.name')}"
           required
+          ?skeleton=${skeleton}
           name="name"
+          .value=${this.state.values.name}
         ></cc-input-text>
         <cc-input-text
           label="${i18n('cc-token-api-creation-form.config-step.form.label.desc')}"
+          ?skeleton=${skeleton}
           name="description"
+          .value=${this.state.values.description}
         ></cc-input-text>
         <div class="form__expiration">
           <cc-select
@@ -398,6 +424,8 @@ export class CcTokenApiCreationForm extends LitElement {
             name="expiration-duration"
             .options=${this._getExpirationDurationOptions()}
             .value="${this._expirationDuration}"
+            ?disabled=${skeleton}
+            .value=${this.state.values.expirationDuration}
             @cc-select:input=${this._onExpirationDurationInput}
           >
             ${this._isExpirationDateActive
@@ -409,11 +437,12 @@ export class CcTokenApiCreationForm extends LitElement {
             name="expiration-date"
             ?required=${this._isExpirationDateActive}
             ?readonly=${!this._isExpirationDateActive}
-            .value="${this._expirationDate}"
+            .value=${this.state.values.expirationDate}
             .min="${shiftDateField(new Date(Date.now()), 'm', 15)}"
             .max="${shiftDateField(new Date(Date.now()), 'Y', 1)}"
             .customErrorMessages=${this._expirationDateErrorMessages}
             timezone="local"
+            ?skeleton=${skeleton}
           >
             ${this._isExpirationDateActive
               ? html`
@@ -428,7 +457,7 @@ export class CcTokenApiCreationForm extends LitElement {
             <cc-icon .icon=${iconGoBack}></cc-icon>
             <span>${i18n('cc-token-api-creation-form.config-step.form.api-token-list-link')}</span>
           </a>
-          <cc-button primary type="submit">
+          <cc-button primary type="submit" ?disabled=${skeleton}>
             ${i18n('cc-token-api-creation-form.config-step.form.button.label.continue')}
           </cc-button>
         </div>
@@ -440,29 +469,28 @@ export class CcTokenApiCreationForm extends LitElement {
    * @param {object} options - Rendering options.
    * @param {boolean} options.isMfaEnabled - Whether Multi-Factor Authentication is enabled for the user.
    * @param {boolean} options.isWaiting - Whether the form is currently waiting for an operation to complete.
-   * @param {boolean} options.hasCredentialsError -
+   * @param {TokenApiCreationFormStateLoadedValidation['credentialsError']} options.credentialsError -
    */
-  _renderValidationForm({ isMfaEnabled, isWaiting, hasCredentialsError }) {
+  _renderValidationForm({ isMfaEnabled, isWaiting, credentialsError }) {
+    const passwordErrorMessage =
+      credentialsError === 'password'
+        ? i18n('cc-token-api-creation-form.validation-step.form.error.credentials.password-only')
+        : null;
+    const mfaErrorMessage =
+      credentialsError === 'mfaCode'
+        ? i18n('cc-token-api-creation-form.validation-step.form.error.credentials.with-mfa')
+        : null;
+
     return html`
       <form name="validation-form" class="form" ${formSubmit(this._onValidateFormSubmit.bind(this))}>
-        ${hasCredentialsError && isMfaEnabled
-          ? html`
-              <cc-notice
-                intent="danger"
-                message="${i18n('cc-token-api-creation-form.validation-step.form.error.credentials.with-mfa')}"
-                tabindex="-1"
-              ></cc-notice>
-            `
-          : ''}
         <cc-input-text
           label="${i18n('cc-token-api-creation-form.validation-step.form.label.password')}"
           name="password"
           ?readonly=${isWaiting}
           required
           secret
-          .errorMessage=${!isMfaEnabled && hasCredentialsError
-            ? i18n('cc-token-api-creation-form.validation-step.form.error.credentials.password-only')
-            : null}
+          .errorMessage=${passwordErrorMessage}
+          .value="${this.state.values.password}"
         ></cc-input-text>
         ${isMfaEnabled
           ? html`
@@ -471,6 +499,8 @@ export class CcTokenApiCreationForm extends LitElement {
                 name="mfa-code"
                 ?readonly=${isWaiting}
                 required
+                .errorMessage=${mfaErrorMessage}
+                .value="${this.state.values.mfaCode}"
               ></cc-input-text>
             `
           : ''}
