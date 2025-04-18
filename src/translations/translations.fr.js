@@ -1517,6 +1517,29 @@ export const translations = {
   'cc-toast.icon-alt.success': `Succès`,
   'cc-toast.icon-alt.warning': `Avertissement`,
   //#endregion
+  //#region cc-token-oauth-list
+  'cc-token-oauth-list.card.expires-soon': `Expire bientôt`,
+  'cc-token-oauth-list.card.human-friendly-date': /** @param {{ date: string|number }} _ */ ({ date }) =>
+    formatDatetime(date),
+  'cc-token-oauth-list.card.label.creation': () => sanitize`Création&nbsp;: `,
+  'cc-token-oauth-list.card.label.expiration': () => sanitize`Expiration&nbsp;: `,
+  'cc-token-oauth-list.card.label.last-used': () => sanitize`Dernière utilisation&nbsp;: `,
+  'cc-token-oauth-list.empty': `Aucune application tierce liée à votre compte`,
+  'cc-token-oauth-list.error': `Une erreur est survenue pendant le chargement des tokens OAuth`,
+  'cc-token-oauth-list.intro': () =>
+    sanitize`Ci-dessous la liste des tokens OAuth enregistrés pour votre compte. Vous pouvez les révoquer comme vous le souhaitez&nbsp;:`,
+  'cc-token-oauth-list.main-heading': `Tokens OAuth`,
+  'cc-token-oauth-list.revoke-all-tokens': `Révoquer tous les tokens OAuth`,
+  'cc-token-oauth-list.revoke-all-tokens.error': () =>
+    sanitize`Une erreur est survenue pendant la révocation de tous les tokens OAuth.<br>Aucun token OAuth n'a été révoqué`,
+  'cc-token-oauth-list.revoke-all-tokens.partial-error': () =>
+    sanitize`Une erreur est survenue pendant la révocation de tous les tokens OAuth.<br>Seuls certains tokens OAuth ont été révoqués avec succès`,
+  'cc-token-oauth-list.revoke-all-tokens.success': `Tous les tokens OAuth ont été révoqués avec succès`,
+  'cc-token-oauth-list.revoke-token': /** @param {{ consumerName: string}} _ */ ({ consumerName }) =>
+    `Révoquer le token OAuth pour ${consumerName}`,
+  'cc-token-oauth-list.revoke-token.error': `Une erreur est survenue pendant la révocation du token OAuth`,
+  'cc-token-oauth-list.revoke-token.success': `Le token OAuth a été révoqué avec succès`,
+  //#endregion
   //#region cc-token-session-list
   'cc-token-session-list.card.clever-team': `Équipe Clever Cloud`,
   'cc-token-session-list.card.current-session': `Session actuelle`,
