@@ -2,41 +2,54 @@
 kind: '🏡 Getting Started'
 title: 'Browser support'
 ---
-
 # Browser support
 
-This project targets _modern browsers_.
+This project relies on Baseline widely available features for browser support.
 
-## What do we mean by _modern browsers_?
+## What is Baseline?
 
-Our subjective definition is: **current** AND **previous** stable versions of ![Chrome logo](https://github.com/alrra/browser-logos/raw/main/src/chrome/chrome_16x16.png) Chrome, ![Firefox logo](https://github.com/alrra/browser-logos/raw/main/src/firefox/firefox_16x16.png) Firefox and ![Safari logo](https://github.com/alrra/browser-logos/raw/main/src/safari/safari_16x16.png) Safari.
+[Baseline](https://web.dev/baseline/) is an initiative that identifies which web platform features work reliably across major browsers.
+Baseline features come in two categories:
 
-In the real world, browsers evolve at different speeds.
-Many browsers are based on Chromium now, and they often land Web features early.
-On the other side, Safari often lands Web features last.
-Because of this, we maintain a more explicit list of such _modern browsers_ and we update it every 6 months, a few months after a new Safari release gets out.
+- **Newly available** (🔵): Features that work in the latest versions of major browsers but may not be supported in older versions.
+These features have been implemented across browsers but haven't yet reached the "widely available" threshold.
 
-| Browser | Version | Comments |
-| --- | --- | --- |
-| ![Chrome logo](https://github.com/alrra/browser-logos/raw/main/src/chrome/chrome_16x16.png) Chrome | `>=86` | Desktop & Android [details](https://www.chromestatus.com/features/schedule) |
-| ![Firefox logo](https://github.com/alrra/browser-logos/raw/main/src/firefox/firefox_16x16.png) Firefox | `>=81` | Desktop & Android [details](https://wiki.mozilla.org/Release_Management/Calendar) |
-| ![Safari logo](https://github.com/alrra/browser-logos/raw/main/src/safari/safari_16x16.png) Safari | `>=14` | macOS, iOS + WebView based browsers [details](https://developer.apple.com/documentation/safari-release-notes) |
-| | | _browsers based on chromium..._ |
-| ![Brave logo](https://github.com/alrra/browser-logos/raw/main/src/brave/brave_16x16.png) Brave | `>=1.15` | Based on Chromium 86 [details](https://github.com/brave/brave-browser/wiki/Brave-Release-Schedule) |
-| ![Edge logo](https://github.com/alrra/browser-logos/raw/main/src/edge/edge_16x16.png) Edge | `>=86` | Based on Chromium 86 [details](https://docs.microsoft.com/en-us/deployedge/microsoft-edge-relnote-stable-channel) |
-| ![Opera logo](https://github.com/alrra/browser-logos/raw/main/src/opera/opera_16x16.png) Opera | `>=72` | Based on Chromium 86 [details](https://help.opera.com/en/opera-version-history/) |
-| ![Samsung Internet logo](https://github.com/alrra/browser-logos/raw/main/src/samsung-internet/samsung-internet_16x16.png) Samsung Internet | `>=14` | Based on Chromium 87 [details](https://en.wikipedia.org/wiki/Samsung_Internet) |
-| ![Vivaldi logo](https://github.com/alrra/browser-logos/raw/main/src/vivaldi/vivaldi_16x16.png) Vivaldi | `>=3.4` | Based on Chromium 86 [details](https://vivaldi.com/blog/desktop/releases/) |
+- **Widely available** (🟢): Features that have been supported across browsers for at least thirty months (two years and six months), providing excellent backwards compatibility and reliability.
+These features work in both current and many older browser versions.
 
-<cc-notice intent="info" message="The above list is based on browser versions that were out when Safari 14 was released in september 2020."></cc-notice>
+We use **Baseline widely available** features as our foundation for browser support, which means our components will work in browser versions that are up to thirty months old, including Extended Support Release (ESR) and Long Term Support (LTS) versions of:
+
+- ![Chrome logo](https://github.com/alrra/browser-logos/raw/main/src/chrome/chrome_16x16.png) Chrome (desktop & Android)
+- ![Firefox logo](https://github.com/alrra/browser-logos/raw/main/src/firefox/firefox_16x16.png) Firefox (desktop & Android)
+- ![Safari logo](https://github.com/alrra/browser-logos/raw/main/src/safari/safari_16x16.png) Safari (macOS & iOS)
+
+As well as other modern browsers based on these engines.
+
+## Exceptions to the "Widely Available" Rule
+
+While we generally rely on Baseline widely available features, we make two types of exceptions:
+
+1. **Progressive Enhancements**: We may use features that are only "newly available" (🔵) if they qualify as progressive enhancements. This means the feature gracefully degrades in browsers that don't support it, while providing enhanced functionality in modern ones. In these cases, no polyfill is required since the absence of the feature doesn't break core functionality.
+
+2. **Critical Features Requiring Polyfills**: In rare cases, we may use features that aren't yet widely available if they're essential for component functionality AND at least one major browser has implemented the feature based on a ratified specification. For these exceptions, developers need to implement specific polyfills to support older browsers. We will never rely on features that exist only in draft specifications or that haven't been implemented in any browser.
+
+## Required Polyfills
+
+The following polyfills are required in specific browser scenarios:
+
+- **ElementInternals API**: The [ElementInternals polyfill](https://github.com/calebdwilliams/element-internals-polyfill) is required for Safari versions prior to 16.4. This polyfill enables critical form-associated custom element features that our components rely on. Make sure to include this polyfill before loading any components if you need to support older Safari versions.
 
 ## What does it mean for users?
 
-As a user of this component library, you can be sure it will work in _modern browsers_.
-If you need wider browser support, you will need to adapt your project configuration and toolchain.
+As a user of this component library, you can expect reliable functionality across all major modern browsers.
+The use of Baseline widely available features means:
 
-When it comes to CSS features, we don't have a clear solution for you right now.
+1. No need to maintain complex browser version lists
+2. Consistent behavior across different browsers and versions
+3. Long-term stability and compatibility
 
-When it comes to JavaScript language features, you will need to configure your toolchain (bundler, transpiler...) to transform the source of our components to something that works for your context.
+If you need to support browsers that don't meet Baseline widely available requirements, you may need to:
 
-When it comes to JavaScript and browser APIs than can be polyfilled, you will need to choose and load the appropriate polyfills yourself before you load our components.
+- Configure your JavaScript toolchain (bundler, transpiler) to transform our components' source code
+- Add appropriate polyfills for JavaScript APIs before loading our components
+- Accept that some progressive enhancement features may not be available in older browsers
