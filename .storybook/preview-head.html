@@ -109,7 +109,7 @@
   toaster.position = 'top-right';
   toaster.animation = 'fade-and-slide';
 
-  window.addEventListener('cc:notify', (e) => {
+  window.addEventListener('cc-notify', (e) => {
     toaster.show(e.detail);
   });
 

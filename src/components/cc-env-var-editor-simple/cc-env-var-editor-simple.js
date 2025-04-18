@@ -1,8 +1,8 @@
 import { css, html, LitElement } from 'lit';
 import { repeat } from 'lit/directives/repeat.js';
-import { dispatchCustomEvent } from '../../lib/events.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-env-var-create/cc-env-var-create.js';
+import { CcEnvChangeEvent } from '../cc-env-var-form/cc-env-var-form.events.js';
 import '../cc-env-var-input/cc-env-var-input.js';
 
 /**
@@ -17,14 +17,16 @@ const SKELETON_VARIABLES = [
 /**
  * @typedef {import('../common.types.js').EnvVarEditorState} EnvVarEditorState
  * @typedef {import('../common.types.js').EnvVar} EnvVar
+ * @typedef {import('../cc-env-var-create/cc-env-var-create.events.js').CcEnvVarCreateEvent} CcEnvVarCreateEvent
+ * @typedef {import('../cc-env-var-input/cc-env-var-input.events.js').CcEnvVarChangeEvent} CcEnvVarChangeEvent
+ * @typedef {import('../cc-env-var-input/cc-env-var-input.events.js').CcEnvVarDeleteEvent} CcEnvVarDeleteEvent
+ * @typedef {import('../cc-env-var-input/cc-env-var-input.events.js').CcEnvVarKeepEvent} CcEnvVarKeepEvent
  */
 
 /**
  * A high level environment variable editor to create/edit/delete variables one at a time (with validation and error messages).
  *
  * @cssdisplay grid / none (with `[hidden]`)
- *
- * @fires {CustomEvent<EnvVar[]>} cc-env-var-editor-simple:change - Fires the new list of variables whenever something changes in the list.
  */
 export class CcEnvVarEditorSimple extends LitElement {
   static get properties() {
@@ -60,10 +62,10 @@ export class CcEnvVarEditorSimple extends LitElement {
       ...this.state,
       variables,
     };
-    dispatchCustomEvent(this, 'change', variables);
+    this.dispatchEvent(new CcEnvChangeEvent(variables));
   }
 
-  /** @param {CustomEvent<EnvVar>} event */
+  /** @param {CcEnvVarCreateEvent} event */
   _onCreate({ detail: newVar }) {
     if (this.state.type === 'loading') {
       return;
@@ -72,8 +74,8 @@ export class CcEnvVarEditorSimple extends LitElement {
     this._changeVariables([...this.state.variables, newVar]);
   }
 
-  /** @param {CustomEvent<EnvVar>} event */
-  _onInput({ detail: editedVar }) {
+  /** @param {CcEnvVarChangeEvent} event */
+  _onChange({ detail: editedVar }) {
     if (this.state.type === 'loading') {
       return;
     }
@@ -85,7 +87,7 @@ export class CcEnvVarEditorSimple extends LitElement {
     );
   }
 
-  /** @param {CustomEvent<EnvVar>} event */
+  /** @param {CcEnvVarDeleteEvent} event */
   _onDelete({ detail: deletedVar }) {
     if (this.state.type === 'loading') {
       return;
@@ -102,7 +104,7 @@ export class CcEnvVarEditorSimple extends LitElement {
     );
   }
 
-  /** @param {CustomEvent<EnvVar>} event */
+  /** @param {CcEnvVarKeepEvent} event */
   _onKeep({ detail: keptVar }) {
     if (this.state.type === 'loading') {
       return;
@@ -128,7 +130,7 @@ export class CcEnvVarEditorSimple extends LitElement {
               ?disabled=${skeleton || this.disabled}
               .validationMode=${validationMode}
               .variablesNames=${variablesNames}
-              @cc-env-var-create:create=${this._onCreate}
+              @cc-env-var-create=${this._onCreate}
             ></cc-env-var-create>
           `
         : ''}
@@ -148,9 +150,9 @@ export class CcEnvVarEditorSimple extends LitElement {
             ?skeleton=${skeleton}
             ?disabled=${this.disabled}
             ?readonly=${this.readonly}
-            @cc-env-var-input:input=${this._onInput}
-            @cc-env-var-input:delete=${this._onDelete}
-            @cc-env-var-input:keep=${this._onKeep}
+            @cc-env-var-change=${this._onChange}
+            @cc-env-var-delete=${this._onDelete}
+            @cc-env-var-keep=${this._onKeep}
           ></cc-env-var-input>
         `,
       )}

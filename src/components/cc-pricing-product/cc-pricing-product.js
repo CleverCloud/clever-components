@@ -2,12 +2,12 @@ import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { iconRemixAddLine as iconAdd } from '../../assets/cc-remix.icons.js';
 import { ResizeController } from '../../controllers/resize-controller.js';
-import { dispatchCustomEvent } from '../../lib/events.js';
 import { accessibilityStyles } from '../../styles/accessibility.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-icon/cc-icon.js';
 import '../cc-loader/cc-loader.js';
 import '../cc-notice/cc-notice.js';
+import { CcPricingPlanAddEvent } from '../cc-pricing-page/cc-pricing-page.events.js';
 
 // 800 seems like a good arbitrary value for the content we need to display.
 const BREAKPOINT = 800;
@@ -64,8 +64,6 @@ const DEFAULT_TEMPORALITY_LIST = [{ type: '30-days', digits: 2 }];
  * **Note:** This component relies on the `resizeObserver` mixin to change its layout with `800px` as a width breakpoint.
  *
  * @cssdisplay block
- *
- * @fires {CustomEvent<Plan>} cc-pricing-product:add-plan - Fires the plan whenever a "plus" button is clicked.
  *
  * @cssprop {Color} --cc-pricing-hovered-color - Sets the text color used on hover (defaults: `purple`).
  */
@@ -226,13 +224,13 @@ export class CcPricingProduct extends LitElement {
 
   /**
    * Adds the product name to the given plan.
-   * Dispatches a `cc-pricing-product:add-plan` event with the plan as its payload.
+   * Dispatches a `cc-pricing-plan-add` event with the plan as its payload.
    *
    * @param {string} productName - the name of the product to which the plan is attached
    * @param {Plan} plan - the plan to be added to the estimation
    */
   _onAddPlan(productName, plan) {
-    dispatchCustomEvent(this, 'add-plan', { productName, ...plan });
+    this.dispatchEvent(new CcPricingPlanAddEvent({ productName, ...plan }));
   }
 
   render() {

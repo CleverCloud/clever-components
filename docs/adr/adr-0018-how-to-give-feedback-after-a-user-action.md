@@ -46,8 +46,8 @@ We created a system composed of two Web Components:
 Here is how it works:
 
 1. The `<cc-toaster>` shows a `<cc-toast>` (we're going to see how after).
-2. After a certain amount of time, the `<cc-toast>` component dispatches a `cc-toast:dismiss` event. This event is also dispatched when user clicks on the close button.
-3. The `<cc-toaster>` listens to the `cc-toast:dismiss` event and reacts by hiding the corresponding `<cc-toast>`.
+2. After a certain amount of time, the `<cc-toast>` component dispatches a `cc-toast-dismiss` event. This event is also dispatched when user clicks on the close button.
+3. The `<cc-toaster>` listens to the `cc-toast-dismiss` event and reacts by hiding the corresponding `<cc-toast>`.
 
 The hard part is to provide a nice and flexible way to interact with the `<cc-toaster>`.
 This was not made in one go, and we want to share with you the path that leaded us to the final implementation.
@@ -99,14 +99,14 @@ The problems with this technique is:
 ### Second implementation
 
 Our second attempt was to remove all public methods and base the implementation on [custom event](https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent).
-When the `<cc-toaster>` element is added to the DOM, it starts listening to `cc-toast:show` events using `window.addEventListener()`.
+When the `<cc-toaster>` element is added to the DOM, it starts listening to `cc-toast-show` events using `window.addEventListener()`.
 
 The code looked like this:
 
 ```javascript
 class CcToaster {
   connectedCallback () {
-    window.addEventListener('cc-toast:show', (event) => {
+    window.addEventListener('cc-toast-show', (event) => {
       // toast display logic was here ...
 
       event.dismissToast = () => {
@@ -125,7 +125,7 @@ The code below shows how it was used:
 
 ```javascript
 // Showing a toast was done by dispatching a `cc-toast:show` custom event with the toast definition in the event's `detail` property:
-const event = new CustomEvent('cc-toast:show', {
+const event = new CustomEvent('cc-toast-show', {
   detail: {
     message: 'Something went wrong while perfoming action',
     intent: 'danger'
@@ -197,14 +197,14 @@ The code below shows how we integrate the `<cc-toaster>` in the Clever Console:
 const toaster = document.querySelector('cc-toaster');
 
 // Here we listen to any components in the app who want to display a notification (a few Clever Components already send this `cc:notify` event)
-window.addEventListener('cc:notify', ({ detail: notification }) => {
+window.addEventListener('cc-notify', ({ detail: notification }) => {
   toaster.show(notification);
 });
 
 // This is a helper function that provides a way to easily dispatch a notification 
 export function notify(node, message, intent) {
   const toast = { message, intent };
-  node.dispatchEvent(new CustomEvent('cc:notify', { detail: toast, bubbles: true, composed: true }));
+  node.dispatchEvent(new CustomEvent('cc-notify', { detail: toast, bubbles: true, composed: true }));
 }
 ```
 
@@ -218,7 +218,7 @@ If you want to read more about that, you can refer to the dedicated ADR: [ADR 00
 We managed to achieve a system that allows two important things:
 
 * Developers can use the notification/toast system with any tech stack (legacy jQuery, Vue.js, React...) and even in a project that doesn't use the Clever Components.
-* Developers can use the Clever Components that send `cc:notify` events without the notification/toast system. They can be used with something else that may be already in the project.
+* Developers can use the Clever Components that send `cc-notify` events without the notification/toast system. They can be used with something else that may be already in the project.
 
 ## References
 

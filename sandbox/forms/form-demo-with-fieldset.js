@@ -33,7 +33,7 @@ export class FormDemoWithFieldset extends LitElement {
 
   render() {
     return html`
-      <form ${formSubmit()} @form:invalid=${this._onInvalid}>
+      <form ${formSubmit()} @cc-form-invalid=${this._onInvalid}>
         <fieldset>
           <legend>Unique items</legend>
 

@@ -13,16 +13,12 @@ export interface GrafanaInfoStateLoaded {
   info: GrafanaInfo;
 }
 
-export type GrafanaInfo = GrafanaInfoEnabled | GrafanaInfoEnabledWithError | GrafanaInfoDisabled;
+export type GrafanaInfo = GrafanaInfoEnabled | GrafanaInfoDisabled;
 
 export interface GrafanaInfoEnabled {
   status: 'enabled';
   link?: string;
   action?: 'disabling' | 'resetting' | null;
-}
-
-export interface GrafanaInfoEnabledWithError {
-  status: 'enabled';
 }
 
 export interface GrafanaInfoDisabled {

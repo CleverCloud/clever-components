@@ -1,7 +1,7 @@
 import { LitElement } from 'lit';
-import { dispatchCustomEvent } from '../events.js';
 import { isStringEmpty } from '../utils.js';
 import { convertErrorMessageToString, getFormDataMap } from './form-utils.js';
+import { CcErrorMessageChangeEvent } from './form.events.js';
 import { combineValidators } from './validation.js';
 
 /**
@@ -202,7 +202,7 @@ export class CcFormControlElement extends LitElement {
   reportInlineValidity() {
     if (this.errorMessage !== this._errorState.message) {
       this.errorMessage = this._errorState.message;
-      dispatchCustomEvent(this, 'error-message-change', this.errorMessage);
+      this.dispatchEvent(new CcErrorMessageChangeEvent(this.errorMessage));
     }
     return this._errorState.validity.valid;
   }
@@ -225,7 +225,7 @@ export class CcFormControlElement extends LitElement {
     this.validate();
     if (this._errorState.message != null) {
       this.errorMessage = null;
-      dispatchCustomEvent(this, 'error-message-change', null);
+      this.dispatchEvent(new CcErrorMessageChangeEvent(null));
     }
   }
 

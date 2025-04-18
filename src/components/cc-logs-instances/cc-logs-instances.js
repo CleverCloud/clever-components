@@ -15,7 +15,6 @@ import {
   iconRemixPlayCircleLine as iconInstanceRunning,
   iconRemixStopCircleLine as iconInstanceStopping,
 } from '../../assets/cc-remix.icons.js';
-import { dispatchCustomEvent } from '../../lib/events.js';
 import { groupBy } from '../../lib/utils.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-datetime-relative/cc-datetime-relative.js';
@@ -24,6 +23,7 @@ import '../cc-input-text/cc-input-text.js';
 import '../cc-loader/cc-loader.js';
 import '../cc-notice/cc-notice.js';
 import '../cc-toggle/cc-toggle.js';
+import { CcLogsInstancesSelectionChangeEvent } from './cc-logs-instances.events.js';
 
 /**
  * @param {Instance} i1
@@ -77,8 +77,6 @@ const DEPLOYMENT_WIP_STATES = ['QUEUED', 'WORK_IN_PROGRESS'];
  * * When using `cold` mode, instances are grouped by deployment.
  *
  * @cssdisplay flex
- *
- * @fires {CustomEvent<Array<string>>} cc-logs-instances:selection-change - Fires whenever the instances selection changes
  */
 export class CcLogsInstances extends LitElement {
   static get properties() {
@@ -130,7 +128,7 @@ export class CcLogsInstances extends LitElement {
         };
       }
 
-      dispatchCustomEvent(this, 'selection-change', this.state.selection);
+      this.dispatchEvent(new CcLogsInstancesSelectionChangeEvent(this.state.selection));
     }
   }
 

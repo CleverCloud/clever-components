@@ -68,7 +68,7 @@ export class CcInvoiceList extends LitElement {
   }
 
   /**
-   * @param {CustomEvent<string>} event
+   * @param {CcSelectEvent} event
    * @private
    */
   _onYearFilterValue({ detail: year }) {
@@ -153,14 +153,14 @@ export class CcInvoiceList extends LitElement {
                 .choices=${yearChoices}
                 value=${yearFilter}
                 inline
-                @cc-toggle:input=${this._onYearFilterValue}
+                @cc-select=${this._onYearFilterValue}
               ></cc-toggle>
               <cc-select
                 label=${i18n('cc-invoice-list.year')}
                 .options=${yearChoices}
                 value=${yearFilter}
                 inline
-                @cc-select:input=${this._onYearFilterValue}
+                @cc-select=${this._onYearFilterValue}
               ></cc-select>
             `
           : ''}

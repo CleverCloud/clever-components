@@ -9,6 +9,11 @@ const DEFAULT_TEMPORALITY = { type: '30-days', digits: 2 };
 /**
  * @typedef {import('../cc-pricing-estimation/cc-pricing-estimation.js').CcPricingEstimation} CcPricingEstimation
  * @typedef {import('../cc-pricing-header/cc-pricing-header.js').CcPricingHeader} CcPricingHeader
+ * @typedef {import('../cc-pricing-page/cc-pricing-page.events.js').CcPricingPlanAddEvent} CcPricingPlanAddEvent
+ * @typedef {import('../cc-pricing-page/cc-pricing-page.events.js').CcPricingCurrencyChangeEvent} CcPricingCurrencyChangeEvent
+ * @typedef {import('../cc-pricing-page/cc-pricing-page.events.js').CcPricingTemporalityChangeEvent} CcPricingTemporalityChangeEvent
+ * @typedef {import('../cc-pricing-page/cc-pricing-page.events.js').CcPricingQuantityChangeEvent} CcPricingQuantityChangeEvent
+ * @typedef {import('../cc-pricing-page/cc-pricing-page.events.js').CcPricingPlanDeleteEvent} CcPricingPlanDeleteEvent
  * @typedef {import('../cc-pricing-product/cc-pricing-product.js').CcPricingProduct} CcPricingProduct
  * @typedef {import('./cc-pricing-page.types.js').SelectedPlansById} SelectedPlansById
  * @typedef {import('../common.types.js').Plan} Plan
@@ -88,7 +93,7 @@ export class CcPricingPage extends LitElement {
     this._estimationElement = this.querySelector('cc-pricing-estimation');
   }
 
-  /** @param {CustomEvent<Plan|ConsumptionPlan>} event */
+  /** @param {CcPricingPlanAddEvent} event */
   _onAddPlan({ detail: plan }) {
     const planId = this._getPlanId(plan);
     if (this.selectedPlans[planId] == null) {
@@ -98,24 +103,24 @@ export class CcPricingPage extends LitElement {
     this.requestUpdate();
   }
 
-  /** @param {CustomEvent<string>} event */
+  /** @param {CcPricingCurrencyChangeEvent} event */
   _onChangeCurrency({ detail: currency }) {
     this.selectedCurrency = currency;
   }
 
-  /** @param {CustomEvent<Temporality>} event */
+  /** @param {CcPricingTemporalityChangeEvent} event */
   _onChangeTemporality({ detail: temporality }) {
     this.selectedTemporality = temporality;
   }
 
-  /** @param {CustomEvent<Plan|ConsumptionPlan>} event */
+  /** @param {CcPricingQuantityChangeEvent} event */
   _onChangeQuantity({ detail: plan }) {
     const planId = this._getPlanId(plan);
     this.selectedPlans[planId].quantity = plan.quantity;
     this.requestUpdate();
   }
 
-  /** @param {CustomEvent<Plan|ConsumptionPlan>} event */
+  /** @param {CcPricingPlanDeleteEvent} event */
   _onDeletePlan({ detail: plan }) {
     const planId = this._getPlanId(plan);
     delete this.selectedPlans[planId];
@@ -172,13 +177,11 @@ export class CcPricingPage extends LitElement {
   render() {
     return html`
       <slot
-        @cc-pricing-header:change-currency=${this._onChangeCurrency}
-        @cc-pricing-header:change-temporality=${this._onChangeTemporality}
-        @cc-pricing-product:add-plan=${this._onAddPlan}
-        @cc-pricing-estimation:change-quantity=${this._onChangeQuantity}
-        @cc-pricing-estimation:delete-plan=${this._onDeletePlan}
-        @cc-pricing-estimation:change-temporality=${this._onChangeTemporality}
-        @cc-pricing-estimation:change-currency=${this._onChangeCurrency}
+        @cc-pricing-plan-add=${this._onAddPlan}
+        @cc-pricing-quantity-change=${this._onChangeQuantity}
+        @cc-pricing-plan-delete=${this._onDeletePlan}
+        @cc-pricing-temporality-change=${this._onChangeTemporality}
+        @cc-pricing-currency-change=${this._onChangeCurrency}
       ></slot>
     `;
   }

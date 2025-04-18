@@ -5,13 +5,13 @@ import {
   iconRemixSubtractLine as iconDecrement,
   iconRemixAddLine as iconIncrement,
 } from '../../assets/cc-remix.icons.js';
-import { dispatchCustomEvent } from '../../lib/events.js';
 import { CcFormControlElement } from '../../lib/form/cc-form-control-element.abstract.js';
 import { NumberValidator, RequiredValidator, combineValidators } from '../../lib/form/validation.js';
 import { accessibilityStyles } from '../../styles/accessibility.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-icon/cc-icon.js';
+import { CcInputEvent, CcRequestSubmitEvent } from '../common.events.js';
 
 /**
  * @typedef {import('lit/directives/ref.js').Ref<HTMLInputElement>} HTMLInputElementRef
@@ -33,9 +33,6 @@ import '../cc-icon/cc-icon.js';
  * * When an `errorMessage` is set, the input is decorated with a red border and a redish focus ring.
  *
  * @cssdisplay inline-block
- *
- * @fires {CustomEvent<string>} cc-input-number:input - Fires the `value` whenever the `value` changes.
- * @fires {CustomEvent} cc-input-number:requestimplicitsubmit - Fires when enter key is pressed.
  *
  * @cssprop {Size} --cc-form-label-gap - The space between the label and the control (defaults: `0.35em` or `1em` when inline).
  * @cssprop {Align} --cc-input-number-align - Change the alignment of the number present in the input (defaults: `right`).
@@ -195,7 +192,7 @@ export class CcInputNumber extends CcFormControlElement {
    */
   _onInput(e) {
     this.value = e.target.valueAsNumber;
-    dispatchCustomEvent(this, 'input', this.value);
+    this.dispatchEvent(new CcInputEvent(this.value));
   }
 
   /**
@@ -220,25 +217,25 @@ export class CcInputNumber extends CcFormControlElement {
     if (e.type === 'keydown' && e.key === 'Enter') {
       e.preventDefault();
       this._internals.form?.requestSubmit();
-      dispatchCustomEvent(this, 'requestimplicitsubmit');
+      this.dispatchEvent(new CcRequestSubmitEvent());
     }
     // Request implicit submit with keypress on enter key
     if (!this.readonly && e.type === 'keypress' && e.key === 'Enter') {
       this._internals.form?.requestSubmit();
-      dispatchCustomEvent(this, 'requestimplicitsubmit');
+      this.dispatchEvent(new CcRequestSubmitEvent());
     }
   }
 
   _onDecrement() {
     this._inputRef.value.stepDown();
     this.value = this._inputRef.value.valueAsNumber;
-    dispatchCustomEvent(this, 'input', this.value);
+    this.dispatchEvent(new CcInputEvent(this.value));
   }
 
   _onIncrement() {
     this._inputRef.value.stepUp();
     this.value = this._inputRef.value.valueAsNumber;
-    dispatchCustomEvent(this, 'input', this.value);
+    this.dispatchEvent(new CcInputEvent(this.value));
   }
 
   render() {

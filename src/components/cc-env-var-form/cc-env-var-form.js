@@ -1,6 +1,5 @@
 import { css, html, LitElement } from 'lit';
 import { iconRemixInformationFill as iconInfo } from '../../assets/cc-remix.icons.js';
-import { dispatchCustomEvent } from '../../lib/events.js';
 import { ccLink, linkStyles } from '../../templates/cc-link/cc-link.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-block/cc-block.js';
@@ -9,8 +8,10 @@ import '../cc-env-var-editor-expert/cc-env-var-editor-expert.js';
 import '../cc-env-var-editor-json/cc-env-var-editor-json.js';
 import '../cc-env-var-editor-simple/cc-env-var-editor-simple.js';
 import '../cc-expand/cc-expand.js';
+import { CcApplicationRestartEvent } from '../cc-header-app/cc-header-app.events.js';
 import '../cc-notice/cc-notice.js';
 import '../cc-toggle/cc-toggle.js';
+import { CcEnvVarFormSubmitEvent } from './cc-env-var-form.events.js';
 
 const ENV_VAR_DOCUMENTATION = 'https://developers.clever-cloud.com/doc/reference/reference-environment-variables/';
 
@@ -18,6 +19,7 @@ const ENV_VAR_DOCUMENTATION = 'https://developers.clever-cloud.com/doc/reference
  * @typedef {import('./cc-env-var-form.types.js').EnvVarFormContextType} EnvVarFormContextType
  * @typedef {import('./cc-env-var-form.types.js').EnvVarFormState} EnvVarFormState
  * @typedef {import('./cc-env-var-form.types.js').EnvVarFormMode} EnvVarFormMode
+ * @typedef {import('./cc-env-var-form.events.js').CcEnvChangeEvent} CcEnvChangeEvent
  * @typedef {import('../common.types.js').EnvVarEditorState} EnvVarEditorState
  * @typedef {import('../common.types.js').EnvVar} EnvVar
  * @typedef {import('lit').PropertyValues<CcEnvVarForm>} CcEnvVarFormPropertyValues
@@ -32,9 +34,6 @@ const ENV_VAR_DOCUMENTATION = 'https://developers.clever-cloud.com/doc/reference
  * * You can also set a context to get the appropriate heading and description (with translations).
  *
  * @cssdisplay block
- *
- * @fires {CustomEvent} cc-env-var-form:restart-app - Fires whenever the restart app button is clicked.
- * @fires {CustomEvent<EnvVar[]>} cc-env-var-form:submit - Fires the new list of variables whenever the submit button is clicked.
  *
  * @slot - Sets custom HTML description.
  */
@@ -143,7 +142,7 @@ export class CcEnvVarForm extends LitElement {
     }
   }
 
-  /** @param {CustomEvent<EnvVar[]>} event */
+  /** @param {CcEnvChangeEvent} event */
   _onChange({ detail: changedVariables }) {
     if (this.state.type === 'loading' || this.state.type === 'error') {
       return;
@@ -191,7 +190,7 @@ export class CcEnvVarForm extends LitElement {
     }
   }
 
-  /** @param {CustomEvent<EnvVarFormMode>} event */
+  /** @param {CcSelectEvent<EnvVarFormMode>} event */
   _onToggleMode({ detail: mode }) {
     if (this.state.type === 'error' || this.state.type === 'loading') {
       return;
@@ -229,7 +228,7 @@ export class CcEnvVarForm extends LitElement {
     const cleanVariables = this._currentVariables
       .filter(({ isDeleted }) => !isDeleted)
       .map(({ name, value }) => ({ name, value }));
-    dispatchCustomEvent(this, 'submit', cleanVariables);
+    this.dispatchEvent(new CcEnvVarFormSubmitEvent(cleanVariables));
   }
 
   /** @param {boolean} isFormDisabled */
@@ -309,7 +308,7 @@ export class CcEnvVarForm extends LitElement {
             value=${this._mode}
             .choices=${this._getModes()}
             ?disabled=${isEditorDisabled}
-            @cc-toggle:input=${this._onToggleMode}
+            @cc-select=${this._onToggleMode}
           ></cc-toggle>
         </div>
 
@@ -317,14 +316,16 @@ export class CcEnvVarForm extends LitElement {
           <slot class="description">${this._description}</slot>
         </div>
 
-        <div slot="content-body">
+        <div
+          slot="content-body"
+          @cc-env-change=${this._onChange}
+          @cc-request-submit=${this._onRequestSubmit(isFormDisabled)}
+        >
           <cc-env-var-editor-simple
             ?hidden=${this._mode !== 'SIMPLE'}
             .state=${this._editorsState}
             ?disabled=${isEditorDisabled}
             ?readonly=${this.readonly}
-            @cc-env-var-editor-simple:change=${this._onChange}
-            @cc-input-text:requestimplicitsubmit=${this._onRequestSubmit(isFormDisabled)}
           ></cc-env-var-editor-simple>
 
           <cc-env-var-editor-expert
@@ -332,8 +333,6 @@ export class CcEnvVarForm extends LitElement {
             .state=${this._editorsState}
             ?disabled=${isEditorDisabled}
             ?readonly=${this.readonly}
-            @cc-env-var-editor-expert:change=${this._onChange}
-            @cc-input-text:requestimplicitsubmit=${this._onRequestSubmit(isFormDisabled)}
           ></cc-env-var-editor-expert>
 
           <cc-env-var-editor-json
@@ -341,15 +340,13 @@ export class CcEnvVarForm extends LitElement {
             .state=${this._editorsState}
             ?disabled=${isEditorDisabled}
             ?readonly=${this.readonly}
-            @cc-env-var-editor-json:change=${this._onChange}
-            @cc-input-text:requestimplicitsubmit=${this._onRequestSubmit(isFormDisabled)}
           ></cc-env-var-editor-json>
         </div>
 
         ${!this.readonly
           ? html`
               <div slot="content-footer" class="button-bar">
-                <cc-button ?disabled="${isSaving}" @cc-button:click=${() => this._resetForm(this._initVariables)}
+                <cc-button ?disabled="${isSaving}" @cc-click=${() => this._resetForm(this._initVariables)}
                   >${i18n('cc-env-var-form.reset')}</cc-button
                 >
 
@@ -357,7 +354,7 @@ export class CcEnvVarForm extends LitElement {
 
                 ${this.restartApp
                   ? html`
-                      <cc-button @cc-button:click=${() => dispatchCustomEvent(this, 'restart-app')}
+                      <cc-button @cc-click=${() => this.dispatchEvent(new CcApplicationRestartEvent())}
                         >${i18n('cc-env-var-form.restart-app')}</cc-button
                       >
                     `
@@ -367,7 +364,7 @@ export class CcEnvVarForm extends LitElement {
                   success
                   ?disabled=${isFormDisabled && !isSaving}
                   ?waiting="${isSaving}"
-                  @cc-button:click=${this._onUpdateForm}
+                  @cc-click=${this._onUpdateForm}
                   >${i18n('cc-env-var-form.update')}</cc-button
                 >
               </div>

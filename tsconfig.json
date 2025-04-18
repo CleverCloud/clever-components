@@ -1,7 +1,7 @@
 {
   // this file is only used for typechecking with IDEs
   // it enables typechecking everywhere expect within directories listed below
-  "include": [".storybook/**/*.js", "**/*.js"],
+  "include": [".storybook/**/*.js", "**/*.js", "src/lib/events-map.types.d.ts"],
   "exclude": ["node_modules", "storybook-static", "dist", "**/*.test.js"],
   "compilerOptions": {
     // Necessary because we use `paths`
@@ -95,11 +95,7 @@
           // https://developer.mozilla.org/en-US/docs/Web/API/Element/mouseenter_event
           "wheel",
           "copy",
-          "paste",
-          // HACK: Right now, we don't have a clean way to recognize events fired from something else than a component.
-          // those events are fired by the `form-submit-directive` through `form-submit-handler`
-          "form:valid",
-          "form:invalid"
+          "paste"
         ]
       }
     ]

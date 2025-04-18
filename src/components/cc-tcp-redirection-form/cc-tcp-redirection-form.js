@@ -25,9 +25,6 @@ const SKELETON_REDIRECTIONS = [{ type: 'loading' }, { type: 'loading' }];
  * An interface to create / delete TCP redirections in the context of an application.
  *
  * @cssdisplay block
- *
- * @fires {CustomEvent<CreateTcpRedirection>} cc-tcp-redirection:create - Fires a redirection namespace whenever the create button is clicked.
- * @fires {CustomEvent<DeleteTcpRedirection>} cc-tcp-redirection:delete - Fires a redirection whenever the delete button is clicked.
  */
 export class CcTcpRedirectionForm extends LitElement {
   static get properties() {

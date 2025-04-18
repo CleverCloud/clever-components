@@ -1,17 +1,18 @@
 import { css, html, LitElement } from 'lit';
-import { dispatchCustomEvent } from '../../lib/events.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-block-section/cc-block-section.js';
 import '../cc-block/cc-block.js';
 import '../cc-input-text/cc-input-text.js';
 import '../cc-loader/cc-loader.js';
 import '../cc-notice/cc-notice.js';
+import { CcAddonDeleteEvent, CcAddonNameChangeEvent, CcAddonTagsChangeEvent } from './cc-addon-admin.events.js';
 
 /**
  * @typedef {import('./cc-addon-admin.types.js').AddonAdminState} AddonAdminState
  * @typedef {import('./cc-addon-admin.types.js').AddonAdminStateLoaded} AddonAdminStateLoaded
  * @typedef {import('./cc-addon-admin.types.js').AddonAdminStateLoading} AddonAdminStateLoading
  * @typedef {import('./cc-addon-admin.types.js').AddonAdminStateSaving} AddonAdminStateSaving
+ * @typedef {import('../cc-input-text/cc-input-text.events.js').CcTagsChangeEvent} CcTagsChangeEvent
  * @typedef {import('lit').PropertyValues<CcAddonAdmin>} CcAddonAdminPropertyValues
  * @typedef {import('lit').TemplateResult<1>} TemplateResult
  */
@@ -20,10 +21,6 @@ import '../cc-notice/cc-notice.js';
  * A component displaying the admin interface of an add-on to edit its name or delete the add-on.
  *
  * @cssdisplay block
- *
- * @fires {CustomEvent} cc-addon-admin:delete-addon - Fires when the delete button is clicked.
- * @fires {CustomEvent<string>} cc-addon-admin:update-name - Fires the new name of the add-on when update name button is clicked.
- * @fires {CustomEvent<string[]>} cc-addon-admin:update-tags - Fires the new list of tags when update tags button is clicked.
  */
 export class CcAddonAdmin extends LitElement {
   static get properties() {
@@ -57,11 +54,11 @@ export class CcAddonAdmin extends LitElement {
 
   /** @private */
   _onDeleteSubmit() {
-    dispatchCustomEvent(this, 'delete-addon');
+    this.dispatchEvent(new CcAddonDeleteEvent());
   }
 
   /**
-   * @param {{ detail: string }} event
+   * @param {CcInputEvent} event
    * @private
    */
   _onNameInput({ detail: name }) {
@@ -70,11 +67,11 @@ export class CcAddonAdmin extends LitElement {
 
   /** @private */
   _onNameSubmit() {
-    dispatchCustomEvent(this, 'update-name', { name: this._name });
+    this.dispatchEvent(new CcAddonNameChangeEvent({ name: this._name }));
   }
 
   /**
-   * @param {{ detail: string[] }} event
+   * @param {CcTagsChangeEvent} event
    * @private
    */
   _onTagsInput({ detail: tags }) {
@@ -83,7 +80,7 @@ export class CcAddonAdmin extends LitElement {
 
   /** @private */
   _onTagsSubmit() {
-    dispatchCustomEvent(this, 'update-tags', { tags: this._tags });
+    this.dispatchEvent(new CcAddonTagsChangeEvent({ tags: this._tags }));
   }
 
   /**
@@ -136,15 +133,15 @@ export class CcAddonAdmin extends LitElement {
             ?skeleton=${isSkeleton}
             ?readonly=${isFormDisabled}
             .value=${this._name}
-            @cc-input-text:input=${this._onNameInput}
-            @cc-input-text:requestimplicitsubmit=${this._onNameSubmit}
+            @cc-input=${this._onNameInput}
+            @cc-request-submit=${this._onNameSubmit}
           ></cc-input-text>
           <cc-button
             primary
             ?skeleton=${isSkeleton}
             ?disabled=${isFormDisabled && state.type !== 'updatingName'}
             ?waiting=${state.type === 'updatingName'}
-            @cc-button:click=${this._onNameSubmit}
+            @cc-click=${this._onNameSubmit}
             >${i18n('cc-addon-admin.update')}</cc-button
           >
         </div>
@@ -160,15 +157,15 @@ export class CcAddonAdmin extends LitElement {
             ?readonly=${isFormDisabled}
             .tags=${this._tags}
             placeholder="${i18n('cc-addon-admin.tags-empty')}"
-            @cc-input-text:tags=${this._onTagsInput}
-            @cc-input-text:requestimplicitsubmit=${this._onTagsSubmit}
+            @cc-tags-change=${this._onTagsInput}
+            @cc-request-submit=${this._onTagsSubmit}
           ></cc-input-text>
           <cc-button
             primary
             ?skeleton=${isSkeleton}
             ?disabled=${isFormDisabled && state.type !== 'updatingTags'}
             ?waiting=${state.type === 'updatingTags'}
-            @cc-button:click=${this._onTagsSubmit}
+            @cc-click=${this._onTagsSubmit}
             >${i18n('cc-addon-admin.tags-update')}</cc-button
           >
         </div>
@@ -187,7 +184,7 @@ export class CcAddonAdmin extends LitElement {
             ?skeleton=${isSkeleton}
             ?disabled=${isFormDisabled && state.type !== 'deleting'}
             ?waiting=${state.type === 'deleting'}
-            @cc-button:click=${this._onDeleteSubmit}
+            @cc-click=${this._onDeleteSubmit}
             >${i18n('cc-addon-admin.delete')}</cc-button
           >
         </div>

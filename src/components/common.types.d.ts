@@ -96,24 +96,32 @@ export type InvoiceType = 'INVOICE' | 'CREDITNOTE';
 interface HeatmapPoint {
   lat: number; // Latitude
   lon: number; // Longitude
-  count: number; // Number of occurences for this location
+  count: number; // Number of occurrences for this location
 }
 
 type MapModeType = 'points' | 'heatmap';
 
 interface Point {
-  lat: number; // Latitude
-  lon: number; // Longitude
-  count?: number; // Number of occurences for this location (default: 1)
-  delay?: number; // How long the point needs to stay (in ms), 'none' for a fixed point, (default: 1000)
-  tooltip?: string | { tag: string; string: any }; // Tooltip when the point is hovered
+  name?: string;
+  // Latitude
+  lat: number;
+  // Longitude
+  lon: number;
+  // Number of occurrences for this location (default: 1)
+  count?: number;
+  // How long the point needs to stay (in ms), (default: 1000)
+  delay?: number;
+  // Tooltip when the point is hovered
+  tooltip?: string | { tag: string; [p: string]: any };
   marker?: Marker;
   zIndexOffset?: number;
 }
 
 interface Marker {
-  tag: string; // The HTML tag name used for the marker
+  // The HTML tag name used for the marker
+  tag: string;
   // Additional specific properties for the marker custom element.
+  [p: string]: any;
 }
 
 interface Plan {

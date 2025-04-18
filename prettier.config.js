@@ -8,15 +8,21 @@ import sortGetPropsPlugin from './prettier-rules/sort-lit-get-properties.js';
 // We need this hack until Prettier does something about it.
 // Issue: https://github.com/prettier/prettier/issues/12807
 /** @type {import("prettier").Parser}  */
-const myParser = {
+const babelParser = {
   ...pluginSortImports.parsers.babel,
   parse: sortGetPropsPlugin.parsers.babel.parse,
+};
+
+/** @type {import("prettier").Parser}  */
+const typescriptParser = {
+  ...pluginSortImports.parsers.typescript,
 };
 
 /** @type {import("prettier").Plugin}  */
 const myPlugin = {
   parsers: {
-    babel: myParser,
+    babel: babelParser,
+    typescript: typescriptParser,
   },
 };
 

@@ -1,6 +1,5 @@
 import { css, html, LitElement } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { dispatchCustomEvent } from '../../lib/events.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-block/cc-block.js';
@@ -9,8 +8,9 @@ import '../cc-notice/cc-notice.js';
 
 /**
  * @typedef {import('./cc-addon-credentials.types.js').Credential} Credential
- * @typedef {import('../cc-block/cc-block.types.js').BlockToggleState} BlockToggleState
  * @typedef {import('./cc-addon-credentials.types.js').AddonType} AddonType
+ * @typedef {import('../cc-block/cc-block.types.js').BlockToggleState} BlockToggleState
+ * @typedef {import('../common.events.js').CcToggleEvent} CcToggleEvent
  */
 
 /**
@@ -21,8 +21,6 @@ import '../cc-notice/cc-notice.js';
  * * When the `value` of a credential is nullish, a skeleton UI pattern is displayed (loading hint).
  *
  * @cssdisplay block
- *
- * @fires {CustomEvent<'open'|'close'>} cc-addon-credentials:toggle-change - Fires toggle state whenever it changes.
  */
 export class CcAddonCredentials extends LitElement {
   static get properties() {
@@ -92,19 +90,14 @@ export class CcAddonCredentials extends LitElement {
     }
   }
 
-  /** @param {CustomEvent<'open'|'close'>} event */
-  _onToggleChange({ detail: value }) {
-    this.toggle = value;
-    dispatchCustomEvent(this, 'toggle-change', this.toggle);
+  /** @param {CcToggleEvent} event */
+  _onToggleChange({ detail: isOpen }) {
+    this.toggle = isOpen ? 'open' : 'close';
   }
 
   render() {
     return html`
-      <cc-block
-        image=${ifDefined(this.image ?? undefined)}
-        toggle=${this.toggle}
-        @cc-block:toggle-change=${this._onToggleChange}
-      >
+      <cc-block image=${ifDefined(this.image ?? undefined)} toggle=${this.toggle} @cc-toggle=${this._onToggleChange}>
         <div slot="header-title">${i18n('cc-addon-credentials.title', { name: this.name })}</div>
 
         ${!this.error

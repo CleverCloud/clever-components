@@ -3,15 +3,15 @@ import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { createRef, ref } from 'lit/directives/ref.js';
 import { iconRemixHashtag as iconShellPrompt, iconRemixAlertFill as iconWarning } from '../../assets/cc-remix.icons.js';
-import { dispatchCustomEvent } from '../../lib/events.js';
 import { isStringBlank, isStringEmpty } from '../../lib/utils.js';
 import { accessibilityStyles } from '../../styles/accessibility.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-icon/cc-icon.js';
+import { CcKvCommandExecuteEvent, CcKvTerminalStateChangeEvent } from './cc-kv-terminal.events.js';
 
 /**
- * @typedef {import('./cc-kv-terminal.types.d.ts').CcKvTerminalState} CcKvTerminalState
- * @typedef {import('./cc-kv-terminal.types.d.ts').CcKvCommandContentItem} CcKvCommandContentItem
+ * @typedef {import('./cc-kv-terminal.types.js').CcKvTerminalState} CcKvTerminalState
+ * @typedef {import('./cc-kv-terminal.types.js').CcKvCommandContentItem} CcKvCommandContentItem
  * @typedef {import('../../lib/events.types.js').GenericEventWithTarget<KeyboardEvent,HTMLInputElement>} HTMLInputKeyboardEvent
  * @typedef {import('lit').PropertyValues<CcKvTerminal>} CcKvTerminalPropertyValues
  * @typedef {import('lit/directives/ref.js').Ref<HTMLDivElement>} HTMLDivElementRef
@@ -28,9 +28,6 @@ import '../cc-icon/cc-icon.js';
  * The `clear` command will clear the terminal (but not the history of commands).
  *
  * @cssdisplay block
- *
- * @fires {CustomEvent<CcKvTerminalState>} cc-kv-terminal:state-change - Fires whenever the state change internally
- * @fires {CustomEvent<string>} cc-kv-terminal:send-command - Fires whenever a command is validated
  *
  * @cssprop {Color} --cc-kv-terminal-color-background - The background color
  * @cssprop {Color} --cc-kv-terminal-color-foreground - The foreground color
@@ -153,7 +150,7 @@ export class CcKvTerminal extends LitElement {
           ...this.state,
           history: [...this.state.history, { commandLine, result: [], success: true }],
         };
-        dispatchCustomEvent(this, 'state-change', this.state);
+        this.dispatchEvent(new CcKvTerminalStateChangeEvent(this.state));
         e.target.value = '';
       } else if (commandLine.toLowerCase() === 'clear') {
         this._pushCommandToHistory('clear');
@@ -161,11 +158,11 @@ export class CcKvTerminal extends LitElement {
           ...this.state,
           history: [],
         };
-        dispatchCustomEvent(this, 'state-change', this.state);
+        this.dispatchEvent(new CcKvTerminalStateChangeEvent(this.state));
         e.target.value = '';
       } else {
         this._pushCommandToHistory(commandLine);
-        dispatchCustomEvent(this, 'send-command', commandLine);
+        this.dispatchEvent(new CcKvCommandExecuteEvent(commandLine));
         e.target.value = '';
       }
     } else if (e.key === 'ArrowUp') {

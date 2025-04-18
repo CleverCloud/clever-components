@@ -188,8 +188,8 @@ export class CcKvListInput extends CcFormControlElement {
         ?disabled=${this.disabled}
         ?readonly=${this.readonly}
         multi
-        @cc-input-text:input=${this._onValueInput}
-        @cc-input-text:requestimplicitsubmit=${this._onAdd}
+        @cc-input=${this._onValueInput}
+        @cc-request-submit=${this._onAdd}
       ></cc-input-text>
 
       ${!isAlone
@@ -203,7 +203,7 @@ export class CcKvListInput extends CcFormControlElement {
               hide-text
               danger
               outlined
-              @cc-button:click=${this._onDelete}
+              @cc-click=${this._onDelete}
             ></cc-button>
           `
         : ''}
@@ -216,7 +216,7 @@ export class CcKvListInput extends CcFormControlElement {
               ?disabled=${this.disabled || this.readonly}
               hide-text
               outlined
-              @cc-button:click=${this._onAdd}
+              @cc-click=${this._onAdd}
             ></cc-button>
           `
         : html`<div></div>`}

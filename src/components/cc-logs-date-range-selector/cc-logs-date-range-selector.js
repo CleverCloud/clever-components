@@ -11,13 +11,13 @@ import {
 } from '../../assets/cc-remix.icons.js';
 import { DateFormatter } from '../../lib/date/date-formatter.js';
 import { isLive, isRightDateRangeAfterNow, shiftDateRange } from '../../lib/date/date-range-utils.js';
-import { dispatchCustomEvent } from '../../lib/events.js';
 import { formSubmit } from '../../lib/form/form-submit-directive.js';
 import { focusFirstFormControlWithError } from '../../lib/form/form-utils.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-icon/cc-icon.js';
 import '../cc-input-date/cc-input-date.js';
 import '../cc-popover/cc-popover.js';
+import { CcLogsDateRangeSelectionChangeEvent } from './cc-logs-date-range-selector.events.js';
 import { dateRangeSelectionToDateRange } from './date-range-selection.js';
 
 /** @type {Array<LogsDateRangeSelectOption>} */
@@ -43,8 +43,6 @@ const OPTIONS = ['live', 'lastHour', 'last4Hours', 'today', 'yesterday', 'last7D
  * A component that allows to select a date range with some quick presets or with a custom date range.
  *
  * @cssdisplay block
- *
- * @fires {CustomEvent<LogsDateRangeSelectionChangeEventData>} cc-logs-date-range-selector:change - Fires the selection and the resulting `range` whenever the selection changes.
  *
  * @beta
  */
@@ -137,7 +135,9 @@ export class CcLogsDateRangeSelector extends LitElement {
   _applyDateRange(dateRangeSelection) {
     this.value = dateRangeSelection;
     this._currentDateRange = dateRangeSelectionToDateRange(this.value);
-    dispatchCustomEvent(this, 'change', { selection: this.value, range: this._currentDateRange });
+    this.dispatchEvent(
+      new CcLogsDateRangeSelectionChangeEvent({ selection: this.value, range: this._currentDateRange }),
+    );
   }
 
   /* endregion */
@@ -185,7 +185,7 @@ export class CcLogsDateRangeSelector extends LitElement {
   }
 
   /**
-   * @param {CustomEvent<string>} event
+   * @param {CcInputEvent} event
    */
   _onCustomSinceInput(event) {
     this._customDateRange = {
@@ -195,7 +195,7 @@ export class CcLogsDateRangeSelector extends LitElement {
   }
 
   /**
-   * @param {CustomEvent<string>} event
+   * @param {CcInputEvent} event
    */
   _onCustomUntilInput(event) {
     this._customDateRange = {
@@ -306,7 +306,7 @@ export class CcLogsDateRangeSelector extends LitElement {
           timezone=${this.timezone}
           .max=${this._customDateRange.until}
           .value=${this._customDateRange.since}
-          @cc-input-date:input=${this._onCustomSinceInput}
+          @cc-input=${this._onCustomSinceInput}
         ></cc-input-date>
         <cc-input-date
           ${ref(this._customDateRangeRefs.until)}
@@ -320,7 +320,7 @@ export class CcLogsDateRangeSelector extends LitElement {
           timezone=${this.timezone}
           .min=${this._customDateRange.since}
           .value=${this._customDateRange.until}
-          @cc-input-date:input=${this._onCustomUntilInput}
+          @cc-input=${this._onCustomUntilInput}
         ></cc-input-date>
         <div class="custom-date-range-buttons">
           <cc-button
@@ -329,7 +329,7 @@ export class CcLogsDateRangeSelector extends LitElement {
             a11y-name=${i18n('cc-logs-date-range-selector.custom-date-range.previous')}
             data-direction="left"
             ?disabled=${this.readonly || this.disabled}
-            @cc-button:click=${this._onCustomDateRangeShift}
+            @cc-click=${this._onCustomDateRangeShift}
           >
           </cc-button>
           <cc-button
@@ -338,7 +338,7 @@ export class CcLogsDateRangeSelector extends LitElement {
             a11y-name=${i18n('cc-logs-date-range-selector.custom-date-range.next')}
             data-direction="right"
             ?disabled=${this.readonly || this.disabled || nextDisabled}
-            @cc-button:click=${this._onCustomDateRangeShift}
+            @cc-click=${this._onCustomDateRangeShift}
           >
           </cc-button>
           <cc-button type="submit" ?disabled=${this.readonly || this.disabled} primary>

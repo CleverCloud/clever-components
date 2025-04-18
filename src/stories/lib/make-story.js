@@ -93,8 +93,8 @@ export function makeStory(...configs) {
         const eventName = e.name;
 
         // actions callbacks are provided on the storyArgs object but their names differ from our events
-        // our events => "cc-component:event-name"
-        // the equivalent callback name => "onCcComponentEventName"
+        // our events => "event-name"
+        // the equivalent callback name => "onEventName"
         const actionCallback = Object.entries(storyArgs).find(([eventNameCamelCase]) => {
           return normalize(eventNameCamelCase) === 'on' + normalize(eventName);
         })?.[1];
@@ -147,7 +147,7 @@ export function makeStory(...configs) {
 }
 
 function normalize(text) {
-  return text.toLowerCase().replace(/[-:]/g, '');
+  return text.toLowerCase().replace(/-/g, '');
 }
 
 function getSourceCode(component, items, dom) {
