@@ -254,6 +254,9 @@ export const translations = {
   //#region cc-beta
   'cc-beta.label': `bêta`,
   //#endregion
+  //#region cc-block-details
+  'cc-block-details.cli.text': `Ligne de commande`,
+  //#endregion
   //#region cc-button
   'cc-button.cancel': `Cliquez pour annuler`,
   //#endregion
@@ -279,6 +282,16 @@ export const translations = {
     sanitize`<p>Si vous choisissez d'utiliser des enregistrements de type <code>A</code>, par exemple pour un domaine racine (APEX), vous devrez vous-même assurer leur mise à jour. Pensez à suivre notre <a href="https://developers.clever-cloud.com/changelog/" lang="en">changelog</a> ou à lire la documentation de notre <a href="https://developers.clever-cloud.com/api/v4/#load-balancers" lang="en">API v4</a> pour cela.</p>`,
   'cc-domain-management.dns.a.heading': `Enregistrements A`,
   'cc-domain-management.dns.a.label': `Valeurs d'enregistrement A`,
+  'cc-domain-management.dns.cli.content': /** @param {{appId: string}} _ */ ({ appId }) =>
+    sanitize`
+      <p>
+      Si ce n'est pas déjà fait, installez rapidement les Clever Tools (notre CLI) à l'aide de notre <a href="https://github.com/CleverCloud/clever-tools/blob/master/docs/setup-systems.md" title="documentation - Installing Clever Tools - new window">documentation</a>.
+      </p>
+      <dl>
+        <dt>Commande pour diagnostiquer l'installation actuelle:</dt>
+        <dd><code>clever diag ${appId}</code></dd>
+      </dl>
+    `,
   'cc-domain-management.dns.cname.desc': () =>
     sanitize`<p>Utiliser un enregistrement <code>CNAME</code> est fortement recommandé. Ainsi, votre configuration est automatiquement maintenue à jour.`,
   'cc-domain-management.dns.cname.heading': `Enregistrement CNAME`,
@@ -344,6 +357,21 @@ export const translations = {
   'cc-domain-management.list.primary.success': /** @param {{domain: string}} _ */ ({ domain }) =>
     `"${domain}" a bien été défini comme nom de domaine principal`,
   'cc-domain-management.main-heading': `Gérez vos noms de domaine`,
+  'cc-domain-management.names.cli.content': /** @param {{appId: string}} _ */ ({ appId }) =>
+    sanitize`
+      <p>
+      Vous pouvez gérer les domaines directement depuis votre terminal grâce aux commandes ci-dessous.
+      Si ce n'est pas déjà fait, installez rapidement les Clever Tools (notre CLI) à l'aide de notre <a href="https://github.com/CleverCloud/clever-tools/blob/master/docs/setup-systems.md" title="documentation - Installing Clever Tools - new window">documentation</a>.
+      </p>
+      <dl>
+        <dt>Lister les domaines :</dt>
+        <dd><code>clever domain --app ${appId}</code></dd>
+        <dt>Diagnostiquer les enregistrements DNS :</dt>
+        <dd><code>clever domain diag --app ${appId}</code></dd>
+        <dt>Ajouter un domaine :</dt>
+        <dd><code>clever domain add myapp.example.com --app ${appId}</code></dd>
+      </dl>
+      `,
   'cc-domain-management.names.documentation.text': `Noms de domaine - Documentation`,
   'cc-domain-management.new-window': `Nouvelle fenêtre`,
   'cc-domain-management.tls.certificates.documentation.text': `Certificats TLS - Documentation`,
