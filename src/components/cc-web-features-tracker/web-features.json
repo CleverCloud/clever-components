@@ -1,0 +1,118 @@
+{
+  "baselineFeatures": [
+    {
+      "featureId": "anchor-positioning",
+      "category": "CSS",
+      "comment": "Places an element based on the position of another element. Useful with popover.",
+      "isProgressiveEnhancement": false,
+      "canBeUsedWithPolyfill": false
+    },
+    {
+      "featureId": "backdrop-filter",
+      "category": "CSS",
+      "comment": "Applies graphical effects such as blurring or color shifting to the area behind an element. Useful with modal windows.",
+      "isProgressiveEnhancement": true,
+      "canBeUsedWithPolyfill": false
+    },
+    {
+      "featureId": "dialog",
+      "category": "HTML",
+      "comment": "Represents a modal or non-modal dialog box, such as a confirmation prompt or a subwindow used to enter data.",
+      "isProgressiveEnhancement": false,
+      "canBeUsedWithPolyfill": false
+    },
+    {
+      "featureId": "form-associated-custom-elements",
+      "category": "JS",
+      "comment": "Matches an element containing a slot that has assigned nodes matching the specified selector.",
+      "isProgressiveEnhancement": false,
+      "canBeUsedWithPolyfill": true
+    },
+    {
+      "featureId": "has",
+      "category": "CSS",
+      "comment": "Matches any element that can be selected by one of the selectors in that list.",
+      "isProgressiveEnhancement": true,
+      "canBeUsedWithPolyfill": false
+    },
+    {
+      "featureId": "has-slotted",
+      "category": "CSS",
+      "comment": "Matches an element containing a slot that has assigned nodes matching the specified selector.",
+      "isProgressiveEnhancement": false,
+      "canBeUsedWithPolyfill": false
+    },
+    {
+      "featureId": "interpolate-size",
+      "category": "CSS",
+      "comment": "Enable animation and transition interpolation between a numeric value and a keyword value, such as from a fixed length to auto or fit-content.",
+      "isProgressiveEnhancement": true,
+      "canBeUsedWithPolyfill": false
+    },
+    {
+      "featureId": "is",
+      "category": "CSS",
+      "comment": "Matches any element that can be selected by one of the selectors in that list.",
+      "isProgressiveEnhancement": true,
+      "canBeUsedWithPolyfill": false
+    },
+    {
+      "featureId": "overflow-clip-margin",
+      "category": "CSS",
+      "comment": "Sets how far overflow content may appear outside the bounds of an element. Useful when focus outline is hidden by overflow: hidden.",
+      "isProgressiveEnhancement": true,
+      "canBeUsedWithPolyfill": false
+    },
+    {
+      "featureId": "popover",
+      "category": "HTML",
+      "comment": "Creates an overlay to display content on top of other page content.",
+      "isProgressiveEnhancement": false,
+      "canBeUsedWithPolyfill": false
+    },
+    {
+      "featureId": "subgrid",
+      "category": "CSS",
+      "comment": "For aligning nested grid items with the parent grid.",
+      "isProgressiveEnhancement": true,
+      "canBeUsedWithPolyfill": false
+    },
+    {
+      "featureId": "view-transitions",
+      "category": "CSS",
+      "comment": "View transitions allow you to create animated visual transitions between different states of a document.",
+      "isProgressiveEnhancement": false,
+      "canBeUsedWithPolyfill": false
+    }
+  ],
+  "bcdFeatures": [
+    {
+      "featureId": "javascript.builtins.Array.toSorted",
+      "category": "JS",
+      "comment": "Non-mutating version of Array.prototype.sort.",
+      "isProgressiveEnhancement": false,
+      "canBeUsedWithPolyfill": false
+    },
+    {
+      "featureId": "javascript.classes.private_class_fields",
+      "category": "JS",
+      "comment": "Encapsulation using # prefix for class fields.",
+      "isProgressiveEnhancement": true,
+      "canBeUsedWithPolyfill": false
+    },
+    {
+      "featureId": "javascript.classes.private_class_fields_in",
+      "category": "JS",
+      "comment": "Ergonomic brand checks for private fields.",
+      "isProgressiveEnhancement": true,
+      "canBeUsedWithPolyfill": false
+    },
+    {
+      "featureId": "javascript.classes.private_class_methods",
+      "category": "JS",
+      "comment": "Encapsulation using # prefix for class methods.",
+      "isProgressiveEnhancement": true,
+      "canBeUsedWithPolyfill": false
+    }
+  ]
+}
