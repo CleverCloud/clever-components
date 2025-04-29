@@ -11,7 +11,7 @@ import '../cc-icon/cc-icon.js';
  *
  * @fires {CustomEvent<boolean>} cc-block-details:is-open-change - Fires is-open state whenever it changes.
  *
- * @slot tab-title - The title of the tab. Try to only use text.
+ * @slot button-text - The title of the tab. Try to only use text.
  * @slot link - A zone dedicated to link, for example to documentation.
  * @slot content - A zone dedicated to main content.
  */
@@ -42,7 +42,9 @@ export class CcBlockDetails extends LitElement {
           <slot name="button-text"></slot>
           <cc-icon .icon="${iconArrowDown}"></cc-icon>
         </button>
-        <div id="content" class="content"><slot name="content"></slot></div>
+        <div id="content" class="content">
+          <slot name="content"></slot>
+        </div>
         <div class="links">
           <slot name="link"></slot>
         </div>
@@ -59,9 +61,9 @@ export class CcBlockDetails extends LitElement {
         }
 
         .wrapper {
-          column-gap: 1em;
           display: grid;
           grid-template-areas: 'button links' 'content content';
+          grid-template-columns: 1fr auto;
           justify-items: start;
         }
 
@@ -84,11 +86,8 @@ export class CcBlockDetails extends LitElement {
         }
 
         .button:hover {
-          border-radius: var(--cc-border-radius-default, 0.25em);
-        }
-
-        :host(:not([is-open])) .button:hover {
           border: solid 1px var(--cc-color-border-neutral-strong, #8c8c8c);
+          border-radius: var(--cc-border-radius-default, 0.25em);
         }
 
         .button cc-icon {
@@ -107,13 +106,21 @@ export class CcBlockDetails extends LitElement {
         .content {
           background-color: var(--cc-color-bg-default, #fff);
           border-radius: var(--cc-border-radius-default, 0.25em);
+          box-sizing: border-box;
           display: none;
           grid-area: content;
           padding: 1em;
+          width: 100%;
         }
 
         :host([is-open]) .content {
+          border-top-left-radius: 0;
           display: block;
+        }
+
+        ::slotted([slot='content']) {
+          display: flex;
+          flex-direction: column;
         }
 
         .links {
@@ -122,6 +129,14 @@ export class CcBlockDetails extends LitElement {
           gap: 0.5em;
           grid-area: links;
           justify-self: end;
+        }
+
+        ::slotted([slot='link']) {
+          align-items: center;
+          color: var(--cc-color-text-primary-highlight, blue);
+          display: flex;
+          flex-direction: row;
+          gap: 0.5em;
         }
       `,
     ];
