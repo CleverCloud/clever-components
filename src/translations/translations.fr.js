@@ -478,6 +478,21 @@ export const translations = {
   'cc-env-var-editor-simple.empty-data': `Il n'y a pas de variable.`,
   //#endregion
   //#region cc-env-var-form
+  'cc-env-var-form.cli.content': /** @param {{appId: string}} _ */ ({ appId }) =>
+    sanitize`
+      <p class="text">
+        Vous pouvez gérer les variables d'environnement directement depuis votre terminal en utilisant les commandes ci-dessous.
+        Si ce n'est pas déjà fait, installez rapidement les Clever Tools (notre CLI) à l'aide de notre <a href="https://github.com/CleverCloud/clever-tools/blob/master/docs/setup-systems.md" title="documentation - Installing Clever Tools - new window">documentation</a>.
+      </p>
+      <dl>
+        <dt>Lister les variables d'environnement:</dt>
+        <dd><code>clever env --app ${appId}</code></dd>
+        <dt>Récupérer un fichier de variables d’environnement executable:</dt>
+        <dd><code>clever env --app ${appId} -F shell</code></dd>
+        <dt>Ajouter ou modifier une variable d'environnement:</dt>
+        <dd><code>clever env set myVarName myVarValue --app ${appId}</code></dd>
+      </dl>
+    `,
   'cc-env-var-form.description.config-provider': /** @param {{addonName: string}} _ */ ({ addonName }) =>
     sanitize`Configuration publiée pour les applications dépendantes. <a href="https://www.clever-cloud.com/doc/deploy/addon/config-provider/">En savoir plus</a><br>Ces seront injectées en tant que variables d'environnement dans les applications qui ont l'add-on <strong>${addonName}</strong> dans leurs services liés.<br>À chaque fois que vous mettez à jour les changements, toutes les applications dépendantes seront redémarrées automatiquement.`,
   'cc-env-var-form.description.env-var': /** @param {{appName: string}} _ */ ({ appName }) =>

@@ -1,8 +1,10 @@
 import { css, html, LitElement } from 'lit';
 import { iconRemixInformationFill as iconInfo } from '../../assets/cc-remix.icons.js';
 import { dispatchCustomEvent } from '../../lib/events.js';
-import { ccLink, linkStyles } from '../../templates/cc-link/cc-link.js';
+import { cliCommandsStyles } from '../../styles/cli-commands.js';
+import { linkStyles } from '../../templates/cc-link/cc-link.js';
 import { i18n } from '../../translations/translation.js';
+import '../cc-block-details/cc-block-details.js';
 import '../cc-block/cc-block.js';
 import '../cc-button/cc-button.js';
 import '../cc-env-var-editor-expert/cc-env-var-editor-expert.js';
@@ -42,6 +44,7 @@ export class CcEnvVarForm extends LitElement {
   static get properties() {
     return {
       addonName: { type: String, attribute: 'addon-name' },
+      appId: { type: String, attribute: 'app-id' },
       appName: { type: String, attribute: 'app-name' },
       context: { type: String, reflect: true },
       heading: { type: String, reflect: true },
@@ -59,6 +62,9 @@ export class CcEnvVarForm extends LitElement {
 
     /** @type {string} Defines add-on name used in some heading/description (depending on context). */
     this.addonName = '?';
+
+    /** @type {string} Sets the application id for documentation */
+    this.appId = 'app_xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx';
 
     /** @type {string} Defines application name used in some heading/description (depending on context). */
     this.appName = '?';
@@ -374,12 +380,14 @@ export class CcEnvVarForm extends LitElement {
             `
           : ''}
 
-        <div slot="footer-right">
-          ${ccLink(
-            `${ENV_VAR_DOCUMENTATION}`,
-            html`<cc-icon .icon="${iconInfo}"></cc-icon>${i18n('cc-env-var-form.documentation.text')}`,
-          )}
-        </div>
+        <cc-block-details slot="footer-left">
+          <div slot="button-text">${i18n('cc-block-details.cli.text')}</div>
+          <div slot="link">
+            <cc-icon .icon="${iconInfo}"></cc-icon>
+            <a href="${ENV_VAR_DOCUMENTATION}">${i18n('cc-env-var-form.documentation.text')}</a>
+          </div>
+          <div slot="content">${i18n('cc-env-var-form.cli.content', { appId: this.appId })}</div>
+        </cc-block-details>
       </cc-block>
     `;
   }
@@ -387,6 +395,7 @@ export class CcEnvVarForm extends LitElement {
   static get styles() {
     return [
       linkStyles,
+      cliCommandsStyles,
       // language=CSS
       css`
         :host {
