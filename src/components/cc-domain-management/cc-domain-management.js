@@ -23,9 +23,11 @@ import {
 import { focusBySelector } from '../../lib/focus-helper.js';
 import { generateDocsHref } from '../../lib/utils.js';
 import { accessibilityStyles } from '../../styles/accessibility.js';
+import { cliCommandsStyles } from '../../styles/cli-commands.js';
 import { ccLink, linkStyles } from '../../templates/cc-link/cc-link.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-badge/cc-badge.js';
+import '../cc-block-details/cc-block-details.js';
 import '../cc-block-section/cc-block-section.js';
 import '../cc-block/cc-block.js';
 import '../cc-button/cc-button.js';
@@ -66,6 +68,7 @@ export class CcDomainManagement extends LitElement {
       dnsInfoState: { type: Object, attribute: 'dns-info-state' },
       domainFormState: { type: Object, attribute: 'domain-form-state' },
       domainListState: { type: Object, attribute: 'domain-list-state' },
+      resourceId: { type: String, attribute: 'resource-id' },
       _sortedDomains: { type: Array, state: true },
     };
   }
@@ -87,6 +90,9 @@ export class CcDomainManagement extends LitElement {
 
   constructor() {
     super();
+
+    /** @type {string} Sets the resource id for documentation */
+    this.resourceId = 'xxx_xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx';
 
     /** @type {DomainManagementDnsInfoState} Sets the state of the DNS info section */
     this.dnsInfoState = { type: 'loading' };
@@ -350,12 +356,14 @@ export class CcDomainManagement extends LitElement {
             ${this.domainListState.type === 'loaded' ? this._renderDomains(this._sortedDomains) : ''}
           </cc-block-section>
 
-          <div slot="footer-right">
-            ${ccLink(
-              DOMAIN_NAMES_DOCUMENTATION,
-              html`<cc-icon .icon="${iconInfo}"></cc-icon> ${i18n('cc-domain-management.names.documentation.text')}`,
-            )}
-          </div>
+          <cc-block-details slot="footer-left">
+            <div slot="button-text">${i18n('cc-block-details.cli.text')}</div>
+            <div slot="link">
+              <cc-icon .icon="${iconInfo}"></cc-icon>
+              <a href="${DOMAIN_NAMES_DOCUMENTATION}">${i18n('cc-domain-management.names.documentation.text')}</a>
+            </div>
+            <div slot="content">${i18n('cc-domain-management.names.cli.content', { resourceId: this.resourceId })}</div>
+          </cc-block-details>
         </cc-block>
 
         <cc-block>
@@ -398,13 +406,14 @@ export class CcDomainManagement extends LitElement {
           ${this.dnsInfoState.type === 'loaded'
             ? this._renderDnsInfo(this.dnsInfoState.cnameRecord, this.dnsInfoState.aRecords)
             : ''}
-
-          <div slot="footer-right">
-            ${ccLink(
-              DNS_DOCUMENTATION,
-              html`<cc-icon .icon="${iconInfo}"></cc-icon> ${i18n('cc-domain-management.dns.documentation.text')}`,
-            )}
-          </div>
+          <cc-block-details slot="footer-left">
+            <div slot="button-text">${i18n('cc-block-details.cli.text')}</div>
+            <div slot="link">
+              <cc-icon .icon="${iconInfo}"></cc-icon>
+              <a href="${DNS_DOCUMENTATION}">${i18n('cc-domain-management.dns.documentation.text')}</a>
+            </div>
+            <div slot="content">${i18n('cc-domain-management.dns.cli.content', { resourceId: this.resourceId })}</div>
+          </cc-block-details>
         </cc-block>
       </div>
     `;
@@ -646,6 +655,7 @@ export class CcDomainManagement extends LitElement {
     return [
       accessibilityStyles,
       linkStyles,
+      cliCommandsStyles,
       css`
         :host {
           display: block;
