@@ -481,7 +481,7 @@ export const translations = {
         <dt>Get a sourceable env file:</dt>
         <dd><code>clever env --app ${appId} -F shell</code></dd>
         <dt>Add or update an environment variable:</dt>
-        <dd><code>clever env set myVarName myVarValue --app ${appId}</code></dd>
+        <dd><code>clever env set VAR_NAME VAR_VALUE --app ${appId}</code></dd>
       </dl>
     `,
   'cc-env-var-form.description.config-provider': /** @param {{addonName: string}} _ */ ({ addonName }) =>
@@ -1415,9 +1415,9 @@ export const translations = {
         <dt>List TCP redirections:</dt>
         <dd><code>clever tcp-redirs --app ${appId}</code></dd>
         <dt>Add a TCP redirection:</dt>
-        <dd><code>clever tcp-redirs add --namespace myNamespace --app ${appId}</code></dd>
+        <dd><code>clever tcp-redirs add --namespace my-namespace --app ${appId}</code></dd>
         <dt>Remove a TCP redirection:</dt>
-        <dd><code>clever tcp-redirs remove --namespace myNamespace --app ${appId}</code></dd>
+        <dd><code>clever tcp-redirs remove --namespace my-namespace --app ${appId}</code></dd>
       </dl>
     `,
   'cc-tcp-redirection-form.create.error': /** @param {{namespace: string}} _ */ ({ namespace }) => {
