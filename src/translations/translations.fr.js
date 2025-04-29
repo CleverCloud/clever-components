@@ -1429,6 +1429,20 @@ export const translations = {
     sanitize`Vous pouvez créer une redirection dans l'espace de nommage <strong>${namespace}</strong>.`,
   //#endregion
   //#region cc-tcp-redirection-form
+  'cc-tcp-redirection-form.cli.content': /** @param {{appId: string}} _ */ ({ appId }) =>
+    sanitize`
+      <p class="text">
+        Vous pouvez gérer les redirections TCP directement depuis votre terminal grâce aux commandes ci-dessous.
+        Si ce n'est pas déjà fait, installez rapidement les Clever Tools (notre CLI) à l'aide de notre <a href="https://github.com/CleverCloud/clever-tools/blob/master/docs/setup-systems.md" title="documentation - Installing Clever Tools - new window">documentation</a>.      </p>
+      <dl>
+        <dt>Lister les redirections TCP:</dt>
+        <dd><code>clever tcp-redirs --app ${appId}</code></dd>
+        <dt>Ajouter une redirection TCP:</dt>
+        <dd><code>clever tcp-redirs add --namespace myNamespace --app ${appId}</code></dd>
+        <dt>Supprimer une redirection TCP:</dt>
+        <dd><code>clever tcp-redirs remove --namespace myNamespace --app ${appId}</code></dd>
+      </dl>
+    `,
   'cc-tcp-redirection-form.create.error': /** @param {{namespace: string}} _ */ ({ namespace }) => {
     return sanitize`Une erreur est survenue pendant la création d'une redirection TCP dans l'espace de nommage <strong>${namespace}</strong>.`;
   },
