@@ -1672,6 +1672,33 @@ export const translations = {
   'cc-token-api-list.revoke-token.error': `Une erreur est survenue pendant la révocation du token d'API`,
   'cc-token-api-list.revoke-token.success': `Le token d'API a été révoqué avec succès`,
   //#endregion
+  //#region cc-token-api-update-form
+  'cc-token-api-update-form.back-to-list': `Retour à la liste de tokens d'API`,
+  'cc-token-api-update-form.cli.content': () => sanitize`
+    <p>
+      Gérez vos tokens d'API depuis un terminal à l'aide des commandes ci-dessous.
+      Pour installer les Clever Tools (CLI), suivez les instructions de la <a href="https://www.clever-cloud.com/developers/doc/cli/install/" title="documentation - Installer les Clever Tools - nouvelle fenêtre - en Anglais">documentation</a>.
+    </p>
+    <dl>
+      <dt>Créer un token d'API&nbsp;:</dt>
+      <dd><code>clever tokens create "&lt;votre nom de token&gt;"</code></dd>
+      <dt>Révoquer un token d'API&nbsp;:</dt>
+      <dd><code>clever tokens revoke &lt;api_token_id&gt;</code></dd>
+      <dt>Lister les tokens d'API&nbsp;:</dt>
+      <dd><code>clever tokens list</code></dd>
+      <dt>Utiliser votre token d'API&nbsp;:</dt>
+      <dd><code>curl -H "Authorization: Bearer &lt;votre_token&gt;" https://api-bridge.clever-cloud.com/v2/self</code></dd>
+    </dl>
+  `,
+  'cc-token-api-update-form.description.label': `Description`,
+  'cc-token-api-update-form.error': `Une erreur est survenue lors du chargement du token d'API`,
+  'cc-token-api-update-form.link.doc': `Tokens d'API - Documentation`,
+  'cc-token-api-update-form.main-heading': `Modifier votre token d'API`,
+  'cc-token-api-update-form.name.label': `Nom`,
+  'cc-token-api-update-form.submit-button': `Modifier`,
+  'cc-token-api-update-form.update-token.error': `Une erreur est survenue lors de la mise à jour du token d'API`,
+  'cc-token-api-update-form.update-token.success': `Le token d'API a été mis à jour avec succès`,
+  //#endregion
   //#region cc-token-oauth-list
   'cc-token-oauth-list.card.expires-soon': `Expire bientôt`,
   'cc-token-oauth-list.card.human-friendly-date': /** @param {{ date: string|number }} _ */ ({ date }) =>

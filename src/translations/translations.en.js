@@ -1643,6 +1643,33 @@ export const translations = {
   'cc-token-api-list.revoke-token.error': `Something went wrong while revoking the API token`,
   'cc-token-api-list.revoke-token.success': `The API token has been revoked successfully`,
   //#endregion
+  //#region cc-token-api-update-form
+  'cc-token-api-update-form.back-to-list': `Back to the API token list`,
+  'cc-token-api-update-form.cli.content': () => sanitize`
+    <p>
+      Manage your API tokens from a terminal using the commands below.
+      To install Clever Tools CLI, follow the instructions from the <a href="https://www.clever-cloud.com/developers/doc/cli/install/" title="documentation - Install Clever Tools - new window">documentation</a>.
+    </p>
+    <dl>
+      <dt>Create a token:</dt>
+      <dd><code>clever tokens create "&lt;your token name&gt;"</code></dd>
+      <dt>Revoke a token:</dt>
+      <dd><code>clever tokens revoke &lt;api_token_id&gt;</code></dd>
+      <dt>List tokens:</dt>
+      <dd><code>clever tokens list</code></dd>
+      <dt>Use your API token&nbsp;:</dt>
+      <dd><code>curl -H "Authorization: Bearer &lt;your_token&gt;" https://api-bridge.clever-cloud.com/v2/self</code></dd>
+    </dl>
+  `,
+  'cc-token-api-update-form.description.label': `Description`,
+  'cc-token-api-update-form.error': `Something went wrong while loading API token information`,
+  'cc-token-api-update-form.link.doc': `API tokens - Documentation`,
+  'cc-token-api-update-form.main-heading': `Modify your API token`,
+  'cc-token-api-update-form.name.label': `Name`,
+  'cc-token-api-update-form.submit-button': `Modify`,
+  'cc-token-api-update-form.update-token.error': `Something went wrong while updating the API token information`,
+  'cc-token-api-update-form.update-token.success': `The API token information has been updated successfully`,
+  //#endregion
   //#region cc-token-oauth-list
   'cc-token-oauth-list.card.expires-soon': `Expires soon`,
   'cc-token-oauth-list.card.human-friendly-date': /** @param {{ date: Date }} _ */ ({ date }) => formatDatetime(date),
