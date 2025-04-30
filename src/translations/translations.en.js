@@ -1579,6 +1579,17 @@ export const translations = {
   'cc-token-api-list.revoke-token.error': `Something went wrong while revoking the API token`,
   'cc-token-api-list.revoke-token.success': `The API token has been revoked successfully`,
   //#endregion
+  //#region cc-token-api-update-form
+  'cc-token-api-update-form.back-to-list': `Back to the API token list`,
+  'cc-token-api-update-form.description.label': `Description`,
+  'cc-token-api-update-form.error': `Something went wrong while loading API token information`,
+  'cc-token-api-update-form.intro': `Use this form to modify the name and description of your API token`,
+  'cc-token-api-update-form.main-heading': `Modify your API token`,
+  'cc-token-api-update-form.name.label': `Name`,
+  'cc-token-api-update-form.submit-button': `Modify`,
+  'cc-token-api-update-form.update-token.error': `Something went wrong while updating the API token information`,
+  'cc-token-api-update-form.update-token.success': `The API token information has been updated successfully`,
+  //#endregion
   //#region cc-token-oauth-list
   'cc-token-oauth-list.card.expires-soon': `Expires soon`,
   'cc-token-oauth-list.card.human-friendly-date': /** @param {{ date: Date }} _ */ ({ date }) => formatDatetime(date),

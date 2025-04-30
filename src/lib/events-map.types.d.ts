@@ -116,6 +116,10 @@ import {
 import { CcToastDismissEvent } from '../components/cc-toast/cc-toast.events.js';
 import { CcTokenCreateEvent } from '../components/cc-token-api-creation-form/cc-token-api-creation-form.events.js';
 import {
+  CcTokenChangeEvent,
+  CcTokenHasChangedEvent,
+} from '../components/cc-token-api-update-form/cc-token-api-update-form.events.js';
+import {
   CcClickEvent,
   CcRequestSubmitEvent,
   CcToggleEvent,
@@ -232,7 +236,9 @@ declare global {
     'cc-tcp-redirection-delete': CcTcpRedirectionDeleteEvent;
     'cc-toast-dismiss': CcToastDismissEvent;
     'cc-toggle': CcToggleEvent;
+    'cc-token-change': CcTokenChangeEvent;
     'cc-token-create': CcTokenCreateEvent;
+    'cc-token-has-changed': CcTokenHasChangedEvent;
     'cc-token-revoke': CcTokenRevokeEvent;
     'cc-tokens-revoke-all': CcTokensRevokeAllEvent;
   }
