@@ -29,7 +29,7 @@ const conf = {
 export const defaultStory = makeStory(conf, {
   items: [
     {
-      appId: 'app_a5a437c5-b9c7-41c2-97f3-fc6432a72ec0',
+      appId: 'app_3f9b1c8e-2d7a-4c4f-91a6-8bde78f4a21b',
       /** @type {DomainManagementListStateLoaded} */
       domainListState: {
         type: 'loaded',
@@ -44,6 +44,7 @@ export const defaultStory = makeStory(conf, {
 export const dataLoadedWithMoreDomains = makeStory(conf, {
   items: [
     {
+      appId: 'app_3f9b1c8e-2d7a-4c4f-91a6-8bde78f4a21b',
       /** @type {DomainManagementListStateLoaded} */
       domainListState: {
         type: 'loaded',
@@ -58,6 +59,7 @@ export const dataLoadedWithMoreDomains = makeStory(conf, {
 export const dataLoadedWithHttpOnlyDomain = makeStory(conf, {
   items: [
     {
+      appId: 'app_3f9b1c8e-2d7a-4c4f-91a6-8bde78f4a21b',
       /** @type {DomainManagementListStateLoaded} */
       domainListState: {
         type: 'loaded',
@@ -72,6 +74,7 @@ export const dataLoadedWithHttpOnlyDomain = makeStory(conf, {
 export const dataLoadedWithLongDomains = makeStory(conf, {
   items: [
     {
+      appId: 'app_3f9b1c8e-2d7a-4c4f-91a6-8bde78f4a21b',
       /** @type {DomainManagementListStateLoaded} */
       domainListState: {
         type: 'loaded',
@@ -86,6 +89,7 @@ export const dataLoadedWithLongDomains = makeStory(conf, {
 export const empty = makeStory(conf, {
   items: [
     {
+      appId: 'app_3f9b1c8e-2d7a-4c4f-91a6-8bde78f4a21b',
       /** @type {DomainManagementListStateLoaded} */
       domainListState: {
         type: 'loaded',
@@ -100,6 +104,7 @@ export const empty = makeStory(conf, {
 export const loading = makeStory(conf, {
   items: [
     {
+      appId: 'app_3f9b1c8e-2d7a-4c4f-91a6-8bde78f4a21b',
       /** @type {DomainManagementListStateLoading} */
       domainListState: { type: 'loading' },
       /** @type {DomainManagementDnsInfoStateLoading} */
@@ -111,6 +116,7 @@ export const loading = makeStory(conf, {
 export const waitingWithAdding = makeStory(conf, {
   items: [
     {
+      appId: 'app_3f9b1c8e-2d7a-4c4f-91a6-8bde78f4a21b',
       /** @type {DomainManagementFormStateAdding} */
       domainFormState: {
         type: 'adding',
@@ -135,6 +141,7 @@ export const waitingWithAdding = makeStory(conf, {
 export const waitingWithDeleting = makeStory(conf, {
   items: [
     {
+      appId: 'app_3f9b1c8e-2d7a-4c4f-91a6-8bde78f4a21b',
       /** @type {DomainManagementListStateLoaded} */
       domainListState: {
         type: 'loaded',
@@ -159,6 +166,7 @@ export const waitingWithDeleting = makeStory(conf, {
 export const waitingWithMarkingAsPrimary = makeStory(conf, {
   items: [
     {
+      appId: 'app_3f9b1c8e-2d7a-4c4f-91a6-8bde78f4a21b',
       /** @type {DomainManagementListStateLoaded} */
       domainListState: {
         type: 'loaded',
@@ -183,6 +191,7 @@ export const waitingWithMarkingAsPrimary = makeStory(conf, {
 export const error = makeStory(conf, {
   items: [
     {
+      appId: 'app_3f9b1c8e-2d7a-4c4f-91a6-8bde78f4a21b',
       /** @type {DomainManagementListStateError} */
       domainListState: { type: 'error' },
       /** @type {DomainManagementDnsInfoStateError} */
@@ -194,6 +203,7 @@ export const error = makeStory(conf, {
 export const errorWithEmpty = makeStory(conf, {
   items: [
     {
+      appId: 'app_3f9b1c8e-2d7a-4c4f-91a6-8bde78f4a21b',
       /** @type {DomainManagementFormStateIdle} */
       domainFormState: {
         type: 'idle',
@@ -219,6 +229,7 @@ export const errorWithEmpty = makeStory(conf, {
 export const errorWithPathWithinDomain = makeStory(conf, {
   items: [
     {
+      appId: 'app_3f9b1c8e-2d7a-4c4f-91a6-8bde78f4a21b',
       /** @type {DomainManagementFormStateIdle} */
       domainFormState: {
         type: 'idle',
@@ -248,6 +259,7 @@ export const errorWithPathWithinDomain = makeStory(conf, {
 export const errorWithInvalidDomain = makeStory(conf, {
   items: [
     {
+      appId: 'app_3f9b1c8e-2d7a-4c4f-91a6-8bde78f4a21b',
       /** @type {DomainManagementFormStateIdle} */
       domainFormState: {
         type: 'idle',
@@ -273,6 +285,7 @@ export const errorWithInvalidDomain = makeStory(conf, {
 export const errorWithInvalidWildcard = makeStory(conf, {
   items: [
     {
+      appId: 'app_3f9b1c8e-2d7a-4c4f-91a6-8bde78f4a21b',
       /** @type {DomainManagementFormStateIdle} */
       domainFormState: {
         type: 'idle',
