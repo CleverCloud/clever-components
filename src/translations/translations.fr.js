@@ -1535,6 +1535,17 @@ export const translations = {
   'cc-token-api-list.revoke-token.error': `Une erreur est survenue pendant la révocation du token d'API`,
   'cc-token-api-list.revoke-token.success': `Le token d'API a été révoqué avec succès`,
   //#endregion
+  //#region cc-token-api-update-form
+  'cc-token-api-update-form.back-to-list': `Retour à la liste de tokens`,
+  'cc-token-api-update-form.description.label': `Description`,
+  'cc-token-api-update-form.error': `Une erreur est survenue lors du chargement du token d'API`,
+  'cc-token-api-update-form.intro': `Utilisez ce formulaire pour modifier le nom et la description de votre token d'API`,
+  'cc-token-api-update-form.main-heading': `Mettre à jour votre token d'API`,
+  'cc-token-api-update-form.name.label': `Nom`,
+  'cc-token-api-update-form.submit-button': `Mettre à jour`,
+  'cc-token-api-update-form.update-token.error': `Une erreur est survenue lors de la mise à jour du token d'API`,
+  'cc-token-api-update-form.update-token.success': `Le token d'API a été mis à jour avec succès`,
+  //#endregion
   //#region cc-token-oauth-list
   'cc-token-oauth-list.card.expires-soon': `Expire bientôt`,
   'cc-token-oauth-list.card.human-friendly-date': /** @param {{ date: string|number }} _ */ ({ date }) =>
