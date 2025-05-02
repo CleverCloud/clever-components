@@ -67,10 +67,10 @@ const DNS_DOCUMENTATION = 'https://developers.clever-cloud.com/doc/administrate/
 export class CcDomainManagement extends LitElement {
   static get properties() {
     return {
-      appId: { type: String, attribute: 'app-id' },
       dnsInfoState: { type: Object, attribute: 'dns-info-state' },
       domainFormState: { type: Object, attribute: 'domain-form-state' },
       domainListState: { type: Object, attribute: 'domain-list-state' },
+      resourceId: { type: String, attribute: 'resource-id' },
       _sortedDomains: { type: Array, state: true },
     };
   }
@@ -93,8 +93,8 @@ export class CcDomainManagement extends LitElement {
   constructor() {
     super();
 
-    /** @type {string} Sets the application id for documentation */
-    this.appId = 'app_xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx';
+    /** @type {string} Sets the resource id for documentation */
+    this.resourceId = 'xxx_xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx';
 
     /** @type {DomainManagementDnsInfoState} Sets the state of the DNS info section */
     this.dnsInfoState = { type: 'loading' };
@@ -354,7 +354,7 @@ export class CcDomainManagement extends LitElement {
               <cc-icon .icon="${iconInfo}"></cc-icon>
               <a href="${DOMAIN_NAMES_DOCUMENTATION}">${i18n('cc-domain-management.names.documentation.text')}</a>
             </div>
-            <div slot="content">${i18n('cc-domain-management.names.cli.content', { appId: this.appId })}</div>
+            <div slot="content">${i18n('cc-domain-management.names.cli.content', { resourceId: this.resourceId })}</div>
           </cc-block-details>
         </cc-block>
 
@@ -404,7 +404,7 @@ export class CcDomainManagement extends LitElement {
               <cc-icon .icon="${iconInfo}"></cc-icon>
               <a href="${DNS_DOCUMENTATION}">${i18n('cc-domain-management.dns.documentation.text')}</a>
             </div>
-            <div slot="content">${i18n('cc-domain-management.dns.cli.content', { appId: this.appId })}</div>
+            <div slot="content">${i18n('cc-domain-management.dns.cli.content', { resourceId: this.resourceId })}</div>
           </cc-block-details>
         </cc-block>
       </div>

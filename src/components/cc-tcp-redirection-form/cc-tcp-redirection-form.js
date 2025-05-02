@@ -34,8 +34,8 @@ const SKELETON_REDIRECTIONS = [{ type: 'loading' }, { type: 'loading' }];
 export class CcTcpRedirectionForm extends LitElement {
   static get properties() {
     return {
-      appId: { type: String, attribute: 'app-id' },
       context: { type: String },
+      resourceId: { type: String, attribute: 'resource-id' },
       state: { type: Object },
     };
   }
@@ -43,8 +43,8 @@ export class CcTcpRedirectionForm extends LitElement {
   constructor() {
     super();
 
-    /** @type {string} Sets the application id for documentation */
-    this.appId = 'app_xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx';
+    /** @type {string} Sets the resource id for documentation */
+    this.resourceId = 'xxx_xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx';
 
     /** @type {TcpRedirectionFormContextType} Defines in which context the form is used so it can show the appropriate description or lack thereof (defaults to user). */
     this.context = 'user';
@@ -94,7 +94,7 @@ export class CcTcpRedirectionForm extends LitElement {
             <cc-icon .icon="${iconInfo}"></cc-icon>
             <a href="${TCP_REDIRECTION_DOCUMENTATION}">${i18n('cc-tcp-redirection-form.documentation.text')}</a>
           </div>
-          <div slot="content">${i18n('cc-tcp-redirection-form.cli.content', { appId: this.appId })}</div>
+          <div slot="content">${i18n('cc-tcp-redirection-form.cli.content', { resourceId: this.resourceId })}</div>
         </cc-block-details>
       </cc-block>
     `;

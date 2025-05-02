@@ -44,11 +44,11 @@ export class CcEnvVarForm extends LitElement {
   static get properties() {
     return {
       addonName: { type: String, attribute: 'addon-name' },
-      appId: { type: String, attribute: 'app-id' },
       appName: { type: String, attribute: 'app-name' },
       context: { type: String, reflect: true },
       heading: { type: String, reflect: true },
       readonly: { type: Boolean, reflect: true },
+      resourceId: { type: String, attribute: 'resource-id' },
       restartApp: { type: Boolean, attribute: 'restart-app' },
       state: { type: Object },
       _editorsState: { type: Object, state: true },
@@ -63,8 +63,8 @@ export class CcEnvVarForm extends LitElement {
     /** @type {string} Defines add-on name used in some heading/description (depending on context). */
     this.addonName = '?';
 
-    /** @type {string} Sets the application id for documentation */
-    this.appId = 'app_xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx';
+    /** @type {string} Sets the resource id for documentation */
+    this.resourceId = 'xxx_xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx';
 
     /** @type {string} Defines application name used in some heading/description (depending on context). */
     this.appName = '?';
@@ -386,7 +386,7 @@ export class CcEnvVarForm extends LitElement {
             <cc-icon .icon="${iconInfo}"></cc-icon>
             <a href="${ENV_VAR_DOCUMENTATION}">${i18n('cc-env-var-form.documentation.text')}</a>
           </div>
-          <div slot="content">${i18n('cc-env-var-form.cli.content', { appId: this.appId })}</div>
+          <div slot="content">${i18n('cc-env-var-form.cli.content', { resourceId: this.resourceId })}</div>
         </cc-block-details>
       </cc-block>
     `;
