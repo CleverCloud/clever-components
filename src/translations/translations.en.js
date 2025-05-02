@@ -243,6 +243,9 @@ export const translations = {
   //#region cc-beta
   'cc-beta.label': `beta`,
   //#endregion
+  //#region cc-block-details
+  'cc-block-details.cli.text': `Command line`,
+  //#endregion
   //#region cc-button
   'cc-button.cancel': `Click to cancel`,
   //#endregion
@@ -268,6 +271,16 @@ export const translations = {
     sanitize`<p>If you choose to use <code>A</code> records, for instance with a root domain (APEX), you'll need to update them yourself. Follow our <a href="https://developers.clever-cloud.com/changelog/">changelog</a> or check our <a href="https://developers.clever-cloud.com/api/v4/#load-balancers">v4 API documentation</a> for this.</p>`,
   'cc-domain-management.dns.a.heading': `A records`,
   'cc-domain-management.dns.a.label': `A Record values`,
+  'cc-domain-management.dns.cli.content': /** @param {{resourceId: string}} _ */ ({ resourceId }) =>
+    sanitize`
+      <p>
+        If you haven't already, quickly install the Clever Tools (our CLI) using our <a href="https://github.com/CleverCloud/clever-tools/blob/master/docs/setup-systems.md" title="documentation - Installing Clever Tools - new window">documentation</a>.
+      </p>
+      <dl>
+        <dt>Command to diagnose the current installation:</dt>
+        <dd><code>clever diag --app ${resourceId}</code></dd>
+      </dl>
+    `,
   'cc-domain-management.dns.cname.desc': () =>
     sanitize`<p>Using a <code>CNAME</code> record is recommended. This keeps your configuration up to date.</p>`,
   'cc-domain-management.dns.cname.heading': `CNAME record`,
@@ -334,6 +347,21 @@ export const translations = {
   'cc-domain-management.list.primary.success': /** @param {{domain: string}} _ */ ({ domain }) =>
     `"${domain}" has been successfully marked as primary domain`,
   'cc-domain-management.main-heading': `Manage your domain names`,
+  'cc-domain-management.names.cli.content': /** @param {{resourceId: string}} _ */ ({ resourceId }) =>
+    sanitize`
+      <p class="text">
+        You can manage domains directly from your terminal using the commands below. 
+        If you haven't already, quickly install the Clever Tools (our CLI) using our <a href="https://github.com/CleverCloud/clever-tools/blob/master/docs/setup-systems.md" title="documentation - Installing Clever Tools - new window">documentation</a>.
+      </p>
+      <dl>
+        <dt>List domains:</dt>
+        <dd><code>clever domain --app ${resourceId}</code></dd>
+        <dt>Diagnose DNS records:</dt>
+        <dd><code>clever domain diag --app ${resourceId}</code></dd>
+        <dt>Add a domain:</dt>
+        <dd><code>clever domain add myapp.example.com --app ${resourceId}</code></dd>
+      </dl>
+    `,
   'cc-domain-management.names.documentation.text': `Domain names - Documentation`,
   'cc-domain-management.new-window': `New Window`,
   'cc-domain-management.tls.certificates.documentation.text': `TLS certificates - Documentation`,
@@ -441,6 +469,21 @@ export const translations = {
   'cc-env-var-editor-simple.empty-data': `There are no variables.`,
   //#endregion
   //#region cc-env-var-form
+  'cc-env-var-form.cli.content': /** @param {{resourceId: string}} _ */ ({ resourceId }) =>
+    sanitize`
+      <p class="text">
+        You can manage environment variables directly from your terminal using the commands below.
+        If you haven't already, quickly install the Clever Tools (our CLI) using our <a href="https://github.com/CleverCloud/clever-tools/blob/master/docs/setup-systems.md" title="documentation - Installing Clever Tools - new window">documentation</a>.
+      </p>
+      <dl>
+        <dt>List environment variables:</dt>
+        <dd><code>clever env --app ${resourceId}</code></dd>
+        <dt>Get a sourceable env file:</dt>
+        <dd><code>clever env --app ${resourceId} -F shell</code></dd>
+        <dt>Add or update an environment variable:</dt>
+        <dd><code>clever env set VAR_NAME VAR_VALUE --app ${resourceId}</code></dd>
+      </dl>
+    `,
   'cc-env-var-form.description.config-provider': /** @param {{addonName: string}} _ */ ({ addonName }) =>
     sanitize`Configuration exposed to dependent applications. <a href="https://www.clever-cloud.com/doc/deploy/addon/config-provider/">Learn more</a><br>These variables will be injected as environment variables in applications that have the add-on <strong>${addonName}</strong> in their service dependencies.<br>Every time you update your changes, all the dependent applications will be automatically restarted.`,
   'cc-env-var-form.description.env-var': /** @param {{appName: string}} _ */ ({ appName }) =>
@@ -1362,6 +1405,21 @@ export const translations = {
     sanitize`You can create a redirection in the <strong>${namespace}</strong> namespace.`,
   //#endregion
   //#region cc-tcp-redirection-form
+  'cc-tcp-redirection-form.cli.content': /** @param {{resourceId: string}} _ */ ({ resourceId }) =>
+    sanitize`
+      <p class="text">
+        You can manage TCP redirections directly from your terminal using the commands below.
+        If you haven't already, quickly install the Clever Tools (our CLI) using our <a href="https://github.com/CleverCloud/clever-tools/blob/master/docs/setup-systems.md" title="documentation - Installing Clever Tools - new window">documentation</a>.
+      </p>
+      <dl>
+        <dt>List TCP redirections:</dt>
+        <dd><code>clever tcp-redirs --app ${resourceId}</code></dd>
+        <dt>Add a TCP redirection:</dt>
+        <dd><code>clever tcp-redirs add --namespace my-namespace --app ${resourceId}</code></dd>
+        <dt>Remove a TCP redirection:</dt>
+        <dd><code>clever tcp-redirs remove --namespace my-namespace {portNumber} --app ${resourceId}</code></dd>
+      </dl>
+    `,
   'cc-tcp-redirection-form.create.error': /** @param {{namespace: string}} _ */ ({ namespace }) => {
     return sanitize`Something went wrong while creating a TCP redirection in the <strong>${namespace}</strong> namespace.`;
   },
