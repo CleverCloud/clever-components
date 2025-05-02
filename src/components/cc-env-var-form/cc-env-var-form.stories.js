@@ -25,7 +25,7 @@ const conf = {
 export const defaultStory = makeStory(conf, {
   items: [
     {
-      appId: 'app_3f9b1c8e-2d7a-4c4f-91a6-8bde78f4a21b',
+      resourceId: 'app_3f9b1c8e-2d7a-4c4f-91a6-8bde78f4a21b',
       appName: 'Foobar backend python',
       context: 'env-var',
       state: { type: 'loaded', validationMode: 'simple', variables: VARIABLES_FULL },
@@ -36,7 +36,7 @@ export const defaultStory = makeStory(conf, {
 export const loading = makeStory(conf, {
   items: [
     {
-      appId: 'app_3f9b1c8e-2d7a-4c4f-91a6-8bde78f4a21b',
+      resourceId: 'app_3f9b1c8e-2d7a-4c4f-91a6-8bde78f4a21b',
       appName: 'Foobar backend python',
       context: 'env-var',
       state: { type: 'loading' },
@@ -47,7 +47,7 @@ export const loading = makeStory(conf, {
 export const loadingWithReadonly = makeStory(conf, {
   items: [
     {
-      appId: 'app_3f9b1c8e-2d7a-4c4f-91a6-8bde78f4a21b',
+      resourceId: 'app_3f9b1c8e-2d7a-4c4f-91a6-8bde78f4a21b',
       appName: 'Foobar backend python',
       context: 'env-var',
       readonly: true,
@@ -59,7 +59,7 @@ export const loadingWithReadonly = makeStory(conf, {
 export const empty = makeStory(conf, {
   items: [
     {
-      appId: 'app_3f9b1c8e-2d7a-4c4f-91a6-8bde78f4a21b',
+      resourceId: 'app_3f9b1c8e-2d7a-4c4f-91a6-8bde78f4a21b',
       appName: 'Foobar backend python',
       context: 'env-var',
       state: { type: 'loaded', validationMode: 'simple', variables: [] },
@@ -70,7 +70,7 @@ export const empty = makeStory(conf, {
 export const emptyWithReadonly = makeStory(conf, {
   items: [
     {
-      appId: 'app_3f9b1c8e-2d7a-4c4f-91a6-8bde78f4a21b',
+      resourceId: 'app_3f9b1c8e-2d7a-4c4f-91a6-8bde78f4a21b',
       appName: 'Foobar backend python',
       context: 'env-var',
       readonly: true,
@@ -82,7 +82,7 @@ export const emptyWithReadonly = makeStory(conf, {
 export const dataLoadedWithNoContext = makeStory(conf, {
   items: [
     {
-      appId: 'app_3f9b1c8e-2d7a-4c4f-91a6-8bde78f4a21b',
+      resourceId: 'app_3f9b1c8e-2d7a-4c4f-91a6-8bde78f4a21b',
       state: { type: 'loaded', validationMode: 'simple', variables: VARIABLES_FULL },
     },
   ],
@@ -91,7 +91,7 @@ export const dataLoadedWithNoContext = makeStory(conf, {
 export const dataLoadedWithContextEnvVarSimple = makeStory(conf, {
   items: [
     {
-      appId: 'app_3f9b1c8e-2d7a-4c4f-91a6-8bde78f4a21b',
+      resourceId: 'app_3f9b1c8e-2d7a-4c4f-91a6-8bde78f4a21b',
       context: 'env-var-simple',
       state: { type: 'loaded', validationMode: 'simple', variables: VARIABLES_FULL },
     },
@@ -101,7 +101,7 @@ export const dataLoadedWithContextEnvVarSimple = makeStory(conf, {
 export const dataLoadedWithContextEnvVarAddon = makeStory(conf, {
   items: [
     {
-      appId: 'app_3f9b1c8e-2d7a-4c4f-91a6-8bde78f4a21b',
+      resourceId: 'app_3f9b1c8e-2d7a-4c4f-91a6-8bde78f4a21b',
       context: 'env-var-addon',
       state: { type: 'loaded', validationMode: 'simple', variables: VARIABLES_FULL },
     },
@@ -111,7 +111,7 @@ export const dataLoadedWithContextEnvVarAddon = makeStory(conf, {
 export const dataLoadedWithContextEnvVar = makeStory(conf, {
   items: [
     {
-      appId: 'app_3f9b1c8e-2d7a-4c4f-91a6-8bde78f4a21b',
+      resourceId: 'app_3f9b1c8e-2d7a-4c4f-91a6-8bde78f4a21b',
       appName: 'Foobar backend python',
       context: 'env-var',
       state: { type: 'loaded', validationMode: 'simple', variables: VARIABLES_FULL },
@@ -122,7 +122,7 @@ export const dataLoadedWithContextEnvVar = makeStory(conf, {
 export const dataLoadedWithContextExposedConfig = makeStory(conf, {
   items: [
     {
-      appId: 'app_3f9b1c8e-2d7a-4c4f-91a6-8bde78f4a21b',
+      resourceId: 'app_3f9b1c8e-2d7a-4c4f-91a6-8bde78f4a21b',
       appName: 'Foobar backend python',
       context: 'exposed-config',
       state: { type: 'loaded', validationMode: 'simple', variables: VARIABLES_FULL },
@@ -133,7 +133,7 @@ export const dataLoadedWithContextExposedConfig = makeStory(conf, {
 export const dataLoadedWithContextConfigProvider = makeStory(conf, {
   items: [
     {
-      appId: 'app_3f9b1c8e-2d7a-4c4f-91a6-8bde78f4a21b',
+      resourceId: 'app_3f9b1c8e-2d7a-4c4f-91a6-8bde78f4a21b',
       addonName: 'My shared config',
       context: 'config-provider',
       state: { type: 'loaded', validationMode: 'simple', variables: VARIABLES_FULL },
@@ -144,7 +144,7 @@ export const dataLoadedWithContextConfigProvider = makeStory(conf, {
 export const dataLoadedWithRestartButton = makeStory(conf, {
   items: [
     {
-      appId: 'app_3f9b1c8e-2d7a-4c4f-91a6-8bde78f4a21b',
+      resourceId: 'app_3f9b1c8e-2d7a-4c4f-91a6-8bde78f4a21b',
       appName: 'Foobar backend python',
       context: 'env-var',
       state: { type: 'loaded', validationMode: 'simple', variables: VARIABLES_FULL },
@@ -156,7 +156,7 @@ export const dataLoadedWithRestartButton = makeStory(conf, {
 export const dataLoadedWithCustomHeadingAndReadonly = makeStory(conf, {
   items: [
     {
-      appId: 'app_3f9b1c8e-2d7a-4c4f-91a6-8bde78f4a21b',
+      resourceId: 'app_3f9b1c8e-2d7a-4c4f-91a6-8bde78f4a21b',
       heading: 'Add-on: Awesome PG database',
       state: { type: 'loaded', validationMode: 'simple', variables: VARIABLES_FULL },
       readonly: true,
@@ -167,7 +167,7 @@ export const dataLoadedWithCustomHeadingAndReadonly = makeStory(conf, {
 export const dataLoadedWithCustomHeadingAndDescription = makeStory(conf, {
   items: [
     {
-      appId: 'app_3f9b1c8e-2d7a-4c4f-91a6-8bde78f4a21b',
+      resourceId: 'app_3f9b1c8e-2d7a-4c4f-91a6-8bde78f4a21b',
       state: { type: 'loaded', validationMode: 'simple', variables: VARIABLES_FULL },
       heading: 'Custom heading title',
       innerHTML: `
@@ -180,7 +180,7 @@ export const dataLoadedWithCustomHeadingAndDescription = makeStory(conf, {
 export const dataLoadedWithStrictMode = makeStory(conf, {
   items: [
     {
-      appId: 'app_3f9b1c8e-2d7a-4c4f-91a6-8bde78f4a21b',
+      resourceId: 'app_3f9b1c8e-2d7a-4c4f-91a6-8bde78f4a21b',
       appName: 'Foobar backend python (strict validation mode)',
       context: 'env-var',
       state: { type: 'loaded', validationMode: 'strict', variables: VARIABLES_FULL },
@@ -191,7 +191,7 @@ export const dataLoadedWithStrictMode = makeStory(conf, {
 export const saving = makeStory(conf, {
   items: [
     {
-      appId: 'app_3f9b1c8e-2d7a-4c4f-91a6-8bde78f4a21b',
+      resourceId: 'app_3f9b1c8e-2d7a-4c4f-91a6-8bde78f4a21b',
       appName: 'Foobar backend python',
       context: 'env-var',
       state: { type: 'loaded', validationMode: 'simple', variables: VARIABLES_FULL },
@@ -206,7 +206,7 @@ export const saving = makeStory(conf, {
 export const errorWithLoading = makeStory(conf, {
   items: [
     {
-      appId: 'app_3f9b1c8e-2d7a-4c4f-91a6-8bde78f4a21b',
+      resourceId: 'app_3f9b1c8e-2d7a-4c4f-91a6-8bde78f4a21b',
       appName: 'Foobar backend python',
       context: 'env-var',
       state: { type: 'error' },
