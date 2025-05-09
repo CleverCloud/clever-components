@@ -7,7 +7,7 @@ import { CcEvent } from '../../lib/events.js';
 
 /**
  * Dispatched when more KV hash elements loading is requested.
- * @extends {CcEvent<void>}
+ * @extends {CcEvent}
  */
 export class CcKvHashLoadMoreEvent extends CcEvent {
   static TYPE = 'cc-kv-hash-load-more';

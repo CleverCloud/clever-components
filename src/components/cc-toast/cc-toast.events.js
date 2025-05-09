@@ -2,7 +2,7 @@ import { CcEvent } from '../../lib/events.js';
 
 /**
  * Dispatched when a toast is dismissed.
- * @extends {CcEvent<void>}
+ * @extends {CcEvent}
  */
 export class CcToastDismissEvent extends CcEvent {
   static TYPE = 'cc-toast-dismiss';

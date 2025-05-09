@@ -8,7 +8,7 @@ import { CcEvent } from '../../lib/events.js';
 
 /**
  * Dispatched when more KV list elements loading is requested.
- * @extends {CcEvent<void>}
+ * @extends {CcEvent}
  */
 export class CcKvListLoadMoreEvent extends CcEvent {
   static TYPE = 'cc-kv-list-load-more';

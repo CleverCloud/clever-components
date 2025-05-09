@@ -17,7 +17,7 @@ export class CcGrafanaToggleEvent extends CcEvent {
 
 /**
  * Dispatch when grafana reset is requested.
- * @extends {CcEvent<void>}
+ * @extends {CcEvent}
  */
 export class CcGrafanaResetEvent extends CcEvent {
   static TYPE = 'cc-grafana-reset';

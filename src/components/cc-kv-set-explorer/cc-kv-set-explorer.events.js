@@ -2,7 +2,7 @@ import { CcEvent } from '../../lib/events.js';
 
 /**
  * Dispatched when more KV set elements loading is requested.
- * @extends {CcEvent<void>}
+ * @extends {CcEvent}
  */
 export class CcKvSetLoadMoreEvent extends CcEvent {
   static TYPE = 'cc-kv-set-load-more';
