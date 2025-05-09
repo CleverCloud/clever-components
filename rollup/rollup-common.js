@@ -82,7 +82,11 @@ export function getMainFiles() {
     `${SOURCE_DIR}/translations/*.js`,
   ];
 
-  const ignorePatterns = [`${SOURCE_DIR}/components/**/*.stories.js`, `${SOURCE_DIR}/components/**/*.test.js`];
+  const ignorePatterns = [
+    `${SOURCE_DIR}/components/**/*.stories.js`,
+    `${SOURCE_DIR}/components/**/*.test.js`,
+    `${SOURCE_DIR}/components/**/*.events.js`,
+  ];
 
   return multiGlob(mainFilesPatterns, { ignore: ignorePatterns });
 }
