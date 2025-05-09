@@ -87,7 +87,7 @@ export class EventHandler {
 
 /**
  * @extends {CustomEvent<D>}
- * @template D detail
+ * @template [D=void] detail
  */
 export class CcEvent extends CustomEvent {
   /**

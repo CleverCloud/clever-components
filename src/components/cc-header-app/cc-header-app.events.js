@@ -2,7 +2,7 @@ import { CcEvent } from '../../lib/events.js';
 
 /**
  * Dispatched when a deployment cancellation is requested.
- * @extends {CcEvent<void>}
+ * @extends {CcEvent}
  */
 export class CcDeploymentCancelEvent extends CcEvent {
   static TYPE = 'cc-deployment-cancel';
@@ -44,7 +44,7 @@ export class CcApplicationStartEvent extends CcEvent {
 
 /**
  * Dispatch when an application stop is requested.
- * @extends {CcEvent<void>}
+ * @extends {CcEvent}
  */
 export class CcApplicationStopEvent extends CcEvent {
   static TYPE = 'cc-application-stop';

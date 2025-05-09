@@ -53,7 +53,7 @@ export class CcKvKeyFilterChangeEvent extends CcEvent {
 
 /**
  * Dispatched when loading more keys is requested.
- * @extends {CcEvent<void>}
+ * @extends {CcEvent}
  */
 export class CcKvLoadMoreKeysEvent extends CcEvent {
   static TYPE = 'cc-kv-load-more-keys';
@@ -65,7 +65,7 @@ export class CcKvLoadMoreKeysEvent extends CcEvent {
 
 /**
  * Dispatched when KV keys refresh is requested.
- * @extends {CcEvent<void>}
+ * @extends {CcEvent}
  */
 export class CcKvKeysRefreshEvent extends CcEvent {
   static TYPE = 'cc-kv-keys-refresh';

@@ -2,7 +2,7 @@ import { CcEvent } from '../../lib/events.js';
 
 /**
  * Dispatched when pause of the logs stream is requested.
- * @extends {CcEvent<void>}
+ * @extends {CcEvent}
  */
 export class CcLogsLoadingPauseEvent extends CcEvent {
   static TYPE = 'cc-logs-loading-pause';
@@ -14,7 +14,7 @@ export class CcLogsLoadingPauseEvent extends CcEvent {
 
 /**
  * Dispatched when resume of the logs stream is requested.
- * @extends {CcEvent<void>}
+ * @extends {CcEvent}
  */
 export class CcLogsLoadingResumeEvent extends CcEvent {
   static TYPE = 'cc-logs-loading-resume';
@@ -26,7 +26,7 @@ export class CcLogsLoadingResumeEvent extends CcEvent {
 
 /**
  * Dispatched when the logs stream overflow is accepted.
- * @extends {CcEvent<void>}
+ * @extends {CcEvent}
  */
 export class CcLogsLoadingOverflowAcceptEvent extends CcEvent {
   static TYPE = 'cc-logs-loading-overflow-accept';
@@ -38,7 +38,7 @@ export class CcLogsLoadingOverflowAcceptEvent extends CcEvent {
 
 /**
  * Dispatched when the logs stream overflow is discarded.
- * @extends {CcEvent<void>}
+ * @extends {CcEvent}
  */
 export class CcLogsLoadingOverflowDiscardEvent extends CcEvent {
   static TYPE = 'cc-logs-loading-overflow-discard';
