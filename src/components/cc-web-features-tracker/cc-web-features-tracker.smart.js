@@ -15,6 +15,8 @@ import './cc-web-features-tracker.js';
  * @typedef {import('./cc-web-features-tracker.types.js').BrowserSupported} BrowserSupported
  * @typedef {import('./cc-web-features-tracker.types.js').BrowserUnsupported} BrowserUnsupported
  * @typedef {import('./cc-web-features-tracker.types.js').FeatureStatus} FeatureStatus
+ * @typedef {import('./cc-web-features-tracker.types.js').FeatureJson} FeatureJson
+ * @typedef {import('./cc-web-features-tracker.types.js').SkeletonWebFeature} SkeletonWebFeature
  */
 
 defineSmartComponent({
@@ -24,11 +26,26 @@ defineSmartComponent({
   },
   /** @param {OnContextUpdateArgs} args */
   onContextUpdate({ context, updateComponent, signal }) {
-    const { trackedWebFeatures } = context;
+    const { trackedWebFeatures } = /** @type {{ trackedWebFeatures: WebFeatures }} */ (context);
 
     const api = new Api(trackedWebFeatures, signal);
 
-    updateComponent('state', { type: 'loading' });
+    updateComponent('state', {
+      type: 'loading',
+      webFeatures: Object.values(trackedWebFeatures).flatMap(
+        /**
+         * @param {FeatureJson} webFeature
+         * @returns {SkeletonWebFeature}
+         */
+        (webFeature) => ({
+          featureName: webFeature.featureId,
+          comment: webFeature.comment,
+          category: webFeature.category,
+          canBeUsedWithPolyfill: webFeature.canBeUsedWithPolyfill,
+          isProgressiveEnhancement: webFeature.isProgressiveEnhancement,
+        }),
+      ),
+    });
 
     api
       .getWebFeaturesData()
@@ -166,6 +183,8 @@ class FeatureFormatter {
       a.featureName.localeCompare(b.featureName),
     );
   }
+
+  getSkeletonWebFeatures() {}
 
   /**
    *

@@ -37,7 +37,7 @@ export const loading = makeStory(conf, {
   /** @type {Partial<CcWebFeaturesTracker>[]} */
   items: [
     {
-      state: { type: 'loading' },
+      state: { type: 'loading', webFeatures },
     },
   ],
 });

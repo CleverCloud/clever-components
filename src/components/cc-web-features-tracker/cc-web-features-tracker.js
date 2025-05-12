@@ -14,14 +14,13 @@ import {
   iconRemixAlertFill as iconWarning,
 } from '../../assets/cc-remix.icons.js';
 import { dispatchCustomEvent } from '../../lib/events.js';
+import { skeletonStyles } from '../../styles/skeleton.js';
 import '../cc-icon/cc-icon.js';
 import '../cc-loader/cc-loader.js';
 import '../cc-notice/cc-notice.js';
 import '../cc-toggle/cc-toggle.js';
 
-// TODO: finir style filtres & toggles
-// TODO: doc contrib
-// TODO: doc utilisation de ce composant / tableau
+const TODAY = new Date();
 
 /**
  * @typedef {import('./cc-web-features-tracker.types.js').WebFeaturesTrackerState} WebFeaturesTrackerState
@@ -29,6 +28,7 @@ import '../cc-toggle/cc-toggle.js';
  * @typedef {import('./cc-web-features-tracker.types.js').FormattedFeature} FormattedFeature
  * @typedef {import('./cc-web-features-tracker.types.js').BrowserSupported} BrowserSupported
  * @typedef {import('./cc-web-features-tracker.types.js').BrowserUnsupported} BrowserUnsupported
+ * @typedef {import('./cc-web-features-tracker.types.js').SkeletonWebFeature} SkeletonWebFeature
  * @typedef {import('../cc-toggle/cc-toggle.js').CcToggle} CcToggle
  * @typedef {import('../../lib/events.types.js').EventWithTarget<CcToggle & { value: 'all' | 'can-be-used' }>} EventWithTargetCcToggleFeatureFilter
  * @typedef {import('../../lib/events.types.js').EventWithTarget<CcToggle & { value: 'compact' | 'detailed' }>} EventWithTargetCcToggleDisplayMode
@@ -55,7 +55,7 @@ export class CcWebFeaturesTracker extends LitElement {
     super();
 
     /** @type {WebFeaturesTrackerState} */
-    this.state = { type: 'loading' };
+    this.state = { type: 'loading', webFeatures: [] };
 
     /** @type {{ displayControl: boolean, value: 'all' | 'can-be-used' }} */
     this.tableFeatureFilter = { displayControl: true, value: 'all' };
@@ -91,10 +91,6 @@ export class CcWebFeaturesTracker extends LitElement {
   }
 
   render() {
-    if (this.state.type === 'loading') {
-      return html`<cc-loader></cc-loader>`;
-    }
-
     if (this.state.type === 'error') {
       return html`<cc-notice intent="warning" message="Something went wrong while retrieving data"></cc-notice>`;
     }
@@ -103,11 +99,33 @@ export class CcWebFeaturesTracker extends LitElement {
       return html`<div class="empty"><p>No Web Features to track</p></div>`;
     }
 
-    return this._renderFeaturesTable(this.state.webFeatures);
+    const webFeatures =
+      this.state.type === 'loaded'
+        ? this.state.webFeatures
+        : this.state.webFeatures.map(
+            /**
+             * @param {SkeletonWebFeature} skeletonWebFeature
+             * @returns {FormattedFeature}
+             */
+            (skeletonWebFeature) => ({
+              ...skeletonWebFeature,
+              currentStatus: 'widely',
+              canBeUsed: true,
+              chromeSupport: { isSupported: true, releaseDate: TODAY, version: '100' },
+              firefoxSupport: { isSupported: true, releaseDate: TODAY, version: '100' },
+              safariSupport: { isSupported: true, releaseDate: TODAY, version: '10' },
+            }),
+          );
+    const skeleton = this.state.type === 'loading';
+
+    return this._renderFeaturesTable(webFeatures, skeleton);
   }
 
-  /** @param {FormattedFeature[]} formattedFeatures */
-  _renderFeaturesTable(formattedFeatures) {
+  /**
+   * @param {FormattedFeature[]} formattedFeatures
+   * @param {boolean} skeleton
+   */
+  _renderFeaturesTable(formattedFeatures, skeleton) {
     const filterFeatureChoices = [
       { label: 'All features', value: 'all' },
       { label: 'Can be used', value: 'can-be-used' },
@@ -179,32 +197,35 @@ export class CcWebFeaturesTracker extends LitElement {
           </tr>
         </thead>
         <tbody>
-          ${filteredFeatures.map((feature) => this._renderFeatureRow(feature))}
+          ${filteredFeatures.map((feature) => this._renderFeatureRow(feature, skeleton))}
         </tbody>
       </table>
     `;
   }
 
   /** @param {FormattedFeature} _ */
-  _renderFeatureRow({
-    isProgressiveEnhancement,
-    canBeUsedWithPolyfill,
-    comment,
-    category,
-    canBeUsed,
-    chromeSupport,
-    currentStatus,
-    featureName,
-    firefoxSupport,
-    safariSupport,
-  }) {
+  _renderFeatureRow(
+    {
+      isProgressiveEnhancement,
+      canBeUsedWithPolyfill,
+      comment,
+      category,
+      canBeUsed,
+      chromeSupport,
+      currentStatus,
+      featureName,
+      firefoxSupport,
+      safariSupport,
+    },
+    skeleton,
+  ) {
     const { a11yName, icon: baselineIcon } = this._getBaselineIcon(currentStatus);
     return html`
       <tr>
         <th>
           <div class="feature-name-th"><strong>${featureName}</strong><span class="comment">${comment}</span></div>
         </th>
-        <td>${category}</td>
+        <td><span class="skeleton">${category}</span></td>
         <td>
           <div class="can-be-used">
             ${canBeUsed ? 'Yes' : 'No'}
@@ -273,112 +294,119 @@ export class CcWebFeaturesTracker extends LitElement {
   }
 
   static get styles() {
-    return css`
-      :host {
-        display: grid;
-        gap: 1em;
-      }
+    return [
+      skeletonStyles,
+      css`
+        :host {
+          display: grid;
+          gap: 1em;
+        }
 
-      p {
-        margin: 0;
-      }
+        .skeleton {
+          background-color: #bbb;
+        }
 
-      .empty {
-        border: solid 1px var(--cc-color-border-neutral-weak, #eee);
-        padding: 2em;
-        text-align: center;
-      }
+        p {
+          margin: 0;
+        }
 
-      .table-controls {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 1em;
-      }
+        .empty {
+          border: solid 1px var(--cc-color-border-neutral-weak, #eee);
+          padding: 2em;
+          text-align: center;
+        }
 
-      table {
-        border-collapse: collapse;
-        border-radius: var(--cc-border-radius-small, 0.15em);
-        display: block;
-        overflow-x: auto;
-        table-layout: fixed;
-      }
+        .table-controls {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 1em;
+        }
 
-      th,
-      td {
-        padding: 0.5em 1em;
-        text-align: left;
-      }
+        table {
+          border-collapse: collapse;
+          border-radius: var(--cc-border-radius-small, 0.15em);
+          display: block;
+          overflow-x: auto;
+          table-layout: fixed;
+        }
 
-      thead th {
-        background-color: var(--cc-color-bg-neutral-alt, #eee);
-        color: var(--cc-color-text-strongest);
-        min-width: max-content;
-      }
+        th,
+        td {
+          padding: 0.5em 1em;
+          text-align: left;
+        }
 
-      tbody th,
-      tbody td {
-        background-color: var(--cc-color-bg-neutral, #ddd);
-        color: var(--cc-color-text-default, #000);
-      }
+        thead th {
+          background-color: var(--cc-color-bg-neutral-alt, #eee);
+          color: var(--cc-color-text-strongest);
+          min-width: max-content;
+        }
 
-      tr:not(:last-child) td,
-      tbody tr:not(:last-child) th {
-        border-bottom: 1px solid var(--cc-color-border-neutral-weak, #eee);
-      }
+        tbody th,
+        tbody td {
+          background-color: var(--cc-color-bg-neutral, #ddd);
+          color: var(--cc-color-text-default, #000);
+        }
 
-      .feature-name-th {
-        display: grid;
-      }
+        tr:not(:last-child) td,
+        tbody tr:not(:last-child) th {
+          border-bottom: 1px solid var(--cc-color-border-neutral-weak, #eee);
+        }
 
-      .comment {
-        font-style: italic;
-        font-weight: normal;
-      }
+        .feature-name-th {
+          display: grid;
+        }
 
-      .current-status {
-        align-items: center;
-        display: flex;
-        gap: 0.5em;
-      }
+        .comment {
+          font-style: italic;
+          font-weight: normal;
+        }
 
-      .current-status--detailed {
-        flex-direction: column;
-        text-align: center;
-      }
+        .current-status {
+          align-items: center;
+          display: flex;
+          gap: 0.5em;
+        }
 
-      .current-status__icon {
-        flex: 0 0 auto;
-        height: 1.5em;
-        width: auto;
-      }
+        .current-status--detailed {
+          flex-direction: column;
+          text-align: center;
+        }
 
-      .supported {
-        --cc-icon-color: var(--cc-color-text-success);
-      }
+        .current-status__icon {
+          flex: 0 0 auto;
+          height: 1.5em;
+          width: auto;
+        }
 
-      .unsupported {
-        --cc-icon-color: var(--cc-color-text-danger);
-      }
+        .supported {
+          --cc-icon-color: var(--cc-color-text-success);
+        }
 
-      .can-be-used {
-        --cc-icon-color: var(--cc-color-text-warning);
+        .unsupported {
+          --cc-icon-color: var(--cc-color-text-danger);
+        }
 
-        align-items: center;
-        display: flex;
-        gap: 0.5em;
-      }
+        .can-be-used {
+          --cc-icon-color: var(--cc-color-text-warning);
 
-      .browser-support {
-        display: grid;
-        gap: 0.5em;
-      }
+          align-items: center;
+          display: flex;
+          gap: 0.5em;
+        }
 
-      .browser-support p {
-        align-items: center;
-        display: flex;
-        gap: 0.5em;
-      }
-    `;
+        .browser-support {
+          display: grid;
+          gap: 0.5em;
+        }
+
+        .browser-support p {
+          align-items: center;
+          display: flex;
+          gap: 0.5em;
+        }
+      `,
+    ];
   }
 }
 
