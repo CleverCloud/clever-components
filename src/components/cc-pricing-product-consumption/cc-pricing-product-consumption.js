@@ -12,7 +12,6 @@ import {
   iconRemixUser_3Fill as iconUser,
 } from '../../assets/cc-remix.icons.js';
 import { ResizeController } from '../../controllers/resize-controller.js';
-import { dispatchCustomEvent } from '../../lib/events.js';
 import { PricingConsumptionSimulator } from '../../lib/pricing.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-button/cc-button.js';
@@ -20,6 +19,7 @@ import '../cc-icon/cc-icon.js';
 import '../cc-input-number/cc-input-number.js';
 import '../cc-loader/cc-loader.js';
 import '../cc-notice/cc-notice.js';
+import { CcPricingPlanAddEvent } from '../cc-pricing-page/cc-pricing-page.events.js';
 import '../cc-toggle/cc-toggle.js';
 
 const BREAKPOINT = 600;
@@ -58,13 +58,11 @@ const ICONS = {
  *
  * * Interval prices are defined in "euros / byte / 30 days" or just "euros / byte" for timeless sections like traffic.
  * * Interval ranges are defined in bytes.
- * * To comply with `<cc-pricing-product>`, the price in the event `cc-pricing-product:add-plan` is in "euros / 1 hour".
+ * * To comply with `<cc-pricing-product>`, the price in the event `cc-pricing-plan-add` is in "euros / 1 hour".
  *
  * **Note:** This component relies on the `ResizeController` to change its layout with `600px` as a width breakpoint.
  *
  * @cssdisplay block
- *
- * @fires {CustomEvent<ConsumptionPlan>} cc-pricing-product:add-plan - Fires the plan whenever the "add" button is clicked.
  *
  * @cssprop {Color} --cc-pricing-hovered-color - Sets the text color used on hover (defaults: `purple`).
  */
@@ -260,7 +258,7 @@ export class CcPricingProductConsumption extends LitElement {
 
   /**
    * Creates a plan object based on the component data.
-   * Dispatches a `cc-pricing-product:add-plan` event with the plan as its payload.
+   * Dispatches a `cc-pricing-plan-add` event with the plan as its payload.
    */
   _onAddPlan() {
     if (this.state.type !== 'loaded') {
@@ -288,7 +286,7 @@ export class CcPricingProductConsumption extends LitElement {
       })),
     };
 
-    dispatchCustomEvent(this, 'cc-pricing-product:add-plan', plan);
+    this.dispatchEvent(new CcPricingPlanAddEvent(plan));
   }
 
   /**
@@ -298,7 +296,7 @@ export class CcPricingProductConsumption extends LitElement {
    * @param {SectionType} type - the type of the section to update
    */
   _onInputValue(type) {
-    /** @param {CustomEvent<number>} e */
+    /** @param {CcInputEvent<number>} e */
     return (e) => {
       this._sectionStates[type].quantity = isNaN(e.detail) ? 0 : e.detail;
       this._updateSimulatorQuantity(type);
@@ -313,7 +311,7 @@ export class CcPricingProductConsumption extends LitElement {
    * @param {SectionType} type - the type of the section to update
    */
   _onToggleUnit(type) {
-    /** @param {CustomEvent<string>} e */
+    /** @param {CcSelectEvent} e */
     return (e) => {
       this._sectionStates[type].unitValue = e.detail;
       this._updateSimulatorQuantity(type);
@@ -398,7 +396,7 @@ export class CcPricingProductConsumption extends LitElement {
                 <cc-button
                   .icon=${iconPlus}
                   ?disabled=${someNullishIntervals || everyQuantityAtZero}
-                  @cc-button:click=${this._onAddPlan}
+                  @cc-click=${this._onAddPlan}
                 >
                   ${i18n('cc-pricing-product-consumption.add')}
                 </cc-button>
@@ -468,14 +466,14 @@ export class CcPricingProductConsumption extends LitElement {
           class="input-quantity"
           value=${quantity}
           min="0"
-          @cc-input-number:input=${this._onInputValue(type)}
+          @cc-input=${this._onInputValue(type)}
         ></cc-input-number>
         <cc-toggle
           legend=${i18n('cc-pricing-product-consumption.unit')}
           class="input-unit"
           value=${unitValue}
           .choices=${this._getUnits()}
-          @cc-toggle:input=${this._onToggleUnit(type)}
+          @cc-select=${this._onToggleUnit(type)}
         ></cc-toggle>
       `;
     } else {
@@ -485,7 +483,7 @@ export class CcPricingProductConsumption extends LitElement {
           class="input-quantity"
           value=${quantity}
           min="0"
-          @cc-input-number:input=${this._onInputValue(type)}
+          @cc-input=${this._onInputValue(type)}
         ></cc-input-number>
       `;
     }

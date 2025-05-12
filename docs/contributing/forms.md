@@ -33,7 +33,7 @@ class MyForm extends LitElement {
     //   email: 'user@example.com',
     //   age: '25'
     // }
-    dispatchCustomEvent(this, 'change', formData);
+     this.dispatchEvent(new MyFormSubmitEvent(formData));
   }
 
   render() {
@@ -209,7 +209,7 @@ class MyForm extends LitElement {
     this._nameErrorMessage = null;
     this._firstnameErrorMessage = null;
     // Dispatch data for smart component
-    dispatchCustomEvent(this, 'change', formData);
+     this.dispatchEvent(new MyFormSubmitEvent(formData));
   }
 
   _onInvalid(formValidity) {
@@ -317,7 +317,7 @@ class FormComponent extends LitElement {
         email: formData.email,
       },
     };
-    dispatchCustomEvent(this, 'submit-form', formData);
+     this.dispatchEvent(new MyFormSubmitEvent(formData));
   }
 
   render() {
@@ -380,7 +380,7 @@ defineSmartComponent({
       });
 
     // Handle submission
-    onEvent('form-component:submit-form', (data) => {
+    onEvent('my-form-submit', (data) => {
       updateComponent('formState', (formState) => {
         formState.type = 'submitting';
       });

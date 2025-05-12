@@ -2,7 +2,7 @@ import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { repeat } from 'lit/directives/repeat.js';
-import { dispatchCustomEvent } from '../../lib/events.js';
+import { CcMultiSelectEvent, CcSelectEvent } from '../common.events.js';
 
 /**
  * @typedef {import('./cc-toggle.types.js').Choice} Choice
@@ -30,9 +30,6 @@ import { dispatchCustomEvent } from '../../lib/events.js';
  * * We decided to use a JavaScript array of objects for the choices because it's way simpler to implement and not that dirtier to use.
  *
  * @cssdisplay inline-flex
- *
- * @fires {CustomEvent<string>} cc-toggle:input - Fires the selected `value` whenever the selected `value` changes (single mode only).
- * @fires {CustomEvent<string[]>} cc-toggle:input-multiple - Fires the selected `multipleValues` whenever the selected `multipleValues` changes (single mode only).
  *
  * @cssprop {Size} --cc-form-label-gap - The space between the label and the control (defaults: `0.35em` or `1em` when inline).
  * @cssprop {BorderRadius} --cc-toggle-border-radius - Sets the value of the border radius CSS property (defaults: `0.15em`).
@@ -100,7 +97,7 @@ export class CcToggle extends LitElement {
   _onChange(e) {
     if (this.multipleValues == null) {
       this.value = e.target.value;
-      dispatchCustomEvent(this, 'input', this.value);
+      this.dispatchEvent(new CcSelectEvent(this.value));
     } else {
       // Same order as the choices
       const multipleValues = this.choices
@@ -109,7 +106,7 @@ export class CcToggle extends LitElement {
         })
         .map(({ value }) => value);
       this.multipleValues = multipleValues;
-      dispatchCustomEvent(this, 'input-multiple', multipleValues);
+      this.dispatchEvent(new CcMultiSelectEvent(multipleValues));
     }
   }
 

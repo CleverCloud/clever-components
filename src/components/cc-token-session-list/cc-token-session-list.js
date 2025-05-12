@@ -11,7 +11,6 @@ import {
 } from '../../assets/cc-remix.icons.js';
 import { LostFocusController } from '../../controllers/lost-focus-controller.js';
 import { ResizeController } from '../../controllers/resize-controller.js';
-import { dispatchCustomEvent } from '../../lib/events.js';
 import { isExpirationClose } from '../../lib/tokens.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-badge/cc-badge.js';
@@ -20,6 +19,7 @@ import '../cc-button/cc-button.js';
 import '../cc-icon/cc-icon.js';
 import '../cc-loader/cc-loader.js';
 import '../cc-notice/cc-notice.js';
+import { CcTokenRevokeEvent, CcTokensRevokeAllEvent } from '../common.events.js';
 
 /**
  * @typedef {import('./cc-token-session-list.types.js').SessionTokenState} SessionTokenState
@@ -36,9 +36,6 @@ import '../cc-notice/cc-notice.js';
  * This component allows users to view their active session and revoke individual tokens or all tokens at once.
  * It displays information about each session including creation date, last used date, and expiration date.
  * Sessions are displayed in a list sorted by creation date (newest first).
- *
- * @fires {CustomEvent<void>} cc-token-session-list:revoke-all-session-tokens - Dispatched when a user requests to revoke all tokens
- * @fires {CustomEvent<string>} cc-token-session-list:revoke-session-token - Dispatched when a user requests to revoke a specific token, with the token ID as payload
  */
 export class CcTokenSessionList extends LitElement {
   static get properties() {
@@ -91,7 +88,7 @@ export class CcTokenSessionList extends LitElement {
    * @private
    */
   _onRevokeAllTokens() {
-    dispatchCustomEvent(this, 'revoke-all-session-tokens');
+    this.dispatchEvent(new CcTokensRevokeAllEvent());
   }
 
   /**
@@ -101,7 +98,7 @@ export class CcTokenSessionList extends LitElement {
    * @private
    */
   _onRevokeToken(tokenId) {
-    dispatchCustomEvent(this, 'revoke-session-token', tokenId);
+    this.dispatchEvent(new CcTokenRevokeEvent(tokenId));
   }
 
   render() {
@@ -130,7 +127,7 @@ export class CcTokenSessionList extends LitElement {
                   danger
                   outlined
                   ?waiting=${this.state.type === 'revoking-all'}
-                  @cc-button:click=${this._onRevokeAllTokens}
+                  @cc-click=${this._onRevokeAllTokens}
                 >
                   ${i18n('cc-token-session-list.revoke-all-sessions')}
                 </cc-button>
@@ -221,7 +218,7 @@ export class CcTokenSessionList extends LitElement {
                 .icon=${iconDelete}
                 circle
                 ?waiting=${isRevoking}
-                @cc-button:click=${() => this._onRevokeToken(id)}
+                @cc-click=${() => this._onRevokeToken(id)}
               >
                 ${i18n('cc-token-session-list.revoke-session', { tokenNumber: index + 1 })}
               </cc-button>

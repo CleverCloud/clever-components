@@ -327,7 +327,7 @@ export class CcTileMetrics extends LitElement {
             })}"
             .icon=${this._docsPanelVisible ? iconClose : iconInfo}
             hide-text
-            @cc-button:click=${this._onToggleDocs}
+            @cc-click=${this._onToggleDocs}
           >
             ${this._docsPanelVisible ? i18n('cc-tile-metrics.close-btn') : i18n('cc-tile-metrics.about-btn')}
           </cc-button>

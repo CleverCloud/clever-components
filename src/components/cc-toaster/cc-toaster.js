@@ -275,7 +275,7 @@ export class CcToaster extends LitElement {
         ?closeable=${toast.options.closeable}
         ?show-progress=${toast.options.showProgress}
         ${this._getAnimationDirective()}
-        @cc-toast:dismiss=${() => this._dismiss(toast)}
+        @cc-toast-dismiss=${() => this._dismiss(toast)}
       ></cc-toast>
     `;
   }

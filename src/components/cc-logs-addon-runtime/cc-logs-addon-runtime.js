@@ -5,7 +5,6 @@ import {
   iconRemixFullscreenExitLine as fullscreenExitIcon,
   iconRemixFullscreenLine as fullscreenIcon,
 } from '../../assets/cc-remix.icons.js';
-import { dispatchCustomEvent } from '../../lib/events.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-loader/cc-loader.js';
 import '../cc-logs-control/cc-logs-control.js';
@@ -18,13 +17,13 @@ import '../cc-notice/cc-notice.js';
 
 /**
  * @typedef {import('./cc-logs-addon-runtime.types.js').LogsAddonRuntimeState} LogsAddonRuntimeState
- * @typedef {import('./cc-logs-addon-runtime.types.js').LogsAddonRuntimeOptions} LogsAddonRuntimeOptions
  * @typedef {import('../cc-logs-control/cc-logs-control.js').CcLogsControl} CcLogsControl
- * @typedef {import('../cc-logs-control/cc-logs-control.types.js').LogsControlOption} LogsControlOption
+ * @typedef {import('../cc-logs-control/cc-logs-control.types.js').LogsOptions} LogsOptions
  * @typedef {import('../cc-logs/cc-logs.types.js').Log} Log
  * @typedef {import('../cc-logs-date-range-selector/cc-logs-date-range-selector.types.js').LogsDateRangeSelection} LogsDateRangeSelection
- * @typedef {import('../cc-logs-date-range-selector/cc-logs-date-range-selector.types.js').LogsDateRangeSelectionChangeEventData} LogsDateRangeSelectionChangeEventData
+ * @typedef {import('../cc-logs-date-range-selector/cc-logs-date-range-selector.events.js').CcLogsDateRangeSelectionChangeEvent} CcLogsDateRangeSelectionChangeEvent
  * @typedef {import('../cc-logs-message-filter/cc-logs-message-filter.types.js').LogsMessageFilterValue} LogsMessageFilterValue
+ * @typedef {import('../cc-logs-message-filter/cc-logs-message-filter.events.js').CcLogsMessageFilterChangeEvent} CcLogsMessageFilterChangeEvent
  * @typedef {import('lit/directives/ref.js').Ref<CcLogsControl>} CcLogsControlRef
  * @typedef {import('lit').PropertyValues<CcLogsAddonRuntime>} PropertyValues
  * @typedef {import('lit').TemplateResult<1>} TemplateResult
@@ -34,8 +33,6 @@ import '../cc-notice/cc-notice.js';
  * A component displaying addon runtime logs.
  *
  * @cssdisplay block
- *
- * @fires {CustomEvent<LogsAddonRuntimeOptions>} cc-logs-addon-runtime:options-change - Fires when the options changed
  *
  * @beta
  */
@@ -62,7 +59,7 @@ export class CcLogsAddonRuntime extends LitElement {
     /** @type {number|null} The maximum number of logs to display. `null` for no limit. */
     this.limit = 1000;
 
-    /** @type {LogsAddonRuntimeOptions} The logs options. */
+    /** @type {LogsOptions} The logs options. */
     this.options = {
       'date-display': 'datetime-iso',
       'metadata-display': {
@@ -107,22 +104,10 @@ export class CcLogsAddonRuntime extends LitElement {
   /* region Event handlers */
 
   /**
-   * @param {CustomEvent<LogsDateRangeSelectionChangeEventData>} event
+   * @param {CcLogsDateRangeSelectionChangeEvent} event
    */
   _onDateRangeSelectionChange(event) {
     this.dateRangeSelection = event.detail.selection;
-  }
-
-  /**
-   * @param {CustomEvent<LogsControlOption>} event
-   */
-  _onLogsOptionChange({ detail }) {
-    this.options = {
-      ...this.options,
-      [detail.name]: detail.value,
-    };
-
-    dispatchCustomEvent(this, 'options-change', this.options);
   }
 
   _onFullscreenToggle() {
@@ -130,10 +115,10 @@ export class CcLogsAddonRuntime extends LitElement {
   }
 
   /**
-   * @param {CustomEvent<LogsMessageFilterValue>} event
+   * @param {CcLogsMessageFilterChangeEvent} event
    */
-  _onMessageFilterInput(event) {
-    this._messageFilter = event.detail;
+  _onMessageFilterChange({ detail }) {
+    this._messageFilter = detail;
   }
 
   /* endregion */
@@ -192,18 +177,17 @@ export class CcLogsAddonRuntime extends LitElement {
         .stripAnsi=${this.options['strip-ansi']}
         .timezone=${this.options.timezone}
         .wrapLines=${this.options['wrap-lines']}
-        @cc-logs-control:option-change=${this._onLogsOptionChange}
       >
         <div slot="header" class="logs-header">
           <cc-logs-date-range-selector-beta
             .value=${this.dateRangeSelection}
-            @cc-logs-date-range-selector:change=${this._onDateRangeSelectionChange}
+            @cc-logs-date-range-selection-change=${this._onDateRangeSelectionChange}
           ></cc-logs-date-range-selector-beta>
 
           <cc-logs-message-filter-beta
             class="logs-message-filter"
             .filter=${this._messageFilter}
-            @cc-logs-message-filter:input=${this._onMessageFilterInput}
+            @cc-logs-message-filter-change=${this._onMessageFilterChange}
           ></cc-logs-message-filter-beta>
 
           <cc-button
@@ -213,7 +197,7 @@ export class CcLogsAddonRuntime extends LitElement {
               ? i18n('cc-logs-addon-runtime.fullscreen.exit')
               : i18n('cc-logs-addon-runtime.fullscreen')}
             hide-text
-            @cc-button:click=${this._onFullscreenToggle}
+            @cc-click=${this._onFullscreenToggle}
           ></cc-button>
         </div>
       </cc-logs-control-beta>

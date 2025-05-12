@@ -5,6 +5,7 @@ import identifyReadonlyMembers from './cem/identify-readonly-members.js';
 import listImages from './cem/list-images.js';
 import removePrivateMembers from './cem/remove-private-members.js';
 import sortItems from './cem/sort-items.js';
+import supportCcEvents from './cem/support-cc-events.js';
 import supportCssdisplayJsdoc from './cem/support-cssdisplay-jsdoc.js';
 import supportTypedefJsdoc from './cem/support-typedef-jsdoc.js';
 
@@ -18,6 +19,7 @@ export default {
   // dev: true,
   // watch: true,
   plugins: [
+    supportCcEvents(),
     sortItems(),
     removePrivateMembers(),
     identifyReadonlyMembers(),

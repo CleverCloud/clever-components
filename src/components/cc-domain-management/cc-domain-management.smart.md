@@ -15,9 +15,9 @@ title: '💡 Smart'
 
 ## 👋️ Events fired
 
-| Name                                | Payload | Details                                                                                                                           |
-|-------------------------------------|---------|-----------------------------------------------------------------------------------------------------------------------------------|
-| `domain-management-primary-change` |         | Fired when the primary domain has been changed successfully.<br/>Should be used to refresh the app link within the console header |
+| Name                       | Payload | Details                                                                                                                           |
+|----------------------------|---------|-----------------------------------------------------------------------------------------------------------------------------------|
+| `cc-domain-primary-change` |         | Fired when the primary domain has been changed successfully.<br/>Should be used to refresh the app link within the console header |
 
 
 ## ⚙️ Params

@@ -165,7 +165,7 @@ export class LogsInputController {
 
   /**
    * Handles the drag movement.
-   * @param {DragEvent} e
+   * @param {MouseEvent} e
    */
   _onDrag(e) {
     // We do not support drag with ctrl and shift key modifiers.

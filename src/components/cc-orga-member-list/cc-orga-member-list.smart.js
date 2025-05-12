@@ -8,6 +8,7 @@ import { sendToApi } from '../../lib/send-to-api.js';
 import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-smart-container/cc-smart-container.js';
+import { CcOrgaMemberLeftEvent } from './cc-orga-member-list.events.js';
 import { CcOrgaMemberList } from './cc-orga-member-list.js';
 
 const MEMBER_NOT_FOUND = 6501;
@@ -83,7 +84,7 @@ defineSmartComponent({
       );
     }
 
-    onEvent('cc-orga-member-list:invite', ({ email, role }) => {
+    onEvent('cc-orga-member-invite', ({ email, role }) => {
       component.inviteMemberFormState = { type: 'inviting' };
 
       postNewMember({ apiConfig, ownerId, email: email.trim(), role })
@@ -115,7 +116,7 @@ defineSmartComponent({
         });
     });
 
-    onEvent('cc-orga-member-list:update', ({ id, role, newRole, name, email, isCurrentUser }) => {
+    onEvent('cc-orga-member-update', ({ id, role, newRole, name, email, isCurrentUser }) => {
       if (component.memberListState.type !== 'loaded') {
         return;
       }
@@ -185,7 +186,7 @@ defineSmartComponent({
         );
     });
 
-    onEvent('cc-orga-member-card:delete', ({ id, name, email }) => {
+    onEvent('cc-orga-member-delete', ({ id, name, email }) => {
       updateMemberState(
         id,
         /** @param {OrgaMemberCardState} member */
@@ -234,9 +235,9 @@ defineSmartComponent({
         );
     });
 
-    onEvent('cc-orga-member-list:leave', ({ id }) => {
+    onEvent('cc-orga-member-leave', (orgaMember) => {
       updateMemberState(
-        id,
+        orgaMember.id,
         /** @param {OrgaMemberCardState} member */
         (member) => {
           member.type = 'deleting';
@@ -251,12 +252,12 @@ defineSmartComponent({
         },
       );
 
-      deleteMember({ apiConfig, ownerId, id })
+      deleteMember({ apiConfig, ownerId, id: orgaMember.id })
         .then(() => {
           notifySuccess(i18n('cc-orga-member-list.leave.success'));
           updateAuthorisations();
           updateComponent('memberListState', { type: 'error' });
-          window.dispatchEvent(new Event('orga-member-leave-success'));
+          component.dispatchEvent(new CcOrgaMemberLeftEvent(orgaMember));
         })
         .catch(
           /** @param {Error} error */
@@ -264,7 +265,7 @@ defineSmartComponent({
             console.error(error);
             notifyError(i18n('cc-orga-member-list.leave.error'));
             updateMemberState(
-              id,
+              orgaMember.id,
               /** @param {OrgaMemberCardState} member */
               (member) => {
                 member.type = 'loaded';

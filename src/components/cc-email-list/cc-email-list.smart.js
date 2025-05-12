@@ -76,7 +76,7 @@ defineSmartComponent({
         updateComponent('emailListState', { type: 'error' });
       });
 
-    onEvent('cc-email-list:send-confirmation-email', (address) => {
+    onEvent('cc-email-send-confirmation', (address) => {
       updateComponent(
         'emailListState',
         /** @param {EmailListStateLoaded} emailListState */
@@ -116,7 +116,7 @@ defineSmartComponent({
         });
     });
 
-    onEvent('cc-email-list:add', (address) => {
+    onEvent('cc-email-add', (address) => {
       updateComponent(
         'addEmailFormState',
         /** @param {AddEmailFormState} emailListState */
@@ -172,7 +172,7 @@ defineSmartComponent({
         });
     });
 
-    onEvent('cc-email-list:delete', (address) => {
+    onEvent('cc-email-delete', (address) => {
       updateSecondary(address, (secondaryAddressState) => {
         secondaryAddressState.type = 'deleting';
       });
@@ -204,7 +204,7 @@ defineSmartComponent({
         );
     });
 
-    onEvent('cc-email-list:mark-as-primary', (address) => {
+    onEvent('cc-email-mark-as-primary', (address) => {
       updateSecondary(address, (secondaryAddressState) => {
         secondaryAddressState.type = 'marking-as-primary';
       });

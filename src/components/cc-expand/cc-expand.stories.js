@@ -51,7 +51,7 @@ export const defaultStory = makeStory(conf, {
     function template({ size }) {
       return html`
         <div class="knob">
-          <cc-toggle value="${size}" .choices=${choices} @cc-toggle:input=${onSize}></cc-toggle>
+          <cc-toggle value="${size}" .choices=${choices} @cc-select=${onSize}></cc-toggle>
         </div>
         <cc-expand>
           <div class="box" data-size="${size}"></div>

@@ -1,12 +1,11 @@
 import { css, html } from 'lit';
+import { ifDefined } from 'lit/directives/if-defined.js';
+import { iconRemixEarthLine as zoneIcon } from '../../assets/cc-remix.icons.js';
 import { CcFormControlElement } from '../../lib/form/cc-form-control-element.abstract.js';
 import { accessibilityStyles } from '../../styles/accessibility.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-zone-card/cc-zone-card.js';
-
-import { ifDefined } from 'lit/directives/if-defined.js';
-import { iconRemixEarthLine as zoneIcon } from '../../assets/cc-remix.icons.js';
-import { dispatchCustomEvent } from '../../lib/events.js';
+import { CcSelectEvent } from '../common.events.js';
 
 /**
  * @typedef {import('./cc-zone-picker.types.js').ZoneItem} ZoneItem
@@ -21,8 +20,6 @@ import { dispatchCustomEvent } from '../../lib/events.js';
  * A component that allows you to select a zone from a list of zones sections.
  *
  * @cssdisplay block
- *
- * @fires {CustomEvent<string>} cc-zone-picker:input - Fires the zone code when a zone has been selected.
  *
  * @cssprop {Size} --cc-form-controls-indent - The horizontal space between the start of the line and the form control without the label (defaults: `34px`).
  * @cssprop {Size} --cc-form-label-gap - The space between the label and the control (defaults: `0.35em`).
@@ -71,7 +68,7 @@ export class CcZonePicker extends CcFormControlElement {
    */
   _onZoneSelect(e) {
     this.value = e.target.value;
-    dispatchCustomEvent(this, 'cc-zone-picker:input', e.target.value);
+    this.dispatchEvent(new CcSelectEvent(this.value));
   }
 
   render() {

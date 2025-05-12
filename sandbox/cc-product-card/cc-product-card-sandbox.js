@@ -9,6 +9,10 @@ import '../../src/components/cc-select/cc-select.js';
 import '../../src/components/cc-toggle/cc-toggle.js';
 import { sandboxStyles } from '../sandbox-styles.js';
 
+/**
+ * @typedef {import('../../src/components/cc-product-card/cc-product-card.types.js').Keyword} Keyword
+ */
+
 const DEFAULT_PRODUCT = {
   iconUrl: 'https://placekitten.com/202/202',
   name: 'My product',
@@ -40,10 +44,14 @@ export class CcProductCardSandbox extends LitElement {
   constructor() {
     super();
 
+    /** @type {{iconUrl: string, name: string, description: string, keywords?: Array<Keyword>}} */
     this._currentProduct = DEFAULT_PRODUCT;
     this._componentWidth = 20;
   }
 
+  /**
+   * @param {CcSelectEvent} event
+   */
   _onSelect({ detail: productName }) {
     if (productName === 'default') {
       this._currentProduct = DEFAULT_PRODUCT;
@@ -58,6 +66,9 @@ export class CcProductCardSandbox extends LitElement {
     };
   }
 
+  /**
+   * @param {CcInputEvent} event
+   */
   _onProductInput({ detail: product }) {
     const parsedProduct = JSON.parse(product);
     if (parsedProduct != null) {
@@ -65,6 +76,9 @@ export class CcProductCardSandbox extends LitElement {
     }
   }
 
+  /**
+   * @param {CcInputEvent<number>} event
+   */
   _onWidthInput({ detail: width }) {
     this._componentWidth = width;
   }
@@ -76,12 +90,12 @@ export class CcProductCardSandbox extends LitElement {
           label="API products"
           value="default"
           .options="${API_PRODUCTS_SELECT}"
-          @cc-select:input="${this._onSelect}"
+          @cc-select="${this._onSelect}"
         ></cc-select>
         <cc-input-number
           label="component width (em)"
           value=${this._componentWidth}
-          @cc-input-number:input="${this._onWidthInput}"
+          @cc-input="${this._onWidthInput}"
         ></cc-input-number>
       </div>
       <div class="main">
@@ -97,7 +111,7 @@ export class CcProductCardSandbox extends LitElement {
         <cc-input-text
           label="Product details"
           value=${JSON.stringify(this._currentProduct, null, '\t')}
-          @cc-input-text:input="${this._onProductInput}"
+          @cc-input="${this._onProductInput}"
           multi
         ></cc-input-text>
       </div>

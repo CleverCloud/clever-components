@@ -101,25 +101,37 @@ export const defaultStory = makeStory(conf, {
         container,
       );
 
-    const onVisibleElementIdChange = ({ detail: newVisibleElementId }) => {
+    /**
+     * @param {CcSelectEvent} event
+     */
+    function onVisibleElementIdChange({ detail: newVisibleElementId }) {
       visibleElementId = newVisibleElementId;
       refreshUi();
-    };
+    }
 
-    const onStretchingChange = ({ detail: newStretching }) => {
+    /**
+     * @param {CcSelectEvent} event
+     */
+    function onStretchingChange({ detail: newStretching }) {
       stretching = newStretching;
       refreshUi();
-    };
+    }
 
-    const onJustifyCustomPropChange = ({ detail: newJustifyCustomProp }) => {
+    /**
+     * @param {CcSelectEvent} event
+     */
+    function onJustifyCustomPropChange({ detail: newJustifyCustomProp }) {
       justifyCustomProp = newJustifyCustomProp;
       refreshUi();
-    };
+    }
 
-    const onAlignCustomPropChange = ({ detail: newAlignCustomProp }) => {
+    /**
+     * @param {CcSelectEvent} event
+     */
+    function onAlignCustomPropChange({ detail: newAlignCustomProp }) {
       alignCustomProp = newAlignCustomProp;
       refreshUi();
-    };
+    }
 
     function template({ visibleElementId, justifyCustomProp, alignCustomProp, stretching }) {
       return html`
@@ -130,13 +142,13 @@ export const defaultStory = makeStory(conf, {
               legend="Visible element ID"
               .choices=${choicesItemIds}
               value=${visibleElementId}
-              @cc-toggle:input=${onVisibleElementIdChange}
+              @cc-select=${onVisibleElementIdChange}
             ></cc-toggle>
             <cc-toggle
               legend="Stretching"
               .choices=${choicesStretching}
               value=${stretching}
-              @cc-toggle:input=${onStretchingChange}
+              @cc-select=${onStretchingChange}
             ></cc-toggle>
           </div>
           <div>
@@ -145,13 +157,13 @@ export const defaultStory = makeStory(conf, {
               legend="--cc-stretch-justify-items"
               value="${justifyCustomProp}"
               .choices=${choices}
-              @cc-toggle:input=${onJustifyCustomPropChange}
+              @cc-select=${onJustifyCustomPropChange}
             ></cc-toggle>
             <cc-toggle
               legend="--cc-stretch-align-items"
               value="${alignCustomProp}"
               .choices=${choices}
-              @cc-toggle:input=${onAlignCustomPropChange}
+              @cc-select=${onAlignCustomPropChange}
             ></cc-toggle>
           </div>
           <p>

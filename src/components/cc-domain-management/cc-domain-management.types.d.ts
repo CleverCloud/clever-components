@@ -93,3 +93,9 @@ interface DomainManagementDnsInfoStateLoading {
 interface DomainManagementDnsInfoStateError {
   type: 'error';
 }
+
+export interface NewDomain {
+  hostname: string;
+  pathPrefix: string;
+  isWildcard: boolean;
+}

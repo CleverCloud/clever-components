@@ -1,13 +1,14 @@
 import { css, html, LitElement } from 'lit';
-import { dispatchCustomEvent } from '../../lib/events.js';
 import { linkStyles } from '../../templates/cc-link/cc-link.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-addon-option/cc-addon-option.js';
 import '../cc-block/cc-block.js';
 import '../cc-button/cc-button.js';
+import { CcAddonOptionFormSubmitEvent } from './cc-addon-option-form.events.js';
 
 /**
  * @typedef {import('../cc-addon-option/cc-addon-option.js').CcAddonOption} CcAddonOption
+ * @typedef {import('../cc-addon-option/cc-addon-option.events.js').CcAddonOptionChangeEvent} CcAddonOptionChangeEvent
  * @typedef {import('../common.types.js').AddonOptionStates} AddonOptionStates
  * @typedef {import('../common.types.js').AddonOption} AddonOption
  * @typedef {import('../common.types.js').AddonOptionWithMetadata} AddonOptionWithMetadata
@@ -17,8 +18,6 @@ import '../cc-button/cc-button.js';
  * A component that displays a form of `<cc-addon-option>`.
  *
  * @cssdisplay block
- *
- * @fires {CustomEvent<AddonOptionStates>} cc-addon-option-form:submit - Fires when the form is submitted.
  *
  * @slot description - The description of the add-on and available options.
  */
@@ -51,12 +50,12 @@ export class CcAddonOptionForm extends LitElement {
       }
     });
 
-    dispatchCustomEvent(this, 'submit', this._optionsStates);
+    this.dispatchEvent(new CcAddonOptionFormSubmitEvent(this._optionsStates));
   }
 
   /** @param {string} optionName */
-  _onOptionToggle(optionName) {
-    /** @param {CustomEvent<boolean>} e */
+  _onOptionChange(optionName) {
+    /** @param {CcAddonOptionChangeEvent} e */
     return (e) => {
       this._optionsStates[optionName] = e.detail;
     };
@@ -75,14 +74,14 @@ export class CcAddonOptionForm extends LitElement {
               .icon="${option.icon}"
               logo="${option.logo}"
               ?enabled=${enabled}
-              @cc-addon-option:input=${this._onOptionToggle(option.name)}
+              @cc-addon-option-change=${this._onOptionChange(option.name)}
             >
               ${option.description}
             </cc-addon-option>`;
           })}
         </div>
         <div slot="content-footer" class="button-bar">
-          <cc-button primary @cc-button:click=${this._onSubmit}> ${i18n('cc-addon-option-form.confirm')} </cc-button>
+          <cc-button primary @cc-click=${this._onSubmit}> ${i18n('cc-addon-option-form.confirm')} </cc-button>
         </div>
       </cc-block>
     `;

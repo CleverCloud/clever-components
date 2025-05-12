@@ -9,14 +9,10 @@
     "src/controllers/*.js",
     "src/templates/*.js",
     "src/translations/**/*.js",
-    "tasks/typechecking-stats.js"
+    "tasks/typechecking-stats.js",
+    "src/lib/events-map.types.d.ts"
   ],
-  "exclude": [
-    "src/controllers/*.stories.js",
-    "src/components/**/*.test.js",
-    "src/components/**/*.stories.js",
-    "src/components/cc-grafana-info"
-  ],
+  "exclude": ["src/controllers/*.stories.js", "src/components/**/*.test.js", "src/components/**/*.stories.js"],
   "extends": "./tsconfig.json",
   "compilerOptions": {
     // FIXME:

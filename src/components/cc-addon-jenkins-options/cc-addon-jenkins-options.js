@@ -1,11 +1,9 @@
 import { css, html, LitElement } from 'lit';
-import { dispatchCustomEvent } from '../../lib/events.js';
 import { ccAddonEncryptionAtRestOption } from '../../templates/cc-addon-encryption-at-rest-option/cc-addon-encryption-at-rest-option.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-addon-option-form/cc-addon-option-form.js';
 
 /**
- * @typedef {import('../common.types.js').AddonOptionStates} AddonOptionStates
  * @typedef {import('../common.types.js').EncryptionAddonOption} EncryptionAddonOption
  */
 
@@ -13,8 +11,6 @@ import '../cc-addon-option-form/cc-addon-option-form.js';
  * A component that displays the available options of a Jenkins add-on.
  *
  * @cssdisplay block
- *
- * @fires {CustomEvent<AddonOptionStates>} cc-addon-jenkins-options:submit - Fires when the form is submitted.
  */
 export class CcAddonJenkinsOptions extends LitElement {
   static get properties() {
@@ -28,11 +24,6 @@ export class CcAddonJenkinsOptions extends LitElement {
 
     /** @type {Array<EncryptionAddonOption>} List of options for this add-on. */
     this.options = [];
-  }
-
-  /** @param {CustomEvent<AddonOptionStates>} event */
-  _onFormOptionsSubmit({ detail }) {
-    dispatchCustomEvent(this, 'submit', detail);
   }
 
   _getFormOptions() {
@@ -53,11 +44,7 @@ export class CcAddonJenkinsOptions extends LitElement {
     const heading = i18n('cc-addon-jenkins-options.title');
 
     return html`
-      <cc-addon-option-form
-        heading="${heading}"
-        .options=${options}
-        @cc-addon-option-form:submit="${this._onFormOptionsSubmit}"
-      >
+      <cc-addon-option-form heading="${heading}" .options=${options}>
         <div slot="description">${i18n('cc-addon-jenkins-options.description')}</div>
       </cc-addon-option-form>
     `;

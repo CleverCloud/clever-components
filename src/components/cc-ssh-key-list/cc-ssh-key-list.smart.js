@@ -17,6 +17,7 @@ import './cc-ssh-key-list.js';
 /**
  * @typedef {import('./cc-ssh-key-list.js').CcSshKeyList} CcSshKeyList
  * @typedef {import('./cc-ssh-key-list.types.js').SshKey} SshKey
+ * @typedef {import('./cc-ssh-key-list.types.js').GithubSshKey} GithubSshKey
  * @typedef {import('./cc-ssh-key-list.types.js').CreateSshKeyFormState} CreateSshKeyFormState
  * @typedef {import('./cc-ssh-key-list.types.js').SshKeyListStateLoadedAndLinked} SshKeyListStateLoadedAndLinked
  * @typedef {import('./cc-ssh-key-list.types.js').SshKeyListStateLoadedAndUnlinked} SshKeyListStateLoadedAndUnlinked
@@ -57,7 +58,7 @@ defineSmartComponent({
         });
     }
 
-    onEvent('cc-ssh-key-list:create', ({ name, publicKey }) => {
+    onEvent('cc-ssh-key-create', ({ name, publicKey }) => {
       component.createKeyFormState = { type: 'creating' };
 
       addKey({ apiConfig, key: { name: name.trim(), key: publicKey.trim() } })
@@ -77,7 +78,7 @@ defineSmartComponent({
         });
     });
 
-    onEvent('cc-ssh-key-list:delete', ({ name }) => {
+    onEvent('cc-ssh-key-delete', ({ name }) => {
       updateComponent(
         'keyListState',
         /** @param {SshKeyListStateLoadedAndLinked|SshKeyListStateLoadedAndUnlinked} keyListState */
@@ -106,7 +107,7 @@ defineSmartComponent({
         });
     });
 
-    onEvent('cc-ssh-key-list:import', ({ name, key, fingerprint }) => {
+    onEvent('cc-ssh-key-import', ({ name, key, fingerprint }) => {
       updateComponent(
         'keyListState',
         /** @param {SshKeyListStateLoadedAndLinked} keyListState */
@@ -158,7 +159,7 @@ defineSmartComponent({
  * @return {Promise<{
  *   isGithubLinked: boolean,
  *   personalKeys: Array<SshKey>,
- *   githubKeys: Array<SshKey>,
+ *   githubKeys: Array<GithubSshKey>,
  * }>}
  */
 async function fetchAllKeys({ apiConfig, signal, cacheDelay }) {

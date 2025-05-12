@@ -1,44 +1,4 @@
 /**
- * Send a custom event in the format node => tagName:eventSuffix
- * @param {Window|Node} node
- * @param {string} eventNameOrSuffix - In case of an eventName it will dispatch the event associated to the node or dispatch the event directly if there's a suffix in the eventName
- * @param {any} [detail]
- * @return {CustomEvent} the event that has been dispatched.
- */
-export function dispatchCustomEvent(node, eventNameOrSuffix, detail) {
-  const eventName = getEventName(node, eventNameOrSuffix);
-  const event = new CustomEvent(eventName, { detail, bubbles: true, composed: true });
-  node.dispatchEvent(event);
-  return event;
-}
-
-const betaComponentNodeNameRegex = /^(cc-.+?)-beta$/;
-
-/**
- *
- * @param {Window|Node} node
- * @param {string} eventNameOrSuffix
- * @return {string}
- */
-function getEventName(node, eventNameOrSuffix) {
-  if (eventNameOrSuffix.includes(':')) {
-    return eventNameOrSuffix;
-  }
-
-  if (node instanceof Window) {
-    return eventNameOrSuffix;
-  }
-
-  const nodeName = node.nodeName.toLocaleLowerCase();
-  const match = nodeName.match(betaComponentNodeNameRegex);
-  const isBetaComponent = match != null;
-
-  const prefix = isBetaComponent ? match[1] : nodeName;
-
-  return `${prefix}:${eventNameOrSuffix}`;
-}
-
-/**
  * This is a utility handler that will help adding and removing an event listener from a DOM Element.
  * @template {Event} T
  */
@@ -81,6 +41,25 @@ export class EventHandler {
    * @return {_handler is EventListener}
    */
   _castHandler(_handler) {
+    return true;
+  }
+}
+
+/**
+ * @extends {CustomEvent<D>}
+ * @template [D=void] detail
+ */
+export class CcEvent extends CustomEvent {
+  /**
+   * @param {string} type
+   * @param {D} [detail]
+   */
+  constructor(type, detail) {
+    super(type, { detail, bubbles: true, composed: true });
+  }
+
+  // this makes CcEvent unique for Typescript
+  get ccEvent() {
     return true;
   }
 }

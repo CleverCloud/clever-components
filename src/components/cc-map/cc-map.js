@@ -3,12 +3,12 @@ import { classMap } from 'lit/directives/class-map.js';
 import { iconRemixAlertFill as iconAlert } from '../../assets/cc-remix.icons.js';
 import { WORLD_GEOJSON } from '../../assets/world-110m.geo.js';
 import { ResizeController } from '../../controllers/resize-controller.js';
-import { dispatchCustomEvent } from '../../lib/events.js';
 import * as leaflet from '../../lib/leaflet/leaflet-esm.js';
 import { leafletStyles } from '../../styles/leaflet.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-icon/cc-icon.js';
 import '../cc-loader/cc-loader.js';
+import { CcMapMarkerClickEvent, CcMapMarkerEnterEvent, CcMapMarkerLeaveEvent } from './cc-map.events.js';
 
 /**
  * @typedef {import('../common.types.js').HeatmapPoint} HeatmapPoint
@@ -27,13 +27,9 @@ import '../cc-loader/cc-loader.js';
  * * The component has a default height of 15em and a default width 20em but this can be overridden with CSS.
  * * When using `points`, you need to specify which HTML tag should be used to create and display the marker.
  * * The marker DOM element should expose `size`, `anchor` and `tooltip` to help this component place the marker and tooltip correctly on the map.
- * * When using `points`, you can specify some text for the tooltip but you can also specify which HTML tag to use to create and display the tooltip.
+ * * When using `points`, you can specify some text for the tooltip, but you can also specify which HTML tag to use to create and display the tooltip.
  *
  * @cssdisplay flex
- *
- * @fires {CustomEvent<Point>} cc-map:marker-click - Fires the corresponding point whenever a marker is clicked.
- * @fires {CustomEvent<Point>} cc-map:marker-enter - Fires the corresponding point whenever a marker is entered by the mouse.
- * @fires {CustomEvent<Point>} cc-map:marker-leave - Fires the corresponding point whenever a marker is left by the mouse.
  *
  * @slot - The legend and/or details for the map (displayed at the bottom).
  */
@@ -164,9 +160,9 @@ export class CcMap extends LitElement {
       .addTo(this._pointsLayer);
 
     marker
-      .on('click', () => dispatchCustomEvent(this, 'marker-click', point))
-      .on('mouseover', () => dispatchCustomEvent(this, 'marker-enter', point))
-      .on('mouseout', () => dispatchCustomEvent(this, 'marker-leave', point));
+      .on('click', () => this.dispatchEvent(new CcMapMarkerClickEvent(point)))
+      .on('mouseover', () => this.dispatchEvent(new CcMapMarkerEnterEvent(point)))
+      .on('mouseout', () => this.dispatchEvent(new CcMapMarkerLeaveEvent(point)));
 
     this._pointsCache[id] = { point, marker, iconElement };
   }

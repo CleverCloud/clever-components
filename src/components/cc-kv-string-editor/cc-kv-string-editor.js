@@ -1,13 +1,12 @@
 import { css, html, LitElement } from 'lit';
-import { dispatchCustomEvent } from '../../lib/events.js';
 import { formSubmit } from '../../lib/form/form-submit-directive.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-button/cc-button.js';
 import '../cc-input-text/cc-input-text.js';
+import { CcKvStringValueUpdateEvent } from './cc-kv-string-editor.events.js';
 
 /**
  * @typedef {import('./cc-kv-string-editor.types.js').CcKvKeyStringEditorState} CcKvKeyStringEditorState
- * @typedef {import('../../lib/form/form.types.js').FormDataMap} FormDataMap
  * @typedef {import('lit').PropertyValues<CcKvStringEditor>} PropertyValues
  */
 
@@ -21,8 +20,6 @@ import '../cc-input-text/cc-input-text.js';
  * * copy the value to the clipboard
  *
  * @cssdisplay block
- *
- * @fires {CustomEvent<string>} cc-kv-string-editor:update-value - Fires whenever the save button is clicked
  */
 export class CcKvStringEditor extends LitElement {
   static get properties() {
@@ -50,21 +47,21 @@ export class CcKvStringEditor extends LitElement {
   }
 
   /**
-   * @param {CustomEvent<string>} event
+   * @param {CcInputEvent} event
    */
   _onValueInput(event) {
     this._value = event.detail;
   }
 
   /**
-   * @param {FormDataMap} formData
+   * @param {{value: string}} formData
    */
   _onFormSubmit(formData) {
     if (this.state.type === 'loading') {
       return;
     }
 
-    dispatchCustomEvent(this, 'update-value', formData.value);
+    this.dispatchEvent(new CcKvStringValueUpdateEvent(formData.value));
   }
 
   /**
@@ -92,7 +89,7 @@ export class CcKvStringEditor extends LitElement {
         multi
         .resetValue=${this._value}
         .value=${this._value}
-        @cc-input-text:input=${this._onValueInput}
+        @cc-input=${this._onValueInput}
       ></cc-input-text>
       <div class="buttons">
         <cc-button type="reset" .skeleton=${isLoading} .disabled=${isDisabled || isSaving}>

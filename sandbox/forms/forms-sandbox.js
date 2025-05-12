@@ -19,6 +19,8 @@ const DEMOS = {
 const DEMO_CHOICES = Object.entries(DEMOS).map(([value, label]) => ({ value, label }));
 
 /**
+ * @typedef {import('../../src/lib/form/form.events.js').CcFormValidEvent} CcFormValidEvent
+ * @typedef {import('../../src/lib/form/form.events.js').CcFormInvalidEvent} CcFormInvalidEvent
  * @typedef {import('lit').PropertyValues<FormsSandbox>} FormsSandboxPropertyValues
  */
 
@@ -38,14 +40,14 @@ export class FormsSandbox extends LitElement {
   }
 
   /**
-   * @param {CustomEvent} e
+   * @param {CcSelectEvent} e
    */
   _onDemoChange({ detail }) {
     this._loadDemo(detail);
   }
 
   /**
-   * @param {CustomEvent} e
+   * @param {CcFormValidEvent} e
    */
   _onFormValid(e) {
     this._event = {
@@ -57,7 +59,7 @@ export class FormsSandbox extends LitElement {
   }
 
   /**
-   * @param {CustomEvent} e
+   * @param {CcFormInvalidEvent} e
    */
   _onFormInvalid(e) {
     this._event = {
@@ -102,7 +104,7 @@ export class FormsSandbox extends LitElement {
           inline
           .options=${DEMO_CHOICES}
           .value=${this._demo}
-          @cc-select:input=${this._onDemoChange}
+          @cc-select=${this._onDemoChange}
         ></cc-select>
       </div>
       <div class="main">
@@ -128,7 +130,7 @@ export class FormsSandbox extends LitElement {
     }
     const tagName = `form-demo-${this._demo}`;
 
-    return staticHtml`<${unsafeStatic(tagName)} @form:valid=${this._onFormValid} @form:invalid=${this._onFormInvalid}></${unsafeStatic(tagName)}>`;
+    return staticHtml`<${unsafeStatic(tagName)} @cc-form-valid=${this._onFormValid} @cc-form-invalid=${this._onFormInvalid}></${unsafeStatic(tagName)}>`;
   }
 
   static get styles() {
@@ -139,13 +141,13 @@ export class FormsSandbox extends LitElement {
         }
 
         .ctrl {
+          align-items: center;
+          border-bottom: 1px solid #ddd;
           display: flex;
           flex-wrap: wrap;
-          align-items: center;
-          padding-bottom: 1em;
-          border-bottom: 1px solid #ddd;
-          margin-bottom: 1em;
           gap: 0.5em;
+          margin-bottom: 1em;
+          padding-bottom: 1em;
         }
 
         .main {
@@ -160,24 +162,24 @@ export class FormsSandbox extends LitElement {
 
         .event {
           align-self: center;
+          border: 1px solid #ddd;
           display: flex;
           flex-direction: column;
-          border: 1px solid #ddd;
-          width: 25em;
           max-height: 30em;
+          width: 25em;
         }
 
         .event-title {
-          padding: 1em;
           font-family: monospace;
           font-weight: bold;
+          padding: 1em;
         }
 
         pre {
+          background-color: #efefef;
+          margin: 0;
           overflow: auto;
           padding: 1em;
-          margin: 0;
-          background-color: #efefef;
           white-space: pre-wrap;
         }
       `,

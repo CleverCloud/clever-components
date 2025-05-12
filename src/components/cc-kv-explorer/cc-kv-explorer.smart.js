@@ -16,11 +16,6 @@ import { KvTerminalCtrl } from './kv-terminal-ctrl.js';
  * @typedef {import('./cc-kv-explorer.types.js').CcKvExplorerDetailState} CcKvExplorerDetailState
  * @typedef {import('./cc-kv-explorer.types.js').CcKvExplorerDetailStateAdd} CcKvExplorerDetailStateAdd
  * @typedef {import('./cc-kv-explorer.types.js').CcKvExplorerDetailStateEdit} CcKvExplorerDetailStateEdit
- * @typedef {import('./cc-kv-explorer.types.js').CcKvKeyState} CcKvKeyState
- * @typedef {import('./cc-kv-explorer.types.js').CcKvKey} CcKvKey
- * @typedef {import('./cc-kv-explorer.types.js').CcKvKeyType} CcKvKeyType
- * @typedef {import('./cc-kv-explorer.types.js').CcKvKeyValue} CcKvKeyValue
- * @typedef {import('./cc-kv-explorer.types.js').CcKvKeyFilter} CcKvKeyFilter
  * @typedef {import('./kv-key-editor-hash-ctrl.js').KvKeyEditorHashCtrl} KvKeyEditorHashCtrl
  * @typedef {import('./kv-key-editor-list-ctrl.js').KvKeyEditorListCtrl} KvKeyEditorListCtrl
  * @typedef {import('./kv-key-editor-set-ctrl.js').KvKeyEditorSetCtrl} KvKeyEditorSetCtrl
@@ -70,20 +65,16 @@ defineSmartComponent({
 
     // -- keys ---
 
-    onEvent(
-      'cc-kv-explorer:filter-change',
-      /** @param { CcKvKeyFilter } filter */
-      async ({ type, pattern }) => {
-        try {
-          await keysCtrl.filter(type, pattern);
-        } catch (e) {
-          console.error(e);
-          updateComponent('state', { type: 'error-keys', action: 'filtering' });
-        }
-      },
-    );
+    onEvent('cc-kv-key-filter-change', async ({ type, pattern }) => {
+      try {
+        await keysCtrl.filter(type, pattern);
+      } catch (e) {
+        console.error(e);
+        updateComponent('state', { type: 'error-keys', action: 'filtering' });
+      }
+    });
 
-    onEvent('cc-kv-explorer:refresh-keys', async () => {
+    onEvent('cc-kv-keys-refresh', async () => {
       try {
         await keysCtrl.refresh();
       } catch (e) {
@@ -92,7 +83,7 @@ defineSmartComponent({
       }
     });
 
-    onEvent('cc-kv-explorer:load-more-keys', async () => {
+    onEvent('cc-kv-load-more-keys', async () => {
       try {
         await keysCtrl.loadMore();
       } catch (e) {
@@ -101,99 +92,79 @@ defineSmartComponent({
       }
     });
 
-    onEvent(
-      'cc-kv-explorer:selected-key-change',
-      /** @param {CcKvKey} key */
-      async (key) => {
-        if (keysCtrl.select(key)) {
-          try {
-            await detailsCtrl.load(key);
-          } catch (e) {
-            checkIfKeyNotFoundOrElse(e, () => {
-              notifyError(i18n('cc-kv-explorer.error.get-key'));
-              keysCtrl.clearSelection();
-              detailsCtrl.hide();
-            });
-          }
-        }
-      },
-    );
-
-    onEvent(
-      'cc-kv-explorer:delete-key',
-      /** @param {string} key */
-      async (key) => {
+    onEvent('cc-kv-selected-key-change', async (key) => {
+      if (keysCtrl.select(key)) {
         try {
-          await keysCtrl.delete(key);
-          notifySuccess(i18n('cc-kv-explorer.success.delete-key'));
-
-          if (detailsCtrl.keyName === key) {
-            detailsCtrl.hide();
-          }
+          await detailsCtrl.load(key);
         } catch (e) {
           checkIfKeyNotFoundOrElse(e, () => {
-            notifyError(i18n('cc-kv-explorer.error.delete-key'));
+            notifyError(i18n('cc-kv-explorer.error.get-key'));
+            keysCtrl.clearSelection();
+            detailsCtrl.hide();
           });
         }
-      },
-    );
+      }
+    });
 
-    onEvent(
-      'cc-kv-explorer:add-key',
-      /** @param {CcKvKeyValue} keyValue */
-      async (keyValue) => {
-        try {
-          await detailsCtrl.add(keyValue);
+    onEvent('cc-kv-key-delete', async (key) => {
+      try {
+        await keysCtrl.delete(key);
+        notifySuccess(i18n('cc-kv-explorer.success.delete-key'));
 
-          keysCtrl.add({ name: keyValue.name, type: keyValue.type });
-
-          notifySuccess(i18n('cc-kv-explorer.success.add-key'));
-        } catch (e) {
-          console.error(e);
-          notifyError(i18n('cc-kv-explorer.error.add-key'));
+        if (detailsCtrl.keyName === key) {
+          detailsCtrl.hide();
         }
-      },
-    );
+      } catch (e) {
+        checkIfKeyNotFoundOrElse(e, () => {
+          notifyError(i18n('cc-kv-explorer.error.delete-key'));
+        });
+      }
+    });
+
+    onEvent('cc-kv-key-add', async (keyValue) => {
+      try {
+        await detailsCtrl.add(keyValue);
+
+        keysCtrl.add({ name: keyValue.name, type: keyValue.type });
+
+        notifySuccess(i18n('cc-kv-explorer.success.add-key'));
+      } catch (e) {
+        console.error(e);
+        notifyError(i18n('cc-kv-explorer.error.add-key'));
+      }
+    });
 
     // -- string ---
 
-    onEvent(
-      'cc-kv-string-editor:update-value',
-      /** @param {string} value */
-      async (value) => {
-        const editorCtrl = /** @type {KvKeyEditorStringCtrl} */ (detailsCtrl.editorCtrl);
+    onEvent('cc-kv-string-value-update', async (value) => {
+      const editorCtrl = /** @type {KvKeyEditorStringCtrl} */ (detailsCtrl.editorCtrl);
 
-        try {
-          await editorCtrl.save(value);
+      try {
+        await editorCtrl.save(value);
 
-          notifySuccess(i18n('cc-kv-string-editor.success.update-value'));
-        } catch (e) {
-          checkIfKeyNotFoundOrElse(e, () => {
-            notifyError(i18n('cc-kv-string-editor.error.update-value'));
-          });
-        }
-      },
-    );
+        notifySuccess(i18n('cc-kv-string-editor.success.update-value'));
+      } catch (e) {
+        checkIfKeyNotFoundOrElse(e, () => {
+          notifyError(i18n('cc-kv-string-editor.error.update-value'));
+        });
+      }
+    });
 
     // -- hash ---
 
-    onEvent(
-      'cc-kv-hash-explorer:filter-change',
-      /** @param {string} pattern */
-      async (pattern) => {
-        const editorCtrl = /** @type {KvKeyEditorHashCtrl} */ (detailsCtrl.editorCtrl);
+    onEvent('cc-kv-hash-filter-change', async (pattern) => {
+      const editorCtrl = /** @type {KvKeyEditorHashCtrl} */ (detailsCtrl.editorCtrl);
 
-        try {
-          await editorCtrl.filter(pattern);
-        } catch (e) {
-          checkIfKeyNotFoundOrElse(e, () => {
-            notifyError(i18n('cc-kv-hash-explorer.error.apply-filter'));
-          });
-        }
-      },
-    );
+      try {
+        await editorCtrl.filter(pattern);
+      } catch (e) {
+        checkIfKeyNotFoundOrElse(e, () => {
+          notifyError(i18n('cc-kv-hash-explorer.error.apply-filter'));
+        });
+      }
+    });
 
-    onEvent('cc-kv-hash-explorer:load-more-elements', async () => {
+    onEvent('cc-kv-hash-load-more', async () => {
       const editorCtrl = /** @type {KvKeyEditorHashCtrl} */ (detailsCtrl.editorCtrl);
 
       try {
@@ -205,81 +176,65 @@ defineSmartComponent({
       }
     });
 
-    onEvent(
-      'cc-kv-hash-explorer:delete-element',
-      /** @param {string} field */
-      async (field) => {
-        const editorCtrl = /** @type {KvKeyEditorHashCtrl} */ (detailsCtrl.editorCtrl);
+    onEvent('cc-kv-hash-element-delete', async (field) => {
+      const editorCtrl = /** @type {KvKeyEditorHashCtrl} */ (detailsCtrl.editorCtrl);
 
-        try {
-          await editorCtrl.deleteElement(field);
-          notifySuccess(i18n('cc-kv-hash-explorer.success.element-delete'));
-        } catch (e) {
-          checkIfKeyNotFoundOrElse(e, () => {
-            notifyError(i18n('cc-kv-hash-explorer.error.element-delete'));
-          });
-        }
-      },
-    );
+      try {
+        await editorCtrl.deleteElement(field);
+        notifySuccess(i18n('cc-kv-hash-explorer.success.element-delete'));
+      } catch (e) {
+        checkIfKeyNotFoundOrElse(e, () => {
+          notifyError(i18n('cc-kv-hash-explorer.error.element-delete'));
+        });
+      }
+    });
 
-    onEvent(
-      'cc-kv-hash-explorer:update-element',
-      /** @param {{field: string, value: string}} element */
-      async ({ field, value }) => {
-        const editorCtrl = /** @type {KvKeyEditorHashCtrl} */ (detailsCtrl.editorCtrl);
+    onEvent('cc-kv-hash-element-update', async ({ field, value }) => {
+      const editorCtrl = /** @type {KvKeyEditorHashCtrl} */ (detailsCtrl.editorCtrl);
 
-        try {
-          await editorCtrl.updateElement(field, value);
+      try {
+        await editorCtrl.updateElement(field, value);
+        notifySuccess(i18n('cc-kv-hash-explorer.success.element-update'));
+      } catch (e) {
+        checkIfKeyNotFoundOrElse(e, () => {
+          notifyError(i18n('cc-kv-hash-explorer.error.element-update'));
+        });
+      }
+    });
+
+    onEvent('cc-kv-hash-element-add', async ({ field, value }) => {
+      const editorCtrl = /** @type {KvKeyEditorHashCtrl} */ (detailsCtrl.editorCtrl);
+
+      try {
+        const added = await editorCtrl.addElement(field, value);
+
+        if (added) {
+          notifySuccess(i18n('cc-kv-hash-explorer.success.element-add'));
+        } else {
           notifySuccess(i18n('cc-kv-hash-explorer.success.element-update'));
-        } catch (e) {
-          checkIfKeyNotFoundOrElse(e, () => {
-            notifyError(i18n('cc-kv-hash-explorer.error.element-update'));
-          });
         }
-      },
-    );
-
-    onEvent(
-      'cc-kv-hash-explorer:add-element',
-      /** @param {{field: string, value: string}} element */
-      async ({ field, value }) => {
-        const editorCtrl = /** @type {KvKeyEditorHashCtrl} */ (detailsCtrl.editorCtrl);
-
-        try {
-          const added = await editorCtrl.addElement(field, value);
-
-          if (added) {
-            notifySuccess(i18n('cc-kv-hash-explorer.success.element-add'));
-          } else {
-            notifySuccess(i18n('cc-kv-hash-explorer.success.element-update'));
-          }
-        } catch (e) {
-          checkIfKeyNotFoundOrElse(e, () => {
-            notifyError(i18n('cc-kv-hash-explorer.error.element-add'));
-          });
-        }
-      },
-    );
+      } catch (e) {
+        checkIfKeyNotFoundOrElse(e, () => {
+          notifyError(i18n('cc-kv-hash-explorer.error.element-add'));
+        });
+      }
+    });
 
     // -- list
 
-    onEvent(
-      'cc-kv-list-explorer:filter-change',
-      /** @param {number} index */
-      async (index) => {
-        const editorCtrl = /** @type {KvKeyEditorListCtrl} */ (detailsCtrl.editorCtrl);
+    onEvent('cc-kv-list-filter-change', async (index) => {
+      const editorCtrl = /** @type {KvKeyEditorListCtrl} */ (detailsCtrl.editorCtrl);
 
-        try {
-          await editorCtrl.filter(index);
-        } catch (e) {
-          checkIfKeyNotFoundOrElse(e, () => {
-            notifyError(i18n('cc-kv-list-explorer.error.apply-filter'));
-          });
-        }
-      },
-    );
+      try {
+        await editorCtrl.filter(index);
+      } catch (e) {
+        checkIfKeyNotFoundOrElse(e, () => {
+          notifyError(i18n('cc-kv-list-explorer.error.apply-filter'));
+        });
+      }
+    });
 
-    onEvent('cc-kv-list-explorer:load-more-elements', async () => {
+    onEvent('cc-kv-list-load-more', async () => {
       const editorCtrl = /** @type {KvKeyEditorListCtrl} */ (detailsCtrl.editorCtrl);
 
       try {
@@ -291,62 +246,48 @@ defineSmartComponent({
       }
     });
 
-    onEvent(
-      'cc-kv-list-explorer:update-element',
-      /**
-       * @param {{index: number, value: string}} element
-       */
-      async ({ index, value }) => {
-        const editorCtrl = /** @type {KvKeyEditorListCtrl} */ (detailsCtrl.editorCtrl);
+    onEvent('cc-kv-list-element-update', async ({ index, value }) => {
+      const editorCtrl = /** @type {KvKeyEditorListCtrl} */ (detailsCtrl.editorCtrl);
 
-        try {
-          await editorCtrl.updateElement(index, value);
-          notifySuccess(i18n('cc-kv-list-explorer.success.element-update'));
-        } catch (e) {
-          checkIfKeyNotFoundOrElse(e, () => {
-            notifyError(i18n('cc-kv-list-explorer.error.element-update'));
-          });
-        }
-      },
-    );
+      try {
+        await editorCtrl.updateElement(index, value);
+        notifySuccess(i18n('cc-kv-list-explorer.success.element-update'));
+      } catch (e) {
+        checkIfKeyNotFoundOrElse(e, () => {
+          notifyError(i18n('cc-kv-list-explorer.error.element-update'));
+        });
+      }
+    });
 
-    onEvent(
-      'cc-kv-list-explorer:add-element',
-      /** @param {{position: 'tail'|'head', value: string }} element */
-      async ({ position, value }) => {
-        const editorCtrl = /** @type {KvKeyEditorListCtrl} */ (detailsCtrl.editorCtrl);
+    onEvent('cc-kv-list-element-add', async ({ position, value }) => {
+      const editorCtrl = /** @type {KvKeyEditorListCtrl} */ (detailsCtrl.editorCtrl);
 
-        try {
-          const index = await editorCtrl.addElement(position, value);
+      try {
+        const index = await editorCtrl.addElement(position, value);
 
-          notifySuccess(i18n('cc-kv-list-explorer.success.element-add', { index }));
-        } catch (e) {
-          checkIfKeyNotFoundOrElse(e, () => {
-            notifyError(i18n('cc-kv-list-explorer.error.element-add'));
-          });
-        }
-      },
-    );
+        notifySuccess(i18n('cc-kv-list-explorer.success.element-add', { index }));
+      } catch (e) {
+        checkIfKeyNotFoundOrElse(e, () => {
+          notifyError(i18n('cc-kv-list-explorer.error.element-add'));
+        });
+      }
+    });
 
     // -- set ---
 
-    onEvent(
-      'cc-kv-set-explorer:filter-change',
-      /** @param {string} pattern */
-      async (pattern) => {
-        const editorCtrl = /** @type {KvKeyEditorSetCtrl} */ (detailsCtrl.editorCtrl);
+    onEvent('cc-kv-set-filter-change', async (pattern) => {
+      const editorCtrl = /** @type {KvKeyEditorSetCtrl} */ (detailsCtrl.editorCtrl);
 
-        try {
-          await editorCtrl.filter(pattern);
-        } catch (e) {
-          checkIfKeyNotFoundOrElse(e, () => {
-            notifyError(i18n('cc-kv-set-explorer.error.apply-filter'));
-          });
-        }
-      },
-    );
+      try {
+        await editorCtrl.filter(pattern);
+      } catch (e) {
+        checkIfKeyNotFoundOrElse(e, () => {
+          notifyError(i18n('cc-kv-set-explorer.error.apply-filter'));
+        });
+      }
+    });
 
-    onEvent('cc-kv-set-explorer:load-more-elements', async () => {
+    onEvent('cc-kv-set-load-more', async () => {
       const editorCtrl = /** @type {KvKeyEditorSetCtrl} */ (detailsCtrl.editorCtrl);
 
       try {
@@ -358,54 +299,42 @@ defineSmartComponent({
       }
     });
 
-    onEvent(
-      'cc-kv-set-explorer:delete-element',
-      /** @param {string} element */
-      async (element) => {
-        const editorCtrl = /** @type {KvKeyEditorSetCtrl} */ (detailsCtrl.editorCtrl);
+    onEvent('cc-kv-set-element-delete', async (element) => {
+      const editorCtrl = /** @type {KvKeyEditorSetCtrl} */ (detailsCtrl.editorCtrl);
 
-        try {
-          await editorCtrl.deleteElement(element);
-          notifySuccess(i18n('cc-kv-set-explorer.success.element-delete'));
-        } catch (e) {
-          checkIfKeyNotFoundOrElse(e, () => {
-            notifyError(i18n('cc-kv-set-explorer.error.element-delete'));
-          });
+      try {
+        await editorCtrl.deleteElement(element);
+        notifySuccess(i18n('cc-kv-set-explorer.success.element-delete'));
+      } catch (e) {
+        checkIfKeyNotFoundOrElse(e, () => {
+          notifyError(i18n('cc-kv-set-explorer.error.element-delete'));
+        });
+      }
+    });
+
+    onEvent('cc-kv-set-element-add', async (element) => {
+      const editorCtrl = /** @type {KvKeyEditorSetCtrl} */ (detailsCtrl.editorCtrl);
+
+      try {
+        const added = await editorCtrl.addElement(element);
+
+        if (added) {
+          notifySuccess(i18n('cc-kv-set-explorer.success.element-add'));
+        } else {
+          notifySuccess(i18n('cc-kv-set-explorer.success.element-already-exist'));
         }
-      },
-    );
-
-    onEvent(
-      'cc-kv-set-explorer:add-element',
-      /** @param {string} element */
-      async (element) => {
-        const editorCtrl = /** @type {KvKeyEditorSetCtrl} */ (detailsCtrl.editorCtrl);
-
-        try {
-          const added = await editorCtrl.addElement(element);
-
-          if (added) {
-            notifySuccess(i18n('cc-kv-set-explorer.success.element-add'));
-          } else {
-            notifySuccess(i18n('cc-kv-set-explorer.success.element-already-exist'));
-          }
-        } catch (e) {
-          checkIfKeyNotFoundOrElse(e, () => {
-            notifyError(i18n('cc-kv-set-explorer.error.element-add'));
-          });
-        }
-      },
-    );
+      } catch (e) {
+        checkIfKeyNotFoundOrElse(e, () => {
+          notifyError(i18n('cc-kv-set-explorer.error.element-add'));
+        });
+      }
+    });
 
     // -- CLI
 
-    onEvent(
-      'cc-kv-terminal:send-command',
-      /** @param {string} commandLine */
-      async (commandLine) => {
-        await terminalCtrl.runCommandLine(commandLine);
-      },
-    );
+    onEvent('cc-kv-command-execute', async (commandLine) => {
+      await terminalCtrl.runCommandLine(commandLine);
+    });
 
     // -- init ---
 

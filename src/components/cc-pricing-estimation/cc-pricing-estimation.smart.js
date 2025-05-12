@@ -32,13 +32,9 @@ defineSmartComponent({
      *
      * For more info, refer to the `Smart` docs about the `cc-pricing-estimation` component in the `Notes` section.
      */
-    onEvent(
-      'cc-pricing-estimation:change-currency',
-      /** @param {string} currency */
-      (currency) => {
-        container.context = { ...container.context, currency };
-      },
-    );
+    onEvent('cc-pricing-currency-change', (currency) => {
+      container.context = { ...container.context, currency };
+    });
 
     updateComponent('state', { type: 'loading' });
 

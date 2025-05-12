@@ -1,9 +1,9 @@
 // @ts-expect-error FIXME: remove when the clever-client exports types
 import { ERROR_TYPES, parseRawJson, toJson } from '@clevercloud/client/esm/utils/env-vars.js';
 import { LitElement, css, html } from 'lit';
-import { dispatchCustomEvent } from '../../lib/events.js';
 import { linkStyles } from '../../templates/cc-link/cc-link.js';
 import { i18n } from '../../translations/translation.js';
+import { CcEnvChangeEvent } from '../cc-env-var-form/cc-env-var-form.events.js';
 import '../cc-input-text/cc-input-text.js';
 import '../cc-notice/cc-notice.js';
 
@@ -28,8 +28,6 @@ const SKELETON_VARIABLES = [
  * A high level environment variable editor to create/edit/delete all variables at once as a JSON text (properly parsed with validation and error messages).
  *
  * @cssdisplay block
- *
- * @fires {CustomEvent<EnvVar[]>} cc-env-var-editor-json:change - Fires the new list of variables whenever something changes in the list.
  */
 export class CcEnvVarEditorJson extends LitElement {
   static get properties() {
@@ -116,14 +114,14 @@ export class CcEnvVarEditorJson extends LitElement {
     });
   }
 
-  /** @param {CustomEvent<string>} event */
+  /** @param {CcInputEvent} event */
   _onInput({ detail: value }) {
     if (this.state.type === 'loading') {
       return;
     }
 
     this._variablesAsJson = value;
-    /** @type {{ variables: string[], errors: EnvVarRawError[] }} */
+    /** @type {{ variables: EnvVar[], errors: EnvVarRawError[] }} */
     const { variables, errors } = parseRawJson(value, { mode: this.state.validationMode });
     this._setErrors(errors);
 
@@ -132,7 +130,7 @@ export class CcEnvVarEditorJson extends LitElement {
       ({ type }) => type === ERROR_TYPES.INVALID_JSON || type === ERROR_TYPES.INVALID_JSON_FORMAT,
     );
     if (!hasJsonError) {
-      dispatchCustomEvent(this, 'change', variables);
+      this.dispatchEvent(new CcEnvChangeEvent(variables));
     }
   }
 
@@ -159,7 +157,7 @@ export class CcEnvVarEditorJson extends LitElement {
         ?disabled=${this.disabled}
         ?readonly=${this.readonly}
         ?skeleton=${this._skeleton}
-        @cc-input-text:input=${this._onInput}
+        @cc-input=${this._onInput}
       ></cc-input-text>
 
       ${this._errors.length > 0

@@ -35,13 +35,9 @@ defineSmartComponent({
      *
      * For more info, refer to the `Smart` docs about the `cc-pricing-header` component in the `Notes` section.
      */
-    onEvent(
-      'cc-pricing-header:change-zone',
-      /** @param {string} zoneId */
-      (zoneId) => {
-        container.context = { ...container.context, zoneId };
-      },
-    );
+    onEvent('cc-pricing-zone-change', (zoneId) => {
+      container.context = { ...container.context, zoneId };
+    });
 
     /**
      * This smart component targets `cc-pricing-header` but when `currency` changes, we want to trigger
@@ -51,13 +47,9 @@ defineSmartComponent({
      *
      * For more info, refer to the `Smart` docs about the `cc-pricing-header` component in the `Notes` section.
      */
-    onEvent(
-      'cc-pricing-header:change-currency',
-      /** @param {string} currency */
-      (currency) => {
-        container.context = { ...container.context, currency };
-      },
-    );
+    onEvent('cc-pricing-currency-change', (currency) => {
+      container.context = { ...container.context, currency };
+    });
 
     /**
      * Zones data is not dynamic and not context dependant.

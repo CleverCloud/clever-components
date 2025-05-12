@@ -15,9 +15,9 @@ title: '💡 Smart'
 
 ## 👋️ Events fired
 
-| Name                        | Payload | Details                                                                                                       |
-|-----------------------------|---------|---------------------------------------------------------------------------------------------------------------|
-| `orga-member-leave-success` |         | Fired when the current user leaves the organisation.<br/>Should be used to redirect the user to another page. |
+| Name                  | Payload | Details                                                                                                       |
+|-----------------------|---------|---------------------------------------------------------------------------------------------------------------|
+| `cc-orga-member-left` |         | Fired when the current user leaves the organisation.<br/>Should be used to redirect the user to another page. |
 
 
 ## ⚙️ Params

@@ -1,12 +1,12 @@
 // @ts-expect-error FIXME: remove when clever-client exports types
 import { validateName } from '@clevercloud/client/esm/utils/env-vars.js';
 import { css, html, LitElement } from 'lit';
-import { dispatchCustomEvent } from '../../lib/events.js';
 import { linkStyles } from '../../templates/cc-link/cc-link.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-button/cc-button.js';
 import '../cc-input-text/cc-input-text.js';
 import '../cc-notice/cc-notice.js';
+import { CcEnvVarCreateEvent } from './cc-env-var-create.events.js';
 
 /**
  * @typedef {import('../common.types.js').EnvVar} EnvVar
@@ -23,8 +23,6 @@ import '../cc-notice/cc-notice.js';
  * * The validation of existing names is handled with the `variablesNames` property which is a list of already existing names.
  *
  * @cssdisplay block
- *
- * @fires {CustomEvent<EnvVar>} cc-env-var-create:create - Fires the variable whenever the add button is clicked.
  */
 export class CcEnvVarCreate extends LitElement {
   static get properties() {
@@ -62,21 +60,23 @@ export class CcEnvVarCreate extends LitElement {
     this._variableValue = '';
   }
 
-  /** @param {CustomEvent<string>} event */
+  /** @param {CcInputEvent} event */
   _onNameInput({ detail: value }) {
     this._variableName = value;
   }
 
-  /** @param {CustomEvent<string>} event */
+  /** @param {CcInputEvent} event */
   _onValueInput({ detail: value }) {
     this._variableValue = value;
   }
 
   _onSubmit() {
-    dispatchCustomEvent(this, 'create', {
-      name: this._variableName,
-      value: this._variableValue,
-    });
+    this.dispatchEvent(
+      new CcEnvVarCreateEvent({
+        name: this._variableName,
+        value: this._variableValue,
+      }),
+    );
     this.reset();
     // Put focus back on name input, so we can add something else directly
     /** @type {CcInputText|null} */
@@ -85,7 +85,7 @@ export class CcEnvVarCreate extends LitElement {
   }
 
   /**
-   * @param {CustomEvent<string>} e
+   * @param {Event} e
    * @param {boolean} hasErrors
    */
   _onRequestSubmit(e, hasErrors) {
@@ -112,9 +112,9 @@ export class CcEnvVarCreate extends LitElement {
           name="name"
           value=${this._variableName}
           ?readonly=${this.disabled}
-          @cc-input-text:input=${this._onNameInput}
-          @cc-input-text:requestimplicitsubmit=${
-            /** @param {CustomEvent<string>} e */
+          @cc-input=${this._onNameInput}
+          @cc-request-submit=${
+            /** @param {Event} e */
             (e) => this._onRequestSubmit(e, hasErrors)
           }
         ></cc-input-text>
@@ -127,14 +127,14 @@ export class CcEnvVarCreate extends LitElement {
             value=${this._variableValue}
             multi
             ?readonly=${this.disabled}
-            @cc-input-text:input=${this._onValueInput}
-            @cc-input-text:requestimplicitsubmit=${
-              /** @param {CustomEvent<string>} e */
+            @cc-input=${this._onValueInput}
+            @cc-request-submit=${
+              /** @param {Event} e */
               (e) => this._onRequestSubmit(e, hasErrors)
             }
           ></cc-input-text>
 
-          <cc-button primary ?disabled=${hasErrors || this.disabled} @cc-button:click=${this._onSubmit}
+          <cc-button primary ?disabled=${hasErrors || this.disabled} @cc-click=${this._onSubmit}
             >${i18n('cc-env-var-create.create-button')}
           </cc-button>
         </div>

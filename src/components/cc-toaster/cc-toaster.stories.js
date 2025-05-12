@@ -134,15 +134,21 @@ export const defaultStory = makeStory(conf, {
       render(template(options), container);
     }
 
-    const onMaxToastChanged = ({ detail: maxToasts }) => {
+    /**
+     * @param {CcInputEvent<number>} event
+     */
+    function onMaxToastChanged({ detail: maxToasts }) {
       options = { ...options, maxToasts };
       refresh();
-    };
+    }
 
-    const onTimeoutChanged = ({ detail: timeout }) => {
+    /**
+     * @param {CcInputEvent<number>} event
+     */
+    function onTimeoutChanged({ detail: timeout }) {
       options = { ...options, timeout };
       refresh();
-    };
+    }
 
     const onClick = ({ target }) => {
       toast(target, { intent: target.dataset.intent });
@@ -153,20 +159,26 @@ export const defaultStory = makeStory(conf, {
       value,
     }));
 
-    const onAnimationChanged = ({ detail: animation }) => {
+    /**
+     * @param {CcSelectEvent} event
+     */
+    function onAnimationChanged({ detail: animation }) {
       options = { ...options, animation };
       refresh();
-    };
+    }
 
     const positions = ['top', 'top-left', 'top-right', 'bottom', 'bottom-left', 'bottom-right'].map((value) => ({
       label: value,
       value,
     }));
 
-    const onPositionChanged = ({ detail: position }) => {
+    /**
+     * @param {CcSelectEvent} event
+     */
+    function onPositionChanged({ detail: position }) {
       options = { ...options, position };
       refresh();
-    };
+    }
 
     const onCloseableChanged = () => {
       options = { ...options, closeable: !options.closeable };
@@ -186,7 +198,7 @@ export const defaultStory = makeStory(conf, {
         ?success="${intent === 'success'}"
         ?warning="${intent === 'warning'}"
         ?danger="${intent === 'danger'}"
-        @cc-button:click=${onClick}
+        @cc-click=${onClick}
       >
         ${intent}
       </cc-button>`;
@@ -213,7 +225,7 @@ export const defaultStory = makeStory(conf, {
               <cc-input-number
                 label="Maximum number of toasts that can be displayed at a time"
                 value=${maxToasts}
-                @cc-input-number:input=${onMaxToastChanged}
+                @cc-input=${onMaxToastChanged}
               ></cc-input-number>
             </div>
             <div slot="content">
@@ -221,7 +233,7 @@ export const defaultStory = makeStory(conf, {
                 legend="Position"
                 value=${position}
                 .choices=${positions}
-                @cc-toggle:input=${onPositionChanged}
+                @cc-select=${onPositionChanged}
               ></cc-toggle>
             </div>
             <div slot="content">
@@ -229,14 +241,14 @@ export const defaultStory = makeStory(conf, {
                 legend="Kind of animation to be played when the toast appears"
                 value=${animation}
                 .choices=${animations}
-                @cc-toggle:input=${onAnimationChanged}
+                @cc-select=${onAnimationChanged}
               ></cc-toggle>
             </div>
             <div slot="content">
               <cc-input-number
                 value=${timeout}
                 label="Time before the toast is automatically dismissed (0 for infinite time)"
-                @cc-input-number:input=${onTimeoutChanged}
+                @cc-input=${onTimeoutChanged}
               ></cc-input-number>
             </div>
             <div slot="content">

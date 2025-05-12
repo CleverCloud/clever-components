@@ -1,4 +1,4 @@
-import { ToImport, ImpExtendInterface } from "./test-imports.types";
+import { ToImport, ImpExtendInterface } from "./test-imports.types.js";
 import { TemplateResult } from "lit";
 
 interface Foo {
@@ -121,17 +121,5 @@ interface AnotherExtendsInt {
 }
 
 interface toBeImpExtended extends ImpExtendInterface {
-
-}
-
-interface CustomEventFoo {
-
-}
-
-interface CustomEventBar {
-
-}
-
-interface CustomEventBaz {
 
 }

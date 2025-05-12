@@ -50,7 +50,7 @@ interface CardAuthorisations {
   delete: boolean;
 }
 
-interface UpdateMember extends OrgaMemberCardStateEditing {
+interface UpdateMember extends OrgaMember {
   newRole: OrgaMemberRole;
 }
 /*endregion*/

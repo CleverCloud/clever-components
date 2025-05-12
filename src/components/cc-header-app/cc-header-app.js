@@ -11,7 +11,6 @@ import {
   iconCleverUnknown as iconUnknown,
 } from '../../assets/cc-clever.icons.js';
 import { iconRemixStopFill as iconStopped } from '../../assets/cc-remix.icons.js';
-import { dispatchCustomEvent } from '../../lib/events.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
 import { waitingStyles } from '../../styles/waiting.js';
 import { ccLink, linkStyles } from '../../templates/cc-link/cc-link.js';
@@ -21,6 +20,12 @@ import '../cc-button/cc-button.js';
 import '../cc-icon/cc-icon.js';
 import '../cc-notice/cc-notice.js';
 import '../cc-zone/cc-zone.js';
+import {
+  CcApplicationRestartEvent,
+  CcApplicationStartEvent,
+  CcApplicationStopEvent,
+  CcDeploymentCancelEvent,
+} from './cc-header-app.events.js';
 
 const COMMIT_ICON = {
   git: iconGit,
@@ -56,19 +61,14 @@ const SKELETON_APP_INFO = {
  * @typedef {import('../cc-zone/cc-zone.types.js').ZoneState} ZoneState
  * @typedef {import('../common.types.js').IconModel} IconModel
  * @typedef {import('../common.types.js').App} App
- * @typedef {import('lit').PropertyValues<CcHeaderApp>} CcHeaderAppChangedProperties
  * @typedef {import('../common.types.js').AppStatus} AppStatus
+ * @typedef {import('lit').PropertyValues<CcHeaderApp>} CcHeaderAppChangedProperties
  */
 
 /**
  * A component to display various info about an app (name, commits, status...).
  *
  * @cssdisplay block
- *
- * @fires {CustomEvent} cc-header-app:cancel - Fires whenever the cancel button is clicked.
- * @fires {CustomEvent} cc-header-app:restart - Fires whenever one of the 3 restart buttons is clicked.
- * @fires {CustomEvent} cc-header-app:start - Fires whenever one of the 3 start buttons is clicked.
- * @fires {CustomEvent} cc-header-app:stop - Fires whenever the stop button is clicked (after the delay).
  */
 export class CcHeaderApp extends LitElement {
   static get properties() {
@@ -166,7 +166,7 @@ export class CcHeaderApp extends LitElement {
   /** @private */
   _onCancel() {
     this._lastUserAction = 'cancel';
-    dispatchCustomEvent(this, 'cancel');
+    this.dispatchEvent(new CcDeploymentCancelEvent());
   }
 
   /**
@@ -175,7 +175,7 @@ export class CcHeaderApp extends LitElement {
    */
   _onRestart(type) {
     this._lastUserAction = 'restart';
-    dispatchCustomEvent(this, 'restart', type);
+    this.dispatchEvent(new CcApplicationRestartEvent(type));
   }
 
   /**
@@ -184,13 +184,13 @@ export class CcHeaderApp extends LitElement {
    */
   _onStart(type) {
     this._lastUserAction = 'start';
-    dispatchCustomEvent(this, 'start', type);
+    this.dispatchEvent(new CcApplicationStartEvent(type));
   }
 
   /** @private */
   _onStop() {
     this._lastUserAction = 'stop';
-    dispatchCustomEvent(this, 'stop');
+    this.dispatchEvent(new CcApplicationStopEvent());
   }
 
   /**
@@ -267,21 +267,21 @@ export class CcHeaderApp extends LitElement {
             <cc-button
               title=${ifDefined(disableButtonsTitle)}
               ?disabled=${shouldDisableAllButtons}
-              @cc-button:click=${() => this._onStart('normal')}
+              @cc-click=${() => this._onStart('normal')}
             >
               ${i18n('cc-header-app.action.start')}
             </cc-button>
             <cc-button
               title=${ifDefined(disableButtonsTitle)}
               ?disabled=${shouldDisableAllButtons}
-              @cc-button:click=${() => this._onStart('rebuild')}
+              @cc-click=${() => this._onStart('rebuild')}
             >
               ${i18n('cc-header-app.action.start-rebuild')}
             </cc-button>
             <cc-button
               title=${ifDefined(disableButtonsTitle)}
               ?disabled=${shouldDisableAllButtons}
-              @cc-button:click=${() => this._onStart('last-commit')}
+              @cc-click=${() => this._onStart('last-commit')}
             >
               ${i18n('cc-header-app.action.start-last-commit')}
             </cc-button>
@@ -293,7 +293,7 @@ export class CcHeaderApp extends LitElement {
               title=${ifDefined(disableButtonsTitle)}
               ?skeleton=${skeleton}
               ?disabled=${shouldDisableAllButtons}
-              @cc-button:click=${() => this._onRestart('normal')}
+              @cc-click=${() => this._onRestart('normal')}
             >
               ${i18n('cc-header-app.action.restart')}
             </cc-button>
@@ -301,7 +301,7 @@ export class CcHeaderApp extends LitElement {
               title=${ifDefined(disableButtonsTitle)}
               ?skeleton=${skeleton}
               ?disabled=${shouldDisableAllButtons}
-              @cc-button:click=${() => this._onRestart('rebuild')}
+              @cc-click=${() => this._onRestart('rebuild')}
             >
               ${i18n('cc-header-app.action.restart-rebuild')}
             </cc-button>
@@ -309,7 +309,7 @@ export class CcHeaderApp extends LitElement {
               title=${ifDefined(disableButtonsTitle)}
               ?skeleton=${skeleton}
               ?disabled=${shouldDisableAllButtons}
-              @cc-button:click=${() => this._onRestart('last-commit')}
+              @cc-click=${() => this._onRestart('last-commit')}
             >
               ${i18n('cc-header-app.action.restart-last-commit')}
             </cc-button>
@@ -322,7 +322,7 @@ export class CcHeaderApp extends LitElement {
               outlined
               title=${ifDefined(disableButtonsTitle)}
               ?disabled=${shouldDisableAllButtons}
-              @cc-button:click=${this._onCancel}
+              @cc-click=${this._onCancel}
             >
               ${i18n('cc-header-app.action.cancel-deployment')}
             </cc-button>
@@ -336,7 +336,7 @@ export class CcHeaderApp extends LitElement {
         title=${ifDefined(disableButtonsTitle)}
         ?skeleton=${skeleton}
         ?disabled=${shouldDisableAllButtons || shouldDisableStopButton}
-        @cc-button:click=${this._onStop}
+        @cc-click=${this._onStop}
         >${i18n('cc-header-app.action.stop')}</cc-button
       >
     `;

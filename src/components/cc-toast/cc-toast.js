@@ -9,9 +9,9 @@ import {
   iconRemixCheckboxCircleLine as iconSuccess,
   iconRemixAlertLine as iconWarning,
 } from '../../assets/cc-remix.icons.js';
-import { dispatchCustomEvent } from '../../lib/events.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-icon/cc-icon.js';
+import { CcToastDismissEvent } from './cc-toast.events.js';
 
 /**
  * @typedef {import('../common.types.js').NotificationIntent} NotificationIntent
@@ -42,7 +42,6 @@ import '../cc-icon/cc-icon.js';
  *
  * @cssdisplay block
  *
- * @fires {CustomEvent} cc-toast:dismiss - Fires whenever the toast is dismissed.
  * @cssprop {Color} --cc-toast-icon-color - The color of the icon on the left of the toast (defaults: `e7e7e7`).
  */
 export class CcToast extends LitElement {
@@ -90,10 +89,6 @@ export class CcToast extends LitElement {
   }
 
   /* region PRIVATE METHODS*/
-  _dismiss() {
-    dispatchCustomEvent(this, 'dismiss');
-  }
-
   _getIcon() {
     switch (this.intent) {
       case 'info':
@@ -122,6 +117,10 @@ export class CcToast extends LitElement {
 
   _onCloseButtonClick() {
     this._dismiss();
+  }
+
+  _dismiss() {
+    this.dispatchEvent(new CcToastDismissEvent());
   }
 
   _pause() {
