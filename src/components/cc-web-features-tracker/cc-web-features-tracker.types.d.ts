@@ -8,8 +8,14 @@ export interface WebFeaturesTrackerStateLoaded {
   webFeatures: FormattedFeature[];
 }
 
+type SkeletonWebFeature = Pick<
+  FormattedFeature,
+  'featureName' | 'comment' | 'category' | 'canBeUsedWithPolyfill' | 'isProgressiveEnhancement'
+>;
+
 export interface WebFeaturesTrackerStateLoading {
   type: 'loading';
+  webFeatures: SkeletonWebFeature[];
 }
 
 export interface WebFeaturesTrackerStateError {
