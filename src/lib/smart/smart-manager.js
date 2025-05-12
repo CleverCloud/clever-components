@@ -69,7 +69,9 @@ export function observeContainer(container, signal) {
  */
 export function defineSmartComponentCore(definition, signal) {
   smartComponentDefinitions.add(definition);
-  updateEverything();
+  // We want to make sure that it's not run directly and let the engine parse the whole smart component file before triggering the update
+  // See https://github.com/CleverCloud/clever-components/issues/1384 for more info
+  setTimeout(updateEverything, 0);
 
   if (signal != null) {
     signal.addEventListener(
