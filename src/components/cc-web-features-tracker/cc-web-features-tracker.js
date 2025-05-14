@@ -14,7 +14,6 @@ import {
   iconRemixHashtag as iconVersion,
   iconRemixAlertFill as iconWarning,
 } from '../../assets/cc-remix.icons.js';
-import { dispatchCustomEvent } from '../../lib/events.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
 import '../cc-button/cc-button.js';
 import '../cc-icon/cc-icon.js';
@@ -34,6 +33,7 @@ const TODAY = new Date();
  * @typedef {import('../cc-toggle/cc-toggle.js').CcToggle} CcToggle
  * @typedef {import('../../lib/events.types.js').EventWithTarget<CcToggle & { value: 'all' | 'can-be-used' }>} EventWithTargetCcToggleFeatureFilter
  * @typedef {import('../../lib/events.types.js').EventWithTarget<CcToggle & { value: 'compact' | 'detailed' }>} EventWithTargetCcToggleDisplayMode
+ * @typedef {import('lit').PropertyValues<CcWebFeaturesTracker>} CcWebFeaturesTrackerPropertyValues
  */
 
 /**
@@ -87,13 +87,43 @@ export class CcWebFeaturesTracker extends LitElement {
   /** @param {EventWithTargetCcToggleFeatureFilter} event */
   _onFeatureFilterChange(event) {
     this.tableFeatureFilter = { ...this.tableFeatureFilter, value: event.target.value };
-    dispatchCustomEvent(this, 'table-feature-filter-change', this.tableFeatureFilter);
+    // dispatchCustomEvent(this, 'table-feature-filter-change', this.tableFeatureFilter);
   }
 
-  /** @param {EventWithTargetCcToggleDisplayMode} event */
-  _onDisplayModeChange(event) {
-    this.tableDisplayMode = { ...this.tableDisplayMode, value: event.target.value };
-    dispatchCustomEvent(this, 'table-display-mode-change', this.tableDisplayMode);
+  /** @param {string} featureId */
+  _onDisplayModeChange(featureId) {
+    console.log(featureId);
+    this._webFeatures = this._webFeatures.map((webFeature) => {
+      if (webFeature.featureId === featureId) {
+        return {
+          ...webFeature,
+          displayMode: webFeature.displayMode === 'compact' ? 'detailed' : 'compact',
+        };
+      }
+      return webFeature;
+    });
+    // dispatchCustomEvent(this, 'table-display-mode-change', this.tableDisplayMode);
+  }
+
+  /** @param {CcWebFeaturesTrackerPropertyValues} changedProperties */
+  willUpdate(changedProperties) {
+    if (changedProperties.has('state') && this.state.type === 'loaded') {
+      this._webFeatures = this.state.webFeatures.map((webFeature) => ({
+        ...webFeature,
+        displayMode: 'compact',
+      }));
+    }
+    if (changedProperties.has('state') && this.state.type === 'loading') {
+      this._webFeatures = this.state.webFeatures.map((webFeature) => ({
+        ...webFeature,
+        currentStatus: 'widely',
+        canBeUsed: true,
+        chromeSupport: { isSupported: true, releaseDate: TODAY, version: '100' },
+        firefoxSupport: { isSupported: true, releaseDate: TODAY, version: '100' },
+        safariSupport: { isSupported: true, releaseDate: TODAY, version: '10' },
+        displayMode: 'compact',
+      }));
+    }
   }
 
   render() {
@@ -105,33 +135,13 @@ export class CcWebFeaturesTracker extends LitElement {
       return html`<div class="empty"><p>No Web Features to track</p></div>`;
     }
 
-    const webFeatures =
-      this.state.type === 'loaded'
-        ? this.state.webFeatures.map((webFeature) => ({
-            ...webFeature,
-            displayMode: 'compact',
-          }))
-        : this.state.webFeatures.map(
-            /**
-             * @param {SkeletonWebFeature} skeletonWebFeature
-             * @returns {FormattedFeature}
-             */
-            (skeletonWebFeature) => ({
-              ...skeletonWebFeature,
-              currentStatus: 'widely',
-              canBeUsed: true,
-              chromeSupport: { isSupported: true, releaseDate: TODAY, version: '100' },
-              firefoxSupport: { isSupported: true, releaseDate: TODAY, version: '100' },
-              safariSupport: { isSupported: true, releaseDate: TODAY, version: '10' },
-            }),
-          );
     const skeleton = this.state.type === 'loading';
 
-    return this._renderFeaturesTable(webFeatures, skeleton);
+    return this._renderFeaturesTable(this._webFeatures, skeleton);
   }
 
   /**
-   * @param {FormattedFeature[]} formattedFeatures
+   * @param {Array<FormattedFeature & { displayMode: 'detailed' | 'compact' }>} formattedFeatures
    * @param {boolean} skeleton
    */
   _renderFeaturesTable(formattedFeatures, skeleton) {
@@ -139,11 +149,6 @@ export class CcWebFeaturesTracker extends LitElement {
       { label: 'All features', value: 'all' },
       { label: 'Can be used', value: 'can-be-used' },
     ];
-    const displayModeChoices = [
-      { label: 'Compact', value: 'compact' },
-      { label: 'Detailed', value: 'detailed' },
-    ];
-
     const filteredFeatures =
       this.tableFeatureFilter.value === 'all'
         ? formattedFeatures
@@ -177,7 +182,7 @@ export class CcWebFeaturesTracker extends LitElement {
                     <cc-toggle
                       .choices=${filterFeatureChoices}
                       .value="${this.tableFeatureFilter.value}"
-                      @cc-toggle:input=${this._onFeatureFilterChange}
+                      @cc-select=${this._onFeatureFilterChange}
                     ></cc-toggle>
                   `
                 : ''}
@@ -205,11 +210,12 @@ export class CcWebFeaturesTracker extends LitElement {
   }
 
   /**
-   * @param {FormattedFeature} _
+   * @param {FormattedFeature & { displayMode: 'compact' | 'detailed'}} _
    * @param {boolean} skeleton
    */
   _renderFeatureRow(
     {
+      featureId,
       isProgressiveEnhancement,
       canBeUsedWithPolyfill,
       comment,
@@ -220,16 +226,24 @@ export class CcWebFeaturesTracker extends LitElement {
       featureName,
       firefoxSupport,
       safariSupport,
+      displayMode,
     },
     skeleton,
   ) {
     const { a11yName, icon: baselineIcon } = this._getBaselineIcon(currentStatus);
+    const isDisplayModeDetailed = displayMode === 'detailed';
     return html`
       <tr>
         <th>
           <div class="feature-name-th">
             <strong class="${classMap({ skeleton })}">${featureName}</strong>
-            <span class="comment ${classMap({ skeleton })}">${comment}</span>
+            <span
+              class="comment ${classMap({
+                skeleton,
+                hidden: !isDisplayModeDetailed,
+              })}"
+              >${comment}</span
+            >
           </div>
         </th>
         <td><span class="${classMap({ skeleton })}">${category}</span></td>
@@ -259,25 +273,25 @@ export class CcWebFeaturesTracker extends LitElement {
           </div>
         </td>
         <td>
-          <div
-            class="current-status ${classMap({
-              'current-status--detailed': this.tableDisplayMode.value === 'detailed',
-            })}"
-          >
+          <div class="current-status">
             <cc-icon
               class="current-status__icon"
               .icon="${baselineIcon}"
-              a11y-name="${this.tableDisplayMode.value === 'compact' ? a11yName : ''}"
-              title="${this.tableDisplayMode.value === 'compact' ? a11yName : ''}"
+              a11y-name="${!isDisplayModeDetailed ? a11yName : ''}"
+              title="${!isDisplayModeDetailed ? a11yName : ''}"
               ?skeleton="${skeleton}"
             ></cc-icon>
-            <span class="${classMap({ skeleton })}">${this.tableDisplayMode.value === 'detailed' ? a11yName : ''}</span>
+            <span class="${classMap({ skeleton, hidden: !isDisplayModeDetailed })}"> ${a11yName} </span>
           </div>
         </td>
-        <td>${this._renderBrowserSupport(chromeSupport, skeleton)}</td>
-        <td>${this._renderBrowserSupport(firefoxSupport, skeleton)}</td>
-        <td>${this._renderBrowserSupport(safariSupport, skeleton)}</td>
-        <td><cc-button hide-text .icon=${iconDown}>blabla</cc-button></td>
+        <td>${this._renderBrowserSupport(chromeSupport, skeleton, isDisplayModeDetailed)}</td>
+        <td>${this._renderBrowserSupport(firefoxSupport, skeleton, isDisplayModeDetailed)}</td>
+        <td>${this._renderBrowserSupport(safariSupport, skeleton, isDisplayModeDetailed)}</td>
+        <td>
+          <cc-button hide-text .icon=${iconDown} @cc-click="${() => this._onDisplayModeChange(featureId)}">
+            ${!isDisplayModeDetailed ? 'Display detailed info' : 'Hide detailed info'}
+          </cc-button>
+        </td>
       </tr>
     `;
   }
@@ -285,24 +299,25 @@ export class CcWebFeaturesTracker extends LitElement {
   /**
    * @param {BrowserSupported|BrowserUnsupported} browserSupport
    * @param {boolean} skeleton
+   * @param {boolean} isDisplayModeDetailed
    */
-  _renderBrowserSupport(browserSupport, skeleton) {
+  _renderBrowserSupport(browserSupport, skeleton, isDisplayModeDetailed) {
     const className = browserSupport.isSupported ? 'supported' : 'unsupported';
     return html`
-      <div class="browser-support">
+      <div class="browser-support ${classMap({ 'browser-support--detailed': isDisplayModeDetailed })}">
         <cc-icon
           .icon=${browserSupport.isSupported ? iconSupported : iconUnsupported}
           class=${className}
           size="lg"
           ?skeleton="${skeleton}"
         ></cc-icon>
-        ${browserSupport.isSupported && this.tableDisplayMode.value === 'detailed'
+        ${browserSupport.isSupported
           ? html`
-              <p>
+              <p class="${classMap({ hidden: !isDisplayModeDetailed })}">
                 <cc-icon .icon=${iconVersion} size="md" ?skeleton="${skeleton}"></cc-icon>
                 <span class="${classMap({ skeleton })}">${browserSupport.version}</span>
               </p>
-              <p>
+              <p class="${classMap({ hidden: !isDisplayModeDetailed })}">
                 <cc-icon .icon=${iconDate} size="md" ?skeleton="${skeleton}"></cc-icon>
                 <span class="${classMap({ skeleton })}">
                   ${browserSupport.releaseDate.toLocaleDateString('en-US', {
@@ -326,8 +341,17 @@ export class CcWebFeaturesTracker extends LitElement {
           gap: 1em;
         }
 
+        * {
+          box-sizing: border-box;
+        }
+
         .skeleton {
           background-color: #bbb;
+        }
+
+        .hidden {
+          height: 0;
+          visibility: hidden;
         }
 
         p {
@@ -347,15 +371,28 @@ export class CcWebFeaturesTracker extends LitElement {
         }
 
         table {
-          border-collapse: collapse;
+          align-content: center;
+          /* border-collapse: collapse;
           border-radius: var(--cc-border-radius-small, 0.15em);
           display: block;
           overflow-x: auto;
-          table-layout: fixed;
+          table-layout: fixed; */
+          display: grid;
+          grid-template-columns: 1fr min-content min-content min-content min-content min-content min-content min-content;
+          overflow-x: auto;
+          overflow-y: hidden;
+        }
+
+        thead,
+        tbody,
+        tr {
+          display: contents;
         }
 
         th,
         td {
+          align-items: center;
+          display: grid;
           padding: 0.5em 1em;
           text-align: left;
         }
@@ -364,6 +401,7 @@ export class CcWebFeaturesTracker extends LitElement {
           background-color: var(--cc-color-bg-neutral-alt, #eee);
           color: var(--cc-color-text-strongest);
           min-width: max-content;
+          padding: 1em;
         }
 
         tbody th,
@@ -388,12 +426,8 @@ export class CcWebFeaturesTracker extends LitElement {
 
         .current-status {
           align-items: center;
-          display: flex;
+          display: grid;
           gap: 0.5em;
-        }
-
-        .current-status--detailed {
-          flex-direction: column;
           text-align: center;
         }
 
@@ -421,6 +455,9 @@ export class CcWebFeaturesTracker extends LitElement {
 
         .browser-support {
           display: grid;
+        }
+
+        .browser-support--detailed {
           gap: 0.5em;
         }
 
@@ -428,6 +465,11 @@ export class CcWebFeaturesTracker extends LitElement {
           align-items: center;
           display: flex;
           gap: 0.5em;
+        }
+
+        .browser-support cc-icon,
+        cc-button {
+          justify-self: center;
         }
       `,
     ];

@@ -1,6 +1,7 @@
 /** @type {import('../../components/cc-web-features-tracker/cc-web-features-tracker.types.js').FormattedFeature[]}*/
 export const webFeatures = [
   {
+    featureId: 'css-grid-layout',
     featureName: 'CSS Grid Layout',
     category: 'CSS',
     currentStatus: 'widely',
@@ -25,6 +26,7 @@ export const webFeatures = [
     },
   },
   {
+    featureId: 'decorators',
     featureName: 'Decorators',
     category: 'JS',
     currentStatus: 'newly',
@@ -45,6 +47,7 @@ export const webFeatures = [
     },
   },
   {
+    featureId: 'css-subgrid',
     featureName: 'CSS Subgrid',
     category: 'CSS',
     currentStatus: 'newly',
@@ -69,6 +72,7 @@ export const webFeatures = [
     },
   },
   {
+    featureId: 'container-queries',
     featureName: 'Container Queries',
     category: 'CSS',
     currentStatus: 'newly',

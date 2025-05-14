@@ -10,7 +10,7 @@ export interface WebFeaturesTrackerStateLoaded {
 
 type SkeletonWebFeature = Pick<
   FormattedFeature,
-  'featureName' | 'comment' | 'category' | 'canBeUsedWithPolyfill' | 'isProgressiveEnhancement'
+  'featureId' | 'featureName' | 'comment' | 'category' | 'canBeUsedWithPolyfill' | 'isProgressiveEnhancement'
 >;
 
 export interface WebFeaturesTrackerStateLoading {
@@ -39,6 +39,7 @@ export interface FeatureJson {
 }
 
 export interface FormattedFeature {
+  featureId: string;
   featureName: string;
   currentStatus: FeatureStatus;
   isProgressiveEnhancement: boolean;

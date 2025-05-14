@@ -196,12 +196,13 @@ class FeatureFormatter {
   #formatBaselineFeatures(rawBaselineFeatures) {
     const formattedFeatures = rawBaselineFeatures.map((baselineFeature) => {
       const currentStatus = baselineFeature.baseline.status;
-      const { isProgressiveEnhancement, canBeUsedWithPolyfill, comment, category } =
+      const { featureId, isProgressiveEnhancement, canBeUsedWithPolyfill, comment, category } =
         this.#trackedWebFeatures.baselineFeatures.find(
           (webFeature) => webFeature.featureId === baselineFeature.feature_id,
         );
 
       return {
+        featureId: featureId,
         featureName: baselineFeature.name,
         currentStatus,
         comment,
@@ -233,12 +234,13 @@ class FeatureFormatter {
       };
       const supportedBrowsersAsArray = Object.values(supportedBrowsers);
 
-      const { isProgressiveEnhancement, canBeUsedWithPolyfill, comment, category } =
+      const { featureId, isProgressiveEnhancement, canBeUsedWithPolyfill, comment, category } =
         this.#trackedWebFeatures.bcdFeatures.find((webFeature) => webFeature.featureId === rawBcdFeature.id);
       const currentStatus = this.#getBcdFeatureCurrentStatus(supportedBrowsersAsArray);
 
       /** @type {FormattedFeature} */
       const formattedFeature = {
+        featureId,
         featureName: rawBcdFeature.description ?? rawBcdFeature.id,
         currentStatus,
         comment,
