@@ -85,6 +85,11 @@ import {
   CcMapMarkerLeaveEvent,
 } from '../components/cc-map/cc-map.events.js';
 import { CcNoticeDismissEvent } from '../components/cc-notice/cc-notice.events.js';
+import {
+  CcOauthConsumerFormCreateEvent,
+  CcOauthConsumerFormDeleteEvent,
+  CcOauthConsumerFormUpdateEvent,
+} from '../components/cc-oauth-consumer-form/cc-oauth-consumer-form.events.js';
 import { CcProductCreateEvent } from '../components/cc-order-summary/cc-order-summary.events.js';
 import {
   CcOrgaMemberDeleteEvent,
@@ -208,6 +213,9 @@ declare global {
     'cc-multi-select': CcMultiSelectEvent;
     'cc-notice-dismiss': CcNoticeDismissEvent;
     'cc-notify': CcNotifyEvent;
+    'cc-oauth-consumer-form-create': CcOauthConsumerFormCreateEvent;
+    'cc-oauth-consumer-form-delete': CcOauthConsumerFormDeleteEvent;
+    'cc-oauth-consumer-form-update': CcOauthConsumerFormUpdateEvent;
     'cc-orga-member-delete': CcOrgaMemberDeleteEvent;
     'cc-orga-member-edit-toggle': CcOrgaMemberEditToggleEvent;
     'cc-orga-member-invite': CcOrgaMemberInviteEvent;
