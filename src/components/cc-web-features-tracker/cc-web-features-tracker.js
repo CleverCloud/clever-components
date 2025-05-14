@@ -7,6 +7,7 @@ import {
 } from '../../assets/cc-clever.icons.js';
 import {
   iconRemixCalendarLine as iconDate,
+  iconRemixArrowDownSLine as iconDown,
   iconRemixCheckFill as iconSupported,
   iconRemixToolsFill as iconTools,
   iconRemixCloseFill as iconUnsupported,
@@ -15,6 +16,7 @@ import {
 } from '../../assets/cc-remix.icons.js';
 import { dispatchCustomEvent } from '../../lib/events.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
+import '../cc-button/cc-button.js';
 import '../cc-icon/cc-icon.js';
 import '../cc-loader/cc-loader.js';
 import '../cc-notice/cc-notice.js';
@@ -48,6 +50,7 @@ export class CcWebFeaturesTracker extends LitElement {
       state: { type: Object },
       tableDisplayMode: { type: Object, state: true },
       tableFeatureFilter: { type: Object, state: true },
+      _webFeatures: { type: Array, state: true },
     };
   }
 
@@ -62,6 +65,9 @@ export class CcWebFeaturesTracker extends LitElement {
 
     /** @type {{ displayControl: boolean, value: 'compact' | 'detailed' }} */
     this.tableDisplayMode = { displayControl: true, value: 'compact' };
+
+    /** @type {Array<FormattedFeature & { displayMode: 'compact' | 'detailed' }>} */
+    this._webFeatures = [];
   }
 
   /**
@@ -101,7 +107,10 @@ export class CcWebFeaturesTracker extends LitElement {
 
     const webFeatures =
       this.state.type === 'loaded'
-        ? this.state.webFeatures
+        ? this.state.webFeatures.map((webFeature) => ({
+            ...webFeature,
+            displayMode: 'compact',
+          }))
         : this.state.webFeatures.map(
             /**
              * @param {SkeletonWebFeature} skeletonWebFeature
@@ -172,15 +181,6 @@ export class CcWebFeaturesTracker extends LitElement {
                     ></cc-toggle>
                   `
                 : ''}
-              ${this.tableDisplayMode.displayControl
-                ? html`
-                    <cc-toggle
-                      .choices=${displayModeChoices}
-                      .value="${this.tableDisplayMode.value}"
-                      @cc-toggle:input=${this._onDisplayModeChange}
-                    ></cc-toggle>
-                  `
-                : ''}
             </div>
           `
         : ''}
@@ -194,6 +194,7 @@ export class CcWebFeaturesTracker extends LitElement {
             <th>Chrome</th>
             <th>Firefox</th>
             <th>Safari</th>
+            <th>More info</th>
           </tr>
         </thead>
         <tbody>
@@ -203,7 +204,10 @@ export class CcWebFeaturesTracker extends LitElement {
     `;
   }
 
-  /** @param {FormattedFeature} _ */
+  /**
+   * @param {FormattedFeature} _
+   * @param {boolean} skeleton
+   */
   _renderFeatureRow(
     {
       isProgressiveEnhancement,
@@ -223,14 +227,24 @@ export class CcWebFeaturesTracker extends LitElement {
     return html`
       <tr>
         <th>
-          <div class="feature-name-th"><strong>${featureName}</strong><span class="comment">${comment}</span></div>
+          <div class="feature-name-th">
+            <strong class="${classMap({ skeleton })}">${featureName}</strong>
+            <span class="comment ${classMap({ skeleton })}">${comment}</span>
+          </div>
         </th>
-        <td><span class="skeleton">${category}</span></td>
+        <td><span class="${classMap({ skeleton })}">${category}</span></td>
         <td>
-          <div class="can-be-used">
+          <div class="can-be-used ${classMap({ skeleton })}">
             ${canBeUsed ? 'Yes' : 'No'}
             ${canBeUsedWithPolyfill
-              ? html` <cc-icon .icon=${iconTools} a11y-name="With polyfill only" title="With polyfill only"></cc-icon> `
+              ? html`
+                  <cc-icon
+                    .icon=${iconTools}
+                    a11y-name="With polyfill only"
+                    title="With polyfill only"
+                    ?skeleton="${skeleton}"
+                  ></cc-icon>
+                `
               : ''}
             ${isProgressiveEnhancement && currentStatus === 'newly'
               ? html`
@@ -238,6 +252,7 @@ export class CcWebFeaturesTracker extends LitElement {
                     .icon=${iconWarning}
                     a11y-name="Progressive enhancement only"
                     title="Progressive enhancement only"
+                    ?skeleton="${skeleton}"
                   ></cc-icon>
                 `
               : ''}
@@ -252,21 +267,26 @@ export class CcWebFeaturesTracker extends LitElement {
             <cc-icon
               class="current-status__icon"
               .icon="${baselineIcon}"
-              a11y-name=${this.tableDisplayMode.value === 'compact' ? a11yName : ''}
-              title=${this.tableDisplayMode.value === 'compact' ? a11yName : ''}
+              a11y-name="${this.tableDisplayMode.value === 'compact' ? a11yName : ''}"
+              title="${this.tableDisplayMode.value === 'compact' ? a11yName : ''}"
+              ?skeleton="${skeleton}"
             ></cc-icon>
-            <span>${this.tableDisplayMode.value === 'detailed' ? a11yName : ''}</span>
+            <span class="${classMap({ skeleton })}">${this.tableDisplayMode.value === 'detailed' ? a11yName : ''}</span>
           </div>
         </td>
-        <td>${this._renderBrowserSupport(chromeSupport)}</td>
-        <td>${this._renderBrowserSupport(firefoxSupport)}</td>
-        <td>${this._renderBrowserSupport(safariSupport)}</td>
+        <td>${this._renderBrowserSupport(chromeSupport, skeleton)}</td>
+        <td>${this._renderBrowserSupport(firefoxSupport, skeleton)}</td>
+        <td>${this._renderBrowserSupport(safariSupport, skeleton)}</td>
+        <td><cc-button hide-text .icon=${iconDown}>blabla</cc-button></td>
       </tr>
     `;
   }
 
-  /** @param {BrowserSupported|BrowserUnsupported} browserSupport */
-  _renderBrowserSupport(browserSupport) {
+  /**
+   * @param {BrowserSupported|BrowserUnsupported} browserSupport
+   * @param {boolean} skeleton
+   */
+  _renderBrowserSupport(browserSupport, skeleton) {
     const className = browserSupport.isSupported ? 'supported' : 'unsupported';
     return html`
       <div class="browser-support">
@@ -274,18 +294,22 @@ export class CcWebFeaturesTracker extends LitElement {
           .icon=${browserSupport.isSupported ? iconSupported : iconUnsupported}
           class=${className}
           size="lg"
+          ?skeleton="${skeleton}"
         ></cc-icon>
         ${browserSupport.isSupported && this.tableDisplayMode.value === 'detailed'
           ? html`
-              <p><cc-icon .icon=${iconVersion} size="md"></cc-icon> <span>${browserSupport.version}</span></p>
               <p>
-                <cc-icon .icon=${iconDate} size="md"></cc-icon>
-                <span
-                  >${browserSupport.releaseDate.toLocaleDateString('en-US', {
+                <cc-icon .icon=${iconVersion} size="md" ?skeleton="${skeleton}"></cc-icon>
+                <span class="${classMap({ skeleton })}">${browserSupport.version}</span>
+              </p>
+              <p>
+                <cc-icon .icon=${iconDate} size="md" ?skeleton="${skeleton}"></cc-icon>
+                <span class="${classMap({ skeleton })}">
+                  ${browserSupport.releaseDate.toLocaleDateString('en-US', {
                     month: 'numeric',
                     year: 'numeric',
-                  })}</span
-                >
+                  })}
+                </span>
               </p>
             `
           : ''}

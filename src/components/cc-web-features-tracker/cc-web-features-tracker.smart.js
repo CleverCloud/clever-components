@@ -32,19 +32,21 @@ defineSmartComponent({
 
     updateComponent('state', {
       type: 'loading',
-      webFeatures: Object.values(trackedWebFeatures).flatMap(
-        /**
-         * @param {FeatureJson} webFeature
-         * @returns {SkeletonWebFeature}
-         */
-        (webFeature) => ({
-          featureName: webFeature.featureId,
-          comment: webFeature.comment,
-          category: webFeature.category,
-          canBeUsedWithPolyfill: webFeature.canBeUsedWithPolyfill,
-          isProgressiveEnhancement: webFeature.isProgressiveEnhancement,
-        }),
-      ),
+      webFeatures: Object.values(trackedWebFeatures)
+        .flat()
+        .map(
+          /**
+           * @param {FeatureJson} webFeature
+           * @returns {SkeletonWebFeature}
+           */
+          (webFeature) => ({
+            featureName: webFeature.featureId,
+            comment: webFeature.comment,
+            category: webFeature.category,
+            canBeUsedWithPolyfill: webFeature.canBeUsedWithPolyfill,
+            isProgressiveEnhancement: webFeature.isProgressiveEnhancement,
+          }),
+        ),
     });
 
     api

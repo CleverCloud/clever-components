@@ -37,7 +37,16 @@ export const loading = makeStory(conf, {
   /** @type {Partial<CcWebFeaturesTracker>[]} */
   items: [
     {
-      state: { type: 'loading', webFeatures },
+      state: {
+        type: 'loading',
+        webFeatures: webFeatures.map((webFeature) => ({
+          featureName: webFeature.featureName,
+          comment: webFeature.comment,
+          category: webFeature.category,
+          canBeUsedWithPolyfill: webFeature.canBeUsedWithPolyfill,
+          isProgressiveEnhancement: webFeature.isProgressiveEnhancement,
+        })),
+      },
     },
   ],
 });
