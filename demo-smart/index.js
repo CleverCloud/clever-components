@@ -20,7 +20,9 @@ import(`../src/components/${componentName}/${definition}.js`);
 const $container = document.querySelector('cc-smart-container');
 
 const $component = document.createElement(componentName);
-Object.assign($component, componentProperties);
+for (const [name, value] of Object.entries(componentProperties)) {
+  $component.setAttribute(name, value);
+}
 $container.appendChild($component);
 
 const $contextButtons = document.querySelector('.context-buttons');
