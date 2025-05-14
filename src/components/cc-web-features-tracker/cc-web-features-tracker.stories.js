@@ -40,6 +40,7 @@ export const loading = makeStory(conf, {
       state: {
         type: 'loading',
         webFeatures: webFeatures.map((webFeature) => ({
+          featureId: webFeature.featureId,
           featureName: webFeature.featureName,
           comment: webFeature.comment,
           category: webFeature.category,
