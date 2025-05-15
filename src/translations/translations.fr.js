@@ -1531,9 +1531,12 @@ export const translations = {
   'cc-token-api-list.intro': () =>
     sanitize`Ci-dessous la liste des tokens d'API associés à votre compte <a href="https://www.clever-cloud.com/developers/api/howto/#api-tokens" title="Tokens d'API - Documentation - nouvelle fenêtre">tokens d'API</a> et leurs informations. Vous pouvez les révoquez si nécessaire.`,
   'cc-token-api-list.main-heading': `Tokens d'API`,
-  'cc-token-api-list.revoke-token': /** @param {{ name: string}} _ */ ({ name }) => `Révoquer le token d'API "${name}"`,
+  'cc-token-api-list.revoke-token': /** @param {{ name: string}} _ */ ({ name }) => `Révoquer le token d'API - ${name}`,
   'cc-token-api-list.revoke-token.error': `Une erreur est survenue pendant la révocation du token d'API`,
   'cc-token-api-list.revoke-token.success': `Le token d'API a été révoqué avec succès`,
+  'cc-token-api-list.update-token': `Mettre à jour le token d'API`,
+  'cc-token-api-list.update-token-with-name': /** @param {{ name: string}} _ */ ({ name }) =>
+    `Mettre à jour le token d'API - ${name}`,
   //#endregion
   //#region cc-token-api-update-form
   'cc-token-api-update-form.back-to-list': `Retour à la liste de tokens`,

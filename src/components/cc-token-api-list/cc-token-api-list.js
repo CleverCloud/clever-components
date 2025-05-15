@@ -4,6 +4,7 @@ import { createRef, ref } from 'lit/directives/ref.js';
 import {
   iconRemixCalendar_2Fill as iconCreation,
   iconRemixDeleteBinLine as iconDelete,
+  iconRemixArrowRightLine as iconGoTo,
   iconRemixCodeSSlashLine as iconId,
   iconRemixInformationLine as iconInfo,
 } from '../../assets/cc-remix.icons.js';
@@ -38,6 +39,7 @@ export class CcTokenApiList extends LitElement {
   static get properties() {
     return {
       apiTokenCreationHref: { type: String, attribute: 'api-token-creation-href' },
+      apiTokenUpdateHref: { type: String, attribute: 'api-token-update-href' },
       state: { type: Object },
     };
   }
@@ -47,6 +49,9 @@ export class CcTokenApiList extends LitElement {
 
     /** @type {string|null} Sets the URL leading to the API token creation screen */
     this.apiTokenCreationHref = null;
+
+    /** @type {string|null} Sets the URL leading to the API token update screen */
+    this.apiTokenUpdateHref = null;
 
     /** @type {TokenApiListState} Sets the state of the component */
     this.state = { type: 'loading' };
@@ -58,7 +63,7 @@ export class CcTokenApiList extends LitElement {
       widthBreakpoints: [730],
     });
 
-    new LostFocusController(this, '.api-token-card__action-revoke', ({ suggestedElement }) => {
+    new LostFocusController(this, '.api-token-card__actions__rev', ({ suggestedElement }) => {
       if (suggestedElement instanceof HTMLElement) {
         suggestedElement.focus();
       } else {
@@ -175,8 +180,16 @@ export class CcTokenApiList extends LitElement {
             </dd>
           </div>
         </dl>
+        <a
+          class="api-token-card__actions__update"
+          href="${this.apiTokenUpdateHref}/${id}"
+          title="${i18n('cc-token-api-list.update-token-with-name', { name })}"
+        >
+          ${i18n('cc-token-api-list.update-token')}
+          <cc-icon .icon="${iconGoTo}"></cc-icon>
+        </a>
         <cc-button
-          class="api-token-card__action-revoke"
+          class="api-token-card__actions__revoke"
           danger
           outlined
           hide-text
@@ -389,11 +402,20 @@ export class CcTokenApiList extends LitElement {
         gap: 0.5em;
       }
 
-      .api-token-card cc-button {
-        align-self: start;
+      .api-token-card__actions__revoke {
         grid-column: actions-start / actions-end;
-        grid-row: 1 / -1;
+        grid-row: 1 / 2;
         justify-self: end;
+        order: -1;
+      }
+
+      .api-token-card__actions__update {
+        align-items: center;
+        align-self: flex-end;
+        color: var(--cc-color-text-weak);
+        display: flex;
+        grid-column: actions-start / actions-end;
+        text-decoration: none;
       }
     `;
   }
