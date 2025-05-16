@@ -1,3 +1,5 @@
+import { CcSshKeyList } from './cc-ssh-key-list.js';
+
 //#region creation form
 export interface NewKey {
   name: string;
@@ -62,3 +64,9 @@ interface GithubSshKeyState extends GithubSshKey {
   type: 'idle' | 'importing';
 }
 //#endregion
+
+declare global {
+  interface HTMLElementTagNameMap {
+    'cc-ssh-key-list': CcSshKeyList;
+  }
+}

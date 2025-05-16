@@ -21,19 +21,27 @@ export interface SmartComponent extends Element {
   [META]?: Map<SmartComponentDefinition<this>, { abortController?: AbortController }>;
 }
 
-export interface SmartComponentCoreDefinition<T extends SmartComponent> {
-  selector: string;
+export interface SmartComponentCoreDefinition<C extends keyof HTMLElementTagNameMap> {
+  selector: `${C}${string}`;
   params?: Record<string, SmartDefinitionParam>;
-  onConnect?: (container: SmartContainer, component: T) => void;
-  onContextUpdate?: (container: SmartContainer, component: T, context: SmartContext) => void;
-  onDisconnect?: (container: SmartContainer, component: T) => void;
+  onConnect?: (container: SmartContainer, component: HTMLElementTagNameMap[C]) => void;
+  onContextUpdate?: (container: SmartContainer, component: HTMLElementTagNameMap[C], context: SmartContext) => void;
+  onDisconnect?: (container: SmartContainer, component: HTMLElementTagNameMap[C]) => void;
 }
 
-export interface SmartComponentDefinition<C extends SmartComponent> {
-  selector: string;
+export interface SmartComponentDefinition<C extends keyof HTMLElementTagNameMap> {
+  selector: `${C}${string}`;
   params: Record<string, SmartDefinitionParam>;
   onContextUpdate: (args: OnContextUpdateArgs<C>) => void | Promise<void>;
 }
+
+type CcComponent = keyof HTMLElementTagNameMap & `cc-${string}`;
+
+export type defineSmartComponent = <ComponentTagName extends CcComponent>(definition: {
+  selector: ComponentTagName | `${ComponentTagName}[${string}]`;
+  params: Record<string, SmartDefinitionParam>;
+  onContextUpdate: (args: OnContextUpdateArgs<HTMLElementTagNameMap[ComponentTagName]>) => void | Promise<void>;
+}) => void;
 
 export interface SmartDefinitionParam<TypeHint = unknown> {
   type: TypeHint;
@@ -59,7 +67,7 @@ export type UpdateComponentCallback<C extends SmartComponent> = <P extends keyof
   property: CallbackOrObject<V>,
 ) => void;
 
-export interface OnContextUpdateArgs<C extends SmartComponent> {
+export interface OnContextUpdateArgs<C extends HTMLElementTagNameMap[keyof HTMLElementTagNameMap]> {
   container: SmartContainer;
   component: C;
   context: SmartContext;

@@ -9,10 +9,7 @@ import { META } from './smart-symbols.js';
  * @typedef {import('./smart-component.types.js').OnEventCallback} OnEventCallback
  */
 
-/**
- * @param {import('./smart-component.types.js').SmartComponentDefinition<T>} definition
- * @template {SmartComponent} T
- */
+/** @type {import('./smart-component.types.js').defineSmartComponent} */
 export function defineSmartComponent(definition) {
   defineSmartComponentCore({
     selector: definition.selector,

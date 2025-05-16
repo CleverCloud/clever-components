@@ -15,14 +15,12 @@ import '../cc-smart-container/cc-smart-container.js';
 import './cc-ssh-key-list.js';
 
 /**
- * @typedef {import('./cc-ssh-key-list.js').CcSshKeyList} CcSshKeyList
  * @typedef {import('./cc-ssh-key-list.types.js').SshKey} SshKey
  * @typedef {import('./cc-ssh-key-list.types.js').GithubSshKey} GithubSshKey
  * @typedef {import('./cc-ssh-key-list.types.js').CreateSshKeyFormState} CreateSshKeyFormState
  * @typedef {import('./cc-ssh-key-list.types.js').SshKeyListStateLoadedAndLinked} SshKeyListStateLoadedAndLinked
  * @typedef {import('./cc-ssh-key-list.types.js').SshKeyListStateLoadedAndUnlinked} SshKeyListStateLoadedAndUnlinked
  * @typedef {import('../../lib/send-to-api.types.js').ApiConfig} ApiConfig
- * @typedef {import('../../lib/smart/smart-component.types.js').OnContextUpdateArgs<CcSshKeyList>} OnContextUpdateArgs
  */
 
 defineSmartComponent({
@@ -30,9 +28,6 @@ defineSmartComponent({
   params: {
     apiConfig: { type: Object },
   },
-  /**
-   * @param {OnContextUpdateArgs} args
-   */
   onContextUpdate({ component, context, onEvent, updateComponent, signal }) {
     const { apiConfig } = context;
 
