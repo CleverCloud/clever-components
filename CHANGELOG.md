@@ -5,6 +5,159 @@ title: 'Changelog'
 
 # Changelog
 
+## [19.0.0](https://github.com/CleverCloud/clever-components/compare/18.4.0...19.0.0) (2025-05-16)
+
+
+### ⚠ BREAKING CHANGES
+
+* **cc-button:** refactor events
+* **cc-input-text:** refactor events
+* **cc-input-number:** refactor events
+* **cc-input-date:** refactor events
+* **cc-select:** refactor events
+* **send-to-api:** refactor events
+* **notification:** refactor events
+* **form-control-elements:** refactor events
+* **form:** refactor events
+* **cc-plan-picker:** refactor events
+* **cc-zone-picker:** refactor events
+* **cc-zone-input:** refactor events
+* **cc-token-session-list:** refactor events
+* **cc-toggle:** refactor events
+* **cc-toast:** refactor events
+* **cc-tcp-redirection:** refactor events
+* **cc-ssh-key-list:** refactor events
+* **cc-pricing-product-consumption:** refactor events
+* **cc-pricing-product:** refactor events
+* **cc-pricing-header:** refactor events
+* **cc-pricing-estimation:** refactor events
+* **cc-popover:** refactor events
+* **cc-orga-member-list:** refactor events
+* **cc-orga-member-card:** refactor events
+* **cc-order-summary:** refactor events
+* **cc-notice:** refactor events
+* **cc-logsmap:** refactor events
+* **cc-map:** refactor events
+* **cc-logs-instances:** refactor events
+* **cc-logs-message-filter:** refactor events
+* **cc-logs-loading-progress:** refactor events
+* **cc-logs-date-range-selector:** refactor events
+* **cc-logs-control:** refactor events
+* **cc-logs:** refactor events
+* **cc-kv-explorer:** refactor events
+* **cc-kv-terminal:** refactor events
+* **cc-kv-string-editor:** refactor events
+* **cc-kv-set-explorer:** refactor events
+* **cc-kv-list-explorer:** refactor events
+* **cc-kv-hash-explorer:** refactor events
+* **cc-grafana-info:** refactor events
+* **cc-email-list:** refactor events
+* **cc-domain-management:** refactor events
+* **cc-addon-credentials:** stop dispatching `cc-addon-credentials:toggle-change` event
+* **cc-block:** refactor events
+* **cc-block-detail:** refactor events
+* **cc-env-var-form:** refactor events
+* **cc-env-var-editor-expert:** refactor events
+* **cc-env-var-editor-json:** refactor events
+* **cc-env-var-editor-simple:** refactor events
+* **cc-env-var-create:** refactor events
+* **cc-env-var-input:** refactor events
+* **cc-header-app:** refactor events
+* **cc-addon-option-form:** refactor events
+* **cc-addon-option:** refactor events
+* **cc-addon-admin:** refactor events
+* **cc-addon-redis-options:** stop dispatching `cc-addon-redis-options:submit` event
+* **cc-addon-postgresql-options:** stop dispatching `cc-addon-postgresql-options:submit` event
+* **cc-addon-mysql-options:** stop dispatching `cc-addon-mysql-options:submit` event
+* **cc-addon-mongodb-options:** stop dispatching `cc-addon-mongodb-options:submit` event
+* **cc-addon-jenkins-options:** stop dispatching `cc-addon-jenkins-options:submit` event
+* **cc-addon-elasticsearch-options:** stop dispatching `cc-addon-elasticsearch-options:submit`
+* **cc-logs-addon-runtime:** stop dispatching `cc-logs-addon-runtime:options-change` event
+* **cc-logs-app-access:** stop dispatching `cc-logs-app-access:options-change` event
+* **cc-logs-app-runtime:** stop dispatching `cc-logs-app-runtime:options-change` event
+* **cc-logs-control:** change `cc-logs-control:option-change` event detail
+
+### 🚀 Features
+
+* **cc-token-api-list:** init ([74aeaf3](https://github.com/CleverCloud/clever-components/commit/74aeaf352889000832a571d46e705c3243371703)), closes [#1370](https://github.com/CleverCloud/clever-components/issues/1370)
+* **cc-token-oauth-list:** init ([b613d77](https://github.com/CleverCloud/clever-components/commit/b613d777cf56e1d9e5cff27757e6e06841f47e03)), closes [#1369](https://github.com/CleverCloud/clever-components/issues/1369)
+
+
+### 🐛 Bug Fixes
+
+* **cc-block-details:** fix folder name and update style ([327739b](https://github.com/CleverCloud/clever-components/commit/327739b491dbbfa1c1269bd01f01a31aa66e0715))
+* **smart-manager:** avoid triggering `updateEverything` too early ([2b89985](https://github.com/CleverCloud/clever-components/commit/2b89985525d0c63782c0a4da4563b0b5ca79de73)), closes [#1384](https://github.com/CleverCloud/clever-components/issues/1384)
+
+
+### 🛠 Code Refactoring
+
+* **cc-addon-admin:** refactor events ([c459075](https://github.com/CleverCloud/clever-components/commit/c45907580cc355f8382d0682a07c90251694fb6d))
+* **cc-addon-credentials:** stop dispatching `cc-addon-credentials:toggle-change` event ([e6edfb5](https://github.com/CleverCloud/clever-components/commit/e6edfb5ade8a10580f68fb19d077ddd2140eef76))
+* **cc-addon-elasticsearch-options:** stop dispatching `cc-addon-elasticsearch-options:submit` ([091e46e](https://github.com/CleverCloud/clever-components/commit/091e46e11ae29bc322924dc6dbd98a72fbe7bd2d))
+* **cc-addon-jenkins-options:** stop dispatching `cc-addon-jenkins-options:submit` event ([07b9ff9](https://github.com/CleverCloud/clever-components/commit/07b9ff9ade82d4b9c5b7c00aaac363e4aca57425))
+* **cc-addon-mongodb-options:** stop dispatching `cc-addon-mongodb-options:submit` event ([42efb72](https://github.com/CleverCloud/clever-components/commit/42efb724444f40b1fc78a29fe3088bcf478b3577))
+* **cc-addon-mysql-options:** stop dispatching `cc-addon-mysql-options:submit` event ([714fc0f](https://github.com/CleverCloud/clever-components/commit/714fc0f03742842d979685f873e0fbb0c57cd4d3))
+* **cc-addon-option-form:** refactor events ([e5ccfc3](https://github.com/CleverCloud/clever-components/commit/e5ccfc3f35fad085828f8b98b5e9676e97498d81))
+* **cc-addon-option:** refactor events ([1690837](https://github.com/CleverCloud/clever-components/commit/169083785f7551bad731a8646ba5618f8aa4e364))
+* **cc-addon-postgresql-options:** stop dispatching `cc-addon-postgresql-options:submit` event ([6cb7c6f](https://github.com/CleverCloud/clever-components/commit/6cb7c6fdd679494af1c093d784ffd92da2d7a35d))
+* **cc-addon-redis-options:** stop dispatching `cc-addon-redis-options:submit` event ([94e4b7a](https://github.com/CleverCloud/clever-components/commit/94e4b7a24c937b58b9f5bbc0bbef2dd4309f486f))
+* **cc-block-detail:** refactor events ([7ef4d8b](https://github.com/CleverCloud/clever-components/commit/7ef4d8bba7129b8e1d562559df6b5772ea771768))
+* **cc-block:** refactor events ([b68445a](https://github.com/CleverCloud/clever-components/commit/b68445a35005c7758bb0d257e33235ebfa6e7611))
+* **cc-button:** refactor events ([2fcf216](https://github.com/CleverCloud/clever-components/commit/2fcf2164d48469a8c2da654d550ae8e985b6d9f6))
+* **cc-domain-management:** refactor events ([21d1b5f](https://github.com/CleverCloud/clever-components/commit/21d1b5f27082ccc236f97644ef205e984523cf0b))
+* **cc-email-list:** refactor events ([539da37](https://github.com/CleverCloud/clever-components/commit/539da371bc1fc588ac473ef69f3c11959dd2451a))
+* **cc-env-var-create:** refactor events ([5488374](https://github.com/CleverCloud/clever-components/commit/5488374af75c6bd308571e8c5006bbdf265cfce6))
+* **cc-env-var-editor-expert:** refactor events ([ffb5a0c](https://github.com/CleverCloud/clever-components/commit/ffb5a0cdf2a8f75081c5cdfaf843e3c06edf6c5c))
+* **cc-env-var-editor-json:** refactor events ([8d9c6ca](https://github.com/CleverCloud/clever-components/commit/8d9c6ca3d8382bc0166df1a65587d6e8db7b5df7))
+* **cc-env-var-editor-simple:** refactor events ([a0fa283](https://github.com/CleverCloud/clever-components/commit/a0fa283b69d6af4f5c771a52590da7b89a35df92))
+* **cc-env-var-form:** refactor events ([66f90db](https://github.com/CleverCloud/clever-components/commit/66f90db6a86e58e3fef1a9305254282e7f7f9d7d))
+* **cc-env-var-input:** refactor events ([fefd870](https://github.com/CleverCloud/clever-components/commit/fefd870dfb992037a1b97d425c606b881a5fcbba))
+* **cc-grafana-info:** refactor events ([08fe143](https://github.com/CleverCloud/clever-components/commit/08fe14362d1db144d53c753766bee11ad26a01c0))
+* **cc-header-app:** refactor events ([b7da8f5](https://github.com/CleverCloud/clever-components/commit/b7da8f5b910bbefa02d54c96d1397edeed95668e))
+* **cc-input-date:** refactor events ([11992f3](https://github.com/CleverCloud/clever-components/commit/11992f3b19d0cc9d664294e41a99d68727e746a9))
+* **cc-input-number:** refactor events ([64bdace](https://github.com/CleverCloud/clever-components/commit/64bdace50e443e82a325b6645d66fae796c92f0b))
+* **cc-input-text:** refactor events ([f57e2cb](https://github.com/CleverCloud/clever-components/commit/f57e2cb928855c079bd17632e535078e97d631ae))
+* **cc-kv-explorer:** refactor events ([3012e48](https://github.com/CleverCloud/clever-components/commit/3012e48555f166ab5332bb0cae25848811d8de41))
+* **cc-kv-hash-explorer:** refactor events ([d412b50](https://github.com/CleverCloud/clever-components/commit/d412b50c6039f4ecaa0fb86bd5e966f82780e5e4))
+* **cc-kv-list-explorer:** refactor events ([08b2c24](https://github.com/CleverCloud/clever-components/commit/08b2c24b587fc2f89690f6d8181772eff4e2bced))
+* **cc-kv-set-explorer:** refactor events ([f5d5d24](https://github.com/CleverCloud/clever-components/commit/f5d5d24cb4affa95f137a9cb0ed47e1e52a0d5d3))
+* **cc-kv-string-editor:** refactor events ([5f0a1e9](https://github.com/CleverCloud/clever-components/commit/5f0a1e96af0770452f2752e61152825b7af3b810))
+* **cc-kv-terminal:** refactor events ([7bdf299](https://github.com/CleverCloud/clever-components/commit/7bdf2999bcb98e71a28203eaf3445c676b47f26d))
+* **cc-logs-addon-runtime:** stop dispatching `cc-logs-addon-runtime:options-change` event ([3e79a5f](https://github.com/CleverCloud/clever-components/commit/3e79a5fa2cb709b21ec61ad5089166da43171c23))
+* **cc-logs-app-access:** stop dispatching `cc-logs-app-access:options-change` event ([705b520](https://github.com/CleverCloud/clever-components/commit/705b520aa0925096a7412440219028a0ef464140))
+* **cc-logs-app-runtime:** stop dispatching `cc-logs-app-runtime:options-change` event ([33212b8](https://github.com/CleverCloud/clever-components/commit/33212b811f52719f09c2ef60b19bd2f3dc6b58c8))
+* **cc-logs-control:** change `cc-logs-control:option-change` event detail ([608606e](https://github.com/CleverCloud/clever-components/commit/608606ef4e657ac3b86f6424151ef6a36766a41c))
+* **cc-logs-control:** refactor events ([bc1af60](https://github.com/CleverCloud/clever-components/commit/bc1af602c1fbea330730f9677517f3fb2d6152c9))
+* **cc-logs-date-range-selector:** refactor events ([2d589e3](https://github.com/CleverCloud/clever-components/commit/2d589e3f00d06606654e4c2b090ac5bdc384c562))
+* **cc-logs-instances:** refactor events ([3389c98](https://github.com/CleverCloud/clever-components/commit/3389c98a4e9aa6caf495a2e97556750ea3486696))
+* **cc-logs-loading-progress:** refactor events ([917aacc](https://github.com/CleverCloud/clever-components/commit/917aacc4fe7c78faa57250f99a33d2a86fcd7f2f))
+* **cc-logs-message-filter:** refactor events ([60f4ad9](https://github.com/CleverCloud/clever-components/commit/60f4ad99d22c4f57d28acc08efb2a1265186608f))
+* **cc-logsmap:** refactor events ([a00cb45](https://github.com/CleverCloud/clever-components/commit/a00cb45a21976cb75fcc6451747174d5b5f5bc4d))
+* **cc-logs:** refactor events ([e12e8aa](https://github.com/CleverCloud/clever-components/commit/e12e8aad362b1b8c8b1352493b0c55d446859056))
+* **cc-map:** refactor events ([f0d3820](https://github.com/CleverCloud/clever-components/commit/f0d3820dbf0cecb9ff6556336bfe0a67b911e6c0))
+* **cc-notice:** refactor events ([fed73d2](https://github.com/CleverCloud/clever-components/commit/fed73d2dcee068b87806256370b12ec6aaaae52b))
+* **cc-order-summary:** refactor events ([ab8197d](https://github.com/CleverCloud/clever-components/commit/ab8197d6da19980192b20b7307b61b6e7e249ff6))
+* **cc-orga-member-card:** refactor events ([6d60d57](https://github.com/CleverCloud/clever-components/commit/6d60d5758114a8878d7606a7d0618ff03697d465))
+* **cc-orga-member-list:** refactor events ([86ef9cb](https://github.com/CleverCloud/clever-components/commit/86ef9cb6f855892f67c941ce5dbd65c2f58a8848))
+* **cc-plan-picker:** refactor events ([5d0737b](https://github.com/CleverCloud/clever-components/commit/5d0737b1b26f1ad8f860976b249ba6a90675cfa7))
+* **cc-popover:** refactor events ([19de8bb](https://github.com/CleverCloud/clever-components/commit/19de8bbaf6bd424674bce5f4fc41382be556e25e))
+* **cc-pricing-estimation:** refactor events ([36eb0d1](https://github.com/CleverCloud/clever-components/commit/36eb0d10579ad119131117ce70edd86395b408a3))
+* **cc-pricing-header:** refactor events ([53df30c](https://github.com/CleverCloud/clever-components/commit/53df30cca6b4e364563342e46af439844d152912))
+* **cc-pricing-product-consumption:** refactor events ([d1a9c38](https://github.com/CleverCloud/clever-components/commit/d1a9c383901cbfcf728e933285095f14bf3d5a5f))
+* **cc-pricing-product:** refactor events ([6f77777](https://github.com/CleverCloud/clever-components/commit/6f77777e46ca8d8d1e9bd412b42487ed3cc6b74b))
+* **cc-select:** refactor events ([2a47112](https://github.com/CleverCloud/clever-components/commit/2a47112dbae4e8fbd68a0efa8c985724691807ce))
+* **cc-ssh-key-list:** refactor events ([1d61a34](https://github.com/CleverCloud/clever-components/commit/1d61a3498cdcebf6aaf6bcff83c905d5778e3e32))
+* **cc-tcp-redirection:** refactor events ([ea6a033](https://github.com/CleverCloud/clever-components/commit/ea6a0331eab39cf96bce235bf1c5fb6215599f65))
+* **cc-toast:** refactor events ([89fb1d7](https://github.com/CleverCloud/clever-components/commit/89fb1d779873bfc3da523cce8cc3346e7932614c))
+* **cc-toggle:** refactor events ([b5e2e32](https://github.com/CleverCloud/clever-components/commit/b5e2e323a4fe5da998e163d44efdd7b2939efa07))
+* **cc-token-session-list:** refactor events ([a8d0896](https://github.com/CleverCloud/clever-components/commit/a8d0896fdd2e9cd1fa1529ef7198d652183c0a59))
+* **cc-zone-input:** refactor events ([e84e88e](https://github.com/CleverCloud/clever-components/commit/e84e88e5538bd91fbfd43cf3e200eca1842fbf56))
+* **cc-zone-picker:** refactor events ([1d595cd](https://github.com/CleverCloud/clever-components/commit/1d595cde1136e5dfd65cbba9887cef7a6b9725db))
+* **form-control-elements:** refactor events ([3bc4fd9](https://github.com/CleverCloud/clever-components/commit/3bc4fd9f28e6fb984200da443d6fb3b77f5f2974))
+* **form:** refactor events ([d93b949](https://github.com/CleverCloud/clever-components/commit/d93b949268a0e80af49c5511b81efe23f484e51c))
+* **notification:** refactor events ([71425c7](https://github.com/CleverCloud/clever-components/commit/71425c75ee52aaf89a6e38d28df23e3d30252179))
+* **send-to-api:** refactor events ([285e67d](https://github.com/CleverCloud/clever-components/commit/285e67de32dd0e8bbcc64abbf99de50480fae6c2))
+
 ## [18.4.0](https://github.com/CleverCloud/clever-components/compare/18.3.0...18.4.0) (2025-04-15)
 
 
