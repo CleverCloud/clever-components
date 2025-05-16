@@ -10,6 +10,7 @@ import {
 import { LostFocusController } from '../../controllers/lost-focus-controller.js';
 import { ResizeController } from '../../controllers/resize-controller.js';
 import { isExpirationClose } from '../../lib/tokens.js';
+import { linkStyles } from '../../templates/cc-link/cc-link.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-badge/cc-badge.js';
 import '../cc-block/cc-block.js';
@@ -187,180 +188,183 @@ export class CcTokenOauthList extends LitElement {
   }
 
   static get styles() {
-    return css`
-      :host {
-        display: block;
-      }
+    return [
+      linkStyles,
+      css`
+        :host {
+          display: block;
+        }
 
-      /* Reset default margins and paddings */
-      dl,
-      dd,
-      dt {
-        margin: 0;
-        padding: 0;
-      }
+        /* Reset default margins and paddings */
+        dl,
+        dd,
+        dt {
+          margin: 0;
+          padding: 0;
+        }
 
-      p {
-        margin: 0;
-      }
+        p {
+          margin: 0;
+        }
 
-      .is-revoking > :not(cc-button) {
-        opacity: var(--cc-opacity-when-disabled, 0.65);
-      }
+        .is-revoking > :not(cc-button) {
+          opacity: var(--cc-opacity-when-disabled, 0.65);
+        }
 
-      .empty {
-        border: 1px solid var(--cc-color-border-neutral-weak);
-        font-weight: bold;
-        padding: 1em;
-        text-align: center;
-      }
+        .empty {
+          border: 1px solid var(--cc-color-border-neutral-weak);
+          font-weight: bold;
+          padding: 1em;
+          text-align: center;
+        }
 
-      /* When all sessions are revoked, focus goes to the empty message container */
-      .empty:focus-visible {
-        outline: var(--cc-focus-outline);
-        outline-offset: var(--cc-focus-outline-offset, 2px);
-      }
+        /* When all sessions are revoked, focus goes to the empty message container */
+        .empty:focus-visible {
+          outline: var(--cc-focus-outline);
+          outline-offset: var(--cc-focus-outline-offset, 2px);
+        }
 
-      .oauth-token-list-wrapper {
-        margin-top: 2.5em;
-      }
+        .oauth-token-list-wrapper {
+          margin-top: 2.5em;
+        }
 
-      .oauth-token-list-wrapper__list {
-        display: grid;
-        gap: 1.5em;
-      }
-
-      @supports (grid-template-columns: subgrid) {
         .oauth-token-list-wrapper__list {
-          grid-template-columns: [card-start info-start] max-content max-content 1fr [info-end actions-start] auto [actions-end card-end];
-        }
-
-        :host([w-lt-995]) .oauth-token-list-wrapper__list {
-          grid-template-columns: [card-start info-start] 1fr 1fr 1fr [info-end actions-start] auto [actions-end card-end];
-        }
-      }
-
-      .oauth-token-card {
-        align-items: center;
-        border: solid 1px var(--cc-color-border-neutral-weak, #e6e6e6);
-        border-radius: var(--cc-border-radius-default, 0.25em);
-        display: grid;
-        grid-template-columns: [card-start info-start] 1fr [info-end actions-start] auto [actions-end card-end];
-        padding: 1em;
-      }
-
-      :host([w-lt-730]) .oauth-token-card {
-        grid-template-columns: [card-start info-start] 1fr [info-end actions-start] max-content [actions-end card-end];
-      }
-
-      @supports (grid-template-columns: subgrid) {
-        .oauth-token-card {
           display: grid;
-          grid-column: card-start / card-end;
-          grid-template-columns: subgrid;
+          gap: 1.5em;
+        }
+
+        @supports (grid-template-columns: subgrid) {
+          .oauth-token-list-wrapper__list {
+            grid-template-columns: [card-start info-start] max-content max-content 1fr [info-end actions-start] auto [actions-end card-end];
+          }
+
+          :host([w-lt-995]) .oauth-token-list-wrapper__list {
+            grid-template-columns: [card-start info-start] 1fr 1fr 1fr [info-end actions-start] auto [actions-end card-end];
+          }
+        }
+
+        .oauth-token-card {
+          align-items: center;
+          border: solid 1px var(--cc-color-border-neutral-weak, #e6e6e6);
+          border-radius: var(--cc-border-radius-default, 0.25em);
+          display: grid;
+          grid-template-columns: [card-start info-start] 1fr [info-end actions-start] auto [actions-end card-end];
+          padding: 1em;
         }
 
         :host([w-lt-730]) .oauth-token-card {
-          grid-template-columns: [card-start info-start] 1fr [info-end actions-start] auto [actions-end card-end];
+          grid-template-columns: [card-start info-start] 1fr [info-end actions-start] max-content [actions-end card-end];
         }
-      }
 
-      .oauth-token-card__header {
-        --cc-icon-size: 1.2em;
+        @supports (grid-template-columns: subgrid) {
+          .oauth-token-card {
+            display: grid;
+            grid-column: card-start / card-end;
+            grid-template-columns: subgrid;
+          }
 
-        align-items: center;
-        column-gap: 1em;
-        display: flex;
-        flex-wrap: wrap;
-        grid-column: info-start / info-end;
-        margin-bottom: 1em;
-        row-gap: 0.5em;
-      }
+          :host([w-lt-730]) .oauth-token-card {
+            grid-template-columns: [card-start info-start] 1fr [info-end actions-start] auto [actions-end card-end];
+          }
+        }
 
-      .oauth-token-card__header__logo-name {
-        align-items: center;
-        display: flex;
-        font-weight: bold;
-        gap: 0.5em;
-      }
+        .oauth-token-card__header {
+          --cc-icon-size: 1.2em;
 
-      .oauth-token-card__header__logo-name cc-img {
-        border-radius: var(--cc-border-radius-default, 0.25em);
-        height: 2em;
-        width: 2em;
-      }
-
-      .oauth-token-card__info-list {
-        display: flex;
-        gap: 1em;
-        grid-column: info-start / info-end;
-      }
-
-      :host([w-lt-730]) .oauth-token-card__info-list {
-        display: grid;
-        row-gap: 0.5em;
-      }
-
-      @supports (grid-template-columns: subgrid) {
-        .oauth-token-card__info-list {
-          display: grid;
+          align-items: center;
+          column-gap: 1em;
+          display: flex;
+          flex-wrap: wrap;
           grid-column: info-start / info-end;
-          grid-template-columns: subgrid;
+          margin-bottom: 1em;
+          row-gap: 0.5em;
+        }
+
+        .oauth-token-card__header__logo-name {
+          align-items: center;
+          display: flex;
+          font-weight: bold;
+          gap: 0.5em;
+        }
+
+        .oauth-token-card__header__logo-name cc-img {
+          border-radius: var(--cc-border-radius-default, 0.25em);
+          height: 2em;
+          width: 2em;
+        }
+
+        .oauth-token-card__info-list {
+          display: flex;
+          gap: 1em;
+          grid-column: info-start / info-end;
         }
 
         :host([w-lt-730]) .oauth-token-card__info-list {
+          display: grid;
           row-gap: 0.5em;
         }
-      }
 
-      .oauth-token-card__info-list__item {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 0.5em;
-      }
+        @supports (grid-template-columns: subgrid) {
+          .oauth-token-card__info-list {
+            display: grid;
+            grid-column: info-start / info-end;
+            grid-template-columns: subgrid;
+          }
 
-      :host([w-lt-995]) .oauth-token-card__info-list__item {
-        display: grid;
-      }
-
-      @supports (grid-template-columns: subgrid) {
-        :host([w-lt-730]) .oauth-token-card__info-list__item {
-          display: flex;
+          :host([w-lt-730]) .oauth-token-card__info-list {
+            row-gap: 0.5em;
+          }
         }
-      }
 
-      .oauth-token-card__info-list__item--italic {
-        font-style: italic;
-      }
+        .oauth-token-card__info-list__item {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 0.5em;
+        }
 
-      .oauth-token-card__info-list__item--bold {
-        font-weight: bold;
-      }
+        :host([w-lt-995]) .oauth-token-card__info-list__item {
+          display: grid;
+        }
 
-      dt {
-        --line-height: 1.2em;
-        --cc-icon-size: var(--line-height);
+        @supports (grid-template-columns: subgrid) {
+          :host([w-lt-730]) .oauth-token-card__info-list__item {
+            display: flex;
+          }
+        }
 
-        align-items: center;
-        display: flex;
-        gap: 0.5em;
-        line-height: var(--line-height);
-      }
+        .oauth-token-card__info-list__item--italic {
+          font-style: italic;
+        }
 
-      dd {
-        align-items: center;
-        display: flex;
-        flex-wrap: wrap;
-        gap: 0.5em;
-      }
+        .oauth-token-card__info-list__item--bold {
+          font-weight: bold;
+        }
 
-      .oauth-token-card cc-button {
-        align-self: start;
-        grid-column: actions-start / actions-end;
-        grid-row: 1 / -1;
-        justify-self: end;
-      }
-    `;
+        dt {
+          --line-height: 1.2em;
+          --cc-icon-size: var(--line-height);
+
+          align-items: center;
+          display: flex;
+          gap: 0.5em;
+          line-height: var(--line-height);
+        }
+
+        dd {
+          align-items: center;
+          display: flex;
+          flex-wrap: wrap;
+          gap: 0.5em;
+        }
+
+        .oauth-token-card cc-button {
+          align-self: start;
+          grid-column: actions-start / actions-end;
+          grid-row: 1 / -1;
+          justify-self: end;
+        }
+      `,
+    ];
   }
 }
 
