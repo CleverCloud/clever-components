@@ -3,9 +3,10 @@ import { classMap } from 'lit/directives/class-map.js';
 import { createRef, ref } from 'lit/directives/ref.js';
 import {
   iconRemixCalendar_2Fill as iconCreation,
-  iconRemixDeleteBinLine as iconDelete,
+  iconRemixCloseLine as iconDelete,
   iconRemixCodeSSlashLine as iconId,
   iconRemixInformationLine as iconInfo,
+  iconRemixDeleteBinLine as iconRevoke,
 } from '../../assets/cc-remix.icons.js';
 import { LostFocusController } from '../../controllers/lost-focus-controller.js';
 import { ResizeController } from '../../controllers/resize-controller.js';
@@ -77,6 +78,24 @@ export class CcTokenApiList extends LitElement {
     this.dispatchEvent(new CcTokenRevokeEvent(tokenId));
   }
 
+  /**
+   * Sorts API tokens for display.
+   * Non-expired tokens are shown first, then expired tokens.
+   * Within each group, tokens are sorted by creationDate descending.
+   *
+   * @param {ApiTokenState} tokenA
+   * @param {ApiTokenState} tokenB
+   */
+  _sortTokens(tokenA, tokenB) {
+    if (tokenA.isExpired && !tokenB.isExpired) {
+      return 1;
+    }
+    if (!tokenA.isExpired && tokenB.isExpired) {
+      return -1;
+    }
+    return tokenB.creationDate.getTime() - tokenA.creationDate.getTime();
+  }
+
   render() {
     if (this.state.type === 'error') {
       return html`<cc-notice intent="warning" message="${i18n('cc-token-api-list.error')}"></cc-notice>`;
@@ -84,12 +103,7 @@ export class CcTokenApiList extends LitElement {
 
     const isEmpty = this.state.type === 'loaded' && this.state.apiTokens.length === 0;
 
-    const sortedTokens =
-      this.state.type === 'loaded'
-        ? [...this.state.apiTokens].sort(
-            (tokenA, tokenB) => tokenB.creationDate.getTime() - tokenA.creationDate.getTime(),
-          )
-        : [];
+    const sortedTokens = this.state.type === 'loaded' ? [...this.state.apiTokens].sort(this._sortTokens) : [];
 
     return html`
       <cc-block>
@@ -140,17 +154,27 @@ export class CcTokenApiList extends LitElement {
    * @param {ApiTokenState} token - The token data to render
    * @private
    */
-  _renderTokenCard({ type, id, name, description, creationDate, expirationDate }) {
-    const hasExpirationWarning = isExpirationClose({ creationDate, expirationDate });
+  _renderTokenCard({ type, id, name, description, creationDate, expirationDate, isExpired }) {
+    const hasExpirationWarning = !isExpired && isExpirationClose({ creationDate, expirationDate });
     const isRevoking = type === 'revoking';
+    const textRevokeOrDelete = isExpired
+      ? i18n('cc-token-api-list.delete-token', { name })
+      : i18n('cc-token-api-list.revoke-token', { name });
+    const iconRevokeOrDelete = isExpired ? iconDelete : iconRevoke;
 
     return html`
-      <div class="api-token-card ${classMap({ 'is-revoking': isRevoking })}">
+      <div
+        class="api-token-card ${classMap({
+          'api-token-card--is-revoking': isRevoking,
+          'api-token-card--is-expired': isExpired,
+        })}"
+      >
         <div class="api-token-card__header">
           <div class="api-token-card__header__name">${name}</div>
           ${hasExpirationWarning
-            ? html` <cc-badge intent="warning">${i18n('cc-token-api-list.card.expires-soon')}</cc-badge> `
+            ? html`<cc-badge intent="warning">${i18n('cc-token-api-list.card.expires-soon')}</cc-badge>`
             : ''}
+          ${isExpired ? html`<cc-badge>${i18n('cc-token-api-list.card.expired')}</cc-badge>` : ''}
         </div>
         ${!isStringEmpty(description) ? html` <p class="api-token-card__description">${description}</p> ` : ''}
         <div class="api-token-card__id">
@@ -177,15 +201,15 @@ export class CcTokenApiList extends LitElement {
         </dl>
         <cc-button
           class="api-token-card__action-revoke"
-          danger
+          ?danger="${!isExpired}"
           outlined
           hide-text
-          .icon=${iconDelete}
+          .icon=${iconRevokeOrDelete}
           circle
           ?waiting=${isRevoking}
           @cc-click=${() => this._onRevokeToken(id)}
         >
-          ${i18n('cc-token-api-list.revoke-token', { name })}
+          ${textRevokeOrDelete}
         </cc-button>
       </div>
     `;
@@ -224,10 +248,6 @@ export class CcTokenApiList extends LitElement {
         gap: 1.5em;
         justify-items: center;
         padding: 1em;
-      }
-
-      .is-revoking > *:not(cc-button) {
-        opacity: var(--cc-opacity-when-disabled, 0.65);
       }
 
       .create-token-cta {
@@ -287,6 +307,15 @@ export class CcTokenApiList extends LitElement {
         gap: 0.5em;
         grid-template-columns: [card-start info-start] 1fr [info-end actions-start] max-content [actions-end card-end];
         padding: 1em;
+      }
+
+      .api-token-card--is-revoking > :not(cc-button),
+      .api-token-card--is-expired > :not(cc-button) {
+        opacity: var(--cc-opacity-when-disabled, 0.65);
+      }
+
+      .api-token-card--is-expired {
+        background-color: var(--cc-color-bg-neutral, #eee);
       }
 
       @supports (grid-template-columns: subgrid) {

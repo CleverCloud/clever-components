@@ -28,6 +28,7 @@ const baseTokens = [
     description: 'Used for automated deployments',
     creationDate: shiftDateField(now, 'D', -30),
     expirationDate: shiftDateField(now, 'D', 60),
+    isExpired: false,
   },
   {
     type: 'idle',
@@ -35,6 +36,7 @@ const baseTokens = [
     name: 'Monitoring Script (no desc)',
     creationDate: shiftDateField(now, 'D', -15),
     expirationDate: shiftDateField(now, 'D', 5), // expires soon (5 days)
+    isExpired: false,
   },
   {
     type: 'idle',
@@ -44,6 +46,7 @@ const baseTokens = [
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla facilisi. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Phasellus fringilla lectus vel magna pulvinar, in finibus nulla ultricies. Suspendisse potenti. Maecenas nec lacus vel nisl convallis feugiat in sit amet massa.',
     creationDate: shiftDateField(now, 'D', -60),
     expirationDate: shiftDateField(now, 'D', 30),
+    isExpired: false,
   },
   {
     type: 'idle',
@@ -52,6 +55,25 @@ const baseTokens = [
     description: 'Local development testing',
     creationDate: shiftDateField(now, 'D', -10),
     expirationDate: shiftDateField(now, 'D', 2), // expires very soon (2 days)
+    isExpired: false,
+  },
+  {
+    type: 'idle',
+    id: 'fake_api_token_expired1',
+    name: 'Old Integration',
+    description: 'Token for a deprecated integration',
+    creationDate: shiftDateField(now, 'D', -120),
+    expirationDate: shiftDateField(now, 'D', -10),
+    isExpired: true,
+  },
+  {
+    type: 'idle',
+    id: 'fake_api_token_expired2',
+    name: 'Legacy Script',
+    description: 'Legacy script token, no longer in use',
+    creationDate: shiftDateField(now, 'D', -200),
+    expirationDate: shiftDateField(now, 'D', -50),
+    isExpired: true,
   },
 ];
 
@@ -105,6 +127,27 @@ export const waitingWithRevokingOneToken = makeStory(conf, {
         type: 'loaded',
         apiTokens: baseTokens.map((token, index) => {
           if (index === 2) {
+            return {
+              ...token,
+              type: 'revoking',
+            };
+          }
+
+          return token;
+        }),
+      },
+    },
+  ],
+});
+
+export const waitingWithDeletingExpiredToken = makeStory(conf, {
+  /** @type {Partial<CcTokenApiList>[]} */
+  items: [
+    {
+      state: {
+        type: 'loaded',
+        apiTokens: baseTokens.map((token, index) => {
+          if (index === baseTokens.length - 1) {
             return {
               ...token,
               type: 'revoking',

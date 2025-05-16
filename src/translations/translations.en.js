@@ -1494,12 +1494,14 @@ export const translations = {
   'cc-toast.icon-alt.warning': `Warning`,
   //#endregion
   //#region cc-token-api-list
+  'cc-token-api-list.card.expired': `Expired`,
   'cc-token-api-list.card.expires-soon': `Expires soon`,
   'cc-token-api-list.card.human-friendly-date': /** @param {{ date: Date }} _ */ ({ date }) => formatDatetime(date),
   'cc-token-api-list.card.label.creation': `Creation: `,
   'cc-token-api-list.card.label.expiration': `Expiration: `,
   'cc-token-api-list.card.token-id-icon.a11y-name': `API token identifier`,
   'cc-token-api-list.create-token': `Create new token`,
+  'cc-token-api-list.delete-token': /** @param {{ name: string}} _ */ ({ name }) => `Delete API token - ${name}`,
   'cc-token-api-list.empty': `You have not created any token yet or you don't have any active token. Go ahead and create a new API token`,
   'cc-token-api-list.error': `Something went wrong while loading API tokens`,
   'cc-token-api-list.intro': () =>

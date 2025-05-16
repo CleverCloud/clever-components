@@ -29,6 +29,7 @@ export interface ApiToken {
   expirationDate: Date;
   name: string;
   description?: string;
+  isExpired: boolean;
 }
 
 export interface RawApiToken {
@@ -39,4 +40,5 @@ export interface RawApiToken {
   ip: string;
   name: string;
   description?: string;
+  state: 'ACTIVE' | 'EXPIRED';
 }

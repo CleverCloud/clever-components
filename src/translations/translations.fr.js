@@ -1518,6 +1518,7 @@ export const translations = {
   'cc-toast.icon-alt.warning': `Avertissement`,
   //#endregion
   //#region cc-token-api-list
+  'cc-token-api-list.card.expired': `Expiré`,
   'cc-token-api-list.card.expires-soon': `Expire bientôt`,
   'cc-token-api-list.card.human-friendly-date': /** @param {{ date: string|number }} _ */ ({ date }) =>
     formatDatetime(date),
@@ -1525,13 +1526,15 @@ export const translations = {
   'cc-token-api-list.card.label.expiration': () => sanitize`Expiration&nbsp;: `,
   'cc-token-api-list.card.token-id-icon.a11y-name': `Identifiant du token d'API`,
   'cc-token-api-list.create-token': `Créer un nouveau token`,
+  'cc-token-api-list.delete-token': /** @param {{ name: string}} _ */ ({ name }) =>
+    `Supprimer le token d'API - ${name}`,
   'cc-token-api-list.empty': () =>
     sanitize`Vous n'avez aucun token d'API. Cliquez sur le bouton ci-dessous pour créer un nouveau token&nbsp;:`,
   'cc-token-api-list.error': `Une erreur est survenue pendant le chargement des tokens d'API`,
   'cc-token-api-list.intro': () =>
     sanitize`Ci-dessous la liste des tokens d'API associés à votre compte <a href="https://www.clever-cloud.com/developers/api/howto/#api-tokens" title="Tokens d'API - Documentation - nouvelle fenêtre">tokens d'API</a> et leurs informations. Vous pouvez les révoquez si nécessaire.`,
   'cc-token-api-list.main-heading': `Tokens d'API`,
-  'cc-token-api-list.revoke-token': /** @param {{ name: string}} _ */ ({ name }) => `Révoquer le token d'API "${name}"`,
+  'cc-token-api-list.revoke-token': /** @param {{ name: string}} _ */ ({ name }) => `Révoquer le token d'API - ${name}`,
   'cc-token-api-list.revoke-token.error': `Une erreur est survenue pendant la révocation du token d'API`,
   'cc-token-api-list.revoke-token.success': `Le token d'API a été révoqué avec succès`,
   //#endregion

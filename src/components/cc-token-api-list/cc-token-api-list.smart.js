@@ -130,6 +130,7 @@ class Api {
               expirationDate: new Date(token.expirationDate),
               name: token.name,
               description: token.description,
+              isExpired: token.state === 'EXPIRED',
             }),
           ),
       );
