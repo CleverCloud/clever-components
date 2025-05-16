@@ -31,10 +31,10 @@ interface ApiConfig {
 
 ## 🌐 API endpoints
 
-| Method   | Type                    | Cache?  |
-|----------|:------------------------|---------|
-| `GET`    | `/v2/self/tokens`       | Default |
-| `POST`   | `/v2/self/tokens/revoke`| Default |
+| Method     | Type                    | Cache?  |
+|------------|:------------------------|---------|
+| `GET`      | `/v2/self/tokens`       | Default |
+| `DELETE`   | `/v2/self/tokens/revoke`| Default |
 
 ```html
 <cc-smart-container context='{
