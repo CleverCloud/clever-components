@@ -22,11 +22,12 @@ import { withOptions } from '@clevercloud/client/esm/with-options.js';
  */
 export function sendToAuthBridge({ apiConfig, signal, cacheDelay, timeout }) {
   return (requestParams) => {
+    console.log(requestParams);
     const cacheParams = { ...apiConfig, ...requestParams };
     return withCache(cacheParams, cacheDelay, () => {
       const { API_HOST, ...tokens } = apiConfig;
       return Promise.resolve(requestParams)
-        .then(prefixUrl('https://api-bridge.clever-cloud.com'))
+        .then(prefixUrl('http://127.0.0.1:8080'))
         .then(addOauthHeaderPlaintext(tokens))
         .then(withOptions({ signal, timeout }))
         .then(request);

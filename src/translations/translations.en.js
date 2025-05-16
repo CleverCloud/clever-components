@@ -1508,6 +1508,20 @@ export const translations = {
   'cc-token-api-list.revoke-token': /** @param {{ name: string}} _ */ ({ name }) => `Revoke API token - ${name}`,
   'cc-token-api-list.revoke-token.error': `Something went wrong while revoking the API token`,
   'cc-token-api-list.revoke-token.success': `The API token has been revoked successfully`,
+  'cc-token-api-list.update-token': `Edit`,
+  'cc-token-api-list.update-token-with-name': /** @param {{ name: string}} _ */ ({ name }) =>
+    `Edit API token - ${name}`,
+  //#endregion
+  //#region cc-token-api-update-form
+  'cc-token-api-update-form.back-to-list': `Back to the API token list`,
+  'cc-token-api-update-form.description.label': `Description`,
+  'cc-token-api-update-form.error': `Something went wrong while loading API token information`,
+  'cc-token-api-update-form.intro': `Use this form to change the name and description of your API token`,
+  'cc-token-api-update-form.main-heading': `Update your API token`,
+  'cc-token-api-update-form.name.label': `Name`,
+  'cc-token-api-update-form.submit-button': `Update`,
+  'cc-token-api-update-form.update-token.error': `Something went wrong while updating the API token information`,
+  'cc-token-api-update-form.update-token.success': `The API token information has been updated successfully`,
   //#endregion
   //#region cc-token-oauth-list
   'cc-token-oauth-list.card.expires-soon': `Expires soon`,
