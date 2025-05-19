@@ -1,4 +1,4 @@
-import { webFeatures } from '../../stories/fixtures/web-features.js';
+import { SKELETON_WEB_FEATURES, WEB_FEATURES } from '../../stories/fixtures/web-features.js';
 import { makeStory, storyWait } from '../../stories/lib/make-story.js';
 import './cc-web-features-tracker.js';
 
@@ -27,7 +27,7 @@ export const defaultStory = makeStory(conf, {
     {
       state: {
         type: 'loaded',
-        webFeatures,
+        webFeatures: WEB_FEATURES,
       },
     },
   ],
@@ -39,14 +39,7 @@ export const loading = makeStory(conf, {
     {
       state: {
         type: 'loading',
-        webFeatures: webFeatures.map((webFeature) => ({
-          featureId: webFeature.featureId,
-          featureName: webFeature.featureName,
-          comment: webFeature.comment,
-          category: webFeature.category,
-          canBeUsedWithPolyfill: webFeature.canBeUsedWithPolyfill,
-          isProgressiveEnhancement: webFeature.isProgressiveEnhancement,
-        })),
+        webFeatures: SKELETON_WEB_FEATURES,
       },
     },
   ],
@@ -79,7 +72,7 @@ export const dataLoadedWithCanBeUsedOnly = makeStory(conf, {
     {
       state: {
         type: 'loaded',
-        webFeatures,
+        webFeatures: WEB_FEATURES,
       },
       tableFeatureFilter: { displayControl: true, value: 'can-be-used' },
     },
@@ -92,7 +85,7 @@ export const dataLoadedWithoutProgressiveEnhancement = makeStory(conf, {
     {
       state: {
         type: 'loaded',
-        webFeatures: webFeatures.filter((feature) => !feature.isProgressiveEnhancement),
+        webFeatures: WEB_FEATURES.filter((feature) => !feature.isProgressiveEnhancement),
       },
     },
   ],
@@ -104,7 +97,7 @@ export const dataLoadedWithoutPolyfill = makeStory(conf, {
     {
       state: {
         type: 'loaded',
-        webFeatures: webFeatures.filter((feature) => !feature.canBeUsedWithPolyfill),
+        webFeatures: WEB_FEATURES.filter((feature) => !feature.canBeUsedWithPolyfill),
       },
     },
   ],
@@ -116,37 +109,10 @@ export const dataLoadedWithoutProgressiveEnhancementAndPolyfill = makeStory(conf
     {
       state: {
         type: 'loaded',
-        webFeatures: webFeatures.filter(
+        webFeatures: WEB_FEATURES.filter(
           (feature) => !feature.isProgressiveEnhancement && !feature.canBeUsedWithPolyfill,
         ),
       },
-    },
-  ],
-});
-
-export const dataLoadedWithDetailedDisplayMode = makeStory(conf, {
-  /** @type {Partial<CcWebFeaturesTracker>[]} */
-  items: [
-    {
-      state: {
-        type: 'loaded',
-        webFeatures,
-      },
-      tableDisplayMode: { displayControl: true, value: 'detailed' },
-    },
-  ],
-});
-
-export const dataLoadedWithDetailedDisplayModeAndCanBeUsedFilter = makeStory(conf, {
-  /** @type {Partial<CcWebFeaturesTracker>[]} */
-  items: [
-    {
-      state: {
-        type: 'loaded',
-        webFeatures,
-      },
-      tableFeatureFilter: { displayControl: true, value: 'can-be-used' },
-      tableDisplayMode: { displayControl: true, value: 'detailed' },
     },
   ],
 });
@@ -157,59 +123,22 @@ export const dataLoadedWithoutFeatureFilterControl = makeStory(conf, {
     {
       state: {
         type: 'loaded',
-        webFeatures,
+        webFeatures: WEB_FEATURES,
       },
       tableFeatureFilter: { displayControl: false, value: 'all' },
-      tableDisplayMode: { displayControl: true, value: 'compact' },
-    },
-  ],
-});
-
-export const dataLoadedWithoutDisplayModeControl = makeStory(conf, {
-  /** @type {Partial<CcWebFeaturesTracker>[]} */
-  items: [
-    {
-      state: {
-        type: 'loaded',
-        webFeatures,
-      },
-      tableFeatureFilter: { displayControl: true, value: 'all' },
-      tableDisplayMode: { displayControl: false, value: 'compact' },
-    },
-  ],
-});
-
-export const dataLoadedWithoutDisplayControls = makeStory(conf, {
-  /** @type {Partial<CcWebFeaturesTracker>[]} */
-  items: [
-    {
-      state: {
-        type: 'loaded',
-        webFeatures,
-      },
-      tableFeatureFilter: { displayControl: false, value: 'all' },
-      tableDisplayMode: { displayControl: false, value: 'compact' },
-    },
-  ],
-});
-
-export const dataLoadedWithNoProgressiveWarning = makeStory(conf, {
-  /** @type {Partial<CcWebFeaturesTracker>[]} */
-  items: [
-    {
-      state: {
-        type: 'loaded',
-        webFeatures: webFeatures.map((feature) => ({
-          ...feature,
-          isProgressiveEnhancement: false,
-        })),
-      },
     },
   ],
 });
 
 export const simulationLoadingSuccess = makeStory(conf, {
-  items: [{}],
+  items: [
+    {
+      state: {
+        type: 'loading',
+        webFeatures: SKELETON_WEB_FEATURES,
+      },
+    },
+  ],
   simulations: [
     storyWait(
       2000,
@@ -217,7 +146,7 @@ export const simulationLoadingSuccess = makeStory(conf, {
       ([component]) => {
         component.state = {
           type: 'loaded',
-          webFeatures,
+          webFeatures: WEB_FEATURES,
         };
       },
     ),
@@ -225,7 +154,14 @@ export const simulationLoadingSuccess = makeStory(conf, {
 });
 
 export const simulationLoadingError = makeStory(conf, {
-  items: [{}],
+  items: [
+    {
+      state: {
+        type: 'loading',
+        webFeatures: SKELETON_WEB_FEATURES,
+      },
+    },
+  ],
   simulations: [
     storyWait(
       2000,
@@ -245,7 +181,7 @@ export const simulationChangingFilters = makeStory(conf, {
     {
       state: {
         type: 'loaded',
-        webFeatures,
+        webFeatures: WEB_FEATURES,
       },
     },
   ],
@@ -261,21 +197,7 @@ export const simulationChangingFilters = makeStory(conf, {
       2000,
       /** @param {CcWebFeaturesTracker[]} components */
       ([component]) => {
-        component.tableDisplayMode = { displayControl: true, value: 'detailed' };
-      },
-    ),
-    storyWait(
-      2000,
-      /** @param {CcWebFeaturesTracker[]} components */
-      ([component]) => {
         component.tableFeatureFilter = { displayControl: true, value: 'all' };
-      },
-    ),
-    storyWait(
-      2000,
-      /** @param {CcWebFeaturesTracker[]} components */
-      ([component]) => {
-        component.tableDisplayMode = { displayControl: true, value: 'compact' };
       },
     ),
   ],

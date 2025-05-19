@@ -48,7 +48,6 @@ export class CcWebFeaturesTracker extends LitElement {
   static get properties() {
     return {
       state: { type: Object },
-      tableDisplayMode: { type: Object, state: true },
       tableFeatureFilter: { type: Object, state: true },
       _webFeatures: { type: Array, state: true },
     };
@@ -62,9 +61,6 @@ export class CcWebFeaturesTracker extends LitElement {
 
     /** @type {{ displayControl: boolean, value: 'all' | 'can-be-used' }} */
     this.tableFeatureFilter = { displayControl: true, value: 'all' };
-
-    /** @type {{ displayControl: boolean, value: 'compact' | 'detailed' }} */
-    this.tableDisplayMode = { displayControl: true, value: 'compact' };
 
     /** @type {Array<FormattedFeature & { displayMode: 'compact' | 'detailed' }>} */
     this._webFeatures = [];
@@ -131,7 +127,7 @@ export class CcWebFeaturesTracker extends LitElement {
       return html`<cc-notice intent="warning" message="Something went wrong while retrieving data"></cc-notice>`;
     }
 
-    if (this.state.webFeatures.length === 0) {
+    if (this.state.type === 'loaded' && this.state.webFeatures.length === 0) {
       return html`<div class="empty"><p>No Web Features to track</p></div>`;
     }
 
@@ -160,8 +156,6 @@ export class CcWebFeaturesTracker extends LitElement {
 
     const hasCanBeUsedAsPolyfill = formattedFeatures.some((feature) => feature.canBeUsedWithPolyfill);
 
-    const hasTableControls = this.tableFeatureFilter.displayControl || this.tableDisplayMode.displayControl;
-
     return html`
       ${hasCanBeUsedAsProgressive
         ? html`<cc-notice intent="warning">
@@ -174,18 +168,14 @@ export class CcWebFeaturesTracker extends LitElement {
             <div slot="message">Features with the tools icons can be used but requires a polyfill</div>
           </cc-notice>`
         : ''}
-      ${hasTableControls
+      ${this.tableFeatureFilter.displayControl
         ? html`
             <div class="table-controls">
-              ${this.tableFeatureFilter.displayControl
-                ? html`
-                    <cc-toggle
-                      .choices=${filterFeatureChoices}
-                      .value="${this.tableFeatureFilter.value}"
-                      @cc-select=${this._onFeatureFilterChange}
-                    ></cc-toggle>
-                  `
-                : ''}
+              <cc-toggle
+                .choices=${filterFeatureChoices}
+                .value="${this.tableFeatureFilter.value}"
+                @cc-select=${this._onFeatureFilterChange}
+              ></cc-toggle>
             </div>
           `
         : ''}

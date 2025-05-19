@@ -1,5 +1,5 @@
 /** @type {import('../../components/cc-web-features-tracker/cc-web-features-tracker.types.js').FormattedFeature[]}*/
-export const webFeatures = [
+export const WEB_FEATURES = [
   {
     featureId: 'css-grid-layout',
     featureName: 'CSS Grid Layout',
@@ -96,3 +96,13 @@ export const webFeatures = [
     },
   },
 ];
+
+/** @type {import('../../components/cc-web-features-tracker/cc-web-features-tracker.types.js').SkeletonWebFeature[]} */
+export const SKELETON_WEB_FEATURES = WEB_FEATURES.map((webFeature) => ({
+  featureId: webFeature.featureId,
+  featureName: webFeature.featureName,
+  comment: webFeature.comment,
+  category: webFeature.category,
+  canBeUsedWithPolyfill: webFeature.canBeUsedWithPolyfill,
+  isProgressiveEnhancement: webFeature.isProgressiveEnhancement,
+}));
