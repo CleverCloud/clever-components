@@ -310,7 +310,9 @@ export class CcOauthConsumerForm extends LitElement {
 
   render() {
     if (this.state.type === 'error') {
-      return html` <cc-notice slot="content" intent="warning" message="error"></cc-notice> `;
+      return html`
+        <cc-notice slot="content" intent="warning" message="${i18n('cc-oauth-consumer-form.load.error')}"></cc-notice>
+      `;
     }
     const creatingContext = this.state.type === 'idle-create' || this.state.type === 'creating';
     const isWaiting =
