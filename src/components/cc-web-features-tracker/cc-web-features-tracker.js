@@ -14,6 +14,7 @@ import {
   iconRemixHashtag as iconVersion,
   iconRemixAlertFill as iconWarning,
 } from '../../assets/cc-remix.icons.js';
+import { accessibilityStyles } from '../../styles/accessibility.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
 import '../cc-button/cc-button.js';
 import '../cc-icon/cc-icon.js';
@@ -31,8 +32,6 @@ const TODAY = new Date();
  * @typedef {import('./cc-web-features-tracker.types.js').BrowserUnsupported} BrowserUnsupported
  * @typedef {import('./cc-web-features-tracker.types.js').SkeletonWebFeature} SkeletonWebFeature
  * @typedef {import('../cc-toggle/cc-toggle.js').CcToggle} CcToggle
- * @typedef {import('../../lib/events.types.js').EventWithTarget<CcToggle & { value: 'all' | 'can-be-used' }>} EventWithTargetCcToggleFeatureFilter
- * @typedef {import('../../lib/events.types.js').EventWithTarget<CcToggle & { value: 'compact' | 'detailed' }>} EventWithTargetCcToggleDisplayMode
  * @typedef {import('lit').PropertyValues<CcWebFeaturesTracker>} CcWebFeaturesTrackerPropertyValues
  */
 
@@ -40,9 +39,6 @@ const TODAY = new Date();
  * Component to display web tracked features.
  *
  * @cssdisplay block
- *
- * @fires {CustomEvent<{ displayControl: boolean, value: 'all' | 'can-be-used' }>} table-feature-filter-change
- * @fires {CustomEvent<{ displayControl: boolean, value: 'compact' | 'detailed' }>} table-display-mode-change
  */
 export class CcWebFeaturesTracker extends LitElement {
   static get properties() {
@@ -80,15 +76,13 @@ export class CcWebFeaturesTracker extends LitElement {
     }
   }
 
-  /** @param {EventWithTargetCcToggleFeatureFilter} event */
-  _onFeatureFilterChange(event) {
-    this.tableFeatureFilter = { ...this.tableFeatureFilter, value: event.target.value };
-    // dispatchCustomEvent(this, 'table-feature-filter-change', this.tableFeatureFilter);
+  /** @param {CcSelectEvent<'all' | 'can-be-used'>} event */
+  _onFeatureFilterChange({ detail: value }) {
+    this.tableFeatureFilter = { ...this.tableFeatureFilter, value };
   }
 
   /** @param {string} featureId */
   _onDisplayModeChange(featureId) {
-    console.log(featureId);
     this._webFeatures = this._webFeatures.map((webFeature) => {
       if (webFeature.featureId === featureId) {
         return {
@@ -98,7 +92,6 @@ export class CcWebFeaturesTracker extends LitElement {
       }
       return webFeature;
     });
-    // dispatchCustomEvent(this, 'table-display-mode-change', this.tableDisplayMode);
   }
 
   /** @param {CcWebFeaturesTrackerPropertyValues} changedProperties */
@@ -222,11 +215,22 @@ export class CcWebFeaturesTracker extends LitElement {
   ) {
     const { a11yName, icon: baselineIcon } = this._getBaselineIcon(currentStatus);
     const isDisplayModeDetailed = displayMode === 'detailed';
+    const featureInfoToggleText = !isDisplayModeDetailed ? 'Display detailed info' : 'Hide detailed info';
     return html`
-      <tr>
+      <tr class="${classMap({ 'row--detailed': isDisplayModeDetailed })}">
         <th>
           <div class="feature-name-th">
-            <strong class="${classMap({ skeleton })}">${featureName}</strong>
+            <div class="feature-name-th__btn-and-name">
+              <button
+                class="feature-name-th__btn-and-name__btn"
+                @click="${() => this._onDisplayModeChange(featureId)}"
+                title="${featureInfoToggleText}"
+              >
+                <cc-icon .icon=${iconDown}></cc-icon>
+                <span class="visually-hidden">${featureInfoToggleText}</span>
+              </button>
+              <strong class="${classMap({ skeleton })}">${featureName}</strong>
+            </div>
             <span
               class="comment ${classMap({
                 skeleton,
@@ -277,11 +281,7 @@ export class CcWebFeaturesTracker extends LitElement {
         <td>${this._renderBrowserSupport(chromeSupport, skeleton, isDisplayModeDetailed)}</td>
         <td>${this._renderBrowserSupport(firefoxSupport, skeleton, isDisplayModeDetailed)}</td>
         <td>${this._renderBrowserSupport(safariSupport, skeleton, isDisplayModeDetailed)}</td>
-        <td>
-          <cc-button hide-text .icon=${iconDown} @cc-click="${() => this._onDisplayModeChange(featureId)}">
-            ${!isDisplayModeDetailed ? 'Display detailed info' : 'Hide detailed info'}
-          </cc-button>
-        </td>
+        <td></td>
       </tr>
     `;
   }
@@ -294,7 +294,7 @@ export class CcWebFeaturesTracker extends LitElement {
   _renderBrowserSupport(browserSupport, skeleton, isDisplayModeDetailed) {
     const className = browserSupport.isSupported ? 'supported' : 'unsupported';
     return html`
-      <div class="browser-support ${classMap({ 'browser-support--detailed': isDisplayModeDetailed })}">
+      <div class="browser-support">
         <cc-icon
           .icon=${browserSupport.isSupported ? iconSupported : iconUnsupported}
           class=${className}
@@ -325,6 +325,7 @@ export class CcWebFeaturesTracker extends LitElement {
   static get styles() {
     return [
       skeletonStyles,
+      accessibilityStyles,
       css`
         :host {
           display: grid;
@@ -362,11 +363,6 @@ export class CcWebFeaturesTracker extends LitElement {
 
         table {
           align-content: center;
-          /* border-collapse: collapse;
-          border-radius: var(--cc-border-radius-small, 0.15em);
-          display: block;
-          overflow-x: auto;
-          table-layout: fixed; */
           display: grid;
           grid-template-columns: 1fr min-content min-content min-content min-content min-content min-content min-content;
           overflow-x: auto;
@@ -407,6 +403,42 @@ export class CcWebFeaturesTracker extends LitElement {
 
         .feature-name-th {
           display: grid;
+          gap: 0.5em;
+        }
+
+        .feature-name-th__btn-and-name {
+          align-items: center;
+          display: flex;
+          gap: 0.5em;
+        }
+
+        .feature-name-th__btn-and-name__btn {
+          background: none;
+          background-color: var(--cc-color-bg-default, #fff);
+          border: solid 1px var(--cc-color-border-neutral);
+          border-radius: var(--cc-border-radius-small, 0.15em);
+          box-shadow: 0 0 0 0 rgb(255 255 255 / 0%);
+          display: flex;
+          padding: 0.3em;
+          transition: box-shadow 75ms ease-in-out;
+        }
+
+        .feature-name-th__btn-and-name__btn cc-icon {
+          transition: transform 0.3s ease-in-out;
+        }
+
+        .feature-name-th__btn-and-name__btn:hover {
+          box-shadow: 0 1px 2px rgb(0 0 0 / 40%);
+        }
+
+        .feature-name-th__btn-and-name__btn:focus-visible {
+          outline: var(--cc-focus-outline);
+          outline-offset: var(--cc-focus-outline-offset);
+        }
+
+        .row--detailed .feature-name-th__btn-and-name__btn cc-icon {
+          transform: rotate(180deg);
+          transition: transform 0.3s ease-in-out;
         }
 
         .comment {
@@ -447,7 +479,7 @@ export class CcWebFeaturesTracker extends LitElement {
           display: grid;
         }
 
-        .browser-support--detailed {
+        .row--detailed .browser-support {
           gap: 0.5em;
         }
 
