@@ -31,9 +31,9 @@ interface ApiConfig {
 
 ## 🌐 API endpoints
 
-| Method   | URL                                       | Cache?  |
-|----------|-------------------------------------------|---------|
-| `CREATE` | `/v2/organisations/${ownerId}/consumers/`          | Default |
+| Method | URL                                       | Cache?  |
+|--------|-------------------------------------------|---------|
+| `POST` | `/v2/organisations/${ownerId}/consumers`          | Default |
 
 ## ⬇️️ Examples
 
@@ -48,7 +48,7 @@ interface ApiConfig {
     },
     "ownerId": "",
 }'>
-  <cc-oauth-consumer-form></cc-oauth-consumer-form>
+  <cc-oauth-consumer-form smart-mode="create"></cc-oauth-consumer-form>
 </cc-smart-container>
 ```
 

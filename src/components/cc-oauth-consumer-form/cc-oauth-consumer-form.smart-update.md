@@ -36,8 +36,8 @@ interface ApiConfig {
 | Method   | URL                                       | Cache?  |
 |----------|-------------------------------------------|---------|
 | `GET`    | `/v2/organisations/${ownerId}/consumers/${key}`          | Default |
-| `REMOVE` | `/v2/organisations/${ownerId}/consumers/${key}`          | Default |
-| `UPDATE` | `/v2/organisations/${ownerId}/consumers/${key}`          | Default |
+| `DELETE` | `/v2/organisations/${ownerId}/consumers/${key}`          | Default |
+| `PUT`    | `/v2/organisations/${ownerId}/consumers/${key}`          | Default |
 
 
 
@@ -55,7 +55,7 @@ interface ApiConfig {
     "ownerId": "",
     "key": "",
 }'>
-  <cc-oauth-consumer-form></cc-oauth-consumer-form>
+  <cc-oauth-consumer-form smart-mode="update"></cc-oauth-consumer-form>
 </cc-smart-container>
 ```
 

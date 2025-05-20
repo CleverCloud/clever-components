@@ -1,6 +1,9 @@
 import { css, html, LitElement } from 'lit';
 import { createRef, ref } from 'lit/directives/ref.js';
-import { iconRemixArrowLeftLine as iconGoBack } from '../../assets/cc-remix.icons.js';
+import {
+  iconRemixArrowLeftLine as iconGoBack,
+  iconRemixInformationFill as iconInfo,
+} from '../../assets/cc-remix.icons.js';
 import { ResizeController } from '../../controllers/resize-controller.js';
 import { fakeString } from '../../lib/fake-strings.js';
 import { formSubmit } from '../../lib/form/form-submit-directive.js';
@@ -19,7 +22,9 @@ import {
   CcOauthConsumerFormUpdateEvent,
 } from './cc-oauth-consumer-form.events.js';
 
-const BREAKPOINTS = [450, 750];
+const BREAKPOINTS = [450, 550, 750];
+
+const OAUTH_CONSUMER_DOCUMENTATION = 'https://www.clever-cloud.com/developers/api/howto/#oauth1';
 
 const URL_VALIDATOR = {
   /**
@@ -331,6 +336,12 @@ export class CcOauthConsumerForm extends LitElement {
             ? html`<div slot="header-title">${i18n('cc-oauth-consumer-form.create-title')}</div>`
             : html`<div slot="header-title">${i18n('cc-oauth-consumer-form.update-title')}</div>`}
           ${this._renderOauthConsumerForm(formValues, isWaiting, skeleton)}
+          <div slot="footer-right">
+            ${ccLink(
+              `${OAUTH_CONSUMER_DOCUMENTATION}`,
+              html`<cc-icon .icon="${iconInfo}"></cc-icon>${i18n('cc-oauth-consumer-form.documentation.text')}`,
+            )}
+          </div>
         </cc-block>
 
         ${this.state.type === 'idle-update' ||
@@ -364,60 +375,70 @@ export class CcOauthConsumerForm extends LitElement {
           <cc-input-text
             name="name"
             label="${i18n('cc-oauth-consumer-form.info.name')}"
-            required
             placeholder="${i18n('cc-oauth-consumer-form.info.placeholder')}"
+            required
             ?readonly=${isWaiting}
             ?skeleton=${skeleton}
             .value=${formValues.name}
             .resetValue=${formValues.name}
-          ></cc-input-text>
+          >
+            <p slot="help">${i18n('cc-oauth-consumer-form.info.name.help')}</p>
+          </cc-input-text>
+          <cc-input-text
+            name="description"
+            label="${i18n('cc-oauth-consumer-form.info.description-input')}"
+            placeholder="${i18n('cc-oauth-consumer-form.info.placeholder')}"
+            required
+            multi
+            ?readonly=${isWaiting}
+            ?skeleton=${skeleton}
+            .value=${formValues.description}
+            .resetValue=${formValues.description}
+          >
+            <p slot="help">${i18n('cc-oauth-consumer-form.info.description.help')}</p>
+          </cc-input-text>
           <cc-input-text
             name="url"
             label="${i18n('cc-oauth-consumer-form.info.homepage-url')}"
-            required
             placeholder="${i18n('cc-oauth-consumer-form.info.placeholder')}"
+            required
             ?readonly=${isWaiting}
             ?skeleton=${skeleton}
             .value=${formValues.url}
             .resetValue=${formValues.url}
             .customValidator=${URL_VALIDATOR}
             .customErrorMessages=${this._customErrorMessages}
-          ></cc-input-text>
+          >
+            <p slot="help">${i18n('cc-oauth-consumer-form.info.homepage-url.help')}</p>
+          </cc-input-text>
           <cc-input-text
             name="baseUrl"
             label="${i18n('cc-oauth-consumer-form.info.base-url')}"
-            required
             placeholder="${i18n('cc-oauth-consumer-form.info.placeholder')}"
+            required
             ?readonly=${isWaiting}
             ?skeleton=${skeleton}
             .value=${formValues.baseUrl}
             .resetValue=${formValues.baseUrl}
             .customValidator=${URL_VALIDATOR}
             .customErrorMessages=${this._customErrorMessages}
-          ></cc-input-text>
-          <cc-input-text
-            name="description"
-            label="${i18n('cc-oauth-consumer-form.info.description-input')}"
-            required
-            placeholder="${i18n('cc-oauth-consumer-form.info.placeholder')}"
-            multi
-            ?readonly=${isWaiting}
-            ?skeleton=${skeleton}
-            .value=${formValues.description}
-            .resetValue=${formValues.description}
-          ></cc-input-text>
+          >
+            <p slot="help">${i18n('cc-oauth-consumer-form.info.base-url.help')}</p>
+          </cc-input-text>
           <cc-input-text
             name="picture"
             label="${i18n('cc-oauth-consumer-form.info.image')}"
-            required
             placeholder="${i18n('cc-oauth-consumer-form.info.placeholder')}"
+            required
             ?readonly=${isWaiting}
             ?skeleton=${skeleton}
             .value=${formValues.picture}
             .resetValue=${formValues.picture}
             .customValidator=${URL_VALIDATOR}
             .customErrorMessages=${this._customErrorMessages}
-          ></cc-input-text>
+          >
+            <p slot="help">${i18n('cc-oauth-consumer-form.info.image.help')}</p>
+          </cc-input-text>
         </cc-block-section>
 
         <cc-block-section>
@@ -581,6 +602,8 @@ export class CcOauthConsumerForm extends LitElement {
           margin-top: 0;
         }
 
+        /* endregion */
+
         /* region information */
 
         .info-block {
@@ -590,6 +613,8 @@ export class CcOauthConsumerForm extends LitElement {
         .info-title {
           font-size: 1.1em;
         }
+
+        /* endregion */
 
         /* region rights */
 
@@ -646,21 +671,19 @@ export class CcOauthConsumerForm extends LitElement {
           margin-left: 1em;
         }
 
+        /* endregion */
+
         .oauth-form-buttons {
           align-items: center;
           display: flex;
+          flex-wrap: wrap;
           gap: 1em;
           justify-content: end;
           margin-top: 1em;
         }
 
         :host([w-lt-450]) .oauth-form-buttons {
-          flex-wrap: wrap;
           justify-content: center;
-        }
-
-        :host([w-lt-450]) .buttons {
-          width: 100%;
         }
 
         .link-container a {
@@ -675,7 +698,11 @@ export class CcOauthConsumerForm extends LitElement {
         }
 
         .buttons {
-          width: 12.5em;
+          flex: 0 0 min(100%, 12.5em);
+        }
+
+        :host([w-lt-550]) .buttons {
+          flex: 1 0 min(100%, 12.5em);
         }
 
         /* region danger zone */
@@ -686,7 +713,7 @@ export class CcOauthConsumerForm extends LitElement {
           grid-template-areas:
             'title button'
             'description button';
-          grid-template-columns: 1fr auto;
+          grid-template-columns: 1fr minmax(12.5em, auto);
         }
 
         :host([w-lt-750]) .danger-zone-wrapper {
@@ -713,7 +740,8 @@ export class CcOauthConsumerForm extends LitElement {
         }
 
         .danger-button {
-          align-content: center;
+          align-items: center;
+          display: flex;
           grid-area: button;
         }
 
@@ -725,6 +753,18 @@ export class CcOauthConsumerForm extends LitElement {
         :host([w-lt-450]) .danger-button {
           justify-content: center;
         }
+
+        /* endregion */
+
+        /* region footer */
+
+        [slot='footer-right'] .cc-link {
+          align-items: center;
+          display: flex;
+          gap: 0.5em;
+        }
+
+        /* endregion */
       `,
     ];
   }
