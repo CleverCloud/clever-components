@@ -14,9 +14,9 @@ import '../cc-block/cc-block.js';
 import '../cc-input-text/cc-input-text.js';
 import '../cc-notice/cc-notice.js';
 import {
-  CcOauthConsumerFormCreateEvent,
-  CcOauthConsumerFormDeleteEvent,
-  CcOauthConsumerFormUpdateEvent,
+  CcOauthConsumerCreateEvent,
+  CcOauthConsumerDeleteEvent,
+  CcOauthConsumerUpdateEvent,
 } from './cc-oauth-consumer-form.events.js';
 
 const BREAKPOINTS = [450, 550, 750];
@@ -80,11 +80,7 @@ const MANAGE_RIGHT_KEYS = [
 ];
 
 /**
- * @typedef {import('./cc-oauth-consumer-form.types.js').OauthConsumerFormState} OAuthConsumerFormState
- * @typedef {import('./cc-oauth-consumer-form.types.js').OauthConsumerFormStateIdleUpdate} OauthConsumerFormStateIdleUpdate
- * @typedef {import('./cc-oauth-consumer-form.types.js').OauthConsumerFormStateCreating} OauthConsumerFormStateCreating
- * @typedef {import('./cc-oauth-consumer-form.types.js').OauthConsumerFormStateUpdating} OauthConsumerFormStateUpdating
- * @typedef {import('./cc-oauth-consumer-form.types.js').OauthConsumerFormStateDeleting} OAuthConsumerFormStateDeleting
+ * @typedef {import('./cc-oauth-consumer-form.types.js').OauthConsumerFormState} OauthConsumerFormState
  * @typedef {import('./cc-oauth-consumer-form.types.js').OauthConsumerWithoutKeyAndSecret} OauthConsumerWithoutKeyAndSecret
  * @typedef {import('./cc-oauth-consumer-form.types.js').OauthConsumerFormData} OauthConsumerFormData
  * @typedef {import('../cc-oauth-consumer-info/cc-oauth-consumer-info.types.js').OauthConsumer} OauthConsumer
@@ -116,7 +112,7 @@ export class CcOauthConsumerForm extends LitElement {
     /** @type {string|null} Sets the link to navigate back to the organisation information screen. */
     this.orgaHref = null;
 
-    /** @type {OAuthConsumerFormState} Sets the state of the component. */
+    /** @type {OauthConsumerFormState} Sets the state of the component. */
     this.state = { type: 'idle-create' };
 
     /** @type {Boolean} */
@@ -214,7 +210,7 @@ export class CcOauthConsumerForm extends LitElement {
     };
 
     if (this.state.type === 'idle-create') {
-      this.dispatchEvent(new CcOauthConsumerFormCreateEvent(oauthConsumer));
+      this.dispatchEvent(new CcOauthConsumerCreateEvent(oauthConsumer));
     }
 
     if (this.state.type === 'idle-update') {
@@ -222,12 +218,12 @@ export class CcOauthConsumerForm extends LitElement {
         type: 'idle-update',
         values: oauthConsumer,
       };
-      this.dispatchEvent(new CcOauthConsumerFormUpdateEvent(oauthConsumer));
+      this.dispatchEvent(new CcOauthConsumerUpdateEvent(oauthConsumer));
     }
   }
 
   _onDeleteOauthConsumer() {
-    this.dispatchEvent(new CcOauthConsumerFormDeleteEvent());
+    this.dispatchEvent(new CcOauthConsumerDeleteEvent());
   }
 
   // We only put the first checkbox of group validity on error

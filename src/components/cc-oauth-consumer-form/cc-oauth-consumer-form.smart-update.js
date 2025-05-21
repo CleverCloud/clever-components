@@ -6,7 +6,7 @@ import { sendToApi } from '../../lib/send-to-api.js';
 import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-smart-container/cc-smart-container.js';
-import { CcOauthConsumerFormDeletedEvent, CcOauthConsumerFormUpdatedEvent } from './cc-oauth-consumer-form.events.js';
+import { CcOauthConsumerDeletedEvent, CcOauthConsumerUpdatedEvent } from './cc-oauth-consumer-form.events.js';
 import './cc-oauth-consumer-form.js';
 
 /**
@@ -86,7 +86,7 @@ defineSmartComponent({
         });
       });
 
-    onEvent('cc-oauth-consumer-form-update', (data) => {
+    onEvent('cc-oauth-consumer-update', (data) => {
       const oauthConsumerName = data.name;
       updateComponent('state', (state) => {
         state.type = 'updating';
@@ -103,12 +103,12 @@ defineSmartComponent({
         .finally(() => {
           updateComponent('state', (state) => {
             state.type = 'idle-update';
-            component.dispatchEvent(new CcOauthConsumerFormUpdatedEvent());
+            component.dispatchEvent(new CcOauthConsumerUpdatedEvent());
           });
         });
     });
 
-    onEvent('cc-oauth-consumer-form-delete', () => {
+    onEvent('cc-oauth-consumer-delete', () => {
       updateComponent('state', (state) => {
         state.type = 'deleting';
       });
@@ -116,7 +116,7 @@ defineSmartComponent({
         .deleteOauthConsumer()
         .then(() => {
           notifySuccess(i18n('cc-oauth-consumer-form.delete.success'));
-          component.dispatchEvent(new CcOauthConsumerFormDeletedEvent());
+          component.dispatchEvent(new CcOauthConsumerDeletedEvent());
         })
         .catch((error) => {
           console.error(error);

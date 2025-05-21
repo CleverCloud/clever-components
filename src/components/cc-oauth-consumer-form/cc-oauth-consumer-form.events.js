@@ -8,37 +8,12 @@ import { CcEvent } from '../../lib/events.js';
  * Dispatched when an OAuth consumer creation is requested.
  * @extends {CcEvent<OauthConsumerWithoutKeyAndSecret>}
  */
-export class CcOauthConsumerFormCreateEvent extends CcEvent {
-  static TYPE = 'cc-oauth-consumer-form-create';
+export class CcOauthConsumerCreateEvent extends CcEvent {
+  static TYPE = 'cc-oauth-consumer-create';
 
   /** @param {OauthConsumerWithoutKeyAndSecret} detail */
   constructor(detail) {
-    super(CcOauthConsumerFormCreateEvent.TYPE, detail);
-  }
-}
-
-/**
- * Dispatched when an OAuth consumer update is requested.
- * @extends {CcEvent<OauthConsumerWithoutKeyAndSecret>}
- */
-export class CcOauthConsumerFormUpdateEvent extends CcEvent {
-  static TYPE = 'cc-oauth-consumer-form-update';
-
-  /** @param {OauthConsumerWithoutKeyAndSecret} detail */
-  constructor(detail) {
-    super(CcOauthConsumerFormUpdateEvent.TYPE, detail);
-  }
-}
-
-/**
- * Dispatched when an OAuth consumer deletion is requested.
- * @extends {CcEvent<OauthConsumerWithoutKeyAndSecret>}
- */
-export class CcOauthConsumerFormDeleteEvent extends CcEvent {
-  static TYPE = 'cc-oauth-consumer-form-delete';
-
-  constructor() {
-    super(CcOauthConsumerFormDeleteEvent.TYPE);
+    super(CcOauthConsumerCreateEvent.TYPE, detail);
   }
 }
 
@@ -47,12 +22,25 @@ export class CcOauthConsumerFormDeleteEvent extends CcEvent {
  * We need to dispatch the key of an OAuth consumer for the redirection.
  * @extends {CcEvent<string>}
  */
-export class CcOauthConsumerFormCreatedEvent extends CcEvent {
-  static TYPE = 'cc-oauth-consumer-form-dispatch-key';
+export class CcOauthConsumerCreatedEvent extends CcEvent {
+  static TYPE = 'cc-oauth-consumer-created';
 
   /** @param {string} key */
   constructor(key) {
-    super(CcOauthConsumerFormCreatedEvent.TYPE, key);
+    super(CcOauthConsumerCreatedEvent.TYPE, key);
+  }
+}
+
+/**
+ * Dispatched when an OAuth consumer update is requested.
+ * @extends {CcEvent<OauthConsumerWithoutKeyAndSecret>}
+ */
+export class CcOauthConsumerUpdateEvent extends CcEvent {
+  static TYPE = 'cc-oauth-consumer-update';
+
+  /** @param {OauthConsumerWithoutKeyAndSecret} detail */
+  constructor(detail) {
+    super(CcOauthConsumerUpdateEvent.TYPE, detail);
   }
 }
 
@@ -61,11 +49,23 @@ export class CcOauthConsumerFormCreatedEvent extends CcEvent {
  * We need to dispatch the event for the redirection.
  * @extends {CcEvent<string>}
  */
-export class CcOauthConsumerFormUpdatedEvent extends CcEvent {
-  static TYPE = 'cc-oauth-consumer-form-updated';
+export class CcOauthConsumerUpdatedEvent extends CcEvent {
+  static TYPE = 'cc-oauth-consumer-updated';
 
   constructor() {
-    super(CcOauthConsumerFormUpdatedEvent.TYPE);
+    super(CcOauthConsumerUpdatedEvent.TYPE);
+  }
+}
+
+/**
+ * Dispatched when an OAuth consumer deletion is requested.
+ * @extends {CcEvent<OauthConsumerWithoutKeyAndSecret>}
+ */
+export class CcOauthConsumerDeleteEvent extends CcEvent {
+  static TYPE = 'cc-oauth-consumer-delete';
+
+  constructor() {
+    super(CcOauthConsumerDeleteEvent.TYPE);
   }
 }
 
@@ -74,10 +74,10 @@ export class CcOauthConsumerFormUpdatedEvent extends CcEvent {
  * We need to dispatch the event for the redirection.
  * @extends {CcEvent<string>}
  */
-export class CcOauthConsumerFormDeletedEvent extends CcEvent {
-  static TYPE = 'cc-oauth-consumer-form-deleted';
+export class CcOauthConsumerDeletedEvent extends CcEvent {
+  static TYPE = 'cc-oauth-consumer-deleted';
 
   constructor() {
-    super(CcOauthConsumerFormDeletedEvent.TYPE);
+    super(CcOauthConsumerDeletedEvent.TYPE);
   }
 }

@@ -6,7 +6,7 @@ import { sendToApi } from '../../lib/send-to-api.js';
 import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-smart-container/cc-smart-container.js';
-import { CcOauthConsumerFormCreatedEvent } from './cc-oauth-consumer-form.events.js';
+import { CcOauthConsumerCreatedEvent } from './cc-oauth-consumer-form.events.js';
 import './cc-oauth-consumer-form.js';
 
 /**
@@ -30,7 +30,7 @@ defineSmartComponent({
 
     updateComponent('state', { type: 'idle-create' });
 
-    onEvent('cc-oauth-consumer-form-create', (data) => {
+    onEvent('cc-oauth-consumer-create', (data) => {
       const oauthConsumerName = data.name;
       updateComponent('state', (state) => {
         state.type = 'creating';
@@ -41,7 +41,7 @@ defineSmartComponent({
           notifySuccess(i18n('cc-oauth-consumer-form.create.success', { oauthConsumerName }));
           component.resetOauthConsumerForm();
           updateComponent('state', { type: 'idle-create' });
-          component.dispatchEvent(new CcOauthConsumerFormCreatedEvent(key));
+          component.dispatchEvent(new CcOauthConsumerCreatedEvent(key));
         })
         .catch(
           /** @param {Error} error */

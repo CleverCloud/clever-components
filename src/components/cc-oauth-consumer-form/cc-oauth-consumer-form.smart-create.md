@@ -14,9 +14,9 @@ title: '💡 Smart (create)'
 
 ## 👋️ Events fired
 
-| Name                                  | Payload  | Details                                                                                                                   |
-|---------------------------------------|----------|---------------------------------------------------------------------------------------------------------------------------|
-| `cc-oauth-consumer-form-dispatch-key` | `string` | Fired when the OAuth consumer is created.<br/>Should be used to redirect the user to the OAuth consumer information page. |
+| Name                          | Payload  | Details                                                                                                                   |
+|-------------------------------|----------|---------------------------------------------------------------------------------------------------------------------------|
+| `cc-oauth-consumer-created`   | `string` | Fired when the OAuth consumer is created.<br/>Should be used to redirect the user to the OAuth consumer information page. |
 
 
 ## ⚙️ Params
