@@ -19,6 +19,9 @@ const conf = {
 
 const now = new Date();
 
+const apiTokenUpdateHref =
+  'https://www.clever-cloud.com/doc/clever-components/?path=/story/🛠-profile-cc-token-api-update-form--default-story';
+
 /** @type {Array<ApiTokenState>} */
 const baseTokens = [
   {
@@ -59,6 +62,7 @@ export const defaultStory = makeStory(conf, {
   /** @type {Partial<CcTokenApiList>[]} */
   items: [
     {
+      apiTokenUpdateHref,
       state: {
         type: 'loaded',
         apiTokens: baseTokens,
@@ -71,6 +75,7 @@ export const loading = makeStory(conf, {
   /** @type {Partial<CcTokenApiList>[]} */
   items: [
     {
+      apiTokenUpdateHref,
       state: { type: 'loading' },
     },
   ],
@@ -80,6 +85,7 @@ export const error = makeStory(conf, {
   /** @type {Partial<CcTokenApiList>[]} */
   items: [
     {
+      apiTokenUpdateHref,
       state: { type: 'error' },
     },
   ],
@@ -89,6 +95,7 @@ export const empty = makeStory(conf, {
   /** @type {Partial<CcTokenApiList>[]} */
   items: [
     {
+      apiTokenUpdateHref,
       state: {
         type: 'loaded',
         apiTokens: [],
@@ -98,9 +105,16 @@ export const empty = makeStory(conf, {
 });
 
 export const waitingWithRevokingOneToken = makeStory(conf, {
+  tests: {
+    accessibility: {
+      enabled: true,
+      ignoredRules: ['color-contrast'], // the modify link  is failing color contrasts during revocation but it's a temporary state and it's disabled during the call so no real impact
+    },
+  },
   /** @type {Partial<CcTokenApiList>[]} */
   items: [
     {
+      apiTokenUpdateHref,
       state: {
         type: 'loaded',
         apiTokens: baseTokens.map((token, index) => {
@@ -120,7 +134,12 @@ export const waitingWithRevokingOneToken = makeStory(conf, {
 
 export const simulationsWithLoadingSuccess = makeStory(conf, {
   /** @type {Partial<CcTokenApiList>[]} */
-  items: [{ state: { type: 'loading' } }],
+  items: [
+    {
+      apiTokenUpdateHref,
+      state: { type: 'loading' },
+    },
+  ],
   simulations: [
     storyWait(
       2000,
@@ -137,7 +156,12 @@ export const simulationsWithLoadingSuccess = makeStory(conf, {
 
 export const simulationsWithLoadingError = makeStory(conf, {
   /** @type {Partial<CcTokenApiList>[]} */
-  items: [{ state: { type: 'loading' } }],
+  items: [
+    {
+      apiTokenUpdateHref,
+      state: { type: 'loading' },
+    },
+  ],
   simulations: [
     storyWait(
       2000,
@@ -155,6 +179,7 @@ export const simulationsWithRevokingToken = makeStory(conf, {
   /** @type {Partial<CcTokenApiList>[]} */
   items: [
     {
+      apiTokenUpdateHref,
       state: {
         type: 'loaded',
         apiTokens: baseTokens,

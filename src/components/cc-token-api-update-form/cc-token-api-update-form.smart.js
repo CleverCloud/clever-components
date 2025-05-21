@@ -3,7 +3,7 @@ import { sendToAuthBridge } from '../../lib/send-to-auth-bridge.js';
 import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-smart-container/cc-smart-container.js';
-import { CcTokenHasChangedEvent } from './cc-token-api-update-form.events.js';
+import { CcTokenWasChangedEvent } from './cc-token-api-update-form.events.js';
 import './cc-token-api-update-form.js';
 
 /**
@@ -48,7 +48,7 @@ defineSmartComponent({
             state.type = 'loaded';
           });
           // Dispatch event to make the console redirect to the list of tokens
-          component.dispatchEvent(new CcTokenHasChangedEvent(apiTokenId));
+          component.dispatchEvent(new CcTokenWasChangedEvent(apiTokenId));
           notifySuccess(i18n('cc-token-api-update-form.update-token.success'));
         })
         .catch((error) => {

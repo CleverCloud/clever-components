@@ -21,11 +21,11 @@ export class CcTokenChangeEvent extends CcEvent {
  * Dispatched when the API token has been updated successfully
  * @extends {CcEvent<string>}
  */
-export class CcTokenHasChangedEvent extends CcEvent {
-  static TYPE = 'cc-token-has-changed';
+export class CcTokenWasChangedEvent extends CcEvent {
+  static TYPE = 'cc-token-was-changed';
 
   /** @param {string} detail */
   constructor(detail) {
-    super(CcTokenHasChangedEvent.TYPE, detail);
+    super(CcTokenWasChangedEvent.TYPE, detail);
   }
 }

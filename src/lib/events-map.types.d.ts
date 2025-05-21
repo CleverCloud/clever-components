@@ -117,7 +117,7 @@ import { CcToastDismissEvent } from '../components/cc-toast/cc-toast.events.js';
 import { CcTokenCreateEvent } from '../components/cc-token-api-creation-form/cc-token-api-creation-form.events.js';
 import {
   CcTokenChangeEvent,
-  CcTokenHasChangedEvent,
+  CcTokenWasChangedEvent,
 } from '../components/cc-token-api-update-form/cc-token-api-update-form.events.js';
 import {
   CcClickEvent,
@@ -238,8 +238,8 @@ declare global {
     'cc-toggle': CcToggleEvent;
     'cc-token-change': CcTokenChangeEvent;
     'cc-token-create': CcTokenCreateEvent;
-    'cc-token-has-changed': CcTokenHasChangedEvent;
     'cc-token-revoke': CcTokenRevokeEvent;
+    'cc-token-was-changed': CcTokenWasChangedEvent;
     'cc-tokens-revoke-all': CcTokensRevokeAllEvent;
   }
 }
