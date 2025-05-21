@@ -1505,7 +1505,7 @@ export const translations = {
   'cc-token-api-list.empty': `You have not created any token yet or you don't have any active token. Go ahead and create a new API token`,
   'cc-token-api-list.error': `Something went wrong while loading API tokens`,
   'cc-token-api-list.intro': () =>
-    sanitize`Below is the list of <a href="https://www.clever-cloud.com/developers/api/howto/#api-tokens" title="API Tokens - Documentation - new window">API tokens</a> linked to your account and their associated information. You may revoke as needed.`,
+    sanitize`Below is the list of <a href="https://www.clever-cloud.com/developers/api/howto/#api-tokens" title="API Tokens - Documentation - new window">API tokens</a> linked to your account and their associated information. You may revoke them as needed.`,
   'cc-token-api-list.main-heading': `API tokens`,
   'cc-token-api-list.revoke-token': /** @param {{ name: string}} _ */ ({ name }) => `Revoke API token - ${name}`,
   'cc-token-api-list.revoke-token.error': `Something went wrong while revoking the API token`,
