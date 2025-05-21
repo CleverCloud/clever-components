@@ -1642,6 +1642,9 @@ export const translations = {
   'cc-token-api-list.revoke-token': /** @param {{ name: string}} _ */ ({ name }) => `Revoke API token - ${name}`,
   'cc-token-api-list.revoke-token.error': `Something went wrong while revoking the API token`,
   'cc-token-api-list.revoke-token.success': `The API token has been revoked successfully`,
+  'cc-token-api-list.update-token': `Modify`,
+  'cc-token-api-list.update-token-with-name': /** @param {{ name: string}} _ */ ({ name }) =>
+    `Modify API token - ${name}`,
   //#endregion
   //#region cc-token-api-update-form
   'cc-token-api-update-form.back-to-list': `Back to the API token list`,
