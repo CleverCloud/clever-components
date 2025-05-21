@@ -12,6 +12,13 @@ title: '💡 Smart (create)'
 <tr><td><strong>Requires auth</strong> <td>Yes
 </table>
 
+## 👋️ Events fired
+
+| Name                                  | Payload  | Details                                                                                                                   |
+|---------------------------------------|----------|---------------------------------------------------------------------------------------------------------------------------|
+| `cc-oauth-consumer-form-dispatch-key` | `string` | Fired when the OAuth consumer is created.<br/>Should be used to redirect the user to the OAuth consumer information page. |
+
+
 ## ⚙️ Params
 
 | Name        | Type         | Details                                                | Default |
@@ -33,7 +40,7 @@ interface ApiConfig {
 
 | Method | URL                                       | Cache?  |
 |--------|-------------------------------------------|---------|
-| `POST` | `/v2/organisations/${ownerId}/consumers`          | Default |
+| `POST` | `/v2/organisations/${ownerId}/consumers`  | Default |
 
 ## ⬇️️ Examples
 

@@ -1,17 +1,14 @@
 import { css, html, LitElement } from 'lit';
 import { createRef, ref } from 'lit/directives/ref.js';
-import {
-  iconRemixArrowLeftLine as iconGoBack,
-  iconRemixInformationFill as iconInfo,
-} from '../../assets/cc-remix.icons.js';
+import { iconRemixInformationFill as iconInfo } from '../../assets/cc-remix.icons.js';
 import { ResizeController } from '../../controllers/resize-controller.js';
 import { fakeString } from '../../lib/fake-strings.js';
 import { formSubmit } from '../../lib/form/form-submit-directive.js';
 import { getFormDataMap } from '../../lib/form/form-utils.js';
 import { Validation } from '../../lib/form/validation.js';
-import { i18n } from '../../lib/i18n/i18n.js';
 import { accessibilityStyles } from '../../styles/accessibility.js';
 import { ccLink, linkStyles } from '../../templates/cc-link/cc-link.js';
+import { i18n } from '../../translations/translation.js';
 import '../cc-block-section/cc-block-section.js';
 import '../cc-block/cc-block.js';
 import '../cc-input-text/cc-input-text.js';
@@ -92,10 +89,10 @@ const MANAGE_RIGHT_KEYS = [
  * @typedef {import('./cc-oauth-consumer-form.types.js').OauthConsumerFormData} OauthConsumerFormData
  * @typedef {import('../cc-oauth-consumer-info/cc-oauth-consumer-info.types.js').OauthConsumer} OauthConsumer
  * @typedef {import('../cc-oauth-consumer-info/cc-oauth-consumer-info.types.js').OauthConsumerRights} OauthConsumerRights
+ * @typedef {import('lit').PropertyValues<CcOauthConsumerForm>} CcOauthConsumerFormPropertyValues
  * @typedef {import('lit').TemplateResult<1>} TemplateResult
  * @typedef {import('lit/directives/ref.js').Ref<HTMLFormElement>} HTMLFormElementRef
  * @typedef {import('../../lib/events.types.js').EventWithTarget<HTMLInputElement>} HTMLInputEvent
- * @typedef {import('../../lib/form/form.types.js').FormDataMap} FormDataMap
  * @typedef {import('../../lib/form/validation.types.js').Validity} Validity
  */
 
@@ -109,28 +106,28 @@ export class CcOauthConsumerForm extends LitElement {
     return {
       orgaHref: { type: String, attribute: 'orga-href' },
       state: { type: Object, attribute: false },
-      _hasCheckboxGroupError: { type: Boolean, state: true },
+      _shouldDisplayCheckboxGroupError: { type: Boolean, state: true },
     };
   }
 
   constructor() {
     super();
 
-    /** @type {string|null} Link to navigate back to the organisation information screen. */
+    /** @type {string|null} Sets the link to navigate back to the organisation information screen. */
     this.orgaHref = null;
 
     /** @type {OAuthConsumerFormState} Sets the state of the component. */
     this.state = { type: 'idle-create' };
 
     /** @type {Boolean} */
-    this._hasCheckboxGroupError = false;
+    this._shouldDisplayCheckboxGroupError = false;
 
     /** @type {HTMLFormElementRef} */
     this._formRef = createRef();
 
     this._customErrorMessages = { invalidUrl: i18n('cc-oauth-consumer-form.info.url.error') };
 
-    this._resizeController = new ResizeController(this, {
+    new ResizeController(this, {
       widthBreakpoints: BREAKPOINTS,
     });
   }
@@ -166,8 +163,8 @@ export class CcOauthConsumerForm extends LitElement {
     /** @type {HTMLInputElement} */
     const selectAllCheckbox = this.shadowRoot.querySelector(`#${selectAllId}`);
 
-    // If a checkbox is checked, verify if all the checkboxes are checked
-    // If there are, the selectAllCheckbox is checked
+    // Verify if at least one checkbox of the group is unchecked
+    // If no checkbox is unchecked within the group, then we check the related selectAllCheckbox
     /** @type {NodeListOf<HTMLInputElement>} */
     const checkboxes = this.shadowRoot.querySelectorAll(`${sectionSelector} .right`);
     const hasAtLeastOneUnchecked = Array.from(checkboxes).some((checkbox) => !checkbox.checked);
@@ -189,7 +186,7 @@ export class CcOauthConsumerForm extends LitElement {
       return;
     }
 
-    this._hasCheckboxGroupError = false;
+    this._shouldDisplayCheckboxGroupError = false;
 
     /** @type {OauthConsumerRights} */
     const defaultRights =
@@ -258,7 +255,7 @@ export class CcOauthConsumerForm extends LitElement {
     const isCheckboxGroupValid = validationResult.every(({ name, validity }) => {
       return name !== 'rights' || validity.valid;
     });
-    this._hasCheckboxGroupError = !isCheckboxGroupValid;
+    this._shouldDisplayCheckboxGroupError = !isCheckboxGroupValid;
   }
 
   /**
@@ -309,8 +306,16 @@ export class CcOauthConsumerForm extends LitElement {
     this._formRef.value.reset();
   }
 
-  updated() {
-    this._validateCheckboxGroup();
+  /**
+   * This is needed when we retrieve the data from the API on 'idle-update' state
+   * @param {CcOauthConsumerFormPropertyValues} changedProperties
+   */
+  updated(changedProperties) {
+    if (changedProperties.has('state') && this.state.type === 'idle-update') {
+      this._validateCheckboxGroup();
+      this._updateSelectAllAccessCheckbox();
+      this._updateSelectAllManageCheckbox();
+    }
   }
 
   render() {
@@ -338,7 +343,7 @@ export class CcOauthConsumerForm extends LitElement {
           ${this._renderOauthConsumerForm(formValues, isWaiting, skeleton)}
           <div slot="footer-right">
             ${ccLink(
-              `${OAUTH_CONSUMER_DOCUMENTATION}`,
+              OAUTH_CONSUMER_DOCUMENTATION,
               html`<cc-icon .icon="${iconInfo}"></cc-icon>${i18n('cc-oauth-consumer-form.documentation.text')}`,
             )}
           </div>
@@ -348,7 +353,7 @@ export class CcOauthConsumerForm extends LitElement {
         this.state.type === 'updating' ||
         this.state.type === 'deleting' ||
         this.state.type === 'loading'
-          ? html`${this._renderDangerZone(formValues, isWaiting, skeleton)}`
+          ? html`${this._renderDangerZone(isWaiting)}`
           : ''}
       </div>
     `;
@@ -446,7 +451,7 @@ export class CcOauthConsumerForm extends LitElement {
             <legend slot="title" class="rights-title">${i18n('cc-oauth-consumer-form.auth.title')}</legend>
             <p class="description">${i18n('cc-oauth-consumer-form.rights.description')}</p>
             <div class="error-message">
-              ${this._hasCheckboxGroupError ? i18n('cc-oauth-consumer-form.rights.error') : ''}
+              ${this._shouldDisplayCheckboxGroupError ? i18n('cc-oauth-consumer-form.rights.error') : ''}
             </div>
             <div class="rights-container">
               <fieldset id="access-rights-container">
@@ -487,13 +492,6 @@ export class CcOauthConsumerForm extends LitElement {
         <div class="oauth-form-buttons">
           ${this.state.type === 'idle-create' || this.state.type === 'creating'
             ? html`
-                <div class="link-container">
-                  ${ccLink(
-                    `${this.orgaHref}`,
-                    html` <cc-icon .icon=${iconGoBack}></cc-icon>${i18n('cc-oauth-consumer-form.go-back-link')}`,
-                    false,
-                  )}
-                </div>
                 <cc-button class="buttons" primary type="submit" ?waiting="${this.state.type === 'creating'}"
                   >${i18n('cc-oauth-consumer-form.create-button')}
                 </cc-button>
@@ -508,17 +506,16 @@ export class CcOauthConsumerForm extends LitElement {
                   class="buttons"
                   outlined
                   type="reset"
-                  ?disabled=${isWaiting || this.state.type === 'deleting'}
-                  ?skeleton=${skeleton}
+                  ?disabled=${isWaiting || this.state.type === 'deleting' || this.state.type === 'loading'}
                   >${i18n('cc-oauth-consumer-form.reset-button')}
                 </cc-button>
                 <cc-button
                   class="buttons"
                   primary
                   type="submit"
-                  ?disabled=${this.state.type !== 'updating' && this.state.type === 'deleting'}
+                  ?disabled=${(this.state.type !== 'updating' && this.state.type === 'deleting') ||
+                  this.state.type === 'loading'}
                   ?waiting="${this.state.type === 'updating'}"
-                  ?skeleton=${skeleton}
                   >${i18n('cc-oauth-consumer-form.update-button')}
                 </cc-button>
               `
@@ -529,17 +526,13 @@ export class CcOauthConsumerForm extends LitElement {
   }
 
   /**
-   * @param {OauthConsumerWithoutKeyAndSecret} formValues
    * @param {boolean} isWaiting
-   * @param {boolean} skeleton
-   * */
-  _renderDangerZone({ name }, isWaiting, skeleton) {
-    const oauthConsumerName = name;
-
+   */
+  _renderDangerZone(isWaiting) {
     return html`
       <cc-block class="danger-zone-block">
         <div slot="content" class="danger-zone-wrapper">
-          <div class="danger-title">${i18n('cc-oauth-consumer-form.danger-zone.title', { oauthConsumerName })}</div>
+          <div class="danger-title">${i18n('cc-oauth-consumer-form.danger-zone.title')}</div>
           <div class="danger-description">${i18n('cc-oauth-consumer-form.danger-zone.description')}</div>
           <div class="danger-button">
             <cc-button
@@ -548,7 +541,6 @@ export class CcOauthConsumerForm extends LitElement {
               type="submit"
               ?disabled=${(isWaiting && this.state.type !== 'deleting') || this.state.type === 'loading'}
               ?waiting="${this.state.type === 'deleting'}"
-              ?skeleton=${skeleton}
               @cc-click=${this._onDeleteOauthConsumer}
               >${i18n('cc-oauth-consumer-form.delete-button')}</cc-button
             >
@@ -684,17 +676,6 @@ export class CcOauthConsumerForm extends LitElement {
 
         :host([w-lt-450]) .oauth-form-buttons {
           justify-content: center;
-        }
-
-        .link-container a {
-          align-items: center;
-          color: var(--cc-color-text-weak);
-          cursor: pointer;
-          display: flex;
-          gap: 0.5em;
-          justify-self: end;
-          padding: 0.25em 0.5em;
-          text-decoration: none;
         }
 
         .buttons {

@@ -87,9 +87,11 @@ import {
 import { CcNoticeDismissEvent } from '../components/cc-notice/cc-notice.events.js';
 import {
   CcOauthConsumerFormCreateEvent,
+  CcOauthConsumerFormCreatedEvent,
   CcOauthConsumerFormDeleteEvent,
-  CcOauthConsumerFormDispatchKeyEvent,
+  CcOauthConsumerFormDeletedEvent,
   CcOauthConsumerFormUpdateEvent,
+  CcOauthConsumerFormUpdatedEvent,
 } from '../components/cc-oauth-consumer-form/cc-oauth-consumer-form.events.js';
 import { CcProductCreateEvent } from '../components/cc-order-summary/cc-order-summary.events.js';
 import {
@@ -216,8 +218,10 @@ declare global {
     'cc-notify': CcNotifyEvent;
     'cc-oauth-consumer-form-create': CcOauthConsumerFormCreateEvent;
     'cc-oauth-consumer-form-delete': CcOauthConsumerFormDeleteEvent;
-    'cc-oauth-consumer-form-dispatch-key': CcOauthConsumerFormDispatchKeyEvent;
+    'cc-oauth-consumer-form-deleted': CcOauthConsumerFormDeletedEvent;
+    'cc-oauth-consumer-form-dispatch-key': CcOauthConsumerFormCreatedEvent;
     'cc-oauth-consumer-form-update': CcOauthConsumerFormUpdateEvent;
+    'cc-oauth-consumer-form-updated': CcOauthConsumerFormUpdatedEvent;
     'cc-orga-member-delete': CcOrgaMemberDeleteEvent;
     'cc-orga-member-edit-toggle': CcOrgaMemberEditToggleEvent;
     'cc-orga-member-invite': CcOrgaMemberInviteEvent;

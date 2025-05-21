@@ -1,11 +1,12 @@
 // @ts-expect-error FIXME: remove when clever-client exports types
 import { get as getOauthConsumer, remove, update } from '@clevercloud/client/esm/api/v2/oauth-consumer.js';
 import { camelCase, snakeCase } from '../../lib/change-case.js';
-import { i18n } from '../../lib/i18n/i18n.js';
 import { notifyError, notifySuccess } from '../../lib/notifications.js';
 import { sendToApi } from '../../lib/send-to-api.js';
 import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
+import { i18n } from '../../translations/translation.js';
 import '../cc-smart-container/cc-smart-container.js';
+import { CcOauthConsumerFormDeletedEvent, CcOauthConsumerFormUpdatedEvent } from './cc-oauth-consumer-form.events.js';
 import './cc-oauth-consumer-form.js';
 
 /**
@@ -43,7 +44,7 @@ defineSmartComponent({
     key: { type: String },
   },
   /** @param {OnContextUpdateArgs} args */
-  onContextUpdate({ context, updateComponent, onEvent }) {
+  onContextUpdate({ context, updateComponent, onEvent, component }) {
     const { apiConfig, ownerId, key } = context;
     const api = new Api(apiConfig, ownerId, key);
 
@@ -64,7 +65,7 @@ defineSmartComponent({
         };
 
         /** @type {OauthConsumerWithoutKeyAndSecret} */
-        const oAuthConsumerValues = {
+        const oauthConsumerValues = {
           name: data.name,
           url: data.url,
           baseUrl: data.baseUrl,
@@ -75,7 +76,7 @@ defineSmartComponent({
 
         updateComponent('state', {
           type: 'idle-update',
-          values: oAuthConsumerValues,
+          values: oauthConsumerValues,
         });
       })
       .catch((error) => {
@@ -102,7 +103,7 @@ defineSmartComponent({
         .finally(() => {
           updateComponent('state', (state) => {
             state.type = 'idle-update';
-            window.dispatchEvent(new Event('oauth-consumer-update'));
+            component.dispatchEvent(new CcOauthConsumerFormUpdatedEvent());
           });
         });
     });
@@ -115,7 +116,7 @@ defineSmartComponent({
         .deleteOauthConsumer()
         .then(() => {
           notifySuccess(i18n('cc-oauth-consumer-form.delete.success'));
-          window.dispatchEvent(new Event('oauth-consumer-delete'));
+          component.dispatchEvent(new CcOauthConsumerFormDeletedEvent());
         })
         .catch((error) => {
           console.error(error);
@@ -147,7 +148,7 @@ class Api {
 
   /**
    * @param {OauthConsumerWithoutKeyAndSecret} data
-   * @return {Promise<any>}
+   * @return {Promise<void>}
    */
   updateOauthConsumer(data) {
     const rights = Object.fromEntries(
@@ -170,7 +171,7 @@ class Api {
     );
   }
 
-  /** @return {Promise<any>} */
+  /** @return {Promise<void>} */
   deleteOauthConsumer() {
     return remove({ id: this._ownerId, key: this._key }).then(sendToApi({ apiConfig: this._apiConfig }));
   }

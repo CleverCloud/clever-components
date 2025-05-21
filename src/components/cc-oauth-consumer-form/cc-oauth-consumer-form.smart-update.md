@@ -12,6 +12,15 @@ title: '💡 Smart (update)'
 <tr><td><strong>Requires auth</strong> <td>Yes
 </table>
 
+## 👋️ Events fired
+
+| Name                             | Payload | Details                                                                                                                      |
+|----------------------------------|---------|------------------------------------------------------------------------------------------------------------------------------|
+| `cc-oauth-consumer-form-updated` |         | Fired when the OAuth consumer is updated.<br/>Should be used to redirect the user to the OAuth consumer information page.    |
+| `cc-oauth-consumer-form-deleted` |         | Fired when the OAuth consumer is deleted.<br/>Should be used to redirect the user to the current organisation overview page. |
+
+
+
 ## ⚙️ Params
 
 | Name        | Type         | Details                                                | Default |
@@ -33,11 +42,11 @@ interface ApiConfig {
 
 ## 🌐 API endpoints
 
-| Method   | URL                                       | Cache?  |
-|----------|-------------------------------------------|---------|
-| `GET`    | `/v2/organisations/${ownerId}/consumers/${key}`          | Default |
-| `DELETE` | `/v2/organisations/${ownerId}/consumers/${key}`          | Default |
-| `PUT`    | `/v2/organisations/${ownerId}/consumers/${key}`          | Default |
+| Method   | URL                                             | Cache?  |
+|----------|-------------------------------------------------|---------|
+| `GET`    | `/v2/organisations/${ownerId}/consumers/${key}` | Default |
+| `DELETE` | `/v2/organisations/${ownerId}/consumers/${key}` | Default |
+| `PUT`    | `/v2/organisations/${ownerId}/consumers/${key}` | Default |
 
 
 

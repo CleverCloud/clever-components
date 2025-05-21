@@ -47,11 +47,37 @@ export class CcOauthConsumerFormDeleteEvent extends CcEvent {
  * We need to dispatch the key of an OAuth consumer for the redirection.
  * @extends {CcEvent<string>}
  */
-export class CcOauthConsumerFormDispatchKeyEvent extends CcEvent {
+export class CcOauthConsumerFormCreatedEvent extends CcEvent {
   static TYPE = 'cc-oauth-consumer-form-dispatch-key';
 
   /** @param {string} key */
   constructor(key) {
-    super(CcOauthConsumerFormDispatchKeyEvent.TYPE, key);
+    super(CcOauthConsumerFormCreatedEvent.TYPE, key);
+  }
+}
+
+/**
+ * Dispatched when an OAuth consumer update is requested.
+ * We need to dispatch the event for the redirection.
+ * @extends {CcEvent<string>}
+ */
+export class CcOauthConsumerFormUpdatedEvent extends CcEvent {
+  static TYPE = 'cc-oauth-consumer-form-updated';
+
+  constructor() {
+    super(CcOauthConsumerFormUpdatedEvent.TYPE);
+  }
+}
+
+/**
+ * Dispatched when an OAuth consumer deletion is requested.
+ * We need to dispatch the event for the redirection.
+ * @extends {CcEvent<string>}
+ */
+export class CcOauthConsumerFormDeletedEvent extends CcEvent {
+  static TYPE = 'cc-oauth-consumer-form-deleted';
+
+  constructor() {
+    super(CcOauthConsumerFormDeletedEvent.TYPE);
   }
 }

@@ -1,12 +1,12 @@
 // @ts-expect-error FIXME: remove when clever-client exports types
 import { create } from '@clevercloud/client/esm/api/v2/oauth-consumer.js';
 import { snakeCase } from '../../lib/change-case.js';
-import { i18n } from '../../lib/i18n/i18n.js';
 import { notifyError, notifySuccess } from '../../lib/notifications.js';
 import { sendToApi } from '../../lib/send-to-api.js';
 import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
+import { i18n } from '../../translations/translation.js';
 import '../cc-smart-container/cc-smart-container.js';
-import { CcOauthConsumerFormDispatchKeyEvent } from './cc-oauth-consumer-form.events.js';
+import { CcOauthConsumerFormCreatedEvent } from './cc-oauth-consumer-form.events.js';
 import './cc-oauth-consumer-form.js';
 
 /**
@@ -37,15 +37,12 @@ defineSmartComponent({
       });
       api
         .createOauthConsumer(data)
-        .then(
-          /** @param {OauthConsumer} response */ (response) => {
-            notifySuccess(i18n('cc-oauth-consumer-form.create.success', { oauthConsumerName }));
-            component.resetOauthConsumerForm();
-            updateComponent('state', { type: 'idle-create' });
-            const key = response.key;
-            window.dispatchEvent(new CcOauthConsumerFormDispatchKeyEvent(key));
-          },
-        )
+        .then((key) => {
+          notifySuccess(i18n('cc-oauth-consumer-form.create.success', { oauthConsumerName }));
+          component.resetOauthConsumerForm();
+          updateComponent('state', { type: 'idle-create' });
+          component.dispatchEvent(new CcOauthConsumerFormCreatedEvent(key));
+        })
         .catch(
           /** @param {Error} error */
           (error) => {
@@ -63,7 +60,7 @@ defineSmartComponent({
 class Api {
   /**
    * @param {ApiConfig} apiConfig
-   * @param {String} ownerId
+   * @param {string} ownerId
    */
   constructor(apiConfig, ownerId) {
     this._apiConfig = apiConfig;
@@ -72,7 +69,7 @@ class Api {
 
   /**
    * @param {OauthConsumerWithoutKeyAndSecret} data
-   * @return {*}
+   * @return {Promise<string>} key
    */
   createOauthConsumer(data) {
     const rights = Object.fromEntries(
@@ -88,8 +85,10 @@ class Api {
       baseUrl: data.baseUrl,
       description: data.description,
       picture: data.picture,
-      rights: rights,
+      rights,
     };
-    return create({ id: this._ownerId }, newOauthConsumer).then(sendToApi({ apiConfig: this._apiConfig }));
+    return create({ id: this._ownerId }, newOauthConsumer)
+      .then(sendToApi({ apiConfig: this._apiConfig }))
+      .then(/** @param {OauthConsumer} response */ (response) => response.key);
   }
 }

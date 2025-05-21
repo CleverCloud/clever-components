@@ -130,21 +130,13 @@ export const waitingWithCreating = makeStory(conf, {
   ],
   /** @type {(component: CcOauthConsumerForm) => void} */
   onUpdateComplete: (component) => {
-    /** @type {HTMLInputElement} */
-    const nameInput = component.shadowRoot.querySelector('form [name="name"]');
-    nameInput.value = oAuthConsumerData.name;
-    /** @type {HTMLInputElement} */
-    const urlInput = component.shadowRoot.querySelector('form [name="url"]');
-    urlInput.value = oAuthConsumerData.url;
-    /** @type {HTMLInputElement} */
-    const baseUrlInput = component.shadowRoot.querySelector('form [name="baseUrl"]');
-    baseUrlInput.value = oAuthConsumerData.baseUrl;
-    /** @type {HTMLInputElement} */
-    const descriptionInput = component.shadowRoot.querySelector('form [name="description"]');
-    descriptionInput.value = oAuthConsumerData.description;
-    /** @type {HTMLInputElement} */
-    const pictureInput = component.shadowRoot.querySelector('form [name="picture"]');
-    pictureInput.value = oAuthConsumerData.picture;
+    const form = component.shadowRoot.querySelector('form');
+    getFormInputElement(form, 'name').value = oAuthConsumerData.name;
+    getFormInputElement(form, 'url').value = oAuthConsumerData.url;
+    getFormInputElement(form, 'baseUrl').value = oAuthConsumerData.baseUrl;
+    getFormInputElement(form, 'description').value = oAuthConsumerData.description;
+    getFormInputElement(form, 'picture').value = oAuthConsumerData.picture;
+
     const rightsToEnable = Object.entries(oAuthConsumerData.rights)
       .filter(([_, isEnabled]) => isEnabled)
       .map(([rightName]) => rightName);
@@ -210,21 +202,7 @@ export const errorWithEmptyInputs = makeStory(conf, {
   ],
   /** @param {CcOauthConsumerForm} component */
   onUpdateComplete: (component) => {
-    /** @type {CcInputText} */
-    const nameInputElement = component._formRef.value.querySelector('[name="name"]');
-    nameInputElement.reportInlineValidity();
-    /** @type {CcInputText} */
-    const urlInputElement = component._formRef.value.querySelector('[name="url"]');
-    urlInputElement.reportInlineValidity();
-    /** @type {CcInputText} */
-    const baseUrlInputElement = component._formRef.value.querySelector('[name="baseUrl"]');
-    baseUrlInputElement.reportInlineValidity();
-    /** @type {CcInputText} */
-    const descriptionInputElement = component._formRef.value.querySelector('[name="description"]');
-    descriptionInputElement.reportInlineValidity();
-    /** @type {CcInputText} */
-    const pictureInputElement = component._formRef.value.querySelector('[name="picture"]');
-    pictureInputElement.reportInlineValidity();
+    component.shadowRoot.querySelector(`form`).requestSubmit();
   },
 });
 
@@ -243,18 +221,7 @@ export const errorWithInvalidInputs = makeStory(conf, {
     component._formRef.value.url.value = 'Invalid url';
     component._formRef.value.baseUrl.value = 'Invalid base url';
     component._formRef.value.picture.value = 'Invalid picture url';
-    component._formRef.value.url.validate();
-    component._formRef.value.baseUrl.validate();
-    component._formRef.value.picture.validate();
-    /** @type {CcInputText} */
-    const urlInputElement = component._formRef.value.querySelector('[name="url"]');
-    urlInputElement.reportInlineValidity();
-    /** @type {CcInputText} */
-    const baseUrlInputElement = component._formRef.value.querySelector('[name="baseUrl"]');
-    baseUrlInputElement.reportInlineValidity();
-    /** @type {CcInputText} */
-    const pictureInputElement = component._formRef.value.querySelector('[name="picture"]');
-    pictureInputElement.reportInlineValidity();
+    component._formRef.value.requestSubmit();
   },
 });
 
@@ -347,6 +314,15 @@ export const simulationWithCreatingAnOauthConsumer = makeStory(conf, {
       /** @param {CcOauthConsumerForm[]} components */
       ([component]) => {
         /** @type {CcInputText} */
+        const descriptionInputElement = component._formRef.value.querySelector('[name="description"]');
+        descriptionInputElement.value = NEW_OAUTH_CONSUMER.description;
+      },
+    ),
+    storyWait(
+      500,
+      /** @param {CcOauthConsumerForm[]} components */
+      ([component]) => {
+        /** @type {CcInputText} */
         const urlInputElement = component._formRef.value.querySelector('[name="url"]');
         urlInputElement.value = NEW_OAUTH_CONSUMER.url;
       },
@@ -358,15 +334,6 @@ export const simulationWithCreatingAnOauthConsumer = makeStory(conf, {
         /** @type {CcInputText} */
         const baseUrlInputElement = component._formRef.value.querySelector('[name="baseUrl"]');
         baseUrlInputElement.value = NEW_OAUTH_CONSUMER.baseUrl;
-      },
-    ),
-    storyWait(
-      500,
-      /** @param {CcOauthConsumerForm[]} components */
-      ([component]) => {
-        /** @type {CcInputText} */
-        const descriptionInputElement = component._formRef.value.querySelector('[name="description"]');
-        descriptionInputElement.value = NEW_OAUTH_CONSUMER.description;
       },
     ),
     storyWait(
@@ -446,3 +413,12 @@ export const simulationWithUpdatingAnOauthConsumer = makeStory(conf, {
     ),
   ],
 });
+
+/**
+ * @param {HTMLFormElement} form
+ * @param {string} formControlName
+ * @return {CcInputText | HTMLInputElement}
+ */
+function getFormInputElement(form, formControlName) {
+  return form.querySelector(`[name=${formControlName}]`);
+}

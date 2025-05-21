@@ -100,8 +100,8 @@ export function camelCase(input) {
  * snakeCase('PascalCase'); //=> 'pascal_case'
  * snakeCase('camelCase'); //=> 'camel_case'
  * snakeCase('version 1.2.10'); //=> 'version_1_2_10'
- * @param {String} input
- * @returns {String}
+ * @param {string} input
+ * @returns {string}
  */
 export function snakeCase(input) {
   return stringToWordArray(input)
