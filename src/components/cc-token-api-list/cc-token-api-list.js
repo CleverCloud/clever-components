@@ -355,7 +355,7 @@ export class CcTokenApiList extends LitElement {
 
         .api-token-card__id__text {
           flex: 1 1 0;
-          word-break: 'break-word';
+          word-break: break-word;
         }
 
         .api-token-card__description {
