@@ -1,4 +1,4 @@
-const AUTHORIZED_TAGS = ['STRONG', 'EM', 'CODE', 'A', 'BR', 'P', 'SPAN'];
+const AUTHORIZED_TAGS = ['STRONG', 'EM', 'CODE', 'A', 'BR', 'P', 'SPAN', 'DL', 'DT', 'DD'];
 
 /**
  * Checks whether the given attribute on the given tag is authorized in translation.
