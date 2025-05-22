@@ -1548,6 +1548,66 @@ export const translations = {
   'cc-toast.icon-alt.success': `Success`,
   'cc-toast.icon-alt.warning': `Warning`,
   //#endregion
+  //#region cc-token-api-creation-form
+  'cc-token-api-creation-form.cli.content': () => sanitize`
+    <p>
+      Manage your API tokens from a terminal using the commands below.
+      To install Clever Tools CLI, follow the instructions from the <a href="https://www.clever-cloud.com/developers/doc/cli/install/" title="documentation - Install Clever Tools - new window">documentation</a>.
+    </p>
+    <dl>
+      <dt>Create a token:</dt>
+      <dd><code>clever tokens create "&lt;your token name&gt;"</code></dd>
+      <dt>Revoke a token:</dt>
+      <dd><code>clever tokens revoke &lt;api_token_id&gt;</code></dd>
+      <dt>List tokens:</dt>
+      <dd><code>clever tokens list</code></dd>
+      <dt>Use your API token&nbsp;:</dt>
+      <dd><code>curl -H "Authorization: Bearer &lt;your_token&gt;" https://api-bridge.clever-cloud.com/v2/self</code></dd>
+    </dl>
+  `,
+  'cc-token-api-creation-form.configuration-step.form.desc.label': `Description`,
+  'cc-token-api-creation-form.configuration-step.form.expiration-date.error.invalid':
+    /** @param {{ date: string }} _ */ ({ date }) => sanitize`Enter a valid date and time.<br>For instance: ${date}`,
+  'cc-token-api-creation-form.configuration-step.form.expiration-date.error.range-overflow':
+    /** @param {{ date: string }} _ */ ({ date }) =>
+      sanitize`The expiration date must be less than 1 year from now<br>For instance: ${date}`,
+  'cc-token-api-creation-form.configuration-step.form.expiration-date.error.range-underflow':
+    /** @param {{ date: string }} _ */ ({ date }) =>
+      sanitize`The expiration date must be at least 15 minutes from now<br>For instance: ${date}`,
+  'cc-token-api-creation-form.configuration-step.form.expiration-date.help.format': `Format: YYYY-MM-DD HH:MM:SS`,
+  'cc-token-api-creation-form.configuration-step.form.expiration-date.help.min-max': `Must be at least 15 minutes and up to 1 year from now`,
+  'cc-token-api-creation-form.configuration-step.form.expiration-date.label': `Expiration date`,
+  'cc-token-api-creation-form.configuration-step.form.expiration-duration.help.custom': `Specify the expiration date using the following field`,
+  'cc-token-api-creation-form.configuration-step.form.expiration-duration.label': `Time before expiration`,
+  'cc-token-api-creation-form.configuration-step.form.expiration-duration.option-label.custom': `Custom`,
+  'cc-token-api-creation-form.configuration-step.form.expiration-duration.option-label.ninety-days': `90 days`,
+  'cc-token-api-creation-form.configuration-step.form.expiration-duration.option-label.one-year': `1 year`,
+  'cc-token-api-creation-form.configuration-step.form.expiration-duration.option-label.seven-days': `7 days`,
+  'cc-token-api-creation-form.configuration-step.form.expiration-duration.option-label.sixty-days': `60 days`,
+  'cc-token-api-creation-form.configuration-step.form.expiration-duration.option-label.thirty-days': `30 days`,
+  'cc-token-api-creation-form.configuration-step.form.link.back-to-list': `Back to the API token list`,
+  'cc-token-api-creation-form.configuration-step.form.name.label': `Name`,
+  'cc-token-api-creation-form.configuration-step.form.submit-button.label': `Continue`,
+  'cc-token-api-creation-form.configuration-step.main-heading': `Create a new API token`,
+  'cc-token-api-creation-form.configuration-step.nav.label': `Configuration`,
+  'cc-token-api-creation-form.copy-step.form.token.label': `Your API token`,
+  'cc-token-api-creation-form.copy-step.link.back-to-list': `Go to the token list`,
+  'cc-token-api-creation-form.copy-step.main-heading': `Your API token is now created`,
+  'cc-token-api-creation-form.copy-step.nav.label': `Get API token`,
+  'cc-token-api-creation-form.copy-step.notice.message': `For security reasons, this API token will only be shown once. Make sure to copy and store it in a secure place. After creation, you will not be able to retrieve it ever again. If you lose this token, you will have to revoke it and create a new one.`,
+  'cc-token-api-creation-form.error': `Something went wrong while loading information about your account`,
+  'cc-token-api-creation-form.link.doc': `API tokens - Documentation`,
+  'cc-token-api-creation-form.nav.aria-label': `API token creation steps`,
+  'cc-token-api-creation-form.validation-step.error.generic': `Something went wrong while creating the API token`,
+  'cc-token-api-creation-form.validation-step.form.link.back-to-configuration': `Back to the configuration step`,
+  'cc-token-api-creation-form.validation-step.form.mfa-code.error': `Invalid 2FA code`,
+  'cc-token-api-creation-form.validation-step.form.mfa-code.label': `Two-factor authentication code (2FA)`,
+  'cc-token-api-creation-form.validation-step.form.password.error': `Invalid password`,
+  'cc-token-api-creation-form.validation-step.form.password.label': `Password`,
+  'cc-token-api-creation-form.validation-step.form.submit-button.label': `Create`,
+  'cc-token-api-creation-form.validation-step.main-heading': `Confirm your identity`,
+  'cc-token-api-creation-form.validation-step.nav.label': `Authentication`,
+  //#endregion
   //#region cc-token-api-list
   'cc-token-api-list.card.expired': `Expired`,
   'cc-token-api-list.card.expires-soon': `Expires soon`,
@@ -1560,10 +1620,7 @@ export const translations = {
         Manage your API tokens from a terminal using the commands below.
         To install Clever Tools CLI, follow the instructions from the <a href="https://www.clever-cloud.com/developers/doc/cli/install/" title="documentation - Install Clever Tools - new window">documentation</a>.
       </p>
-      <p>Note: These commands are experimental and need to be enabled in the CLI in order to be used.
       <dl>
-        <dt>Enable the API tokens feature:</dt>
-        <dd><code>clever features enable tokens</code></dd>
         <dt>Create a token:</dt>
         <dd><code>clever tokens create "&lt;your token name&gt;"</code></dd>
         <dt>Revoke a token:</dt>

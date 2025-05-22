@@ -95,7 +95,8 @@
           // https://developer.mozilla.org/en-US/docs/Web/API/Element/mouseenter_event
           "wheel",
           "copy",
-          "paste"
+          "paste",
+          "transitionend"
         ]
       }
     ]
