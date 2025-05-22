@@ -4,6 +4,7 @@ import { createRef, ref } from 'lit/directives/ref.js';
 import {
   iconRemixCalendar_2Fill as iconCreation,
   iconRemixCloseLine as iconDelete,
+  iconRemixLogoutBoxRLine as iconExternalLink,
   iconRemixCodeSSlashLine as iconId,
   iconRemixInformationLine as iconInfo,
   iconRemixDeleteBinLine as iconRevoke,
@@ -12,9 +13,11 @@ import { LostFocusController } from '../../controllers/lost-focus-controller.js'
 import { ResizeController } from '../../controllers/resize-controller.js';
 import { isExpirationClose } from '../../lib/tokens.js';
 import { isStringEmpty } from '../../lib/utils.js';
+import { cliCommandsStyles } from '../../styles/cli-commands.js';
 import { linkStyles } from '../../templates/cc-link/cc-link.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-badge/cc-badge.js';
+import '../cc-block-details/cc-block-details.js';
 import '../cc-block/cc-block.js';
 import '../cc-button/cc-button.js';
 import '../cc-icon/cc-icon.js';
@@ -145,6 +148,14 @@ export class CcTokenApiList extends LitElement {
               : ''}
           </div>
         </div>
+        <cc-block-details slot="footer-left">
+          <div slot="button-text">${i18n('cc-block-details.cli.text')}</div>
+          <a slot="link" href="https://www.clever-cloud.com/developers/api/howto/#api-tokens" target="_blank">
+            <span class="cc-link">${i18n('cc-token-api-list.link.doc')}</span>
+            <cc-icon .icon=${iconExternalLink}></cc-icon>
+          </a>
+          <div slot="content">${i18n('cc-token-api-list.cli.content')}</div>
+        </cc-block-details>
       </cc-block>
     `;
   }
@@ -218,6 +229,7 @@ export class CcTokenApiList extends LitElement {
 
   static get styles() {
     return [
+      cliCommandsStyles,
       linkStyles,
       css`
         :host {
@@ -406,7 +418,7 @@ export class CcTokenApiList extends LitElement {
           font-weight: bold;
         }
 
-        dt {
+        .api-token-card__info-list__item dt {
           --cc-icon-size: var(--list-item-icon-size);
 
           align-items: center;
@@ -414,7 +426,7 @@ export class CcTokenApiList extends LitElement {
           gap: 0.5em;
         }
 
-        dd {
+        .api-token-card__info-list__item dd {
           align-items: center;
           display: flex;
           flex-wrap: wrap;
