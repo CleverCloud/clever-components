@@ -254,6 +254,9 @@ export const translations = {
   //#region cc-beta
   'cc-beta.label': `bêta`,
   //#endregion
+  //#region cc-block-details
+  'cc-block-details.cli.text': `Ligne de commande`,
+  //#endregion
   //#region cc-button
   'cc-button.cancel': `Cliquez pour annuler`,
   //#endregion
@@ -1518,20 +1521,43 @@ export const translations = {
   'cc-toast.icon-alt.warning': `Avertissement`,
   //#endregion
   //#region cc-token-api-list
+  'cc-token-api-list.card.expired': `Expiré`,
   'cc-token-api-list.card.expires-soon': `Expire bientôt`,
   'cc-token-api-list.card.human-friendly-date': /** @param {{ date: string|number }} _ */ ({ date }) =>
     formatDatetime(date),
   'cc-token-api-list.card.label.creation': () => sanitize`Création&nbsp;: `,
   'cc-token-api-list.card.label.expiration': () => sanitize`Expiration&nbsp;: `,
   'cc-token-api-list.card.token-id-icon.a11y-name': `Identifiant du token d'API`,
+  'cc-token-api-list.cli.content': () => sanitize`
+      <p>
+        Gérez vos tokens d'API depuis un terminal à l'aide des commandes ci-dessous.
+        Pour installer les Clever Tools (CLI), suivez les instructions de la <a href="https://www.clever-cloud.com/developers/doc/cli/install/" title="documentation - Installer les Clever Tools - nouvelle fenêtre - en Anglais">documentation</a>.
+      </p>
+      <p>Note&nbsp;: Ces commandes sont expérimentales et doivent être activées dans la CLI pour être utilisées.
+      <dl>
+        <dt>Activer la fonctionnalité des tokens d'API&nbsp;:</dt>
+        <dd><code>clever features enable tokens</code></dd>
+        <dt>Créer un token d'API&nbsp;:</dt>
+        <dd><code>clever tokens create "&lt;votre nom de token&gt;"</code></dd>
+        <dt>Révoquer un token d'API&nbsp;:</dt>
+        <dd><code>clever tokens revoke &lt;api_token_id&gt;</code></dd>
+        <dt>Lister les tokens d'API&nbsp;:</dt>
+        <dd><code>clever tokens list</code></dd>
+        <dt>Utiliser votre token d'API&nbsp;:</dt>
+        <dd><code>curl -H "Authorization: Bearer &lt;votre_token&gt;" https://api-bridge.clever-cloud.com/v2/self</code></dd>
+      </dl>
+    `,
   'cc-token-api-list.create-token': `Créer un nouveau token`,
+  'cc-token-api-list.delete-token': /** @param {{ name: string}} _ */ ({ name }) =>
+    `Supprimer le token d'API - ${name}`,
   'cc-token-api-list.empty': () =>
     sanitize`Vous n'avez aucun token d'API. Cliquez sur le bouton ci-dessous pour créer un nouveau token&nbsp;:`,
   'cc-token-api-list.error': `Une erreur est survenue pendant le chargement des tokens d'API`,
   'cc-token-api-list.intro': () =>
     sanitize`Ci-dessous la liste des tokens d'API associés à votre compte <a href="https://www.clever-cloud.com/developers/api/howto/#api-tokens" title="Tokens d'API - Documentation - nouvelle fenêtre">tokens d'API</a> et leurs informations. Vous pouvez les révoquez si nécessaire.`,
+  'cc-token-api-list.link.doc': `Tokens d'API - Documentation`,
   'cc-token-api-list.main-heading': `Tokens d'API`,
-  'cc-token-api-list.revoke-token': /** @param {{ name: string}} _ */ ({ name }) => `Révoquer le token d'API "${name}"`,
+  'cc-token-api-list.revoke-token': /** @param {{ name: string}} _ */ ({ name }) => `Révoquer le token d'API - ${name}`,
   'cc-token-api-list.revoke-token.error': `Une erreur est survenue pendant la révocation du token d'API`,
   'cc-token-api-list.revoke-token.success': `Le token d'API a été révoqué avec succès`,
   //#endregion

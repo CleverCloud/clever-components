@@ -3,16 +3,21 @@ import { classMap } from 'lit/directives/class-map.js';
 import { createRef, ref } from 'lit/directives/ref.js';
 import {
   iconRemixCalendar_2Fill as iconCreation,
-  iconRemixDeleteBinLine as iconDelete,
+  iconRemixCloseLine as iconDelete,
+  iconRemixLogoutBoxRLine as iconExternalLink,
   iconRemixCodeSSlashLine as iconId,
   iconRemixInformationLine as iconInfo,
+  iconRemixDeleteBinLine as iconRevoke,
 } from '../../assets/cc-remix.icons.js';
 import { LostFocusController } from '../../controllers/lost-focus-controller.js';
 import { ResizeController } from '../../controllers/resize-controller.js';
 import { isExpirationClose } from '../../lib/tokens.js';
 import { isStringEmpty } from '../../lib/utils.js';
+import { cliCommandsStyles } from '../../styles/cli-commands.js';
+import { linkStyles } from '../../templates/cc-link/cc-link.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-badge/cc-badge.js';
+import '../cc-block-details/cc-block-details.js';
 import '../cc-block/cc-block.js';
 import '../cc-button/cc-button.js';
 import '../cc-icon/cc-icon.js';
@@ -77,6 +82,24 @@ export class CcTokenApiList extends LitElement {
     this.dispatchEvent(new CcTokenRevokeEvent(tokenId));
   }
 
+  /**
+   * Sorts API tokens for display.
+   * Non-expired tokens are shown first, then expired tokens.
+   * Within each group, tokens are sorted by creationDate descending.
+   *
+   * @param {ApiTokenState} tokenA
+   * @param {ApiTokenState} tokenB
+   */
+  _sortTokens(tokenA, tokenB) {
+    if (tokenA.isExpired && !tokenB.isExpired) {
+      return 1;
+    }
+    if (!tokenA.isExpired && tokenB.isExpired) {
+      return -1;
+    }
+    return tokenB.creationDate.getTime() - tokenA.creationDate.getTime();
+  }
+
   render() {
     if (this.state.type === 'error') {
       return html`<cc-notice intent="warning" message="${i18n('cc-token-api-list.error')}"></cc-notice>`;
@@ -84,12 +107,7 @@ export class CcTokenApiList extends LitElement {
 
     const isEmpty = this.state.type === 'loaded' && this.state.apiTokens.length === 0;
 
-    const sortedTokens =
-      this.state.type === 'loaded'
-        ? [...this.state.apiTokens].sort(
-            (tokenA, tokenB) => tokenB.creationDate.getTime() - tokenA.creationDate.getTime(),
-          )
-        : [];
+    const sortedTokens = this.state.type === 'loaded' ? [...this.state.apiTokens].sort(this._sortTokens) : [];
 
     return html`
       <cc-block>
@@ -130,6 +148,14 @@ export class CcTokenApiList extends LitElement {
               : ''}
           </div>
         </div>
+        <cc-block-details slot="footer-left">
+          <div slot="button-text">${i18n('cc-block-details.cli.text')}</div>
+          <a slot="link" href="https://www.clever-cloud.com/developers/api/howto/#api-tokens" target="_blank">
+            <span class="cc-link">${i18n('cc-token-api-list.link.doc')}</span>
+            <cc-icon .icon=${iconExternalLink}></cc-icon>
+          </a>
+          <div slot="content">${i18n('cc-token-api-list.cli.content')}</div>
+        </cc-block-details>
       </cc-block>
     `;
   }
@@ -140,17 +166,27 @@ export class CcTokenApiList extends LitElement {
    * @param {ApiTokenState} token - The token data to render
    * @private
    */
-  _renderTokenCard({ type, id, name, description, creationDate, expirationDate }) {
-    const hasExpirationWarning = isExpirationClose({ creationDate, expirationDate });
+  _renderTokenCard({ type, id, name, description, creationDate, expirationDate, isExpired }) {
+    const hasExpirationWarning = !isExpired && isExpirationClose({ creationDate, expirationDate });
     const isRevoking = type === 'revoking';
+    const textRevokeOrDelete = isExpired
+      ? i18n('cc-token-api-list.delete-token', { name })
+      : i18n('cc-token-api-list.revoke-token', { name });
+    const iconRevokeOrDelete = isExpired ? iconDelete : iconRevoke;
 
     return html`
-      <div class="api-token-card ${classMap({ 'is-revoking': isRevoking })}">
+      <div
+        class="api-token-card ${classMap({
+          'api-token-card--is-revoking': isRevoking,
+          'api-token-card--is-expired': isExpired,
+        })}"
+      >
         <div class="api-token-card__header">
           <div class="api-token-card__header__name">${name}</div>
           ${hasExpirationWarning
-            ? html` <cc-badge intent="warning">${i18n('cc-token-api-list.card.expires-soon')}</cc-badge> `
+            ? html`<cc-badge intent="warning">${i18n('cc-token-api-list.card.expires-soon')}</cc-badge>`
             : ''}
+          ${isExpired ? html`<cc-badge>${i18n('cc-token-api-list.card.expired')}</cc-badge>` : ''}
         </div>
         ${!isStringEmpty(description) ? html` <p class="api-token-card__description">${description}</p> ` : ''}
         <div class="api-token-card__id">
@@ -177,225 +213,234 @@ export class CcTokenApiList extends LitElement {
         </dl>
         <cc-button
           class="api-token-card__action-revoke"
-          danger
+          ?danger="${!isExpired}"
           outlined
           hide-text
-          .icon=${iconDelete}
+          .icon=${iconRevokeOrDelete}
           circle
           ?waiting=${isRevoking}
           @cc-click=${() => this._onRevokeToken(id)}
         >
-          ${i18n('cc-token-api-list.revoke-token', { name })}
+          ${textRevokeOrDelete}
         </cc-button>
       </div>
     `;
   }
 
   static get styles() {
-    return css`
-      :host {
-        --list-item-icon-size: 1.2em;
+    return [
+      cliCommandsStyles,
+      linkStyles,
+      css`
+        :host {
+          --list-item-icon-size: 1.2em;
 
-        display: block;
-      }
-
-      /* Reset default margins and paddings */
-      ul,
-      li,
-      dl,
-      dd,
-      dt {
-        margin: 0;
-        padding: 0;
-      }
-
-      li {
-        list-style: none;
-      }
-
-      p {
-        margin: 0;
-      }
-
-      .empty {
-        border: 1px solid var(--cc-color-border-neutral-weak);
-        display: grid;
-        font-weight: bold;
-        gap: 1.5em;
-        justify-items: center;
-        padding: 1em;
-      }
-
-      .is-revoking > *:not(cc-button) {
-        opacity: var(--cc-opacity-when-disabled, 0.65);
-      }
-
-      .create-token-cta {
-        align-items: center;
-        background-color: var(--cc-color-bg-primary);
-        border: 1px solid var(--cc-color-bg-primary);
-        border-radius: var(--cc-button-border-radius, 0.15em);
-        box-sizing: border-box;
-        color: var(--cc-color-text-inverted, #000);
-        cursor: pointer;
-        display: flex;
-        font-weight: var(--cc-button-font-weight, bold);
-        min-height: 2em;
-        padding: 0 0.5em;
-        text-decoration: none;
-        text-transform: var(--cc-button-text-transform, uppercase);
-        user-select: none;
-      }
-
-      .create-token-cta span {
-        font-size: 0.85em;
-      }
-
-      .create-token-cta:hover {
-        box-shadow: 0 1px 3px rgb(0 0 0 / 40%);
-      }
-
-      .create-token-cta:focus {
-        outline: var(--cc-focus-outline);
-        outline-offset: var(--cc-focus-outline-offset, 2px);
-      }
-
-      .api-tokens-wrapper {
-        margin-top: 2.5em;
-      }
-
-      .api-tokens-wrapper__list {
-        display: grid;
-        gap: 1.5em;
-      }
-
-      @supports (grid-template-columns: subgrid) {
-        .api-tokens-wrapper__list {
-          grid-template-columns: [card-start info-start] max-content 1fr [info-end actions-start] auto [actions-end card-end];
+          display: block;
         }
 
-        :host([w-lt-730]) .api-tokens-wrapper__list {
-          grid-template-columns: [card-start info-start] 1fr [info-end actions-start] auto [actions-end card-end];
-        }
-      }
-
-      .api-token-card {
-        align-items: center;
-        border: solid 1px var(--cc-color-border-neutral-weak, #e6e6e6);
-        border-radius: var(--cc-border-radius-default, 0.25em);
-        display: grid;
-        gap: 0.5em;
-        grid-template-columns: [card-start info-start] 1fr [info-end actions-start] max-content [actions-end card-end];
-        padding: 1em;
-      }
-
-      @supports (grid-template-columns: subgrid) {
-        .api-token-card {
-          grid-column: card-start / card-end;
-          grid-template-columns: subgrid;
+        /* Reset default margins and paddings */
+        ul,
+        li,
+        dl,
+        dd,
+        dt {
+          margin: 0;
+          padding: 0;
         }
 
-        :host([w-lt-730]) .api-token-card {
-          grid-template-columns: subgrid;
+        li {
+          list-style: none;
         }
-      }
 
-      .api-token-card__header {
-        align-items: center;
-        column-gap: 1em;
-        display: flex;
-        flex-wrap: wrap;
-        grid-column: info-start / info-end;
-        row-gap: 0.5em;
-      }
+        p {
+          margin: 0;
+        }
 
-      .api-token-card__header__name {
-        font-weight: bold;
-      }
-
-      .api-token-card__id {
-        align-items: flex-start;
-        display: flex;
-        flex-wrap: wrap;
-        gap: 0.5em;
-        grid-column: info-start / info-end;
-      }
-
-      .api-token-card__id__text {
-        flex: 1 1 0;
-        word-break: 'break-word';
-      }
-
-      .api-token-card__description {
-        grid-column: info-start / info-end;
-        margin: 0;
-      }
-
-      .api-token-card__id cc-icon {
-        --cc-icon-size: var(--list-item-icon-size);
-
-        flex: 0 0 auto;
-      }
-
-      .api-token-card__info-list {
-        column-gap: 1em;
-        display: flex;
-        flex-wrap: wrap;
-        grid-column: info-start / info-end;
-        row-gap: 0.5em;
-      }
-
-      @supports (grid-template-columns: subgrid) {
-        .api-token-card__info-list {
+        .empty {
+          border: 1px solid var(--cc-color-border-neutral-weak);
           display: grid;
-          grid-column: info-start / info-end;
-          grid-template-columns: subgrid;
+          font-weight: bold;
+          gap: 1.5em;
+          justify-items: center;
+          padding: 1em;
         }
-      }
 
-      .api-token-card__info-list__item {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 0.5em;
-      }
-
-      :host([w-lt-730]) .api-token-card__info-list__item {
-        display: grid;
-        row-gap: 0.5em;
-      }
-
-      @supports (grid-template-columns: subgrid) {
-        :host([w-lt-730]) .api-token-card__info-list__item {
+        .create-token-cta {
+          align-items: center;
+          background-color: var(--cc-color-bg-primary);
+          border: 1px solid var(--cc-color-bg-primary);
+          border-radius: var(--cc-button-border-radius, 0.15em);
+          box-sizing: border-box;
+          color: var(--cc-color-text-inverted, #000);
+          cursor: pointer;
           display: flex;
+          font-weight: var(--cc-button-font-weight, bold);
+          min-height: 2em;
+          padding: 0 0.5em;
+          text-decoration: none;
+          text-transform: var(--cc-button-text-transform, uppercase);
+          user-select: none;
         }
-      }
 
-      .api-token-card__info-list__item--bold {
-        font-weight: bold;
-      }
+        .create-token-cta span {
+          font-size: 0.85em;
+        }
 
-      dt {
-        --cc-icon-size: var(--list-item-icon-size);
+        .create-token-cta:hover {
+          box-shadow: 0 1px 3px rgb(0 0 0 / 40%);
+        }
 
-        align-items: center;
-        display: flex;
-        gap: 0.5em;
-      }
+        .create-token-cta:focus {
+          outline: var(--cc-focus-outline);
+          outline-offset: var(--cc-focus-outline-offset, 2px);
+        }
 
-      dd {
-        align-items: center;
-        display: flex;
-        flex-wrap: wrap;
-        gap: 0.5em;
-      }
+        .api-tokens-wrapper {
+          margin-top: 2.5em;
+        }
 
-      .api-token-card cc-button {
-        align-self: start;
-        grid-column: actions-start / actions-end;
-        grid-row: 1 / -1;
-        justify-self: end;
-      }
-    `;
+        .api-tokens-wrapper__list {
+          display: grid;
+          gap: 1.5em;
+        }
+
+        @supports (grid-template-columns: subgrid) {
+          .api-tokens-wrapper__list {
+            grid-template-columns: [card-start info-start] max-content 1fr [info-end actions-start] auto [actions-end card-end];
+          }
+
+          :host([w-lt-730]) .api-tokens-wrapper__list {
+            grid-template-columns: [card-start info-start] 1fr [info-end actions-start] auto [actions-end card-end];
+          }
+        }
+
+        .api-token-card {
+          align-items: center;
+          border: solid 1px var(--cc-color-border-neutral-weak, #e6e6e6);
+          border-radius: var(--cc-border-radius-default, 0.25em);
+          display: grid;
+          gap: 0.5em;
+          grid-template-columns: [card-start info-start] 1fr [info-end actions-start] max-content [actions-end card-end];
+          padding: 1em;
+        }
+
+        .api-token-card--is-revoking > :not(cc-button),
+        .api-token-card--is-expired > :not(cc-button) {
+          opacity: var(--cc-opacity-when-disabled, 0.65);
+        }
+
+        .api-token-card--is-expired {
+          background-color: var(--cc-color-bg-neutral, #eee);
+        }
+
+        @supports (grid-template-columns: subgrid) {
+          .api-token-card {
+            grid-column: card-start / card-end;
+            grid-template-columns: subgrid;
+          }
+
+          :host([w-lt-730]) .api-token-card {
+            grid-template-columns: subgrid;
+          }
+        }
+
+        .api-token-card__header {
+          align-items: center;
+          column-gap: 1em;
+          display: flex;
+          flex-wrap: wrap;
+          grid-column: info-start / info-end;
+          row-gap: 0.5em;
+        }
+
+        .api-token-card__header__name {
+          font-weight: bold;
+        }
+
+        .api-token-card__id {
+          align-items: flex-start;
+          display: flex;
+          flex-wrap: wrap;
+          gap: 0.5em;
+          grid-column: info-start / info-end;
+        }
+
+        .api-token-card__id__text {
+          flex: 1 1 0;
+          word-break: break-word;
+        }
+
+        .api-token-card__description {
+          grid-column: info-start / info-end;
+          margin: 0;
+        }
+
+        .api-token-card__id cc-icon {
+          --cc-icon-size: var(--list-item-icon-size);
+
+          flex: 0 0 auto;
+        }
+
+        .api-token-card__info-list {
+          column-gap: 1em;
+          display: flex;
+          flex-wrap: wrap;
+          grid-column: info-start / info-end;
+          row-gap: 0.5em;
+        }
+
+        @supports (grid-template-columns: subgrid) {
+          .api-token-card__info-list {
+            display: grid;
+            grid-column: info-start / info-end;
+            grid-template-columns: subgrid;
+          }
+        }
+
+        .api-token-card__info-list__item {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 0.5em;
+        }
+
+        :host([w-lt-730]) .api-token-card__info-list__item {
+          display: grid;
+          row-gap: 0.5em;
+        }
+
+        @supports (grid-template-columns: subgrid) {
+          :host([w-lt-730]) .api-token-card__info-list__item {
+            display: flex;
+          }
+        }
+
+        .api-token-card__info-list__item--bold {
+          font-weight: bold;
+        }
+
+        .api-token-card__info-list__item dt {
+          --cc-icon-size: var(--list-item-icon-size);
+
+          align-items: center;
+          display: flex;
+          gap: 0.5em;
+        }
+
+        .api-token-card__info-list__item dd {
+          align-items: center;
+          display: flex;
+          flex-wrap: wrap;
+          gap: 0.5em;
+        }
+
+        .api-token-card cc-button {
+          align-self: start;
+          grid-column: actions-start / actions-end;
+          grid-row: 1 / -1;
+          justify-self: end;
+        }
+      `,
+    ];
   }
 }
 
