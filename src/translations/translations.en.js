@@ -1596,6 +1596,7 @@ export const translations = {
   'cc-token-oauth-list.error': `Something went wrong while loading OAuth tokens`,
   'cc-token-oauth-list.intro': () =>
     sanitize`Below is the list of third-party applications linked to your account and their associated information. You may revoke these <a href="https://www.clever-cloud.com/developers/api/howto/#oauth1" title="OAuth tokens - Documentation - new window">OAuth tokens</a> as needed.`,
+  'cc-token-oauth-list.link.doc': `OAuth tokens - Documentation`,
   'cc-token-oauth-list.main-heading': `OAuth tokens`,
   'cc-token-oauth-list.revoke-all-tokens': `Revoke all OAuth tokens`,
   'cc-token-oauth-list.revoke-all-tokens.error': () =>
