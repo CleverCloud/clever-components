@@ -4,6 +4,7 @@ import { createRef, ref } from 'lit/directives/ref.js';
 import {
   iconRemixCalendar_2Fill as iconCreation,
   iconRemixDeleteBinLine as iconDelete,
+  iconRemixArrowRightLine as iconGoTo,
   iconRemixCodeSSlashLine as iconId,
   iconRemixInformationLine as iconInfo,
 } from '../../assets/cc-remix.icons.js';
@@ -38,6 +39,7 @@ export class CcTokenApiList extends LitElement {
   static get properties() {
     return {
       apiTokenCreationHref: { type: String, attribute: 'api-token-creation-href' },
+      apiTokenUpdateHref: { type: String, attribute: 'api-token-update-href' },
       state: { type: Object },
     };
   }
@@ -47,6 +49,9 @@ export class CcTokenApiList extends LitElement {
 
     /** @type {string|null} Sets the URL leading to the API token creation screen */
     this.apiTokenCreationHref = null;
+
+    /** @type {string|null} Sets the URL leading to the API token update screen */
+    this.apiTokenUpdateHref = null;
 
     /** @type {TokenApiListState} Sets the state of the component */
     this.state = { type: 'loading' };
@@ -58,7 +63,7 @@ export class CcTokenApiList extends LitElement {
       widthBreakpoints: [730],
     });
 
-    new LostFocusController(this, '.api-token-card__action-revoke', ({ suggestedElement }) => {
+    new LostFocusController(this, '.api-token-card__actions__rev', ({ suggestedElement }) => {
       if (suggestedElement instanceof HTMLElement) {
         suggestedElement.focus();
       } else {
@@ -90,6 +95,7 @@ export class CcTokenApiList extends LitElement {
             (tokenA, tokenB) => tokenB.creationDate.getTime() - tokenA.creationDate.getTime(),
           )
         : [];
+    const isOneTokenRevoking = sortedTokens.some((token) => token.type === 'revoking');
 
     return html`
       <cc-block>
@@ -124,7 +130,7 @@ export class CcTokenApiList extends LitElement {
             ${sortedTokens.length > 0
               ? html`
                   <div class="api-tokens-wrapper__list">
-                    ${sortedTokens.map((token) => this._renderTokenCard(token))}
+                    ${sortedTokens.map((token) => this._renderTokenCard(token, isOneTokenRevoking))}
                   </div>
                 `
               : ''}
@@ -138,9 +144,10 @@ export class CcTokenApiList extends LitElement {
    * Renders an individual token card
    *
    * @param {ApiTokenState} token - The token data to render
+   * @param {boolean} isOneTokenRevoking - True if there is at least one token within the list that is being revoked
    * @private
    */
-  _renderTokenCard({ type, id, name, description, creationDate, expirationDate }) {
+  _renderTokenCard({ type, id, name, description, creationDate, expirationDate }, isOneTokenRevoking) {
     const hasExpirationWarning = isExpirationClose({ creationDate, expirationDate });
     const isRevoking = type === 'revoking';
 
@@ -176,7 +183,7 @@ export class CcTokenApiList extends LitElement {
           </div>
         </dl>
         <cc-button
-          class="api-token-card__action-revoke"
+          class="api-token-card__actions__revoke"
           danger
           outlined
           hide-text
@@ -187,6 +194,26 @@ export class CcTokenApiList extends LitElement {
         >
           ${i18n('cc-token-api-list.revoke-token', { name })}
         </cc-button>
+        ${!isOneTokenRevoking
+          ? html`
+              <a
+                class="api-token-card__actions__update"
+                href="${this.apiTokenUpdateHref}/${id}"
+                title="${i18n('cc-token-api-list.update-token-with-name', { name })}"
+              >
+                ${i18n('cc-token-api-list.update-token')}
+                <cc-icon .icon="${iconGoTo}"></cc-icon>
+              </a>
+            `
+          : ''}
+        ${isOneTokenRevoking
+          ? html`
+              <span class="api-token-card__actions__update api-token-card__actions__update--disabled">
+                ${i18n('cc-token-api-list.update-token')}
+                <cc-icon .icon="${iconGoTo}"></cc-icon>
+              </span>
+            `
+          : ''}
       </div>
     `;
   }
@@ -389,11 +416,36 @@ export class CcTokenApiList extends LitElement {
         gap: 0.5em;
       }
 
-      .api-token-card cc-button {
-        align-self: start;
+      .api-token-card__actions__revoke {
         grid-column: actions-start / actions-end;
-        grid-row: 1 / -1;
+        grid-row: 1 / 2;
         justify-self: end;
+      }
+
+      .api-token-card__actions__update {
+        align-items: center;
+        align-self: flex-end;
+        border-radius: var(--cc-border-radius-default, 0.25em);
+        color: var(--cc-color-text-weak, #404040);
+        display: flex;
+        gap: 0.5em;
+        grid-column: actions-start / actions-end;
+        padding: 0.2em;
+        text-decoration: none;
+      }
+
+      .api-token-card__actions__update:visited,
+      .api-token-card__actions__update:active {
+        color: var(--cc-color-text-weak, #404040);
+      }
+
+      .api-token-card__actions__update:focus-visible {
+        outline: var(--cc-focus-outline, #3569aa solid 2px);
+        outline-offset: var(--cc-focus-outline-offset, 2px);
+      }
+
+      .api-token-card__actions__update--disabled {
+        opacity: var(--cc-opacity-when-disabled, 0.65);
       }
     `;
   }
