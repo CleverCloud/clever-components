@@ -5,6 +5,21 @@ title: 'Changelog'
 
 # Changelog
 
+## [19.1.0](https://github.com/CleverCloud/clever-components/compare/19.0.0...19.1.0) (2025-05-22)
+
+
+### 🚀 Features
+
+* **cc-token-api-list:** add doc link & CLI commands to block footer ([22c602c](https://github.com/CleverCloud/clever-components/commit/22c602c9857a2e92543a065a9f916b9ff4577f6f))
+* **cc-token-api-list:** support expired tokens ([c744864](https://github.com/CleverCloud/clever-components/commit/c7448648fda20ef43e55e63c51e55d894345aa78)), closes [#1407](https://github.com/CleverCloud/clever-components/issues/1407)
+
+
+### 🐛 Bug Fixes
+
+* **cc-token-api-list:** add link styles ([6a09003](https://github.com/CleverCloud/clever-components/commit/6a090031c1ea6baeb90ba500c8f0c3bfaa550f02)), closes [#1410](https://github.com/CleverCloud/clever-components/issues/1410)
+* **cc-token-api-list:** add missing word in english translation ([a414ecf](https://github.com/CleverCloud/clever-components/commit/a414ecf4be9fdb244e54d408a46d9e31f8e4b175))
+* **cc-token-api-list:** prevent overflow when viewport is reduced ([1f01b8f](https://github.com/CleverCloud/clever-components/commit/1f01b8fb7056951ac26e334b569a07da32f96f37)), closes [#1414](https://github.com/CleverCloud/clever-components/issues/1414)
+
 ## [19.0.0](https://github.com/CleverCloud/clever-components/compare/18.4.0...19.0.0) (2025-05-16)
 
 
