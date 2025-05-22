@@ -95,6 +95,7 @@ defineSmartComponent({
         .updateOauthConsumer(data)
         .then(() => {
           notifySuccess(i18n('cc-oauth-consumer-form.update.success', { oauthConsumerName }));
+          component.dispatchEvent(new CcOauthConsumerUpdatedEvent());
         })
         .catch((error) => {
           console.error(error);
@@ -103,7 +104,6 @@ defineSmartComponent({
         .finally(() => {
           updateComponent('state', (state) => {
             state.type = 'idle-update';
-            component.dispatchEvent(new CcOauthConsumerUpdatedEvent());
           });
         });
     });
