@@ -24,3 +24,5 @@ export interface DateParts {
 }
 
 export type DatePart = keyof DateParts;
+
+export type DateField = 'Y' | 'M' | 'D' | 'H' | 'm' | 's' | 'S';
