@@ -243,6 +243,9 @@ export const translations = {
   //#region cc-beta
   'cc-beta.label': `beta`,
   //#endregion
+  //#region cc-block-details
+  'cc-block-details.cli.text': `Command line`,
+  //#endregion
   //#region cc-button
   'cc-button.cancel': `Click to cancel`,
   //#endregion
@@ -1493,6 +1496,73 @@ export const translations = {
   'cc-toast.icon-alt.success': `Success`,
   'cc-toast.icon-alt.warning': `Warning`,
   //#endregion
+  //#region cc-token-api-creation-form
+  'cc-token-api-creation-form.cli.content': () => sanitize`
+    <p>
+      If you haven't already, quickly install the Clever Tools (our CLI) using our <a href="https://github.com/CleverCloud/clever-tools/blob/master/docs/setup-systems.md" title="documentation - Installing Clever Tools - new window">documentation</a>.
+      Manage your API tokens from your terminal using the commands below.
+    </p>
+    <p>Note: These commands are experimental and need to be enabled in the CLI in order to be used.
+    <dl>
+      <dt>Enabling the API tokens feature in the CLI:</dt>
+      <dd><code>clever features enable tokens</code></dd>
+
+      <dt>Creating a token:</dt>
+      <dd><code>clever tokens create myTokenName</code></dd>
+
+      <dt>Revoking a token:</dt>
+      <dd><code>clever tokens revoke myTokenId</code></dd>
+
+      <dt>Listing tokens:</dt>
+      <dd><code>clever tokens list</code></dd>
+    </dl>
+  `,
+  'cc-token-api-creation-form.configuration-step.description': `Use this form to generate a new API token, which will allow you to securely and selectively authorize applications to access your services`,
+  'cc-token-api-creation-form.configuration-step.form.desc.label': `Description`,
+  'cc-token-api-creation-form.configuration-step.form.expiration-date.error.invalid':
+    /** @param {{ date: string }} _ */ ({ date }) => sanitize`Enter a valid date and time.<br>For instance: ${date}`,
+  'cc-token-api-creation-form.configuration-step.form.expiration-date.error.range-overflow':
+    /** @param {{ date: string }} _ */ ({ date }) =>
+      sanitize`The expiration date must be less than 1 year from now.<br>For instance: ${date}`,
+  'cc-token-api-creation-form.configuration-step.form.expiration-date.error.range-underflow':
+    /** @param {{ date: string }} _ */ ({ date }) =>
+      sanitize`The expiration date must be at least 15 minutes from now.<br>For instance: ${date}`,
+  'cc-token-api-creation-form.configuration-step.form.expiration-date.help.format': `Format: YYYY-MM-DD HH:MM:SS`,
+  'cc-token-api-creation-form.configuration-step.form.expiration-date.help.min-max': `Must be at least 15 minutes and up to 1 year from now`,
+  'cc-token-api-creation-form.configuration-step.form.expiration-date.label': `Expiration date`,
+  'cc-token-api-creation-form.configuration-step.form.expiration-duration.help.custom': `Specify the expiration date using the next form control`,
+  'cc-token-api-creation-form.configuration-step.form.expiration-duration.label': `Expiration duration`,
+  'cc-token-api-creation-form.configuration-step.form.expiration-duration.option-label.custom': `Custom`,
+  'cc-token-api-creation-form.configuration-step.form.expiration-duration.option-label.ninety-days': `90 days`,
+  'cc-token-api-creation-form.configuration-step.form.expiration-duration.option-label.one-year': `1 year`,
+  'cc-token-api-creation-form.configuration-step.form.expiration-duration.option-label.seven-days': `7 days`,
+  'cc-token-api-creation-form.configuration-step.form.expiration-duration.option-label.sixty-days': `60 days`,
+  'cc-token-api-creation-form.configuration-step.form.expiration-duration.option-label.thirty-days': `30 days`,
+  'cc-token-api-creation-form.configuration-step.form.link.back-to-list': `Back to the API token list`,
+  'cc-token-api-creation-form.configuration-step.form.name.label': `Name`,
+  'cc-token-api-creation-form.configuration-step.form.submit-button.label': `Continue`,
+  'cc-token-api-creation-form.configuration-step.main-heading': `Create a new API token`,
+  'cc-token-api-creation-form.configuration-step.nav.label': `Configuration`,
+  'cc-token-api-creation-form.copy-step.description': `Congratulations, your token is now created!`,
+  'cc-token-api-creation-form.copy-step.form.token.label': `Your token`,
+  'cc-token-api-creation-form.copy-step.link.back-to-list': `Go to the token list`,
+  'cc-token-api-creation-form.copy-step.main-heading': `Your API token is now created`,
+  'cc-token-api-creation-form.copy-step.nav.label': `Copy Token`,
+  'cc-token-api-creation-form.copy-step.notice.message': `Warning: For security reasons, this API token will only be shown once. Make sure to copy and store it in a secure place now. After creation, you will not be able to retrieve it again. If you lose this key, you will need to create a new token.`,
+  'cc-token-api-creation-form.error': `Something went wrong while loading information about your account`,
+  'cc-token-api-creation-form.link.doc': `API tokens - Documentation`,
+  'cc-token-api-creation-form.nav.aria-label': `API token creation steps`,
+  'cc-token-api-creation-form.validation-step.description': `Finalise and confirm your new API token by authenticating yourself.`,
+  'cc-token-api-creation-form.validation-step.error.generic': `Something went wrong while creating the API token`,
+  'cc-token-api-creation-form.validation-step.form.link.back-to-configuration': `Back to the configuration step`,
+  'cc-token-api-creation-form.validation-step.form.mfa-code.error': `Invalid 2FA code`,
+  'cc-token-api-creation-form.validation-step.form.mfa-code.label': `2FA code`,
+  'cc-token-api-creation-form.validation-step.form.password.error': `Invalid password`,
+  'cc-token-api-creation-form.validation-step.form.password.label': `Password`,
+  'cc-token-api-creation-form.validation-step.form.submit-button.label': `Create`,
+  'cc-token-api-creation-form.validation-step.main-heading': `Confirm your identity`,
+  'cc-token-api-creation-form.validation-step.nav.label': `Validation`,
+  //#endregion
   //#region cc-token-api-list
   'cc-token-api-list.card.expires-soon': `Expires soon`,
   'cc-token-api-list.card.human-friendly-date': /** @param {{ date: Date }} _ */ ({ date }) => formatDatetime(date),
@@ -1503,7 +1573,7 @@ export const translations = {
   'cc-token-api-list.empty': `You have not created any token yet or you don't have any active token. Go ahead and create a new API token`,
   'cc-token-api-list.error': `Something went wrong while loading API tokens`,
   'cc-token-api-list.intro': () =>
-    sanitize`Below is the list of <a href="https://www.clever-cloud.com/developers/api/howto/#api-tokens" title="API Tokens - Documentation - new window">API tokens</a> linked to your account and their associated information. You may revoke as needed.`,
+    sanitize`Below is the list of <a href="https://www.clever-cloud.com/developers/api/howto/#api-tokens" title="API tokens - Documentation - new window">API tokens</a> linked to your account and their associated information. You may revoke as needed.`,
   'cc-token-api-list.main-heading': `API tokens`,
   'cc-token-api-list.revoke-token': /** @param {{ name: string}} _ */ ({ name }) => `Revoke API token - ${name}`,
   'cc-token-api-list.revoke-token.error': `Something went wrong while revoking the API token`,

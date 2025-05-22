@@ -254,6 +254,9 @@ export const translations = {
   //#region cc-beta
   'cc-beta.label': `bêta`,
   //#endregion
+  //#region cc-block-details
+  'cc-block-details.cli.text': `Ligne de commande`,
+  //#endregion
   //#region cc-button
   'cc-button.cancel': `Cliquez pour annuler`,
   //#endregion
@@ -1516,6 +1519,76 @@ export const translations = {
   'cc-toast.icon-alt.info': `Information`,
   'cc-toast.icon-alt.success': `Succès`,
   'cc-toast.icon-alt.warning': `Avertissement`,
+  //#endregion
+  //#region cc-token-api-creation-form
+  'cc-token-api-creation-form.cli.content': () => sanitize`
+    <p>
+      Si ce n'est pas déjà fait, installez rapidement les Clever Tools (notre CLI) à l'aide de notre <a href="https://github.com/CleverCloud/clever-tools/blob/master/docs/setup-systems.md" title="documentation - Installing Clever Tools - new window">documentation</a>.
+      Vous pouvez gérer vos tokens d'API grâce aux commandes ci-dessous.
+    </p>
+    <p>Note&nbsp;: Ces commandes sont expérimentales et doivent être activées dans la CLI pour être utilisées.
+    <dl>
+      <dt>Activer la fonctionnalité des tokens d'API dans la CLI&nbsp;:</dt>
+      <dd><code>clever features enable tokens</code></dd>
+
+      <dt>Créer un token&nbsp;:</dt>
+      <dd><code>clever tokens create monNomDeToken</code></dd>
+
+      <dt>Révoquer un token&nbsp;:</dt>
+      <dd><code>clever tokens revoke monIdentifiantDeToken</code></dd>
+
+      <dt>Lister les tokens&nbsp;:</dt>
+      <dd><code>clever tokens list</code></dd>
+    </dl>
+  `,
+  'cc-token-api-creation-form.configuration-step.description': `Utilisez ce formulaire pour générer un nouveau token d'API. Ce token vous permettra d'autoriser des applications à intéragir avec vos services de façon sécurisée.`,
+  'cc-token-api-creation-form.configuration-step.form.desc.label': `Description`,
+  'cc-token-api-creation-form.configuration-step.form.expiration-date.error.invalid':
+    /** @param {{ date: string }} _ */ ({ date }) =>
+      sanitize`Saisissez une date et une heure valide.<br>Par exemple&nbsp;: ${date}`,
+  'cc-token-api-creation-form.configuration-step.form.expiration-date.error.range-overflow':
+    /** @param {{ date: string }} _ */ ({ date }) =>
+      sanitize`La date d'expiration doit être moins d'un an à partir de maintenant.<br>Par exemple&nbsp;: ${date}`,
+  'cc-token-api-creation-form.configuration-step.form.expiration-date.error.range-underflow':
+    /** @param {{ date: string }} _ */ ({ date }) =>
+      sanitize`La date d'expiration doit être au moins 15 minutes à partir de maintenant.<br>Par exemple&nbsp;: ${date}`,
+  'cc-token-api-creation-form.configuration-step.form.expiration-date.help.format': () =>
+    sanitize`Format&nbsp;: AAAA-MM-JJ HH:MM:SS`,
+  'cc-token-api-creation-form.configuration-step.form.expiration-date.help.min-max': `Au moins 15 minutes et jusqu'à 1 an à partir de maintenant`,
+  'cc-token-api-creation-form.configuration-step.form.expiration-date.label': `Date d'expiration`,
+  'cc-token-api-creation-form.configuration-step.form.expiration-duration.help.custom': `Utilisez le champ suivant pour spécifier la date d'expiration`,
+  'cc-token-api-creation-form.configuration-step.form.expiration-duration.label': `Durée avant expiration`,
+  'cc-token-api-creation-form.configuration-step.form.expiration-duration.option-label.custom': `Personnalisée`,
+  'cc-token-api-creation-form.configuration-step.form.expiration-duration.option-label.ninety-days': `90 jours`,
+  'cc-token-api-creation-form.configuration-step.form.expiration-duration.option-label.one-year': `1 an`,
+  'cc-token-api-creation-form.configuration-step.form.expiration-duration.option-label.seven-days': `7 jours`,
+  'cc-token-api-creation-form.configuration-step.form.expiration-duration.option-label.sixty-days': `60 jours`,
+  'cc-token-api-creation-form.configuration-step.form.expiration-duration.option-label.thirty-days': `30 jours`,
+  'cc-token-api-creation-form.configuration-step.form.link.back-to-list': `Retour à la liste des tokens d'API`,
+  'cc-token-api-creation-form.configuration-step.form.name.label': `Nom du token`,
+  'cc-token-api-creation-form.configuration-step.form.submit-button.label': `Continuer`,
+  'cc-token-api-creation-form.configuration-step.main-heading': `Créer un nouveau token d'API`,
+  'cc-token-api-creation-form.configuration-step.nav.label': `Configuration`,
+  'cc-token-api-creation-form.copy-step.description': `Félicitations, votre token est maintenant créé ! Voici le token à conserver pour pouvoir l'utiliser. Elle vous permettra d'autoriser de façon sécurisée et sélective des applications à accéder à vos services.`,
+  'cc-token-api-creation-form.copy-step.form.token.label': `Votre token`,
+  'cc-token-api-creation-form.copy-step.link.back-to-list': `Retour à la liste des tokens d'API`,
+  'cc-token-api-creation-form.copy-step.main-heading': `Votre token d'API est prêt`,
+  'cc-token-api-creation-form.copy-step.nav.label': `Récupération du Token`,
+  'cc-token-api-creation-form.copy-step.notice.message': () =>
+    sanitize`Attention&nbsp;: Pour des raisons de sécurité, ce token d'API ne sera affichée qu'une seule fois. Assurez-vous de la copier et de la conserver dans un endroit sûr dès maintenant. Après sa création, vous ne pourrez plus la récupérer. Si vous perdez ce token, vous devrez en créer une nouvelle.`,
+  'cc-token-api-creation-form.error': `Une erreur est survenue lors du chargement des informations liées votre compte`,
+  'cc-token-api-creation-form.link.doc': `Tokens d'API - Documentation`,
+  'cc-token-api-creation-form.nav.aria-label': `Étapes de création de token d'API`,
+  'cc-token-api-creation-form.validation-step.description': `Finalisez et confirmez votre nouveau token d'API en vous authentifiant.`,
+  'cc-token-api-creation-form.validation-step.error.generic': `Une erreur est survenue lors de la création du token d'API`,
+  'cc-token-api-creation-form.validation-step.form.link.back-to-configuration': `Retour à l'étape de configuration`,
+  'cc-token-api-creation-form.validation-step.form.mfa-code.error': `Code 2FA invalide`,
+  'cc-token-api-creation-form.validation-step.form.mfa-code.label': `Code 2FA`,
+  'cc-token-api-creation-form.validation-step.form.password.error': `Mot de passe invalide`,
+  'cc-token-api-creation-form.validation-step.form.password.label': `Mot de passe`,
+  'cc-token-api-creation-form.validation-step.form.submit-button.label': `Créer`,
+  'cc-token-api-creation-form.validation-step.main-heading': `Confirmer votre identité`,
+  'cc-token-api-creation-form.validation-step.nav.label': `Validation`,
   //#endregion
   //#region cc-token-api-list
   'cc-token-api-list.card.expires-soon': `Expire bientôt`,
