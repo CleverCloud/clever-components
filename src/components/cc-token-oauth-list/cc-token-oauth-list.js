@@ -5,6 +5,7 @@ import {
   iconRemixCalendar_2Fill as iconCreation,
   iconRemixDeleteBinLine as iconDelete,
   iconRemixInformationLine as iconExpiration,
+  iconRemixLogoutBoxRLine as iconExternalLink,
   iconRemixHistoryLine as iconLastUsed,
 } from '../../assets/cc-remix.icons.js';
 import { LostFocusController } from '../../controllers/lost-focus-controller.js';
@@ -124,6 +125,12 @@ export class CcTokenOauthList extends LitElement {
               : ''}
           </div>
         </div>
+        <div slot="footer-right">
+          <a slot="link" href="https://www.clever-cloud.com/developers/api/howto/#oauth1" target="_blank">
+            <span class="cc-link">${i18n('cc-token-oauth-list.link.doc')}</span>
+            <cc-icon .icon=${iconExternalLink}></cc-icon>
+          </a>
+        </div>
       </cc-block>
     `;
   }
@@ -193,6 +200,14 @@ export class CcTokenOauthList extends LitElement {
       css`
         :host {
           display: block;
+        }
+
+        [slot='link'] {
+          align-items: center;
+          color: var(--cc-color-text-primary-highlight, blue);
+          display: flex;
+          flex-direction: row;
+          gap: 0.5em;
         }
 
         /* Reset default margins and paddings */
