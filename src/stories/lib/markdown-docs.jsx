@@ -3,9 +3,20 @@
 import React from 'react';
 // several docs rely on `cc-notice`
 import '../../components/cc-notice/cc-notice.js';
+import '../../components/cc-web-features-tracker/cc-web-features-tracker.smart.js';
+import trackedWebFeatures from '../../components/cc-web-features-tracker/web-features.json';
+import { updateRootContext } from '../../lib/smart/smart-manager.js';
 
 export function MarkdownDocs({ html }) {
   const htmlContent = { __html: html };
 
-  return <div className="markdown-body sb-unstyled" dangerouslySetInnerHTML={htmlContent}></div>;
+  React.useEffect(() => {
+    updateRootContext({ trackedWebFeatures });
+  }, []);
+
+  return (
+    <cc-smart-container>
+      <div className="markdown-body sb-unstyled" dangerouslySetInnerHTML={htmlContent}></div>
+    </cc-smart-container>
+  );
 }
