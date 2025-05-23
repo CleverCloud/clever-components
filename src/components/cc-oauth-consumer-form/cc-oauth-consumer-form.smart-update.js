@@ -6,7 +6,7 @@ import { sendToApi } from '../../lib/send-to-api.js';
 import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-smart-container/cc-smart-container.js';
-import { CcOauthConsumerDeletedEvent, CcOauthConsumerUpdatedEvent } from './cc-oauth-consumer-form.events.js';
+import { CcOauthConsumerWasDeletedEvent, CcOauthConsumerWasUpdatedEvent } from './cc-oauth-consumer-form.events.js';
 import './cc-oauth-consumer-form.js';
 
 /**
@@ -86,7 +86,7 @@ defineSmartComponent({
         });
       });
 
-    onEvent('cc-oauth-consumer-update', (data) => {
+    onEvent('cc-oauth-consumer-change', (data) => {
       const oauthConsumerName = data.name;
       updateComponent('state', (state) => {
         state.type = 'updating';
@@ -95,7 +95,7 @@ defineSmartComponent({
         .updateOauthConsumer(data)
         .then(() => {
           notifySuccess(i18n('cc-oauth-consumer-form.update.success', { oauthConsumerName }));
-          component.dispatchEvent(new CcOauthConsumerUpdatedEvent());
+          component.dispatchEvent(new CcOauthConsumerWasUpdatedEvent());
         })
         .catch((error) => {
           console.error(error);
@@ -116,7 +116,7 @@ defineSmartComponent({
         .deleteOauthConsumer()
         .then(() => {
           notifySuccess(i18n('cc-oauth-consumer-form.delete.success'));
-          component.dispatchEvent(new CcOauthConsumerDeletedEvent());
+          component.dispatchEvent(new CcOauthConsumerWasDeletedEvent());
         })
         .catch((error) => {
           console.error(error);

@@ -14,9 +14,9 @@ import '../cc-block/cc-block.js';
 import '../cc-input-text/cc-input-text.js';
 import '../cc-notice/cc-notice.js';
 import {
+  CcOauthConsumerChangeEvent,
   CcOauthConsumerCreateEvent,
   CcOauthConsumerDeleteEvent,
-  CcOauthConsumerUpdateEvent,
 } from './cc-oauth-consumer-form.events.js';
 
 const BREAKPOINTS = [450, 550, 750];
@@ -100,7 +100,6 @@ const MANAGE_RIGHT_KEYS = [
 export class CcOauthConsumerForm extends LitElement {
   static get properties() {
     return {
-      orgaHref: { type: String, attribute: 'orga-href' },
       state: { type: Object, attribute: false },
       _shouldDisplayCheckboxGroupError: { type: Boolean, state: true },
     };
@@ -108,9 +107,6 @@ export class CcOauthConsumerForm extends LitElement {
 
   constructor() {
     super();
-
-    /** @type {string|null} Sets the link to navigate back to the organisation information screen. */
-    this.orgaHref = null;
 
     /** @type {OauthConsumerFormState} Sets the state of the component. */
     this.state = { type: 'idle-create' };
@@ -164,7 +160,6 @@ export class CcOauthConsumerForm extends LitElement {
     /** @type {NodeListOf<HTMLInputElement>} */
     const checkboxes = this.shadowRoot.querySelectorAll(`${sectionSelector} .right`);
     const hasAtLeastOneUnchecked = Array.from(checkboxes).some((checkbox) => !checkbox.checked);
-
     selectAllCheckbox.checked = !hasAtLeastOneUnchecked;
   }
 
@@ -218,7 +213,7 @@ export class CcOauthConsumerForm extends LitElement {
         type: 'idle-update',
         values: oauthConsumer,
       };
-      this.dispatchEvent(new CcOauthConsumerUpdateEvent(oauthConsumer));
+      this.dispatchEvent(new CcOauthConsumerChangeEvent(oauthConsumer));
     }
   }
 
@@ -287,17 +282,6 @@ export class CcOauthConsumerForm extends LitElement {
     }
   }
 
-  /**
-   * @param {string} sectionSelector
-   * @returns {boolean}
-   */
-  _areAllRightsEnabled(sectionSelector) {
-    /** @type {NodeListOf<HTMLInputElement>} */
-    const checkboxes = this.shadowRoot.querySelectorAll(`${sectionSelector} .right`);
-    const checkboxesAsArray = Array.from(checkboxes);
-    return checkboxesAsArray.every((checkbox) => checkbox.checked === true);
-  }
-
   resetOauthConsumerForm() {
     this._formRef.value.reset();
   }
@@ -363,6 +347,13 @@ export class CcOauthConsumerForm extends LitElement {
    * @private
    */
   _renderOauthConsumerForm(formValues, isWaiting, skeleton) {
+    const isSelectAllAccessCheckedByDefault = ACCESS_RIGHT_KEYS.every(
+      (accessRightKey) => formValues.rights[accessRightKey],
+    );
+    const isSelectAllManageCheckedByDefault = MANAGE_RIGHT_KEYS.every(
+      (manageRightKey) => formValues.rights[manageRightKey],
+    );
+
     return html`
       <form
         slot="content"
@@ -371,7 +362,6 @@ export class CcOauthConsumerForm extends LitElement {
       >
         <cc-block-section class="info-block">
           <div slot="title" class="info-title">${i18n('cc-oauth-consumer-form.info.title')}</div>
-          <p class="description">${i18n('cc-oauth-consumer-form.info.description')}</p>
 
           <cc-input-text
             name="name"
@@ -456,7 +446,8 @@ export class CcOauthConsumerForm extends LitElement {
                   <input
                     id="select-all-access"
                     type="checkbox"
-                    .checked=${this._areAllRightsEnabled('.access-rights-section')}
+                    .checked=${isSelectAllAccessCheckedByDefault}
+                    .defaultChecked=${isSelectAllAccessCheckedByDefault}
                     ?disabled=${isWaiting || skeleton}
                     @click=${this._handleSelectAllAccessClick}
                   />
@@ -472,7 +463,8 @@ export class CcOauthConsumerForm extends LitElement {
                   <input
                     id="select-all-manage"
                     type="checkbox"
-                    .checked=${this._areAllRightsEnabled('.manage-rights-section')}
+                    .checked=${isSelectAllManageCheckedByDefault}
+                    .defaultChecked=${isSelectAllManageCheckedByDefault}
                     ?disabled=${isWaiting || skeleton}
                     @click=${this._handleSelectAllManageClick}
                   />

@@ -22,38 +22,38 @@ export class CcOauthConsumerCreateEvent extends CcEvent {
  * We need to dispatch the key of an OAuth consumer for the redirection.
  * @extends {CcEvent<string>}
  */
-export class CcOauthConsumerCreatedEvent extends CcEvent {
-  static TYPE = 'cc-oauth-consumer-created';
+export class CcOauthConsumerWasCreatedEvent extends CcEvent {
+  static TYPE = 'cc-oauth-consumer-was-created';
 
   /** @param {string} key */
   constructor(key) {
-    super(CcOauthConsumerCreatedEvent.TYPE, key);
+    super(CcOauthConsumerWasCreatedEvent.TYPE, key);
   }
 }
 
 /**
- * Dispatched when an OAuth consumer update is requested.
+ * Dispatched when an OAuth consumer changes.
  * @extends {CcEvent<OauthConsumerWithoutKeyAndSecret>}
  */
-export class CcOauthConsumerUpdateEvent extends CcEvent {
-  static TYPE = 'cc-oauth-consumer-update';
+export class CcOauthConsumerChangeEvent extends CcEvent {
+  static TYPE = 'cc-oauth-consumer-change';
 
   /** @param {OauthConsumerWithoutKeyAndSecret} detail */
   constructor(detail) {
-    super(CcOauthConsumerUpdateEvent.TYPE, detail);
+    super(CcOauthConsumerChangeEvent.TYPE, detail);
   }
 }
 
 /**
- * Dispatched when an OAuth consumer update is requested.
+ * Dispatched when an OAuth consumer was updated.
  * We need to dispatch the event for the redirection.
  * @extends {CcEvent<string>}
  */
-export class CcOauthConsumerUpdatedEvent extends CcEvent {
-  static TYPE = 'cc-oauth-consumer-updated';
+export class CcOauthConsumerWasUpdatedEvent extends CcEvent {
+  static TYPE = 'cc-oauth-consumer-was-updated';
 
   constructor() {
-    super(CcOauthConsumerUpdatedEvent.TYPE);
+    super(CcOauthConsumerWasUpdatedEvent.TYPE);
   }
 }
 
@@ -74,10 +74,10 @@ export class CcOauthConsumerDeleteEvent extends CcEvent {
  * We need to dispatch the event for the redirection.
  * @extends {CcEvent<string>}
  */
-export class CcOauthConsumerDeletedEvent extends CcEvent {
-  static TYPE = 'cc-oauth-consumer-deleted';
+export class CcOauthConsumerWasDeletedEvent extends CcEvent {
+  static TYPE = 'cc-oauth-consumer-was-deleted';
 
   constructor() {
-    super(CcOauthConsumerDeletedEvent.TYPE);
+    super(CcOauthConsumerWasDeletedEvent.TYPE);
   }
 }

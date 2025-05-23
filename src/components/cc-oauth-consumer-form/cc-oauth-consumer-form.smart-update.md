@@ -14,10 +14,10 @@ title: '💡 Smart (update)'
 
 ## 👋️ Events fired
 
-| Name                          | Payload | Details                                                                                                                      |
-|-------------------------------|---------|------------------------------------------------------------------------------------------------------------------------------|
-| `cc-oauth-consumer-updated`   |         | Fired when the OAuth consumer is updated.<br/>Should be used to redirect the user to the OAuth consumer information page.    |
-| `cc-oauth-consumer-deleted`   |         | Fired when the OAuth consumer is deleted.<br/>Should be used to redirect the user to the current organisation overview page. |
+| Name                            | Payload | Details                                                                                                                      |
+|---------------------------------|---------|------------------------------------------------------------------------------------------------------------------------------|
+| `cc-oauth-consumer-was-updated` |         | Fired when the OAuth consumer is updated.<br/>Should be used to redirect the user to the OAuth consumer information page.    |
+| `cc-oauth-consumer-was-deleted`     |         | Fired when the OAuth consumer is deleted.<br/>Should be used to redirect the user to the current organisation overview page. |
 
 
 
