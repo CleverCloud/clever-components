@@ -16,6 +16,7 @@ const config = {
     '../src/**/*.stories.js',
     // The smart component Markdown docs
     '../src/**/*smart*.md',
+    '../src/**/*smarttt*.md',
   ],
   addons: ['@storybook/addon-links', '@storybook/addon-essentials'],
   framework: {

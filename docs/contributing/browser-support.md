@@ -22,7 +22,13 @@ When developing components, you need to be mindful of which web platform feature
 
 <cc-web-features-tracker></cc-web-features-tracker>
 
-For more details on how to use and interpret the feature tracker, see the [Web Features Tracker documentation](../components/cc-web-features-tracker.md).
+For more details on how to use and interpret the feature tracker, see the [Web Features Tracker documentation](http://localhost:6006/docs/contributing/web-features-tracker.md).
+
+<details>
+  <summary>How to add features to the list of tracked web features?</summary>
+
+<br>
+</details>
 
 ## Polyfills
 
