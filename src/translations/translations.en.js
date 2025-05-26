@@ -118,14 +118,14 @@ export const translations = {
   'cc-addon-backups.restore.btn': `restore...`,
   'cc-addon-backups.restore.manual.description.es-addon': () =>
     sanitize`You can restore this backup using <a href="https://curl.se/docs/">cURL</a> by executing this command:`,
-  'cc-addon-backups.restore.manual.description.jenkins': `Restoring a Jenkins backup must be done by our support team. Please open a support ticket containing the add-on ID and the backup to restore and we will do it for you.`,
+  'cc-addon-backups.restore.manual.description.jenkins': `Restoring a Jenkins backup must be done by our support team. Open a support ticket containing the add-on ID and the backup to restore and we will do it for you.`,
   'cc-addon-backups.restore.manual.description.mongodb-addon': () =>
     sanitize`You can restore this backup using the <a href="https://docs.mongodb.com/v4.0/reference/program/mongorestore/">mongorestore</a> tool by executing this command:`,
   'cc-addon-backups.restore.manual.description.mysql-addon': () =>
     sanitize`You can restore this backup using the <a href="https://dev.mysql.com/doc/refman/8.0/en/mysql.html">mysql</a> CLI by executing this command:`,
   'cc-addon-backups.restore.manual.description.postgresql-addon': () =>
     sanitize`You can restore this backup using the <a href="https://www.postgresql.org/docs/current/app-pgrestore.html">pg_restore</a> tool by executing this command:`,
-  'cc-addon-backups.restore.manual.description.redis-addon': `Restoring a Redis backup must be done by our support team. Please open a support ticket containing the add-on ID and the backup to restore and we will do it for you.`,
+  'cc-addon-backups.restore.manual.description.redis-addon': `Restoring a Redis backup must be done by our support team. Open a support ticket containing the add-on ID and the backup to restore and we will do it for you.`,
   'cc-addon-backups.restore.manual.title': `Restore manually`,
   'cc-addon-backups.restore.with-service.description.es-addon': /** @param {{href: string}} _ */ ({ href }) =>
     sanitize`You can restore this backup using Kibana by going to the <a href="${href}">backup repository</a>.`,
@@ -325,7 +325,7 @@ export const translations = {
   'cc-domain-management.list.empty': `No domain associated to this application`,
   'cc-domain-management.list.error-not-found.heading': `Domain not found`,
   'cc-domain-management.list.error-not-found.text': /** @param {{domain: string}} _ */ ({ domain }) =>
-    sanitize`<p>"${domain}" may have been removed by someone else after loading the list of domains.<p><p>Please <strong>refresh your page</strong> to get the updated list of domains.</p>`,
+    sanitize`<p>"${domain}" may have been removed by someone else after loading the list of domains.<p><p><strong>Refresh your page</strong> to get the updated list of domains.</p>`,
   'cc-domain-management.list.heading': `Domain names linked to this application`,
   'cc-domain-management.list.http-only.notice': () =>
     sanitize`Only direct domains of <code>cleverapps.io</code> are secured with SSL certificates, not <code>xx.yy.cleverapps.io</code> domains.`,
@@ -592,7 +592,7 @@ export const translations = {
   //#endregion
   //#region cc-input-date
   'cc-input-date.error.bad-input': `You must enter a date.`,
-  'cc-input-date.error.empty': `You must enter a value.`,
+  'cc-input-date.error.empty': `You must enter a value`,
   'cc-input-date.error.range-overflow': /** @param {{max: string}} _ */ ({ max }) =>
     `You must enter a date lower that ${max}.`,
   'cc-input-date.error.range-underflow': /** @param {{min: string}} _ */ ({ min }) =>
@@ -603,7 +603,7 @@ export const translations = {
   //#region cc-input-number
   'cc-input-number.decrease': `decrease`,
   'cc-input-number.error.bad-type': `You must enter a number.`,
-  'cc-input-number.error.empty': `You must enter a value.`,
+  'cc-input-number.error.empty': `You must enter a value`,
   'cc-input-number.error.range-overflow': /** @param {{max: number}} _ */ ({ max }) =>
     `You must enter a number lower that ${max}.`,
   'cc-input-number.error.range-underflow': /** @param {{min: number}} _ */ ({ min }) =>
@@ -614,8 +614,8 @@ export const translations = {
   //#region cc-input-text
   'cc-input-text.clipboard': `Copy to clipboard`,
   'cc-input-text.error.bad-email': () => sanitize`Invalid email address format.<br>Example: john.doe@example.com.`,
-  'cc-input-text.error.empty': `You must enter a value.`,
-  'cc-input-text.error.empty.email': `Please enter an email address.`,
+  'cc-input-text.error.empty': `You must enter a value`,
+  'cc-input-text.error.empty.email': `Enter an email address`,
   'cc-input-text.required': `required`,
   'cc-input-text.secret.hide': `Hide secret`,
   'cc-input-text.secret.show': `Show secret`,
@@ -1086,7 +1086,7 @@ export const translations = {
   'cc-orga-member-card.btn.validate.visible-text': `Validate`,
   'cc-orga-member-card.current-user': `Your account`,
   'cc-orga-member-card.error.last-admin.heading': `You are the last admin of the organisation`,
-  'cc-orga-member-card.error.last-admin.text': `Please add a new admin before you can edit your role or leave the organisation.`,
+  'cc-orga-member-card.error.last-admin.text': `Add a new admin before you can edit your role or leave the organisation`,
   'cc-orga-member-card.mfa-disabled': `2FA disabled`,
   'cc-orga-member-card.mfa-enabled': `2FA enabled`,
   'cc-orga-member-card.role.accounting': `Accountant`,
@@ -1108,7 +1108,7 @@ export const translations = {
   'cc-orga-member-list.error': `Something went wrong while loading the organisation member list.`,
   'cc-orga-member-list.error-member-not-found.heading': `Member not found`,
   'cc-orga-member-list.error-member-not-found.text': () =>
-    sanitize`<p>The member has left the organisation or has been removed by someone else after loading the list of members.<p><p>Please <strong>refresh your page</strong> to get the updated list of members.</p>`,
+    sanitize`<p>The member has left the organisation or has been removed by someone else after loading the list of members.<p><p><strong>Refresh your page</strong> to get the updated list of members.</p>`,
   'cc-orga-member-list.error.unauthorised.heading': `Unauthorised action`,
   'cc-orga-member-list.error.unauthorised.text': `Only admins may invite, edit or remove other admins.`,
   'cc-orga-member-list.filter.mfa': `Accounts not secured with 2FA`,
@@ -1134,7 +1134,7 @@ export const translations = {
   'cc-orga-member-list.leave.btn': `Leave the organisation`,
   'cc-orga-member-list.leave.error': `Something went wrong when trying to leave the organisation.`,
   'cc-orga-member-list.leave.error-last-admin.heading': `You are the last admin of your organisation`,
-  'cc-orga-member-list.leave.error-last-admin.text': `Please add a new admin before you can edit your role or leave the organisation.`,
+  'cc-orga-member-list.leave.error-last-admin.text': `Add a new admin before you can edit your role or leave the organisation`,
   'cc-orga-member-list.leave.heading': `Danger zone`,
   'cc-orga-member-list.leave.success': `You have left the organisation.`,
   'cc-orga-member-list.leave.text': () => sanitize`
@@ -1162,11 +1162,11 @@ export const translations = {
     return `To avoid any suspension of your services and deletion of your data, please check the billing info related to the following ${organisation}:`;
   },
   'cc-payment-warning.home.title': `Beware! Something is wrong with your payment methods.`,
-  'cc-payment-warning.orga.default-payment-method-is-expired': `To avoid any suspension of your services and deletion of your data, please add a valid payment method and set it as default.`,
+  'cc-payment-warning.orga.default-payment-method-is-expired': `To avoid any suspension of your services and deletion of your data, add a valid payment method and set it as default.`,
   'cc-payment-warning.orga.default-payment-method-is-expired.title': `Beware! Your default payment method has expired`,
-  'cc-payment-warning.orga.no-default-payment-method': `To avoid any suspension of your services and deletion of your data, please set one of them as default.`,
+  'cc-payment-warning.orga.no-default-payment-method': `To avoid any suspension of your services and deletion of your data, set one of them as default.`,
   'cc-payment-warning.orga.no-default-payment-method.title': `Beware! You have registered payment methods but none of them are set as default`,
-  'cc-payment-warning.orga.no-payment-method': `To avoid any suspension of your services and deletion of your data, please add a valid payment method and set it as default.`,
+  'cc-payment-warning.orga.no-payment-method': `To avoid any suspension of your services and deletion of your data, add a valid payment method and set it as default.`,
   'cc-payment-warning.orga.no-payment-method.title': `Beware! You don't have any registered payment method`,
   //#endregion
   //#region cc-plan-picker
@@ -1354,7 +1354,7 @@ export const translations = {
   'cc-product-list.search-label': `Search for a product`,
   //#endregion
   //#region cc-select
-  'cc-select.error.empty': `You must select a value.`,
+  'cc-select.error.empty': `You must select a value`,
   'cc-select.required': `required`,
   //#endregion
   //#region cc-ssh-key-list
@@ -1373,8 +1373,8 @@ export const translations = {
     `An error occurred while importing your GitHub key "${name}".`,
   'cc-ssh-key-list.error.loading': `An error occurred while loading your keys.`,
   'cc-ssh-key-list.error.private-key': `Invalid format: did you enter your private key instead of your public key?`,
-  'cc-ssh-key-list.error.required.name': `Please enter a name for your SSH key`,
-  'cc-ssh-key-list.error.required.public-key': `Please enter the public key value`,
+  'cc-ssh-key-list.error.required.name': `Enter a name for your SSH key`,
+  'cc-ssh-key-list.error.required.public-key': `Enter the public key value`,
   'cc-ssh-key-list.github.empty': `There are no SSH keys available for import from your GitHub account.`,
   'cc-ssh-key-list.github.import': `Import`,
   'cc-ssh-key-list.github.import.a11y': /** @param {{name: string}} _ */ ({ name }) =>
