@@ -1,15 +1,15 @@
 ---
-kind: '🛠 Profile/<cc-token-api-list>'
+kind: '🛠 Profile/<cc-token-api-creation-form>'
 title: '💡 Smart'
 ---
 
-# 💡 Smart `<cc-token-api-list>`
+# 💡 Smart `<cc-token-api-creation-form>`
 
 ## ℹ️ Details
 
 <table>
-  <tr><td><strong>Component    </strong> <td><a href="https://www.clever-cloud.com/doc/clever-components/?path=/docs/🛠-profile-cc-token-api-list--default-story"><code>&lt;cc-token-api-list&gt;</code></a>
-  <tr><td><strong>Selector     </strong> <td><code>cc-token-api-list</code>
+  <tr><td><strong>Component    </strong> <td><a href="https://www.clever-cloud.com/doc/clever-components/?path=/docs/🛠-profile-cc-token-api-creation-form--default-story"><code>&lt;cc-token-api-creation-form&gt;</code></a>
+  <tr><td><strong>Selector     </strong> <td><code>cc-token-api-creation-form</code>
   <tr><td><strong>Requires auth</strong> <td>Yes
 </table>
 
@@ -21,6 +21,7 @@ title: '💡 Smart'
 
 ```ts
 interface ApiConfig {
+  API_HOST: string,
   API_OAUTH_TOKEN: string,
   API_OAUTH_TOKEN_SECRET: string,
   OAUTH_CONSUMER_KEY: string,
@@ -33,8 +34,8 @@ interface ApiConfig {
 
 | Method   | Type                    | Cache?  |
 |----------|:------------------------|---------|
-| `GET`    | `/api-tokens`           | Default |
-| `DELETE` | `/api-tokens/{tokenId}` | N/A     |
+| `GET`    | `/v2/self`              | Default |
+| `POST`   | `/api-tokens`           | N/A     |
 
 ```html
 <cc-smart-container context='{
@@ -47,6 +48,6 @@ interface ApiConfig {
       AUTH_BRIDGE_HOST: "",
     }
 }'>
-    <cc-token-api-list></cc-token-api-list>
+    <cc-token-api-creation-form></cc-token-api-creation-form>
 <cc-smart-container>
 ```

@@ -14,6 +14,7 @@ import './cc-token-api-list.js';
  * @typedef {import('./cc-token-api-list.types.js').RawApiToken} RawApiToken
  * @typedef {import('../../lib/smart/smart-component.types.js').OnContextUpdateArgs<CcTokenApiList>} OnContextUpdateArgs
  * @typedef {import('../../lib/send-to-api.types.js').ApiConfig} ApiConfig
+ * @typedef {import('../../lib/send-to-api.types.js').AuthBridgeConfig} AuthBridgeConfig
  */
 
 defineSmartComponent({
@@ -93,9 +94,9 @@ defineSmartComponent({
 });
 
 class Api {
-  /** @param {ApiConfig} apiConfig */
+  /** @param {AuthBridgeConfig} apiConfig */
   constructor(apiConfig) {
-    this._apiConfig = apiConfig;
+    this._authBridgeConfig = apiConfig;
   }
 
   _listApiTokens() {
@@ -118,7 +119,7 @@ class Api {
   /** @returns {Promise<ApiToken[]>} */
   getApiTokens() {
     return this._listApiTokens()
-      .then(sendToAuthBridge({ apiConfig: this._apiConfig }))
+      .then(sendToAuthBridge({ authBridgeConfig: this._authBridgeConfig }))
       .then(
         /** @param {RawApiToken[]} tokens */
         (tokens) =>
@@ -141,6 +142,6 @@ class Api {
    * @returns {Promise<void>}
    */
   revokeApiToken(apiTokenId) {
-    return this._deleteApiToken(apiTokenId).then(sendToAuthBridge({ apiConfig: this._apiConfig }));
+    return this._deleteApiToken(apiTokenId).then(sendToAuthBridge({ authBridgeConfig: this._authBridgeConfig }));
   }
 }

@@ -1572,6 +1572,68 @@ export const translations = {
   'cc-toast.icon-alt.success': `Succès`,
   'cc-toast.icon-alt.warning': `Avertissement`,
   //#endregion
+  //#region cc-token-api-creation-form
+  'cc-token-api-creation-form.cli.content': () => sanitize`
+    <p>
+      Gérez vos tokens d'API depuis un terminal à l'aide des commandes ci-dessous.
+      Pour installer les Clever Tools (CLI), suivez les instructions de la <a href="https://www.clever-cloud.com/developers/doc/cli/install/" title="documentation - Installer les Clever Tools - nouvelle fenêtre - en Anglais">documentation</a>.
+    </p>
+    <dl>
+      <dt>Créer un token d'API&nbsp;:</dt>
+      <dd><code>clever tokens create "&lt;votre nom de token&gt;"</code></dd>
+      <dt>Révoquer un token d'API&nbsp;:</dt>
+      <dd><code>clever tokens revoke &lt;api_token_id&gt;</code></dd>
+      <dt>Lister les tokens d'API&nbsp;:</dt>
+      <dd><code>clever tokens list</code></dd>
+      <dt>Utiliser votre token d'API&nbsp;:</dt>
+      <dd><code>curl -H "Authorization: Bearer &lt;votre_token&gt;" https://api-bridge.clever-cloud.com/v2/self</code></dd>
+    </dl>
+  `,
+  'cc-token-api-creation-form.configuration-step.form.desc.label': `Description`,
+  'cc-token-api-creation-form.configuration-step.form.expiration-date.error.invalid':
+    /** @param {{ date: string }} _ */ ({ date }) =>
+      sanitize`Saisissez une date et une heure valide.<br>Par exemple&nbsp;: ${date}`,
+  'cc-token-api-creation-form.configuration-step.form.expiration-date.error.range-overflow':
+    /** @param {{ date: string }} _ */ ({ date }) =>
+      sanitize`La date d'expiration doit être moins d'un an à partir de maintenant<br>Par exemple&nbsp;: ${date}`,
+  'cc-token-api-creation-form.configuration-step.form.expiration-date.error.range-underflow':
+    /** @param {{ date: string }} _ */ ({ date }) =>
+      sanitize`La date d'expiration doit être au moins 15 minutes à partir de maintenant<br>Par exemple&nbsp;: ${date}`,
+  'cc-token-api-creation-form.configuration-step.form.expiration-date.help.format': () =>
+    sanitize`Format&nbsp;: AAAA-MM-JJ HH:MM:SS`,
+  'cc-token-api-creation-form.configuration-step.form.expiration-date.help.min-max': `Au moins 15 minutes et jusqu'à 1 an à partir de maintenant`,
+  'cc-token-api-creation-form.configuration-step.form.expiration-date.label': `Date d'expiration`,
+  'cc-token-api-creation-form.configuration-step.form.expiration-duration.help.custom': `Spécifiez la date d'expiration à l'aide du champ ci-contre`,
+  'cc-token-api-creation-form.configuration-step.form.expiration-duration.label': `Durée avant expiration`,
+  'cc-token-api-creation-form.configuration-step.form.expiration-duration.option-label.custom': `Personnalisée`,
+  'cc-token-api-creation-form.configuration-step.form.expiration-duration.option-label.ninety-days': `90 jours`,
+  'cc-token-api-creation-form.configuration-step.form.expiration-duration.option-label.one-year': `1 an`,
+  'cc-token-api-creation-form.configuration-step.form.expiration-duration.option-label.seven-days': `7 jours`,
+  'cc-token-api-creation-form.configuration-step.form.expiration-duration.option-label.sixty-days': `60 jours`,
+  'cc-token-api-creation-form.configuration-step.form.expiration-duration.option-label.thirty-days': `30 jours`,
+  'cc-token-api-creation-form.configuration-step.form.link.back-to-list': `Retour à la liste des tokens d'API`,
+  'cc-token-api-creation-form.configuration-step.form.name.label': `Nom`,
+  'cc-token-api-creation-form.configuration-step.form.submit-button.label': `Continuer`,
+  'cc-token-api-creation-form.configuration-step.main-heading': `Créer un nouveau token d'API`,
+  'cc-token-api-creation-form.configuration-step.nav.label': `Configuration`,
+  'cc-token-api-creation-form.copy-step.form.token.label': `Votre token d'API`,
+  'cc-token-api-creation-form.copy-step.link.back-to-list': `Retour à la liste des tokens d'API`,
+  'cc-token-api-creation-form.copy-step.main-heading': `Votre token d'API est prêt`,
+  'cc-token-api-creation-form.copy-step.nav.label': `Récupération du token d'API`,
+  'cc-token-api-creation-form.copy-step.notice.message': `Pour des raisons de sécurité, ce token d'API ne sera affiché qu'une fois. Assurez-vous de le copier et de le stocker dans un endroit sécurisé. Si vous perdez ce token, vous devrez le révoquer et en créer un nouveau.`,
+  'cc-token-api-creation-form.error': `Une erreur est survenue lors du chargement des informations liées votre compte`,
+  'cc-token-api-creation-form.link.doc': `Tokens d'API - Documentation`,
+  'cc-token-api-creation-form.nav.aria-label': `Étapes de création de token d'API`,
+  'cc-token-api-creation-form.validation-step.error.generic': `Une erreur est survenue lors de la création du token d'API`,
+  'cc-token-api-creation-form.validation-step.form.link.back-to-configuration': `Retour à l'étape de configuration`,
+  'cc-token-api-creation-form.validation-step.form.mfa-code.error': `Code 2FA invalide`,
+  'cc-token-api-creation-form.validation-step.form.mfa-code.label': `Code de double authentification (2FA)`,
+  'cc-token-api-creation-form.validation-step.form.password.error': `Mot de passe invalide`,
+  'cc-token-api-creation-form.validation-step.form.password.label': `Mot de passe`,
+  'cc-token-api-creation-form.validation-step.form.submit-button.label': `Créer`,
+  'cc-token-api-creation-form.validation-step.main-heading': `Confirmer votre identité`,
+  'cc-token-api-creation-form.validation-step.nav.label': `Authentification`,
+  //#endregion
   //#region cc-token-api-list
   'cc-token-api-list.card.expired': `Expiré`,
   'cc-token-api-list.card.expires-soon': `Expire bientôt`,
@@ -1585,10 +1647,7 @@ export const translations = {
         Gérez vos tokens d'API depuis un terminal à l'aide des commandes ci-dessous.
         Pour installer les Clever Tools (CLI), suivez les instructions de la <a href="https://www.clever-cloud.com/developers/doc/cli/install/" title="documentation - Installer les Clever Tools - nouvelle fenêtre - en Anglais">documentation</a>.
       </p>
-      <p>Note&nbsp;: Ces commandes sont expérimentales et doivent être activées dans la CLI pour être utilisées.
       <dl>
-        <dt>Activer la fonctionnalité des tokens d'API&nbsp;:</dt>
-        <dd><code>clever features enable tokens</code></dd>
         <dt>Créer un token d'API&nbsp;:</dt>
         <dd><code>clever tokens create "&lt;votre nom de token&gt;"</code></dd>
         <dt>Révoquer un token d'API&nbsp;:</dt>
@@ -1606,7 +1665,7 @@ export const translations = {
     sanitize`Vous n'avez aucun token d'API. Cliquez sur le bouton ci-dessous pour créer un nouveau token&nbsp;:`,
   'cc-token-api-list.error': `Une erreur est survenue pendant le chargement des tokens d'API`,
   'cc-token-api-list.intro': () =>
-    sanitize`Ci-dessous la liste des tokens d'API associés à votre compte <a href="https://www.clever-cloud.com/developers/api/howto/#api-tokens" title="Tokens d'API - Documentation - nouvelle fenêtre">tokens d'API</a> et leurs informations. Vous pouvez les révoquez si nécessaire.`,
+    sanitize`Ci-dessous la liste des tokens d'API associés à votre compte <a href="https://www.clever-cloud.com/developers/api/howto/#request-the-api" title="Tokens d'API - Documentation - nouvelle fenêtre">tokens d'API</a> et leurs informations. Vous pouvez les révoquez si nécessaire.`,
   'cc-token-api-list.link.doc': `Tokens d'API - Documentation`,
   'cc-token-api-list.main-heading': `Tokens d'API`,
   'cc-token-api-list.revoke-token': /** @param {{ name: string}} _ */ ({ name }) => `Révoquer le token d'API - ${name}`,

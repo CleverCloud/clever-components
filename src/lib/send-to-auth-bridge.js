@@ -8,25 +8,25 @@ import { withCache } from '@clevercloud/client/esm/with-cache.js';
 import { withOptions } from '@clevercloud/client/esm/with-options.js';
 
 /**
- * @typedef {import('./send-to-api.types.js').ApiConfig} ApiConfig
+ * @typedef {import('./send-to-api.types.js').AuthBridgeConfig} AuthBridgeConfig
  */
 
 /**
  *
  * @param {object} params
- * @param {ApiConfig} params.apiConfig
+ * @param {AuthBridgeConfig} params.authBridgeConfig
  * @param {AbortSignal} [params.signal]
  * @param {number} [params.cacheDelay]
  * @param {number} [params.timeout]
  * @returns {(requestParams: any) => Promise<any>}
  */
-export function sendToAuthBridge({ apiConfig, signal, cacheDelay, timeout }) {
+export function sendToAuthBridge({ authBridgeConfig, signal, cacheDelay, timeout }) {
   return (requestParams) => {
-    const cacheParams = { ...apiConfig, ...requestParams };
+    const cacheParams = { ...authBridgeConfig, ...requestParams };
     return withCache(cacheParams, cacheDelay, () => {
-      const { API_HOST, ...tokens } = apiConfig;
+      const { AUTH_BRIDGE_HOST = 'https://api-bridge.clever-cloud.com', ...tokens } = authBridgeConfig;
       return Promise.resolve(requestParams)
-        .then(prefixUrl('https://api-bridge.clever-cloud.com'))
+        .then(prefixUrl(AUTH_BRIDGE_HOST))
         .then(addOauthHeaderPlaintext(tokens))
         .then(withOptions({ signal, timeout }))
         .then(request);
@@ -35,7 +35,7 @@ export function sendToAuthBridge({ apiConfig, signal, cacheDelay, timeout }) {
 }
 
 /**
- * @param {Omit<ApiConfig, 'API_HOST'>} tokens
+ * @param {Omit<AuthBridgeConfig, 'AUTH_BRIDGE_HOST'>} tokens
  * @returns {(requestParams: any) => any}
  */
 export function addOauthHeaderPlaintext(tokens) {

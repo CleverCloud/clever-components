@@ -2,6 +2,7 @@ import { clampNumber } from '../utils.js';
 
 /**
  * @typedef {import('./date.types.js').Timezone} Timezone
+ * @typedef {import('./date.types.js').DateField} DateField
  * @typedef {(date: Date, offset: number) => Date} DateShiftFunction
  */
 
@@ -48,6 +49,16 @@ export function clampDate(date, min, max) {
  */
 export function getNumberOfDaysInMonth(year, month) {
   return new Date(year, month + 1, 0).getDate();
+}
+
+/**
+ * @param {DateField} field
+ * @param {number} offset
+ * @returns {Date}
+ */
+export function getRelativeDateFromNow(field, offset) {
+  const now = new Date();
+  return shiftDateField(now, field, offset);
 }
 
 // region Date shift
@@ -120,7 +131,7 @@ const DATE_SHIFTER = {
  * The given date is not mutated.
  *
  * @param {Date} date
- * @param {'Y'|'M'|'D'|'H'|'m'|'s'|'S'} field the date field to shift
+ * @param {DateField} field the date field to shift
  * @param {number} offset the shifting offset
  * @return {Date}
  */
