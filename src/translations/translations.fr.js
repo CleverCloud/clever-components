@@ -1624,6 +1624,7 @@ export const translations = {
   'cc-token-oauth-list.error': `Une erreur est survenue pendant le chargement des tokens OAuth`,
   'cc-token-oauth-list.intro': () =>
     sanitize`Ci-dessous la liste des applications tierces liées à votre compte et leurs informations. Vous pouvez révoquer leurs <a href="https://www.clever-cloud.com/developers/api/howto/#oauth1" title="tokens OAuth - Documentation - nouvelle fenêtre">tokens OAuth</a> si vous le souhaitez.`,
+  'cc-token-oauth-list.link.doc': `Tokens OAuth - Documentation`,
   'cc-token-oauth-list.main-heading': `Tokens OAuth`,
   'cc-token-oauth-list.revoke-all-tokens': `Révoquer tous les tokens OAuth`,
   'cc-token-oauth-list.revoke-all-tokens.error': () =>
