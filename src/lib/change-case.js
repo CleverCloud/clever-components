@@ -93,3 +93,18 @@ export function camelCase(input) {
     })
     .join('');
 }
+
+/**
+ * snakeCase('string'); //=> 'string'
+ * snakeCase('dot.case'); //=> 'dot_case'
+ * snakeCase('PascalCase'); //=> 'pascal_case'
+ * snakeCase('camelCase'); //=> 'camel_case'
+ * snakeCase('version 1.2.10'); //=> 'version_1_2_10'
+ * @param {string} input
+ * @returns {string}
+ */
+export function snakeCase(input) {
+  return stringToWordArray(input)
+    .map((word) => word.toLowerCase())
+    .join('_');
+}

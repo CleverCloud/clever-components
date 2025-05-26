@@ -10,7 +10,7 @@ export interface OauthConsumer {
 }
 
 export type OauthConsumerRights = {
-  almighty: boolean;
+  almighty?: boolean;
   accessOrganisations: boolean;
   accessOrganisationsBills: boolean;
   accessOrganisationsConsumptionStatistics: boolean;

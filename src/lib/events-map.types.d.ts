@@ -85,6 +85,14 @@ import {
   CcMapMarkerLeaveEvent,
 } from '../components/cc-map/cc-map.events.js';
 import { CcNoticeDismissEvent } from '../components/cc-notice/cc-notice.events.js';
+import {
+  CcOauthConsumerChangeEvent,
+  CcOauthConsumerCreateEvent,
+  CcOauthConsumerDeleteEvent,
+  CcOauthConsumerWasCreatedEvent,
+  CcOauthConsumerWasDeletedEvent,
+  CcOauthConsumerWasUpdatedEvent,
+} from '../components/cc-oauth-consumer-form/cc-oauth-consumer-form.events.js';
 import { CcProductCreateEvent } from '../components/cc-order-summary/cc-order-summary.events.js';
 import {
   CcOrgaMemberDeleteEvent,
@@ -208,6 +216,12 @@ declare global {
     'cc-multi-select': CcMultiSelectEvent;
     'cc-notice-dismiss': CcNoticeDismissEvent;
     'cc-notify': CcNotifyEvent;
+    'cc-oauth-consumer-change': CcOauthConsumerChangeEvent;
+    'cc-oauth-consumer-create': CcOauthConsumerCreateEvent;
+    'cc-oauth-consumer-delete': CcOauthConsumerDeleteEvent;
+    'cc-oauth-consumer-was-created': CcOauthConsumerWasCreatedEvent;
+    'cc-oauth-consumer-was-deleted': CcOauthConsumerWasDeletedEvent;
+    'cc-oauth-consumer-was-updated': CcOauthConsumerWasUpdatedEvent;
     'cc-orga-member-delete': CcOrgaMemberDeleteEvent;
     'cc-orga-member-edit-toggle': CcOrgaMemberEditToggleEvent;
     'cc-orga-member-invite': CcOrgaMemberInviteEvent;
