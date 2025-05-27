@@ -129,14 +129,14 @@ export const translations = {
   'cc-addon-backups.restore.btn': `restaurer...`,
   'cc-addon-backups.restore.manual.description.es-addon': () =>
     sanitize`Vous pouvez restaurer cette sauvegarde manuellement grâce à l'outil <a href="https://curl.se/docs/">cURL</a> en exécutant cette commande :`,
-  'cc-addon-backups.restore.manual.description.jenkins': `La restauration de backups Jenkins doit passer par notre support. Veuillez créer un ticket en indiquant l'ID de votre add-on ainsi que la date du backup à restaurer et nous le ferons pour vous.`,
+  'cc-addon-backups.restore.manual.description.jenkins': `La restauration de backups Jenkins doit passer par notre support. Créez un ticket en indiquant l'ID de votre add-on ainsi que la date du backup à restaurer et nous le ferons pour vous.`,
   'cc-addon-backups.restore.manual.description.mongodb-addon': () =>
     sanitize`Vous pouvez restaurer cette sauvegarde manuellement grâce à l'outil <a href="https://docs.mongodb.com/v4.0/reference/program/mongorestore/">mongorestore</a> en exécutant cette commande :`,
   'cc-addon-backups.restore.manual.description.mysql-addon': () =>
     sanitize`Vous pouvez restaurer cette sauvegarde manuellement grâce à la CLI <a href="https://dev.mysql.com/doc/refman/8.0/en/mysql.html">mysql</a> en exécutant cette commande :`,
   'cc-addon-backups.restore.manual.description.postgresql-addon': () =>
     sanitize`Vous pouvez restaurer cette sauvegarde manuellement grâce à l'outil <a href="https://www.postgresql.org/docs/current/app-pgrestore.html">pg_restore</a> en exécutant cette commande :`,
-  'cc-addon-backups.restore.manual.description.redis-addon': `La restauration de backups Redis doit passer par notre support. Veuillez créer un ticket en indiquant l'ID de votre add-on ainsi que la date du backup à restaurer et nous le ferons pour vous.`,
+  'cc-addon-backups.restore.manual.description.redis-addon': `La restauration de backups Redis doit passer par notre support. Créez un ticket en indiquant l'ID de votre add-on ainsi que la date du backup à restaurer et nous le ferons pour vous`,
   'cc-addon-backups.restore.manual.title': `Restauration manuelle`,
   'cc-addon-backups.restore.with-service.description.es-addon': /** @param {{href: string}} _ */ ({ href }) =>
     sanitize`Vous pouvez restaurer cette sauvegarde avec Kibana en vous rendant sur le <a href="${href}">dépôt de sauvegardes</a>.`,
@@ -603,31 +603,31 @@ export const translations = {
   'cc-heptapod-info.storage-description': `Stockage utilisé`,
   //#endregion
   //#region cc-input-date
-  'cc-input-date.error.bad-input': `Veuillez saisir une date.`,
-  'cc-input-date.error.empty': `Veuillez saisir une valeur.`,
+  'cc-input-date.error.bad-input': `Saisir une date`,
+  'cc-input-date.error.empty': `Saisissez une valeur`,
   'cc-input-date.error.range-overflow': /** @param {{max: string}} _ */ ({ max }) =>
-    `Veuillez saisir une date inférieure à ${max}.`,
+    `Saisissez une date inférieure à ${max}`,
   'cc-input-date.error.range-underflow': /** @param {{min: string}} _ */ ({ min }) =>
-    `Veuillez saisir une date supérieure à ${min}.`,
+    `Saisissez une date supérieure à ${min}`,
   'cc-input-date.keyboard-hint': `Vous pouvez utiliser les touches flèche haut et flèche bas pour modifier des parties de la date.`,
   'cc-input-date.required': `obligatoire`,
   //#endregion
   //#region cc-input-number
   'cc-input-number.decrease': `décrémenter`,
-  'cc-input-number.error.bad-type': `Veuillez saisir un nombre.`,
-  'cc-input-number.error.empty': `Veuillez saisir une valeur.`,
+  'cc-input-number.error.bad-type': `Saisissez un nombre`,
+  'cc-input-number.error.empty': `Saisissez une valeur`,
   'cc-input-number.error.range-overflow': /** @param {{max: string}} _ */ ({ max }) =>
-    `Veuillez saisir un nombre supérieur à ${max}.`,
+    `Saisissez un nombre supérieur à ${max}`,
   'cc-input-number.error.range-underflow': /** @param {{min: string}} _ */ ({ min }) =>
-    `Veuillez saisir un nombre inférieur à ${min}.`,
+    `Saisissez un nombre inférieur à ${min}`,
   'cc-input-number.increase': `incrémenter`,
   'cc-input-number.required': `obligatoire`,
   //#endregion
   //#region cc-input-text
   'cc-input-text.clipboard': `Copier dans le presse-papier`,
   'cc-input-text.error.bad-email': () => sanitize`Format d'adresse e-mail invalide.<br>Exemple: john.doe@example.com.`,
-  'cc-input-text.error.empty': `Veuillez saisir une valeur.`,
-  'cc-input-text.error.empty.email': `Veuillez saisir une adresse e-mail.`,
+  'cc-input-text.error.empty': `Saisissez une valeur`,
+  'cc-input-text.error.empty.email': `Saisissez une adresse e-mail`,
   'cc-input-text.required': `obligatoire`,
   'cc-input-text.secret.hide': `Cacher le secret`,
   'cc-input-text.secret.show': `Afficher le secret`,
@@ -1098,7 +1098,7 @@ export const translations = {
   'cc-orga-member-card.btn.validate.visible-text': `Valider`,
   'cc-orga-member-card.current-user': `Votre compte`,
   'cc-orga-member-card.error.last-admin.heading': `Vous êtes le dernier admin de l'organisation`,
-  'cc-orga-member-card.error.last-admin.text': `Veuillez désigner un nouvel admin avant de pouvoir modifier votre rôle ou quitter l'organisation.`,
+  'cc-orga-member-card.error.last-admin.text': `Désignez un nouvel admin avant de pouvoir modifier votre rôle ou quitter l'organisation`,
   'cc-orga-member-card.mfa-disabled': `2FA désactivée`,
   'cc-orga-member-card.mfa-enabled': `2FA activée`,
   'cc-orga-member-card.role.accounting': `Comptable`,
@@ -1120,7 +1120,7 @@ export const translations = {
   'cc-orga-member-list.error': `Une erreur est survenue pendant le chargement de la liste des membres.`,
   'cc-orga-member-list.error-member-not-found.heading': `Membre introuvable`,
   'cc-orga-member-list.error-member-not-found.text': () =>
-    sanitize`<p>Le membre a probablement quitté l'organisation ou a été supprimé par quelqu'un d'autre pendant que vous consultiez la liste.<p><p>Veuillez <strong>rafraîchir votre page</strong> pour récupérer la liste des membres à jour.</p>`,
+    sanitize`<p>Le membre a probablement quitté l'organisation ou a été supprimé par quelqu'un d'autre pendant que vous consultiez la liste.<p><p><strong>Rafraîchissez votre page</strong> pour récupérer la liste des membres à jour.</p>`,
   'cc-orga-member-list.error.unauthorised.heading': `Vous n'avez pas les droits nécessaires`,
   'cc-orga-member-list.error.unauthorised.text': `Seul un admin peut inviter, éditer ou supprimer un autre admin.`,
   'cc-orga-member-list.filter.mfa': `Comptes non sécurisés par 2FA`,
@@ -1146,7 +1146,7 @@ export const translations = {
   'cc-orga-member-list.leave.btn': `Quitter l'organisation`,
   'cc-orga-member-list.leave.error': `Une erreur est survenue lorsque vous avez tenté de quitter l'organisation.`,
   'cc-orga-member-list.leave.error-last-admin.heading': `Vous êtes le dernier admin de l'organisation`,
-  'cc-orga-member-list.leave.error-last-admin.text': `Veuillez désigner un nouvel admin avant de pouvoir quitter l'organisation.`,
+  'cc-orga-member-list.leave.error-last-admin.text': `Désignez un nouvel admin avant de pouvoir quitter l'organisation`,
   'cc-orga-member-list.leave.heading': `Zone de danger`,
   'cc-orga-member-list.leave.success': `Vous avez quitté l'organisation.`,
   'cc-orga-member-list.leave.text': () => sanitize`
@@ -1377,7 +1377,7 @@ export const translations = {
   'cc-product-list.search-label': `Chercher un produit`,
   //#endregion
   //#region cc-select
-  'cc-select.error.empty': `Veuillez sélectionner une valeur.`,
+  'cc-select.error.empty': `Sélectionnez une valeur`,
   'cc-select.required': `obligatoire`,
   //#endregion
   //#region cc-ssh-key-list
@@ -1397,8 +1397,8 @@ export const translations = {
   'cc-ssh-key-list.error.loading': `Une erreur est survenue pendant le chargement de vos clés.`,
   'cc-ssh-key-list.error.private-key': () =>
     sanitize`Format incorrect&nbsp;: avez-vous saisi votre clé privée au lieu de votre clé publique&nbsp;?`,
-  'cc-ssh-key-list.error.required.name': `Veuillez saisir un nom pour votre clé SSH`,
-  'cc-ssh-key-list.error.required.public-key': `Veuillez saisir la valeur de votre clé publique`,
+  'cc-ssh-key-list.error.required.name': `Saisissez un nom pour votre clé SSH`,
+  'cc-ssh-key-list.error.required.public-key': `Saisissez la valeur de votre clé publique`,
   'cc-ssh-key-list.github.empty': `Il n'y a aucune clé SSH disponible à l'import depuis votre compte GitHub.`,
   'cc-ssh-key-list.github.import': `Importer`,
   'cc-ssh-key-list.github.import.a11y': /** @param {{name: string}} _ */ ({ name }) =>
