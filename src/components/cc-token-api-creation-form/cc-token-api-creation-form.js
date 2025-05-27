@@ -708,7 +708,7 @@ export class CcTokenApiCreationForm extends LitElement {
 
         /* FIXME: not great when viewport is reduced + should be handled by the cc-block component itself */
         cc-block > [slot='content'] {
-          padding-bottom: 2em;
+          padding-bottom: 1em;
           padding-inline: 3em;
         }
 
@@ -737,7 +737,7 @@ export class CcTokenApiCreationForm extends LitElement {
           flex-wrap: wrap;
           list-style: none;
           margin: 0;
-          margin-block: 2em;
+          margin-block: 1em;
           padding: 0;
           row-gap: 1em;
         }
@@ -844,7 +844,7 @@ export class CcTokenApiCreationForm extends LitElement {
           flex-wrap: wrap;
           gap: 1.5em;
           justify-content: flex-end;
-          margin-top: 2em;
+          margin-top: 1em;
         }
 
         .form__actions__submit-button {
