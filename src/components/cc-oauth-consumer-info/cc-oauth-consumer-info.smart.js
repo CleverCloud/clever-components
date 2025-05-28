@@ -48,11 +48,10 @@ defineSmartComponent({
 
     updateComponent('state', { type: 'loading' });
 
-    api
-      .getOauthConsumerWithSecret()
-      .then(([data, secretData]) => {
+    api.getOauthConsumerWithSecret().then(({ rawOauthConsumer, secret, errors }) => {
+      if (rawOauthConsumer != null) {
         const rightsFromApiData = Object.fromEntries(
-          Object.entries(data.rights).map(([name, isEnabled]) => {
+          Object.entries(rawOauthConsumer.rights).map(([name, isEnabled]) => {
             const camelCaseName = camelCase(name);
             return [camelCaseName, isEnabled];
           }),
@@ -63,22 +62,24 @@ defineSmartComponent({
         };
         updateComponent('state', {
           type: 'loaded',
-          name: data.name,
-          url: data.url,
-          baseUrl: data.baseUrl,
-          description: data.description,
-          picture: data.picture,
+          name: rawOauthConsumer.name,
+          url: rawOauthConsumer.url,
+          baseUrl: rawOauthConsumer.baseUrl,
+          description: rawOauthConsumer.description,
+          picture: rawOauthConsumer.picture,
           rights,
-          key: data.key,
-          secret: secretData.secret,
+          key: rawOauthConsumer.key,
+          secret,
         });
-      })
-      .catch((error) => {
-        console.error(error);
+      } else if (rawOauthConsumer == null) {
+        errors.forEach((error) => {
+          console.error(error);
+        });
         updateComponent('state', {
           type: 'error',
         });
-      });
+      }
+    });
   },
 });
 
@@ -109,9 +110,18 @@ class Api {
   }
 
   /**
-   * @return {Promise<[RawOauthConsumer, {secret: string}]>}
+   * @returns {Promise<{ rawOauthConsumer: RawOauthConsumer, secret: string, errors: any[] }>} A promise that resolves when getOauthConsumer and getSecret are resolved
    */
   getOauthConsumerWithSecret() {
-    return Promise.all([this.getOauthConsumer(), this.getSecret()]);
+    return Promise.allSettled([this.getOauthConsumer(), this.getSecret()]).then(
+      /** @param {[PromiseSettledResult<RawOauthConsumer>, PromiseSettledResult<{secret: string}>]} results */
+      (results) => {
+        const [getOauthConsumerResult, getSecretResult] = results;
+        const rawOauthConsumer = getOauthConsumerResult.status === 'fulfilled' ? getOauthConsumerResult.value : null;
+        const secret = getSecretResult.status === 'fulfilled' ? getSecretResult.value.secret : null;
+        const errors = results.filter((result) => result.status === 'rejected');
+        return { rawOauthConsumer, secret, errors };
+      },
+    );
   }
 }

@@ -6,7 +6,8 @@ export interface OauthConsumer {
   picture: string;
   rights: OauthConsumerRights;
   key: string;
-  secret: string;
+  /** There is no secret if the user is not admin */
+  secret?: string;
 }
 
 export type OauthConsumerRights = {
