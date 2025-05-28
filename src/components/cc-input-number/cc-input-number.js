@@ -435,7 +435,6 @@ export class CcInputNumber extends CcFormControlElement {
           font-size: unset;
           margin: 0;
           padding: 0;
-          resize: none;
           width: 100%;
         }
 
