@@ -128,8 +128,10 @@ defineSmartComponent({
         if (errors.length === 0) {
           notifySuccess(i18n('cc-token-oauth-list.revoke-all-tokens.success'));
         } else if (revokedTokens.length > 0) {
+          errors.forEach((error) => console.error(error));
           notifyError(i18n('cc-token-oauth-list.revoke-all-tokens.partial-error'));
         } else {
+          errors.forEach((error) => console.error(error));
           notifyError(i18n('cc-token-oauth-list.revoke-all-tokens.error'));
         }
       });
