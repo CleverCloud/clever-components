@@ -5,61 +5,69 @@ title: 'Browser support'
 
 # Browser support
 
-## What does it mean for contributors?
+## Browser compatibility approach
 
-As a contributor of this component library, you need to make sure a given Web feature (HTML, CSS, JS, SVG, browser API...) is supported by _modern browsers_ before using it.
+When contributing to our components, it's important to understand our browser support strategy. We follow the **Baseline widely available** approach for browser compatibility, which is explained in detail in our [Browser Support Getting Started guide](https://www.clever-cloud.com/doc/clever-components/?path=/docs/%F0%9F%8F%A1-getting-started-browser-support--docs).
 
-When it comes to CSS features, we're not using [autoprefixer](https://autoprefixer.github.io/) yet.
-This could change in the future.
-For now, this means you really need to wait for native support in _modern browsers_.
+The key points to remember:
 
-When it comes to JavaScript language features, we decided **not to use** any transpilation provided by tools like [Babel](https://babeljs.io/).
-We made this decision out of simplicity.
-We don't intend to change this in the future.
-For now, this means you really need to wait for native support in _modern browsers_.
+- We support browsers that implement features that have been widely available for at least 30 months,
+- We do not transpile or transform our code to support older browsers,
+- We may use "newly available" features as progressive enhancements,
+- In rare cases, we may use critical features that require polyfills (see below).
 
-When it comes to JavaScript and browser APIs than can be polyfilled, we try to wait for native support in _modern browsers_.
-In some rare situations (hello Safari), we can make an exception and rely on a polyfill with a dependency in this project.
-We did this in the past with:
+## Tracked web features
 
-* [Clipboard API](https://developer.mozilla.org/en-US/docs/Web/API/Clipboard_API)
-* [ResizeObserver](https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver)
+When developing components, you need to be mindful of which web platform features you can use. We maintain a tracker of interesting web features to check if they are compatible with our browser support strategy:
 
-If you're not sure if a given feature is supported by _modern browsers_, you can find out on those sites:
+<cc-web-features-tracker></cc-web-features-tracker>
 
-* [Can I use?](https://caniuse.com/) works really well for HTML, CSS, SVG and browser APIs
-* [Kangax's compat table](https://kangax.github.io/compat-table/es6/) works really well for specific JavaScript features
-* [MDN](https://developer.mozilla.org/en-US/) works well in for all features
+<details>
+  <summary style="margin-bottom:1em"><h3 style="display: inline;">How to add features to the list of tracked web features?</h3></summary>
 
-Browser vendors also maintain platform/feature status pages:
+The table above is a smart web component that accepts a list of features as a source to fetch data about these features through different APIs.
 
-* https://www.chromestatus.com/features
-* https://developer.microsoft.com/en-us/microsoft-edge/status/
-* https://platform-status.mozilla.org/
-* https://webkit.org/status/
+If you want to add features to this list, you need to edit the `src/components/cc-web-features/web-features.json` file that is consumed by the component.
 
-## What features are we waiting for?
+#### 1. Choose the right source
 
-There are lots of exciting new Web features we'd like to use in this project, but we still need to wait.
+When adding a new feature to track, follow these steps:
 
-### Features landed in some browsers
+1. Go to the [Web Features Explorer IDs page](https://web-platform-dx.github.io/web-features-explorer/ids/),
+2. Search for your feature.
 
-* [JS: Top level await](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/await)
-  * Waiting for Safari 15
-* [JS: Intl.NumberFormat - currencySymbol: 'narrow'](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat)
-  * Waiting for Safari 14.1
-* [JS: Private class features](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/Private_class_fields)
-  * Waiting for Safari 14.1
-* [CSS: gap with Flexbox](https://developer.mozilla.org/en-US/docs/Web/CSS/gap)
-  * Waiting for Safari 14.1
-* [CSS: Subgrids](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Grid_Layout/Subgrid)
-  * Waiting for Chrome and Safari
+- If you find your feature in the **"id" column**:
+  - It means that your feature is referenced by the baseline project,
+  - It means you should add your feature to the `baselineFeatures` array within the json file.
 
-### Promising/WIP features
+- If you don't find your feature in the "id" column OR your feature is a sub-feature (like private methods in classes):
+  - Look in the **"bcd keys" column**,
+  - It means you should add your feature to the `bcdFeatures` array within the json file.
 
-* [CSS: Container queries](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Container_Queries)
-  * Very early but supported in Chrome with a flag
-* [JS: Temporal](https://github.com/tc39/proposal-temporal)
-* [JS: .at() method on all the built-in indexables](https://github.com/tc39/proposal-relative-indexing-method)
-* [JS: New Set methods](https://github.com/tc39/proposal-set-methods)
-* [JS: Decorators](https://github.com/tc39/proposal-decorators)
+#### 2. Configure Feature Properties
+
+For each feature, you need to specify:
+
+| Property                   | Type                      | Description                                                |
+|----------------------------|---------------------------|------------------------------------------------------------|
+| `featureId`                | `string`                  | ID of the feature from Web Features Explorer or BCD        |
+| `category`                 | `"JS" \| "HTML" \| "CSS"` | The category related to your feature                       |
+| `comment`                  | `string`                  | Brief description of the feature (optional)                |
+| `isProgressiveEnhancement` | `boolean`                 | Whether the feature can be used as progressive enhancement |
+| `canBeUsedWithPolyfill`    | `boolean`                 | Whether the feature can be used with a polyfill            |
+
+If you need more information about progressive enhancement and polyfills, refer to the [Browser Support - Getting started documentation](https://www.clever-cloud.com/doc/clever-components/?path=/docs/%F0%9F%8F%A1-getting-started-browser-support--docs)
+
+</details>
+
+## Polyfills
+
+We minimize our use of polyfills to maintain performance and simplicity. However, in some cases, polyfills are necessary to support critical functionality.
+
+The conditions for adding a new polyfill to the project are:
+
+1. The feature must be essential for component functionality,
+2. The feature must be implemented in at least one major browser based on a ratified specification,
+3. The polyfill must be well-maintained and have minimal performance impact.
+
+If you need to add a polyfill to support a new component or feature, please update the [Browser Support Getting Started guide](https://www.clever-cloud.com/doc/clever-components/?path=/docs/%F0%9F%8F%A1-getting-started-browser-support--docs).
