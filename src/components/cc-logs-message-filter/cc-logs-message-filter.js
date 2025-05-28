@@ -127,7 +127,7 @@ export class CcLogsMessageFilter extends LitElement {
             aria-pressed=${this.filter.mode === 'strict'}
             @click=${this._onTextFilterModeClick}
           >
-            “”
+            “toto”
           </button>
           <button
             data-mode="regex"

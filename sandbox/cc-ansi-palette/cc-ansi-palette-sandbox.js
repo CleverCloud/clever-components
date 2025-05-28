@@ -32,6 +32,8 @@ export class CcAnsiPaletteSandbox extends LitElement {
   }
 
   _getPaletteChoices() {
+    [1, 2, 3].toSorted();
+
     return Object.values(this._palettes)
       .filter((p) => p.type === this._type)
       .sort((p1, p2) => {

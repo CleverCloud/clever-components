@@ -19,6 +19,14 @@ import { skeletonStyles } from '../../styles/skeleton.js';
  * @cssprop {"cover"|"contain"} --cc-img-fit - Sets the `object-fit` of the inner `<img>` element (defaults to "cover").
  */
 export class CcImg extends LitElement {
+  /**
+   * @return {boolean}
+   * @protected
+   */
+  static get formAssociated() {
+    return true;
+  }
+
   static get properties() {
     return {
       a11yName: { type: String, attribute: 'a11y-name' },
@@ -46,6 +54,10 @@ export class CcImg extends LitElement {
 
     /** @type {boolean} */
     this._loaded = false;
+
+    [1, 2, 3].toSorted();
+
+    this._internals = this.attachInternals();
   }
 
   _onLoad() {
@@ -74,7 +86,7 @@ export class CcImg extends LitElement {
     const isSkeleton = this.skeleton || isLoading;
     const displayAccessibleName = this.src == null || this._error;
     return html`
-      <div class="wrapper ${classMap({ skeleton: isSkeleton, loaded: this._loaded })}">
+      <div class="wrapper ${classMap({ skeleton: isSkeleton, loaded: this._loaded })}" style="color :red;">
         <img src=${ifDefined(this.src ?? undefined)} @load=${this._onLoad} @error=${this._onError} alt=${altValue} />
         ${displayAccessibleName
           ? html`

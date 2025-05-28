@@ -1,5 +1,8 @@
 // @ts-nocheck
 import { includeIgnoreFile } from '@eslint/compat';
+import html from '@html-eslint/eslint-plugin';
+import htmlParser from '@html-eslint/parser';
+import compat from 'eslint-plugin-compat';
 import nodePlugin from 'eslint-plugin-n';
 import globals from 'globals';
 import path from 'node:path';
@@ -23,6 +26,25 @@ export default [
   wcCleverCloud,
   litCleverCloud,
   litA11yCleverCloud,
+  {
+    ...compat.configs['flat/recommended'],
+    settings: {
+      lintAllEsApis: true,
+    },
+  },
+  {
+    ...html.configs['flat/recommended'],
+    files: ['src/components/**/*.js'],
+    plugins: {
+      '@html-eslint': html,
+    },
+    rules: {
+      '@html-eslint/use-baseline': 'error',
+    },
+    languageOptions: {
+      parser: htmlParser,
+    },
+  },
   // Allow importing dev dependencies for files that are related to build / stories / tooling / testing
   {
     name: 'allow-extraneous-imports',
