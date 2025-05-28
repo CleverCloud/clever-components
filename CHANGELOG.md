@@ -5,6 +5,27 @@ title: 'Changelog'
 
 # Changelog
 
+## [19.1.0](https://github.com/CleverCloud/clever-components/compare/19.0.0...19.1.0) (2025-05-28)
+
+
+### 🚀 Features
+
+* **cc-oauth-consumer-form:** init component ([b0c3d97](https://github.com/CleverCloud/clever-components/commit/b0c3d97af4b248ce8f436d4d3114943d364df7f5))
+* **cc-token-api-creation-form:** init ([a0e313d](https://github.com/CleverCloud/clever-components/commit/a0e313da067d98de6b3b89d5f280437dcb565259)), closes [#1395](https://github.com/CleverCloud/clever-components/issues/1395)
+* **cc-token-api-list:** add `modify` feature ([52f0c5e](https://github.com/CleverCloud/clever-components/commit/52f0c5eda94e79cf3249938fc8411e559108c1f7)), closes [#1406](https://github.com/CleverCloud/clever-components/issues/1406)
+* **cc-token-api-list:** add doc link & CLI commands to block footer ([22c602c](https://github.com/CleverCloud/clever-components/commit/22c602c9857a2e92543a065a9f916b9ff4577f6f))
+* **cc-token-api-list:** change API tokens doc link ([aed807c](https://github.com/CleverCloud/clever-components/commit/aed807c2821dc376578a545ed68ec3f76e1447a2))
+* **cc-token-api-list:** support expired tokens ([c744864](https://github.com/CleverCloud/clever-components/commit/c7448648fda20ef43e55e63c51e55d894345aa78)), closes [#1407](https://github.com/CleverCloud/clever-components/issues/1407)
+* **cc-token-api-update-form:** init ([84df701](https://github.com/CleverCloud/clever-components/commit/84df701002fa0f348e2c4f5d775ce8eadf0e708b)), closes [#1398](https://github.com/CleverCloud/clever-components/issues/1398)
+* **cc-token-oauth-list:** add doc link to `cc-block` footer ([d12b532](https://github.com/CleverCloud/clever-components/commit/d12b532b76bc3ce63898eaa243af7f0292179e31)), closes [#1416](https://github.com/CleverCloud/clever-components/issues/1416)
+
+
+### 🐛 Bug Fixes
+
+* **cc-token-api-list:** add link styles ([6a09003](https://github.com/CleverCloud/clever-components/commit/6a090031c1ea6baeb90ba500c8f0c3bfaa550f02)), closes [#1410](https://github.com/CleverCloud/clever-components/issues/1410)
+* **cc-token-api-list:** add missing word in english translation ([a414ecf](https://github.com/CleverCloud/clever-components/commit/a414ecf4be9fdb244e54d408a46d9e31f8e4b175))
+* **cc-token-api-list:** prevent overflow when viewport is reduced ([1f01b8f](https://github.com/CleverCloud/clever-components/commit/1f01b8fb7056951ac26e334b569a07da32f96f37)), closes [#1414](https://github.com/CleverCloud/clever-components/issues/1414)
+
 ## [19.0.0](https://github.com/CleverCloud/clever-components/compare/18.4.0...19.0.0) (2025-05-16)
 
 
