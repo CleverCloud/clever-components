@@ -9,7 +9,7 @@ const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
 const cleverTheme = create({
   base: isDarkMode ? 'dark' : 'light',
   brandTitle: 'Clever Cloud components',
-  brandUrl: 'https://www.clever-cloud.com/doc/',
+  brandUrl: 'https://www.clever-cloud.com/developers/doc/',
   brandImage: isDarkMode ? 'imgs/logo-clever-dark.svg' : 'imgs/logo-clever-light.svg',
 });
 
