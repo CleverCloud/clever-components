@@ -17,7 +17,7 @@ const MATOMO_LOGO_URL = 'https://assets.clever-cloud.com/logos/matomo.svg';
 const PHP_LOGO_URL = 'https://assets.clever-cloud.com/logos/php.svg';
 const MYSQL_LOGO_URL = 'https://assets.clever-cloud.com/logos/mysql.svg';
 const REDIS_LOGO_URL = 'https://assets.clever-cloud.com/logos/redis.svg';
-const MATOMO_DOCUMENTATION = 'https://www.clever-cloud.com/doc/deploy/addon/matomo/';
+const MATOMO_DOCUMENTATION = 'https://www.clever-cloud.com/developers/doc/deploy/addon/matomo/';
 
 /**
  * @typedef {import('./cc-matomo-info.types.js').MatomoInfoState} MatomoInfoState
