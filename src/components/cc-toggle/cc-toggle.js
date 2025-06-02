@@ -314,7 +314,7 @@ export class CcToggle extends LitElement {
         /* DISABLED */
 
         .toggle-group.disabled {
-          opacity: 0.5;
+          opacity: var(--cc-opacity-when-disabled);
         }
 
         .disabled label {
