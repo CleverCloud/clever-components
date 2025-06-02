@@ -309,7 +309,7 @@ export class CcInputText extends CcFormControlElement {
     }
     // Request implicit submit with keypress on enter key
     if (!this.readonly && e.type === 'keypress' && e.key === 'Enter') {
-      if (!this.multi || (this.multi && e.ctrlKey)) {
+      if (!this.multi || (this.multi && (e.ctrlKey || e.metaKey))) {
         this._internals.form?.requestSubmit();
         this.dispatchEvent(new CcRequestSubmitEvent());
       }
