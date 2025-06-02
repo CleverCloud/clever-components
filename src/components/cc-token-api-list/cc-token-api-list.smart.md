@@ -8,7 +8,7 @@ title: '💡 Smart'
 ## ℹ️ Details
 
 <table>
-  <tr><td><strong>Component    </strong> <td><a href="https://www.clever-cloud.com/doc/clever-components/?path=/docs/🛠-profile-cc-token-api-list--default-story"><code>&lt;cc-token-api-list&gt;</code></a>
+  <tr><td><strong>Component    </strong> <td><a href="https://www.clever-cloud.com/developers/doc/clever-components/?path=/docs/🛠-profile-cc-token-api-list--default-story"><code>&lt;cc-token-api-list&gt;</code></a>
   <tr><td><strong>Selector     </strong> <td><code>cc-token-api-list</code>
   <tr><td><strong>Requires auth</strong> <td>Yes
 </table>

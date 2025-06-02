@@ -7,7 +7,7 @@ title: '💡 Smart (exposed-config)'
 ## ℹ️ Details
 
 <table>
-  <tr><td><strong>Component    </strong> <td><a href="https://www.clever-cloud.com/doc/clever-components/?path=/story/🛠-environment-variables-cc-env-var-form--data-loaded-with-context-exposed-config"><code>&lt;cc-env-var-form&gt;</code></a>
+  <tr><td><strong>Component    </strong> <td><a href="https://www.clever-cloud.com/developers/doc/clever-components/?path=/story/🛠-environment-variables-cc-env-var-form--data-loaded-with-context-exposed-config"><code>&lt;cc-env-var-form&gt;</code></a>
   <tr><td><strong>Selector     </strong> <td><code>cc-env-var-form[context="exposed-config"]</code>
   <tr><td><strong>Requires auth</strong> <td>Yes
 </table>

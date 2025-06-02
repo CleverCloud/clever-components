@@ -7,7 +7,7 @@ title: '💡 Smart'
 ## ℹ️ Details
 
 <table>
-  <tr><td><strong>Component    </strong> <td><a href="https://www.clever-cloud.com/doc/clever-components/?path=/docs/🛠-overview-cc-tile-metrics--default-story"><code>&lt;cc-tile-metrics&gt;</code></a>
+  <tr><td><strong>Component    </strong> <td><a href="https://www.clever-cloud.com/developers/doc/clever-components/?path=/docs/🛠-overview-cc-tile-metrics--default-story"><code>&lt;cc-tile-metrics&gt;</code></a>
   <tr><td><strong>Selector     </strong> <td><code>cc-tile-metrics</code>
   <tr><td><strong>Requires auth</strong> <td>Yes
 </table>

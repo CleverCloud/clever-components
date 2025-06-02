@@ -7,7 +7,7 @@ title: '💡 Smart (update)'
 ## ℹ️ Details
 
 <table>
-<tr><td><strong>Component    </strong> <td><a href="https://www.clever-cloud.com/doc/clever-components/?path=/story/🛠-oauth-consumer-cc-oauth-consumer-form--default-story"><code>&lt;cc-oauth-consumer-form&gt;</code></a>
+<tr><td><strong>Component    </strong> <td><a href="https://www.clever-cloud.com/developers/doc/clever-components/?path=/story/🛠-oauth-consumer-cc-oauth-consumer-form--default-story"><code>&lt;cc-oauth-consumer-form&gt;</code></a>
 <tr><td><strong>Selector     </strong> <td><code>cc-oauth-consumer-form[smart-mode=update]</code>
 <tr><td><strong>Requires auth</strong> <td>Yes
 </table>
@@ -67,4 +67,3 @@ interface ApiConfig {
   <cc-oauth-consumer-form smart-mode="update"></cc-oauth-consumer-form>
 </cc-smart-container>
 ```
-

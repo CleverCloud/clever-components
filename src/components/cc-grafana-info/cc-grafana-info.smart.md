@@ -7,7 +7,7 @@ title: '💡 Smart'
 ## ℹ️ Details
 
 <table>
-  <tr><td><strong>Component    </strong> <td><a href="https://www.clever-cloud.com/doc/clever-components/?path=/story/🛠-saas-cc-grafana-info--default-story"><code>&lt;cc-grafana-info&gt;</code></a>
+  <tr><td><strong>Component    </strong> <td><a href="https://www.clever-cloud.com/developers/doc/clever-components/?path=/story/🛠-saas-cc-grafana-info--default-story"><code>&lt;cc-grafana-info&gt;</code></a>
   <tr><td><strong>Selector     </strong> <td><code>cc-grafana-info</code>
   <tr><td><strong>Requires auth</strong> <td>Yes
 </table>

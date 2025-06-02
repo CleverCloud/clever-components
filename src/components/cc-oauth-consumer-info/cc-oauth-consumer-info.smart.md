@@ -7,7 +7,7 @@ title: '💡 Smart'
 ## ℹ️ Details
 
 <table>
-<tr><td><strong>Component    </strong> <td><a href="https://www.clever-cloud.com/doc/clever-components/?path=/story/🛠-oauth-consumer-cc-oauth-consumer-info--default-story"><code>&lt;cc-oauth-consumer-info&gt;</code></a>
+<tr><td><strong>Component    </strong> <td><a href="https://www.clever-cloud.com/developers/doc/clever-components/?path=/story/🛠-oauth-consumer-cc-oauth-consumer-info--default-story"><code>&lt;cc-oauth-consumer-info&gt;</code></a>
 <tr><td><strong>Selector     </strong> <td><code>cc-oauth-consumer-info</code>
 <tr><td><strong>Requires auth</strong> <td>Yes
 </table>
@@ -56,4 +56,3 @@ interface ApiConfig {
   <cc-oauth-consumer-info></cc-oauth-consumer-info>
 </cc-smart-container>
 ```
-

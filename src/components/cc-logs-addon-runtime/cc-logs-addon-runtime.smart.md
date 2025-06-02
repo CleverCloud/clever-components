@@ -8,7 +8,7 @@ title: '💡 Smart'
 ## ℹ️ Details
 
 <table>
-  <tr><td><strong>Component    </strong> <td><a href="https://www.clever-cloud.com/doc/clever-components/?path=/docs/🚧-beta-🛠-logs-addon-cc-logs-addon-runtime-beta--docs"><code>&lt;cc-logs-addon-runtime-beta&gt;</code></a>
+  <tr><td><strong>Component    </strong> <td><a href="https://www.clever-cloud.com/developers/doc/clever-components/?path=/docs/🚧-beta-🛠-logs-addon-cc-logs-addon-runtime-beta--docs"><code>&lt;cc-logs-addon-runtime-beta&gt;</code></a>
   <tr><td><strong>Selector     </strong> <td><code>cc-logs-addon-runtime-beta></code>
   <tr><td><strong>Requires auth</strong> <td>Yes
 </table>

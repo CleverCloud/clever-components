@@ -7,7 +7,7 @@ title: '💡 Smart'
 ## ℹ️ Details
 
 <table>
-  <tr><td><strong>Component    </strong> <td><a href="https://www.clever-cloud.com/doc/clever-components/?path=/story/%F0%9F%9B%A0-invoices-cc-invoice--default-story"><code>&lt;cc-invoice&gt;</code></a>
+  <tr><td><strong>Component    </strong> <td><a href="https://www.clever-cloud.com/developers/doc/clever-components/?path=/story/%F0%9F%9B%A0-invoices-cc-invoice--default-story"><code>&lt;cc-invoice&gt;</code></a>
   <tr><td><strong>Selector     </strong> <td><code>cc-invoice</code>
   <tr><td><strong>Requires auth</strong> <td>Yes
 </table>
