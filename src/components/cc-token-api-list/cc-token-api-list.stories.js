@@ -20,7 +20,7 @@ const conf = {
 const now = new Date();
 
 const apiTokenUpdateHref =
-  'https://www.clever-cloud.com/doc/clever-components/?path=/story/🛠-profile-cc-token-api-update-form--default-story';
+  'https://www.clever-cloud.com/developers/doc/clever-components/?path=/story/🛠-profile-cc-token-api-update-form--default-story';
 
 /** @type {Array<ApiTokenState>} */
 const baseTokens = [

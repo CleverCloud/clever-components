@@ -2,7 +2,7 @@ import { makeStory, storyWait } from '../../stories/lib/make-story.js';
 import './cc-token-api-update-form.js';
 
 const CC_TOKEN_API_LIST_STORY_HREF =
-  'https://www.clever-cloud.com/doc/clever-components/?path=/story/🛠-profile-cc-token-api-list--default-story';
+  'https://www.clever-cloud.com/developers/doc/clever-components/?path=/story/🛠-profile-cc-token-api-list--default-story';
 
 export default {
   tags: ['autodocs'],
