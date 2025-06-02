@@ -438,7 +438,7 @@ export class CcButton extends LitElement {
 
         button[aria-disabled='true'] {
           cursor: inherit;
-          opacity: 0.5;
+          opacity: var(--cc-opacity-when-disabled);
         }
 
         .skeleton {
