@@ -1118,7 +1118,7 @@ export const translations = {
   'cc-orga-member-list.invite.email.label': `Email address`,
   'cc-orga-member-list.invite.heading': `Invite a member`,
   'cc-orga-member-list.invite.info': () =>
-    sanitize`More information about roles in the <a href="https://www.clever-cloud.com/doc/account/organizations/#roles-and-privileges">Roles and Organisations</a> page.`,
+    sanitize`More information about roles in the <a href="https://www.clever-cloud.com/developers/doc/account/organizations/#roles-and-privileges">Roles and Organisations</a> page.`,
   'cc-orga-member-list.invite.role.accounting': `Accountant`,
   'cc-orga-member-list.invite.role.admin': `Admin`,
   'cc-orga-member-list.invite.role.developer': `Developer`,
