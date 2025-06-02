@@ -483,7 +483,7 @@ export class CcInputNumber extends CcFormControlElement {
         }
 
         button[disabled] {
-          opacity: 0.5;
+          opacity: var(--cc-opacity-when-disabled);
           pointer-events: none;
         }
 
