@@ -16,7 +16,7 @@ Smart components automatically:
 - Update the UI when data changes,
 - Make API calls in response to user actions,
 - Emit events for important state changes,
-- Fire events that a [`cc-toaster` component](https://www.clever-cloud.com/doc/clever-components/?path=/story/%F0%9F%9B%A0-toast-cc-toaster--default-story) can react to by showing notifications about API call results.
+- Fire events that a [`cc-toaster` component](https://www.clever-cloud.com/developers/doc/clever-components/?path=/story/%F0%9F%9B%A0-toast-cc-toaster--default-story) can react to by showing notifications about API call results.
 
 # How to use a smart component
 
@@ -87,7 +87,7 @@ Each smart component has its own documentation page that specifies:
 - Usage examples.
 
 You can find these details in the component's Smart documentation page, denoted by the "💡 Smart" suffix in Storybook.
-For instance, check the [`cc-addon-linked-apps` smart doc page](https://www.clever-cloud.com/doc/clever-components/?path=/docs/%F0%9F%9B%A0-addon-cc-addon-linked-apps-%F0%9F%92%A1-smart--docs).
+For instance, check the [`cc-addon-linked-apps` smart doc page](https://www.clever-cloud.com/developers/doc/clever-components/?path=/docs/%F0%9F%9B%A0-addon-cc-addon-linked-apps-%F0%9F%92%A1-smart--docs).
 
 Most smart components require authentication via an `apiConfig` object containing API credentials.
 Some of them may require additional parameters like `ownerId` or `appId` depending on their functionality.
