@@ -454,7 +454,7 @@ export const translations = {
   //#endregion
   //#region cc-env-var-form
   'cc-env-var-form.description.config-provider': /** @param {{addonName: string}} _ */ ({ addonName }) =>
-    sanitize`Configuration publiée pour les applications dépendantes. <a href="https://www.clever-cloud.com/doc/deploy/addon/config-provider/">En savoir plus</a><br>Ces seront injectées en tant que variables d'environnement dans les applications qui ont l'add-on <strong>${addonName}</strong> dans leurs services liés.<br>À chaque fois que vous mettez à jour les changements, toutes les applications dépendantes seront redémarrées automatiquement.`,
+    sanitize`Configuration publiée pour les applications dépendantes. <a href="https://www.clever-cloud.com/developers/doc/deploy/addon/config-provider/">En savoir plus</a><br>Ces seront injectées en tant que variables d'environnement dans les applications qui ont l'add-on <strong>${addonName}</strong> dans leurs services liés.<br>À chaque fois que vous mettez à jour les changements, toutes les applications dépendantes seront redémarrées automatiquement.`,
   'cc-env-var-form.description.env-var': /** @param {{appName: string}} _ */ ({ appName }) =>
     sanitize`Ces variables seront injectées en tant que variables d'environnement dans l'application <strong>${appName}</strong>.`,
   'cc-env-var-form.description.exposed-config': /** @param {{appName: string}} _ */ ({ appName }) =>
