@@ -130,7 +130,7 @@ export class MyComponent extends LitElement {
 }
 ```
 
-This subject is covered more extensively in [How to deal with complex component states / data? - Web Components Guidelines](https://www.clever-cloud.com/doc/clever-components/?path=/docs/%F0%9F%91%8B-contributing-web-components-guidelines--docs).
+This subject is covered more extensively in [How to deal with complex component states / data? - Web Components Guidelines](https://www.clever-cloud.com/developers/doc/clever-components/?path=/docs/%F0%9F%91%8B-contributing-web-components-guidelines--docs).
 
 ## Resources
 

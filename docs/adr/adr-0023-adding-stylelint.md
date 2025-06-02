@@ -8,10 +8,10 @@ kind: '📌 Architecture Decision Records'
 
 ## The context
 
-Since the beginning of this component library, we've never had a dedicated tool to format our CSS and enforce some rules. 
-We only had a custom ESLint plugin to sort our CSS declarations but that was pretty much it as referenced in [ADR 11](https://www.clever-cloud.com/doc/clever-components/?path=/docs/📌-architecture-decision-records-adr-0011-sorting-css-declarations--docs). 
+Since the beginning of this component library, we've never had a dedicated tool to format our CSS and enforce some rules.
+We only had a custom ESLint plugin to sort our CSS declarations but that was pretty much it as referenced in [ADR 11](https://www.clever-cloud.com/developers/doc/clever-components/?path=/docs/📌-architecture-decision-records-adr-0011-sorting-css-declarations--docs).
 
-However, in 2020 we found out that Stylelint was able to handle CSS in template literals. 
+However, in 2020 we found out that Stylelint was able to handle CSS in template literals.
 
 Thus, we decided to give it a try in 2022 when reworking and adapting our tools for the component library.
 
@@ -40,15 +40,15 @@ While it could have served as a base for our configuration we have decided not t
 The *Standard* configuration is provided by Stylelint too but as it is not present by default you must install it and add it as a dependency.
 It is based on *Recommended*, but it improves on it by enforcing some conventions and formatting.
 
-While *Standard* does what *Recommended* lacks (rules and formatting), we have decided to not use it as default. 
-Instead, we chose to have a custom configuration based on the *Standard*. 
+While *Standard* does what *Recommended* lacks (rules and formatting), we have decided to not use it as default.
+Instead, we chose to have a custom configuration based on the *Standard*.
 It allows us to override some rules we thought didn't match with our code style.
 
 #### Airbnb
 
-After trying the one provided by Stylelint we decided to check some that were available on the web to see if there were any popular ones and we saw that the one from Airbnb was quite popular or used. 
+After trying the one provided by Stylelint we decided to check some that were available on the web to see if there were any popular ones and we saw that the one from Airbnb was quite popular or used.
 However, after checking it out we found that it was not using the latest version of Stylelint.
-Indeed, it would take too much effort to make it work with the new version. 
+Indeed, it would take too much effort to make it work with the new version.
 Also, downgrading Stylelint was not something we wanted to make, so we decided to not choose it.
 
 
@@ -75,8 +75,8 @@ You can find more info in the [Idiomatic CSS repository documentation](https://g
 ## Solution
 
 After some discussion with the team, we decided to take the `Standard` configuration to have some base rules and code formats and tweak it to our needs.
-For this purpose, we used a tool named Stylelint config generator composed of 42 options (rules). 
-For each rule it lets you choose between several alternatives that would suit you best. 
+For this purpose, we used a tool named Stylelint config generator composed of 42 options (rules).
+For each rule it lets you choose between several alternatives that would suit you best.
 After that, we added the idiomatic order configuration to our own to have it as our CSS properties order.
 
 This resulted in this config file:
@@ -136,7 +136,7 @@ This resulted in this config file:
 }
 ```
 
-While we won't dive into the configuration deeper, you can find a description of each rule on [the Stylelint website](https://stylelint.io/user-guide/rules). 
+While we won't dive into the configuration deeper, you can find a description of each rule on [the Stylelint website](https://stylelint.io/user-guide/rules).
 What we have done here is adding or overriding existing rules on the `Standard` configuration to best match our needs.
 
 To run and check our styles on our component we created three commands in our `package.json`:
@@ -146,7 +146,7 @@ To run and check our styles on our component we created three commands in our `p
 * `stylelint:ci` which runs Stylelint and checks for errors and formats the output for our GitHub actions CI.
 
 The benefits of Stylelint are that we now have a coherent style across our component library code base and use the same formatting everywhere.
-It also allowed us to get rid of the custom ESLint sort plugin which is done by Stylelint directly from now on. 
+It also allowed us to get rid of the custom ESLint sort plugin which is done by Stylelint directly from now on.
 
 ## Problems encountered
 
@@ -155,7 +155,7 @@ While we are satisfied with our current configuration we encountered some proble
 ### The whitespace rule
 
 First, we had some problems with the whitespace rule [`no-eol-whitespace-rule`](https://stylelint.io/user-guide/rules/no-eol-whitespace/).
-The purpose of this rule is not to have whitespace after a line ending (e.g: semicolon or empty lines). 
+The purpose of this rule is not to have whitespace after a line ending (e.g: semicolon or empty lines).
 The problem with this is that the processor we use targets only the CSS inside template literals which means the backtick wasn't included.
 
 This leads the code going from this:
@@ -193,7 +193,7 @@ static get styles ()
 As you can see, the closing CSS backtick of the template literal isn't formatted correctly.
 This is due to the rule only taking into account what's inside the backticks.
 Therefore, the rule considers that the spaces before the closing backtick shouldn't be there and remove the correct formatting.
-This led us to deactivate this rule for now. 
+This led us to deactivate this rule for now.
 
 ### Selector name case
 
@@ -201,7 +201,7 @@ We encountered another problem on the case policy applied on our CSS selectors.
 Indeed, the `Standard` configuration we use wants the selectors to be written as `kebab-case`.
 However, in our components we also used `kebab--case` and `snake__case`.
 
-To resolve this problem we decided to override the rules [`selector-class-pattern`](https://stylelint.io/user-guide/rules/selector-class-pattern/) 
+To resolve this problem we decided to override the rules [`selector-class-pattern`](https://stylelint.io/user-guide/rules/selector-class-pattern/)
 and [`selector-id-pattern`](https://stylelint.io/user-guide/rules/selector-id-pattern/) to match our needs which led us to the following rule:
 
 ```json
@@ -226,7 +226,7 @@ We also provided a custom message to know precisely what's happening otherwise w
 
 ### Duplicate selectors on atoms
 
-In our components that wraps and customises a native HTML element we have multiple CSS selectors of the native element. (e.g: `<cc-button>` wraps and customises a native `<button>`) 
+In our components that wraps and customises a native HTML element we have multiple CSS selectors of the native element. (e.g: `<cc-button>` wraps and customises a native `<button>`)
 We always have a `reset` one where we reset the native styles of the element and another one to style it to our needs.
 
 The problem is that this is not allowed by the [`no-duplicate-selectors`](https://stylelint.io/user-guide/rules/no-duplicate-selectors/) rule which is part of the custom config we use.
@@ -238,8 +238,8 @@ Because we like the way we `reset default` and then `apply our styles` but also 
 [No-descending-specificity](https://stylelint.io/user-guide/rules/no-descending-specificity/) is a rule that forces the order of the selectors within their specificity.
 This means that if a selector has a lower specificity it should not be after one that has a higher specificity.
 
-While this is a great rule we have decided to not use it. 
-Indeed, with a blank project, it might be much more convenient to use it but in our case, it was very tricky and a mess to deal with our components so we deactivated it. 
+While this is a great rule we have decided to not use it.
+Indeed, with a blank project, it might be much more convenient to use it but in our case, it was very tricky and a mess to deal with our components so we deactivated it.
 
 You can find more info on CSS specificity:
 * on the MDN: [MDN CSS specificity](https://developer.mozilla.org/en-US/docs/Web/CSS/Specificity)
@@ -247,7 +247,7 @@ You can find more info on CSS specificity:
 
 ## What's next?
 
-While we are happy with our configuration right now, in the future we might want to find a way to handle the whitespace rule problem explained above. 
+While we are happy with our configuration right now, in the future we might want to find a way to handle the whitespace rule problem explained above.
 We might also consider adding, changing, and tweaking rules to our needs in the future.
 
 ## Resources

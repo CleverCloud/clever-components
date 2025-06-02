@@ -10,7 +10,7 @@ This ADR explains why we decided to introduce Prettier while migrating our linti
 
 ## Context
 
-One year ago we made the decision to add Stylelint to our components library. You can find the how and why in the [ADR](https://www.clever-cloud.com/doc/clever-components/?path=%2Fdocs%2F%F0%9F%93%8C-architecture-decision-records-adr-0023-adding-stylelint--docs).
+One year ago we made the decision to add Stylelint to our components library. You can find the how and why in the [ADR](https://www.clever-cloud.com/developers/doc/clever-components/?path=%2Fdocs%2F%F0%9F%93%8C-architecture-decision-records-adr-0023-adding-stylelint--docs).
 At that time Stylelint was in version `14`ish and is now in version `16` as of this writing.
 During a meeting while discussing versions of the tools we use, we decided to take a look at the updates and the feasibility to update them to the latest version.
 And here came the problem: linters don't (want to) format anymore.
@@ -155,7 +155,7 @@ Considering all of this, we decided to pause the migration to the version 9 for 
 - We need to keep an eye out on ESLint to migrate it to the latest version, which means:
   - Migrating to the new flat config.
   - Updating the plugins nor find an alternative if the plugins aren't maintained anymore.
-  - Getting rid of the Prettier plugin and remove all the deprecated formatting rules.  
+  - Getting rid of the Prettier plugin and remove all the deprecated formatting rules.
 
 ## Resources
 
