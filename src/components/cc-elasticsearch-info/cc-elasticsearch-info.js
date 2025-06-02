@@ -12,7 +12,7 @@ import '../cc-notice/cc-notice.js';
 const ELASTICSEARCH_LOGO_URL = 'https://assets.clever-cloud.com/logos/elastic.svg';
 const KIBANA_LOGO_URL = 'https://assets.clever-cloud.com/logos/elasticsearch-kibana.svg';
 const APM_LOGO_URL = 'https://assets.clever-cloud.com/logos/elasticsearch-apm.svg';
-const ELASTICSEARCH_DOCUMENTATION = 'https://www.clever-cloud.com/doc/addons/elastic/';
+const ELASTICSEARCH_DOCUMENTATION = 'https://www.clever-cloud.com/developers/doc/addons/elastic/';
 const linksSortOrder = ['elasticsearch', 'kibana', 'apm'];
 
 /**
