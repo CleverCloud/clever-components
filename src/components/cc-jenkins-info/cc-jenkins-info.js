@@ -11,7 +11,7 @@ import '../cc-img/cc-img.js';
 import '../cc-notice/cc-notice.js';
 
 const JENKINS_LOGO_URL = 'https://assets.clever-cloud.com/logos/jenkins.svg';
-const JENKINS_DOCUMENTATION = 'https://www.clever-cloud.com/doc/deploy/addon/jenkins/';
+const JENKINS_DOCUMENTATION = 'https://www.clever-cloud.com/developers/doc/deploy/addon/jenkins/';
 
 /**
  * @typedef {import('./cc-jenkins-info.types.js').JenkinsInfoState} JenkinsInfoState
