@@ -750,7 +750,7 @@ clever deploy && clever open</code></pre>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
-<p>We already support <a href="https://www.clever-cloud.com/blog/engineering/2020/05/19/deploy-deno/">Deno</a>, <a href="https://www.clever-cloud.com/doc/deploy/application/javascript/by-framework/meteor/">Meteor.js</a>, <a href="https://www.clever-cloud.com/doc/deploy/application/javascript/by-framework/nodejs/#supported-package-managers">yarn</a>. While we haven't yet taken the decision to integrate Bun natively into our images, as we await initial feedback from our customers, it's all very straightforward.</p>
+<p>We already support <a href="https://www.clever-cloud.com/blog/engineering/2020/05/19/deploy-deno/">Deno</a>, <a href="https://www.clever-cloud.com/developers/doc/deploy/application/javascript/by-framework/meteor/">Meteor.js</a>, <a href="https://www.clever-cloud.com/developers/doc/deploy/application/javascript/by-framework/nodejs/#supported-package-managers">yarn</a>. While we haven't yet taken the decision to integrate Bun natively into our images, as we await initial feedback from our customers, it's all very straightforward.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:heading -->
@@ -921,7 +921,7 @@ clever stop</code></pre>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
-<p>We already support <a href="https://www.clever-cloud.com/blog/engineering/2020/05/19/deploy-deno/">Deno</a>, <a href="https://www.clever-cloud.com/doc/deploy/application/javascript/by-framework/meteor/">Meteor.js</a>, <a href="https://www.clever-cloud.com/doc/deploy/application/javascript/by-framework/nodejs/#supported-package-managers">yarn</a>. While we haven't yet taken the decision to integrate Bun natively into our images, as we await initial feedback from our customers, it's all very straightforward.</p>
+<p>We already support <a href="https://www.clever-cloud.com/blog/engineering/2020/05/19/deploy-deno/">Deno</a>, <a href="https://www.clever-cloud.com/developers/doc/deploy/application/javascript/by-framework/meteor/">Meteor.js</a>, <a href="https://www.clever-cloud.com/developers/doc/deploy/application/javascript/by-framework/nodejs/#supported-package-managers">yarn</a>. While we haven't yet taken the decision to integrate Bun natively into our images, as we await initial feedback from our customers, it's all very straightforward.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:heading -->
@@ -1408,7 +1408,7 @@ clever stop</code></pre>
 <!-- /wp:image -->
 
 <!-- wp:paragraph -->
-<p>Now you can <a href="https://www.clever-cloud.com/doc/account/organizations/" target="_blank" rel="noopener">invite the user to your organization with his email address</a>, giving him administration rights on the instance.</p>
+<p>Now you can <a href="https://www.clever-cloud.com/developers/doc/account/organizations/" target="_blank" rel="noopener">invite the user to your organization with his email address</a>, giving him administration rights on the instance.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:heading {"level":3} -->
@@ -1647,7 +1647,7 @@ clever stop</code></pre>
 <!-- /wp:image -->
 
 <!-- wp:paragraph -->
-<p>Now you can <a href="https://www.clever-cloud.com/doc/account/organizations/" target="_blank" rel="noopener">invite the user to your organization with his email address</a>, giving him administration rights on the instance.</p>
+<p>Now you can <a href="https://www.clever-cloud.com/developers/doc/account/organizations/" target="_blank" rel="noopener">invite the user to your organization with his email address</a>, giving him administration rights on the instance.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:heading {"level":3} -->
@@ -2090,7 +2090,7 @@ clever stop</code></pre>
 <!-- /wp:heading -->
 
 <!-- wp:paragraph -->
-<p>Of course, <a href="https://www.clever-cloud.com/doc/clever-components/?path=/story/%F0%9F%9B%A0-overview-cc-tile-metrics--default-story" target="_blank" rel="noreferrer noopener">this tile has been developed as <strong>a Web Component</strong>, documented here</a>, that you can freely use. It is also <strong>the first one to follow our accessibility rules</strong>, from buttons and links to screen reader handling: it will feature a table for the graphic.</p>
+<p>Of course, <a href="https://www.clever-cloud.com/developers/doc/clever-components/?path=/story/%F0%9F%9B%A0-overview-cc-tile-metrics--default-story" target="_blank" rel="noreferrer noopener">this tile has been developed as <strong>a Web Component</strong>, documented here</a>, that you can freely use. It is also <strong>the first one to follow our accessibility rules</strong>, from buttons and links to screen reader handling: it will feature a table for the graphic.</p>
 <!-- /wp:paragraph -->]]></description>
             <content:encoded><![CDATA[<p></p><!-- wp:paragraph -->
 <p>Hosting your sites through a service such as Clever Cloud is not just about sending your files to a server. It is gaining in simplicity of execution, in velocity, and more importantly, ensuring that they are kept in operating conditions.</p>
@@ -2129,7 +2129,7 @@ clever stop</code></pre>
 <!-- /wp:heading -->
 
 <!-- wp:paragraph -->
-<p>Of course, <a href="https://www.clever-cloud.com/doc/clever-components/?path=/story/%F0%9F%9B%A0-overview-cc-tile-metrics--default-story" target="_blank" rel="noreferrer noopener">this tile has been developed as <strong>a Web Component</strong>, documented here</a>, that you can freely use. It is also <strong>the first one to follow our accessibility rules</strong>, from buttons and links to screen reader handling: it will feature a table for the graphic.</p>
+<p>Of course, <a href="https://www.clever-cloud.com/developers/doc/clever-components/?path=/story/%F0%9F%9B%A0-overview-cc-tile-metrics--default-story" target="_blank" rel="noreferrer noopener">this tile has been developed as <strong>a Web Component</strong>, documented here</a>, that you can freely use. It is also <strong>the first one to follow our accessibility rules</strong>, from buttons and links to screen reader handling: it will feature a table for the graphic.</p>
 <!-- /wp:paragraph -->]]></content:encoded>
         </item>
     </channel>
