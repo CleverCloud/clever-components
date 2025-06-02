@@ -7,7 +7,7 @@ import '../cc-block/cc-block.js';
 import '../cc-notice/cc-notice.js';
 import '../cc-tcp-redirection/cc-tcp-redirection.js';
 
-const TCP_REDIRECTION_DOCUMENTATION = 'https://developers.clever-cloud.com/doc/administrate/tcp-redirections/';
+const TCP_REDIRECTION_DOCUMENTATION = 'https://www.clever-cloud.com/developers/doc/administrate/tcp-redirections/';
 
 /** @type {TcpRedirectionStateLoading[]} */
 const SKELETON_REDIRECTIONS = [{ type: 'loading' }, { type: 'loading' }];

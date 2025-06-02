@@ -34,9 +34,9 @@ import '../cc-notice/cc-notice.js';
 import { CcDomainAddEvent, CcDomainDeleteEvent, CcDomainMarkAsPrimaryEvent } from './cc-domain-management.events.js';
 
 const DOMAIN_NAMES_DOCUMENTATION =
-  'https://developers.clever-cloud.com/doc/administrate/domain-names/#using-a-cleverappsio-free-domain-with-built-in-ssl';
-const TLS_CERTIFICATES_DOCUMENTATION = 'https://developers.clever-cloud.com/doc/administrate/ssl/';
-const DNS_DOCUMENTATION = 'https://developers.clever-cloud.com/doc/administrate/domain-names/';
+  'https://www.clever-cloud.com/developers/doc/administrate/domain-names/#using-a-cleverappsio-free-domain-with-built-in-ssl';
+const TLS_CERTIFICATES_DOCUMENTATION = 'https://www.clever-cloud.com/developers/doc/administrate/ssl/';
+const DNS_DOCUMENTATION = 'https://www.clever-cloud.com/developers/doc/administrate/domain-names/';
 
 /**
  * @typedef {import('./cc-domain-management.types.js').DomainManagementDnsInfoState} DomainManagementDnsInfoState

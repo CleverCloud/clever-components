@@ -20,7 +20,7 @@ import { CcOrgaMemberCard } from '../cc-orga-member-card/cc-orga-member-card.js'
 import '../cc-select/cc-select.js';
 import { CcOrgaMemberInviteEvent } from './cc-orga-member-list.events.js';
 
-const ORGA_MEMBER_DOCUMENTATION = 'https://developers.clever-cloud.com/doc/account/administrate-organization/';
+const ORGA_MEMBER_DOCUMENTATION = 'https://www.clever-cloud.com/developers/doc/account/administrate-organization/';
 
 /**
  * @typedef {import('./cc-orga-member-list.types.js').OrgaMemberListState} OrgaMemberListState

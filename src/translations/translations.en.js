@@ -263,7 +263,7 @@ export const translations = {
   //#endregion
   //#region cc-domain-management
   'cc-domain-management.certif.automated': () =>
-    sanitize`Whether you use <code>cleverapps.io</code> or your own domain names with applications hosted by Clever Cloud, a Let's Encrypt certificate is automatically issued and renewed for HTTPS/TLS access. No action is required from you, this is all automated. For specific cases, refer to <a href="https://developers.clever-cloud.com/doc/administrate/ssl/">Installing TLS Certificates</a>.`,
+    sanitize`Whether you use <code>cleverapps.io</code> or your own domain names with applications hosted by Clever Cloud, a Let's Encrypt certificate is automatically issued and renewed for HTTPS/TLS access. No action is required from you, this is all automated. For specific cases, refer to <a href="https://www.clever-cloud.com/developers/doc/administrate/ssl/">Installing TLS Certificates</a>.`,
   'cc-domain-management.certif.custom': () =>
     sanitize`You can provide your own certificate by using the <a href="https://api.clever-cloud.com/v2/certificates/new">Clever Cloud Certificate Manager</a>.`,
   'cc-domain-management.certif.heading': `Secure your application`,
@@ -281,7 +281,7 @@ export const translations = {
   'cc-domain-management.dns.documentation.text': `DNS records - Documentation`,
   'cc-domain-management.dns.heading': `Configure your DNS`,
   'cc-domain-management.dns.info.desc': () =>
-    sanitize`If you are using a dedicated load balancer, refer to its configuration or <a href="/ticket-center-choice">contact support</a>. Our team can also help you to order such a service. For a domain with no subdomains (APEX) or a subdomain with its own DNS zone, refer to our <a href="https://developers.clever-cloud.com/doc/administrate/domain-names/">DNS & Domains documentation</a>.`,
+    sanitize`If you are using a dedicated load balancer, refer to its configuration or <a href="/ticket-center-choice">contact support</a>. Our team can also help you to order such a service. For a domain with no subdomains (APEX) or a subdomain with its own DNS zone, refer to our <a href="https://www.clever-cloud.com/developers/doc/administrate/domain-names/">DNS & Domains documentation</a>.`,
   'cc-domain-management.dns.info.heading': `Dedicated load balancers & specific cases`,
   'cc-domain-management.dns.loading-error': `Something went wrong while loading DNS information`,
   'cc-domain-management.form.domain.error.contains-path': /** @param {{path: string}} _ */ ({ path }) =>
@@ -294,7 +294,7 @@ export const translations = {
     sanitize`For instance: <code>example.com</code>, <code>*.example.com</code> or <code>example.cleverapps.io</code>`,
   'cc-domain-management.form.domain.label': `Domain name`,
   'cc-domain-management.form.info.cleverapps': () =>
-    sanitize`By default, an application is automatically associated to <code>app_id.cleverapps.io</code> as primary domain. You can remove it or change the subdomain freely, but <code>xxx.cleverapps.io</code> should only be used for testing purposes (see our <a href="https://developers.clever-cloud.com/doc/administrate/domain-names/#testing-with-cleverappsio-domain">documentation</a>).`,
+    sanitize`By default, an application is automatically associated to <code>app_id.cleverapps.io</code> as primary domain. You can remove it or change the subdomain freely, but <code>xxx.cleverapps.io</code> should only be used for testing purposes (see our <a href="https://www.clever-cloud.com/developers/doc/administrate/domain-names/#testing-with-cleverappsio-domain">documentation</a>).`,
   'cc-domain-management.form.info.docs': `You can associate one or more domain names with your application. The primary domain is the one that will be used in Console links and in e-mails sent to you. Several applications can share the same domain, each with a specific subdomain and/or route.`,
   'cc-domain-management.form.path.help': () => sanitize`For example: <code>/api</code> or <code>/blog</code>`,
   'cc-domain-management.form.path.label': `Route`,
@@ -449,7 +449,7 @@ export const translations = {
   'cc-env-var-form.description.env-var': /** @param {{appName: string}} _ */ ({ appName }) =>
     sanitize`These variables will be injected as environment variables in the application <strong>${appName}</strong>.`,
   'cc-env-var-form.description.exposed-config': /** @param {{appName: string}} _ */ ({ appName }) =>
-    sanitize`Configuration exposed to dependent applications. <a href="https://developers.clever-cloud.com/doc/administrate/service-dependencies/#exposed-configuration">Learn more</a><br>These variables won't be injected in the application <strong>${appName}</strong>, they will be injected as environment variables in applications that have <strong>${appName}</strong> in their service dependencies.`,
+    sanitize`Configuration exposed to dependent applications. <a href="https://www.clever-cloud.com/developers/doc/administrate/service-dependencies/#exposed-configuration">Learn more</a><br>These variables won't be injected in the application <strong>${appName}</strong>, they will be injected as environment variables in applications that have <strong>${appName}</strong> in their service dependencies.`,
   'cc-env-var-form.documentation.text': `Environment variables - Reference`,
   'cc-env-var-form.error.loading': `Something went wrong while loading variables.`,
   'cc-env-var-form.heading.config-provider': `Variables`,

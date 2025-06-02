@@ -13,7 +13,7 @@ import '../cc-select/cc-select.js';
 import '../cc-toggle/cc-toggle.js';
 
 const BREAKPOINTS = [520];
-const INVOICE_DOCUMENTATION = 'https://developers.clever-cloud.com/doc/billing/unified-invoices/';
+const INVOICE_DOCUMENTATION = 'https://www.clever-cloud.com/developers/doc/billing/unified-invoices/';
 
 /**
  * @param {string} dateString

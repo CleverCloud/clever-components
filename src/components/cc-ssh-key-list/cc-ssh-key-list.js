@@ -27,7 +27,7 @@ import '../cc-input-text/cc-input-text.js';
 import '../cc-notice/cc-notice.js';
 import { CcSshKeyCreateEvent, CcSshKeyDeleteEvent, CcSshKeyImportEvent } from './cc-ssh-key-list.events.js';
 
-const SSH_KEY_DOCUMENTATION = 'https://developers.clever-cloud.com/doc/account/ssh-keys-management/';
+const SSH_KEY_DOCUMENTATION = 'https://www.clever-cloud.com/developers/doc/account/ssh-keys-management/';
 
 /**
  * @type {SshKeyState[]}

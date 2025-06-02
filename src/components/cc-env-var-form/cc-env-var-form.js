@@ -13,7 +13,7 @@ import '../cc-notice/cc-notice.js';
 import '../cc-toggle/cc-toggle.js';
 import { CcEnvVarFormSubmitEvent } from './cc-env-var-form.events.js';
 
-const ENV_VAR_DOCUMENTATION = 'https://developers.clever-cloud.com/doc/reference/reference-environment-variables/';
+const ENV_VAR_DOCUMENTATION = 'https://www.clever-cloud.com/developers/doc/reference/reference-environment-variables/';
 
 /**
  * @typedef {import('./cc-env-var-form.types.js').EnvVarFormContextType} EnvVarFormContextType
