@@ -14,7 +14,7 @@ const GRAFANA_LOGO_URL = 'https://assets.clever-cloud.com/logos/grafana.svg';
 const GRAFANA_HOME_SCREEN = 'https://assets.clever-cloud.com/grafana/screens/home.png';
 const GRAFANA_RUNTIME_SCREEN = 'https://assets.clever-cloud.com/grafana/screens/runtime.png';
 const GRAFANA_ADDON_SCREEN = 'https://assets.clever-cloud.com/grafana/screens/addon.png';
-const GRAFANA_DOCUMENTATION = 'https://www.clever-cloud.com/doc/administrate/metrics/overview/';
+const GRAFANA_DOCUMENTATION = 'https://www.clever-cloud.com/developers/doc/administrate/metrics/overview/';
 
 /**
  * @typedef {import('./cc-grafana-info.types.js').GrafanaInfoState} GrafanaInfoState
