@@ -180,7 +180,7 @@ notify({
 ```
 
 These notification helpers ensure a consistent look and feel across the application while making it easy to provide feedback about API operations.
-Refer to the [cc-toaster component](https://www.clever-cloud.com/doc/clever-components/?path=/story/%F0%9F%9B%A0-toast-cc-toaster--default-story) for more info.
+Refer to the [cc-toaster component](https://www.clever-cloud.com/developers/doc/clever-components/?path=/story/%F0%9F%9B%A0-toast-cc-toaster--default-story) for more info.
 
 ## Smart Component Documentation
 

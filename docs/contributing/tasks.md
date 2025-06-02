@@ -35,8 +35,8 @@ This project provides a series of tasks you can run as [npm scripts](https://doc
 
 * Upload all assets in `cdn-ui` to the preview CDN remote object storage.
 * You can get more details by reading:
-  * [the documentation about the preview](https://www.clever-cloud.com/doc/clever-components/?path=/docs/%F0%9F%91%8B-contributing-previews--docs).
-  * [the documentation about the release](https://www.clever-cloud.com/doc/clever-components/?path=/docs/%F0%9F%91%8B-contributing-release--docs).
+  * [the documentation about the preview](https://www.clever-cloud.com/developers/doc/clever-components/?path=/docs/%F0%9F%91%8B-contributing-previews--docs).
+  * [the documentation about the release](https://www.clever-cloud.com/developers/doc/clever-components/?path=/docs/%F0%9F%91%8B-contributing-release--docs).
 
 ## `npm run cdn-release:build`
 
@@ -44,26 +44,26 @@ This project provides a series of tasks you can run as [npm scripts](https://doc
 * See config in `rollup/rollup-cdn.config.js` for more details.
 * Requires a `VERSION` environment variable, you can use `0.0.0` when doing some local tests.
 * You can get more details by reading:
-  * [the documentation about the preview](https://www.clever-cloud.com/doc/clever-components/?path=/docs/%F0%9F%91%8B-contributing-previews--docs).
-  * [the documentation about the release](https://www.clever-cloud.com/doc/clever-components/?path=/docs/%F0%9F%91%8B-contributing-release--docs).
+  * [the documentation about the preview](https://www.clever-cloud.com/developers/doc/clever-components/?path=/docs/%F0%9F%91%8B-contributing-previews--docs).
+  * [the documentation about the release](https://www.clever-cloud.com/developers/doc/clever-components/?path=/docs/%F0%9F%91%8B-contributing-release--docs).
 
 ## `npm run cdn-release:publish`
 
 * Upload all assets in `dist-cdn` to the CDN remote object storage.
 * You can get more details by reading:
-  * [the documentation about the preview](https://www.clever-cloud.com/doc/clever-components/?path=/docs/%F0%9F%91%8B-contributing-previews--docs).
-  * [the documentation about the release](https://www.clever-cloud.com/doc/clever-components/?path=/docs/%F0%9F%91%8B-contributing-release--docs).
+  * [the documentation about the preview](https://www.clever-cloud.com/developers/doc/clever-components/?path=/docs/%F0%9F%91%8B-contributing-previews--docs).
+  * [the documentation about the release](https://www.clever-cloud.com/developers/doc/clever-components/?path=/docs/%F0%9F%91%8B-contributing-release--docs).
 
 ## `npm run cdn-release:ui`
 
 * Upload all assets in `cdn-ui` to the CDN remote object storage.
-* You can get more details by reading [the documentation about the release](https://www.clever-cloud.com/doc/clever-components/?path=/docs/%F0%9F%91%8B-contributing-release--docs).
+* You can get more details by reading [the documentation about the release](https://www.clever-cloud.com/developers/doc/clever-components/?path=/docs/%F0%9F%91%8B-contributing-release--docs).
 
 ## `npm run components:build`
 
 * Build components for npm with [Rollup](https://rollupjs.org/) in `dist` folder.
 * See config in `rollup/rollup-npm.config.js` for more details.
-* You can get more details by reading [the global contributing page](https://www.clever-cloud.com/doc/clever-components/?path=/docs/%F0%9F%91%8B-contributing-contribute--docs).
+* You can get more details by reading [the global contributing page](https://www.clever-cloud.com/developers/doc/clever-components/?path=/docs/%F0%9F%91%8B-contributing-contribute--docs).
 
 ## `npm run components:check-i18n`
 
@@ -92,7 +92,7 @@ This project provides a series of tasks you can run as [npm scripts](https://doc
   * `src/assets/cc-clever.icons.js` from the SVG files in `src/assets/`,
   * `src/assets/cc-remix.icons.js` from the `remixicon` dependency.
 * Should be executed each time an icon is added, removed or updated.
-* You can get more details by reading [the related ADR](https://www.clever-cloud.com/doc/clever-components/?path=/docs/%F0%9F%93%8C-architecture-decision-records-adr-0022-implementing-a-new-icon-system--docs).
+* You can get more details by reading [the related ADR](https://www.clever-cloud.com/developers/doc/clever-components/?path=/docs/%F0%9F%93%8C-architecture-decision-records-adr-0022-implementing-a-new-icon-system--docs).
 
 ## `npm run components:graph-usage`
 
