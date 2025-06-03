@@ -84,6 +84,19 @@ export const translations = {
   'cc-addon-admin.update': `Update name`,
   //#endregion
   //#region cc-addon-backups
+  'cc-addon-backups.cli.content': /** @param {{addonId: string}} _ */ ({ addonId }) =>
+    sanitize`
+      <p>
+        You can manage backups directly from your terminal using the commands below. 
+        If you haven't already, quickly install the Clever Tools (our CLI) using our <a href="https://github.com/CleverCloud/clever-tools/blob/master/docs/setup-systems.md" title="documentation - Installing Clever Tools - new window">documentation</a>.
+      </p>
+      <dl>
+        <dt>List available database backups:</dt>
+        <dd><code>clever database backups ${addonId}</code></dd>
+        <dt>Download a database backup:</dt>
+        <dd><code>clever database backups download ${addonId} BACKUP_ID</code></dd>
+      </dl>
+    `,
   'cc-addon-backups.close-btn': `Close this panel`,
   'cc-addon-backups.command-password': `This command will ask for your password, here it is:`,
   'cc-addon-backups.delete': /** @param {{createdAt: string|number}} _ */ ({ createdAt }) =>
