@@ -93,6 +93,31 @@ export const defaultStory = makeStory(conf, {
   ],
 });
 
+export const dataLoaded = makeStory(conf, {
+  /** @type {Partial<CcTokenApiList>[]} */
+  items: [
+    {
+      apiTokenUpdateHref,
+      state: {
+        type: 'loaded',
+        apiTokens: baseTokens,
+      },
+    },
+  ],
+});
+
+export const dataLoadedWithNoPassword = makeStory(conf, {
+  /** @type {Partial<CcTokenApiList>[]} */
+  items: [
+    {
+      apiTokenUpdateHref,
+      state: {
+        type: 'no-password',
+      },
+    },
+  ],
+});
+
 export const loading = makeStory(conf, {
   /** @type {Partial<CcTokenApiList>[]} */
   items: [
@@ -181,6 +206,18 @@ export const waitingWithDeletingExpiredToken = makeStory(conf, {
   ],
 });
 
+export const waitingWithResettingPassword = makeStory(conf, {
+  /** @type {Partial<CcTokenApiList>[]} */
+  items: [
+    {
+      apiTokenUpdateHref,
+      state: {
+        type: 'resetting-password',
+      },
+    },
+  ],
+});
+
 export const simulationsWithLoadingSuccess = makeStory(conf, {
   /** @type {Partial<CcTokenApiList>[]} */
   items: [
@@ -261,6 +298,27 @@ export const simulationsWithRevokingToken = makeStory(conf, {
         component.state = {
           type: 'loaded',
           apiTokens: baseTokens.filter((_, index) => index !== 1),
+        };
+      },
+    ),
+  ],
+});
+
+export const simulationsWithNoPassword = makeStory(conf, {
+  /** @type {Partial<CcTokenApiList>[]} */
+  items: [
+    {
+      apiTokenUpdateHref,
+      state: { type: 'loading' },
+    },
+  ],
+  simulations: [
+    storyWait(
+      2000,
+      /** @param {CcTokenApiList[]} components */
+      ([component]) => {
+        component.state = {
+          type: 'no-password',
         };
       },
     ),

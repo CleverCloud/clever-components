@@ -24,7 +24,7 @@ import '../cc-button/cc-button.js';
 import '../cc-icon/cc-icon.js';
 import '../cc-loader/cc-loader.js';
 import '../cc-notice/cc-notice.js';
-import { CcTokenRevokeEvent } from '../common.events.js';
+import { CcPasswordResetEvent, CcTokenRevokeEvent } from '../common.events.js';
 
 /**
  * @typedef {import('./cc-token-api-list.types.js').ApiTokenState} ApiTokenState
@@ -87,6 +87,10 @@ export class CcTokenApiList extends LitElement {
     this.dispatchEvent(new CcTokenRevokeEvent(tokenId));
   }
 
+  _onRequestPassword() {
+    this.dispatchEvent(new CcPasswordResetEvent());
+  }
+
   /**
    * Sorts API tokens for display.
    * Non-expired tokens are shown first, then expired tokens.
@@ -115,10 +119,14 @@ export class CcTokenApiList extends LitElement {
     const sortedTokens = this.state.type === 'loaded' ? [...this.state.apiTokens].sort(this._sortTokens) : [];
     const isOneTokenRevoking = sortedTokens.some((token) => token.type === 'revoking');
 
+    const isResettingPassword = this.state.type === 'resetting-password';
+    const hasNoPassword = this.state.type === 'no-password';
+    const shouldDisplayCreateBtn = !isEmpty && !hasNoPassword && !isResettingPassword;
+
     return html`
       <cc-block>
         <div slot="header-title">${i18n('cc-token-api-list.main-heading')}</div>
-        ${!isEmpty
+        ${shouldDisplayCreateBtn
           ? html`
               <div slot="header-right">
                 <a class="create-token-cta" href="${this.apiTokenCreationHref}">
@@ -131,6 +139,26 @@ export class CcTokenApiList extends LitElement {
           <p>${i18n('cc-token-api-list.intro')}</p>
           <div class="api-tokens-wrapper">
             ${this.state.type === 'loading' ? html`<cc-loader></cc-loader>` : ''}
+            ${hasNoPassword || isResettingPassword
+              ? html`
+                  <div class="empty">
+                    ${i18n('cc-token-api-list.empty')}
+                    <cc-notice>
+                      <div slot="message" class="empty__no-password">
+                        <p class="empty__no-password__message">${i18n('cc-token-api-list.no-password.message')}</p>
+                        <cc-button
+                          primary
+                          class="empty__no-password__btn"
+                          @cc-click="${this._onRequestPassword}"
+                          ?waiting="${isResettingPassword}"
+                        >
+                          ${i18n('cc-token-api-list.no-password.create-password-btn')}
+                        </cc-button>
+                      </div>
+                    </cc-notice>
+                  </div>
+                `
+              : ''}
             ${isEmpty
               ? html`
                   <div class="empty">
@@ -290,6 +318,23 @@ export class CcTokenApiList extends LitElement {
           gap: 1.5em;
           justify-items: center;
           padding: 1em;
+        }
+
+        .empty__no-password {
+          align-items: center;
+          display: flex;
+          flex-wrap: wrap;
+          font-weight: normal;
+          gap: 1em;
+        }
+
+        .empty__no-password__message {
+          flex: 1 1 15em;
+          margin: 0;
+        }
+
+        .empty__no-password__btn {
+          flex: 0 0 auto;
         }
 
         .create-token-cta {

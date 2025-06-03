@@ -113,3 +113,15 @@ export class CcTokenRevokeEvent extends CcEvent {
     super(CcTokenRevokeEvent.TYPE, detail);
   }
 }
+
+/**
+ * Dispatched when a password reset is requested.
+ * @extends {CcEvent}
+ */
+export class CcPasswordResetEvent extends CcEvent {
+  static TYPE = 'cc-password-reset';
+
+  constructor() {
+    super(CcPasswordResetEvent.TYPE);
+  }
+}

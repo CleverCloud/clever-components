@@ -1662,12 +1662,18 @@ export const translations = {
   'cc-token-api-list.delete-token': /** @param {{ name: string}} _ */ ({ name }) =>
     `Supprimer le token d'API - ${name}`,
   'cc-token-api-list.empty': () =>
-    sanitize`Vous n'avez aucun token d'API. Cliquez sur le bouton ci-dessous pour créer un nouveau token&nbsp;:`,
+    sanitize`Vous n'avez aucun token d'API, ou aucun d'eux n'est actif. Créez un nouveau token&nbsp;:`,
   'cc-token-api-list.error': `Une erreur est survenue pendant le chargement des tokens d'API`,
   'cc-token-api-list.intro': () =>
     sanitize`Ci-dessous la liste des tokens d'API associés à votre compte <a href="https://www.clever-cloud.com/developers/api/howto/#request-the-api" title="Tokens d'API - Documentation - nouvelle fenêtre">tokens d'API</a> et leurs informations. Vous pouvez les révoquez si nécessaire.`,
   'cc-token-api-list.link.doc': `Tokens d'API - Documentation`,
   'cc-token-api-list.main-heading': `Tokens d'API`,
+  'cc-token-api-list.no-password.create-password-btn': `Ajouter un mot de passe`,
+  'cc-token-api-list.no-password.message': () =>
+    sanitize`Votre compte Clever Cloud est lié via GitHub et ne possède pas de mot de passe. <strong>L'ajout d'un mot de passe est nécessaire pour créer des tokens d'API</strong>. Cliquez sur le bouton ci-contre pour <strong>ajouter un mot de passe à votre compte</strong>, nous vous enverrons un e-mail pour confirmer votre identité.`,
+  'cc-token-api-list.no-password.reset-password-error': `Une erreur est survenue lors de la demande de création de mot de passe`,
+  'cc-token-api-list.no-password.reset-password-successful': /** @param {{ email: string }} _ */ ({ email }) =>
+    `L'e-mail a été envoyé à ${email}, rechargez cette page une fois le mot de passe ajouté à votre compte`,
   'cc-token-api-list.revoke-token': /** @param {{ name: string}} _ */ ({ name }) => `Révoquer le token d'API - ${name}`,
   'cc-token-api-list.revoke-token.error': `Une erreur est survenue pendant la révocation du token d'API`,
   'cc-token-api-list.revoke-token.success': `Le token d'API a été révoqué avec succès`,

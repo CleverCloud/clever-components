@@ -1,4 +1,7 @@
-import { notifyError, notifySuccess } from '../../lib/notifications.js';
+// @ts-expect-error FIXME: remove when clever-client exports types
+import { get as getSelf } from '@clevercloud/client/esm/api/v2/organisation.js';
+import { notify, notifyError, notifySuccess } from '../../lib/notifications.js';
+import { sendToApi } from '../../lib/send-to-api.js';
 import { sendToAuthBridge } from '../../lib/send-to-auth-bridge.js';
 import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
 import { i18n } from '../../translations/translation.js';
@@ -51,7 +54,12 @@ defineSmartComponent({
 
     api
       .getApiTokens()
-      .then((tokens) => {
+      .then(([{ hasPassword }, tokens]) => {
+        if (!hasPassword) {
+          updateComponent('state', { type: 'no-password' });
+          return;
+        }
+
         /** @type {ApiTokenStateIdle[]} */
         const apiTokens = tokens.map((token) => ({
           type: 'idle',
@@ -90,13 +98,52 @@ defineSmartComponent({
           notifyError(i18n('cc-token-api-list.revoke-token.error'));
         });
     });
+
+    onEvent('cc-password-reset', () => {
+      updateComponent('state', { type: 'resetting-password' });
+      api
+        .resetPassword()
+        .then((email) => {
+          updateComponent('state', { type: 'no-password' });
+          notify({
+            intent: 'info',
+            message: i18n('cc-token-api-list.no-password.reset-password-successful', { email }),
+            options: {
+              timeout: 0,
+              closeable: true,
+            },
+          });
+        })
+        .catch((error) => {
+          console.error(error);
+          notifyError(i18n('cc-token-api-list.no-password.reset-password-error'));
+          updateComponent('state', { type: 'no-password' });
+        });
+    });
   },
 });
 
 class Api {
-  /** @param {AuthBridgeConfig} apiConfig */
+  /** @param {AuthBridgeConfig & ApiConfig} apiConfig */
   constructor(apiConfig) {
-    this._authBridgeConfig = apiConfig;
+    this._authAndApiConfig = apiConfig;
+  }
+
+  /** @returns {Promise<{ hasPassword: boolean }>} */
+  _getUserInfo() {
+    return getSelf({})
+      .then(sendToApi({ apiConfig: this._authAndApiConfig }))
+      .then(
+        /**
+         * @param {{ email: string, partnerId: string, hasPassword: boolean }} user
+         * @returns {{ hasPassword: boolean }}
+         */
+        ({ email, partnerId, hasPassword }) => {
+          this._userEmail = email;
+          this._userPartnerId = partnerId;
+          return { hasPassword };
+        },
+      );
   }
 
   _listApiTokens() {
@@ -116,25 +163,39 @@ class Api {
     });
   }
 
-  /** @returns {Promise<ApiToken[]>} */
+  /** @returns {Promise<[{ hasPassword: boolean }, ApiToken[]]>} */
   getApiTokens() {
-    return this._listApiTokens()
-      .then(sendToAuthBridge({ authBridgeConfig: this._authBridgeConfig }))
-      .then(
-        /** @param {RawApiToken[]} tokens */
-        (tokens) =>
-          tokens.map(
-            /** @returns {ApiToken} */
-            (token) => ({
-              id: token.apiTokenId,
-              creationDate: new Date(token.creationDate),
-              expirationDate: new Date(token.expirationDate),
-              name: token.name,
-              description: token.description,
-              isExpired: token.state === 'EXPIRED',
-            }),
-          ),
-      );
+    return Promise.all([
+      this._getUserInfo(),
+      this._listApiTokens()
+        .then(sendToAuthBridge({ authBridgeConfig: this._authAndApiConfig }))
+        .then(
+          /** @param {RawApiToken[]} tokens */
+          (tokens) =>
+            tokens.map(
+              /** @returns {ApiToken} */
+              (token) => ({
+                id: token.apiTokenId,
+                creationDate: new Date(token.creationDate),
+                expirationDate: new Date(token.expirationDate),
+                name: token.name,
+                description: token.description,
+                isExpired: token.state === 'EXPIRED',
+              }),
+            ),
+        ),
+    ]);
+  }
+
+  /** @param {{ partner_id: string, login: string, drop_tokens: 'on'|'off' }} body */
+  _resetPasswordRequest(body) {
+    return Promise.resolve({
+      method: 'post',
+      url: `/v2/password_forgotten`,
+      headers: { Accept: 'application/json', 'Content-Type': 'application/x-www-form-urlencoded' },
+      // no query params
+      body,
+    });
   }
 
   /**
@@ -142,6 +203,19 @@ class Api {
    * @returns {Promise<void>}
    */
   revokeApiToken(apiTokenId) {
-    return this._deleteApiToken(apiTokenId).then(sendToAuthBridge({ authBridgeConfig: this._authBridgeConfig }));
+    return this._deleteApiToken(apiTokenId).then(sendToAuthBridge({ authBridgeConfig: this._authAndApiConfig }));
+  }
+
+  /** @returns {Promise<string>} */
+  resetPassword() {
+    return this._resetPasswordRequest({
+      // eslint-disable-next-line camelcase
+      partner_id: this._userPartnerId,
+      login: this._userEmail,
+      // eslint-disable-next-line camelcase
+      drop_tokens: 'off',
+    })
+      .then(sendToApi({ apiConfig: this._authAndApiConfig }))
+      .then(() => this._userEmail);
   }
 }

@@ -1,4 +1,9 @@
-export type TokenApiListState = TokenApiListStateLoading | TokenApiListStateError | TokenApiListStateLoaded;
+export type TokenApiListState =
+  | TokenApiListStateLoading
+  | TokenApiListStateError
+  | TokenApiListStateLoaded
+  | TokenApiListStateNoPassword
+  | TokenApiListStateResettingPassword;
 
 export interface TokenApiListStateLoading {
   type: 'loading';
@@ -11,6 +16,14 @@ export interface TokenApiListStateError {
 export interface TokenApiListStateLoaded {
   type: 'loaded';
   apiTokens: ApiTokenState[];
+}
+
+export interface TokenApiListStateNoPassword {
+  type: 'no-password';
+}
+
+export interface TokenApiListStateResettingPassword {
+  type: 'resetting-password';
 }
 
 export type ApiTokenState = ApiTokenStateIdle | ApiTokenStateRevoking;
