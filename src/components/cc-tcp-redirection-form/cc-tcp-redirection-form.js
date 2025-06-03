@@ -1,9 +1,11 @@
 import { css, html, LitElement } from 'lit';
 import { iconRemixInformationFill as iconInfo } from '../../assets/cc-remix.icons.js';
 import { generateDocsHref } from '../../lib/utils.js';
-import { ccLink, linkStyles } from '../../templates/cc-link/cc-link.js';
+import { cliCommandsStyles } from '../../styles/cli-commands.js';
+import { linkStyles } from '../../templates/cc-link/cc-link.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-badge/cc-badge.js';
+import '../cc-block-details/cc-block-details.js';
 import '../cc-block/cc-block.js';
 import '../cc-notice/cc-notice.js';
 import '../cc-tcp-redirection/cc-tcp-redirection.js';
@@ -31,12 +33,16 @@ export class CcTcpRedirectionForm extends LitElement {
   static get properties() {
     return {
       context: { type: String },
+      resourceId: { type: String, attribute: 'resource-id' },
       state: { type: Object },
     };
   }
 
   constructor() {
     super();
+
+    /** @type {string} Sets the resource id for documentation */
+    this.resourceId = 'xxx_xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx';
 
     /** @type {TcpRedirectionFormContextType} Defines in which context the form is used so it can show the appropriate description or lack thereof (defaults to user). */
     this.context = 'user';
@@ -80,12 +86,14 @@ export class CcTcpRedirectionForm extends LitElement {
             : ''}
         </div>
 
-        <div slot="footer-right">
-          ${ccLink(
-            `${TCP_REDIRECTION_DOCUMENTATION}`,
-            html`<cc-icon .icon="${iconInfo}"></cc-icon> ${i18n('cc-tcp-redirection-form.documentation.text')}`,
-          )}
-        </div>
+        <cc-block-details slot="footer-left">
+          <div slot="button-text">${i18n('cc-block-details.cli.text')}</div>
+          <div slot="link">
+            <cc-icon .icon="${iconInfo}"></cc-icon>
+            <a href="${TCP_REDIRECTION_DOCUMENTATION}">${i18n('cc-tcp-redirection-form.documentation.text')}</a>
+          </div>
+          <div slot="content">${i18n('cc-tcp-redirection-form.cli.content', { resourceId: this.resourceId })}</div>
+        </cc-block-details>
       </cc-block>
     `;
   }
@@ -104,6 +112,7 @@ export class CcTcpRedirectionForm extends LitElement {
   static get styles() {
     return [
       linkStyles,
+      cliCommandsStyles,
       // language=CSS
       css`
         :host {
