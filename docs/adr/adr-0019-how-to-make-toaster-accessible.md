@@ -6,7 +6,7 @@ kind: '📌 Architecture Decision Records'
 
 🗓️ 2022-08-26 · ✍️ Pierre de Soyres
 
-This ADR tries to explain what challenges we faced when we implemented the `toast` pattern. (see [ADR 0018: How to give feedback after a user action?](https://www.clever-cloud.com/doc/clever-components/?path=/docs/📌-architecture-decision-records-adr-0018-how-to-give-feedback-after-a-user-action--docs)).
+This ADR tries to explain what challenges we faced when we implemented the `toast` pattern. (see [ADR 0018: How to give feedback after a user action?](📌-architecture-decision-records-adr-0018-how-to-give-feedback-after-a-user-action--docs)).
 
 ## Context?
 
