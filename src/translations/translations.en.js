@@ -400,7 +400,7 @@ export const translations = {
   'cc-env-var-create.errors.invalid-name': /** @param {{name: string}} _ */ ({ name }) =>
     sanitize`Name <code>${name}</code> is invalid`,
   'cc-env-var-create.info.java-prop': /** @param {{name: string}} _ */ ({ name }) =>
-    sanitize`Variable <code>${name}</code> will only be injected as a Java property and won't be part of the environment, <a href="https://www.clever-cloud.com/doc/develop/env-variables/#environment-variables-rules-and-formats">more details</a>`,
+    sanitize`Variable <code>${name}</code> will only be injected as a Java property and won't be part of the environment, <a href="${generateDocsHref('/develop/env-variables/#environment-variables-rules-and-formats')}">more details</a>`,
   'cc-env-var-create.name.label': `Variable name`,
   'cc-env-var-create.value.label': `Variable value`,
   //#endregion
