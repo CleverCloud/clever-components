@@ -21,6 +21,7 @@ import {
   sortDomains,
 } from '../../lib/domain.js';
 import { focusBySelector } from '../../lib/focus-helper.js';
+import { generateDocsHref } from '../../lib/utils.js';
 import { accessibilityStyles } from '../../styles/accessibility.js';
 import { ccLink, linkStyles } from '../../templates/cc-link/cc-link.js';
 import { i18n } from '../../translations/translation.js';
@@ -33,10 +34,11 @@ import '../cc-loader/cc-loader.js';
 import '../cc-notice/cc-notice.js';
 import { CcDomainAddEvent, CcDomainDeleteEvent, CcDomainMarkAsPrimaryEvent } from './cc-domain-management.events.js';
 
-const DOMAIN_NAMES_DOCUMENTATION =
-  'https://developers.clever-cloud.com/doc/administrate/domain-names/#using-a-cleverappsio-free-domain-with-built-in-ssl';
-const TLS_CERTIFICATES_DOCUMENTATION = 'https://developers.clever-cloud.com/doc/administrate/ssl/';
-const DNS_DOCUMENTATION = 'https://developers.clever-cloud.com/doc/administrate/domain-names/';
+const DOMAIN_NAMES_DOCUMENTATION = generateDocsHref(
+  '/administrate/domain-names/#using-a-cleverappsio-free-domain-with-built-in-ssl',
+);
+const TLS_CERTIFICATES_DOCUMENTATION = generateDocsHref('/administrate/ssl/');
+const DNS_DOCUMENTATION = generateDocsHref('/administrate/domain-names/');
 
 /**
  * @typedef {import('./cc-domain-management.types.js').DomainManagementDnsInfoState} DomainManagementDnsInfoState

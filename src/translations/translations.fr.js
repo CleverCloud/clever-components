@@ -15,6 +15,7 @@ import {
 } from '../lib/i18n/i18n-number.js';
 import { sanitize } from '../lib/i18n/i18n-sanitize.js';
 import { preparePlural } from '../lib/i18n/i18n-string.js';
+import { generateDevHubHref, generateDocsHref } from '../lib/utils.js';
 
 /**
  * @typedef {import('../components/common.types.js').Flavor} Flavor
@@ -274,12 +275,12 @@ export const translations = {
   //#endregion
   //#region cc-domain-management
   'cc-domain-management.certif.automated': () =>
-    sanitize`Que vous utilisiez <code>cleverapps.io</code> ou vos propres noms de domaine avec les applications hébergées par Clever Cloud, un certificat Let's Encrypt est automatiquement généré et renouvelé pour l'accès HTTPS/TLS. Vous n'avez rien à faire. Pour les cas spécifiques, reportez-vous à notre <a href="https://developers.clever-cloud.com/doc/administrate/ssl/" lang="en">documentation</a>.`,
+    sanitize`Que vous utilisiez <code>cleverapps.io</code> ou vos propres noms de domaine avec les applications hébergées par Clever Cloud, un certificat Let's Encrypt est automatiquement généré et renouvelé pour l'accès HTTPS/TLS. Vous n'avez rien à faire. Pour les cas spécifiques, reportez-vous à notre <a href="${generateDocsHref('/administrate/ssl/')}" lang="en">documentation</a>.`,
   'cc-domain-management.certif.custom': () =>
     sanitize`Vous pouvez fournir votre propre certificat grâce au <a href="https://api.clever-cloud.com/v2/certificates/new">gestionnaire de certificats Clever Cloud</a>.`,
   'cc-domain-management.certif.heading': `Sécurisez votre application`,
   'cc-domain-management.dns.a.desc': () =>
-    sanitize`<p>Si vous choisissez d'utiliser des enregistrements de type <code>A</code>, par exemple pour un domaine racine (APEX), vous devrez vous-même assurer leur mise à jour. Pensez à suivre notre <a href="https://developers.clever-cloud.com/changelog/" lang="en">changelog</a> ou à lire la documentation de notre <a href="https://developers.clever-cloud.com/api/v4/#load-balancers" lang="en">API v4</a> pour cela.</p>`,
+    sanitize`<p>Si vous choisissez d'utiliser des enregistrements de type <code>A</code>, par exemple pour un domaine racine (APEX), vous devrez vous-même assurer leur mise à jour. Pensez à suivre notre <a href="${generateDevHubHref('/changelog')}" lang="en">changelog</a> ou à lire la documentation de notre <a href="${generateDevHubHref('/api/v4/#load-balancers')}" lang="en">API v4</a> pour cela.</p>`,
   'cc-domain-management.dns.a.heading': `Enregistrements A`,
   'cc-domain-management.dns.a.label': `Valeurs d'enregistrement A`,
   'cc-domain-management.dns.cname.desc': () =>
@@ -291,7 +292,7 @@ export const translations = {
   'cc-domain-management.dns.documentation.text': `Enregistrements DNS - Documentation`,
   'cc-domain-management.dns.heading': `Configurez vos DNS`,
   'cc-domain-management.dns.info.desc': () =>
-    sanitize`Si vous bénéficiez d'un <span lang="en">load balancer</span> dédié, référez-vous à sa configuration ou <a href="/ticket-center-choice">contactez le support</a>. Notre équipe pourra également vous aider pour commander un tel service. Pour un domaine sans sous-domaine (APEX) ou un sous-domaine avec sa propre zone DNS, référez-vous à notre <a href="https://developers.clever-cloud.com/doc/administrate/domain-names/">documentation</a>.`,
+    sanitize`Si vous bénéficiez d'un <span lang="en">load balancer</span> dédié, référez-vous à sa configuration ou <a href="/ticket-center-choice">contactez le support</a>. Notre équipe pourra également vous aider pour commander un tel service. Pour un domaine sans sous-domaine (APEX) ou un sous-domaine avec sa propre zone DNS, référez-vous à notre <a href="${generateDocsHref('/administrate/domain-names/')}">documentation</a>.`,
   'cc-domain-management.dns.info.heading': `Load balancers dédiés et cas spécifiques`,
   'cc-domain-management.dns.loading-error': `Une erreur est survenue pendant le chargement des informations DNS`,
   'cc-domain-management.form.domain.error.contains-path': /** @param {{path: string}} _ */ ({ path }) =>
@@ -304,7 +305,7 @@ export const translations = {
     sanitize`Par exemple: <code>example.com</code>, <code>*.example.com</code> ou <code>example.cleverapps.io</code>`,
   'cc-domain-management.form.domain.label': `Nom de domaine`,
   'cc-domain-management.form.info.cleverapps': () =>
-    sanitize`Par défaut, une application se voit attribuer un nom de domaine de type <code>app_id.cleverapps.io</code>. Vous pouvez le supprimer ou changer le sous-domaine librement, mais <code>xxx.cleverapps.io</code> doit uniquement être utilisé à des fins de test (voir notre <a href="https://developers.clever-cloud.com/doc/administrate/domain-names/#testing-with-cleverappsio-domain">documentation</a>).`,
+    sanitize`Par défaut, une application se voit attribuer un nom de domaine de type <code>app_id.cleverapps.io</code>. Vous pouvez le supprimer ou changer le sous-domaine librement, mais <code>xxx.cleverapps.io</code> doit uniquement être utilisé à des fins de test (voir notre <a href="${generateDocsHref('/administrate/domain-names/#testing-with-cleverappsio-domain')}">documentation</a>).`,
   'cc-domain-management.form.info.docs': `Vous pouvez associer un ou plusieurs noms de domaines à votre application. Le domaine principal sera utilisé dans les liens de la Console et dans les e-mails qui vous seront envoyés. Plusieurs applications peuvent partager un même domaine, chacune avec un sous-domaine et/ou une route spécifique.`,
   'cc-domain-management.form.path.help': () => sanitize`Par exemple: <code>/api</code> ou <code>/blog</code>`,
   'cc-domain-management.form.path.label': `Route`,
