@@ -1,6 +1,7 @@
 import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { iconRemixInformationFill as iconInfo } from '../../assets/cc-remix.icons.js';
+import { generateDocsHref } from '../../lib/utils.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
 import { ccLink, linkStyles } from '../../templates/cc-link/cc-link.js';
 import { i18n } from '../../translations/translation.js';
@@ -17,7 +18,7 @@ const MATOMO_LOGO_URL = 'https://assets.clever-cloud.com/logos/matomo.svg';
 const PHP_LOGO_URL = 'https://assets.clever-cloud.com/logos/php.svg';
 const MYSQL_LOGO_URL = 'https://assets.clever-cloud.com/logos/mysql.svg';
 const REDIS_LOGO_URL = 'https://assets.clever-cloud.com/logos/redis.svg';
-const MATOMO_DOCUMENTATION = 'https://www.clever-cloud.com/doc/deploy/addon/matomo/';
+const MATOMO_DOCUMENTATION = generateDocsHref('/deploy/addon/matomo/');
 
 /**
  * @typedef {import('./cc-matomo-info.types.js').MatomoInfoState} MatomoInfoState
