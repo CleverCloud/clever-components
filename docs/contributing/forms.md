@@ -261,7 +261,7 @@ Note: For native validation constraints (like `required` or `type="email"`), you
 
 ## Smart Component Interactions
 
-Please refer to the [smart component documentation](https://www.clever-cloud.com/doc/clever-components/?path=/docs/%F0%9F%91%8B-contributing-smart-component-guidelines--docs) for details about state management with smart components.
+Please refer to the [smart component documentation](👋-contributing-smart-component-guidelines--docs) for details about state management with smart components.
 
 ## Form and Smart Component Separation
 

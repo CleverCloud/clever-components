@@ -17,7 +17,7 @@ You only need to create test files if you want to test aspects of a component ot
 
 These accessibility tests are managed directly within the story files themselves through configuration options.
 
-Refer to the [Contributing - Writing Stories](https://www.clever-cloud.com/doc/clever-components/?path=/docs/%F0%9F%91%8B-contributing-writing-stories--docs) docs to learn how to disable tests or rules.
+Refer to the [Contributing - Writing Stories](👋-contributing-writing-stories--docs) docs to learn how to disable tests or rules.
 
 ## How to run tests on a single test file?
 
