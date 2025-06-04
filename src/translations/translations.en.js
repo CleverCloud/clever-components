@@ -645,8 +645,8 @@ export const translations = {
   'cc-heptapod-info.storage-description': `Storage size`,
   //#endregion
   //#region cc-input-date
-  'cc-input-date.error.bad-input': `You must enter a date.`,
-  'cc-input-date.error.empty': `You must enter a value`,
+  'cc-input-date.error.bad-input': () => sanitize`You must enter a date. <br> For instance: 2025-06-03 17:25:50.`,
+  'cc-input-date.error.empty': () => sanitize`You must enter a value. <br> Format: YYYY-MM-DD HH:MM:SS.`,
   'cc-input-date.error.range-overflow': /** @param {{max: string}} _ */ ({ max }) =>
     `You must enter a date lower that ${max}.`,
   'cc-input-date.error.range-underflow': /** @param {{min: string}} _ */ ({ min }) =>
