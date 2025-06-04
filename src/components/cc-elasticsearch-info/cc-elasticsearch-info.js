@@ -1,6 +1,7 @@
 import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { iconRemixInformationFill as iconInfo } from '../../assets/cc-remix.icons.js';
+import { generateDocsHref } from '../../lib/utils.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
 import { ccLink, linkStyles } from '../../templates/cc-link/cc-link.js';
 import { i18n } from '../../translations/translation.js';
@@ -12,7 +13,7 @@ import '../cc-notice/cc-notice.js';
 const ELASTICSEARCH_LOGO_URL = 'https://assets.clever-cloud.com/logos/elastic.svg';
 const KIBANA_LOGO_URL = 'https://assets.clever-cloud.com/logos/elasticsearch-kibana.svg';
 const APM_LOGO_URL = 'https://assets.clever-cloud.com/logos/elasticsearch-apm.svg';
-const ELASTICSEARCH_DOCUMENTATION = 'https://www.clever-cloud.com/doc/addons/elastic/';
+const ELASTICSEARCH_DOCUMENTATION = generateDocsHref('/addons/elastic/');
 const linksSortOrder = ['elasticsearch', 'kibana', 'apm'];
 
 /**
