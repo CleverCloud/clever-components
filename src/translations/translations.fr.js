@@ -428,9 +428,9 @@ export const translations = {
   'cc-env-var-editor-expert.errors.line': `ligne`,
   'cc-env-var-editor-expert.errors.unknown': `Erreur inconnue`,
   'cc-env-var-editor-expert.example': () =>
-    sanitize`Format : <code>NOM_DE_LA_VARIABLE="valeur de la variable"</code> <br> Chaque variable doit être séparée par des sauts de ligne, <a href="https://www.clever-cloud.com/doc/develop/env-variables/#format">en savoir plus</a>.`,
+    sanitize`Format : <code>NOM_DE_LA_VARIABLE="valeur de la variable"</code> <br> Chaque variable doit être séparée par des sauts de ligne, <a href="${generateDocsHref('/develop/env-variables/#format')}">en savoir plus</a>.`,
   'cc-env-var-editor-expert.info.java-prop': /** @param {{name: string}} _ */ ({ name }) =>
-    sanitize`La variable <code>${name}</code> sera injecté sous forme de propriété Java et non en tant que variable d'environnement, <a href="https://www.clever-cloud.com/doc/develop/env-variables/#environment-variables-rules-and-formats">plus de détails</a>`,
+    sanitize`La variable <code>${name}</code> sera injecté sous forme de propriété Java et non en tant que variable d'environnement, <a href="${generateDocsHref('/develop/env-variables/#environment-variables-rules-and-formats')}">plus de détails</a>`,
   'cc-env-var-editor-expert.label': `Edition des variables. Format : NOM_DE_LA_VARIABLE="valeur de la variable". Chaque variable doit être séparée par des sauts de ligne.`,
   //#endregion
   //#region cc-env-var-editor-json
