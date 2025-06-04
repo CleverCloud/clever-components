@@ -1,7 +1,7 @@
 import { css, html, LitElement } from 'lit';
 import { iconRemixInformationFill as iconInfo } from '../../assets/cc-remix.icons.js';
 import { ResizeController } from '../../controllers/resize-controller.js';
-import { sortBy, unique } from '../../lib/utils.js';
+import { generateDocsHref, sortBy, unique } from '../../lib/utils.js';
 import { ccLink, linkStyles } from '../../templates/cc-link/cc-link.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-block-section/cc-block-section.js';
@@ -13,7 +13,7 @@ import '../cc-select/cc-select.js';
 import '../cc-toggle/cc-toggle.js';
 
 const BREAKPOINTS = [520];
-const INVOICE_DOCUMENTATION = 'https://developers.clever-cloud.com/doc/billing/unified-invoices/';
+const INVOICE_DOCUMENTATION = generateDocsHref('/billing/unified-invoices/');
 
 /**
  * @param {string} dateString
