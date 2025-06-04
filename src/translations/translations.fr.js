@@ -1577,7 +1577,7 @@ export const translations = {
   'cc-token-api-creation-form.cli.content': () => sanitize`
     <p>
       Gérez vos tokens d'API depuis un terminal à l'aide des commandes ci-dessous.
-      Pour installer les Clever Tools (CLI), suivez les instructions de la <a href="https://www.clever-cloud.com/developers/doc/cli/install/" title="documentation - Installer les Clever Tools - nouvelle fenêtre - en Anglais">documentation</a>.
+      Pour installer les Clever Tools (CLI), suivez les instructions de la <a href="${generateDocsHref('/cli/install/')}" title="documentation - Installer les Clever Tools - nouvelle fenêtre - en Anglais">documentation</a>.
     </p>
     <dl>
       <dt>Créer un token d'API&nbsp;:</dt>
