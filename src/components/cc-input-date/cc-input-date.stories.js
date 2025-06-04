@@ -94,7 +94,7 @@ export const helpMessage = makeStory(conf, {
   items: baseItems.map((p) => ({
     ...p,
     required: true,
-    innerHTML: '<p slot="help">Must be a date</p>',
+    innerHTML: '<p slot="help">Must be a date. Format: YYYY-MM-DD HH:MM:SS.</p>',
   })),
 });
 
@@ -102,7 +102,7 @@ export const errorMessage = makeStory(conf, {
   items: baseItems.map((p) => ({
     ...p,
     required: true,
-    errorMessage: 'You must enter a value',
+    errorMessage: 'You must enter a value. Format: YYYY-MM-DD HH:MM:SS.',
   })),
 });
 
@@ -110,9 +110,9 @@ export const errorMessageWithHelpMessage = makeStory(conf, {
   items: baseItems.map((p) => ({
     ...p,
     required: true,
-    errorMessage: 'You must enter a value',
+    errorMessage: 'You must enter a value. Format: YYYY-MM-DD HH:MM:SS.',
     innerHTML: `
-      <p slot="help">Must be a date</p>
+      <p slot="help">Must be a date. Format: YYYY-MM-DD HH:MM:SS.</p>
     `,
   })),
 });
@@ -137,9 +137,9 @@ export const inlineWithErrorAndHelpMessages = makeStory(conf, {
     ...p,
     inline: true,
     required: true,
-    errorMessage: 'You must enter a value',
+    errorMessage: 'You must enter a value. Format: YYYY-MM-DD HH:MM:SS.',
     innerHTML: `
-      <p slot="help">Must be a date</p>
+      <p slot="help">Must be a date. Format: YYYY-MM-DD HH:MM:SS.</p>
     `,
   })),
 });
@@ -201,36 +201,36 @@ export const customLabelStyle = makeStory(
       ...customBaseItems,
       ...customBaseItems.map((item) => ({
         ...item,
-        innerHTML: `<p slot="help">Must be a date</p>`,
+        innerHTML: `<p slot="help">Must be a date. Format: YYYY-MM-DD HH:MM:SS.</p>`,
       })),
       ...customBaseItems.map((item) => ({
         ...item,
-        errorMessage: 'You must enter a value',
+        errorMessage: 'You must enter a value. Format: YYYY-MM-DD HH:MM:SS.',
       })),
       ...customBaseItems.map((item) => ({
         ...item,
-        errorMessage: 'You must enter a value',
-        innerHTML: `<p slot="help">Must be a date</p>`,
-      })),
-      ...customBaseItems.map((item) => ({
-        ...item,
-        inline: true,
+        errorMessage: 'You must enter a value. Format: YYYY-MM-DD HH:MM:SS.',
+        innerHTML: `<p slot="help">Must be a date. Format: YYYY-MM-DD HH:MM:SS.</p>`,
       })),
       ...customBaseItems.map((item) => ({
         ...item,
         inline: true,
-        innerHTML: `<p slot="help">Must be a date</p>`,
       })),
       ...customBaseItems.map((item) => ({
         ...item,
         inline: true,
-        errorMessage: 'You must enter a value',
+        innerHTML: `<p slot="help">Must be a date. Format: YYYY-MM-DD HH:MM:SS.</p>`,
       })),
       ...customBaseItems.map((item) => ({
         ...item,
         inline: true,
-        errorMessage: 'You must enter a value',
-        innerHTML: `<p slot="help">Must be a date</p>`,
+        errorMessage: 'You must enter a value. Format: YYYY-MM-DD HH:MM:SS.',
+      })),
+      ...customBaseItems.map((item) => ({
+        ...item,
+        inline: true,
+        errorMessage: 'You must enter a value. Format: YYYY-MM-DD HH:MM:SS.',
+        innerHTML: `<p slot="help">Must be a date. Format: YYYY-MM-DD HH:MM:SS.</p>`,
       })),
     ],
   },
