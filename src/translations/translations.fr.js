@@ -1665,7 +1665,7 @@ export const translations = {
     sanitize`Vous n'avez aucun token d'API, ou aucun d'eux n'est actif. Créez un nouveau token&nbsp;:`,
   'cc-token-api-list.error': `Une erreur est survenue pendant le chargement des tokens d'API`,
   'cc-token-api-list.intro': () =>
-    sanitize`Ci-dessous la liste des tokens d'API associés à votre compte <a href="https://www.clever-cloud.com/developers/api/howto/#request-the-api" title="Tokens d'API - Documentation - nouvelle fenêtre">tokens d'API</a> et leurs informations. Vous pouvez les révoquez si nécessaire.`,
+    sanitize`Ci-dessous la liste des <a href="https://www.clever-cloud.com/developers/api/howto/#request-the-api" title="Tokens d'API - Documentation - nouvelle fenêtre">tokens d'API</a> associés à votre compte et leurs informations. Vous pouvez les révoquer si nécessaire.`,
   'cc-token-api-list.link.doc': `Tokens d'API - Documentation`,
   'cc-token-api-list.main-heading': `Tokens d'API`,
   'cc-token-api-list.no-password.create-password-btn': `Ajouter un mot de passe`,
