@@ -15,7 +15,7 @@ You can add some details in parens when the selector is more complex.
 <!-- Here we give some general details about the smart definition. -->
 
 <table>
-  <tr><td><strong>Component    </strong> <td><a href="https://www.clever-cloud.com/doc/clever-components/?path=/docs/ ..."><code>&lt;cc-example-component&gt;</code></a>
+  <tr><td><strong>Component    </strong> <td><a href="🛠-example-section--story-id"><code>&lt;cc-example-component&gt;</code></a>
   <tr><td><strong>Selector     </strong> <td><code>cc-example-component</code>
   <tr><td><strong>Requires auth</strong> <td>Yes/No
 </table>
@@ -85,4 +85,3 @@ Some quick description of the example.
   <cc-example-component></cc-example-component>
 </cc-smart-container>
 ```
-
