@@ -5,6 +5,16 @@ title: 'Changelog'
 
 # Changelog
 
+## [19.2.1](https://github.com/CleverCloud/clever-components/compare/19.2.0...19.2.1) (2025-06-05)
+
+
+### 🐛 Bug Fixes
+
+* **cc-button:** update opacity with --cc-opacity-when-disabled var ([ef275c9](https://github.com/CleverCloud/clever-components/commit/ef275c93ae4295367f135d1b01fd58032ddc7405))
+* **cc-input-number:** update opacity with --cc-opacity-when-disabled var ([3870369](https://github.com/CleverCloud/clever-components/commit/3870369910a0ee7f32b612e7d16ad3d18a569ac3))
+* **cc-input-text:** add the possibility to use command key on implicit submit ([3e9ebd0](https://github.com/CleverCloud/clever-components/commit/3e9ebd086d639c48870b9c7e6f17bbec758dfb66))
+* **cc-toggle:** update opacity with --cc-opacity-when-disabled var ([f985309](https://github.com/CleverCloud/clever-components/commit/f985309a5bc20cf45f251db3f007234a080176f9))
+
 ## [19.2.0](https://github.com/CleverCloud/clever-components/compare/19.1.0...19.2.0) (2025-06-05)
 
 
