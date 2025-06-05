@@ -102,8 +102,11 @@ export const errorMessage = makeStory(conf, {
   items: baseItems.map((p) => ({
     ...p,
     required: true,
-    errorMessage: 'You must enter a value. Format: YYYY-MM-DD HH:MM:SS.',
   })),
+  /** @param {CcInputDate} component */
+  onUpdateComplete: (component) => {
+    component.reportInlineValidity();
+  },
 });
 
 export const errorMessageWithHelpMessage = makeStory(conf, {
