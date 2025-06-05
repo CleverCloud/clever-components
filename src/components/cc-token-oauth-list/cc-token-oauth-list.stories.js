@@ -51,6 +51,15 @@ const baseTokens = [
   {
     type: 'idle',
     id: 'token-4',
+    consumerName: 'Console - Staging',
+    creationDate: shiftDateField(NOW, 'D', -30),
+    expirationDate: shiftDateField(NOW, 'D', 2), // expires soon (2 days)
+    lastUsedDate: shiftDateField(NOW, 'D', -2),
+    imageUrl: 'https://assets.clever-cloud.com/login-assets/img/logo.svg',
+  },
+  {
+    type: 'idle',
+    id: 'token-5',
     consumerName: 'clever-tools',
     creationDate: shiftDateField(NOW, 'D', -30),
     expirationDate: shiftDateField(NOW, 'D', 2), // expires soon (2 days)

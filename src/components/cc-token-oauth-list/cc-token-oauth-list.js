@@ -306,6 +306,8 @@ export class CcTokenOauthList extends LitElement {
           border-radius: var(--cc-border-radius-default, 0.25em);
           height: 2em;
           width: 2em;
+
+          --cc-img-fit: contain;
         }
 
         .oauth-token-card__info-list {
