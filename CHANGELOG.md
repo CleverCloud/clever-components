@@ -5,6 +5,34 @@ title: 'Changelog'
 
 # Changelog
 
+## [19.2.0](https://github.com/CleverCloud/clever-components/compare/19.1.0...19.2.0) (2025-06-05)
+
+
+### 🚀 Features
+
+* **cc-token-api-list:** handle users with no password set ([f4e644d](https://github.com/CleverCloud/clever-components/commit/f4e644d1fa216c44936ab7036bef768b275e0571)), closes [#1431](https://github.com/CleverCloud/clever-components/issues/1431)
+
+
+### 🐛 Bug Fixes
+
+* **cc-addon-encryption-at-rest-option:** update docs links to prevent ([a4d2327](https://github.com/CleverCloud/clever-components/commit/a4d2327b3c6a27db3db6bc38cd9b1afc3fb7be46)), closes [#1425](https://github.com/CleverCloud/clever-components/issues/1425) [#1430](https://github.com/CleverCloud/clever-components/issues/1430)
+* **cc-domain-management:** update docs links to prevent 404 ([27eda62](https://github.com/CleverCloud/clever-components/commit/27eda6216d90a9acfd382ec2b24fdc261ea26fdb)), closes [#1425](https://github.com/CleverCloud/clever-components/issues/1425)
+* **cc-elasticsearch-info:** update docs links to prevent 404 ([de4c832](https://github.com/CleverCloud/clever-components/commit/de4c832f70af700cb1c171dff5a8c28780319dec)), closes [#1425](https://github.com/CleverCloud/clever-components/issues/1425)
+* **cc-env-var-create:** update docs links to prevent 404 ([f0f1137](https://github.com/CleverCloud/clever-components/commit/f0f113701e053c0a670ad04a5114d0e7259d3a6e)), closes [#1425](https://github.com/CleverCloud/clever-components/issues/1425) [#1430](https://github.com/CleverCloud/clever-components/issues/1430)
+* **cc-env-var-editor-expert:** update docs links to prevent 404 ([889a2e5](https://github.com/CleverCloud/clever-components/commit/889a2e5a1dda58e30b1341ab2df81f7b14de369c)), closes [#1425](https://github.com/CleverCloud/clever-components/issues/1425) [#1430](https://github.com/CleverCloud/clever-components/issues/1430)
+* **cc-env-var-editor-json:** update docs links to prevent 404 ([e006f1c](https://github.com/CleverCloud/clever-components/commit/e006f1c821c8379cba95f3d8ce7cb5be166a286d)), closes [#1425](https://github.com/CleverCloud/clever-components/issues/1425) [#1430](https://github.com/CleverCloud/clever-components/issues/1430)
+* **cc-env-var-form:** update docs links to prevent 404 ([fb0ccbb](https://github.com/CleverCloud/clever-components/commit/fb0ccbbf5cf4a4f4fd984ff834a57b12760869e3)), closes [#1425](https://github.com/CleverCloud/clever-components/issues/1425)
+* **cc-grafana-info:** update docs links to prevent 404 ([a85af35](https://github.com/CleverCloud/clever-components/commit/a85af352dad897b4b41873e6eaa7dd8143b57a6b)), closes [#1425](https://github.com/CleverCloud/clever-components/issues/1425)
+* **cc-heptapod-info:** update docs links to prevent 404 ([b6d147e](https://github.com/CleverCloud/clever-components/commit/b6d147ed6b29c5b8a68fd2aa500e87e610015985)), closes [#1425](https://github.com/CleverCloud/clever-components/issues/1425) [#1430](https://github.com/CleverCloud/clever-components/issues/1430)
+* **cc-invoice-list:** update docs links to prevent 404 ([2a8a5c2](https://github.com/CleverCloud/clever-components/commit/2a8a5c2f72eaf9109c4149f50d9031e5b83ed928)), closes [#1425](https://github.com/CleverCloud/clever-components/issues/1425) [#1430](https://github.com/CleverCloud/clever-components/issues/1430)
+* **cc-jenkins-info:** update docs links to prevent 404 ([8586008](https://github.com/CleverCloud/clever-components/commit/85860087b5d24c88d6447c8bc5d2e602a9274f79)), closes [#1425](https://github.com/CleverCloud/clever-components/issues/1425) [#1430](https://github.com/CleverCloud/clever-components/issues/1430)
+* **cc-matomo-info:** update docs links to prevent 404 ([c69f5fc](https://github.com/CleverCloud/clever-components/commit/c69f5fc2490f766d1b7292d0c8e135a5ebda9f91)), closes [#1425](https://github.com/CleverCloud/clever-components/issues/1425) [#1430](https://github.com/CleverCloud/clever-components/issues/1430)
+* **cc-orga-member-list:** update docs links to prevent 404 ([dcbe75a](https://github.com/CleverCloud/clever-components/commit/dcbe75a496b5a5bb8efb0731f3b5d258c5dfee54)), closes [#1425](https://github.com/CleverCloud/clever-components/issues/1425) [#1430](https://github.com/CleverCloud/clever-components/issues/1430)
+* **cc-ssh-key-list:** update docs links to prevent 404 ([a091ee5](https://github.com/CleverCloud/clever-components/commit/a091ee51d63b9ea0c86f58e14a030127f1eb7ae6)), closes [#1425](https://github.com/CleverCloud/clever-components/issues/1425) [#1430](https://github.com/CleverCloud/clever-components/issues/1430)
+* **cc-tcp-redirection-form:** update docs links to prevent 404 ([2154d14](https://github.com/CleverCloud/clever-components/commit/2154d140f30cc0738fe9e7eb8676571dbe19760f)), closes [#1425](https://github.com/CleverCloud/clever-components/issues/1425) [#1430](https://github.com/CleverCloud/clever-components/issues/1430)
+* **cc-token-api-list:** remove typo in french introduction text ([87baf70](https://github.com/CleverCloud/clever-components/commit/87baf704be81f1e596aed28fa4361d2fc67ea649))
+* **cc-token-oauth-list:** prevent images from being cropped ([8a923e6](https://github.com/CleverCloud/clever-components/commit/8a923e68c479f568acbb7273df1737f13caab9c4)), closes [#1439](https://github.com/CleverCloud/clever-components/issues/1439)
+
 ## [19.1.0](https://github.com/CleverCloud/clever-components/compare/19.0.0...19.1.0) (2025-05-28)
 
 
