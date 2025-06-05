@@ -7,7 +7,7 @@ title: '💡 Smart'
 ## ℹ️ Details
 
 <table>
-  <tr><td><strong>Component    </strong> <td><a href="https://www.clever-cloud.com/doc/clever-components/?path=/docs/ ..."><code>&lt;cc-tile-status-codes&gt;</code></a>
+  <tr><td><strong>Component    </strong> <td><a href="🛠-overview-cc-tile-status-codes--default-story"><code>&lt;cc-tile-status-codes&gt;</code></a>
   <tr><td><strong>Selector     </strong> <td><code>cc-tile-status-codes</code>
   <tr><td><strong>Requires auth</strong> <td>Yes
 </table>

@@ -7,7 +7,7 @@ title: '💡 Smart (add-on)'
 ## ℹ️ Details
 
 <table>
-  <tr><td><strong>Component    </strong> <td><a href="https://www.clever-cloud.com/doc/clever-components/?path=/docs/%F0%9F%9B%A0-pricing-cc-pricing-product--default-story"><code>&lt;cc-pricing-product&gt;</code></a>
+  <tr><td><strong>Component    </strong> <td><a href="🛠-pricing-cc-pricing-product--default-story"><code>&lt;cc-pricing-product&gt;</code></a>
   <tr><td><strong>Selector     </strong> <td><code>cc-pricing-product[mode="addon"]</code>
   <tr><td><strong>Requires auth</strong> <td>No
 </table>
