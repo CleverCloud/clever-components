@@ -129,6 +129,7 @@ import {
 } from '../components/cc-token-api-update-form/cc-token-api-update-form.events.js';
 import {
   CcClickEvent,
+  CcPasswordResetEvent,
   CcRequestSubmitEvent,
   CcToggleEvent,
   CcTokenRevokeEvent,
@@ -233,6 +234,7 @@ declare global {
     'cc-orga-member-leave': CcOrgaMemberLeaveEvent;
     'cc-orga-member-left': CcOrgaMemberLeftEvent;
     'cc-orga-member-update': CcOrgaMemberUpdateEvent;
+    'cc-password-reset': CcPasswordResetEvent;
     'cc-pricing-currency-change': CcPricingCurrencyChangeEvent;
     'cc-pricing-plan-add': CcPricingPlanAddEvent;
     'cc-pricing-plan-delete': CcPricingPlanDeleteEvent;

@@ -21,6 +21,7 @@ title: '💡 Smart'
 
 ```ts
 interface ApiConfig {
+  API_HOST: string,
   API_OAUTH_TOKEN: string,
   API_OAUTH_TOKEN_SECRET: string,
   OAUTH_CONSUMER_KEY: string,
@@ -33,6 +34,7 @@ interface ApiConfig {
 
 | Method   | Type                    | Cache?  |
 |----------|:------------------------|---------|
+| `GET`    | `/v2/self`              | Default |
 | `GET`    | `/api-tokens`           | Default |
 | `DELETE` | `/api-tokens/{tokenId}` | N/A     |
 

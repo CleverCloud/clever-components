@@ -1633,12 +1633,18 @@ export const translations = {
     `,
   'cc-token-api-list.create-token': `Create new token`,
   'cc-token-api-list.delete-token': /** @param {{ name: string}} _ */ ({ name }) => `Delete API token - ${name}`,
-  'cc-token-api-list.empty': `You have not created any token yet or you don't have any active token. Go ahead and create a new API token`,
+  'cc-token-api-list.empty': `You haven't created any API tokens yet, or none of them are active. Let's create a new one:`,
   'cc-token-api-list.error': `Something went wrong while loading API tokens`,
   'cc-token-api-list.intro': () =>
     sanitize`Below is the list of <a href="https://www.clever-cloud.com/developers/api/howto/#request-the-api" title="API Tokens - Documentation - new window">API tokens</a> linked to your account and their associated information. You may revoke them as needed.`,
   'cc-token-api-list.link.doc': `API tokens - Documentation`,
   'cc-token-api-list.main-heading': `API tokens`,
+  'cc-token-api-list.no-password.create-password-btn': `Add a password`,
+  'cc-token-api-list.no-password.message': () =>
+    sanitize`Your Clever Cloud account is linked via GitHub and has no password. <strong>Setting one is required to create API tokens</strong>. Click the following button to <strong>add a password to your account</strong>, we’ll  send you an email to confirm your identity.`,
+  'cc-token-api-list.no-password.reset-password-error': `Something went wrong while trying to send your password creation request`,
+  'cc-token-api-list.no-password.reset-password-successful': /** @param {{ email: string }} _ */ ({ email }) =>
+    `The email has been sent to ${email}, reload this page once the password is added to your account`,
   'cc-token-api-list.revoke-token': /** @param {{ name: string}} _ */ ({ name }) => `Revoke API token - ${name}`,
   'cc-token-api-list.revoke-token.error': `Something went wrong while revoking the API token`,
   'cc-token-api-list.revoke-token.success': `The API token has been revoked successfully`,
