@@ -1,4 +1,13 @@
 /**
+ * If you change the base URL here, you should probably also change it in places where it's still hard coded:
+ * - README.md,
+ * - CONTRIBUTING.md,
+ * - sandbox/index.html,
+ * - test/utils.test.js.
+ */
+const CC_DEV_HUB_BASE_URL = 'https://www.clever-cloud.com/developers/';
+
+/**
  * @param {Record<string, any>} a
  * @param {Record<string, any>} b
  * @return {boolean}
@@ -229,4 +238,37 @@ export function sleep(delay) {
   return new Promise((resolve) => {
     setTimeout(resolve, delay);
   });
+}
+
+/**
+ * Rely on this helper for every reference to the Clever Cloud docs website
+ *
+ * @param {string} [path]
+ * @returns {string} href
+ */
+export function generateDocsHref(path = '') {
+  /**
+   * Ensure "/doc" is appended after the base URL, then append the provided path
+   * If you change the base URL here, you should probably also change it in places where it's still hard coded:
+   * - README.md,
+   * - CONTRIBUTING.md,
+   * - sandbox/index.html,
+   * - test/utils.test.js.
+   */
+  const CC_DOCS_BASE_URL = CC_DEV_HUB_BASE_URL.replace(/\/$/, '') + '/doc/';
+  // if a '/' is present at the beginning, the path is considered absolute and it is appended right after the origin
+  // we want the path to always be appended after the existing path of the base URL so we remove the first '/' so that it's considered relative
+  return new URL(path.replace(/^\//, ''), CC_DOCS_BASE_URL).href;
+}
+
+/**
+ * Rely on this helper for every reference to the Clever Cloud developer hub website
+ *
+ * @param {string} [path]
+ * @returns {string} href
+ */
+export function generateDevHubHref(path = '') {
+  // if a '/' is present at the beginning, the path is considered absolute and it is appended right after the origin
+  // we want the path to always be appended after the existing path of the base URL so we remove the first '/' so that it's considered relative
+  return new URL(path.replace(/^\//, ''), CC_DEV_HUB_BASE_URL).href;
 }

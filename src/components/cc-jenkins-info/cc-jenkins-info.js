@@ -1,6 +1,7 @@
 import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { iconRemixInformationFill as iconInfo } from '../../assets/cc-remix.icons.js';
+import { generateDocsHref } from '../../lib/utils.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
 import { ccLink, linkStyles } from '../../templates/cc-link/cc-link.js';
 import { i18n } from '../../translations/translation.js';
@@ -11,7 +12,7 @@ import '../cc-img/cc-img.js';
 import '../cc-notice/cc-notice.js';
 
 const JENKINS_LOGO_URL = 'https://assets.clever-cloud.com/logos/jenkins.svg';
-const JENKINS_DOCUMENTATION = 'https://www.clever-cloud.com/doc/deploy/addon/jenkins/';
+const JENKINS_DOCUMENTATION = generateDocsHref('/deploy/addon/jenkins/');
 
 /**
  * @typedef {import('./cc-jenkins-info.types.js').JenkinsInfoState} JenkinsInfoState

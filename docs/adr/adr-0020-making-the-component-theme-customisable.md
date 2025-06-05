@@ -110,7 +110,7 @@ Rollup npm config:
 
 To use the components inside a project, one needs to import this CSS file from `node_modules`.
 The procedure to do so depends on the project stack.
-We tried to give a few examples in [how to use the components theme](https://www.clever-cloud.com/doc/clever-components/?path=/docs/🏡-getting-started-install-via-npm--docs).
+We tried to give a few examples in [how to use the components theme](🏡-getting-started-install-via-npm--docs).
 
 ##### CDN
 
@@ -224,7 +224,7 @@ became
 --cc-color-text-success
 ```
 
-**Note:** 
+**Note:**
 
 * "Choices" are not prefixed because they are not meant to be exposed anyway.
 * CSS Custom properties defined at component level are not prefixed since they are not global.

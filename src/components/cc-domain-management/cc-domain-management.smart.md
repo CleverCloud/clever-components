@@ -8,7 +8,7 @@ title: '💡 Smart'
 ## ℹ️ Details
 
 <table>
-  <tr><td><strong>Component    </strong> <td><a href="https://www.clever-cloud.com/doc/clever-components/?path=/docs/🛠-domains-cc-domain-management--default-story"><code>&lt;cc-domain-management&gt;</code></a>
+  <tr><td><strong>Component    </strong> <td><a href="🛠-domains-cc-domain-management--default-story"><code>&lt;cc-domain-management&gt;</code></a>
   <tr><td><strong>Selector     </strong> <td><code>cc-domain-management</code>
   <tr><td><strong>Requires auth</strong> <td>Yes
 </table>
@@ -65,4 +65,3 @@ interface ApiConfig {
     <cc-domain-management></cc-domain-management>
 <cc-smart-container>
 ```
-

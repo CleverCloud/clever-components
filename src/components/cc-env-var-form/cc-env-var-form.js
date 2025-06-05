@@ -1,5 +1,6 @@
 import { css, html, LitElement } from 'lit';
 import { iconRemixInformationFill as iconInfo } from '../../assets/cc-remix.icons.js';
+import { generateDocsHref } from '../../lib/utils.js';
 import { ccLink, linkStyles } from '../../templates/cc-link/cc-link.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-block/cc-block.js';
@@ -13,7 +14,7 @@ import '../cc-notice/cc-notice.js';
 import '../cc-toggle/cc-toggle.js';
 import { CcEnvVarFormSubmitEvent } from './cc-env-var-form.events.js';
 
-const ENV_VAR_DOCUMENTATION = 'https://developers.clever-cloud.com/doc/reference/reference-environment-variables/';
+const ENV_VAR_DOCUMENTATION = generateDocsHref('/reference/reference-environment-variables/');
 
 /**
  * @typedef {import('./cc-env-var-form.types.js').EnvVarFormContextType} EnvVarFormContextType

@@ -1,5 +1,6 @@
 import { css, html, LitElement } from 'lit';
 import { iconRemixInformationFill as iconInfo } from '../../assets/cc-remix.icons.js';
+import { generateDocsHref } from '../../lib/utils.js';
 import { ccLink, linkStyles } from '../../templates/cc-link/cc-link.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-badge/cc-badge.js';
@@ -7,7 +8,7 @@ import '../cc-block/cc-block.js';
 import '../cc-notice/cc-notice.js';
 import '../cc-tcp-redirection/cc-tcp-redirection.js';
 
-const TCP_REDIRECTION_DOCUMENTATION = 'https://developers.clever-cloud.com/doc/administrate/tcp-redirections/';
+const TCP_REDIRECTION_DOCUMENTATION = generateDocsHref('/administrate/tcp-redirections/');
 
 /** @type {TcpRedirectionStateLoading[]} */
 const SKELETON_REDIRECTIONS = [{ type: 'loading' }, { type: 'loading' }];

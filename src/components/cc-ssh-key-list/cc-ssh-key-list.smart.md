@@ -8,7 +8,7 @@ title: '💡 Smart'
 ## ℹ️ Details
 
 <table>
-  <tr><td><strong>Component    </strong> <td><a href="https://www.clever-cloud.com/doc/clever-components/?path=/story/🛠-profile-cc-ssh-key-list--default-story"><code>&lt;cc-ssh-key-list&gt;</code></a>
+  <tr><td><strong>Component    </strong> <td><a href="🛠-profile-cc-ssh-key-list--default-story"><code>&lt;cc-ssh-key-list&gt;</code></a>
   <tr><td><strong>Selector     </strong> <td><code>cc-ssh-key-list</code>
   <tr><td><strong>Requires auth</strong> <td>Yes
 </table>

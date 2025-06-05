@@ -107,7 +107,7 @@ This list focuses on the following aspects:
   </table>
 
   This list is extracted from the official French guidelines that can be found on the [Testing environments page (In French)](https://accessibilite.numerique.gouv.fr/methode/environnement-de-test/).
-  
+
   The version used for testing is based on results of screen reader usage surveys that show most users tend to update NVDA and VoiceOver but not JAWS because updates are not free.
 </details>
 
@@ -146,4 +146,4 @@ A good example is the `cc-toaster` & `cc-toast` components. Even though they are
 
 We did our best to provide a good user experience (the timeout is paused on `hover` / on `focus`) and we want to add a way to view past notifications and interact with them.
 
-We have documented all of this in the [ADR 19 - How to make toaster accessible?](https://www.clever-cloud.com/doc/clever-components/?path=/docs/📌-architecture-decision-records-adr-0019-how-to-make-toaster-accessible--docs).
+We have documented all of this in the [ADR 19 - How to make toaster accessible?](📌-architecture-decision-records-adr-0019-how-to-make-toaster-accessible--docs).

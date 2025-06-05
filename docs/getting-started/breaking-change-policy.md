@@ -19,7 +19,7 @@ When relevant, this section also includes information to help you migrate from y
 
 ## Breaking changes for components
 
-Regarding how [our components](https://www.clever-cloud.com/doc/clever-components/?path=/docs/👋-contributing-web-components-guidelines--docs) are made, the elements exposed to a breaking change are (but not limited to):
+Regarding how [our components](👋-contributing-web-components-guidelines--docs) are made, the elements exposed to a breaking change are (but not limited to):
 
 * attributes,
 * properties,

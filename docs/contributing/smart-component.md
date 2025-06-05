@@ -44,7 +44,7 @@ It serves as a context provider that:
 
 All smart components must be wrapped in a `<cc-smart-container>` element when used in HTML, as shown in the usage examples.
 The container exposes the context to the components through the smart component system, enabling automatic data fetching and state management.
-For more information, please refer to the [Getting Started - Smart Component](https://clever-components.com/docs/getting-started/smart-component).
+For more information, please refer to the [Getting Started - Smart Component](🏡-getting-started-smart-components--docs).
 
 ### 2. Selector and Context Parameters
 
@@ -180,7 +180,7 @@ notify({
 ```
 
 These notification helpers ensure a consistent look and feel across the application while making it easy to provide feedback about API operations.
-Refer to the [cc-toaster component](https://www.clever-cloud.com/doc/clever-components/?path=/story/%F0%9F%9B%A0-toast-cc-toaster--default-story) for more info.
+Refer to the [cc-toaster component](🛠-toast-cc-toaster--default-story) for more info.
 
 ## Smart Component Documentation
 

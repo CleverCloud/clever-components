@@ -7,7 +7,7 @@ title: '💡 Smart (create)'
 ## ℹ️ Details
 
 <table>
-<tr><td><strong>Component    </strong> <td><a href="https://www.clever-cloud.com/doc/clever-components/?path=/story/🛠-oauth-consumer-cc-oauth-consumer-form--default-story"><code>&lt;cc-oauth-consumer-form&gt;</code></a>
+<tr><td><strong>Component    </strong> <td><a href="🛠-oauth-consumer-cc-oauth-consumer-form--data-loaded-with-create"><code>&lt;cc-oauth-consumer-form&gt;</code></a>
 <tr><td><strong>Selector     </strong> <td><code>cc-oauth-consumer-form[smart-mode=create]</code>
 <tr><td><strong>Requires auth</strong> <td>Yes
 </table>
@@ -58,4 +58,3 @@ interface ApiConfig {
   <cc-oauth-consumer-form smart-mode="create"></cc-oauth-consumer-form>
 </cc-smart-container>
 ```
-

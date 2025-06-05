@@ -15,6 +15,7 @@ import {
 } from '../lib/i18n/i18n-number.js';
 import { sanitize } from '../lib/i18n/i18n-sanitize.js';
 import { preparePlural } from '../lib/i18n/i18n-string.js';
+import { generateDevHubHref, generateDocsHref } from '../lib/utils.js';
 
 /**
  * @typedef {import('../components/common.types.js').Flavor} Flavor
@@ -177,7 +178,7 @@ export const translations = {
   //#endregion
   //#region cc-addon-encryption-at-rest-option
   'cc-addon-encryption-at-rest-option.description': () =>
-    sanitize`Encryption at rest encrypts the entire data disk of your add-on. It prevents reading the stored data in case of a physical access to the hard drive. More information in our <a href="https://www.clever-cloud.com/doc/administrate/encryption-at-rest/">documentation</a>.`,
+    sanitize`Encryption at rest encrypts the entire data disk of your add-on. It prevents reading the stored data in case of a physical access to the hard drive. More information in our <a href="${generateDocsHref('/administrate/encryption-at-rest/')}">documentation</a>.`,
   'cc-addon-encryption-at-rest-option.title': `Encryption at rest`,
   //#endregion
   //#region cc-addon-features
@@ -263,12 +264,12 @@ export const translations = {
   //#endregion
   //#region cc-domain-management
   'cc-domain-management.certif.automated': () =>
-    sanitize`Whether you use <code>cleverapps.io</code> or your own domain names with applications hosted by Clever Cloud, a Let's Encrypt certificate is automatically issued and renewed for HTTPS/TLS access. No action is required from you, this is all automated. For specific cases, refer to <a href="https://developers.clever-cloud.com/doc/administrate/ssl/">Installing TLS Certificates</a>.`,
+    sanitize`Whether you use <code>cleverapps.io</code> or your own domain names with applications hosted by Clever Cloud, a Let's Encrypt certificate is automatically issued and renewed for HTTPS/TLS access. No action is required from you, this is all automated. For specific cases, refer to <a href="${generateDocsHref('/administrate/ssl/')}">Installing TLS Certificates</a>.`,
   'cc-domain-management.certif.custom': () =>
     sanitize`You can provide your own certificate by using the <a href="https://api.clever-cloud.com/v2/certificates/new">Clever Cloud Certificate Manager</a>.`,
   'cc-domain-management.certif.heading': `Secure your application`,
   'cc-domain-management.dns.a.desc': () =>
-    sanitize`<p>If you choose to use <code>A</code> records, for instance with a root domain (APEX), you'll need to update them yourself. Follow our <a href="https://developers.clever-cloud.com/changelog/">changelog</a> or check our <a href="https://developers.clever-cloud.com/api/v4/#load-balancers">v4 API documentation</a> for this.</p>`,
+    sanitize`<p>If you choose to use <code>A</code> records, for instance with a root domain (APEX), you'll need to update them yourself. Follow our <a href="${generateDevHubHref('/changelog')}">changelog</a> or check our <a href="${generateDevHubHref('/api/v4/#load-balancers')}">v4 API documentation</a> for this.</p>`,
   'cc-domain-management.dns.a.heading': `A records`,
   'cc-domain-management.dns.a.label': `A Record values`,
   'cc-domain-management.dns.cname.desc': () =>
@@ -281,7 +282,7 @@ export const translations = {
   'cc-domain-management.dns.documentation.text': `DNS records - Documentation`,
   'cc-domain-management.dns.heading': `Configure your DNS`,
   'cc-domain-management.dns.info.desc': () =>
-    sanitize`If you are using a dedicated load balancer, refer to its configuration or <a href="/ticket-center-choice">contact support</a>. Our team can also help you to order such a service. For a domain with no subdomains (APEX) or a subdomain with its own DNS zone, refer to our <a href="https://developers.clever-cloud.com/doc/administrate/domain-names/">DNS & Domains documentation</a>.`,
+    sanitize`If you are using a dedicated load balancer, refer to its configuration or <a href="/ticket-center-choice">contact support</a>. Our team can also help you to order such a service. For a domain with no subdomains (APEX) or a subdomain with its own DNS zone, refer to our <a href="${generateDocsHref('/administrate/domain-names/')}">DNS & Domains documentation</a>.`,
   'cc-domain-management.dns.info.heading': `Dedicated load balancers & specific cases`,
   'cc-domain-management.dns.loading-error': `Something went wrong while loading DNS information`,
   'cc-domain-management.form.domain.error.contains-path': /** @param {{path: string}} _ */ ({ path }) =>
@@ -294,7 +295,7 @@ export const translations = {
     sanitize`For instance: <code>example.com</code>, <code>*.example.com</code> or <code>example.cleverapps.io</code>`,
   'cc-domain-management.form.domain.label': `Domain name`,
   'cc-domain-management.form.info.cleverapps': () =>
-    sanitize`By default, an application is automatically associated to <code>app_id.cleverapps.io</code> as primary domain. You can remove it or change the subdomain freely, but <code>xxx.cleverapps.io</code> should only be used for testing purposes (see our <a href="https://developers.clever-cloud.com/doc/administrate/domain-names/#testing-with-cleverappsio-domain">documentation</a>).`,
+    sanitize`By default, an application is automatically associated to <code>app_id.cleverapps.io</code> as primary domain. You can remove it or change the subdomain freely, but <code>xxx.cleverapps.io</code> should only be used for testing purposes (see our <a href="${generateDocsHref('/administrate/domain-names/#testing-with-cleverappsio-domain')}">documentation</a>).`,
   'cc-domain-management.form.info.docs': `You can associate one or more domain names with your application. The primary domain is the one that will be used in Console links and in e-mails sent to you. Several applications can share the same domain, each with a specific subdomain and/or route.`,
   'cc-domain-management.form.path.help': () => sanitize`For example: <code>/api</code> or <code>/blog</code>`,
   'cc-domain-management.form.path.label': `Route`,
@@ -399,7 +400,7 @@ export const translations = {
   'cc-env-var-create.errors.invalid-name': /** @param {{name: string}} _ */ ({ name }) =>
     sanitize`Name <code>${name}</code> is invalid`,
   'cc-env-var-create.info.java-prop': /** @param {{name: string}} _ */ ({ name }) =>
-    sanitize`Variable <code>${name}</code> will only be injected as a Java property and won't be part of the environment, <a href="https://www.clever-cloud.com/doc/develop/env-variables/#environment-variables-rules-and-formats">more details</a>`,
+    sanitize`Variable <code>${name}</code> will only be injected as a Java property and won't be part of the environment, <a href="${generateDocsHref('/develop/env-variables/#environment-variables-rules-and-formats')}">more details</a>`,
   'cc-env-var-create.name.label': `Variable name`,
   'cc-env-var-create.value.label': `Variable value`,
   //#endregion
@@ -417,9 +418,9 @@ export const translations = {
   'cc-env-var-editor-expert.errors.line': `line`,
   'cc-env-var-editor-expert.errors.unknown': `Unknown Error`,
   'cc-env-var-editor-expert.example': () =>
-    sanitize`Format: <code>VARIABLE_NAME="variable value"</code> <br> Every variable must be separated by a line break, <a href="https://www.clever-cloud.com/doc/develop/env-variables/#format">learn more</a>.`,
+    sanitize`Format: <code>VARIABLE_NAME="variable value"</code> <br> Every variable must be separated by a line break, <a href="${generateDocsHref('/develop/env-variables/#format')}">learn more</a>.`,
   'cc-env-var-editor-expert.info.java-prop': /** @param {{name: string}} _ */ ({ name }) =>
-    sanitize`Variable <code>${name}</code> will only be injected as a Java property and won't be part of the environment, <a href="https://www.clever-cloud.com/doc/develop/env-variables/#environment-variables-rules-and-formats">more details</a>`,
+    sanitize`Variable <code>${name}</code> will only be injected as a Java property and won't be part of the environment, <a href="${generateDocsHref('/develop/env-variables/#environment-variables-rules-and-formats')}">more details</a>`,
   'cc-env-var-editor-expert.label': `Variable editing. Format: VARIABLE_NAME="variable value". Every variable must be separated by a line break.`,
   //#endregion
   //#region cc-env-var-editor-json
@@ -435,9 +436,9 @@ export const translations = {
     sanitize`<code>${name}</code> is not a valid variable name in strict mode`,
   'cc-env-var-editor-json.errors.unknown': `Unknown Error`,
   'cc-env-var-editor-json.example': () =>
-    sanitize`Format: <code>{ "name": "VARIABLE_NAME", "value": "variable value" }</code> <br> Array of objects following the above format, <a href="https://www.clever-cloud.com/doc/develop/env-variables/#format">learn more</a>.`,
+    sanitize`Format: <code>{ "name": "VARIABLE_NAME", "value": "variable value" }</code> <br> Array of objects following the above format, <a href="${generateDocsHref('/develop/env-variables/#format')}">learn more</a>.`,
   'cc-env-var-editor-json.info.java-prop': /** @param {{name: string}} _ */ ({ name }) =>
-    sanitize`Variable <code>${name}</code> will only be injected as a Java property and won't be part of the environment, <a href="https://www.clever-cloud.com/doc/develop/env-variables/#environment-variables-rules-and-formats">more details</a>`,
+    sanitize`Variable <code>${name}</code> will only be injected as a Java property and won't be part of the environment, <a href="${generateDocsHref('/develop/env-variables/#environment-variables-rules-and-formats')}">more details</a>`,
   'cc-env-var-editor-json.label': `Variable editing. Array of objects following the format: { "name": "VARIABLE_NAME", "value": "variable value" }.`,
   //#endregion
   //#region cc-env-var-editor-simple
@@ -445,11 +446,11 @@ export const translations = {
   //#endregion
   //#region cc-env-var-form
   'cc-env-var-form.description.config-provider': /** @param {{addonName: string}} _ */ ({ addonName }) =>
-    sanitize`Configuration exposed to dependent applications. <a href="https://www.clever-cloud.com/doc/deploy/addon/config-provider/">Learn more</a><br>These variables will be injected as environment variables in applications that have the add-on <strong>${addonName}</strong> in their service dependencies.<br>Every time you update your changes, all the dependent applications will be automatically restarted.`,
+    sanitize`Configuration exposed to dependent applications. <a href="${generateDocsHref('/deploy/addon/config-provider/')}">Learn more</a><br>These variables will be injected as environment variables in applications that have the add-on <strong>${addonName}</strong> in their service dependencies.<br>Every time you update your changes, all the dependent applications will be automatically restarted.`,
   'cc-env-var-form.description.env-var': /** @param {{appName: string}} _ */ ({ appName }) =>
     sanitize`These variables will be injected as environment variables in the application <strong>${appName}</strong>.`,
   'cc-env-var-form.description.exposed-config': /** @param {{appName: string}} _ */ ({ appName }) =>
-    sanitize`Configuration exposed to dependent applications. <a href="https://developers.clever-cloud.com/doc/administrate/service-dependencies/#exposed-configuration">Learn more</a><br>These variables won't be injected in the application <strong>${appName}</strong>, they will be injected as environment variables in applications that have <strong>${appName}</strong> in their service dependencies.`,
+    sanitize`Configuration exposed to dependent applications. <a href="${generateDocsHref('/administrate/service-dependencies/#exposed-configuration')}">Learn more</a><br>These variables won't be injected in the application <strong>${appName}</strong>, they will be injected as environment variables in applications that have <strong>${appName}</strong> in their service dependencies.`,
   'cc-env-var-form.documentation.text': `Environment variables - Reference`,
   'cc-env-var-form.error.loading': `Something went wrong while loading variables.`,
   'cc-env-var-form.heading.config-provider': `Variables`,
@@ -1118,7 +1119,7 @@ export const translations = {
   'cc-orga-member-list.invite.email.label': `Email address`,
   'cc-orga-member-list.invite.heading': `Invite a member`,
   'cc-orga-member-list.invite.info': () =>
-    sanitize`More information about roles in the <a href="https://www.clever-cloud.com/doc/account/organizations/#roles-and-privileges">Roles and Organisations</a> page.`,
+    sanitize`More information about roles in the <a href="${generateDocsHref('/account/organizations/#roles-and-privileges')}">Roles and Organisations</a> page.`,
   'cc-orga-member-list.invite.role.accounting': `Accountant`,
   'cc-orga-member-list.invite.role.admin': `Admin`,
   'cc-orga-member-list.invite.role.developer': `Developer`,
@@ -1552,7 +1553,7 @@ export const translations = {
   'cc-token-api-creation-form.cli.content': () => sanitize`
     <p>
       Manage your API tokens from a terminal using the commands below.
-      To install Clever Tools CLI, follow the instructions from the <a href="https://www.clever-cloud.com/developers/doc/cli/install/" title="documentation - Install Clever Tools - new window">documentation</a>.
+      To install Clever Tools CLI, follow the instructions from the <a href="${generateDocsHref('/cli/install/')}" title="documentation - Install Clever Tools - new window">documentation</a>.
     </p>
     <dl>
       <dt>Create a token:</dt>
@@ -1618,7 +1619,7 @@ export const translations = {
   'cc-token-api-list.cli.content': () => sanitize`
       <p>
         Manage your API tokens from a terminal using the commands below.
-        To install Clever Tools CLI, follow the instructions from the <a href="https://www.clever-cloud.com/developers/doc/cli/install/" title="documentation - Install Clever Tools - new window">documentation</a>.
+        To install Clever Tools CLI, follow the instructions from the <a href="${generateDocsHref('/cli/install/')}" title="documentation - Install Clever Tools - new window">documentation</a>.
       </p>
       <dl>
         <dt>Create a token:</dt>
@@ -1657,7 +1658,7 @@ export const translations = {
   'cc-token-api-update-form.cli.content': () => sanitize`
     <p>
       Manage your API tokens from a terminal using the commands below.
-      To install Clever Tools CLI, follow the instructions from the <a href="https://www.clever-cloud.com/developers/doc/cli/install/" title="documentation - Install Clever Tools - new window">documentation</a>.
+      To install Clever Tools CLI, follow the instructions from the <a href="${generateDocsHref('/cli/install/')}" title="documentation - Install Clever Tools - new window">documentation</a>.
     </p>
     <dl>
       <dt>Create a token:</dt>

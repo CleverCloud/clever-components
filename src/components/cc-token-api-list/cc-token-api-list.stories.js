@@ -1,4 +1,5 @@
 import { shiftDateField } from '../../lib/date/date-utils.js';
+import { generateDocsHref } from '../../lib/utils.js';
 import { makeStory, storyWait } from '../../stories/lib/make-story.js';
 import './cc-token-api-list.js';
 
@@ -19,8 +20,9 @@ const conf = {
 
 const now = new Date();
 
-const apiTokenUpdateHref =
-  'https://www.clever-cloud.com/doc/clever-components/?path=/story/🛠-profile-cc-token-api-update-form--default-story';
+const apiTokenUpdateHref = generateDocsHref(
+  '/clever-components/?path=/story/🛠-profile-cc-token-api-update-form--default-story',
+);
 
 /** @type {Array<ApiTokenState>} */
 const baseTokens = [
