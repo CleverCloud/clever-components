@@ -5,6 +5,7 @@ import { cliCommandsStyles } from '../../styles/cli-commands.js';
 import { linkStyles } from '../../templates/cc-link/cc-link.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-badge/cc-badge.js';
+import '../cc-block-details-command/cc-block-details-command.js';
 import '../cc-block-details/cc-block-details.js';
 import '../cc-block/cc-block.js';
 import '../cc-notice/cc-notice.js';
@@ -92,7 +93,21 @@ export class CcTcpRedirectionForm extends LitElement {
             <cc-icon .icon="${iconInfo}"></cc-icon>
             <a href="${TCP_REDIRECTION_DOCUMENTATION}">${i18n('cc-tcp-redirection-form.documentation.text')}</a>
           </div>
-          <div slot="content">${i18n('cc-tcp-redirection-form.cli.content', { resourceId: this.resourceId })}</div>
+          <div slot="content">
+            ${i18n('cc-tcp-redirection-form.cli.content.text')}
+            <cc-block-details-command
+              command="clever tcp-redirs --app ${this.resourceId}"
+              description="${i18n('cc-tcp-redirection-form.cli.content.list-tcp-redirection-command')}"
+            ></cc-block-details-command>
+            <cc-block-details-command
+              command="clever tcp-redirs add --namespace my-namespace --app ${this.resourceId}"
+              description="${i18n('cc-tcp-redirection-form.cli.content.add-tcp-redirection-command')}"
+            ></cc-block-details-command>
+            <cc-block-details-command
+              command="clever tcp-redirs remove --namespace my-namespace {portNumber} --app ${this.resourceId}"
+              description="${i18n('cc-tcp-redirection-form.cli.content.remove-tecp-redirection-command')}"
+            ></cc-block-details-command>
+          </div>
         </cc-block-details>
       </cc-block>
     `;
