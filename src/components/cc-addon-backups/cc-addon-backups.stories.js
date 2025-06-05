@@ -30,6 +30,7 @@ const conf = {
 export const defaultStory = makeStory(conf, {
   items: [
     {
+      addonId: 'addon_3f9b1c8e-2d7a-4c4f-91a6-8bde78f4a21b',
       /** @type {AddonBackupsStateLoaded} */
       state: backupsNewElasticsearchState,
     },
@@ -39,6 +40,7 @@ export const defaultStory = makeStory(conf, {
 export const loading = makeStory(conf, {
   items: [
     {
+      addonId: 'addon_3f9b1c8e-2d7a-4c4f-91a6-8bde78f4a21b',
       /** @type {AddonBackupsStateLoading} */
       state: { type: 'loading' },
     },
@@ -48,6 +50,7 @@ export const loading = makeStory(conf, {
 export const error = makeStory(conf, {
   items: [
     {
+      addonId: 'addon_3f9b1c8e-2d7a-4c4f-91a6-8bde78f4a21b',
       /** @type {AddonBackupsStateError} */
       state: { type: 'error' },
     },
@@ -57,6 +60,7 @@ export const error = makeStory(conf, {
 export const empty = makeStory(conf, {
   items: [
     {
+      addonId: 'addon_3f9b1c8e-2d7a-4c4f-91a6-8bde78f4a21b',
       /** @type {AddonBackupsStateLoaded} */
       state: {
         ...backupsNewElasticsearchState,
@@ -69,6 +73,7 @@ export const empty = makeStory(conf, {
 export const dataLoadedWithNewElasticsearch = makeStory(conf, {
   items: [
     {
+      addonId: 'addon_3f9b1c8e-2d7a-4c4f-91a6-8bde78f4a21b',
       /** @type {AddonBackupsStateLoaded} */
       state: backupsNewElasticsearchState,
     },
@@ -78,6 +83,7 @@ export const dataLoadedWithNewElasticsearch = makeStory(conf, {
 export const dataLoadedWithNewElasticsearchAndSmallbackups = makeStory(conf, {
   items: [
     {
+      addonId: 'addon_3f9b1c8e-2d7a-4c4f-91a6-8bde78f4a21b',
       /** @type {AddonBackupsStateLoaded} */
       state: {
         ...backupsNewElasticsearchState,
@@ -90,6 +96,7 @@ export const dataLoadedWithNewElasticsearchAndSmallbackups = makeStory(conf, {
 export const dataLoadedWithOldElasticsearch = makeStory(conf, {
   items: [
     {
+      addonId: 'addon_3f9b1c8e-2d7a-4c4f-91a6-8bde78f4a21b',
       /** @type {AddonBackupsStateLoaded} */
       state: backupsOldElasticsearchState,
     },
@@ -99,6 +106,7 @@ export const dataLoadedWithOldElasticsearch = makeStory(conf, {
 export const dataLoadedWithOldElasticsearchAndBigbackups = makeStory(conf, {
   items: [
     {
+      addonId: 'addon_3f9b1c8e-2d7a-4c4f-91a6-8bde78f4a21b',
       /** @type {AddonBackupsStateLoaded} */
       state: {
         ...backupsOldElasticsearchState,
@@ -116,6 +124,7 @@ export const dataLoadedWithOldElasticsearchAndBigbackups = makeStory(conf, {
 export const dataLoadedWithPostgresql = makeStory(conf, {
   items: [
     {
+      addonId: 'addon_3f9b1c8e-2d7a-4c4f-91a6-8bde78f4a21b',
       /** @type {AddonBackupsStateLoaded} */
       state: backupsPostgresqlState,
     },
@@ -125,6 +134,7 @@ export const dataLoadedWithPostgresql = makeStory(conf, {
 export const dataLoadedWithPostgresqlAndBigbackups = makeStory(conf, {
   items: [
     {
+      addonId: 'addon_3f9b1c8e-2d7a-4c4f-91a6-8bde78f4a21b',
       /** @type {AddonBackupsStateLoaded} */
       state: {
         ...backupsPostgresqlState,
@@ -142,6 +152,7 @@ export const dataLoadedWithPostgresqlAndBigbackups = makeStory(conf, {
 export const dataLoadedWithMysql = makeStory(conf, {
   items: [
     {
+      addonId: 'addon_3f9b1c8e-2d7a-4c4f-91a6-8bde78f4a21b',
       /** @type {AddonBackupsStateLoaded} */
       state: backupsMysqlState,
     },
@@ -151,6 +162,7 @@ export const dataLoadedWithMysql = makeStory(conf, {
 export const dataLoadedWithMysqlAndBigbackups = makeStory(conf, {
   items: [
     {
+      addonId: 'addon_3f9b1c8e-2d7a-4c4f-91a6-8bde78f4a21b',
       /** @type {AddonBackupsStateLoaded} */
       state: {
         ...backupsMysqlState,
@@ -168,6 +180,7 @@ export const dataLoadedWithMysqlAndBigbackups = makeStory(conf, {
 export const dataLoadedWithMongodb = makeStory(conf, {
   items: [
     {
+      addonId: 'addon_3f9b1c8e-2d7a-4c4f-91a6-8bde78f4a21b',
       /** @type {AddonBackupsStateLoaded} */
       state: backupsMongodbState,
     },
@@ -177,6 +190,7 @@ export const dataLoadedWithMongodb = makeStory(conf, {
 export const dataLoadedWithMongodbAndBigbackups = makeStory(conf, {
   items: [
     {
+      addonId: 'addon_3f9b1c8e-2d7a-4c4f-91a6-8bde78f4a21b',
       /** @type {AddonBackupsStateLoaded} */
       state: {
         ...backupsMongodbState,
@@ -194,6 +208,7 @@ export const dataLoadedWithMongodbAndBigbackups = makeStory(conf, {
 export const dataLoadedWithRedis = makeStory(conf, {
   items: [
     {
+      addonId: 'addon_3f9b1c8e-2d7a-4c4f-91a6-8bde78f4a21b',
       /** @type {AddonBackupsStateLoaded} */
       state: backupsRedisState,
     },
@@ -203,6 +218,7 @@ export const dataLoadedWithRedis = makeStory(conf, {
 export const dataLoadedWithRedisAndBigbackups = makeStory(conf, {
   items: [
     {
+      addonId: 'addon_3f9b1c8e-2d7a-4c4f-91a6-8bde78f4a21b',
       /** @type {AddonBackupsStateLoaded} */
       state: {
         ...backupsRedisState,
@@ -220,6 +236,7 @@ export const dataLoadedWithRedisAndBigbackups = makeStory(conf, {
 export const dataLoadedWithJenkins = makeStory(conf, {
   items: [
     {
+      addonId: 'addon_3f9b1c8e-2d7a-4c4f-91a6-8bde78f4a21b',
       /** @type {AddonBackupsStateLoaded} */
       state: backupsJenkinsState,
     },
@@ -229,6 +246,7 @@ export const dataLoadedWithJenkins = makeStory(conf, {
 export const dataLoadedWithJenkinsAndBigbackups = makeStory(conf, {
   items: [
     {
+      addonId: 'addon_3f9b1c8e-2d7a-4c4f-91a6-8bde78f4a21b',
       /** @type {AddonBackupsStateLoaded} */
       state: {
         ...backupsJenkinsState,
