@@ -2,7 +2,6 @@ import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
-import { linkStyles } from '../../templates/cc-link/cc-link.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-icon/cc-icon.js';
 import { CcClickEvent } from '../common.events.js';
@@ -325,7 +324,6 @@ export class CcButton extends LitElement {
   static get styles() {
     return [
       skeletonStyles,
-      linkStyles,
       // language=CSS
       css`
         /* stylelint-disable no-duplicate-selectors */
@@ -650,9 +648,24 @@ export class CcButton extends LitElement {
 
         /* button that looks like a cc-link */
 
-        .cc-link {
-          --btn-color: var(--color-text-strong);
+        .cc-link:focus {
+          background-color: var(--cc-color-bg-default, #fff);
+          border-radius: 0.1em;
+          outline: var(--cc-focus-outline, #000 solid 2px);
+          outline-offset: var(--cc-focus-outline-offset, 2px);
+        }
 
+        .cc-link::-moz-focus-inner {
+          border: 0;
+        }
+
+        .cc-link.skeleton {
+          background-color: var(--cc-color-text-primary-weak, hsl(209deg 98% 73%));
+          color: transparent;
+        }
+
+        .cc-link {
+          color: var(--cc-color-text-primary-highlight);
           cursor: pointer;
           min-height: 2em;
           overflow: hidden;

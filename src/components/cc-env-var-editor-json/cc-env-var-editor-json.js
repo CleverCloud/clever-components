@@ -1,10 +1,10 @@
 // @ts-expect-error FIXME: remove when the clever-client exports types
 import { ERROR_TYPES, parseRawJson, toJson } from '@clevercloud/client/esm/utils/env-vars.js';
 import { LitElement, css, html } from 'lit';
-import { linkStyles } from '../../templates/cc-link/cc-link.js';
 import { i18n } from '../../translations/translation.js';
 import { CcEnvChangeEvent } from '../cc-env-var-form/cc-env-var-form.events.js';
 import '../cc-input-text/cc-input-text.js';
+import '../cc-link/cc-link.js';
 import '../cc-notice/cc-notice.js';
 
 /**
@@ -178,7 +178,6 @@ export class CcEnvVarEditorJson extends LitElement {
 
   static get styles() {
     return [
-      linkStyles,
       // language=CSS
       css`
         :host {
