@@ -94,27 +94,51 @@ export const helpMessage = makeStory(conf, {
   items: baseItems.map((p) => ({
     ...p,
     required: true,
-    innerHTML: '<p slot="help">Must be a date</p>',
+    innerHTML: '<p slot="help">Format: YYYY-MM-DD HH:MM:SS</p>',
   })),
 });
 
-export const errorMessage = makeStory(conf, {
-  items: baseItems.map((p) => ({
-    ...p,
-    required: true,
-    errorMessage: 'You must enter a value',
-  })),
+export const errorMessageEmptyInput = makeStory(conf, {
+  items: [
+    {
+      ...baseItems[0],
+      required: 'true',
+    },
+  ],
+  /** @param {CcInputDate} component */
+  onUpdateComplete: (component) => {
+    component.reportInlineValidity();
+  },
+});
+
+export const errorMessageInvalidFormat = makeStory(conf, {
+  items: [
+    {
+      ...baseItems[0],
+      value: 'Invalid Format',
+      required: 'true',
+    },
+  ],
+  /** @param {CcInputDate} component */
+  onUpdateComplete: (component) => {
+    component.reportInlineValidity();
+  },
 });
 
 export const errorMessageWithHelpMessage = makeStory(conf, {
-  items: baseItems.map((p) => ({
-    ...p,
-    required: true,
-    errorMessage: 'You must enter a value',
-    innerHTML: `
-      <p slot="help">Must be a date</p>
+  items: [
+    {
+      ...baseItems[0],
+      required: 'true',
+      innerHTML: `
+      <p slot="help">Format: YYYY-MM-DD HH:MM:SS.</p>
     `,
-  })),
+    },
+  ],
+  /** @param {CcInputDate} component */
+  onUpdateComplete: (component) => {
+    component.reportInlineValidity();
+  },
 });
 
 export const inline = makeStory(conf, {
@@ -137,11 +161,14 @@ export const inlineWithErrorAndHelpMessages = makeStory(conf, {
     ...p,
     inline: true,
     required: true,
-    errorMessage: 'You must enter a value',
     innerHTML: `
-      <p slot="help">Must be a date</p>
+      <p slot="help">Format: YYYY-MM-DD HH:MM:SS.</p>
     `,
   })),
+  /** @param {CcInputDate} component */
+  onUpdateComplete: (component) => {
+    component.reportInlineValidity();
+  },
 });
 
 export const minMax = makeStory(conf, {
@@ -175,7 +202,7 @@ export const customWidth = makeStory(conf, {
   }),
 });
 
-const customBaseItems = [{ label: 'The label' }, { label: 'The label', required: true }];
+const customBaseItems = [{ label: 'The Label' }, { label: 'The Label', required: true }];
 
 export const customLabelStyle = makeStory(
   { ...conf, displayMode: 'block' },
@@ -201,16 +228,14 @@ export const customLabelStyle = makeStory(
       ...customBaseItems,
       ...customBaseItems.map((item) => ({
         ...item,
-        innerHTML: `<p slot="help">Must be a date</p>`,
+        innerHTML: `<p slot="help">Format: YYYY-MM-DD HH:MM:SS.</p>`,
       })),
       ...customBaseItems.map((item) => ({
         ...item,
-        errorMessage: 'You must enter a value',
       })),
       ...customBaseItems.map((item) => ({
         ...item,
-        errorMessage: 'You must enter a value',
-        innerHTML: `<p slot="help">Must be a date</p>`,
+        innerHTML: `<p slot="help">Format: YYYY-MM-DD HH:MM:SS.</p>`,
       })),
       ...customBaseItems.map((item) => ({
         ...item,
@@ -219,27 +244,29 @@ export const customLabelStyle = makeStory(
       ...customBaseItems.map((item) => ({
         ...item,
         inline: true,
-        innerHTML: `<p slot="help">Must be a date</p>`,
+        innerHTML: `<p slot="help">Format: YYYY-MM-DD HH:MM:SS.</p>`,
       })),
       ...customBaseItems.map((item) => ({
         ...item,
         inline: true,
-        errorMessage: 'You must enter a value',
       })),
       ...customBaseItems.map((item) => ({
         ...item,
         inline: true,
-        errorMessage: 'You must enter a value',
-        innerHTML: `<p slot="help">Must be a date</p>`,
+        innerHTML: `<p slot="help">Format: YYYY-MM-DD HH:MM:SS.</p>`,
       })),
     ],
+    /** @param {CcInputDate} component */
+    onUpdateComplete: (component) => {
+      component.reportInlineValidity();
+    },
   },
 );
 
 export const allFormControls = allFormControlsStory;
 
 export const simulation = makeStory(conf, {
-  items: [{}],
+  items: [{ label: 'The Label', required: true }],
   simulations: [
     storyWait(
       0,
@@ -258,7 +285,7 @@ export const simulation = makeStory(conf, {
        * @param {Array<CcInputDate>} args
        */
       ([component]) => {
-        component.errorMessage = 'This is an error message';
+        component.reportInlineValidity();
         component.innerHTML = `
         <p slot="help">With error, no focus</p>
       `;
@@ -270,7 +297,7 @@ export const simulation = makeStory(conf, {
        * @param {Array<CcInputDate>} args
        */
       ([component]) => {
-        component.errorMessage = 'This is an error message';
+        component.reportInlineValidity();
         component.innerHTML = `
         <p slot="help">With error, with focus</p>
       `;
