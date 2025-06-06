@@ -1,8 +1,8 @@
 // @ts-expect-error FIXME: remove when clever-client exports types
 import { ERROR_TYPES } from '@clevercloud/client/esm/utils/payment.js';
 import { css, html, LitElement } from 'lit';
-import { linkStyles } from '../../templates/cc-link/cc-link.js';
 import { i18n } from '../../translations/translation.js';
+import '../cc-link/cc-link.js';
 import '../cc-notice/cc-notice.js';
 
 /**
@@ -124,7 +124,6 @@ export class CcWarningPayment extends LitElement {
   static get styles() {
     return [
       // language=CSS
-      linkStyles,
       css`
         :host {
           display: block;
