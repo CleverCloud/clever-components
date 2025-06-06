@@ -17,10 +17,10 @@ import { isStringEmpty } from '../../lib/utils.js';
 import { accessibilityStyles } from '../../styles/accessibility.js';
 import { tileStyles } from '../../styles/info-tiles.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
-import { ccLink, linkStyles } from '../../templates/cc-link/cc-link.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-button/cc-button.js';
 import '../cc-icon/cc-icon.js';
+import '../cc-link/cc-link.js';
 
 Chart.register(BarController, BarElement, Tooltip, CategoryScale, LinearScale, Title, Filler);
 
@@ -283,19 +283,22 @@ export class CcTileMetrics extends LitElement {
 
     const links = [];
     if (this.grafanaLinkState.type === 'loaded') {
-      links.push(
-        ccLink(
-          this.grafanaLinkState.link,
-          i18n('cc-tile-metrics.grafana'),
-          skeleton,
-          i18n('cc-tile-metrics.link-to-grafana'),
-        ),
-      );
+      links.push(html`
+        <cc-link
+          href="${this.grafanaLinkState.link}"
+          ?skeleton="${skeleton}"
+          a11y-desc="${i18n('cc-tile-metrics.link-to-grafana')}"
+        >
+          ${i18n('cc-tile-metrics.grafana')}
+        </cc-link>
+      `);
     }
     if (!isStringEmpty(this.metricsLink)) {
-      links.push(
-        ccLink(this.metricsLink, i18n('cc-tile-metrics.metrics-link'), false, i18n('cc-tile-metrics.link-to-metrics')),
-      );
+      links.push(html`
+        <cc-link href="${this.metricsLink}" a11y-desc="${i18n('cc-tile-metrics.link-to-metrics')}">
+          ${i18n('cc-tile-metrics.metrics-link')}
+        </cc-link>
+      `);
     }
 
     const panel = this._getCurrentPanel();
@@ -306,18 +309,17 @@ export class CcTileMetrics extends LitElement {
         <div class="docs-buttons">
           ${this.grafanaLinkState.type === 'loaded'
             ? html`
-                ${ccLink(
-                  this.grafanaLinkState.link,
-                  html`
-                    <cc-icon
-                      class="icon--grafana"
-                      .icon=${iconGrafana}
-                      a11y-name="${i18n('cc-tile-metrics.link-to-grafana')}"
-                    ></cc-icon>
-                  `,
-                  false,
-                  i18n('cc-tile-metrics.link-to-grafana'),
-                )}
+                <cc-link
+                  href="${this.grafanaLinkState.link}"
+                  a11y-desc="${i18n('cc-tile-metrics.link-to-grafana')}"
+                  disable-external-link-icon
+                >
+                  <cc-icon
+                    class="icon--grafana"
+                    .icon=${iconGrafana}
+                    a11y-name="${i18n('cc-tile-metrics.link-to-grafana')}"
+                  ></cc-icon>
+                </cc-link>
               `
             : ''}
           <cc-button
@@ -439,7 +441,6 @@ export class CcTileMetrics extends LitElement {
   static get styles() {
     return [
       accessibilityStyles,
-      linkStyles,
       skeletonStyles,
       tileStyles,
       // language=CSS
@@ -451,7 +452,7 @@ export class CcTileMetrics extends LitElement {
           justify-content: space-between;
         }
 
-        .tile_title .cc-link {
+        .tile_title cc-link {
           align-items: center;
           /* TODO: Change variable when we have proper border token */
           border: 1px solid var(--cc-color-bg-strong);
@@ -465,7 +466,7 @@ export class CcTileMetrics extends LitElement {
           width: 1.75em;
         }
 
-        .tile_title .cc-link:hover {
+        .tile_title cc-link:hover {
           box-shadow: rgb(0 0 0 / 40%) 0 1px 3px;
         }
 
