@@ -5,16 +5,16 @@ import {
   iconRemixCalendar_2Fill as iconCreation,
   iconRemixDeleteBinLine as iconDelete,
   iconRemixInformationLine as iconExpiration,
-  iconRemixLogoutBoxRLine as iconExternalLink,
+  iconRemixInformationFill as iconInfo,
   iconRemixHistoryLine as iconLastUsed,
 } from '../../assets/cc-remix.icons.js';
 import { LostFocusController } from '../../controllers/lost-focus-controller.js';
 import { ResizeController } from '../../controllers/resize-controller.js';
 import { isExpirationClose } from '../../lib/tokens.js';
-import { linkStyles } from '../../templates/cc-link/cc-link.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-badge/cc-badge.js';
 import '../cc-block/cc-block.js';
+import '../cc-link/cc-link.js';
 import '../cc-loader/cc-loader.js';
 import '../cc-notice/cc-notice.js';
 import { CcTokenRevokeEvent, CcTokensRevokeAllEvent } from '../common.events.js';
@@ -126,10 +126,9 @@ export class CcTokenOauthList extends LitElement {
           </div>
         </div>
         <div slot="footer-right">
-          <a slot="link" href="https://www.clever-cloud.com/developers/api/howto/#oauth1" target="_blank">
-            <span class="cc-link">${i18n('cc-token-oauth-list.link.doc')}</span>
-            <cc-icon .icon=${iconExternalLink}></cc-icon>
-          </a>
+          <cc-link slot="link" href="https://www.clever-cloud.com/developers/api/howto/#oauth1" .icon="${iconInfo}">
+            <span>${i18n('cc-token-oauth-list.link.doc')}</span>
+          </cc-link>
         </div>
       </cc-block>
     `;
@@ -196,7 +195,6 @@ export class CcTokenOauthList extends LitElement {
 
   static get styles() {
     return [
-      linkStyles,
       css`
         :host {
           display: block;

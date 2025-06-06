@@ -3,10 +3,10 @@ import { classMap } from 'lit/directives/class-map.js';
 import { iconRemixAlertFill as iconAlert } from '../../assets/cc-remix.icons.js';
 import { tileStyles } from '../../styles/info-tiles.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
-import { ccLink, linkStyles } from '../../templates/cc-link/cc-link.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-datetime-relative/cc-datetime-relative.js';
 import '../cc-icon/cc-icon.js';
+import '../cc-link/cc-link.js';
 
 const SKELETON_DEPLOYS = [
   { state: '???????', date: '??????????', action: '????', logsUrl: '' },
@@ -101,7 +101,7 @@ export class CcTileDeployments extends LitElement {
               ${skeleton ? html` <span class="skeleton">${deploymentInfo.date}</span> ` : ''}
               ${!skeleton ? html` <cc-datetime-relative datetime=${deploymentInfo.date}></cc-datetime-relative> ` : ''}
             </div>
-            <div>${ccLink(deploymentInfo.logsUrl, 'logs', skeleton)}</div>
+            <div><cc-link href="${deploymentInfo.logsUrl}" ?skeleton="${skeleton}">logs</cc-link></div>
           `,
         )}
       </div>
@@ -112,7 +112,6 @@ export class CcTileDeployments extends LitElement {
     return [
       tileStyles,
       skeletonStyles,
-      linkStyles,
       // language=CSS
       css`
         .tile_body {

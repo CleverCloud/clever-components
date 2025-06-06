@@ -13,11 +13,11 @@ import {
 import { iconRemixStopFill as iconStopped } from '../../assets/cc-remix.icons.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
 import { waitingStyles } from '../../styles/waiting.js';
-import { ccLink, linkStyles } from '../../templates/cc-link/cc-link.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-block/cc-block.js';
 import '../cc-button/cc-button.js';
 import '../cc-icon/cc-icon.js';
+import '../cc-link/cc-link.js';
 import '../cc-notice/cc-notice.js';
 import '../cc-zone/cc-zone.js';
 import {
@@ -393,7 +393,9 @@ export class CcHeaderApp extends LitElement {
         ? html`
             <cc-icon class="status-icon ${status}" size="lg" .icon=${STATUS_ICON[status]}></cc-icon>
             <span class=${classMap({ skeleton })}> ${this._getStatusMsg(status)} </span>
-            ${shouldDisplayLogsLink ? ccLink(lastDeploymentLogsUrl, i18n('cc-header-app.read-logs')) : ''}
+            ${shouldDisplayLogsLink
+              ? html`<cc-link href="${lastDeploymentLogsUrl}">${i18n('cc-header-app.read-logs')}</cc-link>`
+              : ''}
           `
         : ''}
       ${this._lastUserAction != null ? html` ${this._getLastUserActionMsg(this._lastUserAction)} ` : ''}
@@ -405,7 +407,6 @@ export class CcHeaderApp extends LitElement {
   static get styles() {
     return [
       skeletonStyles,
-      linkStyles,
       waitingStyles,
       // language=CSS
       css`

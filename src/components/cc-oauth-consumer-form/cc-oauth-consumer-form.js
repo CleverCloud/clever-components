@@ -7,11 +7,11 @@ import { formSubmit } from '../../lib/form/form-submit-directive.js';
 import { getFormDataMap } from '../../lib/form/form-utils.js';
 import { Validation } from '../../lib/form/validation.js';
 import { accessibilityStyles } from '../../styles/accessibility.js';
-import { ccLink, linkStyles } from '../../templates/cc-link/cc-link.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-block-section/cc-block-section.js';
 import '../cc-block/cc-block.js';
 import '../cc-input-text/cc-input-text.js';
+import '../cc-link/cc-link.js';
 import '../cc-notice/cc-notice.js';
 import {
   CcOauthConsumerChangeEvent,
@@ -322,10 +322,9 @@ export class CcOauthConsumerForm extends LitElement {
             : html`<div slot="header-title">${i18n('cc-oauth-consumer-form.update-title')}</div>`}
           ${this._renderOauthConsumerForm(formValues, isWaiting, skeleton)}
           <div slot="footer-right">
-            ${ccLink(
-              OAUTH_CONSUMER_DOCUMENTATION,
-              html`<cc-icon .icon="${iconInfo}"></cc-icon>${i18n('cc-oauth-consumer-form.documentation.text')}`,
-            )}
+            <cc-link href="${OAUTH_CONSUMER_DOCUMENTATION}" .icon=${iconInfo}>
+              ${i18n('cc-oauth-consumer-form.documentation.text')}
+            </cc-link>
           </div>
         </cc-block>
 
@@ -563,7 +562,6 @@ export class CcOauthConsumerForm extends LitElement {
 
   static get styles() {
     return [
-      linkStyles,
       accessibilityStyles,
       // language=CSS
       css`
@@ -726,16 +724,6 @@ export class CcOauthConsumerForm extends LitElement {
 
         :host([w-lt-450]) .danger-button {
           justify-content: center;
-        }
-
-        /* endregion */
-
-        /* region footer */
-
-        [slot='footer-right'] .cc-link {
-          align-items: center;
-          display: flex;
-          gap: 0.5em;
         }
 
         /* endregion */

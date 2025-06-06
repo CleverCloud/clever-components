@@ -8,9 +8,9 @@ import { iconCleverInfo as iconInfo } from '../../assets/cc-clever.icons.js';
 import { iconRemixAlertFill as iconAlert, iconRemixCloseLine as iconClose } from '../../assets/cc-remix.icons.js';
 import { tileStyles } from '../../styles/info-tiles.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
-import { linkStyles } from '../../templates/cc-link/cc-link.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-button/cc-button.js';
+import '../cc-link/cc-link.js';
 
 Chart.register(ArcElement, DoughnutController, Legend, Tooltip);
 
@@ -277,7 +277,6 @@ export class CcTileStatusCodes extends LitElement {
     return [
       tileStyles,
       skeletonStyles,
-      linkStyles,
       // language=CSS
       css`
         .tile_title {

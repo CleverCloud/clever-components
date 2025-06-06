@@ -4,10 +4,10 @@ import { createRef, ref } from 'lit/directives/ref.js';
 import {
   iconRemixCalendar_2Fill as iconCreation,
   iconRemixCloseLine as iconDelete,
-  iconRemixLogoutBoxRLine as iconExternalLink,
   iconRemixArrowRightLine as iconGoTo,
   iconRemixCodeSSlashLine as iconId,
   iconRemixInformationLine as iconInfo,
+  iconRemixInformationFill as iconInfoLink,
   iconRemixDeleteBinLine as iconRevoke,
 } from '../../assets/cc-remix.icons.js';
 import { LostFocusController } from '../../controllers/lost-focus-controller.js';
@@ -15,13 +15,13 @@ import { ResizeController } from '../../controllers/resize-controller.js';
 import { isExpirationClose } from '../../lib/tokens.js';
 import { isStringEmpty } from '../../lib/utils.js';
 import { cliCommandsStyles } from '../../styles/cli-commands.js';
-import { linkStyles } from '../../templates/cc-link/cc-link.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-badge/cc-badge.js';
 import '../cc-block-details/cc-block-details.js';
 import '../cc-block/cc-block.js';
 import '../cc-button/cc-button.js';
 import '../cc-icon/cc-icon.js';
+import '../cc-link/cc-link.js';
 import '../cc-loader/cc-loader.js';
 import '../cc-notice/cc-notice.js';
 import { CcPasswordResetEvent, CcTokenRevokeEvent } from '../common.events.js';
@@ -129,9 +129,9 @@ export class CcTokenApiList extends LitElement {
         ${shouldDisplayCreateBtn
           ? html`
               <div slot="header-right">
-                <a class="create-token-cta" href="${this.apiTokenCreationHref}">
+                <cc-link mode="button" class="create-token-cta" href="${this.apiTokenCreationHref}">
                   <span>${i18n('cc-token-api-list.create-token')}</span>
-                </a>
+                </cc-link>
               </div>
             `
           : ''}
@@ -163,13 +163,14 @@ export class CcTokenApiList extends LitElement {
               ? html`
                   <div class="empty">
                     ${i18n('cc-token-api-list.empty')}
-                    <a
+                    <cc-link
+                      mode="button"
                       class="create-token-cta"
                       href="${this.apiTokenCreationHref}"
                       ${ref(this._createApiTokenLinkWhenEmptyRef)}
                     >
                       <span>${i18n('cc-token-api-list.create-token')}</span>
-                    </a>
+                    </cc-link>
                   </div>
                 `
               : ''}
@@ -184,10 +185,13 @@ export class CcTokenApiList extends LitElement {
         </div>
         <cc-block-details slot="footer-left">
           <div slot="button-text">${i18n('cc-block-details.cli.text')}</div>
-          <a slot="link" href="https://www.clever-cloud.com/developers/api/howto/#api-tokens" target="_blank">
-            <span class="cc-link">${i18n('cc-token-api-list.link.doc')}</span>
-            <cc-icon .icon=${iconExternalLink}></cc-icon>
-          </a>
+          <cc-link
+            slot="link"
+            href="https://www.clever-cloud.com/developers/api/howto/#api-tokens"
+            .icon="${iconInfoLink}"
+          >
+            <span>${i18n('cc-token-api-list.link.doc')}</span>
+          </cc-link>
           <div slot="content">${i18n('cc-token-api-list.cli.content')}</div>
         </cc-block-details>
       </cc-block>
@@ -260,14 +264,17 @@ export class CcTokenApiList extends LitElement {
         </cc-button>
         ${!isOneTokenRevoking && !isExpired
           ? html`
-              <a
+              <cc-link
+                mode="subtle"
                 class="api-token-card__actions__update"
                 href="${this.apiTokenUpdateHref}/${id}"
-                title="${i18n('cc-token-api-list.update-token-with-name', { name })}"
+                a11y-desc="${i18n('cc-token-api-list.update-token-with-name', { name })}"
               >
-                ${i18n('cc-token-api-list.update-token')}
-                <cc-icon .icon="${iconGoTo}"></cc-icon>
-              </a>
+                <span class="api-token-card__actions__update__span">
+                  ${i18n('cc-token-api-list.update-token')}
+                  <cc-icon .icon="${iconGoTo}"></cc-icon>
+                </span>
+              </cc-link>
             `
           : ''}
         ${isOneTokenRevoking && !isExpired
@@ -285,7 +292,6 @@ export class CcTokenApiList extends LitElement {
   static get styles() {
     return [
       cliCommandsStyles,
-      linkStyles,
       css`
         :host {
           --list-item-icon-size: 1.2em;
@@ -339,32 +345,7 @@ export class CcTokenApiList extends LitElement {
 
         .create-token-cta {
           align-items: center;
-          background-color: var(--cc-color-bg-primary);
-          border: 1px solid var(--cc-color-bg-primary);
-          border-radius: var(--cc-button-border-radius, 0.15em);
-          box-sizing: border-box;
-          color: var(--cc-color-text-inverted, #000);
-          cursor: pointer;
           display: flex;
-          font-weight: var(--cc-button-font-weight, bold);
-          min-height: 2em;
-          padding: 0 0.5em;
-          text-decoration: none;
-          text-transform: var(--cc-button-text-transform, uppercase);
-          user-select: none;
-        }
-
-        .create-token-cta span {
-          font-size: 0.85em;
-        }
-
-        .create-token-cta:hover {
-          box-shadow: 0 1px 3px rgb(0 0 0 / 40%);
-        }
-
-        .create-token-cta:focus {
-          outline: var(--cc-focus-outline);
-          outline-offset: var(--cc-focus-outline-offset, 2px);
         }
 
         .api-tokens-wrapper {
@@ -513,25 +494,17 @@ export class CcTokenApiList extends LitElement {
         }
 
         .api-token-card__actions__update {
+          grid-column: actions-start / actions-end;
+          padding: 0.2em;
+        }
+
+        .api-token-card__actions__update__span {
           align-items: center;
           align-self: flex-end;
           border-radius: var(--cc-border-radius-default, 0.25em);
           color: var(--cc-color-text-weak, #404040);
           display: flex;
           gap: 0.5em;
-          grid-column: actions-start / actions-end;
-          padding: 0.2em;
-          text-decoration: none;
-        }
-
-        .api-token-card__actions__update:visited,
-        .api-token-card__actions__update:active {
-          color: var(--cc-color-text-weak, #404040);
-        }
-
-        .api-token-card__actions__update:focus-visible {
-          outline: var(--cc-focus-outline, #3569aa solid 2px);
-          outline-offset: var(--cc-focus-outline-offset, 2px);
         }
 
         .api-token-card__actions__update--disabled {
