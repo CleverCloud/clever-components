@@ -884,6 +884,10 @@ export const translations = {
   'cc-kv-terminal.shell.prompt': `Ligne de commande`,
   'cc-kv-terminal.warning': `Les commandes exécutées dans ce terminal sont directement envoyées à la base de données`,
   //#endregion
+  //#region cc-link
+  'cc-link.new-window.name': `nouvelle fenêtre`,
+  'cc-link.new-window.title': /** @param {{linkText: string}} _ */ ({ linkText }) => `${linkText} - nouvelle fenêtre`,
+  //#endregion
   //#region cc-loader
   'cc-loader.a11y-name': `Chargement en cours`,
   //#endregion

@@ -873,6 +873,10 @@ export const translations = {
   'cc-kv-terminal.shell.prompt': `Command line`,
   'cc-kv-terminal.warning': `All commands executed in this terminal are immediately sent to the database`,
   //#endregion
+  //#region cc-link
+  'cc-link.new-window.name': `new window`,
+  'cc-link.new-window.title': /** @param {{linkText: string}} _ */ ({ linkText }) => `${linkText} - new window`,
+  //#endregion
   //#region cc-loader
   'cc-loader.a11y-name': `Loading`,
   //#endregion
