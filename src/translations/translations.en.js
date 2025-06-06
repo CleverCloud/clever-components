@@ -87,8 +87,8 @@ export const translations = {
   'cc-addon-backups.cli.content': /** @param {{addonId: string}} _ */ ({ addonId }) =>
     sanitize`
       <p>
-        You can manage backups directly from your terminal using the commands below. 
-        To install Clever Tools CLI, follow the instructions from the <a href="${generateDocsHref('/cli/install/')}" title="documentation - Install Clever Tools - new window">documentation</a>.
+        You can manage backups directly from your terminal using the commands below.
+        To install Clever Tools CLI, follow the instructions from the <cc-link href="${generateDocsHref('/cli/install/')}" a11y-desc="documentation - Install Clever Tools">documentation</cc-link>.
       </p>
       <dl>
         <dt>List available database backups:</dt>
@@ -103,20 +103,20 @@ export const translations = {
     sanitize`Delete the backup from <strong title="${formatDate(createdAt)}">${formatDatetime(createdAt)}</strong>`,
   'cc-addon-backups.delete.btn': `delete...`,
   'cc-addon-backups.delete.manual.description.es-addon': () =>
-    sanitize`You can delete this backup using <a href="https://curl.se/docs/">cURL</a> by executing this command:`,
+    sanitize`You can delete this backup using <cc-link href="https://curl.se/docs/">cURL</cc-link> by executing this command:`,
   'cc-addon-backups.delete.manual.title': `Delete manually`,
   'cc-addon-backups.delete.with-service.description.es-addon': /** @param {{href: string}} _ */ ({ href }) =>
-    sanitize`You can delete this backup using Kibana by going to the <a href="${href}">backup repository</a>.`,
+    sanitize`You can delete this backup using Kibana by going to the <cc-link href="${href}">backup repository</cc-link>.`,
   'cc-addon-backups.delete.with-service.title.es-addon': `Delete with Kibana`,
   'cc-addon-backups.description.es-addon': `Backups are managed by Elasticsearch itself. You can define the retention period and backup frequency through Kibana's UI.`,
   'cc-addon-backups.description.es-addon-old': `Backups are managed by Elasticsearch itself. The version of your Elasticsearch does not allow to define a retention policy. Deleting a backup can be done manually through Elasticsearch's API.`,
   'cc-addon-backups.description.jenkins': `Backups are created by archiving Jenkins's data.`,
   'cc-addon-backups.description.mongodb-addon': () =>
-    sanitize`Backups are created using the <a href="https://docs.mongodb.com/v4.0/reference/program/mongodump/">mongodump</a> tool.`,
+    sanitize`Backups are created using the <cc-link href="https://docs.mongodb.com/v4.0/reference/program/mongodump/">mongodump</cc-link> tool.`,
   'cc-addon-backups.description.mysql-addon': () =>
-    sanitize`Backups are created using the <a href="https://dev.mysql.com/doc/refman/8.0/en/mysqldump.html">mysqldump</a> tool.`,
+    sanitize`Backups are created using the <cc-link href="https://dev.mysql.com/doc/refman/8.0/en/mysqldump.html">mysqldump</cc-link> tool.`,
   'cc-addon-backups.description.postgresql-addon': () =>
-    sanitize`Backups are created using the <a href="https://www.postgresql.org/docs/current/app-pgdump.html">pg_dump</a> tool.`,
+    sanitize`Backups are created using the <cc-link href="https://www.postgresql.org/docs/current/app-pgdump.html">pg_dump</cc-link> tool.`,
   'cc-addon-backups.description.redis-addon': `Backups are created by archiving Redis's data.`,
   'cc-addon-backups.empty': `There are no backups yet.`,
   'cc-addon-backups.link.es-addon': `open in Kibana`,
@@ -131,18 +131,18 @@ export const translations = {
     sanitize`Restore the backup from <strong title="${formatDate(createdAt)}">${formatDatetime(createdAt)}</strong>`,
   'cc-addon-backups.restore.btn': `restore...`,
   'cc-addon-backups.restore.manual.description.es-addon': () =>
-    sanitize`You can restore this backup using <a href="https://curl.se/docs/">cURL</a> by executing this command:`,
+    sanitize`You can restore this backup using <cc-link href="https://curl.se/docs/">cURL</cc-link> by executing this command:`,
   'cc-addon-backups.restore.manual.description.jenkins': `Restoring a Jenkins backup must be done by our support team. Open a support ticket containing the add-on ID and the backup to restore and we will do it for you.`,
   'cc-addon-backups.restore.manual.description.mongodb-addon': () =>
-    sanitize`You can restore this backup using the <a href="https://docs.mongodb.com/v4.0/reference/program/mongorestore/">mongorestore</a> tool by executing this command:`,
+    sanitize`You can restore this backup using the <cc-link href="https://docs.mongodb.com/v4.0/reference/program/mongorestore/">mongorestore</cc-link> tool by executing this command:`,
   'cc-addon-backups.restore.manual.description.mysql-addon': () =>
-    sanitize`You can restore this backup using the <a href="https://dev.mysql.com/doc/refman/8.0/en/mysql.html">mysql</a> CLI by executing this command:`,
+    sanitize`You can restore this backup using the <cc-link href="https://dev.mysql.com/doc/refman/8.0/en/mysql.html">mysql</cc-link> CLI by executing this command:`,
   'cc-addon-backups.restore.manual.description.postgresql-addon': () =>
-    sanitize`You can restore this backup using the <a href="https://www.postgresql.org/docs/current/app-pgrestore.html">pg_restore</a> tool by executing this command:`,
+    sanitize`You can restore this backup using the <cc-link href="https://www.postgresql.org/docs/current/app-pgrestore.html">pg_restore</cc-link> tool by executing this command:`,
   'cc-addon-backups.restore.manual.description.redis-addon': `Restoring a Redis backup must be done by our support team. Open a support ticket containing the add-on ID and the backup to restore and we will do it for you.`,
   'cc-addon-backups.restore.manual.title': `Restore manually`,
   'cc-addon-backups.restore.with-service.description.es-addon': /** @param {{href: string}} _ */ ({ href }) =>
-    sanitize`You can restore this backup using Kibana by going to the <a href="${href}">backup repository</a>.`,
+    sanitize`You can restore this backup using Kibana by going to the <cc-link href="${href}">backup repository</cc-link>.`,
   'cc-addon-backups.restore.with-service.title.es-addon': `Restore with Kibana`,
   'cc-addon-backups.text': /** @param {{createdAt: string|number, expiresAt: string|number}} _ */ ({
     createdAt,
@@ -174,9 +174,9 @@ export const translations = {
     sanitize`As such, <strong>enabling these options will result in an increase in credits consumption</strong> as well.`,
   'cc-addon-elasticsearch-options.description': `This add-on is part of the Elastic Stack offer which includes two options. Both these options will be deployed as applications, managed and updated by Clever Cloud on your behalf. They will appear as regular applications that you can stop, scale up or down automatically like one of your own applications.`,
   'cc-addon-elasticsearch-options.details.apm': () =>
-    sanitize`Elastic APM server is an application performance monitoring system built on the Elastic Stack. Deploying this will allow you to automatically send APM metrics from any applications linked to the Elasticsearch add-on instance, providing you add the Elastic APM agent to the application code. Learn more in the <a href="https://www.elastic.co/guide/en/apm/get-started/current/overview.html">official APM server documentation</a>.`,
+    sanitize`Elastic APM server is an application performance monitoring system built on the Elastic Stack. Deploying this will allow you to automatically send APM metrics from any applications linked to the Elasticsearch add-on instance, providing you add the Elastic APM agent to the application code. Learn more in the <cc-link href="https://www.elastic.co/guide/en/apm/get-started/current/overview.html">official APM server documentation</cc-link>.`,
   'cc-addon-elasticsearch-options.details.kibana': () =>
-    sanitize`Kibana is the admin UI for the Elastic Stack. It lets you visualize your Elasticsearch data and navigate the stack so you can do anything from tracking query load to understanding the way requests flow through your apps. Learn more in the <a href="https://www.elastic.co/guide/en/kibana/master/index.html">official Kibana documentation</a>.`,
+    sanitize`Kibana is the admin UI for the Elastic Stack. It lets you visualize your Elasticsearch data and navigate the stack so you can do anything from tracking query load to understanding the way requests flow through your apps. Learn more in the <cc-link href="https://www.elastic.co/guide/en/kibana/master/index.html">official Kibana documentation</cc-link>.`,
   'cc-addon-elasticsearch-options.error.icon-a11y-name': `Warning`,
   'cc-addon-elasticsearch-options.title': `Options for the Elastic Stack`,
   'cc-addon-elasticsearch-options.warning.apm': `If you enable this option, we'll deploy and manage an Elastic APM server application for you.`,
@@ -191,7 +191,7 @@ export const translations = {
   //#endregion
   //#region cc-addon-encryption-at-rest-option
   'cc-addon-encryption-at-rest-option.description': () =>
-    sanitize`Encryption at rest encrypts the entire data disk of your add-on. It prevents reading the stored data in case of a physical access to the hard drive. More information in our <a href="${generateDocsHref('/administrate/encryption-at-rest/')}">documentation</a>.`,
+    sanitize`Encryption at rest encrypts the entire data disk of your add-on. It prevents reading the stored data in case of a physical access to the hard drive. More information in our <cc-link href="${generateDocsHref('/administrate/encryption-at-rest/')}">documentation</cc-link>.`,
   'cc-addon-encryption-at-rest-option.title': `Encryption at rest`,
   //#endregion
   //#region cc-addon-features
@@ -269,7 +269,7 @@ export const translations = {
   //#endregion
   //#region cc-doc-card
   'cc-doc-card.link': /** @param {{link: string, product: string}} _ */ ({ link, product }) =>
-    sanitize`<a href=${link} aria-label="Read the documentation - ${product}">Read the documentation</a>`,
+    sanitize`<cc-link href=${link} a11y-desc="Read the documentation - ${product}">Read the documentation</cc-link>`,
   'cc-doc-card.skeleton-link-title': `Read the documentation`,
   //#endregion
   //#region cc-doc-list
@@ -277,35 +277,35 @@ export const translations = {
   //#endregion
   //#region cc-domain-management
   'cc-domain-management.certif.automated': () =>
-    sanitize`Whether you use <code>cleverapps.io</code> or your own domain names with applications hosted by Clever Cloud, a Let's Encrypt certificate is automatically issued and renewed for HTTPS/TLS access. No action is required from you, this is all automated. For specific cases, refer to <a href="${generateDocsHref('/administrate/ssl/')}">Installing TLS Certificates</a>.`,
+    sanitize`Whether you use <code>cleverapps.io</code> or your own domain names with applications hosted by Clever Cloud, a Let's Encrypt certificate is automatically issued and renewed for HTTPS/TLS access. No action is required from you, this is all automated. For specific cases, refer to <cc-link href="${generateDocsHref('/administrate/ssl/')}">Installing TLS Certificates</cc-link>.`,
   'cc-domain-management.certif.custom': () =>
-    sanitize`You can provide your own certificate by using the <a href="https://api.clever-cloud.com/v2/certificates/new">Clever Cloud Certificate Manager</a>.`,
+    sanitize`You can provide your own certificate by using the <cc-link href="https://api.clever-cloud.com/v2/certificates/new">Clever Cloud Certificate Manager</cc-link>.`,
   'cc-domain-management.certif.heading': `Secure your application`,
   'cc-domain-management.dns.a.desc': () =>
-    sanitize`<p>If you choose to use <code>A</code> records, for instance with a root domain (APEX), you'll need to update them yourself. Follow our <a href="${generateDevHubHref('/changelog')}">changelog</a> or check our <a href="${generateDevHubHref('/api/v4/#load-balancers')}">v4 API documentation</a> for this.</p>`,
+    sanitize`<p>If you choose to use <code>A</code> records, for instance with a root domain (APEX), you'll need to update them yourself. Follow our <cc-link href="${generateDevHubHref('/changelog')}">changelog</cc-link> or check our <cc-link href="${generateDevHubHref('/api/v4/#load-balancers')}">v4 API documentation</cc-link> for this.</p>`,
   'cc-domain-management.dns.a.heading': `A records`,
   'cc-domain-management.dns.a.label': `A Record values`,
   'cc-domain-management.dns.cli.content': /** @param {{resourceId: string}} _ */ ({ resourceId }) =>
     sanitize`
       <p>
-        To install Clever Tools CLI, follow the instructions from the <a href="${generateDocsHref('/cli/install/')}" title="documentation - Install Clever Tools - new window">documentation</a>.
-      </p>
-      <dl>
-        <dt>Diagnose the current configuration:</dt>
-        <dd><code>clever diag --app ${resourceId}</code></dd>
-      </dl>
-    `,
+      To install Clever Tools CLI, follow the instructions from the <cc-link href="${generateDocsHref('/cli/install/')}" a11y-desc="documentation - Install Clever Tools">documentation</cc-link>.
+    </p>
+    <dl>
+      <dt>Diagnose the current configuration:</dt>
+      <dd><code>clever diag --app ${resourceId}</code></dd>
+    </dl>
+  `,
   'cc-domain-management.dns.cname.desc': () =>
     sanitize`<p>Using a <code>CNAME</code> record is recommended. This keeps your configuration up to date.</p>`,
   'cc-domain-management.dns.cname.heading': `CNAME record`,
   'cc-domain-management.dns.cname.label': `CNAME record value`,
   'cc-domain-management.dns.desc':
     () => sanitize`<p>To associate a domain managed by a third-party provider to your Clever Cloud application, you need to configure its DNS zone.</p>
-  <p>This may be achieved using a <code>CNAME</code> or <code>A</code> records. We recommend using a <code>CNAME</code> record, as you won't have to reconfigure it if we change our IPs.</p>`,
+<p>This may be achieved using a <code>CNAME</code> or <code>A</code> records. We recommend using a <code>CNAME</code> record, as you won't have to reconfigure it if we change our IPs.</p>`,
   'cc-domain-management.dns.documentation.text': `DNS records - Documentation`,
   'cc-domain-management.dns.heading': `Configure your DNS`,
   'cc-domain-management.dns.info.desc': () =>
-    sanitize`If you are using a dedicated load balancer, refer to its configuration or <a href="/ticket-center-choice">contact support</a>. Our team can also help you to order such a service. For a domain with no subdomains (APEX) or a subdomain with its own DNS zone, refer to our <a href="${generateDocsHref('/administrate/domain-names/')}">DNS & Domains documentation</a>.`,
+    sanitize`If you are using a dedicated load balancer, refer to its configuration or <cc-link href="/ticket-center-choice">contact support</cc-link>. Our team can also help you to order such a service. For a domain with no subdomains (APEX) or a subdomain with its own DNS zone, refer to our <cc-link href="${generateDocsHref('/administrate/domain-names/')}">DNS & Domains documentation</cc-link>.`,
   'cc-domain-management.dns.info.heading': `Dedicated load balancers & specific cases`,
   'cc-domain-management.dns.loading-error': `Something went wrong while loading DNS information`,
   'cc-domain-management.form.domain.error.contains-path': /** @param {{path: string}} _ */ ({ path }) =>
@@ -318,7 +318,7 @@ export const translations = {
     sanitize`For instance: <code>example.com</code>, <code>*.example.com</code> or <code>example.cleverapps.io</code>`,
   'cc-domain-management.form.domain.label': `Domain name`,
   'cc-domain-management.form.info.cleverapps': () =>
-    sanitize`By default, an application is automatically associated to <code>app_id.cleverapps.io</code> as primary domain. You can remove it or change the subdomain freely, but <code>xxx.cleverapps.io</code> should only be used for testing purposes (see our <a href="${generateDocsHref('/administrate/domain-names/#testing-with-cleverappsio-domain')}">documentation</a>).`,
+    sanitize`By default, an application is automatically associated to <code>app_id.cleverapps.io</code> as primary domain. You can remove it or change the subdomain freely, but <code>xxx.cleverapps.io</code> should only be used for testing purposes (see our <cc-link href="${generateDocsHref('/administrate/domain-names/#testing-with-cleverappsio-domain')}">documentation</cc-link>).`,
   'cc-domain-management.form.info.docs': `You can associate one or more domain names with your application. The primary domain is the one that will be used in Console links and in e-mails sent to you. Several applications can share the same domain, each with a specific subdomain and/or route.`,
   'cc-domain-management.form.path.help': () => sanitize`For example: <code>/api</code> or <code>/blog</code>`,
   'cc-domain-management.form.path.label': `Route`,
@@ -363,9 +363,9 @@ export const translations = {
   'cc-domain-management.main-heading': `Manage your domain names`,
   'cc-domain-management.names.cli.content': /** @param {{resourceId: string}} _ */ ({ resourceId }) =>
     sanitize`
-      <p class="text">
-        You can manage domains directly from your terminal using the commands below. 
-        To install Clever Tools CLI, follow the instructions from the <a href="${generateDocsHref('/cli/install/')}" title="documentation - Install Clever Tools - new window">documentation</a>.
+    <p class="text">
+      You can manage domains directly from your terminal using the commands below.
+      To install Clever Tools CLI, follow the instructions from the <cc-link href="${generateDocsHref('/cli/install/')}" title="documentation - Install Clever Tools">documentation</cc-link>.
       </p>
       <dl>
         <dt>List domains:</dt>
@@ -438,7 +438,7 @@ export const translations = {
   'cc-env-var-create.errors.invalid-name': /** @param {{name: string}} _ */ ({ name }) =>
     sanitize`Name <code>${name}</code> is invalid`,
   'cc-env-var-create.info.java-prop': /** @param {{name: string}} _ */ ({ name }) =>
-    sanitize`Variable <code>${name}</code> will only be injected as a Java property and won't be part of the environment, <a href="${generateDocsHref('/develop/env-variables/#environment-variables-rules-and-formats')}">more details</a>`,
+    sanitize`Variable <code>${name}</code> will only be injected as a Java property and won't be part of the environment, <cc-link href="${generateDocsHref('/develop/env-variables/#environment-variables-rules-and-formats')}">more details</cc-link>`,
   'cc-env-var-create.name.label': `Variable name`,
   'cc-env-var-create.value.label': `Variable value`,
   //#endregion
@@ -456,9 +456,9 @@ export const translations = {
   'cc-env-var-editor-expert.errors.line': `line`,
   'cc-env-var-editor-expert.errors.unknown': `Unknown Error`,
   'cc-env-var-editor-expert.example': () =>
-    sanitize`Format: <code>VARIABLE_NAME="variable value"</code> <br> Every variable must be separated by a line break, <a href="${generateDocsHref('/develop/env-variables/#format')}">learn more</a>.`,
+    sanitize`Format: <code>VARIABLE_NAME="variable value"</code> <br> Every variable must be separated by a line break, <cc-link href="${generateDocsHref('/develop/env-variables/#format')}">learn more</cc-link>.`,
   'cc-env-var-editor-expert.info.java-prop': /** @param {{name: string}} _ */ ({ name }) =>
-    sanitize`Variable <code>${name}</code> will only be injected as a Java property and won't be part of the environment, <a href="${generateDocsHref('/develop/env-variables/#environment-variables-rules-and-formats')}">more details</a>`,
+    sanitize`Variable <code>${name}</code> will only be injected as a Java property and won't be part of the environment, <cc-link href="${generateDocsHref('/develop/env-variables/#environment-variables-rules-and-formats')}">more details</cc-link>`,
   'cc-env-var-editor-expert.label': `Variable editing. Format: VARIABLE_NAME="variable value". Every variable must be separated by a line break.`,
   //#endregion
   //#region cc-env-var-editor-json
@@ -474,9 +474,9 @@ export const translations = {
     sanitize`<code>${name}</code> is not a valid variable name in strict mode`,
   'cc-env-var-editor-json.errors.unknown': `Unknown Error`,
   'cc-env-var-editor-json.example': () =>
-    sanitize`Format: <code>{ "name": "VARIABLE_NAME", "value": "variable value" }</code> <br> Array of objects following the above format, <a href="${generateDocsHref('/develop/env-variables/#format')}">learn more</a>.`,
+    sanitize`Format: <code>{ "name": "VARIABLE_NAME", "value": "variable value" }</code> <br> Array of objects following the above format, <cc-link href="${generateDocsHref('/develop/env-variables/#format')}">learn more</cc-link>.`,
   'cc-env-var-editor-json.info.java-prop': /** @param {{name: string}} _ */ ({ name }) =>
-    sanitize`Variable <code>${name}</code> will only be injected as a Java property and won't be part of the environment, <a href="${generateDocsHref('/develop/env-variables/#environment-variables-rules-and-formats')}">more details</a>`,
+    sanitize`Variable <code>${name}</code> will only be injected as a Java property and won't be part of the environment, <cc-link href="${generateDocsHref('/develop/env-variables/#environment-variables-rules-and-formats')}">more details</cc-link>`,
   'cc-env-var-editor-json.label': `Variable editing. Array of objects following the format: { "name": "VARIABLE_NAME", "value": "variable value" }.`,
   //#endregion
   //#region cc-env-var-editor-simple
@@ -487,7 +487,7 @@ export const translations = {
     sanitize`
       <p class="text">
         You can manage environment variables directly from your terminal using the commands below.
-        To install Clever Tools CLI, follow the instructions from the <a href="${generateDocsHref('/cli/install/')}" title="documentation - Install Clever Tools - new window">documentation</a>.
+        To install Clever Tools CLI, follow the instructions from the <cc-link href="${generateDocsHref('/cli/install/')}" title="documentation - Install Clever Tools">documentation</cc-link>.
       </p>
       <dl>
         <dt>List environment variables:</dt>
@@ -499,11 +499,11 @@ export const translations = {
       </dl>
     `,
   'cc-env-var-form.description.config-provider': /** @param {{addonName: string}} _ */ ({ addonName }) =>
-    sanitize`Configuration exposed to dependent applications. <a href="${generateDocsHref('/deploy/addon/config-provider/')}">Learn more</a><br>These variables will be injected as environment variables in applications that have the add-on <strong>${addonName}</strong> in their service dependencies.<br>Every time you update your changes, all the dependent applications will be automatically restarted.`,
+    sanitize`Configuration exposed to dependent applications. <cc-link href="${generateDocsHref('/deploy/addon/config-provider/')}">Learn more</cc-link><br>These variables will be injected as environment variables in applications that have the add-on <strong>${addonName}</strong> in their service dependencies.<br>Every time you update your changes, all the dependent applications will be automatically restarted.`,
   'cc-env-var-form.description.env-var': /** @param {{appName: string}} _ */ ({ appName }) =>
     sanitize`These variables will be injected as environment variables in the application <strong>${appName}</strong>.`,
   'cc-env-var-form.description.exposed-config': /** @param {{appName: string}} _ */ ({ appName }) =>
-    sanitize`Configuration exposed to dependent applications. <a href="${generateDocsHref('/administrate/service-dependencies/#exposed-configuration')}">Learn more</a><br>These variables won't be injected in the application <strong>${appName}</strong>, they will be injected as environment variables in applications that have <strong>${appName}</strong> in their service dependencies.`,
+    sanitize`Configuration exposed to dependent applications. <cc-link href="${generateDocsHref('/administrate/service-dependencies/#exposed-configuration')}">Learn more</cc-link><br>These variables won't be injected in the application <strong>${appName}</strong>, they will be injected as environment variables in applications that have <strong>${appName}</strong> in their service dependencies.`,
   'cc-env-var-form.documentation.text': `Environment variables - Reference`,
   'cc-env-var-form.error.loading': `Something went wrong while loading variables.`,
   'cc-env-var-form.heading.config-provider': `Variables`,
@@ -632,7 +632,7 @@ export const translations = {
   //#endregion
   //#region cc-heptapod-info
   'cc-heptapod-info.description': () =>
-    sanitize`This Heptapod instance hosts mercurial projects. Learn more on <a href="https://about.heptapod.host">https://about.heptapod.host</a>.`,
+    sanitize`This Heptapod instance hosts mercurial projects. Learn more on <cc-link href="https://about.heptapod.host">https://about.heptapod.host</cc-link>.`,
   'cc-heptapod-info.documentation.text': `Heptapod - Documentation`,
   'cc-heptapod-info.error-loading': `Something went wrong while loading usage info.`,
   'cc-heptapod-info.not-in-use': `You are not using this Heptapod service.`,
@@ -728,7 +728,7 @@ export const translations = {
     `Jenkins version ${version} is available!`,
   'cc-jenkins-info.update.text': `Jenkins and its plugins often get updates. You can automatically update Jenkins and its plugins using its dedicated WEB interface.`,
   'cc-jenkins-info.update.title': `Updates`,
-  'cc-jenkins-info.update.up-to-date': `Your Jenkins version is up-to-date.`,
+  'cc-jenkins-info.update.up-to-date': `Your Jenkins version is up-to-date`,
   //#endregion
   //#region cc-kv-explorer
   'cc-kv-explorer.details.empty': `Select a key in the list to get its content`,
@@ -1177,7 +1177,7 @@ export const translations = {
   'cc-orga-member-list.invite.email.label': `Email address`,
   'cc-orga-member-list.invite.heading': `Invite a member`,
   'cc-orga-member-list.invite.info': () =>
-    sanitize`More information about roles in the <a href="${generateDocsHref('/account/organizations/#roles-and-privileges')}">Roles and Organisations</a> page.`,
+    sanitize`More information about roles in the <cc-link href="${generateDocsHref('/account/organizations/#roles-and-privileges')}">Roles and Organisations</cc-link> page.`,
   'cc-orga-member-list.invite.role.accounting': `Accountant`,
   'cc-orga-member-list.invite.role.admin': `Admin`,
   'cc-orga-member-list.invite.role.developer': `Developer`,
@@ -1209,7 +1209,7 @@ export const translations = {
     orgaName,
     orgaBillingLink,
   }) =>
-    sanitize`<a href="${orgaBillingLink}" aria-label="Go to the billing page - ${orgaName}">Go to the billing page</a>`,
+    sanitize`<cc-link href="${orgaBillingLink}" a11y-desc="Go to the billing page - ${orgaName}">Go to the billing page</cc-link>`,
   'cc-payment-warning.generic.default-payment-method-is-expired': /** @param {{orgaName: string}} _ */ ({ orgaName }) =>
     sanitize`<strong>${orgaName}</strong> has a default payment method but it has expired.`,
   'cc-payment-warning.generic.no-default-payment-method': /** @param {{orgaName: string}} _ */ ({ orgaName }) =>
@@ -1442,7 +1442,7 @@ export const translations = {
     sanitize`<p>These are the SSH keys from your GitHub account. You can import them to associate them to your Clever Cloud account.</p>`,
   'cc-ssh-key-list.github.title': `GitHub keys`,
   'cc-ssh-key-list.github.unlinked': () =>
-    sanitize`There is no GitHub account linked to your Clever Cloud account. You may link your accounts from your <a href="./information">profile</a> page.`,
+    sanitize`There is no GitHub account linked to your Clever Cloud account. You may link your accounts from your <cc-link href="./information">profile</cc-link> page.`,
   'cc-ssh-key-list.personal.delete': `Delete`,
   'cc-ssh-key-list.personal.delete.a11y': /** @param {{name: string}} _ */ ({ name }) =>
     `Delete your personal SSH key - ${name}`,
@@ -1480,7 +1480,7 @@ export const translations = {
     sanitize`
       <p class="text">
         You can manage TCP redirections directly from your terminal using the commands below.
-        To install Clever Tools CLI, follow the instructions from the <a href="${generateDocsHref('/cli/install/')}" title="documentation - Install Clever Tools - new window">documentation</a>.
+        To install Clever Tools CLI, follow the instructions from the <cc-link href="${generateDocsHref('/cli/install/')}" title="documentation - Install Clever Tools">documentation</cc-link>.
       </p>
       <dl>
         <dt>List TCP redirections:</dt>
@@ -1603,7 +1603,7 @@ export const translations = {
   'cc-tile-status-codes.about-btn': `About this chart...`,
   'cc-tile-status-codes.close-btn': `Display chart`,
   'cc-tile-status-codes.docs.link': () =>
-    sanitize`<a href="https://developer.mozilla.org/en/docs/Web/HTTP/Status">HTTP response status codes (MDN)</a>`,
+    sanitize`<cc-link href="https://developer.mozilla.org/en/docs/Web/HTTP/Status">HTTP response status codes (MDN)</cc-link>`,
   'cc-tile-status-codes.docs.msg': `Repartition of HTTP response codes returned in the last 24 hours. Click on legend items to show/hide HTTP code categories.`,
   'cc-tile-status-codes.empty': `No data to display for now.`,
   'cc-tile-status-codes.error': `Something went wrong while loading HTTP response codes.`,
@@ -1626,7 +1626,7 @@ export const translations = {
   'cc-token-api-creation-form.cli.content': () => sanitize`
     <p>
       Manage your API tokens from a terminal using the commands below.
-      To install Clever Tools CLI, follow the instructions from the <a href="${generateDocsHref('/cli/install/')}" title="documentation - Install Clever Tools - new window">documentation</a>.
+      To install Clever Tools CLI, follow the instructions from the <cc-link href="${generateDocsHref('/cli/install/')}" a11y-desc="documentation - Install Clever Tools">documentation</cc-link>.
     </p>
     <dl>
       <dt>Create a token:</dt>
@@ -1692,7 +1692,7 @@ export const translations = {
   'cc-token-api-list.cli.content': () => sanitize`
       <p>
         Manage your API tokens from a terminal using the commands below.
-        To install Clever Tools CLI, follow the instructions from the <a href="${generateDocsHref('/cli/install/')}" title="documentation - Install Clever Tools - new window">documentation</a>.
+        To install Clever Tools CLI, follow the instructions from the <cc-link href="${generateDocsHref('/cli/install/')}" a11y-desc="documentation - Install Clever Tools">documentation</cc-link>.
       </p>
       <dl>
         <dt>Create a token:</dt>
@@ -1710,7 +1710,7 @@ export const translations = {
   'cc-token-api-list.empty': `You haven't created any API tokens yet, or none of them are active. Let's create a new one:`,
   'cc-token-api-list.error': `Something went wrong while loading API tokens`,
   'cc-token-api-list.intro': () =>
-    sanitize`Below is the list of <a href="https://www.clever-cloud.com/developers/api/howto/#request-the-api" title="API Tokens - Documentation - new window">API tokens</a> linked to your account and their associated information. You may revoke them as needed.`,
+    sanitize`Below is the list of <cc-link href="https://www.clever-cloud.com/developers/api/howto/#request-the-api" a11y-desc="API Tokens - Documentation">API tokens</cc-link> linked to your account and their associated information. You may revoke them as needed.`,
   'cc-token-api-list.link.doc': `API tokens - Documentation`,
   'cc-token-api-list.main-heading': `API tokens`,
   'cc-token-api-list.no-password.create-password-btn': `Add a password`,
@@ -1731,7 +1731,7 @@ export const translations = {
   'cc-token-api-update-form.cli.content': () => sanitize`
     <p>
       Manage your API tokens from a terminal using the commands below.
-      To install Clever Tools CLI, follow the instructions from the <a href="${generateDocsHref('/cli/install/')}" title="documentation - Install Clever Tools - new window">documentation</a>.
+      To install Clever Tools CLI, follow the instructions from the <cc-link href="${generateDocsHref('/cli/install/')}" a11y-desc="documentation - Install Clever Tools">documentation</cc-link>.
     </p>
     <dl>
       <dt>Create a token:</dt>
@@ -1762,7 +1762,7 @@ export const translations = {
   'cc-token-oauth-list.empty': `You do not have any third-party applications linked to your account`,
   'cc-token-oauth-list.error': `Something went wrong while loading OAuth tokens`,
   'cc-token-oauth-list.intro': () =>
-    sanitize`Below is the list of third-party applications linked to your account and their associated information. You may revoke these <a href="https://www.clever-cloud.com/developers/api/howto/#oauth1" title="OAuth tokens - Documentation - new window">OAuth tokens</a> as needed.`,
+    sanitize`Below is the list of third-party applications linked to your account and their associated information. You may revoke these <cc-link href="https://www.clever-cloud.com/developers/api/howto/#oauth1" a11y-desc="OAuth tokens - Documentation">OAuth tokens</cc-link> as needed.`,
   'cc-token-oauth-list.link.doc': `OAuth tokens - Documentation`,
   'cc-token-oauth-list.main-heading': `OAuth tokens`,
   'cc-token-oauth-list.revoke-all-tokens': `Revoke all OAuth tokens`,
