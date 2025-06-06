@@ -4,14 +4,13 @@ import {
   iconRemixVerifiedBadgeFill as iconBadge,
   iconRemixPhoneFill as iconPhone,
 } from '../../assets/cc-remix.icons.js';
+import { skeletonStyles } from '../../styles/skeleton.js';
+import { i18n } from '../../translations/translation.js';
 import '../cc-badge/cc-badge.js';
 import '../cc-block/cc-block.js';
 import '../cc-img/cc-img.js';
+import '../cc-link/cc-link.js';
 import '../cc-notice/cc-notice.js';
-
-import { skeletonStyles } from '../../styles/skeleton.js';
-import { linkStyles } from '../../templates/cc-link/cc-link.js';
-import { i18n } from '../../translations/translation.js';
 
 /**
  * @typedef {import('./cc-header-orga.types.js').HeaderOrgaState} HeaderOrgaState
@@ -134,7 +133,7 @@ export class CcHeaderOrga extends LitElement {
                     <cc-icon .icon=${iconPhone}>${emergencyNumber}</cc-icon>
                     <span>
                       ${i18n('cc-header-orga.hotline')}
-                      <a class="cc-link" href="tel:${emergencyNumber}">${emergencyNumber}</a>
+                      <cc-link href="tel:${emergencyNumber}" disable-external-link-icon>${emergencyNumber}</cc-link>
                     </span>
                   </p>
                 `
@@ -182,7 +181,6 @@ export class CcHeaderOrga extends LitElement {
 
   static get styles() {
     return [
-      linkStyles,
       skeletonStyles,
       // language=CSS
       css`

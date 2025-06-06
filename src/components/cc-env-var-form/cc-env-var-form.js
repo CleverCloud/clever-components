@@ -2,7 +2,6 @@ import { css, html, LitElement } from 'lit';
 import { iconRemixInformationFill as iconInfo } from '../../assets/cc-remix.icons.js';
 import { generateDocsHref } from '../../lib/utils.js';
 import { cliCommandsStyles } from '../../styles/cli-commands.js';
-import { linkStyles } from '../../templates/cc-link/cc-link.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-block-details/cc-block-details.js';
 import '../cc-block/cc-block.js';
@@ -12,6 +11,7 @@ import '../cc-env-var-editor-json/cc-env-var-editor-json.js';
 import '../cc-env-var-editor-simple/cc-env-var-editor-simple.js';
 import '../cc-expand/cc-expand.js';
 import { CcApplicationRestartEvent } from '../cc-header-app/cc-header-app.events.js';
+import '../cc-link/cc-link.js';
 import '../cc-notice/cc-notice.js';
 import '../cc-toggle/cc-toggle.js';
 import { CcEnvVarFormSubmitEvent } from './cc-env-var-form.events.js';
@@ -381,8 +381,9 @@ export class CcEnvVarForm extends LitElement {
         <cc-block-details slot="footer-left">
           <div slot="button-text">${i18n('cc-block-details.cli.text')}</div>
           <div slot="link">
-            <cc-icon .icon="${iconInfo}"></cc-icon>
-            <a href="${ENV_VAR_DOCUMENTATION}">${i18n('cc-env-var-form.documentation.text')}</a>
+            <cc-link href="${ENV_VAR_DOCUMENTATION}" .icon=${iconInfo}>
+              ${i18n('cc-env-var-form.documentation.text')}
+            </cc-link>
           </div>
           <div slot="content">${i18n('cc-env-var-form.cli.content', { resourceId: this.resourceId })}</div>
         </cc-block-details>
@@ -392,7 +393,6 @@ export class CcEnvVarForm extends LitElement {
 
   static get styles() {
     return [
-      linkStyles,
       cliCommandsStyles,
       // language=CSS
       css`
@@ -429,7 +429,7 @@ export class CcEnvVarForm extends LitElement {
           padding-bottom: 0.5em;
         }
 
-        [slot='footer-right'] .cc-link {
+        [slot='footer-right'] cc-link {
           align-items: center;
           display: flex;
           gap: 0.5em;

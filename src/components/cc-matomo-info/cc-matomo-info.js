@@ -3,12 +3,12 @@ import { classMap } from 'lit/directives/class-map.js';
 import { iconRemixInformationFill as iconInfo } from '../../assets/cc-remix.icons.js';
 import { generateDocsHref } from '../../lib/utils.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
-import { ccLink, linkStyles } from '../../templates/cc-link/cc-link.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-block-section/cc-block-section.js';
 import '../cc-block/cc-block.js';
 import '../cc-icon/cc-icon.js';
 import '../cc-img/cc-img.js';
+import '../cc-link/cc-link.js';
 import '../cc-notice/cc-notice.js';
 
 /** @type {{ [key: string]: null }} */
@@ -77,10 +77,9 @@ export class CcMatomoInfo extends LitElement {
         </cc-block-section>
 
         <div slot="footer-right">
-          ${ccLink(
-            `${MATOMO_DOCUMENTATION}`,
-            html`<cc-icon .icon="${iconInfo}"></cc-icon> ${i18n('cc-matomo-info.documentation.text')}`,
-          )}
+          <cc-link href="${MATOMO_DOCUMENTATION}" .icon="${iconInfo}">
+            ${i18n('cc-matomo-info.documentation.text')}
+          </cc-link>
         </div>
       </cc-block>
     `;
@@ -98,13 +97,10 @@ export class CcMatomoInfo extends LitElement {
   _renderImageLink(imageUrl, linkUrl, linkText, skeleton) {
     return html`
       <div>
-        ${ccLink(
-          linkUrl,
-          html`
-            <cc-img src=${imageUrl}></cc-img>
-            <span class="${classMap({ skeleton })}">${linkText}</span>
-          `,
-        )}
+        <cc-link href="${linkUrl}">
+          <cc-img src=${imageUrl}></cc-img>
+          <span class="${classMap({ skeleton })}">${linkText}</span>
+        </cc-link>
       </div>
     `;
   }
@@ -112,7 +108,6 @@ export class CcMatomoInfo extends LitElement {
   static get styles() {
     return [
       skeletonStyles,
-      linkStyles,
       // language=CSS
       css`
         :host {
@@ -129,7 +124,7 @@ export class CcMatomoInfo extends LitElement {
           margin-bottom: 0;
         }
 
-        .cc-link {
+        cc-link {
           align-items: center;
           display: inline-flex;
         }

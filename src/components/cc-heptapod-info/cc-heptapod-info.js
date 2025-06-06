@@ -3,9 +3,10 @@ import { classMap } from 'lit/directives/class-map.js';
 import { iconRemixInformationFill as iconInfo } from '../../assets/cc-remix.icons.js';
 import { generateDocsHref } from '../../lib/utils.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
-import { ccLink, linkStyles } from '../../templates/cc-link/cc-link.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-block/cc-block.js';
+import '../cc-icon/cc-icon.js';
+import '../cc-link/cc-link.js';
 import '../cc-notice/cc-notice.js';
 
 /** @type {Statistics} */
@@ -53,7 +54,7 @@ export class CcHeptapodInfo extends LitElement {
           <img class="header-logo" src=${HEPTAPOD_LOGO_URL} alt="heptapod logo" title="heptapod logo" />
           <div class="header-content">
             <div>Heptapod</div>
-            <div>${ccLink('https://heptapod.host', 'https://heptapod.host')}</div>
+            <div><cc-link href="https://heptapod.host">https://heptapod.host</cc-link></div>
           </div>
         </div>
         <div slot="content" class="description">${i18n('cc-heptapod-info.description')}</div>
@@ -74,10 +75,9 @@ export class CcHeptapodInfo extends LitElement {
         ${this.state.type === 'loaded' ? this._renderStatistics(this.state.statistics, false) : ''}
 
         <div slot="footer-right">
-          ${ccLink(
-            `${HEPTAPOD_DOCUMENTATION}`,
-            html`<cc-icon .icon="${iconInfo}"></cc-icon> ${i18n('cc-heptapod-info.documentation.text')}`,
-          )}
+          <cc-link href="${HEPTAPOD_DOCUMENTATION}" .icon="${iconInfo}">
+            ${i18n('cc-heptapod-info.documentation.text')}
+          </cc-link>
         </div>
       </cc-block>
     `;
@@ -118,7 +118,6 @@ export class CcHeptapodInfo extends LitElement {
   static get styles() {
     return [
       skeletonStyles,
-      linkStyles,
       // language=CSS
       css`
         :host {
@@ -179,7 +178,7 @@ export class CcHeptapodInfo extends LitElement {
           color: transparent;
         }
 
-        [slot='footer-right'] .cc-link {
+        [slot='footer-right'] cc-link {
           align-items: center;
           display: flex;
           gap: 0.5em;

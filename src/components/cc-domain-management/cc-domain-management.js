@@ -24,7 +24,6 @@ import { focusBySelector } from '../../lib/focus-helper.js';
 import { generateDocsHref } from '../../lib/utils.js';
 import { accessibilityStyles } from '../../styles/accessibility.js';
 import { cliCommandsStyles } from '../../styles/cli-commands.js';
-import { ccLink, linkStyles } from '../../templates/cc-link/cc-link.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-badge/cc-badge.js';
 import '../cc-block-details/cc-block-details.js';
@@ -32,6 +31,7 @@ import '../cc-block-section/cc-block-section.js';
 import '../cc-block/cc-block.js';
 import '../cc-button/cc-button.js';
 import '../cc-input-text/cc-input-text.js';
+import '../cc-link/cc-link.js';
 import '../cc-loader/cc-loader.js';
 import '../cc-notice/cc-notice.js';
 import { CcDomainAddEvent, CcDomainDeleteEvent, CcDomainMarkAsPrimaryEvent } from './cc-domain-management.events.js';
@@ -355,12 +355,13 @@ export class CcDomainManagement extends LitElement {
             ${this.domainListState.type === 'loading' ? html` <cc-loader></cc-loader> ` : ''}
             ${this.domainListState.type === 'loaded' ? this._renderDomains(this._sortedDomains) : ''}
           </cc-block-section>
-
+          
           <cc-block-details slot="footer-left">
             <div slot="button-text">${i18n('cc-block-details.cli.text')}</div>
             <div slot="link">
-              <cc-icon .icon="${iconInfo}"></cc-icon>
-              <a href="${DOMAIN_NAMES_DOCUMENTATION}">${i18n('cc-domain-management.names.documentation.text')}</a>
+              <cc-link href="${DOMAIN_NAMES_DOCUMENTATION}" .icon="${iconInfo}">
+                ${i18n('cc-domain-management.names.documentation.text')}
+              </cc-link>
             </div>
             <div slot="content">${i18n('cc-domain-management.names.cli.content', { resourceId: this.resourceId })}</div>
           </cc-block-details>
@@ -373,12 +374,9 @@ export class CcDomainManagement extends LitElement {
             <p>${i18n('cc-domain-management.certif.custom')}</p>
           </div>
           <div slot="footer-right">
-            ${ccLink(
-              TLS_CERTIFICATES_DOCUMENTATION,
-              html`<cc-icon .icon="${iconInfo}"></cc-icon> ${i18n(
-                  'cc-domain-management.tls.certificates.documentation.text',
-                )}`,
-            )}
+            <cc-link href="${TLS_CERTIFICATES_DOCUMENTATION}" .icon="${iconInfo}">
+              ${i18n('cc-domain-management.tls.certificates.documentation.text')}
+            </cc-link>
           </div>
         </cc-block>
 
@@ -409,8 +407,9 @@ export class CcDomainManagement extends LitElement {
           <cc-block-details slot="footer-left">
             <div slot="button-text">${i18n('cc-block-details.cli.text')}</div>
             <div slot="link">
-              <cc-icon .icon="${iconInfo}"></cc-icon>
-              <a href="${DNS_DOCUMENTATION}">${i18n('cc-domain-management.dns.documentation.text')}</a>
+              <cc-link href="${DNS_DOCUMENTATION}" .icon="${iconInfo}">
+                ${i18n('cc-domain-management.dns.documentation.text')}
+              </cc-link>
             </div>
             <div slot="content">${i18n('cc-domain-management.dns.cli.content', { resourceId: this.resourceId })}</div>
           </cc-block-details>
@@ -531,12 +530,11 @@ export class CcDomainManagement extends LitElement {
         <span class="domain-name-with-path">
           <!-- These tags need to remain on the same line so there is no white-space when pasting domain+path -->
           <span>${hostWithWildcard}</span><span class="path-prefix">${pathPrefix}</span>
-          <a
-            class="domain-link"
-            href="${domainUrl}"
-            title="${i18n('cc-domain-management.list.link.title', { domainUrl })}"
-            target="_blank"
-          >
+          <cc-link href="${domainUrl}" a11y-desc="${i18n('cc-domain-management.list.link.title', { domainUrl })}">
+            <!-- -->
+            toto
+          </cc-link>
+          <a class="domain-link" href="${domainUrl}" target="_blank">
             <span class="visually-hidden">${domainUrl}</span>
             <cc-icon .icon=${iconLink} a11y-name="${i18n('cc-domain-management.new-window')}"></cc-icon>
           </a>
@@ -654,7 +652,6 @@ export class CcDomainManagement extends LitElement {
   static get styles() {
     return [
       accessibilityStyles,
-      linkStyles,
       cliCommandsStyles,
       css`
         :host {
@@ -870,12 +867,6 @@ export class CcDomainManagement extends LitElement {
         }
 
         /** #endregion */
-
-        [slot='footer-right'] .cc-link {
-          align-items: center;
-          display: flex;
-          gap: 0.5em;
-        }
       `,
     ];
   }
