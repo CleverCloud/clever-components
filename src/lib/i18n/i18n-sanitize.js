@@ -1,4 +1,4 @@
-const AUTHORIZED_TAGS = ['STRONG', 'EM', 'CODE', 'A', 'BR', 'P', 'SPAN', 'DL', 'DT', 'DD'];
+const AUTHORIZED_TAGS = ['STRONG', 'EM', 'CODE', 'CC-LINK', 'BR', 'P', 'SPAN', 'DL', 'DT', 'DD'];
 
 /**
  * Checks whether the given attribute on the given tag is authorized in translation.
@@ -8,12 +8,10 @@ const AUTHORIZED_TAGS = ['STRONG', 'EM', 'CODE', 'A', 'BR', 'P', 'SPAN', 'DL', '
  * @return {boolean}
  */
 function isAuthorizedAttribute(attributeName, tagName) {
-  return (
-    attributeName === 'title' ||
-    attributeName === 'aria-label' ||
-    (attributeName === 'href' && tagName === 'A') ||
-    attributeName === 'lang'
-  );
+  if (tagName === 'CC-LINK') {
+    return ['href', 'a11y-desc', 'lang'].includes(attributeName);
+  }
+  return ['title', 'aria-label', 'lang'].includes(attributeName);
 }
 
 /** @type {(dirtyHtml: string) => string} - Function to escape HTML (Always reuse the same text node) */
@@ -89,29 +87,8 @@ export function sanitize(statics, ...params) {
           console.warn(`Attribute ${attr.name} is not allowed on <${node.tagName.toLowerCase()}> in translations!`);
           return node.removeAttribute(attr.name);
         });
-
-      // If link has href and external origin => force rel and target
-      if (isLinkNodeWithHref(node)) {
-        node.classList.add('sanitized-link');
-        // Chrome > 120 returns an empty string for an anchor element with an absolute url like `href=/foo` when it's in a template DOM element
-        // In such case, we need to test if it's an empty string to make sure absolute or relative urls are not considered external
-        if (node.origin?.length > 0 && node.origin !== window.location.origin) {
-          node.setAttribute('rel', 'noopener noreferrer');
-          node.setAttribute('target', '_blank');
-        }
-      }
     }
   });
 
   return template.content.cloneNode(true);
-}
-
-/**
- * Checks whether the given element is an `<a>` element with `href` attribute
- *
- * @param {Element} element
- * @return {element is Element & {origin: string}}
- */
-function isLinkNodeWithHref(element) {
-  return element.tagName === 'A' && element.getAttribute('href') != null;
 }
