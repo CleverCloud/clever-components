@@ -1,5 +1,3 @@
-/* eslint-env node, mocha */
-
 import { expect } from '@open-wc/testing';
 import {
   getRangeToNow,

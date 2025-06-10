@@ -1,5 +1,3 @@
-/* eslint-env node, mocha */
-
 import { expect } from '@bundled-es-modules/chai';
 import * as hanbi from 'hanbi';
 import { LogsController } from './logs-controller.js';

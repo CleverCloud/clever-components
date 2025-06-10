@@ -1,5 +1,3 @@
-/* eslint-env node, mocha */
-
 import { expect } from '@bundled-es-modules/chai';
 import { matchKvPattern } from './kv-utils.js';
 
