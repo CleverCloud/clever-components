@@ -3,6 +3,7 @@ import '../../src/components/cc-button/cc-button.js';
 import '../../src/components/cc-input-date/cc-input-date.js';
 import '../../src/components/cc-input-number/cc-input-number.js';
 import '../../src/components/cc-input-text/cc-input-text.js';
+import '../../src/components/cc-picker/cc-picker.js';
 import '../../src/components/cc-select/cc-select.js';
 import '../../src/components/cc-toggle/cc-toggle.js';
 import { formSubmit } from '../../src/lib/form/form-submit-directive.js';
@@ -22,6 +23,13 @@ const COLOR_OPTIONS = [
   },
 ];
 
+const PICKER_OPTIONS = [
+  { body: 'Lady Gaga', value: 'GAGA' },
+  { body: 'John Lennon', value: 'LENNON' },
+  { body: 'Paul McCartney', value: 'MCCARTNEY' },
+  { body: 'George Harrison', value: 'HARRISON' },
+];
+
 export class FormDemoWithCcComponents extends LitElement {
   render() {
     return html`
@@ -34,6 +42,7 @@ export class FormDemoWithCcComponents extends LitElement {
         </cc-input-number>
         <cc-input-text label="Email address" name="email" type="email" required></cc-input-text>
         <cc-select label="Favorite color" name="color" .options=${COLOR_OPTIONS} required></cc-select>
+        <cc-picker label="Find the intruder" name="star" .options=${PICKER_OPTIONS} required></cc-picker>
 
         <cc-button primary type="submit">Submit</cc-button>
       </form>
