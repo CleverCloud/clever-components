@@ -272,6 +272,16 @@ export const translations = {
     sanitize`<p>If you choose to use <code>A</code> records, for instance with a root domain (APEX), you'll need to update them yourself. Follow our <a href="${generateDevHubHref('/changelog')}">changelog</a> or check our <a href="${generateDevHubHref('/api/v4/#load-balancers')}">v4 API documentation</a> for this.</p>`,
   'cc-domain-management.dns.a.heading': `A records`,
   'cc-domain-management.dns.a.label': `A Record values`,
+  'cc-domain-management.dns.cli.content': /** @param {{resourceId: string}} _ */ ({ resourceId }) =>
+    sanitize`
+      <p>
+        To install Clever Tools CLI, follow the instructions from the <a href="${generateDocsHref('/cli/install/')}" title="documentation - Install Clever Tools - new window">documentation</a>.
+      </p>
+      <dl>
+        <dt>Diagnose the current configuration:</dt>
+        <dd><code>clever diag --app ${resourceId}</code></dd>
+      </dl>
+    `,
   'cc-domain-management.dns.cname.desc': () =>
     sanitize`<p>Using a <code>CNAME</code> record is recommended. This keeps your configuration up to date.</p>`,
   'cc-domain-management.dns.cname.heading': `CNAME record`,
@@ -338,6 +348,21 @@ export const translations = {
   'cc-domain-management.list.primary.success': /** @param {{domain: string}} _ */ ({ domain }) =>
     `"${domain}" has been successfully marked as primary domain`,
   'cc-domain-management.main-heading': `Manage your domain names`,
+  'cc-domain-management.names.cli.content': /** @param {{resourceId: string}} _ */ ({ resourceId }) =>
+    sanitize`
+      <p class="text">
+        You can manage domains directly from your terminal using the commands below. 
+        To install Clever Tools CLI, follow the instructions from the <a href="${generateDocsHref('/cli/install/')}" title="documentation - Install Clever Tools - new window">documentation</a>.
+      </p>
+      <dl>
+        <dt>List domains:</dt>
+        <dd><code>clever domain --app ${resourceId}</code></dd>
+        <dt>Diagnose DNS records:</dt>
+        <dd><code>clever domain diag --app ${resourceId}</code></dd>
+        <dt>Add a domain:</dt>
+        <dd><code>clever domain add myapp.example.com --app ${resourceId}</code></dd>
+      </dl>
+    `,
   'cc-domain-management.names.documentation.text': `Domain names - Documentation`,
   'cc-domain-management.new-window': `New Window`,
   'cc-domain-management.tls.certificates.documentation.text': `TLS certificates - Documentation`,
