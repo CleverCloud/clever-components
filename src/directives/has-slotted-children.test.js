@@ -1,5 +1,3 @@
-/* eslint-env node, mocha */
-
 import { defineCE, elementUpdated, expect } from '@open-wc/testing';
 import { LitElement, html } from 'lit';
 import { getElement } from '../../test/helpers/element-helper.js';

@@ -1,4 +1,3 @@
-/* eslint-env node, mocha */
 /**
  * @typedef {import('./cc-product-list.types.js').Product} Product
  * @typedef {import('hanbi').Stub<() => void>} Stub

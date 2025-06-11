@@ -1,5 +1,3 @@
-/* eslint-env node, mocha */
-
 import { elementUpdated, expect, fixture } from '@open-wc/testing';
 import { sendKeys } from '@web/test-runner-commands';
 import { html } from 'lit';
