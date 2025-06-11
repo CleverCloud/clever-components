@@ -2,9 +2,11 @@ import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { iconRemixHistoryLine as iconBackup, iconRemixCloseLine as iconClose } from '../../assets/cc-remix.icons.js';
 import { fakeString } from '../../lib/fake-strings.js';
+import { cliCommandsStyles } from '../../styles/cli-commands.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
 import { ccLink, linkStyles } from '../../templates/cc-link/cc-link.js';
 import { i18n } from '../../translations/translation.js';
+import '../cc-block-details/cc-block-details.js';
 import '../cc-block-section/cc-block-section.js';
 import '../cc-block/cc-block.js';
 import '../cc-button/cc-button.js';
@@ -49,6 +51,7 @@ const SKELETON_BACKUPS = {
 export class CcAddonBackups extends LitElement {
   static get properties() {
     return {
+      addonId: { type: String, attribute: 'addon-id' },
       state: { type: Object },
       _overlayType: { type: String, state: true },
       _selectedBackup: { type: Object, state: true },
@@ -57,6 +60,9 @@ export class CcAddonBackups extends LitElement {
 
   constructor() {
     super();
+
+    /** @type {string} Sets the addon id for documentation */
+    this.addonId = 'xxx_xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx';
 
     /** @type {AddonBackupsState} Sets the state of the component. */
     this.state = {
@@ -265,6 +271,10 @@ export class CcAddonBackups extends LitElement {
           : ''}
         ${this.state.type === 'loading' ? this._renderLoading(this.state) : ''}
         ${this.state.type === 'loaded' ? this._renderLoaded(this.state) : ''}
+        <cc-block-details slot="footer-left">
+          <div slot="button-text">${i18n('cc-block-details.cli.text')}</div>
+          <div slot="content">${i18n('cc-addon-backups.cli.content', { addonId: this.addonId })}</div>
+        </cc-block-details>
       </cc-block>
     `;
   }
@@ -447,6 +457,7 @@ export class CcAddonBackups extends LitElement {
     return [
       skeletonStyles,
       linkStyles,
+      cliCommandsStyles,
       // language=CSS
       css`
         :host {
