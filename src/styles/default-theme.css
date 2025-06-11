@@ -45,6 +45,7 @@
   --color-orange-10: #fff9cb;
   --color-purple-light: #e0e0ff;
   --color-red-100: #be242d;
+  --color-red-70: #f72d36;
   --color-red-30: #fbc8c2;
   --color-red-20: #facbc9;
   --color-red-10: #ffe4e1;
@@ -218,8 +219,11 @@
   /* Usage: for danger border */
   --cc-color-border-danger: var(--color-red-100);
 
-  /* Usage: for danger border */
-  --cc-color-border-danger-weak: var(--color-red-20);
+  /* Usage: for subtle danger border */
+  --cc-color-border-danger-weak: var(--color-red-70);
+
+  /* Usage: for danger border even more subtle */
+  --cc-color-border-danger-weaker: var(--color-red-20);
 
   /* Usage: for subtle decorative borders
   * For instance: block & card borders */
@@ -245,7 +249,28 @@
   * For instance: row separators within a table. */
   --cc-color-border-neutral-weak: var(--color-grey-15);
 
-  /* Usage: for primary border */
+  /* Usage: for subtle decorative borders
+  * For instance: block & card borders */
+  --cc-color-border-primary: var(--color-blue-60);
+
+  /* Usage: for disabled borders
+  * For instance: disabled input / select borders */
+  --cc-color-border-primary-disabled: var(--color-blue-30);
+
+  /* Usage: for focused borders
+  * For instance: focused input / select borders */
+  --cc-color-border-primary-focused: var(--color-blue-80);
+
+  /* Usage: for borders on hover
+  * For instance: input / select borders on hover */
+  --cc-color-border-primary-hovered: var(--color-blue-80);
+
+  /* Usage: for contrasted borders.
+  * For instance: click targets like input fields */
+  --cc-color-border-primary-strong: var(--color-blue-70);
+
+  /* Usage: for very subtle primary decorative borders
+  * For instance: row separators within a table. */
   --cc-color-border-primary-weak: var(--color-blue-20);
 
   /* Usage: for success border */

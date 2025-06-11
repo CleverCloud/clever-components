@@ -81,13 +81,19 @@ As our design tokens only exist (for now) as CSS values, keys will be listed as 
 | Key                                  | Default value         | Matching choice |
 |:-------------------------------------|:----------------------|:----------------|
 | `--cc-color-border-danger`           | `--color-red-100`     | `#be242d`       |
-| `--cc-color-border-danger-weak`      | `--color-red-20`      | `#facbc9`       |
+| `--cc-color-border-danger-weak`      | `--color-red-70`      | `#f72d36`       |
+| `--cc-color-border-danger-weaker`    | `--color-red-20`      | `#facbc9`       |
 | `--cc-color-border-neutral`          | `--color-grey-30`     | `#bfbfbf`       |
 | `--cc-color-border-neutral-disabled` | `--color-grey-15`     | `#e7e7e7`       |
 | `--cc-color-border-neutral-focused`  | `--color-grey-70`     | `#595959`       |
 | `--cc-color-border-neutral-hovered`  | `--color-grey-70`     | `#595959`       |
 | `--cc-color-border-neutral-strong`   | `--color-grey-50`     | `#8c8c8c`       |
 | `--cc-color-border-neutral-weak`     | `--color-grey-15`     | `#e7e7e7`       |
+| `--cc-color-border-primary`          | `--color-blue-60`     | `#3569aa`       |
+| `--cc-color-border-primary-disabled` | `--color-blue-30`     | `#cedcff`       |
+| `--cc-color-border-primary-focused`  | `--color-blue-80`     | `#002c9d`       |
+| `--cc-color-border-primary-hovered`  | `--color-blue-80`     | `#002c9d`       |
+| `--cc-color-border-primary-strong`   | `--color-blue-70`     | `#0061bd`       |
 | `--cc-color-border-primary-weak`     | `--color-blue-20`     | `#ccd4dc`       |
 | `--cc-color-border-success-weak`     | `--color-green-20`    | `#c3dab7`       |
 | `--cc-color-border-warning-weak`     | `--color-orange-20`   | `#d9d4ad`       |
