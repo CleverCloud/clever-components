@@ -1220,6 +1220,9 @@ export const translations = {
   'cc-payment-warning.orga.no-payment-method': `To avoid any suspension of your services and deletion of your data, add a valid payment method and set it as default.`,
   'cc-payment-warning.orga.no-payment-method.title': `Beware! You don't have any registered payment method`,
   //#endregion
+  //#region cc-picker
+  'cc-picker.required': `required`,
+  //#endregion
   //#region cc-plan-picker
   'cc-plan-picker.legend': `Select your plan`,
   'cc-plan-picker.legend.customize': `Customize your plan`,
