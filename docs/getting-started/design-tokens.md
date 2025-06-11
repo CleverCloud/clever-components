@@ -88,6 +88,11 @@ As our design tokens only exist (for now) as CSS values, keys will be listed as 
 | `--cc-color-border-neutral-hovered`  | `--color-grey-70`     | `#595959`       |
 | `--cc-color-border-neutral-strong`   | `--color-grey-50`     | `#8c8c8c`       |
 | `--cc-color-border-neutral-weak`     | `--color-grey-15`     | `#e7e7e7`       |
+| `--cc-color-border-primary`          | `--color-blue-60`     | `#3569aa`       |
+| `--cc-color-border-primary-disabled` | `--color-blue-30`     | `#cedcff`       |
+| `--cc-color-border-primary-focused`  | `--color-blue-80`     | `#002c9d`       |
+| `--cc-color-border-primary-hovered`  | `--color-blue-80`     | `#002c9d`       |
+| `--cc-color-border-primary-strong`   | `--color-blue-70`     | `#0061bd`       |
 | `--cc-color-border-primary-weak`     | `--color-blue-20`     | `#ccd4dc`       |
 | `--cc-color-border-success-weak`     | `--color-green-20`    | `#c3dab7`       |
 | `--cc-color-border-warning-weak`     | `--color-orange-20`   | `#d9d4ad`       |
