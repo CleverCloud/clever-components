@@ -15,6 +15,7 @@ import { formSubmit } from '../../lib/form/form-submit-directive.js';
 import { cliCommandsStyles } from '../../styles/cli-commands.js';
 import { linkStyles } from '../../templates/cc-link/cc-link.js';
 import { i18n } from '../../translations/translation.js';
+import '../cc-block-details-command/cc-block-details-command.js';
 import '../cc-block-details/cc-block-details.js';
 import '../cc-block/cc-block.js';
 import '../cc-input-date/cc-input-date.js';
@@ -379,7 +380,25 @@ export class CcTokenApiCreationForm extends LitElement {
             <span class="cc-link">${i18n('cc-token-api-creation-form.link.doc')}</span>
             <cc-icon .icon=${iconExternalLink}></cc-icon>
           </a>
-          <div slot="content">${i18n('cc-token-api-creation-form.cli.content')}</div>
+          <div slot="content">
+            ${i18n('cc-token-api-creation-form.cli.content.text')}
+            <cc-block-details-command
+              command='clever tokens create "&lt;votre nom de token&gt;"'
+              description="${i18n('cc-token-api-creation-form.cli.content.create-token')}"
+            ></cc-block-details-command>
+            <cc-block-details-command
+              command="clever tokens revoke &lt;api_token_id&gt;"
+              description="${i18n('cc-token-api-creation-form.cli.content.revoke-token')}"
+            ></cc-block-details-command>
+            <cc-block-details-command
+              command="clever tokens list"
+              description="${i18n('cc-token-api-creation-form.cli.content.list-token')}"
+            ></cc-block-details-command>
+            <cc-block-details-command
+              command='curl -H "Authorization: Bearer &lt;votre_token&gt;" https://api-bridge.clever-cloud.com/v2/self'
+              description="${i18n('cc-token-api-creation-form.cli.content.use-token')}"
+            ></cc-block-details-command>
+          </div>
         </cc-block-details>
       </cc-block>
     `;
