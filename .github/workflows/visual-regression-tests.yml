@@ -20,7 +20,7 @@ jobs:
         run: npm ci
 
       - name: '[Prepare] Install Playwright Browsers'
-        run: npx playwright install --with-deps
+        run: npx playwright install chromium --with-deps
 
       - name: 'Run Visual Regression Tests'
         run: npm run test-visual-regressions
