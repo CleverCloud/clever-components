@@ -23,4 +23,9 @@ jobs:
         run: npx playwright install chromium --with-deps
 
       - name: 'Run Visual Regression Tests'
+        if: ${{ !contains(join(fromJson(toJson(github.event.pull_request.labels)).*.name, ','), 'test-visual-regressions:update-baseline') }}
         run: npm run test-visual-regressions
+
+      - name: 'Update Visual baseline'
+        if: ${{ contains(join(fromJson(toJson(github.event.pull_request.labels)).*.name, ','), 'test-visual-regressions:update-baseline') }}
+        run: npm run test-visual-regressions:update-baseline
