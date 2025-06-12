@@ -4,6 +4,7 @@ import { generateDocsHref } from '../../lib/utils.js';
 import { cliCommandsStyles } from '../../styles/cli-commands.js';
 import { linkStyles } from '../../templates/cc-link/cc-link.js';
 import { i18n } from '../../translations/translation.js';
+import '../cc-block-details-command/cc-block-details-command.js';
 import '../cc-block-details/cc-block-details.js';
 import '../cc-block/cc-block.js';
 import '../cc-button/cc-button.js';
@@ -384,7 +385,21 @@ export class CcEnvVarForm extends LitElement {
             <cc-icon .icon="${iconInfo}"></cc-icon>
             <a href="${ENV_VAR_DOCUMENTATION}">${i18n('cc-env-var-form.documentation.text')}</a>
           </div>
-          <div slot="content">${i18n('cc-env-var-form.cli.content', { resourceId: this.resourceId })}</div>
+          <div slot="content">
+            ${i18n('cc-env-var-form.cli.content.text')}
+            <cc-block-details-command
+              command="clever env --app ${this.resourceId}"
+              description="${i18n('cc-env-var-form.cli.content.list-var-command')}"
+            ></cc-block-details-command>
+            <cc-block-details-command
+              command="clever env --app ${this.resourceId} -F shell"
+              description="${i18n('cc-env-var-form.cli.content.get-file-var-command')}"
+            ></cc-block-details-command>
+            <cc-block-details-command
+              command="clever env set VAR_NAME VAR_VALUE --app ${this.resourceId}"
+              description="${i18n('cc-env-var-form.cli.content.add-var-command')}"
+            ></cc-block-details-command>
+          </div>
         </cc-block-details>
       </cc-block>
     `;
