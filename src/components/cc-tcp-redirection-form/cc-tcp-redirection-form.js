@@ -1,10 +1,10 @@
 import { css, html, LitElement } from 'lit';
 import { iconRemixInformationFill as iconInfo } from '../../assets/cc-remix.icons.js';
 import { generateDocsHref } from '../../lib/utils.js';
-import { ccLink, linkStyles } from '../../templates/cc-link/cc-link.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-badge/cc-badge.js';
 import '../cc-block/cc-block.js';
+import '../cc-link/cc-link.js';
 import '../cc-notice/cc-notice.js';
 import '../cc-tcp-redirection/cc-tcp-redirection.js';
 
@@ -81,10 +81,9 @@ export class CcTcpRedirectionForm extends LitElement {
         </div>
 
         <div slot="footer-right">
-          ${ccLink(
-            `${TCP_REDIRECTION_DOCUMENTATION}`,
-            html`<cc-icon .icon="${iconInfo}"></cc-icon> ${i18n('cc-tcp-redirection-form.documentation.text')}`,
-          )}
+          <cc-link href="${TCP_REDIRECTION_DOCUMENTATION}" .icon="${iconInfo}">
+            ${i18n('cc-tcp-redirection-form.documentation.text')}
+          </cc-link>
         </div>
       </cc-block>
     `;
@@ -103,7 +102,6 @@ export class CcTcpRedirectionForm extends LitElement {
 
   static get styles() {
     return [
-      linkStyles,
       // language=CSS
       css`
         :host {
@@ -143,7 +141,7 @@ export class CcTcpRedirectionForm extends LitElement {
           font-style: italic;
         }
 
-        [slot='footer-right'] .cc-link {
+        [slot='footer-right'] cc-link {
           align-items: center;
           display: flex;
           gap: 0.5em;
