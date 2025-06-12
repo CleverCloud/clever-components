@@ -18,5 +18,8 @@ jobs:
       - name: '[Prepare] Install dependencies'
         run: npm ci
 
+      - name: '[Prepare] Install Playwright Browsers'
+        run: npx playwright install --with-deps
+
       - name: 'Run Visual Regression Tests'
         run: npm run test-visual-regressions
