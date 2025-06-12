@@ -1458,20 +1458,15 @@ export const translations = {
     sanitize`You can create a redirection in the <strong>${namespace}</strong> namespace.`,
   //#endregion
   //#region cc-tcp-redirection-form
-  'cc-tcp-redirection-form.cli.content': /** @param {{resourceId: string}} _ */ ({ resourceId }) =>
+  'cc-tcp-redirection-form.cli.content.add-tcp-redirection-command': `Add a TCP redirection:`,
+  'cc-tcp-redirection-form.cli.content.list-tcp-redirection-command': `List TCP redirections:`,
+  'cc-tcp-redirection-form.cli.content.remove-tecp-redirection-command': `Remove a TCP redirection:`,
+  'cc-tcp-redirection-form.cli.content.text': () =>
     sanitize`
       <p class="text">
         You can manage TCP redirections directly from your terminal using the commands below.
         To install Clever Tools CLI, follow the instructions from the <a href="${generateDocsHref('/cli/install/')}" title="documentation - Install Clever Tools - new window">documentation</a>.
       </p>
-      <dl>
-        <dt>List TCP redirections:</dt>
-        <dd><code>clever tcp-redirs --app ${resourceId}</code></dd>
-        <dt>Add a TCP redirection:</dt>
-        <dd><code>clever tcp-redirs add --namespace my-namespace --app ${resourceId}</code></dd>
-        <dt>Remove a TCP redirection:</dt>
-        <dd><code>clever tcp-redirs remove --namespace my-namespace {portNumber} --app ${resourceId}</code></dd>
-      </dl>
     `,
   'cc-tcp-redirection-form.create.error': /** @param {{namespace: string}} _ */ ({ namespace }) => {
     return sanitize`Something went wrong while creating a TCP redirection in the <strong>${namespace}</strong> namespace.`;
