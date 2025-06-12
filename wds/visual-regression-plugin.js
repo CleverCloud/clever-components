@@ -1,7 +1,4 @@
 import { visualRegressionPlugin } from '@web/test-runner-visual-regression/plugin';
-import { CellarClient } from '../tasks/cellar-client.js';
-import { getCurrentBranch } from '../tasks/git-utils.js';
-import { Buffer } from 'buffer';
 
 const MASTER_BRANCH_NAME = 'master';
 
@@ -12,6 +9,11 @@ const MASTER_BRANCH_NAME = 'master';
 // });
 
 export const visualRegressionPluginWithConfig = visualRegressionPlugin({
+  diffOptions: {
+    alpha: 1,
+    aaColor: [0, 255, 255],
+    diffColor: [0, 255, 255],
+  },
   update: process.argv.includes('--update-visual-baseline'), // should we force to target some component or all? need to test what happens when you update baseline and it's already ok?
   // async getBaseline({ name }) {
   //   if (process.argv.includes('--update-visual-baseline')) {

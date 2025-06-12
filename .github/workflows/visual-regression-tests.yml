@@ -35,5 +35,5 @@ jobs:
         if: ${{ !cancelled() }}
         with:
           name: screenshots
-          path: screenshots/
+          path: screenshots/Chromium/failed
           retention-days: 30
