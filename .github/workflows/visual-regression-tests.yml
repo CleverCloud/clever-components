@@ -1,0 +1,22 @@
+name: Visual Regression Tests
+
+on:
+  pull_request:
+    types: [synchronize, opened, reopened]
+
+jobs:
+  run-on-pr-push:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: '[Prepare] Setup Node.js'
+        uses: actions/setup-node@v3
+        with:
+          node-version-file: 'package.json'
+          cache: 'npm'
+      - name: '[Prepare] Install dependencies'
+        run: npm ci
+
+      - name: 'Run Visual Regression Tests'
+        run: npm run test-visual-regressions
