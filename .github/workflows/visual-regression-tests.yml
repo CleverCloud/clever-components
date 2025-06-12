@@ -2,10 +2,11 @@ name: Visual Regression Tests
 
 on:
   pull_request:
-    types: [synchronize, opened, reopened]
+    types: [synchronize, opened, reopened, labeled, unlabeled]
 
 jobs:
-  run-on-pr-push:
+  run-test-visual-regression-tests:
+    if: ${{ !contains(join(fromJson(toJson(github.event.pull_request.labels)).*.name, ','), 'test-visual-regressions:skip') }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
