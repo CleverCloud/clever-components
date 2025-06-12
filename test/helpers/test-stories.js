@@ -184,6 +184,7 @@ export async function testStories(storiesModule) {
               if (storyFunction.parameters.tests.accessibility.enable) {
                 it('should be accessible', async function () {
                   await setViewport(viewports.desktop);
+                  await document.fonts.ready;
                   const element = await fixture(storyFunction({}, storyConf));
 
                   await elementUpdated(element);
@@ -197,6 +198,7 @@ export async function testStories(storiesModule) {
               if (storyFunction.parameters.tests.visualRegressions.enable) {
                 it('should have no visual regression', async function () {
                   await setViewport(viewports.desktop);
+                  await document.fonts.ready;
                   const element = await fixture(storyFunction({}, storyConf));
                   injectCssIntoAllShadowRoots(element, DISABLE_ANIMATIONS_CSS);
                   const imagesToPreload = storyFunction.parameters.tests.visualRegressions.imagesToPreload;
@@ -215,6 +217,7 @@ export async function testStories(storiesModule) {
               if (storyFunction.parameters.tests.accessibility.enable) {
                 it('should be accessible', async function () {
                   await setViewport(viewports.mobile);
+                  await document.fonts.ready;
                   const element = await fixture(storyFunction({}, storyConf));
 
                   await elementUpdated(element.shadowRoot.querySelector(`${componentTag}`));
@@ -228,6 +231,7 @@ export async function testStories(storiesModule) {
               if (storyFunction.parameters.tests.visualRegressions.enable) {
                 it('should have no visual regression', async function () {
                   await setViewport(viewports.desktop);
+                  await document.fonts.ready;
                   const element = await fixture(storyFunction({}, storyConf));
                   injectCssIntoAllShadowRoots(element, DISABLE_ANIMATIONS_CSS);
                   const imagesToPreload = storyFunction.parameters.tests.visualRegressions.imagesToPreload;
