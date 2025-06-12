@@ -4,9 +4,9 @@ import {
 } from '@lit-labs/virtualizer/support/resize-observer-errors.js';
 import { elementUpdated, expect, fixture } from '@open-wc/testing';
 import { setViewport } from '@web/test-runner-commands';
+import { visualDiff } from '@web/test-runner-visual-regression';
 import { addTranslations } from '../../src/lib/i18n/i18n.js';
 import * as en from '../../src/translations/translations.en.js';
-import { visualDiff } from '@web/test-runner-visual-regression';
 
 /**
  * @typedef {import('./test-stories.types.js').RawStoriesModule} RawStoriesModule
@@ -16,6 +16,8 @@ import { visualDiff } from '@web/test-runner-visual-regression';
  * @typedef {import('@storybook/web-components').WebComponentsRenderer} WebComponentsRenderer
  * @typedef {import('@storybook/web-components').StoryContext<WebComponentsRenderer>} StoryContext
  */
+
+// TODO Flo: mock Date?
 
 const viewports = {
   desktop: {
@@ -82,6 +84,35 @@ setupIgnoreIrrelevantErrors(before, after, (message) => {
 });
 
 const IGNORE_PATTERNS_FOR_VISUAL_REGRESSIONS = ['waiting', 'loading', 'simulation', 'skeleton'];
+
+/**
+ * Recursively injects a <style> tag with the given CSS into all shadow roots in the subtree.
+ * @param {Node} root - The root node to start searching from (usually document.body)
+ * @param {string} css - The CSS string to inject
+ */
+export function injectCssIntoAllShadowRoots(root, css) {
+  if (root.shadowRoot) {
+    const style = document.createElement('style');
+    style.textContent = css;
+    root.shadowRoot.appendChild(style);
+  }
+  // Traverse children (for both shadow and light DOM)
+  if (root.children.length > 0) {
+    Array.from(root.children).forEach((child) => injectCssIntoAllShadowRoots(child, css));
+  }
+
+  if (root.shadowRoot != null && root.shadowRoot.children.length > 0) {
+    Array.from(root.shadowRoot.children).forEach((child) => injectCssIntoAllShadowRoots(child, css));
+  }
+}
+
+const DISABLE_ANIMATIONS_CSS = `
+  *, *::before, *::after {
+    transition: none !important;
+    animation: none !important;
+    animation-duration: 0s !important;
+  }
+`;
 
 /**
  * Transform the result of an imported module from a story file into an array of story functions that can be used to render every story.
@@ -167,6 +198,7 @@ export async function testStories(storiesModule) {
                 it('should have no visual regression', async function () {
                   await setViewport(viewports.desktop);
                   const element = await fixture(storyFunction({}, storyConf));
+                  injectCssIntoAllShadowRoots(element, DISABLE_ANIMATIONS_CSS);
                   const imagesToPreload = storyFunction.parameters.tests.visualRegressions.imagesToPreload;
 
                   await elementUpdated(element);
@@ -197,6 +229,7 @@ export async function testStories(storiesModule) {
                 it('should have no visual regression', async function () {
                   await setViewport(viewports.desktop);
                   const element = await fixture(storyFunction({}, storyConf));
+                  injectCssIntoAllShadowRoots(element, DISABLE_ANIMATIONS_CSS);
                   const imagesToPreload = storyFunction.parameters.tests.visualRegressions.imagesToPreload;
 
                   await elementUpdated(element);

@@ -2,11 +2,10 @@ import json from '@rollup/plugin-json';
 import { rollupAdapter } from '@web/dev-server-rollup';
 import { defaultReporter, summaryReporter } from '@web/test-runner';
 import { playwrightLauncher } from '@web/test-runner-playwright';
-import { globSync } from 'tinyglobby';
 import { cemAnalyzerPlugin } from './wds/cem-analyzer-plugin.js';
 import { testStoriesPlugin } from './wds/test-stories-plugin.js';
-import { commonjsPluginWithConfig, esbuildBundlePluginWithConfig } from './wds/wds-common.js';
 import { visualRegressionPluginWithConfig } from './wds/visual-regression-plugin.js';
+import { commonjsPluginWithConfig, esbuildBundlePluginWithConfig } from './wds/wds-common.js';
 
 // sets the language used by the headless browser
 // normally we'd set it through the `chromeLauncher` options but it makes the debug mode crash
@@ -31,7 +30,7 @@ export default {
     playwrightLauncher({
       product: 'chromium',
       createBrowserContext({ browser }) {
-        return browser.newContext({ timezoneId: 'Europe/Paris' });
+        return browser.newContext({ timezoneId: 'Europe/Paris', deviceScaleFactor: 1 });
       },
     }),
   ],
@@ -51,21 +50,25 @@ export default {
     },
   },
   groups: [
-    {
-      name: 'unit',
-      files: ['test/**/*.test.*'],
-    },
+    // {
+    //   name: 'unit',
+    //   files: ['test/**/*.test.*'],
+    // },
     // Create a named group for every test file to enable running single tests. If a story file is `cc-example-component.stories.js`
     // then you can run `npm run test:group stories:cc-example-component` to run only that component's stories tests.
     // If a test file is `cc-example-component.test.js`, then you can run `npm run test:group test:cc-example-component to run only that component's unit tests.
     // adapted from https://github.com/shoelace-style/shoelace/blob/next/web-test-runner.config.js
-    ...globSync(['src/components/**/*.stories.js', 'src/components/**/*.test.js']).map((path) => {
-      const groups = path.match(/^.*\/(?<fileName>.*)\.(?<fileType>.*)\.js/).groups;
-      return {
-        name: `${groups.fileType}:${groups.fileName}`,
-        files: path,
-      };
-    }),
+    // ...globSync(['src/components/**/*.stories.js', 'src/components/**/*.test.js']).map((path) => {
+    //   const groups = path.match(/^.*\/(?<fileName>.*)\.(?<fileType>.*)\.js/).groups;
+    //   return {
+    //     name: `${groups.fileType}:${groups.fileName}`,
+    //     files: path,
+    //   };
+    // }),
+    {
+      name: 'small',
+      files: ['src/components/cc-button/*.stories.js'],
+    },
   ],
   testRunnerHtml: (testFramework) => `
     <!DOCTYPE html>

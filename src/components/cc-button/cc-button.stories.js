@@ -68,7 +68,7 @@ export const waitingAndOutlined = makeStory(conf, {
 export const delay = makeStory(conf, {
   docs: `
 \`<cc-button>\` have a delay mechanism:
- 
+
  * When \`delay\` is set, \`cc-click\` events are not fired immediately.
  * They are fired after the number of seconds set with \`delay\`.
  * During this \`delay\`, the user is presented a "click to cancel" label.
@@ -165,7 +165,7 @@ export const accessibleName = makeStory(conf, {
     container.innerHTML = `
         <p>The accessible name can be checked by using the accessibility inspector of your browser.</p>
         <p>You may also hover the buttons because we populate the <code>title</code> attribute with the same value.</p>
-        
+
         <div>With <code>a11y-name</code> attribute:</div>
         <cc-button a11y-name="Add to estimation - NodeJS XS" primary>Add to estimation</cc-button>
         <cc-button a11y-name="Remove from estimation - NodeJS XS" danger outlined>Remove from estimation</cc-button>
