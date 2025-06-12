@@ -41,3 +41,17 @@ GITHUB ACTIONS:
   - je créé des callback pour l'accessibilité
   - je créé des callback pour les tests visuels
   - comment je fais pour permettre de focus sur l'un ou l'autre ? Il me faudrait des groupes
+
+
+## OS & rendering issues
+
+- First iteration => we commit baseline images
+  - have to ALWAYS run on the same OS (VM)
+    - CI should run `npm run test` everytime we submit a PR (& for every push) => same a preview
+      - unless we have a `skip-visual-regressions-test` label on PR
+      - MEANS that should be a separate command & maybe a separate test runner config
+    - if FAILS
+      - CI should report the failing files
+      - => Where do we see the changes?!
+- Second iteration => we send to Cellar
+- Third iteration => split CI jobs to be more efficient

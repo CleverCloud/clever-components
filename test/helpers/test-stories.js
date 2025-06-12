@@ -4,7 +4,6 @@ import {
 } from '@lit-labs/virtualizer/support/resize-observer-errors.js';
 import { elementUpdated, expect, fixture } from '@open-wc/testing';
 import { setViewport } from '@web/test-runner-commands';
-import { visualDiff } from '@web/test-runner-visual-regression';
 import { addTranslations } from '../../src/lib/i18n/i18n.js';
 import * as en from '../../src/translations/translations.en.js';
 
@@ -194,23 +193,6 @@ export async function testStories(storiesModule) {
                   });
                 });
               }
-
-              if (storyFunction.parameters.tests.visualRegressions.enable) {
-                it('should have no visual regression', async function () {
-                  await setViewport(viewports.desktop);
-                  await document.fonts.ready;
-                  const element = await fixture(storyFunction({}, storyConf));
-                  injectCssIntoAllShadowRoots(element, DISABLE_ANIMATIONS_CSS);
-                  const imagesToPreload = storyFunction.parameters.tests.visualRegressions.imagesToPreload;
-
-                  await elementUpdated(element);
-
-                  if (imagesToPreload != null && imagesToPreload.length > 0) {
-                    await preloadImages(imagesToPreload);
-                  }
-                  await visualDiff(element, `${componentTag}-${storyName}-desktop`);
-                });
-              }
             });
 
             describe(`Mobile: width = ${viewports.mobile.width} height = ${viewports.mobile.height}`, async function () {
@@ -225,24 +207,6 @@ export async function testStories(storiesModule) {
                   await expect(element).to.be.accessible({
                     ignoredRules: storyFunction.parameters.tests.accessibility.ignoredRules,
                   });
-                });
-              }
-
-              if (storyFunction.parameters.tests.visualRegressions.enable) {
-                it('should have no visual regression', async function () {
-                  await setViewport(viewports.desktop);
-                  await document.fonts.ready;
-                  const element = await fixture(storyFunction({}, storyConf));
-                  injectCssIntoAllShadowRoots(element, DISABLE_ANIMATIONS_CSS);
-                  const imagesToPreload = storyFunction.parameters.tests.visualRegressions.imagesToPreload;
-
-                  await elementUpdated(element);
-
-                  if (imagesToPreload != null && imagesToPreload.length > 0) {
-                    await preloadImages(imagesToPreload);
-                  }
-
-                  await visualDiff(element, `${componentTag}-${storyName}-mobile`);
                 });
               }
             });
