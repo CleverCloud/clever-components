@@ -657,7 +657,7 @@ export const translations = {
   //#endregion
   //#region cc-input-number
   'cc-input-number.decrease': `decrease`,
-  'cc-input-number.error.bad-type': `You must enter a number.`,
+  'cc-input-number.error.bad-type': `You must enter a number`,
   'cc-input-number.error.empty': `You must enter a value`,
   'cc-input-number.error.range-overflow': /** @param {{max: number}} _ */ ({ max }) =>
     `You must enter a number lower that ${max}.`,
