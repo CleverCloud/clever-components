@@ -657,8 +657,9 @@ export const translations = {
   'cc-heptapod-info.storage-description': `Stockage utilisé`,
   //#endregion
   //#region cc-input-date
-  'cc-input-date.error.bad-input': () => sanitize`Saisir une date. <br> Par exemple : 2025-06-03 17:25:50.`,
-  'cc-input-date.error.empty': () => sanitize`Saisissez une valeur. <br> Format : AAAA-MM-JJ HH:MM:SS.`,
+  'cc-input-date.error.bad-input': /** @param {{ date: string }} _ */ ({ date }) =>
+    sanitize`Saisissez une date. <br> Par exemple : ${date}.`,
+  'cc-input-date.error.empty': `Saisissez une valeur`,
   'cc-input-date.error.range-overflow': /** @param {{max: string}} _ */ ({ max }) =>
     `Saisissez une date inférieure à ${max}`,
   'cc-input-date.error.range-underflow': /** @param {{min: string}} _ */ ({ min }) =>
