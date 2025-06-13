@@ -20,6 +20,8 @@ import { CcInputEvent, CcRequestSubmitEvent } from '../common.events.js';
 
 // This is the date format chosen to format the date displayed to the user.
 const DATE_FORMAT = 'datetime-short';
+const DATE_FORMATTER_SHORT = new DateFormatter('datetime-short', 'local');
+const NOW = new Date();
 // This array is hard coded and corresponds directly to the date format defined above.
 const FIELDS_POSITION = /** @type {const} */ ([
   'Y',
@@ -209,7 +211,10 @@ export class CcInputDate extends CcFormControlElement {
     /** @type {ErrorMessageMap} */
     this._errorMessages = {
       empty: () => i18n('cc-input-date.error.empty'),
-      badInput: () => i18n('cc-input-date.error.bad-input'),
+      badInput: () =>
+        i18n('cc-input-date.error.bad-input', {
+          date: DATE_FORMATTER_SHORT.format(shiftDateField(NOW, 'D', 1)),
+        }),
       rangeUnderflow: () => i18n('cc-input-date.error.range-underflow', { min: this.min }),
       rangeOverflow: () => i18n('cc-input-date.error.range-overflow', { max: this.max }),
     };
