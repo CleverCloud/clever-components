@@ -2,6 +2,10 @@ import { allFormControlsStory } from '../../stories/all-form-controls.js';
 import { makeStory, storyWait } from '../../stories/lib/make-story.js';
 import './cc-input-number.js';
 
+/**
+ * @typedef {import('./cc-input-number.js').CcInputNumber} CcInputNumber
+ */
+
 const baseItems = [
   { label: 'The Label' },
   { label: 'The Label', value: 100 },
@@ -50,22 +54,43 @@ export const helpMessage = makeStory(conf, {
 });
 
 export const errorMessage = makeStory(conf, {
-  items: baseItems.map((p) => ({
-    ...p,
-    required: true,
-    errorMessage: 'You must enter a value',
-  })),
+  items: [
+    {
+      ...baseItems[0],
+      required: true,
+    },
+  ],
+  onUpdateComplete: (component) => {
+    component.reportInlineValidity();
+  },
 });
 
 export const errorMessageWithHelpMessage = makeStory(conf, {
-  items: baseItems.map((p) => ({
-    ...p,
-    required: true,
-    errorMessage: 'You must enter a value',
-    innerHTML: `
-      <p slot="help">Must be an integer</p>
-    `,
-  })),
+  items: [
+    {
+      ...baseItems[0],
+      required: true,
+      innerHTML: `
+   <p slot="help">Must be an integer</p>
+   `,
+    },
+  ],
+  onUpdateComplete: (component) => {
+    component.reportInlineValidity();
+  },
+});
+
+export const errorMessageWithInvalidTypeFormat = makeStory(conf, {
+  items: [
+    {
+      ...baseItems[0],
+      required: true,
+      value: 'Invalid Type Format',
+    },
+  ],
+  onUpdateComplete: (component) => {
+    component.reportInlineValidity();
+  },
 });
 
 export const inline = makeStory(conf, {
@@ -84,15 +109,19 @@ export const inlineWithRequired = makeStory(conf, {
 });
 
 export const inlineWithErrorAndHelpMessages = makeStory(conf, {
-  items: baseItems.map((p) => ({
-    ...p,
-    inline: true,
-    required: true,
-    errorMessage: 'You must enter a value',
-    innerHTML: `
-      <p slot="help">Must be an integer</p>
-    `,
-  })),
+  items: [
+    {
+      ...baseItems[0],
+      required: true,
+      inline: true,
+      innerHTML: `
+   <p slot="help">Must be an integer</p>
+   `,
+    },
+  ],
+  onUpdateComplete: (component) => {
+    component.reportInlineValidity();
+  },
 });
 
 export const controls = makeStory(conf, {
@@ -169,6 +198,7 @@ export const customWidth = makeStory(conf, {
 const customBaseItems = [
   { label: 'The label', value: 100 },
   { label: 'The label', value: 100, required: true },
+  { label: 'The label', required: true },
   { label: 'The label', value: 100, controls: true },
   { label: 'The label', value: 100, required: true, controls: true },
 ];
@@ -201,11 +231,9 @@ export const customLabelStyle = makeStory(
       })),
       ...customBaseItems.map((item) => ({
         ...item,
-        errorMessage: 'You must enter a value',
       })),
       ...customBaseItems.map((item) => ({
         ...item,
-        errorMessage: 'You must enter a value',
         innerHTML: `<p slot="help">Must be an integer</p>`,
       })),
       ...customBaseItems.map((item) => ({
@@ -220,22 +248,29 @@ export const customLabelStyle = makeStory(
       ...customBaseItems.map((item) => ({
         ...item,
         inline: true,
-        errorMessage: 'You must enter a value',
       })),
       ...customBaseItems.map((item) => ({
         ...item,
         inline: true,
-        errorMessage: 'You must enter a value',
         innerHTML: `<p slot="help">Must be an integer</p>`,
       })),
     ],
+    onUpdateComplete: () => {
+      /** @type {HTMLElement} */
+      const container = document.querySelector('.story-shadow-container');
+      /** @type {NodeListOf<CcInputNumber>} */
+      const allComponents = container.shadowRoot.querySelectorAll('cc-input-number');
+      allComponents.forEach((component) => {
+        component.reportInlineValidity();
+      });
+    },
   },
 );
 
 export const allFormControls = allFormControlsStory;
 
 export const simulation = makeStory(conf, {
-  items: [{}],
+  items: [{ label: 'The Label', required: true }],
   simulations: [
     storyWait(0, ([component]) => {
       component.innerHTML = `
@@ -243,13 +278,13 @@ export const simulation = makeStory(conf, {
       `;
     }),
     storyWait(2000, ([component]) => {
-      component.errorMessage = 'This is an error message';
+      component.reportInlineValidity();
       component.innerHTML = `
         <p slot="help">With error, no focus</p>
       `;
     }),
     storyWait(2000, ([component]) => {
-      component.errorMessage = 'This is an error message';
+      component.reportInlineValidity();
       component.innerHTML = `
         <p slot="help">With error, with focus</p>
       `;
