@@ -17,7 +17,7 @@ export const defaultStory = makeStory(conf, {
 
 export const validationWithExistingNames = makeStory(conf, {
   docs: 'In this example `FOO` and `BAR` are already defined and cannot be used as a variable name again.',
-  items: [{ variablesNames: ['FOO', 'BAR'] }],
+  items: [{ variablesNames: ['FOO', 'BAR'], _variableName: 'FOO' }],
 });
 
 export const validationWithStrictMode = makeStory(conf, {
