@@ -63,7 +63,7 @@ export class CcAddonBackups extends LitElement {
     super();
 
     /** @type {string} Sets the addon id for documentation */
-    this.addonId = 'xxx_xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx';
+    this.addonId = 'addon_00000000-0000-0000-0000-000000000000';
 
     /** @type {AddonBackupsState} Sets the state of the component. */
     this.state = {

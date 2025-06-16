@@ -15,7 +15,7 @@ export class CcBlockDetailsCommand extends LitElement {
     return {
       command: { type: String },
       description: { type: String },
-      _copied: { type: Boolean },
+      _copied: { type: Boolean, state: true },
     };
   }
 
@@ -49,9 +49,7 @@ export class CcBlockDetailsCommand extends LitElement {
       <div class="command-container">
         <code class="command">${this.command}</code>
         <button class="copy-button" @click=${this._copyToClipboard} title="Copy command">
-          ${this._copied
-            ? html`<cc-icon .icon="${iconSuccess}" size="lg"></cc-icon>`
-            : html`<cc-icon .icon="${iconCopy}" size="lg"></cc-icon>`}
+          <cc-icon .icon="${this._copied ? iconSuccess : iconCopy}" size="lg"></cc-icon>
         </button>
       </div>
     `;

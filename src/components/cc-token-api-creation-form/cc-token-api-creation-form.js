@@ -383,7 +383,7 @@ export class CcTokenApiCreationForm extends LitElement {
           <div slot="content">
             ${i18n('cc-token-api-creation-form.cli.content.text')}
             <cc-block-details-command
-              command='clever tokens create "&lt;votre nom de token&gt;"'
+              command='clever tokens create "&lt;your token name&gt;"'
               description="${i18n('cc-token-api-creation-form.cli.content.create-token')}"
             ></cc-block-details-command>
             <cc-block-details-command
@@ -395,7 +395,7 @@ export class CcTokenApiCreationForm extends LitElement {
               description="${i18n('cc-token-api-creation-form.cli.content.list-token')}"
             ></cc-block-details-command>
             <cc-block-details-command
-              command='curl -H "Authorization: Bearer &lt;votre_token&gt;" https://api-bridge.clever-cloud.com/v2/self'
+              command='curl -H "Authorization: Bearer &lt;your_token&gt;" https://api-bridge.clever-cloud.com/v2/self'
               description="${i18n('cc-token-api-creation-form.cli.content.use-token')}"
             ></cc-block-details-command>
           </div>
