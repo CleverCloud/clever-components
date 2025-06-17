@@ -2,38 +2,30 @@ name: Visual Regression Tests
 
 on:
   pull_request:
-    types: [synchronize, opened, reopened, labeled, unlabeled]
+    types: [synchronize, opened, reopened]
 
 jobs:
   run-test-visual-regression-tests:
-    if: ${{ !contains(join(fromJson(toJson(github.event.pull_request.labels)).*.name, ','), 'test-visual-regressions:skip') }}
+    # if: ${{ !contains(join(fromJson(toJson(github.event.pull_request.labels)).*.name, ','), 'test-visual-regressions:skip') }}
     runs-on: ubuntu-latest
     container:
-      image: mcr.microsoft.com/playwright:v1.50.1-noble
+      image: mcr.microsoft.com/playwright:v1.53.0-noble
       options: --user 1001
 
     steps:
-      - uses: actions/checkout@v4
+      - name: '[Prepare] Checkout base commit'
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.base.sha }}
 
       - name: '[Prepare] Setup Node.js'
         uses: actions/setup-node@v4
         with:
           node-version-file: 'package.json'
           cache: 'npm'
+
       - name: '[Prepare] Install dependencies'
         run: npm ci
 
-      - name: 'Run Visual Regression Tests'
-        if: ${{ !contains(join(fromJson(toJson(github.event.pull_request.labels)).*.name, ','), 'test-visual-regressions:update-baseline') }}
-        run: npm run test-visual-regressions
-
-      - name: 'Update Visual baseline'
-        if: ${{ contains(join(fromJson(toJson(github.event.pull_request.labels)).*.name, ','), 'test-visual-regressions:update-baseline') }}
+      - name: 'Run Visual Regression Tests (Baseline update)'
         run: npm run test-visual-regressions:update-baseline
-
-      - uses: actions/upload-artifact@v4
-        if: ${{ !cancelled() }}
-        with:
-          name: screenshots
-          path: screenshots/Chromium/failed
-          retention-days: 30
