@@ -3,7 +3,6 @@ import { kebabCase } from '../src/lib/change-case.js';
 import { CellarClient } from '../tasks/cellar-client.js';
 import { getCurrentBranch } from '../tasks/git-utils.js';
 
-const MASTER_BRANCH_NAME = 'master';
 const CURRENT_BRANCH_NAME = getCurrentBranch();
 
 const cellar = new CellarClient({
