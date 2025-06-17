@@ -2,6 +2,10 @@ import { allFormControlsStory } from '../../stories/all-form-controls.js';
 import { makeStory, storyWait } from '../../stories/lib/make-story.js';
 import './cc-input-text.js';
 
+/**
+ * @typedef {import('./cc-input-text.js').CcInputText} CcInputText
+ */
+
 function widthContent(chars) {
   const rawContents = `_chars`;
   return String(chars) + String(rawContents).padStart(chars - 2, '_');
@@ -119,22 +123,47 @@ export const helpMessage = makeStory(conf, {
 });
 
 export const errorMessage = makeStory(conf, {
-  items: baseItems.map((p) => ({
-    ...p,
-    required: true,
-    errorMessage: 'You must enter a value',
-  })),
+  items: [
+    {
+      ...baseItems[0],
+      required: true,
+    },
+  ],
+  /** @param {CcInputText} component */
+  onUpdateComplete: (component) => {
+    component.reportInlineValidity();
+  },
 });
 
 export const errorMessageWithHelpMessage = makeStory(conf, {
-  items: baseItems.map((p) => ({
-    ...p,
-    required: true,
-    errorMessage: 'You must enter a value',
-    innerHTML: `
+  items: [
+    {
+      ...baseItems[0],
+      required: true,
+      innerHTML: `
       <p slot="help">Must be at least 7 characters long</p>
-    `,
-  })),
+     `,
+    },
+  ],
+  /** @param {CcInputText} component */
+  onUpdateComplete: (component) => {
+    component.reportInlineValidity();
+  },
+});
+
+export const errorMessageWithInvalidEmailFormat = makeStory(conf, {
+  items: [
+    {
+      ...baseItems[0],
+      required: true,
+      type: 'email',
+      value: 'Invalid Email Format',
+    },
+  ],
+  /** @param {CcInputText} component */
+  onUpdateComplete: (component) => {
+    component.reportInlineValidity();
+  },
 });
 
 export const inline = makeStory(conf, {
@@ -153,15 +182,20 @@ export const inlineWithRequired = makeStory(conf, {
 });
 
 export const inlineWithErrorAndHelpMessages = makeStory(conf, {
-  items: baseItems.map((p) => ({
-    ...p,
-    inline: true,
-    required: true,
-    errorMessage: 'You must enter a value',
-    innerHTML: `
+  items: [
+    {
+      ...baseItems[0],
+      required: true,
+      inline: true,
+      innerHTML: `
       <p slot="help">Must be at least 7 characters long</p>
-    `,
-  })),
+     `,
+    },
+  ],
+  /** @param {CcInputText} component */
+  onUpdateComplete: (component) => {
+    component.reportInlineValidity();
+  },
 });
 
 export const clipboard = makeStory(conf, {
@@ -239,7 +273,7 @@ const customBaseItems = [
     placeholder: 'No value yet...',
     multi: true,
     required: true,
-    value: 'Simple value\nOther lines...',
+    value: '',
   },
 ];
 
@@ -272,11 +306,9 @@ export const customLabelStyle = makeStory(conf, {
     })),
     ...customBaseItems.map((item) => ({
       ...item,
-      errorMessage: 'You must enter a value',
     })),
     ...customBaseItems.map((item) => ({
       ...item,
-      errorMessage: 'You must enter a value',
       innerHTML: `<p slot="help">Must be at least 7 characters long</p>`,
     })),
     ...customBaseItems.map((item) => ({
@@ -291,46 +323,78 @@ export const customLabelStyle = makeStory(conf, {
     ...customBaseItems.map((item) => ({
       ...item,
       inline: true,
-      errorMessage: 'You must enter a value',
     })),
     ...customBaseItems.map((item) => ({
       ...item,
       inline: true,
-      errorMessage: 'You must enter a value',
       innerHTML: `<p slot="help">Must be at least 7 characters long</p>`,
     })),
   ],
+
+  onUpdateComplete: () => {
+    /** @type {HTMLElement} */
+    const container = document.querySelector('.story-shadow-container');
+    /** @type {NodeListOf<CcInputText>} */
+    const allComponents = container.shadowRoot.querySelectorAll('cc-input-text');
+    allComponents.forEach((component) => {
+      component.reportInlineValidity();
+    });
+  },
 });
 
 export const allFormControls = allFormControlsStory;
 
 export const simulation = makeStory(conf, {
-  items: [{}],
+  items: [{ label: 'The Label', required: true }],
   simulations: [
-    storyWait(0, ([component]) => {
-      component.innerHTML = `
+    storyWait(
+      0,
+      /**
+       * @param {Array<CcInputText>} args
+       */
+      ([component]) => {
+        component.innerHTML = `
         <p slot="help">No error, no focus</p>
       `;
-    }),
-    storyWait(2000, ([component]) => {
-      component.errorMessage = 'This is an error message';
-      component.innerHTML = `
+      },
+    ),
+    storyWait(
+      2000,
+      /**
+       * @param {Array<CcInputText>} args
+       */
+      ([component]) => {
+        component.reportInlineValidity();
+        component.innerHTML = `
         <p slot="help">With error, no focus</p>
       `;
-    }),
-    storyWait(2000, ([component]) => {
-      component.errorMessage = 'This is an error message';
-      component.innerHTML = `
+      },
+    ),
+    storyWait(
+      2000,
+      /**
+       * @param {Array<CcInputText>} args
+       */
+      ([component]) => {
+        component.reportInlineValidity();
+        component.innerHTML = `
         <p slot="help">With error, with focus</p>
       `;
-      component.focus();
-    }),
-    storyWait(2000, ([component]) => {
-      component.errorMessage = null;
-      component.innerHTML = `
+        component.focus();
+      },
+    ),
+    storyWait(
+      2000,
+      /**
+       * @param {Array<CcInputText>} args
+       */
+      ([component]) => {
+        component.errorMessage = null;
+        component.innerHTML = `
         <p slot="help">No error, with focus</p>
       `;
-      component.focus();
-    }),
+        component.focus();
+      },
+    ),
   ],
 });

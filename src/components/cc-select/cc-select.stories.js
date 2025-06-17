@@ -75,7 +75,7 @@ export const helpMessage = makeStory(conf, {
       required: true,
       value: '',
       options: baseOptions,
-      innerHTML: '<p slot="help">There can be only one.</p>',
+      innerHTML: '<p slot="help">There can be only one</p>',
     },
   ],
 });
@@ -88,9 +88,12 @@ export const errorMessage = makeStory(conf, {
       required: true,
       value: '',
       options: baseOptions,
-      errorMessage: 'A value must be selected.',
     },
   ],
+  /** @param {CcSelect} component */
+  onUpdateComplete: (component) => {
+    component.reportInlineValidity();
+  },
 });
 
 export const errorMessageWithHelpMessage = makeStory(conf, {
@@ -101,12 +104,15 @@ export const errorMessageWithHelpMessage = makeStory(conf, {
       required: true,
       value: '',
       options: baseOptions,
-      errorMessage: 'A value must be selected.',
       innerHTML: `
-        <p slot="help">There can be only one.</p>
+        <p slot="help">There can be only one</p>
       `,
     },
   ],
+  /** @param {CcSelect} component */
+  onUpdateComplete: (component) => {
+    component.reportInlineValidity();
+  },
 });
 
 export const inline = makeStory(conf, {
@@ -154,10 +160,8 @@ export const inlineWithErrorAndHelpMessages = makeStory(conf, {
       inline: true,
       required: true,
       options: baseOptions,
-      value: 'LENNON',
-      errorMessage: 'A value must be selected.',
       innerHTML: `
-        <p slot="help">There can be only one.</p>
+        <p slot="help">There can be only one</p>
       `,
     },
     {
@@ -167,12 +171,20 @@ export const inlineWithErrorAndHelpMessages = makeStory(conf, {
       required: true,
       value: '',
       options: baseOptions,
-      errorMessage: 'A value must be selected.',
       innerHTML: `
-        <p slot="help">There can be only one.</p>
+        <p slot="help">There can be only one</p>
       `,
     },
   ],
+  onUpdateComplete: () => {
+    /** @type {HTMLElement} */
+    const container = document.querySelector('.story-shadow-container');
+    /** @type {NodeListOf<CcSelect>} */
+    const allComponents = container.shadowRoot.querySelectorAll('cc-select');
+    allComponents.forEach((component) => {
+      component.reportInlineValidity();
+    });
+  },
 });
 
 export const disabled = makeStory(conf, {
@@ -211,6 +223,7 @@ export const longContentWihFixedWidth = makeStory(
 const customBaseItems = [
   { label: 'Favourite artist', value: 'LENNON', options: baseOptions },
   { label: 'Favourite artist', value: 'LENNON', options: baseOptions, required: true },
+  { label: 'Favourite artist', required: true, options: baseOptions },
 ];
 
 export const customLabelStyle = makeStory(
@@ -237,16 +250,14 @@ export const customLabelStyle = makeStory(
       ...customBaseItems,
       ...customBaseItems.map((item) => ({
         ...item,
-        innerHTML: `<p slot="help">There can be only one.</p>`,
+        innerHTML: `<p slot="help">There can be only one</p>`,
       })),
       ...customBaseItems.map((item) => ({
         ...item,
-        errorMessage: 'A value must be selected.',
       })),
       ...customBaseItems.map((item) => ({
         ...item,
-        errorMessage: 'A value must be selected.',
-        innerHTML: `<p slot="help">There can be only one.</p>`,
+        innerHTML: `<p slot="help">There can be only one</p>`,
       })),
       ...customBaseItems.map((item) => ({
         ...item,
@@ -255,34 +266,34 @@ export const customLabelStyle = makeStory(
       ...customBaseItems.map((item) => ({
         ...item,
         inline: true,
-        innerHTML: `<p slot="help">There can be only one.</p>`,
+        innerHTML: `<p slot="help">There can be only one</p>`,
       })),
       ...customBaseItems.map((item) => ({
         ...item,
         inline: true,
-        errorMessage: 'A value must be selected.',
       })),
       ...customBaseItems.map((item) => ({
         ...item,
         inline: true,
-        errorMessage: 'A value must be selected.',
-        innerHTML: `<p slot="help">There can be only one.</p>`,
+        innerHTML: `<p slot="help">There can be only one</p>`,
       })),
     ],
+    onUpdateComplete: () => {
+      /** @type {HTMLElement} */
+      const container = document.querySelector('.story-shadow-container');
+      /** @type {NodeListOf<CcSelect>} */
+      const allComponents = container.shadowRoot.querySelectorAll('cc-select');
+      allComponents.forEach((component) => {
+        component.reportInlineValidity();
+      });
+    },
   },
 );
 
 export const allFormControls = allFormControlsStory;
 
 export const simulation = makeStory(conf, {
-  items: [
-    {
-      label: 'Favourite artist',
-      placeholder: '-- Select an artist --',
-      value: '',
-      options: baseOptions,
-    },
-  ],
+  items: [{ label: 'The Label', required: true }],
   simulations: [
     storyWait(
       0,
@@ -301,7 +312,7 @@ export const simulation = makeStory(conf, {
        * @param {Array<CcSelect>} args
        */
       ([component]) => {
-        component.errorMessage = 'This is an error message';
+        component.reportInlineValidity();
         component.innerHTML = `
         <p slot="help">With error, no focus</p>
       `;
@@ -313,7 +324,7 @@ export const simulation = makeStory(conf, {
        * @param {Array<CcSelect>} args
        */
       ([component]) => {
-        component.errorMessage = 'This is an error message';
+        component.reportInlineValidity();
         component.innerHTML = `
         <p slot="help">With error, with focus</p>
       `;
