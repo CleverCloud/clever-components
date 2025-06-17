@@ -173,14 +173,14 @@ export async function testStories(storiesModule) {
   );
 
   if (shouldRunTests) {
-    describe(`Component: ${componentTag}`, function () {
+    describe(componentTag, function () {
       stories.forEach(({ storyName, storyFunction }) => {
         if (
           storyFunction.parameters.tests.accessibility.enable ||
           storyFunction.parameters.tests.visualRegressions.enable
         ) {
-          describe(`Story: ${storyName}`, function () {
-            describe(`Desktop: width = ${viewports.desktop.width} height = ${viewports.desktop.height}`, async function () {
+          describe(storyName, function () {
+            describe(`desktop`, async function () {
               if (storyFunction.parameters.tests.visualRegressions.enable) {
                 it('should have no visual regression', async function () {
                   await setViewport(viewports.desktop);
@@ -199,7 +199,7 @@ export async function testStories(storiesModule) {
               }
             });
 
-            describe(`Mobile: width = ${viewports.mobile.width} height = ${viewports.mobile.height}`, async function () {
+            describe('mobile', async function () {
               if (storyFunction.parameters.tests.visualRegressions.enable) {
                 it('should have no visual regression', async function () {
                   await setViewport(viewports.desktop);

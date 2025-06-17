@@ -108,3 +108,18 @@ export function snakeCase(input) {
     .map((word) => word.toLowerCase())
     .join('_');
 }
+
+/**
+ * kebabCase('string'); //=> 'string'
+ * kebabCase('dot.case'); //=> 'dot-case'
+ * kebabCase('PascalCase'); //=> 'pascal-case'
+ * kebabCase('camelCase'); //=> 'camel-case'
+ * kebabCase('version 1.2.10'); //=> 'version-1-2-10'
+ * @param {string} input
+ * @returns {string}
+ */
+export function kebabCase(input) {
+  return stringToWordArray(input)
+    .map((word) => word.toLowerCase())
+    .join('-');
+}

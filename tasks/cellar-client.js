@@ -50,6 +50,7 @@ export class CellarClient {
 
   putObject({ key, body, filepath, acl = 'public-read', cacheControl }) {
     const objectBody = body == null && filepath != null ? createReadStream(filepath) : body;
+    console.log(mime.lookup(key));
 
     return this._client
       .send(
@@ -62,7 +63,8 @@ export class CellarClient {
           CacheControl: cacheControl,
         }),
       )
-      .then(() => console.log(`PUT    ${key}`));
+      .then(() => console.log(`PUT    ${key}`))
+      .catch((error) => console.log(error));
   }
 
   /**

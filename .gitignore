@@ -7,3 +7,5 @@ dist
 dist-cdn
 node_modules
 storybook-static
+test-reports
+screenshots

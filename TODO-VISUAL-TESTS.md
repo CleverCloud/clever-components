@@ -55,3 +55,36 @@ GITHUB ACTIONS:
       - => Where do we see the changes?!
 - Second iteration => we send to Cellar
 - Third iteration => split CI jobs to be more efficient
+
+## We need a reporter
+
+- We need a JSON reporter
+  - to generate a list of components that failed the test
+  - => would be added in a comment
+
+- We need an HTML reporter
+  - to see actual screenshots of failed tests & compare to baseline,
+  - to see the new baseline
+- We'll need to add status check & post status check
+
+- Then we can handle the new baseline update stuff (labels are a bad idea cause anybody can set them, we could go for a comment to a bot? We'll need PAT anyway)
+
+- Need to create a lit component or template for HTML maybe just use lit html`` => nah static HTML seems fine? Issue is sanitizing :thinking:
+- We'll need a menu on the left
+- Add link to preview vs link in prod
+- GitHub comment in md (maybe some md reporter directly instead of JSON): list of impacted components (link to preview) (each story) if less than 50 failures? If not then only list components?
+
+- We still need to deal with Cellar stuff
+
+- every PR sync => would have been nice to check if we already have baseline based on hash :thinking:
+  - checkout base commit, (GH Action's job)
+  - update-visual-baseline,
+    - path should be => branch name => then baseline (test runner's job)
+    - should we deposit some kind of manifest with the base commit hash in there? YES good this way the cache system is independant (GH Action's job)
+  - THEN
+    - gco branch,
+    - run tests-visual-regressions,
+
+
+
+    HANDLE ALL ERRORS WITH ASYNC AWAIT
