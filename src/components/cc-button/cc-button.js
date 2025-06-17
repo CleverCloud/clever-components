@@ -366,7 +366,7 @@ export class CcButton extends LitElement {
           -ms-user-select: none;
           user-select: none;
           width: 100%;
-          min-width: 10em;
+          min-width: 15em;
         }
 
         /* COLORS */

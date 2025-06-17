@@ -2,6 +2,10 @@ import { execSync } from 'child_process';
 import superagent from 'superagent';
 
 export function getCurrentBranch() {
+  // Use the GitHub Actions env var if available
+  if (process.env.GITHUB_HEAD_REF != null && process.env.GITHUB_HEAD_REF.length > 0) {
+    return process.env.GITHUB_HEAD_REF;
+  }
   const stdout = execSync('git branch --show-current');
   return stdout.toString().trim();
 }

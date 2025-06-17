@@ -32,6 +32,7 @@ jobs:
         env:
           VISUAL_REGRESSIONS_CELLAR_KEY_ID: ${{ secrets.VISUAL_REGRESSIONS_CELLAR_KEY_ID }}
           VISUAL_REGRESSIONS_CELLAR_SECRET_KEY: ${{ secrets.VISUAL_REGRESSIONS_CELLAR_SECRET_KEY }}
+          GITHUB_HEAD_REF: ${{ github.head_ref }}
 
       - name: '[Prepare] Checkout latest commit'
         uses: actions/checkout@v4
@@ -40,14 +41,19 @@ jobs:
         run: npm ci
 
       - name: 'Run Visual Regression Tests (Current changes)'
-        run: npm run test-visual-regressions
+        run: |
+          npm run test-visual-regressions
+          echo "HEAD is at: $(git rev-parse HEAD)"
         env:
           VISUAL_REGRESSIONS_CELLAR_KEY_ID: ${{ secrets.VISUAL_REGRESSIONS_CELLAR_KEY_ID }}
           VISUAL_REGRESSIONS_CELLAR_SECRET_KEY: ${{ secrets.VISUAL_REGRESSIONS_CELLAR_SECRET_KEY }}
+          GITHUB_HEAD_REF: ${{ github.head_ref }}
         continue-on-error: true
 
       - name: 'Upload test report'
-        run: node ./tasks/upload-test-report.js
+        run: |
+          npm run upload-test-report
         env:
           VISUAL_REGRESSIONS_CELLAR_KEY_ID: ${{ secrets.VISUAL_REGRESSIONS_CELLAR_KEY_ID }}
           VISUAL_REGRESSIONS_CELLAR_SECRET_KEY: ${{ secrets.VISUAL_REGRESSIONS_CELLAR_SECRET_KEY }}
+          GITHUB_HEAD_REF: ${{ github.head_ref }}

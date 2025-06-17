@@ -90,7 +90,6 @@ export function myHtmlReporter({ reportResults = true, reportProgress = false } 
 </body>
 </html>
       `;
-      console.log('SAVINNNNG');
 
       // const currentBranchName = getCurrentBranch();
       // FIXME: terrible, we cannot be async
