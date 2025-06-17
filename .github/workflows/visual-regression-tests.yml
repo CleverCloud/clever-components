@@ -29,3 +29,18 @@ jobs:
 
       - name: 'Run Visual Regression Tests (Baseline update)'
         run: npm run test-visual-regressions:update-baseline
+        env:
+          VISUAL_REGRESSIONS_CELLAR_KEY_ID: ${{ secrets.VISUAL_REGRESSIONS_CELLAR_KEY_ID }}
+          VISUAL_REGRESSIONS_CELLAR_SECRET_KEY: ${{ secrets.VISUAL_REGRESSIONS_CELLAR_SECRET_KEY }}
+
+      - name: '[Prepare] Checkout latest commit'
+        uses: actions/checkout@v4
+
+      - name: '[Prepare] Install dependencies'
+        run: npm ci
+
+      - name: 'Run Visual Regression Tests (Current changes)'
+        run: npm run test-visual-regressions
+        env:
+          VISUAL_REGRESSIONS_CELLAR_KEY_ID: ${{ secrets.VISUAL_REGRESSIONS_CELLAR_KEY_ID }}
+          VISUAL_REGRESSIONS_CELLAR_SECRET_KEY: ${{ secrets.VISUAL_REGRESSIONS_CELLAR_SECRET_KEY }}
