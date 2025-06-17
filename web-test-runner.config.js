@@ -1,6 +1,7 @@
 import json from '@rollup/plugin-json';
 import { rollupAdapter } from '@web/dev-server-rollup';
-import { chromeLauncher, defaultReporter, summaryReporter } from '@web/test-runner';
+import { defaultReporter, summaryReporter } from '@web/test-runner';
+import { playwrightLauncher } from '@web/test-runner-playwright';
 import { globSync } from 'tinyglobby';
 import { cemAnalyzerPlugin } from './wds/cem-analyzer-plugin.js';
 import { testStoriesPlugin } from './wds/test-stories-plugin.js';
@@ -24,15 +25,12 @@ export default {
   nodeResolve: {
     exportConditions: ['production', 'default'],
   },
+  concurrentBrowsers: 3,
   browsers: [
-    chromeLauncher({
-      // Fixes random timeouts with Chrome > 127, see https://github.com/CleverCloud/clever-components/issues/1146 for more info
-      concurrency: 1,
-      async createPage({ context }) {
-        const page = await context.newPage();
-        // We need that for unit tests working with dates and timezones
-        await page.emulateTimezone('Europe/Paris');
-        return page;
+    playwrightLauncher({
+      product: 'chromium',
+      createBrowserContext({ browser }) {
+        return browser.newContext({ timezoneId: 'Europe/Paris', deviceScaleFactor: 1 });
       },
     }),
   ],
@@ -77,6 +75,113 @@ export default {
         <script>
           window.process = {env: { NODE_ENV: "production" }}
         </script>
+        <style>
+
+        @font-face {
+          font-family: 'SourceSansPro';
+          src: url('/public/fonts/sourcesanspro-bold-webfont.eot');
+          src:
+            url('.storybook/public/fonts/sourcesanspro-bold-webfont.eot?#iefix') format('embedded-opentype'),
+            url('/public/fonts/sourcesanspro-bold-webfont.woff2') format('woff2'),
+            url('/public/fonts/sourcesanspro-bold-webfont.woff') format('woff'),
+            url('/public/fonts/sourcesanspro-bold-webfont.ttf') format('truetype'),
+            url('/public/fonts/sourcesanspro-bold-webfont.svg#source_sans_probold') format('svg');
+          font-weight: bold;
+          font-style: normal;
+        }
+
+        @font-face {
+          font-family: 'SourceSansPro';
+          src: url('/public/fonts/sourcesanspro-bolditalic-webfont.eot');
+          src:
+            url('/public/fonts/sourcesanspro-bolditalic-webfont.eot?#iefix') format('embedded-opentype'),
+            url('/public/fonts/sourcesanspro-bolditalic-webfont.woff2') format('woff2'),
+            url('/public/fonts/sourcesanspro-bolditalic-webfont.woff') format('woff'),
+            url('/public/fonts/sourcesanspro-bolditalic-webfont.ttf') format('truetype'),
+            url('/public/fonts/sourcesanspro-bolditalic-webfont.svg#source_sans_probold_italic') format('svg');
+          font-weight: italic;
+          font-style: bold;
+        }
+
+        @font-face {
+          font-family: 'SourceSansPro';
+          src: url('/public/fonts/sourcesanspro-italic-webfont.eot');
+          src:
+            url('/public/fonts/sourcesanspro-italic-webfont.eot?#iefix') format('embedded-opentype'),
+            url('/public/fonts/sourcesanspro-italic-webfont.woff2') format('woff2'),
+            url('/public/fonts/sourcesanspro-italic-webfont.woff') format('woff'),
+            url('/public/fonts/sourcesanspro-italic-webfont.ttf') format('truetype'),
+            url('/public/fonts/sourcesanspro-italic-webfont.svg#source_sans_proitalic') format('svg');
+          font-weight: normal;
+          font-style: italic;
+        }
+
+        @font-face {
+          font-family: 'SourceSansPro';
+          src: url('/public/fonts/sourcesanspro-regular-webfont.eot');
+          src:
+            url('/public/fonts/sourcesanspro-regular-webfont.eot?#iefix') format('embedded-opentype'),
+            url('/public/fonts/sourcesanspro-regular-webfont.woff2') format('woff2'),
+            url('/public/fonts/sourcesanspro-regular-webfont.woff') format('woff'),
+            url('/public/fonts/sourcesanspro-regular-webfont.ttf') format('truetype'),
+            url('/public/fonts/sourcesanspro-regular-webfont.svg#source_sans_proregular') format('svg');
+          font-weight: normal;
+          font-style: normal;
+        }
+
+        @font-face {
+          font-family: 'SourceSansPro';
+          src: url('/public/fonts/sourcesanspro-extralight-webfont.eot');
+          src:
+            url('/public/fonts/sourcesanspro-extralight-webfont.eot?#iefix') format('embedded-opentype'),
+            url('/public/fonts/sourcesanspro-extralight-webfont.woff2') format('woff2'),
+            url('/public/fonts/sourcesanspro-extralight-webfont.woff') format('woff'),
+            url('/public/fonts/sourcesanspro-extralight-webfont.ttf') format('truetype'),
+            url('/public/fonts/sourcesanspro-extralight-webfont.svg#SourceSansPro') format('svg');
+          font-weight: 100;
+          font-style: normal;
+        }
+
+        @font-face {
+          font-family: 'SourceSansPro';
+          src: url('/public/fonts/sourcesanspro-extralightitalic-webfont.eot');
+          src:
+            url('/public/fonts/sourcesanspro-extralightitalic-webfont.eot?#iefix') format('embedded-opentype'),
+            url('/public/fonts/sourcesanspro-extralightitalic-webfont.woff2') format('woff2'),
+            url('/public/fonts/sourcesanspro-extralightitalic-webfont.woff') format('woff'),
+            url('/public/fonts/sourcesanspro-extralightitalic-webfont.ttf') format('truetype'),
+            url('/public/fonts/sourcesanspro-extralightitalic-webfont.svg#SourceSansPro') format('svg');
+          font-weight: 100;
+          font-style: italic;
+        }
+
+        @font-face {
+          font-family: 'SourceSansPro';
+          src: url('/public/fonts/sourcesanspro-light-webfont.eot');
+          src:
+            url('/public/fonts/sourcesanspro-light-webfont.eot?#iefix') format('embedded-opentype'),
+            url('/public/fonts/sourcesanspro-light-webfont.woff2') format('woff2'),
+            url('/public/fonts/sourcesanspro-light-webfont.woff') format('woff'),
+            url('/public/fonts/sourcesanspro-light-webfont.ttf') format('truetype'),
+            url('/public/fonts/sourcesanspro-light-webfont.svg#SourceSansPro') format('svg');
+          font-weight: 300;
+          font-style: normal;
+        }
+
+        @font-face {
+          font-family: 'SourceSansPro';
+          src: url('/public/fonts/sourcesanspro-lightitalic-webfont.eot');
+          src:
+            url('/public/fonts/sourcesanspro-lightitalic-webfont.eot?#iefix') format('embedded-opentype'),
+            url('/public/fonts/sourcesanspro-lightitalic-webfont.woff2') format('woff2'),
+            url('/public/fonts/sourcesanspro-lightitalic-webfont.woff') format('woff'),
+            url('/public/fonts/sourcesanspro-lightitalic-webfont.ttf') format('truetype'),
+            url('/public/fonts/sourcesanspro-lightitalic-webfont.svg#source_sans_prolight_italic') format('svg');
+          font-weight: 300;
+          font-style: italic;
+        }
+          html { font-family: 'SourceSansPro' }
+        </style>
       </head>
     </html>
   `,

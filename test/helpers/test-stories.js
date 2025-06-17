@@ -16,6 +16,8 @@ import * as en from '../../src/translations/translations.en.js';
  * @typedef {import('@storybook/web-components').StoryContext<WebComponentsRenderer>} StoryContext
  */
 
+// TODO Flo: mock Date?
+
 const viewports = {
   desktop: {
     width: 1200,
@@ -57,6 +59,20 @@ function setupIgnoreIrrelevantErrors(before, after, messagePredicate) {
   });
 }
 
+async function preloadImages(imagesToPreload) {
+  const preloadPromises = imagesToPreload.map((src) => {
+    return new Promise((resolve, reject) => {
+      const img = new Image();
+      img.onload = () => resolve(`loaded ${src}`);
+      img.onerror = () => reject(`failed to load ${src}`);
+      img.fetchPriority = 'high';
+      img.src = src;
+    });
+  });
+
+  await Promise.all(preloadPromises);
+}
+
 setupIgnoreIrrelevantErrors(before, after, (message) => {
   return (
     isResizeObserverLoopErrorMessage(message) ||
@@ -65,6 +81,37 @@ setupIgnoreIrrelevantErrors(before, after, (message) => {
     )
   );
 });
+
+const IGNORE_PATTERNS_FOR_VISUAL_REGRESSIONS = ['waiting', 'loading', 'simulation', 'skeleton'];
+
+/**
+ * Recursively injects a <style> tag with the given CSS into all shadow roots in the subtree.
+ * @param {Node} root - The root node to start searching from (usually document.body)
+ * @param {string} css - The CSS string to inject
+ */
+export function injectCssIntoAllShadowRoots(root, css) {
+  if (root.shadowRoot) {
+    const style = document.createElement('style');
+    style.textContent = css;
+    root.shadowRoot.appendChild(style);
+  }
+  // Traverse children (for both shadow and light DOM)
+  if (root.children.length > 0) {
+    Array.from(root.children).forEach((child) => injectCssIntoAllShadowRoots(child, css));
+  }
+
+  if (root.shadowRoot != null && root.shadowRoot.children.length > 0) {
+    Array.from(root.shadowRoot.children).forEach((child) => injectCssIntoAllShadowRoots(child, css));
+  }
+}
+
+const DISABLE_ANIMATIONS_CSS = `
+  *, *::before, *::after {
+    transition: none !important;
+    animation: none !important;
+    animation-duration: 0s !important;
+  }
+`;
 
 /**
  * Transform the result of an imported module from a story file into an array of story functions that can be used to render every story.
@@ -80,47 +127,88 @@ export const getStories = (importedModule) => {
         ([_moduleEntryName, moduleEntryValue]) =>
           typeof moduleEntryValue === 'function' && 'component' in moduleEntryValue,
       )
-      .map(([storyName, storyFunction]) => ({ storyName, storyFunction }))
+      .map(([storyName, storyFunction]) => {
+        const defaultTestsConfig = getDefaultTestsConfig(storyName);
+        storyFunction.parameters.tests = mergeTestsConfig(defaultTestsConfig, storyFunction.parameters.tests);
+
+        return { storyName, storyFunction };
+      })
   );
 
   return filteredStories;
 };
 
+const mergeTestsConfig = (defaults, custom) => {
+  return {
+    accessibility: {
+      ...defaults.accessibility,
+      ...custom?.accessibility,
+    },
+    visualRegressions: {
+      ...defaults.visualRegressions,
+      ...custom?.visualRegressions,
+    },
+  };
+};
+
+const getDefaultTestsConfig = (storyName) => ({
+  accessibility: {
+    enable: !storyName.toLowerCase().includes('simulation'),
+  },
+  visualRegressions: {
+    enable: !IGNORE_PATTERNS_FOR_VISUAL_REGRESSIONS.some((ignorePattern) =>
+      storyName.toLowerCase().includes(ignorePattern),
+    ),
+  },
+});
+
 /** @param {RawStoriesModule} storiesModule */
 export async function testStories(storiesModule) {
   const componentTag = storiesModule.default.component;
   const stories = getStories(storiesModule);
-  const shouldRunTests = stories.some(({ storyFunction }) => storyFunction.parameters.tests.accessibility.enable);
+  const shouldRunTests = stories.some(
+    ({ storyFunction }) =>
+      storyFunction.parameters.tests.accessibility.enable || storyFunction.parameters.tests.visualRegressions.enable,
+  );
 
   if (shouldRunTests) {
     describe(`Component: ${componentTag}`, function () {
       stories.forEach(({ storyName, storyFunction }) => {
-        if (storyFunction.parameters.tests.accessibility.enable) {
+        if (
+          storyFunction.parameters.tests.accessibility.enable ||
+          storyFunction.parameters.tests.visualRegressions.enable
+        ) {
           describe(`Story: ${storyName}`, function () {
             describe(`Desktop: width = ${viewports.desktop.width} height = ${viewports.desktop.height}`, async function () {
-              it('should be accessible', async function () {
-                await setViewport(viewports.desktop);
-                const element = await fixture(storyFunction({}, storyConf));
+              if (storyFunction.parameters.tests.accessibility.enable) {
+                it('should be accessible', async function () {
+                  await setViewport(viewports.desktop);
+                  await document.fonts.ready;
+                  const element = await fixture(storyFunction({}, storyConf));
 
-                await elementUpdated(element);
+                  await elementUpdated(element);
 
-                await expect(element).to.be.accessible({
-                  ignoredRules: storyFunction.parameters.tests.accessibility.ignoredRules,
+                  await expect(element).to.be.accessible({
+                    ignoredRules: storyFunction.parameters.tests.accessibility.ignoredRules,
+                  });
                 });
-              });
+              }
             });
 
             describe(`Mobile: width = ${viewports.mobile.width} height = ${viewports.mobile.height}`, async function () {
-              it('should be accessible', async function () {
-                await setViewport(viewports.mobile);
-                const element = await fixture(storyFunction({}, storyConf));
+              if (storyFunction.parameters.tests.accessibility.enable) {
+                it('should be accessible', async function () {
+                  await setViewport(viewports.mobile);
+                  await document.fonts.ready;
+                  const element = await fixture(storyFunction({}, storyConf));
 
-                await elementUpdated(element);
+                  await elementUpdated(element.shadowRoot.querySelector(`${componentTag}`));
 
-                await expect(element).to.be.accessible({
-                  ignoredRules: storyFunction.parameters.tests.accessibility.ignoredRules,
+                  await expect(element).to.be.accessible({
+                    ignoredRules: storyFunction.parameters.tests.accessibility.ignoredRules,
+                  });
                 });
-              });
+              }
             });
           });
         }

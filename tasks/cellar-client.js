@@ -33,6 +33,10 @@ export class CellarClient {
       .then((response) => streamToObject(response.Body));
   }
 
+  getImage({ key }) {
+    return this._client.send(new AWS.GetObjectCommand({ Bucket: this._bucket, Key: key }));
+  }
+
   async listKeys({ prefix }) {
     const listObjectsResponse = await this._client.send(
       new AWS.ListObjectsV2Command({
@@ -46,6 +50,7 @@ export class CellarClient {
 
   putObject({ key, body, filepath, acl = 'public-read', cacheControl }) {
     const objectBody = body == null && filepath != null ? createReadStream(filepath) : body;
+    console.log(mime.lookup(key));
 
     return this._client
       .send(
@@ -58,7 +63,8 @@ export class CellarClient {
           CacheControl: cacheControl,
         }),
       )
-      .then(() => console.log(`PUT    ${key}`));
+      .then(() => console.log(`PUT    ${key}`))
+      .catch((error) => console.log(error));
   }
 
   /**

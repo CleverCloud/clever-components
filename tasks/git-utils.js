@@ -17,6 +17,22 @@ export function getCurrentAuthor() {
 }
 
 /**
+ * Returns the base commit SHA between the given branch and master.
+ * If no branch is provided, uses the current branch.
+ *
+ * @param {string} baseBranch
+ * @param {string} [branchToCompare] - The name of the branch to compare with master (defaults to current branch).
+ * @return {string} The SHA of the base commit.
+ **/
+export function getBranchBaseCommit(baseBranch, branchToCompare) {
+  if (branchToCompare == null) {
+    branchToCompare = getCurrentBranch();
+  }
+  const stdout = execSync(`git merge-base ${baseBranch} ${branchToCompare}`);
+  return stdout.toString().trim();
+}
+
+/**
  * Decodes a GitHub object returned by one of the following API:
  *
  * @param tagGitHubObject

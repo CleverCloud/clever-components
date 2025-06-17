@@ -110,16 +110,6 @@ export function makeStory(...configs) {
   // We use the values of the first item for the args
   storyFn.args = { ...items[0] };
 
-  const testParameters =
-    tests != null
-      ? tests
-      : {
-          accessibility: {
-            // a11y tests are enabled by default unless the story contains simulations
-            enable: simulations.length === 0,
-          },
-        };
-
   storyFn.parameters = {
     docs: {
       description: {
@@ -129,7 +119,7 @@ export function makeStory(...configs) {
         code: getSourceCode(component, items, dom),
       },
     },
-    tests: testParameters,
+    tests: tests,
   };
 
   storyFn.argTypes = argTypes;
@@ -137,7 +127,7 @@ export function makeStory(...configs) {
   storyFn.css = css;
   storyFn.component = component;
   storyFn.items = items;
-  storyFn.tests = testParameters;
+  storyFn.tests = tests;
 
   if (name != null) {
     storyFn.storyName = name;

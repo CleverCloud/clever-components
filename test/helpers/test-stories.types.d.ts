@@ -9,6 +9,10 @@ export type AccessibilityTestOptions = {
       enable: boolean;
       ignoredRules: Array<string>;
     };
+    visualRegressions: {
+      enable: boolean;
+      imagesToPreload?: Array<string>;
+    };
   };
 };
 
