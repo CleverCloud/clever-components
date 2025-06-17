@@ -9,7 +9,7 @@ import { myHtmlReporter } from './wtr-reporter-visual-regressions-html.js';
 
 export default {
   ...globalWtrConfig,
-  reporters: [myHtmlReporter()],
+  reporters: [...globalWtrConfig.reporters, myHtmlReporter()],
   groups: [
     // ...globSync(['src/components/**/*.stories.js']).map((path) => {
     //   const groups = path.match(/^.*\/(?<fileName>.*)\.(?<fileType>.*)\.js/).groups;

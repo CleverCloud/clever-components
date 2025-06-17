@@ -298,7 +298,7 @@ export class CcButton extends LitElement {
           This way, when delay is set, the button has a min width of the largest label (normal or cancel).
         -->
         <div class="text-wrapper ${classMap({ 'cancel-mode': this._cancelMode })}">
-          toto ${this.image != null ? html` <img src=${this.image} alt="" /> ` : ''}
+          ${this.image != null ? html` <img src=${this.image} alt="" /> ` : ''}
           ${this.icon != null ? html` <cc-icon .icon="${this.icon}"></cc-icon> ` : ''}
           <div class="text-normal">
             <slot></slot>

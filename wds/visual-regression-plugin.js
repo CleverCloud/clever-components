@@ -69,7 +69,7 @@ export const visualRegressionPluginWithConfig = visualRegressionPlugin({
         body: content,
       })
       .then((response) => {
-        console.log('saved diff', cellarKey, name);
+        // console.log('saved diff', cellarKey, name);
       })
       .catch((err) => {
         console.log('failed to save DIFF', name, err);
@@ -77,7 +77,6 @@ export const visualRegressionPluginWithConfig = visualRegressionPlugin({
   },
   async saveFailed({ content, name }) {
     const nameWithKebabCase = kebabCase(name);
-    console.log('failed', name);
     const cellarKey = `${CURRENT_BRANCH_NAME}/${nameWithKebabCase}.png`;
 
     await cellar
@@ -86,7 +85,7 @@ export const visualRegressionPluginWithConfig = visualRegressionPlugin({
         body: content,
       })
       .then((response) => {
-        console.log('saved failed', cellarKey, name);
+        // console.log('saved failed', cellarKey, name);
       })
       .catch((err) => {
         console.log('failed to save FAILED', name, err);
