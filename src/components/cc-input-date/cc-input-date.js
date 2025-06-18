@@ -215,8 +215,10 @@ export class CcInputDate extends CcFormControlElement {
         i18n('cc-input-date.error.bad-input', {
           date: DATE_FORMATTER_SHORT.format(shiftDateField(NOW, 'D', 1)),
         }),
-      rangeUnderflow: () => i18n('cc-input-date.error.range-underflow', { min: this.min }),
-      rangeOverflow: () => i18n('cc-input-date.error.range-overflow', { max: this.max }),
+      rangeUnderflow: () =>
+        i18n('cc-input-date.error.range-underflow', { min: DATE_FORMATTER_SHORT.format(new Date(this.min)) }),
+      rangeOverflow: () =>
+        i18n('cc-input-date.error.range-overflow', { max: DATE_FORMATTER_SHORT.format(new Date(this.max)) }),
     };
   }
 

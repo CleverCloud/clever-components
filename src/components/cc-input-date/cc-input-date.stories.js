@@ -124,6 +124,29 @@ export const errorMessageInvalidFormat = makeStory(conf, {
   },
 });
 
+export const errorMessageInvalidRangeOverflowAndUnderflow = makeStory(conf, {
+  items: [
+    {
+      ...baseItems[0],
+      value: '2023-07-23T00:00:00.000Z',
+      min: '2023-07-23T00:00:00.000Z',
+      max: '2023-05-22T00:00:00.000Z',
+      label: 'Since',
+    },
+    {
+      ...baseItems[0],
+      value: '2023-05-22T00:00:00.000Z',
+      min: '2023-07-23T00:00:00.000Z',
+      max: '2023-09-23T00:00:00.000Z',
+      label: 'Until',
+    },
+  ],
+  /** @param {CcInputDate} component */
+  onUpdateComplete: (component) => {
+    component.reportInlineValidity();
+  },
+});
+
 export const inline = makeStory(conf, {
   items: baseItems.map((p) => ({
     ...p,
