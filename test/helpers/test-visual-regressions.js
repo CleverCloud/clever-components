@@ -116,6 +116,7 @@ const IGNORE_PATTERNS_FOR_VISUAL_REGRESSIONS = ['simulation'];
  * @param {Element|DocumentFragment} root - The root node to start searching from (usually document.body)
  */
 export async function cancelAnimations(root) {
+  root.animate = null;
   // Cancel all running animations on this node
   if (typeof root.getAnimations === 'function') {
     for (const anim of root.getAnimations()) {
@@ -123,6 +124,7 @@ export async function cancelAnimations(root) {
         anim.pause();
         anim.currentTime = 0;
       } catch {
+        console.log('COULDNT CANCEL ANIMATION');
         /* ignore */
       }
     }
