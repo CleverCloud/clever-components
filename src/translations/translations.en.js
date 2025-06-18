@@ -88,8 +88,8 @@ export const translations = {
   'cc-addon-backups.cli.content': /** @param {{addonId: string}} _ */ ({ addonId }) =>
     sanitize`
       <p>
-        You can manage backups directly from your terminal using the commands below. 
-        To install Clever Tools CLI, follow the instructions from the <a href="${generateDocsHref('/cli/install/')}" title="documentation - Install Clever Tools - new window">documentation</a>.
+        You can manage backups directly from your terminal using the commands below.
+        To install Clever Tools CLI, follow the instructions from the <cc-link href="${generateDocsHref('/cli/install/')}" a11y-desc="documentation - Install Clever Tools">documentation</cc-link>.
       </p>
       <dl>
         <dt>List available database backups:</dt>
@@ -289,20 +289,20 @@ export const translations = {
   'cc-domain-management.dns.cli.content': /** @param {{resourceId: string}} _ */ ({ resourceId }) =>
     sanitize`
       <p>
-        To install Clever Tools CLI, follow the instructions from the <a href="${generateDocsHref('/cli/install/')}" title="documentation - Install Clever Tools - new window">documentation</a>.
-      </p>
-      <dl>
-        <dt>Diagnose the current configuration:</dt>
-        <dd><code>clever diag --app ${resourceId}</code></dd>
-      </dl>
-    `,
+      To install Clever Tools CLI, follow the instructions from the <cc-link href="${generateDocsHref('/cli/install/')}" a11y-desc="documentation - Install Clever Tools">documentation</cc-link>.
+    </p>
+    <dl>
+      <dt>Diagnose the current configuration:</dt>
+      <dd><code>clever diag --app ${resourceId}</code></dd>
+    </dl>
+  `,
   'cc-domain-management.dns.cname.desc': () =>
     sanitize`<p>Using a <code>CNAME</code> record is recommended. This keeps your configuration up to date.</p>`,
   'cc-domain-management.dns.cname.heading': `CNAME record`,
   'cc-domain-management.dns.cname.label': `CNAME record value`,
   'cc-domain-management.dns.desc':
     () => sanitize`<p>To associate a domain managed by a third-party provider to your Clever Cloud application, you need to configure its DNS zone.</p>
-  <p>This may be achieved using a <code>CNAME</code> or <code>A</code> records. We recommend using a <code>CNAME</code> record, as you won't have to reconfigure it if we change our IPs.</p>`,
+<p>This may be achieved using a <code>CNAME</code> or <code>A</code> records. We recommend using a <code>CNAME</code> record, as you won't have to reconfigure it if we change our IPs.</p>`,
   'cc-domain-management.dns.documentation.text': `DNS records - Documentation`,
   'cc-domain-management.dns.heading': `Configure your DNS`,
   'cc-domain-management.dns.info.desc': () =>
@@ -364,9 +364,9 @@ export const translations = {
   'cc-domain-management.main-heading': `Manage your domain names`,
   'cc-domain-management.names.cli.content': /** @param {{resourceId: string}} _ */ ({ resourceId }) =>
     sanitize`
-      <p class="text">
-        You can manage domains directly from your terminal using the commands below. 
-        To install Clever Tools CLI, follow the instructions from the <a href="${generateDocsHref('/cli/install/')}" title="documentation - Install Clever Tools - new window">documentation</a>.
+    <p class="text">
+      You can manage domains directly from your terminal using the commands below.
+      To install Clever Tools CLI, follow the instructions from the <cc-link href="${generateDocsHref('/cli/install/')}" title="documentation - Install Clever Tools">documentation</cc-link>.
       </p>
       <dl>
         <dt>List domains:</dt>
@@ -488,7 +488,7 @@ export const translations = {
     sanitize`
       <p class="text">
         You can manage environment variables directly from your terminal using the commands below.
-        To install Clever Tools CLI, follow the instructions from the <a href="${generateDocsHref('/cli/install/')}" title="documentation - Install Clever Tools - new window">documentation</a>.
+        To install Clever Tools CLI, follow the instructions from the <cc-link href="${generateDocsHref('/cli/install/')}" title="documentation - Install Clever Tools">documentation</cc-link>.
       </p>
       <dl>
         <dt>List environment variables:</dt>
@@ -1481,7 +1481,7 @@ export const translations = {
     sanitize`
       <p class="text">
         You can manage TCP redirections directly from your terminal using the commands below.
-        To install Clever Tools CLI, follow the instructions from the <a href="${generateDocsHref('/cli/install/')}" title="documentation - Install Clever Tools - new window">documentation</a>.
+        To install Clever Tools CLI, follow the instructions from the <cc-link href="${generateDocsHref('/cli/install/')}" title="documentation - Install Clever Tools">documentation</cc-link>.
       </p>
       <dl>
         <dt>List TCP redirections:</dt>
