@@ -45,13 +45,13 @@ export class CcBlockDetailsCommand extends LitElement {
 
   render() {
     return html`
-      <div class="description">${this.description}</div>
-      <div class="command-container">
+      <dt class="description">${this.description}</dt>
+      <dd class="command-container">
         <code class="command">${this.command}</code>
         <button class="copy-button" @click=${this._copyToClipboard} title="Copy command">
           <cc-icon .icon="${this._copied ? iconSuccess : iconCopy}" size="lg"></cc-icon>
         </button>
-      </div>
+      </dd>
     `;
   }
 
@@ -75,6 +75,7 @@ export class CcBlockDetailsCommand extends LitElement {
           border-radius: var(--cc-border-radius-default, 0.25em);
           display: flex;
           font-family: var(--cc-ff-monospace);
+          margin: 0;
           padding: 0 0.7em;
           word-break: break-all;
         }
