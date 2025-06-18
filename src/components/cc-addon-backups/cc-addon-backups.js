@@ -6,6 +6,7 @@ import { cliCommandsStyles } from '../../styles/cli-commands.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
 import { ccLink, linkStyles } from '../../templates/cc-link/cc-link.js';
 import { i18n } from '../../translations/translation.js';
+import '../cc-block-details-command/cc-block-details-command.js';
 import '../cc-block-details/cc-block-details.js';
 import '../cc-block-section/cc-block-section.js';
 import '../cc-block/cc-block.js';
@@ -62,7 +63,7 @@ export class CcAddonBackups extends LitElement {
     super();
 
     /** @type {string} Sets the addon id for documentation */
-    this.addonId = 'xxx_xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx';
+    this.addonId = 'addon_00000000-0000-0000-0000-000000000000';
 
     /** @type {AddonBackupsState} Sets the state of the component. */
     this.state = {
@@ -273,7 +274,17 @@ export class CcAddonBackups extends LitElement {
         ${this.state.type === 'loaded' ? this._renderLoaded(this.state) : ''}
         <cc-block-details slot="footer-left">
           <div slot="button-text">${i18n('cc-block-details.cli.text')}</div>
-          <div slot="content">${i18n('cc-addon-backups.cli.content', { addonId: this.addonId })}</div>
+          <div slot="content">
+            ${i18n('cc-addon-backups.cli.content.text')}
+            <cc-block-details-command
+              command="clever database backups ${this.addonId}"
+              description="${i18n('cc-addon-backups.cli.content.list-backups-command')}"
+            ></cc-block-details-command>
+            <cc-block-details-command
+              command="clever database backups download ${this.addonId} BACKUP_ID"
+              description="${i18n('cc-addon-backups.cli.content.download-backup-command')}"
+            ></cc-block-details-command>
+          </div>
         </cc-block-details>
       </cc-block>
     `;
