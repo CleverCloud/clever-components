@@ -664,6 +664,7 @@ export const translations = {
     `Saisissez une date inférieure à ${max}`,
   'cc-input-date.error.range-underflow': /** @param {{min: string}} _ */ ({ min }) =>
     `Saisissez une date supérieure à ${min}`,
+  'cc-input-date.help': `Format : AAAA-MM-JJ HH:MM:SS`,
   'cc-input-date.keyboard-hint': `Vous pouvez utiliser les touches flèche haut et flèche bas pour modifier des parties de la date.`,
   'cc-input-date.required': `obligatoire`,
   //#endregion
