@@ -689,8 +689,8 @@ export class CcTokenApiCreationForm extends LitElement {
           clipboard
           value=${token}
         ></cc-input-text>
-        <cc-link href="${this.apiTokenListHref}" mode="subtle">
-          <span class="token-list-cta">${i18n('cc-token-api-creation-form.copy-step.link.back-to-list')}</span>
+        <cc-link class="token-list-link-cta" href="${this.apiTokenListHref}" mode="button">
+          <span>${i18n('cc-token-api-creation-form.copy-step.link.back-to-list')}</span>
         </cc-link>
       </div>
     `;
@@ -732,10 +732,6 @@ export class CcTokenApiCreationForm extends LitElement {
           --cc-icon-color: var(--cc-color-text-primary-highlight);
 
           text-decoration: none;
-        }
-
-        .cc-link {
-          text-decoration: underline;
         }
 
         .block-intro {
@@ -872,7 +868,7 @@ export class CcTokenApiCreationForm extends LitElement {
         }
 
         .token-list-link-cta {
-          font-size: 0.85em;
+          justify-self: flex-end;
         }
 
         .form__actions__link-container {

@@ -18,11 +18,13 @@ import '../cc-img/cc-img.js';
  *
  * ## Details
  *
- * * The link has a display of `flex` to ease vertical alignment and spacing.
+ * * The link has a display of `inline-flex` to ease vertical alignment and spacing.
  * * External URLs are automatically handled by adding `target="_blank"` and `rel="noreferrer"` on the link for security purposes.
- * * The title is automatically infered though it can be overriden by the `a11yDesc` attribute.
+ * * The title is automatically inferred though it can be overridden by the `a11yDesc` attribute.
  *
- * @cssdisplay inline
+ * @cssdisplay inline-flex
+ *
+ * @csspart img - Styles the `cc-img` on the left of the link when the `image` property is used.
  *
  * @slot - The content of the link (text or HTML).
  */
@@ -60,13 +62,13 @@ export class CcLink extends LitElement {
     /** @type {string|null} Sets the `a11y-name` attribute value on the `<cc-icon>` tag. Only use if the icon conveys additional info compared to surrounding text. Check the `<cc-icon>` documentation for more details. */
     this.iconA11yName = null;
 
-    /** @type {string|null} Sets the `a11y-name` attribute value on the `<cc-img>` tag. Only use if the image conveys additional info compared to surrounding text. Check the `<cc-icon>` documentation for more details. */
+    /** @type {string|null} Sets the `a11y-name` attribute value on the `<cc-img>` tag. Only use if the image conveys additional info compared to surrounding text. Check the `<cc-img>` documentation for more details. */
     this.imgA11yName = null;
 
     /** @type {string|null} If set, enables icon mode and sets the `src` of the inner native `<img>` element. */
     this.image = null;
 
-    /** @type {'default'|'cta'|'subtle'} Sets the display mode of the link. (defaults to `default`) */
+    /** @type {'default'|'button'|'subtle'} Sets the display mode of the link. (defaults to `default`) */
     this.mode = 'default';
 
     /** @type {boolean} Enables skeleton styles for loading state. */
@@ -123,7 +125,7 @@ export class CcLink extends LitElement {
     const slotElement = e.target;
     this._title = slotElement
       .assignedNodes()
-      .map((/** @type {Node} */ node) => {
+      .map((node) => {
         return node.textContent;
       })
       .join('')
@@ -134,7 +136,6 @@ export class CcLink extends LitElement {
     const href = this.href != null && !this.skeleton ? this.href : null;
     const isDifferentOrigin = this._isDifferentOrigin(href);
     const target = isDifferentOrigin ? '_blank' : null;
-    // TODO: check MDN one of noopener noreferrer should be there by default now
     const rel = isDifferentOrigin ? 'noreferrer' : null;
     const disableExternalIcon = this.disableExternalLinkIcon || this.mode !== 'default';
 
@@ -194,20 +195,16 @@ export class CcLink extends LitElement {
           text-decoration: none;
         }
 
-        a:enabled:hover {
-          color: var(--cc-color-text-primary);
-        }
         /* endregion */
 
         /* region focus states */
         a:focus {
-          border: none;
           outline: none;
         }
 
         .cc-link:focus-within {
           background-color: var(--cc-color-bg-default, #fff);
-          border-radius: 0.1em;
+          border-radius: var(--cc-border-radius-small, 0.15em);
           outline: var(--cc-focus-outline, #000 solid 2px);
           outline-offset: var(--cc-focus-outline-offset, 2px);
         }
@@ -263,14 +260,14 @@ export class CcLink extends LitElement {
         }
         /* endregion */
 
-        /* region CTA */
-        :host([mode='cta']) .link-slot {
+        /* region BUTTON */
+        :host([mode='button']) .link-slot {
           color: var(--cc-color-text-inverted, #fff);
           font-size: 0.85em;
           text-decoration: none;
         }
 
-        :host([mode='cta']) .cc-link {
+        :host([mode='button']) .cc-link {
           background-color: var(--cc-color-bg-primary, #3569aaff);
           border: 1px solid var(--cc-color-bg-primary, #3569aaff);
           border-radius: var(--cc-button-border-radius, 0.15em);
@@ -282,21 +279,21 @@ export class CcLink extends LitElement {
           text-transform: var(--cc-button-text-transform, uppercase);
         }
 
-        :host([mode='cta']) .cc-link:hover {
+        :host([mode='button']) .cc-link:hover {
           box-shadow: 0 1px 3px rgb(0 0 0 / 40%);
         }
 
-        :host([mode='cta']) .skeleton {
+        :host([mode='button']) .skeleton {
           background-color: #bbb;
           border-color: #777;
           cursor: default;
         }
 
-        :host([mode='cta']) .skeleton .link-slot {
+        :host([mode='button']) .skeleton .link-slot {
           color: transparent;
         }
 
-        :host([mode='cta']) .cc-link:hover.skeleton {
+        :host([mode='button']) .cc-link:hover.skeleton {
           box-shadow: none;
         }
 

@@ -1,5 +1,4 @@
 import { css, html, LitElement } from 'lit';
-import { classMap } from 'lit/directives/class-map.js';
 import { iconRemixInformationFill as iconInfo } from '../../assets/cc-remix.icons.js';
 import { generateDocsHref } from '../../lib/utils.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
@@ -97,9 +96,8 @@ export class CcMatomoInfo extends LitElement {
   _renderImageLink(imageUrl, linkUrl, linkText, skeleton) {
     return html`
       <div>
-        <cc-link href="${linkUrl}">
-          <cc-img src=${imageUrl}></cc-img>
-          <span class="${classMap({ skeleton })}">${linkText}</span>
+        <cc-link href="${linkUrl}" .image=${imageUrl} ?skeleton=${skeleton}>
+          <span> ${linkText}</span>
         </cc-link>
       </div>
     `;
@@ -129,11 +127,10 @@ export class CcMatomoInfo extends LitElement {
           display: inline-flex;
         }
 
-        cc-img {
+        cc-link::part(img) {
           border-radius: var(--cc-border-radius-default, 0.25em);
           flex: 0 0 auto;
           height: 1.5em;
-          margin-right: 0.5em;
           width: 1.5em;
         }
 

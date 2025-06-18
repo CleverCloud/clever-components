@@ -4,7 +4,6 @@ import { fakeString } from '../../lib/fake-strings.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-img/cc-img.js';
-import '../cc-link/cc-link.js';
 
 /** @type {DocCard} */
 const SKELETON_INFO = {

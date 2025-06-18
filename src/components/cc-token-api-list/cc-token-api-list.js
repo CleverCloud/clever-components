@@ -129,7 +129,7 @@ export class CcTokenApiList extends LitElement {
         ${shouldDisplayCreateBtn
           ? html`
               <div slot="header-right">
-                <cc-link mode="cta" class="create-token-cta" href="${this.apiTokenCreationHref}">
+                <cc-link mode="button" class="create-token-cta" href="${this.apiTokenCreationHref}">
                   <span>${i18n('cc-token-api-list.create-token')}</span>
                 </cc-link>
               </div>
@@ -164,7 +164,7 @@ export class CcTokenApiList extends LitElement {
                   <div class="empty">
                     ${i18n('cc-token-api-list.empty')}
                     <cc-link
-                      mode="cta"
+                      mode="button"
                       class="create-token-cta"
                       href="${this.apiTokenCreationHref}"
                       ${ref(this._createApiTokenLinkWhenEmptyRef)}

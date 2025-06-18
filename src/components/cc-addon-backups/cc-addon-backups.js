@@ -493,6 +493,10 @@ export class CcAddonBackups extends LitElement {
           color: var(--cc-color-text-strongest, #000);
         }
 
+        cc-link {
+          margin-right: 0.5em;
+        }
+
         [title] {
           cursor: help;
         }

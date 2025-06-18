@@ -24,6 +24,11 @@ export const defaultStory = makeStory(conf, {
       href: 'https://www.clever-cloud.com',
       innerHTML: 'Visit Clever Cloud',
     },
+    {
+      href: 'https://www.clever-cloud.com',
+      innerHTML: 'Visit Clever Cloud',
+      skeleton: true,
+    },
   ],
 });
 
@@ -115,16 +120,6 @@ export const internalLink = makeStory(conf, {
     {
       href: '/dashboard',
       innerHTML: 'Go to dashboard',
-    },
-  ],
-});
-
-export const skeleton = makeStory(conf, {
-  items: [
-    {
-      href: 'https://www.clever-cloud.com',
-      skeleton: true,
-      innerHTML: 'Loading link...',
     },
   ],
 });

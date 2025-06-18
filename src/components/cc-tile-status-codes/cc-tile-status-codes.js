@@ -10,7 +10,6 @@ import { tileStyles } from '../../styles/info-tiles.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-button/cc-button.js';
-import '../cc-link/cc-link.js';
 
 Chart.register(ArcElement, DoughnutController, Legend, Tooltip);
 

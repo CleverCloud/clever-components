@@ -132,14 +132,8 @@ export class CcAddonLinkedApps extends LitElement {
           display: block;
         }
 
-        /* .application {
-          align-items: flex-start;
-          display: flex;
-        } */
-
         cc-link::part(img) {
           border-radius: var(--cc-border-radius-default, 0.25em);
-          cursor: help;
           height: 1.6em;
           width: 1.6em;
         }

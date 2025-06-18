@@ -137,7 +137,7 @@ export class CcOauthConsumerInfo extends LitElement {
             <div class="header-description">
               <span class="${classMap({ skeleton })}">${oauthConsumerInfo.description}</span>
             </div>
-            <cc-link class="edit-link" mode="cta" href="${this.editInfoHref}" ?skeleton="${skeleton}">
+            <cc-link class="edit-link" mode="button" href="${this.editInfoHref}" ?skeleton="${skeleton}">
               ${i18n('cc-oauth-consumer-info.rights.edit')}
             </cc-link>
           </div>

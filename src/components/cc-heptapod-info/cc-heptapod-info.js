@@ -5,7 +5,6 @@ import { generateDocsHref } from '../../lib/utils.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-block/cc-block.js';
-import '../cc-icon/cc-icon.js';
 import '../cc-link/cc-link.js';
 import '../cc-notice/cc-notice.js';
 
@@ -176,12 +175,6 @@ export class CcHeptapodInfo extends LitElement {
         .skeleton {
           background-color: #bbb;
           color: transparent;
-        }
-
-        [slot='footer-right'] cc-link {
-          align-items: center;
-          display: flex;
-          gap: 0.5em;
         }
       `,
     ];

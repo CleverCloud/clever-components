@@ -1,3 +1,4 @@
+import '../components/cc-link/cc-link.js';
 import {
   prepareFormatDate,
   prepareFormatDateOnly,
@@ -728,7 +729,7 @@ export const translations = {
     `Jenkins version ${version} is available!`,
   'cc-jenkins-info.update.text': `Jenkins and its plugins often get updates. You can automatically update Jenkins and its plugins using its dedicated WEB interface.`,
   'cc-jenkins-info.update.title': `Updates`,
-  'cc-jenkins-info.update.up-to-date': `Your Jenkins version is up-to-date.`,
+  'cc-jenkins-info.update.up-to-date': `Your Jenkins version is up-to-date`,
   //#endregion
   //#region cc-kv-explorer
   'cc-kv-explorer.details.empty': `Select a key in the list to get its content`,

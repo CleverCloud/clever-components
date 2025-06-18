@@ -184,7 +184,7 @@ export class CcGrafanaInfo extends LitElement {
                     <div slot="info">${item.description}</div>
                     <div>
                       <cc-link href="${item.url}" disable-external-link-icon a11y-desc="${item.alt}">
-                        <img class="dashboard-screenshot" src="${item.url}" alt="" />
+                        <img class="dashboard-screenshot" src="${item.url}" alt="${item.alt}" />
                       </cc-link>
                     </div>
                   </cc-block-section>

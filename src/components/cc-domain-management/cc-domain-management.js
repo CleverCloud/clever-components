@@ -355,7 +355,7 @@ export class CcDomainManagement extends LitElement {
             ${this.domainListState.type === 'loading' ? html` <cc-loader></cc-loader> ` : ''}
             ${this.domainListState.type === 'loaded' ? this._renderDomains(this._sortedDomains) : ''}
           </cc-block-section>
-          
+
           <cc-block-details slot="footer-left">
             <div slot="button-text">${i18n('cc-block-details.cli.text')}</div>
             <div slot="link">
@@ -530,10 +530,6 @@ export class CcDomainManagement extends LitElement {
         <span class="domain-name-with-path">
           <!-- These tags need to remain on the same line so there is no white-space when pasting domain+path -->
           <span>${hostWithWildcard}</span><span class="path-prefix">${pathPrefix}</span>
-          <cc-link href="${domainUrl}" a11y-desc="${i18n('cc-domain-management.list.link.title', { domainUrl })}">
-            <!-- -->
-            toto
-          </cc-link>
           <a class="domain-link" href="${domainUrl}" target="_blank">
             <span class="visually-hidden">${domainUrl}</span>
             <cc-icon .icon=${iconLink} a11y-name="${i18n('cc-domain-management.new-window')}"></cc-icon>

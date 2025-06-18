@@ -7,7 +7,6 @@ import '../cc-button/cc-button.js';
 import '../cc-expand/cc-expand.js';
 import '../cc-icon/cc-icon.js';
 import '../cc-img/cc-img.js';
-import '../cc-link/cc-link.js';
 import { CcToggleEvent } from '../common.events.js';
 
 /**

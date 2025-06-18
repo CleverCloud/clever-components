@@ -727,16 +727,6 @@ export class CcOauthConsumerForm extends LitElement {
         }
 
         /* endregion */
-
-        /* region footer */
-
-        [slot='footer-right'] .cc-link {
-          align-items: center;
-          display: flex;
-          gap: 0.5em;
-        }
-
-        /* endregion */
       `,
     ];
   }

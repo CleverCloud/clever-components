@@ -645,12 +645,6 @@ export class CcOrgaMemberList extends LitElement {
           justify-content: end;
         }
         /* endregion */
-
-        [slot='footer-right'] cc-link {
-          align-items: center;
-          display: flex;
-          gap: 0.5em;
-        }
       `,
     ];
   }

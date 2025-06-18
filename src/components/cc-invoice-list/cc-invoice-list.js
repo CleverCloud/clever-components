@@ -184,8 +184,8 @@ export class CcInvoiceList extends LitElement {
         <div slot="header-title">${i18n('cc-invoice-list.title')}</div>
         ${content}
         <div slot="footer-right">
-          <cc-link href="${INVOICE_DOCUMENTATION}">
-            <cc-icon .icon="${iconInfo}"></cc-icon> ${i18n('cc-invoice-list.documentation.text')}
+          <cc-link href="${INVOICE_DOCUMENTATION}" .icon="${iconInfo}">
+            ${i18n('cc-invoice-list.documentation.text')}
           </cc-link>
         </div>
       </cc-block>
@@ -219,12 +219,6 @@ export class CcInvoiceList extends LitElement {
         .empty-msg {
           color: var(--cc-color-text-weak);
           font-style: italic;
-        }
-
-        [slot='footer-right'] cc-link {
-          align-items: center;
-          display: flex;
-          gap: 0.5em;
         }
       `,
     ];

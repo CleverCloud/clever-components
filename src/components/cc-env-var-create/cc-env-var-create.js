@@ -4,7 +4,6 @@ import { css, html, LitElement } from 'lit';
 import { i18n } from '../../translations/translation.js';
 import '../cc-button/cc-button.js';
 import '../cc-input-text/cc-input-text.js';
-import '../cc-link/cc-link.js';
 import '../cc-notice/cc-notice.js';
 import { CcEnvVarCreateEvent } from './cc-env-var-create.events.js';
 
