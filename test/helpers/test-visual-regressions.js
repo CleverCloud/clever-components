@@ -3,7 +3,7 @@ import {
   isResizeObserverLoopErrorMessage,
 } from '@lit-labs/virtualizer/support/resize-observer-errors.js';
 import { elementUpdated, fixture } from '@open-wc/testing';
-import { setViewport } from '@web/test-runner-commands';
+import { executeServerCommand, setViewport } from '@web/test-runner-commands';
 import { visualDiff } from '@web/test-runner-visual-regression';
 import { addTranslations } from '../../src/lib/i18n/i18n.js';
 import * as en from '../../src/translations/translations.en.js';
@@ -16,8 +16,6 @@ import * as en from '../../src/translations/translations.en.js';
  * @typedef {import('@storybook/web-components').WebComponentsRenderer} WebComponentsRenderer
  * @typedef {import('@storybook/web-components').StoryContext<WebComponentsRenderer>} StoryContext
  */
-
-// TODO Flo: mock Date?
 
 const viewports = {
   desktop: {
@@ -60,20 +58,6 @@ function setupIgnoreIrrelevantErrors(before, after, messagePredicate) {
   });
 }
 
-async function preloadImages(imagesToPreload) {
-  const preloadPromises = imagesToPreload.map((src) => {
-    return new Promise((resolve, reject) => {
-      const img = new Image();
-      img.onload = () => resolve(`loaded ${src}`);
-      img.onerror = () => reject(`failed to load ${src}`);
-      img.fetchPriority = 'high';
-      img.src = src;
-    });
-  });
-
-  await Promise.all(preloadPromises);
-}
-
 setupIgnoreIrrelevantErrors(before, after, (message) => {
   return (
     isResizeObserverLoopErrorMessage(message) ||
@@ -83,7 +67,19 @@ setupIgnoreIrrelevantErrors(before, after, (message) => {
   );
 });
 
-const IGNORE_PATTERNS_FOR_VISUAL_REGRESSIONS = ['waiting', 'loading', 'simulation', 'skeleton'];
+const OriginalMathRandom = Math.random;
+function setupFixedRandom(before, after) {
+  before(() => {
+    Math.random = () => 0.5;
+  });
+  after(() => {
+    Math.random = OriginalMathRandom;
+  });
+}
+
+setupFixedRandom(before, after);
+
+const IGNORE_PATTERNS_FOR_VISUAL_REGRESSIONS = ['simulation'];
 
 /**
  * Recursively injects a <style> tag with the given CSS into all shadow roots in the subtree.
@@ -183,17 +179,15 @@ export async function testStories(storiesModule) {
             describe(`desktop`, async function () {
               if (storyFunction.parameters.tests.visualRegressions.enable) {
                 it('should have no visual regression', async function () {
+                  await executeServerCommand('set-fixed-time');
+                  // await executeServerCommand('set-predictible-random');
                   await setViewport(viewports.desktop);
-                  await document.fonts.ready;
                   const element = await fixture(storyFunction({}, storyConf));
                   injectCssIntoAllShadowRoots(element, DISABLE_ANIMATIONS_CSS);
-                  const imagesToPreload = storyFunction.parameters.tests.visualRegressions.imagesToPreload;
 
                   await elementUpdated(element);
+                  await executeServerCommand('wait-for-network-idle');
 
-                  if (imagesToPreload != null && imagesToPreload.length > 0) {
-                    await preloadImages(imagesToPreload);
-                  }
                   await visualDiff(element, `${componentTag}-${storyName}-desktop`);
                 });
               }
@@ -202,17 +196,14 @@ export async function testStories(storiesModule) {
             describe('mobile', async function () {
               if (storyFunction.parameters.tests.visualRegressions.enable) {
                 it('should have no visual regression', async function () {
+                  await executeServerCommand('set-fixed-time');
+                  // await executeServerCommand('set-predictible-random');
                   await setViewport(viewports.desktop);
-                  await document.fonts.ready;
                   const element = await fixture(storyFunction({}, storyConf));
                   injectCssIntoAllShadowRoots(element, DISABLE_ANIMATIONS_CSS);
-                  const imagesToPreload = storyFunction.parameters.tests.visualRegressions.imagesToPreload;
 
                   await elementUpdated(element);
-
-                  if (imagesToPreload != null && imagesToPreload.length > 0) {
-                    await preloadImages(imagesToPreload);
-                  }
+                  await executeServerCommand('wait-for-network-idle');
 
                   await visualDiff(element, `${componentTag}-${storyName}-mobile`);
                 });

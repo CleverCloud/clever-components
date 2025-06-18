@@ -2,7 +2,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { kebabCase } from './src/lib/change-case.js';
-import { CELLAR_HOST, CellarClient } from './tasks/cellar-client.js';
+import { CELLAR_HOST } from './tasks/cellar-client.js';
 import { getCurrentBranch } from './tasks/git-utils.js';
 
 /**
@@ -11,11 +11,6 @@ import { getCurrentBranch } from './tasks/git-utils.js';
  */
 
 const BUCKET_NAME = 'clever-test-flo-visual-regressions';
-const cellar = new CellarClient({
-  bucket: 'clever-test-flo-visual-regressions',
-  accessKeyId: process.env.VISUAL_REGRESSIONS_CELLAR_KEY_ID,
-  secretAccessKey: process.env.VISUAL_REGRESSIONS_CELLAR_SECRET_KEY,
-});
 
 const CURRENT_BRANCH_NAME = getCurrentBranch();
 const BASE_SCREENSHOT_URL = new URL(`${BUCKET_NAME}/${CURRENT_BRANCH_NAME}`, `https://${CELLAR_HOST}`);

@@ -1,6 +1,7 @@
 import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { random, randomString } from '../../lib/utils.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
 import { linkStyles } from '../../templates/cc-link/cc-link.js';
 import { i18n } from '../../translations/translation.js';
@@ -278,6 +279,8 @@ export class CcButton extends LitElement {
       circle: this.circle && this.hideText && hasIcon,
     };
 
+    console.log('random', randomString(random(8, 15)));
+
     const tabIndex = this.skeleton ? -1 : null;
     return html`
       <button
@@ -299,7 +302,8 @@ export class CcButton extends LitElement {
         -->
         <div class="text-wrapper ${classMap({ 'cancel-mode': this._cancelMode })}">
           ${this.image != null ? html` <img src=${this.image} alt="" /> ` : ''}
-          ${this.icon != null ? html` <cc-icon .icon="${this.icon}"></cc-icon> ` : ''}
+          ${this.icon != null ? html` <cc-icon .icon="${this.icon}"></cc-icon> ` : ''} ${new Date(Date.now())}
+          ${new Date()}
           <div class="text-normal">
             <slot></slot>
           </div>
