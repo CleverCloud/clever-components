@@ -538,6 +538,7 @@ export class CcInputDate extends CcFormControlElement {
 
       <div class="help-container" id="help">
         <slot name="help"></slot>
+        <p class="help-message">${i18n('cc-input-date.help')}</p>
       </div>
 
       ${hasErrorMessage
@@ -692,6 +693,12 @@ export class CcInputDate extends CcFormControlElement {
           line-height: 2em;
           overflow: hidden;
           z-index: 2;
+        }
+
+        .help-message {
+          color: var(--cc-color-text-weak, #333);
+          font-size: 0.9em;
+          margin: 0.3em 0 0;
         }
 
         /* STATES */
