@@ -57,8 +57,12 @@ describe('filter', () => {
     ]);
   });
 
-  it('Authorize <a>', () => {
-    compareChildNodes(sanitize`One Two Three Four <a>Five</a> Six`, ['One Two Three Four ', ['a', ['Five']], ' Six']);
+  it('Authorize <cc-link>', () => {
+    compareChildNodes(sanitize`One Two Three Four <cc-link>Five</cc-link> Six`, [
+      'One Two Three Four ',
+      ['cc-link', ['Five']],
+      ' Six',
+    ]);
   });
 
   it('Replace non-authorized tags with a text node and escape the contents', () => {
@@ -70,7 +74,7 @@ describe('filter', () => {
 
   it('Remove all attributes on authorized tags', () => {
     compareChildNodes(
-      sanitize`One <strong href="/foo" onclick="alert('xss')">Two</strong> <em foo-attribute="bar">Three</em> <code class="the-class">Four</code> <a>Five</a> Six`,
+      sanitize`One <strong href="/foo" onclick="alert('xss')">Two</strong> <em foo-attribute="bar">Three</em> <code class="the-class">Four</code> <cc-link>Five</cc-link> Six`,
       [
         'One ',
         ['strong', ['Two'], []],
@@ -79,7 +83,7 @@ describe('filter', () => {
         ' ',
         ['code', ['Four'], []],
         ' ',
-        ['a', ['Five'], []],
+        ['cc-link', ['Five'], []],
         ' Six',
       ],
     );
@@ -87,7 +91,7 @@ describe('filter', () => {
 
   it('Keep title attribute on authorized tags', () => {
     compareChildNodes(
-      sanitize`One <strong title="strong-title">Two</strong> <em title="em-title">Three</em> <code title="code-title">Four</code> <a title="a-title">Five</a> Six`,
+      sanitize`One <strong title="strong-title">Two</strong> <em title="em-title">Three</em> <code title="code-title">Four</code> <cc-link a11y-desc="a-title">Five</cc-link> Six`,
       [
         'One ',
         ['strong', ['Two'], [['title', 'strong-title']]],
@@ -96,44 +100,23 @@ describe('filter', () => {
         ' ',
         ['code', ['Four'], [['title', 'code-title']]],
         ' ',
-        ['a', ['Five'], [['title', 'a-title']]],
+        ['cc-link', ['Five'], [['a11y-desc', 'a-title']]],
         ' Six',
       ],
     );
   });
 
-  it('Only keep href and title attributes on <a> (remove every other attributes)', () => {
+  it('Only keep href and title (a11y-desc) attributes on <cc-link> (remove every other attributes)', () => {
     compareChildNodes(
-      sanitize`One Two Three Four <a href="/foobar" download id="the-id" target="foobar" title="a-title">Five</a> Six`,
+      sanitize`One Two Three Four <cc-link href="/foobar" download id="the-id" target="foobar" a11y-desc="a-title">Five</cc-link> Six`,
       [
         'One Two Three Four ',
         [
-          'a',
+          'cc-link',
           ['Five'],
           [
             ['href', '/foobar'],
-            ['title', 'a-title'],
-            ['class', 'sanitized-link'],
-          ],
-        ],
-        ' Six',
-      ],
-    );
-  });
-
-  it('Add rel="noopener noreferrer" and target=_blank on <a> if href origin is different than document', () => {
-    compareChildNodes(
-      sanitize`One Two Three Four <a href="http://example.com/foobar" download id="the-id" target="foobar">Five</a> Six`,
-      [
-        'One Two Three Four ',
-        [
-          'a',
-          ['Five'],
-          [
-            ['class', 'sanitized-link'],
-            ['href', 'http://example.com/foobar'],
-            ['rel', 'noopener noreferrer'],
-            ['target', '_blank'],
+            ['a11y-desc', 'a-title'],
           ],
         ],
         ' Six',

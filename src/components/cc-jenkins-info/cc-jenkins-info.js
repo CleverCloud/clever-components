@@ -1,14 +1,13 @@
 import { css, html, LitElement } from 'lit';
-import { classMap } from 'lit/directives/class-map.js';
 import { iconRemixInformationFill as iconInfo } from '../../assets/cc-remix.icons.js';
 import { generateDocsHref } from '../../lib/utils.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
-import { ccLink, linkStyles } from '../../templates/cc-link/cc-link.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-block-section/cc-block-section.js';
 import '../cc-block/cc-block.js';
 import '../cc-icon/cc-icon.js';
 import '../cc-img/cc-img.js';
+import '../cc-link/cc-link.js';
 import '../cc-notice/cc-notice.js';
 
 const JENKINS_LOGO_URL = 'https://assets.clever-cloud.com/logos/jenkins.svg';
@@ -57,13 +56,9 @@ export class CcJenkinsInfo extends LitElement {
           <div slot="title">${i18n('cc-jenkins-info.open-jenkins.title')}</div>
           <div slot="info">${i18n('cc-jenkins-info.open-jenkins.text')}</div>
           <div class="one-line-form">
-            ${ccLink(
-              jenkinsLink,
-              html`
-                <cc-img src="${JENKINS_LOGO_URL}"></cc-img
-                ><span class="${classMap({ skeleton })}">${i18n('cc-jenkins-info.open-jenkins.link')}</span>
-              `,
-            )}
+            <cc-link href="${jenkinsLink}" image="${JENKINS_LOGO_URL}" ?skeleton=${skeleton}>
+              <span>${i18n('cc-jenkins-info.open-jenkins.link')}</span>
+            </cc-link>
           </div>
         </cc-block-section>
 
@@ -71,25 +66,20 @@ export class CcJenkinsInfo extends LitElement {
           <div slot="title">${i18n('cc-jenkins-info.update.title')}</div>
           <div slot="info">${i18n('cc-jenkins-info.update.text')}</div>
           <div class="one-line-form">
-            ${ccLink(
-              jenkinsManageLink,
-              html`
-                <cc-icon size="lg" .icon=${iconInfo}></cc-icon>
-                <span class="${classMap({ skeleton })}">
-                  ${hasNewVersion
-                    ? i18n('cc-jenkins-info.update.new-version', { version: versions.available })
-                    : i18n('cc-jenkins-info.update.up-to-date')}
-                </span>
-              `,
-            )}
+            <cc-link class="cc-link__manage-link" href="${jenkinsManageLink}" .icon=${iconInfo} ?skeleton="${skeleton}">
+              <span>
+                ${hasNewVersion
+                  ? i18n('cc-jenkins-info.update.new-version', { version: versions.available })
+                  : i18n('cc-jenkins-info.update.up-to-date')}
+              </span>
+            </cc-link>
           </div>
         </cc-block-section>
 
         <div slot="footer-right">
-          ${ccLink(
-            `${JENKINS_DOCUMENTATION}`,
-            html`<cc-icon .icon="${iconInfo}"></cc-icon> ${i18n('cc-jenkins-info.documentation.text')}`,
-          )}
+          <cc-link href="${JENKINS_DOCUMENTATION}" .icon="${iconInfo}">
+            ${i18n('cc-jenkins-info.documentation.text')}
+          </cc-link>
         </div>
       </cc-block>
     `;
@@ -97,7 +87,6 @@ export class CcJenkinsInfo extends LitElement {
 
   static get styles() {
     return [
-      linkStyles,
       skeletonStyles,
       // language=CSS
       css`
@@ -107,22 +96,14 @@ export class CcJenkinsInfo extends LitElement {
           display: block;
         }
 
-        .cc-link {
-          align-items: center;
-          display: flex;
-        }
-
-        cc-img {
-          border-radius: var(--cc-border-radius-default, 0.25em);
-          flex: 0 0 auto;
+        cc-link::part(img),
+        .cc-link__manage-link::part(icon) {
           height: 1.5em;
-          margin-right: 0.5em;
           width: 1.5em;
         }
 
-        cc-icon {
-          flex: 0 0 auto;
-          margin-right: 0.5em;
+        cc-link::part(img) {
+          border-radius: var(--cc-border-radius-default, 0.25em);
         }
 
         /* SKELETON */

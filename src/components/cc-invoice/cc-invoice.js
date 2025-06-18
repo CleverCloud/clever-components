@@ -3,11 +3,11 @@ import { classMap } from 'lit/directives/class-map.js';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { iconRemixFileTextLine as iconFile } from '../../assets/cc-remix.icons.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
-import { ccLink, linkStyles } from '../../templates/cc-link/cc-link.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-block/cc-block.js';
 import '../cc-html-frame/cc-html-frame.js';
 import '../cc-icon/cc-icon.js';
+import '../cc-link/cc-link.js';
 import '../cc-notice/cc-notice.js';
 
 /** @type {Partial<InvoiceStateLoaded>} */
@@ -60,7 +60,11 @@ export class CcInvoice extends LitElement {
           : ''}
         ${this.state.type !== 'error'
           ? html`
-              <div slot="header-right">${ccLink(invoice.downloadUrl, i18n('cc-invoice.download-pdf'), skeleton)}</div>
+              <div slot="header-right">
+                <cc-link href="${invoice.downloadUrl}" ?skeleton="${skeleton}"
+                  >${i18n('cc-invoice.download-pdf')}</cc-link
+                >
+              </div>
               <div slot="content">
                 <div class="info">
                   <em class=${classMap({ skeleton })}>
@@ -83,7 +87,6 @@ export class CcInvoice extends LitElement {
 
   static get styles() {
     return [
-      linkStyles,
       skeletonStyles,
       // language=CSS
       css`
