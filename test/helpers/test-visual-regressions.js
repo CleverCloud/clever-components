@@ -101,19 +101,43 @@ const IGNORE_PATTERNS_FOR_VISUAL_REGRESSIONS = ['simulation'];
  * @param {Node} root - The root node to start searching from (usually document.body)
  * @param {string} css - The CSS string to inject
  */
-export function injectCssIntoAllShadowRoots(root, css) {
-  if (root.shadowRoot) {
-    const style = document.createElement('style');
-    style.textContent = css;
-    root.shadowRoot.appendChild(style);
-  }
-  // Traverse children (for both shadow and light DOM)
-  if (root.children.length > 0) {
-    Array.from(root.children).forEach((child) => injectCssIntoAllShadowRoots(child, css));
+/**
+ * Recursively cancels all running animations in the subtree, including shadow roots.
+ * Optionally, injects a <style> tag with the given CSS into all shadow roots.
+ * Returns a Promise that resolves when all animations have been cancelled.
+ *
+ * @param {Element|DocumentFragment} root - The root node to start searching from (usually document.body)
+ * @param {string} [css] - Optional CSS string to inject into each shadow root
+ * @returns {Promise<void>}
+ */
+/**
+ * Recursively cancels all running animations in the subtree (including shadow roots),
+ * and optionally injects a <style> tag with the given CSS into all shadow roots.
+ * @param {Element|DocumentFragment} root - The root node to start searching from (usually document.body)
+ */
+export async function cancelAnimations(root) {
+  // Cancel all running animations on this node
+  if (typeof root.getAnimations === 'function') {
+    for (const anim of root.getAnimations()) {
+      try {
+        anim.pause();
+        anim.currentTime = 0;
+      } catch {
+        /* ignore */
+      }
+    }
   }
 
-  if (root.shadowRoot != null && root.shadowRoot.children.length > 0) {
-    Array.from(root.shadowRoot.children).forEach((child) => injectCssIntoAllShadowRoots(child, css));
+  // Traverse children (for both light DOM and shadow DOM)
+  if (root instanceof Element || root instanceof DocumentFragment) {
+    for (const child of root.children ? Array.from(root.children) : []) {
+      await cancelAnimations(child);
+    }
+  }
+
+  // Traverse shadow root if present
+  if (root instanceof Element && root.shadowRoot) {
+    await cancelAnimations(root.shadowRoot);
   }
 }
 
@@ -174,7 +198,7 @@ const getDefaultTestsConfig = (storyName) => ({
   },
 });
 
-export async function waitForAllImagesLoaded(root) {
+export async function waitForAllImagesLoaded(root, timeoutMs = 5000) {
   /**
    * Recursively collects all <img> elements from the given root, including shadow roots.
    * @param {Element|DocumentFragment} node
@@ -184,7 +208,7 @@ export async function waitForAllImagesLoaded(root) {
     let images = [];
     if (node instanceof Element || node instanceof DocumentFragment) {
       // Collect images in the light DOM
-      images.push(...node.querySelectorAll('img'));
+      images.push(...node.querySelectorAll('img[src]'));
       // Traverse shadow root if present
       if (node.shadowRoot) {
         images.push(...collectAllImages(node.shadowRoot));
@@ -199,17 +223,20 @@ export async function waitForAllImagesLoaded(root) {
 
   const allImages = collectAllImages(root);
 
-  // Wait for all images to be loaded
-  await Promise.all(
-    allImages.map((img) =>
-      img.complete && img.naturalWidth > 0
-        ? Promise.resolve()
-        : new Promise((resolve) => {
-            img.addEventListener('load', resolve, { once: true });
-            img.addEventListener('error', resolve, { once: true });
-          }),
-    ),
+  const imagePromises = allImages.map((img) =>
+    img.complete && img.naturalWidth > 0
+      ? Promise.resolve()
+      : new Promise((resolve) => {
+          img.addEventListener('load', resolve, { once: true });
+          img.addEventListener('error', resolve, { once: true });
+        }),
   );
+
+  // Add a timeout to the whole operation
+  await Promise.race([
+    Promise.all(imagePromises),
+    new Promise((_, reject) => setTimeout(() => reject(new Error('Timeout waiting for images to load')), timeoutMs)),
+  ]);
 }
 
 /** @param {RawStoriesModule} storiesModule */
@@ -237,8 +264,12 @@ export async function testStories(storiesModule) {
 
                   await elementUpdated(element);
 
-                  injectCssIntoAllShadowRoots(element, DISABLE_ANIMATIONS_CSS);
-                  await waitForAllImagesLoaded(element);
+                  await cancelAnimations(element);
+                  try {
+                    await waitForAllImagesLoaded(element);
+                  } catch {
+                    console.warn('Some images failed to load in time');
+                  }
                   await visualDiff(element, `${componentTag}-${storyName}-desktop`);
                 });
               }
@@ -252,8 +283,12 @@ export async function testStories(storiesModule) {
 
                   await elementUpdated(element);
 
-                  injectCssIntoAllShadowRoots(element, DISABLE_ANIMATIONS_CSS);
-                  await waitForAllImagesLoaded(element);
+                  await cancelAnimations(element);
+                  try {
+                    await waitForAllImagesLoaded(element);
+                  } catch {
+                    console.warn('Some images failed to load in time');
+                  }
                   await visualDiff(element, `${componentTag}-${storyName}-mobile`);
                 });
               }
