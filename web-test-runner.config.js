@@ -25,7 +25,7 @@ export default {
   nodeResolve: {
     exportConditions: ['production', 'default'],
   },
-  concurrentBrowsers: 3,
+  concurrentBrowsers: 1,
   browsers: [
     playwrightLauncher({
       product: 'chromium',

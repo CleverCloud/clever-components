@@ -67,17 +67,32 @@ setupIgnoreIrrelevantErrors(before, after, (message) => {
   );
 });
 
-const OriginalMathRandom = Math.random;
-function setupFixedRandom(before, after) {
-  before(() => {
-    Math.random = () => 0.5;
-  });
-  after(() => {
-    Math.random = OriginalMathRandom;
-  });
-}
+const OriginalDate = Date;
+beforeEach(async () => {
+  // await executeServerCommand('install-clock');
+  Date = class MockedDate extends OriginalDate {
+    constructor() {
+      super();
 
-setupFixedRandom(before, after);
+      return new OriginalDate('2024-02-02T10:00:00');
+    }
+
+    static now() {
+      return new OriginalDate('2024-02-02T10:00:00');
+    }
+
+    getTime() {
+      return new OriginalDate('2024-02-02T10:00:00').getTime();
+    }
+  };
+});
+// beforeEach(async () => {
+//   await executeServerCommand('pause-clock');
+// });
+afterEach(async () => {
+  // await executeServerCommand('resume-clock');
+  Date = OriginalDate;
+});
 
 const IGNORE_PATTERNS_FOR_VISUAL_REGRESSIONS = ['simulation'];
 
@@ -179,15 +194,14 @@ export async function testStories(storiesModule) {
             describe(`desktop`, async function () {
               if (storyFunction.parameters.tests.visualRegressions.enable) {
                 it('should have no visual regression', async function () {
-                  await executeServerCommand('set-fixed-time');
-                  // await executeServerCommand('set-predictible-random');
                   await setViewport(viewports.desktop);
                   const element = await fixture(storyFunction({}, storyConf));
-                  injectCssIntoAllShadowRoots(element, DISABLE_ANIMATIONS_CSS);
 
                   await elementUpdated(element);
                   await executeServerCommand('wait-for-network-idle');
 
+                  injectCssIntoAllShadowRoots(element, DISABLE_ANIMATIONS_CSS);
+                  // await executeServerCommand('pause-clock');
                   await visualDiff(element, `${componentTag}-${storyName}-desktop`);
                 });
               }
@@ -196,15 +210,14 @@ export async function testStories(storiesModule) {
             describe('mobile', async function () {
               if (storyFunction.parameters.tests.visualRegressions.enable) {
                 it('should have no visual regression', async function () {
-                  await executeServerCommand('set-fixed-time');
-                  // await executeServerCommand('set-predictible-random');
                   await setViewport(viewports.desktop);
                   const element = await fixture(storyFunction({}, storyConf));
-                  injectCssIntoAllShadowRoots(element, DISABLE_ANIMATIONS_CSS);
 
                   await elementUpdated(element);
                   await executeServerCommand('wait-for-network-idle');
 
+                  injectCssIntoAllShadowRoots(element, DISABLE_ANIMATIONS_CSS);
+                  // await executeServerCommand('pause-clock');
                   await visualDiff(element, `${componentTag}-${storyName}-mobile`);
                 });
               }
