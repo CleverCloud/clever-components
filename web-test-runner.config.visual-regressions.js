@@ -1,6 +1,5 @@
 import json from '@rollup/plugin-json';
 import { rollupAdapter } from '@web/dev-server-rollup';
-import { globSync } from 'tinyglobby';
 import { cemAnalyzerPlugin } from './wds/cem-analyzer-plugin.js';
 import { setFixedTimePlugin } from './wds/set-fixed-time-plugin.js';
 import { setPredictibleRandomPlugin } from './wds/set-predictible-random-plugin.js';
@@ -15,17 +14,17 @@ export default {
   ...globalWtrConfig,
   reporters: [...globalWtrConfig.reporters, myHtmlReporter()],
   groups: [
-    ...globSync(['src/components/**/*.stories.js']).map((path) => {
-      const groups = path.match(/^.*\/(?<fileName>.*)\.(?<fileType>.*)\.js/).groups;
-      return {
-        name: `${groups.fileType}:${groups.fileName}`,
-        files: path,
-      };
-    }),
-    // {
-    //   name: 'small',
-    //   files: 'src/components/cc-logs-app-access/cc-*.stories.js',
-    // },
+    // ...globSync(['src/components/**/*.stories.js']).map((path) => {
+    //   const groups = path.match(/^.*\/(?<fileName>.*)\.(?<fileType>.*)\.js/).groups;
+    //   return {
+    //     name: `${groups.fileType}:${groups.fileName}`,
+    //     files: path,
+    //   };
+    // }),
+    {
+      name: 'small',
+      files: 'src/components/cc-addon-credentials/cc-*.stories.js',
+    },
   ],
   testRunnerHtml: (testFramework) => `
     <!DOCTYPE html>

@@ -3,7 +3,7 @@ import {
   isResizeObserverLoopErrorMessage,
 } from '@lit-labs/virtualizer/support/resize-observer-errors.js';
 import { elementUpdated, fixture } from '@open-wc/testing';
-import { executeServerCommand, setViewport } from '@web/test-runner-commands';
+import { setViewport } from '@web/test-runner-commands';
 import { visualDiff } from '@web/test-runner-visual-regression';
 import { addTranslations } from '../../src/lib/i18n/i18n.js';
 import * as en from '../../src/translations/translations.en.js';
@@ -174,6 +174,44 @@ const getDefaultTestsConfig = (storyName) => ({
   },
 });
 
+export async function waitForAllImagesLoaded(root) {
+  /**
+   * Recursively collects all <img> elements from the given root, including shadow roots.
+   * @param {Element|DocumentFragment} node
+   * @returns {HTMLImageElement[]}
+   */
+  function collectAllImages(node) {
+    let images = [];
+    if (node instanceof Element || node instanceof DocumentFragment) {
+      // Collect images in the light DOM
+      images.push(...node.querySelectorAll('img'));
+      // Traverse shadow root if present
+      if (node.shadowRoot) {
+        images.push(...collectAllImages(node.shadowRoot));
+      }
+      // Traverse children (for slot or DocumentFragment)
+      for (const child of node.children || []) {
+        images.push(...collectAllImages(child));
+      }
+    }
+    return images;
+  }
+
+  const allImages = collectAllImages(root);
+
+  // Wait for all images to be loaded
+  await Promise.all(
+    allImages.map((img) =>
+      img.complete && img.naturalWidth > 0
+        ? Promise.resolve()
+        : new Promise((resolve) => {
+            img.addEventListener('load', resolve, { once: true });
+            img.addEventListener('error', resolve, { once: true });
+          }),
+    ),
+  );
+}
+
 /** @param {RawStoriesModule} storiesModule */
 export async function testStories(storiesModule) {
   const componentTag = storiesModule.default.component;
@@ -198,10 +236,9 @@ export async function testStories(storiesModule) {
                   const element = await fixture(storyFunction({}, storyConf));
 
                   await elementUpdated(element);
-                  await executeServerCommand('wait-for-network-idle');
 
                   injectCssIntoAllShadowRoots(element, DISABLE_ANIMATIONS_CSS);
-                  // await executeServerCommand('pause-clock');
+                  await waitForAllImagesLoaded(element);
                   await visualDiff(element, `${componentTag}-${storyName}-desktop`);
                 });
               }
@@ -214,10 +251,9 @@ export async function testStories(storiesModule) {
                   const element = await fixture(storyFunction({}, storyConf));
 
                   await elementUpdated(element);
-                  await executeServerCommand('wait-for-network-idle');
 
                   injectCssIntoAllShadowRoots(element, DISABLE_ANIMATIONS_CSS);
-                  // await executeServerCommand('pause-clock');
+                  await waitForAllImagesLoaded(element);
                   await visualDiff(element, `${componentTag}-${storyName}-mobile`);
                 });
               }
