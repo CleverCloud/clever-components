@@ -17,40 +17,40 @@ on:
         type: string
 
 jobs:
-  baseline-update:
-    name: Baseline Update (sharded)
-    runs-on: ubuntu-latest
-    container:
-      image: mcr.microsoft.com/playwright:v1.53.0-noble
-      options: --user 1001
-    strategy:
-      matrix:
-        batch: ${{ fromJson(inputs.matrix) }}
-    steps:
-      - name: '[Prepare] Checkout base commit'
-        uses: actions/checkout@v4
-        with:
-          ref: ${{ inputs.base_sha }}
+  # baseline-update:
+  #   name: Baseline Update (sharded)
+  #   runs-on: ubuntu-latest
+  #   container:
+  #     image: mcr.microsoft.com/playwright:v1.53.0-noble
+  #     options: --user 1001
+  #   strategy:
+  #     matrix:
+  #       batch: ${{ fromJson(inputs.matrix) }}
+  # steps:
+  # - name: '[Prepare] Checkout base commit'
+  #   uses: actions/checkout@v4
+  #   with:
+  #     ref: ${{ inputs.base_sha }}
 
-      - name: '[Prepare] Setup Node.js'
-        uses: actions/setup-node@v4
-        with:
-          node-version-file: 'package.json'
-          cache: 'npm'
+  # - name: '[Prepare] Setup Node.js'
+  #   uses: actions/setup-node@v4
+  #   with:
+  #     node-version-file: 'package.json'
+  #     cache: 'npm'
 
-      - name: '[Prepare] Install dependencies'
-        run: npm ci
+  # - name: '[Prepare] Install dependencies'
+  #   run: npm ci
 
-      - name: 'Run Visual Regression Tests (Baseline update) - batch ${{ matrix.batch }}'
-        run: npm run test-visual-regressions:update-baseline -- --group batch-${{ matrix.batch }}
-        env:
-          VISUAL_REGRESSIONS_CELLAR_KEY_ID: ${{ secrets.VISUAL_REGRESSIONS_CELLAR_KEY_ID }}
-          VISUAL_REGRESSIONS_CELLAR_SECRET_KEY: ${{ secrets.VISUAL_REGRESSIONS_CELLAR_SECRET_KEY }}
-          GITHUB_HEAD_REF: ${{ inputs.branch }}
+  # - name: 'Run Visual Regression Tests (Baseline update) - batch ${{ matrix.batch }}'
+  #   run: npm run test-visual-regressions:update-baseline -- --group batch-${{ matrix.batch }}
+  #   env:
+  #     VISUAL_REGRESSIONS_CELLAR_KEY_ID: ${{ secrets.VISUAL_REGRESSIONS_CELLAR_KEY_ID }}
+  #     VISUAL_REGRESSIONS_CELLAR_SECRET_KEY: ${{ secrets.VISUAL_REGRESSIONS_CELLAR_SECRET_KEY }}
+  #     GITHUB_HEAD_REF: ${{ inputs.branch }}
 
   run-test-visual-regression-tests:
     name: Run Visual Regression Tests (Current changes)
-    needs: [baseline-update]
+    # needs: [baseline-update]
     runs-on: ubuntu-latest
     container:
       image: mcr.microsoft.com/playwright:v1.53.0-noble
