@@ -5,13 +5,12 @@ on:
     types: [synchronize, opened, reopened]
 
 jobs:
-  run-test-visual-regression-tests:
-    # if: ${{ !contains(join(fromJson(toJson(github.event.pull_request.labels)).*.name, ','), 'test-visual-regressions:skip') }}
+  baseline-batch-1:
+    name: Baseline Update (batch-1)
     runs-on: ubuntu-latest
     container:
       image: mcr.microsoft.com/playwright:v1.53.0-noble
       options: --user 1001
-
     steps:
       - name: '[Prepare] Checkout base commit'
         uses: actions/checkout@v4
@@ -27,13 +26,77 @@ jobs:
       - name: '[Prepare] Install dependencies'
         run: npm ci
 
-      - name: 'Run Visual Regression Tests (Baseline update)'
-        run: npm run test-visual-regressions:update-baseline
+      - name: 'Run Visual Regression Tests (Baseline update) - batch 1'
+        run: npm run test-visual-regressions:update-baseline -- --group batch-1
         env:
           VISUAL_REGRESSIONS_CELLAR_KEY_ID: ${{ secrets.VISUAL_REGRESSIONS_CELLAR_KEY_ID }}
           VISUAL_REGRESSIONS_CELLAR_SECRET_KEY: ${{ secrets.VISUAL_REGRESSIONS_CELLAR_SECRET_KEY }}
           GITHUB_HEAD_REF: ${{ github.head_ref }}
 
+  baseline-batch-2:
+    name: Baseline Update (batch-2)
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.53.0-noble
+      options: --user 1001
+    steps:
+      - name: '[Prepare] Checkout base commit'
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.base.sha }}
+
+      - name: '[Prepare] Setup Node.js'
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: 'package.json'
+          cache: 'npm'
+
+      - name: '[Prepare] Install dependencies'
+        run: npm ci
+
+      - name: 'Run Visual Regression Tests (Baseline update) - batch 2'
+        run: npm run test-visual-regressions:update-baseline -- --group batch-2
+        env:
+          VISUAL_REGRESSIONS_CELLAR_KEY_ID: ${{ secrets.VISUAL_REGRESSIONS_CELLAR_KEY_ID }}
+          VISUAL_REGRESSIONS_CELLAR_SECRET_KEY: ${{ secrets.VISUAL_REGRESSIONS_CELLAR_SECRET_KEY }}
+          GITHUB_HEAD_REF: ${{ github.head_ref }}
+
+  baseline-batch-3:
+    name: Baseline Update (batch-3)
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.53.0-noble
+      options: --user 1001
+    steps:
+      - name: '[Prepare] Checkout base commit'
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.base.sha }}
+
+      - name: '[Prepare] Setup Node.js'
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: 'package.json'
+          cache: 'npm'
+
+      - name: '[Prepare] Install dependencies'
+        run: npm ci
+
+      - name: 'Run Visual Regression Tests (Baseline update) - batch 3'
+        run: npm run test-visual-regressions:update-baseline -- --group batch-3
+        env:
+          VISUAL_REGRESSIONS_CELLAR_KEY_ID: ${{ secrets.VISUAL_REGRESSIONS_CELLAR_KEY_ID }}
+          VISUAL_REGRESSIONS_CELLAR_SECRET_KEY: ${{ secrets.VISUAL_REGRESSIONS_CELLAR_SECRET_KEY }}
+          GITHUB_HEAD_REF: ${{ github.head_ref }}
+
+  run-test-visual-regression-tests:
+    name: Run Visual Regression Tests (Current changes)
+    needs: [baseline-batch-1, baseline-batch-2, baseline-batch-3]
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.53.0-noble
+      options: --user 1001
+    steps:
       - name: '[Prepare] Checkout latest commit'
         uses: actions/checkout@v4
 
@@ -51,8 +114,7 @@ jobs:
         continue-on-error: true
 
       - name: 'Upload test report'
-        run: |
-          npm run upload-test-report
+        run: npm run upload-test-report
         env:
           VISUAL_REGRESSIONS_CELLAR_KEY_ID: ${{ secrets.VISUAL_REGRESSIONS_CELLAR_KEY_ID }}
           VISUAL_REGRESSIONS_CELLAR_SECRET_KEY: ${{ secrets.VISUAL_REGRESSIONS_CELLAR_SECRET_KEY }}
