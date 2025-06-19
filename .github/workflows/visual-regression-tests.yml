@@ -12,6 +12,9 @@ on:
       pr_number:
         required: true
         type: string
+      base_sha:
+        required: true
+        type: string
 
 jobs:
   baseline-update:
@@ -27,7 +30,7 @@ jobs:
       - name: '[Prepare] Checkout base commit'
         uses: actions/checkout@v4
         with:
-          ref: ${{ github.event.pull_request.base.sha }}
+          ref: ${{ inputs.base_sha }}
 
       - name: '[Prepare] Setup Node.js'
         uses: actions/setup-node@v4

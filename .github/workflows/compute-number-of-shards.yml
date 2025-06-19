@@ -10,6 +10,9 @@ jobs:
     outputs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
     steps:
+      - name: '[Prepare] Checkout'
+        uses: actions/checkout@v4
+
       - id: set-matrix
         run: |
           # Example: dynamically determine batches
@@ -22,3 +25,4 @@ jobs:
       matrix: ${{ needs.calculate.outputs.matrix }}
       branch: ${{ github.head_ref }}
       pr_number: ${{ github.event.pull_request.number }}-matrix.outputs.matrix }}
+      base_sha: ${{ github.event.pull_request.base.sha }}
