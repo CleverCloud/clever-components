@@ -1,5 +1,6 @@
 import { globSync } from 'tinyglobby';
 
+const nbOfStoriesByBatch = 25;
 /** @returns {Array<{ name: string, files: string[] }>} */
 export function getStoriesGroups() {
   let groupIndex = 0;
@@ -8,7 +9,7 @@ export function getStoriesGroups() {
   let arrayOfGroups;
 
   globSync(['src/components/**/*.stories.js']).forEach((path, index, listOfStories) => {
-    if (index % 50 === 0) {
+    if (index % nbOfStoriesByBatch === 0) {
       groupIndex++;
       groups[`batch-${groupIndex}`] = [];
     }
