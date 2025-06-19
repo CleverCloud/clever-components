@@ -2,11 +2,8 @@ import json from '@rollup/plugin-json';
 import { rollupAdapter } from '@web/dev-server-rollup';
 import { globSync } from 'tinyglobby';
 import { cemAnalyzerPlugin } from './wds/cem-analyzer-plugin.js';
-import { setFixedTimePlugin } from './wds/set-fixed-time-plugin.js';
-import { setPredictibleRandomPlugin } from './wds/set-predictible-random-plugin.js';
 import { testVisualStoriesPlugin } from './wds/test-visual-stories-plugin.js';
 import { visualRegressionPluginWithConfig } from './wds/visual-regression-plugin.js';
-import { waitForNetworkIdlePlugin } from './wds/wait-for-network-idle-plugin.js';
 import { commonjsPluginWithConfig, esbuildBundlePluginWithConfig } from './wds/wds-common.js';
 import globalWtrConfig from './web-test-runner.config.js';
 import { myHtmlReporter } from './wtr-reporter-visual-regressions-html.js';
@@ -52,9 +49,6 @@ export default {
     rollupAdapter(json()),
     esbuildBundlePluginWithConfig,
     commonjsPluginWithConfig,
-    waitForNetworkIdlePlugin(),
-    setFixedTimePlugin(),
-    setPredictibleRandomPlugin(),
     visualRegressionPluginWithConfig,
     testVisualStoriesPlugin,
   ],
