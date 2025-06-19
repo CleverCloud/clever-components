@@ -25,7 +25,7 @@ jobs:
     needs: calculate-matrix
     uses: ./.github/workflows/visual-regression-tests.yml
     with:
-      matrix: ${{ needs.calculate-matrix.outputs.matrix }}
+      # matrix: ${{ needs.calculate-matrix.outputs.matrix }}
       branch: ${{ github.head_ref }}
       pr_number: ${{ github.event.pull_request.number }}
       base_sha: ${{ github.event.pull_request.base.sha }}

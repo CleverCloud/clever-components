@@ -26,6 +26,7 @@ export const visualRegressionPluginWithConfig = visualRegressionPlugin({
     const nameWithKebabCase = kebabCase(name);
     const cellarKey = `${CURRENT_BRANCH_NAME}/${nameWithKebabCase}.png`;
 
+    console.log('getting', cellarKey);
     const fileBufferFromCurrentBranch = await cellar
       .getImage({ key: cellarKey })
       .then((response) => {
@@ -49,7 +50,6 @@ export const visualRegressionPluginWithConfig = visualRegressionPlugin({
     const cellarKey = `${CURRENT_BRANCH_NAME}/${nameWithKebabCase}.png`;
     // TODO: should we remove the whole baseline content first? => would probably need to be done elsewhere
 
-    console.log(content);
     await cellar
       .putObject({
         key: cellarKey,
@@ -63,6 +63,7 @@ export const visualRegressionPluginWithConfig = visualRegressionPlugin({
     const nameWithKebabCase = kebabCase(name);
     const cellarKey = `${CURRENT_BRANCH_NAME}/${nameWithKebabCase}.png`;
 
+    console.log('log', content);
     await cellar
       .putObject({
         key: cellarKey,
@@ -79,6 +80,7 @@ export const visualRegressionPluginWithConfig = visualRegressionPlugin({
     const nameWithKebabCase = kebabCase(name);
     const cellarKey = `${CURRENT_BRANCH_NAME}/${nameWithKebabCase}.png`;
 
+    console.log('log failed', content);
     await cellar
       .putObject({
         key: cellarKey,

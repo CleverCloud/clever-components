@@ -1,0 +1,70 @@
+name: Visual Regression Tests (Fixed Sharding)
+
+on:
+  pull_request:
+    types: [synchronize, opened, reopened]
+
+jobs:
+  baseline-update:
+    name: Baseline Update (sharded)
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.53.0-noble
+      options: --user 1001
+    strategy:
+      matrix:
+        batch: [1, 2, 3, 4, 5]
+    steps:
+      - name: '[Prepare] Checkout base commit'
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.base.sha }}
+
+      - name: '[Prepare] Setup Node.js'
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: 'package.json'
+          cache: 'npm'
+
+      - name: '[Prepare] Install dependencies'
+        run: npm ci
+
+      - name: 'Run Visual Regression Tests (Baseline update) - batch ${{ matrix.batch }}'
+        run: npm run test-visual-regressions:update-baseline -- --group batch-${{ matrix.batch }}
+        env:
+          VISUAL_REGRESSIONS_CELLAR_KEY_ID: ${{ secrets.VISUAL_REGRESSIONS_CELLAR_KEY_ID }}
+          VISUAL_REGRESSIONS_CELLAR_SECRET_KEY: ${{ secrets.VISUAL_REGRESSIONS_CELLAR_SECRET_KEY }}
+          GITHUB_HEAD_REF: ${{ github.head_ref }}
+
+  run-test-visual-regression-tests:
+    name: Run Visual Regression Tests (Current changes)
+    needs: [baseline-update]
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.53.0-noble
+      options: --user 1001
+    strategy:
+      matrix:
+        batch: [1, 2, 3]
+    steps:
+      - name: '[Prepare] Checkout latest commit'
+        uses: actions/checkout@v4
+
+      - name: '[Prepare] Install dependencies'
+        run: npm ci
+
+      - name: Run Visual Regression Tests (Current changes) - batch ${{ matrix.batch }}
+        run: |
+          npm run test-visual-regressions -- --group batch-${{ matrix.batch }}
+        env:
+          VISUAL_REGRESSIONS_CELLAR_KEY_ID: ${{ secrets.VISUAL_REGRESSIONS_CELLAR_KEY_ID }}
+          VISUAL_REGRESSIONS_CELLAR_SECRET_KEY: ${{ secrets.VISUAL_REGRESSIONS_CELLAR_SECRET_KEY }}
+          GITHUB_HEAD_REF: ${{ github.head_ref }}
+        continue-on-error: true
+
+      - name: 'Upload test report'
+        run: npm run upload-test-report
+        env:
+          VISUAL_REGRESSIONS_CELLAR_KEY_ID: ${{ secrets.VISUAL_REGRESSIONS_CELLAR_KEY_ID }}
+          VISUAL_REGRESSIONS_CELLAR_SECRET_KEY: ${{ secrets.VISUAL_REGRESSIONS_CELLAR_SECRET_KEY }}
+          GITHUB_HEAD_REF: ${{ github.head_ref }}

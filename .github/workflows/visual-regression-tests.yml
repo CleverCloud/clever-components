@@ -61,6 +61,8 @@ jobs:
     steps:
       - name: '[Prepare] Checkout latest commit'
         uses: actions/checkout@v4
+        with:
+          branch: ${{ inputs.branch }}
 
       - name: '[Prepare] Install dependencies'
         run: npm ci
