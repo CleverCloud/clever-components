@@ -170,7 +170,11 @@ export const customWidth = makeStory(conf, {
       controls: true,
       label: `width: ${width}px`,
       style: `width: ${width}px`,
-      value: new Date(date.getTime() + i * 60_000),
+      value: (() => {
+        console.log('GeNERATING DATE FROM STORY');
+        return new Date();
+        // return new Date(date.getTime() + i * 60_000);
+      })(),
     };
   }),
 });

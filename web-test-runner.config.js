@@ -25,12 +25,12 @@ export default {
   nodeResolve: {
     exportConditions: ['production', 'default'],
   },
-  concurrentBrowsers: 3,
+  concurrentBrowsers: 1,
   browsers: [
     playwrightLauncher({
       product: 'chromium',
       createBrowserContext({ browser }) {
-        return browser.newContext({ timezoneId: 'Europe/Paris', deviceScaleFactor: 1 });
+        return browser.newContext({ timezoneId: 'Europe/Paris', deviceScaleFactor: 1, reducedMotion: 'reduce' });
       },
     }),
   ],

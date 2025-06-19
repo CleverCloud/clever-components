@@ -41,7 +41,7 @@ export class CcExpand extends HTMLElement {
     }
     this._ro = new ResizeObserver(() => {
       // The animation API is not supported in some versions of Safari but it's purely decorative so it's OK if it does not work
-      if (this.animate == null) {
+      if (this.animate == null || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
         return;
       }
 

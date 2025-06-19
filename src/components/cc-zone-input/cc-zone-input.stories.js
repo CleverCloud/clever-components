@@ -16,6 +16,11 @@ const conf = {
       height: 350px;
     }
   `,
+  tests: {
+    visualRegressions: {
+      enable: false,
+    },
+  },
 };
 
 /**

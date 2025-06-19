@@ -298,7 +298,7 @@ export class CcButton extends LitElement {
           This way, when delay is set, the button has a min width of the largest label (normal or cancel).
         -->
         <div class="text-wrapper ${classMap({ 'cancel-mode': this._cancelMode })}">
-          toto ${this.image != null ? html` <img src=${this.image} alt="" /> ` : ''}
+          ${this.image != null ? html` <img src=${this.image} alt="" /> ` : ''}
           ${this.icon != null ? html` <cc-icon .icon="${this.icon}"></cc-icon> ` : ''}
           <div class="text-normal">
             <slot></slot>
@@ -366,7 +366,6 @@ export class CcButton extends LitElement {
           -ms-user-select: none;
           user-select: none;
           width: 100%;
-          min-width: 10em;
         }
 
         /* COLORS */
@@ -667,6 +666,10 @@ export class CcButton extends LitElement {
 
         .cc-link.skeleton:hover {
           color: transparent;
+        }
+
+        :host-context(.no-animations) * {
+          animation: none !important;
         }
       `,
     ];

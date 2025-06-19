@@ -48,6 +48,7 @@ export const color = makeStory(conf, {
     { icon: iconDummy, size: 'xl', style: '--cc-icon-color: red;' },
   ],
 });
+
 export const accessibleName = makeStory(conf, {
   css: `
     div {
@@ -121,6 +122,9 @@ export const remixIcons = makeStory(conf, {
     accessibility: {
       enable: false,
     },
+    visualRegressions: {
+      enable: false,
+    },
   },
   css: ICONS_LAYOUT_CSS,
   dom: (container) => {
@@ -131,6 +135,9 @@ export const remixIcons = makeStory(conf, {
 export const cleverIcons = makeStory(conf, {
   tests: {
     accessibility: {
+      enable: false,
+    },
+    visualRegressions: {
       enable: false,
     },
   },

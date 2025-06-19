@@ -11,6 +11,7 @@ export const testVisualStoriesPlugin = {
     if (context.path.endsWith('.stories.test.js')) {
       const testFileContent = `
         import { testStories } from '/test/helpers/test-visual-regressions.js';
+        import '/test/helpers/mock-date.js';
         import * as storiesModule from '${context.path.replace('.stories.test.js', '.stories.js')}';
 
         testStories(storiesModule);

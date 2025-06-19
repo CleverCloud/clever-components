@@ -3,7 +3,6 @@ import { kebabCase } from '../src/lib/change-case.js';
 import { CellarClient } from '../tasks/cellar-client.js';
 import { getCurrentBranch } from '../tasks/git-utils.js';
 
-const MASTER_BRANCH_NAME = 'master';
 const CURRENT_BRANCH_NAME = getCurrentBranch();
 
 const cellar = new CellarClient({
@@ -69,7 +68,7 @@ export const visualRegressionPluginWithConfig = visualRegressionPlugin({
         body: content,
       })
       .then((response) => {
-        console.log('saved diff', cellarKey, name);
+        // console.log('saved diff', cellarKey, name);
       })
       .catch((err) => {
         console.log('failed to save DIFF', name, err);
@@ -77,7 +76,6 @@ export const visualRegressionPluginWithConfig = visualRegressionPlugin({
   },
   async saveFailed({ content, name }) {
     const nameWithKebabCase = kebabCase(name);
-    console.log('failed', name);
     const cellarKey = `${CURRENT_BRANCH_NAME}/${nameWithKebabCase}.png`;
 
     await cellar
@@ -86,7 +84,7 @@ export const visualRegressionPluginWithConfig = visualRegressionPlugin({
         body: content,
       })
       .then((response) => {
-        console.log('saved failed', cellarKey, name);
+        // console.log('saved failed', cellarKey, name);
       })
       .catch((err) => {
         console.log('failed to save FAILED', name, err);
