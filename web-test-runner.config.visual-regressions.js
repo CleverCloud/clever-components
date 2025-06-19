@@ -1,6 +1,6 @@
 import json from '@rollup/plugin-json';
 import { rollupAdapter } from '@web/dev-server-rollup';
-import { globSync } from 'tinyglobby';
+import { getStoriesGroups } from './test/helpers/generate-stories-batches.js';
 import { cemAnalyzerPlugin } from './wds/cem-analyzer-plugin.js';
 import { testVisualStoriesPlugin } from './wds/test-visual-stories-plugin.js';
 import { visualRegressionPluginWithConfig } from './wds/visual-regression-plugin.js';
@@ -8,30 +8,11 @@ import { commonjsPluginWithConfig, esbuildBundlePluginWithConfig } from './wds/w
 import globalWtrConfig from './web-test-runner.config.js';
 import { myHtmlReporter } from './wtr-reporter-visual-regressions-html.js';
 
-let groupIndex = 0;
-let groups = {};
-let arrayOfGroups;
-
-globSync(['src/components/**/*.stories.js']).forEach((path, index, listOfStories) => {
-  if (index % 50 === 0) {
-    groupIndex++;
-    groups[`batch-${groupIndex}`] = [];
-  }
-
-  groups[`batch-${groupIndex}`].push(path);
-
-  if (index === listOfStories.length - 1) {
-    arrayOfGroups = Object.entries(groups).map(([name, files]) => ({
-      name,
-      files,
-    }));
-  }
-});
 export default {
   ...globalWtrConfig,
   reporters: [...globalWtrConfig.reporters, myHtmlReporter()],
   groups: [
-    ...arrayOfGroups,
+    ...getStoriesGroups(),
     // {
     //   name: 'small',
     //   files: 'src/components/cc-addon-credentials/cc-*.stories.js',
