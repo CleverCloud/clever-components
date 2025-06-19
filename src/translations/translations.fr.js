@@ -98,7 +98,7 @@ export const translations = {
   'cc-addon-backups.cli.content': /** @param {{addonId: string}} _ */ ({ addonId }) =>
     sanitize`
       <p>
-        Vous pouvez gérer les sauvegardes directement depuis votre terminal en utilisant les commandes ci-dessous. 
+        Vous pouvez gérer les sauvegardes directement depuis votre terminal en utilisant les commandes ci-dessous.
         Pour installer les Clever Tools (CLI), suivez les instructions de la <a href="${generateDocsHref('/cli/install/')}" title="documentation - Installer les Clever Tools - nouvelle fenêtre - en Anglais">documentation</a>.
       </p>
       <dl>
@@ -273,6 +273,11 @@ export const translations = {
   //#endregion
   //#region cc-button
   'cc-button.cancel': `Cliquez pour annuler`,
+  //#endregion
+  //#region cc-clipboard
+  'cc-clipboard.copied': `Le texte a été copié`,
+  'cc-clipboard.copy': /** @param {{text: string}} _ */ ({ text }) =>
+    `Copier dans le presse-papier - ${text.substring(0, 5)}...`,
   //#endregion
   //#region cc-datetime-relative
   'cc-datetime-relative.distance': /** @param {{date: string|number}} _ */ ({ date }) => formatDistanceToNow(date),
@@ -679,7 +684,6 @@ export const translations = {
   'cc-input-number.required': `obligatoire`,
   //#endregion
   //#region cc-input-text
-  'cc-input-text.clipboard': `Copier dans le presse-papier`,
   'cc-input-text.error.bad-email': () => sanitize`Format d'adresse e-mail invalide.<br>Exemple: john.doe@example.com.`,
   'cc-input-text.error.empty': `Saisissez une valeur`,
   'cc-input-text.error.empty.email': `Saisissez une adresse e-mail`,
