@@ -49,6 +49,7 @@ export const visualRegressionPluginWithConfig = visualRegressionPlugin({
     const cellarKey = `${CURRENT_BRANCH_NAME}/${nameWithKebabCase}.png`;
     // TODO: should we remove the whole baseline content first? => would probably need to be done elsewhere
 
+    console.log(content);
     await cellar
       .putObject({
         key: cellarKey,
