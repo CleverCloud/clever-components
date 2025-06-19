@@ -263,6 +263,10 @@ export const translations = {
   //#region cc-button
   'cc-button.cancel': `Click to cancel`,
   //#endregion
+  //#region cc-clipboard
+  'cc-clipboard.copied': `The text has been copied`,
+  'cc-clipboard.copy': /** @param {{text: string}} _ */ ({ text }) => `Copy to clipboard - ${text.substring(0, 5)}...`,
+  //#endregion
   //#region cc-datetime-relative
   'cc-datetime-relative.distance': /** @param {{date: string|number}} _ */ ({ date }) => formatDistanceToNow(date),
   'cc-datetime-relative.title': /** @param {{date: string|number}} _ */ ({ date }) => formatDate(date),
