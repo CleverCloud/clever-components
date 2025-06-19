@@ -25,4 +25,10 @@ export const skeletonStyles = css`
     -ms-user-select: none;
     user-select: none;
   }
+
+  @media (prefers-reduced-motion: reduce) {
+    .skeleton {
+      animation: none !important;
+    }
+  }
 `;

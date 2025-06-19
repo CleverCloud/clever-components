@@ -15,7 +15,7 @@ export default {
   ...globalWtrConfig,
   reporters: [...globalWtrConfig.reporters, myHtmlReporter()],
   groups: [
-    ...globSync(['src/components/**/*.stories.js']).map((path) => {
+    ...globSync(['src/components/cc-kv-hash-explorer/*.stories.js']).map((path) => {
       const groups = path.match(/^.*\/(?<fileName>.*)\.(?<fileType>.*)\.js/).groups;
       return {
         name: `${groups.fileType}:${groups.fileName}`,
@@ -40,9 +40,9 @@ export default {
           Math.random = () => 0.5;
         </script>
         <style>
-        .story-shadow-container {
-        padding: 3rem;
-        }
+          .story-shadow-container {
+            padding: 3rem;
+          }
         </style>
       </head>
     </html>

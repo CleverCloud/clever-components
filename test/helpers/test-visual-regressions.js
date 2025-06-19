@@ -97,37 +97,48 @@ afterEach(async () => {
 const IGNORE_PATTERNS_FOR_VISUAL_REGRESSIONS = ['simulation'];
 
 /**
- * Recursively injects a <style> tag with the given CSS into all shadow roots in the subtree.
- * @param {Node} root - The root node to start searching from (usually document.body)
- * @param {string} css - The CSS string to inject
- */
-/**
- * Recursively cancels all running animations in the subtree, including shadow roots.
- * Optionally, injects a <style> tag with the given CSS into all shadow roots.
- * Returns a Promise that resolves when all animations have been cancelled.
- *
- * @param {Element|DocumentFragment} root - The root node to start searching from (usually document.body)
- * @param {string} [css] - Optional CSS string to inject into each shadow root
- * @returns {Promise<void>}
- */
-/**
  * Recursively cancels all running animations in the subtree (including shadow roots),
  * and optionally injects a <style> tag with the given CSS into all shadow roots.
  * @param {Element|DocumentFragment} root - The root node to start searching from (usually document.body)
  */
 export async function cancelAnimations(root) {
-  root.animate = null;
+  const style = document.createElement('style');
+  style.textContent = DISABLE_ANIMATIONS_CSS;
+  if (root instanceof ShadowRoot || root instanceof DocumentFragment) {
+    // Only inject if not already present
+    if (
+      ![...root.childNodes].some(
+        (n) => n.nodeType === Node.ELEMENT_NODE && n.tagName === 'STYLE' && n.textContent === DISABLE_ANIMATIONS_CSS,
+      )
+    ) {
+      root.insertBefore(style, root.firstChild);
+    }
+  } else if (root instanceof Element) {
+    // Only inject if not already present
+    if (
+      ![...root.childNodes].some(
+        (n) => n.nodeType === Node.ELEMENT_NODE && n.tagName === 'STYLE' && n.textContent === DISABLE_ANIMATIONS_CSS,
+      )
+    ) {
+      root.insertBefore(style, root.firstChild);
+    }
+  }
   // Cancel all running animations on this node
   if (typeof root.getAnimations === 'function') {
     for (const anim of root.getAnimations()) {
+      // console.log('no animations found for ', root);
       try {
         anim.pause();
         anim.currentTime = 0;
       } catch {
-        console.log('COULDNT CANCEL ANIMATION');
         /* ignore */
       }
     }
+  }
+
+  // Traverse shadow root if present
+  if (root instanceof Element && root.shadowRoot) {
+    await cancelAnimations(root.shadowRoot);
   }
 
   // Traverse children (for both light DOM and shadow DOM)
@@ -136,15 +147,10 @@ export async function cancelAnimations(root) {
       await cancelAnimations(child);
     }
   }
-
-  // Traverse shadow root if present
-  if (root instanceof Element && root.shadowRoot) {
-    await cancelAnimations(root.shadowRoot);
-  }
 }
 
 const DISABLE_ANIMATIONS_CSS = `
-  *, *::before, *::after {
+  *, *::before, *::after, .skeleton {
     transition: none !important;
     animation: none !important;
     animation-duration: 0s !important;
