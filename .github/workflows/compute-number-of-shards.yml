@@ -13,12 +13,12 @@ jobs:
       - id: set-matrix
         run: |
           # Example: dynamically determine batches
-          echo "matrix=[\"batch-1\",\"batch-2\",\"batch-3\"]" >> $GITHUB_OUTPUT
+          echo "matrix=$(node ./tasks/get-number-of-visual-batches.js)" >> $GITHUB_OUTPUT
 
   run-visual-tests:
     needs: calculate-matrix
     uses: ./.github/workflows/visual-regression-tests.yml
     with:
-      matrix: ${{ needs.calculate
+      matrix: ${{ needs.calculate.outputs.matrix }}
       branch: ${{ github.head_ref }}
       pr_number: ${{ github.event.pull_request.number }}-matrix.outputs.matrix }}
