@@ -263,6 +263,10 @@ export const translations = {
   //#region cc-button
   'cc-button.cancel': `Click to cancel`,
   //#endregion
+  //#region cc-clipboard
+  'cc-clipboard.copied': `The text has been copied`,
+  'cc-clipboard.copy': /** @param {{text: string}} _ */ ({ text }) => `Copy to clipboard - ${text.substring(0, 5)}...`,
+  //#endregion
   //#region cc-datetime-relative
   'cc-datetime-relative.distance': /** @param {{date: string|number}} _ */ ({ date }) => formatDistanceToNow(date),
   'cc-datetime-relative.title': /** @param {{date: string|number}} _ */ ({ date }) => formatDate(date),
@@ -288,20 +292,20 @@ export const translations = {
   'cc-domain-management.dns.cli.content': /** @param {{resourceId: string}} _ */ ({ resourceId }) =>
     sanitize`
       <p>
-      To install Clever Tools CLI, follow the instructions from the <cc-link href="${generateDocsHref('/cli/install/')}" a11y-desc="documentation - Install Clever Tools">documentation</cc-link>.
-    </p>
-    <dl>
-      <dt>Diagnose the current configuration:</dt>
-      <dd><code>clever diag --app ${resourceId}</code></dd>
-    </dl>
-  `,
+        To install Clever Tools CLI, follow the instructions from the <cc-link href="${generateDocsHref('/cli/install/')}" a11y-desc="documentation - Install Clever Tools">documentation</cc-link>.
+      </p>
+      <dl>
+        <dt>Diagnose the current configuration:</dt>
+        <dd><code>clever diag --app ${resourceId}</code></dd>
+      </dl>
+    `,
   'cc-domain-management.dns.cname.desc': () =>
     sanitize`<p>Using a <code>CNAME</code> record is recommended. This keeps your configuration up to date.</p>`,
   'cc-domain-management.dns.cname.heading': `CNAME record`,
   'cc-domain-management.dns.cname.label': `CNAME record value`,
   'cc-domain-management.dns.desc':
     () => sanitize`<p>To associate a domain managed by a third-party provider to your Clever Cloud application, you need to configure its DNS zone.</p>
-<p>This may be achieved using a <code>CNAME</code> or <code>A</code> records. We recommend using a <code>CNAME</code> record, as you won't have to reconfigure it if we change our IPs.</p>`,
+    <p>This may be achieved using a <code>CNAME</code> or <code>A</code> records. We recommend using a <code>CNAME</code> record, as you won't have to reconfigure it if we change our IPs.</p>`,
   'cc-domain-management.dns.documentation.text': `DNS records - Documentation`,
   'cc-domain-management.dns.heading': `Configure your DNS`,
   'cc-domain-management.dns.info.desc': () =>
@@ -667,7 +671,6 @@ export const translations = {
   'cc-input-number.required': `required`,
   //#endregion
   //#region cc-input-text
-  'cc-input-text.clipboard': `Copy to clipboard`,
   'cc-input-text.error.bad-email': () => sanitize`Invalid email address format.<br>Example: john.doe@example.com.`,
   'cc-input-text.error.empty': `You must enter a value`,
   'cc-input-text.error.empty.email': `Enter an email address`,
