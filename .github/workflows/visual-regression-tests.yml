@@ -43,6 +43,9 @@ jobs:
     container:
       image: mcr.microsoft.com/playwright:v1.53.0-noble
       options: --user 1001
+    strategy:
+      matrix:
+        batch: [1, 2, 3]
     steps:
       - name: '[Prepare] Checkout latest commit'
         uses: actions/checkout@v4
@@ -50,9 +53,9 @@ jobs:
       - name: '[Prepare] Install dependencies'
         run: npm ci
 
-      - name: 'Run Visual Regression Tests (Current changes)'
+      - name: Run Visual Regression Tests (Current changes) - batch ${{ matrix.batch }}'
         run: |
-          npm run test-visual-regressions
+          npm run test-visual-regressions -- --group batch-${{ matrix.batch }}
         env:
           VISUAL_REGRESSIONS_CELLAR_KEY_ID: ${{ secrets.VISUAL_REGRESSIONS_CELLAR_KEY_ID }}
           VISUAL_REGRESSIONS_CELLAR_SECRET_KEY: ${{ secrets.VISUAL_REGRESSIONS_CELLAR_SECRET_KEY }}
