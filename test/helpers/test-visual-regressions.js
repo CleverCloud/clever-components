@@ -101,32 +101,16 @@ const IGNORE_PATTERNS_FOR_VISUAL_REGRESSIONS = ['simulation'];
  * and optionally injects a <style> tag with the given CSS into all shadow roots.
  * @param {Element|DocumentFragment} root - The root node to start searching from (usually document.body)
  */
-export async function cancelAnimations(root) {
-  const style = document.createElement('style');
-  style.textContent = DISABLE_ANIMATIONS_CSS;
-  if (root instanceof ShadowRoot || root instanceof DocumentFragment) {
-    // Only inject if not already present
-    if (
-      ![...root.childNodes].some(
-        (n) => n.nodeType === Node.ELEMENT_NODE && n.tagName === 'STYLE' && n.textContent === DISABLE_ANIMATIONS_CSS,
-      )
-    ) {
-      root.insertBefore(style, root.firstChild);
-    }
-  } else if (root instanceof Element) {
-    // Only inject if not already present
-    if (
-      ![...root.childNodes].some(
-        (n) => n.nodeType === Node.ELEMENT_NODE && n.tagName === 'STYLE' && n.textContent === DISABLE_ANIMATIONS_CSS,
-      )
-    ) {
-      root.insertBefore(style, root.firstChild);
-    }
-  }
+export function cancelAnimations(root) {
+  // if (root.shadowRoot != null && root.shadowRoot.querySelector('#cancel-animations') == null) {
+  //   const styleElement = document.createElement('style');
+  //   styleElement.id = 'cancel-animations';
+  //   styleElement.textContent = DISABLE_ANIMATIONS_CSS;
+  //   root.shadowRoot.prepend(styleElement);
+  // }
   // Cancel all running animations on this node
   if (typeof root.getAnimations === 'function') {
     for (const anim of root.getAnimations()) {
-      // console.log('no animations found for ', root);
       try {
         anim.pause();
         anim.currentTime = 0;
@@ -138,13 +122,13 @@ export async function cancelAnimations(root) {
 
   // Traverse shadow root if present
   if (root instanceof Element && root.shadowRoot) {
-    await cancelAnimations(root.shadowRoot);
+    cancelAnimations(root.shadowRoot);
   }
 
   // Traverse children (for both light DOM and shadow DOM)
   if (root instanceof Element || root instanceof DocumentFragment) {
     for (const child of root.children ? Array.from(root.children) : []) {
-      await cancelAnimations(child);
+      cancelAnimations(child);
     }
   }
 }
@@ -270,14 +254,15 @@ export async function testStories(storiesModule) {
                   await setViewport(viewports.desktop);
                   const element = await fixture(storyFunction({}, storyConf));
 
+                  element.classList.add('no-animations');
                   await elementUpdated(element);
 
-                  await cancelAnimations(element);
                   try {
                     await waitForAllImagesLoaded(element);
                   } catch {
                     console.warn('Some images failed to load in time');
                   }
+                  cancelAnimations(element);
                   await visualDiff(element, `${componentTag}-${storyName}-desktop`);
                 });
               }
@@ -286,17 +271,19 @@ export async function testStories(storiesModule) {
             describe('mobile', async function () {
               if (storyFunction.parameters.tests.visualRegressions.enable) {
                 it('should have no visual regression', async function () {
-                  await setViewport(viewports.desktop);
+                  await setViewport(viewports.mobile);
                   const element = await fixture(storyFunction({}, storyConf));
 
+                  element.classList.add('no-animations');
                   await elementUpdated(element);
 
-                  await cancelAnimations(element);
+                  cancelAnimations(element);
                   try {
                     await waitForAllImagesLoaded(element);
                   } catch {
                     console.warn('Some images failed to load in time');
                   }
+
                   await visualDiff(element, `${componentTag}-${storyName}-mobile`);
                 });
               }

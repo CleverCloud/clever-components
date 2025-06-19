@@ -15,7 +15,7 @@ export default {
   ...globalWtrConfig,
   reporters: [...globalWtrConfig.reporters, myHtmlReporter()],
   groups: [
-    ...globSync(['src/components/cc-kv-hash-explorer/*.stories.js']).map((path) => {
+    ...globSync(['src/components/**/*.stories.js']).map((path) => {
       const groups = path.match(/^.*\/(?<fileName>.*)\.(?<fileType>.*)\.js/).groups;
       return {
         name: `${groups.fileType}:${groups.fileName}`,

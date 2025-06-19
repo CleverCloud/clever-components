@@ -417,6 +417,10 @@ export class CcKvTerminal extends LitElement {
             background-color: var(--cc-kv-terminal-color-foreground);
           }
         }
+
+        :host-context(.no-animations) .caret-blink {
+          animation: none !important;
+        }
       `,
     ];
   }

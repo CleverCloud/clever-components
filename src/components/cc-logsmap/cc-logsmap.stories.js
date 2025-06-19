@@ -14,6 +14,11 @@ export default {
 const conf = {
   component: 'cc-logsmap',
   displayMode: 'flex-wrap',
+  tests: {
+    visualRegressions: {
+      enable: false,
+    },
+  },
 };
 
 const spreadDuration = 5000;

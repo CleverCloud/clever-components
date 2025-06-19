@@ -667,6 +667,10 @@ export class CcButton extends LitElement {
         .cc-link.skeleton:hover {
           color: transparent;
         }
+
+        :host-context(.no-animations) * {
+          animation: none !important;
+        }
       `,
     ];
   }
