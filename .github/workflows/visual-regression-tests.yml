@@ -1,8 +1,17 @@
 name: Visual Regression Tests
 
 on:
-  pull_request:
-    types: [synchronize, opened, reopened]
+  workflow_call:
+    inputs:
+      matrix:
+        required: true
+        type: string
+      branch:
+        required: true
+        type: string
+      pr_number:
+        required: true
+        type: string
 
 jobs:
   baseline-update:
@@ -13,7 +22,7 @@ jobs:
       options: --user 1001
     strategy:
       matrix:
-        batch: [1, 2, 3]
+        batch: ${{ fromJson(inputs.matrix) }}
     steps:
       - name: '[Prepare] Checkout base commit'
         uses: actions/checkout@v4

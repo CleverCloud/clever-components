@@ -1,0 +1,24 @@
+name: Compute number of shards
+
+on:
+  pull_request:
+    types: [synchronize, opened, reopened]
+
+jobs:
+  calculate-matrix:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    steps:
+      - id: set-matrix
+        run: |
+          # Example: dynamically determine batches
+          echo "matrix=[\"batch-1\",\"batch-2\",\"batch-3\"]" >> $GITHUB_OUTPUT
+
+  run-visual-tests:
+    needs: calculate-matrix
+    uses: ./.github/workflows/visual-regression-tests.yml
+    with:
+      matrix: ${{ needs.calculate
+      branch: ${{ github.head_ref }}
+      pr_number: ${{ github.event.pull_request.number }}-matrix.outputs.matrix }}
