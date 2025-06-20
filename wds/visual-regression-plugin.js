@@ -47,7 +47,6 @@ export const visualRegressionPluginWithConfig = visualRegressionPlugin({
     return fileBufferFromCurrentBranch;
   },
   async saveBaseline({ content, name }) {
-    console.log('name', name);
     // TODO: should we remove the whole baseline content first? => would probably need to be done elsewhere
 
     await cellar

@@ -1,4 +1,5 @@
 import { CellarClient } from './cellar-client.js';
+import { getCurrentBranch } from './git-utils.js';
 
 const cellar = new CellarClient({
   bucket: 'clever-test-flo-visual-regressions',
@@ -7,5 +8,5 @@ const cellar = new CellarClient({
 });
 
 cellar
-  .sync({ localDir: 'test-reports/', remoteDir: `${getCurrentBranch}/test-reports`, deleteRemoved: true })
+  .sync({ localDir: 'test-reports/', remoteDir: `${getCurrentBranch()}/test-reports`, deleteRemoved: true })
   .catch((error) => console.log(error));

@@ -90,3 +90,13 @@ GITHUB ACTIONS:
     HANDLE ALL ERRORS WITH ASYNC AWAIT
 
 TODO: manifest to cache
+
+- On echo chaque test result en fin de run =>
+
+- On récupère le contenu de chaque result.json
+- On créé un fichier JSON
+- On met les Metadata (last update baseline)
+- On met une catégorie results
+- On met l'id du workflow si il y a
+- Numéro de PR
+- on merge tout dans results
