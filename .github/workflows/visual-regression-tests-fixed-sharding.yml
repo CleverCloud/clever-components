@@ -1,8 +1,11 @@
 name: Visual Regression Tests (Fixed Sharding)
 
 on:
-  pull_request:
-    types: [synchronize, opened, reopened]
+  # pull_request:
+  #   types: [synchronize, opened, reopened]
+  push:
+    branches:
+      - toto
 
 jobs:
   baseline-update:

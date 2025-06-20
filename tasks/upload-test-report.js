@@ -1,5 +1,4 @@
 import { CellarClient } from './cellar-client.js';
-import { getCurrentBranch } from './git-utils.js';
 
 const cellar = new CellarClient({
   bucket: 'clever-test-flo-visual-regressions',
@@ -8,8 +7,5 @@ const cellar = new CellarClient({
 });
 
 cellar
-  .putObject({
-    key: `${getCurrentBranch()}/test-report.html`,
-    filepath: 'test-reports/test-visual-regressions.report.html',
-  })
+  .sync({ localDir: 'screenshots', remoteDir: 'toto-test/', deleteRemoved: true })
   .catch((error) => console.log(error));
