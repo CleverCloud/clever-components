@@ -1,20 +1,11 @@
-name: Visual Regression Tests
+name: Visual Regression Tests (Fixed Sharding)
 
 on:
-  workflow_call:
-    inputs:
-      matrix:
-        required: true
-        type: string
-      branch:
-        required: true
-        type: string
-      pr_number:
-        required: true
-        type: string
-      base_sha:
-        required: true
-        type: string
+  # pull_request:
+  #   types: [synchronize, opened, reopened]
+  push:
+    branches:
+      - toto
 
 jobs:
   baseline-update:
@@ -25,12 +16,12 @@ jobs:
       options: --user 1001
     strategy:
       matrix:
-        batch: ${{ fromJson(inputs.matrix) }}
+        batch: [1, 2, 3, 4, 5]
     steps:
       - name: '[Prepare] Checkout base commit'
         uses: actions/checkout@v4
         with:
-          ref: ${{ inputs.base_sha }}
+          ref: ${{ github.event.pull_request.base.sha }}
 
       - name: '[Prepare] Setup Node.js'
         uses: actions/setup-node@v4
@@ -46,13 +37,6 @@ jobs:
         env:
           VISUAL_REGRESSIONS_CELLAR_KEY_ID: ${{ secrets.VISUAL_REGRESSIONS_CELLAR_KEY_ID }}
           VISUAL_REGRESSIONS_CELLAR_SECRET_KEY: ${{ secrets.VISUAL_REGRESSIONS_CELLAR_SECRET_KEY }}
-          GITHUB_HEAD_REF: ${{ inputs.branch }}
-
-      - name: 'Upload test report'
-        run: npm run upload-test-report
-        env:
-          VISUAL_REGRESSIONS_CELLAR_KEY_ID: ${{ secrets.VISUAL_REGRESSIONS_CELLAR_KEY_ID }}
-          VISUAL_REGRESSIONS_CELLAR_SECRET_KEY: ${{ secrets.VISUAL_REGRESSIONS_CELLAR_SECRET_KEY }}
           GITHUB_HEAD_REF: ${{ github.head_ref }}
 
   run-test-visual-regression-tests:
@@ -64,27 +48,21 @@ jobs:
       options: --user 1001
     strategy:
       matrix:
-        batch: ${{ fromJson(inputs.matrix) }}
+        batch: [1, 2, 3]
     steps:
       - name: '[Prepare] Checkout latest commit'
         uses: actions/checkout@v4
-        with:
-          ref: ${{ inputs.branch }}
 
-      - name: '[Prepare] Setup Node.js'
-        uses: actions/setup-node@v4
-        with:
-          node-version-file: 'package.json'
-          cache: 'npm'
-      - run: npm ci
+      - name: '[Prepare] Install dependencies'
+        run: npm ci
 
-      - name: Run Visual Regression Tests (Current changes) - batch ${{ matrix.batch }}'
+      - name: Run Visual Regression Tests (Current changes) - batch ${{ matrix.batch }}
         run: |
           npm run test-visual-regressions -- --group batch-${{ matrix.batch }}
         env:
           VISUAL_REGRESSIONS_CELLAR_KEY_ID: ${{ secrets.VISUAL_REGRESSIONS_CELLAR_KEY_ID }}
           VISUAL_REGRESSIONS_CELLAR_SECRET_KEY: ${{ secrets.VISUAL_REGRESSIONS_CELLAR_SECRET_KEY }}
-          GITHUB_HEAD_REF: ${{ inputs.branch }}
+          GITHUB_HEAD_REF: ${{ github.head_ref }}
         continue-on-error: true
 
       - name: 'Upload test report'

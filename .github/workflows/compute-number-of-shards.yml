@@ -13,17 +13,21 @@ jobs:
       - name: '[Prepare] Checkout'
         uses: actions/checkout@v4
 
-      - name: '[Prepare] Install deps'
-        run: npm ci
+      - name: '[Prepare] Setup Node.js'
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: 'package.json'
+          cache: 'npm'
+      - run: npm ci
 
       - id: set-matrix
         run: |
-          # Example: dynamically determine batches
           echo "matrix=$(node ./tasks/get-number-of-visual-batches.js)" >> $GITHUB_OUTPUT
 
   run-visual-tests:
     needs: calculate-matrix
     uses: ./.github/workflows/visual-regression-tests.yml
+    secrets: inherit
     with:
       matrix: ${{ needs.calculate-matrix.outputs.matrix }}
       branch: ${{ github.head_ref }}

@@ -7,6 +7,7 @@ import { visualRegressionPluginWithConfig } from './wds/visual-regression-plugin
 import { commonjsPluginWithConfig, esbuildBundlePluginWithConfig } from './wds/wds-common.js';
 import globalWtrConfig from './web-test-runner.config.js';
 
+console.log(getStoriesGroups()[0]);
 export default {
   ...globalWtrConfig,
   reporters: [...globalWtrConfig.reporters],
