@@ -577,7 +577,6 @@ export class CcTokenApiCreationForm extends LitElement {
                   </p>
                 `
               : ''}
-            <p slot="help">${i18n('cc-token-api-creation-form.configuration-step.form.expiration-date.help.format')}</p>
           </cc-input-date>
         </div>
         <div class="form__actions">
