@@ -89,14 +89,6 @@ export const required = makeStory(conf, {
   items: baseItems.map((p) => ({ ...p, required: true })),
 });
 
-export const helpMessage = makeStory(conf, {
-  items: baseItems.map((p) => ({
-    ...p,
-    required: true,
-    innerHTML: '<p slot="help">Format: YYYY-MM-DD HH:MM:SS</p>',
-  })),
-});
-
 export const errorMessageEmptyInput = makeStory(conf, {
   items: [
     {
@@ -124,14 +116,21 @@ export const errorMessageInvalidFormat = makeStory(conf, {
   },
 });
 
-export const errorMessageWithHelpMessage = makeStory(conf, {
+export const errorMessageInvalidRangeOverflowAndUnderflow = makeStory(conf, {
   items: [
     {
       ...baseItems[0],
-      required: true,
-      innerHTML: `
-      <p slot="help">Format: YYYY-MM-DD HH:MM:SS</p>
-    `,
+      value: '2023-07-23T00:00:00.000Z',
+      min: '2023-07-23T00:00:00.000Z',
+      max: '2023-05-22T00:00:00.000Z',
+      label: 'Since',
+    },
+    {
+      ...baseItems[0],
+      value: '2023-05-22T00:00:00.000Z',
+      min: '2023-07-23T00:00:00.000Z',
+      max: '2023-09-23T00:00:00.000Z',
+      label: 'Until',
     },
   ],
   /** @param {CcInputDate} component */
@@ -161,9 +160,6 @@ export const inlineWithErrorAndHelpMessages = makeStory(conf, {
       ...baseItems[0],
       inline: true,
       required: true,
-      innerHTML: `
-      <p slot="help">Format: YYYY-MM-DD HH:MM:SS</p>
-    `,
     },
   ],
   /** @param {CcInputDate} component */
@@ -231,23 +227,12 @@ export const customLabelStyle = makeStory(
       ...customBaseItems,
       ...customBaseItems.map((item) => ({
         ...item,
-        innerHTML: `<p slot="help">Format: YYYY-MM-DD HH:MM:SS</p>`,
       })),
       ...customBaseItems.map((item) => ({
         ...item,
       })),
       ...customBaseItems.map((item) => ({
         ...item,
-        innerHTML: `<p slot="help">Format: YYYY-MM-DD HH:MM:SS</p>`,
-      })),
-      ...customBaseItems.map((item) => ({
-        ...item,
-        inline: true,
-      })),
-      ...customBaseItems.map((item) => ({
-        ...item,
-        inline: true,
-        innerHTML: `<p slot="help">Format: YYYY-MM-DD HH:MM:SS</p>`,
       })),
       ...customBaseItems.map((item) => ({
         ...item,
@@ -256,7 +241,14 @@ export const customLabelStyle = makeStory(
       ...customBaseItems.map((item) => ({
         ...item,
         inline: true,
-        innerHTML: `<p slot="help">Format: YYYY-MM-DD HH:MM:SS</p>`,
+      })),
+      ...customBaseItems.map((item) => ({
+        ...item,
+        inline: true,
+      })),
+      ...customBaseItems.map((item) => ({
+        ...item,
+        inline: true,
       })),
     ],
     onUpdateComplete: () => {
