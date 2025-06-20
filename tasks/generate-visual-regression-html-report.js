@@ -37,7 +37,7 @@ const htmlReport = `
     <script type="module"></script>
     <script>
       const ccVisualChangesReporter = document.querySelector('cc-visual-changes-reporter');
-      ccVisualChangesReporter.report = ${finalJsonReport};
+      ccVisualChangesReporter.report = ${finalJsonReport.toString()};
     </script>
   </head>
   <body>
