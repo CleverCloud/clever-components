@@ -58,7 +58,7 @@ jobs:
   run-visual-regression-tests:
     name: Run Visual Regression Tests (Current changes)
     needs: [baseline-update]
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-lastest
     container:
       image: mcr.microsoft.com/playwright:v1.53.0-noble
       options: --user 1001
