@@ -1,4 +1,5 @@
 import { visualRegressionPlugin } from '@web/test-runner-visual-regression/plugin';
+import { kebabCase } from '../src/lib/change-case.js';
 import { CellarClient } from '../tasks/cellar-client.js';
 import { getCurrentBranch } from '../tasks/git-utils.js';
 
