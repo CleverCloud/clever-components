@@ -88,5 +88,5 @@ export const visualRegressionPluginWithConfig = visualRegressionPlugin({
   //     .catch((err) => {
   //       console.log('failed to save FAILED', name, err);
   //     });
-  },
+  // },
 });
