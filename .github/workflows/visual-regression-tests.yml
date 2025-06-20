@@ -19,7 +19,7 @@ on:
 jobs:
   baseline-update:
     name: Baseline Update (sharded)
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-lastest
     container:
       image: mcr.microsoft.com/playwright:v1.53.0-noble
       options: --user 1001
@@ -97,7 +97,7 @@ jobs:
   generate-final-report:
     name: Generate final report
     needs: [baseline-update, run-visual-regression-tests]
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-lastest
     steps:
       - name: '[Prepare] Checkout latest commit'
         uses: actions/checkout@v4
