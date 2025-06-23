@@ -33,6 +33,12 @@ export default {
         return browser.newContext({ timezoneId: 'Europe/Paris', deviceScaleFactor: 1, reducedMotion: 'reduce' });
       },
     }),
+    playwrightLauncher({
+      product: 'firefox',
+      createBrowserContext({ browser }) {
+        return browser.newContext({ timezoneId: 'Europe/Paris', deviceScaleFactor: 1, reducedMotion: 'reduce' });
+      },
+    }),
   ],
   mimeTypes: {
     '**/*.json': 'js',

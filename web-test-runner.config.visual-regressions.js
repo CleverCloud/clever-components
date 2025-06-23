@@ -1,22 +1,22 @@
 import json from '@rollup/plugin-json';
 import { rollupAdapter } from '@web/dev-server-rollup';
-import { getStoriesGroups } from './test/helpers/generate-stories-batches.js';
+// import { getStoriesGroups } from './test/helpers/generate-stories-batches.js';
 import { cemAnalyzerPlugin } from './wds/cem-analyzer-plugin.js';
 import { testVisualStoriesPlugin } from './wds/test-visual-stories-plugin.js';
 import { visualRegressionPluginWithConfig } from './wds/visual-regression-plugin.js';
 import { commonjsPluginWithConfig, esbuildBundlePluginWithConfig } from './wds/wds-common.js';
+import { visualRegressionsReporter } from './wds/wtr-reporter-visual-regressions-json.js';
 import globalWtrConfig from './web-test-runner.config.js';
 
-console.log(getStoriesGroups()[0]);
 export default {
   ...globalWtrConfig,
-  reporters: [...globalWtrConfig.reporters],
+  reporters: [visualRegressionsReporter(), ...globalWtrConfig.reporters],
   groups: [
-    ...getStoriesGroups(),
-    // {
-    //   name: 'small',
-    //   files: 'src/components/cc-addon-credentials/cc-*.stories.js',
-    // },
+    // ...getStoriesGroups(),
+    {
+      name: 'small',
+      files: 'src/components/cc-addon-credentials/cc-*.stories.js',
+    },
   ],
   testRunnerHtml: (testFramework) => `
     <!DOCTYPE html>
@@ -45,5 +45,6 @@ export default {
     commonjsPluginWithConfig,
     visualRegressionPluginWithConfig,
     testVisualStoriesPlugin,
+    visualRegressionsReporter(),
   ],
 };

@@ -1,12 +1,9 @@
 import { visualRegressionPlugin } from '@web/test-runner-visual-regression/plugin';
-import { kebabCase } from '../src/lib/change-case.js';
 import { CellarClient } from '../tasks/cellar-client.js';
-import { getCurrentBranch } from '../tasks/git-utils.js';
-
-const CURRENT_BRANCH_NAME = getCurrentBranch();
+import { BUCKET_NAME, getScreenshotPath } from '../test/helpers/get-screenshot-path.js';
 
 const cellar = new CellarClient({
-  bucket: 'clever-test-flo-visual-regressions',
+  bucket: BUCKET_NAME,
   accessKeyId: process.env.VISUAL_REGRESSIONS_CELLAR_KEY_ID,
   secretAccessKey: process.env.VISUAL_REGRESSIONS_CELLAR_SECRET_KEY,
 });
@@ -18,16 +15,22 @@ export const visualRegressionPluginWithConfig = visualRegressionPlugin({
     diffColor: [0, 255, 255],
   },
   update: process.argv.includes('--update-visual-baseline'), // should we force to target some component or all? need to test what happens when you update baseline and it's already ok?
+  getBaselineName({ browser, name: componentWithStoryName }) {
+    return getScreenshotPath({ browser, componentWithStoryName, screenshotType: 'baseline' });
+  },
+  getDiffName({ browser, name: componentWithStoryName }) {
+    return getScreenshotPath({ browser, componentWithStoryName, screenshotType: 'diff' });
+  },
+  getFailedName({ browser, name: componentWithStoryName }) {
+    return getScreenshotPath({ browser, componentWithStoryName, screenshotType: 'changes' });
+  },
   async getBaseline({ name }) {
     if (process.argv.includes('--update-visual-baseline')) {
       return null;
     }
 
-    const nameWithKebabCase = kebabCase(name);
-    const cellarKey = `${CURRENT_BRANCH_NAME}/${nameWithKebabCase}.png`;
-
     const fileBufferFromCurrentBranch = await cellar
-      .getImage({ key: cellarKey })
+      .getImage({ key: name })
       .then((response) => {
         return new Promise((resolve, reject) => {
           const data = [];
@@ -38,33 +41,28 @@ export const visualRegressionPluginWithConfig = visualRegressionPlugin({
       })
       .catch((err) => {
         // TODO proper error filtering (some are ok to be silenced but others are not?)
-        console.log('error getting baseline from current branch', cellarKey, err);
+        console.log('error getting baseline from current branch', name, err);
       });
 
     return fileBufferFromCurrentBranch;
-    // TODO: if we get it from current branch, it means we have a new baseline and there are new visuals so we should probably set some env var so that CI lists impacted components in a comment for review?
   },
   async saveBaseline({ content, name }) {
-    const nameWithKebabCase = kebabCase(name);
-    const cellarKey = `${CURRENT_BRANCH_NAME}/${nameWithKebabCase}.png`;
+    console.log('name', name);
     // TODO: should we remove the whole baseline content first? => would probably need to be done elsewhere
 
     await cellar
       .putObject({
-        key: cellarKey,
+        key: name,
         body: content,
       })
       .catch((err) => {
-        console.log('failed to save baseline', cellarKey, err);
+        console.log('failed to save baseline', name, err);
       });
   },
   async saveDiff({ content, name }) {
-    const nameWithKebabCase = kebabCase(name);
-    const cellarKey = `${CURRENT_BRANCH_NAME}/${nameWithKebabCase}.png`;
-
     await cellar
       .putObject({
-        key: cellarKey,
+        key: name,
         body: content,
       })
       .then((response) => {
@@ -75,12 +73,9 @@ export const visualRegressionPluginWithConfig = visualRegressionPlugin({
       });
   },
   async saveFailed({ content, name }) {
-    const nameWithKebabCase = kebabCase(name);
-    const cellarKey = `${CURRENT_BRANCH_NAME}/${nameWithKebabCase}.png`;
-
     await cellar
       .putObject({
-        key: cellarKey,
+        key: name,
         body: content,
       })
       .then((response) => {

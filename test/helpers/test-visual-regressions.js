@@ -5,6 +5,7 @@ import {
 import { elementUpdated, fixture } from '@open-wc/testing';
 import { setViewport } from '@web/test-runner-commands';
 import { visualDiff } from '@web/test-runner-visual-regression';
+import { kebabCase } from '../../src/lib/change-case.js';
 import { addTranslations } from '../../src/lib/i18n/i18n.js';
 import * as en from '../../src/translations/translations.en.js';
 
@@ -248,6 +249,7 @@ export async function testStories(storiesModule) {
           storyFunction.parameters.tests.visualRegressions.enable
         ) {
           describe(storyName, function () {
+            const storyNameWithKebabCase = kebabCase(storyName);
             describe(`desktop`, async function () {
               if (storyFunction.parameters.tests.visualRegressions.enable) {
                 it('should have no visual regression', async function () {
@@ -263,7 +265,7 @@ export async function testStories(storiesModule) {
                     console.warn('Some images failed to load in time');
                   }
                   cancelAnimations(element);
-                  await visualDiff(element, `${componentTag}-${storyName}-desktop`);
+                  await visualDiff(element, `${componentTag}-${storyNameWithKebabCase}-desktop`);
                 });
               }
             });
@@ -284,7 +286,7 @@ export async function testStories(storiesModule) {
                     console.warn('Some images failed to load in time');
                   }
 
-                  await visualDiff(element, `${componentTag}-${storyName}-mobile`);
+                  await visualDiff(element, `${componentTag}-${storyNameWithKebabCase}-mobile`);
                 });
               }
             });
