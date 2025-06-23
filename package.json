@@ -143,7 +143,7 @@
     "mime-types": "^2.1.30",
     "mocha": "^10.0.0",
     "postcss-styled-syntax": "^0.7.0",
-    "prettier": "^3.2.5",
+    "prettier": "^3.6.0",
     "prettier-plugin-organize-imports": "^4.0.0",
     "remark-frontmatter": "^3.0.0",
     "remark-gfm": "^1.0.0",

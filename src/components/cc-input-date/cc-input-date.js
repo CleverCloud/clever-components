@@ -312,7 +312,7 @@ export class CcInputDate extends CcFormControlElement {
    * @return {Date|null} The current value as Date or null if the value is not a valid date.
    */
   get valueAsDate() {
-    return this._valueState.type === 'valid' ? this._valueState.date ?? null : null;
+    return this._valueState.type === 'valid' ? (this._valueState.date ?? null) : null;
   }
 
   /* endregion */
