@@ -447,6 +447,7 @@ export class CcLogsDateRangeSelector extends LitElement {
         .options-popover-content--left {
           display: flex;
           flex-direction: column;
+          justify-content: space-evenly;
         }
 
         .options-popover-content--right {
