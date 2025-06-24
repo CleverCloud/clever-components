@@ -48,14 +48,7 @@ jobs:
           VISUAL_REGRESSIONS_CELLAR_SECRET_KEY: ${{ secrets.VISUAL_REGRESSIONS_CELLAR_SECRET_KEY }}
           GITHUB_HEAD_REF: ${{ inputs.branch }}
 
-      # - name: 'Upload test report'
-      #   run: npm run upload-test-report
-      #   env:
-      #     VISUAL_REGRESSIONS_CELLAR_KEY_ID: ${{ secrets.VISUAL_REGRESSIONS_CELLAR_KEY_ID }}
-      #     VISUAL_REGRESSIONS_CELLAR_SECRET_KEY: ${{ secrets.VISUAL_REGRESSIONS_CELLAR_SECRET_KEY }}
-      #     GITHUB_HEAD_REF: ${{ github.head_ref }}
-
-  run-test-visual-regression-tests:
+  run-visual-regression-tests:
     name: Run Visual Regression Tests (Current changes)
     needs: [baseline-update]
     runs-on: ubuntu-latest
@@ -79,17 +72,51 @@ jobs:
       - run: npm ci
 
       - name: Run Visual Regression Tests (Current changes) - batch ${{ matrix.batch }}'
-        run: |
-          npm run test-visual-regressions -- --group batch-${{ matrix.batch }}
+        run: npm run test-visual-regressions -- --group batch-${{ matrix.batch }}
         env:
           VISUAL_REGRESSIONS_CELLAR_KEY_ID: ${{ secrets.VISUAL_REGRESSIONS_CELLAR_KEY_ID }}
           VISUAL_REGRESSIONS_CELLAR_SECRET_KEY: ${{ secrets.VISUAL_REGRESSIONS_CELLAR_SECRET_KEY }}
           GITHUB_HEAD_REF: ${{ inputs.branch }}
         continue-on-error: true
 
-      # - name: 'Upload test report'
-      #   run: npm run upload-test-report
-      #   env:
-      #     VISUAL_REGRESSIONS_CELLAR_KEY_ID: ${{ secrets.VISUAL_REGRESSIONS_CELLAR_KEY_ID }}
-      #     VISUAL_REGRESSIONS_CELLAR_SECRET_KEY: ${{ secrets.VISUAL_REGRESSIONS_CELLAR_SECRET_KEY }}
-      #     GITHUB_HEAD_REF: ${{ github.head_ref }}
+      - name: Upload blob report to GitHub Actions Artifacts
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: visual-regression-results-${{ matrix.batch }}.json
+          path: test-reports/visual-regression-results.json
+          retention-days: 1
+
+  generate-final-report:
+    name: Generate final report
+    needs: [run-visual-regression-tests]
+    runs-on: ubuntu-latest
+    steps:
+      - name: '[Prepare] Checkout latest commit'
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.branch }}
+
+      - name: '[Prepare] Setup Node.js'
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: 'package.json'
+          cache: 'npm'
+      - run: npm ci
+
+      - name: Download blob reports from GitHub Actions Artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: test-reports
+          pattern: visual-regression-results-*
+          merge-multiple: true
+
+      - name: Generate single HTML report
+        run: node ./tasks/generate-visual-regression-html-report.js
+
+      - name: 'Upload test report'
+        run: npm run upload-test-report
+        env:
+          VISUAL_REGRESSIONS_CELLAR_KEY_ID: ${{ secrets.VISUAL_REGRESSIONS_CELLAR_KEY_ID }}
+          VISUAL_REGRESSIONS_CELLAR_SECRET_KEY: ${{ secrets.VISUAL_REGRESSIONS_CELLAR_SECRET_KEY }}
+          GITHUB_HEAD_REF: ${{ github.head_ref }}

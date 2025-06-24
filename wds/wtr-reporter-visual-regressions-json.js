@@ -1,5 +1,4 @@
 import { mkdirSync, writeFileSync } from 'node:fs';
-import { getBranchBaseCommit, getCurrentBranch, getCurrentCommit } from '../tasks/git-utils.js';
 import { getScreenshotUrl } from '../test/helpers/get-screenshot-path.js';
 
 /**
@@ -99,16 +98,12 @@ export function visualRegressionsReporter({ reportResults = true, reportProgress
         }),
       );
 
-      const jsonReport = {
-        baseCommit: getBranchBaseCommit(),
-        headCommit: getCurrentCommit(),
-        branchName: getCurrentBranch(),
-        lastRunDate: new Date().toISOString(),
-        results: visualRegressionResults,
-      };
-
       mkdirSync('test-reports', { recursive: true });
-      writeFileSync('test-reports/visual-regression-results.json', JSON.stringify(jsonReport, null, 2), 'utf-8');
+      writeFileSync(
+        'test-reports/visual-regression-results.json',
+        JSON.stringify(visualRegressionResults, null, 2),
+        'utf-8',
+      );
       console.log('Generated visual regression report in "test-reports/visual-regression-results.json"');
     },
   };

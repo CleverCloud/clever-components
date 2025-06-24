@@ -7,5 +7,5 @@ const cellar = new CellarClient({
 });
 
 cellar
-  .sync({ localDir: 'screenshots', remoteDir: 'toto-test/', deleteRemoved: true })
+  .sync({ localDir: 'test-reports/', remoteDir: `${getCurrentBranch}/test-reports`, deleteRemoved: true })
   .catch((error) => console.log(error));
