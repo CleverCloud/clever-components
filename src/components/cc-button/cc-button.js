@@ -366,6 +366,7 @@ export class CcButton extends LitElement {
           -ms-user-select: none;
           user-select: none;
           width: 100%;
+          color: blue !important;
         }
 
         /* COLORS */
