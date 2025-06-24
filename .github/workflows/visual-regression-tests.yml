@@ -48,6 +48,13 @@ jobs:
           VISUAL_REGRESSIONS_CELLAR_SECRET_KEY: ${{ secrets.VISUAL_REGRESSIONS_CELLAR_SECRET_KEY }}
           GITHUB_HEAD_REF: ${{ inputs.branch }}
 
+      - name: 'Set LAST_BASELINE_UPDATE output'
+        id: set_last_baseline_update
+        run: echo "last_baseline_update=$(date -u +'%Y-%m-%dT%H:%M:%SZ')" >> $GITHUB_OUTPUT
+
+    outputs:
+      last_baseline_update: ${{ steps.set_last_baseline_update.outputs.last_baseline_update }}
+
   run-visual-regression-tests:
     name: Run Visual Regression Tests (Current changes)
     needs: [baseline-update]
@@ -89,7 +96,7 @@ jobs:
 
   generate-final-report:
     name: Generate final report
-    needs: [run-visual-regression-tests]
+    needs: [baseline-update, run-visual-regression-tests]
     runs-on: ubuntu-latest
     steps:
       - name: '[Prepare] Checkout latest commit'
@@ -120,3 +127,7 @@ jobs:
           VISUAL_REGRESSIONS_CELLAR_KEY_ID: ${{ secrets.VISUAL_REGRESSIONS_CELLAR_KEY_ID }}
           VISUAL_REGRESSIONS_CELLAR_SECRET_KEY: ${{ secrets.VISUAL_REGRESSIONS_CELLAR_SECRET_KEY }}
           GITHUB_HEAD_REF: ${{ github.head_ref }}
+          BASE_SHA: ${{ inputs.base_sha }}
+          LAST_BASELINE_UPDATE: ${{ needs.baseline-update.outputs.last_baseline_update }}
+          WORKFLOW_ID: ${{ github.run_id }}
+          PR_NUMBER: ${{ inputs.pr_number }}

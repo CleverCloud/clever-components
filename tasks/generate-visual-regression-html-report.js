@@ -23,7 +23,7 @@ const finalJsonReport = {
   },
   workflowId: process.env.WORKFLOW_ID,
   prNumber: process.env.PR_NUMBER,
-  branch:
+  branch: CURRENT_BRANCH,
   impactedComponents: concatenatedResults.map((result) => result.componentTagName),
   results: concatenatedResults,
 };
