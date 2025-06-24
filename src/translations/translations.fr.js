@@ -98,8 +98,8 @@ export const translations = {
   'cc-addon-backups.cli.content': /** @param {{addonId: string}} _ */ ({ addonId }) =>
     sanitize`
       <p>
-        Vous pouvez gérer les sauvegardes directement depuis votre terminal en utilisant les commandes ci-dessous. 
-        Pour installer les Clever Tools (CLI), suivez les instructions de la <a href="${generateDocsHref('/cli/install/')}" title="documentation - Installer les Clever Tools - nouvelle fenêtre - en Anglais">documentation</a>.
+        Vous pouvez gérer les sauvegardes directement depuis votre terminal en utilisant les commandes ci-dessous.
+        Pour installer les Clever Tools (CLI), suivez les instructions de la <cc-link href="${generateDocsHref('/cli/install/')}" a11y-desc="documentation - Installer les Clever Tools - en Anglais">documentation</cc-link>.
       </p>
       <dl>
         <dt>Lister les sauvegardes de bases de données disponibles :</dt>
@@ -114,20 +114,20 @@ export const translations = {
     sanitize`Supprimer la sauvegarde du <strong title="${formatDate(createdAt)}">${formatDatetime(createdAt)}</strong>`,
   'cc-addon-backups.delete.btn': `supprimer...`,
   'cc-addon-backups.delete.manual.description.es-addon': /** @param {{href: string}} _ */ ({ href }) =>
-    sanitize`Vous pouvez supprimer cette sauvegarde manuellement grâce à l'outil <a href="${href}">cURL</a> en exécutant cette commande :`,
+    sanitize`Vous pouvez supprimer cette sauvegarde manuellement grâce à l'outil <cc-link href="${href}">cURL</cc-link> en exécutant cette commande :`,
   'cc-addon-backups.delete.manual.title': `Suppression manuelle`,
   'cc-addon-backups.delete.with-service.description.es-addon': /** @param {{href: string}} _ */ ({ href }) =>
-    sanitize`Vous pouvez supprimer cette sauvegarde avec Kibana en vous rendant sur le <a href="${href}">dépôt de sauvegardes</a>.`,
+    sanitize`Vous pouvez supprimer cette sauvegarde avec Kibana en vous rendant sur le <cc-link href="${href}">dépôt de sauvegardes</cc-link>.`,
   'cc-addon-backups.delete.with-service.title.es-addon': `Suppression avec Kibana`,
   'cc-addon-backups.description.es-addon': `Les sauvegardes sont gérées par Elasticsearch lui-même. Vous pouvez définir la rétention ainsi que la périodicité des sauvegardes dans l'interface de Kibana.`,
   'cc-addon-backups.description.es-addon-old': `Les sauvegardes sont gérées par Elasticsearch lui-même. La version de votre Elasticsearch ne permet pas de définir de politique de rétention. La suppression d'une sauvegarde se fait manuellement avec l'API d'Elasticsearch.`,
   'cc-addon-backups.description.jenkins': `Les sauvegardes sont réalisées en archivant les données contenues dans Jenkins.`,
   'cc-addon-backups.description.mongodb-addon': () =>
-    sanitize`Les sauvegardes sont réalisées en utilisant l'outil <a href="https://docs.mongodb.com/v4.0/reference/program/mongodump/">mongodump</a>.`,
+    sanitize`Les sauvegardes sont réalisées en utilisant l'outil <cc-link href="https://docs.mongodb.com/v4.0/reference/program/mongodump/">mongodump</cc-link>.`,
   'cc-addon-backups.description.mysql-addon': () =>
-    sanitize`Les sauvegardes sont réalisées en utilisant l'outil <a href="https://dev.mysql.com/doc/refman/8.0/en/mysqldump.html">mysqldump</a>.`,
+    sanitize`Les sauvegardes sont réalisées en utilisant l'outil <cc-link href="https://dev.mysql.com/doc/refman/8.0/en/mysqldump.html">mysqldump</cc-link>.`,
   'cc-addon-backups.description.postgresql-addon': () =>
-    sanitize`Les sauvegardes sont réalisées en utilisant l'outil <a href="https://www.postgresql.org/docs/current/app-pgdump.html">pg_dump</a>.`,
+    sanitize`Les sauvegardes sont réalisées en utilisant l'outil <cc-link href="https://www.postgresql.org/docs/current/app-pgdump.html">pg_dump</cc-link>.`,
   'cc-addon-backups.description.redis-addon': `Les sauvegardes sont réalisées en archivant les données contenues dans Redis.`,
   'cc-addon-backups.empty': `Il n'y a aucune sauvegarde pour l'instant.`,
   'cc-addon-backups.link.es-addon': `ouvrir dans Kibana`,
@@ -142,18 +142,18 @@ export const translations = {
     sanitize`Restaurer la sauvegarde du <strong title="${formatDate(createdAt)}">${formatDatetime(createdAt)}</strong>`,
   'cc-addon-backups.restore.btn': `restaurer...`,
   'cc-addon-backups.restore.manual.description.es-addon': () =>
-    sanitize`Vous pouvez restaurer cette sauvegarde manuellement grâce à l'outil <a href="https://curl.se/docs/">cURL</a> en exécutant cette commande :`,
+    sanitize`Vous pouvez restaurer cette sauvegarde manuellement grâce à l'outil <cc-link href="https://curl.se/docs/">cURL</cc-link> en exécutant cette commande :`,
   'cc-addon-backups.restore.manual.description.jenkins': `La restauration de backups Jenkins doit passer par notre support. Créez un ticket en indiquant l'ID de votre add-on ainsi que la date du backup à restaurer et nous le ferons pour vous.`,
   'cc-addon-backups.restore.manual.description.mongodb-addon': () =>
-    sanitize`Vous pouvez restaurer cette sauvegarde manuellement grâce à l'outil <a href="https://docs.mongodb.com/v4.0/reference/program/mongorestore/">mongorestore</a> en exécutant cette commande :`,
+    sanitize`Vous pouvez restaurer cette sauvegarde manuellement grâce à l'outil <cc-link href="https://docs.mongodb.com/v4.0/reference/program/mongorestore/">mongorestore</cc-link> en exécutant cette commande :`,
   'cc-addon-backups.restore.manual.description.mysql-addon': () =>
-    sanitize`Vous pouvez restaurer cette sauvegarde manuellement grâce à la CLI <a href="https://dev.mysql.com/doc/refman/8.0/en/mysql.html">mysql</a> en exécutant cette commande :`,
+    sanitize`Vous pouvez restaurer cette sauvegarde manuellement grâce à la CLI <cc-link href="https://dev.mysql.com/doc/refman/8.0/en/mysql.html">mysql</cc-link> en exécutant cette commande :`,
   'cc-addon-backups.restore.manual.description.postgresql-addon': () =>
-    sanitize`Vous pouvez restaurer cette sauvegarde manuellement grâce à l'outil <a href="https://www.postgresql.org/docs/current/app-pgrestore.html">pg_restore</a> en exécutant cette commande :`,
+    sanitize`Vous pouvez restaurer cette sauvegarde manuellement grâce à l'outil <cc-link href="https://www.postgresql.org/docs/current/app-pgrestore.html">pg_restore</cc-link> en exécutant cette commande :`,
   'cc-addon-backups.restore.manual.description.redis-addon': `La restauration de backups Redis doit passer par notre support. Créez un ticket en indiquant l'ID de votre add-on ainsi que la date du backup à restaurer et nous le ferons pour vous`,
   'cc-addon-backups.restore.manual.title': `Restauration manuelle`,
   'cc-addon-backups.restore.with-service.description.es-addon': /** @param {{href: string}} _ */ ({ href }) =>
-    sanitize`Vous pouvez restaurer cette sauvegarde avec Kibana en vous rendant sur le <a href="${href}">dépôt de sauvegardes</a>.`,
+    sanitize`Vous pouvez restaurer cette sauvegarde avec Kibana en vous rendant sur le <cc-link href="${href}">dépôt de sauvegardes</cc-link>.`,
   'cc-addon-backups.restore.with-service.title.es-addon': `Restauration avec Kibana`,
   'cc-addon-backups.text': /** @param {{createdAt: string|number, expiresAt: string|number}} _ */ ({
     createdAt,
@@ -185,9 +185,9 @@ export const translations = {
     sanitize`<strong>Activer ces options augmentera votre consommation de crédits.</strong>`,
   'cc-addon-elasticsearch-options.description': `Cet add-on fait partie de l'offre Suite Elastic qui inclue deux options. Ces options sont déployées comme des applications et sont gérées et mises à jour par Clever Cloud. Elles apparaîtront donc comme des applications habituelles que vous pouvez arrêter, supprimer, scaler comme n'importe quelle autre application.`,
   'cc-addon-elasticsearch-options.details.apm': () =>
-    sanitize`Elastic APM est un serveur de monitoring de performance applicative pour la Suite Elastic. Déployer cette option permet d'envoyer automatiquement les métriques de toute application liée à cette instance d'add-on Elasticsearch, en supposant que vous utilisez bien l'agent Elastic APM dans les dépendances de vos applications. Retrouvez plus de détails dans <a href="https://www.elastic.co/guide/en/apm/get-started/current/overview.html">la documentation officielle de APM server</a>.`,
+    sanitize`Elastic APM est un serveur de monitoring de performance applicative pour la Suite Elastic. Déployer cette option permet d'envoyer automatiquement les métriques de toute application liée à cette instance d'add-on Elasticsearch, en supposant que vous utilisez bien l'agent Elastic APM dans les dépendances de vos applications. Retrouvez plus de détails dans <cc-link href="https://www.elastic.co/guide/en/apm/get-started/current/overview.html">la documentation officielle de APM server</cc-link>.`,
   'cc-addon-elasticsearch-options.details.kibana': () =>
-    sanitize`Kibana est l'interface d'administration de la Suite Elastic. Kibana vous permet de visualiser vos données Elasticsearch et de naviguer dans la Suite Elastic. Vous voulez effectuer le suivi de la charge de travail liée à la recherche ou comprendre le flux des requêtes dans vos applications ? Kibana est là pour ça. Retrouvez plus de détails dans <a href="https://www.elastic.co/guide/en/kibana/master/index.html">la documentation officielle de Kibana</a>.`,
+    sanitize`Kibana est l'interface d'administration de la Suite Elastic. Kibana vous permet de visualiser vos données Elasticsearch et de naviguer dans la Suite Elastic. Vous voulez effectuer le suivi de la charge de travail liée à la recherche ou comprendre le flux des requêtes dans vos applications ? Kibana est là pour ça. Retrouvez plus de détails dans <cc-link href="https://www.elastic.co/guide/en/kibana/master/index.html">la documentation officielle de Kibana</cc-link>.`,
   'cc-addon-elasticsearch-options.error.icon-a11y-name': `Avertissement`,
   'cc-addon-elasticsearch-options.title': `Options pour la Suite Elastic`,
   'cc-addon-elasticsearch-options.warning.apm': `Si vous activez cette option, nous allons déployer et gérer pour vous un APM server`,
@@ -202,7 +202,7 @@ export const translations = {
   //#endregion
   //#region cc-addon-encryption-at-rest-option
   'cc-addon-encryption-at-rest-option.description': () =>
-    sanitize`Le chiffrement au repos chiffre l'intégralité du disque de données afin de ne pas y stocker d'informations en clair. Grâce à cette sécurité, l'accès physique au disque empêchera toute lecture des données stockées. Plus d'information dans notre <a href="${generateDocsHref('/administrate/encryption-at-rest/')}">documentation</a>.`,
+    sanitize`Le chiffrement au repos chiffre l'intégralité du disque de données afin de ne pas y stocker d'informations en clair. Grâce à cette sécurité, l'accès physique au disque empêchera toute lecture des données stockées. Plus d'information dans notre <cc-link href="${generateDocsHref('/administrate/encryption-at-rest/')}">documentation</cc-link>.`,
   'cc-addon-encryption-at-rest-option.title': `Chiffrement au repos`,
   //#endregion
   //#region cc-addon-features
@@ -280,7 +280,7 @@ export const translations = {
   //#endregion
   //#region cc-doc-card
   'cc-doc-card.link': /** @param {{link: string, product: string}} _ */ ({ link, product }) =>
-    sanitize`<a href=${link} aria-label="Lire la documentation - ${product}">Lire la documentation</a>`,
+    sanitize`<cc-link href=${link} a11y-desc="Lire la documentation - ${product}">Lire la documentation</cc-link>`,
   'cc-doc-card.skeleton-link-title': `Lire la documentation`,
   //#endregion
   //#region cc-doc-list
@@ -288,18 +288,18 @@ export const translations = {
   //#endregion
   //#region cc-domain-management
   'cc-domain-management.certif.automated': () =>
-    sanitize`Que vous utilisiez <code>cleverapps.io</code> ou vos propres noms de domaine avec les applications hébergées par Clever Cloud, un certificat Let's Encrypt est automatiquement généré et renouvelé pour l'accès HTTPS/TLS. Vous n'avez rien à faire. Pour les cas spécifiques, reportez-vous à notre <a href="${generateDocsHref('/administrate/ssl/')}" lang="en">documentation</a>.`,
+    sanitize`Que vous utilisiez <code>cleverapps.io</code> ou vos propres noms de domaine avec les applications hébergées par Clever Cloud, un certificat Let's Encrypt est automatiquement généré et renouvelé pour l'accès HTTPS/TLS. Vous n'avez rien à faire. Pour les cas spécifiques, reportez-vous à notre <cc-link href="${generateDocsHref('/administrate/ssl/')}" lang="en">documentation</cc-link>.`,
   'cc-domain-management.certif.custom': () =>
-    sanitize`Vous pouvez fournir votre propre certificat grâce au <a href="https://api.clever-cloud.com/v2/certificates/new">gestionnaire de certificats Clever Cloud</a>.`,
+    sanitize`Vous pouvez fournir votre propre certificat grâce au <cc-link href="https://api.clever-cloud.com/v2/certificates/new">gestionnaire de certificats Clever Cloud</cc-link>.`,
   'cc-domain-management.certif.heading': `Sécurisez votre application`,
   'cc-domain-management.dns.a.desc': () =>
-    sanitize`<p>Si vous choisissez d'utiliser des enregistrements de type <code>A</code>, par exemple pour un domaine racine (APEX), vous devrez vous-même assurer leur mise à jour. Pensez à suivre notre <a href="${generateDevHubHref('/changelog')}" lang="en">changelog</a> ou à lire la documentation de notre <a href="${generateDevHubHref('/api/v4/#load-balancers')}" lang="en">API v4</a> pour cela.</p>`,
+    sanitize`<p>Si vous choisissez d'utiliser des enregistrements de type <code>A</code>, par exemple pour un domaine racine (APEX), vous devrez vous-même assurer leur mise à jour. Pensez à suivre notre <cc-link href="${generateDevHubHref('/changelog')}" lang="en">changelog</cc-link> ou à lire la documentation de notre <cc-link href="${generateDevHubHref('/api/v4/#load-balancers')}" lang="en">API v4</cc-link> pour cela.</p>`,
   'cc-domain-management.dns.a.heading': `Enregistrements A`,
   'cc-domain-management.dns.a.label': `Valeurs d'enregistrement A`,
   'cc-domain-management.dns.cli.content': /** @param {{resourceId: string}} _ */ ({ resourceId }) =>
     sanitize`
       <p>
-      Pour installer les Clever Tools (CLI), suivez les instructions de la <a href="${generateDocsHref('/cli/install/')}" title="documentation - Installer les Clever Tools - nouvelle fenêtre - en Anglais">documentation</a>.
+      Pour installer les Clever Tools (CLI), suivez les instructions de la <cc-link href="${generateDocsHref('/cli/install/')}" a11y-desc="documentation - Installer les Clever Tools - en Anglais">documentation</cc-link>.
       </p>
       <dl>
         <dt>Commande pour diagnostiquer l'installation actuelle :</dt>
@@ -315,7 +315,7 @@ export const translations = {
   'cc-domain-management.dns.documentation.text': `Enregistrements DNS - Documentation`,
   'cc-domain-management.dns.heading': `Configurez vos DNS`,
   'cc-domain-management.dns.info.desc': () =>
-    sanitize`Si vous bénéficiez d'un <span lang="en">load balancer</span> dédié, référez-vous à sa configuration ou <a href="/ticket-center-choice">contactez le support</a>. Notre équipe pourra également vous aider pour commander un tel service. Pour un domaine sans sous-domaine (APEX) ou un sous-domaine avec sa propre zone DNS, référez-vous à notre <a href="${generateDocsHref('/administrate/domain-names/')}">documentation</a>.`,
+    sanitize`Si vous bénéficiez d'un <span lang="en">load balancer</span> dédié, référez-vous à sa configuration ou <cc-link href="/ticket-center-choice">contactez le support</cc-link>. Notre équipe pourra également vous aider pour commander un tel service. Pour un domaine sans sous-domaine (APEX) ou un sous-domaine avec sa propre zone DNS, référez-vous à notre <cc-link href="${generateDocsHref('/administrate/domain-names/')}">documentation</cc-link>.`,
   'cc-domain-management.dns.info.heading': `Load balancers dédiés et cas spécifiques`,
   'cc-domain-management.dns.loading-error': `Une erreur est survenue pendant le chargement des informations DNS`,
   'cc-domain-management.form.domain.error.contains-path': /** @param {{path: string}} _ */ ({ path }) =>
@@ -328,7 +328,7 @@ export const translations = {
     sanitize`Par exemple: <code>example.com</code>, <code>*.example.com</code> ou <code>example.cleverapps.io</code>`,
   'cc-domain-management.form.domain.label': `Nom de domaine`,
   'cc-domain-management.form.info.cleverapps': () =>
-    sanitize`Par défaut, une application se voit attribuer un nom de domaine de type <code>app_id.cleverapps.io</code>. Vous pouvez le supprimer ou changer le sous-domaine librement, mais <code>xxx.cleverapps.io</code> doit uniquement être utilisé à des fins de test (voir notre <a href="${generateDocsHref('/administrate/domain-names/#testing-with-cleverappsio-domain')}">documentation</a>).`,
+    sanitize`Par défaut, une application se voit attribuer un nom de domaine de type <code>app_id.cleverapps.io</code>. Vous pouvez le supprimer ou changer le sous-domaine librement, mais <code>xxx.cleverapps.io</code> doit uniquement être utilisé à des fins de test (voir notre <cc-link href="${generateDocsHref('/administrate/domain-names/#testing-with-cleverappsio-domain')}">documentation</cc-link>).`,
   'cc-domain-management.form.info.docs': `Vous pouvez associer un ou plusieurs noms de domaines à votre application. Le domaine principal sera utilisé dans les liens de la Console et dans les e-mails qui vous seront envoyés. Plusieurs applications peuvent partager un même domaine, chacune avec un sous-domaine et/ou une route spécifique.`,
   'cc-domain-management.form.path.help': () => sanitize`Par exemple: <code>/api</code> ou <code>/blog</code>`,
   'cc-domain-management.form.path.label': `Route`,
@@ -375,7 +375,7 @@ export const translations = {
     sanitize`
       <p>
       Vous pouvez gérer les domaines directement depuis votre terminal grâce aux commandes ci-dessous.
-      Pour installer les Clever Tools (CLI), suivez les instructions de la <a href="${generateDocsHref('/cli/install/')}" title="documentation - Installer les Clever Tools - nouvelle fenêtre - en Anglais">documentation</a>.
+      Pour installer les Clever Tools (CLI), suivez les instructions de la <cc-link href="${generateDocsHref('/cli/install/')}" a11y-desc="documentation - Installer les Clever Tools - en Anglais">documentation</cc-link>.
       </p>
       <dl>
         <dt>Lister les domaines :</dt>
@@ -448,7 +448,7 @@ export const translations = {
   'cc-env-var-create.errors.invalid-name': /** @param {{name: string}} _ */ ({ name }) =>
     sanitize`Le nom <code>${name}</code> n'est pas valide`,
   'cc-env-var-create.info.java-prop': /** @param {{name: string}} _ */ ({ name }) =>
-    sanitize`La variable <code>${name}</code> sera injecté sous forme de propriété Java et non en tant que variable d'environnement, <a href="${generateDocsHref('/develop/env-variables/#environment-variables-rules-and-formats')}">plus de détails</a>`,
+    sanitize`La variable <code>${name}</code> sera injecté sous forme de propriété Java et non en tant que variable d'environnement, <cc-link href="${generateDocsHref('/develop/env-variables/#environment-variables-rules-and-formats')}">plus de détails</cc-link>`,
   'cc-env-var-create.name.label': `Nom de la variable`,
   'cc-env-var-create.value.label': `Valeur de la variable`,
   //#endregion
@@ -466,9 +466,9 @@ export const translations = {
   'cc-env-var-editor-expert.errors.line': `ligne`,
   'cc-env-var-editor-expert.errors.unknown': `Erreur inconnue`,
   'cc-env-var-editor-expert.example': () =>
-    sanitize`Format : <code>NOM_DE_LA_VARIABLE="valeur de la variable"</code> <br> Chaque variable doit être séparée par des sauts de ligne, <a href="${generateDocsHref('/develop/env-variables/#format')}">en savoir plus</a>.`,
+    sanitize`Format : <code>NOM_DE_LA_VARIABLE="valeur de la variable"</code> <br> Chaque variable doit être séparée par des sauts de ligne, <cc-link href="${generateDocsHref('/develop/env-variables/#format')}">en savoir plus</cc-link>.`,
   'cc-env-var-editor-expert.info.java-prop': /** @param {{name: string}} _ */ ({ name }) =>
-    sanitize`La variable <code>${name}</code> sera injecté sous forme de propriété Java et non en tant que variable d'environnement, <a href="${generateDocsHref('/develop/env-variables/#environment-variables-rules-and-formats')}">plus de détails</a>`,
+    sanitize`La variable <code>${name}</code> sera injecté sous forme de propriété Java et non en tant que variable d'environnement, <cc-link href="${generateDocsHref('/develop/env-variables/#environment-variables-rules-and-formats')}">plus de détails</cc-link>`,
   'cc-env-var-editor-expert.label': `Edition des variables. Format : NOM_DE_LA_VARIABLE="valeur de la variable". Chaque variable doit être séparée par des sauts de ligne.`,
   //#endregion
   //#region cc-env-var-editor-json
@@ -483,9 +483,9 @@ export const translations = {
     sanitize`Le nom <code>${name}</code> n'est pas valide en mode strict`,
   'cc-env-var-editor-json.errors.unknown': `Erreur inconnue`,
   'cc-env-var-editor-json.example': () =>
-    sanitize`Format : <code>{ "name": "NOM_DE_LA_VARIABLE", "value": "valeur de la variable" }</code> <br> Tableau d'objets respectant le format ci-dessus, <a href="${generateDocsHref('/develop/env-variables/#format')}">en savoir plus</a>.`,
+    sanitize`Format : <code>{ "name": "NOM_DE_LA_VARIABLE", "value": "valeur de la variable" }</code> <br> Tableau d'objets respectant le format ci-dessus, <cc-link href="${generateDocsHref('/develop/env-variables/#format')}">en savoir plus</cc-link>.`,
   'cc-env-var-editor-json.info.java-prop': /** @param {{name: string}} _ */ ({ name }) =>
-    sanitize`La variable <code>${name}</code> sera injecté sous forme de propriété Java et non en tant que variable d'environnement, <a href="${generateDocsHref('/develop/env-variables/#environment-variables-rules-and-formats')}">plus de détails</a>`,
+    sanitize`La variable <code>${name}</code> sera injecté sous forme de propriété Java et non en tant que variable d'environnement, <cc-link href="${generateDocsHref('/develop/env-variables/#environment-variables-rules-and-formats')}">plus de détails</cc-link>`,
   'cc-env-var-editor-json.label': `Edition des variables. Tableau d'objets respectant le format : { "name": "NOM_DE_LA_VARIABLE", "value": "valeur de la variable" }.`,
   //#endregion
   //#region cc-env-var-editor-simple
@@ -496,7 +496,7 @@ export const translations = {
     sanitize`
       <p class="text">
         Vous pouvez gérer les variables d'environnement directement depuis votre terminal en utilisant les commandes ci-dessous.
-        Pour installer les Clever Tools (CLI), suivez les instructions de la <a href="${generateDocsHref('/cli/install/')}" title="documentation - Installer les Clever Tools - nouvelle fenêtre - en Anglais">documentation</a>.
+        Pour installer les Clever Tools (CLI), suivez les instructions de la <cc-link href="${generateDocsHref('/cli/install/')}" a11y-desc="documentation - Installer les Clever Tools - en Anglais">documentation</cc-link>.
       </p>
       <dl>
         <dt>Lister les variables d'environnement :</dt>
@@ -508,11 +508,11 @@ export const translations = {
       </dl>
     `,
   'cc-env-var-form.description.config-provider': /** @param {{addonName: string}} _ */ ({ addonName }) =>
-    sanitize`Configuration publiée pour les applications dépendantes. <a href="${generateDocsHref('/deploy/addon/config-provider/')}">En savoir plus</a><br>Ces seront injectées en tant que variables d'environnement dans les applications qui ont l'add-on <strong>${addonName}</strong> dans leurs services liés.<br>À chaque fois que vous mettez à jour les changements, toutes les applications dépendantes seront redémarrées automatiquement.`,
+    sanitize`Configuration publiée pour les applications dépendantes. <cc-link href="${generateDocsHref('/deploy/addon/config-provider/')}">En savoir plus</cc-link><br>Ces seront injectées en tant que variables d'environnement dans les applications qui ont l'add-on <strong>${addonName}</strong> dans leurs services liés.<br>À chaque fois que vous mettez à jour les changements, toutes les applications dépendantes seront redémarrées automatiquement.`,
   'cc-env-var-form.description.env-var': /** @param {{appName: string}} _ */ ({ appName }) =>
     sanitize`Ces variables seront injectées en tant que variables d'environnement dans l'application <strong>${appName}</strong>.`,
   'cc-env-var-form.description.exposed-config': /** @param {{appName: string}} _ */ ({ appName }) =>
-    sanitize`Configuration publiée pour les applications dépendantes. <a href="${generateDocsHref('/administrate/service-dependencies/#exposed-configuration')}">En savoir plus</a><br>Ces variables ne seront pas injectées dans l'application <strong>${appName}</strong>, elles seront injectées en tant que variables d'environnement dans les applications qui ont <strong>${appName}</strong> dans leurs services liés.`,
+    sanitize`Configuration publiée pour les applications dépendantes. <cc-link href="${generateDocsHref('/administrate/service-dependencies/#exposed-configuration')}">En savoir plus</cc-link><br>Ces variables ne seront pas injectées dans l'application <strong>${appName}</strong>, elles seront injectées en tant que variables d'environnement dans les applications qui ont <strong>${appName}</strong> dans leurs services liés.`,
   'cc-env-var-form.documentation.text': `Variables d’environnement - Référence`,
   'cc-env-var-form.error.loading': `Une erreur est survenue pendant le chargement des variables.`,
   'cc-env-var-form.heading.config-provider': `Variables`,
@@ -644,7 +644,7 @@ export const translations = {
   //#endregion
   //#region cc-heptapod-info
   'cc-heptapod-info.description': () =>
-    sanitize`Cette instance Heptapod héberge des dépôts Mercurial. Plus d'informations sur <a href="https://about.heptapod.host">https://about.heptapod.host</a>.`,
+    sanitize`Cette instance Heptapod héberge des dépôts Mercurial. Plus d'informations sur <cc-link href="https://about.heptapod.host">https://about.heptapod.host</cc-link>.`,
   'cc-heptapod-info.documentation.text': `Heptapod - Documentation`,
   'cc-heptapod-info.error-loading': `Une erreur est survenue pendant le chargement des informations d'utilisation.`,
   'cc-heptapod-info.not-in-use': `Vous n'utilisez pas ce service Heptapod.`,
@@ -739,7 +739,7 @@ export const translations = {
     `La version ${version} de Jenkins est disponible !`,
   'cc-jenkins-info.update.text': `Jenkins et ses plugins reçoivent régulièrement des mises à jour. Vous pouvez mettre à jour automatiquement votre instance ainsi que ses plugins à travers l'interface Jenkins.`,
   'cc-jenkins-info.update.title': `Mises à jour`,
-  'cc-jenkins-info.update.up-to-date': `Votre version de Jenkins est à jour.`,
+  'cc-jenkins-info.update.up-to-date': `Votre version de Jenkins est à jour`,
   //#endregion
   //#region cc-kv-explorer
   'cc-kv-explorer.details.empty': `Sélectionnez une clé pour en récupérer le contenu`,
@@ -883,6 +883,10 @@ export const translations = {
   'cc-kv-terminal.header': `KV Explorer Terminal`,
   'cc-kv-terminal.shell.prompt': `Ligne de commande`,
   'cc-kv-terminal.warning': `Les commandes exécutées dans ce terminal sont directement envoyées à la base de données`,
+  //#endregion
+  //#region cc-link
+  'cc-link.new-window.name': `nouvelle fenêtre`,
+  'cc-link.new-window.title': /** @param {{linkText: string}} _ */ ({ linkText }) => `${linkText} - nouvelle fenêtre`,
   //#endregion
   //#region cc-loader
   'cc-loader.a11y-name': `Chargement en cours`,
@@ -1185,7 +1189,7 @@ export const translations = {
   'cc-orga-member-list.invite.email.label': `Adresse e-mail`,
   'cc-orga-member-list.invite.heading': `Inviter un membre`,
   'cc-orga-member-list.invite.info': () =>
-    sanitize`Plus d'informations à propos des rôles sur la page <a href="${generateDocsHref('/account/organizations/#roles-and-privileges')}">Rôles et organisations (en anglais)</a>`,
+    sanitize`Plus d'informations à propos des rôles sur la page <cc-link href="${generateDocsHref('/account/organizations/#roles-and-privileges')}">Rôles et organisations (en anglais)</cc-link>`,
   'cc-orga-member-list.invite.role.accounting': `Comptable`,
   'cc-orga-member-list.invite.role.admin': `Admin`,
   'cc-orga-member-list.invite.role.developer': `Développeur`,
@@ -1217,7 +1221,7 @@ export const translations = {
     orgaName,
     orgaBillingLink,
   }) =>
-    sanitize`<a href="${orgaBillingLink}" aria-label="Se rendre sur la page de facturation - ${orgaName}">Se rendre sur la page de facturation</a>`,
+    sanitize`<cc-link href="${orgaBillingLink}" a11y-desc="Se rendre sur la page de facturation - ${orgaName}">Se rendre sur la page de facturation</cc-link>`,
   'cc-payment-warning.generic.default-payment-method-is-expired': /** @param {{orgaName: string}} _ */ ({ orgaName }) =>
     sanitize`<strong>${orgaName}</strong> a un moyen de paiement enregistré mais il est expiré.`,
   'cc-payment-warning.generic.no-default-payment-method': /** @param {{orgaName: string}} _ */ ({ orgaName }) =>
@@ -1462,7 +1466,7 @@ export const translations = {
     sanitize`<p>Voici les clés provenant de votre compte GitHub. Vous pouvez les importer pour les associer à votre compte Clever Cloud.</p>`,
   'cc-ssh-key-list.github.title': `Clés GitHub`,
   'cc-ssh-key-list.github.unlinked': () =>
-    sanitize`Il n'y a pas de compte GitHub lié à votre compte Clever Cloud. Vous pouvez lier vos comptes depuis votre <a href="./information">profil</a>`,
+    sanitize`Il n'y a pas de compte GitHub lié à votre compte Clever Cloud. Vous pouvez lier vos comptes depuis votre <cc-link href="./information">profil</cc-link>`,
   'cc-ssh-key-list.personal.delete': `Supprimer`,
   'cc-ssh-key-list.personal.delete.a11y': /** @param {{name: string}} _ */ ({ name }) =>
     `Supprimer votre clé SSH personnelle - ${name}`,
@@ -1500,7 +1504,7 @@ export const translations = {
     sanitize`
       <p class="text">
         Vous pouvez gérer les redirections TCP directement depuis votre terminal grâce aux commandes ci-dessous.
-        Pour installer les Clever Tools (CLI), suivez les instructions de la <a href="${generateDocsHref('/cli/install/')}" title="documentation - Installer les Clever Tools - nouvelle fenêtre - en Anglais">documentation</a>.      </p>
+        Pour installer les Clever Tools (CLI), suivez les instructions de la <cc-link href="${generateDocsHref('/cli/install/')}" a11y-desc="documentation - Installer les Clever Tools - en Anglais">documentation</cc-link>.      </p>
       <dl>
         <dt>Lister les redirections TCP :</dt>
         <dd><code>clever tcp-redirs --app ${resourceId}</code></dd>
@@ -1622,7 +1626,7 @@ export const translations = {
   'cc-tile-status-codes.about-btn': `À propos de ce graphe...`,
   'cc-tile-status-codes.close-btn': `Afficher le graphe`,
   'cc-tile-status-codes.docs.link': () =>
-    sanitize`<a href="https://developer.mozilla.org/fr/docs/Web/HTTP/Status">Codes de réponses HTTP (MDN)</a>`,
+    sanitize`<cc-link href="https://developer.mozilla.org/fr/docs/Web/HTTP/Status">Codes de réponses HTTP (MDN)</cc-link>`,
   'cc-tile-status-codes.docs.msg': `Répartition des codes de réponses HTTP envoyés durant les dernières 24 heures. Cliquez sur les éléments de légende pour cacher/montrer certaines catégories de codes.`,
   'cc-tile-status-codes.empty': `Il n'y a pas de données à afficher pour l'instant.`,
   'cc-tile-status-codes.error': `Une erreur est survenue pendant le chargement des codes de réponses HTTP.`,
@@ -1645,7 +1649,7 @@ export const translations = {
   'cc-token-api-creation-form.cli.content': () => sanitize`
     <p>
       Gérez vos tokens d'API depuis un terminal à l'aide des commandes ci-dessous.
-      Pour installer les Clever Tools (CLI), suivez les instructions de la <a href="${generateDocsHref('/cli/install/')}" title="documentation - Installer les Clever Tools - nouvelle fenêtre - en Anglais">documentation</a>.
+      Pour installer les Clever Tools (CLI), suivez les instructions de la <cc-link href="${generateDocsHref('/cli/install/')}" a11y-desc="documentation - Installer les Clever Tools - en Anglais">documentation</cc-link>.
     </p>
     <dl>
       <dt>Créer un token d'API&nbsp;:</dt>
@@ -1714,7 +1718,7 @@ export const translations = {
   'cc-token-api-list.cli.content': () => sanitize`
       <p>
         Gérez vos tokens d'API depuis un terminal à l'aide des commandes ci-dessous.
-        Pour installer les Clever Tools (CLI), suivez les instructions de la <a href="${generateDocsHref('/cli/install/')}" title="documentation - Installer les Clever Tools - nouvelle fenêtre - en Anglais">documentation</a>.
+        Pour installer les Clever Tools (CLI), suivez les instructions de la <cc-link href="${generateDocsHref('/cli/install/')}" a11y-desc="documentation - Installer les Clever Tools - en Anglais">documentation</cc-link>.
       </p>
       <dl>
         <dt>Créer un token d'API&nbsp;:</dt>
@@ -1734,7 +1738,7 @@ export const translations = {
     sanitize`Vous n'avez aucun token d'API, ou aucun d'eux n'est actif. Créez un nouveau token&nbsp;:`,
   'cc-token-api-list.error': `Une erreur est survenue pendant le chargement des tokens d'API`,
   'cc-token-api-list.intro': () =>
-    sanitize`Ci-dessous la liste des <a href="https://www.clever-cloud.com/developers/api/howto/#request-the-api" title="Tokens d'API - Documentation - nouvelle fenêtre">tokens d'API</a> associés à votre compte et leurs informations. Vous pouvez les révoquer si nécessaire.`,
+    sanitize`Ci-dessous la liste des <cc-link href="https://www.clever-cloud.com/developers/api/howto/#request-the-api" a11y-desc="Tokens d'API - Documentation">tokens d'API</cc-link> associés à votre compte et leurs informations. Vous pouvez les révoquer si nécessaire.`,
   'cc-token-api-list.link.doc': `Tokens d'API - Documentation`,
   'cc-token-api-list.main-heading': `Tokens d'API`,
   'cc-token-api-list.no-password.create-password-btn': `Ajouter un mot de passe`,
@@ -1755,7 +1759,7 @@ export const translations = {
   'cc-token-api-update-form.cli.content': () => sanitize`
     <p>
       Gérez vos tokens d'API depuis un terminal à l'aide des commandes ci-dessous.
-      Pour installer les Clever Tools (CLI), suivez les instructions de la <a href="${generateDocsHref('/cli/install/')}" title="documentation - Installer les Clever Tools - nouvelle fenêtre - en Anglais">documentation</a>.
+      Pour installer les Clever Tools (CLI), suivez les instructions de la <cc-link href="${generateDocsHref('/cli/install/')}" a11y-desc="documentation - Installer les Clever Tools - en Anglais">documentation</cc-link>.
     </p>
     <dl>
       <dt>Créer un token d'API&nbsp;:</dt>
@@ -1787,7 +1791,7 @@ export const translations = {
   'cc-token-oauth-list.empty': `Aucune application tierce n'est liée à votre compte`,
   'cc-token-oauth-list.error': `Une erreur est survenue pendant le chargement des tokens OAuth`,
   'cc-token-oauth-list.intro': () =>
-    sanitize`Ci-dessous la liste des applications tierces liées à votre compte et leurs informations. Vous pouvez révoquer leurs <a href="https://www.clever-cloud.com/developers/api/howto/#oauth1" title="tokens OAuth - Documentation - nouvelle fenêtre">tokens OAuth</a> si vous le souhaitez.`,
+    sanitize`Ci-dessous la liste des applications tierces liées à votre compte et leurs informations. Vous pouvez révoquer leurs <cc-link href="https://www.clever-cloud.com/developers/api/howto/#oauth1" a11y-desc="tokens OAuth - Documentation">tokens OAuth</cc-link> si vous le souhaitez.`,
   'cc-token-oauth-list.link.doc': `Tokens OAuth - Documentation`,
   'cc-token-oauth-list.main-heading': `Tokens OAuth`,
   'cc-token-oauth-list.revoke-all-tokens': `Révoquer tous les tokens OAuth`,

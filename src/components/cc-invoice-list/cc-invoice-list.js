@@ -2,12 +2,12 @@ import { css, html, LitElement } from 'lit';
 import { iconRemixInformationFill as iconInfo } from '../../assets/cc-remix.icons.js';
 import { ResizeController } from '../../controllers/resize-controller.js';
 import { generateDocsHref, sortBy, unique } from '../../lib/utils.js';
-import { ccLink, linkStyles } from '../../templates/cc-link/cc-link.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-block-section/cc-block-section.js';
 import '../cc-block/cc-block.js';
 import '../cc-button/cc-button.js';
 import { PENDING_STATUSES, PROCESSED_STATUSES, PROCESSING_STATUS } from '../cc-invoice-table/cc-invoice-table.js';
+import '../cc-link/cc-link.js';
 import '../cc-notice/cc-notice.js';
 import '../cc-select/cc-select.js';
 import '../cc-toggle/cc-toggle.js';
@@ -184,10 +184,9 @@ export class CcInvoiceList extends LitElement {
         <div slot="header-title">${i18n('cc-invoice-list.title')}</div>
         ${content}
         <div slot="footer-right">
-          ${ccLink(
-            `${INVOICE_DOCUMENTATION}`,
-            html`<cc-icon .icon="${iconInfo}"></cc-icon> ${i18n('cc-invoice-list.documentation.text')}`,
-          )}
+          <cc-link href="${INVOICE_DOCUMENTATION}" .icon="${iconInfo}">
+            ${i18n('cc-invoice-list.documentation.text')}
+          </cc-link>
         </div>
       </cc-block>
     `;
@@ -195,7 +194,6 @@ export class CcInvoiceList extends LitElement {
 
   static get styles() {
     return [
-      linkStyles,
       // language=CSS
       css`
         :host {
@@ -221,12 +219,6 @@ export class CcInvoiceList extends LitElement {
         .empty-msg {
           color: var(--cc-color-text-weak);
           font-style: italic;
-        }
-
-        [slot='footer-right'] .cc-link {
-          align-items: center;
-          display: flex;
-          gap: 0.5em;
         }
       `,
     ];

@@ -2,9 +2,9 @@ import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { fakeString } from '../../lib/fake-strings.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
-import { linkStyles } from '../../templates/cc-link/cc-link.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-img/cc-img.js';
+import '../cc-link/cc-link.js';
 
 /** @type {DocCard} */
 const SKELETON_INFO = {
@@ -65,7 +65,6 @@ export class CcDocCard extends LitElement {
 
   static get styles() {
     return [
-      linkStyles,
       skeletonStyles,
       // language=CSS
       css`

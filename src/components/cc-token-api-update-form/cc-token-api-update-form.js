@@ -1,15 +1,15 @@
 import { LitElement, css, html } from 'lit';
 import {
-  iconRemixLogoutBoxRLine as iconExternalLink,
   iconRemixArrowLeftLine as iconGoBack,
+  iconRemixInformationFill as iconInfo,
 } from '../../assets/cc-remix.icons.js';
 import { formSubmit } from '../../lib/form/form-submit-directive.js';
 import { cliCommandsStyles } from '../../styles/cli-commands.js';
-import { linkStyles } from '../../templates/cc-link/cc-link.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-block-details/cc-block-details.js';
 import '../cc-block/cc-block.js';
 import '../cc-input-text/cc-input-text.js';
+import '../cc-link/cc-link.js';
 import '../cc-notice/cc-notice.js';
 import { CcTokenChangeEvent } from './cc-token-api-update-form.events.js';
 
@@ -77,10 +77,13 @@ export class CcTokenApiUpdateForm extends LitElement {
         </div>
         <cc-block-details slot="footer-left">
           <div slot="button-text">${i18n('cc-block-details.cli.text')}</div>
-          <a slot="link" href="https://www.clever-cloud.com/developers/api/howto/#request-the-api" target="_blank">
-            <span class="cc-link">${i18n('cc-token-api-update-form.link.doc')}</span>
-            <cc-icon .icon=${iconExternalLink}></cc-icon>
-          </a>
+          <cc-link
+            slot="link"
+            href="https://www.clever-cloud.com/developers/api/howto/#request-the-api"
+            .icon="${iconInfo}"
+          >
+            <span>${i18n('cc-token-api-update-form.link.doc')}</span>
+          </cc-link>
           <div slot="content">${i18n('cc-token-api-update-form.cli.content')}</div>
         </cc-block-details>
       </cc-block>
@@ -114,22 +117,14 @@ export class CcTokenApiUpdateForm extends LitElement {
         ></cc-input-text>
         <div class="form__actions">
           <div class="form__actions__link-container">
-            ${skeleton || isWaiting
-              ? html`
-                  <div class="form__actions__link-container__link">
-                    <cc-icon .icon=${iconGoBack}></cc-icon>
-                    <span>${i18n('cc-token-api-update-form.back-to-list')}</span>
-                  </div>
-                `
-              : ''}
-            ${!skeleton && !isWaiting
-              ? html`
-                  <a href="${this.apiTokenListHref}" class="form__actions__link-container__link">
-                    <cc-icon .icon=${iconGoBack}></cc-icon>
-                    <span>${i18n('cc-token-api-update-form.back-to-list')}</span>
-                  </a>
-                `
-              : ''}
+            <cc-link
+              href="${this.apiTokenListHref}"
+              class="form__actions__link-container__link"
+              .icon="${iconGoBack}"
+              mode="subtle"
+            >
+              <span>${i18n('cc-token-api-update-form.back-to-list')}</span>
+            </cc-link>
           </div>
           <cc-button
             class="form__actions__submit-button"
@@ -147,7 +142,6 @@ export class CcTokenApiUpdateForm extends LitElement {
 
   static get styles() {
     return [
-      linkStyles,
       cliCommandsStyles,
       css`
         :host {

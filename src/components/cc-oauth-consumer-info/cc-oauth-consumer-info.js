@@ -5,7 +5,6 @@ import { iconRemixCheckLine, iconRemixCloseLine, iconRemixInformationFill } from
 import { ResizeController } from '../../controllers/resize-controller.js';
 import { fakeString } from '../../lib/fake-strings.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
-import { ccLink, linkStyles } from '../../templates/cc-link/cc-link.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-badge/cc-badge.js';
 import '../cc-block-section/cc-block-section.js';
@@ -13,6 +12,7 @@ import '../cc-block/cc-block.js';
 import '../cc-icon/cc-icon.js';
 import '../cc-img/cc-img.js';
 import '../cc-input-text/cc-input-text.js';
+import '../cc-link/cc-link.js';
 import '../cc-notice/cc-notice.js';
 
 /** @type {Partial<OauthConsumerInfoStateLoaded>} */
@@ -137,9 +137,9 @@ export class CcOauthConsumerInfo extends LitElement {
             <div class="header-description">
               <span class="${classMap({ skeleton })}">${oauthConsumerInfo.description}</span>
             </div>
-            <a class="edit-link ${classMap({ skeleton })}" href="${this.editInfoHref}"
-              ><span>${i18n('cc-oauth-consumer-info.rights.edit')}</span></a
-            >
+            <cc-link class="edit-link" mode="button" href="${this.editInfoHref}" ?skeleton="${skeleton}">
+              ${i18n('cc-oauth-consumer-info.rights.edit')}
+            </cc-link>
           </div>
         </cc-block>
 
@@ -150,11 +150,27 @@ export class CcOauthConsumerInfo extends LitElement {
             <dl class="access-grid">
               <div>
                 <dt>${i18n('cc-oauth-consumer-info.info.homepage-url')}</dt>
-                <dd>${ccLink(oauthConsumerInfo.url, oauthConsumerInfo.url, skeleton)}</dd>
+                <dd>
+                  <cc-link
+                    href="${oauthConsumerInfo.url}"
+                    a11y-desc="${oauthConsumerInfo.url} - ${i18n('cc-oauth-consumer-info.info.homepage-url')} "
+                    ?skeleton="${skeleton}"
+                  >
+                    ${oauthConsumerInfo.url}
+                  </cc-link>
+                </dd>
               </div>
               <div>
                 <dt>${i18n('cc-oauth-consumer-info.info.base-url')}</dt>
-                <dd>${ccLink(oauthConsumerInfo.baseUrl, oauthConsumerInfo.baseUrl, skeleton)}</dd>
+                <dd>
+                  <cc-link
+                    href="${oauthConsumerInfo.baseUrl}"
+                    a11y-desc="${oauthConsumerInfo.baseUrl} - ${i18n('cc-oauth-consumer-info.info.base-url')}"
+                    ?skeleton="${skeleton}"
+                  >
+                    ${oauthConsumerInfo.baseUrl}
+                  </cc-link>
+                </dd>
               </div>
             </dl>
             <div class="access-grid">
@@ -221,7 +237,6 @@ export class CcOauthConsumerInfo extends LitElement {
   static get styles() {
     return [
       skeletonStyles,
-      linkStyles,
       // language=CSS
       css`
         :host {
@@ -282,34 +297,9 @@ export class CcOauthConsumerInfo extends LitElement {
         .edit-link {
           align-items: center;
           align-self: center;
-          background-color: var(--cc-color-bg-primary, #3569aaff);
-          border: 1px solid var(--cc-color-bg-primary, #3569aaff);
-          border-radius: var(--cc-button-border-radius, 0.15em);
-          box-sizing: border-box;
-          color: var(--cc-color-text-inverted, #fff);
-          cursor: pointer;
           display: flex;
-          font-weight: var(--cc-button-font-weight, bold);
           grid-area: link;
           justify-content: center;
-          min-height: 2em;
-          padding: 0 0.5em;
-          text-decoration: none;
-          text-transform: var(--cc-button-text-transform, uppercase);
-          user-select: none;
-        }
-
-        .edit-link span {
-          font-size: 0.85em;
-        }
-
-        .edit-link:hover {
-          box-shadow: 0 1px 3px rgb(0 0 0 / 40%);
-        }
-
-        .edit-link:focus {
-          outline: var(--cc-focus-outline);
-          outline-offset: var(--cc-focus-outline-offset, 2px);
         }
 
         /* end region */
