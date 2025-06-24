@@ -102,8 +102,9 @@ export const shoelaceStyles = css`
     --sl-transition-fast: 150ms;
     --sl-transition-x-fast: 50ms;
     --sl-font-mono: SFMono-Regular, Consolas, 'Liberation Mono', Menlo, monospace;
-    --sl-font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif,
-      'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+    --sl-font-sans:
+      -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji',
+      'Segoe UI Emoji', 'Segoe UI Symbol';
     --sl-font-serif: Georgia, 'Times New Roman', serif;
     --sl-font-size-xx-small: 0.625em;
     --sl-font-size-x-small: 0.75em;
