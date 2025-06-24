@@ -80,7 +80,7 @@ export class CcImgDiffViewer extends LitElement {
           grid-template-areas: 'img';
           position: relative;
           align-items: center;
-          justify-content: flex-start;
+          justify-content: stretch;
           border-radius: var(--cc-border-radius-default);
           border: solid 1px var(--cc-color-border-neutral);
         }
@@ -129,14 +129,20 @@ export class CcImgDiffViewer extends LitElement {
           position: absolute;
           top: 0;
           height: 100%;
-          width: 1px;
+          width: 5px;
           background-color: var(--cc-color-border-neutral-weak);
           transform: translateX(-50%);
+          box-sizing: border-box;
+          border: solid 2px #fff;
         }
 
         input:focus-visible + cc-icon {
           outline: var(--cc-focus-outline);
           outline-offset: var(--cc-focus-outline-offset);
+        }
+
+        input:hover + cc-icon {
+          box-shadow: 0 1px 3px rgb(0 0 0 / 40%);
         }
       `,
     ];
