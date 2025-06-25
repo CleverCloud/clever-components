@@ -8,13 +8,13 @@ export interface CcHeaderAddonBetaStateLoading {
 
 export interface CcHeaderAddonBetaStateLoaded extends Addon {
   type: 'loaded';
-  addonHref: String;
-  logsHref: String;
-  zone: String;
+  addonHref: string;
+  logsHref: string;
+  zone: string;
 }
 
 export type Addon = {
-  id: String;
-  logo: String;
-  name: String;
+  id: string;
+  logo: string;
+  name: string;
 };
