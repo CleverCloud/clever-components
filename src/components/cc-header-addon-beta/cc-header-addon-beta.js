@@ -29,14 +29,26 @@ export class CcHeaderAddonBeta extends LitElement {
     };
   }
 
+  /**
+   * @param {string} addonName
+   */
+  _getRender(addonName) {
+    switch (addonName) {
+      case 'Matomo':
+        return this._renderMatomo();
+      case 'Keycloak':
+        return this._renderKeycloak();
+      case 'Jenkins':
+        return this._renderJenkins();
+      default:
+        return '';
+    }
+  }
+
   render() {
-    return html`
-      <div class="wrapper">
-        ${this.state.name === 'Matomo' ? this._renderMatomo() : ''}
-        ${this.state.name === 'Keycloak' ? this._renderKeycloak() : ''}
-        ${this.state.name === 'Jenkins' ? this._renderJenkins() : ''}
-      </div>
-    `;
+    /** @type {string} */
+    const addonName = this.state.name;
+    return html` <div class="wrapper">${this._getRender(addonName)}</div> `;
   }
 
   _renderMatomo() {
