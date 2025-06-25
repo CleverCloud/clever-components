@@ -14,7 +14,8 @@ import '../cc-img/cc-img.js';
 import '../cc-toggle/cc-toggle.js';
 
 /**
- * @typedef {import('./cc-visual-change-report-entry.types.js').VisualChangeScreenshots} VisualChangeScreenshots
+ * @typedef {import('./cc-visual-changes-report-entry.types.js').VisualChangesTestResult} VisualChangeTestResult
+ * @typedef {import('./cc-visual-changes-report-entry.types.js').VisualChangesScreenshots} VisualChangesScreenshots
  * @typedef {import('../cc-toggle/cc-toggle.types.js').Choice} Choice
  */
 
@@ -45,35 +46,19 @@ const VIEWPORT_ICONS = {
   mobile: iconRemixSmartphoneLine,
 };
 
-export class CcVisualChangeReportEntry extends LitElement {
+export class CcVisualChangesReportEntry extends LitElement {
   static get properties() {
     return {
-      browserName: { type: String, attribute: 'browser-name' },
-      componentTagName: { type: String, attribute: 'component-tag-name' },
-      screenshots: { type: Object },
-      storyName: { type: String, attribute: 'story-name' },
+      testResult: { type: Object, attribute: 'test-result' },
       viewerMode: { type: String, attribute: 'viewer-mode' },
-      viewportType: { type: String, attribute: 'viewport-type' },
     };
   }
 
   constructor() {
     super();
 
-    /** @type {string|null} */
-    this.componentTagName = null;
-
-    /** @type {string|null} */
-    this.storyName = null;
-
-    /** @type {string|null} */
-    this.viewportType = null;
-
-    /** @type {string|null} */
-    this.browserName = null;
-
-    /** @type {VisualChangeScreenshots} */
-    this.screenshots = null;
+    /** @type {import('./cc-visual-changes-report-entry.types.js').VisualChangesTestResult|null} */
+    this.testResult = null;
 
     /** @type {typeof CHOICES[number]['value']} */
     this.viewerMode = DEFAULT_CHOICE;
@@ -85,24 +70,29 @@ export class CcVisualChangeReportEntry extends LitElement {
   }
 
   render() {
-    const formattedStoryName = enhanceStoryName(camelCaseToHuman(this.storyName));
+    if (this.testResult == null) {
+      return '';
+    }
+
+    const { componentTagName, storyName, viewportType, browserName, screenshots } = this.testResult;
+    const formattedStoryName = enhanceStoryName(camelCaseToHuman(storyName));
     return html`
       <header class="header">
         <div class="main-heading">
-          <span><cc-icon .icon="${iconRemixCodeLine}"></cc-icon> ${this.componentTagName}</span>
+          <span><cc-icon .icon="${iconRemixCodeLine}"></cc-icon> ${componentTagName}</span>
           <span>&nbsp;| ${formattedStoryName}</span>
-          <cc-icon .icon="${VIEWPORT_ICONS[this.viewportType]}" a11y-name="${this.viewportType}"></cc-icon>
-          <cc-icon .icon="${BROWSER_ICONS[this.browserName]}" a11y-name="${this.browserName}"></cc-icon>
+          <cc-icon .icon="${VIEWPORT_ICONS[viewportType]}" a11y-name="${viewportType}"></cc-icon>
+          <cc-icon .icon="${BROWSER_ICONS[browserName.toLowerCase()]}" a11y-name="${browserName}"></cc-icon>
         </div>
         <cc-toggle .choices="${CHOICES}" @cc-select="${this._onSelect}" .value="${this.viewerMode}"></cc-toggle>
       </header>
       <div class="image-viewer">
-        ${this.viewerMode === 'diff' ? this._renderThreeWayDiff(this.screenshots) : ''}
+        ${this.viewerMode === 'diff' ? this._renderThreeWayDiff(screenshots) : ''}
         ${this.viewerMode === 'comparison'
           ? html`
               <cc-img-diff-viewer
-                base-img-src="${this.screenshots.baselineScreenshotUrl}"
-                changed-img-src="${this.screenshots.changesScreenshotUrl}"
+                base-img-src="${screenshots.baselineScreenshotUrl}"
+                changed-img-src="${screenshots.changesScreenshotUrl}"
               ></cc-img-diff-viewer>
             `
           : ''}
@@ -110,7 +100,7 @@ export class CcVisualChangeReportEntry extends LitElement {
     `;
   }
 
-  /** @param {VisualChangeScreenshots} _ */
+  /** @param {VisualChangesScreenshots} _ */
   _renderThreeWayDiff({ baselineScreenshotUrl, changesScreenshotUrl, diffScreenshotUrl }) {
     return html`
       <div class="three-way-diff">
@@ -213,4 +203,4 @@ export class CcVisualChangeReportEntry extends LitElement {
   }
 }
 
-window.customElements.define('cc-visual-change-report-entry', CcVisualChangeReportEntry);
+customElements.define('cc-visual-changes-report-entry', CcVisualChangesReportEntry);

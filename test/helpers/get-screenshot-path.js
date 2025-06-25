@@ -8,7 +8,7 @@ import { getCurrentBranch } from '../../tasks/git-utils.js';
 
 const CURRENT_BRANCH_NAME = getCurrentBranch();
 export const BUCKET_NAME = 'clever-test-flo-visual-regressions';
-const BASE_SCREENSHOT_URL = new URL(`${BUCKET_NAME}/${CURRENT_BRANCH_NAME}`, `https://${CELLAR_HOST}`);
+const BASE_SCREENSHOT_URL = new URL(`${CURRENT_BRANCH_NAME}`, `https://${BUCKET_NAME}.${CELLAR_HOST}`);
 const EXTENSION = '.png';
 
 /**
@@ -38,12 +38,11 @@ export function getScreenshotPath({ browser, componentWithStoryName, screenshotT
  */
 export function getScreenshotUrl({ browser, componentTagName, storyName, viewportType, screenshotType }) {
   try {
-    return new URL(
-      kebabCase(
-        `${CURRENT_BRANCH_NAME}/${browser}/${componentTagName}-${storyName}-${viewportType}-${screenshotType}`,
-      ).toLowerCase() + EXTENSION,
-      BASE_SCREENSHOT_URL,
-    ).href;
+    return (
+      BASE_SCREENSHOT_URL.href +
+      kebabCase(`/${browser}/${componentTagName}-${storyName}-${viewportType}-${screenshotType}`).toLowerCase() +
+      EXTENSION
+    );
   } catch (error) {
     console.error('Failed to build the screenshot URL', error);
     return null;

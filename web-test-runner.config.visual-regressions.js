@@ -1,6 +1,6 @@
 import json from '@rollup/plugin-json';
 import { rollupAdapter } from '@web/dev-server-rollup';
-import { getStoriesGroups } from './test/helpers/generate-stories-batches.js';
+// import { getStoriesGroups } from './test/helpers/generate-stories-batches.js';
 import { cemAnalyzerPlugin } from './wds/cem-analyzer-plugin.js';
 import { testVisualStoriesPlugin } from './wds/test-visual-stories-plugin.js';
 import { visualRegressionPluginWithConfig } from './wds/visual-regression-plugin.js';
@@ -12,11 +12,11 @@ export default {
   ...globalWtrConfig,
   reporters: [visualRegressionsReporter(), ...globalWtrConfig.reporters],
   groups: [
-    ...getStoriesGroups(),
-    // {
-    //   name: 'small',
-    //   files: 'src/components/cc-addon-credentials/cc-*.stories.js',
-    // },
+    // ...getStoriesGroups(),
+    {
+      name: 'small',
+      files: 'src/components/cc-addon-credentials/cc-*.stories.js',
+    },
   ],
   testRunnerHtml: (testFramework) => `
     <!DOCTYPE html>

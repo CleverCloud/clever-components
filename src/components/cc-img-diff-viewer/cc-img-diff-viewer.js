@@ -149,4 +149,4 @@ export class CcImgDiffViewer extends LitElement {
   }
 }
 
-window.customElements.define('cc-img-diff-viewer', CcImgDiffViewer);
+customElements.define('cc-img-diff-viewer', CcImgDiffViewer);
