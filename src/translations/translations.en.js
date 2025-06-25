@@ -357,13 +357,9 @@ export const translations = {
   'cc-domain-management.names.cli.content.add-domain-command': `Add a domain:`,
   'cc-domain-management.names.cli.content.diag-dns-records-command': `Diagnose DNS records:`,
   'cc-domain-management.names.cli.content.list-command': `List domains:`,
-  'cc-domain-management.names.cli.content.text': () =>
-    sanitize`
-      <p class="text">
-        You can manage domains directly from your terminal using the commands below. 
-        To install Clever Tools CLI, follow the instructions from the <a href="${generateDocsHref('/cli/install/')}" title="documentation - Install Clever Tools - new window">documentation</a>.
-      </p>
-    `,
+  'cc-domain-management.names.cli.content.text':
+    () => sanitize`You can manage domains directly from your terminal using the commands below. 
+        To install Clever Tools CLI, follow the instructions from the <a href="${generateDocsHref('/cli/install/')}" title="documentation - Install Clever Tools - new window">documentation</a>.`,
   'cc-domain-management.names.documentation.text': `Domain names - Documentation`,
   'cc-domain-management.new-window': `New Window`,
   'cc-domain-management.tls.certificates.documentation.text': `TLS certificates - Documentation`,

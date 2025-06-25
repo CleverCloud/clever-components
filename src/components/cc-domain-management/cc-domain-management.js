@@ -364,19 +364,23 @@ export class CcDomainManagement extends LitElement {
               <a href="${DOMAIN_NAMES_DOCUMENTATION}">${i18n('cc-domain-management.names.documentation.text')}</a>
             </div>
             <div slot="content">
-              ${i18n('cc-domain-management.names.cli.content.text')}
-              <cc-block-details-command
-                command="clever domain --app ${this.resourceId}"
-                description="${i18n('cc-domain-management.names.cli.content.list-command')}"
-              ></cc-block-details-command>
-              <cc-block-details-command
-                command="clever domain diag --app ${this.resourceId}"
-                description="${i18n('cc-domain-management.names.cli.content.diag-dns-records-command')}"
-              ></cc-block-details-command>
-              <cc-block-details-command
-                command="clever domain add myapp.example.com --app ${this.resourceId}"
-                description="${i18n('cc-domain-management.names.cli.content.add-domain-command')}"
-              ></cc-block-details-command>
+              <p>${i18n('cc-domain-management.names.cli.content.text')}</p>
+              <dl>
+                <dt>${i18n('cc-domain-management.names.cli.content.list-command')}</dt>
+                <dd><cc-block-details-command>clever domain --app ${this.resourceId}</cc-block-details-command></dd>
+
+                <dt>${i18n('cc-domain-management.names.cli.content.diag-dns-records-command')}</dt>
+                <dd>
+                  <cc-block-details-command>clever domain diag --app ${this.resourceId}</cc-block-details-command>
+                </dd>
+
+                <dt>${i18n('cc-domain-management.names.cli.content.add-domain-command')}</dt>
+                <dd>
+                  <cc-block-details-command>
+                    clever domain add myapp.example.com --app ${this.resourceId}
+                  </cc-block-details-command>
+                </dd>
+              </dl>
             </div>
           </cc-block-details>
         </cc-block>
@@ -675,8 +679,8 @@ export class CcDomainManagement extends LitElement {
   static get styles() {
     return [
       accessibilityStyles,
-      linkStyles,
       cliCommandsStyles,
+      linkStyles,
       css`
         :host {
           display: block;

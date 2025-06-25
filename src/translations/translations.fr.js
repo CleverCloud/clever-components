@@ -368,12 +368,8 @@ export const translations = {
   'cc-domain-management.names.cli.content.diag-dns-records-command': `Diagnostiquer les enregistrements DNS :`,
   'cc-domain-management.names.cli.content.list-command': `Lister les domaines :`,
   'cc-domain-management.names.cli.content.text': () =>
-    sanitize`
-      <p>
-      Vous pouvez gérer les domaines directement depuis votre terminal grâce aux commandes ci-dessous.
-      Pour installer les Clever Tools (CLI), suivez les instructions de la <a href="${generateDocsHref('/cli/install/')}" title="documentation - Installer les Clever Tools - nouvelle fenêtre - en Anglais">documentation</a>.
-      </p>
-      `,
+    sanitize`Vous pouvez gérer les domaines directement depuis votre terminal grâce aux commandes ci-dessous.
+      Pour installer les Clever Tools (CLI), suivez les instructions de la <a href="${generateDocsHref('/cli/install/')}" title="documentation - Installer les Clever Tools - nouvelle fenêtre - en Anglais">documentation</a>.`,
   'cc-domain-management.names.documentation.text': `Noms de domaine - Documentation`,
   'cc-domain-management.new-window': `Nouvelle fenêtre`,
   'cc-domain-management.tls.certificates.documentation.text': `Certificats TLS - Documentation`,

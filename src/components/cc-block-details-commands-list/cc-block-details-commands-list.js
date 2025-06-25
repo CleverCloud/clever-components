@@ -13,10 +13,6 @@ export class CcBlockDetailsCommandsList extends LitElement {
     return {};
   }
 
-  constructor() {
-    super();
-  }
-
   render() {
     return html`
       <dl class="wrapper">
