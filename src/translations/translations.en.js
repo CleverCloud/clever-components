@@ -581,6 +581,13 @@ export const translations = {
   'cc-header-addon.plan': `Plan`,
   'cc-header-addon.version': `Version`,
   //#endregion
+  //#region cc-header-addon-beta
+  'cc-header-addon-beta.action.open-addon': /** @param {{ linkName: string }} _ */ ({ linkName }) => `Open ${linkName}`,
+  'cc-header-addon-beta.action.restart': `Restart`,
+  'cc-header-addon-beta.action.restart-rebuild': `Re-build and restart`,
+  'cc-header-addon-beta.error': `Something went wrong while loading add-on info.`,
+  'cc-header-addon-beta.logs.link': `View logs`,
+  //#endregion
   //#region cc-header-app
   'cc-header-app.action.cancel-deployment': `Cancel deployment`,
   'cc-header-app.action.restart': `Restart`,
