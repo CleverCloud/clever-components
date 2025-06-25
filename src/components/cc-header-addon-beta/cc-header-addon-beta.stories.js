@@ -48,20 +48,7 @@ const conf = {
   component: 'cc-header-addon-beta',
 };
 
-export const defaultStory = makeStory(conf, {
-  items: [
-    {
-      /** @type {CcHeaderAddonBetaStateLoaded} */
-      state: {
-        ...matomoData,
-      },
-      innerHTML: `
-      <dd slot="restart"><a href="http://example.com">Restart</a></dd>
-      <dd slot="rebuild"><a href="http://example.com">Re-built and restart</a></dd>
-      `,
-    },
-  ],
-});
+export const defaultStory = makeStory(conf, {});
 
 export const matomoDataLoadedStory = makeStory(conf, {
   items: [
@@ -70,10 +57,10 @@ export const matomoDataLoadedStory = makeStory(conf, {
       state: {
         ...matomoData,
       },
-      innerHTML: `
+      /*  innerHTML: `
       <dd slot="restart"><a href="http://example.com">Restart</a></dd>
       <dd slot="rebuild"><a href="http://example.com">Re-built and restart</a></dd>
-      `,
+      `, */
     },
   ],
 });
@@ -85,10 +72,10 @@ export const keycloackDataLoadedStory = makeStory(conf, {
       state: {
         ...keycloakData,
       },
-      innerHTML: `
+      /* innerHTML: `
       <dd slot="restart"><a href="http://example.com">Restart</a></dd>
       <dd slot="rebuild"><a href="http://example.com">Re-built and restart</a></dd>
-      `,
+      `, */
     },
   ],
 });
