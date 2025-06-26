@@ -69,6 +69,7 @@ export default [
       'src/stories/lib/smart-auth-plugin.js',
       'test-mocha/**/*.*js',
       '.storybook/**/*.js',
+      '.github/**/*.js',
     ],
     languageOptions: {
       globals: {

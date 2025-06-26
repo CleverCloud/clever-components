@@ -1,4 +1,5 @@
 import { mkdirSync, writeFileSync } from 'node:fs';
+import { kebabCase } from '../src/lib/change-case.js';
 import { getScreenshotUrl } from '../test/helpers/get-screenshot-path.js';
 
 /**
@@ -88,7 +89,7 @@ export function visualRegressionsReporter({ reportResults = true, reportProgress
           for (const [viewportType, browsers] of Object.entries(viewports)) {
             for (const [browserName, testResult] of Object.entries(browsers)) {
               visualRegressionResults.push({
-                id: `${componentTagName}-${storyName}-${viewportType}-${browserName}`,
+                id: kebabCase(`${componentTagName}-${storyName}-${viewportType}-${browserName}`),
                 componentTagName,
                 storyName,
                 viewportType,
