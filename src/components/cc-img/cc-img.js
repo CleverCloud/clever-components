@@ -145,4 +145,4 @@ export class CcImg extends LitElement {
   }
 }
 
-window.customElements.define('cc-img', CcImg);
+customElements.define('cc-img', CcImg);

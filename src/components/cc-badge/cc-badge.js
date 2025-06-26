@@ -193,4 +193,4 @@ export class CcBadge extends LitElement {
   }
 }
 
-window.customElements.define('cc-badge', CcBadge);
+customElements.define('cc-badge', CcBadge);

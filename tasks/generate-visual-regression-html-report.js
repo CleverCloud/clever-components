@@ -1,5 +1,11 @@
-import { writeFileSync } from 'node:fs';
+import { html, render } from '@lit-labs/ssr';
+import { collectResultSync } from '@lit-labs/ssr/lib/render-result.js';
+import { unsafeHTML } from 'lit/directives/unsafe-html.js';
+import { mkdirSync, writeFileSync } from 'node:fs';
 import { globSync } from 'tinyglobby';
+import '../src/components/cc-badge/cc-badge.js';
+import '../src/components/cc-visual-changes-menu/cc-visual-changes-menu.js';
+import '../src/components/cc-visual-changes-report-entry/cc-visual-changes-report-entry.js';
 import { getCurrentBranch, getCurrentCommit } from './git-utils.js';
 
 const CURRENT_BRANCH = getCurrentBranch();
@@ -8,8 +14,8 @@ let concatenatedResults = [];
 
 const jsonModules = await Promise.all(paths.map((path) => import(path, { with: { type: 'json' } })));
 
-jsonModules.map(({ default: results }) => {
-  concatenatedResults = [...concatenatedResults, ...results];
+jsonModules.map(({ default: report }) => {
+  concatenatedResults = [...concatenatedResults, ...report.results];
 });
 
 const finalJsonReport = {
@@ -19,7 +25,7 @@ const finalJsonReport = {
   },
   changesMetadata: {
     commitReference: getCurrentCommit(),
-    lastUpdated: new Date(),
+    lastUpdated: new Date().toISOString(),
   },
   workflowId: process.env.WORKFLOW_ID,
   prNumber: process.env.PR_NUMBER,
@@ -28,23 +34,92 @@ const finalJsonReport = {
   results: concatenatedResults,
 };
 
-const htmlReport = `
-  <!DOCTYPE html>
-  <html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <title>PR #${process.env.PR_NUMBER} - Branch ${CURRENT_BRANCH} - Visual Regression Report</title>
-    <script type="module"></script>
-    <script>
-      const ccVisualChangesReporter = document.querySelector('cc-visual-changes-reporter');
-      ccVisualChangesReporter.report = ${finalJsonReport};
-    </script>
-  </head>
-  <body>
-    <cc-visual-changes-reporter></cc-visual-changes-reporter>
-  </body>
-  </html>
-`;
+const htmlReportTemplate = (report) => {
+  return html`
+    <!doctype html>
+    <html lang="en">
+      <head>
+        <meta charset="UTF-8" />
+        <title>PR ${process.env.PR_NUMBER} - Branch ${CURRENT_BRANCH} - Visual Regression Report</title>
+        <link rel="stylesheet" href="https://components.clever-cloud.com/styles.css" />
+        ${unsafeHTML(`
+          <script>
+            window.toto = ${JSON.stringify(finalJsonReport)};
+          </script>
+        `)}
+        <style>
+          body {
+            display: flex;
+            gap: 2em;
+            padding: 0;
+            margin: 0;
+          }
 
+          html,
+          body,
+          nav {
+            height: 100%;
+          }
+
+          cc-visual-changes-menu {
+            max-width: 20em;
+          }
+
+          main {
+            flex: 1 1 0;
+            padding: 1em;
+          }
+        </style>
+        <script
+          type="module"
+          src="https://preview-components.clever-cloud.com/load.js?version=visual-changes-new-components&lang=en&components=cc-visual-changes-menu,cc-visual-changes-report-entry"
+        ></script>
+      </head>
+      <body>
+        <!-- TODO: logo en haut du menu, h1 et metadata? -->
+        <nav aria-label="Visual changes tests results menu">
+          <cc-visual-changes-menu></cc-visual-changes-menu>
+        </nav>
+        <main>
+          <cc-visual-changes-report-entry></cc-visual-changes-report-entry>
+        </main>
+        <script type="module">
+          // TODO: rely on CDN
+          // import('/src/components/cc-visual-changes-menu/cc-visual-changes-menu.js');
+          // import('/src/components/cc-visual-changes-report-entry/cc-visual-changes-report-entry.js');
+
+          const entityDecoder = document.createElement('textarea');
+          // TODO: should we sanitize just in case?!
+          entityDecoder.innerHTML = document.getElementById('visual-changes-report').textContent;
+          const decodedReport = entityDecoder.value;
+
+          const report = JSON.parse(decodedReport);
+
+          const ccVisualChangesReportEntry = document.querySelector('cc-visual-changes-report-entry');
+          const ccVisualChangesMenu = document.querySelector('cc-visual-changes-menu');
+          ccVisualChangesReportEntry.testResult = report.results[0];
+          ccVisualChangesMenu.testResults = report.results;
+
+          document.addEventListener('click', (e) => {
+            const linkElement = e.composedPath().find((element) => element.tagName === 'A');
+
+            if (linkElement != null && linkElement.origin === window.location.origin) {
+              e.preventDefault();
+              const testResultId = linkElement.pathname.split('/').pop();
+
+              ccVisualChangesReportEntry.testResult = report.results.find(({ id }) => id === testResultId);
+            }
+          });
+        </script>
+        <script type="text/json" id="visual-changes-report">
+          ${JSON.stringify(report)}
+        </script>
+      </body>
+    </html>
+  `;
+};
+const ssrResult = render(htmlReportTemplate(finalJsonReport));
+
+mkdirSync('test-reports', { recursive: true });
 writeFileSync('test-reports/visual-regression-results.json', JSON.stringify(finalJsonReport), { encoding: 'utf-8' });
-writeFileSync('test-reports/visual-regression-results.html', htmlReport, { encoding: 'utf-8' });
+writeFileSync('test-reports/visual-regression-results.html', collectResultSync(ssrResult), { encoding: 'utf-8' });

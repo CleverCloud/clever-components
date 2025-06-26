@@ -38,7 +38,7 @@ export function visualRegressionsReporter({ reportResults = true, reportProgress
               name: viewportType,
               tests: [visualRegressionTest],
             } of /** @type {Array<TestSuiteResult & { name: ViewportType }>} */ (storySuites)) {
-              if (visualRegressionTest.passed) {
+              if (visualRegressionTest == null || visualRegressionTest.passed) {
                 continue;
               }
 
@@ -80,28 +80,34 @@ export function visualRegressionsReporter({ reportResults = true, reportProgress
         }
       }
 
-      /** @type {VisualRegressionTestResult[]} */
-      const visualRegressionResults = Object.entries(resultsByComponent).map(
-        ([componentTagName, { fileName, stories }]) => ({
-          componentTagName,
-          fileName,
-          stories: Object.entries(stories).map(([storyName, viewports]) => ({
-            storyName,
-            viewports: Object.entries(viewports).map(([viewportType, browsers]) => ({
-              viewportType: /** @type {ViewportType} */ (viewportType),
-              tests: Object.entries(browsers).map(([browserName, testResult]) => ({
+      /** @type {import('../src/components/cc-visual-changes-report-entry/cc-visual-changes-report-entry.types.js').VisualChangesTestResult[]} */
+      const visualRegressionResults = [];
+
+      for (const [componentTagName, { fileName, stories }] of Object.entries(resultsByComponent)) {
+        for (const [storyName, viewports] of Object.entries(stories)) {
+          for (const [viewportType, browsers] of Object.entries(viewports)) {
+            for (const [browserName, testResult] of Object.entries(browsers)) {
+              visualRegressionResults.push({
+                id: `${componentTagName}-${storyName}-${viewportType}-${browserName}`,
+                componentTagName,
+                storyName,
+                viewportType,
                 browserName,
-                testResult,
-              })),
-            })),
-          })),
-        }),
-      );
+                screenshots: {
+                  baselineScreenshotUrl: testResult.baselineScreenshotUrl,
+                  diffScreenshotUrl: testResult.diffScreenshotUrl,
+                  changesScreenshotUrl: testResult.changesScreenshotUrl,
+                },
+              });
+            }
+          }
+        }
+      }
 
       mkdirSync('test-reports', { recursive: true });
       writeFileSync(
         'test-reports/visual-regression-results.json',
-        JSON.stringify(visualRegressionResults, null, 2),
+        JSON.stringify({ results: visualRegressionResults }, null, 2),
         'utf-8',
       );
       console.log('Generated visual regression report in "test-reports/visual-regression-results.json"');
