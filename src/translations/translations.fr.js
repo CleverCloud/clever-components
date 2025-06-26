@@ -1485,19 +1485,13 @@ export const translations = {
     sanitize`Vous pouvez créer une redirection dans l'espace de nommage <strong>${namespace}</strong>.`,
   //#endregion
   //#region cc-tcp-redirection-form
-  'cc-tcp-redirection-form.cli.content': /** @param {{resourceId: string}} _ */ ({ resourceId }) =>
+  'cc-tcp-redirection-form.cli.content.add-tcp-redirection-command': `Ajouter une redirection TCP :`,
+  'cc-tcp-redirection-form.cli.content.list-tcp-redirection-command': `Lister les redirections TCP :`,
+  'cc-tcp-redirection-form.cli.content.remove-tecp-redirection-command': `Supprimer une redirection TCP :`,
+  'cc-tcp-redirection-form.cli.content.text': () =>
     sanitize`
-      <p class="text">
-        Vous pouvez gérer les redirections TCP directement depuis votre terminal grâce aux commandes ci-dessous.
-        Pour installer les Clever Tools (CLI), suivez les instructions de la <cc-link href="${generateDocsHref('/cli/install/')}" a11y-desc="documentation - Installer les Clever Tools - en Anglais">documentation</cc-link>.      </p>
-      <dl>
-        <dt>Lister les redirections TCP :</dt>
-        <dd><code>clever tcp-redirs --app ${resourceId}</code></dd>
-        <dt>Ajouter une redirection TCP :</dt>
-        <dd><code>clever tcp-redirs add --namespace my-namespace --app ${resourceId}</code></dd>
-        <dt>Supprimer une redirection TCP :</dt>
-        <dd><code>clever tcp-redirs remove --namespace my-namespace {portNumber} --app ${resourceId}</code></dd>
-      </dl>
+      Vous pouvez gérer les redirections TCP directement depuis votre terminal grâce aux commandes ci-dessous.
+      Pour installer les Clever Tools (CLI), suivez les instructions de la <cc-link href="${generateDocsHref('/cli/install/')}" a11y-desc="documentation - Installer les Clever Tools - en Anglais">documentation</cc-link>.      
     `,
   'cc-tcp-redirection-form.create.error': /** @param {{namespace: string}} _ */ ({ namespace }) => {
     return sanitize`Une erreur est survenue pendant la création d'une redirection TCP dans l'espace de nommage <strong>${namespace}</strong>.`;
