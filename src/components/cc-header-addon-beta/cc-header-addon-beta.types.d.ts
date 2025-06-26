@@ -1,20 +1,23 @@
-export type CcHeaderAddonBetaState = CcHeaderAddonBetaStateLoaded;
+import { Addon, AddonPlan, AddonProvider } from '../common.types.js';
 
-/*
-export interface CcHeaderAddonBetaStateLoading {
-  type: 'loading';
-}
-*/
+export type CcHeaderAddonBetaState = CcHeaderAddonBetaStateLoaded | CcHeaderAddonBetaStateError;
 
 export interface CcHeaderAddonBetaStateLoaded extends Addon {
   type: 'loaded';
-  addonHref: string;
-  logsHref: string;
-  zone: string;
 }
 
-export type Addon = {
+export interface CcHeaderAddonBetaStateError {
+  type: 'error';
+}
+
+export interface RawAddon {
   id: string;
-  logo: string;
   name: string;
-};
+  realId: string;
+  region: string;
+  zoneId: string;
+  provider: AddonProvider;
+  plan: AddonPlan;
+  creationDate: number;
+  configKeys: string[];
+}
