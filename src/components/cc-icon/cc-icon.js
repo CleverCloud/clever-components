@@ -148,4 +148,4 @@ export class CcIcon extends LitElement {
   }
 }
 
-window.customElements.define('cc-icon', CcIcon);
+customElements.define('cc-icon', CcIcon);
