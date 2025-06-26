@@ -11,7 +11,13 @@ import { getCurrentBranch, getCurrentCommit } from './git-utils.js';
 const CURRENT_BRANCH = getCurrentBranch();
 
 const paths = globSync(
+<<<<<<< HEAD
   ['test-reports/**/visual-regression-results*.json', '!test-reports/**/visual-regression-results-merged.json'],
+||||||| parent of ea5000f6 (feat: test comment)
+const paths = globSync('test-reports/visual-regression-results*.json', { absolute: true });
+=======
+  ['test-reports/visual-regression-results*.json', '!test-reports/visual-regression-results-merged.json'],
+>>>>>>> ea5000f6 (feat: test comment)
   { absolute: true },
 );
 let concatenatedResults = [];
