@@ -456,6 +456,7 @@ export class CcButton extends LitElement {
         /* TRANSITIONS */
 
         .btn {
+          padding: 1em;
           box-shadow: 0 0 0 0 rgb(255 255 255 / 0%);
           transition: box-shadow 75ms ease-in-out;
         }

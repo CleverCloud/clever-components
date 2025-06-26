@@ -169,7 +169,7 @@ export class CcBlock extends LitElement {
         .container {
           display: grid;
           gap: 0.5em;
-          padding-block: 1em;
+          padding-block: 2em;
 
           --left-space: 1em;
         }
