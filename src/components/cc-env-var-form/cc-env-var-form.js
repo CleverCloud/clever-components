@@ -6,6 +6,7 @@ import { i18n } from '../../translations/translation.js';
 import '../cc-block-details/cc-block-details.js';
 import '../cc-block/cc-block.js';
 import '../cc-button/cc-button.js';
+import '../cc-code/cc-code.js';
 import '../cc-env-var-editor-expert/cc-env-var-editor-expert.js';
 import '../cc-env-var-editor-json/cc-env-var-editor-json.js';
 import '../cc-env-var-editor-simple/cc-env-var-editor-simple.js';
@@ -385,7 +386,23 @@ export class CcEnvVarForm extends LitElement {
               ${i18n('cc-env-var-form.documentation.text')}
             </cc-link>
           </div>
-          <div slot="content">${i18n('cc-env-var-form.cli.content', { resourceId: this.resourceId })}</div>
+          <div slot="content">
+            <p>${i18n('cc-env-var-form.cli.content.text')}</p>
+            <dl>
+              <dt>${i18n('cc-env-var-form.cli.content.list-var-command')}</dt>
+              <dd>
+                <cc-code>clever env --app ${this.resourceId}</cc-code>
+              </dd>
+              <dt>${i18n('cc-env-var-form.cli.content.get-file-var-command')}</dt>
+              <dd>
+                <cc-code>clever env --app ${this.resourceId} -F shell</cc-code>
+              </dd>
+              <dt>${i18n('cc-env-var-form.cli.content.add-var-command')}</dt>
+              <dd>
+                <cc-code>clever env set VAR_NAME VAR_VALUE --app ${this.resourceId}</cc-code>
+              </dd>
+            </dl>
+          </div>
         </cc-block-details>
       </cc-block>
     `;
