@@ -11,9 +11,7 @@ export class CcHeaderAddonBeta extends LitElement {
   static get properties() {
     return {
       addonHref: { type: String, attribute: 'addon-href' },
-      // logo: { type: String },
       logsHref: { type: String, attribute: 'logs-href' },
-      // region: { type: String },
       state: { type: Object },
     };
   }

@@ -46,9 +46,15 @@ const jenkinsData = {
   id: 'addon_22354884',
   realId: 'jenkins_22354884',
   name: 'Jenkins',
-  provider: null,
-  plan: null,
-  creationDate: null,
+  provider: {
+    name: 'Jenkins',
+    logoUrl: 'https://assets.clever-cloud.com/logos/jenkins.svg',
+  },
+  plan: {
+    name: '',
+  },
+  region: 'par',
+  creationDate: 0,
 };
 
 export default {
@@ -98,7 +104,6 @@ export const jenkinsDataLoadedStory = makeStory(conf, {
       },
       addonHref: 'http://example.com',
       logsHref: 'http://example.com',
-      logo: 'https://assets.clever-cloud.com/logos/jenkins.svg',
     },
   ],
 });
