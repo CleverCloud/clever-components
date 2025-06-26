@@ -145,4 +145,4 @@ export class CcMapMarkerDot extends LitElement {
   }
 }
 
-window.customElements.define('cc-map-marker-dot', CcMapMarkerDot);
+customElements.define('cc-map-marker-dot', CcMapMarkerDot);

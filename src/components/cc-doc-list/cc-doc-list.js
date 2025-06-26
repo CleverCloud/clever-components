@@ -69,4 +69,4 @@ export class CcDocList extends LitElement {
 
 // DOCS: 11. Define the custom element
 
-window.customElements.define('cc-doc-list', CcDocList);
+customElements.define('cc-doc-list', CcDocList);

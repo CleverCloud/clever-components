@@ -110,9 +110,14 @@ export class CcLoader extends LitElement {
             stroke-dashoffset: -100px;
           }
         }
+
+        :host-context(.no-animations) svg,
+        :host-context(.no-animations) circle {
+          animation: none !important;
+        }
       `,
     ];
   }
 }
 
-window.customElements.define('cc-loader', CcLoader);
+customElements.define('cc-loader', CcLoader);

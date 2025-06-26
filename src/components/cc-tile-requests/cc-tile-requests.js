@@ -377,4 +377,4 @@ export class CcTileRequests extends LitElement {
   }
 }
 
-window.customElements.define('cc-tile-requests', CcTileRequests);
+customElements.define('cc-tile-requests', CcTileRequests);

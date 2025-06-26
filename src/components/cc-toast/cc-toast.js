@@ -327,4 +327,4 @@ export class CcToast extends LitElement {
   }
 }
 
-window.customElements.define('cc-toast', CcToast);
+customElements.define('cc-toast', CcToast);

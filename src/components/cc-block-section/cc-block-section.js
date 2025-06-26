@@ -89,4 +89,4 @@ export class CcBlockSection extends LitElement {
   }
 }
 
-window.customElements.define('cc-block-section', CcBlockSection);
+customElements.define('cc-block-section', CcBlockSection);

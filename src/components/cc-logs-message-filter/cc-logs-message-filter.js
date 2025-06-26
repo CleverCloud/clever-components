@@ -237,4 +237,4 @@ export class CcLogsMessageFilter extends LitElement {
 }
 
 // eslint-disable-next-line wc/tag-name-matches-class
-window.customElements.define('cc-logs-message-filter-beta', CcLogsMessageFilter);
+customElements.define('cc-logs-message-filter-beta', CcLogsMessageFilter);

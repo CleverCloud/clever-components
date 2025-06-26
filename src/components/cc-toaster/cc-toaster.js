@@ -316,4 +316,4 @@ export class CcToaster extends LitElement {
   }
 }
 
-window.customElements.define('cc-toaster', CcToaster);
+customElements.define('cc-toaster', CcToaster);

@@ -149,7 +149,7 @@ export class CcAddonCredentials extends LitElement {
         .credential-list {
           display: flex;
           flex-wrap: wrap;
-          gap: 1em;
+          gap: 2em;
         }
 
         cc-input-text {
@@ -168,4 +168,4 @@ export class CcAddonCredentials extends LitElement {
   }
 }
 
-window.customElements.define('cc-addon-credentials', CcAddonCredentials);
+customElements.define('cc-addon-credentials', CcAddonCredentials);

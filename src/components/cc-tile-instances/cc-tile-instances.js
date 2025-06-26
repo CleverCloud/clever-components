@@ -229,4 +229,4 @@ export class CcTileInstances extends LitElement {
   }
 }
 
-window.customElements.define('cc-tile-instances', CcTileInstances);
+customElements.define('cc-tile-instances', CcTileInstances);

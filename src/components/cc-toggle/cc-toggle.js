@@ -366,4 +366,4 @@ export class CcToggle extends LitElement {
   }
 }
 
-window.customElements.define('cc-toggle', CcToggle);
+customElements.define('cc-toggle', CcToggle);

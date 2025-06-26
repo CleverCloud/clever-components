@@ -20,8 +20,6 @@ import { CcInputEvent, CcRequestSubmitEvent } from '../common.events.js';
 
 // This is the date format chosen to format the date displayed to the user.
 const DATE_FORMAT = 'datetime-short';
-const DATE_FORMATTER_SHORT = new DateFormatter('datetime-short', 'local');
-const NOW = new Date();
 // This array is hard coded and corresponds directly to the date format defined above.
 const FIELDS_POSITION = /** @type {const} */ ([
   'Y',
@@ -314,7 +312,7 @@ export class CcInputDate extends CcFormControlElement {
    * @return {Date|null} The current value as Date or null if the value is not a valid date.
    */
   get valueAsDate() {
-    return this._valueState.type === 'valid' ? (this._valueState.date ?? null) : null;
+    return this._valueState.type === 'valid' ? this._valueState.date ?? null : null;
   }
 
   /* endregion */
@@ -804,4 +802,4 @@ export class CcInputDate extends CcFormControlElement {
   }
 }
 
-window.customElements.define('cc-input-date', CcInputDate);
+customElements.define('cc-input-date', CcInputDate);

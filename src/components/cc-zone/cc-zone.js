@@ -266,4 +266,4 @@ export class CcZone extends LitElement {
   }
 }
 
-window.customElements.define('cc-zone', CcZone);
+customElements.define('cc-zone', CcZone);

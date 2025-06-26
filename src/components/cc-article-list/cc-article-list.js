@@ -67,4 +67,4 @@ export class CcArticleList extends LitElement {
   }
 }
 
-window.customElements.define('cc-article-list', CcArticleList);
+customElements.define('cc-article-list', CcArticleList);

@@ -62,4 +62,4 @@ export class CcAddonPostgresqlOptions extends LitElement {
   }
 }
 
-window.customElements.define('cc-addon-postgresql-options', CcAddonPostgresqlOptions);
+customElements.define('cc-addon-postgresql-options', CcAddonPostgresqlOptions);

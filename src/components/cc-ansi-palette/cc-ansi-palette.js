@@ -216,4 +216,4 @@ export class CcAnsiPalette extends LitElement {
   }
 }
 
-window.customElements.define('cc-ansi-palette', CcAnsiPalette);
+customElements.define('cc-ansi-palette', CcAnsiPalette);

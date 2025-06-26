@@ -1088,4 +1088,4 @@ export class CcPricingEstimation extends LitElement {
   }
 }
 
-window.customElements.define('cc-pricing-estimation', CcPricingEstimation);
+customElements.define('cc-pricing-estimation', CcPricingEstimation);

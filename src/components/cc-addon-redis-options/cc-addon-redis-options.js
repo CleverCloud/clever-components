@@ -62,4 +62,4 @@ export class CcAddonRedisOptions extends LitElement {
   }
 }
 
-window.customElements.define('cc-addon-redis-options', CcAddonRedisOptions);
+customElements.define('cc-addon-redis-options', CcAddonRedisOptions);

@@ -252,4 +252,4 @@ export class CcLogsmap extends LitElement {
   }
 }
 
-window.customElements.define('cc-logsmap', CcLogsmap);
+customElements.define('cc-logsmap', CcLogsmap);

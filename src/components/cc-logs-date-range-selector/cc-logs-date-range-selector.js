@@ -513,4 +513,4 @@ export class CcLogsDateRangeSelector extends LitElement {
 }
 
 // eslint-disable-next-line wc/tag-name-matches-class
-window.customElements.define('cc-logs-date-range-selector-beta', CcLogsDateRangeSelector);
+customElements.define('cc-logs-date-range-selector-beta', CcLogsDateRangeSelector);

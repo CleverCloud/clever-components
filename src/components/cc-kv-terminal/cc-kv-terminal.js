@@ -417,10 +417,14 @@ export class CcKvTerminal extends LitElement {
             background-color: var(--cc-kv-terminal-color-foreground);
           }
         }
+
+        :host-context(.no-animations) .caret-blink {
+          animation: none !important;
+        }
       `,
     ];
   }
 }
 
 // eslint-disable-next-line wc/tag-name-matches-class
-window.customElements.define('cc-kv-terminal-beta', CcKvTerminal);
+customElements.define('cc-kv-terminal-beta', CcKvTerminal);

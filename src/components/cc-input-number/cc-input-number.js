@@ -606,4 +606,4 @@ export class CcInputNumber extends CcFormControlElement {
   }
 }
 
-window.customElements.define('cc-input-number', CcInputNumber);
+customElements.define('cc-input-number', CcInputNumber);

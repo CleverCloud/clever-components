@@ -329,4 +329,4 @@ export class CcLogsAddonRuntime extends LitElement {
 }
 
 // eslint-disable-next-line wc/tag-name-matches-class
-window.customElements.define('cc-logs-addon-runtime-beta', CcLogsAddonRuntime);
+customElements.define('cc-logs-addon-runtime-beta', CcLogsAddonRuntime);

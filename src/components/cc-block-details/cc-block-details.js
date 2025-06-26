@@ -141,4 +141,4 @@ export class CcBlockDetails extends LitElement {
   }
 }
 
-window.customElements.define('cc-block-details', CcBlockDetails);
+customElements.define('cc-block-details', CcBlockDetails);

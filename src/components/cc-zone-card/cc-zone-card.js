@@ -181,4 +181,4 @@ export class CcZoneCard extends LitElement {
   }
 }
 
-window.customElements.define('cc-zone-card', CcZoneCard);
+customElements.define('cc-zone-card', CcZoneCard);

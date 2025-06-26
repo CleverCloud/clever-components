@@ -215,4 +215,4 @@ export class CcHeaderAddon extends LitElement {
   }
 }
 
-window.customElements.define('cc-header-addon', CcHeaderAddon);
+customElements.define('cc-header-addon', CcHeaderAddon);

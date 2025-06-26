@@ -104,4 +104,4 @@ export class CcBeta extends LitElement {
   }
 }
 
-window.customElements.define('cc-beta', CcBeta);
+customElements.define('cc-beta', CcBeta);

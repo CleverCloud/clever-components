@@ -367,4 +367,4 @@ export class CcSelect extends CcFormControlElement {
   }
 }
 
-window.customElements.define('cc-select', CcSelect);
+customElements.define('cc-select', CcSelect);

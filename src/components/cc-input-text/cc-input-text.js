@@ -772,4 +772,4 @@ export class CcInputText extends CcFormControlElement {
   }
 }
 
-window.customElements.define('cc-input-text', CcInputText);
+customElements.define('cc-input-text', CcInputText);

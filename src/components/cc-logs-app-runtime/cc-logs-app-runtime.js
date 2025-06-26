@@ -447,4 +447,4 @@ export class CcLogsAppRuntime extends LitElement {
 }
 
 // eslint-disable-next-line wc/tag-name-matches-class
-window.customElements.define('cc-logs-app-runtime-beta', CcLogsAppRuntime);
+customElements.define('cc-logs-app-runtime-beta', CcLogsAppRuntime);

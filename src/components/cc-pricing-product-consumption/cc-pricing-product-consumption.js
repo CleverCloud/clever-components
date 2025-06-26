@@ -808,4 +808,4 @@ export class CcPricingProductConsumption extends LitElement {
   }
 }
 
-window.customElements.define('cc-pricing-product-consumption', CcPricingProductConsumption);
+customElements.define('cc-pricing-product-consumption', CcPricingProductConsumption);

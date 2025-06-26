@@ -256,4 +256,4 @@ export class CcLogsLoadingProgress extends LitElement {
 }
 
 // eslint-disable-next-line wc/tag-name-matches-class
-window.customElements.define('cc-logs-loading-progress-beta', CcLogsLoadingProgress);
+customElements.define('cc-logs-loading-progress-beta', CcLogsLoadingProgress);

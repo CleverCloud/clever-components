@@ -414,4 +414,4 @@ export class CcLogsAppAccess extends LitElement {
 }
 
 // eslint-disable-next-line wc/tag-name-matches-class
-window.customElements.define('cc-logs-app-access-beta', CcLogsAppAccess);
+customElements.define('cc-logs-app-access-beta', CcLogsAppAccess);

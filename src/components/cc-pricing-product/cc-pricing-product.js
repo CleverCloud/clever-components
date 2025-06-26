@@ -575,4 +575,4 @@ export class CcPricingProduct extends LitElement {
   }
 }
 
-window.customElements.define('cc-pricing-product', CcPricingProduct);
+customElements.define('cc-pricing-product', CcPricingProduct);

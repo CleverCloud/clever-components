@@ -95,6 +95,26 @@ export function camelCase(input) {
 }
 
 /**
+ * Inserts spaces between words in camelCase or PascalCase strings, making them more human-readable,
+ * and capitalizes the first letter of each word.
+ * Does not modify strings with underscores or numbers adjacent to underscores.
+ * camelCaseToHuman('string'); //=> 'String'
+ * camelCaseToHuman('dotCase'); //=> 'Dot Case'
+ * camelCaseToHuman('PascalCase'); //=> 'Pascal Case'
+ * camelCaseToHuman('snakeCase'); //=> 'Snake Case'
+ * camelCaseToHuman('version_1_2_10'); //=> 'Version_1_2_10'
+ * camelCaseToHuman('version1_2_10'); //=> 'Version1_2_10'
+ * @param {string} input
+ * @returns {string}
+ */
+export function camelCaseToHuman(input) {
+  // Insert a space before each uppercase letter (except the first char)
+  const spaced = input.replace(/([a-z0-9])([A-Z])/g, '$1 $2').replace(/([A-Z])([A-Z][a-z])/g, '$1 $2');
+  // Capitalize the first letter of each word
+  return spaced.replace(/\b\w/g, (c) => c.toUpperCase());
+}
+
+/**
  * snakeCase('string'); //=> 'string'
  * snakeCase('dot.case'); //=> 'dot_case'
  * snakeCase('PascalCase'); //=> 'pascal_case'
@@ -107,4 +127,19 @@ export function snakeCase(input) {
   return stringToWordArray(input)
     .map((word) => word.toLowerCase())
     .join('_');
+}
+
+/**
+ * kebabCase('string'); //=> 'string'
+ * kebabCase('dot.case'); //=> 'dot-case'
+ * kebabCase('PascalCase'); //=> 'pascal-case'
+ * kebabCase('camelCase'); //=> 'camel-case'
+ * kebabCase('version 1.2.10'); //=> 'version-1-2-10'
+ * @param {string} input
+ * @returns {string}
+ */
+export function kebabCase(input) {
+  return stringToWordArray(input)
+    .map((word) => word.toLowerCase())
+    .join('-');
 }

@@ -182,4 +182,4 @@ same as this.size
   }
 }
 
-window.customElements.define('cc-map-marker-server', CcMapMarkerServer);
+customElements.define('cc-map-marker-server', CcMapMarkerServer);

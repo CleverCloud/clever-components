@@ -192,4 +192,4 @@ export class CcEnvVarLinkedServices extends LitElement {
   }
 }
 
-window.customElements.define('cc-env-var-linked-services', CcEnvVarLinkedServices);
+customElements.define('cc-env-var-linked-services', CcEnvVarLinkedServices);

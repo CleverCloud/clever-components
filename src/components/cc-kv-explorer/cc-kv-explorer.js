@@ -1210,4 +1210,4 @@ export class CcKvExplorer extends LitElement {
 }
 
 // eslint-disable-next-line wc/tag-name-matches-class
-window.customElements.define('cc-kv-explorer-beta', CcKvExplorer);
+customElements.define('cc-kv-explorer-beta', CcKvExplorer);

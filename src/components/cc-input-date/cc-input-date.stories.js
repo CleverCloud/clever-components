@@ -3,6 +3,7 @@ import { makeStory, storyWait } from '../../stories/lib/make-story.js';
 import './cc-input-date.js';
 
 /**
+ *
  * @typedef {import('./cc-input-date.js').CcInputDate} CcInputDate
  */
 
@@ -97,31 +98,12 @@ export const helpMessageSlotted = makeStory(conf, {
   })),
 });
 
-export const errorMessageEmptyInput = makeStory(conf, {
-  items: [
-    {
-      ...baseItems[0],
-      required: true,
-    },
-  ],
-  /** @param {CcInputDate} component */
-  onUpdateComplete: (component) => {
-    component.reportInlineValidity();
-  },
-});
-
-export const errorMessageInvalidFormat = makeStory(conf, {
-  items: [
-    {
-      ...baseItems[0],
-      value: 'Invalid Format',
-      required: true,
-    },
-  ],
-  /** @param {CcInputDate} component */
-  onUpdateComplete: (component) => {
-    component.reportInlineValidity();
-  },
+export const errorMessage = makeStory(conf, {
+  items: baseItems.map((p) => ({
+    ...p,
+    required: true,
+    errorMessage: 'You must enter a value',
+  })),
 });
 
 export const errorMessageInvalidRangeOverflowAndUnderflow = makeStory(conf, {
@@ -202,35 +184,37 @@ export const customWidth = makeStory(conf, {
       controls: true,
       label: `width: ${width}px`,
       style: `width: ${width}px`,
-      value: new Date(date.getTime() + i * 60_000),
+      value: (() => {
+        console.log('GeNERATING DATE FROM STORY');
+        return new Date();
+        // return new Date(date.getTime() + i * 60_000);
+      })(),
     };
   }),
 });
 
-const customBaseItems = [{ label: 'The Label' }, { label: 'The Label', required: true }];
+const customBaseItems = [{ label: 'The label' }, { label: 'The label', required: true }];
 
 export const customLabelStyle = makeStory(
   { ...conf, displayMode: 'block' },
   {
     // language=CSS
     css: `
-        cc-input-date {
-            --cc-input-label-color: #475569;
-            --cc-input-label-font-size: 1.2em;
-            --cc-input-label-font-weight: bold;
-            --cc-form-label-gap: 0.5em;
-            font-size: 1.25em;
-            max-width: 32em;
-        }
-
-        cc-input-date[inline] {
-            --cc-form-label-gap: 0.75em;
-        }
-
-        cc-input-date:nth-of-type(${customBaseItems.length + 'n'}) {
-            margin-block-end: 2em;
-        }
-    `,
+    cc-input-date {
+      --cc-input-label-color: #475569;
+      --cc-input-label-font-size: 1.2em;
+      --cc-input-label-font-weight: bold;
+      --cc-form-label-gap: 0.5em;
+      font-size: 1.25em;
+      max-width: 32em;
+    }
+    cc-input-date[inline] {
+      --cc-form-label-gap: 0.75em;
+    }
+    cc-input-date:nth-of-type(${customBaseItems.length + 'n'}) {
+      margin-block-end: 2em;
+    }
+  `,
     items: [
       ...customBaseItems,
       ...customBaseItems.map((item) => ({
@@ -238,6 +222,7 @@ export const customLabelStyle = makeStory(
       })),
       ...customBaseItems.map((item) => ({
         ...item,
+        errorMessage: 'You must enter a value',
       })),
       ...customBaseItems.map((item) => ({
         ...item,
@@ -253,28 +238,20 @@ export const customLabelStyle = makeStory(
       ...customBaseItems.map((item) => ({
         ...item,
         inline: true,
+        errorMessage: 'You must enter a value',
       })),
       ...customBaseItems.map((item) => ({
         ...item,
         inline: true,
       })),
     ],
-    onUpdateComplete: () => {
-      /** @type {HTMLElement} */
-      const container = document.querySelector('.story-shadow-container');
-      /** @type {NodeListOf<CcInputDate>} */
-      const allComponents = container.shadowRoot.querySelectorAll('cc-input-date');
-      allComponents.forEach((component) => {
-        component.reportInlineValidity();
-      });
-    },
   },
 );
 
 export const allFormControls = allFormControlsStory;
 
 export const simulation = makeStory(conf, {
-  items: [{ label: 'The Label', required: true }],
+  items: [{}],
   simulations: [
     storyWait(
       0,
@@ -293,7 +270,7 @@ export const simulation = makeStory(conf, {
        * @param {Array<CcInputDate>} args
        */
       ([component]) => {
-        component.reportInlineValidity();
+        component.errorMessage = 'This is an error message';
         component.innerHTML = `
         <p slot="help">With error, no focus</p>
       `;
@@ -305,7 +282,7 @@ export const simulation = makeStory(conf, {
        * @param {Array<CcInputDate>} args
        */
       ([component]) => {
-        component.reportInlineValidity();
+        component.errorMessage = 'This is an error message';
         component.innerHTML = `
         <p slot="help">With error, with focus</p>
       `;

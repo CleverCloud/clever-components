@@ -240,4 +240,4 @@ export class CcAddonFeatures extends LitElement {
   }
 }
 
-window.customElements.define('cc-addon-features', CcAddonFeatures);
+customElements.define('cc-addon-features', CcAddonFeatures);

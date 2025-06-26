@@ -419,4 +419,4 @@ export class CcEmailList extends LitElement {
   }
 }
 
-window.customElements.define('cc-email-list', CcEmailList);
+customElements.define('cc-email-list', CcEmailList);

@@ -201,4 +201,4 @@ export class CcZonePicker extends CcFormControlElement {
   }
 }
 
-window.customElements.define('cc-zone-picker', CcZonePicker);
+customElements.define('cc-zone-picker', CcZonePicker);

@@ -270,4 +270,4 @@ export class CcOrderSummary extends LitElement {
 }
 
 // eslint-disable-next-line wc/tag-name-matches-class
-window.customElements.define('cc-order-summary-beta', CcOrderSummary);
+customElements.define('cc-order-summary-beta', CcOrderSummary);

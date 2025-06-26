@@ -18,6 +18,11 @@ const conf = {
 };
 
 export const defaultStory = makeStory(conf, {
+  tests: {
+    visualRegressions: {
+      enable: true,
+    },
+  },
   /** @type {Array<Partial<CcKvHashExplorer>>} */
   items: [
     {
@@ -37,6 +42,11 @@ export const defaultStory = makeStory(conf, {
 });
 
 export const loading = makeStory(conf, {
+  tests: {
+    visualRegressions: {
+      enable: true,
+    },
+  },
   /** @type {Array<Partial<CcKvHashExplorer>>} */
   items: [
     {
@@ -48,6 +58,11 @@ export const loading = makeStory(conf, {
 });
 
 export const loadingMore = makeStory(conf, {
+  tests: {
+    visualRegressions: {
+      enable: true,
+    },
+  },
   /** @type {Array<Partial<CcKvHashExplorer>>} */
   items: [
     {
@@ -64,6 +79,11 @@ export const loadingMore = makeStory(conf, {
 });
 
 export const filtering = makeStory(conf, {
+  tests: {
+    visualRegressions: {
+      enable: true,
+    },
+  },
   /** @type {Array<Partial<CcKvHashExplorer>>} */
   items: [
     {
@@ -82,6 +102,11 @@ export const filtering = makeStory(conf, {
 });
 
 export const disabled = makeStory(conf, {
+  tests: {
+    visualRegressions: {
+      enable: true,
+    },
+  },
   /** @type {Array<Partial<CcKvHashExplorer>>} */
   items: [
     {
@@ -102,6 +127,11 @@ export const disabled = makeStory(conf, {
 });
 
 export const empty = makeStory(conf, {
+  tests: {
+    visualRegressions: {
+      enable: true,
+    },
+  },
   /** @type {Array<Partial<CcKvHashExplorer>>} */
   items: [
     {
@@ -115,6 +145,11 @@ export const empty = makeStory(conf, {
 });
 
 export const adding = makeStory(conf, {
+  tests: {
+    visualRegressions: {
+      enable: true,
+    },
+  },
   /** @type {Array<Partial<CcKvHashExplorer>>} */
   items: [
     {
@@ -134,6 +169,11 @@ export const adding = makeStory(conf, {
 });
 
 export const editing = makeStory(conf, {
+  tests: {
+    visualRegressions: {
+      enable: true,
+    },
+  },
   /** @type {Array<Partial<CcKvHashExplorer>>} */
   items: [
     {
@@ -153,6 +193,11 @@ export const editing = makeStory(conf, {
 });
 
 export const updating = makeStory(conf, {
+  tests: {
+    visualRegressions: {
+      enable: true,
+    },
+  },
   /** @type {Array<Partial<CcKvHashExplorer>>} */
   items: [
     {
@@ -172,6 +217,11 @@ export const updating = makeStory(conf, {
 });
 
 export const deleting = makeStory(conf, {
+  tests: {
+    visualRegressions: {
+      enable: true,
+    },
+  },
   /** @type {Array<Partial<CcKvHashExplorer>>} */
   items: [
     {

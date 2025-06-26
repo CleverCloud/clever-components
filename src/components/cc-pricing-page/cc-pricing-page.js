@@ -198,4 +198,4 @@ export class CcPricingPage extends LitElement {
   }
 }
 
-window.customElements.define('cc-pricing-page', CcPricingPage);
+customElements.define('cc-pricing-page', CcPricingPage);

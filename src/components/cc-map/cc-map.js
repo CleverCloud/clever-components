@@ -480,4 +480,4 @@ export class CcMap extends LitElement {
   }
 }
 
-window.customElements.define('cc-map', CcMap);
+customElements.define('cc-map', CcMap);

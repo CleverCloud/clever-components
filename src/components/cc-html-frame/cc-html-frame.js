@@ -123,4 +123,4 @@ export class CcHtmlFrame extends LitElement {
   }
 }
 
-window.customElements.define('cc-html-frame', CcHtmlFrame);
+customElements.define('cc-html-frame', CcHtmlFrame);

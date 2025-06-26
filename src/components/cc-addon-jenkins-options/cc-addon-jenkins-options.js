@@ -62,4 +62,4 @@ export class CcAddonJenkinsOptions extends LitElement {
   }
 }
 
-window.customElements.define('cc-addon-jenkins-options', CcAddonJenkinsOptions);
+customElements.define('cc-addon-jenkins-options', CcAddonJenkinsOptions);

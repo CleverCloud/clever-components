@@ -4,9 +4,9 @@ import { iconRemixFileTextLine as iconFile } from '../../assets/cc-remix.icons.j
 import { ResizeController } from '../../controllers/resize-controller.js';
 import { sortBy } from '../../lib/utils.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
+import { ccLink, linkStyles } from '../../templates/cc-link/cc-link.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-icon/cc-icon.js';
-import '../cc-link/cc-link.js';
 
 // TODO: Move to clever-client
 export const PENDING_STATUSES = ['PENDING', 'PAYMENTHELD', 'WONTPAY'];
@@ -190,11 +190,9 @@ export class CcInvoiceTable extends LitElement {
   _renderLinks(skeleton, invoice) {
     return html`
       <div class="links">
-        <cc-link href="${invoice.downloadUrl}" ?skeleton="${skeleton}">${i18n('cc-invoice-table.open-pdf')}</cc-link>
+        ${ccLink(invoice.downloadUrl, i18n('cc-invoice-table.open-pdf'), skeleton)}
         ${PENDING_STATUSES.includes(invoice.status)
-          ? html`
-              <cc-link href="${invoice.paymentUrl}" ?skeleton="${skeleton}">${i18n('cc-invoice-table.pay')}</cc-link>
-            `
+          ? html` ${ccLink(invoice.paymentUrl, i18n('cc-invoice-table.pay'), skeleton)} `
           : ''}
       </div>
     `;
@@ -203,6 +201,7 @@ export class CcInvoiceTable extends LitElement {
   static get styles() {
     return [
       skeletonStyles,
+      linkStyles,
       // language=CSS
       css`
         :host {
@@ -220,7 +219,7 @@ export class CcInvoiceTable extends LitElement {
           font-style: italic;
         }
 
-        cc-link {
+        .cc-link {
           white-space: nowrap;
         }
 
@@ -327,4 +326,4 @@ export class CcInvoiceTable extends LitElement {
   }
 }
 
-window.customElements.define('cc-invoice-table', CcInvoiceTable);
+customElements.define('cc-invoice-table', CcInvoiceTable);

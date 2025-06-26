@@ -105,4 +105,4 @@ export class CcStretch extends LitElement {
   }
 }
 
-window.customElements.define('cc-stretch', CcStretch);
+customElements.define('cc-stretch', CcStretch);

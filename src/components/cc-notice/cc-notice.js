@@ -264,4 +264,4 @@ export class CcNotice extends LitElement {
   }
 }
 
-window.customElements.define('cc-notice', CcNotice);
+customElements.define('cc-notice', CcNotice);

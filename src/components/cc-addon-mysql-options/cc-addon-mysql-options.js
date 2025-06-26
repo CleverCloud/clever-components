@@ -62,4 +62,4 @@ export class CcAddonMysqlOptions extends LitElement {
   }
 }
 
-window.customElements.define('cc-addon-mysql-options', CcAddonMysqlOptions);
+customElements.define('cc-addon-mysql-options', CcAddonMysqlOptions);

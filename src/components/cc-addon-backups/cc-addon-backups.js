@@ -4,6 +4,7 @@ import { iconRemixHistoryLine as iconBackup, iconRemixCloseLine as iconClose } f
 import { fakeString } from '../../lib/fake-strings.js';
 import { cliCommandsStyles } from '../../styles/cli-commands.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
+import { ccLink, linkStyles } from '../../templates/cc-link/cc-link.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-block-details/cc-block-details.js';
 import '../cc-block-section/cc-block-section.js';
@@ -11,7 +12,6 @@ import '../cc-block/cc-block.js';
 import '../cc-button/cc-button.js';
 import '../cc-icon/cc-icon.js';
 import '../cc-input-text/cc-input-text.js';
-import '../cc-link/cc-link.js';
 import '../cc-notice/cc-notice.js';
 
 /** @type {Backup} */
@@ -331,9 +331,7 @@ export class CcAddonBackups extends LitElement {
               <span class="backup-text">
                 <span class="backup-text-details ${classMap({ skeleton })}">${this._getBackupText(backup)}</span>
                 <br />
-                <cc-link href="${this._overlayType == null ? backup.url : null}" ?skeleton="${skeleton}"
-                  >${this._getBackupLink(data.providerId)}</cc-link
-                >
+                ${ccLink(this._overlayType == null ? backup.url : null, this._getBackupLink(data.providerId), skeleton)}
                 <cc-button
                   link
                   ?disabled=${areBtnsDisabled}
@@ -458,6 +456,7 @@ export class CcAddonBackups extends LitElement {
   static get styles() {
     return [
       skeletonStyles,
+      linkStyles,
       cliCommandsStyles,
       // language=CSS
       css`
@@ -493,10 +492,6 @@ export class CcAddonBackups extends LitElement {
           color: var(--cc-color-text-strongest, #000);
         }
 
-        cc-link {
-          margin-right: 0.5em;
-        }
-
         [title] {
           cursor: help;
         }
@@ -529,6 +524,7 @@ export class CcAddonBackups extends LitElement {
           filter: blur(5px);
         }
 
+        .cc-link,
         cc-button[link] {
           margin-right: 0.5em;
           vertical-align: baseline;
@@ -547,4 +543,4 @@ export class CcAddonBackups extends LitElement {
   }
 }
 
-window.customElements.define('cc-addon-backups', CcAddonBackups);
+customElements.define('cc-addon-backups', CcAddonBackups);

@@ -146,4 +146,4 @@ export class CcOverview extends LitElement {
   }
 }
 
-window.customElements.define('cc-overview', CcOverview);
+customElements.define('cc-overview', CcOverview);

@@ -320,4 +320,4 @@ export class CcPricingHeader extends LitElement {
   }
 }
 
-window.customElements.define('cc-pricing-header', CcPricingHeader);
+customElements.define('cc-pricing-header', CcPricingHeader);

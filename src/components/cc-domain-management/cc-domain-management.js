@@ -24,6 +24,7 @@ import { focusBySelector } from '../../lib/focus-helper.js';
 import { generateDocsHref } from '../../lib/utils.js';
 import { accessibilityStyles } from '../../styles/accessibility.js';
 import { cliCommandsStyles } from '../../styles/cli-commands.js';
+import { ccLink, linkStyles } from '../../templates/cc-link/cc-link.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-badge/cc-badge.js';
 import '../cc-block-details/cc-block-details.js';
@@ -31,7 +32,6 @@ import '../cc-block-section/cc-block-section.js';
 import '../cc-block/cc-block.js';
 import '../cc-button/cc-button.js';
 import '../cc-input-text/cc-input-text.js';
-import '../cc-link/cc-link.js';
 import '../cc-loader/cc-loader.js';
 import '../cc-notice/cc-notice.js';
 import { CcDomainAddEvent, CcDomainDeleteEvent, CcDomainMarkAsPrimaryEvent } from './cc-domain-management.events.js';
@@ -359,9 +359,8 @@ export class CcDomainManagement extends LitElement {
           <cc-block-details slot="footer-left">
             <div slot="button-text">${i18n('cc-block-details.cli.text')}</div>
             <div slot="link">
-              <cc-link href="${DOMAIN_NAMES_DOCUMENTATION}" .icon="${iconInfo}">
-                ${i18n('cc-domain-management.names.documentation.text')}
-              </cc-link>
+              <cc-icon .icon="${iconInfo}"></cc-icon>
+              <a href="${DOMAIN_NAMES_DOCUMENTATION}">${i18n('cc-domain-management.names.documentation.text')}</a>
             </div>
             <div slot="content">${i18n('cc-domain-management.names.cli.content', { resourceId: this.resourceId })}</div>
           </cc-block-details>
@@ -374,9 +373,12 @@ export class CcDomainManagement extends LitElement {
             <p>${i18n('cc-domain-management.certif.custom')}</p>
           </div>
           <div slot="footer-right">
-            <cc-link href="${TLS_CERTIFICATES_DOCUMENTATION}" .icon="${iconInfo}">
-              ${i18n('cc-domain-management.tls.certificates.documentation.text')}
-            </cc-link>
+            ${ccLink(
+              TLS_CERTIFICATES_DOCUMENTATION,
+              html`<cc-icon .icon="${iconInfo}"></cc-icon> ${i18n(
+                  'cc-domain-management.tls.certificates.documentation.text',
+                )}`,
+            )}
           </div>
         </cc-block>
 
@@ -407,9 +409,8 @@ export class CcDomainManagement extends LitElement {
           <cc-block-details slot="footer-left">
             <div slot="button-text">${i18n('cc-block-details.cli.text')}</div>
             <div slot="link">
-              <cc-link href="${DNS_DOCUMENTATION}" .icon="${iconInfo}">
-                ${i18n('cc-domain-management.dns.documentation.text')}
-              </cc-link>
+              <cc-icon .icon="${iconInfo}"></cc-icon>
+              <a href="${DNS_DOCUMENTATION}">${i18n('cc-domain-management.dns.documentation.text')}</a>
             </div>
             <div slot="content">${i18n('cc-domain-management.dns.cli.content', { resourceId: this.resourceId })}</div>
           </cc-block-details>
@@ -533,8 +534,8 @@ export class CcDomainManagement extends LitElement {
           <a
             class="domain-link"
             href="${domainUrl}"
-            target="_blank"
             title="${i18n('cc-domain-management.list.link.title', { domainUrl })}"
+            target="_blank"
           >
             <span class="visually-hidden">${domainUrl}</span>
             <cc-icon .icon=${iconLink} a11y-name="${i18n('cc-domain-management.new-window')}"></cc-icon>
@@ -653,6 +654,7 @@ export class CcDomainManagement extends LitElement {
   static get styles() {
     return [
       accessibilityStyles,
+      linkStyles,
       cliCommandsStyles,
       css`
         :host {
@@ -773,7 +775,6 @@ export class CcDomainManagement extends LitElement {
         }
 
         .domain-link {
-          color: var(--cc-color-text-primary-highlight, blue);
           /** fixes icon alignment that differs depending on the font-family */
 
           font-family: var(--cc-ff-monospace, monospace);
@@ -869,9 +870,15 @@ export class CcDomainManagement extends LitElement {
         }
 
         /** #endregion */
+
+        [slot='footer-right'] .cc-link {
+          align-items: center;
+          display: flex;
+          gap: 0.5em;
+        }
       `,
     ];
   }
 }
 
-window.customElements.define('cc-domain-management', CcDomainManagement);
+customElements.define('cc-domain-management', CcDomainManagement);

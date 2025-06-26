@@ -596,4 +596,4 @@ export class CcOrgaMemberCard extends LitElement {
   }
 }
 
-window.customElements.define('cc-orga-member-card', CcOrgaMemberCard);
+customElements.define('cc-orga-member-card', CcOrgaMemberCard);

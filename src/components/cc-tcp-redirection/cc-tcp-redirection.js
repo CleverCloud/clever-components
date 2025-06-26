@@ -237,4 +237,4 @@ export class CcTcpRedirection extends LitElement {
   }
 }
 
-window.customElements.define('cc-tcp-redirection', CcTcpRedirection);
+customElements.define('cc-tcp-redirection', CcTcpRedirection);

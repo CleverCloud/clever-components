@@ -192,4 +192,4 @@ despite the cc-block padding
   }
 }
 
-window.customElements.define('cc-env-var-editor-simple', CcEnvVarEditorSimple);
+customElements.define('cc-env-var-editor-simple', CcEnvVarEditorSimple);

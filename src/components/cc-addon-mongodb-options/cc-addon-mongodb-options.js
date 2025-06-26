@@ -62,4 +62,4 @@ export class CcAddonMongodbOptions extends LitElement {
   }
 }
 
-window.customElements.define('cc-addon-mongodb-options', CcAddonMongodbOptions);
+customElements.define('cc-addon-mongodb-options', CcAddonMongodbOptions);

@@ -90,4 +90,4 @@ export class CcDatetimeRelative extends HTMLElement {
   }
 }
 
-window.customElements.define('cc-datetime-relative', CcDatetimeRelative);
+customElements.define('cc-datetime-relative', CcDatetimeRelative);

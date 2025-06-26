@@ -15,6 +15,7 @@ import { formSubmit } from '../../lib/form/form-submit-directive.js';
 import { Validation } from '../../lib/form/validation.js';
 import { generateDocsHref, sortBy } from '../../lib/utils.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
+import { ccLink, linkStyles } from '../../templates/cc-link/cc-link.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-badge/cc-badge.js';
 import '../cc-block-section/cc-block-section.js';
@@ -23,7 +24,6 @@ import '../cc-button/cc-button.js';
 import '../cc-icon/cc-icon.js';
 import '../cc-img/cc-img.js';
 import '../cc-input-text/cc-input-text.js';
-import '../cc-link/cc-link.js';
 import '../cc-notice/cc-notice.js';
 import { CcSshKeyCreateEvent, CcSshKeyDeleteEvent, CcSshKeyImportEvent } from './cc-ssh-key-list.events.js';
 
@@ -220,9 +220,10 @@ export class CcSshKeyList extends LitElement {
         </cc-block-section>
 
         <div slot="footer-right">
-          <cc-link href="${SSH_KEY_DOCUMENTATION}" .icon="${iconInfo}">
-            ${i18n('cc-ssh-key-list.documentation.text')}
-          </cc-link>
+          ${ccLink(
+            SSH_KEY_DOCUMENTATION,
+            html`<cc-icon .icon="${iconInfo}"></cc-icon> ${i18n('cc-ssh-key-list.documentation.text')}`,
+          )}
         </div>
       </cc-block>
     `;
@@ -345,6 +346,7 @@ export class CcSshKeyList extends LitElement {
   static get styles() {
     return [
       skeletonStyles,
+      linkStyles,
       // language=CSS
       css`
         /* region global */
@@ -485,7 +487,7 @@ export class CcSshKeyList extends LitElement {
 
         /* endregion */
 
-        [slot='footer-right'] cc-link {
+        [slot='footer-right'] .cc-link {
           align-items: center;
           display: flex;
           gap: 0.5em;
@@ -495,4 +497,4 @@ export class CcSshKeyList extends LitElement {
   }
 }
 
-window.customElements.define('cc-ssh-key-list', CcSshKeyList);
+customElements.define('cc-ssh-key-list', CcSshKeyList);

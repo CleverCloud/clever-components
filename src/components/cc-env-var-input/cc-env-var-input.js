@@ -182,4 +182,4 @@ export class CcEnvVarInput extends LitElement {
   }
 }
 
-window.customElements.define('cc-env-var-input', CcEnvVarInput);
+customElements.define('cc-env-var-input', CcEnvVarInput);

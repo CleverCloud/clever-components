@@ -1,10 +1,10 @@
 import { css, html, LitElement } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
+import { ccLink, linkStyles } from '../../templates/cc-link/cc-link.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-block/cc-block.js';
 import '../cc-img/cc-img.js';
-import '../cc-link/cc-link.js';
 import '../cc-notice/cc-notice.js';
 import '../cc-zone/cc-zone.js';
 
@@ -96,10 +96,14 @@ export class CcAddonLinkedApps extends LitElement {
       ${linkedApps.map(
         (linkedApp) => html`
           <div slot="content" class="application">
+            <cc-img
+              class="logo"
+              ?skeleton=${skeleton}
+              src=${ifDefined(linkedApp.variantLogoUrl)}
+              title="${ifDefined(linkedApp.variantName)}"
+            ></cc-img>
             <div class="details">
-              <cc-link image="${ifDefined(linkedApp.variantLogoUrl)}" href="${linkedApp.link}" ?skeleton="${skeleton}">
-                ${linkedApp.name}
-              </cc-link>
+              <span class="name">${ccLink(linkedApp.link, linkedApp.name, skeleton)}</span>
               <cc-zone mode="small" .state="${this._getZoneState(skeleton, linkedApp.zone)}"></cc-zone>
             </div>
           </div>
@@ -125,6 +129,7 @@ export class CcAddonLinkedApps extends LitElement {
 
   static get styles() {
     return [
+      linkStyles,
       skeletonStyles,
       // language=CSS
       css`
@@ -132,8 +137,15 @@ export class CcAddonLinkedApps extends LitElement {
           display: block;
         }
 
-        cc-link::part(img) {
+        .application {
+          align-items: flex-start;
+          display: flex;
+          line-height: 1.6em;
+        }
+
+        .logo {
           border-radius: var(--cc-border-radius-default, 0.25em);
+          flex: 0 0 auto;
           height: 1.6em;
           width: 1.6em;
         }
@@ -143,6 +155,7 @@ export class CcAddonLinkedApps extends LitElement {
           display: flex;
           flex-wrap: wrap;
           gap: 0.5em;
+          margin-left: 0.5em;
         }
 
         .empty-msg {
@@ -155,9 +168,13 @@ export class CcAddonLinkedApps extends LitElement {
         .name.skeleton {
           background-color: #bbb;
         }
+
+        [title] {
+          cursor: help;
+        }
       `,
     ];
   }
 }
 
-window.customElements.define('cc-addon-linked-apps', CcAddonLinkedApps);
+customElements.define('cc-addon-linked-apps', CcAddonLinkedApps);

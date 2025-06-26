@@ -601,4 +601,4 @@ export class CcKvHashExplorer extends LitElement {
 }
 
 // eslint-disable-next-line wc/tag-name-matches-class
-window.customElements.define('cc-kv-hash-explorer-beta', CcKvHashExplorer);
+customElements.define('cc-kv-hash-explorer-beta', CcKvHashExplorer);

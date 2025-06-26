@@ -174,4 +174,4 @@ export class CcPlanItem extends LitElement {
   }
 }
 
-window.customElements.define('cc-plan-item', CcPlanItem);
+customElements.define('cc-plan-item', CcPlanItem);

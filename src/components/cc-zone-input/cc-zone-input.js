@@ -411,4 +411,4 @@ export class CcZoneInput extends LitElement {
   }
 }
 
-window.customElements.define('cc-zone-input', CcZoneInput);
+customElements.define('cc-zone-input', CcZoneInput);

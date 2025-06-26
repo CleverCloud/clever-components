@@ -5,20 +5,20 @@ import { createRef, ref } from 'lit/directives/ref.js';
 import {
   iconRemixArrowRightCircleLine as iconActiveStep,
   iconRemixCheckboxCircleLine as iconDoneStep,
+  iconRemixLogoutBoxRLine as iconExternalLink,
   iconRemixArrowLeftLine as iconGoBack,
-  iconRemixInformationFill as iconInfo,
 } from '../../assets/cc-remix.icons.js';
 import { DateFormatter } from '../../lib/date/date-formatter.js';
 import { getRelativeDateFromNow, shiftDateField } from '../../lib/date/date-utils.js';
 import { FormErrorFocusController } from '../../lib/form/form-error-focus-controller.js';
 import { formSubmit } from '../../lib/form/form-submit-directive.js';
 import { cliCommandsStyles } from '../../styles/cli-commands.js';
+import { linkStyles } from '../../templates/cc-link/cc-link.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-block-details/cc-block-details.js';
 import '../cc-block/cc-block.js';
 import '../cc-input-date/cc-input-date.js';
 import '../cc-input-text/cc-input-text.js';
-import '../cc-link/cc-link.js';
 import '../cc-loader/cc-loader.js';
 import '../cc-notice/cc-notice.js';
 import '../cc-select/cc-select.js';
@@ -375,13 +375,10 @@ export class CcTokenApiCreationForm extends LitElement {
         </div>
         <cc-block-details slot="footer-left">
           <div slot="button-text">${i18n('cc-block-details.cli.text')}</div>
-          <cc-link
-            slot="link"
-            href="https://www.clever-cloud.com/developers/api/howto/#request-the-api"
-            .icon="${iconInfo}"
-          >
-            <span>${i18n('cc-token-api-creation-form.link.doc')}</span>
-          </cc-link>
+          <a slot="link" href="https://www.clever-cloud.com/developers/api/howto/#request-the-api" target="_blank">
+            <span class="cc-link">${i18n('cc-token-api-creation-form.link.doc')}</span>
+            <cc-icon .icon=${iconExternalLink}></cc-icon>
+          </a>
           <div slot="content">${i18n('cc-token-api-creation-form.cli.content')}</div>
         </cc-block-details>
       </cc-block>
@@ -581,14 +578,10 @@ export class CcTokenApiCreationForm extends LitElement {
         </div>
         <div class="form__actions">
           <div class="form__actions__link-container">
-            <cc-link
-              mode="subtle"
-              href="${this.apiTokenListHref}"
-              class="form__actions__link-container__link"
-              .icon="${iconGoBack}"
-            >
+            <a href="${this.apiTokenListHref}" class="form__actions__link-container__link">
+              <cc-icon .icon=${iconGoBack}></cc-icon>
               <span>${i18n('cc-token-api-creation-form.configuration-step.form.link.back-to-list')}</span>
-            </cc-link>
+            </a>
           </div>
           <cc-button class="form__actions__submit-button" primary type="submit" ?disabled=${skeleton}>
             ${i18n('cc-token-api-creation-form.configuration-step.form.submit-button.label')}
@@ -655,15 +648,10 @@ export class CcTokenApiCreationForm extends LitElement {
               : ''}
             ${!isWaiting
               ? html`
-                  <cc-link
-                    mode="subtle"
-                    class="form__actions__link-container__link"
-                    @click="${this._onConfigLinkClick}"
-                    href="#"
-                    .icon="${iconGoBack}"
-                  >
+                  <a class="form__actions__link-container__link" @click="${this._onConfigLinkClick}" href="#">
+                    <cc-icon .icon=${iconGoBack}></cc-icon>
                     <span>${i18n('cc-token-api-creation-form.validation-step.form.link.back-to-configuration')}</span>
-                  </cc-link>
+                  </a>
                 `
               : ''}
           </div>
@@ -688,15 +676,16 @@ export class CcTokenApiCreationForm extends LitElement {
           clipboard
           value=${token}
         ></cc-input-text>
-        <cc-link class="token-list-link-cta" href="${this.apiTokenListHref}" mode="button">
+        <a class="token-list-link-cta" href="${this.apiTokenListHref}">
           <span>${i18n('cc-token-api-creation-form.copy-step.link.back-to-list')}</span>
-        </cc-link>
+        </a>
       </div>
     `;
   }
 
   static get styles() {
     return [
+      linkStyles,
       cliCommandsStyles,
       css`
         :host {
@@ -731,6 +720,10 @@ export class CcTokenApiCreationForm extends LitElement {
           --cc-icon-color: var(--cc-color-text-primary-highlight);
 
           text-decoration: none;
+        }
+
+        .cc-link {
+          text-decoration: underline;
         }
 
         .block-intro {
@@ -867,7 +860,30 @@ export class CcTokenApiCreationForm extends LitElement {
         }
 
         .token-list-link-cta {
+          align-items: center;
+          background-color: var(--cc-color-bg-primary, #fff);
+          border: 1px solid var(--cc-color-bg-primary);
+          border-radius: var(--cc-button-border-radius, 0.15em);
+          box-sizing: border-box;
+          color: var(--cc-color-text-inverted, #fff);
+          cursor: pointer;
+          display: flex;
+          font-weight: var(--cc-button-font-weight, bold);
           justify-self: flex-end;
+          min-height: 2em;
+          padding: 0 0.5em;
+          text-decoration: none;
+          text-transform: var(--cc-button-text-transform, uppercase);
+          user-select: none;
+        }
+
+        .token-list-link-cta:focus-visible {
+          outline: var(--cc-focus-outline);
+          outline-offset: var(--cc-focus-outline-offset, 2px);
+        }
+
+        .token-list-link-cta span {
+          font-size: 0.85em;
         }
 
         .form__actions__link-container {
@@ -905,4 +921,4 @@ export class CcTokenApiCreationForm extends LitElement {
   }
 }
 
-window.customElements.define('cc-token-api-creation-form', CcTokenApiCreationForm);
+customElements.define('cc-token-api-creation-form', CcTokenApiCreationForm);

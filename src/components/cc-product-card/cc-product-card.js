@@ -192,4 +192,4 @@ export class CcProductCard extends LitElement {
   }
 }
 
-window.customElements.define('cc-product-card', CcProductCard);
+customElements.define('cc-product-card', CcProductCard);

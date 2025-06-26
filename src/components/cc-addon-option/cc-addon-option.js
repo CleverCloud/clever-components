@@ -139,4 +139,4 @@ export class CcAddonOption extends LitElement {
   }
 }
 
-window.customElements.define('cc-addon-option', CcAddonOption);
+customElements.define('cc-addon-option', CcAddonOption);

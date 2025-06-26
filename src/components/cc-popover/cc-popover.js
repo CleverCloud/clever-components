@@ -296,4 +296,4 @@ export class CcPopover extends LitElement {
   }
 }
 
-window.customElements.define('cc-popover', CcPopover);
+customElements.define('cc-popover', CcPopover);

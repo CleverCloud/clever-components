@@ -165,4 +165,4 @@ export class CcTileScalability extends LitElement {
   }
 }
 
-window.customElements.define('cc-tile-scalability', CcTileScalability);
+customElements.define('cc-tile-scalability', CcTileScalability);

@@ -285,4 +285,4 @@ export class CcKvHashInput extends CcFormControlElement {
 }
 
 // eslint-disable-next-line wc/tag-name-matches-class
-window.customElements.define('cc-kv-hash-input-beta', CcKvHashInput);
+customElements.define('cc-kv-hash-input-beta', CcKvHashInput);

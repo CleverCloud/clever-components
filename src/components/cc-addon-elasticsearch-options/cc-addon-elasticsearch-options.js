@@ -144,4 +144,4 @@ export class CcAddonElasticsearchOptions extends LitElement {
   }
 }
 
-window.customElements.define('cc-addon-elasticsearch-options', CcAddonElasticsearchOptions);
+customElements.define('cc-addon-elasticsearch-options', CcAddonElasticsearchOptions);

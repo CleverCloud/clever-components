@@ -258,4 +258,4 @@ export class CcPlanPicker extends CcFormControlElement {
   }
 }
 
-window.customElements.define('cc-plan-picker', CcPlanPicker);
+customElements.define('cc-plan-picker', CcPlanPicker);
