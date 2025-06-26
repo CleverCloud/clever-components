@@ -29,9 +29,15 @@ const keycloakData = {
   id: 'addon_665123365',
   realId: 'keycloak_665123365',
   name: 'Keycloak',
-  provider: null,
-  plan: null,
-  creationDate: null,
+  provider: {
+    name: 'Matomo Analytics',
+    logoUrl: 'https://cc-keycloak.cellar-c2.services.clever-cloud.com/keycloak_logo.svg',
+  },
+  plan: {
+    name: '',
+  },
+  region: 'par',
+  creationDate: 0,
 };
 
 /** @type {CcHeaderAddonBetaStateLoaded} */
@@ -79,7 +85,6 @@ export const keycloackDataLoadedStory = makeStory(conf, {
       },
       addonHref: 'http://example.com',
       logsHref: 'http://example.com',
-      logo: 'https://cc-keycloak.cellar-c2.services.clever-cloud.com/keycloak_logo.svg',
     },
   ],
 });
