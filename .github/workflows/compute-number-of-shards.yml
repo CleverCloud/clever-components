@@ -6,7 +6,7 @@ concurrency:
 
 on:
   pull_request:
-    types: [synchronize, opened, reopened]
+    types: [synchronize, opened, reopened, closed]
 
 jobs:
   calculate-matrix:
@@ -30,7 +30,7 @@ jobs:
 
   run-visual-tests:
     needs: calculate-matrix
-    uses: ./.github/workflows/visual-regression-tests.yml
+    uses: ./.github/workflows/run-visual-changes-tests.yml
     secrets: inherit
     permissions:
       contents: write
@@ -40,3 +40,4 @@ jobs:
       branch: ${{ github.head_ref }}
       pr_number: ${{ github.event.pull_request.number }}
       base_sha: ${{ github.event.pull_request.base.sha }}
+      event_type: ${{ github.event.action }}

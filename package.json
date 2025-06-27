@@ -56,7 +56,6 @@
     "test": "wtr",
     "test:group": "wtr --group",
     "test-visual-regressions": "wtr --config web-test-runner.config.visual-regressions.js",
-    "upload-test-report": "node ./tasks/upload-test-report.js",
     "test-visual-regressions:watch": "wtr --config web-test-runner.config.visual-regressions.js --watch",
     "test-visual-regressions:update-baseline": "wtr --config web-test-runner.config.visual-regressions.js --update-visual-baseline",
     "test:mocha": "mocha test-mocha/**/*.test.*js",

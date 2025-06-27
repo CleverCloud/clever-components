@@ -1,4 +1,4 @@
-name: Visual Changes Tests
+name: Run visual changes Tests
 
 concurrency:
   group: visual-changes-${{ inputs.pr_number || inputs.branch }}
@@ -19,9 +19,13 @@ on:
       base_sha:
         required: true
         type: string
+      event_type:
+        required: true
+        type: string
 
 jobs:
   baseline-update:
+    if: inputs.event_type != 'closed'
     name: Baseline Update (sharded)
     runs-on: ubuntu-latest
     container:
@@ -60,6 +64,7 @@ jobs:
       last_baseline_update: ${{ steps.set_last_baseline_update.outputs.last_baseline_update }}
 
   run-visual-regression-tests:
+    if: inputs.event_type != 'closed'
     name: Run Visual Regression Tests (Current changes)
     needs: [baseline-update]
     runs-on: ubuntu-latest
@@ -99,6 +104,7 @@ jobs:
           retention-days: 1
 
   generate-final-report:
+    if: inputs.event_type != 'closed'
     name: Generate final report
     needs: [baseline-update, run-visual-regression-tests]
     runs-on: ubuntu-latest
@@ -123,18 +129,20 @@ jobs:
 
       - name: Generate single HTML report
         run: node ./tasks/generate-visual-regression-html-report.js
-
-      - name: 'Upload test report'
-        id: 'upload-test-report'
-        run: npm run upload-test-report
         env:
-          VISUAL_REGRESSIONS_CELLAR_KEY_ID: ${{ secrets.VISUAL_REGRESSIONS_CELLAR_KEY_ID }}
-          VISUAL_REGRESSIONS_CELLAR_SECRET_KEY: ${{ secrets.VISUAL_REGRESSIONS_CELLAR_SECRET_KEY }}
           GITHUB_HEAD_REF: ${{ github.head_ref }}
           BASE_SHA: ${{ inputs.base_sha }}
           LAST_BASELINE_UPDATE: ${{ needs.baseline-update.outputs.last_baseline_update }}
           WORKFLOW_ID: ${{ github.run_id }}
           PR_NUMBER: ${{ inputs.pr_number }}
+
+      - name: 'Upload test report'
+        id: 'upload-test-report'
+        run: node ./tasks/manage-visual-changes-data.js upload
+        env:
+          VISUAL_REGRESSIONS_CELLAR_KEY_ID: ${{ secrets.VISUAL_REGRESSIONS_CELLAR_KEY_ID }}
+          VISUAL_REGRESSIONS_CELLAR_SECRET_KEY: ${{ secrets.VISUAL_REGRESSIONS_CELLAR_SECRET_KEY }}
+          GITHUB_HEAD_REF: ${{ github.head_ref }}
 
       - name: '[Prepare] Retrieve and format impacted components list'
         id: get-impacted-components-list
@@ -177,3 +185,27 @@ jobs:
             </details>
 
             _This comment was generated automatically by the Visual Changes workflow._
+
+  clean-up:
+    if: inputs.event_type == 'closed'
+    name: 'Clean up visual changes report data'
+    runs-on: ubuntu-latest
+    steps:
+      - name: '[Prepare] Checkout'
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.branch }}
+
+      - name: '[Prepare] Setup Node.js'
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: 'package.json'
+          cache: 'npm'
+      - run: npm ci
+
+      - name: '[Run] Remove report data for current branch'
+        run: node ./tasks/manage-visual-changes-data.js delete
+        env:
+          VISUAL_REGRESSIONS_CELLAR_KEY_ID: ${{ secrets.VISUAL_REGRESSIONS_CELLAR_KEY_ID }}
+          VISUAL_REGRESSIONS_CELLAR_SECRET_KEY: ${{ secrets.VISUAL_REGRESSIONS_CELLAR_SECRET_KEY }}
+          GITHUB_HEAD_REF: ${{ github.head_ref }}
