@@ -19,6 +19,8 @@ defineSmartComponent({
     apiConfig: { type: Object },
     ownerId: { type: String },
     addonId: { type: String },
+    // "/organisations/orga_3547a882-d464-4c34-8168-add4b3e0c135/applications/:id/logs"
+    logsUrlPattern: { type: String },
   },
 
   /**
@@ -27,18 +29,35 @@ defineSmartComponent({
   onContextUpdate({ context, updateComponent }) {
     const { apiConfig, ownerId, addonId } = context;
     const api = new Api(apiConfig, ownerId, addonId);
+
+    updateComponent('state', {
+      type: 'loading',
+    });
+
+    // API spécifique pour récupérer l'ID de l'app Java
+    // resources.entrypoint
+    const javaAppId = 'app_tmp';
+
     api
       .getAddon()
       .then((rawAddon) => {
         updateComponent('state', {
           type: 'loaded',
-          id: rawAddon.id,
-          realId: rawAddon.realId,
+          providerName: rawAddon.provider.name,
+          providerLogoUrl: rawAddon.provider.logoUrl,
           name: rawAddon.name,
-          provider: rawAddon.provider,
-          plan: rawAddon.plan,
-          region: rawAddon.region,
-          creationDate: rawAddon.creationDate,
+          id: rawAddon.realId,
+          zone: rawAddon.region,
+          logsUrl: context.logsUrlPattern.replace('/:id/', javaAppId),
+          openLinks: [
+            {
+              name: rawAddon.provider.name,
+              // API spécifique pour récupérer l'URL du keycloak
+              // accessUrl
+              url: '/',
+            },
+          ],
+          actions: { restart: true, rebuildAndRestart: true },
         });
       })
       .catch((error) => {
@@ -57,7 +76,7 @@ class Api {
    * @param {string} addonId
    */
   constructor(apiConfig, ownerId, addonId) {
-    this._apiCpnfig = apiConfig;
+    this._apiConfig = apiConfig;
     this._ownerId = ownerId;
     this._addonId = addonId;
   }
@@ -66,6 +85,22 @@ class Api {
    * @return {Promise<RawAddon>}
    */
   getAddon() {
-    return getAddon({ id: this._ownerId, addonId: this._addonId }).then(sendToApi({ apiConfig: this._apiCpnfig }));
+    return getAddon({ id: this._ownerId, addonId: this._addonId }).then(sendToApi({ apiConfig: this._apiConfig }));
   }
+
+  getOperator(realId) {
+    return getOperator({ provider: 'keycloak', realId }).then(sendToApi({ apiConfig: this._apiConfig }));
+  }
+}
+
+// move this to clever client
+export function getOperator(params) {
+  // no multipath for /self or /organisations/{id}
+  return Promise.resolve({
+    method: 'get',
+    url: `/v4/addon-providers/addon-${params.provider}/addons/${params.realId}`,
+    headers: { Accept: 'application/json' },
+    // no queryParams
+    // no body
+  });
 }

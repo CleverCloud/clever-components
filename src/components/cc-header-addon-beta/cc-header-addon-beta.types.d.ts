@@ -1,23 +1,37 @@
-import { Addon, AddonPlan, AddonProvider } from '../common.types.js';
+import { Zone } from '../common.types.js';
 
-export type CcHeaderAddonBetaState = CcHeaderAddonBetaStateLoaded | CcHeaderAddonBetaStateError;
+export type CcHeaderAddonBetaState =
+  | CcHeaderAddonBetaStateLoading
+  | CcHeaderAddonBetaStateLoaded
+  | CcHeaderAddonBetaStateError;
 
-export interface CcHeaderAddonBetaStateLoaded extends Addon {
+export interface CcHeaderAddonBetaStateLoading extends OptionalProperties {
+  type: 'loading';
+}
+
+export interface CcHeaderAddonBetaStateLoaded extends OptionalProperties {
   type: 'loaded';
+  providerName: string;
+  providerLogoUrl: string;
+  name: string;
+  id: string;
+  zone: Zone;
+}
+
+interface OptionalProperties {
+  logsUrl?: string;
+  openLinks?: Array<OpenLink>;
+  actions?:
+    restart: boolean;
+    rebuildAndRestart: boolean;
+  };
+}
+
+interface OpenLink {
+  url: string;
+  name: string;
 }
 
 export interface CcHeaderAddonBetaStateError {
   type: 'error';
-}
-
-export interface RawAddon {
-  id: string;
-  name: string;
-  realId: string;
-  region: string;
-  zoneId: string;
-  provider: AddonProvider;
-  plan: AddonPlan;
-  creationDate: number;
-  configKeys: string[];
 }
