@@ -209,3 +209,15 @@ jobs:
           VISUAL_REGRESSIONS_CELLAR_KEY_ID: ${{ secrets.VISUAL_REGRESSIONS_CELLAR_KEY_ID }}
           VISUAL_REGRESSIONS_CELLAR_SECRET_KEY: ${{ secrets.VISUAL_REGRESSIONS_CELLAR_SECRET_KEY }}
           GITHUB_HEAD_REF: ${{ github.head_ref }}
+
+      - name: '[Run] Edit comment'
+        run: node .github/scripts/create-or-edit-comment.js
+        env:
+          PR_NUMBER: ${{ inputs.pr_number }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          MESSAGE: |
+            ## :broom: Visual Changes Report deleted
+
+            The report and its associated data have been deleted following the closing of this PR.
+
+            _This comment was generated automatically by the Visual Changes workflow._

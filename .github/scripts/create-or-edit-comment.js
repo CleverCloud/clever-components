@@ -86,9 +86,6 @@ async function getEssentialInfo() {
   if (process.env.PR_NUMBER == null) {
     missingVars.push('PR_NUMBER');
   }
-  if (process.env.MARKER == null) {
-    missingVars.push('MARKER');
-  }
 
   let body;
   if (process.env.MESSAGE_FILE_PATH != null) {

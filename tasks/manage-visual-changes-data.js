@@ -35,7 +35,7 @@ async function uploadReport() {
 
 async function deleteReportAndAssociatedData() {
   try {
-    await cellar.deleteManyObjects({ prefix: CURRENT_BRANCH + '/' });
+    await cellar.deleteManyObjects({ prefix: CURRENT_BRANCH });
     console.log(`Report deleted for the current branch ${CURRENT_BRANCH}`);
   } catch (error) {
     console.error(error);
