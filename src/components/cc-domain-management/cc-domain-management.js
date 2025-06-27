@@ -30,6 +30,7 @@ import '../cc-block-details/cc-block-details.js';
 import '../cc-block-section/cc-block-section.js';
 import '../cc-block/cc-block.js';
 import '../cc-button/cc-button.js';
+import '../cc-code/cc-code.js';
 import '../cc-input-text/cc-input-text.js';
 import '../cc-link/cc-link.js';
 import '../cc-loader/cc-loader.js';
@@ -363,7 +364,23 @@ export class CcDomainManagement extends LitElement {
                 ${i18n('cc-domain-management.names.documentation.text')}
               </cc-link>
             </div>
-            <div slot="content">${i18n('cc-domain-management.names.cli.content', { resourceId: this.resourceId })}</div>
+            <div slot="content">
+              <p>${i18n('cc-domain-management.names.cli.content.text')}</p>
+              <dl>
+                <dt>${i18n('cc-domain-management.names.cli.content.list-command')}</dt>
+                <dd>
+                  <cc-code>clever domain --app ${this.resourceId}</cc-code>
+                </dd>
+                <dt>${i18n('cc-domain-management.names.cli.content.diag-dns-records-command')}</dt>
+                <dd>
+                  <cc-code>clever domain diag --app ${this.resourceId}</cc-code>
+                </dd>
+                <dt>${i18n('cc-domain-management.names.cli.content.add-domain-command')}</dt>
+                <dd>
+                  <cc-code> clever domain add myapp.example.com --app ${this.resourceId} </cc-code>
+                </dd>
+              </dl>
+            </div>
           </cc-block-details>
         </cc-block>
 
@@ -411,7 +428,15 @@ export class CcDomainManagement extends LitElement {
                 ${i18n('cc-domain-management.dns.documentation.text')}
               </cc-link>
             </div>
-            <div slot="content">${i18n('cc-domain-management.dns.cli.content', { resourceId: this.resourceId })}</div>
+            <div slot="content">
+              ${i18n('cc-domain-management.dns.cli.content.text')}
+              <dl>
+                <dt>${i18n('cc-domain-management.dns.cli.content.diag-conf-command')}</dt>
+                <dd>
+                  <cc-code>clever diag --app ${this.resourceId}</cc-code>
+                </dd>
+              </dl>
+            </div>
           </cc-block-details>
         </cc-block>
       </div>

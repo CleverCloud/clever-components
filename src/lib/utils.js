@@ -56,6 +56,28 @@ export function arrayEquals(a, b) {
 }
 
 /**
+ * @param {string} text
+ * @returns {string}
+ */
+export function dedent(text) {
+  let lines = text.split('\n');
+
+  while (lines.length && lines[0].trim() === '') {
+    lines.shift();
+  }
+
+  while (lines.length && lines[lines.length - 1].trim() === '') {
+    lines.pop();
+  }
+
+  const lineIndents = lines.filter((line) => line.trim() !== '').map((line) => line.match(/^[ \t]*/)?.[0].length);
+
+  const minIndent = lineIndents.length > 0 ? Math.min(...lineIndents) : 0;
+
+  return lines.map((l) => l.slice(minIndent)).join('\n');
+}
+
+/**
  * This must be used with flatMap so it can be chained
  * => myArray.flatMap(unique)
  *
