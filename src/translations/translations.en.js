@@ -649,9 +649,10 @@ export const translations = {
     sanitize`You must enter a date. <br> For instance: ${date}.`,
   'cc-input-date.error.empty': `You must enter a value`,
   'cc-input-date.error.range-overflow': /** @param {{max: string}} _ */ ({ max }) =>
-    `You must enter a date lower that ${max}.`,
+    `You must enter a date lower than ${max}.`,
   'cc-input-date.error.range-underflow': /** @param {{min: string}} _ */ ({ min }) =>
-    `You must enter a date higher that ${min}.`,
+    `You must enter a date higher than ${min}.`,
+  'cc-input-date.help': `Format: YYYY-MM-DD HH:MM:SS`,
   'cc-input-date.keyboard-hint': `You can use up or down arrow keys to modify parts of the date.`,
   'cc-input-date.required': `required`,
   //#endregion
@@ -1648,7 +1649,6 @@ export const translations = {
   'cc-token-api-creation-form.configuration-step.form.expiration-date.error.range-underflow':
     /** @param {{ date: string }} _ */ ({ date }) =>
       sanitize`The expiration date must be at least 15 minutes from now<br>For instance: ${date}`,
-  'cc-token-api-creation-form.configuration-step.form.expiration-date.help.format': `Format: YYYY-MM-DD HH:MM:SS`,
   'cc-token-api-creation-form.configuration-step.form.expiration-date.help.min-max': `Must be at least 15 minutes and up to 1 year from now`,
   'cc-token-api-creation-form.configuration-step.form.expiration-date.label': `Expiration date`,
   'cc-token-api-creation-form.configuration-step.form.expiration-duration.help.custom': `Specify the expiration date using the following field`,
