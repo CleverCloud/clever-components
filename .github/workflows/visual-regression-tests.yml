@@ -1,4 +1,8 @@
-name: Visual Regression Tests
+name: Visual Changes Tests
+
+concurrency:
+  group: visual-changes-${{ inputs.pr_number || inputs.branch }}
+  cancel-in-progress: true
 
 on:
   workflow_call:
@@ -111,12 +115,11 @@ jobs:
           cache: 'npm'
       - run: npm ci
 
-      - name: Download blob reports from GitHub Actions Artifacts
+      - name: Download reports from GitHub Actions Artifacts
         uses: actions/download-artifact@v4
         with:
           path: test-reports
           pattern: visual-regression-results-*
-          merge-multiple: true
 
       - name: Generate single HTML report
         run: node ./tasks/generate-visual-regression-html-report.js
@@ -133,6 +136,19 @@ jobs:
           WORKFLOW_ID: ${{ github.run_id }}
           PR_NUMBER: ${{ inputs.pr_number }}
 
+      - name: '[Prepare] Retrieve and format impacted components list'
+        id: get-impacted-components-list
+        run: |
+          impacted_components=$(jq -r '.impactedComponents[] | "- \(. )"' test-reports/visual-regression-results-merged.json | paste -sd '\n' -)
+          echo "impacted_components<<EOF" >> $GITHUB_OUTPUT
+          echo "$impacted_components" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+          echo nb_of_impacted_components=$(jq '.impactedComponents | length' test-reports/visual-regression-results-merged.json) >> $GITHUB_OUTPUT
+
+      - name: '[Prepare] Get report update date'
+        id: get-report-update-date
+        run: echo "report_update_date=$(date -u +'%Y-%m-%dT%H:%M:%SZ')" >> $GITHUB_OUTPUT
+
       - name: 'Create or edit PR comment'
         run: node .github/scripts/create-or-edit-comment.js
         env:
@@ -140,12 +156,24 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           MARKER: 'Visual Changes Report'
           MESSAGE: |
-            :mag: **Visual Regression Report** for PR #${{ inputs.pr_number }}
+            ## :monocle_face: Visual Changes Report for PR #${{ inputs.pr_number }}
 
             The latest visual regression test report is available. Please review the results.
 
             - [View HTML Report](${{ steps.upload-test-report.outputs.report_url }})
-            - Baseline updated at: ${{ needs.baseline-update.outputs.last_baseline_update }}
-            - Workflow run: ${{ github.run_id }}
+            - Baseline info:
+              - Commit: ${{ inputs.base_sha }}
+              - Last update: ${{ needs.baseline-update.outputs.last_baseline_update }}
+            - Changes info:
+              - Commit: ${{ github.sha }}
+              - Last update: ${{ steps.get-report-update-date.outputs.report_update_date }}
+            - Workflow run: [${{ github.run_id }}](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})
 
-            _This comment was generated automatically by the Visual Regression workflow._
+            <details>
+              <summary>${{ steps.get-impacted-components-list.outputs.nb_of_impacted_components }} components impacted</summary>
+
+            ${{ steps.get-impacted-components-list.outputs.impacted_components }}
+
+            </details>
+
+            _This comment was generated automatically by the Visual Changes workflow._

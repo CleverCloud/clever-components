@@ -1,5 +1,9 @@
 name: Compute number of shards
 
+concurrency:
+  group: visual-changes-${{ inputs.pr_number || inputs.branch }}
+  cancel-in-progress: true
+
 on:
   pull_request:
     types: [synchronize, opened, reopened]
