@@ -210,7 +210,7 @@ jobs:
           VISUAL_REGRESSIONS_CELLAR_SECRET_KEY: ${{ secrets.VISUAL_REGRESSIONS_CELLAR_SECRET_KEY }}
           GITHUB_HEAD_REF: ${{ github.head_ref }}
 
-      - name: '[Run] Edit comment'
+      - name: '[Run] Create clean up comment'
         run: node .github/scripts/create-or-edit-comment.js
         env:
           PR_NUMBER: ${{ inputs.pr_number }}
