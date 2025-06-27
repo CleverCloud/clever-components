@@ -57,6 +57,57 @@ const jenkinsData = {
   creationDate: 0,
 };
 
+/** @type {CcHeaderAddonBetaStateLoaded} */
+const materiaData = {
+  type: 'loaded',
+  id: 'addon_9874221',
+  realId: 'materia_9874221',
+  name: 'Materia',
+  provider: {
+    name: 'Materia KV',
+    logoUrl: 'https://assets.clever-cloud.com/logos/materia-db-kv.png',
+  },
+  plan: {
+    name: '',
+  },
+  region: 'par',
+  creationDate: 0,
+};
+
+/** @type {CcHeaderAddonBetaStateLoaded} */
+const elasticData = {
+  type: 'loaded',
+  id: 'addon_5541236',
+  realId: 'elastic_5541236',
+  name: 'Elastic',
+  provider: {
+    name: 'Elastic Stack',
+    logoUrl: 'https://assets.clever-cloud.com/logos/elastic.svg',
+  },
+  plan: {
+    name: '',
+  },
+  region: 'par',
+  creationDate: 0,
+};
+
+/** @type {CcHeaderAddonBetaStateLoaded} */
+const configData = {
+  type: 'loaded',
+  id: 'addon_1452154',
+  realId: 'config_1452154',
+  name: 'Elastic',
+  provider: {
+    name: 'Configuration provider',
+    logoUrl: 'https://assets.clever-cloud.com/logos/configprovider.svg',
+  },
+  plan: {
+    name: '',
+  },
+  region: 'par',
+  creationDate: 0,
+};
+
 export default {
   tags: ['autodocs'],
   title: '🚧 Beta/🛠 Addons/<cc-header-addon-beta>',
@@ -101,6 +152,45 @@ export const jenkinsDataLoadedStory = makeStory(conf, {
       /** @type {CcHeaderAddonBetaStateLoaded} */
       state: {
         ...jenkinsData,
+      },
+      addonHref: 'http://example.com',
+      logsHref: 'http://example.com',
+    },
+  ],
+});
+
+export const materiaDataLoadedStory = makeStory(conf, {
+  items: [
+    {
+      /** @type {CcHeaderAddonBetaStateLoaded} */
+      state: {
+        ...materiaData,
+      },
+      addonHref: 'http://example.com',
+      logsHref: 'http://example.com',
+    },
+  ],
+});
+
+export const elasticDataLoadedStory = makeStory(conf, {
+  items: [
+    {
+      /** @type {CcHeaderAddonBetaStateLoaded} */
+      state: {
+        ...elasticData,
+      },
+      addonHref: 'http://example.com',
+      logsHref: 'http://example.com',
+    },
+  ],
+});
+
+export const configDataLoadedStory = makeStory(conf, {
+  items: [
+    {
+      /** @type {CcHeaderAddonBetaStateLoaded} */
+      state: {
+        ...configData,
       },
       addonHref: 'http://example.com',
       logsHref: 'http://example.com',

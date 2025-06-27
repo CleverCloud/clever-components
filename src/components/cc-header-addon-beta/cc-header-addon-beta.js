@@ -1,4 +1,5 @@
 import { LitElement, css, html } from 'lit';
+import '../cc-button/cc-button.js';
 import '../cc-img/cc-img.js';
 import '../cc-notice/cc-notice.js';
 
@@ -33,8 +34,8 @@ export class CcHeaderAddonBeta extends LitElement {
       name: null,
       provider: null,
       plan: null,
-      creationDate: null,
       region: null,
+      creationDate: null,
     };
   }
 
@@ -49,6 +50,12 @@ export class CcHeaderAddonBeta extends LitElement {
         return this._renderKeycloak();
       case 'Jenkins':
         return this._renderJenkins();
+      case 'Materia KV':
+        return this._renderMateria();
+      case 'Elastic Stack':
+        return this._renderElastic();
+      case 'Configuration provider':
+        return this._renderConfig();
       default:
         return '';
     }
@@ -73,10 +80,14 @@ export class CcHeaderAddonBeta extends LitElement {
         <cc-img class="logo" src=${addonInfo.provider.logoUrl}></cc-img>
         <div class="name">${addonInfo.name}</div>
         <div class="id">${addonInfo.realId}</div>
-        <dl class="links">
+        <dl class="buttons">
           <dd><a href="${this.addonHref}">Open ${addonInfo.name}</a></dd>
-          <dd><a href="http://example.com">Restart</a></dd>
-          <dd><a href="http://example.com">Re-built and restart</a></dd>
+          <dd>
+            <cc-button type="button">Restart</cc-button>
+          </dd>
+          <dd>
+            <cc-button type="button">Re-built and restart</cc-button>
+          </dd>
         </dl>
       </div>
       <div class="footer">
@@ -95,10 +106,14 @@ export class CcHeaderAddonBeta extends LitElement {
         <cc-img class="logo" src=${addonInfo.provider.logoUrl}></cc-img>
         <div class="name">${addonInfo.name}</div>
         <div class="id">${addonInfo.realId}</div>
-        <dl class="links">
+        <dl class="buttons">
           <dd><a href="${this.addonHref}">Open ${addonInfo.name}</a></dd>
-          <dd><a href="http://example.com">Restart</a></dd>
-          <dd><a href="http://example.com">Re-built and restart</a></dd>
+          <dd>
+            <cc-button type="button">Restart</cc-button>
+          </dd>
+          <dd>
+            <cc-button type="button">Re-built and restart</cc-button>
+          </dd>
         </dl>
       </div>
       <div class="footer">
@@ -117,12 +132,66 @@ export class CcHeaderAddonBeta extends LitElement {
         <cc-img class="logo" src=${addonInfo.provider.logoUrl}></cc-img>
         <div class="name">${addonInfo.name}</div>
         <div class="id">${addonInfo.realId}</div>
-        <dl class="links">
+        <dl class="buttons">
           <dd><a href="${this.addonHref}">Open ${addonInfo.name}</a></dd>
         </dl>
       </div>
       <div class="footer">
         <a href=${this.logsHref}>View logs</a>
+        <div class="region">${addonInfo.region}</div>
+      </div>
+    `;
+  }
+
+  _renderMateria() {
+    /** @type {CcHeaderAddonBetaStateLoaded} **/
+    const addonInfo = this.state.type === 'loaded' ? this.state : null;
+
+    return html`
+      <div class="container">
+        <cc-img class="logo" src=${addonInfo.provider.logoUrl}></cc-img>
+        <div class="name">${addonInfo.name}</div>
+        <div class="id">${addonInfo.realId}</div>
+      </div>
+      <div class="footer">
+        <a href=${this.logsHref}>View logs</a>
+        <div class="region">${addonInfo.region}</div>
+      </div>
+    `;
+  }
+
+  _renderElastic() {
+    /** @type {CcHeaderAddonBetaStateLoaded} **/
+    const addonInfo = this.state.type === 'loaded' ? this.state : null;
+
+    return html`
+      <div class="container">
+        <cc-img class="logo" src=${addonInfo.provider.logoUrl}></cc-img>
+        <div class="name">${addonInfo.name}</div>
+        <div class="id">${addonInfo.realId}</div>
+        <dl class="buttons">
+          <dd><a href="${this.addonHref}">Open APM</a></dd>
+          <dd><a href="${this.addonHref}">Open Kibana</a></dd>
+        </dl>
+      </div>
+      <div class="footer">
+        <a href=${this.logsHref}>View logs</a>
+        <div class="region">${addonInfo.region}</div>
+      </div>
+    `;
+  }
+
+  _renderConfig() {
+    /** @type {CcHeaderAddonBetaStateLoaded} **/
+    const addonInfo = this.state.type === 'loaded' ? this.state : null;
+
+    return html`
+      <div class="container">
+        <cc-img class="logo" src=${addonInfo.provider.logoUrl}></cc-img>
+        <div class="name">${addonInfo.name}</div>
+        <div class="id">${addonInfo.realId}</div>
+      </div>
+      <div class="footer">
         <div class="region">${addonInfo.region}</div>
       </div>
     `;
@@ -135,7 +204,7 @@ export class CcHeaderAddonBeta extends LitElement {
         .container {
           display: grid;
           grid-auto-columns: auto 1fr auto;
-          grid-template-areas: 'logo name links' 'logo id links';
+          grid-template-areas: 'logo name buttons' 'logo id buttons';
         }
 
         .logo {
@@ -152,9 +221,9 @@ export class CcHeaderAddonBeta extends LitElement {
           grid-area: id;
         }
 
-        .links {
+        .buttons {
           display: flex;
-          grid-area: links;
+          grid-area: buttons;
         }
       `,
     ];
