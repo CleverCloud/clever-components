@@ -28,6 +28,9 @@ jobs:
     needs: calculate-matrix
     uses: ./.github/workflows/visual-regression-tests.yml
     secrets: inherit
+    permissions:
+      contents: write
+      pull-requests: write
     with:
       matrix: ${{ needs.calculate-matrix.outputs.matrix }}
       branch: ${{ github.head_ref }}
