@@ -45,6 +45,7 @@ export class CellarClient {
       }),
     );
     const files = listObjectsResponse.Contents ?? [];
+    console.log(files);
     return files.map((file) => file.Key);
   }
 
