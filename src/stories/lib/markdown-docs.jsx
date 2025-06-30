@@ -5,6 +5,9 @@ import React, { useEffect } from 'react';
 import { SELECT_STORY } from 'storybook/internal/core-events';
 // several docs rely on `cc-notice`
 import '../../components/cc-notice/cc-notice.js';
+import '../../components/cc-web-features-tracker/cc-web-features-tracker.smart.js';
+import trackedWebFeatures from '../../components/cc-web-features-tracker/web-features.json';
+import { updateRootContext } from '../../lib/smart/smart-manager.js';
 
 /**
  * @typedef {Object} ParamsId
@@ -23,13 +26,18 @@ export function MarkdownDocs({ html }) {
   const htmlContent = { __html: html };
 
   useEffect(() => {
+    updateRootContext({ trackedWebFeatures });
     document.addEventListener('click', linksListener);
     return () => {
       document.removeEventListener('click', linksListener);
     };
   }, []);
 
-  return <div className="markdown-body sb-unstyled" dangerouslySetInnerHTML={htmlContent}></div>;
+  return (
+    <cc-smart-container>
+      <div className="markdown-body sb-unstyled" dangerouslySetInnerHTML={htmlContent}></div>
+    </cc-smart-container>
+  );
 }
 
 /**
