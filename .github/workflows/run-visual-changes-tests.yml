@@ -5,35 +5,59 @@ concurrency:
   cancel-in-progress: true
 
 on:
-  workflow_call:
-    inputs:
-      matrix:
-        required: true
-        type: string
-      branch:
-        required: true
-        type: string
-      pr_number:
-        required: true
-        type: string
-      base_sha:
-        required: true
-        type: string
-      event_type:
-        required: true
-        type: string
+  pull_request:
+    types: [synchronize, opened, reopened, closed]
+
+# on:
+#   workflow_call:
+#     inputs:
+#       matrix:
+#         required: true
+#         type: string
+#       branch:
+#         required: true
+#         type: string
+#       pr_number:
+#         required: true
+#         type: string
+#       base_sha:
+#         required: true
+#         type: string
+#       event_type:
+#         required: true
+#         type: string
 
 jobs:
+  split-into-shards:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    steps:
+      - name: '[Prepare] Checkout'
+        uses: actions/checkout@v4
+
+      - name: '[Prepare] Setup Node.js'
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: 'package.json'
+          cache: 'npm'
+      - run: npm ci
+
+      - id: set-matrix
+        run: |
+          echo "matrix=$(node ./tasks/get-number-of-visual-batches.js)" >> $GITHUB_OUTPUT
+
   baseline-update:
     if: inputs.event_type != 'closed'
     name: Baseline Update (sharded)
+    needs: [split-into-shards]
     runs-on: ubuntu-latest
     container:
       image: mcr.microsoft.com/playwright:v1.53.0-noble
       options: --user 1001
     strategy:
       matrix:
-        batch: ${{ fromJson(inputs.matrix) }}
+        batch: ${{ fromJson(needs.split-into-shards.outputs.matrix) }}
     steps:
       - name: '[Prepare] Checkout base commit'
         uses: actions/checkout@v4
