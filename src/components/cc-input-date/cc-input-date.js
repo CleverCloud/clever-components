@@ -215,8 +215,10 @@ export class CcInputDate extends CcFormControlElement {
         i18n('cc-input-date.error.bad-input', {
           date: DATE_FORMATTER_SHORT.format(shiftDateField(NOW, 'D', 1)),
         }),
-      rangeUnderflow: () => i18n('cc-input-date.error.range-underflow', { min: this.min }),
-      rangeOverflow: () => i18n('cc-input-date.error.range-overflow', { max: this.max }),
+      rangeUnderflow: () =>
+        i18n('cc-input-date.error.range-underflow', { min: DATE_FORMATTER_SHORT.format(new Date(this.min)) }),
+      rangeOverflow: () =>
+        i18n('cc-input-date.error.range-overflow', { max: DATE_FORMATTER_SHORT.format(new Date(this.max)) }),
     };
   }
 
@@ -538,6 +540,7 @@ export class CcInputDate extends CcFormControlElement {
 
       <div class="help-container" id="help">
         <slot name="help"></slot>
+        <p class="help-message">${i18n('cc-input-date.help')}</p>
       </div>
 
       ${hasErrorMessage
@@ -692,6 +695,12 @@ export class CcInputDate extends CcFormControlElement {
           line-height: 2em;
           overflow: hidden;
           z-index: 2;
+        }
+
+        .help-message {
+          color: var(--cc-color-text-weak, #333);
+          font-size: 0.9em;
+          margin: 0.3em 0 0;
         }
 
         /* STATES */

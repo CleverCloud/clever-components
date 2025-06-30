@@ -664,6 +664,7 @@ export const translations = {
     `Saisissez une date inférieure à ${max}`,
   'cc-input-date.error.range-underflow': /** @param {{min: string}} _ */ ({ min }) =>
     `Saisissez une date supérieure à ${min}`,
+  'cc-input-date.help': `Format : AAAA-MM-JJ HH:MM:SS`,
   'cc-input-date.keyboard-hint': `Vous pouvez utiliser les touches flèche haut et flèche bas pour modifier des parties de la date.`,
   'cc-input-date.required': `obligatoire`,
   //#endregion
@@ -1672,8 +1673,6 @@ export const translations = {
   'cc-token-api-creation-form.configuration-step.form.expiration-date.error.range-underflow':
     /** @param {{ date: string }} _ */ ({ date }) =>
       sanitize`La date d'expiration doit être au moins 15 minutes à partir de maintenant<br>Par exemple&nbsp;: ${date}`,
-  'cc-token-api-creation-form.configuration-step.form.expiration-date.help.format': () =>
-    sanitize`Format&nbsp;: AAAA-MM-JJ HH:MM:SS`,
   'cc-token-api-creation-form.configuration-step.form.expiration-date.help.min-max': `Au moins 15 minutes et jusqu'à 1 an à partir de maintenant`,
   'cc-token-api-creation-form.configuration-step.form.expiration-date.label': `Date d'expiration`,
   'cc-token-api-creation-form.configuration-step.form.expiration-duration.help.custom': `Spécifiez la date d'expiration à l'aide du champ ci-contre`,
