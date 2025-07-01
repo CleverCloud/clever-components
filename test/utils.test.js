@@ -1,6 +1,7 @@
 import { expect } from '@bundled-es-modules/chai';
 import {
   clampNumber,
+  dedent,
   generateDevHubHref,
   generateDocsHref,
   groupBy,
@@ -45,6 +46,77 @@ describe('clampNumber function', () => {
   });
   it('should return number when bounds is undefined', () => {
     expect(clampNumber(14, undefined, undefined)).to.eql(14);
+  });
+});
+
+describe('dedent function', () => {
+  it('should remove common leading spaces', () => {
+    const input = `
+      line 1
+      line 2
+      line 3
+    `;
+    const expected = 'line 1\nline 2\nline 3';
+    expect(dedent(input)).to.equal(expected);
+  });
+
+  it('should handle mixed indentation', () => {
+    const input = `
+      \t\tline 1
+      \t\tline 2
+      \t\tline 3
+    `;
+    const expected = 'line 1\nline 2\nline 3';
+    expect(dedent(input)).to.equal(expected);
+  });
+
+  it('should handle lines with different indentation', () => {
+    const input = `
+        line 1
+      line 2
+    `;
+    const expected = '  line 1\nline 2';
+    expect(dedent(input)).to.equal(expected);
+  });
+
+  it('should ignore empty first and last lines', () => {
+    const input = `
+
+      line 1
+      line 2
+
+    `;
+    const expected = 'line 1\nline 2';
+    expect(dedent(input)).to.equal(expected);
+  });
+
+  it('should return empty string if only empty lines', () => {
+    const input = `
+
+    
+    
+    `;
+    expect(dedent(input)).to.equal('');
+  });
+
+  it('should preserve internal blank lines', () => {
+    const input = `
+      line 1
+
+      line 2
+    `;
+    const expected = 'line 1\n\nline 2';
+    expect(dedent(input)).to.equal(expected);
+  });
+
+  it('should not fail if all lines are unindented', () => {
+    const input = `
+      line 1
+      line 2
+      line 3
+    `;
+    const expected = 'line 1\nline 2\nline 3';
+    expect(dedent(input)).to.equal(expected);
   });
 });
 
