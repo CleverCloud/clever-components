@@ -2,18 +2,14 @@ import { css, html } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { createRef, ref } from 'lit/directives/ref.js';
-import {
-  iconRemixCheckLine as iconCheck,
-  iconRemixClipboardLine as iconClipboard,
-  iconRemixEyeOffLine as iconEyeClosed,
-  iconRemixEyeLine as iconEyeOpen,
-} from '../../assets/cc-remix.icons.js';
+import { iconRemixEyeOffLine as iconEyeClosed, iconRemixEyeLine as iconEyeOpen } from '../../assets/cc-remix.icons.js';
 import { CcFormControlElement } from '../../lib/form/cc-form-control-element.abstract.js';
 import { EmailValidator, RequiredValidator, combineValidators } from '../../lib/form/validation.js';
 import { arrayEquals } from '../../lib/utils.js';
 import { accessibilityStyles } from '../../styles/accessibility.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
 import { i18n } from '../../translations/translation.js';
+import '../cc-clipboard/cc-clipboard.js';
 import '../cc-icon/cc-icon.js';
 import { CcInputEvent, CcRequestSubmitEvent } from '../common.events.js';
 import { CcTagsChangeEvent } from './cc-input-text.events.js';
@@ -71,7 +67,6 @@ export class CcInputText extends CcFormControlElement {
       tags: { type: Array },
       type: { type: String, reflect: true },
       value: { type: String },
-      _copyOk: { type: Boolean, state: true },
       _showSecret: { type: Boolean, state: true },
       _tagsEnabled: { type: Boolean, state: true },
     };
@@ -128,9 +123,6 @@ export class CcInputText extends CcFormControlElement {
 
     /** @type {string} Sets `value` attribute on inner native input element or textarea's inner content. */
     this.value = '';
-
-    /** @type {boolean} */
-    this._copyOk = false;
 
     /** @type {HTMLElementRef} */
     this._errorRef = createRef();
@@ -281,13 +273,6 @@ export class CcInputText extends CcFormControlElement {
     }
   }
 
-  _onClickCopy() {
-    navigator.clipboard.writeText(this.value).then(() => {
-      this._copyOk = true;
-      setTimeout(() => (this._copyOk = false), 1000);
-    });
-  }
-
   _onClickSecret() {
     this._showSecret = !this._showSecret;
   }
@@ -424,18 +409,7 @@ export class CcInputText extends CcFormControlElement {
               </button>
             `
           : ''}
-        ${clipboard
-          ? html`
-              <button class="btn" @click=${this._onClickCopy} title=${i18n('cc-input-text.clipboard')}>
-                <cc-icon
-                  class="btn-img"
-                  .icon=${this._copyOk ? iconCheck : iconClipboard}
-                  a11y-name=${i18n('cc-input-text.clipboard')}
-                  size="lg"
-                ></cc-icon>
-              </button>
-            `
-          : ''}
+        ${clipboard ? html` <cc-clipboard class="btn-copy" value="${this.value}"></cc-clipboard> ` : ''}
       </div>
 
       <div class="help-container" id="help-id">
@@ -537,6 +511,7 @@ export class CcInputText extends CcFormControlElement {
         /* endregion */
 
         .meta-input {
+          align-items: center;
           box-sizing: border-box;
           display: inline-flex;
           grid-area: input;
@@ -722,14 +697,19 @@ export class CcInputText extends CcFormControlElement {
           padding: 0;
         }
 
+        .btn,
+        .btn-copy {
+          flex-shrink: 0;
+          margin-right: 0.15em;
+          z-index: 2;
+        }
+
         .btn {
           border-radius: var(--cc-border-radius-small, 0.15em);
           cursor: pointer;
-          flex-shrink: 0;
           height: 1.6em;
           margin: 0.2em 0.2em 0.2em 0;
           width: 1.6em;
-          z-index: 2;
         }
 
         .btn:focus {
@@ -758,14 +738,9 @@ export class CcInputText extends CcFormControlElement {
         }
 
         .btn-img {
-          --cc-icon-color: var(--cc-input-btn-icons-color, #595959);
-
           box-sizing: border-box;
+          color: var(--cc-color-text-default, #000);
           padding: 15%;
-        }
-
-        .btn-img:hover {
-          --cc-icon-color: var(--cc-color-text-primary);
         }
       `,
     ];
