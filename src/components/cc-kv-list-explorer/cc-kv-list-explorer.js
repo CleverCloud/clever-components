@@ -5,7 +5,7 @@ import { createRef, ref } from 'lit/directives/ref.js';
 import {
   iconRemixAddLine as iconAdd,
   iconRemixCheckFill as iconCheck,
-  iconRemixClipboardLine as iconCopy,
+  iconRemixFileCopyLine as iconCopy,
   iconRemixCloseFill as iconCross,
   iconRemixSearchLine as iconFilter,
   iconRemixEditFill as iconPen,

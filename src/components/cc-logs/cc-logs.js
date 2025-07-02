@@ -4,7 +4,7 @@ import { classMap } from 'lit/directives/class-map.js';
 import { join } from 'lit/directives/join.js';
 import { createRef, ref } from 'lit/directives/ref.js';
 import {
-  iconRemixFileCopy_2Line as iconCopy,
+  iconRemixFileCopyLine as iconCopy,
   iconRemixCheckboxBlankCircleFill as iconSelected,
 } from '../../assets/cc-remix.icons.js';
 import { ansiPaletteStyle } from '../../lib/ansi/ansi-palette-style.js';

@@ -6,7 +6,7 @@ import {
   iconRemixAddLine as iconAdd,
   iconRemixDeleteBin_5Fill as iconBin,
   iconRemixCheckFill as iconCheck,
-  iconRemixClipboardLine as iconCopy,
+  iconRemixFileCopyLine as iconCopy,
   iconRemixCloseFill as iconCross,
   iconRemixSearchLine as iconFilter,
   iconRemixEditFill as iconPen,
