@@ -169,7 +169,7 @@
     "text-table": "^0.2.0",
     "tinyglobby": "^0.2.10",
     "ts-lit-plugin": "^2.0.2",
-    "typescript": "~5.4.2",
+    "typescript": "^5.8.3",
     "unified": "^9.2.1",
     "vite": "^6.3.5"
   },
