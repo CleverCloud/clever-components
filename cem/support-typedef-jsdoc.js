@@ -1,5 +1,6 @@
 import { readFileSync } from 'fs';
 import path from 'path';
+import ts from 'typescript';
 import {
   convertInterface,
   findInterfacesFromExtends,
@@ -100,66 +101,81 @@ export default function supportTypedefJsdoc() {
 
   return {
     name: 'support-typedef-jsdoc',
-    analyzePhase({ ts, node, moduleDoc }) {
-      // First, we need to find the constructor
-      // It can be found as a member of ClassDeclaration
+    moduleLinkPhase({ moduleDoc }) {
+      let sourceCode;
+      let sourceAst;
 
-      // If the node we loop through is not a ClassDeclaration we don't go any further
-      // as we only want access to the constructor and JSDoc above the class to find the imports.
-      if (node.kind !== ts.SyntaxKind.ClassDeclaration) {
+      try {
+        sourceCode = readFileSync(moduleDoc.path).toString();
+      } catch (e) {
+        console.error(e);
         return;
       }
+      sourceAst = ts.createSourceFile(moduleDoc.path, sourceCode, ts.ScriptTarget.ES2015, true);
 
-      // New module so we clear the cache for that module.
-      moduleTypeCache.clear();
+      for (const statement of sourceAst.statements) {
+        if (statement.kind !== ts.SyntaxKind.ClassDeclaration) {
+          continue;
+        }
 
-      const componentName = node.name.escapedText;
+        // New module so we clear the cache for that module.
+        moduleTypeCache.clear();
 
-      const types = getTypesFromClass(node, ts);
+        const componentName = statement.name.escapedText;
+        // Check if the class we're currently looking at is a component, we don't want to pick validators for example.
+        if (
+          statement?.heritageClauses?.[0].types[0].expression.escapedText !== 'LitElement' &&
+          statement?.heritageClauses?.[0].types[0].expression.escapedText !== 'CcFormControlElement'
+        ) {
+          continue;
+        }
 
-      if (types.length === 0) {
-        return;
-      }
+        const types = getTypesFromClass(statement, ts);
 
-      // This finds the comment where the imports are located
-      const typeDefNode = node?.jsDoc?.filter((node) =>
-        node.tags?.find((tag) => tag.kind === ts.SyntaxKind.JSDocTypedefTag),
-      )?.[0];
-
-      const moduleDir = path.parse(moduleDoc.path).dir;
-
-      // Check the jsDoc of the class and find the imports
-      typeDefNode?.tags?.forEach((tag) => {
-        // Extract the path from the @typedef import
-        const typePath = findTypePath(tag, ROOT_DIR, moduleDir);
-
-        // If an import is not correct, warn the plugin user.
-        if (typePath == null) {
-          console.warn(`[${componentName}] - There's a problem with one of your @typedef - ${tag.getText()}`);
-          process.exitCode = 1;
+        if (types.length === 0) {
           return;
         }
 
-        // Extract the type from the @typedef import
-        const typeDefDisplay = tag.name.getText();
+        // This finds the comment where the imports are located
+        const typeDefNode = statement?.jsDoc?.filter((statement) =>
+          statement.tags?.find((tag) => tag.kind === ts.SyntaxKind.JSDocTypedefTag),
+        )?.[0];
 
-        const type = types.find((type) => type === typeDefDisplay);
+        const moduleDir = path.parse(moduleDoc.path).dir;
 
-        if (type != null) {
-          if (!moduleTypeCache.has(typePath)) {
-            moduleTypeCache.set(typePath, new Set());
+        // Check the jsDoc of the class and find the imports
+        typeDefNode?.tags?.forEach((tag) => {
+          // Extract the path from the @typedef import
+          const typePath = findTypePath(tag, ROOT_DIR, moduleDir);
+
+          // If an import is not correct, warn the plugin user.
+          if (typePath == null) {
+            console.warn(`[${componentName}] - There's a problem with one of your @typedef - ${tag.getText()}`);
+            process.exitCode = 1;
+            return;
           }
-          moduleTypeCache.get(typePath).add(type);
-        }
-      });
 
-      // Now that we have the types, and the path of where the types are located
-      // We can convert the imports to md types
-      const convertedImports = convertImports(ts, moduleTypeCache);
-      const displayText = convertedImports ? '### Type Definitions\n\n' + convertedImports : '';
-      const declaration = moduleDoc.declarations.find((declaration) => declaration.name === node.name.getText());
+          // Extract the type from the @typedef import
+          const typeDefDisplay = tag.name.getText();
 
-      declaration.description = declaration.description + '\n\n' + displayText;
+          const type = types.find((type) => type === typeDefDisplay);
+
+          if (type != null) {
+            if (!moduleTypeCache.has(typePath)) {
+              moduleTypeCache.set(typePath, new Set());
+            }
+            moduleTypeCache.get(typePath).add(type);
+          }
+        });
+
+        // Now that we have the types, and the path of where the types are located
+        // We can convert the imports to md types
+        const convertedImports = convertImports(ts, moduleTypeCache);
+        const displayText = convertedImports ? '### Type Definitions\n\n' + convertedImports : '';
+        const declaration = moduleDoc.declarations.find((declaration) => declaration.name === statement.name.getText());
+
+        declaration.description = declaration.description + '\n\n' + displayText;
+      }
     },
   };
 }
