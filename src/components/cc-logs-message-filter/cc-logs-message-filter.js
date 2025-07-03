@@ -178,7 +178,7 @@ export class CcLogsMessageFilter extends LitElement {
           background: var(--cc-color-bg-default, #fff);
           border: none;
           border-radius: var(--cc-border-radius-default, 0.15em);
-          color: var(--cc-input-btn-icons-color, #595959);
+          color: var(--cc-color-text-default, #000);
           cursor: pointer;
           display: block;
           flex-shrink: 0;

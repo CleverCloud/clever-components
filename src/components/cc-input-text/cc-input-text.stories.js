@@ -204,7 +204,7 @@ export const clipboard = makeStory(conf, {
 
 export const clipboardWithAutoAdjust = makeStory(conf, {
   docs: `
-* If you use \`clipboard\` and \`readonly\`, the width of the input will be auto-adjusted ot the content.
+* If you use \`clipboard\` and \`readonly\`, the width of the input will be auto-adjusted to the content.
 * This has no effect in \`multi\` mode.
 `,
   items: [

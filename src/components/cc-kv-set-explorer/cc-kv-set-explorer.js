@@ -5,7 +5,7 @@ import { createRef, ref } from 'lit/directives/ref.js';
 import {
   iconRemixAddLine as iconAdd,
   iconRemixDeleteBin_5Fill as iconBin,
-  iconRemixClipboardLine as iconCopy,
+  iconRemixFileCopyLine as iconCopy,
   iconRemixSearchLine as iconFilter,
 } from '../../assets/cc-remix.icons.js';
 import { LostFocusController } from '../../controllers/lost-focus-controller.js';

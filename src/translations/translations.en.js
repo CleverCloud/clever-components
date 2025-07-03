@@ -263,6 +263,12 @@ export const translations = {
   //#region cc-button
   'cc-button.cancel': `Click to cancel`,
   //#endregion
+  //#region cc-clipboard
+  'cc-clipboard.copied': `The text has been copied`,
+  'cc-clipboard.copy': /** @param {{text: string}} _ */ ({ text }) =>
+    `Copy to clipboard - ${text.substring(0, 5).trim()}${text.length >= 5 ? '…' : ''}`,
+  'cc-clipboard.copy.empty': `Copy to clipboard`,
+  //#endregion
   //#region cc-datetime-relative
   'cc-datetime-relative.distance': /** @param {{date: string|number}} _ */ ({ date }) => formatDistanceToNow(date),
   'cc-datetime-relative.title': /** @param {{date: string|number}} _ */ ({ date }) => formatDate(date),
@@ -668,7 +674,6 @@ export const translations = {
   'cc-input-number.required': `required`,
   //#endregion
   //#region cc-input-text
-  'cc-input-text.clipboard': `Copy to clipboard`,
   'cc-input-text.error.bad-email': () => sanitize`Invalid email address format.<br>Example: john.doe@example.com.`,
   'cc-input-text.error.empty': `You must enter a value`,
   'cc-input-text.error.empty.email': `Enter an email address`,
