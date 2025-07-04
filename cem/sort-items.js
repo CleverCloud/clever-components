@@ -26,6 +26,8 @@ export default function sortItems() {
           }
         }
       }
+
+      customElementsManifest.modules.sort(sortBy('path'));
     },
   };
 }
