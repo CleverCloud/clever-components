@@ -1,5 +1,7 @@
 // @ts-expect-error FIXME: remove when clever-client exports types
 import { get as getAddon } from '@clevercloud/client/esm/api/v2/addon.js';
+// @ts-expect-error FIXME: remove when clever-client exports types
+import { getAddon as getJenkinsAddon } from '@clevercloud/client/esm/api/v4/addon-providers.js';
 import { sendToApi } from '../../lib/send-to-api.js';
 import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
 import '../cc-smart-container/cc-smart-container.js';
@@ -32,9 +34,6 @@ defineSmartComponent({
     const { apiConfig, ownerId, addonId } = context;
     const api = new Api(apiConfig, ownerId, addonId);
 
-    console.log('phase onContexteUpdate');
-    console.log(addonId);
-
     updateComponent('state', {
       type: 'loading',
     });
@@ -42,42 +41,27 @@ defineSmartComponent({
     api
       .getAddon()
       .then((rawAddon) => {
-        // console.log('Jenkins rawAddon.realId:', rawAddon.realId);
-        // console.log('Jenkins rawAddon.region:', rawAddon.region);
-        console.log(rawAddon.id);
-
-        Promise.all([api.getOperator(rawAddon.realId), api.getZone(rawAddon.region)])
-          .then(([operatorInfo, zone]) => {
-            console.log('Operator Info:', operatorInfo);
-            const url = operatorInfo.accessUrl;
-
-            console.log(context.logsUrlPattern.replace(':id', addonId));
-
-            updateComponent('state', {
-              type: 'loaded',
-              providerName: rawAddon.provider.name,
-              providerLogoUrl: rawAddon.provider.logoUrl,
-              name: rawAddon.name,
-              id: rawAddon.realId,
-              zone,
-              logsUrl: context.logsUrlPattern.replace(':id', addonId),
-              openLinks: [
-                {
-                  name: rawAddon.provider.name,
-                  // API spécifique pour récupérer l'URL du jenkins
-                  // accessUrl
-                  url,
-                },
-              ],
-              actions: { restart: false, rebuildAndRestart: false },
-            });
-          })
-          .catch((error) => {
-            console.error('Error fetching operator info:', error);
+        return Promise.all([api.getZone(rawAddon.region), api.getUrl(addonId)]).then(([zone, jenkinsUrl]) => {
+          updateComponent('state', {
+            type: 'loaded',
+            providerName: rawAddon.provider.name,
+            providerLogoUrl: rawAddon.provider.logoUrl,
+            name: rawAddon.name,
+            id: rawAddon.realId,
+            zone,
+            logsUrl: context.logsUrlPattern.replace(':id', addonId),
+            openLinks: [
+              {
+                name: rawAddon.provider.name,
+                url: jenkinsUrl,
+              },
+            ],
+            actions: { restart: true, rebuildAndRestart: true },
           });
+        });
       })
       .catch((error) => {
-        console.error(error);
+        console.error('Error fetching Jenkins info:', error);
         updateComponent('state', {
           type: 'error',
         });
@@ -105,33 +89,22 @@ class Api {
   }
 
   /**
-   * @param {string} realId
-   */
-  getOperator(realId) {
-    return getOperator({ provider: 'jenkins', realId }).then(sendToApi({ apiConfig: this._apiConfig }));
-  }
-
-  /**
    * @param {string} zoneName
    * @return {Promise<Zone>}
    */
   getZone(zoneName) {
     return getZone({ zoneName }).then(sendToApi({ apiConfig: this._apiConfig }));
   }
-}
 
-// move this to clever client
-/**
- * @param {{ provider: string, realId: string }} params
- * @returns {Promise<Object>}
- */
-export function getOperator(params) {
-  // no multipath for /self or /organisations/{id}
-  return Promise.resolve({
-    method: 'get',
-    url: `/v4/addon-providers/addon-${params.provider}/addons/${params.realId}`,
-    headers: { Accept: 'application/json' },
-    // no queryParams
-    // no body
-  });
+  /**
+   * @param {string} addonId
+   * @return {Promise<string>}
+   */
+  getUrl(addonId) {
+    return getJenkinsAddon({ providerId: 'jenkins', addonId })
+      .then(sendToApi({ apiConfig: this._apiConfig }))
+      .then((jenkinsAddon) => {
+        return `https://${jenkinsAddon.host}`;
+      });
+  }
 }

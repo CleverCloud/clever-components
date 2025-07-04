@@ -43,17 +43,10 @@ defineSmartComponent({
     api
       .getAddon()
       .then((rawAddon) => {
-        // console.log('about to update component...');
-        // console.log('rawAddon:', rawAddon);
-
         Promise.all([api.getOperator(rawAddon.realId), api.getZone(rawAddon.region)])
           .then(([operatorInfo, zone]) => {
-            console.log('Operator Info:', operatorInfo);
             const javaAppId = operatorInfo.resources.entrypoint;
             const url = operatorInfo.accessUrl;
-
-            // console.log(context.logsUrlPattern.replace(':id', javaAppId));
-            console.log(rawAddon);
 
             updateComponent('state', {
               type: 'loaded',
