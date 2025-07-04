@@ -36,6 +36,7 @@ export interface CcHeaderAddonBetaStateError {
   type: 'error';
 }
 
+// We only need 'start' and 'restart'?
 export type LastUserAction = 'start' | 'restart' | 'cancel' | 'stop';
 
 export interface RawAddon {
