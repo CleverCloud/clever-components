@@ -35,6 +35,7 @@ export class CcHeaderAddonBeta extends LitElement {
   static get properties() {
     return {
       state: { type: Object },
+      // Rename _lastUserAction ?
       _lastUserAction: { type: String, state: true },
     };
   }

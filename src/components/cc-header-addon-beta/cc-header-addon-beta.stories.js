@@ -18,7 +18,12 @@ const matomoData = {
   id: 'addon_14234569',
   zone: ZONE,
   logsUrl: 'https://example.com',
-  openLinks: [{ url: 'https://example.com', name: `Matomo` }],
+  openLinks: [
+    {
+      url: 'https://example.com',
+      name: `Matomo Analytics`,
+    },
+  ],
   actions: {
     restart: true,
     rebuildAndRestart: true,
