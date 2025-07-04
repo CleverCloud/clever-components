@@ -129,7 +129,7 @@ export function asyncMap(array, asyncCallback) {
  * Returns the currency symbol corresponding to the given currency.
  *
  * @param {string} currency - the currency to get the symbol for
- * @param {string} [currencyDisplay] - the currency formatting dysplay (defaults to "narrowSymbol")
+ * @param{Intl.NumberFormatOptions['currencyDisplay']} [currencyDisplay] - the currency formatting dysplay (defaults to "narrowSymbol")
  * @returns {string} the formatted currency symbol
  */
 export function getCurrencySymbol(currency, currencyDisplay = 'narrowSymbol') {
