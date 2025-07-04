@@ -5,6 +5,33 @@ title: 'Changelog'
 
 # Changelog
 
+## [19.3.0](https://github.com/CleverCloud/clever-components/compare/19.2.0...19.3.0) (2025-07-04)
+
+
+### 🚀 Features
+
+* **cc-addon-backups:** add cc-block-details in the footer ([35dfa73](https://github.com/CleverCloud/clever-components/commit/35dfa732bba8bcdad84d6f041d1a5e97d3b0a452))
+* **cc-clipboard:** init component ([4bc1d0b](https://github.com/CleverCloud/clever-components/commit/4bc1d0b887d5f523139f787330a257d1e0f8bc9d))
+* **cc-domain-management:** add cc-block-details in the footer ([8c792ae](https://github.com/CleverCloud/clever-components/commit/8c792aeec54cbde46519e235484ec073f407e176))
+* **cc-env-var-form:** add cc-block-details in the footer ([47696e2](https://github.com/CleverCloud/clever-components/commit/47696e2828b6aad4b0b16a78a2c5e551a4a262d3))
+* **cc-input-date:** always show the expected format ([06a3a6a](https://github.com/CleverCloud/clever-components/commit/06a3a6a8206013eb970cd2784818174ca7815845)), closes [#1456](https://github.com/CleverCloud/clever-components/issues/1456)
+* **cc-input-date:** improve overflow and underflow examples in error messages ([0d468e5](https://github.com/CleverCloud/clever-components/commit/0d468e59eaea6c2410247e13213187b29d248e13)), closes [#1455](https://github.com/CleverCloud/clever-components/issues/1455)
+* **cc-link:** init component ([27c9427](https://github.com/CleverCloud/clever-components/commit/27c9427a44faafe059d313fb57cd60aee35acca8))
+* **cc-link:** update sanitize and translations ([6390463](https://github.com/CleverCloud/clever-components/commit/6390463f6fc12658e62073c0730028b224b0684d))
+* **cc-tcp-redirection-form:** add cc-block-details in the footer ([b685573](https://github.com/CleverCloud/clever-components/commit/b685573bc71a28bc5b643c95ba844521cab709ea))
+* **cc-web-features-tracker:** init component ([706405b](https://github.com/CleverCloud/clever-components/commit/706405b56b05c3ef9d236d157e849fdca44ae7b6))
+
+
+### 🐛 Bug Fixes
+
+* **cc-block:** update animation on hover & toggle ([542cf9d](https://github.com/CleverCloud/clever-components/commit/542cf9d163186d4390a83fa811448139cd46a664))
+* **cc-button:** update opacity with --cc-opacity-when-disabled var ([ef275c9](https://github.com/CleverCloud/clever-components/commit/ef275c93ae4295367f135d1b01fd58032ddc7405))
+* **cc-input-date, date-displayer,...:** remove obsolete eslint comments that set mocha / node env ([ee7962d](https://github.com/CleverCloud/clever-components/commit/ee7962d1c6492a446695fb86be0521ea39c444c4))
+* **cc-input-number:** update opacity with --cc-opacity-when-disabled var ([3870369](https://github.com/CleverCloud/clever-components/commit/3870369910a0ee7f32b612e7d16ad3d18a569ac3))
+* **cc-input-text:** add the possibility to use command key on implicit submit ([3e9ebd0](https://github.com/CleverCloud/clever-components/commit/3e9ebd086d639c48870b9c7e6f17bbec758dfb66))
+* **cc-toggle:** update opacity with --cc-opacity-when-disabled var ([f985309](https://github.com/CleverCloud/clever-components/commit/f985309a5bc20cf45f251db3f007234a080176f9))
+* **translations:** remove the extra "s" on "information" word ([67095e5](https://github.com/CleverCloud/clever-components/commit/67095e5354e3a6cc36fe060230fe9b9aae16527b))
+
 ## [19.2.0](https://github.com/CleverCloud/clever-components/compare/19.1.0...19.2.0) (2025-06-05)
 
 
