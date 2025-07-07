@@ -1,5 +1,5 @@
 import { expect } from '@bundled-es-modules/chai';
-import { camelCase, pascalCase, snakeCase } from '../src/lib/change-case.js';
+import { camelCase, kebabCase, pascalCase, snakeCase } from '../src/lib/change-case.js';
 
 const TEST_PASCAL_CASES = [
   ['', ''],
@@ -37,6 +37,18 @@ const TEST_SNAKE_CASES = [
   ['version 1.21.0', 'version_1_21_0'],
 ];
 
+const TEST_KEBAB_CASES = [
+  ['', ''],
+  ['test', 'test'],
+  ['test string', 'test-string'],
+  ['Test String', 'test-string'],
+  ['TestString', 'test-string'],
+  ['dot.case', 'dot-case'],
+  ['TestV2', 'test-v2'],
+  ['version 1.2.10', 'version-1-2-10'],
+  ['version 1.21.0', 'version-1-21-0'],
+];
+
 describe('pascalCase', () => {
   for (const [input, output] of TEST_PASCAL_CASES) {
     it(`${input} => ${output}`, () => {
@@ -57,6 +69,14 @@ describe('snakeCase', () => {
   for (const [input, output] of TEST_SNAKE_CASES) {
     it(`${input} => ${output}`, () => {
       expect(snakeCase(input)).to.equal(output);
+    });
+  }
+});
+
+describe('kebabCase', () => {
+  for (const [input, output] of TEST_KEBAB_CASES) {
+    it(`${input} => ${output}`, () => {
+      expect(kebabCase(input)).to.equal(output);
     });
   }
 });
