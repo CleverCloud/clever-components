@@ -2,8 +2,10 @@ import { LitElement, css, html } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { fakeString } from '../../lib/fake-strings.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
+import '../cc-block/cc-block.js';
 import '../cc-button/cc-button.js';
 import '../cc-img/cc-img.js';
+import '../cc-link/cc-link.js';
 import '../cc-notice/cc-notice.js';
 import '../cc-zone/cc-zone.js';
 import { CcHeaderAddonBetaRestartEvent } from './cc-header-addon-beta.events.js';
@@ -24,11 +26,10 @@ const SKELETON_ADDON_INFO = {
 };
 
 /**
- * @typedef {import('./cc-header-addon-beta.types.js').CcHeaderAddonBetaStateLoaded} CcHeaderAddonBetaStateLoaded
  * @typedef {import('./cc-header-addon-beta.types.js').CcHeaderAddonBetaState} CcHeaderAddonBetaState
- * @typedef {import('./cc-header-addon-beta.types.js').LastUserAction} LastUserAction
+ * @typedef {import('./cc-header-addon-beta.types.js').CcHeaderAddonBetaStateLoaded} CcHeaderAddonBetaStateLoaded
  * @typedef {import('./cc-header-addon-beta.types.js').CcHeaderAddonBetaStateLoading} CcHeaderAddonBetaStateLoading
- *
+ * @typedef {import('./cc-header-addon-beta.types.js').LastUserAction} LastUserAction
  */
 
 export class CcHeaderAddonBeta extends LitElement {
@@ -77,36 +78,49 @@ export class CcHeaderAddonBeta extends LitElement {
     const zoneState = this.state.type === 'loaded' ? { type: 'loaded', ...this.state.zone } : { type: 'loading' };
 
     return html`
-      <div class="container">
-        <cc-img class="logo" ?skeleton=${skeleton} src=${addonInfo.providerLogoUrl}></cc-img>
-        <div class="name ${classMap({ skeleton })}">${addonInfo.providerName}</div>
-        <div class="id ${classMap({ skeleton })}">${addonInfo.id}</div>
-        <dl class="buttons">
-          ${addonInfo.openLinks?.map((link) => html` <dd><a href="${link.url}">Open ${link.name}</a></dd> `)}
-          ${addonInfo.actions?.restart === true
-            ? html`
-                <dd>
-                  <cc-button type="button" ?skeleton="${skeleton}" @cc-click=${() => this._onRestart('normal')}
-                    >Restart</cc-button
-                  >
-                </dd>
-              `
-            : ''}
-          ${addonInfo.actions?.rebuildAndRestart === true
-            ? html`
-                <dd>
-                  <cc-button type="button" ?skeleton="${skeleton}" @cc-click=${() => this._onRestart('rebuild')}
-                    >Re-build and restart
-                  </cc-button>
-                </dd>
-              `
-            : ''}
-        </dl>
-      </div>
-      <div class="footer">
-        <a href=${addonInfo.logsUrl} class=${classMap({ skeleton })}>View logs</a>
-        <cc-zone .state=${zoneState} mode="small-infra" class=${classMap({ skeleton })}></cc-zone>
-      </div>
+      <cc-block>
+        <div slot="content" class="main">
+          <cc-img class="logo" ?skeleton=${skeleton} src=${addonInfo.providerLogoUrl}></cc-img>
+
+          <div class="details">
+            <div class="name ${classMap({ skeleton })}">${addonInfo.providerName}</div>
+            <div class="id ${classMap({ skeleton })}">${addonInfo.id}</div>
+          </div>
+
+          <div class="actions">
+            ${addonInfo.openLinks?.map(
+              (link) => html`
+                <div>
+                  <cc-link mode="button" href="${link.url}">Open ${link.name}</cc-link>
+                </div>
+              `,
+            )}
+            ${addonInfo.actions?.restart === true
+              ? html`
+                  <div>
+                    <cc-button type="button" ?skeleton="${skeleton}" @cc-click=${() => this._onRestart('normal')}
+                      >Restart</cc-button
+                    >
+                  </div>
+                `
+              : ''}
+            ${addonInfo.actions?.rebuildAndRestart === true
+              ? html`
+                  <div>
+                    <cc-button type="button" ?skeleton="${skeleton}" @cc-click=${() => this._onRestart('rebuild')}
+                      >Re-build and restart
+                    </cc-button>
+                  </div>
+                `
+              : ''}
+          </div>
+        </div>
+        <div slot="footer-left" class="footer">
+          <a href=${addonInfo.logsUrl} class=${classMap({ skeleton })}>View logs</a>
+          <span class="spacer"></span>
+          <cc-zone .state=${zoneState} mode="small-infra" class=${classMap({ skeleton })}></cc-zone>
+        </div>
+      </cc-block>
     `;
   }
 
@@ -115,39 +129,57 @@ export class CcHeaderAddonBeta extends LitElement {
       skeletonStyles,
       // language=CSS
       css`
-        .container {
-          display: grid;
-          grid-auto-columns: auto 1fr auto;
-          grid-template-areas: 'logo name buttons' 'logo id buttons';
+        .main {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 1em;
         }
 
         .logo {
-          grid-area: logo;
-          height: 5em;
-          width: 5em;
+          align-self: flex-start;
+          border-radius: var(--cc-border-radius-default, 0.25em);
+          height: 3.25em;
+          overflow: hidden;
+          width: 3.25em;
+        }
+
+        .details {
+          display: flex;
+          flex: 1 1 max-content;
+          flex-direction: column;
+          justify-content: space-between;
         }
 
         .name {
-          grid-area: name;
+          font-size: 1.1em;
+          font-weight: bold;
         }
 
         .id {
-          grid-area: id;
         }
 
-        .buttons {
+        .actions {
+          align-items: center;
+          /* align-self: center; */
           display: flex;
-          grid-area: buttons;
+          flex-wrap: wrap;
+          gap: 1em;
+          margin-block: 0;
         }
 
         .skeleton {
-          background-color: #bbb;
-          border-color: #777;
-          color: transparent;
         }
 
         .footer {
+          align-items: center;
           display: flex;
+          flex-wrap: wrap;
+          font-size: 0.9em;
+          gap: 0.57em;
+        }
+
+        .spacer {
+          flex: 1 1 0;
         }
       `,
     ];
