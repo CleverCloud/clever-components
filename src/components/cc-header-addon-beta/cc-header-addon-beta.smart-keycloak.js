@@ -41,35 +41,33 @@ defineSmartComponent({
     // const javaAppId = 'app_tmp';
 
     api
-      .getAddon()
-      .then((rawAddon) => {
-        Promise.all([api.getOperator(rawAddon.realId), api.getZone(rawAddon.region)])
-          .then(([operatorInfo, zone]) => {
-            const javaAppId = operatorInfo.resources.entrypoint;
-            const url = operatorInfo.accessUrl;
+      .getAddonWithOperatorAndZone()
+      .then((result) => {
+        const { rawAddon, operator, zone } = result;
+        const javaAppId = operator.resources.entrypoint;
+        const url = operator.accessUrl;
 
-            updateComponent('state', {
-              type: 'loaded',
-              providerName: rawAddon.provider.name,
-              providerLogoUrl: rawAddon.provider.logoUrl,
-              name: rawAddon.name,
-              id: rawAddon.realId,
-              zone,
-              logsUrl: context.logsUrlPattern.replace(':id', javaAppId),
-              openLinks: [
-                {
-                  name: rawAddon.provider.name,
-                  // API spécifique pour récupérer l'URL du keycloak
-                  // accessUrl
-                  url,
-                },
-              ],
-              actions: { restart: true, rebuildAndRestart: true },
-            });
-          })
-          .catch((error) => {
-            console.error('Error fetching operator info:', error);
-          });
+        updateComponent('state', {
+          type: 'loaded',
+          providerName: rawAddon.provider.name,
+          providerLogoUrl: rawAddon.provider.logoUrl,
+          name: rawAddon.name,
+          id: rawAddon.realId,
+          zone,
+          logsUrl: context.logsUrlPattern.replace(':id', javaAppId),
+          openLinks: [
+            {
+              name: rawAddon.provider.name,
+              // API spécifique pour récupérer l'URL du keycloak
+              // accessUrl
+              url,
+            },
+          ],
+          actions: {
+            restart: true,
+            rebuildAndRestart: true,
+          },
+        });
       })
       .catch((error) => {
         console.error(error);
@@ -112,6 +110,17 @@ class Api {
    */
   getZone(zoneName) {
     return getZone({ zoneName }).then(sendToApi({ apiConfig: this._apiConfig }));
+  }
+
+  async getAddonWithOperatorAndZone() {
+    const rawAddon = await this.getAddon();
+    const results = await Promise.allSettled([this.getOperator(rawAddon.realId), this.getZone(rawAddon.region)]);
+    const [getOperatorResult, getZoneResult] = results;
+    const operator = getOperatorResult.status === 'fulfilled' ? getOperatorResult.value : null;
+    const zone = getZoneResult.status === 'fulfilled' ? getZoneResult.value : null;
+    const errors = results.filter((result) => result.status === 'rejected');
+
+    return { rawAddon, operator, zone, errors };
   }
 }
 

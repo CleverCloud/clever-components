@@ -95,7 +95,7 @@ export class CcHeaderAddonBeta extends LitElement {
             </div>
             <div class="id">
               <span class="${classMap({ skeleton })}">${addonInfo.id}</span>
-              <cc-clipboard class="clipboard"></cc-clipboard>
+              <cc-clipboard class="clipboard" value=${addonInfo.id}></cc-clipboard>
             </div>
           </div>
 
@@ -175,6 +175,7 @@ export class CcHeaderAddonBeta extends LitElement {
         }
 
         .id {
+          align-items: center;
           display: flex;
         }
 
