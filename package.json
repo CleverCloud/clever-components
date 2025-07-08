@@ -17,6 +17,8 @@
     "dist"
   ],
   "scripts": {
+    "install-local:config": "(cd ../tooling-javascript/eslint/config && DEV=true npm pack) && mv ../tooling-javascript/eslint/config/clevercloud-tooling-javascript-eslint-config-*tgz . && npm i -f ./clevercloud-tooling-javascript-eslint-config-*tgz",
+    "install-local:config-global": "(cd ../tooling-javascript && DEV=true npm pack) && mv ../tooling-javascript/clevercloud-tooling-javascript-*tgz . && npm i -f ./clevercloud-tooling-javascript-*tgz",
     "cdn-preview:build": "rollup -c rollup/rollup-cdn-preview.config.js",
     "cdn-preview:delete": "node tasks/cdn-cli.js delete preview",
     "cdn-preview:get": "node tasks/cdn-cli.js get preview",
@@ -64,6 +66,7 @@
   },
   "dependencies": {
     "@clevercloud/client": "^11.0.1",
+    "@clevercloud/tooling-javascript-eslint-config": "file:clevercloud-tooling-javascript-eslint-config-1.0.0.tgz",
     "@lit-labs/motion": "^1.0.7",
     "@lit-labs/virtualizer": "^2.0.14",
     "@shoelace-style/shoelace": "^2.18.0",
