@@ -40,14 +40,21 @@ export class CellarClient {
   }
 
   async listKeys({ prefix }) {
-    const listObjectsResponse = await this._client.send(
-      new AWS.ListObjectsV2Command({
-        Bucket: this._bucket,
-        Prefix: prefix,
-      }),
-    );
-    const files = listObjectsResponse.Contents ?? [];
-    return files.map((file) => file.Key);
+    let keys = [];
+    let continuationToken = undefined;
+    do {
+      const listObjectsResponse = await this._client.send(
+        new AWS.ListObjectsV2Command({
+          Bucket: this._bucket,
+          Prefix: prefix,
+          ContinuationToken: continuationToken,
+        }),
+      );
+      const files = listObjectsResponse.Contents ?? [];
+      keys = [...keys, ...files.map((file) => file.Key)];
+      continuationToken = listObjectsResponse.IsTruncated ? listObjectsResponse.NextContinuationToken : undefined;
+    } while (continuationToken != null);
+    return keys;
   }
 
   putObject({ key, body, filepath, acl = 'public-read', cacheControl }) {
