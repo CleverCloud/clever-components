@@ -8,12 +8,16 @@ import '../cc-img/cc-img.js';
 import '../cc-link/cc-link.js';
 import '../cc-notice/cc-notice.js';
 import '../cc-zone/cc-zone.js';
+
+import { ifDefined } from 'lit/directives/if-defined.js';
+import { i18n } from '../../lib/i18n/i18n.js';
+import '../cc-clipboard/cc-clipboard.js';
 import { CcHeaderAddonBetaRestartEvent } from './cc-header-addon-beta.events.js';
 
 /** @type {Partial<CcHeaderAddonBetaStateLoaded>} */
 const SKELETON_ADDON_INFO = {
   providerName: fakeString(15),
-  providerLogoUrl: fakeString(15),
+  providerLogoUrl: null,
   name: fakeString(15),
   id: fakeString(15),
   zone: null,
@@ -70,28 +74,38 @@ export class CcHeaderAddonBeta extends LitElement {
 
   render() {
     if (this.state.type === 'error') {
-      return html` <cc-notice slot="content" intent="warning" message="Something went wrong..."></cc-notice>`;
+      return html` <cc-notice
+        slot="content"
+        intent="warning"
+        message=${i18n('cc-header-addon-beta.error')}
+      ></cc-notice>`;
     }
 
     const skeleton = this.state.type === 'loading';
     const addonInfo = this.state.type === 'loaded' ? this.state : SKELETON_ADDON_INFO;
     const zoneState = this.state.type === 'loaded' ? { type: 'loaded', ...this.state.zone } : { type: 'loading' };
-
     return html`
       <cc-block>
         <div slot="content" class="main">
-          <cc-img class="logo" ?skeleton=${skeleton} src=${addonInfo.providerLogoUrl}></cc-img>
+          <cc-img class="logo" ?skeleton=${skeleton} src=${ifDefined(addonInfo.providerLogoUrl)}></cc-img>
 
           <div class="details">
-            <div class="name ${classMap({ skeleton })}">${addonInfo.providerName}</div>
-            <div class="id ${classMap({ skeleton })}">${addonInfo.id}</div>
+            <div class="name">
+              <span class="${classMap({ skeleton })}">${addonInfo.providerName}</span>
+            </div>
+            <div class="id">
+              <span class="${classMap({ skeleton })}">${addonInfo.id}</span>
+              <cc-clipboard class="clipboard"></cc-clipboard>
+            </div>
           </div>
 
           <div class="actions">
             ${addonInfo.openLinks?.map(
               (link) => html`
                 <div>
-                  <cc-link mode="button" href="${link.url}">Open ${link.name}</cc-link>
+                  <cc-link mode="button" href="${link.url}" ?skeleton="${skeleton}">
+                    ${i18n('cc-header-addon-beta.action.open-addon', { linkName: link.name })}</cc-link
+                  >
                 </div>
               `,
             )}
@@ -99,7 +113,7 @@ export class CcHeaderAddonBeta extends LitElement {
               ? html`
                   <div>
                     <cc-button type="button" ?skeleton="${skeleton}" @cc-click=${() => this._onRestart('normal')}
-                      >Restart</cc-button
+                      >${i18n('cc-header-addon-beta.action.restart')}</cc-button
                     >
                   </div>
                 `
@@ -108,7 +122,7 @@ export class CcHeaderAddonBeta extends LitElement {
               ? html`
                   <div>
                     <cc-button type="button" ?skeleton="${skeleton}" @cc-click=${() => this._onRestart('rebuild')}
-                      >Re-build and restart
+                      >${i18n('cc-header-addon-beta.action.restart-rebuild')}
                     </cc-button>
                   </div>
                 `
@@ -116,7 +130,12 @@ export class CcHeaderAddonBeta extends LitElement {
           </div>
         </div>
         <div slot="footer-left" class="footer">
-          <a href=${addonInfo.logsUrl} class=${classMap({ skeleton })}>View logs</a>
+          <cc-link
+            href=${addonInfo.logsUrl}
+            a11y-desc="${i18n('cc-header-addon-beta.logs.link')}"
+            ?skeleton="${skeleton}"
+            >${i18n('cc-header-addon-beta.logs.link')}</cc-link
+          >
           <span class="spacer"></span>
           <cc-zone .state=${zoneState} mode="small-infra" class=${classMap({ skeleton })}></cc-zone>
         </div>
@@ -156,6 +175,11 @@ export class CcHeaderAddonBeta extends LitElement {
         }
 
         .id {
+          display: flex;
+        }
+
+        .clipboard {
+          align-content: center;
         }
 
         .actions {
@@ -168,6 +192,9 @@ export class CcHeaderAddonBeta extends LitElement {
         }
 
         .skeleton {
+          background-color: #bbb;
+          border-color: #777;
+          color: transparent;
         }
 
         .footer {
