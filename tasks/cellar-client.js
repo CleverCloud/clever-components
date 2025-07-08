@@ -27,6 +27,12 @@ export class CellarClient {
     });
   }
 
+  getImage({ key }) {
+    return this._client
+      .send(new AWS.GetObjectCommand({ Bucket: this._bucket, Key: key }))
+      .then((response) => streamToBuffer(response.Body));
+  }
+
   getObject({ key }) {
     return this._client
       .send(new AWS.GetObjectCommand({ Bucket: this._bucket, Key: key }))
@@ -107,6 +113,15 @@ export class CellarClient {
       return this.deleteObjects(removedKeys.map((key) => ({ key })));
     }
   }
+}
+
+function streamToBuffer(stream) {
+  return new Promise((resolve, reject) => {
+    const data = [];
+    stream.on('data', (chunk) => data.push(chunk));
+    stream.on('end', () => resolve(Buffer.concat(data)));
+    stream.on('error', reject);
+  });
 }
 
 function streamToString(stream) {
