@@ -1,4 +1,5 @@
 // @ts-nocheck
+import babelParser from '@babel/eslint-parser';
 import { includeIgnoreFile } from '@eslint/compat';
 import html from '@html-eslint/eslint-plugin';
 import nodePlugin from 'eslint-plugin-n';
@@ -50,6 +51,7 @@ export default [
       'web-test-runner.config*.js',
       'web-test-runner/**/*.js',
       '.storybook/**/*.js',
+      '.github/**/*.js',
     ],
     rules: {
       'import/no-extraneous-dependencies': [
@@ -79,6 +81,7 @@ export default [
       'src/stories/lib/smart-auth-plugin.js',
       'test-mocha/**/*.*js',
       '.storybook/**/*.js',
+      '.github/**/*.js',
     ],
     languageOptions: {
       globals: {
@@ -92,6 +95,22 @@ export default [
       ...nodePlugin.configs['flat/recommended-script'].rules,
       'n/no-process-exit': 'off',
       'n/no-extraneous-import': 'off',
+    },
+  },
+  {
+    name: 'import-attributes',
+    files: ['tasks/visual-tests/*.js'],
+    languageOptions: {
+      sourceType: 'module',
+      parser: babelParser,
+      parserOptions: {
+        requireConfigFile: false,
+        babelOptions: {
+          configFile: false,
+          babelrc: false,
+          plugins: ['@babel/plugin-syntax-import-attributes'],
+        },
+      },
     },
   },
 ];
