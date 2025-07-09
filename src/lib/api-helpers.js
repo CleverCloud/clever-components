@@ -106,9 +106,9 @@ function getDownloadUrl(apiConfig, ownerId, invoiceNumber) {
     .then(prefixUrl(apiConfig.API_HOST))
     .then(addOauthHeader(apiConfig))
     .then(
-      /** @param {{url: string, headers: {Authorization: string}}} requestParams */ (requestParams) => {
+      /** @param {{url: string, headers: {authorization: string}}} requestParams */ (requestParams) => {
         const url = new URL(requestParams.url);
-        url.searchParams.set('authorization', btoa(requestParams.headers.Authorization));
+        url.searchParams.set('authorization', btoa(requestParams.headers.authorization));
         return url.toString();
       },
     );
