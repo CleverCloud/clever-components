@@ -26,7 +26,10 @@ import {
   CcEnvVarKeepEvent,
 } from '../components/cc-env-var-input/cc-env-var-input.events.js';
 import { CcGrafanaResetEvent, CcGrafanaToggleEvent } from '../components/cc-grafana-info/cc-grafana-info.events.js';
-import { CcHeaderAddonBetaRestartEvent } from '../components/cc-header-addon-beta/cc-header-addon-beta.events.js';
+import {
+  CcAddonRebuildEvent,
+  CcAddonRestartEvent,
+} from '../components/cc-header-addon-beta/cc-header-addon-beta.events.js';
 import {
   CcApplicationRestartEvent,
   CcApplicationStartEvent,
@@ -156,6 +159,8 @@ declare global {
     'cc-addon-name-change': CcAddonNameChangeEvent;
     'cc-addon-option-change': CcAddonOptionChangeEvent;
     'cc-addon-option-form-submit': CcAddonOptionFormSubmitEvent;
+    'cc-addon-rebuild': CcAddonRebuildEvent;
+    'cc-addon-restart': CcAddonRestartEvent;
     'cc-addon-tags-change': CcAddonTagsChangeEvent;
     'cc-api-error': CcApiErrorEvent;
     'cc-application-restart': CcApplicationRestartEvent;
@@ -182,7 +187,6 @@ declare global {
     'cc-form-valid': CcFormValidEvent;
     'cc-grafana-reset': CcGrafanaResetEvent;
     'cc-grafana-toggle': CcGrafanaToggleEvent;
-    'cc-header-addon-beta-restart': CcHeaderAddonBetaRestartEvent;
     'cc-input': CcInputEvent;
     'cc-kv-command-execute': CcKvCommandExecuteEvent;
     'cc-kv-hash-element-add': CcKvHashElementAddEvent;

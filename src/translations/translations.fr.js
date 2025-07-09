@@ -100,7 +100,6 @@ export const translations = {
   //#region cc-addon-backups
   'cc-addon-backups.cli.content.download-backup-command': () =>
     sanitize`Télécharger une sauvegarde de la base de données&nbsp;:`,
-  // eslint-disable-next-line i18n/valid-value
   'cc-addon-backups.cli.content.instruction': getCliInstructions,
   'cc-addon-backups.cli.content.intro': `
       Vous pouvez gérer les sauvegardes directement depuis votre terminal en utilisant les commandes ci-dessous.
@@ -303,7 +302,6 @@ export const translations = {
   'cc-domain-management.dns.a.label': `Valeurs d'enregistrement A`,
   'cc-domain-management.dns.cli.content.diag-conf-command': () =>
     sanitize`Commande pour diagnostiquer l'installation actuelle&nbsp;:`,
-  // eslint-disable-next-line i18n/valid-value
   'cc-domain-management.dns.cli.content.instruction': getCliInstructions,
   'cc-domain-management.dns.cname.desc': () =>
     sanitize`<p>Utiliser un enregistrement <code>CNAME</code> est fortement recommandé. Ainsi, votre configuration est automatiquement maintenue à jour.`,
@@ -372,7 +370,6 @@ export const translations = {
   'cc-domain-management.main-heading': `Gérez vos noms de domaine`,
   'cc-domain-management.names.cli.content.add-domain-command': `Ajouter un domaine :`,
   'cc-domain-management.names.cli.content.diag-dns-records-command': `Diagnostiquer les enregistrements DNS :`,
-  // eslint-disable-next-line i18n/valid-value
   'cc-domain-management.names.cli.content.instruction': getCliInstructions,
   'cc-domain-management.names.cli.content.intro': `
       Vous pouvez gérer les domaines directement depuis votre terminal grâce aux commandes ci-dessous.
@@ -488,7 +485,6 @@ export const translations = {
     sanitize`Ajouter ou modifier une variable d'environnement&nbsp;:`,
   'cc-env-var-form.cli.content.get-file-var-command': () =>
     sanitize`Récupérer un fichier de variables d'environnement exécutable&nbsp;:`,
-  // eslint-disable-next-line i18n/valid-value
   'cc-env-var-form.cli.content.instruction': getCliInstructions,
   'cc-env-var-form.cli.content.intro': `
       Vous pouvez gérer les variables d'environnement directement depuis votre terminal en utilisant les commandes ci-dessous.
@@ -603,7 +599,12 @@ export const translations = {
   'cc-header-addon-beta.action.restart-rebuild': `Re-build et redémarrer`,
   'cc-header-addon-beta.error': `Une erreur est survenue pendant le chargement des informations de l'add-on.`,
   'cc-header-addon-beta.logs.link': `Voir les logs`,
-
+  'cc-header-addon-beta.rebuild.error': `Une erreur est survenue pendant le rebuild de l'add-on.`,
+  'cc-header-addon-beta.rebuild.success': /** @param {{logsUrl: string}} _*/ ({ logsUrl }) =>
+    sanitize`L'add-on rebuild... Voir <cc-link href="${logsUrl}">logs</cc-link>.`,
+  'cc-header-addon-beta.restart.error': `Une erreur est survenue pendant le redémarrage de l'add-on.`,
+  'cc-header-addon-beta.restart.success': /** @param {{logsUrl: string}} _*/ ({ logsUrl }) =>
+    sanitize`L'add-on redémarre... Voir <cc-link href="${logsUrl}">logs</cc-link>.`,
   //#endregion
   //#region cc-header-app
   'cc-header-app.action.cancel-deployment': `Annuler le déploiement`,
@@ -1499,7 +1500,6 @@ export const translations = {
   'cc-tcp-redirection-form.cli.content.add-tcp-redirection-command': () => sanitize`Ajouter une redirection TCP&nbsp;:`,
   'cc-tcp-redirection-form.cli.content.add-tcp-redirection-command-default': () =>
     sanitize`Ajouter une redirection TCP&nbsp; (espace de nommage par défaut):`,
-  // eslint-disable-next-line i18n/valid-value
   'cc-tcp-redirection-form.cli.content.instruction': getCliInstructions,
   'cc-tcp-redirection-form.cli.content.intro': `
       Vous pouvez gérer les redirections TCP directement depuis votre terminal grâce aux commandes ci-dessous.
@@ -1641,7 +1641,6 @@ export const translations = {
   //#endregion
   //#region cc-token-api-creation-form
   'cc-token-api-creation-form.cli.content.create-token': () => sanitize`Créer un token d'API&nbsp;:`,
-  // eslint-disable-next-line i18n/valid-value
   'cc-token-api-creation-form.cli.content.instruction': getCliInstructions,
   'cc-token-api-creation-form.cli.content.intro': `
     Gérez vos tokens d'API depuis un terminal à l'aide des commandes ci-dessous.
@@ -1701,7 +1700,6 @@ export const translations = {
   'cc-token-api-list.card.label.expiration': () => sanitize`Expiration&nbsp;: `,
   'cc-token-api-list.card.token-id-icon.a11y-name': `Identifiant du token d'API`,
   'cc-token-api-list.cli.content.create-token': () => sanitize`Créer un token d'API&nbsp;:`,
-  // eslint-disable-next-line i18n/valid-value
   'cc-token-api-list.cli.content.instruction': getCliInstructions,
   'cc-token-api-list.cli.content.intro': `
       Gérez vos tokens d'API depuis un terminal à l'aide des commandes ci-dessous.
@@ -1735,7 +1733,6 @@ export const translations = {
   //#region cc-token-api-update-form
   'cc-token-api-update-form.back-to-list': `Retour à la liste de tokens d'API`,
   'cc-token-api-update-form.cli.content.create-token': () => sanitize`Créer un token d'API&nbsp;:`,
-  // eslint-disable-next-line i18n/valid-value
   'cc-token-api-update-form.cli.content.instruction': getCliInstructions,
   'cc-token-api-update-form.cli.content.intro': `
     Gérez vos tokens d'API depuis un terminal à l'aide des commandes ci-dessous.

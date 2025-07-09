@@ -1,13 +1,75 @@
+import { fakeString } from '../../lib/fake-strings.js';
 import { ZONE } from '../../stories/fixtures/zones.js';
-import { makeStory } from '../../stories/lib/make-story.js';
+import { makeStory, storyWait } from '../../stories/lib/make-story.js';
 import './cc-header-addon-beta.js';
 
 /**
  * @typedef {import('./cc-header-addon-beta.types.js').CcHeaderAddonBetaStateLoaded} CcHeaderAddonBetaStateLoaded
  * @typedef {import('./cc-header-addon-beta.types.js').CcHeaderAddonBetaStateError} CcHeaderAddonBetaStateError
  * @typedef {import('./cc-header-addon-beta.types.js').CcHeaderAddonBetaStateLoading} CcHeaderAddonBetaStateLoading
- *
+ * @typedef {import('./cc-header-addon-beta.types.js').CcHeaderAddonBetaStateRestarting} CcHeaderAddonBetaStateRestarting
+ * @typedef {import('./cc-header-addon-beta.types.js').CcHeaderAddonBetaStateRebuilding} CcHeaderAddonBetaStateRebuilding
+ * @typedef {import('./cc-header-addon-beta.js').CcHeaderAddonBeta} CcHeaderAddonBeta
  */
+
+/** @type {CcHeaderAddonBetaStateLoaded} */
+const configProviderData = {
+  type: 'loaded',
+  providerName: 'Configuration provider',
+  providerLogoUrl: 'https://assets.clever-cloud.com/logos/configprovider.svg',
+  name: 'my-config',
+  id: 'config_59xml9zd-f1rg-2jj2-z733-p564812374122',
+  zone: ZONE,
+};
+
+/** @type {CcHeaderAddonBetaStateLoaded} */
+const materiaData = {
+  type: 'loaded',
+  providerName: 'Materia KV',
+  providerLogoUrl: 'https://assets.clever-cloud.com/logos/materia-db-kv.png',
+  name: 'my-materia',
+  id: 'kv_56ME45ETZMPOF7HR6DCVBN80Q',
+  zone: ZONE,
+  logsUrl: 'https://example.com/logs',
+};
+
+/** @type {CcHeaderAddonBetaStateLoaded} */
+const jenkinsData = {
+  type: 'loaded',
+  providerName: 'Jenkins',
+  providerLogoUrl: 'https://assets.clever-cloud.com/logos/jenkins.svg',
+  name: 'my-jenkins',
+  id: 'jenkins_fgh7evv9-q21m-9129-mm3b-04f77lo56w36',
+  zone: ZONE,
+  logsUrl: 'https://example.com/logs',
+  openLinks: [
+    {
+      url: 'https://example.com/logs',
+      name: `Jenkins`,
+    },
+  ],
+};
+
+/** @type {CcHeaderAddonBetaStateLoaded} */
+const elasticData = {
+  type: 'loaded',
+  providerName: 'Elastic Stack',
+  providerLogoUrl: 'https://assets.clever-cloud.com/logos/elastic.svg',
+  name: 'my-elastic',
+  id: 'elasticsearch_23694507-44yt-023u-ib5o-6vc7d0mp99a2',
+  zone: ZONE,
+  logsUrl: 'https://example.com/logs',
+  openLinks: [
+    {
+      url: 'https://example.com/logs',
+      name: `APM`,
+    },
+    {
+      url: 'https://example.com/logs',
+      name: `Kibana`,
+    },
+  ],
+};
 
 /** @type {CcHeaderAddonBetaStateLoaded} */
 const matomoData = {
@@ -15,12 +77,12 @@ const matomoData = {
   providerName: 'Matomo Analytics',
   providerLogoUrl: 'https://assets.clever-cloud.com/logos/matomo.svg',
   name: 'my-matomo',
-  id: 'addon_14234569',
+  id: 'matomo_0985go7t-2kda-6dv2-x978-h63r45o11q6p',
   zone: ZONE,
-  logsUrl: 'https://example.com',
+  logsUrl: 'https://example.com/logs',
   openLinks: [
     {
-      url: 'https://example.com',
+      url: 'https://example.com/logs',
       name: `Matomo Analytics`,
     },
   ],
@@ -36,12 +98,12 @@ const keycloakData = {
   providerName: 'Keycloak',
   providerLogoUrl: 'https://cc-keycloak.cellar-c2.services.clever-cloud.com/keycloak_logo.svg',
   name: 'my-keycloak',
-  id: 'addon_665123365',
+  id: 'keycloak_511f6k82-9r44-6w90-86s3-az6m5kvyy478',
   zone: ZONE,
-  logsUrl: 'https://example.com',
+  logsUrl: 'https://example.com/logs',
   openLinks: [
     {
-      url: 'https://example.com',
+      url: 'https://example.com/logs',
       name: `Keycloak`,
     },
   ],
@@ -49,79 +111,8 @@ const keycloakData = {
     restart: true,
     rebuildAndRestart: true,
   },
+  productStatus: 'Beta',
 };
-
-/** @type {CcHeaderAddonBetaStateLoaded} */
-const jenkinsData = {
-  type: 'loaded',
-  providerName: 'Jenkins',
-  providerLogoUrl: 'https://assets.clever-cloud.com/logos/jenkins.svg',
-  name: 'my-jenkins',
-  id: 'addon_22354884',
-  zone: ZONE,
-  logsUrl: 'https://example.com',
-  openLinks: [
-    {
-      url: 'https://example.com',
-      name: `Jenkins`,
-    },
-  ],
-  actions: {
-    restart: false,
-    rebuildAndRestart: false,
-  },
-};
-
-/*
-const materiaData = {
-  type: 'loaded',
-  id: 'addon_9874221',
-  realId: 'materia_9874221',
-  name: 'Materia',
-  provider: {
-    name: 'Materia KV',
-    logoUrl: 'https://assets.clever-cloud.com/logos/materia-db-kv.png',
-  },
-  plan: {
-    name: '',
-  },
-  region: 'par',
-  creationDate: 0,
-}; */
-/*
-/!** @type {CcHeaderAddonBetaStateLoaded} *!/
-const elasticData = {
-  type: 'loaded',
-  id: 'addon_5541236',
-  realId: 'elastic_5541236',
-  name: 'Elastic',
-  provider: {
-    name: 'Elastic Stack',
-    logoUrl: 'https://assets.clever-cloud.com/logos/elastic.svg',
-  },
-  plan: {
-    name: '',
-  },
-  region: 'par',
-  creationDate: 0,
-}; */
-/*
-/!** @type {CcHeaderAddonBetaStateLoaded} *!/
-const configData = {
-  type: 'loaded',
-  id: 'addon_1452154',
-  realId: 'config_1452154',
-  name: 'Elastic',
-  provider: {
-    name: 'Configuration provider',
-    logoUrl: 'https://assets.clever-cloud.com/logos/configprovider.svg',
-  },
-  plan: {
-    name: '',
-  },
-  region: 'par',
-  creationDate: 0,
-}; */
 
 export default {
   tags: ['autodocs'],
@@ -133,92 +124,219 @@ const conf = {
   component: 'cc-header-addon-beta',
 };
 
-export const defaultStory = makeStory(conf, {});
-
-export const matomoDataLoadedStory = makeStory(conf, {
+export const defaultStory = makeStory(conf, {
   items: [
     {
       /** @type {CcHeaderAddonBetaStateLoaded} */
       state: {
-        ...matomoData,
+        ...configProviderData,
       },
-      addonHref: 'http://example.com',
-      logsHref: 'http://example.com',
     },
   ],
 });
 
-export const keycloackDataLoadedStory = makeStory(conf, {
+export const basicData = makeStory(conf, {
   items: [
     {
       /** @type {CcHeaderAddonBetaStateLoaded} */
       state: {
-        ...keycloakData,
+        ...configProviderData,
       },
-      addonHref: 'http://example.com',
-      logsHref: 'http://example.com',
+    },
+    {
+      /** @type {CcHeaderAddonBetaStateLoading} */
+      state: {
+        type: 'loading',
+        logsUrl: '',
+        openLinks: [],
+        actions: {
+          restart: false,
+          rebuildAndRestart: false,
+        },
+        productStatus: '',
+      },
     },
   ],
 });
 
-export const jenkinsDataLoadedStory = makeStory(conf, {
+export const withViewLogs = makeStory(conf, {
+  items: [
+    {
+      /** @type {CcHeaderAddonBetaStateLoaded} */
+      state: {
+        ...materiaData,
+      },
+    },
+    {
+      /** @type {CcHeaderAddonBetaStateLoading} */
+      state: {
+        type: 'loading',
+        logsUrl: 'https://example.com/logs',
+      },
+    },
+  ],
+});
+
+export const withOpenLink = makeStory(conf, {
   items: [
     {
       /** @type {CcHeaderAddonBetaStateLoaded} */
       state: {
         ...jenkinsData,
       },
-      addonHref: 'http://example.com',
-      logsHref: 'http://example.com',
     },
-  ],
-});
-
-/* export const materiaDataLoadedStory = makeStory(conf, {
-  items: [
-    {
-      /!** @type {CcHeaderAddonBetaStateLoaded} *!/
-      state: {
-        ...materiaData,
-      },
-      addonHref: 'http://example.com',
-      logsHref: 'http://example.com',
-    },
-  ],
-}); */
-
-/* export const elasticDataLoadedStory = makeStory(conf, {
-  items: [
-    {
-      /!** @type {CcHeaderAddonBetaStateLoaded} *!/
-      state: {
-        ...elasticData,
-      },
-      addonHref: 'http://example.com',
-      logsHref: 'http://example.com',
-    },
-  ],
-}); */
-
-/* export const configDataLoadedStory = makeStory(conf, {
-  items: [
-    {
-      /!** @type {CcHeaderAddonBetaStateLoaded} *!/
-      state: {
-        ...configData,
-      },
-      addonHref: 'http://example.com',
-      logsHref: 'http://example.com',
-    },
-  ],
-}); */
-
-export const loadingStory = makeStory(conf, {
-  items: [
     {
       /** @type {CcHeaderAddonBetaStateLoading} */
       state: {
         type: 'loading',
+        logsUrl: fakeString(15),
+        openLinks: [
+          {
+            url: fakeString(15),
+            name: fakeString(5),
+          },
+        ],
+      },
+    },
+  ],
+});
+
+export const withOpenLinks = makeStory(conf, {
+  items: [
+    {
+      /** @type {CcHeaderAddonBetaStateLoaded} */
+      state: {
+        ...elasticData,
+      },
+    },
+    {
+      /** @type {CcHeaderAddonBetaStateLoading} */
+      state: {
+        type: 'loading',
+        logsUrl: fakeString(15),
+        openLinks: [
+          {
+            url: fakeString(15),
+            name: fakeString(5),
+          },
+          {
+            url: fakeString(15),
+            name: fakeString(5),
+          },
+        ],
+      },
+    },
+  ],
+});
+
+export const withOpenLinkAndActions = makeStory(conf, {
+  items: [
+    {
+      /** @type {CcHeaderAddonBetaStateLoaded} */
+      state: {
+        ...matomoData,
+      },
+    },
+    {
+      /** @type {CcHeaderAddonBetaStateLoading} */
+      state: {
+        type: 'loading',
+        logsUrl: fakeString(15),
+        openLinks: [
+          {
+            url: fakeString(15),
+            name: fakeString(5),
+          },
+        ],
+        actions: {
+          restart: true,
+          rebuildAndRestart: true,
+        },
+      },
+    },
+  ],
+});
+
+export const withProductStatus = makeStory(conf, {
+  items: [
+    {
+      /** @type {CcHeaderAddonBetaStateLoaded} */
+      state: {
+        ...keycloakData,
+      },
+    },
+    {
+      /** @type {CcHeaderAddonBetaStateLoading} */
+      state: {
+        type: 'loading',
+        logsUrl: fakeString(15),
+        openLinks: [
+          {
+            url: fakeString(15),
+            name: fakeString(5),
+          },
+        ],
+        actions: {
+          restart: true,
+          rebuildAndRestart: true,
+        },
+        productStatus: fakeString(4),
+      },
+    },
+  ],
+});
+
+export const waitingWithRestart = makeStory(conf, {
+  items: [
+    {
+      /** @type {CcHeaderAddonBetaStateRestarting} */
+      state: {
+        type: 'restarting',
+        providerName: 'Keycloak',
+        providerLogoUrl: 'https://cc-keycloak.cellar-c2.services.clever-cloud.com/keycloak_logo.svg',
+        name: 'my-keycloak',
+        id: 'keycloak_511f6k82-9r44-6w90-86s3-az6m5kvyy478',
+        zone: ZONE,
+        logsUrl: 'https://example.com/logs',
+        openLinks: [
+          {
+            url: 'https://example.com/logs',
+            name: `Keycloak`,
+          },
+        ],
+        actions: {
+          restart: true,
+          rebuildAndRestart: true,
+        },
+        productStatus: 'Beta',
+      },
+    },
+  ],
+});
+
+export const waitingWithRebuilding = makeStory(conf, {
+  items: [
+    {
+      /** @type {CcHeaderAddonBetaStateRebuilding} */
+      state: {
+        type: 'rebuilding',
+        providerName: 'Keycloak',
+        providerLogoUrl: 'https://cc-keycloak.cellar-c2.services.clever-cloud.com/keycloak_logo.svg',
+        name: 'my-keycloak',
+        id: 'keycloak_511f6k82-9r44-6w90-86s3-az6m5kvyy478',
+        zone: ZONE,
+        logsUrl: 'https://example.com/logs',
+        openLinks: [
+          {
+            url: 'https://example.com/logs',
+            name: `Keycloak`,
+          },
+        ],
+        actions: {
+          restart: true,
+          rebuildAndRestart: true,
+        },
+        productStatus: 'Beta',
       },
     },
   ],
@@ -232,5 +350,168 @@ export const errorStory = makeStory(conf, {
         type: 'error',
       },
     },
+  ],
+});
+
+export const simulationWithLoadingSuccess = makeStory(conf, {
+  /** @type {Partial<CcHeaderAddonBeta>[]} */
+  items: [
+    {
+      state: {
+        type: 'loading',
+        logsUrl: fakeString(15),
+        openLinks: [
+          {
+            url: fakeString(15),
+            name: fakeString(5),
+          },
+        ],
+        actions: {
+          restart: true,
+          rebuildAndRestart: true,
+        },
+        productStatus: fakeString(4),
+      },
+    },
+  ],
+  simulations: [
+    storyWait(
+      2000,
+      /** @param {CcHeaderAddonBeta[]} components */
+      ([component]) => {
+        component.state = {
+          type: 'loaded',
+          ...keycloakData,
+        };
+      },
+    ),
+  ],
+});
+
+export const simulationWithLoadingError = makeStory(conf, {
+  /** @type {Partial<CcHeaderAddonBeta>[]} */
+  items: [
+    {
+      state: {
+        type: 'loading',
+        logsUrl: fakeString(15),
+        openLinks: [
+          {
+            url: fakeString(15),
+            name: fakeString(5),
+          },
+        ],
+        actions: {
+          restart: true,
+          rebuildAndRestart: true,
+        },
+        productStatus: fakeString(4),
+      },
+    },
+  ],
+  simulations: [
+    storyWait(
+      2000,
+      /** @param {CcHeaderAddonBeta[]} components */
+      ([component]) => {
+        component.state = {
+          type: 'error',
+        };
+      },
+    ),
+  ],
+});
+
+export const simulationWithRestarting = makeStory(conf, {
+  /** @type {Partial<CcHeaderAddonBeta>[]} */
+  items: [
+    {
+      state: {
+        type: 'loaded',
+        ...keycloakData,
+      },
+    },
+  ],
+  simulations: [
+    storyWait(
+      2000,
+      /** @param {CcHeaderAddonBeta[]} components */
+      ([component]) => {
+        component.state = {
+          type: 'restarting',
+          providerName: 'Keycloak',
+          providerLogoUrl: 'https://cc-keycloak.cellar-c2.services.clever-cloud.com/keycloak_logo.svg',
+          name: 'my-keycloak',
+          id: 'keycloak_511f6k82-9r44-6w90-86s3-az6m5kvyy478',
+          zone: ZONE,
+          logsUrl: 'https://example.com/logs',
+          openLinks: [
+            {
+              url: 'https://example.com/logs',
+              name: `Keycloak`,
+            },
+          ],
+          actions: {
+            restart: true,
+            rebuildAndRestart: true,
+          },
+          productStatus: 'Beta',
+        };
+      },
+    ),
+    storyWait(
+      5000,
+      /** @param {CcHeaderAddonBeta[]} components */
+      ([component]) => {
+        component.state = { type: 'loaded', ...keycloakData };
+      },
+    ),
+  ],
+});
+
+export const simulationWithRebuilding = makeStory(conf, {
+  /** @type {Partial<CcHeaderAddonBeta>[]} */
+  items: [
+    {
+      state: {
+        type: 'loaded',
+        ...keycloakData,
+      },
+    },
+  ],
+  simulations: [
+    storyWait(
+      2000,
+      /** @param {CcHeaderAddonBeta[]} components */
+      ([component]) => {
+        component.state = {
+          type: 'rebuilding',
+          providerName: 'Keycloak',
+          providerLogoUrl: 'https://cc-keycloak.cellar-c2.services.clever-cloud.com/keycloak_logo.svg',
+          name: 'my-keycloak',
+          id: 'keycloak_511f6k82-9r44-6w90-86s3-az6m5kvyy478',
+          zone: ZONE,
+          logsUrl: 'https://example.com/logs',
+          openLinks: [
+            {
+              url: 'https://example.com/logs',
+              name: `Keycloak`,
+            },
+          ],
+          actions: {
+            restart: true,
+            rebuildAndRestart: true,
+          },
+          productStatus: 'Beta',
+        };
+      },
+    ),
+    storyWait(
+      5000,
+      /** @param {CcHeaderAddonBeta[]} components */
+      ([component]) => {
+        component.state = { type: 'loaded', ...keycloakData };
+      },
+    ),
   ],
 });

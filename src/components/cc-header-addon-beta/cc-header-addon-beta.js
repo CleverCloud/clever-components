@@ -1,18 +1,21 @@
 import { LitElement, css, html } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
+import { ResizeController } from '../../controllers/resize-controller.js';
 import { fakeString } from '../../lib/fake-strings.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
+import { i18n } from '../../translations/translation.js';
+import '../cc-badge/cc-badge.js';
 import '../cc-block/cc-block.js';
 import '../cc-button/cc-button.js';
+import '../cc-clipboard/cc-clipboard.js';
 import '../cc-img/cc-img.js';
 import '../cc-link/cc-link.js';
 import '../cc-notice/cc-notice.js';
 import '../cc-zone/cc-zone.js';
+import { CcAddonRebuildEvent, CcAddonRestartEvent } from './cc-header-addon-beta.events.js';
 
-import { ifDefined } from 'lit/directives/if-defined.js';
-import { i18n } from '../../lib/i18n/i18n.js';
-import '../cc-clipboard/cc-clipboard.js';
-import { CcHeaderAddonBetaRestartEvent } from './cc-header-addon-beta.events.js';
+const BREAKPOINTS = [450, 520, 750];
 
 /** @type {Partial<CcHeaderAddonBetaStateLoaded>} */
 const SKELETON_ADDON_INFO = {
@@ -21,27 +24,23 @@ const SKELETON_ADDON_INFO = {
   name: fakeString(15),
   id: fakeString(15),
   zone: null,
-  logsUrl: fakeString(15),
-  openLinks: [],
-  actions: {
-    restart: false,
-    rebuildAndRestart: false,
-  },
 };
 
 /**
  * @typedef {import('./cc-header-addon-beta.types.js').CcHeaderAddonBetaState} CcHeaderAddonBetaState
  * @typedef {import('./cc-header-addon-beta.types.js').CcHeaderAddonBetaStateLoaded} CcHeaderAddonBetaStateLoaded
  * @typedef {import('./cc-header-addon-beta.types.js').CcHeaderAddonBetaStateLoading} CcHeaderAddonBetaStateLoading
- * @typedef {import('./cc-header-addon-beta.types.js').LastUserAction} LastUserAction
  */
 
+/**
+ * A component to display various info about an add-on (name, plan, version...).
+ *
+ * @cssdisplay block
+ */
 export class CcHeaderAddonBeta extends LitElement {
   static get properties() {
     return {
       state: { type: Object },
-      // Rename _lastUserAction ?
-      _lastUserAction: { type: String, state: true },
     };
   }
 
@@ -59,17 +58,17 @@ export class CcHeaderAddonBeta extends LitElement {
       },
     };
 
-    /** @type {LastUserAction|null} */
-    this._lastUserAction = null;
+    new ResizeController(this, {
+      widthBreakpoints: BREAKPOINTS,
+    });
   }
 
-  /**
-   * @param {'normal'|'rebuild'} type
-   * @private
-   */
-  _onRestart(type) {
-    this._lastUserAction = 'restart';
-    this.dispatchEvent(new CcHeaderAddonBetaRestartEvent(type));
+  _onRestart() {
+    this.dispatchEvent(new CcAddonRestartEvent());
+  }
+
+  _onRebuild() {
+    this.dispatchEvent(new CcAddonRebuildEvent());
   }
 
   render() {
@@ -82,61 +81,92 @@ export class CcHeaderAddonBeta extends LitElement {
     }
 
     const skeleton = this.state.type === 'loading';
-    const addonInfo = this.state.type === 'loaded' ? this.state : SKELETON_ADDON_INFO;
-    const zoneState = this.state.type === 'loaded' ? { type: 'loaded', ...this.state.zone } : { type: 'loading' };
+    const addonInfo =
+      this.state.type === 'loaded' || this.state.type === 'restarting' || this.state.type === 'rebuilding'
+        ? this.state
+        : { ...SKELETON_ADDON_INFO, ...this.state };
+    const zoneState =
+      (this.state.type === 'loaded' || this.state.type === 'restarting' || this.state.type === 'rebuilding') &&
+      this.state.zone
+        ? { type: 'loaded', ...this.state.zone }
+        : { type: 'loading' };
+    const isRestarting = this.state.type === 'restarting';
+    const isRebuilding = this.state.type === 'rebuilding';
+
     return html`
       <cc-block>
         <div slot="content" class="main">
-          <cc-img class="logo" ?skeleton=${skeleton} src=${ifDefined(addonInfo.providerLogoUrl)}></cc-img>
+          <div class="addon-information">
+            <cc-img
+              class="logo"
+              ?skeleton=${skeleton}
+              src=${ifDefined(addonInfo.providerLogoUrl)}
+              a11y-name=${addonInfo.providerName}
+            ></cc-img>
 
-          <div class="details">
-            <div class="name">
-              <span class="${classMap({ skeleton })}">${addonInfo.providerName}</span>
-            </div>
-            <div class="id">
-              <span class="${classMap({ skeleton })}">${addonInfo.id}</span>
-              <cc-clipboard class="clipboard" value=${addonInfo.id}></cc-clipboard>
+            <div class="details">
+              <div class="details__title">
+                <span class="details__name ${classMap({ skeleton })}">${addonInfo.name}</span>
+                ${addonInfo.productStatus
+                  ? html` <cc-badge ?skeleton=${skeleton}>${addonInfo.productStatus}</cc-badge> `
+                  : ''}
+              </div>
+              <div class="details__id">
+                <span class="${classMap({ skeleton })}">${addonInfo.id}</span>
+                ${this.state.type === 'loaded' || this.state.type === 'restarting' || this.state.type === 'rebuilding'
+                  ? html` <cc-clipboard value=${addonInfo.id}></cc-clipboard> `
+                  : ''}
+              </div>
             </div>
           </div>
 
           <div class="actions">
             ${addonInfo.openLinks?.map(
               (link) => html`
-                <div>
-                  <cc-link mode="button" href="${link.url}" ?skeleton="${skeleton}">
-                    ${i18n('cc-header-addon-beta.action.open-addon', { linkName: link.name })}</cc-link
-                  >
-                </div>
+                <cc-link mode="button" href="${link.url}" ?skeleton=${skeleton}>
+                  ${i18n('cc-header-addon-beta.action.open-addon', { linkName: link.name })}</cc-link
+                >
               `,
             )}
             ${addonInfo.actions?.restart === true
               ? html`
-                  <div>
-                    <cc-button type="button" ?skeleton="${skeleton}" @cc-click=${() => this._onRestart('normal')}
-                      >${i18n('cc-header-addon-beta.action.restart')}</cc-button
-                    >
-                  </div>
+                  <cc-button
+                    type="button"
+                    ?skeleton=${skeleton}
+                    ?waiting=${isRestarting}
+                    ?disabled=${isRebuilding}
+                    @cc-click=${this._onRestart}
+                    >${i18n('cc-header-addon-beta.action.restart')}</cc-button
+                  >
                 `
               : ''}
             ${addonInfo.actions?.rebuildAndRestart === true
               ? html`
-                  <div>
-                    <cc-button type="button" ?skeleton="${skeleton}" @cc-click=${() => this._onRestart('rebuild')}
-                      >${i18n('cc-header-addon-beta.action.restart-rebuild')}
-                    </cc-button>
-                  </div>
+                  <cc-button
+                    type="button"
+                    ?skeleton=${skeleton}
+                    ?waiting=${isRebuilding}
+                    ?disabled=${isRestarting}
+                    @cc-click=${this._onRebuild}
+                    >${i18n('cc-header-addon-beta.action.restart-rebuild')}
+                  </cc-button>
                 `
               : ''}
           </div>
         </div>
+
         <div slot="footer-left" class="footer">
-          <cc-link
-            href=${addonInfo.logsUrl}
-            a11y-desc="${i18n('cc-header-addon-beta.logs.link')}"
-            ?skeleton="${skeleton}"
-            >${i18n('cc-header-addon-beta.logs.link')}</cc-link
-          >
-          <span class="spacer"></span>
+          ${addonInfo.logsUrl
+            ? html`
+                <cc-link
+                  href=${addonInfo.logsUrl}
+                  a11y-desc="${i18n('cc-header-addon-beta.logs.link')}"
+                  ?skeleton=${skeleton}
+                  >${i18n('cc-header-addon-beta.logs.link')}</cc-link
+                >
+              `
+            : ''}
+          <span class="footer__spacer"></span>
           <cc-zone .state=${zoneState} mode="small-infra" class=${classMap({ skeleton })}></cc-zone>
         </div>
       </cc-block>
@@ -152,6 +182,14 @@ export class CcHeaderAddonBeta extends LitElement {
           display: flex;
           flex-wrap: wrap;
           gap: 1em;
+          width: 100%;
+        }
+
+        .addon-information {
+          display: flex;
+          flex: 1 1 0;
+          gap: 1em;
+          width: 100%;
         }
 
         .logo {
@@ -163,24 +201,42 @@ export class CcHeaderAddonBeta extends LitElement {
         }
 
         .details {
-          display: flex;
-          flex: 1 1 max-content;
+          /* display: flex; */
           flex-direction: column;
           justify-content: space-between;
         }
 
-        .name {
+        .details__title {
+          align-items: center;
+          display: flex;
+          gap: 0.75em;
+        }
+
+        .details__name {
           font-size: 1.1em;
           font-weight: bold;
         }
 
-        .id {
+        .details__id {
           align-items: center;
           display: flex;
+          gap: 0.5em;
         }
 
-        .clipboard {
-          align-content: center;
+        :host([w-lt-520]) .details__id span {
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          /** Change px to em or relative value ? */
+          /* width: 300px; */
+        }
+
+        :host([w-lt-450]) .details__id span {
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          /** Change px to em or relative value ? */
+          /* width: 200px; */
         }
 
         .actions {
@@ -188,14 +244,33 @@ export class CcHeaderAddonBeta extends LitElement {
           /* align-self: center; */
           display: flex;
           flex-wrap: wrap;
-          gap: 1em;
+          gap: 0.75em;
           margin-block: 0;
         }
 
-        .skeleton {
-          background-color: #bbb;
-          border-color: #777;
-          color: transparent;
+        .actions cc-link,
+        .actions cc-button {
+          flex: 1 1 auto;
+          /* min-width: 0; */
+        }
+
+        :host([w-lt-520]) .actions cc-link {
+          width: 100%;
+        }
+
+        :host([w-lt-520]) .actions cc-button {
+          flex: 1 0 min(100%, 12.5em);
+        }
+
+        :host([w-lt-520]) .actions {
+          display: flex;
+          flex: 1 1 max-content;
+          gap: 1em;
+        }
+
+        :host([w-lt-450]) .actions cc-link,
+        :host([w-lt-450]) .actions cc-button {
+          flex: 1 0 min(100%, 12.5em);
         }
 
         .footer {
@@ -206,8 +281,14 @@ export class CcHeaderAddonBeta extends LitElement {
           gap: 0.57em;
         }
 
-        .spacer {
+        .footer__spacer {
           flex: 1 1 0;
+        }
+
+        .skeleton {
+          background-color: #bbb;
+          border-color: #777;
+          color: transparent;
         }
       `,
     ];

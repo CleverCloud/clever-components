@@ -2,14 +2,18 @@
 import { get as getAddon } from '@clevercloud/client/esm/api/v2/addon.js';
 // @ts-expect-error FIXME: remove when clever-client exports types
 import { getZone } from '@clevercloud/client/esm/api/v4/product.js';
+import { fakeString } from '../../lib/fake-strings.js';
+import { notify, notifyError } from '../../lib/notifications.js';
 import { sendToApi } from '../../lib/send-to-api.js';
 import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
+import { i18n } from '../../translations/translation.js';
 import '../cc-smart-container/cc-smart-container.js';
 import './cc-header-addon-beta.js';
 
 /**
  * @typedef {import('./cc-header-addon-beta.js').CcHeaderAddonBeta} CcHeaderAddonBeta
  * @typedef {import('./cc-header-addon-beta.types.js').RawAddon} RawAddon
+ * @typedef {import('./cc-header-addon-beta.types.js').RawOperator} RawOperator
  * @typedef {import('../../lib/send-to-api.types.js').ApiConfig} ApiConfig
  * @typedef {import('../../lib/smart/smart-component.types.js').OnContextUpdateArgs<CcHeaderAddonBeta>} OnContextUpdateArgs
  * @typedef {import('../common.types.js').Zone} Zone
@@ -21,24 +25,33 @@ defineSmartComponent({
     apiConfig: { type: Object },
     ownerId: { type: String },
     addonId: { type: String },
-    // "/organisations/orga_3547a882-d464-4c34-8168-add4b3e0c135/applications/:id/logs"
     logsUrlPattern: { type: String },
+    productStatus: { type: String, optional: true },
   },
 
   /**
    * @param {OnContextUpdateArgs} args
    */
-  onContextUpdate({ context, updateComponent }) {
-    const { apiConfig, ownerId, addonId } = context;
+  onContextUpdate({ context, updateComponent, onEvent }) {
+    const { apiConfig, ownerId, addonId, productStatus } = context;
     const api = new Api(apiConfig, ownerId, addonId);
+    let logsUrl = '';
 
     updateComponent('state', {
       type: 'loading',
+      logsUrl: fakeString(15),
+      openLinks: [
+        {
+          url: fakeString(15),
+          name: fakeString(5),
+        },
+      ],
+      actions: {
+        restart: true,
+        rebuildAndRestart: true,
+      },
+      productStatus: fakeString(4),
     });
-
-    // API spécifique pour récupérer l'ID de l'app Java
-    // resources.entrypoint
-    // const javaAppId = 'app_tmp';
 
     api
       .getAddonWithOperatorAndZone()
@@ -46,6 +59,7 @@ defineSmartComponent({
         const { rawAddon, operator, zone } = result;
         const javaAppId = operator.resources.entrypoint;
         const url = operator.accessUrl;
+        logsUrl = context.logsUrlPattern.replace(':id', javaAppId);
 
         updateComponent('state', {
           type: 'loaded',
@@ -54,12 +68,10 @@ defineSmartComponent({
           name: rawAddon.name,
           id: rawAddon.realId,
           zone,
-          logsUrl: context.logsUrlPattern.replace(':id', javaAppId),
+          logsUrl,
           openLinks: [
             {
-              name: rawAddon.provider.name,
-              // API spécifique pour récupérer l'URL du keycloak
-              // accessUrl
+              name: 'KEYCLOAK',
               url,
             },
           ],
@@ -67,6 +79,7 @@ defineSmartComponent({
             restart: true,
             rebuildAndRestart: true,
           },
+          productStatus,
         });
       })
       .catch((error) => {
@@ -75,6 +88,62 @@ defineSmartComponent({
           type: 'error',
         });
       });
+
+    onEvent('cc-addon-restart', () => {
+      updateComponent('state', (state) => {
+        state.type = 'restarting';
+      });
+
+      api
+        .restartAddon()
+        .then(() => {
+          notify({
+            intent: 'success',
+            message: i18n('cc-header-addon-beta.restart.success', { logsUrl }),
+            options: {
+              timeout: 0,
+              closeable: true,
+            },
+          });
+        })
+        .catch((error) => {
+          console.error(error);
+          notifyError(i18n('cc-header-addon-beta.restart.error'));
+        })
+        .finally(() => {
+          updateComponent('state', (state) => {
+            state.type = 'loaded';
+          });
+        });
+    });
+
+    onEvent('cc-addon-rebuild', () => {
+      updateComponent('state', (state) => {
+        state.type = 'rebuilding';
+      });
+
+      api
+        .rebuildAndRestartAddon()
+        .then(() => {
+          notify({
+            intent: 'success',
+            message: i18n('cc-header-addon-beta.rebuild.success', { logsUrl }),
+            options: {
+              timeout: 0,
+              closeable: true,
+            },
+          });
+        })
+        .catch((error) => {
+          console.error(error);
+          notifyError(i18n('cc-header-addon-beta.rebuild.error'));
+        })
+        .finally(() => {
+          updateComponent('state', (state) => {
+            state.type = 'loaded';
+          });
+        });
+    });
   },
 });
 
@@ -90,18 +159,17 @@ class Api {
     this._addonId = addonId;
   }
 
-  /**
-   * @return {Promise<RawAddon>}
-   */
+  /** @return {Promise<RawAddon>} */
   getAddon() {
     return getAddon({ id: this._ownerId, addonId: this._addonId }).then(sendToApi({ apiConfig: this._apiConfig }));
   }
 
   /**
    * @param {string} realId
+   * @return {Promise<RawOperator>}
    */
   getOperator(realId) {
-    return getOperator({ provider: 'keycloak', realId }).then(sendToApi({ apiConfig: this._apiConfig }));
+    return this._getOperator({ provider: 'keycloak', realId }).then(sendToApi({ apiConfig: this._apiConfig }));
   }
 
   /**
@@ -112,28 +180,79 @@ class Api {
     return getZone({ zoneName }).then(sendToApi({ apiConfig: this._apiConfig }));
   }
 
+  /** @returns {Promise<{ rawAddon: RawAddon, operator: RawOperator, zone: Zone }>} */
   async getAddonWithOperatorAndZone() {
     const rawAddon = await this.getAddon();
-    const results = await Promise.allSettled([this.getOperator(rawAddon.realId), this.getZone(rawAddon.region)]);
-    const [getOperatorResult, getZoneResult] = results;
-    const operator = getOperatorResult.status === 'fulfilled' ? getOperatorResult.value : null;
-    const zone = getZoneResult.status === 'fulfilled' ? getZoneResult.value : null;
-    const errors = results.filter((result) => result.status === 'rejected');
+    const [operator, zone] = await Promise.all([this.getOperator(rawAddon.realId), this.getZone(rawAddon.region)]);
 
-    return { rawAddon, operator, zone, errors };
+    return { rawAddon, operator, zone };
+  }
+
+  /**
+   * @param {string} realId
+   * @returns {Promise<void>}
+   */
+  async rebootOperator(realId) {
+    return rebootOperator({ provider: 'keycloak', realId }).then(sendToApi({ apiConfig: this._apiConfig }));
+  }
+
+  /** @return {Promise<void>} */
+  async restartAddon() {
+    const rawAddon = await this.getAddon();
+    return this.rebootOperator(rawAddon.realId);
+  }
+
+  /** @param {string} realId */
+  async rebuildOperator(realId) {
+    return rebuildOperator({ provider: 'keycloak', realId }).then(sendToApi({ apiConfig: this._apiConfig }));
+  }
+
+  /** @return {Promise<void>} */
+  async rebuildAndRestartAddon() {
+    const rawAddon = await this.getAddon();
+    return this.rebuildOperator(rawAddon.realId);
+  }
+
+  /**
+   * @param {{ provider: string, realId: string }} params
+   * @returns {Promise<Object>}
+   */
+  _getOperator(params) {
+    return Promise.resolve({
+      method: 'get',
+      url: `/v4/addon-providers/addon-${params.provider}/addons/${params.realId}`,
+      headers: { Accept: 'application/json' },
+      // no queryParams
+      // no body
+    });
   }
 }
 
-// move this to clever client
 /**
  * @param {{ provider: string, realId: string }} params
  * @returns {Promise<Object>}
  */
-export function getOperator(params) {
+export function rebootOperator(params) {
   // no multipath for /self or /organisations/{id}
   return Promise.resolve({
-    method: 'get',
-    url: `/v4/addon-providers/addon-${params.provider}/addons/${params.realId}`,
+    method: 'post',
+    url: `/v4/addon-providers/addon-${params.provider}/addons/${params.realId}/reboot`,
+    headers: { Accept: 'application/json' },
+    // no queryParams
+    // no body
+  });
+}
+
+// rebuildOperator (=rebuild and restart)
+/**
+ * @param {{ provider: string, realId: string }} params
+ * @returns {Promise<Object>}
+ */
+export function rebuildOperator(params) {
+  // no multipath for /self or /organisations/{id}
+  return Promise.resolve({
+    method: 'post',
+    url: `/v4/addon-providers/addon-${params.provider}/addons/${params.realId}/rebuild`,
     headers: { Accept: 'application/json' },
     // no queryParams
     // no body
