@@ -5,6 +5,13 @@ title: 'Changelog'
 
 # Changelog
 
+## [19.3.1](https://github.com/CleverCloud/clever-components/compare/19.3.0...19.3.1) (2025-07-09)
+
+
+### 🐛 Bug Fixes
+
+* **cc-invoice:** fix invoice download URL ([6324e0b](https://github.com/CleverCloud/clever-components/commit/6324e0b70fd693e2d25ae8b1e7ecf3c6caf55497))
+
 ## [19.3.0](https://github.com/CleverCloud/clever-components/compare/19.2.0...19.3.0) (2025-07-04)
 
 
