@@ -511,7 +511,6 @@ export class CcInputText extends CcFormControlElement {
         /* endregion */
 
         .meta-input {
-          align-items: center;
           box-sizing: border-box;
           display: inline-flex;
           grid-area: input;
@@ -700,6 +699,7 @@ export class CcInputText extends CcFormControlElement {
         .btn,
         .btn-copy {
           flex-shrink: 0;
+          margin: 0.2em 0.2em 0.2em 0;
           margin-right: 0.15em;
           z-index: 2;
         }
@@ -708,7 +708,6 @@ export class CcInputText extends CcFormControlElement {
           border-radius: var(--cc-border-radius-small, 0.15em);
           cursor: pointer;
           height: 1.6em;
-          margin: 0.2em 0.2em 0.2em 0;
           width: 1.6em;
         }
 
