@@ -25,6 +25,7 @@ interface OptionalProperties {
     restart: boolean;
     rebuildAndRestart: boolean;
   };
+  productStatus?: string;
 }
 
 interface OpenLink {

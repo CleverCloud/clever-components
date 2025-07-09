@@ -67,6 +67,7 @@ defineSmartComponent({
             restart: true,
             rebuildAndRestart: true,
           },
+          productStatus: 'Beta',
         });
       })
       .catch((error) => {

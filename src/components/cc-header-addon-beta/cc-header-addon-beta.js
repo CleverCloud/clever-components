@@ -2,6 +2,7 @@ import { LitElement, css, html } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { fakeString } from '../../lib/fake-strings.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
+import '../cc-badge/cc-badge.js';
 import '../cc-block/cc-block.js';
 import '../cc-button/cc-button.js';
 import '../cc-img/cc-img.js';
@@ -27,6 +28,7 @@ const SKELETON_ADDON_INFO = {
     restart: false,
     rebuildAndRestart: false,
   },
+  productStatus: null,
 };
 
 /**
@@ -90,12 +92,13 @@ export class CcHeaderAddonBeta extends LitElement {
           <cc-img class="logo" ?skeleton=${skeleton} src=${ifDefined(addonInfo.providerLogoUrl)}></cc-img>
 
           <div class="details">
-            <div class="name">
-              <span class="${classMap({ skeleton })}">${addonInfo.providerName}</span>
+            <div class="details__title">
+              <span class="details__name ${classMap({ skeleton })}">${addonInfo.providerName}</span>
+              <cc-badge>${addonInfo.productStatus}</cc-badge>
             </div>
-            <div class="id">
+            <div class="details__id">
               <span class="${classMap({ skeleton })}">${addonInfo.id}</span>
-              <cc-clipboard class="clipboard" value=${addonInfo.id}></cc-clipboard>
+              <cc-clipboard value=${addonInfo.id}></cc-clipboard>
             </div>
           </div>
 
@@ -136,7 +139,7 @@ export class CcHeaderAddonBeta extends LitElement {
             ?skeleton="${skeleton}"
             >${i18n('cc-header-addon-beta.logs.link')}</cc-link
           >
-          <span class="spacer"></span>
+          <span class="footer__spacer"></span>
           <cc-zone .state=${zoneState} mode="small-infra" class=${classMap({ skeleton })}></cc-zone>
         </div>
       </cc-block>
@@ -169,18 +172,21 @@ export class CcHeaderAddonBeta extends LitElement {
           justify-content: space-between;
         }
 
-        .name {
+        .details__title {
+          align-items: center;
+          display: flex;
+          gap: 0.75em;
+        }
+
+        .details__name {
           font-size: 1.1em;
           font-weight: bold;
         }
 
-        .id {
+        .details__id {
           align-items: center;
           display: flex;
-        }
-
-        .clipboard {
-          align-content: center;
+          gap: 0.5em;
         }
 
         .actions {
@@ -188,14 +194,8 @@ export class CcHeaderAddonBeta extends LitElement {
           /* align-self: center; */
           display: flex;
           flex-wrap: wrap;
-          gap: 1em;
+          gap: 0.75em;
           margin-block: 0;
-        }
-
-        .skeleton {
-          background-color: #bbb;
-          border-color: #777;
-          color: transparent;
         }
 
         .footer {
@@ -206,8 +206,14 @@ export class CcHeaderAddonBeta extends LitElement {
           gap: 0.57em;
         }
 
-        .spacer {
+        .footer__spacer {
           flex: 1 1 0;
+        }
+
+        .skeleton {
+          background-color: #bbb;
+          border-color: #777;
+          color: transparent;
         }
       `,
     ];

@@ -49,6 +49,7 @@ const keycloakData = {
     restart: true,
     rebuildAndRestart: true,
   },
+  productStatus: 'Beta',
 };
 
 /** @type {CcHeaderAddonBetaStateLoaded} */
