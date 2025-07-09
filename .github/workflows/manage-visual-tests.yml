@@ -1,0 +1,297 @@
+name: Manage Visual Tests
+
+concurrency:
+  group: visual-tests-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+on:
+  pull_request:
+    types: [synchronize, opened, reopened, closed, labeled, unlabeled]
+
+env:
+  VISUAL_TESTS_REPORTS_DIR: 'visual-tests-reports'
+  VISUAL_TESTS_RAW_REPORT_NAME: 'visual-tests-results.json'
+  VISUAL_TESTS_FINAL_REPORT_NAME: 'visual-tests-report.json'
+  VISUAL_TESTS_REPORT_COMMENT_ID: 'visual-changes-report-comment-${{ github.event.pull_request.number }}'
+  VISUAL_TESTS_CELLAR_BUCKET_NAME: ${{ vars.VISUAL_TESTS_CELLAR_BUCKET_NAME }}
+  BRANCH_NAME: ${{ github.event.pull_request.head.ref }}
+  BASE_COMMIT_SHA: ${{ github.event.pull_request.base.sha }}
+  HEAD_COMMIT_SHA: ${{ github.event.pull_request.head.sha }}
+  PR_NUMBER: ${{ github.event.pull_request.number }}
+  WORKFLOW_ID: ${{ github.run_id }}
+  REPOSITORY_NAME: ${{ github.event.repository.name }}
+  REPOSITORY_OWNER: ${{ github.repository_owner }}
+
+jobs:
+  split-into-groups:
+    if: github.event.action != 'closed' && contains(github.event.pull_request.labels.*.name, 'run-visual-tests')
+    name: Split into groups
+    runs-on: ubuntu-latest
+    outputs:
+      stories-groups: ${{ steps.get-stories-groups.outputs.stories-groups }}
+    steps:
+      - name: '[Prepare] Checkout'
+        uses: actions/checkout@v4
+
+      - name: '[Prepare] Setup Node.js'
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: 'package.json'
+          cache: 'npm'
+
+      - name: '[Prepare] Install dependencies'
+        run: npm ci
+
+      # Expected outputs
+      # - stories-groups=Array<`stories-group-{number}`>
+      - name: '[Run] Get stories groups'
+        id: get-stories-groups
+        run: node ./.github/scripts/get-stories-groups.js
+
+  check-for-expectation-update:
+    if: github.event.action != 'closed' && contains(github.event.pull_request.labels.*.name, 'run-visual-tests')
+    name: Check for last expectation update
+    runs-on: ubuntu-latest
+    outputs:
+      should-update-expectation: ${{ steps.check-for-expectation-update.outputs.should-update-expectation }}
+      last-expectation-update-utc: ${{ steps.check-for-expectation-update.outputs.last-expectation-update-utc }}
+      last-expectation-update-local: ${{ steps.check-for-expectation-update.outputs.last-expectation-update-local }}
+    steps:
+      - name: '[Prepare] Checkout'
+        uses: actions/checkout@v4
+
+      - name: '[Prepare] Setup Node.js'
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: 'package.json'
+          cache: 'npm'
+
+      - name: '[Prepare] Install dependencies'
+        run: npm ci
+
+      # Expected outputs:
+      # - should-update-expectation: boolean - true if expectation should be updated (base commit has changed or no previous report was found)
+      # - last-expectation-update-utc: string - date as string representing the last update of the expectation screenshots (UTC)
+      # - last-expectation-update-local: string - date as string representing the last update of the expectation screenshots (Local)
+      - name: '[Run] Check for last expectation update'
+        id: check-for-expectation-update
+        run: node ./tasks/visual-tests/manage-visual-tests-data.js check-for-expectation-update
+        env:
+          VISUAL_TESTS_CELLAR_KEY_ID: ${{ secrets.VISUAL_TESTS_CELLAR_KEY_ID }}
+          VISUAL_TESTS_CELLAR_SECRET_KEY: ${{ secrets.VISUAL_TESTS_CELLAR_SECRET_KEY }}
+
+  update-expectation:
+    if: needs.check-for-expectation-update.outputs.should-update-expectation == 'true' && !contains(github.event.pull_request.labels.*.name, 'skip-visual-changes-tests')
+    name: Update expectation ${{ matrix.stories-group }}
+    needs: [split-into-groups, check-for-expectation-update]
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.55.0-noble
+      options: --user 1001
+    strategy:
+      matrix:
+        stories-group: ${{ fromJson(needs.split-into-groups.outputs.stories-groups) }}
+    steps:
+      - name: '[Prepare] Checkout base commit'
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.base.sha }}
+
+      - name: '[Prepare] Setup Node.js'
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: 'package.json'
+          cache: 'npm'
+
+      - name: '[Prepare] Install dependencies'
+        run: npm ci
+
+      - name: '[Run] Visual Tests (Expectation update) - ${{ matrix.stories-group }}'
+        run: npm run test:visual:update-expectation -- --group ${{ matrix.stories-group }}
+        env:
+          VISUAL_TESTS_CELLAR_KEY_ID: ${{ secrets.VISUAL_TESTS_CELLAR_KEY_ID }}
+          VISUAL_TESTS_CELLAR_SECRET_KEY: ${{ secrets.VISUAL_TESTS_CELLAR_SECRET_KEY }}
+
+      - name: '[Run] Set last-expectation-update output'
+        id: set-last-expectation-update
+        run: |
+          echo "last-expectation-update-utc=$(date +'%Y-%m-%dT%H:%M:%SZ')" >> $GITHUB_OUTPUT
+          echo "last-expectation-update-local=$(TZ="Europe/Paris" date +'%Y-%m-%d %H:%M:%S')" >> $GITHUB_OUTPUT
+
+    outputs:
+      last-expectation-update-utc: ${{ steps.set-last-expectation-update.outputs.last-expectation-update-utc }}
+      last-expectation-update-local: ${{ steps.set-last-expectation-update.outputs.last-expectation-update-local }}
+
+  run-visual-tests:
+    if: github.event.action != 'closed' && contains(github.event.pull_request.labels.*.name, 'run-visual-tests') && !cancelled()
+    name: Run visual tests ${{ matrix.stories-group }}
+    needs: [split-into-groups, check-for-expectation-update, update-expectation]
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.55.0-noble
+      options: --user 1001
+    strategy:
+      matrix:
+        stories-group: ${{ fromJson(needs.split-into-groups.outputs.stories-groups) }}
+    steps:
+      - name: '[Prepare] Checkout latest commit'
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+
+      - name: '[Prepare] Setup Node.js'
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: 'package.json'
+          cache: 'npm'
+
+      - name: '[Prepare] Install dependencies'
+        run: npm ci
+
+      - name: '[Run] Visual Tests (Compare Expectation with Actual) - ${{ matrix.stories-group }}'
+        run: npm run test:visual -- --group ${{ matrix.stories-group }}
+        env:
+          VISUAL_TESTS_CELLAR_KEY_ID: ${{ secrets.VISUAL_TESTS_CELLAR_KEY_ID }}
+          VISUAL_TESTS_CELLAR_SECRET_KEY: ${{ secrets.VISUAL_TESTS_CELLAR_SECRET_KEY }}
+          BRANCH_NAME: ${{ github.event.pull_request.head.ref }}
+        continue-on-error: true
+
+      - name: '[Run] set report update date'
+        id: set-last-actual-update
+        run: |
+          echo "last-actual-update-utc=$(date +'%Y-%m-%dT%H:%M:%SZ')" >> $GITHUB_OUTPUT
+          echo "last-actual-update-local=$(TZ=Europe/Paris date +'%Y-%m-%d %H:%M:%S')" >> $GITHUB_OUTPUT
+
+      - name: '[Run] Upload report to GitHub Actions Artifacts'
+        uses: actions/upload-artifact@v4
+        with:
+          name: results-${{ matrix.stories-group }}
+          path: ${{ env.VISUAL_TESTS_REPORTS_DIR }}/${{ env.VISUAL_TESTS_RAW_REPORT_NAME }}
+          retention-days: 1
+
+    outputs:
+      last-actual-update-utc: ${{ steps.set-last-actual-update.outputs.last-actual-update-utc }}
+      last-actual-update-local: ${{ steps.set-last-actual-update.outputs.last-actual-update-local }}
+
+  generate-final-report:
+    if: github.event.action != 'closed' && contains(github.event.pull_request.labels.*.name, 'run-visual-tests') && !cancelled()
+    name: Generate final report
+    needs: [check-for-expectation-update, update-expectation, run-visual-tests]
+    runs-on: ubuntu-latest
+    steps:
+      - name: '[Prepare] Checkout latest commit'
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+
+      - name: '[Prepare] Setup Node.js'
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: 'package.json'
+          cache: 'npm'
+
+      - name: '[Prepare] Install dependencies'
+        run: npm ci
+
+      - name: '[Prepare] Download reports from GitHub Actions Artifacts'
+        uses: actions/download-artifact@v4
+        with:
+          path: ${{ env.VISUAL_TESTS_REPORTS_DIR }}
+          pattern: results-*
+
+      # Expected outputs:
+      # - nb-of-impacted-components: number - number of components with visual changes
+      # - impacted-components-md: Array<string> - formatted list of impacted components to be inserted as Markdown
+      - name: '[Run] Merge results & generate final JSON report'
+        id: merge-results-and-generate-report
+        run: node ./tasks/visual-tests/generate-visual-tests-json-report.js
+        env:
+          LAST_EXPECTATION_UPDATE: ${{ needs.update-expectation.outputs.last-expectation-update-utc || needs.check-for-expectation-update.outputs.last-expectation-update-utc }}
+          LAST_ACTUAL_UPDATE: ${{ needs.run-visual-tests.outputs.last-actual-update-utc }}
+
+      - name: '[Run] Generate HTML report'
+        if: ${{ steps.merge-results-and-generate-report.outputs.nb-of-impacted-components }} > 0
+        run: node ./tasks/visual-tests/generate-visual-tests-html-report.js
+
+      # Expected outputs:
+      # - reports_url: url where reports have been uploaded to
+      - name: '[Run] Upload test reports to Cellar'
+        id: 'upload-test-reports'
+        run: node ./tasks/visual-tests/manage-visual-tests-data.js upload
+        env:
+          VISUAL_TESTS_CELLAR_KEY_ID: ${{ secrets.VISUAL_TESTS_CELLAR_KEY_ID }}
+          VISUAL_TESTS_CELLAR_SECRET_KEY: ${{ secrets.VISUAL_TESTS_CELLAR_SECRET_KEY }}
+
+      - name: '[Run] Create or edit PR comment'
+        run: node ./.github/scripts/create-or-edit-comment.js
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          MARKER: ${{ env.VISUAL_TESTS_REPORT_COMMENT_ID }}
+          MESSAGE: |
+            <!-- ${{ env.VISUAL_TESTS_REPORT_COMMENT_ID }} -->
+            ## :monocle_face: Visual tests report for PR #${{ github.event.pull_request.number }}
+
+            The latest visual tests report is available. Please review the results.
+
+            - ${{ steps.merge-results-and-generate-report.outputs.nb-of-impacted-components > 0 && format('[View HTML Report]({0}/index.html)', steps.upload-test-reports.outputs.reports_url) || '**No visual changes detected**' }}
+            - Baseline info:
+              - Commit: ${{ github.event.pull_request.base.sha }}
+              - Last update: ${{ needs.update-expectation.outputs.last-expectation-update-local || needs.check-for-expectation-update.outputs.last-expectation-update-local }}
+            - Changes info:
+              - Commit: ${{ github.event.pull_request.head.sha }}
+              - Last update: ${{ needs.run-visual-tests.outputs.last-actual-update-local }}
+            - Workflow run: [${{ github.run_id }}](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})
+
+            <details>
+              <summary>${{ steps.merge-results-and-generate-report.outputs.nb-of-impacted-components }} components impacted</summary>
+
+            ${{ steps.merge-results-and-generate-report.outputs.impacted-components-md }}
+
+            </details>
+
+            _This comment was generated automatically by the Visual tests workflow._
+
+  clean-up:
+    if: (github.event.action == 'closed' && contains(github.event.pull_request.labels.*.name, 'run-visual-tests')) || (github.event.action == 'unlabeled' && github.event.label.name == 'run-visual-tests')
+    name: 'Clean up visual tests report data'
+    runs-on: ubuntu-latest
+    steps:
+      - name: '[Prepare] Checkout'
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+
+      - name: '[Prepare] Setup Node.js'
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: 'package.json'
+          cache: 'npm'
+
+      - name: '[Prepare] Install dependencies'
+        run: npm ci
+
+      - name: '[Run] Remove report data for current branch'
+        id: delete-report-and-assets
+        run: node ./tasks/visual-tests/manage-visual-tests-data.js delete
+        env:
+          VISUAL_TESTS_CELLAR_KEY_ID: ${{ secrets.VISUAL_TESTS_CELLAR_KEY_ID }}
+          VISUAL_TESTS_CELLAR_SECRET_KEY: ${{ secrets.VISUAL_TESTS_CELLAR_SECRET_KEY }}
+
+      - name: '[Run] Create clean up comment'
+        if: github.event.action == 'closed'
+        run: node ./.github/scripts/create-or-edit-comment.js
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          MESSAGE: |
+            ## :broom: Visual Changes Report deleted
+
+            The report and its associated data have been deleted because this PR has been closed.
+
+            _This comment was generated automatically by the Visual Changes workflow._
+
+      - name: '[Run] Delete report comment'
+        if: github.event.action == 'unlabeled'
+        run: node ./.github/scripts/delete-comment.js
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          MARKER: ${{ env.VISUAL_TESTS_REPORT_COMMENT_ID }}
