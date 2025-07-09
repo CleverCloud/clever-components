@@ -26,6 +26,11 @@ const conf = {
  */
 
 export const defaultStory = makeStory(conf, {
+  tests: {
+    visual: {
+      enable: false,
+    },
+  },
   items: [
     {
       /** @type {ZoneInputStateLoaded} */
