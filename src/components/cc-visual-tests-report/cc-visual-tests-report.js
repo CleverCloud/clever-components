@@ -98,6 +98,7 @@ export class CcVisualTestsReport extends LitElement {
     return html`
       <cc-link class="skip-link" href="#main-content">Skip to content</cc-link>
       <div class="left">
+        <button>Expand</button>
         <header>
           <a
             class="storybook-link"
@@ -257,7 +258,7 @@ export class CcVisualTestsReport extends LitElement {
       css`
         :host {
           display: grid;
-          grid-template-columns: min(20rem, 100%) 1fr;
+          grid-template-columns: min(20em, 100%) 1fr;
           grid-template-rows: 1fr;
         }
 
@@ -300,8 +301,8 @@ export class CcVisualTestsReport extends LitElement {
           align-items: center;
           display: grid;
           gap: 1em;
-          grid-template-columns: 2rem 1fr;
-          padding: 1.5rem 1em;
+          grid-template-columns: 2em 1fr;
+          padding: 1.5em 1em;
         }
 
         h1 {
