@@ -4,20 +4,14 @@ import '../../src/components/cc-block/cc-block.js';
 import '../../src/components/cc-input-number/cc-input-number.js';
 import '../../src/components/cc-input-text/cc-input-text.js';
 import '../../src/components/cc-product-card/cc-product-card.js';
-import { generateRandomKeywords } from '../../src/components/cc-product-card/generate-random-keywords.js';
 import '../../src/components/cc-select/cc-select.js';
 import '../../src/components/cc-toggle/cc-toggle.js';
 import { sandboxStyles } from '../sandbox-styles.js';
-
-/**
- * @typedef {import('../../src/components/cc-product-card/cc-product-card.types.js').Keyword} Keyword
- */
 
 const DEFAULT_PRODUCT = {
   iconUrl: 'https://placekitten.com/202/202',
   name: 'My product',
   description: 'My description',
-  keywords: generateRandomKeywords(3),
 };
 
 const API_PRODUCTS = await Promise.all([

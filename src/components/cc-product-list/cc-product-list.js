@@ -142,9 +142,9 @@ export class CcProductList extends LitElement {
                 <cc-product-card
                   name="${p.name}"
                   description="${p.description}"
-                  .keywords="${p.keywords ?? []}"
                   icon-url="${p.iconUrl}"
                   url="${p.url}"
+                  product-status="${p.productStatus}"
                 ></cc-product-card>
               `,
             )}
