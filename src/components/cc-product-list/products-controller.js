@@ -108,9 +108,9 @@ export class ProductsController {
    */
   _filterProducts(products, searchTerms) {
     return products.filter((product) => {
-      const keywords = product?.keywords?.map(({ value }) => value) ?? [];
+      const productSearchTerms = product?.searchTerms ?? [];
 
-      const someText = [product.name, product.description ?? '', ...keywords];
+      const someText = [product.name, product.description ?? '', ...productSearchTerms];
 
       return someText.some((text) => {
         return searchTerms.some((input) => {
