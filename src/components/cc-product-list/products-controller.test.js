@@ -11,13 +11,13 @@ import { ProductsController } from './products-controller.js';
  * @param {Partial<Product>} product
  * @returns {Product}
  */
-function generateProduct({ name = '', description = '', keywords = [] }) {
+function generateProduct({ name = '', description = '', searchTerms = [] }) {
   return {
     name,
     description,
     iconUrl: 'https://example.com/icon.png',
     url: 'https://example.com',
-    keywords,
+    searchTerms,
   };
 }
 
@@ -311,7 +311,7 @@ describe('ProductsController()', function () {
       ]);
     });
 
-    it('should return all products matching with keywords', function () {
+    it('should return all products matching with searchTerms', function () {
       productsCtrl.productsByCategories = [
         {
           categoryName: 'aaa',
@@ -319,17 +319,17 @@ describe('ProductsController()', function () {
             generateProduct({
               name: 'aaa',
               description: 'desc',
-              keywords: [{ value: 'one', hidden: false }],
+              searchTerms: ['one'],
             }),
             generateProduct({
               name: 'aaa',
               description: 'desc',
-              keywords: [{ value: 'two', hidden: false }],
+              searchTerms: ['two'],
             }),
             generateProduct({
               name: 'aaa',
               description: 'desc',
-              keywords: [{ value: 'three', hidden: false }],
+              searchTerms: ['three'],
             }),
           ],
         },
@@ -339,17 +339,17 @@ describe('ProductsController()', function () {
             generateProduct({
               name: 'bbb',
               description: 'desc',
-              keywords: [{ value: 'one', hidden: false }],
+              searchTerms: ['one'],
             }),
             generateProduct({
               name: 'bbb',
               description: 'desc',
-              keywords: [{ value: 'two', hidden: false }],
+              searchTerms: ['two'],
             }),
             generateProduct({
               name: 'bbb',
               description: 'desc',
-              keywords: [{ value: 'three', hidden: false }],
+              searchTerms: ['three'],
             }),
           ],
         },
@@ -359,17 +359,17 @@ describe('ProductsController()', function () {
             generateProduct({
               name: 'aaa',
               description: 'desc',
-              keywords: [{ value: 'one', hidden: false }],
+              searchTerms: ['one'],
             }),
             generateProduct({
               name: 'aaa',
               description: 'desc',
-              keywords: [{ value: 'two', hidden: false }],
+              searchTerms: ['two'],
             }),
             generateProduct({
               name: 'aaa',
               description: 'desc',
-              keywords: [{ value: 'three', hidden: false }],
+              searchTerms: ['three'],
             }),
           ],
         },
@@ -384,7 +384,7 @@ describe('ProductsController()', function () {
             generateProduct({
               name: 'aaa',
               description: 'desc',
-              keywords: [{ value: 'two', hidden: false }],
+              searchTerms: ['two'],
             }),
           ],
         },
@@ -394,7 +394,7 @@ describe('ProductsController()', function () {
             generateProduct({
               name: 'bbb',
               description: 'desc',
-              keywords: [{ value: 'two', hidden: false }],
+              searchTerms: ['two'],
             }),
           ],
         },
@@ -404,14 +404,14 @@ describe('ProductsController()', function () {
             generateProduct({
               name: 'aaa',
               description: 'desc',
-              keywords: [{ value: 'two', hidden: false }],
+              searchTerms: ['two'],
             }),
           ],
         },
       ]);
     });
 
-    it('should return all products matching with keywords (match keyword)', function () {
+    it('should return all products matching with searchTerms (match keyword)', function () {
       productsCtrl.productsByCategories = [
         {
           categoryName: 'aaa',
@@ -419,17 +419,17 @@ describe('ProductsController()', function () {
             generateProduct({
               name: 'aaa',
               description: 'desc',
-              keywords: [{ value: 'one', hidden: false }],
+              searchTerms: ['one'],
             }),
             generateProduct({
               name: 'aaa',
               description: 'desc',
-              keywords: [{ value: 'two', hidden: false }],
+              searchTerms: ['two'],
             }),
             generateProduct({
               name: 'aaa',
               description: 'desc',
-              keywords: [{ value: 'three', hidden: false }],
+              searchTerms: ['three'],
             }),
           ],
         },
@@ -439,17 +439,17 @@ describe('ProductsController()', function () {
             generateProduct({
               name: 'bbb',
               description: 'desc',
-              keywords: [{ value: 'one', hidden: false }],
+              searchTerms: ['one'],
             }),
             generateProduct({
               name: 'bbb',
               description: 'desc',
-              keywords: [{ value: 'two', hidden: false }],
+              searchTerms: ['two'],
             }),
             generateProduct({
               name: 'bbb',
               description: 'desc',
-              keywords: [{ value: 'three', hidden: false }],
+              searchTerms: ['three'],
             }),
           ],
         },
@@ -459,17 +459,17 @@ describe('ProductsController()', function () {
             generateProduct({
               name: 'aaa',
               description: 'desc',
-              keywords: [{ value: 'one', hidden: false }],
+              searchTerms: ['one'],
             }),
             generateProduct({
               name: 'aaa',
               description: 'desc',
-              keywords: [{ value: 'two', hidden: false }],
+              searchTerms: ['two'],
             }),
             generateProduct({
               name: 'aaa',
               description: 'desc',
-              keywords: [{ value: 'three', hidden: false }],
+              searchTerms: ['three'],
             }),
           ],
         },
@@ -484,12 +484,12 @@ describe('ProductsController()', function () {
             generateProduct({
               name: 'aaa',
               description: 'desc',
-              keywords: [{ value: 'two', hidden: false }],
+              searchTerms: ['two'],
             }),
             generateProduct({
               name: 'aaa',
               description: 'desc',
-              keywords: [{ value: 'three', hidden: false }],
+              searchTerms: ['three'],
             }),
           ],
         },
@@ -499,12 +499,12 @@ describe('ProductsController()', function () {
             generateProduct({
               name: 'bbb',
               description: 'desc',
-              keywords: [{ value: 'two', hidden: false }],
+              searchTerms: ['two'],
             }),
             generateProduct({
               name: 'bbb',
               description: 'desc',
-              keywords: [{ value: 'three', hidden: false }],
+              searchTerms: ['three'],
             }),
           ],
         },
@@ -514,19 +514,19 @@ describe('ProductsController()', function () {
             generateProduct({
               name: 'aaa',
               description: 'desc',
-              keywords: [{ value: 'two', hidden: false }],
+              searchTerms: ['two'],
             }),
             generateProduct({
               name: 'aaa',
               description: 'desc',
-              keywords: [{ value: 'three', hidden: false }],
+              searchTerms: ['three'],
             }),
           ],
         },
       ]);
     });
 
-    it('should return all products matching with keywords (hidden)', function () {
+    it('should return all products matching with searchTerms (hidden)', function () {
       productsCtrl.productsByCategories = [
         {
           categoryName: 'aaa',
@@ -534,17 +534,17 @@ describe('ProductsController()', function () {
             generateProduct({
               name: 'aaa',
               description: 'desc',
-              keywords: [{ value: 'one', hidden: false }],
+              searchTerms: ['one'],
             }),
             generateProduct({
               name: 'aaa',
               description: 'desc',
-              keywords: [{ value: 'two', hidden: false }],
+              searchTerms: ['two'],
             }),
             generateProduct({
               name: 'aaa',
               description: 'desc',
-              keywords: [{ value: 'hidden', hidden: true }],
+              searchTerms: ['hidden'],
             }),
           ],
         },
@@ -554,17 +554,17 @@ describe('ProductsController()', function () {
             generateProduct({
               name: 'bbb',
               description: 'desc',
-              keywords: [{ value: 'one', hidden: false }],
+              searchTerms: ['one'],
             }),
             generateProduct({
               name: 'bbb',
               description: 'desc',
-              keywords: [{ value: 'two', hidden: false }],
+              searchTerms: ['two'],
             }),
             generateProduct({
               name: 'aaa',
               description: 'desc',
-              keywords: [{ value: 'hidden', hidden: true }],
+              searchTerms: ['hidden'],
             }),
           ],
         },
@@ -574,17 +574,17 @@ describe('ProductsController()', function () {
             generateProduct({
               name: 'aaa',
               description: 'desc',
-              keywords: [{ value: 'one', hidden: false }],
+              searchTerms: ['one'],
             }),
             generateProduct({
               name: 'aaa',
               description: 'desc',
-              keywords: [{ value: 'two', hidden: false }],
+              searchTerms: ['two'],
             }),
             generateProduct({
               name: 'aaa',
               description: 'desc',
-              keywords: [{ value: 'three', hidden: false }],
+              searchTerms: ['three'],
             }),
           ],
         },
@@ -599,7 +599,7 @@ describe('ProductsController()', function () {
             generateProduct({
               name: 'aaa',
               description: 'desc',
-              keywords: [{ value: 'hidden', hidden: true }],
+              searchTerms: ['hidden'],
             }),
           ],
         },
@@ -609,7 +609,7 @@ describe('ProductsController()', function () {
             generateProduct({
               name: 'aaa',
               description: 'desc',
-              keywords: [{ value: 'hidden', hidden: true }],
+              searchTerms: ['hidden'],
             }),
           ],
         },
@@ -812,17 +812,17 @@ describe('ProductsController()', function () {
             generateProduct({
               name: 'aaa',
               description: 'desc',
-              keywords: [{ value: 'one', hidden: false }],
+              searchTerms: ['one'],
             }),
             generateProduct({
               name: 'aaa two',
               description: 'desc',
-              keywords: [{ value: 'two', hidden: false }],
+              searchTerms: ['two'],
             }),
             generateProduct({
               name: 'aaa',
               description: 'desc',
-              keywords: [{ value: 'three', hidden: false }],
+              searchTerms: ['three'],
             }),
           ],
         },
@@ -832,17 +832,17 @@ describe('ProductsController()', function () {
             generateProduct({
               name: 'bbb',
               description: 'desc',
-              keywords: [{ value: 'one', hidden: false }],
+              searchTerms: ['one'],
             }),
             generateProduct({
               name: 'bbb',
               description: 'desc',
-              keywords: [{ value: 'two', hidden: false }],
+              searchTerms: ['two'],
             }),
             generateProduct({
               name: 'bbb',
               description: 'desc',
-              keywords: [{ value: 'three', hidden: false }],
+              searchTerms: ['three'],
             }),
           ],
         },
@@ -858,7 +858,7 @@ describe('ProductsController()', function () {
             generateProduct({
               name: 'aaa two',
               description: 'desc',
-              keywords: [{ value: 'two', hidden: false }],
+              searchTerms: ['two'],
             }),
           ],
         },
@@ -873,17 +873,17 @@ describe('ProductsController()', function () {
             generateProduct({
               name: 'aaa',
               description: 'desc',
-              keywords: [{ value: 'one', hidden: false }],
+              searchTerms: ['one'],
             }),
             generateProduct({
               name: 'aaa two',
               description: 'desc',
-              keywords: [{ value: 'two', hidden: false }],
+              searchTerms: ['two'],
             }),
             generateProduct({
               name: 'aaa',
               description: 'desc',
-              keywords: [{ value: 'three', hidden: false }],
+              searchTerms: ['three'],
             }),
           ],
         },
@@ -893,17 +893,17 @@ describe('ProductsController()', function () {
             generateProduct({
               name: 'bbb',
               description: 'desc',
-              keywords: [{ value: 'one', hidden: false }],
+              searchTerms: ['one'],
             }),
             generateProduct({
               name: 'bbb',
               description: 'desc',
-              keywords: [{ value: 'two', hidden: false }],
+              searchTerms: ['two'],
             }),
             generateProduct({
               name: 'bbb',
               description: 'desc',
-              keywords: [{ value: 'three', hidden: false }],
+              searchTerms: ['three'],
             }),
           ],
         },
@@ -919,7 +919,7 @@ describe('ProductsController()', function () {
             generateProduct({
               name: 'aaa two',
               description: 'desc',
-              keywords: [{ value: 'two', hidden: false }],
+              searchTerms: ['two'],
             }),
           ],
         },
@@ -929,7 +929,7 @@ describe('ProductsController()', function () {
             generateProduct({
               name: 'bbb',
               description: 'desc',
-              keywords: [{ value: 'two', hidden: false }],
+              searchTerms: ['two'],
             }),
           ],
         },
@@ -944,17 +944,17 @@ describe('ProductsController()', function () {
             generateProduct({
               name: 'aaa',
               description: 'desc',
-              keywords: [{ value: 'one', hidden: false }],
+              searchTerms: ['one'],
             }),
             generateProduct({
               name: 'aaa two',
               description: 'desc',
-              keywords: [{ value: 'two', hidden: false }],
+              searchTerms: ['two'],
             }),
             generateProduct({
               name: 'aaa',
               description: 'desc',
-              keywords: [{ value: 'three', hidden: false }],
+              searchTerms: ['three'],
             }),
           ],
         },
@@ -964,17 +964,17 @@ describe('ProductsController()', function () {
             generateProduct({
               name: 'bbb',
               description: 'desc',
-              keywords: [{ value: 'one', hidden: false }],
+              searchTerms: ['one'],
             }),
             generateProduct({
               name: 'bbb',
               description: 'desc',
-              keywords: [{ value: 'two', hidden: false }],
+              searchTerms: ['two'],
             }),
             generateProduct({
               name: 'bbb',
               description: 'desc',
-              keywords: [{ value: 'three', hidden: false }],
+              searchTerms: ['three'],
             }),
           ],
         },
@@ -990,17 +990,17 @@ describe('ProductsController()', function () {
             generateProduct({
               name: 'aaa',
               description: 'desc',
-              keywords: [{ value: 'one', hidden: false }],
+              searchTerms: ['one'],
             }),
             generateProduct({
               name: 'aaa two',
               description: 'desc',
-              keywords: [{ value: 'two', hidden: false }],
+              searchTerms: ['two'],
             }),
             generateProduct({
               name: 'aaa',
               description: 'desc',
-              keywords: [{ value: 'three', hidden: false }],
+              searchTerms: ['three'],
             }),
           ],
         },
@@ -1015,17 +1015,17 @@ describe('ProductsController()', function () {
             generateProduct({
               name: 'aaa',
               description: 'desc',
-              keywords: [{ value: 'one', hidden: false }],
+              searchTerms: ['one'],
             }),
             generateProduct({
               name: 'aaa two',
               description: 'desc',
-              keywords: [{ value: 'two', hidden: false }],
+              searchTerms: ['two'],
             }),
             generateProduct({
               name: 'aaa',
               description: 'desc',
-              keywords: [{ value: 'three', hidden: false }],
+              searchTerms: ['three'],
             }),
           ],
         },
@@ -1035,17 +1035,17 @@ describe('ProductsController()', function () {
             generateProduct({
               name: 'bbb',
               description: 'desc',
-              keywords: [{ value: 'one', hidden: false }],
+              searchTerms: ['one'],
             }),
             generateProduct({
               name: 'bbb',
               description: 'desc',
-              keywords: [{ value: 'two', hidden: false }],
+              searchTerms: ['two'],
             }),
             generateProduct({
               name: 'bbb',
               description: 'desc',
-              keywords: [{ value: 'three', hidden: false }],
+              searchTerms: ['three'],
             }),
           ],
         },
@@ -1065,17 +1065,17 @@ describe('ProductsController()', function () {
             generateProduct({
               name: 'aaa',
               description: 'desc',
-              keywords: [{ value: 'one', hidden: false }],
+              searchTerms: ['one'],
             }),
             generateProduct({
               name: 'aaa two',
               description: 'desc',
-              keywords: [{ value: 'two', hidden: false }],
+              searchTerms: ['two'],
             }),
             generateProduct({
               name: 'aaa',
               description: 'desc',
-              keywords: [{ value: 'three', hidden: false }],
+              searchTerms: ['three'],
             }),
           ],
         },
@@ -1085,17 +1085,17 @@ describe('ProductsController()', function () {
             generateProduct({
               name: 'bbb',
               description: 'desc',
-              keywords: [{ value: 'one', hidden: false }],
+              searchTerms: ['one'],
             }),
             generateProduct({
               name: 'bbb',
               description: 'desc',
-              keywords: [{ value: 'two', hidden: false }],
+              searchTerms: ['two'],
             }),
             generateProduct({
               name: 'bbb',
               description: 'desc',
-              keywords: [{ value: 'three', hidden: false }],
+              searchTerms: ['three'],
             }),
           ],
         },
@@ -1111,7 +1111,7 @@ describe('ProductsController()', function () {
             generateProduct({
               name: 'aaa two',
               description: 'desc',
-              keywords: [{ value: 'two', hidden: false }],
+              searchTerms: ['two'],
             }),
           ],
         },
@@ -1121,7 +1121,7 @@ describe('ProductsController()', function () {
             generateProduct({
               name: 'bbb',
               description: 'desc',
-              keywords: [{ value: 'two', hidden: false }],
+              searchTerms: ['two'],
             }),
           ],
         },
@@ -1136,17 +1136,17 @@ describe('ProductsController()', function () {
             generateProduct({
               name: 'aaa',
               description: 'desc',
-              keywords: [{ value: 'one', hidden: false }],
+              searchTerms: ['one'],
             }),
             generateProduct({
               name: 'aaa two',
               description: 'desc',
-              keywords: [{ value: 'two', hidden: false }],
+              searchTerms: ['two'],
             }),
             generateProduct({
               name: 'aaa',
               description: 'desc',
-              keywords: [{ value: 'three', hidden: false }],
+              searchTerms: ['three'],
             }),
           ],
         },
@@ -1156,17 +1156,17 @@ describe('ProductsController()', function () {
             generateProduct({
               name: 'bbb',
               description: 'desc',
-              keywords: [{ value: 'one', hidden: false }],
+              searchTerms: ['one'],
             }),
             generateProduct({
               name: 'bbb',
               description: 'desc',
-              keywords: [{ value: 'two', hidden: false }],
+              searchTerms: ['two'],
             }),
             generateProduct({
               name: 'bbb',
               description: 'desc',
-              keywords: [{ value: 'three', hidden: false }],
+              searchTerms: ['three'],
             }),
           ],
         },
@@ -1182,17 +1182,17 @@ describe('ProductsController()', function () {
             generateProduct({
               name: 'aaa',
               description: 'desc',
-              keywords: [{ value: 'one', hidden: false }],
+              searchTerms: ['one'],
             }),
             generateProduct({
               name: 'aaa two',
               description: 'desc',
-              keywords: [{ value: 'two', hidden: false }],
+              searchTerms: ['two'],
             }),
             generateProduct({
               name: 'aaa',
               description: 'desc',
-              keywords: [{ value: 'three', hidden: false }],
+              searchTerms: ['three'],
             }),
           ],
         },
@@ -1202,17 +1202,17 @@ describe('ProductsController()', function () {
             generateProduct({
               name: 'bbb',
               description: 'desc',
-              keywords: [{ value: 'one', hidden: false }],
+              searchTerms: ['one'],
             }),
             generateProduct({
               name: 'bbb',
               description: 'desc',
-              keywords: [{ value: 'two', hidden: false }],
+              searchTerms: ['two'],
             }),
             generateProduct({
               name: 'bbb',
               description: 'desc',
-              keywords: [{ value: 'three', hidden: false }],
+              searchTerms: ['three'],
             }),
           ],
         },
@@ -1227,17 +1227,17 @@ describe('ProductsController()', function () {
             generateProduct({
               name: 'aaa',
               description: 'desc',
-              keywords: [{ value: 'one', hidden: false }],
+              searchTerms: ['one'],
             }),
             generateProduct({
               name: 'aaa two',
               description: 'desc',
-              keywords: [{ value: 'two', hidden: false }],
+              searchTerms: ['two'],
             }),
             generateProduct({
               name: 'aaa',
               description: 'desc',
-              keywords: [{ value: 'three', hidden: false }],
+              searchTerms: ['three'],
             }),
           ],
         },
@@ -1247,17 +1247,17 @@ describe('ProductsController()', function () {
             generateProduct({
               name: 'bbb',
               description: 'desc',
-              keywords: [{ value: 'one', hidden: false }],
+              searchTerms: ['one'],
             }),
             generateProduct({
               name: 'bbb',
               description: 'desc',
-              keywords: [{ value: 'two', hidden: false }],
+              searchTerms: ['two'],
             }),
             generateProduct({
               name: 'bbb',
               description: 'desc',
-              keywords: [{ value: 'three', hidden: false }],
+              searchTerms: ['three'],
             }),
           ],
         },
@@ -1275,7 +1275,7 @@ describe('ProductsController()', function () {
             generateProduct({
               name: 'bbb',
               description: 'desc',
-              keywords: [{ value: 'two', hidden: false }],
+              searchTerms: ['two'],
             }),
           ],
         },
@@ -1290,17 +1290,17 @@ describe('ProductsController()', function () {
             generateProduct({
               name: 'aaa',
               description: 'desc',
-              keywords: [{ value: 'one', hidden: false }],
+              searchTerms: ['one'],
             }),
             generateProduct({
               name: 'aaa two',
               description: 'desc',
-              keywords: [{ value: 'two', hidden: false }],
+              searchTerms: ['two'],
             }),
             generateProduct({
               name: 'aaa',
               description: 'desc',
-              keywords: [{ value: 'three', hidden: false }],
+              searchTerms: ['three'],
             }),
           ],
         },
@@ -1310,17 +1310,17 @@ describe('ProductsController()', function () {
             generateProduct({
               name: 'bbb',
               description: 'desc',
-              keywords: [{ value: 'one', hidden: false }],
+              searchTerms: ['one'],
             }),
             generateProduct({
               name: 'bbb',
               description: 'desc',
-              keywords: [{ value: 'two', hidden: false }],
+              searchTerms: ['two'],
             }),
             generateProduct({
               name: 'bbb',
               description: 'desc',
-              keywords: [{ value: 'three', hidden: false }],
+              searchTerms: ['three'],
             }),
           ],
         },
@@ -1334,17 +1334,17 @@ describe('ProductsController()', function () {
             generateProduct({
               name: 'aaa',
               description: 'desc',
-              keywords: [{ value: 'one', hidden: false }],
+              searchTerms: ['one'],
             }),
             generateProduct({
               name: 'aaa two',
               description: 'desc',
-              keywords: [{ value: 'two', hidden: false }],
+              searchTerms: ['two'],
             }),
             generateProduct({
               name: 'aaa',
               description: 'desc',
-              keywords: [{ value: 'three', hidden: false }],
+              searchTerms: ['three'],
             }),
           ],
         },
@@ -1357,7 +1357,7 @@ describe('ProductsController()', function () {
             generateProduct({
               name: 'aaa two',
               description: 'desc',
-              keywords: [{ value: 'two', hidden: false }],
+              searchTerms: ['two'],
             }),
           ],
         },
@@ -1371,17 +1371,17 @@ describe('ProductsController()', function () {
             generateProduct({
               name: 'aaa',
               description: 'desc',
-              keywords: [{ value: 'one', hidden: false }],
+              searchTerms: ['one'],
             }),
             generateProduct({
               name: 'aaa two',
               description: 'desc',
-              keywords: [{ value: 'two', hidden: false }],
+              searchTerms: ['two'],
             }),
             generateProduct({
               name: 'aaa',
               description: 'desc',
-              keywords: [{ value: 'three', hidden: false }],
+              searchTerms: ['three'],
             }),
           ],
         },
@@ -1395,17 +1395,17 @@ describe('ProductsController()', function () {
             generateProduct({
               name: 'aaa',
               description: 'desc',
-              keywords: [{ value: 'one', hidden: false }],
+              searchTerms: ['one'],
             }),
             generateProduct({
               name: 'aaa two',
               description: 'desc',
-              keywords: [{ value: 'two', hidden: false }],
+              searchTerms: ['two'],
             }),
             generateProduct({
               name: 'aaa',
               description: 'desc',
-              keywords: [{ value: 'three', hidden: false }],
+              searchTerms: ['three'],
             }),
           ],
         },
@@ -1415,17 +1415,17 @@ describe('ProductsController()', function () {
             generateProduct({
               name: 'bbb',
               description: 'desc',
-              keywords: [{ value: 'one', hidden: false }],
+              searchTerms: ['one'],
             }),
             generateProduct({
               name: 'bbb',
               description: 'desc',
-              keywords: [{ value: 'two', hidden: false }],
+              searchTerms: ['two'],
             }),
             generateProduct({
               name: 'bbb',
               description: 'desc',
-              keywords: [{ value: 'three', hidden: false }],
+              searchTerms: ['three'],
             }),
           ],
         },
@@ -1439,7 +1439,7 @@ describe('ProductsController()', function () {
             generateProduct({
               name: 'aaa two',
               description: 'desc',
-              keywords: [{ value: 'two', hidden: false }],
+              searchTerms: ['two'],
             }),
           ],
         },
@@ -1449,7 +1449,7 @@ describe('ProductsController()', function () {
             generateProduct({
               name: 'bbb',
               description: 'desc',
-              keywords: [{ value: 'two', hidden: false }],
+              searchTerms: ['two'],
             }),
           ],
         },
