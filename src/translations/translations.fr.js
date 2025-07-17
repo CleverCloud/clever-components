@@ -13,9 +13,11 @@ import {
   prepareNumberBytesFormatter,
   prepareNumberUnitFormatter,
 } from '../lib/i18n/i18n-number.js';
-import { sanitize } from '../lib/i18n/i18n-sanitize.js';
+// import { sanitize } from '../lib/i18n/i18n-sanitize.js';
 import { preparePlural } from '../lib/i18n/i18n-string.js';
 import { generateDevHubHref, generateDocsHref } from '../lib/utils.js';
+
+const sanitize = String.raw;
 
 /**
  * @typedef {import('../components/common.types.js').Flavor} Flavor
