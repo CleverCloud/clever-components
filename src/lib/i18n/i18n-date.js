@@ -112,7 +112,7 @@ export function prepareFormatHours(lang) {
  * @return {DateFormatter}
  */
 function createFormatter(dateTimeFormat) {
-  return (dateInput) => dateTimeFormat.format(new Date(dateInput));
+  return (dateInput) => dateTimeFormat.format(new Date());
 }
 
 /**
