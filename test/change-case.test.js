@@ -1,5 +1,5 @@
 import { expect } from '@bundled-es-modules/chai';
-import { camelCase, kebabCase, pascalCase, snakeCase } from '../src/lib/change-case.js';
+import { camelCase, camelCaseToSpacedCapitalized, kebabCase, pascalCase, snakeCase } from '../src/lib/change-case.js';
 
 const TEST_PASCAL_CASES = [
   ['', ''],
@@ -49,6 +49,16 @@ const TEST_KEBAB_CASES = [
   ['version 1.21.0', 'version-1-21-0'],
 ];
 
+const TESTS_SPACED_CAPITALIZED_CASES = [
+  ['', ''],
+  ['string', 'String'],
+  ['dotCase', 'Dot Case'],
+  ['PascalCase', 'Pascal Case'],
+  ['snakeCase', 'Snake Case'],
+  ['version_1_2_10', 'Version_1_2_10'],
+  ['version1_2_10', 'Version1_2_10'],
+];
+
 describe('pascalCase', () => {
   for (const [input, output] of TEST_PASCAL_CASES) {
     it(`${input} => ${output}`, () => {
@@ -77,6 +87,14 @@ describe('kebabCase', () => {
   for (const [input, output] of TEST_KEBAB_CASES) {
     it(`${input} => ${output}`, () => {
       expect(kebabCase(input)).to.equal(output);
+    });
+  }
+});
+
+describe('camelCaseToSpacedCapitalized', () => {
+  for (const [input, output] of TESTS_SPACED_CAPITALIZED_CASES) {
+    it(`${input} => ${output}`, () => {
+      expect(camelCaseToSpacedCapitalized(input)).to.equal(output);
     });
   }
 });

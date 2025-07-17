@@ -1,36 +1,3 @@
-const ccArticleListDataLoadedDesktopExpectation = new URL('../../stories/assets/cc-article-list-data-loaded-desktop-expectation.png', import.meta.url).href;
-const ccArticleListDataLoadedDesktopActual = new URL('../../stories/assets/cc-article-list-data-loaded-desktop-actual.png', import.meta.url).href;
-const ccArticleListDataLoadedDesktopDiff = new URL('../../stories/assets/cc-article-list-data-loaded-desktop-diff.png', import.meta.url).href;
-
-const ccArticleListDefaultStoryMobileExpectation = new URL('../../stories/assets/cc-article-list-default-story-mobile-expectation.png', import.meta.url).href;
-const ccArticleListDefaultStoryMobileActual = new URL('../../stories/assets/cc-article-list-default-story-mobile-actual.png', import.meta.url).href;
-const ccArticleListDefaultStoryMobileDiff = new URL('../../stories/assets/cc-article-list-default-story-mobile-diff.png', import.meta.url).href;
-
-const ccAddonBackupsDefaultStoryDesktopExpectation = new URL('../../stories/assets/cc-addon-backups-default-story-desktop-expectation.png', import.meta.url).href;
-const ccAddonBackupsDefaultStoryDesktopActual = new URL('../../stories/assets/cc-addon-backups-default-story-desktop-actual.png', import.meta.url).href;
-const ccAddonBackupsDefaultStoryDesktopDiff = new URL('../../stories/assets/cc-addon-backups-default-story-desktop-diff.png', import.meta.url).href;
-
-const ccAddonBackupsDefaultStoryMobileExpectation = new URL('../../stories/assets/cc-addon-backups-default-story-mobile-expectation.png', import.meta.url).href;
-const ccAddonBackupsDefaultStoryMobileActual = new URL('../../stories/assets/cc-addon-backups-default-story-mobile-actual.png', import.meta.url).href;
-const ccAddonBackupsDefaultStoryMobileDiff = new URL('../../stories/assets/cc-addon-backups-default-story-mobile-diff.png', import.meta.url).href;
-
-const ccDomainManagementDefaultStoryDesktopExpectation = new URL('../../stories/assets/cc-domain-management-default-story-desktop-expectation.png', import.meta.url).href;
-const ccDomainManagementDefaultStoryDesktopActual = new URL('../../stories/assets/cc-domain-management-default-story-desktop-actual.png', import.meta.url).href;
-const ccDomainManagementDefaultStoryDesktopDiff = new URL('../../stories/assets/cc-domain-management-default-story-desktop-diff.png', import.meta.url).href;
-
-const ccDomainManagementDefaultStoryMobileExpectation = new URL('../../stories/assets/cc-domain-management-default-story-mobile-expectation.png', import.meta.url).href;
-const ccDomainManagementDefaultStoryMobileActual = new URL('../../stories/assets/cc-domain-management-default-story-mobile-actual.png', import.meta.url).href;
-const ccDomainManagementDefaultStoryMobileDiff = new URL('../../stories/assets/cc-domain-management-default-story-mobile-diff.png', import.meta.url).href;
-
-const ccDomainManagementEmptyDesktopExpectation = new URL('../../stories/assets/cc-domain-management-empty-desktop-expectation.png', import.meta.url).href;
-const ccDomainManagementEmptyDesktopActual = new URL('../../stories/assets/cc-domain-management-empty-desktop-actual.png', import.meta.url).href;
-const ccDomainManagementEmptyDesktopDiff = new URL('../../stories/assets/cc-domain-management-empty-desktop-diff.png', import.meta.url).href;
-
-const ccDomainManagementEmptyMobileExpectation = new URL('../../stories/assets/cc-domain-management-empty-mobile-expectation.png', import.meta.url).href;
-const ccDomainManagementEmptyMobileActual = new URL('../../stories/assets/cc-domain-management-empty-mobile-actual.png', import.meta.url).href;
-const ccDomainManagementEmptyMobileDiff = new URL('../../stories/assets/cc-domain-management-empty-mobile-diff.png', import.meta.url).href;
-
-
 /** @satisfies {import('../../components/cc-visual-tests-report/visual-tests-report.types.js').VisualTestResult[]} */
 export const visualTestsResults = /** @type {const} */ ([
   {
@@ -40,9 +7,9 @@ export const visualTestsResults = /** @type {const} */ ([
     storyName: 'defaultStory',
     viewportType: 'desktop',
     screenshots: {
-      expectationScreenshotUrl: ccArticleListDataLoadedDesktopExpectation,
-      actualScreenshotUrl: ccArticleListDataLoadedDesktopActual,
-      diffScreenshotUrl: ccArticleListDataLoadedDesktopDiff,
+      expectationScreenshotUrl: new URL('../assets/cc-article-list-data-loaded-desktop-expectation.png', import.meta.url).href,
+      actualScreenshotUrl: new URL('../assets/cc-article-list-data-loaded-desktop-actual.png', import.meta.url).href,
+      diffScreenshotUrl: new URL('../assets/cc-article-list-data-loaded-desktop-diff.png', import.meta.url).href,
     },
   },
   {
@@ -52,9 +19,9 @@ export const visualTestsResults = /** @type {const} */ ([
     storyName: 'defaultStory',
     viewportType: 'mobile',
     screenshots: {
-      expectationScreenshotUrl: ccArticleListDefaultStoryMobileExpectation,
-      actualScreenshotUrl: ccArticleListDefaultStoryMobileActual,
-      diffScreenshotUrl: ccArticleListDefaultStoryMobileDiff,
+      expectationScreenshotUrl: new URL('../assets/cc-article-list-default-story-mobile-expectation.png', import.meta.url).href,
+      actualScreenshotUrl: new URL('../assets/cc-article-list-default-story-mobile-actual.png', import.meta.url).href,
+      diffScreenshotUrl: new URL('../assets/cc-article-list-default-story-mobile-diff.png', import.meta.url).href,
     },
   },
   {
@@ -64,9 +31,9 @@ export const visualTestsResults = /** @type {const} */ ([
     storyName: 'defaultStory',
     viewportType: 'desktop',
     screenshots: {
-      expectationScreenshotUrl: ccArticleListDataLoadedDesktopExpectation,
-      actualScreenshotUrl: ccArticleListDataLoadedDesktopActual,
-      diffScreenshotUrl: ccArticleListDataLoadedDesktopDiff,
+      expectationScreenshotUrl: new URL('../assets/cc-article-list-data-loaded-desktop-expectation.png', import.meta.url).href,
+      actualScreenshotUrl: new URL('../assets/cc-article-list-data-loaded-desktop-actual.png', import.meta.url).href,
+      diffScreenshotUrl: new URL('../assets/cc-article-list-data-loaded-desktop-diff.png', import.meta.url).href,
     },
   },
 
@@ -77,9 +44,9 @@ export const visualTestsResults = /** @type {const} */ ([
     storyName: 'skeleton',
     viewportType: 'desktop',
     screenshots: {
-      expectationScreenshotUrl: ccArticleListDataLoadedDesktopExpectation,
-      actualScreenshotUrl: ccArticleListDataLoadedDesktopActual,
-      diffScreenshotUrl: ccArticleListDataLoadedDesktopDiff,
+      expectationScreenshotUrl: new URL('../assets/cc-article-list-data-loaded-desktop-expectation.png', import.meta.url).href,
+      actualScreenshotUrl: new URL('../assets/cc-article-list-data-loaded-desktop-actual.png', import.meta.url).href,
+      diffScreenshotUrl: new URL('../assets/cc-article-list-data-loaded-desktop-diff.png', import.meta.url).href,
     },
   },
   {
@@ -89,9 +56,9 @@ export const visualTestsResults = /** @type {const} */ ([
     storyName: 'skeleton',
     viewportType: 'mobile',
     screenshots: {
-      expectationScreenshotUrl: ccArticleListDefaultStoryMobileExpectation,
-      actualScreenshotUrl: ccArticleListDefaultStoryMobileActual,
-      diffScreenshotUrl: ccArticleListDefaultStoryMobileDiff,
+      expectationScreenshotUrl: new URL('../assets/cc-article-list-default-story-mobile-expectation.png', import.meta.url).href,
+      actualScreenshotUrl: new URL('../assets/cc-article-list-default-story-mobile-actual.png', import.meta.url).href,
+      diffScreenshotUrl: new URL('../assets/cc-article-list-default-story-mobile-diff.png', import.meta.url).href,
     },
   },
 
@@ -102,9 +69,9 @@ export const visualTestsResults = /** @type {const} */ ([
     storyName: 'disabled',
     viewportType: 'desktop',
     screenshots: {
-      expectationScreenshotUrl: ccArticleListDataLoadedDesktopExpectation,
-      actualScreenshotUrl: ccArticleListDataLoadedDesktopActual,
-      diffScreenshotUrl: ccArticleListDataLoadedDesktopDiff,
+      expectationScreenshotUrl: new URL('../assets/cc-article-list-data-loaded-desktop-expectation.png', import.meta.url).href,
+      actualScreenshotUrl: new URL('../assets/cc-article-list-data-loaded-desktop-actual.png', import.meta.url).href,
+      diffScreenshotUrl: new URL('../assets/cc-article-list-data-loaded-desktop-diff.png', import.meta.url).href,
     },
   },
 
@@ -115,9 +82,9 @@ export const visualTestsResults = /** @type {const} */ ([
     storyName: 'defaultStory',
     viewportType: 'desktop',
     screenshots: {
-      expectationScreenshotUrl: ccArticleListDataLoadedDesktopExpectation,
-      actualScreenshotUrl: ccArticleListDataLoadedDesktopActual,
-      diffScreenshotUrl: ccArticleListDataLoadedDesktopDiff,
+      expectationScreenshotUrl: new URL('../assets/cc-article-list-data-loaded-desktop-expectation.png', import.meta.url).href,
+      actualScreenshotUrl: new URL('../assets/cc-article-list-data-loaded-desktop-actual.png', import.meta.url).href,
+      diffScreenshotUrl: new URL('../assets/cc-article-list-data-loaded-desktop-diff.png', import.meta.url).href,
     },
   },
   {
@@ -127,9 +94,9 @@ export const visualTestsResults = /** @type {const} */ ([
     storyName: 'defaultStory',
     viewportType: 'mobile',
     screenshots: {
-      expectationScreenshotUrl: ccArticleListDefaultStoryMobileExpectation,
-      actualScreenshotUrl: ccArticleListDefaultStoryMobileActual,
-      diffScreenshotUrl: ccArticleListDefaultStoryMobileDiff,
+      expectationScreenshotUrl: new URL('../assets/cc-article-list-default-story-mobile-expectation.png', import.meta.url).href,
+      actualScreenshotUrl: new URL('../assets/cc-article-list-default-story-mobile-actual.png', import.meta.url).href,
+      diffScreenshotUrl: new URL('../assets/cc-article-list-default-story-mobile-diff.png', import.meta.url).href,
     },
   },
   {
@@ -139,9 +106,9 @@ export const visualTestsResults = /** @type {const} */ ([
     storyName: 'defaultStory',
     viewportType: 'desktop',
     screenshots: {
-      expectationScreenshotUrl: ccArticleListDataLoadedDesktopExpectation,
-      actualScreenshotUrl: ccArticleListDataLoadedDesktopActual,
-      diffScreenshotUrl: ccArticleListDataLoadedDesktopDiff,
+      expectationScreenshotUrl: new URL('../assets/cc-article-list-data-loaded-desktop-expectation.png', import.meta.url).href,
+      actualScreenshotUrl: new URL('../assets/cc-article-list-data-loaded-desktop-actual.png', import.meta.url).href,
+      diffScreenshotUrl: new URL('../assets/cc-article-list-data-loaded-desktop-diff.png', import.meta.url).href,
     },
   },
 
@@ -152,9 +119,9 @@ export const visualTestsResults = /** @type {const} */ ([
     storyName: 'skeleton',
     viewportType: 'desktop',
     screenshots: {
-      expectationScreenshotUrl: ccArticleListDataLoadedDesktopExpectation,
-      actualScreenshotUrl: ccArticleListDataLoadedDesktopActual,
-      diffScreenshotUrl: ccArticleListDataLoadedDesktopDiff,
+      expectationScreenshotUrl: new URL('../assets/cc-article-list-data-loaded-desktop-expectation.png', import.meta.url).href,
+      actualScreenshotUrl: new URL('../assets/cc-article-list-data-loaded-desktop-actual.png', import.meta.url).href,
+      diffScreenshotUrl: new URL('../assets/cc-article-list-data-loaded-desktop-diff.png', import.meta.url).href,
     },
   },
 
@@ -165,9 +132,9 @@ export const visualTestsResults = /** @type {const} */ ([
     storyName: 'disabled',
     viewportType: 'desktop',
     screenshots: {
-      expectationScreenshotUrl: ccArticleListDataLoadedDesktopExpectation,
-      actualScreenshotUrl: ccArticleListDataLoadedDesktopActual,
-      diffScreenshotUrl: ccArticleListDataLoadedDesktopDiff,
+      expectationScreenshotUrl: new URL('../assets/cc-article-list-data-loaded-desktop-expectation.png', import.meta.url).href,
+      actualScreenshotUrl: new URL('../assets/cc-article-list-data-loaded-desktop-actual.png', import.meta.url).href,
+      diffScreenshotUrl: new URL('../assets/cc-article-list-data-loaded-desktop-diff.png', import.meta.url).href,
     },
   },
   {
@@ -177,9 +144,9 @@ export const visualTestsResults = /** @type {const} */ ([
     storyName: 'disabled',
     viewportType: 'mobile',
     screenshots: {
-      expectationScreenshotUrl: ccArticleListDefaultStoryMobileExpectation,
-      actualScreenshotUrl: ccArticleListDefaultStoryMobileActual,
-      diffScreenshotUrl: ccArticleListDefaultStoryMobileDiff,
+      expectationScreenshotUrl: new URL('../assets/cc-article-list-default-story-mobile-expectation.png', import.meta.url).href,
+      actualScreenshotUrl: new URL('../assets/cc-article-list-default-story-mobile-actual.png', import.meta.url).href,
+      diffScreenshotUrl: new URL('../assets/cc-article-list-default-story-mobile-diff.png', import.meta.url).href,
     },
   },
 
@@ -190,9 +157,9 @@ export const visualTestsResults = /** @type {const} */ ([
     storyName: 'defaultStory',
     viewportType: 'desktop',
     screenshots: {
-      expectationScreenshotUrl: ccArticleListDataLoadedDesktopExpectation,
-      actualScreenshotUrl: ccArticleListDataLoadedDesktopActual,
-      diffScreenshotUrl: ccArticleListDataLoadedDesktopDiff,
+      expectationScreenshotUrl: new URL('../assets/cc-article-list-data-loaded-desktop-expectation.png', import.meta.url).href,
+      actualScreenshotUrl: new URL('../assets/cc-article-list-data-loaded-desktop-actual.png', import.meta.url).href,
+      diffScreenshotUrl: new URL('../assets/cc-article-list-data-loaded-desktop-diff.png', import.meta.url).href,
     },
   },
   {
@@ -202,9 +169,9 @@ export const visualTestsResults = /** @type {const} */ ([
     storyName: 'skeleton',
     viewportType: 'desktop',
     screenshots: {
-      expectationScreenshotUrl: ccArticleListDataLoadedDesktopExpectation,
-      actualScreenshotUrl: ccArticleListDataLoadedDesktopActual,
-      diffScreenshotUrl: ccArticleListDataLoadedDesktopDiff,
+      expectationScreenshotUrl: new URL('../assets/cc-article-list-data-loaded-desktop-expectation.png', import.meta.url).href,
+      actualScreenshotUrl: new URL('../assets/cc-article-list-data-loaded-desktop-actual.png', import.meta.url).href,
+      diffScreenshotUrl: new URL('../assets/cc-article-list-data-loaded-desktop-diff.png', import.meta.url).href,
     },
   },
   {
@@ -214,9 +181,9 @@ export const visualTestsResults = /** @type {const} */ ([
     storyName: 'skeleton',
     viewportType: 'mobile',
     screenshots: {
-      expectationScreenshotUrl: ccArticleListDefaultStoryMobileExpectation,
-      actualScreenshotUrl: ccArticleListDefaultStoryMobileActual,
-      diffScreenshotUrl: ccArticleListDefaultStoryMobileDiff,
+      expectationScreenshotUrl: new URL('../assets/cc-article-list-default-story-mobile-expectation.png', import.meta.url).href,
+      actualScreenshotUrl: new URL('../assets/cc-article-list-default-story-mobile-actual.png', import.meta.url).href,
+      diffScreenshotUrl: new URL('../assets/cc-article-list-default-story-mobile-diff.png', import.meta.url).href,
     },
   },
   {
@@ -226,9 +193,9 @@ export const visualTestsResults = /** @type {const} */ ([
     storyName: 'disabled',
     viewportType: 'mobile',
     screenshots: {
-      expectationScreenshotUrl: ccArticleListDefaultStoryMobileExpectation,
-      actualScreenshotUrl: ccArticleListDefaultStoryMobileActual,
-      diffScreenshotUrl: ccArticleListDefaultStoryMobileDiff,
+      expectationScreenshotUrl: new URL('../assets/cc-article-list-default-story-mobile-expectation.png', import.meta.url).href,
+      actualScreenshotUrl: new URL('../assets/cc-article-list-default-story-mobile-actual.png', import.meta.url).href,
+      diffScreenshotUrl: new URL('../assets/cc-article-list-default-story-mobile-diff.png', import.meta.url).href,
     },
   },
   {
@@ -238,9 +205,9 @@ export const visualTestsResults = /** @type {const} */ ([
     storyName: 'dataLoaded',
     viewportType: 'desktop',
     screenshots: {
-      expectationScreenshotUrl: ccArticleListDataLoadedDesktopExpectation,
-      actualScreenshotUrl: ccArticleListDataLoadedDesktopActual,
-      diffScreenshotUrl: ccArticleListDataLoadedDesktopDiff,
+      expectationScreenshotUrl: new URL('../assets/cc-article-list-data-loaded-desktop-expectation.png', import.meta.url).href,
+      actualScreenshotUrl: new URL('../assets/cc-article-list-data-loaded-desktop-actual.png', import.meta.url).href,
+      diffScreenshotUrl: new URL('../assets/cc-article-list-data-loaded-desktop-diff.png', import.meta.url).href,
     },
   },
   {
@@ -250,9 +217,9 @@ export const visualTestsResults = /** @type {const} */ ([
     storyName: 'defaultStory',
     viewportType: 'mobile',
     screenshots: {
-      expectationScreenshotUrl: ccArticleListDefaultStoryMobileExpectation,
-      actualScreenshotUrl: ccArticleListDefaultStoryMobileActual,
-      diffScreenshotUrl: ccArticleListDefaultStoryMobileDiff,
+      expectationScreenshotUrl: new URL('../assets/cc-article-list-default-story-mobile-expectation.png', import.meta.url).href,
+      actualScreenshotUrl: new URL('../assets/cc-article-list-default-story-mobile-actual.png', import.meta.url).href,
+      diffScreenshotUrl: new URL('../assets/cc-article-list-default-story-mobile-diff.png', import.meta.url).href,
     },
   },
   {
@@ -262,9 +229,9 @@ export const visualTestsResults = /** @type {const} */ ([
     storyName: 'defaultStory',
     viewportType: 'desktop',
     screenshots: {
-      expectationScreenshotUrl: ccAddonBackupsDefaultStoryDesktopExpectation,
-      actualScreenshotUrl: ccAddonBackupsDefaultStoryDesktopActual,
-      diffScreenshotUrl: ccAddonBackupsDefaultStoryDesktopDiff,
+      expectationScreenshotUrl: new URL('../assets/cc-addon-backups-default-story-desktop-expectation.png', import.meta.url).href,
+      actualScreenshotUrl: new URL('../assets/cc-addon-backups-default-story-desktop-actual.png', import.meta.url).href,
+      diffScreenshotUrl: new URL('../assets/cc-addon-backups-default-story-desktop-diff.png', import.meta.url).href,
     },
   },
   {
@@ -274,9 +241,9 @@ export const visualTestsResults = /** @type {const} */ ([
     storyName: 'defaultStory',
     viewportType: 'mobile',
     screenshots: {
-      expectationScreenshotUrl: ccAddonBackupsDefaultStoryMobileExpectation,
-      actualScreenshotUrl: ccAddonBackupsDefaultStoryMobileActual,
-      diffScreenshotUrl: ccAddonBackupsDefaultStoryMobileDiff,
+      expectationScreenshotUrl: new URL('../assets/cc-addon-backups-default-story-mobile-expectation.png', import.meta.url).href,
+      actualScreenshotUrl: new URL('../assets/cc-addon-backups-default-story-mobile-actual.png', import.meta.url).href,
+      diffScreenshotUrl: new URL('../assets/cc-addon-backups-default-story-mobile-diff.png', import.meta.url).href,
     },
   },
   {
@@ -286,9 +253,9 @@ export const visualTestsResults = /** @type {const} */ ([
     storyName: 'defaultStory',
     viewportType: 'desktop',
     screenshots: {
-      expectationScreenshotUrl: ccDomainManagementDefaultStoryDesktopExpectation,
-      actualScreenshotUrl: ccDomainManagementDefaultStoryDesktopActual,
-      diffScreenshotUrl: ccDomainManagementDefaultStoryDesktopDiff,
+      expectationScreenshotUrl: new URL('../assets/cc-domain-management-default-story-desktop-expectation.png', import.meta.url).href,
+      actualScreenshotUrl: new URL('../assets/cc-domain-management-default-story-desktop-actual.png', import.meta.url).href,
+      diffScreenshotUrl: new URL('../assets/cc-domain-management-default-story-desktop-diff.png', import.meta.url).href,
     },
   },
   {
@@ -298,9 +265,9 @@ export const visualTestsResults = /** @type {const} */ ([
     storyName: 'defaultStory',
     viewportType: 'mobile',
     screenshots: {
-      expectationScreenshotUrl: ccDomainManagementDefaultStoryMobileExpectation,
-      actualScreenshotUrl: ccDomainManagementDefaultStoryMobileActual,
-      diffScreenshotUrl: ccDomainManagementDefaultStoryMobileDiff,
+      expectationScreenshotUrl: new URL('../assets/cc-domain-management-default-story-mobile-expectation.png', import.meta.url).href,
+      actualScreenshotUrl: new URL('../assets/cc-domain-management-default-story-mobile-actual.png', import.meta.url).href,
+      diffScreenshotUrl: new URL('../assets/cc-domain-management-default-story-mobile-diff.png', import.meta.url).href,
     },
   },
   {
@@ -310,9 +277,9 @@ export const visualTestsResults = /** @type {const} */ ([
     storyName: 'empty',
     viewportType: 'desktop',
     screenshots: {
-      expectationScreenshotUrl: ccDomainManagementEmptyDesktopExpectation,
-      actualScreenshotUrl: ccDomainManagementEmptyDesktopActual,
-      diffScreenshotUrl: ccDomainManagementEmptyDesktopDiff,
+      expectationScreenshotUrl: new URL('../assets/cc-domain-management-empty-desktop-expectation.png', import.meta.url).href,
+      actualScreenshotUrl: new URL('../assets/cc-domain-management-empty-desktop-actual.png', import.meta.url).href,
+      diffScreenshotUrl: new URL('../assets/cc-domain-management-empty-desktop-diff.png', import.meta.url).href,
     },
   },
   {
@@ -322,9 +289,9 @@ export const visualTestsResults = /** @type {const} */ ([
     storyName: 'empty',
     viewportType: 'mobile',
     screenshots: {
-      expectationScreenshotUrl: ccDomainManagementEmptyMobileExpectation,
-      actualScreenshotUrl: ccDomainManagementEmptyMobileActual,
-      diffScreenshotUrl: ccDomainManagementEmptyMobileDiff,
+      expectationScreenshotUrl: new URL('../assets/cc-domain-management-empty-mobile-expectation.png', import.meta.url).href,
+      actualScreenshotUrl: new URL('../assets/cc-domain-management-empty-mobile-actual.png', import.meta.url).href,
+      diffScreenshotUrl: new URL('../assets/cc-domain-management-empty-mobile-diff.png', import.meta.url).href,
     },
   },
 ]);
