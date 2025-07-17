@@ -84,11 +84,13 @@ export const translations = {
   'cc-addon-admin.delete-backups': `Les sauvegardes sont gardées suivant la politique de rétention.`,
   'cc-addon-admin.delete-disclaimer': `Supprimer cet add-on le rend immédiatement indisponible.`,
   'cc-addon-admin.delete-vm': `La machine virtuelle sera arrêtée sous 24 heures.`,
+  'cc-addon-admin.delete.btn': `supprimer…`,
   'cc-addon-admin.error-loading': `Une erreur est survenue pendant le chargement des informations de l'add-on.`,
   'cc-addon-admin.heading.name': `Nom`,
   'cc-addon-admin.heading.tags': `Tags`,
   'cc-addon-admin.input.name': `Nom de l'add-on`,
   'cc-addon-admin.input.tags': `Tags de l'add-on`,
+  'cc-addon-admin.restore.btn': `restaurer…`,
   'cc-addon-admin.tags-description': `Les tags vous permettent de classer vos applications et add-ons afin de les catégoriser`,
   'cc-addon-admin.tags-empty': `Pas de tags définis`,
   'cc-addon-admin.tags-update': `Mettre à jour les tags`,
@@ -109,12 +111,12 @@ export const translations = {
       </dl>
     `,
   'cc-addon-backups.close-btn': `Fermer ce panneau`,
-  'cc-addon-backups.command-password': `Cette commande vous demandera votre mot de passe, le voici :`,
+  'cc-addon-backups.command-password': () =>
+    sanitize`Cette commande vous demandera votre mot de passe, le voici&nbsp;:`,
   'cc-addon-backups.delete': /** @param {{createdAt: string|number}} _ */ ({ createdAt }) =>
     sanitize`Supprimer la sauvegarde du <strong title="${formatDate(createdAt)}">${formatDatetime(createdAt)}</strong>`,
-  'cc-addon-backups.delete.btn': `supprimer...`,
   'cc-addon-backups.delete.manual.description.es-addon': /** @param {{href: string}} _ */ ({ href }) =>
-    sanitize`Vous pouvez supprimer cette sauvegarde manuellement grâce à l'outil <cc-link href="${href}">cURL</cc-link> en exécutant cette commande :`,
+    sanitize`Vous pouvez supprimer cette sauvegarde manuellement grâce à l'outil <cc-link href="${href}">cURL</cc-link> en exécutant cette commande&nbsp;:`,
   'cc-addon-backups.delete.manual.title': `Suppression manuelle`,
   'cc-addon-backups.delete.with-service.description.es-addon': /** @param {{href: string}} _ */ ({ href }) =>
     sanitize`Vous pouvez supprimer cette sauvegarde avec Kibana en vous rendant sur le <cc-link href="${href}">dépôt de sauvegardes</cc-link>.`,
@@ -140,16 +142,15 @@ export const translations = {
   'cc-addon-backups.loading-error': `Une erreur est survenue pendant le chargement des sauvegardes.`,
   'cc-addon-backups.restore': /** @param {{createdAt: string|number}} _ */ ({ createdAt }) =>
     sanitize`Restaurer la sauvegarde du <strong title="${formatDate(createdAt)}">${formatDatetime(createdAt)}</strong>`,
-  'cc-addon-backups.restore.btn': `restaurer...`,
   'cc-addon-backups.restore.manual.description.es-addon': () =>
-    sanitize`Vous pouvez restaurer cette sauvegarde manuellement grâce à l'outil <cc-link href="https://curl.se/docs/">cURL</cc-link> en exécutant cette commande :`,
+    sanitize`Vous pouvez restaurer cette sauvegarde manuellement grâce à l'outil <cc-link href="https://curl.se/docs/">cURL</cc-link> en exécutant cette commande&nbsp;:`,
   'cc-addon-backups.restore.manual.description.jenkins': `La restauration de backups Jenkins doit passer par notre support. Créez un ticket en indiquant l'ID de votre add-on ainsi que la date du backup à restaurer et nous le ferons pour vous.`,
   'cc-addon-backups.restore.manual.description.mongodb-addon': () =>
-    sanitize`Vous pouvez restaurer cette sauvegarde manuellement grâce à l'outil <cc-link href="https://docs.mongodb.com/v4.0/reference/program/mongorestore/">mongorestore</cc-link> en exécutant cette commande :`,
+    sanitize`Vous pouvez restaurer cette sauvegarde manuellement grâce à l'outil <cc-link href="https://docs.mongodb.com/v4.0/reference/program/mongorestore/">mongorestore</cc-link> en exécutant cette commande&nbsp;:`,
   'cc-addon-backups.restore.manual.description.mysql-addon': () =>
-    sanitize`Vous pouvez restaurer cette sauvegarde manuellement grâce à la CLI <cc-link href="https://dev.mysql.com/doc/refman/8.0/en/mysql.html">mysql</cc-link> en exécutant cette commande :`,
+    sanitize`Vous pouvez restaurer cette sauvegarde manuellement grâce à la CLI <cc-link href="https://dev.mysql.com/doc/refman/8.0/en/mysql.html">mysql</cc-link> en exécutant cette commande&nbsp;:`,
   'cc-addon-backups.restore.manual.description.postgresql-addon': () =>
-    sanitize`Vous pouvez restaurer cette sauvegarde manuellement grâce à l'outil <cc-link href="https://www.postgresql.org/docs/current/app-pgrestore.html">pg_restore</cc-link> en exécutant cette commande :`,
+    sanitize`Vous pouvez restaurer cette sauvegarde manuellement grâce à l'outil <cc-link href="https://www.postgresql.org/docs/current/app-pgrestore.html">pg_restore</cc-link> en exécutant cette commande&nbsp;:`,
   'cc-addon-backups.restore.manual.description.redis-addon': `La restauration de backups Redis doit passer par notre support. Créez un ticket en indiquant l'ID de votre add-on ainsi que la date du backup à restaurer et nous le ferons pour vous`,
   'cc-addon-backups.restore.manual.title': `Restauration manuelle`,
   'cc-addon-backups.restore.with-service.description.es-addon': /** @param {{href: string}} _ */ ({ href }) =>
@@ -252,12 +253,12 @@ export const translations = {
   //#region cc-ansi-palette
   'cc-ansi-palette.compliant': `Couleur qui respecte le RGAA`,
   'cc-ansi-palette.fg-bg': /** @param {{foreground: string, background: string}} _ */ ({ foreground, background }) =>
-    `Texte : ${foreground}, Fond: ${background}`,
-  'cc-ansi-palette.hover': /** @param {{color: string}} _ */ ({ color }) => `Survol : ${color}`,
+    sanitize`Texte&nbsp;: ${foreground}, Fond&nbsp;: ${background}`,
+  'cc-ansi-palette.hover': /** @param {{color: string}} _ */ ({ color }) => sanitize`Survol&nbsp;: ${color}`,
   'cc-ansi-palette.not-compliant': `Couleur qui ne respecte pas le RGAA`,
   'cc-ansi-palette.ratio': /** @param {{ratio: number}} _ */ ({ ratio }) =>
     formatNumber(lang, ratio, { minimumFractionDigits: 2, maximumFractionDigits: 2 }).padStart(5, '0'),
-  'cc-ansi-palette.selected': /** @param {{color: string}} _ */ ({ color }) => `Sélection: ${color}`,
+  'cc-ansi-palette.selected': /** @param {{color: string}} _ */ ({ color }) => sanitize`Sélection&nbsp;: ${color}`,
   //#endregion
   //#region cc-article-card
   'cc-article-card.date': /** @param {{date: string}} _ */ ({ date }) => formatDateOnly(date),
@@ -325,29 +326,29 @@ export const translations = {
   'cc-domain-management.dns.info.heading': `Load balancers dédiés et cas spécifiques`,
   'cc-domain-management.dns.loading-error': `Une erreur est survenue pendant le chargement des informations DNS`,
   'cc-domain-management.form.domain.error.contains-path': /** @param {{path: string}} _ */ ({ path }) =>
-    `Saisissez la partie "${path}" dans le champ "Route"`,
+    `Saisissez la partie « ${path} » dans le champ « Route »`,
   'cc-domain-management.form.domain.error.empty': `Saisissez un nom de domaine`,
-  'cc-domain-management.form.domain.error.format': `Saisissez un domaine valide, par exemple "example.com"`,
+  'cc-domain-management.form.domain.error.format': `Saisissez un domaine valide, par exemple « example.com »`,
   'cc-domain-management.form.domain.error.wildcard': () =>
-    sanitize`Saisissez un domaine valide.<br>Les <span lang="en">wildcard</span> "*" ne peuvent être utilisés qu'en sous-domaine, par exemple&nbsp;: "*.example.com"`,
+    sanitize`Saisissez un domaine valide.<br>Les <span lang="en">wildcard</span> « * » ne peuvent être utilisés qu'en sous-domaine, par exemple&nbsp;: « *.example.com »`,
   'cc-domain-management.form.domain.help': () =>
-    sanitize`Par exemple: <code>example.com</code>, <code>*.example.com</code> ou <code>example.cleverapps.io</code>`,
+    sanitize`Par exemple&nbsp;: <code>example.com</code>, <code>*.example.com</code> ou <code>example.cleverapps.io</code>`,
   'cc-domain-management.form.domain.label': `Nom de domaine`,
   'cc-domain-management.form.info.cleverapps': () =>
     sanitize`Par défaut, une application se voit attribuer un nom de domaine de type <code>app_id.cleverapps.io</code>. Vous pouvez le supprimer ou changer le sous-domaine librement, mais <code>xxx.cleverapps.io</code> doit uniquement être utilisé à des fins de test (voir notre <cc-link href="${generateDocsHref('/administrate/domain-names/#testing-with-cleverappsio-domain')}">documentation</cc-link>).`,
   'cc-domain-management.form.info.docs': `Vous pouvez associer un ou plusieurs noms de domaines à votre application. Le domaine principal sera utilisé dans les liens de la Console et dans les e-mails qui vous seront envoyés. Plusieurs applications peuvent partager un même domaine, chacune avec un sous-domaine et/ou une route spécifique.`,
-  'cc-domain-management.form.path.help': () => sanitize`Par exemple: <code>/api</code> ou <code>/blog</code>`,
+  'cc-domain-management.form.path.help': () => sanitize`Par exemple&nbsp;: <code>/api</code> ou <code>/blog</code>`,
   'cc-domain-management.form.path.label': `Route`,
   'cc-domain-management.form.submit': `Ajouter le domaine`,
   'cc-domain-management.form.submit.error': /** @param {{domain: string}} _ */ ({ domain }) =>
     `Une erreur est survenue lors de l'ajout du nom de domaine "${domain}"`,
   'cc-domain-management.form.submit.error-duplicate.heading': `Nom de domaine indisponible`,
   'cc-domain-management.form.submit.error-duplicate.text': /** @param {{domain: string}} _ */ ({ domain }) =>
-    sanitize`<p>"${domain}" est déjà associé à une application au sein de Clever Cloud.</p><p>Contactez notre équipe support pour plus d'informations.</p>`,
+    sanitize`<p>« ${domain} » est déjà associé à une application au sein de Clever Cloud.</p><p>Contactez notre équipe support pour plus d'informations.</p>`,
   'cc-domain-management.form.submit.success': /** @param {{domain: string}} _ */ ({ domain }) =>
-    `"${domain}" a bien été associé à votre application`,
+    `« ${domain} » a bien été associé à votre application`,
   'cc-domain-management.form.submit.success-config': /** @param {{domain: string}} _ */ ({ domain }) =>
-    sanitize`<p>"${domain}" a bien été associé à votre application.</p><p>Une configuration manuelle est nécessaire pour faire pointer votre domaine vers Clever Cloud. Consultez la section <strong>Configurez vos DNS</strong> pour plus d'informations.</p>`,
+    sanitize`<p>« ${domain} » a bien été associé à votre application.</p><p>Une configuration manuelle est nécessaire pour faire pointer votre domaine vers Clever Cloud. Consultez la section <strong>Configurez vos DNS</strong> pour plus d'informations.</p>`,
   'cc-domain-management.list.badge.http-only.alt': `Avertissement`,
   'cc-domain-management.list.badge.http-only.text': `HTTP uniquement`,
   'cc-domain-management.list.badge.primary': `Principal`,
@@ -359,13 +360,13 @@ export const translations = {
     `Définir comme nom de domaine principal - ${domain}`,
   'cc-domain-management.list.btn.primary.text': `Définir comme principal`,
   'cc-domain-management.list.delete.error': /** @param {{domain: string}} _ */ ({ domain }) =>
-    `Une erreur est survenue lors de la suppression du nom de domaine "${domain}"`,
+    `Une erreur est survenue lors de la suppression du nom de domaine « ${domain} »`,
   'cc-domain-management.list.delete.success': /** @param {{domain: string}} _ */ ({ domain }) =>
-    `"${domain}" a bien été supprimé`,
+    `« ${domain} » a bien été supprimé`,
   'cc-domain-management.list.empty': `Aucun domaine associé à cette application`,
   'cc-domain-management.list.error-not-found.heading': `Nom de domaine introuvable`,
   'cc-domain-management.list.error-not-found.text': /** @param {{domain: string}} _ */ ({ domain }) =>
-    sanitize`<p>"${domain}" a peut-être été supprimé après le chargement de la liste des domaines.</p><p><strong>Rechargez votre page</strong> pour récupérer la liste des domaines à jour.</p>`,
+    sanitize`<p>« ${domain} » a peut-être été supprimé après le chargement de la liste des domaines.</p><p><strong>Rechargez votre page</strong> pour récupérer la liste des domaines à jour.</p>`,
   'cc-domain-management.list.heading': `Noms de domaines liés à cette application`,
   'cc-domain-management.list.http-only.notice': () =>
     sanitize`Seuls les domaines directs de <code>cleverapps.io</code> bénéficient d’un certificat SSL, pas ceux de type <code>xx.yy.cleverapps.io</code>`,
@@ -373,9 +374,9 @@ export const translations = {
     `Ouvrir - ${domainUrl} - nouvelle fenêtre`,
   'cc-domain-management.list.loading-error': `Une erreur est survenue pendant le chargement des domaines associés à cette application`,
   'cc-domain-management.list.primary.error': /** @param {{domain: string}} _ */ ({ domain }) =>
-    `Une erreur est survenue lors du passage du nom de domaine "${domain}" en domaine principal`,
+    `Une erreur est survenue lors du passage du nom de domaine « ${domain} » en domaine principal`,
   'cc-domain-management.list.primary.success': /** @param {{domain: string}} _ */ ({ domain }) =>
-    `"${domain}" a bien été défini comme nom de domaine principal`,
+    `« ${domain} » a bien été défini comme nom de domaine principal`,
   'cc-domain-management.main-heading': `Gérez vos noms de domaine`,
   'cc-domain-management.names.cli.content': /** @param {{resourceId: string}} _ */ ({ resourceId }) =>
     sanitize`
@@ -560,12 +561,14 @@ export const translations = {
     sanitize`Une erreur est survenue pendant le chargement des add-ons liés à <strong>${appName}</strong>.`,
   'cc-env-var-linked-services.error.app': /** @param {{appName: string}} _ */ ({ appName }) =>
     sanitize`Une erreur est survenue pendant le chargement des applications liées à <strong>${appName}</strong>.`,
-  'cc-env-var-linked-services.heading.addon': /** @param {{name: string}} _ */ ({ name }) => `Add-on : ${name}`,
-  'cc-env-var-linked-services.heading.app': /** @param {{name: string}} _ */ ({ name }) => `Application : ${name}`,
+  'cc-env-var-linked-services.heading.addon': /** @param {{name: string}} _ */ ({ name }) =>
+    sanitize`Add-on&nbsp;: ${name}`,
+  'cc-env-var-linked-services.heading.app': /** @param {{name: string}} _ */ ({ name }) =>
+    sanitize`Application&nbsp;: ${name}`,
   'cc-env-var-linked-services.loading.addon': /** @param {{appName: string}} _ */ ({ appName }) =>
-    sanitize`Chargement des variables exposées par les add-ons liés à <strong>${appName}</strong>...`,
+    sanitize`Chargement des variables exposées par les add-ons liés à <strong>${appName}</strong>…`,
   'cc-env-var-linked-services.loading.app': /** @param {{appName: string}} _ */ ({ appName }) =>
-    sanitize`Chargement de la configuration publiée par les applications liées à <strong>${appName}</strong>...`,
+    sanitize`Chargement de la configuration publiée par les applications liées à <strong>${appName}</strong>…`,
   //#endregion
   //#region cc-grafana-info
   'cc-grafana-info.disable-description': `Désactiver Grafana supprimera et mettra fin aux accès à l'organisation du Grafana. Vous pourrez toujours recréer une nouvelle organisation Grafana.`,
@@ -593,7 +596,7 @@ export const translations = {
   'cc-grafana-info.reset.success': `Les tableaux de bords du grafana ont été réinitialisés avec succès.`,
   'cc-grafana-info.screenshot.addon.alt': `Capture d'écran d'un tableau de bord d'add-on dans Grafana`,
   'cc-grafana-info.screenshot.addon.description': () =>
-    sanitize`Ce tableau de bord comprend plusieurs graphiques à propos d'un add-on. <br> Il fournit d'abord un panneau de présentation contenant les métriques système telles que <strong> le processeur, la mémoire, les disques et le réseau</strong>. <br> Pour les add-ons <strong>MySQL, PostgreSQL, MongoDB et Redis</strong>, un second panneau présente la base de données et des informations comme <strong>le nombre de connexions, de requêtes ou de transactions, d'erreurs ou de blocages ou encore d'opérations "tuples"<strong>.`,
+    sanitize`Ce tableau de bord comprend plusieurs graphiques à propos d'un add-on. <br> Il fournit d'abord un panneau de présentation contenant les métriques système telles que <strong> le processeur, la mémoire, les disques et le réseau</strong>. <br> Pour les add-ons <strong>MySQL, PostgreSQL, MongoDB et Redis</strong>, un second panneau présente la base de données et des informations comme <strong>le nombre de connexions, de requêtes ou de transactions, d'erreurs ou de blocages ou encore d'opérations « tuples »</strong>.`,
   'cc-grafana-info.screenshot.addon.title': `Aperçu du tableau de bord d'add-on`,
   'cc-grafana-info.screenshot.organisation.alt': `Capture d'écran d'un tableau de bord d'organisation dans Grafana`,
   'cc-grafana-info.screenshot.organisation.description': () =>
@@ -601,7 +604,7 @@ export const translations = {
   'cc-grafana-info.screenshot.organisation.title': `Aperçu du tableau de bord d'organisation`,
   'cc-grafana-info.screenshot.runtime.alt': `Capture d'écran d'un tableau de bord d'application (runtime) dans Grafana`,
   'cc-grafana-info.screenshot.runtime.description': () =>
-    sanitize`Ce tableau de bord comprend un <strong>panneau de présentation</strong> pour obtenir des informations rapides sur une application, ainsi que plusieurs panneaux présentant leurs métriques système. <br> Il fournit un graphique reprenant l'état <strong>du processeur, de la mémoire, des disques et du réseau</strong>. <br> Pour chaque groupe de métriques, le panneau contient des graphes d'utilisation, des jauges ou encore un indicateur de remplissage (basé sur le résultat d'une prédiction linéaire effectuée sur les données de l'intervalle de temps fixé dans Grafana). Cet indicateur donne la durée attendue avant que les métriques ne dépassent 90%.`,
+    sanitize`Ce tableau de bord comprend un <strong>panneau de présentation</strong> pour obtenir des informations rapides sur une application, ainsi que plusieurs panneaux présentant leurs métriques système. <br> Il fournit un graphique reprenant l'état <strong>du processeur, de la mémoire, des disques et du réseau</strong>. <br> Pour chaque groupe de métriques, le panneau contient des graphes d'utilisation, des jauges ou encore un indicateur de remplissage (basé sur le résultat d'une prédiction linéaire effectuée sur les données de l'intervalle de temps fixé dans Grafana). Cet indicateur donne la durée attendue avant que les métriques ne dépassent 90 %.`,
   'cc-grafana-info.screenshot.runtime.title': `Aperçu du tableau de bord d'application (runtime)`,
   //#endregion
   //#region cc-header-addon
@@ -633,16 +636,16 @@ export const translations = {
   'cc-header-app.disable-buttons': `Vous n'êtes pas autorisé à réaliser ces actions`,
   'cc-header-app.error': `Une erreur est survenue pendant le chargement des informations de l'application.`,
   'cc-header-app.read-logs': `voir les logs`,
-  'cc-header-app.state-msg.app-is-restarting': `L'application redémarre...`,
+  'cc-header-app.state-msg.app-is-restarting': `L'application redémarre…`,
   'cc-header-app.state-msg.app-is-running': `Votre application est disponible !`,
-  'cc-header-app.state-msg.app-is-starting': `L'application démarre...`,
+  'cc-header-app.state-msg.app-is-starting': `L'application démarre…`,
   'cc-header-app.state-msg.app-is-stopped': `L'application est arrêtée.`,
   'cc-header-app.state-msg.last-deploy-failed': `Le dernier déploiement a échoué,`,
   'cc-header-app.state-msg.unknown-state': `État inconnu, essayez de redémarrer l'application ou de contacter notre support si vous avez des questions.`,
-  'cc-header-app.user-action-msg.app-will-start': `L'application va bientôt démarrer...`,
-  'cc-header-app.user-action-msg.app-will-stop': `L'application va s'arrêter...`,
+  'cc-header-app.user-action-msg.app-will-start': `L'application va bientôt démarrer…`,
+  'cc-header-app.user-action-msg.app-will-stop': `L'application va s'arrêter…`,
   'cc-header-app.user-action-msg.deploy-cancelled': `Ce déploiement a été annulé.`,
-  'cc-header-app.user-action-msg.deploy-will-begin': `Un déploiement va bientôt commencer...`,
+  'cc-header-app.user-action-msg.deploy-will-begin': `Un déploiement va bientôt commencer…`,
   //#endregion
   //#region cc-header-orga
   'cc-header-orga.error': `Une erreur est survenue pendant le chargement des informations de l'organisation.`,
@@ -670,7 +673,7 @@ export const translations = {
     `Saisissez une date inférieure à ${max}`,
   'cc-input-date.error.range-underflow': /** @param {{min: string}} _ */ ({ min }) =>
     `Saisissez une date supérieure à ${min}`,
-  'cc-input-date.help': `Format : AAAA-MM-JJ HH:MM:SS`,
+  'cc-input-date.help': () => sanitize`Format&nbsp;: AAAA-MM-JJ HH:MM:SS`,
   'cc-input-date.keyboard-hint': `Vous pouvez utiliser les touches flèche haut et flèche bas pour modifier des parties de la date.`,
   'cc-input-date.required': `obligatoire`,
   //#endregion
@@ -686,7 +689,8 @@ export const translations = {
   'cc-input-number.required': `obligatoire`,
   //#endregion
   //#region cc-input-text
-  'cc-input-text.error.bad-email': () => sanitize`Format d'adresse e-mail invalide.<br>Exemple: john.doe@example.com.`,
+  'cc-input-text.error.bad-email': () =>
+    sanitize`Format d'adresse e-mail invalide.<br>Exemple&nbsp;: john.doe@example.com.`,
   'cc-input-text.error.empty': `Saisissez une valeur`,
   'cc-input-text.error.empty.email': `Saisissez une adresse e-mail`,
   'cc-input-text.required': `obligatoire`,
@@ -714,7 +718,7 @@ export const translations = {
   'cc-invoice-list.processed.no-invoices': `Il n'y a aucune facture réglée pour le moment.`,
   'cc-invoice-list.processing': `Factures dont le paiement est en cours de validation`,
   'cc-invoice-list.title': `Factures`,
-  'cc-invoice-list.year': `Année :`,
+  'cc-invoice-list.year': () => sanitize`Année&nbsp;:`,
   //#endregion
   //#region cc-invoice-table
   'cc-invoice-table.date.emission': `Date d'émission`,
@@ -931,7 +935,7 @@ export const translations = {
   'cc-logs-app-runtime.fullscreen': `Mode plein écran`,
   'cc-logs-app-runtime.fullscreen.exit': `Sortir du mode plein écran`,
   'cc-logs-app-runtime.logs.error': `Une erreur est survenue pendant le chargement des logs`,
-  'cc-logs-app-runtime.logs.loading': `Recherche de logs...`,
+  'cc-logs-app-runtime.logs.loading': `Recherche de logs…`,
   'cc-logs-app-runtime.logs.warning.no-logs.message': `Il n'y a aucun log qui correspond aux critères sélectionnés`,
   'cc-logs-app-runtime.logs.warning.no-logs.title': `Aucun log`,
   'cc-logs-app-runtime.logs.warning.waiting.message': `Les logs émis par l'application apparaîtront ici`,
@@ -977,7 +981,8 @@ export const translations = {
   //#region cc-logs-instances
   'cc-logs-instances.cold.empty': `Aucune instance`,
   'cc-logs-instances.cold.header': `Instances`,
-  'cc-logs-instances.commit.title': /** @param {{commit: string}} _ */ ({ commit }) => `Commit déployé: ${commit}`,
+  'cc-logs-instances.commit.title': /** @param {{commit: string}} _ */ ({ commit }) =>
+    sanitize`Commit déployé&nbsp;: ${commit}`,
   'cc-logs-instances.deleted.header': `Instances supprimées`,
   'cc-logs-instances.deploying.header': `Déploiement en cours`,
   'cc-logs-instances.deployment.deployed': `Déployée`,
@@ -1078,18 +1083,22 @@ export const translations = {
   'cc-oauth-consumer-form.delete.success': `Le consumer OAuth a été supprimé avec succès`,
   'cc-oauth-consumer-form.documentation.text': `Consumer OAuth - Documentation`,
   'cc-oauth-consumer-form.info.base-url': `URL de base`,
-  'cc-oauth-consumer-form.info.base-url.help': `L'URL  qui sera utilisée pour les redirections OAuth. Par exemple : "https://example.com"`,
+  'cc-oauth-consumer-form.info.base-url.help': () =>
+    sanitize`L'URL  qui sera utilisée pour les redirections OAuth. Par exemple&nbsp;: « https://example.com »`,
   'cc-oauth-consumer-form.info.description-input': `Description`,
   'cc-oauth-consumer-form.info.description.help': `Elle sera affichée à tous les utilisateurs de votre application`,
   'cc-oauth-consumer-form.info.homepage-url': `Page d'accueil`,
-  'cc-oauth-consumer-form.info.homepage-url.help': `L'URL complète de la page d'accueil de votre application. Par exemple : "https://www.example.com/home"`,
+  'cc-oauth-consumer-form.info.homepage-url.help': () =>
+    sanitize`L'URL complète de la page d'accueil de votre application. Par exemple&nbsp;: « https://www.example.com/home »`,
   'cc-oauth-consumer-form.info.image': `URL du logo`,
-  'cc-oauth-consumer-form.info.image.help': `Cette image sera affichée aux utilisateurs lors des demandes d'autorisation, facilitant la reconnaissance de votre service. Par exemple : "https://example.com"`,
+  'cc-oauth-consumer-form.info.image.help': () =>
+    sanitize`Cette image sera affichée aux utilisateurs lors des demandes d'autorisation, facilitant la reconnaissance de votre service. Par exemple&nbsp;: « https://example.com »`,
   'cc-oauth-consumer-form.info.name': `Nom`,
   'cc-oauth-consumer-form.info.name.help': `Un nom que les utilisateurs reconnaîtront et auquel ils feront confiance`,
-  'cc-oauth-consumer-form.info.placeholder': `Aucune valeur pour l'instant...`,
+  'cc-oauth-consumer-form.info.placeholder': `Aucune valeur pour l'instant…`,
   'cc-oauth-consumer-form.info.title': `Détails de l'application`,
-  'cc-oauth-consumer-form.info.url.error': `Saisissez une URL valide. Exemple: "https://example.com"`,
+  'cc-oauth-consumer-form.info.url.error': () =>
+    sanitize`Saisissez une URL valide. Exemple&nbsp;: « https://example.com »`,
   'cc-oauth-consumer-form.load.error': `Une erreur est survenue pendant le chargement des informations du consumer OAuth`,
   'cc-oauth-consumer-form.reset-button': `Réinitialiser`,
   'cc-oauth-consumer-form.rights.access-all': `Accéder à tout`,
@@ -1098,7 +1107,7 @@ export const translations = {
   'cc-oauth-consumer-form.rights.access-organisations-consumption-statistics': `Statistiques de consommation des organisations`,
   'cc-oauth-consumer-form.rights.access-organisations-credit-count': `Nombre de crédits des organisations`,
   'cc-oauth-consumer-form.rights.access-personal-information': `Informations personnelles`,
-  'cc-oauth-consumer-form.rights.description': `Le consumer OAuth demandera les droits suivants :`,
+  'cc-oauth-consumer-form.rights.description': () => sanitize`Le consumer OAuth demandera les droits suivants&nbsp;:`,
   'cc-oauth-consumer-form.rights.error': `Veuillez sélectionner au moins une option`,
   'cc-oauth-consumer-form.rights.legend-access': `Accès`,
   'cc-oauth-consumer-form.rights.legend-manage': `Gérer`,
@@ -1120,19 +1129,21 @@ export const translations = {
   'cc-oauth-consumer-info.access.title': `Détails de configuration`,
   'cc-oauth-consumer-info.error': `Une erreur est survenue pendant le chargement des informations du consumer OAuth`,
   'cc-oauth-consumer-info.info.base-url': `URL de base de l'application`,
-  'cc-oauth-consumer-info.info.description': `Votre application est configurée pour ces URLs et a besoin des informations d'identification suivantes pour utiliser le consumer :`,
+  'cc-oauth-consumer-info.info.description': () =>
+    sanitize`Votre application est configurée pour ces URLs et a besoin des informations d'identification suivantes pour utiliser le consumer&nbsp;:`,
   'cc-oauth-consumer-info.info.homepage-url': `Page d'accueil de l'application`,
   'cc-oauth-consumer-info.info.key': `Clé`,
   'cc-oauth-consumer-info.info.secret': `Secret`,
-  'cc-oauth-consumer-info.rights-title.access': `Droits d'accès :`,
-  'cc-oauth-consumer-info.rights-title.manage': `Droits de gestion :`,
+  'cc-oauth-consumer-info.rights-title.access': () => sanitize`Droits d'accès&nbsp;:`,
+  'cc-oauth-consumer-info.rights-title.manage': () => sanitize`Droits de gestion&nbsp;:`,
   'cc-oauth-consumer-info.rights.access-organisations': `Organisations`,
   'cc-oauth-consumer-info.rights.access-organisations-bills': `Factures des organisations`,
   'cc-oauth-consumer-info.rights.access-organisations-consumption-statistics': `Statistiques de consommation des organisations`,
   'cc-oauth-consumer-info.rights.access-organisations-credit-count': `Nombre de crédits des organisations`,
   'cc-oauth-consumer-info.rights.access-personal-information': `Informations personnelles`,
   'cc-oauth-consumer-info.rights.almighty': `Almighty`,
-  'cc-oauth-consumer-info.rights.description': `Le consumer OAuth demandera aux utilisateurs de l'application les droits suivants :`,
+  'cc-oauth-consumer-info.rights.description': () =>
+    sanitize`Le consumer OAuth demandera aux utilisateurs de l'application les droits suivants&nbsp;:`,
   'cc-oauth-consumer-info.rights.edit': `Éditer les informations`,
   'cc-oauth-consumer-info.rights.manage-organisations': `Organisations`,
   'cc-oauth-consumer-info.rights.manage-organisations-applications': `Applications des organisations`,
@@ -1236,7 +1247,7 @@ export const translations = {
     sanitize`<strong>${orgaName}</strong> n'a aucun moyen de paiement enregistré.`,
   'cc-payment-warning.home': /** @param {{orgaCount: number}} _ */ ({ orgaCount }) => {
     const organisation = plural(orgaCount, "à l'organisation suivante", 'aux organisations suivantes');
-    return `Pour éviter tout risque de suspension de vos services et de suppression de vos données, merci de vérifier les informations de facturation liées ${organisation} :`;
+    return sanitize`Pour éviter tout risque de suspension de vos services et de suppression de vos données, merci de vérifier les informations de facturation liées ${organisation}&nbsp;:`;
   },
   'cc-payment-warning.home.title': `Attention ! Quelque chose pose problème avec vos moyens de paiement.`,
   'cc-payment-warning.orga.default-payment-method-is-expired': `Pour éviter tout risque de suspension de vos services et de suppression de vos données, merci d'ajouter un moyen de paiement valide et de le définir par défaut.`,
@@ -1290,7 +1301,7 @@ export const translations = {
     productName,
     planName,
   }) => `Augmenter la quantité - ${productName} (${planName})`,
-  'cc-pricing-estimation.plan.qty.label': `Quantité: `,
+  'cc-pricing-estimation.plan.qty.label': () => sanitize`Quantité&nbsp;: `,
   'cc-pricing-estimation.plan.total.label': /** @param {{productName: string, planName: string}} _ */ ({
     productName,
     planName,
@@ -1311,10 +1322,10 @@ export const translations = {
   'cc-pricing-estimation.price-name.hour': `Prix/heure`,
   'cc-pricing-estimation.price-name.minute': `Prix/minute`,
   'cc-pricing-estimation.price-name.second': `Prix/seconde`,
-  'cc-pricing-estimation.price.unit.label': `Prix unitaire : `,
+  'cc-pricing-estimation.price.unit.label': () => sanitize`Prix unitaire&nbsp;: `,
   'cc-pricing-estimation.show': `Afficher`,
   'cc-pricing-estimation.tax-excluded': `HT`,
-  'cc-pricing-estimation.total.label': `Total : `,
+  'cc-pricing-estimation.total.label': () => sanitize`Total&nbsp;: `,
   'cc-pricing-estimation.type.boolean': /** @param {{boolean: boolean}} _ */ ({ boolean }) =>
     `${boolean ? 'Oui' : 'Non'}`,
   'cc-pricing-estimation.type.boolean-shared': /** @param {{shared: boolean}} _ */ ({ shared }) =>
@@ -1392,11 +1403,11 @@ export const translations = {
   'cc-pricing-product-consumption.bytes-unit': /** @param {{bytes: number}} _ */ ({ bytes }) => getUnit(bytes),
   'cc-pricing-product-consumption.error': `Une erreur est survenue pendant le chargement des prix.`,
   'cc-pricing-product-consumption.inbound-traffic.label': `trafic entrant`,
-  'cc-pricing-product-consumption.inbound-traffic.title': `Trafic entrant :`,
+  'cc-pricing-product-consumption.inbound-traffic.title': () => sanitize`Trafic entrant&nbsp;:`,
   'cc-pricing-product-consumption.number': /** @param {{number: number}} _ */ ({ number }) =>
     formatNumber(lang, number),
   'cc-pricing-product-consumption.outbound-traffic.label': `trafic sortant`,
-  'cc-pricing-product-consumption.outbound-traffic.title': `Trafic sortant :`,
+  'cc-pricing-product-consumption.outbound-traffic.title': () => sanitize`Trafic sortant&nbsp;:`,
   'cc-pricing-product-consumption.price': /** @param {{price: number, currency: string}} _ */ ({ price, currency }) =>
     `${formatCurrency(lang, price, { currency })}`,
   'cc-pricing-product-consumption.price-interval.bytes': /** @param {{price: number, currency: string}} _ */ ({
@@ -1419,17 +1430,17 @@ export const translations = {
       return `${priceInterval} / ${userCount} ${users} (30 jours)`;
     },
   'cc-pricing-product-consumption.private-users.label': `utilisateurs privés`,
-  'cc-pricing-product-consumption.private-users.title': `Utilisateurs privés :`,
+  'cc-pricing-product-consumption.private-users.title': () => sanitize`Utilisateurs privés&nbsp;:`,
   'cc-pricing-product-consumption.public-users.label': `utilisateurs publics`,
-  'cc-pricing-product-consumption.public-users.title': `Utilisateurs publics :`,
+  'cc-pricing-product-consumption.public-users.title': () => sanitize`Utilisateurs publics&nbsp;:`,
   'cc-pricing-product-consumption.quantity': `Quantité`,
   'cc-pricing-product-consumption.size': /** @param {{bytes: number}} _ */ ({ bytes }) =>
     `Taille (en ${getUnit(bytes)})`,
   'cc-pricing-product-consumption.storage.label': `stockage`,
-  'cc-pricing-product-consumption.storage.title': `Stockage :`,
-  'cc-pricing-product-consumption.subtotal.title': `Sous-total (30 jours) :`,
+  'cc-pricing-product-consumption.storage.title': () => sanitize`Stockage&nbsp;:`,
+  'cc-pricing-product-consumption.subtotal.title': () => sanitize`Sous-total (30 jours)&nbsp;:`,
   'cc-pricing-product-consumption.toggle-btn.label': `Afficher plus de details`,
-  'cc-pricing-product-consumption.total.title': `Total estimé (30 jours) :`,
+  'cc-pricing-product-consumption.total.title': () => sanitize`Total estimé (30 jours)&nbsp;:`,
   'cc-pricing-product-consumption.unit': `Unité`,
   //#endregion
   //#region cc-product-card
@@ -1448,17 +1459,17 @@ export const translations = {
   //#region cc-ssh-key-list
   'cc-ssh-key-list.add.btn': `Ajouter la clé`,
   'cc-ssh-key-list.add.info': () =>
-    sanitize`<p>Vous devez associer une clé SSH à votre compte si vous désirez déployer via Git. Utilisez ce formulaire à cet effet.</p><p>Vous pouvez créer une clé SSH avec la commande suivante&nbsp;:</p><code>ssh-keygen -t ed25519 -C "my-email@example.com"</code><p>La clé publique générée est sauvegardée dans le fichier "*.pub".</p>`,
+    sanitize`<p>Vous devez associer une clé SSH à votre compte si vous désirez déployer via Git. Utilisez ce formulaire à cet effet.</p><p>Vous pouvez créer une clé SSH avec la commande suivante&nbsp;:</p><code>ssh-keygen -t ed25519 -C "my-email@example.com"</code><p>La clé publique générée est sauvegardée dans le fichier « *.pub ».</p>`,
   'cc-ssh-key-list.add.name': `Nom`,
   'cc-ssh-key-list.add.public-key': `Clé publique`,
   'cc-ssh-key-list.add.title': `Ajouter une nouvelle clé`,
   'cc-ssh-key-list.documentation.text': `Clés SSH - Documentation`,
   'cc-ssh-key-list.error.add': /** @param {{name: string}} _ */ ({ name }) =>
-    `Une erreur est survenue pendant l'ajout de votre nouvelle clé personnelle "${name}".`,
+    `Une erreur est survenue pendant l'ajout de votre nouvelle clé personnelle « ${name} ».`,
   'cc-ssh-key-list.error.delete': /** @param {{name: string}} _ */ ({ name }) =>
-    `Une erreur est survenue pendant la suppression de votre clé personnelle "${name}".`,
+    `Une erreur est survenue pendant la suppression de votre clé personnelle « ${name} ».`,
   'cc-ssh-key-list.error.import': /** @param {{name: string}} _ */ ({ name }) =>
-    `Une erreur est survenue pendant l'import de votre clé personnelle "${name}".`,
+    `Une erreur est survenue pendant l'import de votre clé personnelle « ${name} ».`,
   'cc-ssh-key-list.error.loading': `Une erreur est survenue pendant le chargement de vos clés.`,
   'cc-ssh-key-list.error.private-key': () =>
     sanitize`Format incorrect&nbsp;: avez-vous saisi votre clé privée au lieu de votre clé publique&nbsp;?`,
@@ -1658,13 +1669,13 @@ export const translations = {
       Pour installer les Clever Tools (CLI), suivez les instructions de la <cc-link href="${generateDocsHref('/cli/install/')}" a11y-desc="documentation - Installer les Clever Tools - en Anglais">documentation</cc-link>.
     </p>
     <dl>
-      <dt>Créer un token d'API&nbsp;:</dt>
+      <dt>Créer un token d'API :</dt>
       <dd><code>clever tokens create "&lt;votre nom de token&gt;"</code></dd>
-      <dt>Révoquer un token d'API&nbsp;:</dt>
+      <dt>Révoquer un token d'API :</dt>
       <dd><code>clever tokens revoke &lt;api_token_id&gt;</code></dd>
-      <dt>Lister les tokens d'API&nbsp;:</dt>
+      <dt>Lister les tokens d'API :</dt>
       <dd><code>clever tokens list</code></dd>
-      <dt>Utiliser votre token d'API&nbsp;:</dt>
+      <dt>Utiliser votre token d'API :</dt>
       <dd><code>curl -H "Authorization: Bearer &lt;votre_token&gt;" https://api-bridge.clever-cloud.com/v2/self</code></dd>
     </dl>
   `,
@@ -1725,13 +1736,13 @@ export const translations = {
         Pour installer les Clever Tools (CLI), suivez les instructions de la <cc-link href="${generateDocsHref('/cli/install/')}" a11y-desc="documentation - Installer les Clever Tools - en Anglais">documentation</cc-link>.
       </p>
       <dl>
-        <dt>Créer un token d'API&nbsp;:</dt>
+        <dt>Créer un token d'API :</dt>
         <dd><code>clever tokens create "&lt;votre nom de token&gt;"</code></dd>
-        <dt>Révoquer un token d'API&nbsp;:</dt>
+        <dt>Révoquer un token d'API :</dt>
         <dd><code>clever tokens revoke &lt;api_token_id&gt;</code></dd>
-        <dt>Lister les tokens d'API&nbsp;:</dt>
+        <dt>Lister les tokens d'API :</dt>
         <dd><code>clever tokens list</code></dd>
-        <dt>Utiliser votre token d'API&nbsp;:</dt>
+        <dt>Utiliser votre token d'API :</dt>
         <dd><code>curl -H "Authorization: Bearer &lt;votre_token&gt;" https://api-bridge.clever-cloud.com/v2/self</code></dd>
       </dl>
     `,
@@ -1766,13 +1777,13 @@ export const translations = {
       Pour installer les Clever Tools (CLI), suivez les instructions de la <cc-link href="${generateDocsHref('/cli/install/')}" a11y-desc="documentation - Installer les Clever Tools - en Anglais">documentation</cc-link>.
     </p>
     <dl>
-      <dt>Créer un token d'API&nbsp;:</dt>
+      <dt>Créer un token d'API :</dt>
       <dd><code>clever tokens create "&lt;votre nom de token&gt;"</code></dd>
-      <dt>Révoquer un token d'API&nbsp;:</dt>
+      <dt>Révoquer un token d'API :</dt>
       <dd><code>clever tokens revoke &lt;api_token_id&gt;</code></dd>
-      <dt>Lister les tokens d'API&nbsp;:</dt>
+      <dt>Lister les tokens d'API :</dt>
       <dd><code>clever tokens list</code></dd>
-      <dt>Utiliser votre token d'API&nbsp;:</dt>
+      <dt>Utiliser votre token d'API :</dt>
       <dd><code>curl -H "Authorization: Bearer &lt;votre_token&gt;" https://api-bridge.clever-cloud.com/v2/self</code></dd>
     </dl>
   `,
