@@ -216,6 +216,16 @@ Check the CSS of our components with [Stylelint](https://stylelint.io/) and fix 
 * Takes same group parameters as `test:group` command
 * Usage: `npm run test:watch:group <group-name>`
 
+## `npm run test:visual`
+
+* Run visual regression tests with [Web Test Runner](https://modern-web.dev/docs/test-runner/overview/),
+* This task is designed to be run in CI.
+
+## `npm run test:visual:update-expectation`
+
+* Update visual regression test expectations with [Web Test Runner](https://modern-web.dev/docs/test-runner/overview/),
+* This task is designed to be run in CI.
+
 ## `npm run typecheck`
 
 * Run the TypeScript compiler to typecheck every file matching the criteria specified within the `tsconfig.ci.json` file.
