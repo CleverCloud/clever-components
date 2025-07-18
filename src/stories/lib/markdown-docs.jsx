@@ -1,8 +1,8 @@
 // we disable this rule because this file is only meant to be processed by Storybook. It is not part of our npm / CDN bundle.
 // eslint-disable-next-line import/no-extraneous-dependencies, no-unused-vars
-import { addons } from '@storybook/preview-api';
 import React, { useEffect } from 'react';
 import { SELECT_STORY } from 'storybook/internal/core-events';
+import { addons } from 'storybook/internal/preview-api';
 // several docs rely on `cc-notice`
 import '../../components/cc-notice/cc-notice.js';
 import '../../components/cc-web-features-tracker/cc-web-features-tracker.smart.js';

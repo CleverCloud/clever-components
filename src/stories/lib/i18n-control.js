@@ -1,5 +1,7 @@
-import { UPDATE_GLOBALS } from '@storybook/core-events';
-import { addons } from '@storybook/preview-api';
+// eslint-disable-next-line import/extensions, import/no-unresolved
+import { UPDATE_GLOBALS } from 'storybook/internal/core-events';
+// eslint-disable-next-line import/extensions, import/no-unresolved
+import { addons } from 'storybook/preview-api';
 import { addTranslations, getLanguage, setLanguage } from '../../lib/i18n/i18n.js';
 import * as en from '../../translations/translations.en.js';
 import * as fr from '../../translations/translations.fr.js';
