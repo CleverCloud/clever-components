@@ -1,4 +1,4 @@
-import { setCustomElementsManifest } from '@storybook/web-components';
+import { setCustomElementsManifest } from '@storybook/web-components-vite';
 // Any CSS file import automagically generates a `<link rel="stylesheet" href="bundledCssFile">` in the story iframe
 import 'github-markdown-css/github-markdown.css';
 import 'highlight.js/styles/vs.css';
@@ -10,8 +10,8 @@ import '../src/stories/lib/i18n-control.js';
 import '../src/styles/default-theme.css';
 
 /**
- * @typedef {import('@storybook/web-components').Preview} Preview
- * @typedef {import('@storybook/addon-viewport').ViewportMap} ViewportMap
+ * @typedef {import('@storybook/web-components-vite').Preview} Preview
+ * @typedef {import('storybook/viewport').ViewportMap} ViewportMap
  */
 
 setCustomElementsManifest(customElementsManifest);
@@ -84,18 +84,21 @@ const preview = {
           '🧬 Molecules',
           '*',
           '🚧 Beta',
+          '🕸️ Web Features',
           '🕹️ Controllers',
           '♻️ Templates',
         ],
       },
     },
-    viewport: { viewports },
+    viewport: { options: viewports },
+  },
+  initialGlobals: {
+    locale: 'en',
   },
   globalTypes: {
     locale: {
       name: 'Language',
       description: 'i18n language',
-      defaultValue: 'en',
       toolbar: {
         icon: 'globe',
         items: availableLanguages,
