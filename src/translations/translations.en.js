@@ -65,6 +65,9 @@ function formatFlavor(flavor) {
   return [cpu + shared, gpu, mem].filter((a) => a).join('\n');
 }
 
+const getCliInstructions = () =>
+  sanitize`To install Clever Tools CLI, follow the instructions from the <cc-link href="${generateDocsHref('/cli/install/')}" a11y-desc="documentation - Install Clever Tools">documentation</cc-link>.`;
+
 export const translations = {
   //#region cc-addon-admin
   'cc-addon-admin.admin': `Add-on administration`,
@@ -291,16 +294,9 @@ export const translations = {
     sanitize`<p>If you choose to use <code>A</code> records, for instance with a root domain (APEX), you'll need to update them yourself. Follow our <cc-link href="${generateDevHubHref('/changelog')}">changelog</cc-link> or check our <cc-link href="${generateDevHubHref('/api/v4/#load-balancers')}">v4 API documentation</cc-link> for this.</p>`,
   'cc-domain-management.dns.a.heading': `A records`,
   'cc-domain-management.dns.a.label': `A Record values`,
-  'cc-domain-management.dns.cli.content': /** @param {{resourceId: string}} _ */ ({ resourceId }) =>
-    sanitize`
-      <p>
-      To install Clever Tools CLI, follow the instructions from the <cc-link href="${generateDocsHref('/cli/install/')}" a11y-desc="documentation - Install Clever Tools">documentation</cc-link>.
-    </p>
-    <dl>
-      <dt>Diagnose the current configuration:</dt>
-      <dd><code>clever diag --app ${resourceId}</code></dd>
-    </dl>
-  `,
+  'cc-domain-management.dns.cli.content.diag-conf-command': `Diagnose the current configuration:`,
+  // eslint-disable-next-line i18n/valid-value
+  'cc-domain-management.dns.cli.content.instruction': getCliInstructions,
   'cc-domain-management.dns.cname.desc': () =>
     sanitize`<p>Using a <code>CNAME</code> record is recommended. This keeps your configuration up to date.</p>`,
   'cc-domain-management.dns.cname.heading': `CNAME record`,
@@ -367,21 +363,14 @@ export const translations = {
   'cc-domain-management.list.primary.success': /** @param {{domain: string}} _ */ ({ domain }) =>
     `"${domain}" has been successfully marked as primary domain`,
   'cc-domain-management.main-heading': `Manage your domain names`,
-  'cc-domain-management.names.cli.content': /** @param {{resourceId: string}} _ */ ({ resourceId }) =>
-    sanitize`
-    <p class="text">
+  'cc-domain-management.names.cli.content.add-domain-command': `Add a domain:`,
+  'cc-domain-management.names.cli.content.diag-dns-records-command': `Diagnose DNS records:`,
+  // eslint-disable-next-line i18n/valid-value
+  'cc-domain-management.names.cli.content.instruction': getCliInstructions,
+  'cc-domain-management.names.cli.content.intro': `
       You can manage domains directly from your terminal using the commands below.
-      To install Clever Tools CLI, follow the instructions from the <cc-link href="${generateDocsHref('/cli/install/')}" title="documentation - Install Clever Tools">documentation</cc-link>.
-      </p>
-      <dl>
-        <dt>List domains:</dt>
-        <dd><code>clever domain --app ${resourceId}</code></dd>
-        <dt>Diagnose DNS records:</dt>
-        <dd><code>clever domain diag --app ${resourceId}</code></dd>
-        <dt>Add a domain:</dt>
-        <dd><code>clever domain add myapp.example.com --app ${resourceId}</code></dd>
-      </dl>
     `,
+  'cc-domain-management.names.cli.content.list-command': `List domains:`,
   'cc-domain-management.names.documentation.text': `Domain names - Documentation`,
   'cc-domain-management.new-window': `New Window`,
   'cc-domain-management.tls.certificates.documentation.text': `TLS certificates - Documentation`,
