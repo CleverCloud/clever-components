@@ -165,12 +165,12 @@
     "ts-lit-plugin": "^2.0.2",
     "typescript": "^5.8.3",
     "unified": "^9.2.1",
-    "vite": "^6.3.5",
+    "vite": "^7.0.5",
     "@storybook/addon-docs": "^9.0.17"
   },
   "customElements": "dist/custom-elements.json",
   "volta": {
-    "node": "20.12.2",
-    "npm": "8.19.3"
+    "node": "22.17.1",
+    "npm": "11.4.2"
   }
 }
