@@ -84,6 +84,7 @@ const preview = {
           '🧬 Molecules',
           '*',
           '🚧 Beta',
+          '🕸️ Web Features',
           '🕹️ Controllers',
           '♻️ Templates',
         ],
