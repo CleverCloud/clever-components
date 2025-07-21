@@ -1696,22 +1696,15 @@ export const translations = {
   //#endregion
   //#region cc-token-api-update-form
   'cc-token-api-update-form.back-to-list': `Back to the API token list`,
-  'cc-token-api-update-form.cli.content': () => sanitize`
-    <p>
-      Manage your API tokens from a terminal using the commands below.
-      To install Clever Tools CLI, follow the instructions from the <cc-link href="${generateDocsHref('/cli/install/')}" a11y-desc="documentation - Install Clever Tools">documentation</cc-link>.
-    </p>
-    <dl>
-      <dt>Create a token:</dt>
-      <dd><code>clever tokens create "&lt;your token name&gt;"</code></dd>
-      <dt>Revoke a token:</dt>
-      <dd><code>clever tokens revoke &lt;api_token_id&gt;</code></dd>
-      <dt>List tokens:</dt>
-      <dd><code>clever tokens list</code></dd>
-      <dt>Use your API token&nbsp;:</dt>
-      <dd><code>curl -H "Authorization: Bearer &lt;your_token&gt;" https://api-bridge.clever-cloud.com/v2/self</code></dd>
-    </dl>
+  'cc-token-api-update-form.cli.content.create-token': `Create a token:`,
+  // eslint-disable-next-line i18n/valid-value
+  'cc-token-api-update-form.cli.content.instruction': getCliInstructions,
+  'cc-token-api-update-form.cli.content.intro': `
+    Manage your API tokens from a terminal using the commands below.
   `,
+  'cc-token-api-update-form.cli.content.list-token': `List tokens:`,
+  'cc-token-api-update-form.cli.content.revoke-token': `Revoke a token:`,
+  'cc-token-api-update-form.cli.content.use-token': `Use your API token:`,
   'cc-token-api-update-form.description.label': `Description`,
   'cc-token-api-update-form.error': `Something went wrong while loading API token information`,
   'cc-token-api-update-form.link.doc': `API tokens - Documentation`,
