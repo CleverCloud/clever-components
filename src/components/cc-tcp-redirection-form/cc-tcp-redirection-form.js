@@ -6,6 +6,7 @@ import { i18n } from '../../translations/translation.js';
 import '../cc-badge/cc-badge.js';
 import '../cc-block-details/cc-block-details.js';
 import '../cc-block/cc-block.js';
+import '../cc-code/cc-code.js';
 import '../cc-link/cc-link.js';
 import '../cc-notice/cc-notice.js';
 import '../cc-tcp-redirection/cc-tcp-redirection.js';
@@ -42,7 +43,7 @@ export class CcTcpRedirectionForm extends LitElement {
     super();
 
     /** @type {string} Sets the resource id for documentation */
-    this.resourceId = 'xxx_xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx';
+    this.resourceId = '<APPLICATION_ID>';
 
     /** @type {TcpRedirectionFormContextType} Defines in which context the form is used so it can show the appropriate description or lack thereof (defaults to user). */
     this.context = 'user';
@@ -93,7 +94,33 @@ export class CcTcpRedirectionForm extends LitElement {
               ${i18n('cc-tcp-redirection-form.documentation.text')}
             </cc-link>
           </div>
-          <div slot="content">${i18n('cc-tcp-redirection-form.cli.content', { resourceId: this.resourceId })}</div>
+          <div slot="content">
+            <p>
+              ${i18n('cc-tcp-redirection-form.cli.content.intro')}
+              ${i18n('cc-tcp-redirection-form.cli.content.instruction')}
+            </p>
+            <dl>
+              <dt>${i18n('cc-tcp-redirection-form.cli.content.list-tcp-redirection-command')}</dt>
+              <dd>
+                <cc-code>clever tcp-redirs --app ${this.resourceId}</cc-code>
+              </dd>
+              <dt>${i18n('cc-tcp-redirection-form.cli.content.add-tcp-redirection-command-default')}</dt>
+              <dd>
+                <cc-code>clever tcp-redirs add --namespace default --app ${this.resourceId}</cc-code>
+              </dd>
+              <dt>${i18n('cc-tcp-redirection-form.cli.content.add-tcp-redirection-command')}</dt>
+              <dd>
+                <cc-code>clever tcp-redirs add --namespace &lt;NAMESPACE&gt; --app ${this.resourceId}</cc-code>
+              </dd>
+              <dt>${i18n('cc-tcp-redirection-form.cli.content.remove-tcp-redirection-command')}</dt>
+              <dd>
+                <cc-code
+                  >clever tcp-redirs remove --namespace &lt;NAMESPACE&gt; &lt;PORT_NUMBER&gt; --app
+                  ${this.resourceId}</cc-code
+                >
+              </dd>
+            </dl>
+          </div>
         </cc-block-details>
       </cc-block>
     `;

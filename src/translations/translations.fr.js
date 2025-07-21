@@ -1491,20 +1491,18 @@ export const translations = {
     sanitize`Vous pouvez créer une redirection dans l'espace de nommage <strong>${namespace}</strong>.`,
   //#endregion
   //#region cc-tcp-redirection-form
-  'cc-tcp-redirection-form.cli.content': /** @param {{resourceId: string}} _ */ ({ resourceId }) =>
-    sanitize`
-      <p class="text">
-        Vous pouvez gérer les redirections TCP directement depuis votre terminal grâce aux commandes ci-dessous.
-        Pour installer les Clever Tools (CLI), suivez les instructions de la <cc-link href="${generateDocsHref('/cli/install/')}" a11y-desc="documentation - Installer les Clever Tools - en Anglais">documentation</cc-link>.      </p>
-      <dl>
-        <dt>Lister les redirections TCP :</dt>
-        <dd><code>clever tcp-redirs --app ${resourceId}</code></dd>
-        <dt>Ajouter une redirection TCP :</dt>
-        <dd><code>clever tcp-redirs add --namespace my-namespace --app ${resourceId}</code></dd>
-        <dt>Supprimer une redirection TCP :</dt>
-        <dd><code>clever tcp-redirs remove --namespace my-namespace {portNumber} --app ${resourceId}</code></dd>
-      </dl>
+  'cc-tcp-redirection-form.cli.content.add-tcp-redirection-command': () => sanitize`Ajouter une redirection TCP&nbsp;:`,
+  'cc-tcp-redirection-form.cli.content.add-tcp-redirection-command-default': () =>
+    sanitize`Ajouter une redirection TCP&nbsp; (espace de nommage par défaut):`,
+  // eslint-disable-next-line i18n/valid-value
+  'cc-tcp-redirection-form.cli.content.instruction': getCliInstructions,
+  'cc-tcp-redirection-form.cli.content.intro': `
+      Vous pouvez gérer les redirections TCP directement depuis votre terminal grâce aux commandes ci-dessous.
     `,
+  'cc-tcp-redirection-form.cli.content.list-tcp-redirection-command': () =>
+    sanitize`Lister les redirections TCP&nbsp;:`,
+  'cc-tcp-redirection-form.cli.content.remove-tcp-redirection-command': () =>
+    sanitize`Supprimer une redirection TCP&nbsp;:`,
   'cc-tcp-redirection-form.create.error': /** @param {{namespace: string}} _ */ ({ namespace }) => {
     return sanitize`Une erreur est survenue pendant la création d'une redirection TCP dans l'espace de nommage <strong>${namespace}</strong>.`;
   },
