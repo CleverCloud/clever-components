@@ -76,6 +76,9 @@ function formatFlavor(flavor) {
   return [cpu + shared, gpu, mem].filter((a) => a).join('\n');
 }
 
+const getCliInstructions = () =>
+  sanitize`Pour installer les Clever Tools (CLI), suivez les instructions de la <cc-link href="${generateDocsHref('/cli/install/')}" a11y-desc="documentation - Installer les Clever Tools - en Anglais">documentation</cc-link>.`;
+
 export const translations = {
   //#region cc-addon-admin
   'cc-addon-admin.admin': `Administration de l'add-on`,
@@ -95,19 +98,15 @@ export const translations = {
   'cc-addon-admin.update': `Mettre à jour le nom`,
   //#endregion
   //#region cc-addon-backups
-  'cc-addon-backups.cli.content': /** @param {{addonId: string}} _ */ ({ addonId }) =>
-    sanitize`
-      <p>
-        Vous pouvez gérer les sauvegardes directement depuis votre terminal en utilisant les commandes ci-dessous.
-        Pour installer les Clever Tools (CLI), suivez les instructions de la <cc-link href="${generateDocsHref('/cli/install/')}" a11y-desc="documentation - Installer les Clever Tools - en Anglais">documentation</cc-link>.
-      </p>
-      <dl>
-        <dt>Lister les sauvegardes de bases de données disponibles :</dt>
-        <dd><code>clever database backups ${addonId}</code></dd>
-        <dt>Télécharger une sauvegarde de la base de données :</dt>
-        <dd><code>clever database backups download ${addonId} BACKUP_ID</code></dd>
-      </dl>
+  'cc-addon-backups.cli.content.download-backup-command': () =>
+    sanitize`Télécharger une sauvegarde de la base de données&nbsp;:`,
+  // eslint-disable-next-line i18n/valid-value
+  'cc-addon-backups.cli.content.instruction': getCliInstructions,
+  'cc-addon-backups.cli.content.intro': `
+      Vous pouvez gérer les sauvegardes directement depuis votre terminal en utilisant les commandes ci-dessous.
     `,
+  'cc-addon-backups.cli.content.list-backups-command': () =>
+    sanitize`Lister les sauvegardes de bases de données disponibles&nbsp;:`,
   'cc-addon-backups.close-btn': `Fermer ce panneau`,
   'cc-addon-backups.command-password': `Cette commande vous demandera votre mot de passe, le voici :`,
   'cc-addon-backups.delete': /** @param {{createdAt: string|number}} _ */ ({ createdAt }) =>
@@ -302,16 +301,10 @@ export const translations = {
     sanitize`<p>Si vous choisissez d'utiliser des enregistrements de type <code>A</code>, par exemple pour un domaine racine (APEX), vous devrez vous-même assurer leur mise à jour. Pensez à suivre notre <cc-link href="${generateDevHubHref('/changelog')}" lang="en">changelog</cc-link> ou à lire la documentation de notre <cc-link href="${generateDevHubHref('/api/v4/#load-balancers')}" lang="en">API v4</cc-link> pour cela.</p>`,
   'cc-domain-management.dns.a.heading': `Enregistrements A`,
   'cc-domain-management.dns.a.label': `Valeurs d'enregistrement A`,
-  'cc-domain-management.dns.cli.content': /** @param {{resourceId: string}} _ */ ({ resourceId }) =>
-    sanitize`
-      <p>
-      Pour installer les Clever Tools (CLI), suivez les instructions de la <cc-link href="${generateDocsHref('/cli/install/')}" a11y-desc="documentation - Installer les Clever Tools - en Anglais">documentation</cc-link>.
-      </p>
-      <dl>
-        <dt>Commande pour diagnostiquer l'installation actuelle :</dt>
-        <dd><code>clever diag --app ${resourceId}</code></dd>
-      </dl>
-    `,
+  'cc-domain-management.dns.cli.content.diag-conf-command': () =>
+    sanitize`Commande pour diagnostiquer l'installation actuelle&nbsp;:`,
+  // eslint-disable-next-line i18n/valid-value
+  'cc-domain-management.dns.cli.content.instruction': getCliInstructions,
   'cc-domain-management.dns.cname.desc': () =>
     sanitize`<p>Utiliser un enregistrement <code>CNAME</code> est fortement recommandé. Ainsi, votre configuration est automatiquement maintenue à jour.`,
   'cc-domain-management.dns.cname.heading': `Enregistrement CNAME`,
@@ -377,21 +370,14 @@ export const translations = {
   'cc-domain-management.list.primary.success': /** @param {{domain: string}} _ */ ({ domain }) =>
     `"${domain}" a bien été défini comme nom de domaine principal`,
   'cc-domain-management.main-heading': `Gérez vos noms de domaine`,
-  'cc-domain-management.names.cli.content': /** @param {{resourceId: string}} _ */ ({ resourceId }) =>
-    sanitize`
-      <p>
+  'cc-domain-management.names.cli.content.add-domain-command': `Ajouter un domaine :`,
+  'cc-domain-management.names.cli.content.diag-dns-records-command': `Diagnostiquer les enregistrements DNS :`,
+  // eslint-disable-next-line i18n/valid-value
+  'cc-domain-management.names.cli.content.instruction': getCliInstructions,
+  'cc-domain-management.names.cli.content.intro': `
       Vous pouvez gérer les domaines directement depuis votre terminal grâce aux commandes ci-dessous.
-      Pour installer les Clever Tools (CLI), suivez les instructions de la <cc-link href="${generateDocsHref('/cli/install/')}" a11y-desc="documentation - Installer les Clever Tools - en Anglais">documentation</cc-link>.
-      </p>
-      <dl>
-        <dt>Lister les domaines :</dt>
-        <dd><code>clever domain --app ${resourceId}</code></dd>
-        <dt>Diagnostiquer les enregistrements DNS :</dt>
-        <dd><code>clever domain diag --app ${resourceId}</code></dd>
-        <dt>Ajouter un domaine :</dt>
-        <dd><code>clever domain add myapp.example.com --app ${resourceId}</code></dd>
-      </dl>
-      `,
+    `,
+  'cc-domain-management.names.cli.content.list-command': `Lister les domaines :`,
   'cc-domain-management.names.documentation.text': `Noms de domaine - Documentation`,
   'cc-domain-management.new-window': `Nouvelle fenêtre`,
   'cc-domain-management.tls.certificates.documentation.text': `Certificats TLS - Documentation`,
@@ -498,21 +484,16 @@ export const translations = {
   'cc-env-var-editor-simple.empty-data': `Il n'y a pas de variable.`,
   //#endregion
   //#region cc-env-var-form
-  'cc-env-var-form.cli.content': /** @param {{resourceId: string}} _ */ ({ resourceId }) =>
-    sanitize`
-      <p class="text">
-        Vous pouvez gérer les variables d'environnement directement depuis votre terminal en utilisant les commandes ci-dessous.
-        Pour installer les Clever Tools (CLI), suivez les instructions de la <cc-link href="${generateDocsHref('/cli/install/')}" a11y-desc="documentation - Installer les Clever Tools - en Anglais">documentation</cc-link>.
-      </p>
-      <dl>
-        <dt>Lister les variables d'environnement :</dt>
-        <dd><code>clever env --app ${resourceId}</code></dd>
-        <dt>Récupérer un fichier de variables d'environnement exécutable :</dt>
-        <dd><code>clever env --app ${resourceId} -F shell</code></dd>
-        <dt>Ajouter ou modifier une variable d'environnement :</dt>
-        <dd><code>clever env set VAR_NAME VAR_VALUE --app ${resourceId}</code></dd>
-      </dl>
+  'cc-env-var-form.cli.content.add-var-command': () =>
+    sanitize`Ajouter ou modifier une variable d'environnement&nbsp;:`,
+  'cc-env-var-form.cli.content.get-file-var-command': () =>
+    sanitize`Récupérer un fichier de variables d'environnement exécutable&nbsp;:`,
+  // eslint-disable-next-line i18n/valid-value
+  'cc-env-var-form.cli.content.instruction': getCliInstructions,
+  'cc-env-var-form.cli.content.intro': `
+      Vous pouvez gérer les variables d'environnement directement depuis votre terminal en utilisant les commandes ci-dessous.
     `,
+  'cc-env-var-form.cli.content.list-var-command': () => sanitize`Lister les variables d'environnement&nbsp;:`,
   'cc-env-var-form.description.config-provider': /** @param {{addonName: string}} _ */ ({ addonName }) =>
     sanitize`Configuration publiée pour les applications dépendantes. <cc-link href="${generateDocsHref('/deploy/addon/config-provider/')}">En savoir plus</cc-link><br>Ces seront injectées en tant que variables d'environnement dans les applications qui ont l'add-on <strong>${addonName}</strong> dans leurs services liés.<br>À chaque fois que vous mettez à jour les changements, toutes les applications dépendantes seront redémarrées automatiquement.`,
   'cc-env-var-form.description.env-var': /** @param {{appName: string}} _ */ ({ appName }) =>
@@ -1506,20 +1487,18 @@ export const translations = {
     sanitize`Vous pouvez créer une redirection dans l'espace de nommage <strong>${namespace}</strong>.`,
   //#endregion
   //#region cc-tcp-redirection-form
-  'cc-tcp-redirection-form.cli.content': /** @param {{resourceId: string}} _ */ ({ resourceId }) =>
-    sanitize`
-      <p class="text">
-        Vous pouvez gérer les redirections TCP directement depuis votre terminal grâce aux commandes ci-dessous.
-        Pour installer les Clever Tools (CLI), suivez les instructions de la <cc-link href="${generateDocsHref('/cli/install/')}" a11y-desc="documentation - Installer les Clever Tools - en Anglais">documentation</cc-link>.      </p>
-      <dl>
-        <dt>Lister les redirections TCP :</dt>
-        <dd><code>clever tcp-redirs --app ${resourceId}</code></dd>
-        <dt>Ajouter une redirection TCP :</dt>
-        <dd><code>clever tcp-redirs add --namespace my-namespace --app ${resourceId}</code></dd>
-        <dt>Supprimer une redirection TCP :</dt>
-        <dd><code>clever tcp-redirs remove --namespace my-namespace {portNumber} --app ${resourceId}</code></dd>
-      </dl>
+  'cc-tcp-redirection-form.cli.content.add-tcp-redirection-command': () => sanitize`Ajouter une redirection TCP&nbsp;:`,
+  'cc-tcp-redirection-form.cli.content.add-tcp-redirection-command-default': () =>
+    sanitize`Ajouter une redirection TCP&nbsp; (espace de nommage par défaut):`,
+  // eslint-disable-next-line i18n/valid-value
+  'cc-tcp-redirection-form.cli.content.instruction': getCliInstructions,
+  'cc-tcp-redirection-form.cli.content.intro': `
+      Vous pouvez gérer les redirections TCP directement depuis votre terminal grâce aux commandes ci-dessous.
     `,
+  'cc-tcp-redirection-form.cli.content.list-tcp-redirection-command': () =>
+    sanitize`Lister les redirections TCP&nbsp;:`,
+  'cc-tcp-redirection-form.cli.content.remove-tcp-redirection-command': () =>
+    sanitize`Supprimer une redirection TCP&nbsp;:`,
   'cc-tcp-redirection-form.create.error': /** @param {{namespace: string}} _ */ ({ namespace }) => {
     return sanitize`Une erreur est survenue pendant la création d'une redirection TCP dans l'espace de nommage <strong>${namespace}</strong>.`;
   },
@@ -1652,22 +1631,15 @@ export const translations = {
   'cc-toast.icon-alt.warning': `Avertissement`,
   //#endregion
   //#region cc-token-api-creation-form
-  'cc-token-api-creation-form.cli.content': () => sanitize`
-    <p>
-      Gérez vos tokens d'API depuis un terminal à l'aide des commandes ci-dessous.
-      Pour installer les Clever Tools (CLI), suivez les instructions de la <cc-link href="${generateDocsHref('/cli/install/')}" a11y-desc="documentation - Installer les Clever Tools - en Anglais">documentation</cc-link>.
-    </p>
-    <dl>
-      <dt>Créer un token d'API&nbsp;:</dt>
-      <dd><code>clever tokens create "&lt;votre nom de token&gt;"</code></dd>
-      <dt>Révoquer un token d'API&nbsp;:</dt>
-      <dd><code>clever tokens revoke &lt;api_token_id&gt;</code></dd>
-      <dt>Lister les tokens d'API&nbsp;:</dt>
-      <dd><code>clever tokens list</code></dd>
-      <dt>Utiliser votre token d'API&nbsp;:</dt>
-      <dd><code>curl -H "Authorization: Bearer &lt;votre_token&gt;" https://api-bridge.clever-cloud.com/v2/self</code></dd>
-    </dl>
+  'cc-token-api-creation-form.cli.content.create-token': () => sanitize`Créer un token d'API&nbsp;:`,
+  // eslint-disable-next-line i18n/valid-value
+  'cc-token-api-creation-form.cli.content.instruction': getCliInstructions,
+  'cc-token-api-creation-form.cli.content.intro': `
+    Gérez vos tokens d'API depuis un terminal à l'aide des commandes ci-dessous.
   `,
+  'cc-token-api-creation-form.cli.content.list-token': () => sanitize`Lister les tokens d'API&nbsp;:`,
+  'cc-token-api-creation-form.cli.content.revoke-token': () => sanitize`Révoquer un token d'API&nbsp;:`,
+  'cc-token-api-creation-form.cli.content.use-token': () => sanitize`Utiliser votre token d'API&nbsp;:`,
   'cc-token-api-creation-form.configuration-step.form.desc.label': `Description`,
   'cc-token-api-creation-form.configuration-step.form.expiration-date.error.invalid':
     /** @param {{ date: string }} _ */ ({ date }) =>
@@ -1719,22 +1691,15 @@ export const translations = {
   'cc-token-api-list.card.label.creation': () => sanitize`Création&nbsp;: `,
   'cc-token-api-list.card.label.expiration': () => sanitize`Expiration&nbsp;: `,
   'cc-token-api-list.card.token-id-icon.a11y-name': `Identifiant du token d'API`,
-  'cc-token-api-list.cli.content': () => sanitize`
-      <p>
-        Gérez vos tokens d'API depuis un terminal à l'aide des commandes ci-dessous.
-        Pour installer les Clever Tools (CLI), suivez les instructions de la <cc-link href="${generateDocsHref('/cli/install/')}" a11y-desc="documentation - Installer les Clever Tools - en Anglais">documentation</cc-link>.
-      </p>
-      <dl>
-        <dt>Créer un token d'API&nbsp;:</dt>
-        <dd><code>clever tokens create "&lt;votre nom de token&gt;"</code></dd>
-        <dt>Révoquer un token d'API&nbsp;:</dt>
-        <dd><code>clever tokens revoke &lt;api_token_id&gt;</code></dd>
-        <dt>Lister les tokens d'API&nbsp;:</dt>
-        <dd><code>clever tokens list</code></dd>
-        <dt>Utiliser votre token d'API&nbsp;:</dt>
-        <dd><code>curl -H "Authorization: Bearer &lt;votre_token&gt;" https://api-bridge.clever-cloud.com/v2/self</code></dd>
-      </dl>
+  'cc-token-api-list.cli.content.create-token': () => sanitize`Créer un token d'API&nbsp;:`,
+  // eslint-disable-next-line i18n/valid-value
+  'cc-token-api-list.cli.content.instruction': getCliInstructions,
+  'cc-token-api-list.cli.content.intro': `
+      Gérez vos tokens d'API depuis un terminal à l'aide des commandes ci-dessous.
     `,
+  'cc-token-api-list.cli.content.list-token': () => sanitize`Lister les tokens d'API&nbsp;:`,
+  'cc-token-api-list.cli.content.revoke-token': () => sanitize`Révoquer un token d'API&nbsp;:`,
+  'cc-token-api-list.cli.content.use-token': () => sanitize`Utiliser votre token d'API&nbsp;:`,
   'cc-token-api-list.create-token': `Créer un nouveau token`,
   'cc-token-api-list.delete-token': /** @param {{ name: string}} _ */ ({ name }) =>
     `Supprimer le token d'API - ${name}`,
@@ -1760,22 +1725,15 @@ export const translations = {
   //#endregion
   //#region cc-token-api-update-form
   'cc-token-api-update-form.back-to-list': `Retour à la liste de tokens d'API`,
-  'cc-token-api-update-form.cli.content': () => sanitize`
-    <p>
-      Gérez vos tokens d'API depuis un terminal à l'aide des commandes ci-dessous.
-      Pour installer les Clever Tools (CLI), suivez les instructions de la <cc-link href="${generateDocsHref('/cli/install/')}" a11y-desc="documentation - Installer les Clever Tools - en Anglais">documentation</cc-link>.
-    </p>
-    <dl>
-      <dt>Créer un token d'API&nbsp;:</dt>
-      <dd><code>clever tokens create "&lt;votre nom de token&gt;"</code></dd>
-      <dt>Révoquer un token d'API&nbsp;:</dt>
-      <dd><code>clever tokens revoke &lt;api_token_id&gt;</code></dd>
-      <dt>Lister les tokens d'API&nbsp;:</dt>
-      <dd><code>clever tokens list</code></dd>
-      <dt>Utiliser votre token d'API&nbsp;:</dt>
-      <dd><code>curl -H "Authorization: Bearer &lt;votre_token&gt;" https://api-bridge.clever-cloud.com/v2/self</code></dd>
-    </dl>
+  'cc-token-api-update-form.cli.content.create-token': () => sanitize`Créer un token d'API&nbsp;:`,
+  // eslint-disable-next-line i18n/valid-value
+  'cc-token-api-update-form.cli.content.instruction': getCliInstructions,
+  'cc-token-api-update-form.cli.content.intro': `
+    Gérez vos tokens d'API depuis un terminal à l'aide des commandes ci-dessous.
   `,
+  'cc-token-api-update-form.cli.content.list-token': () => sanitize`Lister les tokens d'API&nbsp;:`,
+  'cc-token-api-update-form.cli.content.revoke-token': () => sanitize`Révoquer un token d'API&nbsp;:`,
+  'cc-token-api-update-form.cli.content.use-token': () => sanitize`Utiliser votre token d'API&nbsp;:`,
   'cc-token-api-update-form.description.label': `Description`,
   'cc-token-api-update-form.error': `Une erreur est survenue lors du chargement du token d'API`,
   'cc-token-api-update-form.link.doc': `Tokens d'API - Documentation`,

@@ -6,6 +6,7 @@ import { i18n } from '../../translations/translation.js';
 import '../cc-block-details/cc-block-details.js';
 import '../cc-block/cc-block.js';
 import '../cc-button/cc-button.js';
+import '../cc-code/cc-code.js';
 import '../cc-env-var-editor-expert/cc-env-var-editor-expert.js';
 import '../cc-env-var-editor-json/cc-env-var-editor-json.js';
 import '../cc-env-var-editor-simple/cc-env-var-editor-simple.js';
@@ -64,7 +65,7 @@ export class CcEnvVarForm extends LitElement {
     this.addonName = '?';
 
     /** @type {string} Sets the resource id for documentation */
-    this.resourceId = 'xxx_xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx';
+    this.resourceId = '<APPLICATION_ID>';
 
     /** @type {string} Defines application name used in some heading/description (depending on context). */
     this.appName = '?';
@@ -377,16 +378,88 @@ export class CcEnvVarForm extends LitElement {
               </div>
             `
           : ''}
-
-        <cc-block-details slot="footer-left">
-          <div slot="button-text">${i18n('cc-block-details.cli.text')}</div>
-          <div slot="link">
-            <cc-link href="${ENV_VAR_DOCUMENTATION}" .icon=${iconInfo}>
-              ${i18n('cc-env-var-form.documentation.text')}
-            </cc-link>
-          </div>
-          <div slot="content">${i18n('cc-env-var-form.cli.content', { resourceId: this.resourceId })}</div>
-        </cc-block-details>
+        ${this.context && this.context !== 'env-var-simple'
+          ? html`
+              <cc-block-details slot="footer-left">
+                <div slot="button-text">${i18n('cc-block-details.cli.text')}</div>
+                <div slot="link">
+                  <cc-link href="${ENV_VAR_DOCUMENTATION}" .icon=${iconInfo}>
+                    ${i18n('cc-env-var-form.documentation.text')}
+                  </cc-link>
+                </div>
+                <div slot="content">
+                  <p>${i18n('cc-env-var-form.cli.content.intro')} ${i18n('cc-env-var-form.cli.content.instruction')}</p>
+                  <dl>
+                    ${this.context === 'env-var-addon'
+                      ? html`
+                          <dt>${i18n('cc-env-var-form.cli.content.list-var-command')}</dt>
+                          <dd>
+                            <cc-code>clever addon env ${this.resourceId}</cc-code>
+                          </dd>
+                          <dt>${i18n('cc-env-var-form.cli.content.get-file-var-command')}</dt>
+                          <dd>
+                            <cc-code>clever addon env ${this.resourceId} -F shell</cc-code>
+                          </dd>
+                        `
+                      : ''}
+                    ${this.context === 'env-var'
+                      ? html`
+                          <dt>${i18n('cc-env-var-form.cli.content.list-var-command')}</dt>
+                          <dd>
+                            <cc-code>clever env --app ${this.resourceId}</cc-code>
+                          </dd>
+                          <dt>${i18n('cc-env-var-form.cli.content.get-file-var-command')}</dt>
+                          <dd>
+                            <cc-code>clever env --app ${this.resourceId} -F shell</cc-code>
+                          </dd>
+                          <dt>${i18n('cc-env-var-form.cli.content.add-var-command')}</dt>
+                          <dd>
+                            <cc-code>
+                              clever env set &lt;VARIABLE_NAME&gt; &lt;VARIABLE_VALUE&gt; --app ${this.resourceId}
+                            </cc-code>
+                          </dd>
+                        `
+                      : ''}
+                    ${this.context === 'exposed-config'
+                      ? html`
+                          <dt>${i18n('cc-env-var-form.cli.content.list-var-command')}</dt>
+                          <dd>
+                            <cc-code>clever published-config --app ${this.resourceId}</cc-code>
+                          </dd>
+                          <dt>${i18n('cc-env-var-form.cli.content.get-file-var-command')}</dt>
+                          <dd>
+                            <cc-code>clever published-config --app ${this.resourceId} -F shell</cc-code>
+                          </dd>
+                          <dt>${i18n('cc-env-var-form.cli.content.add-var-command')}</dt>
+                          <dd>
+                            <cc-code
+                              >clever published-config set &lt;VARIABLE_NAME&gt; &lt;VARIABLE_VALUE&gt; --app
+                              ${this.resourceId}</cc-code
+                            >
+                          </dd>
+                        `
+                      : ''}
+                    ${this.context === 'config-provider'
+                      ? html`
+                          <dt>${i18n('cc-env-var-form.cli.content.list-var-command')}</dt>
+                          <dd>
+                            <cc-code>clever addon env ${this.resourceId}</cc-code>
+                          </dd>
+                          <dt>${i18n('cc-env-var-form.cli.content.get-file-var-command')}</dt>
+                          <dd>
+                            <cc-code>clever addon env ${this.resourceId} -F shell</cc-code>
+                          </dd>
+                        `
+                      : ''}
+                  </dl>
+                </div>
+              </cc-block-details>
+            `
+          : html`
+              <cc-link slot="footer-left" href="${ENV_VAR_DOCUMENTATION}" .icon=${iconInfo}>
+                ${i18n('cc-env-var-form.documentation.text')}
+              </cc-link>
+            `}
       </cc-block>
     `;
   }
