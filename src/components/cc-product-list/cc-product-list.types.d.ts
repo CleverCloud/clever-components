@@ -1,9 +1,8 @@
-import { Keyword } from '../cc-product-card/cc-product-card.types.js';
-
 export interface Product {
   description: string;
   iconUrl: string;
-  keywords?: Keyword[];
+  productStatus?: string;
+  searchTerms?: string[];
   name: string;
   url: string;
 }

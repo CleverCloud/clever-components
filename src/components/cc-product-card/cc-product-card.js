@@ -1,13 +1,9 @@
 import { css, html, LitElement } from 'lit';
-import { classMap } from 'lit/directives/class-map.js';
+import { isStringEmpty } from '../../lib/utils.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-badge/cc-badge.js';
 import '../cc-button/cc-button.js';
 import '../cc-img/cc-img.js';
-
-/**
- * @typedef {import('./cc-product-card.types.js').Keyword} Keyword
- */
 
 /**
  * A component displaying some information about a product in a card.
@@ -20,8 +16,8 @@ export class CcProductCard extends LitElement {
     return {
       description: { type: String },
       iconUrl: { type: String, attribute: 'icon-url' },
-      keywords: { type: Array },
       name: { type: String },
+      productStatus: { type: String, attribute: 'product-status' },
       url: { type: String },
     };
   }
@@ -32,47 +28,29 @@ export class CcProductCard extends LitElement {
     /** @type {string|null} The description of the product */
     this.description = null;
 
-    /** @type {string|null} The icon url of the product */
+    /** @type {string} The icon url of the product */
     this.iconUrl = null;
 
-    /** @type {Keyword[]} The keywords representing the product */
-    this.keywords = [];
-
-    /** @type {string|null} The name of the product */
+    /** @type {string} The name of the product */
     this.name = null;
+
+    /** @type {string|null} The status availability of the product */
+    this.productStatus = null;
 
     /** @type {string|null} The url where the user will be redirected when the product is selected  */
     this.url = null;
   }
 
-  _areKeywordsAllHidden() {
-    return this.keywords.every((k) => k.hidden);
-  }
-
   render() {
-    const hasKeywords = this.keywords.length > 0 && !this._areKeywordsAllHidden();
-
     // language=HTML
     return html`
-      <div class="wrapper ${classMap({ 'wrapper--no-keywords': !hasKeywords })}">
-        <cc-img src="${this.iconUrl}"></cc-img>
+      <div class="wrapper">
+        ${this.iconUrl != null ? html` <cc-img src="${this.iconUrl}"></cc-img> ` : ''}
         <a class="name" href="${this.url}" title="${i18n('cc-product-card.select', { name: this.name })}">
           ${this.name}
         </a>
-        ${hasKeywords
-          ? html`
-              <ul class="keywords">
-                ${this.keywords.map((keyword) => {
-                  return !keyword.hidden
-                    ? html`
-                        <li>
-                          <cc-badge class="keyword-badge">${keyword.value}</cc-badge>
-                        </li>
-                      `
-                    : '';
-                })}
-              </ul>
-            `
+        ${!isStringEmpty(this.productStatus)
+          ? html` <cc-badge class="product-status">${this.productStatus}</cc-badge> `
           : ''}
         <p class="description">${this.description}</p>
       </div>
@@ -111,11 +89,10 @@ export class CcProductCard extends LitElement {
           display: grid;
           gap: 0.75em;
           grid-template-areas:
-            'icon name'
-            'keywords keywords'
-            'description description';
-          grid-template-columns: min-content 1fr;
-          grid-template-rows: min-content max-content auto;
+            'icon name status'
+            'description description description';
+          grid-template-columns: min-content auto 1fr;
+          grid-template-rows: min-content auto;
           height: 100%;
           padding: 1em;
           position: relative;
@@ -132,10 +109,11 @@ export class CcProductCard extends LitElement {
           outline-offset: var(--cc-focus-outline-offset, 2px);
         }
 
-        .wrapper.wrapper--no-keywords {
+        .wrapper--no-status {
           grid-template-areas:
             'icon name'
             'description description';
+          grid-template-columns: min-content 1fr;
           grid-template-rows: min-content auto;
         }
 
@@ -168,15 +146,11 @@ export class CcProductCard extends LitElement {
           outline: none;
         }
 
-        .keyword-badge {
+        .product-status {
+          align-self: center;
           font-size: 0.85em;
-        }
-
-        .keywords {
-          display: flex;
-          flex-wrap: wrap;
-          gap: 0.5em;
-          grid-area: keywords;
+          grid-area: status;
+          width: min-content;
         }
 
         .description {
