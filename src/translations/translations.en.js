@@ -1657,22 +1657,15 @@ export const translations = {
   'cc-token-api-list.card.label.creation': `Creation: `,
   'cc-token-api-list.card.label.expiration': `Expiration: `,
   'cc-token-api-list.card.token-id-icon.a11y-name': `API token identifier`,
-  'cc-token-api-list.cli.content': () => sanitize`
-      <p>
-        Manage your API tokens from a terminal using the commands below.
-        To install Clever Tools CLI, follow the instructions from the <cc-link href="${generateDocsHref('/cli/install/')}" a11y-desc="documentation - Install Clever Tools">documentation</cc-link>.
-      </p>
-      <dl>
-        <dt>Create a token:</dt>
-        <dd><code>clever tokens create "&lt;your token name&gt;"</code></dd>
-        <dt>Revoke a token:</dt>
-        <dd><code>clever tokens revoke &lt;api_token_id&gt;</code></dd>
-        <dt>List tokens:</dt>
-        <dd><code>clever tokens list</code></dd>
-        <dt>Use your API token&nbsp;:</dt>
-        <dd><code>curl -H "Authorization: Bearer &lt;your_token&gt;" https://api-bridge.clever-cloud.com/v2/self</code></dd>
-      </dl>
+  'cc-token-api-list.cli.content.create-token': `Create a token:`,
+  // eslint-disable-next-line i18n/valid-value
+  'cc-token-api-list.cli.content.instruction': getCliInstructions,
+  'cc-token-api-list.cli.content.intro': `
+      Manage your API tokens from a terminal using the commands below.
     `,
+  'cc-token-api-list.cli.content.list-token': `List tokens:`,
+  'cc-token-api-list.cli.content.revoke-token': `Revoke a token:`,
+  'cc-token-api-list.cli.content.use-token': `Use your API token:`,
   'cc-token-api-list.create-token': `Create new token`,
   'cc-token-api-list.delete-token': /** @param {{ name: string}} _ */ ({ name }) => `Delete API token - ${name}`,
   'cc-token-api-list.empty': `You haven't created any API tokens yet, or none of them are active. Let's create a new one:`,
