@@ -1599,22 +1599,15 @@ export const translations = {
   'cc-toast.icon-alt.warning': `Warning`,
   //#endregion
   //#region cc-token-api-creation-form
-  'cc-token-api-creation-form.cli.content': () => sanitize`
-    <p>
+  'cc-token-api-creation-form.cli.content.create-token': `Create a token:`,
+  // eslint-disable-next-line i18n/valid-value
+  'cc-token-api-creation-form.cli.content.instruction': getCliInstructions,
+  'cc-token-api-creation-form.cli.content.intro': `
       Manage your API tokens from a terminal using the commands below.
-      To install Clever Tools CLI, follow the instructions from the <cc-link href="${generateDocsHref('/cli/install/')}" a11y-desc="documentation - Install Clever Tools">documentation</cc-link>.
-    </p>
-    <dl>
-      <dt>Create a token:</dt>
-      <dd><code>clever tokens create "&lt;your token name&gt;"</code></dd>
-      <dt>Revoke a token:</dt>
-      <dd><code>clever tokens revoke &lt;api_token_id&gt;</code></dd>
-      <dt>List tokens:</dt>
-      <dd><code>clever tokens list</code></dd>
-      <dt>Use your API token&nbsp;:</dt>
-      <dd><code>curl -H "Authorization: Bearer &lt;your_token&gt;" https://api-bridge.clever-cloud.com/v2/self</code></dd>
-    </dl>
-  `,
+    `,
+  'cc-token-api-creation-form.cli.content.list-token': `List tokens:`,
+  'cc-token-api-creation-form.cli.content.revoke-token': `Revoke a token:`,
+  'cc-token-api-creation-form.cli.content.use-token': `Use your API token:`,
   'cc-token-api-creation-form.configuration-step.form.desc.label': `Description`,
   'cc-token-api-creation-form.configuration-step.form.expiration-date.error.invalid':
     /** @param {{ date: string }} _ */ ({ date }) => sanitize`Enter a valid date and time.<br>For instance: ${date}`,

@@ -1631,22 +1631,15 @@ export const translations = {
   'cc-toast.icon-alt.warning': `Avertissement`,
   //#endregion
   //#region cc-token-api-creation-form
-  'cc-token-api-creation-form.cli.content': () => sanitize`
-    <p>
-      Gérez vos tokens d'API depuis un terminal à l'aide des commandes ci-dessous.
-      Pour installer les Clever Tools (CLI), suivez les instructions de la <cc-link href="${generateDocsHref('/cli/install/')}" a11y-desc="documentation - Installer les Clever Tools - en Anglais">documentation</cc-link>.
-    </p>
-    <dl>
-      <dt>Créer un token d'API&nbsp;:</dt>
-      <dd><code>clever tokens create "&lt;votre nom de token&gt;"</code></dd>
-      <dt>Révoquer un token d'API&nbsp;:</dt>
-      <dd><code>clever tokens revoke &lt;api_token_id&gt;</code></dd>
-      <dt>Lister les tokens d'API&nbsp;:</dt>
-      <dd><code>clever tokens list</code></dd>
-      <dt>Utiliser votre token d'API&nbsp;:</dt>
-      <dd><code>curl -H "Authorization: Bearer &lt;votre_token&gt;" https://api-bridge.clever-cloud.com/v2/self</code></dd>
-    </dl>
+  'cc-token-api-creation-form.cli.content.create-token': () => sanitize`Créer un token d'API&nbsp;:`,
+  // eslint-disable-next-line i18n/valid-value
+  'cc-token-api-creation-form.cli.content.instruction': getCliInstructions,
+  'cc-token-api-creation-form.cli.content.intro': `
+    Gérez vos tokens d'API depuis un terminal à l'aide des commandes ci-dessous.
   `,
+  'cc-token-api-creation-form.cli.content.list-token': () => sanitize`Lister les tokens d'API&nbsp;:`,
+  'cc-token-api-creation-form.cli.content.revoke-token': () => sanitize`Révoquer un token d'API&nbsp;:`,
+  'cc-token-api-creation-form.cli.content.use-token': () => sanitize`Utiliser votre token d'API&nbsp;:`,
   'cc-token-api-creation-form.configuration-step.form.desc.label': `Description`,
   'cc-token-api-creation-form.configuration-step.form.expiration-date.error.invalid':
     /** @param {{ date: string }} _ */ ({ date }) =>
