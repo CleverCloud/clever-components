@@ -488,21 +488,16 @@ export const translations = {
   'cc-env-var-editor-simple.empty-data': `Il n'y a pas de variable.`,
   //#endregion
   //#region cc-env-var-form
-  'cc-env-var-form.cli.content': /** @param {{resourceId: string}} _ */ ({ resourceId }) =>
-    sanitize`
-      <p class="text">
-        Vous pouvez gérer les variables d'environnement directement depuis votre terminal en utilisant les commandes ci-dessous.
-        Pour installer les Clever Tools (CLI), suivez les instructions de la <cc-link href="${generateDocsHref('/cli/install/')}" a11y-desc="documentation - Installer les Clever Tools - en Anglais">documentation</cc-link>.
-      </p>
-      <dl>
-        <dt>Lister les variables d'environnement :</dt>
-        <dd><code>clever env --app ${resourceId}</code></dd>
-        <dt>Récupérer un fichier de variables d'environnement exécutable :</dt>
-        <dd><code>clever env --app ${resourceId} -F shell</code></dd>
-        <dt>Ajouter ou modifier une variable d'environnement :</dt>
-        <dd><code>clever env set VAR_NAME VAR_VALUE --app ${resourceId}</code></dd>
-      </dl>
+  'cc-env-var-form.cli.content.add-var-command': () =>
+    sanitize`Ajouter ou modifier une variable d'environnement&nbsp;:`,
+  'cc-env-var-form.cli.content.get-file-var-command': () =>
+    sanitize`Récupérer un fichier de variables d'environnement exécutable&nbsp;:`,
+  // eslint-disable-next-line i18n/valid-value
+  'cc-env-var-form.cli.content.instruction': getCliInstructions,
+  'cc-env-var-form.cli.content.intro': `
+      Vous pouvez gérer les variables d'environnement directement depuis votre terminal en utilisant les commandes ci-dessous.
     `,
+  'cc-env-var-form.cli.content.list-var-command': () => sanitize`Lister les variables d'environnement&nbsp;:`,
   'cc-env-var-form.description.config-provider': /** @param {{addonName: string}} _ */ ({ addonName }) =>
     sanitize`Configuration publiée pour les applications dépendantes. <cc-link href="${generateDocsHref('/deploy/addon/config-provider/')}">En savoir plus</cc-link><br>Ces seront injectées en tant que variables d'environnement dans les applications qui ont l'add-on <strong>${addonName}</strong> dans leurs services liés.<br>À chaque fois que vous mettez à jour les changements, toutes les applications dépendantes seront redémarrées automatiquement.`,
   'cc-env-var-form.description.env-var': /** @param {{appName: string}} _ */ ({ appName }) =>

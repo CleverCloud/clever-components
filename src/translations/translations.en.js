@@ -478,21 +478,14 @@ export const translations = {
   'cc-env-var-editor-simple.empty-data': `There are no variables.`,
   //#endregion
   //#region cc-env-var-form
-  'cc-env-var-form.cli.content': /** @param {{resourceId: string}} _ */ ({ resourceId }) =>
-    sanitize`
-      <p class="text">
-        You can manage environment variables directly from your terminal using the commands below.
-        To install Clever Tools CLI, follow the instructions from the <cc-link href="${generateDocsHref('/cli/install/')}" title="documentation - Install Clever Tools">documentation</cc-link>.
-      </p>
-      <dl>
-        <dt>List environment variables:</dt>
-        <dd><code>clever env --app ${resourceId}</code></dd>
-        <dt>Get a sourceable env file:</dt>
-        <dd><code>clever env --app ${resourceId} -F shell</code></dd>
-        <dt>Add or update an environment variable:</dt>
-        <dd><code>clever env set VAR_NAME VAR_VALUE --app ${resourceId}</code></dd>
-      </dl>
+  'cc-env-var-form.cli.content.add-var-command': `Add or update an environment variable:`,
+  'cc-env-var-form.cli.content.get-file-var-command': `Get a sourceable env file:`,
+  // eslint-disable-next-line i18n/valid-value
+  'cc-env-var-form.cli.content.instruction': getCliInstructions,
+  'cc-env-var-form.cli.content.intro': `
+      You can manage environment variables directly from your terminal using the commands below.
     `,
+  'cc-env-var-form.cli.content.list-var-command': `List environment variables:`,
   'cc-env-var-form.description.config-provider': /** @param {{addonName: string}} _ */ ({ addonName }) =>
     sanitize`Configuration exposed to dependent applications. <cc-link href="${generateDocsHref('/deploy/addon/config-provider/')}">Learn more</cc-link><br>These variables will be injected as environment variables in applications that have the add-on <strong>${addonName}</strong> in their service dependencies.<br>Every time you update your changes, all the dependent applications will be automatically restarted.`,
   'cc-env-var-form.description.env-var': /** @param {{appName: string}} _ */ ({ appName }) =>
