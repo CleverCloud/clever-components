@@ -98,19 +98,15 @@ export const translations = {
   'cc-addon-admin.update': `Mettre à jour le nom`,
   //#endregion
   //#region cc-addon-backups
-  'cc-addon-backups.cli.content': /** @param {{addonId: string}} _ */ ({ addonId }) =>
-    sanitize`
-      <p>
-        Vous pouvez gérer les sauvegardes directement depuis votre terminal en utilisant les commandes ci-dessous.
-        Pour installer les Clever Tools (CLI), suivez les instructions de la <cc-link href="${generateDocsHref('/cli/install/')}" a11y-desc="documentation - Installer les Clever Tools - en Anglais">documentation</cc-link>.
-      </p>
-      <dl>
-        <dt>Lister les sauvegardes de bases de données disponibles :</dt>
-        <dd><code>clever database backups ${addonId}</code></dd>
-        <dt>Télécharger une sauvegarde de la base de données :</dt>
-        <dd><code>clever database backups download ${addonId} BACKUP_ID</code></dd>
-      </dl>
+  'cc-addon-backups.cli.content.download-backup-command': () =>
+    sanitize`Télécharger une sauvegarde de la base de données&nbsp;:`,
+  // eslint-disable-next-line i18n/valid-value
+  'cc-addon-backups.cli.content.instruction': getCliInstructions,
+  'cc-addon-backups.cli.content.intro': `
+      Vous pouvez gérer les sauvegardes directement depuis votre terminal en utilisant les commandes ci-dessous.
     `,
+  'cc-addon-backups.cli.content.list-backups-command': () =>
+    sanitize`Lister les sauvegardes de bases de données disponibles&nbsp;:`,
   'cc-addon-backups.close-btn': `Fermer ce panneau`,
   'cc-addon-backups.command-password': `Cette commande vous demandera votre mot de passe, le voici :`,
   'cc-addon-backups.delete': /** @param {{createdAt: string|number}} _ */ ({ createdAt }) =>
