@@ -25,6 +25,9 @@ export class CcCode extends LitElement {
     super();
 
     this._formattedCode = '';
+    this._mutationObserver = new MutationObserver(() => {
+      this._formatCode();
+    });
   }
 
   /**
@@ -32,13 +35,20 @@ export class CcCode extends LitElement {
    * @private
    */
   _onSlotchange(e) {
-    const rawText = e.target
-      .assignedNodes()
-      .map((node) => {
-        return node.textContent;
-      })
-      .join('');
-    this._formattedCode = dedent(rawText);
+    this._mutationObserver.disconnect();
+    e.target.assignedNodes().forEach((node) => {
+      this._mutationObserver.observe(node, {
+        characterData: true,
+        subtree: true,
+      });
+    });
+
+    this._formatCode();
+  }
+
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    this._mutationObserver.disconnect();
   }
 
   render() {
@@ -47,6 +57,15 @@ export class CcCode extends LitElement {
       <code tabindex="0">${this._formattedCode}</code>
       <cc-clipboard value="${this._formattedCode}"></cc-clipboard>
     `;
+  }
+
+  _formatCode() {
+    const textContent = this.shadowRoot
+      .querySelector('slot')
+      .assignedNodes()
+      .map((node) => node.textContent)
+      .join('');
+    this._formattedCode = dedent(textContent);
   }
 
   static get styles() {
