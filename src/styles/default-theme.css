@@ -327,5 +327,8 @@
 
   /* space between a label and its control */
   --cc-form-label-gap: 0.35em;
+
+  /* space between a label and its control when inline */
+  --cc-form-label-gap-inline: 0.75em;
   /*endregion*/
 }

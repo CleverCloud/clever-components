@@ -122,11 +122,12 @@ As our design tokens only exist (for now) as CSS values, keys will be listed as 
 
 ### Form decisions
 
-| Key                         | Default value |
-|:----------------------------|:--------------|
-| `--cc-form-controls-gap`    | `2em`         |
-| `--cc-form-controls-indent` | `34px`        |
-| `--cc-form-label-gap`       | `0.35em`      |
+| Key                          | Default value |
+|:-----------------------------|:--------------|
+| `--cc-form-controls-gap`     | `2em`         |
+| `--cc-form-controls-indent`  | `34px`        |
+| `--cc-form-label-gap`        | `0.35em`      |
+| `--cc-form-label-gap-inline` | `0.75em`      |
 
 ### Miscellaneous
 
