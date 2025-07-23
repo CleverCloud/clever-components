@@ -116,7 +116,8 @@ function dateStateValid(date) {
  *
  * @cssdisplay inline-block
  *
- * @cssprop {Size} --cc-form-label-gap - The space between the label and the control (defaults: `0.35em` or `1em` when inline).
+ * @cssprop {Size} --cc-form-label-gap - The space between the label and the control (defaults: `0.35em`).
+ * @cssprop {Size} --cc-form-label-gap-inline - The space between the label and the control when layout is inline (defaults: `0.75em`).
  * @cssprop {FontFamily} --cc-input-font-family - The font-family for the input content (defaults: `inherit`).
  * @cssprop {Color} --cc-input-label-color - The color for the input's label (defaults: `inherit`).
  * @cssprop {FontSize} --cc-input-label-font-size - The font-size for the input's label (defaults: `inherit`).
@@ -580,7 +581,7 @@ export class CcInputDate extends CcFormControlElement {
         :host([inline]) {
           align-items: baseline;
           display: inline-grid;
-          gap: 0 var(--cc-form-label-gap, 1em);
+          gap: 0 var(--cc-form-label-gap-inline, 0.75em);
           grid-auto-rows: min-content;
           grid-template-areas:
             'label input'

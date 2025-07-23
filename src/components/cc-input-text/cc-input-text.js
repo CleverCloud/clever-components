@@ -39,7 +39,8 @@ const TAG_SEPARATOR = ' ';
  *
  * @cssdisplay inline-block / block (with `[multi]`)
  *
- * @cssprop {Size} --cc-form-label-gap - The space between the label and the control (defaults: `0.35em` or `1em` when inline).
+ * @cssprop {Size} --cc-form-label-gap - The space between the label and the control (defaults: `0.35em`).
+ * @cssprop {Size} --cc-form-label-gap-inline - The space between the label and the control when layout is inline (defaults: `0.75em`).
  * @cssprop {Color} --cc-input-btn-icon-color - The color for the icon within the clipboard/secret button (defaults: `#595959`).
  * @cssprop {FontFamily} --cc-input-font-family - The font-family for the input content (defaults: `inherit` or `--cc-ff-monospace` when using the tags mode).
  * @cssprop {Color} --cc-input-label-color - The color for the input's label (defaults: `inherit`).
@@ -442,7 +443,7 @@ export class CcInputText extends CcFormControlElement {
         :host([inline]) {
           align-items: baseline;
           display: inline-grid;
-          gap: 0 var(--cc-form-label-gap, 1em);
+          gap: 0 var(--cc-form-label-gap-inline, 0.75em);
           grid-auto-rows: min-content;
           grid-template-areas:
             'label input'
