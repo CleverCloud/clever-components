@@ -31,7 +31,8 @@ import { CcMultiSelectEvent, CcSelectEvent } from '../common.events.js';
  *
  * @cssdisplay inline-flex
  *
- * @cssprop {Size} --cc-form-label-gap - The space between the label and the control (defaults: `0.35em` or `1em` when inline).
+ * @cssprop {Size} --cc-form-label-gap - The space between the label and the control (defaults: `0.35em`).
+ * @cssprop {Size} --cc-form-label-gap-inline - The space between the label and the control when layout is inline (defaults: `0.75em`).
  * @cssprop {BorderRadius} --cc-toggle-border-radius - Sets the value of the border radius CSS property (defaults: `0.15em`).
  * @cssprop {Color} --cc-toggle-color - The main color of the toggle (defaults: `#334252`). It must be defined directly on the element.
  * @cssprop {FontWeight} --cc-toggle-font-weight - Sets the value of the font weight CSS property (defaults: `bold`).
@@ -182,7 +183,7 @@ export class CcToggle extends LitElement {
 
         :host([inline]) .group {
           align-items: center;
-          column-gap: var(--cc-form-label-gap, 1em);
+          column-gap: var(--cc-form-label-gap-inline, 0.75em);
           flex-direction: row;
         }
 

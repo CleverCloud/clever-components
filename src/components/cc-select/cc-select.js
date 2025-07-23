@@ -32,7 +32,8 @@ const DEFAULT_ERROR_MESSAGES = {
  *
  * @cssdisplay inline-block
  *
- * @cssprop {Size} --cc-form-label-gap - The space between the label and the control (defaults: `0.35em` or `1em` when inline).
+ * @cssprop {Size} --cc-form-label-gap - The space between the label and the control (defaults: `0.35em`).
+ * @cssprop {Size} --cc-form-label-gap-inline - The space between the label and the control when layout is inline (defaults: `0.75em`).
  * @cssprop {Color} --cc-select-label-color - The color for the select's label (defaults: `inherit`).
  * @cssprop {FontSize} --cc-select-label-font-size - The font-size for the select's label (defaults: `inherit`).
  * @cssprop {FontWeight} --cc-select-label-font-weight - The font-weight for the select's label (defaults: `normal`).
@@ -220,7 +221,7 @@ export class CcSelect extends CcFormControlElement {
         :host([inline]) {
           align-items: baseline;
           display: inline-grid;
-          gap: 0 var(--cc-form-label-gap, 1em);
+          gap: 0 var(--cc-form-label-gap-inline, 0.75em);
           grid-auto-rows: min-content;
           grid-template-areas:
             'label input'
