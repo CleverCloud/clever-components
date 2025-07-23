@@ -1,15 +1,19 @@
 import { LitElement, html } from 'lit';
+import { iconRemixInformationFill as iconInfo } from '../../assets/cc-remix.icons.js';
 import { i18n } from '../../translations/translation.js';
+import '../cc-addon-access-info/cc-addon-access-info.js';
+import '../cc-block-details/cc-block-details.js';
 import '../cc-block/cc-block.js';
+import '../cc-code/cc-code.js';
 import '../cc-input-text/cc-input-text.js';
+import '../cc-link/cc-link.js';
 import '../cc-loader/cc-loader.js';
 import '../cc-notice/cc-notice.js';
 import '../cc-toggle/cc-toggle.js';
 
 /**
  * @typedef {import('./cc-addon-access-unique.types.js').CcAddonAccessUniqueState} CcAddonAccessUniqueState
- * @typedef {import('./cc-addon-access-unique.types.js').Content} Content
- * @typedef {import('./cc-addon-access-unique.types.js').TabContent} TabContent
+ * @typedef {import('./cc-addon-access-unique.types.js').TabbedContent} TabbedContent
  * @typedef {import('./cc-addon-access-unique.types.js').TabName} TabName
  * @typedef {import('../cc-toggle/cc-toggle.types.js').Choice} Choice
  * @typedef {import('lit').PropertyValues<CcAddonAccessUnique>} CcAddonAccessUniquePropertyValues
@@ -18,6 +22,7 @@ import '../cc-toggle/cc-toggle.js';
 export class CcAddonAccessUnique extends LitElement {
   static get properties() {
     return {
+      docLink: { type: Object, attribute: 'doc-link' },
       state: { type: Object },
       _selectedTab: { type: String, state: true },
     };
@@ -25,6 +30,9 @@ export class CcAddonAccessUnique extends LitElement {
 
   constructor() {
     super();
+
+    /** @type {{ text: string; href: string; }} */
+    this.docLink = null;
 
     /** @type {CcAddonAccessUniqueState} */
     this.state = { type: 'loading' };
@@ -57,15 +65,11 @@ export class CcAddonAccessUnique extends LitElement {
 
   /**
    *
-   * @param {Array<TabContent>|Content} content
+   * @param {Array<TabName>} tabNames
    * @returns {Array<Choice>|null}
    */
-  _getToggleChoices(content) {
-    if (!Array.isArray(content) || content.length === 0) {
-      return null;
-    }
-
-    return content.map(({ tabName }) => ({
+  _getToggleChoices(tabNames) {
+    return tabNames.map((tabName) => ({
       label: this._getToggleChoiceLabel(tabName),
       value: tabName,
     }));
@@ -78,58 +82,80 @@ export class CcAddonAccessUnique extends LitElement {
 
   /** @param {CcAddonAccessUniquePropertyValues} changedProperties */
   willUpdate(changedProperties) {
-    if (changedProperties.has('state') && this.state.type === 'loaded-with-tabs') {
-      this._selectedTab = this.state.tabs[0].tabName;
+    if (
+      changedProperties.has('state') &&
+      (changedProperties.get('state')?.type !== 'loaded-with-tabs' ||
+        changedProperties.get('state')?.type !== 'loading-with-tabs') &&
+      (this.state.type === 'loaded-with-tabs' || this.state.type === 'loading-with-tabs')
+    ) {
+      this._selectedTab = /** @type {TabName} */ (Object.keys(this.state.tabs)[0]);
     }
   }
 
   render() {
-    if (this.state.type === 'loading-with-tabs' || this.state.type === 'loading-without-tabs') {
-      return html`<cc-loader></cc-loader>`;
-    }
-
     if (this.state.type === 'error') {
-      return html`<cc-notice message="error"></cc-notice>`;
+      return html`<cc-notice message="error" intent="warning"></cc-notice>`;
     }
+    const skeleton = this.state.type === 'loading' || this.state.type === 'loading-with-tabs';
 
+    console.log(this.state);
     return html`
       <cc-block>
         <div slot="header-title">${i18n('cc-addon-access-unique.heading')}</div>
-        <div slot="content">${this.state.type === 'loaded-with-tabs' ? this._renderTabs(this.state.tabs) : ''}</div>
+        ${this.state.type === 'loaded' || this.state.type === 'loading'
+          ? html`
+              <cc-addon-access-info
+                .info="${this.state.content}"
+                .skeleton="${skeleton}"
+                slot="content"
+              ></cc-addon-access-info>
+            `
+          : ''}
+        ${this.state.type === 'loaded-with-tabs' || this.state.type === 'loading-with-tabs'
+          ? this._renderTabs(this.state.tabs, skeleton)
+          : ''}
+        ${this.state.cliCommand != null ? this._renderCliCommand(this.state.cliCommand) : ''}
       </cc-block>
     `;
   }
 
-  /** @param {TabContent[]} tabs */
-  _renderTabs(tabs) {
-    const toggleChoices = this._getToggleChoices(tabs);
-    const selectedTabContent = tabs.find(({ tabName }) => tabName === this._selectedTab);
+  /**
+   * @param {TabbedContent} tabs
+   * @param {boolean} skeleton
+   **/
+  _renderTabs(tabs, skeleton) {
+    const tabNames = /** @type {TabName[]} */ (Object.keys(tabs));
+    const toggleChoices = this._getToggleChoices(tabNames);
+    const selectedTabContent = tabs[this._selectedTab] ?? Object.values(tabs)[0];
 
     return html`
       <cc-toggle
         .choices="${toggleChoices}"
         .value="${this._selectedTab}"
         @cc-select="${this._onTabSelect}"
+        slot="header-right"
       ></cc-toggle>
-      <dl>
-        ${selectedTabContent.host != null
-          ? html`
-              <dt>Host</dt>
-              <dd>${selectedTabContent.host}</dd>
-            `
-          : ''}
-        ${selectedTabContent.password != null
-          ? html`
-              <dt>Host</dt>
-              <dd>
-                <cc-input-text secret clipboard value="${selectedTabContent.password}"></cc-input-text>
-              </dd>
-            `
-          : ''}
-      </dl>
+      <cc-addon-access-info .info="${selectedTabContent}" .skeleton="${skeleton}" slot="content"></cc-addon-access-info>
+    `;
+  }
+
+  /** @param {string} cliCommand */
+  _renderCliCommand(cliCommand) {
+    return html`
+      <cc-block-details slot="footer-left">
+        <div slot="button-text">${i18n('cc-block-details.cli.text')}</div>
+        <div slot="link">
+          <cc-link href="${this.docLink.href}" .icon="${iconInfo}">${this.docLink.text}</cc-link>
+        </div>
+        <div slot="content">
+          <div class="cli-heading">${i18n('cc-addon-access-unique.cli.heading')}</div>
+          <p>${i18n('cc-addon-access-unique.cli.text')}</p>
+          <p>${i18n('cc-addon-access-unique.cli.command')}</p>
+          <cc-code>${cliCommand}</cc-code>
+        </div>
+      </cc-block-details>
     `;
   }
 }
 
-// eslint-disable-next-line wc/tag-name-matches-class
-customElements.define('cc-addon-access-unique-beta', CcAddonAccessUnique);
+customElements.define('cc-addon-access-unique', CcAddonAccessUnique);

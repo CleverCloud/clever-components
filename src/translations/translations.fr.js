@@ -80,6 +80,25 @@ const getCliInstructions = () =>
   sanitize`Pour installer les Clever Tools (CLI), suivez les instructions de la <cc-link href="${generateDocsHref('/cli/install/')}" a11y-desc="documentation - Installer les Clever Tools - en Anglais">documentation</cc-link>.`;
 
 export const translations = {
+  //#region cc-addon-access-info
+  'cc-addon-access-info.name.api-client-secret': `Secret du client API`,
+  'cc-addon-access-info.name.api-client-user': `Utilisateur du client API`,
+  'cc-addon-access-info.name.api-url': `URL de l'API`,
+  'cc-addon-access-info.name.cluster-full-name': `Nom complet du cluster`,
+  'cc-addon-access-info.name.database-name': `Nom de la base de données`,
+  'cc-addon-access-info.name.direct-host': `Hôte direct`,
+  'cc-addon-access-info.name.direct-port': `Port direct`,
+  'cc-addon-access-info.name.direct-uri': `URI directe`,
+  'cc-addon-access-info.name.host': `Hôte`,
+  'cc-addon-access-info.name.network-group': `Network Group`,
+  'cc-addon-access-info.name.password': `Mot de passe`,
+  'cc-addon-access-info.name.port': `Port`,
+  'cc-addon-access-info.name.token': `Jeton`,
+  'cc-addon-access-info.name.uri': `URI`,
+  'cc-addon-access-info.name.user': `Utilisateur`,
+  'cc-addon-access-info.ng.disable': `Désactiver`,
+  'cc-addon-access-info.ng.enable': `Activer les Network Groups`,
+  //#endregion
   //#region cc-addon-access-unique
   'cc-addon-access-unique.choice.api': `API`,
   'cc-addon-access-unique.choice.apm': `APM`,
@@ -87,6 +106,9 @@ export const translations = {
   'cc-addon-access-unique.choice.direct': `Direct`,
   'cc-addon-access-unique.choice.elastic': `Elastic`,
   'cc-addon-access-unique.choice.kibana': `Kibana`,
+  'cc-addon-access-unique.cli.command': `Commande directe CLI`,
+  'cc-addon-access-unique.cli.heading': `Utiliser depuis le terminal`,
+  'cc-addon-access-unique.cli.text': `Utilisez la commande suivante pour effectuer cette action depuis votre terminal.`,
   'cc-addon-access-unique.heading': `Accès`,
   //#endregion
   //#region cc-addon-admin

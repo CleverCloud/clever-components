@@ -69,6 +69,25 @@ const getCliInstructions = () =>
   sanitize`To install Clever Tools CLI, follow the instructions from the <cc-link href="${generateDocsHref('/cli/install/')}" a11y-desc="documentation - Install Clever Tools">documentation</cc-link>.`;
 
 export const translations = {
+  //#region cc-addon-access-info
+  'cc-addon-access-info.name.api-client-secret': `API client secret`,
+  'cc-addon-access-info.name.api-client-user': `API client user`,
+  'cc-addon-access-info.name.api-url': `API URL`,
+  'cc-addon-access-info.name.cluster-full-name': `Cluster full name`,
+  'cc-addon-access-info.name.database-name': `Database name`,
+  'cc-addon-access-info.name.direct-host': `Direct host`,
+  'cc-addon-access-info.name.direct-port': `Direct port`,
+  'cc-addon-access-info.name.direct-uri': `Direct URI`,
+  'cc-addon-access-info.name.host': `Host`,
+  'cc-addon-access-info.name.network-group': `Network group`,
+  'cc-addon-access-info.name.password': `Password`,
+  'cc-addon-access-info.name.port': `Port`,
+  'cc-addon-access-info.name.token': `Token`,
+  'cc-addon-access-info.name.uri': `URI`,
+  'cc-addon-access-info.name.user': `User`,
+  'cc-addon-access-info.ng.disable': `Disable`,
+  'cc-addon-access-info.ng.enable': `Enable Network Groups`,
+  //#endregion
   //#region cc-addon-access-unique
   'cc-addon-access-unique.choice.api': `API`,
   'cc-addon-access-unique.choice.apm': `APM`,
@@ -76,6 +95,9 @@ export const translations = {
   'cc-addon-access-unique.choice.direct': `Direct`,
   'cc-addon-access-unique.choice.elastic': `Elastic`,
   'cc-addon-access-unique.choice.kibana': `Kibana`,
+  'cc-addon-access-unique.cli.command': `Direct CLI command`,
+  'cc-addon-access-unique.cli.heading': `Use from the terminal`,
+  'cc-addon-access-unique.cli.text': `Use the following command to perform this action from your terminal.`,
   'cc-addon-access-unique.heading': `Access`,
   //#endregion
   //#region cc-addon-admin

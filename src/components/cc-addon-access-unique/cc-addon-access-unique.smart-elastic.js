@@ -3,29 +3,30 @@ import { defineSmartComponent } from '../../lib/smart/define-smart-component.js'
 import '../cc-smart-container/cc-smart-container.js';
 // @ts-expect-error FIXME: remove when clever-client exports types
 import { get as getAddon } from '@clevercloud/client/esm/api/v2/addon.js';
+// @ts-expect-error FIXME: remove when clever-client exports types
+import { getAddon as getAddonDetails } from '@clevercloud/client/esm/api/v2/providers.js';
 import './cc-addon-access-unique.js';
 
 /** @type {AddonAccessInfo[]} */
 const SKELETON_DATA = [
   {
+    code: 'host',
+    value: 'fake-host-very-long-skeleton',
+  },
+  {
     code: 'user',
-    value: 'fake-skeleton',
+    value: 'skeleto-user',
   },
   {
     code: 'password',
-    value: 'fake-skeleton',
-  },
-  {
-    code: 'ng',
-    value: {
-      isEnabled: false,
-    },
+    value: 'skeleton-password',
   },
 ];
 
 /**
  * @typedef {import('./cc-addon-access-unique.js').CcAddonAccessUnique} CcAddonAccessUnique
  * @typedef {import('../cc-addon-access-info/cc-addon-access-info.types.js').AddonAccessInfo} AddonAccessInfo
+ * @typedef {import('./cc-addon-access-unique.types.js').TabbedContent} TabbedContent
  * @typedef {import('./cc-addon-access-unique.types.js').RawAddon} RawAddon
  * @typedef {import('./cc-addon-access-unique.types.js').KeycloakOperatorInfo} KeycloakOperatorInfo
  * @typedef {import('../../lib/send-to-api.js').ApiConfig} ApiConfig
@@ -33,7 +34,7 @@ const SKELETON_DATA = [
  */
 
 defineSmartComponent({
-  selector: 'cc-addon-access-unique[smart-mode="keycloak"]',
+  selector: 'cc-addon-access-unique[smart-mode="elastic"]',
   params: {
     apiConfig: { type: Object },
     addonId: { type: String },
@@ -53,42 +54,58 @@ defineSmartComponent({
     });
 
     api
-      .getAddonWithOperator()
-      .then((operator) => {
-        updateComponent('state', {
-          type: 'loaded',
-          content: [
-            {
-              code: 'user',
-              value: operator.envVars.CC_KEYCLOAK_ADMIN,
-            },
-            {
-              code: 'password',
-              value: operator.envVars.CC_KEYCLOAK_ADMIN_DEFAULT_PASSWORD,
-            },
-            {
-              code: 'ng',
-              value: {
-                isEnabled: false,
-              },
-            },
-          ],
-        });
+      .getAddonInfo()
+      .then((addonDetails) => {
+        const { isKibanaEnabled, isApmEnabled, tabs } = getTabsFromAddonDetails(addonDetails);
+        if (!isKibanaEnabled && !isApmEnabled) {
+          updateComponent('state', {
+            type: 'loaded',
+            content: tabs.elastic,
+          });
+        } else {
+          updateComponent('state', {
+            type: 'loaded-with-tabs',
+            tabs,
+          });
+        }
       })
       .catch((error) => {
         console.error(error);
         updateComponent('state', { type: 'error' });
       });
-
-    onEvent('cc-ng-enable', () => {
-      // TODO Waiting
-    });
-
-    onEvent('cc-ng-disable', () => {
-      // TODO Waiting
-    });
   },
 });
+
+function getTabsFromAddonDetails(addonDetails) {
+  const isKibanaEnabled = addonDetails.services.some((service) => service.name === 'kibana' && service.enabled);
+  const isApmEnabled = addonDetails.services.some((service) => service.name === 'apm' && service.enabled);
+
+  /** @type {TabbedContent} */
+  const tabs = {
+    elastic: [
+      { code: 'host', value: addonDetails.config.host },
+      { code: 'user', value: addonDetails.config.user },
+      { code: 'password', value: addonDetails.config.password },
+    ],
+  };
+
+  if (isKibanaEnabled) {
+    tabs.kibana = [
+      { code: 'user', value: addonDetails.config.kibana_user },
+      { code: 'password', value: addonDetails.config.kibana_password },
+    ];
+  }
+
+  if (isApmEnabled) {
+    tabs.apm = [
+      { code: 'user', value: addonDetails.config.apm_user },
+      { code: 'password', value: addonDetails.config.apm_password },
+      { code: 'token', value: addonDetails.config.apm_auth_token },
+    ];
+  }
+
+  return { isKibanaEnabled, isApmEnabled, tabs };
+}
 
 class Api {
   /**
@@ -110,20 +127,18 @@ class Api {
   }
 
   /**
-   * @param {string} realId
-   * @returns {Promise<KeycloakOperatorInfo>}
+   *
+   * @param {string} providerId
+   * @returns {Promise<object>}
    */
-  _getOperator(realId) {
-    return getOperator({ provider: 'keycloak', realId }).then(sendToApi({ apiConfig: this._apiConfig }));
+  _getAddonDetails(providerId) {
+    return getAddonDetails({ providerId, addonId: this._addonId }).then(sendToApi({ apiConfig: this._apiConfig }));
   }
 
-  // TODO: NG State!
-  /** @returns {Promise<KeycloakOperatorInfo>} */
-  async getAddonWithOperator() {
+  async getAddonInfo() {
     const rawAddon = await this._getAddon();
-    const operator = await this._getOperator(rawAddon.realId);
-
-    return operator;
+    const addonDetails = await this._getAddonDetails(rawAddon.provider.id);
+    return addonDetails;
   }
 }
 
