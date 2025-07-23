@@ -47,7 +47,6 @@ defineSmartComponent({
     const { apiConfig, addonId, ownerId } = context;
     const api = new Api(apiConfig, ownerId, addonId);
 
-    console.log('UPDATE COMP');
     updateComponent('state', {
       type: 'loading',
       content: SKELETON_DATA,
