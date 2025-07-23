@@ -17,7 +17,7 @@ const config = {
     // The smart component Markdown docs
     '../src/**/*smart*.md',
   ],
-  addons: ['@storybook/addon-links', '@storybook/addon-essentials'],
+  addons: ['@storybook/addon-links', '@storybook/addon-docs'],
   framework: {
     name: '@storybook/web-components-vite',
     options: {},

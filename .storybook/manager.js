@@ -1,5 +1,7 @@
-import { addons } from '@storybook/manager-api';
-import { create } from '@storybook/theming';
+// eslint-disable-next-line import/extensions, import/no-unresolved
+import { addons } from 'storybook/manager-api';
+// eslint-disable-next-line import/extensions, import/no-unresolved
+import { create } from 'storybook/theming';
 import { generateDocsHref } from '../src/lib/utils.js';
 import { enhanceStoryName } from '../src/stories/lib/story-names.js';
 
