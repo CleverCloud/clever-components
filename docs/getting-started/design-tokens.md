@@ -35,6 +35,7 @@ As our design tokens only exist (for now) as CSS values, keys will be listed as 
 |:------------------------------------|:---------------------|:----------------|
 | `--cc-color-text-danger`            | `--color-red-100`    | `#be242d`       |
 | `--cc-color-text-default`           | `--color-grey-90`    | `#262626`       |
+| `--cc-color-text-disabled`          | `--color-grey-70`    | `#595959`       |
 | `--cc-color-text-inverted`          | `--color-white`      | `#ffffff`       |
 | `--cc-color-text-primary`           | `--color-blue-60`    | `#3569aa`       |
 | `--cc-color-text-primary-highlight` | `--color-blue-70`    | `#0061bd`       |
