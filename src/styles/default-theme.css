@@ -58,6 +58,9 @@
   For instance: error messages */
   --cc-color-text-danger: var(--color-red-100);
 
+  /* Usage: text part of a disabled element. */
+  --cc-color-text-disabled: var(--color-grey-70);
+
   /* Usage: regular text. */
   --cc-color-text-default: var(--color-grey-90);
 
