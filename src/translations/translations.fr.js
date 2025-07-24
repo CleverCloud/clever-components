@@ -97,7 +97,7 @@ export const translations = {
   'cc-addon-access-info.name.uri': `URI`,
   'cc-addon-access-info.name.user': `Utilisateur`,
   'cc-addon-access-info.ng.disable': `Désactiver`,
-  'cc-addon-access-info.ng.enable': `Activer les Network Groups`,
+  'cc-addon-access-info.ng.enable': `Enable Network Groups`,
   //#endregion
   //#region cc-addon-access-unique
   'cc-addon-access-unique.choice.api': `API`,
@@ -110,6 +110,10 @@ export const translations = {
   'cc-addon-access-unique.cli.heading': `Utiliser depuis le terminal`,
   'cc-addon-access-unique.cli.text': `Utilisez la commande suivante pour effectuer cette action depuis votre terminal.`,
   'cc-addon-access-unique.heading': `Accès`,
+  'cc-addon-access-unique.ng.disabling.error': `Une erreur est survenue lors de la désactivation du Network Group`,
+  'cc-addon-access-unique.ng.disabling.success': `Le Network Group a été désactivé avec succès`,
+  'cc-addon-access-unique.ng.enabling.error': `Une erreur est survenue lors de l'activation du Network Group`,
+  'cc-addon-access-unique.ng.enabling.success': `Le Network Group a été activé avec succès`,
   //#endregion
   //#region cc-addon-admin
   'cc-addon-admin.admin': `Administration de l'add-on`,

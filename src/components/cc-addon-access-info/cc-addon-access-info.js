@@ -143,19 +143,32 @@ export class CcAddonAccessInfo extends LitElement {
    * @param {boolean} skeleton
    **/
   _renderNetworkGroupInfo(networkGroupInfo, skeleton) {
-    if (networkGroupInfo.isEnabled) {
+    // TODO: handle focus loss with lostFocusController
+    if (networkGroupInfo.status === 'enabled' || networkGroupInfo.status === 'disabling') {
       return html`
         <span class="${classMap({ skeleton })}">${networkGroupInfo.id}</span>
         <cc-clipboard .value="${networkGroupInfo.id}"></cc-clipboard>
-        <cc-button link @cc-click="${this._onNgDisable}" ?skeleton="${skeleton}"
-          >${i18n('cc-addon-access-info.ng.disable')}</cc-button
+        <cc-button
+          link
+          @cc-click="${this._onNgDisable}"
+          ?skeleton="${skeleton}"
+          .waiting="${networkGroupInfo.status === 'disabling'}"
         >
+          ${i18n('cc-addon-access-info.ng.disable')}
+        </cc-button>
       `;
     }
 
-    return html`<cc-button link @cc-click="${this._onNgEnable}" ?skeleton="${skeleton}"
-      >${i18n('cc-addon-access-info.ng.enable')}</cc-button
-    >`;
+    return html`
+      <cc-button
+        link
+        @cc-click="${this._onNgEnable}"
+        ?skeleton="${skeleton}"
+        .waiting="${networkGroupInfo.status === 'enabling'}"
+      >
+        ${i18n('cc-addon-access-info.ng.enable')}
+      </cc-button>
+    `;
   }
 
   static get styles() {
@@ -169,14 +182,14 @@ export class CcAddonAccessInfo extends LitElement {
         dl,
         dt,
         dd {
-          padding: 0;
           margin: 0;
+          padding: 0;
         }
 
         .info-list-item {
+          align-items: center;
           display: flex;
           flex-wrap: wrap;
-          align-items: center;
           padding: 1em 0.5em;
         }
 
@@ -185,16 +198,16 @@ export class CcAddonAccessInfo extends LitElement {
         }
 
         dt {
-          font-weight: bold;
           flex: 1 1 min(15em, 100%);
+          font-weight: bold;
         }
 
         dd {
-          display: flex;
-          gap: 0.5em;
-          flex-wrap: wrap;
           align-items: center;
+          display: flex;
           flex: 1 1 min(15em, 100%);
+          flex-wrap: wrap;
+          gap: 0.5em;
         }
 
         .skeleton {

@@ -8,11 +8,28 @@ export interface AddonAccessInfoRaw {
 export interface AddonAccessInfoNetworkGroup {
   code: 'ng';
   value:
-    | {
-        isEnabled: true;
-        id: string;
-      }
-    | { isEnabled: false };
+    | AddonInfoNetworkGroupDisabled
+    | AddonInfoNetworkGroupDisabling
+    | AddonInfoNetworkGroupEnabled
+    | AddonInfoNetworkGroupEnabling;
+}
+
+export interface AddonInfoNetworkGroupDisabled {
+  status: 'disabled';
+}
+
+export interface AddonInfoNetworkGroupEnabled {
+  status: 'enabled';
+  id: string;
+}
+
+export interface AddonInfoNetworkGroupDisabling {
+  status: 'disabling';
+  id: string;
+}
+
+export interface AddonInfoNetworkGroupEnabling {
+  status: 'enabling';
 }
 
 type AccessInfoLabel =

@@ -15,7 +15,7 @@ const SKELETON_DATA = [
   },
   {
     code: 'user',
-    value: 'skeleto-user',
+    value: 'skeleton-user',
   },
   {
     code: 'password',

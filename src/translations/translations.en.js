@@ -99,6 +99,10 @@ export const translations = {
   'cc-addon-access-unique.cli.heading': `Use from the terminal`,
   'cc-addon-access-unique.cli.text': `Use the following command to perform this action from your terminal.`,
   'cc-addon-access-unique.heading': `Access`,
+  'cc-addon-access-unique.ng.disabling.error': `Something went wrong while trying to disable the Network Group`,
+  'cc-addon-access-unique.ng.disabling.success': `The Network Group has been successfully disabled`,
+  'cc-addon-access-unique.ng.enabling.error': `Something went wrong while trying to enable the Network Group`,
+  'cc-addon-access-unique.ng.enabling.success': `The Network Group has been successfully enabled`,
   //#endregion
   //#region cc-addon-admin
   'cc-addon-admin.admin': `Add-on administration`,
