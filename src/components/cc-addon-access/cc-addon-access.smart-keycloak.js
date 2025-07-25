@@ -30,10 +30,10 @@ const SKELETON_DATA = [
  * @typedef {import('./cc-addon-access-unique.types.js').CcAddonAccessUniqueStateLoaded} CcAddonAccessUniqueStateLoaded
  * @typedef {import('./cc-addon-access-unique.types.js').RawAddon} RawAddon
  * @typedef {import('./cc-addon-access-unique.types.js').KeycloakOperatorInfo} KeycloakOperatorInfo
- * @typedef {import('../cc-addon-access-info/cc-addon-access-info.types.js').AddonAccessInfo} AddonAccessInfo
- * @typedef {import('../cc-addon-access-info/cc-addon-access-info.types.js').AddonAccessInfoNetworkGroup} AddonAccessInfoNetworkGroup
- * @typedef {import('../cc-addon-access-info/cc-addon-access-info.types.js').AddonInfoNetworkGroupEnabled} AddonInfoNetworkGroupEnabled
- * @typedef {import('../cc-addon-access-info/cc-addon-access-info.types.js').AddonInfoNetworkGroupDisabled} AddonInfoNetworkGroupDisabled
+ * @typedef {import('../cc-addon-access-items/cc-addon-access-info.types.js').AddonAccessItem} AddonAccessInfo
+ * @typedef {import('../cc-addon-access-items/cc-addon-access-info.types.js').AddonAccessItemNetworkGroup} AddonAccessInfoNetworkGroup
+ * @typedef {import('../cc-addon-access-items/cc-addon-access-info.types.js').AddonInfoNetworkGroupEnabled} AddonInfoNetworkGroupEnabled
+ * @typedef {import('../cc-addon-access-items/cc-addon-access-info.types.js').AddonInfoNetworkGroupDisabled} AddonInfoNetworkGroupDisabled
  * @typedef {import('../../lib/send-to-api.js').ApiConfig} ApiConfig
  * @typedef {import('../../lib/smart/smart-component.types.js').OnContextUpdateArgs<CcAddonAccessUnique>} OnContextUpdateArgs
  */
@@ -147,7 +147,7 @@ defineSmartComponent({
 
       api
         .deleteNg()
-        .then(() => {
+        .then(() =>
           updateNg({
             code: 'ng',
             value: {

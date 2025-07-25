@@ -1,7 +1,7 @@
 import { LitElement, html } from 'lit';
 import { iconRemixInformationFill as iconInfo } from '../../assets/cc-remix.icons.js';
 import { i18n } from '../../translations/translation.js';
-import '../cc-addon-access-info/cc-addon-access-info.js';
+import '../cc-addon-access-items/cc-addon-access-items.js';
 import '../cc-block-details/cc-block-details.js';
 import '../cc-block/cc-block.js';
 import '../cc-code/cc-code.js';
@@ -12,14 +12,14 @@ import '../cc-notice/cc-notice.js';
 import '../cc-toggle/cc-toggle.js';
 
 /**
- * @typedef {import('./cc-addon-access-unique.types.js').CcAddonAccessUniqueState} CcAddonAccessUniqueState
- * @typedef {import('./cc-addon-access-unique.types.js').TabbedContent} TabbedContent
- * @typedef {import('./cc-addon-access-unique.types.js').TabName} TabName
+ * @typedef {import('./cc-addon-access.types.js').CcAddonAccessState} CcAddonAccessUniqueState
+ * @typedef {import('./cc-addon-access.types.js').TabbedContent} TabbedContent
+ * @typedef {import('./cc-addon-access.types.js').TabName} TabName
  * @typedef {import('../cc-toggle/cc-toggle.types.js').Choice} Choice
- * @typedef {import('lit').PropertyValues<CcAddonAccessUnique>} CcAddonAccessUniquePropertyValues
+ * @typedef {import('lit').PropertyValues<CcAddonAccess>} CcAddonAccessUniquePropertyValues
  */
 
-export class CcAddonAccessUnique extends LitElement {
+export class CcAddonAccess extends LitElement {
   static get properties() {
     return {
       docLink: { type: Object, attribute: 'doc-link' },
@@ -104,11 +104,11 @@ export class CcAddonAccessUnique extends LitElement {
         <div slot="header-title">${i18n('cc-addon-access-unique.heading')}</div>
         ${this.state.type === 'loaded' || this.state.type === 'loading'
           ? html`
-              <cc-addon-access-info
-                .info="${this.state.content}"
+              <cc-addon-access-items-beta
+                .addonAccessItems="${this.state.content}"
                 .skeleton="${skeleton}"
                 slot="content"
-              ></cc-addon-access-info>
+              ></cc-addon-access-items-beta>
             `
           : ''}
         ${this.state.type === 'loaded-with-tabs' || this.state.type === 'loading-with-tabs'
@@ -135,7 +135,11 @@ export class CcAddonAccessUnique extends LitElement {
         @cc-select="${this._onTabSelect}"
         slot="header-right"
       ></cc-toggle>
-      <cc-addon-access-info .info="${selectedTabContent}" .skeleton="${skeleton}" slot="content"></cc-addon-access-info>
+      <cc-addon-access-items-beta
+        .addonAccessItems="${selectedTabContent}"
+        .skeleton="${skeleton}"
+        slot="content"
+      ></cc-addon-access-items-beta>
     `;
   }
 
@@ -158,4 +162,5 @@ export class CcAddonAccessUnique extends LitElement {
   }
 }
 
-customElements.define('cc-addon-access-unique', CcAddonAccessUnique);
+// eslint-disable-next-line wc/tag-name-matches-class
+customElements.define('cc-addon-access-beta', CcAddonAccess);

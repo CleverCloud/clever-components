@@ -25,7 +25,7 @@ const SKELETON_DATA = [
 
 /**
  * @typedef {import('./cc-addon-access-unique.js').CcAddonAccessUnique} CcAddonAccessUnique
- * @typedef {import('../cc-addon-access-info/cc-addon-access-info.types.js').AddonAccessInfo} AddonAccessInfo
+ * @typedef {import('../cc-addon-access-items/cc-addon-access-info.types.js').AddonAccessItem} AddonAccessInfo
  * @typedef {import('./cc-addon-access-unique.types.js').TabbedContent} TabbedContent
  * @typedef {import('./cc-addon-access-unique.types.js').RawAddon} RawAddon
  * @typedef {import('./cc-addon-access-unique.types.js').KeycloakOperatorInfo} KeycloakOperatorInfo

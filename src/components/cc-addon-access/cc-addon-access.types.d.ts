@@ -1,42 +1,23 @@
-import { AddonAccessInfo } from '../cc-addon-access-info/cc-addon-access-info.types.js';
+import { AddonAccessItem } from '../cc-addon-access-items/cc-addon-access-items.types.js';
 import { AddonPlan, AddonProvider } from '../common.types.js';
 
-export type CcAddonAccessUniqueState =
-  | CcAddonAccessUniqueStateLoading
-  | CcAddonAccessUniqueStateLoadingWithTabs
-  | CcAddonAccessUniqueStateError
-  | CcAddonAccessUniqueStateLoaded
-  | CcAddonAccessUniqueStateLoadedWithTabs;
+export type CcAddonAccessState = CcAddonAccessStateLoading | CcAddonAccessStateError | CcAddonAccessStateLoaded;
 
-export interface CcAddonAccessUniqueStateLoading {
+export interface CcAddonAccessStateLoading {
   type: 'loading';
-  content?: Array<AddonAccessInfo>;
-  cliCommand?: string;
-}
-
-export interface CcAddonAccessUniqueStateLoadingWithTabs {
-  type: 'loading-with-tabs';
-  tabs?: TabbedContent;
-  cliCommand?: string;
+  content?: TabbedContent;
 }
 
 type TabbedContent = {
-  [key in TabName]?: Array<AddonAccessInfo>;
+  [key in TabName & string]?: Array<AddonAccessItem>;
 };
 
-export interface CcAddonAccessUniqueStateLoadedWithTabs {
-  type: 'loaded-with-tabs';
-  tabs: TabbedContent;
-  cliCommand?: string;
-}
-
-export interface CcAddonAccessUniqueStateLoaded {
+export interface CcAddonAccessStateLoaded {
   type: 'loaded';
-  content: Array<AddonAccessInfo>;
-  cliCommand?: string;
+  content: TabbedContent;
 }
 
-export interface CcAddonAccessUniqueStateError {
+export interface CcAddonAccessStateError {
   type: 'error';
 }
 
@@ -54,6 +35,7 @@ export interface RawAddon {
   creationDate: number;
   configKeys: string[];
 }
+
 export interface KeycloakOperatorInfo {
   resourceId: string;
   addonId: string;
