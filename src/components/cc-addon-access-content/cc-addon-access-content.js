@@ -6,14 +6,14 @@ import { i18n } from '../../translations/translation.js';
 import '../cc-button/cc-button.js';
 import '../cc-clipboard/cc-clipboard.js';
 import '../cc-input-text/cc-input-text.js';
-import { CcNgDisable, CcNgEnable } from './cc-addon-access-items.events.js';
+import { CcNgDisable, CcNgEnable } from './cc-addon-access-content.events.js';
 
 /**
- * @typedef {import('./cc-addon-access-items.types.js').AddonAccessItem} AddonAccessItem
- * @typedef {import('./cc-addon-access-items.types.js').AddonAccessItemNetworkGroup} AddonAccessItemNetworkGroup
+ * @typedef {import('./cc-addon-access-content.types.js').AddonAccessContentItem} AddonAccessContentItem
+ * @typedef {import('./cc-addon-access-content.types.js').AddonAccessContentItemNg} AddonAccessContentItemNg
  */
 
-/** @type {Set<AddonAccessItem['code']>} */
+/** @type {Set<AddonAccessContentItem['code']>} */
 const itemsToDisplayAsString = new Set([
   'user',
   'api-url',
@@ -27,7 +27,7 @@ const itemsToDisplayAsString = new Set([
   'cluster-full-name',
   'api-client-user',
 ]);
-/** @type {Set<AddonAccessItem['code']>} */
+/** @type {Set<AddonAccessContentItem['code']>} */
 const itemsToDisplayAsInput = new Set([
   'password',
   'initial-password',
@@ -49,10 +49,10 @@ const itemsToDisplayAsInput = new Set([
  *
  * @cssdisplay block
  */
-export class CcAddonAccessItems extends LitElement {
+export class CcAddonAccessContent extends LitElement {
   static get properties() {
     return {
-      addonAccessItems: { type: Array, attribute: 'addon-access-items' },
+      contentItems: { type: Array, attribute: 'addon-access-items' },
       skeleton: { type: Boolean },
     };
   }
@@ -60,8 +60,8 @@ export class CcAddonAccessItems extends LitElement {
   constructor() {
     super();
 
-    /** @type {Array<AddonAccessItem>} Sets the list of items displayed. The array order dictates the order in which items are rendered. */
-    this.addonAccessItems = [];
+    /** @type {Array<AddonAccessContentItem>} Sets the list of items displayed. The array order dictates the order in which items are rendered. */
+    this.contentItems = [];
 
     /** @type {boolean} Whether to display the component in skeleton (loading) state. */
     this.skeleton = false;
@@ -75,7 +75,7 @@ export class CcAddonAccessItems extends LitElement {
   /**
    * Returns the translated label for a given item code.
    *
-   * @param {AddonAccessItem['code']} code - The code of the access item.
+   * @param {AddonAccessContentItem['code']} code - The code of the access item.
    * @returns {string} The translated label.
    */
   _getLabelFromCode(code) {
@@ -134,16 +134,16 @@ export class CcAddonAccessItems extends LitElement {
   render() {
     return html`
       <dl>
-        ${this.addonAccessItems.map((addonAccessInfo) => this._renderItem(addonAccessInfo, this.skeleton))}</div>
+        ${this.contentItems.map((contentItem) => this._renderContentItem(contentItem, this.skeleton))}</div>
       </dl>
     `;
   }
 
   /**
-   * @param {AddonAccessItem} param0 - The access item to render.
+   * @param {AddonAccessContentItem} contentItem - The access item to render.
    * @param {boolean} skeleton - Whether to display the item in skeleton state.
    */
-  _renderItem({ code, value }, skeleton) {
+  _renderContentItem({ code, value }, skeleton) {
     const label = this._getLabelFromCode(code);
     return html`
       <div class="list-item">
@@ -165,28 +165,28 @@ export class CcAddonAccessItems extends LitElement {
                 ?skeleton="${skeleton}"
               ></cc-input-text>`
             : ''}
-          ${code === 'ng' ? this._renderNetworkGroupInfo(value, skeleton) : ''}
+          ${code === 'ng' ? this._renderNgItem(value, skeleton) : ''}
         </dd>
       </div>
     `;
   }
 
   /**
-   * @param {AddonAccessItemNetworkGroup['value']} networkGroupInfo - The network group info value.
+   * @param {AddonAccessContentItemNg['value']} ngItem - The network group info value.
    * @param {boolean} skeleton - Whether to display in skeleton state.
    **/
-  _renderNetworkGroupInfo(networkGroupInfo, skeleton) {
+  _renderNgItem(ngItem, skeleton) {
     // TODO: handle focus loss with lostFocusController
-    if (networkGroupInfo.status === 'enabled' || networkGroupInfo.status === 'disabling') {
+    if (ngItem.status === 'enabled' || ngItem.status === 'disabling') {
       return html`
-        <span class="${classMap({ skeleton })}">${networkGroupInfo.id}</span>
-        ${!skeleton ? html`<cc-clipboard .value="${networkGroupInfo.id}"></cc-clipboard>` : ''}
+        <span class="${classMap({ skeleton })}">${ngItem.id}</span>
+        ${!skeleton ? html`<cc-clipboard .value="${ngItem.id}"></cc-clipboard>` : ''}
         <cc-button
           class="ng-btn"
           link
           @cc-click="${this._onNgDisable}"
           ?skeleton="${skeleton}"
-          .waiting="${networkGroupInfo.status === 'disabling'}"
+          .waiting="${ngItem.status === 'disabling'}"
         >
           ${i18n('cc-addon-access-items.ng.disable')}
         </cc-button>
@@ -199,7 +199,7 @@ export class CcAddonAccessItems extends LitElement {
         link
         @cc-click="${this._onNgEnable}"
         ?skeleton="${skeleton}"
-        .waiting="${networkGroupInfo.status === 'enabling'}"
+        .waiting="${ngItem.status === 'enabling'}"
       >
         ${i18n('cc-addon-access-items.ng.enable')}
       </cc-button>
@@ -259,4 +259,4 @@ export class CcAddonAccessItems extends LitElement {
 }
 
 // eslint-disable-next-line wc/tag-name-matches-class
-customElements.define('cc-addon-access-items-beta', CcAddonAccessItems);
+customElements.define('cc-addon-access-content-beta', CcAddonAccessContent);

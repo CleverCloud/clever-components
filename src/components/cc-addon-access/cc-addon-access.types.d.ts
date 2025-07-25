@@ -1,20 +1,20 @@
-import { AddonAccessItem } from '../cc-addon-access-items/cc-addon-access-items.types.js';
+import { AddonAccessContentItem } from '../cc-addon-access-content/cc-addon-access-content.types.js';
 import { AddonPlan, AddonProvider } from '../common.types.js';
 
 export type CcAddonAccessState = CcAddonAccessStateLoading | CcAddonAccessStateError | CcAddonAccessStateLoaded;
 
 export interface CcAddonAccessStateLoading {
   type: 'loading';
-  content?: TabbedContent;
+  tabs?: Tabs;
 }
 
-type TabbedContent = {
-  [key in TabName & string]?: Array<AddonAccessItem>;
+type Tabs = {
+  [key in TabName & string]?: Array<AddonAccessContentItem>;
 };
 
 export interface CcAddonAccessStateLoaded {
   type: 'loaded';
-  content: TabbedContent;
+  tabs: Tabs;
 }
 
 export interface CcAddonAccessStateError {

@@ -21,7 +21,7 @@ export const defaultStory = makeStory(conf, {
     {
       state: {
         type: 'loaded',
-        content: {
+        tabs: {
           default: [
             { code: 'user', value: 'toto-user' },
             { code: 'password', value: 'my-secret-password' },
@@ -44,7 +44,7 @@ export const dataLoadedWithTabs = makeStory(conf, {
     {
       state: {
         type: 'loaded',
-        content: {
+        tabs: {
           elastic: [
             { code: 'host', value: 'example.com' },
             { code: 'user', value: 'toto' },
@@ -75,7 +75,7 @@ export const loading = makeStory(conf, {
     {
       state: {
         type: 'loading',
-        content: {
+        tabs: {
           default: [
             { code: 'user', value: 'toto-user' },
             { code: 'password', value: 'my-secret-password' },
@@ -98,7 +98,7 @@ export const loadingWithTabs = makeStory(conf, {
     {
       state: {
         type: 'loading',
-        content: {
+        tabs: {
           elastic: [
             { code: 'host', value: 'example.com' },
             { code: 'user', value: 'toto' },
@@ -129,7 +129,7 @@ export const simulationWithLoadingSuccess = makeStory(conf, {
     {
       state: {
         type: 'loading',
-        content: {
+        tabs: {
           default: [
             { code: 'user', value: 'toto-user' },
             { code: 'password', value: 'my-secret-password' },
@@ -151,7 +151,7 @@ export const simulationWithLoadingSuccess = makeStory(conf, {
       ([component]) => {
         component.state = {
           type: 'loaded',
-          content: {
+          tabs: {
             default: [
               { code: 'user', value: 'toto-user' },
               { code: 'password', value: 'my-secret-password' },
@@ -171,7 +171,7 @@ export const simulationsWithTabsAndLoadingSuccess = makeStory(conf, {
     {
       state: {
         type: 'loading',
-        content: {
+        tabs: {
           elastic: [
             { code: 'host', value: 'example.com' },
             { code: 'user', value: 'toto' },
@@ -201,7 +201,7 @@ export const simulationsWithTabsAndLoadingSuccess = makeStory(conf, {
       ([component]) => {
         component.state = {
           type: 'loaded',
-          content: {
+          tabs: {
             elastic: [
               { code: 'host', value: 'example.com' },
               { code: 'user', value: 'toto' },
@@ -229,7 +229,7 @@ export const simulationsWithLoadingError = makeStory(conf, {
     {
       state: {
         type: 'loading',
-        content: {
+        tabs: {
           default: [
             { code: 'user', value: 'toto-user' },
             { code: 'password', value: 'my-secret-password' },
@@ -263,7 +263,7 @@ export const simulationsWithNetworkGroupStatus = makeStory(conf, {
     {
       state: {
         type: 'loaded',
-        content: {
+        tabs: {
           default: [
             { code: 'user', value: 'toto-user' },
             { code: 'ng', value: { status: 'disabled' } },
@@ -283,7 +283,7 @@ export const simulationsWithNetworkGroupStatus = makeStory(conf, {
       ([component]) => {
         component.state = {
           type: 'loaded',
-          content: {
+          tabs: {
             default: [
               { code: 'user', value: 'toto-user' },
               { code: 'ng', value: { status: 'enabling' } },
@@ -298,7 +298,7 @@ export const simulationsWithNetworkGroupStatus = makeStory(conf, {
       ([component]) => {
         component.state = {
           type: 'loaded',
-          content: {
+          tabs: {
             default: [
               { code: 'user', value: 'toto-user' },
               { code: 'ng', value: { status: 'enabled', id: 'fake-ng-id-12345' } },
@@ -313,7 +313,7 @@ export const simulationsWithNetworkGroupStatus = makeStory(conf, {
       ([component]) => {
         component.state = {
           type: 'loaded',
-          content: {
+          tabs: {
             default: [
               { code: 'user', value: 'toto-user' },
               { code: 'ng', value: { status: 'disabling', id: 'fake-ng-id-12345' } },
@@ -328,7 +328,7 @@ export const simulationsWithNetworkGroupStatus = makeStory(conf, {
       ([component]) => {
         component.state = {
           type: 'loaded',
-          content: {
+          tabs: {
             default: [
               { code: 'user', value: 'toto-user' },
               { code: 'ng', value: { status: 'disabled' } },
