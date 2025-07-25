@@ -102,6 +102,7 @@ defineSmartComponent({
     });
 
     updateComponent('state', { type: 'loading' });
+    updateComponent('resourceId', appId);
 
     fetchTcpRedirectionsAndNamespaces({ apiConfig, ownerId, appId, signal })
       .then((redirections) => {
