@@ -5,6 +5,27 @@ title: 'Changelog'
 
 # Changelog
 
+## [19.4.0](https://github.com/CleverCloud/clever-components/compare/19.3.1...19.4.0) (2025-07-25)
+
+
+### 🚀 Features
+
+* **cc-addon-backups:** add text and cc-code in the cc-block-details ([071cc89](https://github.com/CleverCloud/clever-components/commit/071cc8902299cc0afa8a2bba909b420900cbb9af))
+* **cc-code:** init component ([b825734](https://github.com/CleverCloud/clever-components/commit/b8257342fa99197bcf249721177afbf90840d012))
+* **cc-domain-management:** add text and cc-code in the cc-block-details ([563421f](https://github.com/CleverCloud/clever-components/commit/563421f73f66f6a8384a99661b5a253e36624e3f))
+* **cc-env-var-form:** add text and cc-code in the cc-block-details ([45fc725](https://github.com/CleverCloud/clever-components/commit/45fc72560e8a4d393bbe0452e92bb16f09cf2b7c))
+* **cc-product-card:** replace keywords with a productStatus ([3afde19](https://github.com/CleverCloud/clever-components/commit/3afde198c51c4a0a03ab68cdfe031078fe08b6e0))
+* **cc-tcp-redirection-form:** add text and cc-code in the cc-block-details ([04ccdc9](https://github.com/CleverCloud/clever-components/commit/04ccdc9320101b5fe1dc89fbac730a83c79dcfd5))
+* **cc-token-api-creation-form:** add text and cc-code in the cc-block-details ([8adec53](https://github.com/CleverCloud/clever-components/commit/8adec53de6bd9b7d4e58ccd3c76a74db3d022339))
+* **cc-token-api-list:** add text and cc-code in the cc-block-details ([ccdd3a2](https://github.com/CleverCloud/clever-components/commit/ccdd3a21ff8d78f7477bddeb37a08bde63c3e3be))
+* **cc-token-api-update-form:** add text and cc-code in the cc-block-details ([ff0dcf0](https://github.com/CleverCloud/clever-components/commit/ff0dcf06cdc4c4e48e6beb5ccdaf599bc09c2551))
+
+
+### 🐛 Bug Fixes
+
+* **cc-code:** fix component refresh ([85eef0f](https://github.com/CleverCloud/clever-components/commit/85eef0f36eda420ce817e1ee820f4c51ba975d55))
+* **cc-input-text:** align back button correctly on multi ([a38b95a](https://github.com/CleverCloud/clever-components/commit/a38b95aefaf90328eed32e3722ac16467a0d19a4))
+
 ## [19.3.1](https://github.com/CleverCloud/clever-components/compare/19.3.0...19.3.1) (2025-07-09)
 
 
