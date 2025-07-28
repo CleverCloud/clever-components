@@ -88,7 +88,6 @@ export const translations = {
   //#endregion
   //#region cc-addon-backups
   'cc-addon-backups.cli.content.download-backup-command': `List available database backups:`,
-  // eslint-disable-next-line i18n/valid-value
   'cc-addon-backups.cli.content.instruction': getCliInstructions,
   'cc-addon-backups.cli.content.intro': `
       You can manage backups directly from your terminal using the commands below.
@@ -289,7 +288,6 @@ export const translations = {
   'cc-domain-management.dns.a.heading': `A records`,
   'cc-domain-management.dns.a.label': `A Record values`,
   'cc-domain-management.dns.cli.content.diag-conf-command': `Diagnose the current configuration:`,
-  // eslint-disable-next-line i18n/valid-value
   'cc-domain-management.dns.cli.content.instruction': getCliInstructions,
   'cc-domain-management.dns.cname.desc': () =>
     sanitize`<p>Using a <code>CNAME</code> record is recommended. This keeps your configuration up to date.</p>`,
@@ -359,7 +357,6 @@ export const translations = {
   'cc-domain-management.main-heading': `Manage your domain names`,
   'cc-domain-management.names.cli.content.add-domain-command': `Add a domain:`,
   'cc-domain-management.names.cli.content.diag-dns-records-command': `Diagnose DNS records:`,
-  // eslint-disable-next-line i18n/valid-value
   'cc-domain-management.names.cli.content.instruction': getCliInstructions,
   'cc-domain-management.names.cli.content.intro': `
       You can manage domains directly from your terminal using the commands below.
@@ -474,7 +471,6 @@ export const translations = {
   //#region cc-env-var-form
   'cc-env-var-form.cli.content.add-var-command': `Add or update an environment variable:`,
   'cc-env-var-form.cli.content.get-file-var-command': `Get a sourceable env file:`,
-  // eslint-disable-next-line i18n/valid-value
   'cc-env-var-form.cli.content.instruction': getCliInstructions,
   'cc-env-var-form.cli.content.intro': `
       You can manage environment variables directly from your terminal using the commands below.
@@ -1460,7 +1456,6 @@ export const translations = {
   //#region cc-tcp-redirection-form
   'cc-tcp-redirection-form.cli.content.add-tcp-redirection-command': `Add a TCP redirection:`,
   'cc-tcp-redirection-form.cli.content.add-tcp-redirection-command-default': `Add a TCP redirection (default namespace):`,
-  // eslint-disable-next-line i18n/valid-value
   'cc-tcp-redirection-form.cli.content.instruction': getCliInstructions,
   'cc-tcp-redirection-form.cli.content.intro': `
       You can manage TCP redirections directly from your terminal using the commands below.
@@ -1600,7 +1595,6 @@ export const translations = {
   //#endregion
   //#region cc-token-api-creation-form
   'cc-token-api-creation-form.cli.content.create-token': `Create a token:`,
-  // eslint-disable-next-line i18n/valid-value
   'cc-token-api-creation-form.cli.content.instruction': getCliInstructions,
   'cc-token-api-creation-form.cli.content.intro': `
       Manage your API tokens from a terminal using the commands below.
@@ -1658,7 +1652,6 @@ export const translations = {
   'cc-token-api-list.card.label.expiration': `Expiration: `,
   'cc-token-api-list.card.token-id-icon.a11y-name': `API token identifier`,
   'cc-token-api-list.cli.content.create-token': `Create a token:`,
-  // eslint-disable-next-line i18n/valid-value
   'cc-token-api-list.cli.content.instruction': getCliInstructions,
   'cc-token-api-list.cli.content.intro': `
       Manage your API tokens from a terminal using the commands below.
@@ -1690,7 +1683,6 @@ export const translations = {
   //#region cc-token-api-update-form
   'cc-token-api-update-form.back-to-list': `Back to the API token list`,
   'cc-token-api-update-form.cli.content.create-token': `Create a token:`,
-  // eslint-disable-next-line i18n/valid-value
   'cc-token-api-update-form.cli.content.instruction': getCliInstructions,
   'cc-token-api-update-form.cli.content.intro': `
     Manage your API tokens from a terminal using the commands below.

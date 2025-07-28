@@ -63,6 +63,15 @@ export default {
           };
         `,
       },
+      {
+        name: 'identifier callback',
+        filename: '/translations/translations.fake.js',
+        code: `
+          export const translations = {
+            'cc-test.callback': someCallbackFunction,
+          };
+        `,
+      },
     ],
     invalid: [
       {

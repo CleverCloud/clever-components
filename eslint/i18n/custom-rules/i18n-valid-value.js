@@ -68,6 +68,10 @@ export default {
             continue;
           }
 
+          if (tp.value.type === 'Identifier') {
+            continue;
+          }
+
           if (tp.value.type === 'ArrowFunctionExpression') {
             if (tp.value.body.type === 'TemplateLiteral') {
               continue;
