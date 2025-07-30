@@ -69,6 +69,29 @@ const getCliInstructions = () =>
   sanitize`To install Clever Tools CLI, follow the instructions from the <cc-link href="${generateDocsHref('/cli/install/')}" a11y-desc="documentation - Install Clever Tools">documentation</cc-link>.`;
 
 export const translations = {
+  //#region cc-addon-access-content
+  'cc-addon-access-content.code.api-client-secret': `API client secret`,
+  'cc-addon-access-content.code.api-client-user': `API client user`,
+  'cc-addon-access-content.code.api-key': `API key`,
+  'cc-addon-access-content.code.api-password': `API password`,
+  'cc-addon-access-content.code.api-url': `API URL`,
+  'cc-addon-access-content.code.cluster-full-name': `Cluster full name`,
+  'cc-addon-access-content.code.database-name': `Database name`,
+  'cc-addon-access-content.code.direct-host': `Direct host`,
+  'cc-addon-access-content.code.direct-port': `Direct port`,
+  'cc-addon-access-content.code.direct-uri': `Direct URI`,
+  'cc-addon-access-content.code.host': `Host`,
+  'cc-addon-access-content.code.initial-password': `Initial password`,
+  'cc-addon-access-content.code.network-group': `Network group`,
+  'cc-addon-access-content.code.password': `Password`,
+  'cc-addon-access-content.code.port': `Port`,
+  'cc-addon-access-content.code.tenant': `Tenant`,
+  'cc-addon-access-content.code.token': `Token`,
+  'cc-addon-access-content.code.uri': `URI`,
+  'cc-addon-access-content.code.user': `User`,
+  'cc-addon-access-content.ng.disable': `Disable`,
+  'cc-addon-access-content.ng.enable': `Enable Network Groups`,
+  //#endregion
   //#region cc-addon-admin
   'cc-addon-admin.admin': `Add-on administration`,
   'cc-addon-admin.danger-zone': `Danger zone`,

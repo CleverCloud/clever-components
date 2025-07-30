@@ -1,4 +1,5 @@
 // This file is auto-generated. Do not edit manually.
+import { CcNgDisable, CcNgEnable } from '../components/cc-addon-access-content/cc-addon-access-content.events.js';
 import {
   CcAddonDeleteEvent,
   CcAddonNameChangeEvent,
@@ -226,6 +227,8 @@ declare global {
     'cc-map-marker-enter': CcMapMarkerEnterEvent;
     'cc-map-marker-leave': CcMapMarkerLeaveEvent;
     'cc-multi-select': CcMultiSelectEvent;
+    'cc-ng-disable': CcNgDisable;
+    'cc-ng-enable': CcNgEnable;
     'cc-notice-dismiss': CcNoticeDismissEvent;
     'cc-notify': CcNotifyEvent;
     'cc-oauth-consumer-change': CcOauthConsumerChangeEvent;
