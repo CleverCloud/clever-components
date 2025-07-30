@@ -80,6 +80,29 @@ const getCliInstructions = () =>
   sanitize`Pour installer les Clever Tools (CLI), suivez les instructions de la <cc-link href="${generateDocsHref('/cli/install/')}" a11y-desc="documentation - Installer les Clever Tools - en Anglais">documentation</cc-link>.`;
 
 export const translations = {
+  //#region cc-addon-access-content
+  'cc-addon-access-content.code.api-client-secret': `Secret du client API`,
+  'cc-addon-access-content.code.api-client-user': `Utilisateur du client API`,
+  'cc-addon-access-content.code.api-key': `Clé API`,
+  'cc-addon-access-content.code.api-password': `Mot de passe API`,
+  'cc-addon-access-content.code.api-url': `URL de l'API`,
+  'cc-addon-access-content.code.cluster-full-name': `Nom complet du cluster`,
+  'cc-addon-access-content.code.database-name': `Nom de la base de données`,
+  'cc-addon-access-content.code.direct-host': `Hôte direct`,
+  'cc-addon-access-content.code.direct-port': `Port direct`,
+  'cc-addon-access-content.code.direct-uri': `URI directe`,
+  'cc-addon-access-content.code.host': `Hôte`,
+  'cc-addon-access-content.code.initial-password': `Mot de passe initial`,
+  'cc-addon-access-content.code.network-group': `Network Group`,
+  'cc-addon-access-content.code.password': `Mot de passe`,
+  'cc-addon-access-content.code.port': `Port`,
+  'cc-addon-access-content.code.tenant': `Tenant`,
+  'cc-addon-access-content.code.token': `Jeton`,
+  'cc-addon-access-content.code.uri': `URI`,
+  'cc-addon-access-content.code.user': `Utilisateur`,
+  'cc-addon-access-content.ng.disable': `Désactiver`,
+  'cc-addon-access-content.ng.enable': `Enable Network Groups`,
+  //#endregion
   //#region cc-addon-admin
   'cc-addon-admin.admin': `Administration de l'add-on`,
   'cc-addon-admin.danger-zone': `Zone de danger`,
