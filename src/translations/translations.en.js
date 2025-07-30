@@ -69,6 +69,23 @@ const getCliInstructions = () =>
   sanitize`To install Clever Tools CLI, follow the instructions from the <cc-link href="${generateDocsHref('/cli/install/')}" a11y-desc="documentation - Install Clever Tools">documentation</cc-link>.`;
 
 export const translations = {
+  //#region cc-addon-access
+  'cc-addon-access.choice.api': `API`,
+  'cc-addon-access.choice.apm': `APM`,
+  'cc-addon-access.choice.default': `Default`,
+  'cc-addon-access.choice.direct': `Direct`,
+  'cc-addon-access.choice.elastic': `Elastic`,
+  'cc-addon-access.choice.kibana': `Kibana`,
+  'cc-addon-access.cli.command': `Direct CLI command`,
+  'cc-addon-access.cli.heading': `Use from the terminal`,
+  'cc-addon-access.cli.text': `Use the following command to perform this action from your terminal.`,
+  'cc-addon-access.error': `Something went wrong while loading the add-on information.`,
+  'cc-addon-access.heading': `Access`,
+  'cc-addon-access.ng.disabling.error': `Something went wrong while trying to disable the Network Group`,
+  'cc-addon-access.ng.disabling.success': `The Network Group has been successfully disabled`,
+  'cc-addon-access.ng.enabling.error': `Something went wrong while trying to enable the Network Group`,
+  'cc-addon-access.ng.enabling.success': `The Network Group has been successfully enabled`,
+  //#endregion
   //#region cc-addon-access-content
   'cc-addon-access-content.code.api-client-secret': `API client secret`,
   'cc-addon-access-content.code.api-client-user': `API client user`,
