@@ -35,13 +35,13 @@ interface ApiConfig {
 
 ## 🌐 API endpoints
 
-| Method   | URL                                                                            | Cache?  |
-|----------|--------------------------------------------------------------------------------|---------|
-| `GET`    | `/v2/organisations/${ownerId}/addons/${addonId}`                               | Default |
-| `GET`    | `/v4/products/zones?ownerId=${ownerId}`                                        | Default |
-| `GET`    | `/v4/addon-providers/addon-${params.provider}/addons/${params.realId}`         | Default |
-| `POST`   | `/v4/addon-providers/addon-${params.provider}/addons/${params.realId}/reboot`  | Default |
-| `POST`   | `/v4/addon-providers/addon-${params.provider}/addons/${params.realId}/rebuild` | Default |
+| Method   | URL                                                                   | Cache?  |
+|----------|-----------------------------------------------------------------------|---------|
+| `GET`    | `/v2/organisations/${ownerId}/addons/${addonId}`                      | Default |
+| `GET`    | `/v4/products/zones?ownerId=${ownerId}`                               | Default |
+| `GET`    | `/v4/addon-providers/addon-keycloak/addons/${realId}`          | Default |
+| `POST`   | `/v4/addon-providers/addon-keycloak/addons/${realId}/reboot` | Default |
+| `POST`   | `/v4/addon-providers/addon-keycloak/addons/${realId}/rebuild` | Default |
 
 
 ## ⬇️️ Examples

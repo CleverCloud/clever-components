@@ -167,7 +167,7 @@ export class CcHeaderAddonBeta extends LitElement {
               `
             : ''}
           <span class="footer__spacer"></span>
-          <cc-zone .state=${zoneState} mode="small-infra" class=${classMap({ skeleton })}></cc-zone>
+          <cc-zone .state=${zoneState} mode="small-infra"></cc-zone>
         </div>
       </cc-block>
     `;
@@ -178,18 +178,20 @@ export class CcHeaderAddonBeta extends LitElement {
       skeletonStyles,
       // language=CSS
       css`
+        :host {
+          display: block;
+        }
+
         .main {
           display: flex;
           flex-wrap: wrap;
           gap: 1em;
-          width: 100%;
         }
 
         .addon-information {
           display: flex;
           flex: 1 1 0;
           gap: 1em;
-          width: 100%;
         }
 
         .logo {
@@ -201,9 +203,9 @@ export class CcHeaderAddonBeta extends LitElement {
         }
 
         .details {
-          /* display: flex; */
+          display: flex;
           flex-direction: column;
-          justify-content: space-between;
+          justify-content: space-around;
         }
 
         .details__title {
@@ -223,7 +225,17 @@ export class CcHeaderAddonBeta extends LitElement {
           gap: 0.5em;
         }
 
+        :host([w-lt-750]) .details__id span {
+          display: block;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          /** Change px to em or relative value ? */
+          /* width: 300px; */
+        }
+
         :host([w-lt-520]) .details__id span {
+          display: block;
           overflow: hidden;
           text-overflow: ellipsis;
           white-space: nowrap;
@@ -232,6 +244,7 @@ export class CcHeaderAddonBeta extends LitElement {
         }
 
         :host([w-lt-450]) .details__id span {
+          display: block;
           overflow: hidden;
           text-overflow: ellipsis;
           white-space: nowrap;

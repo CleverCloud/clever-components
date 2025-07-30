@@ -16,7 +16,7 @@ import './cc-header-addon-beta.js';
  * @typedef {import('./cc-header-addon-beta.types.js').RawOperator} RawOperator
  * @typedef {import('../../lib/send-to-api.types.js').ApiConfig} ApiConfig
  * @typedef {import('../../lib/smart/smart-component.types.js').OnContextUpdateArgs<CcHeaderAddonBeta>} OnContextUpdateArgs
- * @typedef {import('../common.types.js').Zone} Zone
+ * @typedef {import('../cc-zone/cc-zone.types.js').ZoneStateLoaded} ZoneStateLoaded
  */
 
 defineSmartComponent({
@@ -174,13 +174,13 @@ class Api {
 
   /**
    * @param {string} zoneName
-   * @return {Promise<Zone>}
+   * @return {Promise<ZoneStateLoaded>}
    */
   getZone(zoneName) {
     return getZone({ zoneName }).then(sendToApi({ apiConfig: this._apiConfig }));
   }
 
-  /** @returns {Promise<{ rawAddon: RawAddon, operator: RawOperator, zone: Zone }>} */
+  /** @returns {Promise<{ rawAddon: RawAddon, operator: RawOperator, zone: ZoneStateLoaded }>} */
   async getAddonWithOperatorAndZone() {
     const rawAddon = await this.getAddon();
     const [operator, zone] = await Promise.all([this.getOperator(rawAddon.realId), this.getZone(rawAddon.region)]);

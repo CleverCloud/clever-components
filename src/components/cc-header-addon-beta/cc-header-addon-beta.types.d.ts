@@ -1,11 +1,12 @@
-import { AddonPlan, AddonProvider, Zone } from '../common.types.js';
+import { ZoneStateLoaded } from '../cc-zone/cc-zone.types.js';
+import { AddonPlan, AddonProvider } from '../common.types.js';
 
 interface BaseProperties {
   providerName: string;
   providerLogoUrl: string;
   name: string;
   id: string;
-  zone: Zone;
+  zone: ZoneStateLoaded;
 }
 
 interface OptionalProperties {
