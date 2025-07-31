@@ -35,6 +35,7 @@ defineSmartComponent({
    */
   onContextUpdate({ component, context, onEvent, updateComponent, signal }) {
     const { apiConfig, appId, ownerId } = context;
+    updateComponent('applicationId', appId);
 
     /**
      * @param {string} id
