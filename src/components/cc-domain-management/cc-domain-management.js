@@ -66,10 +66,10 @@ const DNS_DOCUMENTATION = generateDocsHref('/administrate/domain-names/');
 export class CcDomainManagement extends LitElement {
   static get properties() {
     return {
+      applicationId: { type: String, attribute: 'application-id' },
       dnsInfoState: { type: Object, attribute: 'dns-info-state' },
       domainFormState: { type: Object, attribute: 'domain-form-state' },
       domainListState: { type: Object, attribute: 'domain-list-state' },
-      resourceId: { type: String, attribute: 'resource-id' },
       _sortedDomains: { type: Array, state: true },
     };
   }
@@ -92,8 +92,8 @@ export class CcDomainManagement extends LitElement {
   constructor() {
     super();
 
-    /** @type {string} Sets the resource id for documentation */
-    this.resourceId = '<APPLICATION_ID>';
+    /** @type {string} Sets the application id for documentation */
+    this.applicationId = '<APPLICATION_ID>';
 
     /** @type {DomainManagementDnsInfoState} Sets the state of the DNS info section */
     this.dnsInfoState = { type: 'loading' };
@@ -372,15 +372,15 @@ export class CcDomainManagement extends LitElement {
               <dl>
                 <dt>${i18n('cc-domain-management.names.cli.content.list-command')}</dt>
                 <dd>
-                  <cc-code>clever domain --app ${this.resourceId}</cc-code>
+                  <cc-code>clever domain --app ${this.applicationId}</cc-code>
                 </dd>
                 <dt>${i18n('cc-domain-management.names.cli.content.diag-dns-records-command')}</dt>
                 <dd>
-                  <cc-code>clever domain diag --app ${this.resourceId}</cc-code>
+                  <cc-code>clever domain diag --app ${this.applicationId}</cc-code>
                 </dd>
                 <dt>${i18n('cc-domain-management.names.cli.content.add-domain-command')}</dt>
                 <dd>
-                  <cc-code>clever domain add &lt;DOMAIN&gt; --app ${this.resourceId} </cc-code>
+                  <cc-code>clever domain add &lt;DOMAIN&gt; --app ${this.applicationId} </cc-code>
                 </dd>
               </dl>
             </div>
@@ -436,7 +436,7 @@ export class CcDomainManagement extends LitElement {
               <dl>
                 <dt>${i18n('cc-domain-management.dns.cli.content.diag-conf-command')}</dt>
                 <dd>
-                  <cc-code>clever diag --app ${this.resourceId}</cc-code>
+                  <cc-code>clever diag --app ${this.applicationId}</cc-code>
                 </dd>
               </dl>
             </div>
