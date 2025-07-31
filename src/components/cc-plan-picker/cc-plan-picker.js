@@ -2,15 +2,17 @@ import { css, html } from 'lit';
 import { iconRemixServerLine as labelIcon } from '../../assets/cc-remix.icons.js';
 import { CcFormControlElement } from '../../lib/form/cc-form-control-element.abstract.js';
 import { i18n } from '../../lib/i18n/i18n.js';
-import { accessibilityStyles } from '../../styles/accessibility.js';
-import '../cc-plan-item/cc-plan-item.js';
+import '../cc-badge/cc-badge.js';
+import '../cc-picker/cc-picker.js';
 import { CcSelectEvent } from '../common.events.js';
 
 /**
  * @typedef {import('lit').PropertyValues<CcPlanPicker>} CcPlanPickerPropertyValues
- * @typedef {import('../../lib/events.types.js').EventWithTarget} EventWithTarget
  * @typedef {import('../../lib/events.types.js').GenericEventWithTarget<InputEvent, HTMLInputElement>} HTMLInputElementEvent
+ * @typedef {import('../../lib/i18n/i18n.types.js').Translated} Translated
  * @typedef {import('./cc-plan-picker.types.js').PlanItem} PlanItem
+ * @typedef {import('./cc-plan-picker.types.js').PlanBadge} PlanBadge
+ * @typedef {import('./cc-plan-picker.types.js').PlanDetails} PlanDetails
  * @typedef {import('lit').TemplateResult<1>} TemplateResult
  */
 
@@ -99,6 +101,10 @@ export class CcPlanPicker extends CcFormControlElement {
    * @private
    */
   _onChangePlan(e) {
+    if (this.readonly) {
+      return;
+    }
+
     const currentPlan = this._findPlan(this.plans, e.target.value);
     this._currentPlanId = e.target.value;
     if (currentPlan.relatedPlans != null && currentPlan.relatedPlans.length > 0) {
@@ -117,6 +123,10 @@ export class CcPlanPicker extends CcFormControlElement {
    * @private
    */
   _onChangeRelatedPlan(e) {
+    if (this.readonly) {
+      return;
+    }
+
     this.value = e.target.value;
     this.dispatchEvent(new CcSelectEvent(this.value));
   }
@@ -139,120 +149,179 @@ export class CcPlanPicker extends CcFormControlElement {
   }
 
   render() {
-    const legendName = this.legend ?? i18n('cc-plan-picker.legend');
-
     return html`
-      <fieldset @input="${this._onChangePlan}">
-        <legend>
-          <cc-icon class="plan-legend-icon" .icon="${labelIcon}" size="lg"></cc-icon>
-          <span class="plan-legend-text">${legendName}</span>
-        </legend>
-        <div class="form-controls">
-          ${this.plans.map((plan) => this._renderPlan(plan, this.name, this._currentPlanId))}
-        </div>
-      </fieldset>
+      <div class="picker-wrapper">
+        <cc-icon .icon="${labelIcon}" size="lg"></cc-icon>
+        ${this._renderPlans({
+          plans: this.plans,
+          name: this.name,
+          value: this._currentPlanId,
+          legend: this.legend ?? i18n('cc-plan-picker.legend'),
+          inputFn: this._onChangePlan,
+        })}
+      </div>
       ${this._currentRelatedPlans != null && this._currentRelatedPlans.length > 0
-        ? html`
-            <fieldset @input="${this._onChangeRelatedPlan}">
-              <legend>
-                <cc-icon class="plan-legend-icon" .icon="${labelIcon}" size="lg"></cc-icon>
-                <span class="plan-legend-text">${i18n('cc-plan-picker.legend.customize')}</span>
-              </legend>
-              <div class="form-controls">
-                ${this._currentRelatedPlans.map((plan) => this._renderPlan(plan, 'related-plan', this.value))}
-              </div>
-            </fieldset>
-          `
+        ? html`<div class="picker-wrapper">
+            <cc-icon .icon="${labelIcon}" size="lg"></cc-icon>
+            ${this._renderPlans({
+              plans: this._currentRelatedPlans,
+              name: 'related-plan',
+              value: this.value,
+              legend: i18n('cc-plan-picker.legend.customize'),
+              inputFn: this._onChangeRelatedPlan,
+            })}
+          </div>`
         : ''}
     `;
   }
 
   /**
-   * @param {PlanItem} plan - A plan item
-   * @param {string} name - Form control name
-   * @param {string} currentPlanId - Currently selected plan ID
-   * @returns {TemplateResult} The rendered plan radio input and label
+   * @param {Object} _
+   * @param {function} _.inputFn
+   * @param {string|Translated} _.legend
+   * @param {string} _.name
+   * @param {PlanItem[]} _.plans
+   * @param {string} _.value
+   * @returns {TemplateResult}
    * @private
    */
-  _renderPlan(plan, name, currentPlanId) {
-    const isSelected = currentPlanId === plan.id;
-    const isDisabled = plan.disabled || (this.readonly && !isSelected);
+  _renderPlans({ inputFn, legend, name, plans, value }) {
+    const options = plans.map((plan) => {
+      return {
+        body: this._renderOptionBody(plan.name, plan.badge),
+        disabled: plan.disabled,
+        footer: this._renderOptionFooter(plan.details),
+        value: plan.id,
+      };
+    });
+    return html`<cc-picker
+      @input="${inputFn}"
+      label="${legend}"
+      name=${name}
+      .options=${options}
+      ?readonly=${this.readonly}
+      value=${value}
+    ></cc-picker>`;
+  }
+
+  /**
+   * @param {string} name
+   * @param {PlanBadge} badge
+   * @returns {TemplateResult}
+   * @private
+   */
+  _renderOptionBody(name, badge) {
+    return html`
+      <div part="option-body">
+        <span part="option-body--name">${name}</span>
+        ${badge != null
+          ? html` <cc-badge .intent="${badge.intent}" part="option-body--badge">${badge.content}</cc-badge> `
+          : ''}
+      </div>
+    `;
+  }
+
+  /**
+   * @param {Array<PlanDetails>} details
+   * @returns {TemplateResult}
+   * @private
+   */
+  _renderOptionFooter(details) {
+    if (details?.length === 0) {
+      return null;
+    }
 
     return html`
-      <div>
-        <input
-          class="visually-hidden"
-          type="radio"
-          name="${name}"
-          .value="${plan.id}"
-          .disabled=${isDisabled}
-          .checked="${isSelected}"
-          id="${plan.id}"
-        />
-        <label for="${plan.id}">
-          <cc-plan-item
-            name="${plan.name}"
-            ?disabled=${isDisabled}
-            .details="${plan.details}"
-            .selected=${isSelected}
-            .badge="${plan.badge}"
-          >
-          </cc-plan-item>
-        </label>
-      </div>
+      <ul part="option-footer">
+        ${details.map((detail) => {
+          return html`<li part="option-footer--detail">
+            <cc-icon .icon="${detail.icon}" size="md"></cc-icon>
+            <span>${detail.value}</span>
+          </li>`;
+        })}
+      </ul>
     `;
   }
 
   static get styles() {
     return [
-      accessibilityStyles,
       // language=CSS
       css`
+        /* region global */
         :host {
           display: block;
         }
+        /* endregion */
 
-        legend {
+        /* region cc-picker global layout & style */
+        .picker-wrapper {
+          column-gap: 0.25em;
           display: flex;
-          gap: 0.25em;
-          margin-block-end: var(--cc-form-label-gap, 0.35em);
         }
 
-        fieldset {
-          border: none;
-          margin: 0;
-          padding: 0;
+        .picker-wrapper cc-icon {
+          --cc-icon-color: var(--cc-color-text-primary);
+
+          flex: 0 0 auto;
+          padding-block: 0.25em;
         }
 
-        fieldset + fieldset {
+        .picker-wrapper cc-picker {
+          flex: 1 1 auto;
+        }
+
+        .picker-wrapper + .picker-wrapper {
           margin-block-start: var(--cc-form-controls-gap, 2em);
         }
 
-        input[type='radio']:focus-visible + label cc-plan-item {
-          border-radius: var(--cc-border-radius-default, 0.25em);
-          outline: var(--cc-focus-outline, #000 solid 2px);
-          outline-offset: var(--cc-focus-outline-offset, 2px);
-        }
+        cc-picker {
+          --cc-input-label-color: var(--cc-color-text-primary-strongest, #012a51);
+          --cc-input-label-font-size: 1.625em;
+          --cc-input-label-font-weight: 500;
+          --cc-picker-tiles-width: 100%;
 
-        .plan-legend-icon {
-          --cc-icon-color: var(--cc-color-text-primary);
-
-          align-self: center;
-        }
-
-        .plan-legend-text {
-          color: var(--cc-color-text-primary-strongest);
+          display: block;
           font-family: var(--cc-ff-form-legend), inherit;
-          font-size: 1.625em;
-          font-weight: 500;
         }
 
-        .form-controls {
+        cc-picker::part(tiles) {
           display: grid;
           gap: 1em;
           grid-template-columns: repeat(auto-fill, minmax(13em, 1fr));
-          margin-inline-start: var(--cc-form-controls-indent, 34px);
         }
+        /* endregion */
+
+        /* region cc-picker-option slotted content */
+        ::part(option-body) {
+          align-items: center;
+          column-gap: 0.375em;
+          display: inline-flex;
+          flex-wrap: wrap;
+        }
+
+        ::part(option-body--name) {
+          font-size: 1.25em;
+        }
+
+        ::part(option-body--badge) {
+          line-height: normal;
+        }
+
+        ::part(option-footer) {
+          display: flex;
+          flex-direction: column;
+          list-style-type: none;
+          margin: 0;
+          padding: 0;
+          row-gap: 0.25em;
+        }
+
+        ::part(option-footer--detail) {
+          align-items: center;
+          column-gap: 0.5em;
+          display: inline-flex;
+        }
+        /* endregion */
       `,
     ];
   }
