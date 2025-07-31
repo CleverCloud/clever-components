@@ -15,7 +15,7 @@ import '../cc-notice/cc-notice.js';
 import '../cc-zone/cc-zone.js';
 import { CcAddonRebuildEvent, CcAddonRestartEvent } from './cc-header-addon-beta.events.js';
 
-const BREAKPOINTS = [450, 520, 750];
+const BREAKPOINTS = [450, 520, 750, 950];
 
 /** @type {Partial<CcHeaderAddonBetaStateLoaded>} */
 const SKELETON_ADDON_INFO = {
@@ -188,10 +188,15 @@ export class CcHeaderAddonBeta extends LitElement {
           gap: 1em;
         }
 
+        :host([w-lt-950]) .main {
+          flex-direction: column;
+        }
+
         .addon-information {
           display: flex;
           flex: 1 1 0;
           gap: 1em;
+          min-width: 0;
         }
 
         .logo {
@@ -204,8 +209,10 @@ export class CcHeaderAddonBeta extends LitElement {
 
         .details {
           display: flex;
+          flex: 1;
           flex-direction: column;
           justify-content: space-around;
+          min-width: 0;
         }
 
         .details__title {
@@ -222,32 +229,34 @@ export class CcHeaderAddonBeta extends LitElement {
         .details__id {
           align-items: center;
           display: flex;
+          flex: 1;
           gap: 0.5em;
+          min-width: 0;
         }
 
-        :host([w-lt-750]) .details__id span {
+        .details__id span {
           display: block;
           overflow: hidden;
           text-overflow: ellipsis;
           white-space: nowrap;
+        }
+
+        :host([w-lt-950]) .details__id span {
+          /** Change px to em or relative value ? */
+          /* width: 300px; */
+        }
+
+        :host([w-lt-750]) .details__id span {
           /** Change px to em or relative value ? */
           /* width: 300px; */
         }
 
         :host([w-lt-520]) .details__id span {
-          display: block;
-          overflow: hidden;
-          text-overflow: ellipsis;
-          white-space: nowrap;
           /** Change px to em or relative value ? */
           /* width: 300px; */
         }
 
         :host([w-lt-450]) .details__id span {
-          display: block;
-          overflow: hidden;
-          text-overflow: ellipsis;
-          white-space: nowrap;
           /** Change px to em or relative value ? */
           /* width: 200px; */
         }
@@ -265,6 +274,13 @@ export class CcHeaderAddonBeta extends LitElement {
         .actions cc-button {
           flex: 1 1 auto;
           /* min-width: 0; */
+        }
+
+        :host([w-lt-950]) .actions cc-link,
+        :host([w-lt-950]) .actions cc-button {
+          /** Change px to em or relative value ? */
+          /* width: 300px; */
+          flex: 0 0 auto;
         }
 
         :host([w-lt-520]) .actions cc-link {
