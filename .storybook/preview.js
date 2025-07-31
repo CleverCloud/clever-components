@@ -3,7 +3,7 @@ import { setCustomElementsManifest } from '@storybook/web-components-vite';
 import 'github-markdown-css/github-markdown.css';
 import 'highlight.js/styles/vs.css';
 // @ts-ignore not worth helping TS understand this is valid since we don't need to type check this module
-// eslint-disable-next-line import/no-unresolved, n/no-missing-import
+// eslint-disable-next-line n/no-missing-import
 import customElementsManifest from '../dist/custom-elements.json';
 import { AutodocsTemplate } from '../src/stories/lib/autodocs-template.jsx';
 import '../src/stories/lib/i18n-control.js';

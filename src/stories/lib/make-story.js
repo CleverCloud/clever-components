@@ -1,5 +1,4 @@
 // @ts-ignore not worth helping TS understand this is valid since we don't need to type check this module
-// eslint-disable-next-line import/no-unresolved
 import customElementsManifest from '../../../dist/custom-elements.json';
 import { setLanguage } from '../../lib/i18n/i18n.js';
 import { sequence } from './sequence.js';

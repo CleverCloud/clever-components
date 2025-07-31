@@ -1,6 +1,6 @@
 import traverse from '@babel/traverse';
 import * as t from '@babel/types';
-import pkg from 'prettier/parser-babel.js'; // eslint-disable-line
+import pkg from 'prettier/parser-babel.js';
 
 const { parsers } = pkg;
 

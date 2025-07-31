@@ -1,5 +1,4 @@
 import chalk from 'chalk';
-// eslint-disable-next-line n/no-unsupported-features/node-builtins
 import { parseArgs } from 'node:util';
 import {
   getComponentFiles,
