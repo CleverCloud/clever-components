@@ -23,9 +23,10 @@ defineSmartComponent({
    * @param {OnContextUpdateArgs} args
    */
   onContextUpdate({ context, updateComponent, signal }) {
-    updateComponent('state', { type: 'loading' });
-
     const { apiConfig, ownerId, addonId } = context;
+
+    updateComponent('state', { type: 'loading' });
+    updateComponent('resourceId', addonId);
 
     fetchEnvVars({ apiConfig, signal, ownerId, addonId })
       .then(
