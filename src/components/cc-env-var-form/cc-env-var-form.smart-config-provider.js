@@ -31,9 +31,10 @@ defineSmartComponent({
    * @param {OnContextUpdateArgs} args
    */
   onContextUpdate({ context, onEvent, updateComponent, signal }) {
-    updateComponent('state', { type: 'loading' });
-
     const { apiConfig, ownerId, addonId } = context;
+
+    updateComponent('state', { type: 'loading' });
+    updateComponent('resourceId', addonId);
 
     /** @type {string} realAddonId */
     let realAddonId = null;
