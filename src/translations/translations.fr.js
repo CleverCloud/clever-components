@@ -182,6 +182,29 @@ export const translations = {
   'cc-addon-credentials.loading-error': `Une erreur est survenue pendant le chargement des informations de connexion.`,
   'cc-addon-credentials.title': /** @param {{name: string}} _ */ ({ name }) => `Identifiants ${name}`,
   //#endregion
+  //#region cc-addon-credentials-content
+  'cc-addon-credentials-content.code.api-client-secret': `Secret du client API`,
+  'cc-addon-credentials-content.code.api-client-user': `Utilisateur du client API`,
+  'cc-addon-credentials-content.code.api-key': `Clé API`,
+  'cc-addon-credentials-content.code.api-password': `Mot de passe API`,
+  'cc-addon-credentials-content.code.api-url': `URL de l'API`,
+  'cc-addon-credentials-content.code.cluster-full-name': `Nom complet du cluster`,
+  'cc-addon-credentials-content.code.database-name': `Nom de la base de données`,
+  'cc-addon-credentials-content.code.direct-host': `Hôte direct`,
+  'cc-addon-credentials-content.code.direct-port': `Port direct`,
+  'cc-addon-credentials-content.code.direct-uri': `URI directe`,
+  'cc-addon-credentials-content.code.host': `Hôte`,
+  'cc-addon-credentials-content.code.initial-password': `Mot de passe initial`,
+  'cc-addon-credentials-content.code.network-group': `Network Group`,
+  'cc-addon-credentials-content.code.password': `Mot de passe`,
+  'cc-addon-credentials-content.code.port': `Port`,
+  'cc-addon-credentials-content.code.tenant': `Tenant`,
+  'cc-addon-credentials-content.code.token': `Jeton`,
+  'cc-addon-credentials-content.code.uri': `URI`,
+  'cc-addon-credentials-content.code.user': `Utilisateur`,
+  'cc-addon-credentials-content.ng.disable': `Désactiver`,
+  'cc-addon-credentials-content.ng.enable': `Enable Network Groups`,
+  //#endregion
   //#region cc-addon-elasticsearch-options
   'cc-addon-elasticsearch-options.additional-cost': () =>
     sanitize`<strong>Activer ces options augmentera votre consommation de crédits.</strong>`,

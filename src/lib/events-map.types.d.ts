@@ -4,6 +4,10 @@ import {
   CcAddonNameChangeEvent,
   CcAddonTagsChangeEvent,
 } from '../components/cc-addon-admin/cc-addon-admin.events.js';
+import {
+  CcNgDisable,
+  CcNgEnable,
+} from '../components/cc-addon-credentials-content/cc-addon-credentials-content.events.js';
 import { CcAddonRebuildEvent, CcAddonRestartEvent } from '../components/cc-addon-header/cc-addon-header.events.js';
 import { CcAddonOptionFormSubmitEvent } from '../components/cc-addon-option-form/cc-addon-option-form.events.js';
 import { CcAddonOptionChangeEvent } from '../components/cc-addon-option/cc-addon-option.events.js';
@@ -228,6 +232,8 @@ declare global {
     'cc-map-marker-enter': CcMapMarkerEnterEvent;
     'cc-map-marker-leave': CcMapMarkerLeaveEvent;
     'cc-multi-select': CcMultiSelectEvent;
+    'cc-ng-disable': CcNgDisable;
+    'cc-ng-enable': CcNgEnable;
     'cc-notice-dismiss': CcNoticeDismissEvent;
     'cc-notify': CcNotifyEvent;
     'cc-oauth-consumer-change': CcOauthConsumerChangeEvent;
