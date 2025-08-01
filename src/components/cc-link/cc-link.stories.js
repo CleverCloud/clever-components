@@ -51,6 +51,23 @@ export const subtle = makeStory(conf, {
 });
 
 export const button = makeStory(conf, {
+  displayMode: 'flex-wrap',
+  items: [
+    {
+      mode: 'button',
+      href: 'https://clever-cloud.com',
+      innerHTML: 'edit the informations',
+    },
+    {
+      skeleton: true,
+      mode: 'button',
+      href: 'https://clever-cloud.com',
+      innerHTML: 'edit the informations',
+    },
+  ],
+});
+
+export const buttonWithFullWidth = makeStory(conf, {
   items: [
     {
       mode: 'button',
