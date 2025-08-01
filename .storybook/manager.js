@@ -1,6 +1,6 @@
-// eslint-disable-next-line import/extensions, import/no-unresolved
+// eslint-disable-next-line import-x/extensions
 import { addons } from 'storybook/manager-api';
-// eslint-disable-next-line import/extensions, import/no-unresolved
+// eslint-disable-next-line import-x/extensions
 import { create } from 'storybook/theming';
 import { generateDocsHref } from '../src/lib/utils.js';
 import { enhanceStoryName } from '../src/stories/lib/story-names.js';

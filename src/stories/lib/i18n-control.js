@@ -1,6 +1,6 @@
-// eslint-disable-next-line import/extensions, import/no-unresolved
+// eslint-disable-next-line import-x/extensions
 import { UPDATE_GLOBALS } from 'storybook/internal/core-events';
-// eslint-disable-next-line import/extensions, import/no-unresolved
+// eslint-disable-next-line import-x/extensions
 import { addons } from 'storybook/preview-api';
 import { addTranslations, getLanguage, setLanguage } from '../../lib/i18n/i18n.js';
 import * as en from '../../translations/translations.en.js';
