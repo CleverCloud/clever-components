@@ -171,6 +171,29 @@ export const translations = {
   'cc-addon-credentials.loading-error': `Something went wrong while loading the credentials.`,
   'cc-addon-credentials.title': /** @param {{name: string}} _ */ ({ name }) => `${name} credentials`,
   //#endregion
+  //#region cc-addon-credentials-content
+  'cc-addon-credentials-content.code.api-client-secret': `API client secret`,
+  'cc-addon-credentials-content.code.api-client-user': `API client user`,
+  'cc-addon-credentials-content.code.api-key': `API key`,
+  'cc-addon-credentials-content.code.api-password': `API password`,
+  'cc-addon-credentials-content.code.api-url': `API URL`,
+  'cc-addon-credentials-content.code.cluster-full-name': `Cluster full name`,
+  'cc-addon-credentials-content.code.database-name': `Database name`,
+  'cc-addon-credentials-content.code.direct-host': `Direct host`,
+  'cc-addon-credentials-content.code.direct-port': `Direct port`,
+  'cc-addon-credentials-content.code.direct-uri': `Direct URI`,
+  'cc-addon-credentials-content.code.host': `Host`,
+  'cc-addon-credentials-content.code.initial-password': `Initial password`,
+  'cc-addon-credentials-content.code.network-group': `Network group`,
+  'cc-addon-credentials-content.code.password': `Password`,
+  'cc-addon-credentials-content.code.port': `Port`,
+  'cc-addon-credentials-content.code.tenant': `Tenant`,
+  'cc-addon-credentials-content.code.token': `Token`,
+  'cc-addon-credentials-content.code.uri': `URI`,
+  'cc-addon-credentials-content.code.user': `User`,
+  'cc-addon-credentials-content.ng.disable': `Disable`,
+  'cc-addon-credentials-content.ng.enable': `Enable Network Groups`,
+  //#endregion
   //#region cc-addon-elasticsearch-options
   'cc-addon-elasticsearch-options.additional-cost': () =>
     sanitize`As such, <strong>enabling these options will result in an increase in credits consumption</strong> as well.`,
