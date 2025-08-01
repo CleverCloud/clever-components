@@ -5,6 +5,18 @@ title: 'Changelog'
 
 # Changelog
 
+## [19.5.0](https://github.com/CleverCloud/clever-components/compare/19.4.0...19.5.0) (2025-08-01)
+
+
+### 🚀 Features
+
+* **cc-addon-backups:** add smart part ([b9ce398](https://github.com/CleverCloud/clever-components/commit/b9ce398fbd88406b70b42e623c22eb5ae71c44e0))
+
+
+### 🐛 Bug Fixes
+
+* **cc-link:** make button mode closer to `cc-button` ([5a77cb9](https://github.com/CleverCloud/clever-components/commit/5a77cb93e114f04580a7a0762827a46c0964c58a)), closes [#1499](https://github.com/CleverCloud/clever-components/issues/1499)
+
 ## [19.4.0](https://github.com/CleverCloud/clever-components/compare/19.3.1...19.4.0) (2025-07-25)
 
 
