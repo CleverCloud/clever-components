@@ -214,6 +214,19 @@ export const translations = {
   'cc-addon-features.loading-error': `Une erreur est survenue pendant le chargement des spécifications de l'add-on`,
   'cc-addon-features.title': `Spécifications`,
   //#endregion
+  //#region cc-addon-header
+  'cc-addon-header.action.open-addon': /** @param {{ linkName: string }} _ */ ({ linkName }) => `Ouvrir ${linkName}`,
+  'cc-addon-header.action.restart': `Redémarrer`,
+  'cc-addon-header.action.restart-rebuild': `Re-build et redémarrer`,
+  'cc-addon-header.error': `Une erreur est survenue pendant le chargement des informations de l'add-on.`,
+  'cc-addon-header.logs.link': `Voir les logs`,
+  'cc-addon-header.rebuild.error': `Une erreur est survenue pendant le rebuild de l'add-on.`,
+  'cc-addon-header.rebuild.success': /** @param {{logsUrl: string}} _*/ ({ logsUrl }) =>
+    sanitize`L'add-on rebuild... Voir <cc-link href="${logsUrl}">logs</cc-link>.`,
+  'cc-addon-header.restart.error': `Une erreur est survenue pendant le redémarrage de l'add-on.`,
+  'cc-addon-header.restart.success': /** @param {{logsUrl: string}} _*/ ({ logsUrl }) =>
+    sanitize`L'add-on redémarre... Voir <cc-link href="${logsUrl}">logs</cc-link>.`,
+  //#endregion
   //#region cc-addon-jenkins-options
   'cc-addon-jenkins-options.description': `Sélectionnez les options que vous souhaitez pour votre add-on Jenkins.`,
   'cc-addon-jenkins-options.title': `Options pour l'add-on Jenkins`,

@@ -201,6 +201,19 @@ export const translations = {
   'cc-addon-features.loading-error': `Something went wrong while loading add-on features.`,
   'cc-addon-features.title': `Features`,
   //#endregion
+  //#region cc-addon-header
+  'cc-addon-header.action.open-addon': /** @param {{ linkName: string }} _ */ ({ linkName }) => `Open ${linkName}`,
+  'cc-addon-header.action.restart': `Restart`,
+  'cc-addon-header.action.restart-rebuild': `Re-build and restart`,
+  'cc-addon-header.error': `Something went wrong while loading add-on info.`,
+  'cc-addon-header.logs.link': `View logs`,
+  'cc-addon-header.rebuild.error': `Something went wrong while rebuilding the add-on.`,
+  'cc-addon-header.rebuild.success': /** @param {{logsUrl: string}} _*/ ({ logsUrl }) =>
+    sanitize`Your add-on is rebuilding... See <cc-link href="${logsUrl}">logs</cc-link>.`,
+  'cc-addon-header.restart.error': `Something went wrong while restarting the add-on.`,
+  'cc-addon-header.restart.success': /** @param {{logsUrl: string}} _*/ ({ logsUrl }) =>
+    sanitize`Your add-on is restarting... See <cc-link href="${logsUrl}">logs</cc-link>.`,
+  //#endregion
   //#region cc-addon-jenkins-options
   'cc-addon-jenkins-options.description': `Choose the options you want for your Jenkins add-on.`,
   'cc-addon-jenkins-options.title': `Options for the Jenkins add-on`,
