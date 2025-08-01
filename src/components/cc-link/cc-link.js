@@ -267,13 +267,19 @@ export class CcLink extends LitElement {
           text-decoration: none;
         }
 
+        :host([mode='button']) {
+          display: inline-block;
+        }
+
         :host([mode='button']) .cc-link {
           background-color: var(--cc-color-bg-primary, #3569aaff);
           border: 1px solid var(--cc-color-bg-primary, #3569aaff);
           border-radius: var(--cc-button-border-radius, 0.15em);
           box-sizing: border-box;
           cursor: pointer;
+          display: flex;
           font-weight: var(--cc-button-font-weight, bold);
+          justify-content: center;
           min-height: 2em;
           padding: 0 0.5em;
           text-transform: var(--cc-button-text-transform, uppercase);
