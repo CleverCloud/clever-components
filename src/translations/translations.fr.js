@@ -214,6 +214,14 @@ export const translations = {
   'cc-addon-features.loading-error': `Une erreur est survenue pendant le chargement des spécifications de l'add-on`,
   'cc-addon-features.title': `Spécifications`,
   //#endregion
+  //#region cc-addon-info
+  'cc-addon-info.error': `Une erreur est survenue lors du chargement des informations de l'add-on.`,
+  'cc-addon-info.feature.heading': `Fonctionnalités`,
+  'cc-addon-info.heading': `Informations`,
+  'cc-addon-info.plan.heading': `Plan`,
+  'cc-addon-info.version.btn': `Mise à jour disponible`,
+  'cc-addon-info.version.heading': `Version`,
+  //#endregion
   //#region cc-addon-jenkins-options
   'cc-addon-jenkins-options.description': `Sélectionnez les options que vous souhaitez pour votre add-on Jenkins.`,
   'cc-addon-jenkins-options.title': `Options pour l'add-on Jenkins`,

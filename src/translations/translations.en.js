@@ -201,6 +201,14 @@ export const translations = {
   'cc-addon-features.loading-error': `Something went wrong while loading add-on features.`,
   'cc-addon-features.title': `Features`,
   //#endregion
+  //#region cc-addon-info
+  'cc-addon-info.error': `Something went wrong while loading add-on information.`,
+  'cc-addon-info.feature.heading': `Features`,
+  'cc-addon-info.heading': `Information`,
+  'cc-addon-info.plan.heading': `Plan`,
+  'cc-addon-info.version.btn': `Update available`,
+  'cc-addon-info.version.heading': `Version`,
+  //#endregion
   //#region cc-addon-jenkins-options
   'cc-addon-jenkins-options.description': `Choose the options you want for your Jenkins add-on.`,
   'cc-addon-jenkins-options.title': `Options for the Jenkins add-on`,
