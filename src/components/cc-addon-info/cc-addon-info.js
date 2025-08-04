@@ -6,6 +6,7 @@ import {
   iconRemixInformationFill as iconInfo,
   iconRemixSettings_3Line as iconUpdate,
 } from '../../assets/cc-remix.icons.js';
+import { LostFocusController } from '../../controllers/lost-focus-controller.js';
 import { hasSlottedChildren } from '../../directives/has-slotted-children.js';
 import { formSubmit } from '../../lib/form/form-submit-directive.js';
 import { accessibilityStyles } from '../../styles/accessibility.js';
@@ -38,10 +39,12 @@ const GRAFANA_LOGO_URL = 'https://assets.clever-cloud.com/logos/grafana.svg';
 /**
  * @typedef {import('./cc-addon-info.types.js').CcAddonInfoState} CcAddonInfoState
  * @typedef {import('./cc-addon-info.types.js').CcAddonInfoStateLoaded} CcAddonInfoStateLoaded
- * @typedef {import('./cc-addon-info.types.js').AddonVersion} AddonVersion
+ * @typedef {import('./cc-addon-info.types.js').AddonVersionStateUpdateAvailable} AddonVersionStateUpdateAvailable
+ * @typedef {import('./cc-addon-info.types.js').AddonVersionStateRequestingUpdate} AddonVersionStateRequestingUpdate
  * @typedef {import('../common.types.js').FormattedFeature} FormattedFeature
  * @typedef {import('../cc-select/cc-select.types.js').Option} Option
  * @typedef {import('lit/directives/ref.js').Ref<HTMLDialogElement>} HTMLDialogElementRef
+ * @typedef {import('lit/directives/ref.js').Ref<HTMLElement>} HTMLElementRef
  */
 
 export class CcAddonInfo extends LitElement {
@@ -55,23 +58,17 @@ export class CcAddonInfo extends LitElement {
     super();
 
     /** @type {CcAddonInfoState} */
-    this.state = {
-      type: 'loading',
-      version: {
-        installed: '',
-        available: [],
-        changelogLink: '',
-      },
-      plan: '',
-      features: [],
-      creationDate: '',
-      openGrafanaLink: '',
-      openScalabilityLink: '',
-      linkedServices: [],
-    };
+    this.state = { type: 'loading', creationDate: '2025-08-04 15:03:02' };
 
     /** @type {HTMLDialogElementRef} */
     this._versionDialogRef = createRef();
+
+    /** @type {HTMLElementRef} */
+    this._versionTextRef = createRef();
+
+    new LostFocusController(this, 'dialog', () => {
+      this._versionTextRef.value?.focus();
+    });
   }
 
   /**
@@ -141,11 +138,11 @@ export class CcAddonInfo extends LitElement {
         <div slot="content" class="main">
           ${this.state.version != null
             ? html`
-                <div class="section">
+                <div class="section" tabindex="-1" ${ref(this._versionTextRef)}>
                   <strong class="heading">${i18n('cc-addon-info.version.heading')}</strong>
-                  <div class="value version__content" tabindex="-1">
+                  <div class="value version__content">
                     <p class="${classMap({ skeleton })}">${this.state.version.installed}</p>
-                    ${this.state.version.available.length > 0
+                    ${this.state.version.stateType !== 'up-to-date'
                       ? html`
                           <cc-button primary outlined @cc-click="${this._onVersionDialogOpen}">
                             <cc-icon .icon="${iconUpdate}"></cc-icon>
@@ -172,8 +169,8 @@ export class CcAddonInfo extends LitElement {
             ? html`
                 <div class="section">
                   <strong class="heading">${i18n('cc-addon-info.feature.heading')}</strong>
-                  <dl class="value features__content ${classMap({ skeleton })}">
-                    ${this.state.features.map((feature) => this._renderFeature(feature))}
+                  <dl class="value features__content">
+                    ${this.state.features.map((feature) => this._renderFeature(feature, skeleton))}
                   </dl>
                 </div>
               `
@@ -181,9 +178,11 @@ export class CcAddonInfo extends LitElement {
 
           <div class="section">
             <strong class="heading">${i18n('cc-addon-info.creation-date.heading')}</strong>
-            <p class="value ${classMap({ skeleton })}">
-              ${i18n('cc-addon-info.creation-date.human-friendly-date', { date: this.state.creationDate })}
-            </p>
+            <div class="value">
+              <p class="${classMap({ skeleton })}">
+                ${i18n('cc-addon-info.creation-date.human-friendly-date', { date: this.state.creationDate })}
+              </p>
+            </div>
           </div>
 
           ${this.state.openGrafanaLink != null
@@ -217,7 +216,7 @@ export class CcAddonInfo extends LitElement {
 
           <div class="section section--billing" ${hasSlottedChildren()}>
             <strong class="heading">${i18n('cc-addon-info.billing.heading')}</strong>
-            <div class="value ${classMap({ skeleton })}">
+            <div class="value">
               <slot name="billing"></slot>
             </div>
           </div>
@@ -226,17 +225,12 @@ export class CcAddonInfo extends LitElement {
             ? html`
                 <div class="section">
                   <strong class="heading">${i18n('cc-addon-info.linked-services.heading')}</strong>
-                  <div class="value linked-services__content ${classMap({ skeleton })}">
+                  <div class="value linked-services__content">
                     <ul>
                       ${this.state.linkedServices.map((service) => {
                         return html`
-                          <li class="linked-service__li ${classMap({ skeleton })}">
-                            <cc-img
-                              src="${service.logoUrl}"
-                              a11y-name="${service.name}"
-                              title="${service.name}"
-                              ?skeleton=${skeleton}
-                            ></cc-img>
+                          <li class="linked-service__li">
+                            <cc-img src="${service.logoUrl}" ?skeleton=${skeleton}></cc-img>
                             <cc-link href="${service.link}" ?skeleton=${skeleton}>${service.name}</cc-link>
                           </li>
                         `;
@@ -255,8 +249,8 @@ export class CcAddonInfo extends LitElement {
     `;
   }
 
-  /** @param {AddonVersion} addonVersion */
-  _renderVersionDialog({ available, installed, changelogLink }) {
+  /** @param {AddonVersionStateUpdateAvailable | AddonVersionStateRequestingUpdate} addonVersionState */
+  _renderVersionDialog({ stateType, available, installed, changelogLink }) {
     /** @type {Option[]} */
     const selectOptions = available.map((availableVersion) => ({
       label: availableVersion,
@@ -287,21 +281,33 @@ export class CcAddonInfo extends LitElement {
               </p>
             </cc-select>
           </div>
-          <cc-button primary outlined type="reset" @cc-click="${this._onVersionDialogClose}"
+          <cc-button
+            primary
+            outlined
+            type="reset"
+            @cc-click="${this._onVersionDialogClose}"
+            ?disabled="${stateType === 'requesting-update'}"
             >${i18n('cc-addon-info.version.dialog.btn.cancel')}</cc-button
           >
-          <cc-button primary type="submit">${i18n('cc-addon-info.version.dialog.btn.submit')}</cc-button>
+          <cc-button primary type="submit" ?waiting="${stateType === 'requesting-update'}"
+            >${i18n('cc-addon-info.version.dialog.btn.submit')}</cc-button
+          >
         </form>
       </dialog>
     `;
   }
 
-  /** @param {FormattedFeature} param */
-  _renderFeature({ code, type, value }) {
+  /**
+   * @param {FormattedFeature} param
+   * @param {boolean} skeleton
+   **/
+  _renderFeature({ code, type, value }, skeleton) {
     return html`
       <div class="features__content__item">
-        <dt class="features__content__item__label">${FEATURES_I18N[code]()}</dt>
-        <dd class="features__content__item__value data-decoration">${this._getFeatureValue({ code, type, value })}</dd>
+        <dt class="features__content__item__label ${classMap({ skeleton })}">${FEATURES_I18N[code]()}</dt>
+        <dd class="features__content__item__value data-decoration ${classMap({ skeleton })}">
+          ${this._getFeatureValue({ code, type, value })}
+        </dd>
       </div>
     `;
   }
@@ -360,6 +366,10 @@ export class CcAddonInfo extends LitElement {
           align-items: center;
           display: flex;
           gap: 1em;
+        }
+
+        .version__content p {
+          diplay: inline;
         }
 
         .data-decoration {

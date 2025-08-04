@@ -217,7 +217,7 @@ export const translations = {
   //#region cc-addon-info
   'cc-addon-info.billing.heading': `Facturation`,
   'cc-addon-info.creation-date.heading': `Date de création`,
-  'cc-addon-info.creation-date.human-friendly-date': /** @param {{ date: string }} _ */ ({ date }) =>
+  'cc-addon-info.creation-date.human-friendly-date': /** @param {{ date: string | number }} _ */ ({ date }) =>
     formatDatetime(date),
   'cc-addon-info.documentation.text': `Voir la  documentation`,
   'cc-addon-info.error': `Une erreur est survenue lors du chargement des informations de l'add-on.`,

@@ -204,7 +204,7 @@ export const translations = {
   //#region cc-addon-info
   'cc-addon-info.billing.heading': `Billing`,
   'cc-addon-info.creation-date.heading': `Creation date`,
-  'cc-addon-info.creation-date.human-friendly-date': /** @param {{ date: string }} _ */ ({ date }) =>
+  'cc-addon-info.creation-date.human-friendly-date': /** @param {{ date: string | number }} _ */ ({ date }) =>
     formatDatetime(date),
   'cc-addon-info.documentation.text': `See documentation`,
   'cc-addon-info.error': `Something went wrong while loading add-on information.`,
