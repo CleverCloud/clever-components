@@ -31,9 +31,10 @@ defineSmartComponent({
    * @param {OnContextUpdateArgs} args
    */
   onContextUpdate({ context, onEvent, updateComponent, signal }) {
-    updateComponent('state', { type: 'loading' });
-
     const { apiConfig, ownerId, appId } = context;
+
+    updateComponent('state', { type: 'loading' });
+    updateComponent('resourceId', appId);
 
     Promise.all([
       fetchApp({ apiConfig, signal, ownerId, appId }),
