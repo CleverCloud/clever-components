@@ -65,7 +65,7 @@ export class CcEnvVarForm extends LitElement {
     this.addonName = '?';
 
     /** @type {string} Sets the resource id for documentation */
-    this.resourceId = '<APPLICATION_ID>';
+    this.resourceId = '<RESOURCE_ID>';
 
     /** @type {string} Defines application name used in some heading/description (depending on context). */
     this.appName = '?';

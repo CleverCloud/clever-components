@@ -22,7 +22,7 @@ const conf = {
 export const defaultStory = makeStory(conf, {
   items: [
     {
-      resourceId: 'app_3f9b1c8e-2d7a-4c4f-91a6-8bde78f4a21b',
+      applicationId: 'app_3f9b1c8e-2d7a-4c4f-91a6-8bde78f4a21b',
       /** @type {TcpRedirectionFormStateLoaded} */
       state: {
         type: 'loaded',
@@ -38,7 +38,7 @@ export const defaultStory = makeStory(conf, {
 export const empty = makeStory(conf, {
   items: [
     {
-      resourceId: 'app_3f9b1c8e-2d7a-4c4f-91a6-8bde78f4a21b',
+      applicationId: 'app_3f9b1c8e-2d7a-4c4f-91a6-8bde78f4a21b',
       /** @type {TcpRedirectionFormStateLoaded} **/
       state: {
         type: 'loaded',
@@ -51,7 +51,7 @@ export const empty = makeStory(conf, {
 export const loading = makeStory(conf, {
   items: [
     {
-      resourceId: 'app_3f9b1c8e-2d7a-4c4f-91a6-8bde78f4a21b',
+      applicationId: 'app_3f9b1c8e-2d7a-4c4f-91a6-8bde78f4a21b',
       /** @type {TcpRedirectionFormStateLoading} **/
       state: {
         type: 'loading',
@@ -63,7 +63,7 @@ export const loading = makeStory(conf, {
 export const errorWithLoading = makeStory(conf, {
   items: [
     {
-      resourceId: 'app_3f9b1c8e-2d7a-4c4f-91a6-8bde78f4a21b',
+      applicationId: 'app_3f9b1c8e-2d7a-4c4f-91a6-8bde78f4a21b',
       /** @type {TcpRedirectionFormStateError} **/
       state: {
         type: 'error',
@@ -75,7 +75,7 @@ export const errorWithLoading = makeStory(conf, {
 export const dataLoaded = makeStory(conf, {
   items: [
     {
-      resourceId: 'app_3f9b1c8e-2d7a-4c4f-91a6-8bde78f4a21b',
+      applicationId: 'app_3f9b1c8e-2d7a-4c4f-91a6-8bde78f4a21b',
       /** @type {TcpRedirectionFormStateLoaded} **/
       state: {
         type: 'loaded',
@@ -93,7 +93,7 @@ export const dataLoadedWithContextAdmin = makeStory(conf, {
   docs: 'When `context="admin"` is used, the component description is hidden, the block is collapsed and a redirection counter bubble is be displayed.',
   items: [
     {
-      resourceId: 'app_3f9b1c8e-2d7a-4c4f-91a6-8bde78f4a21b',
+      applicationId: 'app_3f9b1c8e-2d7a-4c4f-91a6-8bde78f4a21b',
       /** @type {TcpRedirectionFormStateLoaded} **/
       state: {
         type: 'loaded',
@@ -112,7 +112,7 @@ export const dataLoadedWithContextAdminAndNoRedirections = makeStory(conf, {
   docs: 'When `context="admin"` is used, the counter bubble is not displayed if there is no redirection.',
   items: [
     {
-      resourceId: 'app_3f9b1c8e-2d7a-4c4f-91a6-8bde78f4a21b',
+      applicationId: 'app_3f9b1c8e-2d7a-4c4f-91a6-8bde78f4a21b',
       /** @type {TcpRedirectionFormStateLoaded} **/
       state: {
         type: 'loaded',
@@ -131,7 +131,7 @@ export const dataLoadedWithContextAdminAndNoRedirections = makeStory(conf, {
 export const dataLoadedWithCreatingRedirection = makeStory(conf, {
   items: [
     {
-      resourceId: 'app_3f9b1c8e-2d7a-4c4f-91a6-8bde78f4a21b',
+      applicationId: 'app_3f9b1c8e-2d7a-4c4f-91a6-8bde78f4a21b',
       /** @type {TcpRedirectionFormStateLoaded} **/
       state: {
         type: 'loaded',
@@ -148,7 +148,7 @@ export const dataLoadedWithCreatingRedirection = makeStory(conf, {
 export const dataLoadedWithDeletingRedirection = makeStory(conf, {
   items: [
     {
-      resourceId: 'app_3f9b1c8e-2d7a-4c4f-91a6-8bde78f4a21b',
+      applicationId: 'app_3f9b1c8e-2d7a-4c4f-91a6-8bde78f4a21b',
       /** @type {TcpRedirectionFormStateLoaded} **/
       state: {
         type: 'loaded',
@@ -165,7 +165,7 @@ export const dataLoadedWithDeletingRedirection = makeStory(conf, {
 export const dataLoadedWithManyNamespaces = makeStory(conf, {
   items: [
     {
-      resourceId: 'app_3f9b1c8e-2d7a-4c4f-91a6-8bde78f4a21b',
+      applicationId: 'app_3f9b1c8e-2d7a-4c4f-91a6-8bde78f4a21b',
       /** @type {TcpRedirectionFormStateLoaded} **/
       state: {
         type: 'loaded',
