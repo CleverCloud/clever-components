@@ -27,7 +27,7 @@ export const defaultStory = makeStory(conf, {
     {
       resourceId: 'app_3f9b1c8e-2d7a-4c4f-91a6-8bde78f4a21b',
       appName: 'Foobar backend python',
-      context: 'env-var',
+      context: 'env-var-app',
       state: { type: 'loaded', validationMode: 'simple', variables: VARIABLES_FULL },
     },
   ],
@@ -38,7 +38,7 @@ export const loading = makeStory(conf, {
     {
       resourceId: 'app_3f9b1c8e-2d7a-4c4f-91a6-8bde78f4a21b',
       appName: 'Foobar backend python',
-      context: 'env-var',
+      context: 'env-var-app',
       state: { type: 'loading' },
     },
   ],
@@ -49,7 +49,7 @@ export const loadingWithReadonly = makeStory(conf, {
     {
       resourceId: 'app_3f9b1c8e-2d7a-4c4f-91a6-8bde78f4a21b',
       appName: 'Foobar backend python',
-      context: 'env-var',
+      context: 'env-var-app',
       readonly: true,
       state: { type: 'loading' },
     },
@@ -61,7 +61,7 @@ export const empty = makeStory(conf, {
     {
       resourceId: 'app_3f9b1c8e-2d7a-4c4f-91a6-8bde78f4a21b',
       appName: 'Foobar backend python',
-      context: 'env-var',
+      context: 'env-var-app',
       state: { type: 'loaded', validationMode: 'simple', variables: [] },
     },
   ],
@@ -72,7 +72,7 @@ export const emptyWithReadonly = makeStory(conf, {
     {
       resourceId: 'app_3f9b1c8e-2d7a-4c4f-91a6-8bde78f4a21b',
       appName: 'Foobar backend python',
-      context: 'env-var',
+      context: 'env-var-app',
       readonly: true,
       state: { type: 'loaded', validationMode: 'simple', variables: [] },
     },
@@ -108,12 +108,12 @@ export const dataLoadedWithContextEnvVarAddon = makeStory(conf, {
   ],
 });
 
-export const dataLoadedWithContextEnvVar = makeStory(conf, {
+export const dataLoadedWithContextEnvVarApp = makeStory(conf, {
   items: [
     {
       resourceId: 'app_3f9b1c8e-2d7a-4c4f-91a6-8bde78f4a21b',
       appName: 'Foobar backend python',
-      context: 'env-var',
+      context: 'env-var-app',
       state: { type: 'loaded', validationMode: 'simple', variables: VARIABLES_FULL },
     },
   ],
@@ -146,7 +146,7 @@ export const dataLoadedWithRestartButton = makeStory(conf, {
     {
       resourceId: 'app_3f9b1c8e-2d7a-4c4f-91a6-8bde78f4a21b',
       appName: 'Foobar backend python',
-      context: 'env-var',
+      context: 'env-var-app',
       state: { type: 'loaded', validationMode: 'simple', variables: VARIABLES_FULL },
       restartApp: true,
     },
@@ -182,7 +182,7 @@ export const dataLoadedWithStrictMode = makeStory(conf, {
     {
       resourceId: 'app_3f9b1c8e-2d7a-4c4f-91a6-8bde78f4a21b',
       appName: 'Foobar backend python (strict validation mode)',
-      context: 'env-var',
+      context: 'env-var-app',
       state: { type: 'loaded', validationMode: 'strict', variables: VARIABLES_FULL },
     },
   ],
@@ -193,7 +193,7 @@ export const saving = makeStory(conf, {
     {
       resourceId: 'app_3f9b1c8e-2d7a-4c4f-91a6-8bde78f4a21b',
       appName: 'Foobar backend python',
-      context: 'env-var',
+      context: 'env-var-app',
       state: { type: 'loaded', validationMode: 'simple', variables: VARIABLES_FULL },
     },
   ],
@@ -208,14 +208,14 @@ export const errorWithLoading = makeStory(conf, {
     {
       resourceId: 'app_3f9b1c8e-2d7a-4c4f-91a6-8bde78f4a21b',
       appName: 'Foobar backend python',
-      context: 'env-var',
+      context: 'env-var-app',
       state: { type: 'error' },
     },
   ],
 });
 
 export const simulations = makeStory(conf, {
-  items: [{ context: 'env-var' }, { context: 'env-var' }],
+  items: [{ context: 'env-var-app' }, { context: 'env-var-app' }],
   simulations: [
     storyWait(2000, ([component, componentError]) => {
       component.appName = 'Foobar backend python';

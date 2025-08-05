@@ -121,7 +121,7 @@ export class CcEnvVarForm extends LitElement {
       return this.heading;
     }
 
-    if (this.context === 'env-var') {
+    if (this.context === 'env-var-app') {
       return i18n('cc-env-var-form.heading.env-var');
     }
     if (this.context === 'env-var-simple') {
@@ -141,7 +141,7 @@ export class CcEnvVarForm extends LitElement {
   /** @returns {Node|void} */
   _getDescription() {
     switch (this.context) {
-      case 'env-var':
+      case 'env-var-app':
         return i18n('cc-env-var-form.description.env-var', { appName: this.appName });
       case 'exposed-config':
         return i18n('cc-env-var-form.description.exposed-config', { appName: this.appName });
@@ -253,7 +253,7 @@ export class CcEnvVarForm extends LitElement {
   /** @param {CcEnvVarFormPropertyValues} changedProperties */
   willUpdate(changedProperties) {
     if (changedProperties.has('context') || changedProperties.has('addonName') || changedProperties.has('appName')) {
-      if (this.context === 'env-var') {
+      if (this.context === 'env-var-app') {
         this.heading = i18n('cc-env-var-form.heading.env-var');
         this._description = i18n('cc-env-var-form.description.env-var', { appName: this.appName });
       }
@@ -402,7 +402,7 @@ export class CcEnvVarForm extends LitElement {
                           </dd>
                         `
                       : ''}
-                    ${this.context === 'env-var'
+                    ${this.context === 'env-var-app'
                       ? html`
                           <dt>${i18n('cc-env-var-form.cli.content.list-var-command')}</dt>
                           <dd>
