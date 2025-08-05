@@ -526,8 +526,10 @@ export const translations = {
     sanitize`No applications linked to <strong>${appName}</strong>.`,
   'cc-env-var-linked-services.error.addon': /** @param {{appName: string}} _ */ ({ appName }) =>
     sanitize`Something went wrong while loading add-ons linked to <strong>${appName}</strong>.`,
+  'cc-env-var-linked-services.error.addon.without-app-name': `Something went wrong while loading add-ons linked to the application.`,
   'cc-env-var-linked-services.error.app': /** @param {{appName: string}} _ */ ({ appName }) =>
     sanitize`Something went wrong while loading applications linked to <strong>${appName}</strong>.`,
+  'cc-env-var-linked-services.error.app.without-app-name': `Something went wrong while loading applications linked to the application.`,
   'cc-env-var-linked-services.heading.addon': /** @param {{name: string}} _ */ ({ name }) => `Add-on: ${name}`,
   'cc-env-var-linked-services.heading.app': /** @param {{name: string}} _ */ ({ name }) => `Application: ${name}`,
   'cc-env-var-linked-services.loading.addon': /** @param {{appName: string}} _ */ ({ appName }) =>
