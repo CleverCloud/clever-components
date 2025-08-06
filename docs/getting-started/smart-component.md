@@ -25,9 +25,9 @@ This ensures you get the complete component with data fetching capabilities.
 
 To use a smart component:
 
-1- Wrap it in a `<cc-smart-container>` element
-2- Provide the required configuration via the `context` attribute
-3- The component will automatically handle data fetching and updates
+1. Wrap it in a `<cc-smart-container>` element
+2. Provide the required configuration via the `context` attribute
+3. The component will automatically handle data fetching and updates
 
 `cc-smart-container` elements can be nested, in which case they will inherit the context from their parent container.
 Also note that a single container may wrap multiple UI components, you don't have to add a dedicated container for each UI component.
