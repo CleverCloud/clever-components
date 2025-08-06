@@ -1,10 +1,11 @@
 import { css, html, LitElement } from 'lit';
 import { createRef, ref } from 'lit/directives/ref.js';
-import { iconRemixCloseFill as iconClose } from '../../assets/cc-remix.icons.js';
+import { iconRemixCloseFill as iconClose, iconRemixInformationFill as iconInfo } from '../../assets/cc-remix.icons.js';
 import { formSubmit } from '../../lib/form/form-submit-directive.js';
 import { accessibilityStyles } from '../../styles/accessibility.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-block/cc-block.js';
+import '../cc-link/cc-link.js';
 import '../cc-notice/cc-notice.js';
 import '../cc-select/cc-select.js';
 import { CcAddonVersionChangeEvent } from './cc-addon-info.events.js';
@@ -110,6 +111,8 @@ export class CcAddonInfo extends LitElement {
       return html`<cc-notice intent="warning" message="${i18n('cc-addon-info.error')}"></cc-notice>`;
     }
 
+    const skeleton = this.state.type === 'loading';
+
     // TODO: when modal is closed because update was a success, focus div[tabindex="-1"] (maybe add a ref to simplify)
     return html`
       <cc-block>
@@ -143,6 +146,42 @@ export class CcAddonInfo extends LitElement {
                 <dl>${this.state.features.map((feature) => this._renderFeature(feature))}</dl>
               `
             : ''}
+          <strong class="heading">${i18n('cc-addon-info.creation-date.heading')}</strong>
+          <p>${this.state.creationDate}</p>
+          ${this.state.openGrafanaLink != null
+            ? html`
+                <strong class="heading">Grafana</strong>
+                <cc-link href="${this.state.openGrafanaLink}">${i18n('cc-addon-info.grafana.link')}</cc-link>
+              `
+            : ''}
+          ${this.state.openScalabilityLink != null
+            ? html`
+                <strong class="heading">${i18n('cc-addon-info.scalability-link.heading')}</strong>
+                <cc-link href="${this.state.openScalabilityLink}">${i18n('cc-addon-info.scalability.link')}</cc-link>
+              `
+            : ''}
+          <slot name="billing"></slot>
+          ${this.state.linkedServices != null && this.state.linkedServices.length > 0
+            ? html`
+                <slot name="linked-services">
+                  <strong class="heading">${i18n('cc-addon-info.linked-services.heading')}</strong>
+                  <ul>
+                    ${this.state.linkedServices.map((service) => {
+                      return html`
+                        <li>
+                          <cc-img src="${service.logoUrl}" a11y-name="${service.name}" title="${service.name}"></cc-img>
+                          <cc-link href="${service.link}">${service.name}</cc-link>
+                        </li>
+                      `;
+                    })}
+                  </ul>
+                  <p></p>
+                </slot>
+              `
+            : ''}
+        </div>
+        <div slot="footer-right">
+          <cc-link href="" .icon="${iconInfo}"> ${i18n('cc-addon-info.documentation.text')} </cc-link>
         </div>
       </cc-block>
     `;
@@ -203,6 +242,12 @@ export class CcAddonInfo extends LitElement {
       css`
         :host {
           display: block;
+        }
+
+        .skeleton {
+          background-color: #bbb;
+          border-color: #777;
+          color: transparent;
         }
       `,
     ];

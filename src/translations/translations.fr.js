@@ -215,10 +215,17 @@ export const translations = {
   'cc-addon-features.title': `Spécifications`,
   //#endregion
   //#region cc-addon-info
+  'cc-addon-info.billing.heading': `Facturation`,
+  'cc-addon-info.creation-date.heading': `Date de création`,
+  'cc-addon-info.documentation.text': `Voir la  documentation`,
   'cc-addon-info.error': `Une erreur est survenue lors du chargement des informations de l'add-on.`,
   'cc-addon-info.feature.heading': `Fonctionnalités`,
+  'cc-addon-info.grafana.link': `Ouvrir Grafana`,
   'cc-addon-info.heading': `Informations`,
+  'cc-addon-info.linked-services.heading': `Services liés`,
   'cc-addon-info.plan.heading': `Plan`,
+  'cc-addon-info.scalability-link.heading': `Scalabilité`,
+  'cc-addon-info.scalability.link': `Configurer la scalabilité`,
   'cc-addon-info.version.btn': `Mise à jour disponible`,
   'cc-addon-info.version.heading': `Version`,
   //#endregion

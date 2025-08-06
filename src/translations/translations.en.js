@@ -202,10 +202,17 @@ export const translations = {
   'cc-addon-features.title': `Features`,
   //#endregion
   //#region cc-addon-info
+  'cc-addon-info.billing.heading': `Billing`,
+  'cc-addon-info.creation-date.heading': `Creation date`,
+  'cc-addon-info.documentation.text': `See documentation`,
   'cc-addon-info.error': `Something went wrong while loading add-on information.`,
   'cc-addon-info.feature.heading': `Features`,
+  'cc-addon-info.grafana.link': `Open Grafana`,
   'cc-addon-info.heading': `Information`,
+  'cc-addon-info.linked-services.heading': `Linked services`,
   'cc-addon-info.plan.heading': `Plan`,
+  'cc-addon-info.scalability-link.heading': `Scalability`,
+  'cc-addon-info.scalability.link': `Configure scalability`,
   'cc-addon-info.version.btn': `Update available`,
   'cc-addon-info.version.heading': `Version`,
   //#endregion
