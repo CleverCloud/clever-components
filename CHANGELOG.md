@@ -5,6 +5,13 @@ title: 'Changelog'
 
 # Changelog
 
+## [20.0.1](https://github.com/CleverCloud/clever-components/compare/20.0.0...20.0.1) (2025-08-07)
+
+
+### 🐛 Bug Fixes
+
+* **cc-env-var-form.smart-env-var-app:** support restart app and dispatch event ([1bc2ab2](https://github.com/CleverCloud/clever-components/commit/1bc2ab2b5e7ceb2d92afff001ac96a7b0c9d98dd))
+
 ## [20.0.0](https://github.com/CleverCloud/clever-components/compare/19.4.0...20.0.0) (2025-08-07)
 
 
