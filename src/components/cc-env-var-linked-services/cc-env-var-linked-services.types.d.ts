@@ -11,11 +11,13 @@ interface EnvVarLinkedServicesStateLoading {
 
 interface EnvVarLinkedServicesStateLoaded {
   type: 'loaded';
+  appName?: string;
   servicesStates: Array<LinkedServiceState>;
 }
 
 interface EnvVarLinkedServicesStateError {
   type: 'error';
+  appName?: string;
 }
 
 type EnvVarLinkedServicesType = 'addon' | 'app';

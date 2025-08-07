@@ -136,9 +136,9 @@ class Api {
   getLinkedServicesWithEnvVars() {
     switch (this._type) {
       case 'app':
-        return this._getLinkedAppsWithEnvVars();
+        return Promise.allSettled([this._getAppName(), this._getLinkedAppsWithEnvVars()]);
       case 'addon':
-        return this._getLinkedAddonsWithEnvVars();
+        return Promise.allSettled([this.getAppName(), this._getLinkedAddonsWithEnvVars()]);
     }
   }
 }
