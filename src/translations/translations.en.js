@@ -1708,7 +1708,7 @@ export const translations = {
   'cc-token-oauth-list.empty': `You do not have any third-party applications linked to your account`,
   'cc-token-oauth-list.error': `Something went wrong while loading OAuth tokens`,
   'cc-token-oauth-list.intro': () =>
-    sanitize`Below is the list of third-party applications linked to your account and their associated information. You may revoke these <cc-link href="https://www.clever-cloud.com/developers/api/howto/#oauth1" a11y-desc="OAuth tokens - Documentation">OAuth tokens</cc-link> as needed.`,
+    sanitize`Below is the list of third-party applications linked to your account and their associated information. You may revoke these <cc-link href="${generateDevHubHref('/developers/api/howto/#oauth1')}" a11y-desc="OAuth tokens - Documentation">OAuth tokens</cc-link> as needed.`,
   'cc-token-oauth-list.link.doc': `OAuth tokens - Documentation`,
   'cc-token-oauth-list.main-heading': `OAuth tokens`,
   'cc-token-oauth-list.revoke-all-tokens': `Revoke all OAuth tokens`,
