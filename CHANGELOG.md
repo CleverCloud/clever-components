@@ -5,6 +5,32 @@ title: 'Changelog'
 
 # Changelog
 
+## [20.0.0](https://github.com/CleverCloud/clever-components/compare/19.4.0...20.0.0) (2025-08-07)
+
+
+### ⚠ BREAKING CHANGES
+
+* **cc-env-var-form:** update context `env-var` name to `env-var-app`
+* **cc-tcp-redirection-form:** change name property ressourceId to applicationId
+* **cc-domain-management:** change name property ressourceId to applicationId
+
+### 🚀 Features
+
+* **cc-addon-backups:** add smart part ([b9ce398](https://github.com/CleverCloud/clever-components/commit/b9ce398fbd88406b70b42e623c22eb5ae71c44e0))
+* **cc-env-var-form:** add smart part to env-var-app context ([0900ede](https://github.com/CleverCloud/clever-components/commit/0900ede53ef51de2483a091ce2a201e08ddfbd70))
+
+
+### 🐛 Bug Fixes
+
+* **cc-domain-management:** change name property ressourceId to applicationId ([c5fc385](https://github.com/CleverCloud/clever-components/commit/c5fc385db5ed0065ad8b85b52f4647ad48082ef9))
+* **cc-domain-management:** pass the param applicationId from the smart part to the component ([796298c](https://github.com/CleverCloud/clever-components/commit/796298c8c4e8a4e8951ebdd56665a809a61318f8))
+* **cc-env-var-form:** pass the param applicationId from the smart part to the component ([c3d1b6c](https://github.com/CleverCloud/clever-components/commit/c3d1b6cd6c6152fcd81cf0217f4e9fe30f25046e))
+* **cc-env-var-form:** update context `env-var` name to `env-var-app` ([d62496b](https://github.com/CleverCloud/clever-components/commit/d62496bcdd9f325b2c0a66e523f1f7b679dcc11a))
+* **cc-env-var-form:** update resourceId default value ([57fdd61](https://github.com/CleverCloud/clever-components/commit/57fdd6159c575405120123da68d65d66e537b5be))
+* **cc-link:** make button mode closer to `cc-button` ([5a77cb9](https://github.com/CleverCloud/clever-components/commit/5a77cb93e114f04580a7a0762827a46c0964c58a)), closes [#1499](https://github.com/CleverCloud/clever-components/issues/1499)
+* **cc-tcp-redirection-form:** change name property ressourceId to applicationId ([0386dbb](https://github.com/CleverCloud/clever-components/commit/0386dbbec1a81dd860f2ddf3c7d9725f3b64a69d))
+* **cc-tcp-redirection-form:** pass the param applicationId from the smart part to the component ([d588d30](https://github.com/CleverCloud/clever-components/commit/d588d30b1eaa077cbb488c51589619ef8a80858a))
+
 ## [19.4.0](https://github.com/CleverCloud/clever-components/compare/19.3.1...19.4.0) (2025-07-25)
 
 
