@@ -204,15 +204,39 @@ export const translations = {
   //#region cc-addon-info
   'cc-addon-info.billing.heading': `Billing`,
   'cc-addon-info.creation-date.heading': `Creation date`,
+  'cc-addon-info.creation-date.human-friendly-date': /** @param {{ date: string }} _ */ ({ date }) =>
+    formatDatetime(date),
   'cc-addon-info.documentation.text': `See documentation`,
   'cc-addon-info.error': `Something went wrong while loading add-on information.`,
+  'cc-addon-info.feature.connection-limit': `Connection limit`,
+  'cc-addon-info.feature.cpu': `vCPUs`,
+  'cc-addon-info.feature.databases': `Databases`,
+  'cc-addon-info.feature.dedicated': `Dedicated`,
+  'cc-addon-info.feature.disk-size': `Disk size`,
+  'cc-addon-info.feature.gpu': `GPUs`,
+  'cc-addon-info.feature.has-logs': `Logs`,
+  'cc-addon-info.feature.has-metrics': `Metrics`,
   'cc-addon-info.feature.heading': `Features`,
+  'cc-addon-info.feature.is-migratable': `Migration tool`,
+  'cc-addon-info.feature.max-db-size': `Max DB size`,
+  'cc-addon-info.feature.memory': `RAM`,
+  'cc-addon-info.feature.version': `Version`,
   'cc-addon-info.grafana.link': `Open Grafana`,
   'cc-addon-info.heading': `Information`,
   'cc-addon-info.linked-services.heading': `Linked services`,
   'cc-addon-info.plan.heading': `Plan`,
   'cc-addon-info.scalability-link.heading': `Scalability`,
   'cc-addon-info.scalability.link': `Configure scalability`,
+  'cc-addon-info.type.boolean': /** @param {{boolean: boolean}} _ */ ({ boolean }) => `${boolean ? 'Yes' : 'No'}`,
+  'cc-addon-info.type.boolean-shared': /** @param {{shared: boolean}} _ */ ({ shared }) =>
+    `${shared ? 'Shared' : 'Dedicated'}`,
+  'cc-addon-info.type.bytes': /** @param {{bytes: number}} _ */ ({ bytes }) => formatBytes(bytes, 0, 3),
+  'cc-addon-info.type.number': /** @param {{number: number}} _ */ ({ number }) => formatNumber(lang, number),
+  'cc-addon-info.type.number-cpu-runtime': /** @param {{cpu: number, shared: boolean}} _ */ ({ cpu, shared }) => {
+    return shared
+      ? sanitize`<em title="Lower priority access to vCPU">${formatNumber(lang, cpu)}<code>*</code></em>`
+      : formatNumber(lang, cpu);
+  },
   'cc-addon-info.version.btn': `Update available`,
   'cc-addon-info.version.heading': `Version`,
   //#endregion

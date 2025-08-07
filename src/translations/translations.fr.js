@@ -217,15 +217,39 @@ export const translations = {
   //#region cc-addon-info
   'cc-addon-info.billing.heading': `Facturation`,
   'cc-addon-info.creation-date.heading': `Date de création`,
+  'cc-addon-info.creation-date.human-friendly-date': /** @param {{ date: string }} _ */ ({ date }) =>
+    formatDatetime(date),
   'cc-addon-info.documentation.text': `Voir la  documentation`,
   'cc-addon-info.error': `Une erreur est survenue lors du chargement des informations de l'add-on.`,
+  'cc-addon-info.feature.connection-limit': `Limite de connexions`,
+  'cc-addon-info.feature.cpu': `vCPUs`,
+  'cc-addon-info.feature.databases': `Bases de données`,
+  'cc-addon-info.feature.dedicated': `Dédié`,
+  'cc-addon-info.feature.disk-size': `Taille du disque`,
+  'cc-addon-info.feature.gpu': `GPUs`,
+  'cc-addon-info.feature.has-logs': `Logs`,
+  'cc-addon-info.feature.has-metrics': `Métriques`,
   'cc-addon-info.feature.heading': `Fonctionnalités`,
+  'cc-addon-info.feature.is-migratable': `Outil de migration`,
+  'cc-addon-info.feature.max-db-size': `Taille BDD max`,
+  'cc-addon-info.feature.memory': `RAM`,
+  'cc-addon-info.feature.version': `Version`,
   'cc-addon-info.grafana.link': `Ouvrir Grafana`,
   'cc-addon-info.heading': `Informations`,
   'cc-addon-info.linked-services.heading': `Services liés`,
   'cc-addon-info.plan.heading': `Plan`,
   'cc-addon-info.scalability-link.heading': `Scalabilité`,
   'cc-addon-info.scalability.link': `Configurer la scalabilité`,
+  'cc-addon-info.type.boolean': /** @param {{boolean: boolean}} _ */ ({ boolean }) => `${boolean ? 'Oui' : 'Non'}`,
+  'cc-addon-info.type.boolean-shared': /** @param {{shared: boolean}} _ */ ({ shared }) =>
+    `${shared ? 'Partagé' : 'Dédié'}`,
+  'cc-addon-info.type.bytes': /** @param {{bytes: number}} _ */ ({ bytes }) => formatBytes(bytes, 0, 3),
+  'cc-addon-info.type.number': /** @param {{number: number}} _ */ ({ number }) => formatNumber(lang, number),
+  'cc-addon-info.type.number-cpu-runtime': /** @param {{cpu: number, shared: boolean}} _ */ ({ cpu, shared }) => {
+    return shared
+      ? sanitize`<em title="Accès au vCPU moins prioritaire">${formatNumber(lang, cpu)}<code>*</code></em>`
+      : formatNumber(lang, cpu);
+  },
   'cc-addon-info.version.btn': `Mise à jour disponible`,
   'cc-addon-info.version.heading': `Version`,
   //#endregion
