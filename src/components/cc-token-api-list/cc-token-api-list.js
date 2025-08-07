@@ -13,7 +13,7 @@ import {
 import { LostFocusController } from '../../controllers/lost-focus-controller.js';
 import { ResizeController } from '../../controllers/resize-controller.js';
 import { isExpirationClose } from '../../lib/tokens.js';
-import { isStringEmpty } from '../../lib/utils.js';
+import { generateDevHubHref, isStringEmpty } from '../../lib/utils.js';
 import { cliCommandsStyles } from '../../styles/cli-commands.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-badge/cc-badge.js';
@@ -186,11 +186,7 @@ export class CcTokenApiList extends LitElement {
         </div>
         <cc-block-details slot="footer-left">
           <div slot="button-text">${i18n('cc-block-details.cli.text')}</div>
-          <cc-link
-            slot="link"
-            href="https://www.clever-cloud.com/developers/api/howto/#api-tokens"
-            .icon="${iconInfoLink}"
-          >
+          <cc-link slot="link" href="${generateDevHubHref('/api/howto/#api-tokens')}" .icon="${iconInfoLink}">
             <span>${i18n('cc-token-api-list.link.doc')}</span>
           </cc-link>
           <div slot="content">

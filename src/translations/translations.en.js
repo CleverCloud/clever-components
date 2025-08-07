@@ -1664,7 +1664,7 @@ export const translations = {
   'cc-token-api-list.empty': `You haven't created any API tokens yet, or none of them are active. Let's create a new one:`,
   'cc-token-api-list.error': `Something went wrong while loading API tokens`,
   'cc-token-api-list.intro': () =>
-    sanitize`Below is the list of <cc-link href="https://www.clever-cloud.com/developers/api/howto/#request-the-api" a11y-desc="API Tokens - Documentation">API tokens</cc-link> linked to your account and their associated information. You may revoke them as needed.`,
+    sanitize`Below is the list of <cc-link href="${generateDevHubHref('/api/howto/#request-the-api')}" a11y-desc="API Tokens - Documentation">API tokens</cc-link> linked to your account and their associated information. You may revoke them as needed.`,
   'cc-token-api-list.link.doc': `API tokens - Documentation`,
   'cc-token-api-list.main-heading': `API tokens`,
   'cc-token-api-list.no-password.create-password-btn': `Add a password`,
