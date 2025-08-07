@@ -82,6 +82,7 @@ defineSmartComponent({
             stateType: operatorVersionInfo.needUpdate ? 'update-available' : 'up-to-date',
             installed: operatorVersionInfo.installed,
             available: operatorVersionInfo.needUpdate ? operatorVersionInfo.available : null,
+            changelogLink: 'https://www.clever.cloud/developers/changelog',
           },
           creationDate: addonInfo.creationDate,
           openGrafanaLink: grafanaLink,
@@ -233,8 +234,9 @@ class Api {
       );
   }
 
-  /** @param {string} targetVersion */
+  // TODO: should we move the waiting & update stuff to the state because it triggers modal closing ?!
   updateOperatorVersion(targetVersion) {
+    return new Promise((resolve) => setTimeout(resolve, 2000));
     return updateOperatorVersion({ providerId: this._providerId, realId: this._realId }, targetVersion).then(
       sendToApi({ apiConfig: this._apiConfig }),
     );

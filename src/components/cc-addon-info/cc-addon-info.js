@@ -1,6 +1,7 @@
 import { css, html, LitElement } from 'lit';
 import { createRef, ref } from 'lit/directives/ref.js';
 import { iconRemixCloseFill as iconClose } from '../../assets/cc-remix.icons.js';
+import { LostFocusController } from '../../controllers/lost-focus-controller.js';
 import { formSubmit } from '../../lib/form/form-submit-directive.js';
 import { accessibilityStyles } from '../../styles/accessibility.js';
 import { i18n } from '../../translations/translation.js';
@@ -28,10 +29,12 @@ const FEATURES_I18N = {
 
 /**
  * @typedef {import('./cc-addon-info.types.js').CcAddonInfoState} CcAddonInfoState
- * @typedef {import('./cc-addon-info.types.js').AddonVersion} AddonVersion
+ * @typedef {import('./cc-addon-info.types.js').AddonVersionStateUpdateAvailable} AddonVersionStateUpdateAvailable
+ * @typedef {import('./cc-addon-info.types.js').AddonVersionStateRequestingUpdate} AddonVersionStateRequestingUpdate
  * @typedef {import('../common.types.js').FormattedFeature} FormattedFeature
  * @typedef {import('../cc-select/cc-select.types.js').Option} Option
  * @typedef {import('lit/directives/ref.js').Ref<HTMLDialogElement>} HTMLDialogElementRef
+ * @typedef {import('lit/directives/ref.js').Ref<HTMLElement>} HTMLElementRef
  */
 
 export class CcAddonInfo extends LitElement {
@@ -49,6 +52,13 @@ export class CcAddonInfo extends LitElement {
 
     /** @type {HTMLDialogElementRef} */
     this._versionDialogRef = createRef();
+
+    /** @type {HTMLElementRef} */
+    this._versionTextRef = createRef();
+
+    new LostFocusController(this, 'dialog', () => {
+      this._versionTextRef.value?.focus();
+    });
   }
 
   /**
@@ -87,16 +97,16 @@ export class CcAddonInfo extends LitElement {
           shared: feature.value.shared,
         });
       case 'string':
-        return feature.value.toString();
+        return feature.value?.toString();
     }
   }
 
   _onVersionDialogOpen() {
-    this._versionDialogRef.value.showModal();
+    this._versionDialogRef.value?.showModal();
   }
 
   _onVersionDialogClose() {
-    this._versionDialogRef.value.close();
+    this._versionDialogRef.value?.close();
   }
 
   /** @param {{ version: string }} formData */
@@ -114,13 +124,13 @@ export class CcAddonInfo extends LitElement {
     return html`
       <cc-block>
         <div slot="header-title">${i18n('cc-addon-info.heading')}</div>
-        <div slot="content">
+        <div slot="content" tabindex="-1" ${ref(this._versionTextRef)}>
           ${this.state.version != null
             ? html`
                 <strong class="heading">${i18n('cc-addon-info.version.heading')}</strong>
-                <div tabindex="-1">
+                <div>
                   <p>${this.state.version.installed}</p>
-                  ${this.state.version.available.length > 0
+                  ${this.state.version.stateType !== 'up-to-date'
                     ? html`
                         <cc-button primary outlined @cc-click="${this._onVersionDialogOpen}">
                           ${i18n('cc-addon-info.version.btn')}
@@ -148,8 +158,8 @@ export class CcAddonInfo extends LitElement {
     `;
   }
 
-  /** @param {AddonVersion} addonVersion */
-  _renderVersionDialog({ available, installed, changelogLink }) {
+  /** @param {AddonVersionStateUpdateAvailable | AddonVersionStateRequestingUpdate} addonVersionState */
+  _renderVersionDialog({ stateType, available, installed, changelogLink }) {
     /** @type {Option[]} */
     const selectOptions = available.map((availableVersion) => ({
       label: availableVersion,
@@ -180,10 +190,17 @@ export class CcAddonInfo extends LitElement {
               </p>
             </cc-select>
           </div>
-          <cc-button primary outlined type="reset" @cc-click="${this._onVersionDialogClose}"
+          <cc-button
+            primary
+            outlined
+            type="reset"
+            @cc-click="${this._onVersionDialogClose}"
+            ?disabled="${stateType === 'requesting-update'}"
             >${i18n('cc-addon-info.version.dialog.btn.cancel')}</cc-button
           >
-          <cc-button primary type="submit">${i18n('cc-addon-info.version.dialog.btn.submit')}</cc-button>
+          <cc-button primary type="submit" ?waiting="${stateType === 'requesting-update'}"
+            >${i18n('cc-addon-info.version.dialog.btn.submit')}</cc-button
+          >
         </form>
       </dialog>
     `;

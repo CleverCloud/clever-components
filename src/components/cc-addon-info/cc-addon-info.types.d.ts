@@ -1,4 +1,4 @@
-import { AddonPlan, AddonProvider, FormattedFeature } from "../common.types.js";
+import { AddonPlan, AddonProvider, FormattedFeature } from '../common.types.js';
 
 export type CcAddonInfoState = CcAddonInfoStateLoaded | CcAddonInfoStateLoading | CcAddonInfoStateError;
 
@@ -14,17 +14,36 @@ export interface CcAddonInfoStateError {
   type: 'error';
 }
 
+export type AddonVersionState =
+  | AddonVersionStateUpToDate
+  | AddonVersionStateRequestingUpdate
+  | AddonVersionStateUpdateAvailable;
+
+export interface AddonVersionStateUpToDate extends AddonVersion {
+  stateType: 'up-to-date';
+}
+
+export interface AddonVersionStateRequestingUpdate extends AddonVersion {
+  stateType: 'requesting-update';
+  available: Array<string>;
+  changelogLink: string;
+}
+
+export interface AddonVersionStateUpdateAvailable extends AddonVersion {
+  stateType: 'update-available';
+  available: Array<string>;
+  changelogLink: string;
+}
+
 export type AddonVersion = {
   installed: string;
-  available?: string[];
-  changelogLink?: string;
 };
 
 export interface BaseProperties {
-  version?: AddonVersion;
+  version?: AddonVersionState;
   plan?: string;
-  features?: Array<FormattedFeature>
-  creationDate: string;
+  features?: Array<FormattedFeature>;
+  creationDate: string | number;
   openGrafanaLink?: string;
   openScalabilityLink?: string;
   linkedServices?: Array<LinkedService>;
