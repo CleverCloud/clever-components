@@ -489,6 +489,11 @@ export const translations = {
   'cc-env-var-form.heading.exposed-config': `Exposed configuration`,
   'cc-env-var-form.mode.expert': `Expert`,
   'cc-env-var-form.mode.simple': `Simple`,
+  'cc-env-var-form.redeploy.error': `Something went wrong while trying to restart your application`,
+  'cc-env-var-form.redeploy.error.app-stopped': `The app has never been deployed so it cannot be redeployed. Push a commit to start a deployment.`,
+  'cc-env-var-form.redeploy.success.heading': `Restart in progress`,
+  'cc-env-var-form.redeploy.success.text': /** @param {{ logsUrl: string }} _ */ ({ logsUrl }) =>
+    sanitize`The process of restarting your application is in progress. See the <cc-link href="${logsUrl}">logs</cc-link>.`,
   'cc-env-var-form.reset': `Reset changes`,
   'cc-env-var-form.restart-app': `Restart the app to apply changes`,
   'cc-env-var-form.update': `Update changes`,

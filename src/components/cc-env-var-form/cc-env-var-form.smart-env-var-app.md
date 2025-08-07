@@ -2,7 +2,7 @@
 kind: '🛠 Environment variables/<cc-env-var-form>'
 title: '💡 Smart (env-var-app)'
 ---
-# 💡 Smart `<cc-env-var-form>` for application environment variables
+# 💡 Smart `<cc-env-var-form context="env-var-app">` for application environment variables
 
 ## ℹ️ Details
 
@@ -15,10 +15,11 @@ title: '💡 Smart (env-var-app)'
 ## ⚙️ Params
 
 <table>
-  <tr><th>Name                   <th>Type                   <th>Details                                                     <th>Default
-  <tr><td><code>apiConfig</code> <td><code>ApiConfig</code> <td>Object with API configuration (target host, tokens...)      <td>
-  <tr><td><code>ownerId</code>   <td><code>String</code>    <td>UUID prefixed with <code>user_</code> or <code>orga_</code> <td>
-  <tr><td><code>appId</code>   <td><code>String</code>    <td>UUID prefixed with <code>app_</code>                      <td>
+  <tr><th>Name                          <th>Type                       <th>Details                                                     <th>Default
+  <tr><td><code>apiConfig</code>        <td><code>ApiConfig</code>     <td>Object with API configuration (target host, tokens...)      <td>
+  <tr><td><code>ownerId</code>          <td><code>String</code>        <td>UUID prefixed with <code>user_</code> or <code>orga_</code> <td>
+  <tr><td><code>appId</code>            <td><code>String</code>        <td>UUID prefixed with <code>app_</code>                        <td>
+  <tr><td><code>logsUrlPattern</code>   <td><code>String</code>        <td>Pattern for the logs url                                    <td>
 </table>
 
 ```ts
@@ -33,11 +34,10 @@ interface ApiConfig {
 
 ## 🌐 API endpoints
 
-<!-- List API endpoints used by the component here with the details. -->
-
 <table>
-  <tr><th>Method <th>URL                                                      <th>Cache?
-  <tr><td>GET    <td><code>/v2/organisations/{id}/applications/{appId}/env</code> <td>Default
+  <tr><th>Method  <th>URL                                                                        <th>Cache?
+  <tr><td>GET     <td><code>/v2/organisations/{ownerId}/applications/{appId}/env</code>          <td>Default
+  <tr><td>POST    <td><code>/v2$/organisations/{ownerId}/applications/${appId}/instances`</code> <td>Default
 </table>
 
 ## ⬇️️ Examples
@@ -53,6 +53,7 @@ interface ApiConfig {
   },
   "ownerId": "",
   "appId": "",
+  "logsUrlPattern": "",
 }'>
   <cc-env-var-form context="env-var-app"></cc-env-var-form>
 </cc-smart-container>

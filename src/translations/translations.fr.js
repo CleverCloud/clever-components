@@ -503,6 +503,11 @@ export const translations = {
   'cc-env-var-form.heading.exposed-config': `Configuration publiée`,
   'cc-env-var-form.mode.expert': `Expert`,
   'cc-env-var-form.mode.simple': `Simple`,
+  'cc-env-var-form.redeploy.error': `Une erreur est survenue lors du redémarrage de votre application`,
+  'cc-env-var-form.redeploy.error.app-stopped': `L'application n'a jamais été déployée donc elle ne peut pas être redéployée. Poussez un commit pour lancer un déploiement.`,
+  'cc-env-var-form.redeploy.success.heading': `Redémarrage en cours`,
+  'cc-env-var-form.redeploy.success.text': /** @param {{ logsUrl: string }} _ */ ({ logsUrl }) =>
+    sanitize`Le processus de redémarrage de votre application est en cours. Consultez les <cc-link href="${logsUrl}">logs</cc-link>`,
   'cc-env-var-form.reset': `Annuler les changements`,
   'cc-env-var-form.restart-app': `Redémarrer l'app pour appliquer les changements`,
   'cc-env-var-form.update': `Mettre à jour les changements`,

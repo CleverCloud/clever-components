@@ -19,7 +19,11 @@ import {
   CcEmailSendConfirmationEvent,
 } from '../components/cc-email-list/cc-email-list.events.js';
 import { CcEnvVarCreateEvent } from '../components/cc-env-var-create/cc-env-var-create.events.js';
-import { CcEnvChangeEvent, CcEnvVarFormSubmitEvent } from '../components/cc-env-var-form/cc-env-var-form.events.js';
+import {
+  CcEnvChangeEvent,
+  CcEnvVarFormSubmitEvent,
+  CcEnvVarsWasUpdatedEvent,
+} from '../components/cc-env-var-form/cc-env-var-form.events.js';
 import {
   CcEnvVarChangeEvent,
   CcEnvVarDeleteEvent,
@@ -176,6 +180,7 @@ declare global {
     'cc-env-var-delete': CcEnvVarDeleteEvent;
     'cc-env-var-form-submit': CcEnvVarFormSubmitEvent;
     'cc-env-var-keep': CcEnvVarKeepEvent;
+    'cc-env-vars-was-updated': CcEnvVarsWasUpdatedEvent;
     'cc-error-message-change': CcErrorMessageChangeEvent;
     'cc-form-invalid': CcFormInvalidEvent;
     'cc-form-valid': CcFormValidEvent;

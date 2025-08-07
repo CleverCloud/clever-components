@@ -33,3 +33,18 @@ export class CcEnvChangeEvent extends CcEvent {
     super(CcEnvChangeEvent.TYPE, detail);
   }
 }
+
+/**
+ * Dispatched when env vars have been updated successfully.
+ * @extends {CcEvent<Array<EnvVar>>}
+ */
+export class CcEnvVarsWasUpdatedEvent extends CcEvent {
+  static TYPE = 'cc-env-vars-was-updated';
+
+  /**
+   * @param {Array<EnvVar>} detail
+   */
+  constructor(detail) {
+    super(CcEnvVarsWasUpdatedEvent.TYPE, detail);
+  }
+}

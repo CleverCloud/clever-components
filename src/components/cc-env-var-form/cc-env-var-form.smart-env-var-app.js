@@ -1,13 +1,17 @@
 // @ts-expect-error FIXME: remove when clever-client exports types
-import { getAllEnvVars, updateAllEnvVars } from '@clevercloud/client/esm/api/v2/application.js';
+import { getAllEnvVars, redeploy, updateAllEnvVars } from '@clevercloud/client/esm/api/v2/application.js';
 // @ts-expect-error FIXME: remove when clever-client exports types
 import { toNameValueObject } from '@clevercloud/client/esm/utils/env-vars.js';
-import { notifyError, notifySuccess } from '../../lib/notifications.js';
+import { notify, notifyError, notifySuccess } from '../../lib/notifications.js';
 import { sendToApi } from '../../lib/send-to-api.js';
 import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-smart-container/cc-smart-container.js';
+import { CcEnvVarsWasUpdatedEvent } from './cc-env-var-form.events.js';
 import './cc-env-var-form.js';
+
+// This happens when the app has never be deployed at all, we cannot deploy it because there is no commit to deploy
+const APP_CANNOT_BE_DEPLOYED_ERROR_CODE = 4014;
 
 /**
  * @typedef {import('./cc-env-var-form.js').CcEnvVarForm} CcEnvVarForm
@@ -25,17 +29,21 @@ defineSmartComponent({
     apiConfig: { type: Object },
     ownerId: { type: String },
     appId: { type: String },
+    logsUrlPattern: { type: String },
   },
   /**
    * @param {OnContextUpdateArgs} args
    */
-  onContextUpdate({ context, onEvent, updateComponent, signal }) {
-    const { apiConfig, ownerId, appId } = context;
+  onContextUpdate({ context, onEvent, updateComponent, component, signal }) {
+    const { apiConfig, ownerId, appId, logsUrlPattern } = context;
+    const api = new Api({ apiConfig, ownerId, appId, signal });
 
     updateComponent('state', { type: 'loading' });
     updateComponent('resourceId', appId);
+    updateComponent('restartApp', false);
 
-    fetchEnvVars({ apiConfig, signal, ownerId, appId })
+    api
+      .fetchEnvVars()
       .then(
         /** @param {Array<EnvVar>} variables */
         (variables) => {
@@ -59,7 +67,8 @@ defineSmartComponent({
         },
       );
       const newVarsObject = toNameValueObject(variables);
-      updateVariables({ apiConfig, ownerId, appId, newVarsObject })
+      api
+        .updateVariables(newVarsObject)
         .then(() => {
           updateComponent(
             'state',
@@ -69,6 +78,9 @@ defineSmartComponent({
             },
           );
           notifySuccess(i18n('cc-env-var-form.update.success'));
+          updateComponent('restartApp', true);
+          // Warn the console that env vars have been updated successfully so it can update the EOL variables list
+          component.dispatchEvent(new CcEnvVarsWasUpdatedEvent(variables));
         })
         .catch(() => notifyError(i18n('cc-env-var-form.update.error')))
         .finally(() => {
@@ -81,28 +93,65 @@ defineSmartComponent({
           );
         });
     });
+
+    onEvent('cc-application-restart', () => {
+      api
+        .redeployApp()
+        .then(() => {
+          updateComponent('restartApp', false);
+
+          notify({
+            intent: 'success',
+            message: i18n('cc-env-var-form.redeploy.success.text', { logsUrl: logsUrlPattern.replace(':id', appId) }),
+            title: i18n('cc-env-var-form.redeploy.success.heading'),
+            options: {
+              timeout: 0,
+              closeable: true,
+            },
+          });
+        })
+        .catch((/** @type {Error & { id: number }} */ error) => {
+          console.error(error);
+          if (error.id === APP_CANNOT_BE_DEPLOYED_ERROR_CODE) {
+            notifyError(i18n('cc-env-var-form.redeploy.error.app-stopped'));
+          } else {
+            notifyError(i18n('cc-env-var-form.redeploy.error'));
+          }
+        });
+    });
   },
 });
 
-/**
- * @param {object} params
- * @param {ApiConfig} params.apiConfig
- * @param {AbortSignal} params.signal
- * @param {string} params.ownerId
- * @param {string} params.appId
- * @returns {Promise<Array<EnvVar>>}
- */
-function fetchEnvVars({ apiConfig, signal, ownerId, appId }) {
-  return getAllEnvVars({ id: ownerId, appId }).then(sendToApi({ apiConfig, signal }));
-}
+class Api {
+  /**
+   * @param {object} params
+   * @param {ApiConfig} params.apiConfig
+   * @param {AbortSignal} params.signal
+   * @param {string} params.ownerId
+   * @param {string} params.appId
+   */
+  constructor({ apiConfig, ownerId, appId, signal }) {
+    this._apiConfig = apiConfig;
+    this._ownerId = ownerId;
+    this._appId = appId;
+    this._signal = signal;
+  }
 
-/**
- * @param {object} params
- * @param {ApiConfig} params.apiConfig
- * @param {string} params.ownerId
- * @param {string} params.appId
- * @param {Array<EnvVar>} params.newVarsObject
- */
-async function updateVariables({ apiConfig, ownerId, appId, newVarsObject }) {
-  return updateAllEnvVars({ id: ownerId, appId }, newVarsObject).then(sendToApi({ apiConfig }));
+  /** @returns {Promise<Array<EnvVar>>} */
+  fetchEnvVars() {
+    return getAllEnvVars({ id: this._ownerId, appId: this._appId }).then(
+      sendToApi({ apiConfig: this._apiConfig, signal: this._signal }),
+    );
+  }
+
+  /** @param {Array<EnvVar>} newVarsObject */
+  updateVariables(newVarsObject) {
+    return updateAllEnvVars({ id: this._ownerId, appId: this._appId }, newVarsObject).then(
+      sendToApi({ apiConfig: this._apiConfig }),
+    );
+  }
+
+  redeployApp() {
+    return redeploy({ id: this._ownerId, appId: this._appId }).then(sendToApi({ apiConfig: this._apiConfig }));
+  }
 }
