@@ -10,6 +10,7 @@ import './cc-env-var-linked-services.js';
 /**
  * @typedef {import('./cc-env-var-linked-services.js').CcEnvVarLinkedServices} CcEnvVarLinkedServices
  * @typedef {import('./cc-env-var-linked-services.types.js').LinkedServiceState} LinkedServiceState
+ * @typedef {import('./cc-env-var-linked-services.types.js').EnvVarLinkedServicesType} EnvVarLinkedServicesType
  * @typedef {import('../common.types.js').App} App
  * @typedef {import('../common.types.js').Addon} Addon
  * @typedef {import('../common.types.js').EnvVar} EnvVar
@@ -29,104 +30,115 @@ defineSmartComponent({
    * @param {OnContextUpdateArgs} args
    */
   onContextUpdate({ context, updateComponent, signal }) {
-    updateComponent('state', { type: 'loading' });
-
     const { apiConfig, type, ownerId, appId } = context;
+    const api = new Api({ apiConfig, type, ownerId, appId, signal });
 
-    fetchLinkedServiceStateList({ apiConfig, signal, ownerId, appId, type }).then((linkedServiceList) => {
-      updateComponent('state', {
-        type: 'loaded',
-        servicesStates: linkedServiceList,
+    updateComponent('state', { type: 'loading' });
+    updateComponent('type', type);
+
+    api
+      .getLinkedServicesWithEnvVars()
+      .then((linkedServiceList) => {
+        // FIXME: should take care of the app name, do we fetch it or take it from context?
+        updateComponent('state', {
+          type: 'loaded',
+          servicesStates: linkedServiceList,
+        });
+      })
+      .catch((error) => {
+        console.error(error);
+        updateComponent('state', {
+          type: 'error',
+        });
       });
-    });
   },
 });
 
-/**
- * @param {object} params
- * @param {ApiConfig} params.apiConfig
- * @param {AbortSignal} params.signal
- * @param {string} params.ownerId
- * @param {string} params.appId
- */
-function fetchLinkedAddons({ apiConfig, signal, ownerId, appId }) {
-  return getAllLinkedAddons({ id: ownerId, appId }).then(sendToApi({ apiConfig, signal }));
-}
-
-/**
- * @param {object} params
- * @param {ApiConfig} params.apiConfig
- * @param {AbortSignal} params.signal
- * @param {string} params.ownerId
- * @param {string} params.appId
- */
-function fetchLinkedApps({ apiConfig, signal, ownerId, appId }) {
-  return getAllEnvVarsForDependencies({ id: ownerId, appId })
-    .then(sendToApi({ apiConfig, signal }))
-    .then((/** @type {any[]} */ linkedApps) => linkedApps.map((app) => ({ ...app, name: app.app_name })));
-}
-
-/**
- * @param {object} params
- * @param {ApiConfig} params.apiConfig
- * @param {AbortSignal} params.signal
- * @param {string} params.ownerId
- * @param {string} params.appId
- * @param {string} params.type
- * @return LinkedServiceState[]
- */
-async function fetchLinkedServiceStateList({ apiConfig, signal, ownerId, appId, type }) {
+class Api {
   /**
-   * @type {LinkedServiceState[]}
+   * @param {object} params
+   * @param {ApiConfig} params.apiConfig
+   * @param {string} params.ownerId
+   * @param {string} params.appId
+   * @param {EnvVarLinkedServicesType} params.type
+   * @param {AbortSignal} params.signal
    */
-  let linkedServiceStateList = [];
+  constructor({ apiConfig, ownerId, appId, type, signal }) {
+    this._apiConfig = apiConfig;
+    this._ownerId = ownerId;
+    this._appId = appId;
+    this._type = type;
+    this._signal = signal;
+  }
 
-  const fetchEnvVarsForAddon = (/** @type {Addon} */ addon) =>
-    getAllAddonEnvVars({ id: ownerId, addonId: addon.id }).then(sendToApi({ apiConfig, signal }));
+  /**
+   * @param {object} params
+   * @param {ApiConfig} params.apiConfig
+   * @param {AbortSignal} params.signal
+   * @param {string} params.ownerId
+   * @param {string} params.appId
+   * @returns {Promise<Addon[]>}
+   */
+  _fetchLinkedAddons() {
+    return getAllLinkedAddons({ id: this._ownerId, appId: this._appId }).then(
+      sendToApi({ apiConfig: this._apiConfig, signal: this._signal }),
+    );
+  }
 
-  const fetchEnvVarsForApp = (/** @type {{ env: any; }} */ app) => app.env;
+  /** @param {string} addonId */
+  _fetchEnvVarsForAddon(addonId) {
+    return getAllAddonEnvVars({ id: this._ownerId, addonId }).then(
+      sendToApi({ apiConfig: this._apiConfig, signal: this._signal }),
+    );
+  }
 
-  switch (type) {
-    case 'addon': {
-      const addons = await fetchLinkedAddons({ apiConfig, signal, ownerId, appId });
-      // @ts-ignore
-      linkedServiceStateList = await buildLinkedServiceStates(addons, fetchEnvVarsForAddon);
-      break;
-    }
+  /** @returns {Promise<{ env: EnvVar[], name: string }[]>} */
+  _fetchLinkedApps() {
+    return getAllEnvVarsForDependencies({ id: this._ownerId, appId: this._appId })
+      .then(sendToApi({ apiConfig: this._apiConfig, signal: this._signal }))
+      .then((/** @type {any[]} */ linkedApps) => linkedApps.map((app) => ({ ...app, name: app.app_name })));
+  }
 
-    case 'application': {
-      const apps = await fetchLinkedApps({ apiConfig, signal, ownerId, appId });
-      // @ts-ignore
-      linkedServiceStateList = await buildLinkedServiceStates(apps, fetchEnvVarsForApp);
-      break;
+  /**
+   * @param {string} addonName
+   * @param {string} addonId
+   * @returns {Promise<LinkedServiceState>}
+   */
+  async _getAddonNameWithEnvVars(addonName, addonId) {
+    try {
+      const variables = await this._fetchEnvVarsForAddon(addonId);
+      return { type: 'loaded', name: addonName, variables };
+    } catch (error) {
+      console.error(error);
+      return { name: addonName, type: 'error' };
     }
   }
 
-  return linkedServiceStateList;
-}
+  async _getLinkedAddonsWithEnvVars() {
+    const linkedAddons = await this._fetchLinkedAddons();
+    return Promise.all(linkedAddons.map(({ name, id }) => this._getAddonNameWithEnvVars(name, id)));
+  }
 
-/**
- * @param {Array<Addon | App>} resources - addons ou apps
- * @param {(resource: Addon | App) => Promise<EnvVar[]>} fetchEnvVarsFn
- * @returns {Promise<LinkedServiceState[]>}
- */
-async function buildLinkedServiceStates(resources, fetchEnvVarsFn) {
-  const promises = resources.map(async (resource) => {
-    try {
-      const envVarList = await fetchEnvVarsFn(resource);
-      return /** @type {LinkedServiceState} */ ({
-        type: 'loaded',
-        name: resource.name,
-        variables: envVarList,
-      });
-    } catch (e) {
-      console.error(e);
-      return /** @type {LinkedServiceState} */ ({
-        type: 'error',
-        name: resource.name,
-      });
+  /** @returns {Promise<LinkedServiceState[]>} */
+  _getLinkedAppsWithEnvVars() {
+    return this._fetchLinkedApps().then((linkedApps) =>
+      linkedApps.map(
+        /** @returns {LinkedServiceState} */
+        ({ env, name }) => ({
+          type: 'loaded',
+          name,
+          variables: env,
+        }),
+      ),
+    );
+  }
+
+  getLinkedServicesWithEnvVars() {
+    switch (this._type) {
+      case 'app':
+        return this._getLinkedAppsWithEnvVars();
+      case 'addon':
+        return this._getLinkedAddonsWithEnvVars();
     }
-  });
-
-  return Promise.all(promises);
+  }
 }

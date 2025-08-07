@@ -15,11 +15,11 @@ title: '💡 Smart (env-var-linked-services)'
 ## ⚙️ Params
 
 <table>
-  <tr><th>Name                   <th>Type                   <th>Details                                                     <th>Default
-  <tr><td><code>apiConfig</code> <td><code>ApiConfig</code> <td>Object with API configuration (target host, tokens...)      <td>
-  <tr><td><code>type</code>      <td><code>String</code>    <td>Type of env vars to display linked add-ons or linked apps   <td>
-  <tr><td><code>ownerId</code>   <td><code>String</code>    <td>UUID prefixed with <code>user_</code> or <code>orga_</code> <td>
-  <tr><td><code>appId</code>     <td><code>String</code>    <td>UUID prefixed with <code>app_</code>                        <td>
+  <tr><th>Name                   <th>Type                            <th>Details                                                     <th>Default
+  <tr><td><code>apiConfig</code> <td><code>ApiConfig</code>          <td>Object with API configuration (target host, tokens...)      <td>
+  <tr><td><code>type</code>      <td><code>'app' | 'addon'</code>    <td>Type of env vars to display linked add-ons or linked apps   <td>
+  <tr><td><code>ownerId</code>   <td><code>String</code>             <td>UUID prefixed with <code>user_</code> or <code>orga_</code> <td>
+  <tr><td><code>appId</code>     <td><code>String</code>             <td>UUID prefixed with <code>app_</code>                        <td>
 </table>
 
 ```ts

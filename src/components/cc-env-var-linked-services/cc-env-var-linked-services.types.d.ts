@@ -27,7 +27,7 @@ interface LinkedServiceStateLoading {
   name: string;
 }
 
-interface LinkedServiceStateLoaded {
+export interface LinkedServiceStateLoaded {
   type: 'loaded';
   name: string;
   variables: Array<EnvVar>;
