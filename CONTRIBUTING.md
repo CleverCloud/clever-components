@@ -35,7 +35,7 @@ You can start the local Storybook with:
 npm run storybook:dev
 ```
 
-When the `master` branch is updated, the latest version of the Storybook is automatically published on the [public preview](https://www.clever-cloud.com/developers/clever-components/).
+When the `master` branch is updated, the latest version of the Storybook is automatically published on the [public preview](https://www.clever.cloud/developers/clever-components/).
 
 The production build of the public Storybook is done with:
 

@@ -12,6 +12,7 @@ import { DateFormatter } from '../../lib/date/date-formatter.js';
 import { getRelativeDateFromNow, shiftDateField } from '../../lib/date/date-utils.js';
 import { FormErrorFocusController } from '../../lib/form/form-error-focus-controller.js';
 import { formSubmit } from '../../lib/form/form-submit-directive.js';
+import { generateDevHubHref } from '../../lib/utils.js';
 import { cliCommandsStyles } from '../../styles/cli-commands.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-block-details/cc-block-details.js';
@@ -376,11 +377,7 @@ export class CcTokenApiCreationForm extends LitElement {
         </div>
         <cc-block-details slot="footer-left">
           <div slot="button-text">${i18n('cc-block-details.cli.text')}</div>
-          <cc-link
-            slot="link"
-            href="https://www.clever-cloud.com/developers/api/howto/#request-the-api"
-            .icon="${iconInfo}"
-          >
+          <cc-link slot="link" href="${generateDevHubHref('/api/howto/#request-the-api')}" .icon="${iconInfo}">
             <span>${i18n('cc-token-api-creation-form.link.doc')}</span>
           </cc-link>
           <div slot="content">

@@ -5,7 +5,7 @@
  * - sandbox/index.html,
  * - test/utils.test.js.
  */
-const CC_DEV_HUB_BASE_URL = 'https://www.clever-cloud.com/developers/';
+const CC_DEV_HUB_BASE_URL = 'https://www.clever.cloud/developers/';
 
 /**
  * @param {Record<string, any>} a
