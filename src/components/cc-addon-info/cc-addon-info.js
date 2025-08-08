@@ -1,7 +1,11 @@
 import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { createRef, ref } from 'lit/directives/ref.js';
-import { iconRemixCloseFill as iconClose, iconRemixInformationFill as iconInfo } from '../../assets/cc-remix.icons.js';
+import {
+  iconRemixCloseFill as iconClose,
+  iconRemixInformationFill as iconInfo,
+  iconRemixSettings_3Line as iconUpdate,
+} from '../../assets/cc-remix.icons.js';
 import { hasSlottedChildren } from '../../directives/has-slotted-children.js';
 import { fakeString } from '../../lib/fake-strings.js';
 import { formSubmit } from '../../lib/form/form-submit-directive.js';
@@ -57,6 +61,8 @@ const SKELETON_ADDON_INFO = {
     },
   ],
 };
+
+const GRAFANA_LOGO_URL = 'https://assets.clever-cloud.com/logos/grafana.svg';
 
 /**
  * @typedef {import('./cc-addon-info.types.js').CcAddonInfoState} CcAddonInfoState
@@ -172,6 +178,7 @@ export class CcAddonInfo extends LitElement {
                   ${addonInfo.version.available.length > 0
                     ? html`
                         <cc-button primary outlined @cc-click="${this._onVersionDialogOpen}">
+                          <cc-icon .icon="${iconUpdate}"></cc-icon>
                           ${i18n('cc-addon-info.version.btn')}
                         </cc-button>
                         ${this._renderVersionDialog(addonInfo.version)}
@@ -183,13 +190,13 @@ export class CcAddonInfo extends LitElement {
           ${addonInfo.plan != null
             ? html`
                 <strong class="heading">${i18n('cc-addon-info.plan.heading')}</strong>
-                <p class="value ${classMap({ skeleton })}">${addonInfo.plan}</p>
+                <p class="value plan__content ${classMap({ skeleton })}">${addonInfo.plan}</p>
               `
             : ''}
           ${addonInfo.features != null && addonInfo.features.length > 0
             ? html`
                 <strong class="heading">${i18n('cc-addon-info.feature.heading')}</strong>
-                <dl class="value ${classMap({ skeleton })}">
+                <dl class="value features__content ${classMap({ skeleton })}">
                   ${addonInfo.features.map((feature) => this._renderFeature(feature))}
                 </dl>
               `
@@ -202,7 +209,11 @@ export class CcAddonInfo extends LitElement {
           ${addonInfo.openGrafanaLink != null
             ? html`
                 <strong class="heading">Grafana</strong>
-                <cc-link class="value" href="${addonInfo.openGrafanaLink}" ?skeleton=${skeleton}
+                <cc-link
+                  class="value"
+                  href="${addonInfo.openGrafanaLink}"
+                  image="${GRAFANA_LOGO_URL}"
+                  ?skeleton=${skeleton}
                   >${i18n('cc-addon-info.grafana.link')}
                 </cc-link>
               `
@@ -210,7 +221,11 @@ export class CcAddonInfo extends LitElement {
           ${addonInfo.openScalabilityLink != null
             ? html`
                 <strong class="heading">${i18n('cc-addon-info.scalability-link.heading')}</strong>
-                <cc-link class="value" href="${addonInfo.openScalabilityLink}" ?skeleton=${skeleton}
+                <cc-link
+                  class="value"
+                  href="${addonInfo.openScalabilityLink}"
+                  .icon="${iconUpdate}"
+                  ?skeleton=${skeleton}
                   >${i18n('cc-addon-info.scalability.link')}
                 </cc-link>
               `
@@ -324,7 +339,9 @@ export class CcAddonInfo extends LitElement {
         }
 
         p,
-        dl {
+        dl,
+        dt,
+        dd {
           margin: 0;
         }
 
@@ -342,18 +359,30 @@ export class CcAddonInfo extends LitElement {
           gap: 1em;
         }
 
+        .plan__content {
+          border: solid 1px #c9c9c9;
+          border-radius: 0.2em;
+          font-weight: bold;
+          padding: 0.12em 0.4em;
+          width: fit-content;
+        }
+
+        .features__content {
+          display: flex;
+        }
+
         .billing__container {
           display: none;
         }
 
         .billing__container[billing-is-slotted] {
-          //align-items: center;
           display: flex;
           grid-column: 1 / 4;
         }
 
+        // TODO : change fixed width
         .billing__header {
-          width: 52.5em;
+          width: 32.5em;
         }
 
         ::slotted(p) {
@@ -375,8 +404,15 @@ export class CcAddonInfo extends LitElement {
         }
 
         .linked-service__li {
+          align-items: center;
           display: flex;
           gap: 0.5em;
+        }
+
+        .linked-service__li cc-img {
+          border-radius: 0.19em;
+          height: 1.5em;
+          width: 1.5em;
         }
 
         /* .billing-section[billing-is-slotted] .billing-header {

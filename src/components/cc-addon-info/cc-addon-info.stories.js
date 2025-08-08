@@ -105,20 +105,20 @@ export const slot = makeStory(conf, {
           {
             type: 'app',
             name: 'My App',
-            logoUrl: 'https://example.com/logo.png',
+            logoUrl: 'https://assets.clever-cloud.com/logos/nodejs.svg',
             link: 'https://example.com/app',
           },
           {
             type: 'add-on',
             name: 'My Add-on',
-            logoUrl: 'https://example.com/logo.png',
+            logoUrl: 'https://assets.clever-cloud.com/logos/pgsql.svg',
             link: 'https://example.com/addon',
           },
         ],
       },
       innerHTML: `
-        <p slot="billing">TEXTE BILLING : Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab, atque dolorum exercitationem iste placeat provident quas quo quod suscipit. Consequatur facilis labore laboriosam libero pariatur quaerat, quasi rem sit ullam.</p>
-        <p slot="linked-services">TEXTE LINKED SERVICES : Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab, atque dolorum exercitationem iste placeat provident quas quo quod suscipit. Consequatur facilis labore laboriosam libero pariatur quaerat, quasi rem sit ullam.</p>
+        <p slot="billing"><strong>This add-on is free but its dependencies, mentioned above, are billed based on their consumptions,</strong> just like other applications and add-ons.</p>
+        <p slot="linked-services"><em>The Matomo add-on is a meta add-on. It provides you with a PHP application, a MySQL add-on and a Redis add-on. They appear in your organisation just like your other applications and add-ons. You can still configure them as you like. For example, you may want to change the PHP application's domain or migrate the MySQL add-on to a bigger plan.</em></p>
 `,
     },
   ],
