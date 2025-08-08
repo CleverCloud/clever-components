@@ -150,6 +150,11 @@
           >cc-addon-info.smart-keycloak</a
         >
       </li>
+      <li>
+        <a class="definition-link" href="?definition=cc-addon-info.smart-elastic&smart-mode=elastic"
+          >cc-addon-info.smart-elastic</a
+        >
+      </li>
     </ul>
 
     <div class="context-buttons">
@@ -182,7 +187,15 @@
         ACME FOO
       </button>
       <button
-        data-context='{"ownerId":"orga_3547a882-d464-4c34-8168-add4b3e0c135","addonId":"addon_53167b5a-3290-430d-912a-a084b6e905e7"}'
+        data-context='{
+          "ownerId":"orga_3547a882-d464-4c34-8168-add4b3e0c135",
+          "addonId":"addon_e41d1602-9ec0-43ce-811a-1f47efc2c962",
+          "logsUrlPattern":"/organisations/orga_3547a882-d464-4c34-8168-add4b3e0c135/applications/:id/logs",
+          "grafanaLink":"https://grafana.services.clever-cloud.com",
+          "consoleGrafanaLink":"https://console.clever-cloud.com",
+          "appOverviewUrlPattern": "/organisations/orga_3547a882-d464-4c34-8168-add4b3e0c135/applications/:id",
+          "scalabilityUrlPattern": "/organisations/orga_3547a882-d464-4c34-8168-add4b3e0c135/applications/:id/settings"
+        }'
       >
         addon-elastic
       </button>

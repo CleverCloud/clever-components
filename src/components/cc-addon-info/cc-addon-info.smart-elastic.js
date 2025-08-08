@@ -3,10 +3,40 @@ import { defineSmartComponent } from '../../lib/smart/define-smart-component.js'
 import { get as getAddon } from '@clevercloud/client/esm/api/v2/addon.js';
 // @ts-expect-error FIXME: remove when clever-client exports types
 import { getGrafanaOrganisation } from '@clevercloud/client/esm/api/v4/saas.js';
+// @ts-expect-error FIXME: remove when clever-client exports types
+import { getAddon as getAddonDetails } from '@clevercloud/client/esm/api/v2/providers.js';
 import { notifyError, notifySuccess } from '../../lib/notifications.js';
+import { formatAddonFeatures } from '../../lib/product.js';
 import { sendToApi } from '../../lib/send-to-api.js';
 import '../cc-smart-container/cc-smart-container.js';
 import './cc-addon-info.js';
+
+const SERVICE_CONFIG = {
+  kibana: {
+    name: 'Kibana',
+    logoUrl: 'https://assets.clever-cloud.com/logos/kibana.svg',
+    getAppId: (addonDetails) => addonDetails.kibana_application,
+  },
+  apm: {
+    name: 'APM',
+    logoUrl: 'https://assets.clever-cloud.com/logos/apm.svg',
+    getAppId: (addonDetails) => addonDetails.apm_application,
+  },
+};
+
+function getServiceData(service, addonDetails, appOverviewUrlPattern) {
+  const config = SERVICE_CONFIG[service.name];
+  if (!config) {
+    throw new Error(`Unknown service type: ${service.name}`);
+  }
+
+  return {
+    type: 'app',
+    name: config.name,
+    logoUrl: config.logoUrl,
+    link: appOverviewUrlPattern.replace(':id', config.getAppId(addonDetails)),
+  };
+}
 
 /**
  * @type {BaseProperties}
@@ -17,12 +47,37 @@ const SKELETON_DATA = {
     installed: '0.0.0',
   },
   creationDate: '2025-08-06 15:03:00',
+  plan: 'XS',
+  // Remove encryption since it's not part of the addon features
+  features: [
+    {
+      code: 'cpu',
+      type: 'number',
+      value: 2,
+    },
+    {
+      code: 'memory',
+      type: 'bytes',
+      value: 2,
+    },
+    {
+      code: 'disk-size',
+      type: 'bytes',
+      value: 40,
+    },
+  ],
   openGrafanaLink: 'https://example.com',
   openScalabilityLink: '/placeholder',
   linkedServices: [
     {
       type: 'app',
-      name: 'Java',
+      name: 'Kibana',
+      logoUrl: 'https://example.com',
+      link: 'https://example.com',
+    },
+    {
+      type: 'app',
+      name: 'APM',
       logoUrl: 'https://example.com',
       link: 'https://example.com',
     },
@@ -44,13 +99,12 @@ const SKELETON_DATA = {
  */
 
 defineSmartComponent({
-  selector: 'cc-addon-info[smart-mode="keycloak"]',
+  selector: 'cc-addon-info[smart-mode="elastic"]',
   params: {
     apiConfig: { type: Object },
     ownerId: { type: String },
     addonId: { type: String },
     appOverviewUrlPattern: { type: String },
-    addonDashboardUrlPattern: { type: String },
     scalabilityUrlPattern: { type: String },
     // Grafana may be disabled in some environments
     grafanaLink: { type: Object, optional: true },
@@ -59,15 +113,7 @@ defineSmartComponent({
    * @param {OnContextUpdateArgs} _
    */
   onContextUpdate({ context, onEvent, updateComponent, signal }) {
-    const {
-      apiConfig,
-      ownerId,
-      addonId,
-      appOverviewUrlPattern,
-      addonDashboardUrlPattern,
-      scalabilityUrlPattern,
-      grafanaLink,
-    } = context;
+    const { apiConfig, ownerId, addonId, appOverviewUrlPattern, scalabilityUrlPattern, grafanaLink } = context;
 
     const api = new Api({ apiConfig, ownerId, addonId, grafanaLink, signal });
 
@@ -75,39 +121,23 @@ defineSmartComponent({
 
     api
       .getAddonInfo()
-      .then(({ addonInfo, operator, operatorVersionInfo, grafanaAppLink }) => {
+      .then(({ rawAddon, addonDetails, grafanaAppLink, isKibanaEnabled }) => {
         updateComponent('state', {
           type: 'loaded',
           version: {
-            stateType: operatorVersionInfo.needUpdate ? 'update-available' : 'up-to-date',
-            installed: operatorVersionInfo.installed,
-            available: operatorVersionInfo.needUpdate ? operatorVersionInfo.available : null,
-            changelogLink: 'https://www.clever.cloud/developers/changelog',
+            stateType: 'up-to-date',
+            installed: addonDetails.version,
           },
-          creationDate: addonInfo.creationDate,
-          openGrafanaLink: grafanaLink,
-          openScalabilityLink: scalabilityUrlPattern.replace(':id', operator.resources.entrypoint),
-          linkedServices: [
-            {
-              type: 'app',
-              name: 'Java',
-              // hardcoded right now because if we want to rely on the API, we need to fetch all the applications in order to find the variantLogo for this specific app?!
-              logoUrl: 'https://assets.clever-cloud.com/logos/java-jar.svg',
-              link: appOverviewUrlPattern.replace(':id', operator.resources.entrypoint),
-            },
-            {
-              type: 'addon',
-              name: 'PostgreSQL',
-              logoUrl: 'https://assets.clever-cloud.com/logos/pgsql.svg',
-              link: addonDashboardUrlPattern.replace(':id', operator.resources.pgsqlId),
-            },
-            {
-              type: 'addon',
-              name: 'FS Bucket',
-              logoUrl: 'https://assets.clever-cloud.com/logos/fsbucket.svg',
-              link: addonDashboardUrlPattern.replace(':id', operator.resources.fsbucketId),
-            },
-          ],
+          creationDate: rawAddon.creationDate,
+          plan: rawAddon.plan.name,
+          features: formatAddonFeatures(rawAddon.plan.features, ['cpu', 'disk-size', 'memory']),
+          openGrafanaLink: grafanaAppLink,
+          openScalabilityLink: isKibanaEnabled
+            ? scalabilityUrlPattern.replace(':id', addonDetails.kibana_application)
+            : null,
+          linkedServices: addonDetails.services
+            .filter((service) => service.enabled)
+            .map((service) => getServiceData(service, addonDetails, appOverviewUrlPattern)),
         });
       })
       .catch((error) => {
@@ -234,75 +264,22 @@ class Api {
       );
   }
 
-  // TODO: should we move the waiting & update stuff to the state because it triggers modal closing ?!
-  updateOperatorVersion(targetVersion) {
-    return new Promise((resolve) => setTimeout(resolve, 2000));
-    return updateOperatorVersion({ providerId: this._providerId, realId: this._realId }, targetVersion).then(
-      sendToApi({ apiConfig: this._apiConfig }),
-    );
+  /**
+   *
+   * @param {string} providerId
+   * @returns {Promise<object>}
+   */
+  _getAddonDetails(providerId) {
+    return getAddonDetails({ providerId, addonId: this._addonId }).then(sendToApi({ apiConfig: this._apiConfig }));
   }
 
   async getAddonInfo() {
-    // Fetch addon to get realId,
-    // Fetch operator with realId,
-    // return version, creationDate, Grafana, Scalability, LinkedServices
     const rawAddon = await this._getAddon();
-    this._realId = rawAddon.realId;
-    this._providerId = /** @type {import('../common.types.js').RawAddonProvider} */ (rawAddon.provider).id;
-    const [operator, operatorVersionInfo] = await Promise.all([
-      this._getOperator(this._providerId, this._realId),
-      this._getOperatorVersionInfo(this._providerId, this._realId),
-    ]);
-    const isGrafanaGloballyEnabled = this._grafanaLink != null;
-    const grafanaAppLink = isGrafanaGloballyEnabled
-      ? await this._getGrafanaAppLink({ appId: operator.resources.entrypoint, signal: this._signal })
+    const addonDetails = await this._getAddonDetails(rawAddon.provider.id);
+    const isKibanaEnabled = addonDetails.services.some((service) => service.name === 'kibana' && service.enabled);
+    const grafanaAppLink = isKibanaEnabled
+      ? await this._getGrafanaAppLink({ appId: addonDetails.kibana_application, signal: this._signal })
       : null;
-
-    return { addonInfo: rawAddon, operator, operatorVersionInfo, grafanaAppLink };
+    return { rawAddon, addonDetails, grafanaAppLink, isKibanaEnabled };
   }
-}
-
-/**
- * @param {{ providerId: string, realId: string }} params
- */
-function getOperator(params) {
-  // no multipath for /self or /organisations/{id}
-  return Promise.resolve({
-    method: 'get',
-    url: `/v4/addon-providers/addon-${params.providerId}/addons/${params.realId}`,
-    headers: { Accept: 'application/json' },
-    // no queryParams
-    // no body
-  });
-}
-
-/**
- * @param {{ providerId: string, realId: string }} params
- */
-function checkOperatorVersion(params) {
-  // no multipath for /self or /organisations/{id}
-  return Promise.resolve({
-    method: 'get',
-    url: `/v4/addon-providers/addon-${params.providerId}/addons/${params.realId}/version/check`,
-    headers: { Accept: 'application/json' },
-    // no queryParams
-    // no body
-  });
-}
-
-/**
- * @param {object} params
- * @param {string} params.providerId
- * @param {string} params.realId
- * @param {object} body
- */
-export function updateOperatorVersion(params, body) {
-  // no multipath for /self or /organisations/{id}
-  return Promise.resolve({
-    method: 'post',
-    url: `/v4/addon-providers/addon-${params.providerId}/addons/${params.realId}/version/update`,
-    headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
-    // no queryParams
-    body,
-  });
 }
