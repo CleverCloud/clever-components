@@ -135,7 +135,6 @@ export class CcAddonInfo extends LitElement {
 
     const skeleton = this.state.type === 'loading';
 
-    // TODO: when modal is closed because update was a success, focus div[tabindex="-1"] (maybe add a ref to simplify)
     return html`
       <cc-block>
         <div slot="header-title">${i18n('cc-addon-info.heading')}</div>
@@ -266,7 +265,7 @@ export class CcAddonInfo extends LitElement {
 
     return html`
       <dialog aria-labelledby="dialog-heading" ${ref(this._versionDialogRef)}>
-        <button @click="${this._onVersionDialogClose}">
+        <button class="dialog-close" @click="${this._onVersionDialogClose}">
           <cc-icon .icon="${iconClose}"></cc-icon>
           <span class="visually-hidden">${i18n('cc-addon-info.version.dialog.close')}</span>
         </button>
@@ -326,7 +325,6 @@ export class CcAddonInfo extends LitElement {
         dt,
         dd {
           margin: 0;
-          /* padding: 0; */
         }
 
         .section {
@@ -379,14 +377,6 @@ export class CcAddonInfo extends LitElement {
           display: none;
         }
 
-        /* .billing__container[billing-is-slotted] {
-          //display: flex;
-          //grid-column: 1 / 4;
-          display: grid;
-          gap: 2em 0;
-          grid-template-columns: repeat(3, 1fr);
-        } */
-
         ::slotted(p) {
           margin: 0;
         }
@@ -430,9 +420,34 @@ export class CcAddonInfo extends LitElement {
           gap: 0.5em;
         }
 
+        dialog {
+          box-sizing: border-box;
+          width: min(32em, 80%);
+          border: none;
+          border-radius: var(--cc-border-radius-default, 0.25em);
+          padding: 4em;
+          box-shadow: 2px 4px 8px 0 rgba(0, 0, 0, 0.12);
+        }
+
+        ::backdrop {
+          background: rgb(30 30 30 / 55%);
+        }
+
+        @supports (backdrop-filter: blur(5px)) {
+          ::backdrop {
+            background: rgb(30 30 30 / 35%);
+            backdrop-filter: blur(5px);
+          }
+        }
+
+        .dialog-close {
+          position: absolute;
+          top: 1.5em;
+          right: 1.5em;
+        }
+
         .skeleton {
           background-color: #bbb;
-          border-color: #777;
           color: transparent;
         }
       `,
