@@ -7,7 +7,6 @@ import {
   iconRemixSettings_3Line as iconUpdate,
 } from '../../assets/cc-remix.icons.js';
 import { hasSlottedChildren } from '../../directives/has-slotted-children.js';
-import { fakeString } from '../../lib/fake-strings.js';
 import { formSubmit } from '../../lib/form/form-submit-directive.js';
 import { accessibilityStyles } from '../../styles/accessibility.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
@@ -32,34 +31,6 @@ const FEATURES_I18N = {
   'max-db-size': () => i18n('cc-addon-info.feature.max-db-size'),
   memory: () => i18n('cc-addon-info.feature.memory'),
   version: () => i18n('cc-addon-info.feature.version'),
-};
-
-/** @type {Partial<CcAddonInfoStateLoaded>} */
-const SKELETON_ADDON_INFO = {
-  version: {
-    installed: fakeString(4),
-    available: [],
-    changelogLink: fakeString(20),
-  },
-  plan: fakeString(4),
-  features: [
-    {
-      code: fakeString(5),
-      type: 'number',
-      value: fakeString(1),
-    },
-  ],
-  creationDate: '2023-01-15T10:30:00Z',
-  openGrafanaLink: fakeString(20),
-  openScalabilityLink: fakeString(20),
-  linkedServices: [
-    {
-      type: 'app',
-      name: fakeString(10),
-      logoUrl: '',
-      link: fakeString(20),
-    },
-  ],
 };
 
 const GRAFANA_LOGO_URL = 'https://assets.clever-cloud.com/logos/grafana.svg';
@@ -163,71 +134,82 @@ export class CcAddonInfo extends LitElement {
     }
 
     const skeleton = this.state.type === 'loading';
-    const addonInfo = this.state.type === 'loaded' ? this.state : SKELETON_ADDON_INFO;
 
     // TODO: when modal is closed because update was a success, focus div[tabindex="-1"] (maybe add a ref to simplify)
     return html`
       <cc-block>
         <div slot="header-title">${i18n('cc-addon-info.heading')}</div>
         <div slot="content" class="main">
-          ${addonInfo.version != null
+          ${this.state.version != null
             ? html`
-                <strong class="heading">${i18n('cc-addon-info.version.heading')}</strong>
-                <div class="value version__content" tabindex="-1">
-                  <p class="${classMap({ skeleton })}">${addonInfo.version.installed}</p>
-                  ${addonInfo.version.available.length > 0
-                    ? html`
-                        <cc-button primary outlined @cc-click="${this._onVersionDialogOpen}">
-                          <cc-icon .icon="${iconUpdate}"></cc-icon>
-                          ${i18n('cc-addon-info.version.btn')}
-                        </cc-button>
-                        ${this._renderVersionDialog(addonInfo.version)}
-                      `
-                    : ''}
+                <div class="section">
+                  <strong class="heading">${i18n('cc-addon-info.version.heading')}</strong>
+                  <div class="value version__content" tabindex="-1">
+                    <p class="${classMap({ skeleton })}">${this.state.version.installed}</p>
+                    ${this.state.version.available.length > 0
+                      ? html`
+                          <cc-button primary outlined @cc-click="${this._onVersionDialogOpen}">
+                            <cc-icon .icon="${iconUpdate}"></cc-icon>
+                            ${i18n('cc-addon-info.version.btn')}
+                          </cc-button>
+                          ${this._renderVersionDialog(this.state.version)}
+                        `
+                      : ''}
+                  </div>
                 </div>
               `
             : ''}
-          ${addonInfo.plan != null
+          ${this.state.plan != null
             ? html`
-                <strong class="heading">${i18n('cc-addon-info.plan.heading')}</strong>
-                <p class="value plan__content ${classMap({ skeleton })}">${addonInfo.plan}</p>
+                <div class="section">
+                  <strong class="heading">${i18n('cc-addon-info.plan.heading')}</strong>
+                  <p class="value plan__content ${classMap({ skeleton })}">${this.state.plan}</p>
+                </div>
               `
             : ''}
-          ${addonInfo.features != null && addonInfo.features.length > 0
+          ${this.state.features != null && this.state.features.length > 0
             ? html`
-                <strong class="heading">${i18n('cc-addon-info.feature.heading')}</strong>
-                <dl class="value features__content ${classMap({ skeleton })}">
-                  ${addonInfo.features.map((feature) => this._renderFeature(feature))}
-                </dl>
+                <div class="section">
+                  <strong class="heading">${i18n('cc-addon-info.feature.heading')}</strong>
+                  <dl class="value features__content ${classMap({ skeleton })}">
+                    ${this.state.features.map((feature) => this._renderFeature(feature))}
+                  </dl>
+                </div>
               `
             : ''}
-          <strong class="heading">${i18n('cc-addon-info.creation-date.heading')}</strong>
-          <p class="value ${classMap({ skeleton })}">
-            ${i18n('cc-addon-info.creation-date.human-friendly-date', { date: addonInfo.creationDate })}
-          </p>
+          <div class="section">
+            <strong class="heading">${i18n('cc-addon-info.creation-date.heading')}</strong>
+            <p class="value ${classMap({ skeleton })}">
+              ${i18n('cc-addon-info.creation-date.human-friendly-date', { date: this.state.creationDate })}
+            </p>
+          </div>
 
-          ${addonInfo.openGrafanaLink != null
+          ${this.state.openGrafanaLink != null
             ? html`
-                <strong class="heading">Grafana</strong>
-                <cc-link
-                  class="value"
-                  href="${addonInfo.openGrafanaLink}"
-                  image="${GRAFANA_LOGO_URL}"
-                  ?skeleton=${skeleton}
-                  >${i18n('cc-addon-info.grafana.link')}
-                </cc-link>
+                <div class="section">
+                  <strong class="heading">Grafana</strong>
+                  <cc-link
+                    class="value"
+                    href="${this.state.openGrafanaLink}"
+                    image="${GRAFANA_LOGO_URL}"
+                    ?skeleton=${skeleton}
+                    >${i18n('cc-addon-info.grafana.link')}
+                  </cc-link>
+                </div>
               `
             : ''}
-          ${addonInfo.openScalabilityLink != null
+          ${this.state.openScalabilityLink != null
             ? html`
-                <strong class="heading">${i18n('cc-addon-info.scalability-link.heading')}</strong>
-                <cc-link
-                  class="value"
-                  href="${addonInfo.openScalabilityLink}"
-                  .icon="${iconUpdate}"
-                  ?skeleton=${skeleton}
-                  >${i18n('cc-addon-info.scalability.link')}
-                </cc-link>
+                <div class="section">
+                  <strong class="heading">${i18n('cc-addon-info.scalability-link.heading')}</strong>
+                  <cc-link
+                    class="value"
+                    href="${this.state.openScalabilityLink}"
+                    .icon="${iconUpdate}"
+                    ?skeleton=${skeleton}
+                    >${i18n('cc-addon-info.scalability.link')}
+                  </cc-link>
+                </div>
               `
             : ''}
 
@@ -243,26 +225,28 @@ export class CcAddonInfo extends LitElement {
             </div>
           </div>
 
-          ${addonInfo.linkedServices != null && addonInfo.linkedServices.length > 0
+          ${this.state.linkedServices != null && this.state.linkedServices.length > 0
             ? html`
-                <strong class="heading">${i18n('cc-addon-info.linked-services.heading')}</strong>
-                <div class="value linked-services__content ${classMap({ skeleton })}">
-                  <ul>
-                    ${addonInfo.linkedServices.map((service) => {
-                      return html`
-                        <li class="linked-service__li ${classMap({ skeleton })}">
-                          <cc-img
-                            src="${service.logoUrl}"
-                            a11y-name="${service.name}"
-                            title="${service.name}"
-                            ?skeleton=${skeleton}
-                          ></cc-img>
-                          <cc-link href="${service.link}" ?skeleton=${skeleton}>${service.name}</cc-link>
-                        </li>
-                      `;
-                    })}
-                  </ul>
-                  <slot name="linked-services"></slot>
+                <div class="section">
+                  <strong class="heading">${i18n('cc-addon-info.linked-services.heading')}</strong>
+                  <div class="value linked-services__content ${classMap({ skeleton })}">
+                    <ul>
+                      ${this.state.linkedServices.map((service) => {
+                        return html`
+                          <li class="linked-service__li ${classMap({ skeleton })}">
+                            <cc-img
+                              src="${service.logoUrl}"
+                              a11y-name="${service.name}"
+                              title="${service.name}"
+                              ?skeleton=${skeleton}
+                            ></cc-img>
+                            <cc-link href="${service.link}" ?skeleton=${skeleton}>${service.name}</cc-link>
+                          </li>
+                        `;
+                      })}
+                    </ul>
+                    <slot name="linked-services"></slot>
+                  </div>
                 </div>
               `
             : ''}
@@ -317,9 +301,12 @@ export class CcAddonInfo extends LitElement {
 
   /** @param {FormattedFeature} param */
   _renderFeature({ code, type, value }) {
+    console.log(code);
     return html`
-      <dt>${FEATURES_I18N[code]()}</dt>
-      <dd>${this._getFeatureValue({ code, type, value })}</dd>
+      <div>
+        <dt>${FEATURES_I18N[code]()}</dt>
+        <dd>${this._getFeatureValue({ code, type, value })}</dd>
+      </div>
     `;
   }
 
@@ -333,9 +320,9 @@ export class CcAddonInfo extends LitElement {
         }
 
         .main {
-          display: grid;
-          gap: 2em 0;
-          grid-template-columns: repeat(3, 1fr);
+          display: flex;
+          flex-direction: column;
+          gap: 2em;
         }
 
         p,
@@ -343,6 +330,13 @@ export class CcAddonInfo extends LitElement {
         dt,
         dd {
           margin: 0;
+        }
+
+        .section,
+        .billing__container[billing-is-slotted] {
+          display: grid;
+          gap: 2em 0;
+          grid-template-columns: repeat(3, 1fr);
         }
 
         .heading {
@@ -375,10 +369,13 @@ export class CcAddonInfo extends LitElement {
           display: none;
         }
 
-        .billing__container[billing-is-slotted] {
-          display: flex;
-          grid-column: 1 / 4;
-        }
+        /* .billing__container[billing-is-slotted] {
+          //display: flex;
+          //grid-column: 1 / 4;
+          display: grid;
+          gap: 2em 0;
+          grid-template-columns: repeat(3, 1fr);
+        } */
 
         // TODO : change fixed width
         .billing__header {
