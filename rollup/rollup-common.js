@@ -1,8 +1,8 @@
+import minifyTemplateLiterals from '@lit-labs/rollup-plugin-minify-html-literals';
 import { importMetaAssets } from '@web/rollup-plugin-import-meta-assets';
 import CleanCSS from 'clean-css';
 import glob from 'glob';
 import path from 'path';
-import babel from 'rollup-plugin-babel';
 import clear from 'rollup-plugin-clear';
 import { terser } from 'rollup-plugin-terser';
 import visualizer from 'rollup-plugin-visualizer';
@@ -121,31 +121,24 @@ export function terserPlugin() {
   });
 }
 
-export function babelPlugin() {
-  return babel({
-    plugins: [
-      // Minify HTML inside lit-html and LitElement html`` templates
-      // Minify CSS inside LitElement css`` templates
-      [
-        'template-html-minifier',
-        {
-          modules: {
-            lit: ['html', { name: 'css', encapsulation: 'style' }],
-          },
-          htmlMinifier: {
-            caseSensitive: true,
-            collapseWhitespace: true,
-            removeAttributeQuotes: true,
-            removeComments: true,
-            removeRedundantAttributes: true,
-            // This clearly DOES NOT work well with template strings and lit-element
-            sortAttributes: false,
-            sortClassName: true,
-            minifyCSS: { level: 2 },
-          },
-        },
-      ],
-    ],
+export function minifyPlugin() {
+  return minifyTemplateLiterals({
+    failOnError: true,
+    // Trying to minify shoelace components for CDN release leads to a parser error
+    exclude: ['**/shoelace/**/*.js'],
+    options: {
+      minifyOptions: {
+        caseSensitive: true,
+        collapseWhitespace: true,
+        removeAttributeQuotes: true,
+        removeComments: true,
+        removeRedundantAttributes: true,
+        // This clearly DOES NOT work well with template strings and lit-element
+        sortAttributes: false,
+        sortClassName: true,
+        minifyCSS: true,
+      },
+    },
   });
 }
 
