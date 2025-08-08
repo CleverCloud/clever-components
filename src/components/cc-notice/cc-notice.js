@@ -174,7 +174,7 @@ export class CcNotice extends LitElement {
           --cc-icon-color: var(--cc-color-text-danger);
 
           background-color: var(--cc-color-bg-danger-weaker);
-          border: 1px solid var(--cc-color-border-danger-weak);
+          border: 1px solid var(--cc-color-border-danger-weaker);
         }
 
         .wrapper.closeable {
