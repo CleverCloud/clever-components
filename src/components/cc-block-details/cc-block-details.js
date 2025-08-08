@@ -55,14 +55,26 @@ export class CcBlockDetails extends LitElement {
       // language=CSS
       css`
         :host {
+          container-type: inline-size;
           display: block;
         }
 
         .wrapper {
+          align-items: center;
           display: grid;
           grid-template-areas: 'button links' 'content content';
           grid-template-columns: 1fr auto;
           justify-items: start;
+        }
+
+        @container (max-width: 34em) {
+          .wrapper {
+            grid-template-areas:
+              'button'
+              'content'
+              'links';
+            grid-template-columns: 1fr;
+          }
         }
 
         .button {
@@ -127,6 +139,13 @@ export class CcBlockDetails extends LitElement {
           gap: 0.5em;
           grid-area: links;
           justify-self: end;
+        }
+
+        @container (max-width: 34em) {
+          .links {
+            justify-self: unset;
+            margin-block-start: 0.5em;
+          }
         }
 
         ::slotted([slot='link']) {
