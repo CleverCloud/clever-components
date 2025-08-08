@@ -163,7 +163,9 @@ export class CcAddonInfo extends LitElement {
             ? html`
                 <div class="section">
                   <strong class="heading">${i18n('cc-addon-info.plan.heading')}</strong>
-                  <p class="value plan__content ${classMap({ skeleton })}">${this.state.plan}</p>
+                  <div class="value">
+                    <p class="data-decoration ${classMap({ skeleton })}">${this.state.plan}</p>
+                  </div>
                 </div>
               `
             : ''}
@@ -177,6 +179,7 @@ export class CcAddonInfo extends LitElement {
                 </div>
               `
             : ''}
+
           <div class="section">
             <strong class="heading">${i18n('cc-addon-info.creation-date.heading')}</strong>
             <p class="value ${classMap({ skeleton })}">
@@ -213,13 +216,8 @@ export class CcAddonInfo extends LitElement {
               `
             : ''}
 
-          <!-- <slot name="billing-heading"></slot>
-          <slot name="billing-description"></slot>-->
-
-          <div class="billing__container" ${hasSlottedChildren()}>
-            <div class="billing__header">
-              <strong class="heading">${i18n('cc-addon-info.billing.heading')}</strong>
-            </div>
+          <div class="section section--billing" ${hasSlottedChildren()}>
+            <strong class="heading">${i18n('cc-addon-info.billing.heading')}</strong>
             <div class="value ${classMap({ skeleton })}">
               <slot name="billing"></slot>
             </div>
@@ -301,11 +299,10 @@ export class CcAddonInfo extends LitElement {
 
   /** @param {FormattedFeature} param */
   _renderFeature({ code, type, value }) {
-    console.log(code);
     return html`
-      <div>
-        <dt>${FEATURES_I18N[code]()}</dt>
-        <dd>${this._getFeatureValue({ code, type, value })}</dd>
+      <div class="features__content__item">
+        <dt class="features__content__item__label">${FEATURES_I18N[code]()}</dt>
+        <dd class="features__content__item__value data-decoration">${this._getFeatureValue({ code, type, value })}</dd>
       </div>
     `;
   }
@@ -322,7 +319,6 @@ export class CcAddonInfo extends LitElement {
         .main {
           display: flex;
           flex-direction: column;
-          gap: 2em;
         }
 
         p,
@@ -330,21 +326,36 @@ export class CcAddonInfo extends LitElement {
         dt,
         dd {
           margin: 0;
+          /* padding: 0; */
         }
 
-        .section,
-        .billing__container[billing-is-slotted] {
-          display: grid;
-          gap: 2em 0;
-          grid-template-columns: repeat(3, 1fr);
+        .section {
+          align-items: center;
+          display: flex;
+          flex-wrap: wrap;
+          gap: 0.5em;
+          padding-block: 1em;
+        }
+
+        .section:not(:last-of-type) {
+          border-bottom: solid 1px var(--cc-color-border-neutral-weak);
+        }
+
+        .section.section--billing:not([billing-is-slotted]) {
+          display: none;
         }
 
         .heading {
-          grid-column: 1;
+          flex: 0 1 21em;
+          font-weight: bold;
         }
 
         .value {
-          grid-column: 2 / 4;
+          align-items: center;
+          display: flex;
+          flex: 1 1 21em;
+          flex-wrap: wrap;
+          gap: 0.5em;
         }
 
         .version__content {
@@ -353,12 +364,11 @@ export class CcAddonInfo extends LitElement {
           gap: 1em;
         }
 
-        .plan__content {
-          border: solid 1px #c9c9c9;
-          border-radius: 0.2em;
+        .data-decoration {
+          border: solid 1px var(--cc-color-border-neutral, #bfbfbf);
+          border-radius: var(--cc-border-radius-default, 0.25em);
           font-weight: bold;
           padding: 0.12em 0.4em;
-          width: fit-content;
         }
 
         .features__content {
@@ -377,24 +387,19 @@ export class CcAddonInfo extends LitElement {
           grid-template-columns: repeat(3, 1fr);
         } */
 
-        // TODO : change fixed width
-        .billing__header {
-          width: 32.5em;
-        }
-
         ::slotted(p) {
           margin: 0;
         }
 
         .linked-services__content {
-          display: flex;
-          flex-direction: column;
           gap: 0.75em;
         }
 
         .linked-services__content ul {
           display: flex;
-          gap: 1.5em;
+          flex-wrap: wrap;
+          column-gap: 1.5em;
+          row-gap: 0.5em;
           list-style: none;
           margin: 0;
           padding: 0;
@@ -412,9 +417,18 @@ export class CcAddonInfo extends LitElement {
           width: 1.5em;
         }
 
-        /* .billing-section[billing-is-slotted] .billing-header {
-          display: block;
-        } */
+        .features__content {
+          display: flex;
+          gap: 1.5em;
+          flex-wrap: wrap;
+        }
+
+        .features__content__item {
+          align-items: center;
+          display: flex;
+          flex-wrap: wrap;
+          gap: 0.5em;
+        }
 
         .skeleton {
           background-color: #bbb;

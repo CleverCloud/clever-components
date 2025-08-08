@@ -65,6 +65,7 @@ export const defaultStory = makeStory(conf, {
   ],
 });
 
+// Story sans billing, story sans linkedServices
 export const slot = makeStory(conf, {
   items: [
     {
