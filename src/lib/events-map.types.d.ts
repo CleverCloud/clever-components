@@ -4,6 +4,7 @@ import {
   CcAddonNameChangeEvent,
   CcAddonTagsChangeEvent,
 } from '../components/cc-addon-admin/cc-addon-admin.events.js';
+import { CcAddonRebuildEvent, CcAddonRestartEvent } from '../components/cc-addon-header/cc-addon-header.events.js';
 import { CcAddonOptionFormSubmitEvent } from '../components/cc-addon-option-form/cc-addon-option-form.events.js';
 import { CcAddonOptionChangeEvent } from '../components/cc-addon-option/cc-addon-option.events.js';
 import {
@@ -159,6 +160,8 @@ declare global {
     'cc-addon-name-change': CcAddonNameChangeEvent;
     'cc-addon-option-change': CcAddonOptionChangeEvent;
     'cc-addon-option-form-submit': CcAddonOptionFormSubmitEvent;
+    'cc-addon-rebuild': CcAddonRebuildEvent;
+    'cc-addon-restart': CcAddonRestartEvent;
     'cc-addon-tags-change': CcAddonTagsChangeEvent;
     'cc-api-error': CcApiErrorEvent;
     'cc-application-restart': CcApplicationRestartEvent;
