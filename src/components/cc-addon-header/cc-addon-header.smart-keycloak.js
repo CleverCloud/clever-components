@@ -215,6 +215,7 @@ class Api {
   }
 }
 
+// FIXME: remove when new clever-client
 /** @param {{ provider: string, realId: string }} params */
 export function rebootOperator(params) {
   // no multipath for /self or /organisations/{id}
@@ -227,6 +228,7 @@ export function rebootOperator(params) {
   });
 }
 
+// FIXME: remove when new clever-client
 /** @param {{ provider: string, realId: string }} params */
 export function rebuildOperator(params) {
   // no multipath for /self or /organisations/{id}

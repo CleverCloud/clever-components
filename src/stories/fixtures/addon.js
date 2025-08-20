@@ -1,14 +1,7 @@
 import { ZONE } from "./zones.js";
 
 /**
- * @typedef {import('../../components/cc-addon-header/cc-addon-header.types.js').CcAddonHeaderStateLoaded} CcAddonHeaderStateLoaded
- * @typedef {import('../../components/cc-addon-header/cc-addon-header.types.js').CcAddonHeaderStateError} CcAddonHeaderStateError
- * @typedef {import('../../components/cc-addon-header/cc-addon-header.types.js').CcAddonHeaderStateLoading} CcAddonHeaderStateLoading
- * @typedef {import('../../components/cc-addon-header/cc-addon-header.types.js').CcAddonHeaderStateRestarting} CcAddonHeaderStateRestarting
- * @typedef {import('../../components/cc-addon-header/cc-addon-header.types.js').CcAddonHeaderStateRebuilding} CcAddonHeaderStateRebuilding
  * @typedef {import('../../components/cc-addon-header/cc-addon-header.types.js').Addon} Addon
- * @typedef {import('../../components/cc-addon-header/cc-addon-header.js').CcAddonHeader} CcAddonHeader
- * @typedef {import('../../components/cc-zone/cc-zone.types.js').ZoneStateLoaded} ZoneStateLoaded
  */
 
 /** @type {Addon} */
