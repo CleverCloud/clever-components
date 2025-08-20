@@ -289,6 +289,7 @@ export class CcAddonHeader extends LitElement {
 
         .details__id span {
           display: block;
+          font-family: var(--cc-ff-monospace);
           overflow: hidden;
           text-overflow: ellipsis;
           white-space: nowrap;
@@ -345,6 +346,11 @@ export class CcAddonHeader extends LitElement {
           font-size: 0.9em;
           font-style: italic;
           gap: 0.57em;
+        }
+
+        .messages cc-link,
+        .messages cc-zone {
+          font-style: normal;
         }
 
         .status-icon.active {
