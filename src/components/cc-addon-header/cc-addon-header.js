@@ -8,6 +8,7 @@ import {
 } from '../../assets/cc-clever.icons.js';
 import { ResizeController } from '../../controllers/resize-controller.js';
 import { fakeString } from '../../lib/fake-strings.js';
+import { isStringEmpty } from '../../lib/utils.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-badge/cc-badge.js';
@@ -156,7 +157,7 @@ export class CcAddonHeader extends LitElement {
                 </cc-link>
               `,
             )}
-            ${addonInfo.configLink
+            ${!isStringEmpty(addonInfo.configLink)
               ? html`
                   <cc-link mode="button" href="${addonInfo.configLink}" ?skeleton=${skeleton}>
                     ${i18n('cc-addon-header.action.get-config')}
@@ -204,7 +205,7 @@ export class CcAddonHeader extends LitElement {
                 <span class=${classMap({ skeleton })}> ${this._getStatusMsg(deploymentStatus)} </span>
               `
             : ''}
-          ${addonInfo.logsUrl
+          ${!isStringEmpty(addonInfo.logsUrl)
             ? html`
                 <cc-link
                   href=${addonInfo.logsUrl}
