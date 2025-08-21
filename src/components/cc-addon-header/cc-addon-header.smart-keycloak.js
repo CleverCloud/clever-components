@@ -2,7 +2,6 @@
 import { get as getAddon } from '@clevercloud/client/esm/api/v2/addon.js';
 // @ts-expect-error FIXME: remove when clever-client exports types
 import { getZone } from '@clevercloud/client/esm/api/v4/product.js';
-import { fakeString } from '../../lib/fake-strings.js';
 import { notify, notifyError } from '../../lib/notifications.js';
 import { sendToApi } from '../../lib/send-to-api.js';
 import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
@@ -37,18 +36,18 @@ defineSmartComponent({
 
     updateComponent('state', {
       type: 'loading',
-      logsUrl: fakeString(15),
+      logsUrl: '',
       openLinks: [
         {
-          url: fakeString(15),
-          name: fakeString(5),
+          url: '',
+          name: '',
         },
       ],
       actions: {
         restart: true,
         rebuildAndRestart: true,
       },
-      productStatus: fakeString(4),
+      productStatus: '',
     });
 
     api

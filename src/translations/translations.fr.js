@@ -227,7 +227,7 @@ export const translations = {
   'cc-addon-header.restart.error': `Une erreur est survenue pendant le redémarrage de l'add-on.`,
   'cc-addon-header.restart.success': /** @param {{logsUrl: string}} _*/ ({ logsUrl }) =>
     sanitize`<strong>Redémarrage en cours</strong><br>Le processus de redémarrage de votre add-on et de ses services associés est en cours. Consultez les <cc-link href="${logsUrl}">logs</cc-link> ou la <cc-link href="${generateDocsHref('/addons/keycloak/')}">documentation</cc-link> pour plus d'informations.`,
-  'cc-addon-header.state-msg.addon-is-failed': `Le déploiement de l'add-on a échoué.`,
+  'cc-addon-header.state-msg.deployment-failed': `Le déploiement de l'add-on a échoué.`,
   'cc-addon-header.state-msg.deployment-is-active': `Votre add-on est disponible !`,
   'cc-addon-header.state-msg.deployment-is-deploying': `L'add-on est en cours de déploiement…`,
   'cc-addon-header.state-msg.unknown-state': `État inconnu, essayez de redémarrer l'add-on ou de contacter notre support si vous avez des questions.`,

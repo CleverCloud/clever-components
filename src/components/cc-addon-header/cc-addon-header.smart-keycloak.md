@@ -14,13 +14,13 @@ title: '💡 Smart (Keycloak)'
 
 ## ⚙️ Params
 
-| Name             | Type        | Details                                                | Default |
-|------------------|-------------|--------------------------------------------------------|---------|
-| `apiConfig`      | `ApiConfig` | Object with API configuration (target host, tokens...) |         |
-| `ownerId`        | `string`    | UUID prefixed with orga_                               |         |
-| `addonId`        | `string`    | ID of the add-on                                       |         |
-| `logsUrlPattern` | `string`    | Pattern for the logs url                               |         |
-| `productStatus`  | `string`    | Maturity status of the product                         |         |
+| Name             | Type        | Details                                                                                       | Default |
+|------------------|-------------|-----------------------------------------------------------------------------------------------|---------|
+| `apiConfig`      | `ApiConfig` | Object with API configuration (target host, tokens...)                                        |         |
+| `ownerId`        | `string`    | UUID prefixed with orga_                                                                      |         |
+| `addonId`        | `string`    | ID of the add-on                                                                              |         |
+| `logsUrlPattern` | `string`    | Pattern for the logs url (Example : `/organisations/${ownerId}/applications/${appId}/logs`)   |         |
+| `productStatus`  | `string`    | Maturity status of the product                                                                |         |
 
 
   ```ts
@@ -35,13 +35,13 @@ interface ApiConfig {
 
 ## 🌐 API endpoints
 
-| Method   | URL                                                                   | Cache?  |
-|----------|-----------------------------------------------------------------------|---------|
-| `GET`    | `/v2/organisations/${ownerId}/addons/${addonId}`                      | Default |
-| `GET`    | `/v4/products/zones?ownerId=${ownerId}`                               | Default |
+| Method   | URL                                                            | Cache?  |
+|----------|----------------------------------------------------------------|---------|
+| `GET`    | `/v2/organisations/${ownerId}/addons/${addonId}`               | Default |
+| `GET`    | `/v4/products/zones?ownerId=${ownerId}`                        | Default |
 | `GET`    | `/v4/addon-providers/addon-keycloak/addons/${realId}`          | Default |
-| `POST`   | `/v4/addon-providers/addon-keycloak/addons/${realId}/reboot` | Default |
-| `POST`   | `/v4/addon-providers/addon-keycloak/addons/${realId}/rebuild` | Default |
+| `POST`   | `/v4/addon-providers/addon-keycloak/addons/${realId}/reboot`   | Default |
+| `POST`   | `/v4/addon-providers/addon-keycloak/addons/${realId}/rebuild`  | Default |
 
 
 ## ⬇️️ Examples
