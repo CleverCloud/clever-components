@@ -215,12 +215,14 @@ export const translations = {
   'cc-addon-header.error': `Something went wrong while loading add-on info.`,
   'cc-addon-header.logs.link': `View logs`,
   'cc-addon-header.rebuild.error': `Something went wrong while rebuilding the add-on.`,
-  'cc-addon-header.rebuild.success': /** @param {{logsUrl: string}} _*/ ({ logsUrl }) =>
-    sanitize`<strong>Re-build and restart in progress</strong><br>The process of rebuilding and restarting your add-on and its linked services is in progess. See the <cc-link href="${logsUrl}">logs</cc-link> or the <cc-link href="${generateDocsHref('/addons/keycloak/')}">documentation</cc-link> for more information.`,
+  'cc-addon-header.rebuild.success.message': /** @param {{logsUrl: string}} _*/ ({ logsUrl }) =>
+    sanitize`The process of rebuilding and restarting your add-on and its linked services is in progress. See the <cc-link href="${logsUrl}">logs</cc-link> or the <cc-link href="${generateDocsHref('/addons/keycloak/')}">documentation</cc-link> for more information.`,
+  'cc-addon-header.rebuild.success.title': `Re-build and restart in progress`,
   'cc-addon-header.restart.error': `Something went wrong while restarting the add-on.`,
-  'cc-addon-header.restart.success': /** @param {{logsUrl: string}} _*/ ({ logsUrl }) =>
-    sanitize`<strong>Restart in progress</strong><br>The process of restarting your add-on and its linked services is in progess. See the <cc-link href="${logsUrl}">logs</cc-link> or the <cc-link href="${generateDocsHref('/addons/keycloak/')}">documentation</cc-link> for more information.`,
-  'cc-addon-header.state-msg.addon-is-failed': `The deployement failed.`,
+  'cc-addon-header.restart.success.message': /** @param {{logsUrl: string}} _*/ ({ logsUrl }) =>
+    sanitize`The process of restarting your add-on and its linked services is in progress. See the <cc-link href="${logsUrl}">logs</cc-link> or the <cc-link href="${generateDocsHref('/addons/keycloak/')}">documentation</cc-link> for more information.`,
+  'cc-addon-header.restart.success.title': `Restart in progress`,
+  'cc-addon-header.state-msg.deployment-failed': `The deployement failed.`,
   'cc-addon-header.state-msg.deployment-is-active': `Your add-on is active!`,
   'cc-addon-header.state-msg.deployment-is-deploying': `Your add-on is deploying…`,
   'cc-addon-header.state-msg.unknown-state': `Unknown state, try to restart the add-on or contact our support if you have additional questions.`,

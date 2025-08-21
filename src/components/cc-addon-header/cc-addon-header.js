@@ -90,7 +90,7 @@ export class CcAddonHeader extends LitElement {
       return i18n('cc-addon-header.state-msg.deployment-is-active');
     }
     if (deploymentStatus === 'failed') {
-      return i18n('cc-addon-header.state-msg.addon-is-failed');
+      return i18n('cc-addon-header.state-msg.deployment-failed');
     }
     return i18n('cc-addon-header.state-msg.unknown-state');
   }
@@ -355,6 +355,10 @@ export class CcAddonHeader extends LitElement {
 
         .status-icon.active {
           --cc-icon-color: var(--color-legacy-green);
+          --cc-icon-size: 1.25em;
+        }
+
+        .status-icon.deploying {
           --cc-icon-size: 1.25em;
         }
 

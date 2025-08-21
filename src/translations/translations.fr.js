@@ -226,12 +226,14 @@ export const translations = {
   'cc-addon-header.error': `Une erreur est survenue pendant le chargement des informations de l'add-on.`,
   'cc-addon-header.logs.link': `Voir les logs`,
   'cc-addon-header.rebuild.error': `Une erreur est survenue pendant le rebuild de l'add-on.`,
-  'cc-addon-header.rebuild.success': /** @param {{logsUrl: string}} _*/ ({ logsUrl }) =>
-    sanitize`<strong>Rebuild et redémarrage en cours</strong><br>Le processus de rebuild et de redémarrage de votre add-on et de ses services associés est en cours.  Consultez les <cc-link href="${logsUrl}">logs</cc-link> ou la <cc-link href="${generateDocsHref('/addons/keycloak/')}">documentation</cc-link> pour plus d'informations.`,
+  'cc-addon-header.rebuild.success.message': /** @param {{logsUrl: string}} _*/ ({ logsUrl }) =>
+    sanitize`Le processus de rebuild et de redémarrage de votre add-on et de ses services associés est en cours.  Consultez les <cc-link href="${logsUrl}">logs</cc-link> ou la <cc-link href="${generateDocsHref('/addons/keycloak/')}">documentation</cc-link> pour plus d'informations.`,
+  'cc-addon-header.rebuild.success.title': `Rebuild et redémarrage en cours`,
   'cc-addon-header.restart.error': `Une erreur est survenue pendant le redémarrage de l'add-on.`,
-  'cc-addon-header.restart.success': /** @param {{logsUrl: string}} _*/ ({ logsUrl }) =>
-    sanitize`<strong>Redémarrage en cours</strong><br>Le processus de redémarrage de votre add-on et de ses services associés est en cours. Consultez les <cc-link href="${logsUrl}">logs</cc-link> ou la <cc-link href="${generateDocsHref('/addons/keycloak/')}">documentation</cc-link> pour plus d'informations.`,
-  'cc-addon-header.state-msg.addon-is-failed': `Le déploiement de l'add-on a échoué.`,
+  'cc-addon-header.restart.success.message': /** @param {{logsUrl: string}} _*/ ({ logsUrl }) =>
+    sanitize`Le processus de redémarrage de votre add-on et de ses services associés est en cours. Consultez les <cc-link href="${logsUrl}">logs</cc-link> ou la <cc-link href="${generateDocsHref('/addons/keycloak/')}">documentation</cc-link> pour plus d'informations.`,
+  'cc-addon-header.restart.success.title': `Redémarrage en cours`,
+  'cc-addon-header.state-msg.deployment-failed': `Le déploiement de l'add-on a échoué.`,
   'cc-addon-header.state-msg.deployment-is-active': `Votre add-on est disponible !`,
   'cc-addon-header.state-msg.deployment-is-deploying': `L'add-on est en cours de déploiement…`,
   'cc-addon-header.state-msg.unknown-state': `État inconnu, essayez de redémarrer l'add-on ou de contacter notre support si vous avez des questions.`,

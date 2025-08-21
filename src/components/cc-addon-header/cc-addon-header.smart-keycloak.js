@@ -95,7 +95,8 @@ defineSmartComponent({
         .then(() => {
           notify({
             intent: 'success',
-            message: i18n('cc-addon-header.restart.success', { logsUrl }),
+            message: i18n('cc-addon-header.restart.success.message', { logsUrl }),
+            title: i18n('cc-addon-header.restart.success.title'),
             options: {
               timeout: 0,
               closeable: true,
@@ -123,7 +124,8 @@ defineSmartComponent({
         .then(() => {
           notify({
             intent: 'success',
-            message: i18n('cc-addon-header.rebuild.success', { logsUrl }),
+            message: i18n('cc-addon-header.rebuild.success.message', { logsUrl }),
+            title: i18n('cc-addon-header.rebuild.success.title'),
             options: {
               timeout: 0,
               closeable: true,
