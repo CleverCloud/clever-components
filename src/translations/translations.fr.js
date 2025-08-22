@@ -540,8 +540,10 @@ export const translations = {
     sanitize`Aucune application liée à <strong>${appName}</strong>.`,
   'cc-env-var-linked-services.error.addon': /** @param {{appName: string}} _ */ ({ appName }) =>
     sanitize`Une erreur est survenue pendant le chargement des add-ons liés à <strong>${appName}</strong>.`,
+  'cc-env-var-linked-services.error.addon.without-app-name': `Une erreur est survenue pendant le chargement des add-ons liés à l'application.`,
   'cc-env-var-linked-services.error.app': /** @param {{appName: string}} _ */ ({ appName }) =>
     sanitize`Une erreur est survenue pendant le chargement des applications liées à <strong>${appName}</strong>.`,
+  'cc-env-var-linked-services.error.app.without-app-name': `Une erreur est survenue pendant le chargement des applications liées à l'application.`,
   'cc-env-var-linked-services.heading.addon': /** @param {{name: string}} _ */ ({ name }) => `Add-on : ${name}`,
   'cc-env-var-linked-services.heading.app': /** @param {{name: string}} _ */ ({ name }) => `Application : ${name}`,
   'cc-env-var-linked-services.loading.addon': /** @param {{appName: string}} _ */ ({ appName }) =>

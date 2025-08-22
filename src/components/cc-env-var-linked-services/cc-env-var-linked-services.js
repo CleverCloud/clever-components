@@ -41,7 +41,7 @@ export class CcEnvVarLinkedServices extends LitElement {
   }
 
   _getLoadingMessage() {
-    const i18nParams = { appName: this.appName };
+    const i18nParams = { appName: this.appName ?? '' };
     switch (this.type) {
       case 'addon':
         return i18n('cc-env-var-linked-services.loading.addon', i18nParams);
@@ -66,7 +66,7 @@ export class CcEnvVarLinkedServices extends LitElement {
 
   /** @param {string} serviceName */
   _getServiceDescription(serviceName) {
-    const i18nParams = { serviceName, appName: this.appName };
+    const i18nParams = { serviceName, appName: this.appName ?? '' };
     switch (this.type) {
       case 'addon':
         return i18n('cc-env-var-linked-services.description.addon', i18nParams);
@@ -78,7 +78,7 @@ export class CcEnvVarLinkedServices extends LitElement {
   }
 
   _getEmptyMessage() {
-    const i18nParams = { appName: this.appName };
+    const i18nParams = { appName: this.appName ?? '' };
     switch (this.type) {
       case 'addon':
         return i18n('cc-env-var-linked-services.empty.addon', i18nParams);
@@ -90,12 +90,15 @@ export class CcEnvVarLinkedServices extends LitElement {
   }
 
   _getErrorMessage() {
-    const i18nParams = { appName: this.appName };
     switch (this.type) {
       case 'addon':
-        return i18n('cc-env-var-linked-services.error.addon', i18nParams);
+        return this.appName
+          ? i18n('cc-env-var-linked-services.error.addon', { appName: this.appName })
+          : i18n('cc-env-var-linked-services.error.addon.without-app-name');
       case 'app':
-        return i18n('cc-env-var-linked-services.error.app', i18nParams);
+        return this.appName
+          ? i18n('cc-env-var-linked-services.error.app', { appName: this.appName })
+          : i18n('cc-env-var-linked-services.error.app.without-app-name');
       default:
         return '';
     }
