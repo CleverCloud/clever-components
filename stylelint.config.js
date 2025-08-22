@@ -37,6 +37,7 @@ export default {
           'multicolumn',
           'css-clip-path',
           'css-masks',
+          'css-container-queries',
         ],
       },
     ],
