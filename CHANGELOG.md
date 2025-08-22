@@ -5,6 +5,13 @@ title: 'Changelog'
 
 # Changelog
 
+## [20.1.0](https://github.com/CleverCloud/clever-components/compare/20.0.1...20.1.0) (2025-08-22)
+
+
+### 🚀 Features
+
+* **cc-env-var-linked-services:** add smart part ([bc31678](https://github.com/CleverCloud/clever-components/commit/bc316784cc1f0cdbb53ec1c66970c71707e544fd))
+
 ## [20.0.1](https://github.com/CleverCloud/clever-components/compare/20.0.0...20.0.1) (2025-08-07)
 
 
