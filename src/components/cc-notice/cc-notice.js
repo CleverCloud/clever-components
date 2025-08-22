@@ -135,7 +135,7 @@ export class CcNotice extends LitElement {
         }
 
         .wrapper {
-          align-items: center;
+          align-items: start;
           border-radius: var(--cc-border-radius-default, 0.25em);
           display: grid;
           gap: 0.5em;
@@ -200,6 +200,7 @@ export class CcNotice extends LitElement {
         }
 
         .heading {
+          align-self: center;
           font-weight: bold;
           grid-area: heading;
         }
@@ -213,6 +214,7 @@ export class CcNotice extends LitElement {
         }
 
         .notice-icon {
+          align-self: start;
           grid-area: icon;
           height: 1.5em;
           width: 1.5em;
