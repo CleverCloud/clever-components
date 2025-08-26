@@ -87,6 +87,8 @@ export const translations = {
   'cc-addon-admin.delete-backups': `Les sauvegardes sont gardées suivant la politique de rétention.`,
   'cc-addon-admin.delete-disclaimer': `Supprimer cet add-on le rend immédiatement indisponible.`,
   'cc-addon-admin.delete-vm': `La machine virtuelle sera arrêtée sous 24 heures.`,
+  'cc-addon-admin.delete.error': `Une erreur est survenue lors de la suppression de votre add-on.`,
+  'cc-addon-admin.delete.success': `Votre add-on a bien été supprimé.`,
   'cc-addon-admin.error-loading': `Une erreur est survenue pendant le chargement des informations de l'add-on.`,
   'cc-addon-admin.heading.name': `Nom`,
   'cc-addon-admin.heading.tags': `Tags`,
@@ -96,6 +98,10 @@ export const translations = {
   'cc-addon-admin.tags-empty': `Pas de tags définis`,
   'cc-addon-admin.tags-update': `Mettre à jour les tags`,
   'cc-addon-admin.update': `Mettre à jour le nom`,
+  'cc-addon-admin.update-name.error': `Une erreur est survenue lors de la mise à jour du nom de votre add-on.`,
+  'cc-addon-admin.update-name.success': `Le nom de votre add-on a bien été mis à jour.`,
+  'cc-addon-admin.update-tags.error': `Une erreur est survenue lors de la mise à jour des tags de votre add-on.`,
+  'cc-addon-admin.update-tags.success': `Les tags de votre add-on ont bien été mis à jour.`,
   //#endregion
   //#region cc-addon-backups
   'cc-addon-backups.cli.content.download-backup-command': `Télécharger une sauvegarde de la base de données\u00A0:`,

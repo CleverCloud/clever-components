@@ -4,10 +4,8 @@ export type AddonAdminState =
   | AddonAdminStateError
   | AddonAdminStateSaving;
 
-export interface AddonAdminStateLoaded {
+export interface AddonAdminStateLoaded extends AddonAdminStateBase {
   type: 'loaded';
-  name: string;
-  tags: string[];
 }
 
 export interface AddonAdminStateLoading {
@@ -20,20 +18,20 @@ export interface AddonAdminStateError {
 
 export type AddonAdminStateSaving = AddonAdminStateDeleting | AddonAdminStateUpdatingName | AddonAdminStateUpdatingTags;
 
-export interface AddonAdminStateDeleting {
+export interface AddonAdminStateDeleting extends AddonAdminStateBase {
   type: 'deleting';
-  name: string;
-  tags: string[];
 }
 
-export interface AddonAdminStateUpdatingName {
+export interface AddonAdminStateUpdatingName extends AddonAdminStateBase {
   type: 'updatingName';
-  name: string;
-  tags: string[];
 }
 
-export interface AddonAdminStateUpdatingTags {
+export interface AddonAdminStateUpdatingTags extends AddonAdminStateBase {
   type: 'updatingTags';
+}
+
+interface AddonAdminStateBase {
+  id: string;
   name: string;
   tags: string[];
 }
