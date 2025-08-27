@@ -69,10 +69,10 @@ function getUnit(value) {
  * @return {string}
  */
 function formatFlavor(flavor) {
-  const cpu = `CPUs : ${flavor.cpus}`;
+  const cpu = `CPUs\u00A0: ${flavor.cpus}`;
   const shared = flavor.microservice ? ` (partagé)` : '';
-  const gpu = flavor.gpus > 0 ? `GPUs : ${flavor.gpus}` : '';
-  const mem = `RAM : ${formatBytes(flavor.mem * 1024 * 1024)}`;
+  const gpu = flavor.gpus > 0 ? `GPUs\u00A0: ${flavor.gpus}` : '';
+  const mem = `RAM\u00A0: ${formatBytes(flavor.mem * 1024 * 1024)}`;
   return [cpu + shared, gpu, mem].filter((a) => a).join('\n');
 }
 
@@ -98,21 +98,19 @@ export const translations = {
   'cc-addon-admin.update': `Mettre à jour le nom`,
   //#endregion
   //#region cc-addon-backups
-  'cc-addon-backups.cli.content.download-backup-command': () =>
-    sanitize`Télécharger une sauvegarde de la base de données&nbsp;:`,
+  'cc-addon-backups.cli.content.download-backup-command': `Télécharger une sauvegarde de la base de données\u00A0:`,
   'cc-addon-backups.cli.content.instruction': getCliInstructions,
   'cc-addon-backups.cli.content.intro': `
       Vous pouvez gérer les sauvegardes directement depuis votre terminal en utilisant les commandes ci-dessous.
     `,
-  'cc-addon-backups.cli.content.list-backups-command': () =>
-    sanitize`Lister les sauvegardes de bases de données disponibles&nbsp;:`,
+  'cc-addon-backups.cli.content.list-backups-command': `Lister les sauvegardes de bases de données disponibles\u00A0:`,
   'cc-addon-backups.close-btn': `Fermer ce panneau`,
-  'cc-addon-backups.command-password': `Cette commande vous demandera votre mot de passe, le voici :`,
+  'cc-addon-backups.command-password': `Cette commande vous demandera votre mot de passe, le voici\u00A0:`,
   'cc-addon-backups.delete': /** @param {{createdAt: string|number}} _ */ ({ createdAt }) =>
     sanitize`Supprimer la sauvegarde du <strong title="${formatDate(createdAt)}">${formatDatetime(createdAt)}</strong>`,
-  'cc-addon-backups.delete.btn': `supprimer...`,
+  'cc-addon-backups.delete.btn': `supprimer…`,
   'cc-addon-backups.delete.manual.description.es-addon': /** @param {{href: string}} _ */ ({ href }) =>
-    sanitize`Vous pouvez supprimer cette sauvegarde manuellement grâce à l'outil <cc-link href="${href}">cURL</cc-link> en exécutant cette commande :`,
+    sanitize`Vous pouvez supprimer cette sauvegarde manuellement grâce à l'outil <cc-link href="${href}">cURL</cc-link> en exécutant cette commande\u00A0:`,
   'cc-addon-backups.delete.manual.title': `Suppression manuelle`,
   'cc-addon-backups.delete.with-service.description.es-addon': /** @param {{href: string}} _ */ ({ href }) =>
     sanitize`Vous pouvez supprimer cette sauvegarde avec Kibana en vous rendant sur le <cc-link href="${href}">dépôt de sauvegardes</cc-link>.`,
@@ -138,16 +136,16 @@ export const translations = {
   'cc-addon-backups.loading-error': `Une erreur est survenue pendant le chargement des sauvegardes.`,
   'cc-addon-backups.restore': /** @param {{createdAt: string|number}} _ */ ({ createdAt }) =>
     sanitize`Restaurer la sauvegarde du <strong title="${formatDate(createdAt)}">${formatDatetime(createdAt)}</strong>`,
-  'cc-addon-backups.restore.btn': `restaurer...`,
+  'cc-addon-backups.restore.btn': `restaurer…`,
   'cc-addon-backups.restore.manual.description.es-addon': () =>
-    sanitize`Vous pouvez restaurer cette sauvegarde manuellement grâce à l'outil <cc-link href="https://curl.se/docs/">cURL</cc-link> en exécutant cette commande :`,
+    sanitize`Vous pouvez restaurer cette sauvegarde manuellement grâce à l'outil <cc-link href="https://curl.se/docs/">cURL</cc-link> en exécutant cette commande\u00A0:`,
   'cc-addon-backups.restore.manual.description.jenkins': `La restauration de backups Jenkins doit passer par notre support. Créez un ticket en indiquant l'ID de votre add-on ainsi que la date du backup à restaurer et nous le ferons pour vous.`,
   'cc-addon-backups.restore.manual.description.mongodb-addon': () =>
-    sanitize`Vous pouvez restaurer cette sauvegarde manuellement grâce à l'outil <cc-link href="https://docs.mongodb.com/v4.0/reference/program/mongorestore/">mongorestore</cc-link> en exécutant cette commande :`,
+    sanitize`Vous pouvez restaurer cette sauvegarde manuellement grâce à l'outil <cc-link href="https://docs.mongodb.com/v4.0/reference/program/mongorestore/">mongorestore</cc-link> en exécutant cette commande\u00A0:`,
   'cc-addon-backups.restore.manual.description.mysql-addon': () =>
-    sanitize`Vous pouvez restaurer cette sauvegarde manuellement grâce à la CLI <cc-link href="https://dev.mysql.com/doc/refman/8.0/en/mysql.html">mysql</cc-link> en exécutant cette commande :`,
+    sanitize`Vous pouvez restaurer cette sauvegarde manuellement grâce à la CLI <cc-link href="https://dev.mysql.com/doc/refman/8.0/en/mysql.html">mysql</cc-link> en exécutant cette commande\u00A0:`,
   'cc-addon-backups.restore.manual.description.postgresql-addon': () =>
-    sanitize`Vous pouvez restaurer cette sauvegarde manuellement grâce à l'outil <cc-link href="https://www.postgresql.org/docs/current/app-pgrestore.html">pg_restore</cc-link> en exécutant cette commande :`,
+    sanitize`Vous pouvez restaurer cette sauvegarde manuellement grâce à l'outil <cc-link href="https://www.postgresql.org/docs/current/app-pgrestore.html">pg_restore</cc-link> en exécutant cette commande\u00A0:`,
   'cc-addon-backups.restore.manual.description.redis-addon': `La restauration de backups Redis doit passer par notre support. Créez un ticket en indiquant l'ID de votre add-on ainsi que la date du backup à restaurer et nous le ferons pour vous`,
   'cc-addon-backups.restore.manual.title': `Restauration manuelle`,
   'cc-addon-backups.restore.with-service.description.es-addon': /** @param {{href: string}} _ */ ({ href }) =>
@@ -185,7 +183,7 @@ export const translations = {
   'cc-addon-elasticsearch-options.details.apm': () =>
     sanitize`Elastic APM est un serveur de monitoring de performance applicative pour la Suite Elastic. Déployer cette option permet d'envoyer automatiquement les métriques de toute application liée à cette instance d'add-on Elasticsearch, en supposant que vous utilisez bien l'agent Elastic APM dans les dépendances de vos applications. Retrouvez plus de détails dans <cc-link href="https://www.elastic.co/guide/en/apm/get-started/current/overview.html">la documentation officielle de APM server</cc-link>.`,
   'cc-addon-elasticsearch-options.details.kibana': () =>
-    sanitize`Kibana est l'interface d'administration de la Suite Elastic. Kibana vous permet de visualiser vos données Elasticsearch et de naviguer dans la Suite Elastic. Vous voulez effectuer le suivi de la charge de travail liée à la recherche ou comprendre le flux des requêtes dans vos applications ? Kibana est là pour ça. Retrouvez plus de détails dans <cc-link href="https://www.elastic.co/guide/en/kibana/master/index.html">la documentation officielle de Kibana</cc-link>.`,
+    sanitize`Kibana est l'interface d'administration de la Suite Elastic. Kibana vous permet de visualiser vos données Elasticsearch et de naviguer dans la Suite Elastic. Vous voulez effectuer le suivi de la charge de travail liée à la recherche ou comprendre le flux des requêtes dans vos applications\u202f? Kibana est là pour ça. Retrouvez plus de détails dans <cc-link href="https://www.elastic.co/guide/en/kibana/master/index.html">la documentation officielle de Kibana</cc-link>.`,
   'cc-addon-elasticsearch-options.error.icon-a11y-name': `Avertissement`,
   'cc-addon-elasticsearch-options.title': `Options pour la Suite Elastic`,
   'cc-addon-elasticsearch-options.warning.apm': `Si vous activez cette option, nous allons déployer et gérer pour vous un APM server`,
@@ -250,12 +248,12 @@ export const translations = {
   //#region cc-ansi-palette
   'cc-ansi-palette.compliant': `Couleur qui respecte le RGAA`,
   'cc-ansi-palette.fg-bg': /** @param {{foreground: string, background: string}} _ */ ({ foreground, background }) =>
-    `Texte : ${foreground}, Fond: ${background}`,
-  'cc-ansi-palette.hover': /** @param {{color: string}} _ */ ({ color }) => `Survol : ${color}`,
+    `Texte\u00A0: ${foreground}, Fond\u00A0: ${background}`,
+  'cc-ansi-palette.hover': /** @param {{color: string}} _ */ ({ color }) => `Survol\u00A0: ${color}`,
   'cc-ansi-palette.not-compliant': `Couleur qui ne respecte pas le RGAA`,
   'cc-ansi-palette.ratio': /** @param {{ratio: number}} _ */ ({ ratio }) =>
     formatNumber(lang, ratio, { minimumFractionDigits: 2, maximumFractionDigits: 2 }).padStart(5, '0'),
-  'cc-ansi-palette.selected': /** @param {{color: string}} _ */ ({ color }) => `Sélection: ${color}`,
+  'cc-ansi-palette.selected': /** @param {{color: string}} _ */ ({ color }) => `Sélection\u00A0: ${color}`,
   //#endregion
   //#region cc-article-card
   'cc-article-card.date': /** @param {{date: string}} _ */ ({ date }) => formatDateOnly(date),
@@ -300,8 +298,7 @@ export const translations = {
     sanitize`<p>Si vous choisissez d'utiliser des enregistrements de type <code>A</code>, par exemple pour un domaine racine (APEX), vous devrez vous-même assurer leur mise à jour. Pensez à suivre notre <cc-link href="${generateDevHubHref('/changelog')}" lang="en">changelog</cc-link> ou à lire la documentation de notre <cc-link href="${generateDevHubHref('/api/v4/#load-balancers')}" lang="en">API v4</cc-link> pour cela.</p>`,
   'cc-domain-management.dns.a.heading': `Enregistrements A`,
   'cc-domain-management.dns.a.label': `Valeurs d'enregistrement A`,
-  'cc-domain-management.dns.cli.content.diag-conf-command': () =>
-    sanitize`Commande pour diagnostiquer l'installation actuelle&nbsp;:`,
+  'cc-domain-management.dns.cli.content.diag-conf-command': `Commande pour diagnostiquer l'installation actuelle\u00A0:`,
   'cc-domain-management.dns.cli.content.instruction': getCliInstructions,
   'cc-domain-management.dns.cname.desc': () =>
     sanitize`<p>Utiliser un enregistrement <code>CNAME</code> est fortement recommandé. Ainsi, votre configuration est automatiquement maintenue à jour.`,
@@ -320,14 +317,14 @@ export const translations = {
   'cc-domain-management.form.domain.error.empty': `Saisissez un nom de domaine`,
   'cc-domain-management.form.domain.error.format': `Saisissez un domaine valide, par exemple "example.com"`,
   'cc-domain-management.form.domain.error.wildcard': () =>
-    sanitize`Saisissez un domaine valide.<br>Les <span lang="en">wildcard</span> "*" ne peuvent être utilisés qu'en sous-domaine, par exemple&nbsp;: "*.example.com"`,
+    sanitize`Saisissez un domaine valide.<br>Les <span lang="en">wildcard</span> "*" ne peuvent être utilisés qu'en sous-domaine, par exemple\u00A0: "*.example.com"`,
   'cc-domain-management.form.domain.help': () =>
-    sanitize`Par exemple: <code>example.com</code>, <code>*.example.com</code> ou <code>example.cleverapps.io</code>`,
+    sanitize`Par exemple\u00A0: <code>example.com</code>, <code>*.example.com</code> ou <code>example.cleverapps.io</code>`,
   'cc-domain-management.form.domain.label': `Nom de domaine`,
   'cc-domain-management.form.info.cleverapps': () =>
     sanitize`Par défaut, une application se voit attribuer un nom de domaine de type <code>app_id.cleverapps.io</code>. Vous pouvez le supprimer ou changer le sous-domaine librement, mais <code>xxx.cleverapps.io</code> doit uniquement être utilisé à des fins de test (voir notre <cc-link href="${generateDocsHref('/administrate/domain-names/#testing-with-cleverappsio-domain')}">documentation</cc-link>).`,
   'cc-domain-management.form.info.docs': `Vous pouvez associer un ou plusieurs noms de domaines à votre application. Le domaine principal sera utilisé dans les liens de la Console et dans les e-mails qui vous seront envoyés. Plusieurs applications peuvent partager un même domaine, chacune avec un sous-domaine et/ou une route spécifique.`,
-  'cc-domain-management.form.path.help': () => sanitize`Par exemple: <code>/api</code> ou <code>/blog</code>`,
+  'cc-domain-management.form.path.help': () => sanitize`Par exemple\u00A0: <code>/api</code> ou <code>/blog</code>`,
   'cc-domain-management.form.path.label': `Route`,
   'cc-domain-management.form.submit': `Ajouter le domaine`,
   'cc-domain-management.form.submit.error': /** @param {{domain: string}} _ */ ({ domain }) =>
@@ -368,13 +365,13 @@ export const translations = {
   'cc-domain-management.list.primary.success': /** @param {{domain: string}} _ */ ({ domain }) =>
     `"${domain}" a bien été défini comme nom de domaine principal`,
   'cc-domain-management.main-heading': `Gérez vos noms de domaine`,
-  'cc-domain-management.names.cli.content.add-domain-command': `Ajouter un domaine :`,
-  'cc-domain-management.names.cli.content.diag-dns-records-command': `Diagnostiquer les enregistrements DNS :`,
+  'cc-domain-management.names.cli.content.add-domain-command': `Ajouter un domaine\u00A0:`,
+  'cc-domain-management.names.cli.content.diag-dns-records-command': `Diagnostiquer les enregistrements DNS\u00A0:`,
   'cc-domain-management.names.cli.content.instruction': getCliInstructions,
   'cc-domain-management.names.cli.content.intro': `
       Vous pouvez gérer les domaines directement depuis votre terminal grâce aux commandes ci-dessous.
     `,
-  'cc-domain-management.names.cli.content.list-command': `Lister les domaines :`,
+  'cc-domain-management.names.cli.content.list-command': `Lister les domaines\u00A0:`,
   'cc-domain-management.names.documentation.text': `Noms de domaine - Documentation`,
   'cc-domain-management.new-window': `Nouvelle fenêtre`,
   'cc-domain-management.tls.certificates.documentation.text': `Certificats TLS - Documentation`,
@@ -445,26 +442,26 @@ export const translations = {
   'cc-env-var-editor-expert.errors.duplicated-name': /** @param {{name: string}} _ */ ({ name }) =>
     sanitize`attention, le nom <code>${name}</code> est déjà défini`,
   'cc-env-var-editor-expert.errors.invalid-line': () =>
-    sanitize`cette ligne est invalide, le format correct est : <code>NOM="VALEUR"</code>`,
+    sanitize`cette ligne est invalide, le format correct est\u00A0: <code>NOM="VALEUR"</code>`,
   'cc-env-var-editor-expert.errors.invalid-name': /** @param {{name: string}} _ */ ({ name }) =>
     sanitize`Le nom <code>${name}</code> n'est pas valide`,
   'cc-env-var-editor-expert.errors.invalid-name-strict': /** @param {{name: string}} _ */ ({ name }) =>
     sanitize`Le nom <code>${name}</code> n'est pas valide en mode strict`,
   'cc-env-var-editor-expert.errors.invalid-value': () =>
-    sanitize`la valeur est invalide, si vous utilisez des guillements, vous devez les échapper comme ceci : <code>\\"</code> ou alors mettre toute la valeur entre guillemets.`,
+    sanitize`la valeur est invalide, si vous utilisez des guillements, vous devez les échapper comme ceci\u00A0: <code>\\"</code> ou alors mettre toute la valeur entre guillemets.`,
   'cc-env-var-editor-expert.errors.line': `ligne`,
   'cc-env-var-editor-expert.errors.unknown': `Erreur inconnue`,
   'cc-env-var-editor-expert.example': () =>
-    sanitize`Format : <code>NOM_DE_LA_VARIABLE="valeur de la variable"</code> <br> Chaque variable doit être séparée par des sauts de ligne, <cc-link href="${generateDocsHref('/develop/env-variables/#format')}">en savoir plus</cc-link>.`,
+    sanitize`Format\u00A0: <code>NOM_DE_LA_VARIABLE="valeur de la variable"</code> <br> Chaque variable doit être séparée par des sauts de ligne, <cc-link href="${generateDocsHref('/develop/env-variables/#format')}">en savoir plus</cc-link>.`,
   'cc-env-var-editor-expert.info.java-prop': /** @param {{name: string}} _ */ ({ name }) =>
     sanitize`La variable <code>${name}</code> sera injecté sous forme de propriété Java et non en tant que variable d'environnement, <cc-link href="${generateDocsHref('/develop/env-variables/#environment-variables-rules-and-formats')}">plus de détails</cc-link>`,
-  'cc-env-var-editor-expert.label': `Edition des variables. Format : NOM_DE_LA_VARIABLE="valeur de la variable". Chaque variable doit être séparée par des sauts de ligne.`,
+  'cc-env-var-editor-expert.label': `Edition des variables. Format\u00A0: NOM_DE_LA_VARIABLE="valeur de la variable". Chaque variable doit être séparée par des sauts de ligne.`,
   //#endregion
   //#region cc-env-var-editor-json
   'cc-env-var-editor-json.errors.duplicated-name': /** @param {{name: string}} _ */ ({ name }) =>
     sanitize`attention, le nom <code>${name}</code> est déjà défini`,
   'cc-env-var-editor-json.errors.invalid-json': `Le JSON entré est invalide.`,
-  'cc-env-var-editor-json.errors.invalid-json-entry': `Le JSON entré est un tableau d'objets JSON valide mais toutes les valeurs des propriétés doivent être de type string. Ex : '[{ "name": "THE_NAME", "value": "the value" }]'`,
+  'cc-env-var-editor-json.errors.invalid-json-entry': `Le JSON entré est un tableau d'objets JSON valide mais toutes les valeurs des propriétés doivent être de type string. Ex\u00A0: '[{ "name": "THE_NAME", "value": "the value" }]'`,
   'cc-env-var-editor-json.errors.invalid-json-format': `Le JSON entré est valide mais n'est pas au bon format. Le JSON doit être un tableau d'objets`,
   'cc-env-var-editor-json.errors.invalid-name': /** @param {{name: string}} _ */ ({ name }) =>
     sanitize`Le nom <code>${name}</code> n'est pas valide`,
@@ -472,24 +469,22 @@ export const translations = {
     sanitize`Le nom <code>${name}</code> n'est pas valide en mode strict`,
   'cc-env-var-editor-json.errors.unknown': `Erreur inconnue`,
   'cc-env-var-editor-json.example': () =>
-    sanitize`Format : <code>{ "name": "NOM_DE_LA_VARIABLE", "value": "valeur de la variable" }</code> <br> Tableau d'objets respectant le format ci-dessus, <cc-link href="${generateDocsHref('/develop/env-variables/#format')}">en savoir plus</cc-link>.`,
+    sanitize`Format\u00A0: <code>{ "name": "NOM_DE_LA_VARIABLE", "value": "valeur de la variable" }</code> <br> Tableau d'objets respectant le format ci-dessus, <cc-link href="${generateDocsHref('/develop/env-variables/#format')}">en savoir plus</cc-link>.`,
   'cc-env-var-editor-json.info.java-prop': /** @param {{name: string}} _ */ ({ name }) =>
     sanitize`La variable <code>${name}</code> sera injecté sous forme de propriété Java et non en tant que variable d'environnement, <cc-link href="${generateDocsHref('/develop/env-variables/#environment-variables-rules-and-formats')}">plus de détails</cc-link>`,
-  'cc-env-var-editor-json.label': `Edition des variables. Tableau d'objets respectant le format : { "name": "NOM_DE_LA_VARIABLE", "value": "valeur de la variable" }.`,
+  'cc-env-var-editor-json.label': `Edition des variables. Tableau d'objets respectant le format\u00A0: { "name": "NOM_DE_LA_VARIABLE", "value": "valeur de la variable" }.`,
   //#endregion
   //#region cc-env-var-editor-simple
   'cc-env-var-editor-simple.empty-data': `Il n'y a pas de variable.`,
   //#endregion
   //#region cc-env-var-form
-  'cc-env-var-form.cli.content.add-var-command': () =>
-    sanitize`Ajouter ou modifier une variable d'environnement&nbsp;:`,
-  'cc-env-var-form.cli.content.get-file-var-command': () =>
-    sanitize`Récupérer un fichier de variables d'environnement exécutable&nbsp;:`,
+  'cc-env-var-form.cli.content.add-var-command': `Ajouter ou modifier une variable d'environnement\u00A0:`,
+  'cc-env-var-form.cli.content.get-file-var-command': `Récupérer un fichier de variables d'environnement exécutable\u00A0:`,
   'cc-env-var-form.cli.content.instruction': getCliInstructions,
   'cc-env-var-form.cli.content.intro': `
-      Vous pouvez gérer les variables d'environnement directement depuis votre terminal en utilisant les commandes ci-dessous.
+        Vous pouvez gérer les variables d'environnement directement depuis votre terminal en utilisant les commandes ci-dessous.
     `,
-  'cc-env-var-form.cli.content.list-var-command': () => sanitize`Lister les variables d'environnement&nbsp;:`,
+  'cc-env-var-form.cli.content.list-var-command': `Lister les variables d'environnement\u00A0:`,
   'cc-env-var-form.description.config-provider': /** @param {{addonName: string}} _ */ ({ addonName }) =>
     sanitize`Configuration publiée pour les applications dépendantes. <cc-link href="${generateDocsHref('/deploy/addon/config-provider/')}">En savoir plus</cc-link><br>Ces seront injectées en tant que variables d'environnement dans les applications qui ont l'add-on <strong>${addonName}</strong> dans leurs services liés.<br>À chaque fois que vous mettez à jour les changements, toutes les applications dépendantes seront redémarrées automatiquement.`,
   'cc-env-var-form.description.env-var': /** @param {{appName: string}} _ */ ({ appName }) =>
@@ -544,12 +539,12 @@ export const translations = {
   'cc-env-var-linked-services.error.app': /** @param {{appName: string}} _ */ ({ appName }) =>
     sanitize`Une erreur est survenue pendant le chargement des applications liées à <strong>${appName}</strong>.`,
   'cc-env-var-linked-services.error.app.without-app-name': `Une erreur est survenue pendant le chargement des applications liées à l'application.`,
-  'cc-env-var-linked-services.heading.addon': /** @param {{name: string}} _ */ ({ name }) => `Add-on : ${name}`,
-  'cc-env-var-linked-services.heading.app': /** @param {{name: string}} _ */ ({ name }) => `Application : ${name}`,
+  'cc-env-var-linked-services.heading.addon': /** @param {{name: string}} _ */ ({ name }) => `Add-on\u00A0: ${name}`,
+  'cc-env-var-linked-services.heading.app': /** @param {{name: string}} _ */ ({ name }) => `Application\u00A0: ${name}`,
   'cc-env-var-linked-services.loading.addon': /** @param {{appName: string}} _ */ ({ appName }) =>
-    sanitize`Chargement des variables exposées par les add-ons liés à <strong>${appName}</strong>...`,
+    sanitize`Chargement des variables exposées par les add-ons liés à <strong>${appName}</strong>…`,
   'cc-env-var-linked-services.loading.app': /** @param {{appName: string}} _ */ ({ appName }) =>
-    sanitize`Chargement de la configuration publiée par les applications liées à <strong>${appName}</strong>...`,
+    sanitize`Chargement de la configuration publiée par les applications liées à <strong>${appName}</strong>…`,
   //#endregion
   //#region cc-grafana-info
   'cc-grafana-info.disable-description': `Désactiver Grafana supprimera et mettra fin aux accès à l'organisation du Grafana. Vous pourrez toujours recréer une nouvelle organisation Grafana.`,
@@ -609,28 +604,29 @@ export const translations = {
   'cc-header-app.action.start-rebuild': `Re-build et démarrer`,
   'cc-header-app.action.stop': `Arrêter l'application`,
   'cc-header-app.commits.git': /** @param {{commit: string}} _ */ ({ commit }) =>
-    `version du dépôt git (HEAD) : ${commit}`,
+    `version du dépôt git (HEAD)\u00A0: ${commit}`,
   'cc-header-app.commits.no-commits': `pas encore de commit`,
-  'cc-header-app.commits.running': /** @param {{commit: string}} _ */ ({ commit }) => `version en ligne : ${commit}`,
+  'cc-header-app.commits.running': /** @param {{commit: string}} _ */ ({ commit }) =>
+    `version en ligne\u00A0: ${commit}`,
   'cc-header-app.commits.starting': /** @param {{commit: string}} _ */ ({ commit }) =>
-    `version en cours de déploiement : ${commit}`,
+    `version en cours de déploiement\u00A0: ${commit}`,
   'cc-header-app.disable-buttons': `Vous n'êtes pas autorisé à réaliser ces actions`,
   'cc-header-app.error': `Une erreur est survenue pendant le chargement des informations de l'application.`,
   'cc-header-app.read-logs': `voir les logs`,
-  'cc-header-app.state-msg.app-is-restarting': `L'application redémarre...`,
-  'cc-header-app.state-msg.app-is-running': `Votre application est disponible !`,
-  'cc-header-app.state-msg.app-is-starting': `L'application démarre...`,
+  'cc-header-app.state-msg.app-is-restarting': `L'application redémarre…`,
+  'cc-header-app.state-msg.app-is-running': `Votre application est disponible\u202f!`,
+  'cc-header-app.state-msg.app-is-starting': `L'application démarre…`,
   'cc-header-app.state-msg.app-is-stopped': `L'application est arrêtée.`,
   'cc-header-app.state-msg.last-deploy-failed': `Le dernier déploiement a échoué,`,
   'cc-header-app.state-msg.unknown-state': `État inconnu, essayez de redémarrer l'application ou de contacter notre support si vous avez des questions.`,
-  'cc-header-app.user-action-msg.app-will-start': `L'application va bientôt démarrer...`,
-  'cc-header-app.user-action-msg.app-will-stop': `L'application va s'arrêter...`,
+  'cc-header-app.user-action-msg.app-will-start': `L'application va bientôt démarrer…`,
+  'cc-header-app.user-action-msg.app-will-stop': `L'application va s'arrêter…`,
   'cc-header-app.user-action-msg.deploy-cancelled': `Ce déploiement a été annulé.`,
-  'cc-header-app.user-action-msg.deploy-will-begin': `Un déploiement va bientôt commencer...`,
+  'cc-header-app.user-action-msg.deploy-will-begin': `Un déploiement va bientôt commencer…`,
   //#endregion
   //#region cc-header-orga
   'cc-header-orga.error': `Une erreur est survenue pendant le chargement des informations de l'organisation.`,
-  'cc-header-orga.hotline': `Numéro d'urgence :`,
+  'cc-header-orga.hotline': `Numéro d'urgence\u00A0:`,
   //#endregion
   //#region cc-heptapod-info
   'cc-heptapod-info.description': () =>
@@ -648,13 +644,13 @@ export const translations = {
   //#endregion
   //#region cc-input-date
   'cc-input-date.error.bad-input': /** @param {{ date: string }} _ */ ({ date }) =>
-    sanitize`Saisissez une date. <br> Par exemple : ${date}.`,
+    sanitize`Saisissez une date. <br> Par exemple\u00A0: ${date}.`,
   'cc-input-date.error.empty': `Saisissez une valeur`,
   'cc-input-date.error.range-overflow': /** @param {{max: string}} _ */ ({ max }) =>
     `Saisissez une date inférieure à ${max}`,
   'cc-input-date.error.range-underflow': /** @param {{min: string}} _ */ ({ min }) =>
     `Saisissez une date supérieure à ${min}`,
-  'cc-input-date.help': `Format : AAAA-MM-JJ HH:MM:SS`,
+  'cc-input-date.help': `Format\u00A0: AAAA-MM-JJ HH:MM:SS`,
   'cc-input-date.keyboard-hint': `Vous pouvez utiliser les touches flèche haut et flèche bas pour modifier des parties de la date.`,
   'cc-input-date.required': `obligatoire`,
   //#endregion
@@ -698,7 +694,7 @@ export const translations = {
   'cc-invoice-list.processed.no-invoices': `Il n'y a aucune facture réglée pour le moment.`,
   'cc-invoice-list.processing': `Factures dont le paiement est en cours de validation`,
   'cc-invoice-list.title': `Factures`,
-  'cc-invoice-list.year': `Année :`,
+  'cc-invoice-list.year': `Année\u00A0:`,
   //#endregion
   //#region cc-invoice-table
   'cc-invoice-table.date.emission': `Date d'émission`,
@@ -726,7 +722,7 @@ export const translations = {
   'cc-jenkins-info.open-jenkins.title': `Accéder à Jenkins`,
   'cc-jenkins-info.text': `Cet add-on fait partie de l'offre Jenkins. Vous pouvez retrouver la documentation ainsi que différentes informations ci-dessous.`,
   'cc-jenkins-info.update.new-version': /** @param {{version: string}} _ */ ({ version }) =>
-    `La version ${version} de Jenkins est disponible !`,
+    `La version ${version} de Jenkins est disponible\u202f!`,
   'cc-jenkins-info.update.text': `Jenkins et ses plugins reçoivent régulièrement des mises à jour. Vous pouvez mettre à jour automatiquement votre instance ainsi que ses plugins à travers l'interface Jenkins.`,
   'cc-jenkins-info.update.title': `Mises à jour`,
   'cc-jenkins-info.update.up-to-date': `Votre version de Jenkins est à jour`,
@@ -760,7 +756,7 @@ export const translations = {
   'cc-kv-explorer.key.type.list': `List`,
   'cc-kv-explorer.key.type.set': `Set`,
   'cc-kv-explorer.key.type.string': `String`,
-  'cc-kv-explorer.keys.empty': `La base de données est vide !`,
+  'cc-kv-explorer.keys.empty': `La base de données est vide\u202f!`,
   'cc-kv-explorer.keys.empty.create-key': `Créez une clé`,
   'cc-kv-explorer.keys.header.add-key': `clé`,
   'cc-kv-explorer.keys.header.add-key.a11y': `Ajouter une clé`,
@@ -892,7 +888,7 @@ export const translations = {
   'cc-logs-addon-runtime.fullscreen': `Mode plein écran`,
   'cc-logs-addon-runtime.fullscreen.exit': `Sortir du mode plein écran`,
   'cc-logs-addon-runtime.logs.error': `Une erreur est survenue pendant le chargement des logs`,
-  'cc-logs-addon-runtime.logs.loading': `Recherche de logs...`,
+  'cc-logs-addon-runtime.logs.loading': `Recherche de logs…`,
   'cc-logs-addon-runtime.logs.warning.no-logs.message': `Il n'y a aucun log qui correspond aux critères sélectionnés`,
   'cc-logs-addon-runtime.logs.warning.no-logs.title': `Aucun log`,
   'cc-logs-addon-runtime.logs.warning.waiting.message': `Les logs émis par l'add-on apparaîtront ici`,
@@ -902,7 +898,7 @@ export const translations = {
   'cc-logs-app-access.error': `Une erreur est survenue pendant le chargement des logs`,
   'cc-logs-app-access.fullscreen': `Mode plein écran`,
   'cc-logs-app-access.fullscreen.exit': `Sortir du mode plein écran`,
-  'cc-logs-app-access.loading': `Recherche de logs...`,
+  'cc-logs-app-access.loading': `Recherche de logs…`,
   'cc-logs-app-access.no-logs.message': `Aucun log ne correspond aux critères sélectionnés`,
   'cc-logs-app-access.no-logs.title': `Aucun log`,
   'cc-logs-app-access.options.city': `Afficher la ville`,
@@ -915,7 +911,7 @@ export const translations = {
   'cc-logs-app-runtime.fullscreen': `Mode plein écran`,
   'cc-logs-app-runtime.fullscreen.exit': `Sortir du mode plein écran`,
   'cc-logs-app-runtime.logs.error': `Une erreur est survenue pendant le chargement des logs`,
-  'cc-logs-app-runtime.logs.loading': `Recherche de logs...`,
+  'cc-logs-app-runtime.logs.loading': `Recherche de logs…`,
   'cc-logs-app-runtime.logs.warning.no-logs.message': `Il n'y a aucun log qui correspond aux critères sélectionnés`,
   'cc-logs-app-runtime.logs.warning.no-logs.title': `Aucun log`,
   'cc-logs-app-runtime.logs.warning.waiting.message': `Les logs émis par l'application apparaîtront ici`,
@@ -991,7 +987,7 @@ export const translations = {
   'cc-logs-loading-progress.overflow.info': /** @param {{limit: number}} _ */ ({ limit }) =>
     `Seuls les ${formatNumber(lang, limit)} derniers logs sont affichés.`,
   'cc-logs-loading-progress.overflow.warning': /** @param {{limit: number}} _ */ ({ limit }) =>
-    `Vous allez atteindre ${formatNumber(lang, limit)} logs chargés. Que voulez-vous faire ?`,
+    `Vous allez atteindre ${formatNumber(lang, limit)} logs chargés. Que voulez-vous faire\u202f?`,
   'cc-logs-loading-progress.progress.indeterminate': /** @param {{count: number}} _ */ ({ count }) =>
     `${formatNumber(lang, count)} logs chargés`,
   'cc-logs-loading-progress.progress.none': `Aucun log chargé`,
@@ -1062,16 +1058,16 @@ export const translations = {
   'cc-oauth-consumer-form.delete.success': `Le consumer OAuth a été supprimé avec succès`,
   'cc-oauth-consumer-form.documentation.text': `Consumer OAuth - Documentation`,
   'cc-oauth-consumer-form.info.base-url': `URL de base`,
-  'cc-oauth-consumer-form.info.base-url.help': `L'URL  qui sera utilisée pour les redirections OAuth. Par exemple : "https://example.com"`,
+  'cc-oauth-consumer-form.info.base-url.help': `L'URL  qui sera utilisée pour les redirections OAuth. Par exemple\u00A0: "https://example.com"`,
   'cc-oauth-consumer-form.info.description-input': `Description`,
   'cc-oauth-consumer-form.info.description.help': `Elle sera affichée à tous les utilisateurs de votre application`,
   'cc-oauth-consumer-form.info.homepage-url': `Page d'accueil`,
-  'cc-oauth-consumer-form.info.homepage-url.help': `L'URL complète de la page d'accueil de votre application. Par exemple : "https://www.example.com/home"`,
+  'cc-oauth-consumer-form.info.homepage-url.help': `L'URL complète de la page d'accueil de votre application. Par exemple\u00A0: "https://www.example.com/home"`,
   'cc-oauth-consumer-form.info.image': `URL du logo`,
-  'cc-oauth-consumer-form.info.image.help': `Cette image sera affichée aux utilisateurs lors des demandes d'autorisation, facilitant la reconnaissance de votre service. Par exemple : "https://example.com"`,
+  'cc-oauth-consumer-form.info.image.help': `Cette image sera affichée aux utilisateurs lors des demandes d'autorisation, facilitant la reconnaissance de votre service. Par exemple\u00A0: "https://example.com"`,
   'cc-oauth-consumer-form.info.name': `Nom`,
   'cc-oauth-consumer-form.info.name.help': `Un nom que les utilisateurs reconnaîtront et auquel ils feront confiance`,
-  'cc-oauth-consumer-form.info.placeholder': `Aucune valeur pour l'instant...`,
+  'cc-oauth-consumer-form.info.placeholder': `Aucune valeur pour l'instant…`,
   'cc-oauth-consumer-form.info.title': `Détails de l'application`,
   'cc-oauth-consumer-form.info.url.error': `Saisissez une URL valide. Exemple: "https://example.com"`,
   'cc-oauth-consumer-form.load.error': `Une erreur est survenue pendant le chargement des informations du consumer OAuth`,
@@ -1082,7 +1078,7 @@ export const translations = {
   'cc-oauth-consumer-form.rights.access-organisations-consumption-statistics': `Statistiques de consommation des organisations`,
   'cc-oauth-consumer-form.rights.access-organisations-credit-count': `Nombre de crédits des organisations`,
   'cc-oauth-consumer-form.rights.access-personal-information': `Informations personnelles`,
-  'cc-oauth-consumer-form.rights.description': `Le consumer OAuth demandera les droits suivants :`,
+  'cc-oauth-consumer-form.rights.description': `Le consumer OAuth demandera les droits suivants\u00A0:`,
   'cc-oauth-consumer-form.rights.error': `Veuillez sélectionner au moins une option`,
   'cc-oauth-consumer-form.rights.legend-access': `Accès`,
   'cc-oauth-consumer-form.rights.legend-manage': `Gérer`,
@@ -1104,19 +1100,19 @@ export const translations = {
   'cc-oauth-consumer-info.access.title': `Détails de configuration`,
   'cc-oauth-consumer-info.error': `Une erreur est survenue pendant le chargement des informations du consumer OAuth`,
   'cc-oauth-consumer-info.info.base-url': `URL de base de l'application`,
-  'cc-oauth-consumer-info.info.description': `Votre application est configurée pour ces URLs et a besoin des informations d'identification suivantes pour utiliser le consumer :`,
+  'cc-oauth-consumer-info.info.description': `Votre application est configurée pour ces URLs et a besoin des informations d'identification suivantes pour utiliser le consumer\u00A0:`,
   'cc-oauth-consumer-info.info.homepage-url': `Page d'accueil de l'application`,
   'cc-oauth-consumer-info.info.key': `Clé`,
   'cc-oauth-consumer-info.info.secret': `Secret`,
-  'cc-oauth-consumer-info.rights-title.access': `Droits d'accès :`,
-  'cc-oauth-consumer-info.rights-title.manage': `Droits de gestion :`,
+  'cc-oauth-consumer-info.rights-title.access': `Droits d'accès\u00A0:`,
+  'cc-oauth-consumer-info.rights-title.manage': `Droits de gestion\u00A0:`,
   'cc-oauth-consumer-info.rights.access-organisations': `Organisations`,
   'cc-oauth-consumer-info.rights.access-organisations-bills': `Factures des organisations`,
   'cc-oauth-consumer-info.rights.access-organisations-consumption-statistics': `Statistiques de consommation des organisations`,
   'cc-oauth-consumer-info.rights.access-organisations-credit-count': `Nombre de crédits des organisations`,
   'cc-oauth-consumer-info.rights.access-personal-information': `Informations personnelles`,
   'cc-oauth-consumer-info.rights.almighty': `Almighty`,
-  'cc-oauth-consumer-info.rights.description': `Le consumer OAuth demandera aux utilisateurs de l'application les droits suivants :`,
+  'cc-oauth-consumer-info.rights.description': `Le consumer OAuth demandera aux utilisateurs de l'application les droits suivants\u00A0:`,
   'cc-oauth-consumer-info.rights.edit': `Éditer les informations`,
   'cc-oauth-consumer-info.rights.manage-organisations': `Organisations`,
   'cc-oauth-consumer-info.rights.manage-organisations-applications': `Applications des organisations`,
@@ -1220,15 +1216,15 @@ export const translations = {
     sanitize`<strong>${orgaName}</strong> n'a aucun moyen de paiement enregistré.`,
   'cc-payment-warning.home': /** @param {{orgaCount: number}} _ */ ({ orgaCount }) => {
     const organisation = plural(orgaCount, "à l'organisation suivante", 'aux organisations suivantes');
-    return `Pour éviter tout risque de suspension de vos services et de suppression de vos données, merci de vérifier les informations de facturation liées ${organisation} :`;
+    return `Pour éviter tout risque de suspension de vos services et de suppression de vos données, merci de vérifier les informations de facturation liées ${organisation}\u00A0:`;
   },
-  'cc-payment-warning.home.title': `Attention ! Quelque chose pose problème avec vos moyens de paiement.`,
+  'cc-payment-warning.home.title': `Attention\u202f! Quelque chose pose problème avec vos moyens de paiement.`,
   'cc-payment-warning.orga.default-payment-method-is-expired': `Pour éviter tout risque de suspension de vos services et de suppression de vos données, merci d'ajouter un moyen de paiement valide et de le définir par défaut.`,
-  'cc-payment-warning.orga.default-payment-method-is-expired.title': `Attention ! Votre moyen de paiement est expiré`,
+  'cc-payment-warning.orga.default-payment-method-is-expired.title': `Attention\u202f! Votre moyen de paiement est expiré`,
   'cc-payment-warning.orga.no-default-payment-method': `Pour éviter tout risque de suspension de vos services et de suppression de vos données, merci de définir un de vos moyen de paiement par défaut.`,
-  'cc-payment-warning.orga.no-default-payment-method.title': `Attention ! Vous avez des moyens de payments enregistrés, mais aucun d'entre eux n'est défini par défaut`,
+  'cc-payment-warning.orga.no-default-payment-method.title': `Attention\u202f! Vous avez des moyens de payments enregistrés, mais aucun d'entre eux n'est défini par défaut`,
   'cc-payment-warning.orga.no-payment-method': `Pour éviter tout risque de suspension de vos services et de suppression de vos données, merci d'ajouter un moyen de paiement valide et de le définir par défaut.`,
-  'cc-payment-warning.orga.no-payment-method.title': `Attention ! Vous n'avez aucun moyen de paiement enregistré`,
+  'cc-payment-warning.orga.no-payment-method.title': `Attention\u202f! Vous n'avez aucun moyen de paiement enregistré`,
   //#endregion
   //#region cc-plan-picker
   'cc-plan-picker.legend': `Sélectionnez votre plan`,
@@ -1239,25 +1235,25 @@ export const translations = {
     plural(productCount, 'produit'),
   'cc-pricing-estimation.error': `Une erreur est survenue pendant le chargement des prix.`,
   'cc-pricing-estimation.estimated-price-name.1000-minutes': `estimé (${formatNumber(lang, 1000)} minutes)`,
-  'cc-pricing-estimation.estimated-price-name.30-days': () => sanitize`estimé/30&nbsp;jours`,
+  'cc-pricing-estimation.estimated-price-name.30-days': `estimé/30\u00A0jours`,
   'cc-pricing-estimation.estimated-price-name.day': `estimé/jour`,
   'cc-pricing-estimation.estimated-price-name.hour': `estimé/heure`,
   'cc-pricing-estimation.estimated-price-name.minute': `estimé/minute`,
   'cc-pricing-estimation.estimated-price-name.second': `estimé/seconde`,
-  'cc-pricing-estimation.feature.connection-limit': () => sanitize`Limite de connexions&nbsp;: `,
-  'cc-pricing-estimation.feature.cpu': () => sanitize`vCPUs&nbsp;: `,
+  'cc-pricing-estimation.feature.connection-limit': `Limite de connexions\u00A0: `,
+  'cc-pricing-estimation.feature.cpu': `vCPUs\u00A0: `,
   'cc-pricing-estimation.feature.custom': /** @param {{featureName: string}} _ */ ({ featureName }) =>
-    sanitize`${featureName}&nbsp;: `,
-  'cc-pricing-estimation.feature.databases': () => sanitize`Bases de données&nbsp;: `,
+    `${featureName}\u00A0: `,
+  'cc-pricing-estimation.feature.databases': `Bases de données\u00A0: `,
   'cc-pricing-estimation.feature.dedicated': `Dédié`,
-  'cc-pricing-estimation.feature.disk-size': () => sanitize`Taille du disque&nbsp;: `,
-  'cc-pricing-estimation.feature.gpu': () => sanitize`GPUs&nbsp;: `,
-  'cc-pricing-estimation.feature.has-logs': () => sanitize`Logs&nbsp;: `,
-  'cc-pricing-estimation.feature.has-metrics': () => sanitize`Métriques&nbsp;: `,
+  'cc-pricing-estimation.feature.disk-size': `Taille du disque\u00A0: `,
+  'cc-pricing-estimation.feature.gpu': `GPUs\u00A0: `,
+  'cc-pricing-estimation.feature.has-logs': `Logs\u00A0: `,
+  'cc-pricing-estimation.feature.has-metrics': `Métriques\u00A0: `,
   'cc-pricing-estimation.feature.is-migratable': `Outil de migration`,
-  'cc-pricing-estimation.feature.max-db-size': () => sanitize`Taille BDD max&nbsp;: `,
-  'cc-pricing-estimation.feature.memory': () => sanitize`RAM&nbsp;: `,
-  'cc-pricing-estimation.feature.version': () => sanitize`Version&nbsp;: `,
+  'cc-pricing-estimation.feature.max-db-size': `Taille BDD max\u00A0: `,
+  'cc-pricing-estimation.feature.memory': `RAM\u00A0: `,
+  'cc-pricing-estimation.feature.version': `Version\u00A0: `,
   'cc-pricing-estimation.heading': `Ma sélection`,
   'cc-pricing-estimation.hide': `Masquer`,
   'cc-pricing-estimation.label.currency': `Devise`,
@@ -1290,15 +1286,15 @@ export const translations = {
       maximumFractionDigits: digits,
     }),
   'cc-pricing-estimation.price-name.1000-minutes': `Prix (${formatNumber(lang, 1000)} minutes)`,
-  'cc-pricing-estimation.price-name.30-days': () => sanitize`Prix/30&nbsp;jours`,
+  'cc-pricing-estimation.price-name.30-days': `Prix/30\u00A0jours`,
   'cc-pricing-estimation.price-name.day': `Prix/jour`,
   'cc-pricing-estimation.price-name.hour': `Prix/heure`,
   'cc-pricing-estimation.price-name.minute': `Prix/minute`,
   'cc-pricing-estimation.price-name.second': `Prix/seconde`,
-  'cc-pricing-estimation.price.unit.label': `Prix unitaire : `,
+  'cc-pricing-estimation.price.unit.label': `Prix unitaire\u00A0: `,
   'cc-pricing-estimation.show': `Afficher`,
   'cc-pricing-estimation.tax-excluded': `HT`,
-  'cc-pricing-estimation.total.label': `Total : `,
+  'cc-pricing-estimation.total.label': `Total\u00A0: `,
   'cc-pricing-estimation.type.boolean': /** @param {{boolean: boolean}} _ */ ({ boolean }) =>
     `${boolean ? 'Oui' : 'Non'}`,
   'cc-pricing-estimation.type.boolean-shared': /** @param {{shared: boolean}} _ */ ({ shared }) =>
@@ -1320,7 +1316,7 @@ export const translations = {
   'cc-pricing-header.label.temporality': `Temporalité`,
   'cc-pricing-header.label.zone': `Zone`,
   'cc-pricing-header.price-name.1000-minutes': `Prix (${formatNumber(lang, 1000)} minutes)`,
-  'cc-pricing-header.price-name.30-days': () => sanitize`Prix/30&nbsp;jours`,
+  'cc-pricing-header.price-name.30-days': `Prix/30\u00A0jours`,
   'cc-pricing-header.price-name.day': `Prix/jour`,
   'cc-pricing-header.price-name.hour': `Prix/heure`,
   'cc-pricing-header.price-name.minute': `Prix/minute`,
@@ -1354,7 +1350,7 @@ export const translations = {
       maximumFractionDigits: digits,
     }),
   'cc-pricing-product.price-name.1000-minutes': `Prix (${formatNumber(lang, 1000)} minutes)`,
-  'cc-pricing-product.price-name.30-days': () => sanitize`Prix/30&nbsp;jours`,
+  'cc-pricing-product.price-name.30-days': `Prix/30\u00A0jours`,
   'cc-pricing-product.price-name.day': `Prix/jour`,
   'cc-pricing-product.price-name.hour': `Prix/heure`,
   'cc-pricing-product.price-name.minute': `Prix/minute`,
@@ -1376,11 +1372,11 @@ export const translations = {
   'cc-pricing-product-consumption.bytes-unit': /** @param {{bytes: number}} _ */ ({ bytes }) => getUnit(bytes),
   'cc-pricing-product-consumption.error': `Une erreur est survenue pendant le chargement des prix.`,
   'cc-pricing-product-consumption.inbound-traffic.label': `trafic entrant`,
-  'cc-pricing-product-consumption.inbound-traffic.title': `Trafic entrant :`,
+  'cc-pricing-product-consumption.inbound-traffic.title': `Trafic entrant\u00A0:`,
   'cc-pricing-product-consumption.number': /** @param {{number: number}} _ */ ({ number }) =>
     formatNumber(lang, number),
   'cc-pricing-product-consumption.outbound-traffic.label': `trafic sortant`,
-  'cc-pricing-product-consumption.outbound-traffic.title': `Trafic sortant :`,
+  'cc-pricing-product-consumption.outbound-traffic.title': `Trafic sortant\u00A0:`,
   'cc-pricing-product-consumption.price': /** @param {{price: number, currency: string}} _ */ ({ price, currency }) =>
     `${formatCurrency(lang, price, { currency })}`,
   'cc-pricing-product-consumption.price-interval.bytes': /** @param {{price: number, currency: string}} _ */ ({
@@ -1403,17 +1399,17 @@ export const translations = {
       return `${priceInterval} / ${userCount} ${users} (30 jours)`;
     },
   'cc-pricing-product-consumption.private-users.label': `utilisateurs privés`,
-  'cc-pricing-product-consumption.private-users.title': `Utilisateurs privés :`,
+  'cc-pricing-product-consumption.private-users.title': `Utilisateurs privés\u00A0:`,
   'cc-pricing-product-consumption.public-users.label': `utilisateurs publics`,
-  'cc-pricing-product-consumption.public-users.title': `Utilisateurs publics :`,
+  'cc-pricing-product-consumption.public-users.title': `Utilisateurs publics\u00A0:`,
   'cc-pricing-product-consumption.quantity': `Quantité`,
   'cc-pricing-product-consumption.size': /** @param {{bytes: number}} _ */ ({ bytes }) =>
     `Taille (en ${getUnit(bytes)})`,
   'cc-pricing-product-consumption.storage.label': `stockage`,
-  'cc-pricing-product-consumption.storage.title': `Stockage :`,
-  'cc-pricing-product-consumption.subtotal.title': `Sous-total (30 jours) :`,
+  'cc-pricing-product-consumption.storage.title': `Stockage\u00A0:`,
+  'cc-pricing-product-consumption.subtotal.title': `Sous-total (30 jours)\u00A0:`,
   'cc-pricing-product-consumption.toggle-btn.label': `Afficher plus de details`,
-  'cc-pricing-product-consumption.total.title': `Total estimé (30 jours) :`,
+  'cc-pricing-product-consumption.total.title': `Total estimé (30 jours)\u00A0:`,
   'cc-pricing-product-consumption.unit': `Unité`,
   //#endregion
   //#region cc-product-card
@@ -1432,7 +1428,7 @@ export const translations = {
   //#region cc-ssh-key-list
   'cc-ssh-key-list.add.btn': `Ajouter la clé`,
   'cc-ssh-key-list.add.info': () =>
-    sanitize`<p>Vous devez associer une clé SSH à votre compte si vous désirez déployer via Git. Utilisez ce formulaire à cet effet.</p><p>Vous pouvez créer une clé SSH avec la commande suivante&nbsp;:</p><code>ssh-keygen -t ed25519 -C "my-email@example.com"</code><p>La clé publique générée est sauvegardée dans le fichier "*.pub".</p>`,
+    sanitize`<p>Vous devez associer une clé SSH à votre compte si vous désirez déployer via Git. Utilisez ce formulaire à cet effet.</p><p>Vous pouvez créer une clé SSH avec la commande suivante\u00A0:</p><code>ssh-keygen -t ed25519 -C "my-email@example.com"</code><p>La clé publique générée est sauvegardée dans le fichier "*.pub".</p>`,
   'cc-ssh-key-list.add.name': `Nom`,
   'cc-ssh-key-list.add.public-key': `Clé publique`,
   'cc-ssh-key-list.add.title': `Ajouter une nouvelle clé`,
@@ -1444,8 +1440,7 @@ export const translations = {
   'cc-ssh-key-list.error.import': /** @param {{name: string}} _ */ ({ name }) =>
     `Une erreur est survenue pendant l'import de votre clé personnelle "${name}".`,
   'cc-ssh-key-list.error.loading': `Une erreur est survenue pendant le chargement de vos clés.`,
-  'cc-ssh-key-list.error.private-key': () =>
-    sanitize`Format incorrect&nbsp;: avez-vous saisi votre clé privée au lieu de votre clé publique&nbsp;?`,
+  'cc-ssh-key-list.error.private-key': `Format incorrect\u00A0: avez-vous saisi votre clé privée au lieu de votre clé publique\u202f?`,
   'cc-ssh-key-list.error.required.name': `Saisissez un nom pour votre clé SSH`,
   'cc-ssh-key-list.error.required.public-key': `Saisissez la valeur de votre clé publique`,
   'cc-ssh-key-list.github.empty': `Il n'y a aucune clé SSH disponible à l'import depuis votre compte GitHub.`,
@@ -1462,7 +1457,7 @@ export const translations = {
     `Supprimer votre clé SSH personnelle - ${name}`,
   'cc-ssh-key-list.personal.empty': `Il n'y a aucune clé SSH associée à votre compte.`,
   'cc-ssh-key-list.personal.info': () =>
-    sanitize`<p>Voici la liste des clés SSH associées à votre compte.</p><p>Si vous souhaitez vérifier qu'une clé est déjà associée, vous pouvez lister les empreintes de vos clés locales avec la commande suivante&nbsp;:</p><code>ssh-add -l -E sha256</code>`,
+    sanitize`<p>Voici la liste des clés SSH associées à votre compte.</p><p>Si vous souhaitez vérifier qu'une clé est déjà associée, vous pouvez lister les empreintes de vos clés locales avec la commande suivante\u00A0:</p><code>ssh-add -l -E sha256</code>`,
   'cc-ssh-key-list.personal.title': `Vos clés`,
   'cc-ssh-key-list.success.add': /** @param {{name: string}} _ */ ({ name }) =>
     sanitize`Votre clé <strong>${name}</strong> a été ajoutée avec succès.`,
@@ -1490,17 +1485,14 @@ export const translations = {
     sanitize`Vous pouvez créer une redirection dans l'espace de nommage <strong>${namespace}</strong>.`,
   //#endregion
   //#region cc-tcp-redirection-form
-  'cc-tcp-redirection-form.cli.content.add-tcp-redirection-command': () => sanitize`Ajouter une redirection TCP&nbsp;:`,
-  'cc-tcp-redirection-form.cli.content.add-tcp-redirection-command-default': () =>
-    sanitize`Ajouter une redirection TCP&nbsp; (espace de nommage par défaut):`,
+  'cc-tcp-redirection-form.cli.content.add-tcp-redirection-command': `Ajouter une redirection TCP\u00A0:`,
+  'cc-tcp-redirection-form.cli.content.add-tcp-redirection-command-default': `Ajouter une redirection TCP\u00A0 (espace de nommage par défaut):`,
   'cc-tcp-redirection-form.cli.content.instruction': getCliInstructions,
   'cc-tcp-redirection-form.cli.content.intro': `
-      Vous pouvez gérer les redirections TCP directement depuis votre terminal grâce aux commandes ci-dessous.
+        Vous pouvez gérer les redirections TCP directement depuis votre terminal grâce aux commandes ci-dessous.
     `,
-  'cc-tcp-redirection-form.cli.content.list-tcp-redirection-command': () =>
-    sanitize`Lister les redirections TCP&nbsp;:`,
-  'cc-tcp-redirection-form.cli.content.remove-tcp-redirection-command': () =>
-    sanitize`Supprimer une redirection TCP&nbsp;:`,
+  'cc-tcp-redirection-form.cli.content.list-tcp-redirection-command': `Lister les redirections TCP\u00A0:`,
+  'cc-tcp-redirection-form.cli.content.remove-tcp-redirection-command': `Supprimer une redirection TCP\u00A0:`,
   'cc-tcp-redirection-form.create.error': /** @param {{namespace: string}} _ */ ({ namespace }) => {
     return sanitize`Une erreur est survenue pendant la création d'une redirection TCP dans l'espace de nommage <strong>${namespace}</strong>.`;
   },
@@ -1519,7 +1511,7 @@ export const translations = {
       Vous pouvez créer une redirection TCP par application sur chaque espace de nommage auquel vous avez accès.
     </p>
     <p>
-      Un espace de nommage correspond à un groupe de frontaux : public, cleverapps.io, ou encore dédiés dans le cadre de Clever Cloud Premium.
+      Un espace de nommage correspond à un groupe de frontaux\u00A0: public, cleverapps.io, ou encore dédiés dans le cadre de Clever Cloud Premium.
     </p>
   `,
   'cc-tcp-redirection-form.documentation.text': `Redirections TCP - Documentation`,
@@ -1551,7 +1543,7 @@ export const translations = {
   'cc-tile-metrics.a11y.table-header.timestamp': `Timestamp`,
   'cc-tile-metrics.about-btn': `Afficher plus d'informations à propos de ce graphique`,
   'cc-tile-metrics.close-btn': `Afficher le graphique`,
-  'cc-tile-metrics.docs.more-metrics': `Plus de métriques : `,
+  'cc-tile-metrics.docs.more-metrics': `Plus de métriques\u00A0: `,
   'cc-tile-metrics.docs.msg': () => sanitize`<p>Métriques reçues durant les dernières 24 heures.</p>
     <p>Chaque barre représente une fenêtre de temps de <strong>1 heure</strong>.</p>
     <p>Le pourcentage affiché représente une moyenne sur la dernière heure.</p>`,
@@ -1570,14 +1562,14 @@ export const translations = {
   'cc-tile-metrics.title': `Métriques serveur`,
   //#endregion
   //#region cc-tile-requests
-  'cc-tile-requests.about-btn': `À propos de ce graphe...`,
+  'cc-tile-requests.about-btn': `À propos de ce graphe…`,
   'cc-tile-requests.close-btn': `Afficher le graphe`,
   'cc-tile-requests.date-hours': /** @param {{date: string|number}} _ */ ({ date }) => formatHours(date),
   'cc-tile-requests.date-tooltip': /** @param {{from: string|number, to: string|number}} _ */ ({ from, to }) => {
     const date = formatDateOnly(from);
     const fromH = formatHours(from);
     const toH = formatHours(to);
-    return `${date} : de ${fromH} à ${toH}`;
+    return `${date}\u00A0: de ${fromH} à ${toH}`;
   },
   'cc-tile-requests.docs.msg': /** @param {{windowHours: number}} _ */ ({ windowHours }) => {
     const hour = plural(windowHours, 'heure');
@@ -1610,7 +1602,7 @@ export const translations = {
   'cc-tile-scalability.title': `Scalabilité`,
   //#endregion
   //#region cc-tile-status-codes
-  'cc-tile-status-codes.about-btn': `À propos de ce graphe...`,
+  'cc-tile-status-codes.about-btn': `À propos de ce graphe…`,
   'cc-tile-status-codes.close-btn': `Afficher le graphe`,
   'cc-tile-status-codes.docs.link': () =>
     sanitize`<cc-link href="https://developer.mozilla.org/fr/docs/Web/HTTP/Status">Codes de réponses HTTP (MDN)</cc-link>`,
@@ -1633,24 +1625,24 @@ export const translations = {
   'cc-toast.icon-alt.warning': `Avertissement`,
   //#endregion
   //#region cc-token-api-creation-form
-  'cc-token-api-creation-form.cli.content.create-token': () => sanitize`Créer un token d'API&nbsp;:`,
+  'cc-token-api-creation-form.cli.content.create-token': `Créer un token d'API\u00A0:`,
   'cc-token-api-creation-form.cli.content.instruction': getCliInstructions,
   'cc-token-api-creation-form.cli.content.intro': `
-    Gérez vos tokens d'API depuis un terminal à l'aide des commandes ci-dessous.
+      Gérez vos tokens d'API depuis un terminal à l'aide des commandes ci-dessous.
   `,
-  'cc-token-api-creation-form.cli.content.list-token': () => sanitize`Lister les tokens d'API&nbsp;:`,
-  'cc-token-api-creation-form.cli.content.revoke-token': () => sanitize`Révoquer un token d'API&nbsp;:`,
-  'cc-token-api-creation-form.cli.content.use-token': () => sanitize`Utiliser votre token d'API&nbsp;:`,
+  'cc-token-api-creation-form.cli.content.list-token': `Lister les tokens d'API\u00A0:`,
+  'cc-token-api-creation-form.cli.content.revoke-token': `Révoquer un token d'API\u00A0:`,
+  'cc-token-api-creation-form.cli.content.use-token': `Utiliser votre token d'API\u00A0:`,
   'cc-token-api-creation-form.configuration-step.form.desc.label': `Description`,
   'cc-token-api-creation-form.configuration-step.form.expiration-date.error.invalid':
     /** @param {{ date: string }} _ */ ({ date }) =>
-      sanitize`Saisissez une date et une heure valide.<br>Par exemple&nbsp;: ${date}`,
+      sanitize`Saisissez une date et une heure valide.<br>Par exemple\u00A0: ${date}`,
   'cc-token-api-creation-form.configuration-step.form.expiration-date.error.range-overflow':
     /** @param {{ date: string }} _ */ ({ date }) =>
-      sanitize`La date d'expiration doit être moins d'un an à partir de maintenant<br>Par exemple&nbsp;: ${date}`,
+      sanitize`La date d'expiration doit être moins d'un an à partir de maintenant<br>Par exemple\u00A0: ${date}`,
   'cc-token-api-creation-form.configuration-step.form.expiration-date.error.range-underflow':
     /** @param {{ date: string }} _ */ ({ date }) =>
-      sanitize`La date d'expiration doit être au moins 15 minutes à partir de maintenant<br>Par exemple&nbsp;: ${date}`,
+      sanitize`La date d'expiration doit être au moins 15 minutes à partir de maintenant<br>Par exemple\u00A0: ${date}`,
   'cc-token-api-creation-form.configuration-step.form.expiration-date.help.min-max': `Au moins 15 minutes et jusqu'à 1 an à partir de maintenant`,
   'cc-token-api-creation-form.configuration-step.form.expiration-date.label': `Date d'expiration`,
   'cc-token-api-creation-form.configuration-step.form.expiration-duration.help.custom': `Spécifiez la date d'expiration à l'aide du champ ci-contre`,
@@ -1689,22 +1681,21 @@ export const translations = {
   'cc-token-api-list.card.expires-soon': `Expire bientôt`,
   'cc-token-api-list.card.human-friendly-date': /** @param {{ date: string|number }} _ */ ({ date }) =>
     formatDatetime(date),
-  'cc-token-api-list.card.label.creation': () => sanitize`Création&nbsp;: `,
-  'cc-token-api-list.card.label.expiration': () => sanitize`Expiration&nbsp;: `,
+  'cc-token-api-list.card.label.creation': `Création\u00A0: `,
+  'cc-token-api-list.card.label.expiration': `Expiration\u00A0: `,
   'cc-token-api-list.card.token-id-icon.a11y-name': `Identifiant du token d'API`,
-  'cc-token-api-list.cli.content.create-token': () => sanitize`Créer un token d'API&nbsp;:`,
+  'cc-token-api-list.cli.content.create-token': `Créer un token d'API\u00A0:`,
   'cc-token-api-list.cli.content.instruction': getCliInstructions,
   'cc-token-api-list.cli.content.intro': `
-      Gérez vos tokens d'API depuis un terminal à l'aide des commandes ci-dessous.
+        Gérez vos tokens d'API depuis un terminal à l'aide des commandes ci-dessous.
     `,
-  'cc-token-api-list.cli.content.list-token': () => sanitize`Lister les tokens d'API&nbsp;:`,
-  'cc-token-api-list.cli.content.revoke-token': () => sanitize`Révoquer un token d'API&nbsp;:`,
-  'cc-token-api-list.cli.content.use-token': () => sanitize`Utiliser votre token d'API&nbsp;:`,
+  'cc-token-api-list.cli.content.list-token': `Lister les tokens d'API\u00A0:`,
+  'cc-token-api-list.cli.content.revoke-token': `Révoquer un token d'API\u00A0:`,
+  'cc-token-api-list.cli.content.use-token': `Utiliser votre token d'API\u00A0:`,
   'cc-token-api-list.create-token': `Créer un nouveau token`,
   'cc-token-api-list.delete-token': /** @param {{ name: string}} _ */ ({ name }) =>
     `Supprimer le token d'API - ${name}`,
-  'cc-token-api-list.empty': () =>
-    sanitize`Vous n'avez aucun token d'API, ou aucun d'eux n'est actif. Créez un nouveau token&nbsp;:`,
+  'cc-token-api-list.empty': `Vous n'avez aucun token d'API, ou aucun d'eux n'est actif. Créez un nouveau token\u00A0:`,
   'cc-token-api-list.error': `Une erreur est survenue pendant le chargement des tokens d'API`,
   'cc-token-api-list.intro': () =>
     sanitize`Ci-dessous la liste des <cc-link href="${generateDevHubHref('/developers/api/howto/#request-the-api')}" a11y-desc="Tokens d'API - Documentation">tokens d'API</cc-link> associés à votre compte et leurs informations. Vous pouvez les révoquer si nécessaire.`,
@@ -1725,14 +1716,14 @@ export const translations = {
   //#endregion
   //#region cc-token-api-update-form
   'cc-token-api-update-form.back-to-list': `Retour à la liste de tokens d'API`,
-  'cc-token-api-update-form.cli.content.create-token': () => sanitize`Créer un token d'API&nbsp;:`,
+  'cc-token-api-update-form.cli.content.create-token': `Créer un token d'API\u00A0:`,
   'cc-token-api-update-form.cli.content.instruction': getCliInstructions,
   'cc-token-api-update-form.cli.content.intro': `
-    Gérez vos tokens d'API depuis un terminal à l'aide des commandes ci-dessous.
+      Gérez vos tokens d'API depuis un terminal à l'aide des commandes ci-dessous.
   `,
-  'cc-token-api-update-form.cli.content.list-token': () => sanitize`Lister les tokens d'API&nbsp;:`,
-  'cc-token-api-update-form.cli.content.revoke-token': () => sanitize`Révoquer un token d'API&nbsp;:`,
-  'cc-token-api-update-form.cli.content.use-token': () => sanitize`Utiliser votre token d'API&nbsp;:`,
+  'cc-token-api-update-form.cli.content.list-token': `Lister les tokens d'API\u00A0:`,
+  'cc-token-api-update-form.cli.content.revoke-token': `Révoquer un token d'API\u00A0:`,
+  'cc-token-api-update-form.cli.content.use-token': `Utiliser votre token d'API\u00A0:`,
   'cc-token-api-update-form.description.label': `Description`,
   'cc-token-api-update-form.error': `Une erreur est survenue lors du chargement du token d'API`,
   'cc-token-api-update-form.link.doc': `Tokens d'API - Documentation`,
@@ -1746,9 +1737,9 @@ export const translations = {
   'cc-token-oauth-list.card.expires-soon': `Expire bientôt`,
   'cc-token-oauth-list.card.human-friendly-date': /** @param {{ date: string|number }} _ */ ({ date }) =>
     formatDatetime(date),
-  'cc-token-oauth-list.card.label.creation': () => sanitize`Création&nbsp;: `,
-  'cc-token-oauth-list.card.label.expiration': () => sanitize`Expiration&nbsp;: `,
-  'cc-token-oauth-list.card.label.last-used': () => sanitize`Dernière utilisation&nbsp;: `,
+  'cc-token-oauth-list.card.label.creation': `Création\u00A0: `,
+  'cc-token-oauth-list.card.label.expiration': `Expiration\u00A0: `,
+  'cc-token-oauth-list.card.label.last-used': `Dernière utilisation\u00A0: `,
   'cc-token-oauth-list.empty': `Aucune application tierce n'est liée à votre compte`,
   'cc-token-oauth-list.error': `Une erreur est survenue pendant le chargement des tokens OAuth`,
   'cc-token-oauth-list.intro': () =>
@@ -1772,12 +1763,11 @@ export const translations = {
   'cc-token-session-list.card.expires-soon': `Expire bientôt`,
   'cc-token-session-list.card.human-friendly-date': /** @param {{ date: string|number }} _ */ ({ date }) =>
     formatDatetime(date),
-  'cc-token-session-list.card.label.creation': () => sanitize`Création&nbsp;: `,
-  'cc-token-session-list.card.label.expiration': () => sanitize`Expiration&nbsp;: `,
-  'cc-token-session-list.card.label.last-used': () => sanitize`Dernière utilisation&nbsp;: `,
+  'cc-token-session-list.card.label.creation': `Création\u00A0: `,
+  'cc-token-session-list.card.label.expiration': `Expiration\u00A0: `,
+  'cc-token-session-list.card.label.last-used': `Dernière utilisation\u00A0: `,
   'cc-token-session-list.error': `Une erreur est survenue pendant le chargement des sessions`,
-  'cc-token-session-list.intro': () =>
-    sanitize`Ci-dessous la liste des sessions enregistrées pour votre compte, que vous pouvez révoquer (excepté celle en cours)&nbsp;:`,
+  'cc-token-session-list.intro': `Ci-dessous la liste des sessions enregistrées pour votre compte, que vous pouvez révoquer (excepté celle en cours)\u00A0:`,
   'cc-token-session-list.main-heading': `Sessions de connexion à la Console`,
   'cc-token-session-list.revoke-all-sessions': `Révoquer toutes les sessions`,
   'cc-token-session-list.revoke-all-sessions.error': () =>
