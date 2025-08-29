@@ -37,6 +37,8 @@ interface ApiConfig {
 <table>
   <tr><th>Method  <th>URL                                                                        <th>Cache?
   <tr><td>GET     <td><code>/v2/organisations/{ownerId}/applications/{appId}/env</code>          <td>Default
+  <tr><td>GET     <td><code>/v2/organisations/{ownerId}/applications/{appId}/deployments</code>  <td>Default
+  <tr><td>PUT     <td><code>/v2/organisations/{ownerId}/applications/{appId}/env</code>          <td>Default
   <tr><td>POST    <td><code>/v2$/organisations/{ownerId}/applications/${appId}/instances`</code> <td>Default
 </table>
 

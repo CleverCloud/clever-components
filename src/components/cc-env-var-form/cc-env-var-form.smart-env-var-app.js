@@ -1,5 +1,6 @@
+//prettier-ignore
 // @ts-expect-error FIXME: remove when clever-client exports types
-import { getAllEnvVars, redeploy, updateAllEnvVars } from '@clevercloud/client/esm/api/v2/application.js';
+import { getAllDeployments,getAllEnvVars,redeploy,updateAllEnvVars } from '@clevercloud/client/esm/api/v2/application.js';
 // @ts-expect-error FIXME: remove when clever-client exports types
 import { toNameValueObject } from '@clevercloud/client/esm/utils/env-vars.js';
 import { notify, notifyError, notifySuccess } from '../../lib/notifications.js';
@@ -78,7 +79,13 @@ defineSmartComponent({
             },
           );
           notifySuccess(i18n('cc-env-var-form.update.success'));
-          updateComponent('restartApp', true);
+
+          api.hasDeployments().then((hasDeployments) => {
+            if (hasDeployments) {
+              updateComponent('restartApp', true);
+            }
+          });
+
           // Warn the console that env vars have been updated successfully so it can update the EOL variables list
           component.dispatchEvent(new CcEnvVarsWasUpdatedEvent(variables));
         })
@@ -149,6 +156,13 @@ class Api {
     return updateAllEnvVars({ id: this._ownerId, appId: this._appId }, newVarsObject).then(
       sendToApi({ apiConfig: this._apiConfig }),
     );
+  }
+
+  async hasDeployments() {
+    const deployments = await getAllDeployments({ id: this._ownerId, appId: this._appId }).then(
+      sendToApi({ apiConfig: this._apiConfig }),
+    );
+    return deployments.length > 0;
   }
 
   redeployApp() {
