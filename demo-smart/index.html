@@ -167,9 +167,16 @@
         <a class="definition-link" href="?definition=cc-addon-header.smart-keycloak&smart-mode=keycloak"
           >cc-addon-header.smart-keycloak</a
         >
+      </li>
+      <li>
         <a class="definition-link" href="?definition=cc-addon-credentials-beta.smart-keycloak&smart-mode=keycloak">
           cc-addon-credentials-beta.smart-keycloak
         </a>
+      </li>
+      <li>
+        <a class="definition-link" href="?definition=cc-addon-info.smart-keycloak&smart-mode=keycloak"
+          >cc-addon-info.smart-keycloak</a
+        >
       </li>
     </ul>
 
@@ -243,7 +250,18 @@
         oAuth Consumer
       </button>
       <button
-        data-context='{"ownerId":"orga_3547a882-d464-4c34-8168-add4b3e0c135", "addonId":"addon_b0156348-3825-4026-895a-bcaacafc4746", "logsUrlPattern":"/organisations/orga_3547a882-d464-4c34-8168-add4b3e0c135/applications/:id/logs"}'
+        data-context='{
+          "ownerId":"orga_3547a882-d464-4c34-8168-add4b3e0c135",
+          "addonId":"addon_b0156348-3825-4026-895a-bcaacafc4746",
+          "logsUrlPattern":"/organisations/orga_3547a882-d464-4c34-8168-add4b3e0c135/applications/:id/logs",
+          "grafanaLink": {
+            "base": "https://grafana.services.clever-cloud.com",
+            "console": "https://console.clever-cloud.com"
+          },
+          "appOverviewUrlPattern": "/organisations/orga_3547a882-d464-4c34-8168-add4b3e0c135/applications/:id",
+          "addonDashboardUrlPattern": "/organisations/orga_3547a882-d464-4c34-8168-addons/:id",
+          "scalabilityUrlPattern": "/organisations/orga_3547a882-d464-4c34-8168-add4b3e0c135/applications/:id/settings"
+        }'
       >
         addon-keycloak
       </button>

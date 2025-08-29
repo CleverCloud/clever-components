@@ -271,6 +271,67 @@ export const translations = {
   'cc-addon-header.state-msg.deployment-is-deploying': `Your add-on is deploying…`,
   'cc-addon-header.state-msg.unknown-state': `Unknown state, try to restart the add-on or contact our support if you have additional questions.`,
   //#endregion
+  //#region cc-addon-info
+  'cc-addon-info.billing.heading': `Billing`,
+  'cc-addon-info.creation-date.heading': `Creation date`,
+  'cc-addon-info.creation-date.human-friendly-date': /** @param {{ date: string | number }} _ */ ({ date }) =>
+    formatDatetime(date),
+  'cc-addon-info.doc-link.keycloak': `Keycloak - Documentation`,
+  'cc-addon-info.error': `Something went wrong while loading add-on information.`,
+  'cc-addon-info.feature.connection-limit': `Connection limit`,
+  'cc-addon-info.feature.cpu': `vCPUs`,
+  'cc-addon-info.feature.data-exploration': `Data Exploration`,
+  'cc-addon-info.feature.databases': `Databases`,
+  'cc-addon-info.feature.db-analysis': `DB Analysis`,
+  'cc-addon-info.feature.dedicated': `Dedicated`,
+  'cc-addon-info.feature.disk-size': `Disk size`,
+  'cc-addon-info.feature.encryption-at-rest': `Encryption at rest`,
+  'cc-addon-info.feature.gpu': `GPUs`,
+  'cc-addon-info.feature.has-logs': `Logs`,
+  'cc-addon-info.feature.has-metrics': `Metrics`,
+  'cc-addon-info.feature.heading': `Features`,
+  'cc-addon-info.feature.is-migratable': `Migration tool`,
+  'cc-addon-info.feature.max-db-size': `Max DB size`,
+  'cc-addon-info.feature.memory': `RAM`,
+  'cc-addon-info.feature.users': `Users`,
+  'cc-addon-info.feature.version': `Version`,
+  'cc-addon-info.grafana.link': `Open Grafana`,
+  'cc-addon-info.heading': `Information`,
+  'cc-addon-info.linked-services.heading': `Linked services`,
+  'cc-addon-info.plan.heading': `Plan`,
+  'cc-addon-info.role.heading': `Role`,
+  'cc-addon-info.scalability-link.heading': `Scalability`,
+  'cc-addon-info.scalability.link': `Configure scalability`,
+  'cc-addon-info.service.name.addon': /** @param {{name: string}} _ */ ({ name }) => `${name} add-on`,
+  'cc-addon-info.service.name.app': /** @param {{name: string}} _ */ ({ name }) => `${name} application`,
+  'cc-addon-info.type.boolean': /** @param {{boolean: boolean}} _ */ ({ boolean }) => `${boolean ? 'Yes' : 'No'}`,
+  'cc-addon-info.type.boolean-shared': /** @param {{shared: boolean}} _ */ ({ shared }) =>
+    `${shared ? 'Shared' : 'Dedicated'}`,
+  'cc-addon-info.type.bytes': /** @param {{bytes: number}} _ */ ({ bytes }) => formatBytes(bytes, 0, 3),
+  'cc-addon-info.type.number': /** @param {{number: number}} _ */ ({ number }) => formatNumber(lang, number),
+  'cc-addon-info.type.number-cpu-runtime': /** @param {{cpu: number, shared: boolean}} _ */ ({ cpu, shared }) => {
+    return shared
+      ? sanitize`<em title="Lower priority access to vCPU">${formatNumber(lang, cpu)}<code>*</code></em>`
+      : formatNumber(lang, cpu);
+  },
+  'cc-addon-info.version.btn': `Update available`,
+  'cc-addon-info.version.dialog.btn.cancel': `Cancel`,
+  'cc-addon-info.version.dialog.btn.submit': `Update and rebuild`,
+  'cc-addon-info.version.dialog.close': `Close`,
+  'cc-addon-info.version.dialog.desc': /** @param {{ url: string }} _ */ ({ url }) =>
+    sanitize`One or more new versions are available. Choose the version you wish to apply and confirm to start and rebuild the application. Learn more in our <cc-link href="${url}">Changelog</cc-link>.`,
+  'cc-addon-info.version.dialog.heading': `Update available`,
+  'cc-addon-info.version.dialog.select.desc': `Version from`,
+  'cc-addon-info.version.dialog.select.help': /** @param {{ currentVersion: string }} _ */ ({ currentVersion }) =>
+    `Select the target version to update from ${currentVersion}`,
+  'cc-addon-info.version.dialog.select.label': () => sanitize`<strong>to</strong>`,
+  'cc-addon-info.version.heading': `Version`,
+  'cc-addon-info.version.update.error': `Something went wrong while updating the version`,
+  'cc-addon-info.version.update.success.content': /** @param {{logsUrl: string}} _*/ ({ logsUrl }) =>
+    sanitize`An update and rebuild phase is in progress. See the application live <cc-link href="${logsUrl}">logs</cc-link>.`,
+  'cc-addon-info.version.update.success.heading': /** @param {{ version: string }} _ */ ({ version }) =>
+    `Update to ${version} in progress`,
+  //#endregion
   //#region cc-addon-jenkins-options
   'cc-addon-jenkins-options.description': `Choose the options you want for your Jenkins add-on.`,
   'cc-addon-jenkins-options.title': `Options for the Jenkins add-on`,

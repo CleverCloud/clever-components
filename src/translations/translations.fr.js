@@ -282,6 +282,67 @@ export const translations = {
   'cc-addon-header.state-msg.deployment-is-deploying': `L'add-on est en cours de déploiement…`,
   'cc-addon-header.state-msg.unknown-state': `État inconnu, essayez de redémarrer l'add-on ou de contacter notre support si vous avez des questions.`,
   //#endregion
+  //#region cc-addon-info
+  'cc-addon-info.billing.heading': `Facturation`,
+  'cc-addon-info.creation-date.heading': `Date de création`,
+  'cc-addon-info.creation-date.human-friendly-date': /** @param {{ date: string | number }} _ */ ({ date }) =>
+    formatDatetime(date),
+  'cc-addon-info.doc-link.keycloak': `Keycloak - Documentation`,
+  'cc-addon-info.error': `Une erreur est survenue pendant le chargement des informations de l'add-on.`,
+  'cc-addon-info.feature.connection-limit': `Limite de connexions`,
+  'cc-addon-info.feature.cpu': `vCPUs`,
+  'cc-addon-info.feature.data-exploration': `Exploration des données`,
+  'cc-addon-info.feature.databases': `Bases de données`,
+  'cc-addon-info.feature.db-analysis': `Analyse BDD`,
+  'cc-addon-info.feature.dedicated': `Dédié`,
+  'cc-addon-info.feature.disk-size': `Taille du disque`,
+  'cc-addon-info.feature.encryption-at-rest': `Chiffrement au repos`,
+  'cc-addon-info.feature.gpu': `GPUs`,
+  'cc-addon-info.feature.has-logs': `Logs`,
+  'cc-addon-info.feature.has-metrics': `Métriques`,
+  'cc-addon-info.feature.heading': `Fonctionnalités`,
+  'cc-addon-info.feature.is-migratable': `Outil de migration`,
+  'cc-addon-info.feature.max-db-size': `Taille BDD max`,
+  'cc-addon-info.feature.memory': `RAM`,
+  'cc-addon-info.feature.users': `Utilisateurs`,
+  'cc-addon-info.feature.version': `Version`,
+  'cc-addon-info.grafana.link': `Ouvrir Grafana`,
+  'cc-addon-info.heading': `Informations`,
+  'cc-addon-info.linked-services.heading': `Services liés`,
+  'cc-addon-info.plan.heading': `Plan`,
+  'cc-addon-info.role.heading': `Rôle`,
+  'cc-addon-info.scalability-link.heading': `Scalabilité`,
+  'cc-addon-info.scalability.link': `Configurer la scalabilité`,
+  'cc-addon-info.service.name.addon': /** @param {{name: string}} _ */ ({ name }) => `Add-on ${name}`,
+  'cc-addon-info.service.name.app': /** @param {{name: string}} _ */ ({ name }) => `Application ${name}`,
+  'cc-addon-info.type.boolean': /** @param {{boolean: boolean}} _ */ ({ boolean }) => `${boolean ? 'Oui' : 'Non'}`,
+  'cc-addon-info.type.boolean-shared': /** @param {{shared: boolean}} _ */ ({ shared }) =>
+    `${shared ? 'Partagé' : 'Dédié'}`,
+  'cc-addon-info.type.bytes': /** @param {{bytes: number}} _ */ ({ bytes }) => formatBytes(bytes, 0, 3),
+  'cc-addon-info.type.number': /** @param {{number: number}} _ */ ({ number }) => formatNumber(lang, number),
+  'cc-addon-info.type.number-cpu-runtime': /** @param {{cpu: number, shared: boolean}} _ */ ({ cpu, shared }) => {
+    return shared
+      ? sanitize`<em title="Accès au vCPU moins prioritaire">${formatNumber(lang, cpu)}<code>*</code></em>`
+      : formatNumber(lang, cpu);
+  },
+  'cc-addon-info.version.btn': `Mise à jour disponible`,
+  'cc-addon-info.version.dialog.btn.cancel': `Annuler`,
+  'cc-addon-info.version.dialog.btn.submit': `Mettre à jour et rebuild`,
+  'cc-addon-info.version.dialog.close': `Fermer`,
+  'cc-addon-info.version.dialog.desc': /** @param {{ url: string }} _ */ ({ url }) =>
+    sanitize`Une ou plusieurs nouvelles versions sont disponibles. Choisissez la version que vous souhaitez appliquer et confirmez pour rebuild et redémarrer application. Consultez notre <cc-link href="${url}">Changelog</cc-link> pour en savoir plus.`,
+  'cc-addon-info.version.dialog.heading': `Mise à jour disponible`,
+  'cc-addon-info.version.dialog.select.desc': `Version actuelle`,
+  'cc-addon-info.version.dialog.select.help': /** @param {{ currentVersion: string }} _ */ ({ currentVersion }) =>
+    `Sélectionnez la version cible à mettre à jour à partir de ${currentVersion}`,
+  'cc-addon-info.version.dialog.select.label': () => sanitize`<strong>vers</strong>`,
+  'cc-addon-info.version.heading': `Version`,
+  'cc-addon-info.version.update.error': `Une erreur est survenue pendant la mise à jour de la version`,
+  'cc-addon-info.version.update.success.content': /** @param {{logsUrl: string}} _*/ ({ logsUrl }) =>
+    sanitize`La mise à jour et le redémarrage de l'application est en cours. Consultez les <cc-link href="${logsUrl}">logs</cc-link>.`,
+  'cc-addon-info.version.update.success.heading': /** @param {{ version: string }} _ */ ({ version }) =>
+    `Mise à jour vers "${version}" en cours`,
+  //#endregion
   //#region cc-addon-jenkins-options
   'cc-addon-jenkins-options.description': `Sélectionnez les options que vous souhaitez pour votre add-on Jenkins.`,
   'cc-addon-jenkins-options.title': `Options pour l'add-on Jenkins`,
