@@ -5,6 +5,21 @@ title: 'Changelog'
 
 # Changelog
 
+## [20.1.0](https://github.com/CleverCloud/clever-components/compare/20.0.1...20.1.0) (2025-08-29)
+
+
+### 🚀 Features
+
+* **cc-addon-admin:** add smart part ([d875908](https://github.com/CleverCloud/clever-components/commit/d875908dd2477fe4b38d9036d970d2d0012fbdaa))
+* **cc-env-var-linked-services:** add smart part ([bc31678](https://github.com/CleverCloud/clever-components/commit/bc316784cc1f0cdbb53ec1c66970c71707e544fd))
+
+
+### 🐛 Bug Fixes
+
+* **cc-env-var-form:** display restart button only if app has already been deployed ([cd74765](https://github.com/CleverCloud/clever-components/commit/cd74765d9f93f719bc509c30d5d10a1bdd6c9014))
+* **translations:** adjust typography for english translations ([2b70bc8](https://github.com/CleverCloud/clever-components/commit/2b70bc8bdcef6ce97749bd69e61430526b02b5a9))
+* **translations:** adjust typography for french translations ([9fde9e7](https://github.com/CleverCloud/clever-components/commit/9fde9e73e0eac8ad6bde40c3f7260aaa440396aa))
+
 ## [20.0.1](https://github.com/CleverCloud/clever-components/compare/20.0.0...20.0.1) (2025-08-07)
 
 
