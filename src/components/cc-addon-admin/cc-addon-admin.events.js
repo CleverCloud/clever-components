@@ -2,13 +2,16 @@ import { CcEvent } from '../../lib/events.js';
 
 /**
  * Dispatched when an addon deletion is requested.
- * @extends {CcEvent}
+ * @extends {CcEvent<{id: string, name: string, confirmed: boolean}>}
  */
 export class CcAddonDeleteEvent extends CcEvent {
   static TYPE = 'cc-addon-delete';
 
-  constructor() {
-    super(CcAddonDeleteEvent.TYPE);
+  /**
+   * @param {{id: string, name: string, confirmed: boolean}} details
+   */
+  constructor(details) {
+    super(CcAddonDeleteEvent.TYPE, details);
   }
 }
 

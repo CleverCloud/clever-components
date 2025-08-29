@@ -54,7 +54,9 @@ export class CcAddonAdmin extends LitElement {
 
   /** @private */
   _onDeleteSubmit() {
-    this.dispatchEvent(new CcAddonDeleteEvent());
+    if (this.state.type === 'loaded') {
+      this.dispatchEvent(new CcAddonDeleteEvent({ id: this.state.id, name: this.state.name, confirmed: false }));
+    }
   }
 
   /**

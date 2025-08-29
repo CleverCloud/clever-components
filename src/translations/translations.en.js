@@ -76,6 +76,8 @@ export const translations = {
   'cc-addon-admin.delete-backups': `Backups are kept according to the retention policy.`,
   'cc-addon-admin.delete-disclaimer': `Deleting this add-on makes it immediately unavailable.`,
   'cc-addon-admin.delete-vm': `The virtual machine will be stopped within 24 hours.`,
+  'cc-addon-admin.delete.error': `Something went wrong while deleting your add-on.`,
+  'cc-addon-admin.delete.success': `Your add-on has been deleted successfully.`,
   'cc-addon-admin.error-loading': `Something went wrong while loading add-on info.`,
   'cc-addon-admin.heading.name': `Name`,
   'cc-addon-admin.heading.tags': `Tags`,
@@ -85,6 +87,10 @@ export const translations = {
   'cc-addon-admin.tags-empty': `No defined tags`,
   'cc-addon-admin.tags-update': `Update tags`,
   'cc-addon-admin.update': `Update name`,
+  'cc-addon-admin.update-name.error': `Something went wrong while updating the name of your add-on.`,
+  'cc-addon-admin.update-name.success': `The name of your add-on has been updated successfully.`,
+  'cc-addon-admin.update-tags.error': `Something went wrong while updating the tags of your add-on.`,
+  'cc-addon-admin.update-tags.success': `The tags of your add-on have been updated successfully.`,
   //#endregion
   //#region cc-addon-backups
   'cc-addon-backups.cli.content.download-backup-command': `List available database backups:`,
