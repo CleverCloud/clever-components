@@ -9,6 +9,7 @@ import {
   CcNgEnable,
 } from '../components/cc-addon-credentials-content/cc-addon-credentials-content.events.js';
 import { CcAddonRebuildEvent, CcAddonRestartEvent } from '../components/cc-addon-header/cc-addon-header.events.js';
+import { CcAddonVersionChangeEvent } from '../components/cc-addon-info/cc-addon-info.events.js';
 import { CcAddonOptionFormSubmitEvent } from '../components/cc-addon-option-form/cc-addon-option-form.events.js';
 import { CcAddonOptionChangeEvent } from '../components/cc-addon-option/cc-addon-option.events.js';
 import {
@@ -167,6 +168,7 @@ declare global {
     'cc-addon-rebuild': CcAddonRebuildEvent;
     'cc-addon-restart': CcAddonRestartEvent;
     'cc-addon-tags-change': CcAddonTagsChangeEvent;
+    'cc-addon-version-change': CcAddonVersionChangeEvent;
     'cc-api-error': CcApiErrorEvent;
     'cc-application-restart': CcApplicationRestartEvent;
     'cc-application-start': CcApplicationStartEvent;

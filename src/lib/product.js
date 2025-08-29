@@ -174,7 +174,7 @@ export function formatProductConsumptionIntervals(priceSystem, serviceName) {
  * @param {Array<FormattedFeature['code']>} [selectedFeatures] - Array of selected feature codes.
  * @returns {Array<FormattedFeature>} Formatted addon features.
  */
-function formatAddonFeatures(providerFeatures, selectedFeatures) {
+export function formatAddonFeatures(providerFeatures, selectedFeatures) {
   // If selectedFeatures is not specified, we just use the features as is
   const featureCodes =
     selectedFeatures == null
