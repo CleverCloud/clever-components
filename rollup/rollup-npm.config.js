@@ -1,11 +1,11 @@
 import path from 'path';
 import copy from 'rollup-plugin-copy';
 import {
-  babelPlugin,
   clearPlugin,
   getAllSourceFiles,
   getMainFiles,
   importMetaUrlAssetsPlugin,
+  minifyPlugin,
   minifyStylesheet,
   SOURCE_DIR,
   terserPlugin,
@@ -50,7 +50,7 @@ export default {
     // minify JS
     terserPlugin(),
     // minify HTML and CSS inside components
-    babelPlugin(),
+    minifyPlugin(),
     // add and minify default theme
     copy({
       targets: [
