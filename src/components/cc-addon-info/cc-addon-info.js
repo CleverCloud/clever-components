@@ -131,7 +131,7 @@ export class CcAddonInfo extends LitElement {
           shared: feature.value.shared,
         });
       case 'string':
-        return feature.value?.toString();
+        return feature.value.toString();
     }
   }
 
