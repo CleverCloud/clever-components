@@ -115,8 +115,8 @@ export const translations = {
   'cc-addon-backups.delete': /** @param {{createdAt: string|number}} _ */ ({ createdAt }) =>
     sanitize`Supprimer la sauvegarde du <strong title="${formatDate(createdAt)}">${formatDatetime(createdAt)}</strong>`,
   'cc-addon-backups.delete.btn': `supprimer…`,
-  'cc-addon-backups.delete.manual.description.es-addon': /** @param {{href: string}} _ */ ({ href }) =>
-    sanitize`Vous pouvez supprimer cette sauvegarde manuellement grâce à l'outil <cc-link href="${href}">cURL</cc-link> en exécutant cette commande\u00A0:`,
+  'cc-addon-backups.delete.manual.description.es-addon': () =>
+    sanitize`Vous pouvez supprimer cette sauvegarde manuellement grâce à l'outil <cc-link href="https://curl.se/docs/">cURL</cc-link> en exécutant cette commande\u00A0:`,
   'cc-addon-backups.delete.manual.title': `Suppression manuelle`,
   'cc-addon-backups.delete.with-service.description.es-addon': /** @param {{href: string}} _ */ ({ href }) =>
     sanitize`Vous pouvez supprimer cette sauvegarde avec Kibana en vous rendant sur le <cc-link href="${href}">dépôt de sauvegardes</cc-link>.`,
