@@ -1,4 +1,4 @@
-import { AddonPlan, AddonProvider, FormattedFeature } from '../common.types.js';
+import { FormattedFeature, RawAddonProvider } from '../common.types.js';
 
 export type CcAddonInfoState = CcAddonInfoStateLoaded | CcAddonInfoStateLoading | CcAddonInfoStateError;
 
@@ -57,6 +57,19 @@ export interface LinkedService {
   logoUrl: string;
   link: string;
 }
+
+interface AddonPlan {
+  name: string;
+  features?: {
+    name: string;
+    type: 'BOOLEAN' | 'BOOLEAN_SHARED' | 'NUMBER_CPU_RUNTIME' | 'OBJECT' | 'SHARED' | 'BYTES' | 'NUMBER' | 'STRING';
+    value: string;
+    computable_value: string;
+    name_code: string;
+  }[];
+}
+
+export type AddonProvider = Pick<RawAddonProvider, 'id' | 'name' | 'logoUrl'>;
 
 // Copies from cc-header-addon-beta, will need to mutualize
 export interface RawAddon {
