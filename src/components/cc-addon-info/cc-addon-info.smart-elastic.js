@@ -12,7 +12,7 @@ import '../cc-smart-container/cc-smart-container.js';
 import './cc-addon-info.js';
 
 /**
- * @type {ServiceConfig}
+ * @type {Record<string, { name: string; logoUrl: string; getAppId: (addonDetails: ElasticAddonInfo) => string }>}
  */
 const SERVICE_CONFIG = {
   kibana: {
