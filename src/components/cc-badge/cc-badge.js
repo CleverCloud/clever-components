@@ -6,7 +6,6 @@ import '../cc-icon/cc-icon.js';
 
 /**
  * @typedef {import('./cc-badge.types.js').BadgeIntent} BadgeIntent
- * @typedef {import('./cc-badge.types.js').BadgeWeight} BadgeWeight
  * @typedef {import('../common.types.js').IconModel} IconModel
  */
 

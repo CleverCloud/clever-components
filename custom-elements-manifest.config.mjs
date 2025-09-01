@@ -13,7 +13,7 @@ import supportTypedefJsdoc from './cem/support-typedef-jsdoc.js';
 fs.mkdirSync('dist', { recursive: true });
 
 export default {
-  globs: ['src/components/**/cc-*.js', 'src/lib/form/cc-form-control-element.abstract.js'],
+  globs: ['src/components/**/cc-badge.js'],
   exclude: ['src/**/*.stories.js'],
   litelement: true,
   // dev: true,
