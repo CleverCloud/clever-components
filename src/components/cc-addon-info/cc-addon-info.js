@@ -178,8 +178,8 @@ export class CcAddonInfo extends LitElement {
                             outlined
                             ?waiting=${isRequestingUpdate}
                             @cc-click="${this._onVersionDialogOpen}"
+                            .icon="${iconUpdate}"
                           >
-                            <cc-icon .icon="${iconUpdate}"></cc-icon>
                             ${i18n('cc-addon-info.version.btn')}
                           </cc-button>
                           ${this._renderVersionDialog(this.state.version)}
