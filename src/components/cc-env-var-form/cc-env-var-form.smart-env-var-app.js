@@ -3,7 +3,7 @@
 import { getAllDeployments,getAllEnvVars,redeploy,updateAllEnvVars } from '@clevercloud/client/esm/api/v2/application.js';
 // @ts-expect-error FIXME: remove when clever-client exports types
 import { toNameValueObject } from '@clevercloud/client/esm/utils/env-vars.js';
-import { notify, notifyError, notifySuccess } from '../../lib/notifications.js';
+import { notifyError, notifySuccess } from '../../lib/notifications.js';
 import { sendToApi } from '../../lib/send-to-api.js';
 import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
 import { i18n } from '../../translations/translation.js';
@@ -107,15 +107,10 @@ defineSmartComponent({
         .then(() => {
           updateComponent('restartApp', false);
 
-          notify({
-            intent: 'success',
-            message: i18n('cc-env-var-form.redeploy.success.text', { logsUrl: logsUrlPattern.replace(':id', appId) }),
-            title: i18n('cc-env-var-form.redeploy.success.heading'),
-            options: {
-              timeout: 0,
-              closeable: true,
-            },
-          });
+          notifySuccess(
+            i18n('cc-env-var-form.redeploy.success.text', { logsUrl: logsUrlPattern.replace(':id', appId) }),
+            i18n('cc-env-var-form.redeploy.success.heading'),
+          );
         })
         .catch((/** @type {Error & { id: number }} */ error) => {
           console.error(error);
