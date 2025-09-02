@@ -6,7 +6,6 @@ import {
   iconCleverRestarting as iconDeploying,
   iconCleverRestartFailed as iconDeploymentFailed,
 } from '../../assets/cc-clever.icons.js';
-import { ResizeController } from '../../controllers/resize-controller.js';
 import { fakeString } from '../../lib/fake-strings.js';
 import { isStringEmpty } from '../../lib/utils.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
@@ -20,8 +19,6 @@ import '../cc-link/cc-link.js';
 import '../cc-notice/cc-notice.js';
 import '../cc-zone/cc-zone.js';
 import { CcAddonRebuildEvent, CcAddonRestartEvent } from './cc-addon-header.events.js';
-
-const BREAKPOINTS = [320, 450, 520, 750, 950];
 
 /** @type {{ [Property in DeploymentStatus]: IconModel }} */
 const STATUS_ICON = {
@@ -61,7 +58,7 @@ export class CcAddonHeader extends LitElement {
   constructor() {
     super();
 
-    /** @type {CcAddonHeaderState} */
+    /** @type {CcAddonHeaderState} Sets the state of the component. */
     this.state = {
       type: 'loading',
       logsUrl: '',
@@ -71,10 +68,6 @@ export class CcAddonHeader extends LitElement {
         rebuildAndRestart: false,
       },
     };
-
-    new ResizeController(this, {
-      widthBreakpoints: BREAKPOINTS,
-    });
   }
 
   /**
@@ -136,7 +129,7 @@ export class CcAddonHeader extends LitElement {
             <div class="details">
               <div class="details__title">
                 <span class="details__name ${classMap({ skeleton })}">${addonInfo.name}</span>
-                ${addonInfo.productStatus
+                ${!isStringEmpty(addonInfo.productStatus)
                   ? html` <cc-badge ?skeleton=${skeleton}>${addonInfo.productStatus}</cc-badge> `
                   : ''}
               </div>
@@ -194,7 +187,7 @@ export class CcAddonHeader extends LitElement {
         </div>
 
         <div slot="footer-left" class="footer messages">
-          ${deploymentStatus
+          ${!isStringEmpty(deploymentStatus)
             ? html`
                 <cc-icon
                   class="status-icon ${deploymentStatus}"
@@ -216,9 +209,9 @@ export class CcAddonHeader extends LitElement {
                 </cc-link>
               `
             : ''}
-          <span class="footer__spacer"></span>
-          <cc-zone .state=${zoneState} mode="small-infra"></cc-zone>
+          <!--          <span class="footer__spacer"></span>-->
         </div>
+        <cc-zone slot="footer-right" .state=${zoneState} mode="small-infra"></cc-zone>
       </cc-block>
     `;
   }
@@ -229,6 +222,7 @@ export class CcAddonHeader extends LitElement {
       // language=CSS
       css`
         :host {
+          container-type: inline-size;
           display: block;
         }
 
@@ -241,8 +235,10 @@ export class CcAddonHeader extends LitElement {
           min-width: 0;
         }
 
-        :host([w-lt-950]) .main {
-          grid-auto-flow: row;
+        @container (max-width: 59em) {
+          .main {
+            grid-auto-flow: row;
+          }
         }
 
         .addon-information {
@@ -307,28 +303,33 @@ export class CcAddonHeader extends LitElement {
           flex: 1 1 auto;
         }
 
-        :host([w-lt-950]) .actions cc-link,
-        :host([w-lt-950]) .actions cc-button {
-          flex: 0 0 auto;
+        @container (max-width: 59em) {
+          .actions cc-link,
+          .actions cc-button {
+            flex: 0 0 auto;
+          }
         }
 
-        :host([w-lt-520]) .actions {
-          display: flex;
-          flex: 1 1 max-content;
-          gap: 1em;
+        @container (max-width: 34em) {
+          .actions {
+            display: flex;
+            flex: 1 1 auto;
+          }
+
+          .actions cc-link {
+            width: 100%;
+          }
+
+          .actions cc-button {
+            flex: 1 0 min(100%, 12.5em);
+          }
         }
 
-        :host([w-lt-520]) .actions cc-link {
-          width: 100%;
-        }
-
-        :host([w-lt-520]) .actions cc-button {
-          flex: 1 0 min(100%, 12.5em);
-        }
-
-        :host([w-lt-450]) .actions cc-link,
-        :host([w-lt-450]) .actions cc-button {
-          flex: 1 0 min(100%, 12.5em);
+        @container (max-width: 28em) {
+          .actions cc-link,
+          .actions cc-button {
+            flex: 1 0 min(100%, 12.5em);
+          }
         }
 
         .footer {
