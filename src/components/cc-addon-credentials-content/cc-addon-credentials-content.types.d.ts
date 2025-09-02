@@ -28,12 +28,13 @@ export interface AddonCredentialNgEnabling {
   status: 'enabling';
 }
 
-type AddonCredentialCode =
+export type AddonCredentialCode =
   | 'user'
   | 'password'
   | 'api-client-user'
   | 'api-client-secret'
   | 'api-url'
+  | 'api-server-url'
   | 'api-key'
   | 'api-password'
   | 'initial-password'
@@ -46,4 +47,5 @@ type AddonCredentialCode =
   | 'database-name'
   | 'cluster-full-name'
   | 'uri'
-  | 'tenant';
+  | 'tenant'
+  | 'download-kubeconfig';

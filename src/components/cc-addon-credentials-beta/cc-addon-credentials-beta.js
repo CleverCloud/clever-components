@@ -131,13 +131,15 @@ export class CcAddonCredentialsBeta extends LitElement {
               ></cc-addon-credentials-content>
             `
           : ''}
-        ${this.docLink != null
-          ? html`
-              <div slot="footer-right">
-                <cc-link .href="${this.docLink?.href}" .icon="${iconInfo}"> ${this.docLink.text} </cc-link>
-              </div>
-            `
-          : ''}
+        <slot name="footer-credentials" slot="footer-left">
+          ${this.docLink != null
+            ? html`
+                <div slot="footer-right">
+                  <cc-link .href="${this.docLink?.href}" .icon="${iconInfo}"> ${this.docLink.text} </cc-link>
+                </div>
+              `
+            : ''}
+        </slot>
       </cc-block>
     `;
   }
