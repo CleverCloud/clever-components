@@ -1,5 +1,6 @@
 import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
+import { iconRemixFolderDownloadLine as iconDownload } from '../../assets/cc-remix.icons.js';
 import { LostFocusController } from '../../controllers/lost-focus-controller.js';
 import { accessibilityStyles } from '../../styles/accessibility.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
@@ -7,6 +8,7 @@ import { i18n } from '../../translations/translation.js';
 import '../cc-button/cc-button.js';
 import '../cc-clipboard/cc-clipboard.js';
 import '../cc-input-text/cc-input-text.js';
+import '../cc-link/cc-link';
 import { CcNgDisable, CcNgEnable } from './cc-addon-credentials-content.events.js';
 
 /** @type {Set<AddonCredential['code']>} */
@@ -22,6 +24,7 @@ const credentialsToDisplayAsString = new Set([
   'database-name',
   'cluster-full-name',
   'api-client-user',
+  'api-server-url',
 ]);
 /** @type {Set<AddonCredential['code']>} */
 const credentialsToDisplayAsInput = new Set([
@@ -120,6 +123,10 @@ export class CcAddonCredentialsContent extends LitElement {
         return i18n('cc-addon-credentials-content.code.uri');
       case 'user':
         return i18n('cc-addon-credentials-content.code.user');
+      case 'api-server-url':
+        return i18n('cc-addon-credentials-content.code.api-server-url');
+      case 'download-kubeconfig':
+        return i18n('cc-addon-credentials-content.code.download-kubeconfig');
       default:
         return code;
     }
@@ -171,6 +178,7 @@ export class CcAddonCredentialsContent extends LitElement {
               `
             : ''}
           ${code === 'ng' ? this._renderNgCredential(value, skeleton) : ''}
+          ${code === 'download-kubeconfig' ? this._renderKubeconfigLink(value, skeleton) : ''}
         </dd>
       </div>
     `;
@@ -208,6 +216,18 @@ export class CcAddonCredentialsContent extends LitElement {
       >
         ${i18n('cc-addon-credentials-content.ng.enable')}
       </cc-button>
+    `;
+  }
+
+  /**
+   * @param {string} configLink - The link href value
+   * @param {boolean} skeleton - Whether to display in skeleton state.
+   **/
+  _renderKubeconfigLink(configLink, skeleton) {
+    return html`
+      <cc-link .icon="${iconDownload}" href="${configLink}" .skeleton="${skeleton}">
+        ${i18n('cc-addon-credentials-content.kubeconfig.link-text')}
+      </cc-link>
     `;
   }
 

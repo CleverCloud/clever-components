@@ -1,4 +1,20 @@
-/** @type {import("../../components/cc-addon-credentials-content/cc-addon-credentials-content.js").CcAddonCredentialsContent['credentials']} */
+/**
+ * @typedef {import('../../components/cc-addon-credentials-content/cc-addon-credentials-content.types.js').AddonCredential} AddonCredential
+ * @typedef {import('../../components/cc-addon-credentials-content/cc-addon-credentials-content.types.js').AddonCredentialCode} AddonCredentialCode
+ * @typedef {import('../../components/cc-addon-credentials-content/cc-addon-credentials-content.types.js').AddonCredentialNg} AddonCredentialNg
+ */
+
+/**
+ * Helper to filter items from the base fixture based on their codes.
+ * Returns credentials matching the provided codes.
+ * @param {Array<AddonCredentialCode|AddonCredentialNg['code']>} codes - The credential codes to filter by
+ * @returns {AddonCredential[]} The filtered credentials matching the input codes
+ */
+export function getFilteredAddonCredentials(codes) {
+  return BASE_ADDON_ACCESS_ITEMS.filter((credential) => codes.includes(credential.code));
+};
+
+/** @type {Array<AddonCredential>} */
 export const BASE_ADDON_ACCESS_ITEMS = [
   {
     code: 'user',
@@ -71,6 +87,14 @@ export const BASE_ADDON_ACCESS_ITEMS = [
   {
     code: 'tenant',
     value: 'tenant-value',
+  },
+  {
+    code: 'api-server-url',
+    value: 'https://vgcytprqneuv-ui-otoroshi.example.com',
+  },
+  {
+    code: 'download-kubeconfig',
+    value: 'https://example.com/fake-file.txt',
   },
   {
     code: 'ng',

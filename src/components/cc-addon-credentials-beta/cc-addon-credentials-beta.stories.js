@@ -1,4 +1,4 @@
-import { BASE_ADDON_ACCESS_ITEMS } from '../../stories/fixtures/addon-access-data.js';
+import { getFilteredAddonCredentials } from '../../stories/fixtures/addon-access-data.js';
 import { makeStory, storyWait } from '../../stories/lib/make-story.js';
 import './cc-addon-credentials-beta.js';
 
@@ -12,20 +12,7 @@ const conf = {
   component: 'cc-addon-credentials-beta',
 };
 
-/**
- * @typedef {import('./cc-addon-credentials-beta.js').CcAddonCredentialsBeta} CcAddonCredentialsBeta
- * @typedef {import('../cc-addon-credentials-content/cc-addon-credentials-content.types.js').AddonCredentialCode} AddonCredentialCode
- * @typedef {import('../cc-addon-credentials-content/cc-addon-credentials-content.types.js').AddonCredentialNg} AddonCredentialNg
- */
-
-/**
- * Helper to filter items from the base fixture based on their codes.
- * @param {Array<AddonCredentialCode|AddonCredentialNg['code']>} codes
- * @returns {import('../cc-addon-credentials-content/cc-addon-credentials-content.types.js').AddonCredential[]}
- */
-const getFilteredAddonCredentials = (codes) => {
-  return BASE_ADDON_ACCESS_ITEMS.filter((credential) => codes.includes(credential.code));
-};
+/** @typedef {import('./cc-addon-credentials-beta.js').CcAddonCredentialsBeta} CcAddonCredentialsBeta */
 
 export const defaultStory = makeStory(conf, {
   /** @type {Partial<CcAddonCredentialsBeta>[]} */
