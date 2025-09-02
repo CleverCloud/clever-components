@@ -54,59 +54,6 @@ export const defaultStory = makeStory(conf, {
   ],
 });
 
-export const loading = makeStory(conf, {
-  items: [
-    {
-      /** @type {CcAddonInfoStateLoading} */
-      state: {
-        type: 'loading',
-        version: {
-          installed: '1.33',
-          stateType: 'up-to-date',
-        },
-        plan: 'DEV',
-        features: [
-          {
-            code: 'cpu',
-            type: 'number',
-            value: '1',
-          },
-          {
-            code: 'memory',
-            type: 'bytes',
-            value: '17179869184',
-          },
-          {
-            code: 'disk-size',
-            type: 'bytes',
-            value: '483183820800',
-          },
-          {
-            code: 'connection-limit',
-            type: 'number',
-            value: '15',
-          },
-        ],
-        creationDate: '2025-06-15T10:30:00Z',
-        openGrafanaLink: 'https://grafana.example.com',
-        openScalabilityLink: 'https://scalability.example.com',
-        linkedServices: [
-          {
-            type: 'app',
-            name: 'My App',
-            logoUrl: 'https://example.com/logo.png',
-            link: 'https://example.com/app',
-          },
-        ],
-      },
-      innerHTML: `
-        <p slot="billing">This add-on is a partner product. Its invoicing is therefore entirely independent and managed by the partner. If you have any questions about this subject, please contact him.</p>
-        <p slot="linked-services"><em>The Matomo add-on is a meta add-on. It provides you with a PHP application, a MySQL add-on and a Redis add-on. They appear in your organisation just like your other applications and add-ons. You can still configure them as you like. For example, you may want to change the PHP application's domain or migrate the MySQL add-on to a bigger plan.</em></p>
-`,
-    },
-  ],
-});
-
 export const error = makeStory(conf, {
   items: [
     {
@@ -176,6 +123,17 @@ export const matomo = makeStory(conf, {
         <p slot="linked-services"><em>The Matomo add-on is a meta add-on. It provides you with a PHP application, a MySQL add-on and a Redis add-on. They appear in your organisation just like your other applications and add-ons. You can still configure them as you like. For example, you may want to change the PHP application's domain or migrate the MySQL add-on to a bigger plan.</em></p>
 `,
     },
+    {
+      /** @type {CcAddonInfoStateLoading} */
+      state: {
+        type: 'loading',
+        ...matomoInfo,
+      },
+      innerHTML: `
+        <p slot="billing"><strong>This add-on is free but its dependencies, mentioned above, are billed based on their consumptions,</strong> just like other applications and add-ons.</p>
+        <p slot="linked-services"><em>The Matomo add-on is a meta add-on. It provides you with a PHP application, a MySQL add-on and a Redis add-on. They appear in your organisation just like your other applications and add-ons. You can still configure them as you like. For example, you may want to change the PHP application's domain or migrate the MySQL add-on to a bigger plan.</em></p>
+`,
+    },
   ],
 });
 
@@ -186,6 +144,17 @@ export const metabase = makeStory(conf, {
       /** @type {CcAddonInfoStateLoaded} */
       state: {
         type: 'loaded',
+        ...metabaseInfo,
+      },
+      innerHTML: `
+        <p slot="billing">Discover Metabase at no extra cost. Services and management fees are added to the price of these resources. <strong>During the discovery phase, these fees are offered free of charge.</strong></p>
+        <p slot="linked-services"><em>Metabase, easy to configure and hosted on our services, is now generally available. It deploys a Java application and a PostgreSQL add-on. You can scale them as you grow.</em></p>
+`,
+    },
+    {
+      /** @type {CcAddonInfoStateLoading} */
+      state: {
+        type: 'loading',
         ...metabaseInfo,
       },
       innerHTML: `
@@ -210,6 +179,17 @@ export const keycloak = makeStory(conf, {
         <p slot="linked-services"><em>Keycloak, built with <a href="https://please-open.it/">Please Open It</a> and hosted on our services, is now generally available. It deploys a Java application, a PostgreSQL add-on and a FS Bucket. You can scale them as you grow.</em></p>
 `,
     },
+    {
+      /** @type {CcAddonInfoStateLoading} */
+      state: {
+        type: 'loading',
+        ...keycloakInfo,
+      },
+      innerHTML: `
+        <p slot="billing">Services and management fees are added to the price of these resources.<strong>During the discovery phase, these fees are offered free of charge</strong>.</p>
+        <p slot="linked-services"><em>Keycloak, built with <a href="https://please-open.it/">Please Open It</a> and hosted on our services, is now generally available. It deploys a Java application, a PostgreSQL add-on and a FS Bucket. You can scale them as you grow.</em></p>
+`,
+    },
   ],
 });
 
@@ -220,6 +200,17 @@ export const otoroshi = makeStory(conf, {
       /** @type {CcAddonInfoStateLoaded} */
       state: {
         type: 'loaded',
+        ...otoroshiInfo,
+      },
+      innerHTML: `
+        <p slot="billing">Services and management fees are added to the price of these resources. <strong>During the discovery phase, these fees are offered free of charge</strong>.</p>
+        <p slot="linked-services"><em>Otoroshi, easy to configure and hosted on our services, is now generally available. It deploys a Java application and a Redis add-on. You can scale them as you grow.</em></p>
+`,
+    },
+    {
+      /** @type {CcAddonInfoStateLoading} */
+      state: {
+        type: 'loading',
         ...otoroshiInfo,
       },
       innerHTML: `
@@ -243,6 +234,16 @@ export const materia = makeStory(conf, {
         <p slot="billing">Materia KV uses our next generation of serverless distributed database, synchronously-replicated. Free of charge during testing phases, it will be available on a pay-as-you-go flexible pricing. Develop with ease, it's compatible with third-party protocols, such as Redis: <a href="${generateDocsHref('/doc/addons/materia-kv/')}">learn more.</a></p>
 `,
     },
+    {
+      /** @type {CcAddonInfoStateLoading} */
+      state: {
+        type: 'loading',
+        ...materiaInfo,
+      },
+      innerHTML: `
+        <p slot="billing">Materia KV uses our next generation of serverless distributed database, synchronously-replicated. Free of charge during testing phases, it will be available on a pay-as-you-go flexible pricing. Develop with ease, it's compatible with third-party protocols, such as Redis: <a href="${generateDocsHref('/doc/addons/materia-kv/')}">learn more.</a></p>
+`,
+    },
   ],
 });
 
@@ -256,6 +257,13 @@ export const jenkins = makeStory(conf, {
         ...jenkinsInfo,
       },
     },
+    {
+      /** @type {CcAddonInfoStateLoading} */
+      state: {
+        type: 'loading',
+        ...jenkinsInfo,
+      },
+    },
   ],
 });
 
@@ -266,6 +274,16 @@ export const elastic = makeStory(conf, {
       /** @type {CcAddonInfoStateLoaded} */
       state: {
         type: 'loaded',
+        ...elasticInfo,
+      },
+      innerHTML: `
+        <p slot="linked-services"><em>This add-on is part of the Elastic Stack offering. You can find and access related services above.</em></p>
+`,
+    },
+    {
+      /** @type {CcAddonInfoStateLoading} */
+      state: {
+        type: 'loading',
         ...elasticInfo,
       },
       innerHTML: `
@@ -288,6 +306,16 @@ export const pulsar = makeStory(conf, {
         <p slot="billing">The beta status means that the service is still being improved, but it is fully integrated into our billing system.</p>
 `,
     },
+    {
+      /** @type {CcAddonInfoStateLoading} */
+      state: {
+        type: 'loading',
+        ...pulsarInfo,
+      },
+      innerHTML: `
+        <p slot="billing">The beta status means that the service is still being improved, but it is fully integrated into our billing system.</p>
+`,
+    },
   ],
 });
 
@@ -298,6 +326,13 @@ export const config = makeStory(conf, {
       /** @type {CcAddonInfoStateLoaded} */
       state: {
         type: 'loaded',
+        ...configInfo,
+      },
+    },
+    {
+      /** @type {CcAddonInfoStateLoading} */
+      state: {
+        type: 'loading',
         ...configInfo,
       },
     },
@@ -317,6 +352,16 @@ export const mailpace = makeStory(conf, {
         <p slot="billing">This add-on is a partner product. Its invoicing is therefore entirely independent and managed by the partner. If you have any questions about this subject, please contact him.</p>
 `,
     },
+    {
+      /** @type {CcAddonInfoStateLoading} */
+      state: {
+        type: 'loading',
+        ...mailpaceInfo,
+      },
+      innerHTML: `
+        <p slot="billing">This add-on is a partner product. Its invoicing is therefore entirely independent and managed by the partner. If you have any questions about this subject, please contact him.</p>
+`,
+    },
   ],
 });
 
@@ -327,6 +372,13 @@ export const mysql = makeStory(conf, {
       /** @type {CcAddonInfoStateLoaded} */
       state: {
         type: 'loaded',
+        ...mysqlInfo,
+      },
+    },
+    {
+      /** @type {CcAddonInfoStateLoading} */
+      state: {
+        type: 'loading',
         ...mysqlInfo,
       },
     },
@@ -343,6 +395,13 @@ export const postgresql = makeStory(conf, {
         ...postgresqlInfo,
       },
     },
+    {
+      /** @type {CcAddonInfoStateLoading} */
+      state: {
+        type: 'loading',
+        ...postgresqlInfo,
+      },
+    },
   ],
 });
 
@@ -356,6 +415,13 @@ export const redis = makeStory(conf, {
         ...redisInfo,
       },
     },
+    {
+      /** @type {CcAddonInfoStateLoading} */
+      state: {
+        type: 'loading',
+        ...redisInfo,
+      },
+    },
   ],
 });
 
@@ -366,6 +432,13 @@ export const mongodb = makeStory(conf, {
       /** @type {CcAddonInfoStateLoaded} */
       state: {
         type: 'loaded',
+        ...mongodbInfo,
+      },
+    },
+    {
+      /** @type {CcAddonInfoStateLoading} */
+      state: {
+        type: 'loading',
         ...mongodbInfo,
       },
     },
@@ -385,6 +458,16 @@ export const azimutt = makeStory(conf, {
         <p slot="billing">This add-on is a partner product. Its invoicing is therefore entirely independent and managed by the partner. If you have any questions about this subject, please contact him.</p>
 `,
     },
+    {
+      /** @type {CcAddonInfoStateLoading} */
+      state: {
+        type: 'loading',
+        ...azimuttInfo,
+      },
+      innerHTML: `
+        <p slot="billing">This add-on is a partner product. Its invoicing is therefore entirely independent and managed by the partner. If you have any questions about this subject, please contact him.</p>
+`,
+    },
   ],
 });
 
@@ -395,6 +478,16 @@ export const kubernetes = makeStory(conf, {
       /** @type {CcAddonInfoStateLoaded} */
       state: {
         type: 'loaded',
+        ...kubernetesInfo,
+      },
+      innerHTML: `
+        <p slot="billing">Kubernetes is in Alpha phase and is therefore free during these test phases. Billing will evolve in line with the functionalities made available.</p>
+`,
+    },
+    {
+      /** @type {CcAddonInfoStateLoading} */
+      state: {
+        type: 'loading',
         ...kubernetesInfo,
       },
       innerHTML: `
