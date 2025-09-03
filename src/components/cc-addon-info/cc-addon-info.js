@@ -56,6 +56,9 @@ const GRAFANA_LOGO_URL = 'https://assets.clever-cloud.com/logos/grafana.svg';
  * A component to display detailed info about an add-on.
  *
  * @cssdisplay block
+ *
+ * @slot billing - A customised text regarding the billing.
+ * @slot linked-services - A customised text regarding the linked services.
  */
 export class CcAddonInfo extends LitElement {
   static get properties() {
