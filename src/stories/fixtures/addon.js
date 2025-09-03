@@ -43,7 +43,7 @@ export const jenkinsData = {
   openLinks: [
     {
       url: 'https://example.com/logs',
-      name: `Jenkins`,
+      name: 'Jenkins',
     },
   ],
 };
@@ -62,11 +62,11 @@ export const elasticData = {
   openLinks: [
     {
       url: 'https://example.com/logs',
-      name: `APM`,
+      name: 'APM',
     },
     {
       url: 'https://example.com/logs',
-      name: `Kibana`,
+      name: 'Kibana',
     },
   ],
 };
@@ -85,7 +85,7 @@ export const matomoData = {
   openLinks: [
     {
       url: 'https://example.com/logs',
-      name: `Matomo`,
+      name: 'Matomo',
     },
   ],
   actions: {
@@ -108,7 +108,7 @@ export const keycloakData = {
   openLinks: [
     {
       url: 'https://example.com/logs',
-      name: `Keycloak`,
+      name: 'Keycloak',
     },
   ],
   actions: {
@@ -132,7 +132,7 @@ export const materiaData = {
   openLinks: [
     {
       url: 'https://example.com/logs',
-      name: `KV Explorer`,
+      name: 'KV Explorer',
     },
   ],
   actions: {
@@ -140,25 +140,6 @@ export const materiaData = {
     rebuildAndRestart: false,
   },
   productStatus: 'Alpha',
-};
-
-/** @type {Addon} */
-export const kubernetesData = {
-  providerName: 'Kubernetes',
-  providerLogoUrl: 'https://img.icons8.com/?size=100&id=cvzmaEA4kC0o&format=png&color=000000',
-  name: 'my-kubernetes',
-  id: 'kubernetes_807d9f82-242b-4cd9-ac9f-96c73c1d074f',
-  zone: {
-    type: 'loaded',
-    ...ZONE,
-  },
-  configLink: 'http://localhost:6006/README.md',
-  actions: {
-    restart: true,
-    rebuildAndRestart: true,
-  },
-  productStatus: 'Alpha',
-  deploymentStatus: 'active'
 };
 
 /** @type {Addon} */
@@ -175,7 +156,7 @@ export const redisData = {
   openLinks: [
     {
       url: 'https://example.com/logs',
-      name: `KV Explorer`,
+      name: 'KV Explorer',
     },
   ],
   actions: {

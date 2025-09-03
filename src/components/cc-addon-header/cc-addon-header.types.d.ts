@@ -25,7 +25,6 @@ interface OptionalProperties {
   };
   productStatus?: string;
   deploymentStatus?: DeploymentStatus;
-  configLink?: string;
 }
 
 interface OpenLink {
