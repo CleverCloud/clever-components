@@ -865,6 +865,7 @@ export const translations = {
   'cc-kv-terminal.warning': `All commands executed in this terminal are immediately sent to the database`,
   //#endregion
   //#region cc-link
+  'cc-link.download.icon-a11y-name': `Download`,
   'cc-link.new-window.name': `new window`,
   'cc-link.new-window.title': /** @param {{linkText: string}} _ */ ({ linkText }) => `${linkText} - new window`,
   //#endregion
