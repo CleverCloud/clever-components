@@ -1,16 +1,17 @@
-// prettier-ignore
-// @ts-expect-error FIXME: remove when clever-client exports types
-import { addDomain,getAllDomains,getFavouriteDomain as getPrimaryDomain,markFavouriteDomain as markPrimaryDomain,removeDomain,unmarkFavouriteDomain as unmarkPrimaryDomain,} from '@clevercloud/client/esm/api/v2/application.js';
+import { DeleteDomainCommand } from '@clevercloud/client/cc-api-commands/domain/delete-domain-command.js';
 import { getHostWithWildcard, isTestDomain, parseDomain } from '../../lib/domain.js';
 import { notify, notifyError, notifySuccess } from '../../lib/notifications.js';
-import { sendToApi } from '../../lib/send-to-api.js';
 import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-smart-container/cc-smart-container.js';
-import { CcDomainManagement } from './cc-domain-management.js';
-// @ts-expect-error FIXME: remove when clever-client exports types
-import { getDefaultLoadBalancersDnsInfo } from '@clevercloud/client/esm/api/v4/load-balancers.js';
 import { CcDomainPrimaryChangeEvent } from './cc-domain-management.events.js';
+import { CcDomainManagement } from './cc-domain-management.js';
+
+import { CcApiClient } from '@clevercloud/client/cc-api-client.js';
+import { CreateDomainCommand } from '@clevercloud/client/cc-api-commands/domain/create-domain-command.js';
+import { ListDomainCommand } from '@clevercloud/client/cc-api-commands/domain/list-domain-command.js';
+import { SetPrimaryDomainCommand } from '@clevercloud/client/cc-api-commands/domain/set-primary-domain-command.js';
+import { GetLoadBalancerInfoCommand } from '@clevercloud/client/cc-api-commands/load-balancer/get-load-balancer-info-command.js';
 
 /**
  * @typedef {import('./cc-domain-management.types.js').DomainManagementListStateLoaded} DomainManagementListStateLoaded
@@ -35,7 +36,23 @@ defineSmartComponent({
    */
   onContextUpdate({ component, context, onEvent, updateComponent, signal }) {
     const { apiConfig, appId, ownerId } = context;
+
+    const client = new CcApiClient({
+      authMethod: {
+        type: 'oauth-v1',
+        oauthTokens: {
+          consumerKey: apiConfig.OAUTH_CONSUMER_KEY,
+          consumerSecret: apiConfig.OAUTH_CONSUMER_SECRET,
+          token: apiConfig.API_OAUTH_TOKEN,
+          secret: apiConfig.API_OAUTH_TOKEN_SECRET,
+        },
+      },
+    });
+
     updateComponent('applicationId', appId);
+    updateComponent('domainListState', { type: 'loading' });
+    updateComponent('dnsInfoState', { type: 'loading' });
+    updateComponent('domainFormState', CcDomainManagement.INIT_DOMAIN_FORM_STATE);
 
     /**
      * @param {string} id
@@ -54,18 +71,25 @@ defineSmartComponent({
       );
     }
 
-    getDomains({ apiConfig, ownerId, appId, signal })
+    client
+      .send(new ListDomainCommand({ applicationId: appId, ownerId }), { signal })
       .then((domains) => {
-        updateComponent('domainListState', { type: 'loaded', domains });
+        const domainsWithStates = domains.map((domain) => formatDomainState(domain));
+        updateComponent('domainListState', { type: 'loaded', domains: domainsWithStates });
       })
       .catch((error) => {
         console.error(error);
         updateComponent('domainListState', { type: 'error' });
       });
 
-    fetchDnsInfo({ apiConfig, ownerId, appId, signal })
-      .then(({ cnameRecord, aRecords }) => {
-        updateComponent('dnsInfoState', { type: 'loaded', cnameRecord, aRecords });
+    client
+      .send(new GetLoadBalancerInfoCommand({ applicationId: appId, ownerId }), { signal })
+      .then(([loadBalancerInfo]) => {
+        updateComponent('dnsInfoState', {
+          type: 'loaded',
+          cnameRecord: loadBalancerInfo.dns.cname,
+          aRecords: loadBalancerInfo.dns.a,
+        });
       })
       .catch((error) => {
         console.error(error);
@@ -78,7 +102,8 @@ defineSmartComponent({
         domainFormState.type = 'adding';
       });
 
-      createNewDomain({ apiConfig, ownerId, appId, hostname, pathPrefix, isWildcard })
+      client
+        .send(new CreateDomainCommand({ applicationId: appId, domain: domainWithPathAndWildcard }))
         .then(() => {
           if (isTestDomain(hostname)) {
             notifySuccess(i18n('cc-domain-management.form.submit.success', { domain: domainWithPathAndWildcard }));
@@ -114,34 +139,31 @@ defineSmartComponent({
             },
           );
         })
-        .catch(
-          /** @param {Error} error */
-          (error) => {
-            console.error(error);
-            const errorCode = convertApiError(error);
+        .catch((error) => {
+          console.error(error);
+          const errorCode = convertApiError(error);
 
+          updateComponent('domainFormState', (domainFormState) => {
+            domainFormState.type = 'idle';
+          });
+
+          if (errorCode === 'invalid-format') {
             updateComponent('domainFormState', (domainFormState) => {
-              domainFormState.type = 'idle';
+              domainFormState.hostname.error = { code: errorCode };
             });
+            return;
+          }
 
-            if (errorCode === 'invalid-format') {
-              updateComponent('domainFormState', (domainFormState) => {
-                domainFormState.hostname.error = { code: errorCode };
-              });
-              return;
-            }
+          if (errorCode === 'already-used') {
+            notifyError(
+              i18n('cc-domain-management.form.submit.error-duplicate.text', { domain: domainWithPathAndWildcard }),
+              i18n('cc-domain-management.form.submit.error-duplicate.heading'),
+            );
+            return;
+          }
 
-            if (errorCode === 'already-used') {
-              notifyError(
-                i18n('cc-domain-management.form.submit.error-duplicate.text', { domain: domainWithPathAndWildcard }),
-                i18n('cc-domain-management.form.submit.error-duplicate.heading'),
-              );
-              return;
-            }
-
-            notifyError(i18n('cc-domain-management.form.submit.error', { domain: domainWithPathAndWildcard }));
-          },
-        );
+          notifyError(i18n('cc-domain-management.form.submit.error', { domain: domainWithPathAndWildcard }));
+        });
     });
 
     onEvent('cc-domain-delete', ({ id, hostname, pathPrefix, isWildcard }) => {
@@ -150,7 +172,8 @@ defineSmartComponent({
         domainState.type = 'deleting';
       });
 
-      deleteDomain({ apiConfig, ownerId, appId, id })
+      client
+        .send(new DeleteDomainCommand({ applicationId: appId, ownerId, domain: domainWithPathAndWildcard }))
         .then(() => {
           updateComponent(
             'domainListState',
@@ -178,7 +201,8 @@ defineSmartComponent({
         domainState.type = 'marking-primary';
       });
 
-      markAsPrimaryDomain({ apiConfig, ownerId, appId, id })
+      client
+        .send(new SetPrimaryDomainCommand({ applicationId: appId, ownerId, domain: domainWithPathAndWildcard }))
         .then(() => {
           updateComponent(
             'domainListState',
@@ -218,145 +242,6 @@ defineSmartComponent({
 });
 
 /**
- * @param {Object} params
- * @param {ApiConfig} params.apiConfig
- * @param {string} params.ownerId
- * @param {string} params.appId
- * @param {AbortSignal} params.signal
- * @returns {Promise<DomainStateIdle[]>}
- */
-function getDomains({ apiConfig, ownerId, appId, signal }) {
-  return Promise.all([
-    fetchPrimaryDomain(ownerId, appId, apiConfig, signal),
-    fetchDomains(ownerId, appId, apiConfig),
-  ]).then(([primaryDomain, domains]) => {
-    /** @type {DomainStateIdle[]} */
-    const formattedDomains = domains.map((domainState) => ({
-      ...domainState,
-      type: 'idle',
-      isPrimary: primaryDomain?.fqdn === domainState.id,
-    }));
-
-    return formattedDomains;
-  });
-}
-
-/**
- * @param {Object} params
- * @param {ApiConfig} params.apiConfig
- * @param {string} params.ownerId
- * @param {string} params.appId
- * @param {string} params.hostname
- * @param {string} params.pathPrefix
- * @param {boolean} params.isWildcard
- * @returns {Promise<DomainStateIdle[]>}
- */
-function createNewDomain({ apiConfig, ownerId, appId, hostname, pathPrefix, isWildcard }) {
-  const domainWithEncodedPathAndWildcard = getHostWithWildcard(hostname, isWildcard) + encodeURIComponent(pathPrefix);
-  return addDomain({ id: ownerId, appId, domain: domainWithEncodedPathAndWildcard }).then(sendToApi({ apiConfig }));
-}
-
-/**
- * @param {Object} params
- * @param {ApiConfig} params.apiConfig
- * @param {string} params.ownerId
- * @param {string} params.appId
- * @param {string} params.id
- * @returns {Promise<DomainStateIdle[]>}
- */
-function deleteDomain({ apiConfig, ownerId, appId, id }) {
-  return removeDomain({ id: ownerId, appId, domain: encodeURIComponent(id) }).then(sendToApi({ apiConfig }));
-}
-
-/**
- * @param {Object} params
- * @param {ApiConfig} params.apiConfig
- * @param {string} params.ownerId
- * @param {string} params.appId
- * @param {string} params.id
- * @returns {Promise<DomainStateIdle[]>}
- */
-function markAsPrimaryDomain({ apiConfig, ownerId, appId, id }) {
-  return unmarkPrimaryDomain({ id: ownerId, appId })
-    .then(sendToApi({ apiConfig }))
-    .then(() => markPrimaryDomain({ id: ownerId, appId }, { fqdn: id }).then(sendToApi({ apiConfig })));
-}
-
-/**
- * @param {Object} params
- * @param {ApiConfig} params.apiConfig
- * @param {string} params.ownerId
- * @param {string} params.appId
- * @param {AbortSignal} params.signal
- * @returns {Promise<{ cnameRecord: string, aRecords: string[] }>}
- */
-function fetchDnsInfo({ apiConfig, ownerId, appId, signal }) {
-  return getDefaultLoadBalancersDnsInfo({ appId, ownerId })
-    .then(sendToApi({ apiConfig, signal }))
-    .then(
-      /** @param {Array<{dns?: {cname: string, a: string[]}}>} defaultLoadBalancers */ (defaultLoadBalancers) => {
-        const defaultLoadBalancerData = defaultLoadBalancers[0];
-        return {
-          cnameRecord: defaultLoadBalancerData?.dns?.cname,
-          aRecords: defaultLoadBalancerData?.dns?.a,
-        };
-      },
-    );
-}
-
-/**
- * @param {string} id
- * @param {string} appId
- * @param {ApiConfig} apiConfig
- * @param {AbortSignal} signal
- * @returns {Promise<RawDomainFromApi>}
- */
-function fetchPrimaryDomain(id, appId, apiConfig, signal) {
-  return getPrimaryDomain({ id, appId })
-    .then(sendToApi({ apiConfig, signal }))
-    .catch(
-      /**
-       * @param {Error & { response: { status: number }}} error
-       * @returns {null|void}
-       */
-      (error) => {
-        if (error.response.status === 404) {
-          return null;
-        }
-      },
-    );
-}
-
-/**
- * @param {string} id
- * @param {string} appId
- * @param {ApiConfig} apiConfig
- * @returns {Promise<DomainInfoWithoutIsPrimary[]>}
- */
-function fetchDomains(id, appId, apiConfig) {
-  return getAllDomains({ id, appId })
-    .then(sendToApi({ apiConfig }))
-    .then(
-      /** @param {RawDomainFromApi[]} domains */
-      (domains) => {
-        return domains.map(({ fqdn }) => {
-          const { hostname, pathname, isWildcard } = parseDomain(fqdn);
-
-          /** @type {DomainInfoWithoutIsPrimary} */
-          const formattedDomain = {
-            id: fqdn,
-            hostname,
-            pathPrefix: pathname,
-            isWildcard,
-          };
-
-          return formattedDomain;
-        });
-      },
-    );
-}
-
-/**
  * @param {Error} apiError
  * @returns {'invalid-format'|'already-used'|null}
  */
@@ -370,4 +255,22 @@ function convertApiError(apiError) {
     return 'already-used';
   }
   return null;
+}
+
+/**
+ * @param {object} rawDomainInfo
+ * @param {string} rawDomainInfo.domain
+ * @param {boolean} rawDomainInfo.isPrimary
+ * @returns {DomainStateIdle}
+ */
+function formatDomainState({ domain, isPrimary }) {
+  const { hostname, pathname, isWildcard } = parseDomain(domain);
+  return {
+    type: 'idle',
+    id: domain,
+    hostname,
+    pathPrefix: pathname,
+    isWildcard,
+    isPrimary,
+  };
 }
