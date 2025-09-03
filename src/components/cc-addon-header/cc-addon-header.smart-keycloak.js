@@ -30,9 +30,9 @@ defineSmartComponent({
   },
 
   /** @param {OnContextUpdateArgs} args */
-  onContextUpdate({ context, updateComponent, onEvent }) {
+  onContextUpdate({ context, updateComponent, onEvent, signal }) {
     const { apiConfig, ownerId, addonId, productStatus } = context;
-    const api = new Api(apiConfig, ownerId, addonId);
+    const api = new Api(apiConfig, ownerId, addonId, signal);
     let logsUrl = '';
 
     updateComponent('state', {
@@ -150,17 +150,21 @@ class Api {
    * @param {ApiConfig} apiConfig
    * @param {string} ownerId
    * @param {string} addonId
+   * @param {AbortSignal} signal
    */
-  constructor(apiConfig, ownerId, addonId) {
+  constructor(apiConfig, ownerId, addonId, signal) {
     this._apiConfig = apiConfig;
     this._ownerId = ownerId;
     this._addonId = addonId;
     this._realId = null;
+    this._signal = signal;
   }
 
   /** @return {Promise<RawAddon>} */
   getAddon() {
-    return getAddon({ id: this._ownerId, addonId: this._addonId }).then(sendToApi({ apiConfig: this._apiConfig }));
+    return getAddon({ id: this._ownerId, addonId: this._addonId }).then(
+      sendToApi({ apiConfig: this._apiConfig, signal: this._signal }),
+    );
   }
 
   /**
@@ -168,7 +172,9 @@ class Api {
    * @return {Promise<RawOperator>}
    */
   getOperator(realId) {
-    return this._getOperator({ provider: 'keycloak', realId }).then(sendToApi({ apiConfig: this._apiConfig }));
+    return this._getOperator({ provider: 'keycloak', realId }).then(
+      sendToApi({ apiConfig: this._apiConfig, signal: this._signal }),
+    );
   }
 
   /**
@@ -176,7 +182,7 @@ class Api {
    * @return {Promise<ZoneStateLoaded>}
    */
   getZone(zoneName) {
-    return getZone({ zoneName }).then(sendToApi({ apiConfig: this._apiConfig }));
+    return getZone({ zoneName }).then(sendToApi({ apiConfig: this._apiConfig, signal: this._signal }));
   }
 
   /** @returns {Promise<{ rawAddon: RawAddon, operator: RawOperator, zone: ZoneStateLoaded }>} */
@@ -191,14 +197,14 @@ class Api {
   /** @return {Promise<void>} */
   async restartAddon() {
     return rebootOperator({ provider: 'keycloak', realId: this._realId }).then(
-      sendToApi({ apiConfig: this._apiConfig }),
+      sendToApi({ apiConfig: this._apiConfig, signal: this._signal }),
     );
   }
 
   /** @return {Promise<void>} */
   async rebuildAndRestartAddon() {
     return rebuildOperator({ provider: 'keycloak', realId: this._realId }).then(
-      sendToApi({ apiConfig: this._apiConfig }),
+      sendToApi({ apiConfig: this._apiConfig, signal: this._signal }),
     );
   }
 
