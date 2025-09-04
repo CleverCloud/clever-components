@@ -21,7 +21,7 @@ export class CcEnvVarLinkedServices extends LitElement {
     return {
       appName: { type: String, attribute: 'app-name' },
       state: { type: Object },
-      type: { type: String },
+      type: { type: String, reflect: true },
     };
   }
 
