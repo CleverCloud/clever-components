@@ -81,6 +81,7 @@ class Api {
 
     return linkedAddons.map((/** @type {any} */ linkedAddon) => {
       return {
+        id: linkedAddon.addon_id,
         name: linkedAddon.addon_name,
         variables: linkedAddon.env,
       };
@@ -100,6 +101,7 @@ class Api {
 
     return linkedApps.map((/** @type {any} */ linkedApp) => {
       return {
+        id: linkedApp.app_id,
         name: linkedApp.app_name,
         variables: linkedApp.env,
       };

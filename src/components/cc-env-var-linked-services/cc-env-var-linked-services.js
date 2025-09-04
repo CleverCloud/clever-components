@@ -121,12 +121,16 @@ export class CcEnvVarLinkedServices extends LitElement {
       return html` <div class="empty-msg">${this._getEmptyMessage()}</div> `;
     }
 
+    const context = this.type === 'addon' ? 'linked-addon' : 'linked-app';
+
     return html`
       <div class="service-list">
         ${services.map(
           (service) => html`
             <cc-env-var-form
               readonly
+              context="${context}"
+              resource-id="${service.id}"
               .state=${{ type: 'loaded', variables: service.variables, validationMode: 'simple' }}
               heading=${this._getServiceHeading(service.name)}
             >
