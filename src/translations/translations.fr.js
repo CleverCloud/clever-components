@@ -1233,6 +1233,9 @@ export const translations = {
   'cc-payment-warning.orga.no-payment-method': `Pour éviter tout risque de suspension de vos services et de suppression de vos données, merci d'ajouter un moyen de paiement valide et de le définir par défaut.`,
   'cc-payment-warning.orga.no-payment-method.title': `Attention\u202f! Vous n'avez aucun moyen de paiement enregistré`,
   //#endregion
+  //#region cc-picker
+  'cc-picker.required': `obligatoire`,
+  //#endregion
   //#region cc-plan-picker
   'cc-plan-picker.legend': `Sélectionnez votre plan`,
   'cc-plan-picker.legend.customize': `Personnalisez votre plan`,
@@ -1791,15 +1794,13 @@ export const translations = {
   'cc-zone.country': /** @param {{code: string, name: string}} _ */ ({ code, name }) =>
     getCountryName(lang, code, name),
   //#endregion
-  //#region cc-zone-card
-  'cc-zone-card.alt.country-name': /** @param {{code: string, name: string}} _ */ ({ code, name }) =>
-    getCountryName(lang, code, name),
-  //#endregion
   //#region cc-zone-input
   'cc-zone-input.error': `Une erreur est survenue pendant le chargement des zones.`,
   'cc-zone-input.private-map-warning': `Les zones privées n'apparaissent pas sur la carte.`,
   //#endregion
   //#region cc-zone-picker
+  'cc-zone-picker.alt.country-name': /** @param {{code: string, name: string}} _ */ ({ code, name }) =>
+    getCountryName(lang, code, name),
   'cc-zone-picker.legend': `Sélectionnez votre zone`,
   //#endregion
 };

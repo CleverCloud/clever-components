@@ -1220,6 +1220,9 @@ export const translations = {
   'cc-payment-warning.orga.no-payment-method': `To avoid any suspension of your services and deletion of your data, add a valid payment method and set it as default.`,
   'cc-payment-warning.orga.no-payment-method.title': `Beware! You don't have any registered payment method`,
   //#endregion
+  //#region cc-picker
+  'cc-picker.required': `required`,
+  //#endregion
   //#region cc-plan-picker
   'cc-plan-picker.legend': `Select your plan`,
   'cc-plan-picker.legend.customize': `Customize your plan`,
@@ -1762,15 +1765,13 @@ export const translations = {
   'cc-zone.country': /** @param {{code: string, name: string}} _ */ ({ code, name }) =>
     getCountryName(lang, code, name),
   //#endregion
-  //#region cc-zone-card
-  'cc-zone-card.alt.country-name': /** @param {{code: string, name: string}} _ */ ({ code, name }) =>
-    getCountryName(lang, code, name),
-  //#endregion
   //#region cc-zone-input
   'cc-zone-input.error': `Something went wrong while loading zones.`,
   'cc-zone-input.private-map-warning': `Private zones don't appear on the map.`,
   //#endregion
   //#region cc-zone-picker
+  'cc-zone-picker.alt.country-name': /** @param {{code: string, name: string}} _ */ ({ code, name }) =>
+    getCountryName(lang, code, name),
   'cc-zone-picker.legend': `Select your zone`,
   //#endregion
 };

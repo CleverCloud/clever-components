@@ -34,7 +34,8 @@ import { CcInputEvent, CcRequestSubmitEvent } from '../common.events.js';
  *
  * @cssdisplay inline-block
  *
- * @cssprop {Size} --cc-form-label-gap - The space between the label and the control (defaults: `0.35em` or `1em` when inline).
+ * @cssprop {Size} --cc-form-label-gap - The space between the label and the control (defaults: `0.35em`).
+ * @cssprop {Size} --cc-form-label-gap-inline - The space between the label and the control when layout is inline (defaults: `0.75em`).
  * @cssprop {Align} --cc-input-number-align - Change the alignment of the number present in the input (defaults: `right`).
  * @cssprop {Color} --cc-input-btn-icon-color - The color for the icon within the +/- buttons (defaults: `#595959`).
  * @cssprop {FontFamily} --cc-input-font-family - The font-family for the input content (defaults: `inherit`).
@@ -337,7 +338,7 @@ export class CcInputNumber extends CcFormControlElement {
         :host([inline]) {
           align-items: baseline;
           display: inline-grid;
-          gap: 0 var(--cc-form-label-gap, 1em);
+          gap: 0 var(--cc-form-label-gap-inline, 0.75em);
           grid-auto-rows: min-content;
           grid-template-areas:
             'label input'
