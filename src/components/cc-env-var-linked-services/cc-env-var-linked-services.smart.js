@@ -1,7 +1,6 @@
+// prettier-ignore
 // @ts-expect-error FIXME: remove when clever-client exports types
-import { getAllEnvVars as getAllAddonEnvVars } from '@clevercloud/client/esm/api/v2/addon.js';
-// @ts-expect-error FIXME: remove when clever-client exports types
-import { get, getAllEnvVarsForDependencies, getAllLinkedAddons } from '@clevercloud/client/esm/api/v2/application.js';
+import { get,getAllEnvVarsForAddons,getAllEnvVarsForDependencies } from '@clevercloud/client/esm/api/v2/application.js';
 import { sendToApi } from '../../lib/send-to-api.js';
 import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
 import '../cc-smart-container/cc-smart-container.js';
@@ -73,31 +72,20 @@ class Api {
    * @param {object} params
    * @param {string} params.ownerId
    * @param {string} params.appId
+   * @returns {Promise<LinkedServiceState[]>}
    */
   async fetchEnvVarLinkedAddons({ ownerId, appId }) {
-    const addons = await getAllLinkedAddons({ id: ownerId, appId }).then(
+    const linkedAddons = await getAllEnvVarsForAddons({ id: ownerId, appId }).then(
       sendToApi({ apiConfig: this.apiConfig, signal: this.signal }),
     );
 
-    const promises = await addons.map(async (/** @type {Addon} */ addon) => {
-      try {
-        const envVarList = await getAllAddonEnvVars({ id: ownerId, addonId: addon.id }).then(
-          sendToApi({ apiConfig: this.apiConfig, signal: this.signal }),
-        );
-        return /** @type {LinkedServiceState} */ ({
-          type: 'loaded',
-          name: addon.name,
-          variables: envVarList,
-        });
-      } catch (e) {
-        console.error(e);
-        return /** @type {LinkedServiceState} */ ({
-          type: 'error',
-          name: addon.name,
-        });
-      }
+    return linkedAddons.map((/** @type {any} */ linkedAddon) => {
+      return {
+        type: 'loaded',
+        name: linkedAddon.addon_name,
+        variables: linkedAddon.env,
+      };
     });
-    return Promise.all(promises);
   }
 
   /**
