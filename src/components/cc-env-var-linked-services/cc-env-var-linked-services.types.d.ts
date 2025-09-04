@@ -11,29 +11,16 @@ interface EnvVarLinkedServicesStateLoading {
 
 interface EnvVarLinkedServicesStateLoaded {
   type: 'loaded';
-  servicesStates: Array<LinkedServiceState>;
+  services: Array<LinkedService>;
 }
 
 interface EnvVarLinkedServicesStateError {
   type: 'error';
 }
 
-type EnvVarLinkedServicesType = 'addon' | 'app';
+export type EnvVarLinkedServicesType = 'addon' | 'app';
 
-export type LinkedServiceState = LinkedServiceStateLoading | LinkedServiceStateLoaded | LinkedServiceStateError;
-
-interface LinkedServiceStateLoading {
-  type: 'loading';
-  name: string;
-}
-
-interface LinkedServiceStateLoaded {
-  type: 'loaded';
+export interface LinkedService {
   name: string;
   variables: Array<EnvVar>;
-}
-
-interface LinkedServiceStateError {
-  type: 'error';
-  name: string;
 }
