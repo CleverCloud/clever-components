@@ -26,6 +26,13 @@ export interface EnvVarFormStateError {
   type: 'error';
 }
 
-type EnvVarFormContextType = 'env-var-app' | 'env-var-simple' | 'env-var-addon' | 'exposed-config' | 'config-provider';
+type EnvVarFormContextType =
+  | 'env-var-app'
+  | 'env-var-simple'
+  | 'env-var-addon'
+  | 'exposed-config'
+  | 'config-provider'
+  | 'linked-app'
+  | 'linked-addon';
 
 export type EnvVarFormMode = 'SIMPLE' | 'EXPERT' | 'JSON';

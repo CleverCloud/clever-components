@@ -101,7 +101,7 @@ export const dataLoadedWithContextEnvVarSimple = makeStory(conf, {
 export const dataLoadedWithContextEnvVarAddon = makeStory(conf, {
   items: [
     {
-      resourceId: 'app_3f9b1c8e-2d7a-4c4f-91a6-8bde78f4a21b',
+      resourceId: 'addon_3f9b1c8e-2d7a-4c4f-91a6-8bde78f4a21b',
       context: 'env-var-addon',
       state: { type: 'loaded', validationMode: 'simple', variables: VARIABLES_FULL },
     },
@@ -133,9 +133,31 @@ export const dataLoadedWithContextExposedConfig = makeStory(conf, {
 export const dataLoadedWithContextConfigProvider = makeStory(conf, {
   items: [
     {
-      resourceId: 'app_3f9b1c8e-2d7a-4c4f-91a6-8bde78f4a21b',
+      resourceId: 'addon_3f9b1c8e-2d7a-4c4f-91a6-8bde78f4a21b',
       addonName: 'My shared config',
       context: 'config-provider',
+      state: { type: 'loaded', validationMode: 'simple', variables: VARIABLES_FULL },
+    },
+  ],
+});
+
+export const dataLoadedWithContextLinkedAddon = makeStory(conf, {
+  items: [
+    {
+      resourceId: 'addon_3f9b1c8e-2d7a-4c4f-91a6-8bde78f4a21b',
+      context: 'linked-addon',
+      readonly: true,
+      state: { type: 'loaded', validationMode: 'simple', variables: VARIABLES_FULL },
+    },
+  ],
+});
+
+export const dataLoadedWithContextLinkedApp = makeStory(conf, {
+  items: [
+    {
+      resourceId: 'app_3f9b1c8e-2d7a-4c4f-91a6-8bde78f4a21b',
+      context: 'linked-app',
+      readonly: true,
       state: { type: 'loaded', validationMode: 'simple', variables: VARIABLES_FULL },
     },
   ],
