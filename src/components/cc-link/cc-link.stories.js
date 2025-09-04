@@ -83,6 +83,33 @@ export const buttonWithFullWidth = makeStory(conf, {
   ],
 });
 
+export const downloadLink = makeStory(conf, {
+  items: [
+    {
+      href: '/path/to/invoice.pdf',
+      download: 'invoice.pdf',
+      innerHTML: '',
+    },
+    {
+      href: '/path/to/invoice.pdf',
+      download: 'invoice.pdf',
+      innerHTML: 'Download PDF',
+    },
+    {
+      href: '/path/to/invoice.pdf',
+      download: 'invoice.pdf',
+      innerHTML: 'Download PDF',
+      skeleton: true,
+    },
+    {
+      mode: 'button',
+      href: '/path/to/config.json',
+      download: 'config.json',
+      innerHTML: 'Get config',
+    },
+  ],
+});
+
 export const withA11yDesc = makeStory(conf, {
   items: [
     {

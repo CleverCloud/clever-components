@@ -1,7 +1,7 @@
 import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { iconRemixExternalLinkLine as externalLinkIcon } from '../../assets/cc-remix.icons.js';
+import { iconRemixExternalLinkLine as externalLinkIcon, iconRemixDownloadLine } from '../../assets/cc-remix.icons.js';
 import { isStringEmpty } from '../../lib/utils.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
 import { i18n } from '../../translations/translation.js';
@@ -33,6 +33,7 @@ export class CcLink extends LitElement {
     return {
       a11yDesc: { type: String, attribute: 'a11y-desc' },
       disableExternalLinkIcon: { type: Boolean, attribute: 'disable-external-link-icon' },
+      download: { type: String },
       href: { type: String },
       icon: { type: Object },
       iconA11yName: { type: String, attribute: 'icon-a11y-name' },
@@ -52,6 +53,9 @@ export class CcLink extends LitElement {
 
     /** @type {boolean} Disables the external link icon. */
     this.disableExternalLinkIcon = false;
+
+    /** @type {string|null} If set, enables `download` attribute value on the inner native `<a>` element. */
+    this.download = null;
 
     /** @type {string} The URL for the link. */
     this.href = '';
@@ -150,7 +154,13 @@ export class CcLink extends LitElement {
         ${this.icon != null
           ? html` <cc-icon class="cc-link__icon" .icon="${this.icon}" a11y-name="${this.iconA11yName}"></cc-icon> `
           : ''}
-        <a href=${ifDefined(href)} target=${ifDefined(target)} rel=${ifDefined(rel)} title="${ifDefined(title)}">
+        <a
+          href=${ifDefined(href)}
+          target=${ifDefined(target)}
+          rel=${ifDefined(rel)}
+          title="${ifDefined(title)}"
+          download=${ifDefined(this.download)}
+        >
           <span class="link-slot">
             <slot @slotchange="${this._onSlotChange}"></slot>
           </span>
@@ -159,6 +169,12 @@ export class CcLink extends LitElement {
                 class="cc-link__external-icon"
                 .icon=${externalLinkIcon}
                 a11y-name=${i18n('cc-link.new-window.name')}
+              ></cc-icon>`
+            : ''}
+          ${this.download != null
+            ? html`<cc-icon
+                .icon=${iconRemixDownloadLine}
+                a11y-name=${i18n('cc-link.download.icon-a11y-name')}
               ></cc-icon>`
             : ''}
         </a>
