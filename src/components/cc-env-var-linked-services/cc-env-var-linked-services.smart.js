@@ -8,7 +8,7 @@ import './cc-env-var-linked-services.js';
 
 /**
  * @typedef {import('./cc-env-var-linked-services.js').CcEnvVarLinkedServices} CcEnvVarLinkedServices
- * @typedef {import('./cc-env-var-linked-services.types.js').LinkedServiceState} LinkedServiceState
+ * @typedef {import('./cc-env-var-linked-services.types.js').LinkedService} LinkedService
  * @typedef {import('./cc-env-var-linked-services.types.js').EnvVarLinkedServicesType} EnvVarLinkedServicesType
  * @typedef {import('../common.types.js').App} App
  * @typedef {import('../common.types.js').Addon} Addon
@@ -42,10 +42,10 @@ defineSmartComponent({
 
     api
       .fetchEnvVarLinkedService({ ownerId, appId, type })
-      .then((linkedServiceList) => {
+      .then((linkedServices) => {
         updateComponent('state', {
           type: 'loaded',
-          servicesStates: linkedServiceList,
+          services: linkedServices,
         });
       })
       .catch((e) => {
@@ -72,7 +72,7 @@ class Api {
    * @param {object} params
    * @param {string} params.ownerId
    * @param {string} params.appId
-   * @returns {Promise<LinkedServiceState[]>}
+   * @returns {Promise<LinkedService[]>}
    */
   async fetchEnvVarLinkedAddons({ ownerId, appId }) {
     const linkedAddons = await getAllEnvVarsForAddons({ id: ownerId, appId }).then(
@@ -81,7 +81,6 @@ class Api {
 
     return linkedAddons.map((/** @type {any} */ linkedAddon) => {
       return {
-        type: 'loaded',
         name: linkedAddon.addon_name,
         variables: linkedAddon.env,
       };
@@ -92,17 +91,18 @@ class Api {
    * @param {object} params
    * @param {string} params.ownerId
    * @param {string} params.appId
+   * @returns {Promise<LinkedService[]>}
    */
   async fetchEnvVarLinkedApps({ ownerId, appId }) {
-    const apps = await getAllEnvVarsForDependencies({ id: ownerId, appId })
-      .then(sendToApi({ apiConfig: this.apiConfig, signal: this.signal }))
-      .then((/** @type {any[]} */ linkedApps) => linkedApps.map((app) => ({ ...app, name: app.app_name })));
-    return apps.map((/** @type {App & { env: Array<EnvVar> }} */ app) => {
-      return /** @type {LinkedServiceState} */ ({
-        type: 'loaded',
-        name: app.name,
-        variables: app.env,
-      });
+    const linkedApps = await getAllEnvVarsForDependencies({ id: ownerId, appId }).then(
+      sendToApi({ apiConfig: this.apiConfig, signal: this.signal }),
+    );
+
+    return linkedApps.map((/** @type {any} */ linkedApp) => {
+      return {
+        name: linkedApp.app_name,
+        variables: linkedApp.env,
+      };
     });
   }
 
