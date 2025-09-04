@@ -38,9 +38,8 @@ interface ApiConfig {
 
 <table>
   <tr><th>Method <th>URL                                                    <th>Cache?
-  <tr><td>GET    <td><code>/v2/addons/{addonId}/env</code>                  <td>Default
   <tr><td>GET    <td><code>/v2/applications/{appId}/dependencies/env</code> <td>Default
-  <tr><td>GET    <td><code>/v2/applications/{appId}/addons</code>           <td>Default
+  <tr><td>GET    <td><code>/v2/applications/{appId}/addons/env</code>       <td>Default
 </table>
 
 ## ⬇️️ Examples
