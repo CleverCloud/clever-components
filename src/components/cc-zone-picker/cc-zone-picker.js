@@ -4,7 +4,9 @@ import { iconRemixEarthLine as zoneIcon } from '../../assets/cc-remix.icons.js';
 import { CcFormControlElement } from '../../lib/form/cc-form-control-element.abstract.js';
 import { accessibilityStyles } from '../../styles/accessibility.js';
 import { i18n } from '../../translations/translation.js';
-import '../cc-zone-card/cc-zone-card.js';
+import '../cc-icon/cc-icon.js';
+import '../cc-img/cc-img.js';
+import '../cc-picker-option/cc-picker-option.js';
 import { CcSelectEvent } from '../common.events.js';
 
 /**
@@ -14,6 +16,7 @@ import { CcSelectEvent } from '../common.events.js';
  * @typedef {import('./cc-zone-picker.types.js').ZonesSections} ZonesSections
  * @typedef {import('../../lib/events.types.js').EventWithTarget<HTMLInputElement>} HTMLInputElementEvent
  * @typedef {import('lit').PropertyValues} CcZonePickerPropertyValues
+ * @typedef {import('lit').TemplateResult<1>} TemplateResult
  */
 
 /**
@@ -67,6 +70,10 @@ export class CcZonePicker extends CcFormControlElement {
    * @param {HTMLInputElementEvent} e
    */
   _onZoneSelect(e) {
+    if (this.readonly) {
+      return;
+    }
+
     this.value = e.target.value;
     this.dispatchEvent(new CcSelectEvent(this.value));
   }
@@ -106,31 +113,67 @@ export class CcZonePicker extends CcFormControlElement {
    * @param {ZoneItem} zone
    * @param {boolean} isZoneSelected
    * @param {string} zoneSectionHeaderId
+   * @returns {TemplateResult}
+   * @private
    */
   _renderZoneCard(zone, isZoneSelected, zoneSectionHeaderId) {
-    const disabled = this.readonly ? !isZoneSelected : zone.disabled || this.disabled;
+    const { code } = zone;
+    const disabled = zone.disabled || this.disabled;
+    const readonly = !disabled && this.readonly;
     return html`
       <input
         class="visually-hidden"
         type="radio"
         name="zone"
-        .value="${zone.code}"
-        ?disabled=${disabled}
+        .value="${code}"
+        ?disabled=${disabled || (readonly && !isZoneSelected)}
         .checked="${isZoneSelected}"
-        id="${zone.code}"
+        id="${code}"
         aria-describedby="${ifDefined(zoneSectionHeaderId)}"
       />
-      <label for="${zone.code}">
-        <cc-zone-card
-          ?selected="${isZoneSelected}"
-          ?disabled="${disabled}"
-          name="${zone.name}"
-          country="${zone.country}"
-          code="${zone.code}"
-          flag-url="${zone.flagUrl}"
-          .images="${zone.images}"
-        ></cc-zone-card>
+      <label for="${code}" class="option-wrapper">
+        <cc-picker-option ?selected="${isZoneSelected}" ?readonly="${readonly}" ?disabled="${disabled}">
+          ${this._renderZoneBody(zone)} ${this._renderZoneFooter(zone)}
+        </cc-picker-option>
       </label>
+    `;
+  }
+
+  /**
+   * @param {ZoneItem} zone
+   * @returns {TemplateResult}
+   * @private
+   */
+  _renderZoneBody({ code, name }) {
+    return html`
+      <div slot="body">
+        <div class="option-body--code">${code}</div>
+        <div class="option-body--name">${name}</div>
+      </div>
+    `;
+  }
+
+  /**
+   * @param {ZoneItem} zone
+   * @returns {TemplateResult}
+   * @private
+   */
+  _renderZoneFooter({ country, countryCode, flagUrl, images }) {
+    return html`
+      <div slot="footer">
+        ${flagUrl
+          ? html`
+              <cc-img
+                src=${flagUrl}
+                a11y-name="${i18n('cc-zone-picker.alt.country-name', {
+                  code: countryCode,
+                  name: country,
+                })}"
+              ></cc-img>
+            `
+          : ''}
+        ${images.map((image) => html`<cc-img src="${image.url}" a11y-name="${image.alt}"></cc-img>`)}
+      </div>
     `;
   }
 
@@ -139,21 +182,23 @@ export class CcZonePicker extends CcFormControlElement {
       accessibilityStyles,
       // language=CSS
       css`
+        /* region global */
         :host {
           display: block;
         }
 
+        fieldset {
+          border: none;
+          margin: 0;
+          padding: 0;
+        }
+        /* endregion */
+
+        /* region legend layout & style */
         legend {
           display: flex;
           gap: 0.25em;
           margin-block-end: var(--cc-form-label-gap, 0.35em);
-        }
-
-        .form-controls {
-          display: grid;
-          gap: 1em;
-          grid-template-columns: repeat(auto-fill, minmax(12.5em, 1fr));
-          margin-inline-start: var(--cc-form-controls-indent, 34px);
         }
 
         .zone-legend-icon {
@@ -168,7 +213,18 @@ export class CcZonePicker extends CcFormControlElement {
           font-size: 1.625em;
           font-weight: 500;
         }
+        /* endregion */
 
+        /* region global layout */
+        .form-controls {
+          display: grid;
+          gap: 1em;
+          grid-template-columns: repeat(auto-fill, minmax(12.5em, 1fr));
+          margin-inline-start: var(--cc-form-controls-indent, 34px);
+        }
+        /* endregion */
+
+        /* region zone section title */
         .zone-section-title {
           color: var(--cc-color-text-primary-strongest);
           font-family: var(--cc-ff-form-legend), inherit;
@@ -178,24 +234,60 @@ export class CcZonePicker extends CcFormControlElement {
         }
 
         .form-controls + .zone-section-title {
-          margin-block-start: 1.5em;
+          margin-block-start: 1em;
         }
+        /* endregion */
 
-        fieldset {
-          border: none;
-          margin: 0;
-          padding: 0;
-        }
-
-        cc-zone-card {
-          height: 100%;
-        }
-
-        input[type='radio']:focus-visible + label cc-zone-card {
+        /* region cc-picker-option */
+        input[type='radio']:focus-visible + label cc-picker-option {
           border-radius: var(--cc-border-radius-default, 0.25em);
           outline: var(--cc-focus-outline, #000 solid 2px);
           outline-offset: var(--cc-focus-outline-offset, 2px);
         }
+
+        .option-wrapper {
+          display: inline-flex;
+        }
+
+        .option-wrapper cc-picker-option {
+          flex: 1 1 auto;
+        }
+
+        cc-picker-option [slot='body'] {
+          margin-inline: -0.25em;
+        }
+
+        cc-picker-option .option-body--code {
+          color: var(--cc-color-text-weak);
+          font-size: 0.875em;
+          line-height: 1.125;
+          padding-inline-start: 0.125em;
+        }
+
+        cc-picker-option .option-body--name {
+          font-size: 1.5em;
+          line-height: 1.125;
+        }
+
+        cc-picker-option [slot='footer'] {
+          column-gap: 0.5em;
+          display: flex;
+          padding-block: 0.75em;
+        }
+
+        cc-picker-option [slot='footer'] > cc-img {
+          --cc-img-fit: contain;
+
+          height: 1.5rem;
+          width: 1.5rem;
+        }
+
+        cc-picker-option[disabled] [slot='footer'] cc-icon,
+        cc-picker-option[disabled] [slot='footer'] cc-img {
+          filter: grayscale(1);
+          opacity: var(--cc-opacity-when-disabled, 0.65);
+        }
+        /* endregion */
       `,
     ];
   }

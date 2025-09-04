@@ -1,5 +1,3 @@
-import { ZoneImage } from '../cc-zone-card/cc-zone-card.types.js';
-
 export interface ZoneItem {
   code: string;
   country: string;
@@ -9,6 +7,11 @@ export interface ZoneItem {
   images: Array<ZoneImage>;
   disabled?: boolean;
   selected?: boolean;
+}
+
+export interface ZoneImage {
+  url: string | URL;
+  alt: string;
 }
 
 export type ZonesSections = Array<ZoneSection> | [SingleZoneSection];
