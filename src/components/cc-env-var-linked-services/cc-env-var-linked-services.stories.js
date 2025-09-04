@@ -31,8 +31,12 @@ export const defaultStory = makeStory(conf, {
       state: {
         type: 'loaded',
         services: [
-          { name: 'My Awesome PG database', variables: VARIABLES_FULL },
-          { name: 'Redis cache (PROD)', variables: VARIABLES_FULL },
+          {
+            id: 'addon_01234567-89ab-cdef-0123-456789abcde0',
+            name: 'My Awesome PG database',
+            variables: VARIABLES_FULL,
+          },
+          { id: 'addon_01234567-89ab-cdef-0123-456789abcde1', name: 'Redis cache (PROD)', variables: VARIABLES_FULL },
         ],
       },
     },
@@ -42,9 +46,21 @@ export const defaultStory = makeStory(conf, {
       state: {
         type: 'loaded',
         services: [
-          { name: 'The mighty maven Java app', variables: VARIABLES_FULL },
-          { name: 'Node.js frontend preprod', variables: VARIABLES_FULL },
-          { name: 'Auth gateway for backend', variables: VARIABLES_FULL },
+          {
+            id: 'app_01234567-89ab-cdef-0123-456789abcde0',
+            name: 'The mighty maven Java app',
+            variables: VARIABLES_FULL,
+          },
+          {
+            id: 'app_01234567-89ab-cdef-0123-456789abcde1',
+            name: 'Node.js frontend preprod',
+            variables: VARIABLES_FULL,
+          },
+          {
+            id: 'app_01234567-89ab-cdef-0123-456789abcde2',
+            name: 'Auth gateway for backend',
+            variables: VARIABLES_FULL,
+          },
         ],
       },
     },
@@ -104,8 +120,12 @@ export const loadedWithLinkedAddons = makeStory(conf, {
       state: {
         type: 'loaded',
         services: [
-          { name: 'My Awesome PG database', variables: VARIABLES_FULL },
-          { name: 'Redis cache (PROD)', variables: VARIABLES_FULL },
+          {
+            id: 'addon_01234567-89ab-cdef-0123-456789abcde0',
+            name: 'My Awesome PG database',
+            variables: VARIABLES_FULL,
+          },
+          { id: 'addon_01234567-89ab-cdef-0123-456789abcde1', name: 'Redis cache (PROD)', variables: VARIABLES_FULL },
         ],
       },
     },
@@ -121,9 +141,21 @@ export const loadedWithLinkedApps = makeStory(conf, {
       state: {
         type: 'loaded',
         services: [
-          { name: 'The mighty maven Java app', variables: VARIABLES_FULL },
-          { name: 'Node.js frontend preprod', variables: VARIABLES_FULL },
-          { name: 'Auth gateway for backend', variables: VARIABLES_FULL },
+          {
+            id: 'app_01234567-89ab-cdef-0123-456789abcde0',
+            name: 'The mighty maven Java app',
+            variables: VARIABLES_FULL,
+          },
+          {
+            id: 'app_01234567-89ab-cdef-0123-456789abcde1',
+            name: 'Node.js frontend preprod',
+            variables: VARIABLES_FULL,
+          },
+          {
+            id: 'app_01234567-89ab-cdef-0123-456789abcde2',
+            name: 'Auth gateway for backend',
+            variables: VARIABLES_FULL,
+          },
         ],
       },
     },
@@ -156,8 +188,12 @@ export const simulationsWithAddons = makeStory(conf, {
         component.state = {
           type: 'loaded',
           services: [
-            { name: 'My Awesome PG database', variables: VARIABLES_FULL },
-            { name: 'Redis cache (PROD)', variables: VARIABLES_FULL },
+            {
+              id: 'addon_01234567-89ab-cdef-0123-456789abcde0',
+              name: 'My Awesome PG database',
+              variables: VARIABLES_FULL,
+            },
+            { id: 'addon_01234567-89ab-cdef-0123-456789abcde1', name: 'Redis cache (PROD)', variables: VARIABLES_FULL },
           ],
         };
       },
@@ -181,9 +217,21 @@ export const simulationsWithLinkedApps = makeStory(conf, {
         component.state = {
           type: 'loaded',
           services: [
-            { name: 'The mighty maven Java app', variables: VARIABLES_FULL },
-            { name: 'Node.js frontend preprod', variables: VARIABLES_FULL },
-            { name: 'Auth gateway for backend', variables: VARIABLES_FULL },
+            {
+              id: 'app_01234567-89ab-cdef-0123-456789abcde0',
+              name: 'The mighty maven Java app',
+              variables: VARIABLES_FULL,
+            },
+            {
+              id: 'app_01234567-89ab-cdef-0123-456789abcde1',
+              name: 'Node.js frontend preprod',
+              variables: VARIABLES_FULL,
+            },
+            {
+              id: 'app_01234567-89ab-cdef-0123-456789abcde2',
+              name: 'Auth gateway for backend',
+              variables: VARIABLES_FULL,
+            },
           ],
         };
       },

@@ -127,6 +127,8 @@ export class CcEnvVarLinkedServices extends LitElement {
           (service) => html`
             <cc-env-var-form
               readonly
+              context="linked-service"
+              resource-id="${service.id}"
               .state=${{ type: 'loaded', variables: service.variables, validationMode: 'simple' }}
               heading=${this._getServiceHeading(service.name)}
             >
