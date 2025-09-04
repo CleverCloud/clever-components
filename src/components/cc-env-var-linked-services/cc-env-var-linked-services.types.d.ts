@@ -21,6 +21,7 @@ interface EnvVarLinkedServicesStateError {
 export type EnvVarLinkedServicesType = 'addon' | 'app';
 
 export interface LinkedService {
+  id: string;
   name: string;
   variables: Array<EnvVar>;
 }
