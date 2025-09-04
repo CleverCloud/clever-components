@@ -1,9 +1,9 @@
-import minifyTemplateLiterals from '@lit-labs/rollup-plugin-minify-html-literals';
 import { importMetaAssets } from '@web/rollup-plugin-import-meta-assets';
 import CleanCSS from 'clean-css';
 import glob from 'glob';
 import path from 'path';
 import clear from 'rollup-plugin-clear';
+import minifyTemplateLiterals from 'rollup-plugin-minify-html-literals';
 import { terser } from 'rollup-plugin-terser';
 import visualizer from 'rollup-plugin-visualizer';
 import SVGO from 'svgo';
