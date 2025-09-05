@@ -1,6 +1,7 @@
 import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { createRef, ref } from 'lit/directives/ref.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import {
   iconRemixCloseLine as iconClose,
   iconRemixInformationFill as iconInfo,
@@ -282,7 +283,7 @@ export class CcAddonInfo extends LitElement {
                       ${this.state.linkedServices.map((service) => {
                         return html`
                           <li class="linked-service__li">
-                            <cc-img src="${service.logoUrl}" ?skeleton=${skeleton}></cc-img>
+                            <cc-img src="${ifDefined(skeleton ? undefined : service.logoUrl)}" ?skeleton=${skeleton}></cc-img>
                             <cc-link href="${service.link}" ?skeleton=${skeleton}
                               >${this._getServiceType(service, skeleton)}
                             </cc-link>
