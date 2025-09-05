@@ -207,6 +207,25 @@ export const translations = {
   'cc-addon-features.loading-error': `Something went wrong while loading add-on features.`,
   'cc-addon-features.title': `Features`,
   //#endregion
+  //#region cc-addon-header
+  'cc-addon-header.action.open-addon': /** @param {{ linkName: string }} _ */ ({ linkName }) => `Open ${linkName}`,
+  'cc-addon-header.action.restart': `Restart`,
+  'cc-addon-header.action.restart-rebuild': `Re-build and restart`,
+  'cc-addon-header.error': `Something went wrong while loading add-on info.`,
+  'cc-addon-header.logs.link': `View logs`,
+  'cc-addon-header.rebuild.error': `Something went wrong while rebuilding the add-on.`,
+  'cc-addon-header.rebuild.success.message': /** @param {{logsUrl: string}} _*/ ({ logsUrl }) =>
+    sanitize`The process of rebuilding and restarting your add-on and its linked services is in progress. See the <cc-link href="${logsUrl}">logs</cc-link> or the <cc-link href="${generateDocsHref('/addons/keycloak/')}">documentation</cc-link> for more information.`,
+  'cc-addon-header.rebuild.success.title': `Re-build and restart in progress`,
+  'cc-addon-header.restart.error': `Something went wrong while restarting the add-on.`,
+  'cc-addon-header.restart.success.message': /** @param {{logsUrl: string}} _*/ ({ logsUrl }) =>
+    sanitize`The process of restarting your add-on and its linked services is in progress. See the <cc-link href="${logsUrl}">logs</cc-link> or the <cc-link href="${generateDocsHref('/addons/keycloak/')}">documentation</cc-link> for more information.`,
+  'cc-addon-header.restart.success.title': `Restart in progress`,
+  'cc-addon-header.state-msg.deployment-failed': `The deployement failed.`,
+  'cc-addon-header.state-msg.deployment-is-active': `Your add-on is active!`,
+  'cc-addon-header.state-msg.deployment-is-deploying': `Your add-on is deploying…`,
+  'cc-addon-header.state-msg.unknown-state': `Unknown state, try to restart the add-on or contact our support if you have additional questions.`,
+  //#endregion
   //#region cc-addon-jenkins-options
   'cc-addon-jenkins-options.description': `Choose the options you want for your Jenkins add-on.`,
   'cc-addon-jenkins-options.title': `Options for the Jenkins add-on`,
