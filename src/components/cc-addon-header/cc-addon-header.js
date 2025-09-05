@@ -202,7 +202,6 @@ export class CcAddonHeader extends LitElement {
                 </cc-link>
               `
             : ''}
-          <!--          <span class="footer__spacer"></span>-->
         </div>
         <cc-zone slot="footer-right" .state=${zoneState} mode="small-infra"></cc-zone>
       </cc-block>
