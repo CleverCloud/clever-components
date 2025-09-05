@@ -128,10 +128,15 @@ export class CcAddonInfo extends LitElement {
    * Returns the complete the linked service name with the 'app' or 'addon' mention
    *
    * @param {LinkedService} service
+   * @param {boolean} skeleton
    * @return {string|Node}
    * @private
    */
-  _getServiceType(service) {
+  _getServiceType(service, skeleton) {
+    if (skeleton) {
+      return fakeString(15);
+    }
+    
     switch (service.type) {
       case 'app':
         return i18n('cc-addon-info.service.name.app', { name: service.name });
@@ -263,7 +268,7 @@ export class CcAddonInfo extends LitElement {
 
           <div class="section section--billing" ${hasSlottedChildren()}>
             <strong class="heading">${i18n('cc-addon-info.billing.heading')}</strong>
-            <div class="value ${classMap({ skeleton })}">
+            <div class="value">
               <slot name="billing"></slot>
             </div>
           </div>
@@ -272,14 +277,14 @@ export class CcAddonInfo extends LitElement {
             ? html`
                 <div class="section">
                   <strong class="heading">${i18n('cc-addon-info.linked-services.heading')}</strong>
-                  <div class="value linked-services__content ${classMap({ skeleton })}">
+                  <div class="value linked-services__content">
                     <ul>
                       ${this.state.linkedServices.map((service) => {
                         return html`
                           <li class="linked-service__li">
                             <cc-img src="${service.logoUrl}" ?skeleton=${skeleton}></cc-img>
-                            <cc-link href="${service.link}" ?skeleton=${skeleton}>
-                              ${this._getServiceType(service)}
+                            <cc-link href="${service.link}" ?skeleton=${skeleton}
+                              >${this._getServiceType(service, skeleton)}
                             </cc-link>
                           </li>
                         `;
