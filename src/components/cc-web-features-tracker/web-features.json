@@ -15,6 +15,13 @@
       "canBeUsedWithPolyfill": false
     },
     {
+      "featureId": "container-queries",
+      "category": "CSS",
+      "comment": "Applies styles based on the size of a container rather than the viewport. Useful for responsive component design.",
+      "isProgressiveEnhancement": true,
+      "canBeUsedWithPolyfill": false
+    },
+    {
       "featureId": "dialog",
       "category": "HTML",
       "comment": "Represents a modal or non-modal dialog box, such as a confirmation prompt or a subwindow used to enter data.",
