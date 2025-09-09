@@ -23,12 +23,20 @@ const APM_LOGO_URL = 'https://assets.clever-cloud.com/logos/elasticsearch-apm.sv
 export class CcAddonElasticsearchOptions extends LitElement {
   static get properties() {
     return {
+      apmLogoUrl: { type: String, attribute: 'apm-logo-url' },
+      kibanaLogoUrl: { type: String, attribute: 'kibana-logo-url' },
       options: { type: Array },
     };
   }
 
   constructor() {
     super();
+
+    /** @type {string} Sets the APM logo */
+    this.apmLogoUrl = APM_LOGO_URL;
+
+    /** @type {string} Sets the Kibana logo */
+    this.kibanaLogoUrl = KIBANA_LOGO_URL;
 
     /** @type {Array<AddonOption>} List of options for this add-on. */
     this.options = [];
@@ -47,14 +55,14 @@ export class CcAddonElasticsearchOptions extends LitElement {
           title: 'APM',
           warning: i18n('cc-addon-elasticsearch-options.warning.apm'),
           details: i18n('cc-addon-elasticsearch-options.details.apm'),
-          logo: APM_LOGO_URL,
+          logo: this.apmLogoUrl,
         };
       case 'kibana':
         return {
           title: 'Kibana',
           warning: i18n('cc-addon-elasticsearch-options.warning.kibana'),
           details: i18n('cc-addon-elasticsearch-options.details.kibana'),
-          logo: KIBANA_LOGO_URL,
+          logo: this.kibanaLogoUrl,
         };
     }
   }
