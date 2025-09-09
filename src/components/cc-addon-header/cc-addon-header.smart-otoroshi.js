@@ -20,7 +20,7 @@ import './cc-addon-header.js';
  */
 
 defineSmartComponent({
-  selector: 'cc-addon-header[smart-mode=matomo]',
+  selector: 'cc-addon-header[smart-mode=otoroshi]',
   params: {
     apiConfig: { type: Object },
     ownerId: { type: String },
@@ -34,7 +34,7 @@ defineSmartComponent({
     const { apiConfig, ownerId, addonId, productStatus } = context;
     const api = new Api(apiConfig, ownerId, addonId, signal);
     let logsUrl = '';
-    const docName = 'matomo';
+    const docName = 'otoroshi';
 
     updateComponent('state', {
       type: 'loading',
@@ -55,8 +55,8 @@ defineSmartComponent({
     api
       .getAddonWithOperatorAndZone()
       .then(({ rawAddon, operator, zone }) => {
-        const phpAppId = operator.resources.entrypoint;
-        logsUrl = context.logsUrlPattern.replace(':id', phpAppId);
+        const javaAppId = operator.resources.entrypoint;
+        logsUrl = context.logsUrlPattern.replace(':id', javaAppId);
 
         updateComponent('state', {
           type: 'loaded',
@@ -68,7 +68,7 @@ defineSmartComponent({
           logsUrl,
           openLinks: [
             {
-              name: 'MATOMO',
+              name: 'OTOROSHI',
               url: operator.accessUrl,
             },
           ],
@@ -173,7 +173,7 @@ class Api {
    * @return {Promise<RawOperator>}
    */
   getOperator(realId) {
-    return this._getOperator({ provider: 'matomo', realId }).then(
+    return this._getOperator({ provider: 'otoroshi', realId }).then(
       sendToApi({ apiConfig: this._apiConfig, signal: this._signal }),
     );
   }
@@ -197,12 +197,14 @@ class Api {
 
   /** @return {Promise<void>} */
   async restartAddon() {
-    return rebootOperator({ provider: 'matomo', realId: this._realId }).then(sendToApi({ apiConfig: this._apiConfig }));
+    return rebootOperator({ provider: 'otoroshi', realId: this._realId }).then(
+      sendToApi({ apiConfig: this._apiConfig }),
+    );
   }
 
   /** @return {Promise<void>} */
   async rebuildAndRestartAddon() {
-    return rebuildOperator({ provider: 'matomo', realId: this._realId }).then(
+    return rebuildOperator({ provider: 'otoroshi', realId: this._realId }).then(
       sendToApi({ apiConfig: this._apiConfig }),
     );
   }
