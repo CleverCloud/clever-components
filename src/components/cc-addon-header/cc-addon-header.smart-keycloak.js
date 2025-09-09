@@ -34,6 +34,7 @@ defineSmartComponent({
     const { apiConfig, ownerId, addonId, productStatus } = context;
     const api = new Api(apiConfig, ownerId, addonId, signal);
     let logsUrl = '';
+    const docName = 'keycloak';
 
     updateComponent('state', {
       type: 'loading',
@@ -95,7 +96,7 @@ defineSmartComponent({
         .then(() => {
           notify({
             intent: 'success',
-            message: i18n('cc-addon-header.restart.success.message', { logsUrl }),
+            message: i18n('cc-addon-header.restart.success.message', { logsUrl, docName }),
             title: i18n('cc-addon-header.restart.success.title'),
             options: {
               timeout: 0,
@@ -124,7 +125,7 @@ defineSmartComponent({
         .then(() => {
           notify({
             intent: 'success',
-            message: i18n('cc-addon-header.rebuild.success.message', { logsUrl }),
+            message: i18n('cc-addon-header.rebuild.success.message', { logsUrl, docName }),
             title: i18n('cc-addon-header.rebuild.success.title'),
             options: {
               timeout: 0,
