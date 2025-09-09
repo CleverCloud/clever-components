@@ -33,6 +33,10 @@ const MATOMO_DOCUMENTATION = generateDocsHref('/deploy/addon/matomo/');
 export class CcMatomoInfo extends LitElement {
   static get properties() {
     return {
+      matomoLogoUrl: { type: String, attribute: 'matomo-logo-url' },
+      mysqlLogoUrl: { type: String, attribute: 'mysql-logo-url' },
+      phpLogoUrl: { type: String, attribute: 'php-logo-url' },
+      redisLogoUrl: { type: String, attribute: 'redis-logo-url' },
       state: { type: Object },
     };
   }
@@ -42,6 +46,18 @@ export class CcMatomoInfo extends LitElement {
 
     /** @type {MatomoInfoState} Sets the state of the component */
     this.state = { type: 'loading' };
+
+    /** @type {string} Sets the matomo logo */
+    this.matomoLogourl = MATOMO_LOGO_URL;
+
+    /** @type {string} Sets the php logo */
+    this.matomoLogoUrl = PHP_LOGO_URL;
+
+    /** @type {string} Sets the mysql logo */
+    this.mysqlLogoUrl = MYSQL_LOGO_URL;
+
+    /** @type {string} Sets the redis logo */
+    this.redisLogoUrl = REDIS_LOGO_URL;
   }
 
   render() {
@@ -61,7 +77,7 @@ export class CcMatomoInfo extends LitElement {
           <div slot="title">${i18n('cc-matomo-info.open-matomo.title')}</div>
           <div slot="info">${i18n('cc-matomo-info.open-matomo.text')}</div>
           <div>
-            ${this._renderImageLink(MATOMO_LOGO_URL, matomoUrl, i18n('cc-matomo-info.open-matomo.link'), skeleton)}
+            ${this._renderImageLink(this.matomoLogourl, matomoUrl, i18n('cc-matomo-info.open-matomo.link'), skeleton)}
           </div>
         </cc-block-section>
 
@@ -69,9 +85,9 @@ export class CcMatomoInfo extends LitElement {
           <div slot="title">${i18n('cc-matomo-info.about.title')}</div>
           <div slot="info">${i18n('cc-matomo-info.about.text')}</div>
           <div class="application-list">
-            ${this._renderImageLink(PHP_LOGO_URL, phpUrl, i18n('cc-matomo-info.link.php'), skeleton)}
-            ${this._renderImageLink(MYSQL_LOGO_URL, mysqlUrl, i18n('cc-matomo-info.link.mysql'), skeleton)}
-            ${this._renderImageLink(REDIS_LOGO_URL, redisUrl, i18n('cc-matomo-info.link.redis'), skeleton)}
+            ${this._renderImageLink(this.matomoLogoUrl, phpUrl, i18n('cc-matomo-info.link.php'), skeleton)}
+            ${this._renderImageLink(this.mysqlLogoUrl, mysqlUrl, i18n('cc-matomo-info.link.mysql'), skeleton)}
+            ${this._renderImageLink(this.redisLogoUrl, redisUrl, i18n('cc-matomo-info.link.redis'), skeleton)}
           </div>
         </cc-block-section>
 
