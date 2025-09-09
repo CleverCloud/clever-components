@@ -171,7 +171,7 @@ export class CcLink extends LitElement {
                 a11y-name=${i18n('cc-link.new-window.name')}
               ></cc-icon>`
             : ''}
-          ${this.download != null
+          ${this.download != null && this.mode === 'default'
             ? html`<cc-icon
                 .icon=${iconRemixDownloadLine}
                 a11y-name=${i18n('cc-link.download.icon-a11y-name')}
