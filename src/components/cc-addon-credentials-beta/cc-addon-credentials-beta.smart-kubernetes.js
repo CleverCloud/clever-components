@@ -5,7 +5,6 @@ import '../cc-smart-container/cc-smart-container.js';
 import { get as getAddon } from '@clevercloud/client/esm/api/v2/addon.js';
 import { render } from 'lit';
 import { notifyError, notifySuccess } from '../../lib/notifications.js';
-import { cliCommandsStyles } from '../../styles/cli-commands.js';
 import { ccAddonCredentialsBetaKubernetes } from '../../templates/cc-addon-credentials-beta-kubernetes/cc-addon-credentials-beta-kubernetes.js';
 import { i18n } from '../../translations/translation.js';
 import './cc-addon-credentials-beta.js';
@@ -55,7 +54,6 @@ defineSmartComponent({
     const { apiConfig, addonId, ownerId } = context;
     const api = new Api({ apiConfig, ownerId, addonId, signal });
     render(ccAddonCredentialsBetaKubernetes(), component);
-    component.shadowRoot.adoptedStyleSheets.push(cliCommandsStyles.styleSheet);
 
     /** @param {AddonCredentialNg|((param: AddonCredentialNg) => AddonCredential)} newNgInfoOrCallback */
     function updateNg(newNgInfoOrCallback) {

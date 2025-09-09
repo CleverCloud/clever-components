@@ -6,6 +6,7 @@ import '../../components/cc-icon/cc-icon.js';
 import '../../components/cc-link/cc-link.js';
 import { i18n } from '../../translations/translation.js';
 
+// eslint-disable lit/prefer-static-styles
 export const ccAddonCredentialsBetaKubernetes = () => html`
   <cc-block-details slot="footer-credentials">
     <div slot="button-text">${i18n('cc-block-details.cli.text')}</div>
