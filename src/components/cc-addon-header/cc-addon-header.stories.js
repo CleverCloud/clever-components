@@ -4,6 +4,7 @@ import {
   elasticData,
   jenkinsData,
   keycloakData,
+  kubernetesData,
   materiaData,
   matomoData,
   pulsarData,
@@ -225,6 +226,98 @@ export const withLongProductStatus = makeStory(conf, {
           rebuildAndRestart: true,
         },
         productStatus: fakeString(10),
+      },
+    },
+  ],
+});
+
+export const deploymentStatusWithDeployingState = makeStory(conf, {
+  items: [
+    {
+      /** @type {CcAddonHeaderStateLoaded} */
+      state: {
+        type: 'loaded',
+        ...kubernetesData,
+        deploymentStatus: 'deploying',
+      },
+    },
+    {
+      /** @type {CcAddonHeaderStateLoading} */
+      state: {
+        type: 'loading',
+        openLinks: [
+          {
+            url: fakeString(15),
+            name: fakeString(5),
+          },
+        ],
+        actions: {
+          restart: true,
+          rebuildAndRestart: true,
+        },
+        productStatus: fakeString(10),
+        deploymentStatus: 'deploying',
+      },
+    },
+  ],
+});
+
+export const deploymentStatusWithActiveState = makeStory(conf, {
+  items: [
+    {
+      /** @type {CcAddonHeaderStateLoaded} */
+      state: {
+        type: 'loaded',
+        ...kubernetesData,
+      },
+    },
+    {
+      /** @type {CcAddonHeaderStateLoading} */
+      state: {
+        type: 'loading',
+        openLinks: [
+          {
+            url: fakeString(15),
+            name: fakeString(5),
+          },
+        ],
+        actions: {
+          restart: true,
+          rebuildAndRestart: true,
+        },
+        productStatus: fakeString(10),
+        deploymentStatus: 'active',
+      },
+    },
+  ],
+});
+
+export const deploymentStatusWithFailedState = makeStory(conf, {
+  items: [
+    {
+      /** @type {CcAddonHeaderStateLoaded} */
+      state: {
+        type: 'loaded',
+        ...kubernetesData,
+        deploymentStatus: 'failed',
+      },
+    },
+    {
+      /** @type {CcAddonHeaderStateLoading} */
+      state: {
+        type: 'loading',
+        openLinks: [
+          {
+            url: fakeString(15),
+            name: fakeString(5),
+          },
+        ],
+        actions: {
+          restart: true,
+          rebuildAndRestart: true,
+        },
+        productStatus: fakeString(10),
+        deploymentStatus: 'failed',
       },
     },
   ],
