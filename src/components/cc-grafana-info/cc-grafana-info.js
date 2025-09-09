@@ -29,6 +29,10 @@ const GRAFANA_DOCUMENTATION = generateDocsHref('/metrics');
 export class CcGrafanaInfo extends LitElement {
   static get properties() {
     return {
+      grafanaAddonScreenUrl: { type: String, attribute: 'grafana-addon-screen-url' },
+      grafanaHomeScreenUrl: { type: String, attribute: 'grafana-home-screen-url' },
+      grafanaLogoUrl: { type: String, attribute: 'grafana-logo-url' },
+      grafanaRuntimeScreenUrl: { type: String, attribute: 'grafana-runtime-screen-url' },
       state: { type: Object },
     };
   }
@@ -38,25 +42,37 @@ export class CcGrafanaInfo extends LitElement {
 
     /** @type {GrafanaInfoState} Sets the grafana info state. */
     this.state = { type: 'loading' };
+
+    /** @type {string} Sets the grafana logo */
+    this.grafanaLogoUrl = GRAFANA_LOGO_URL;
+
+    /** @type {string} Sets the grafana home screen URL */
+    this.grafanaHomeScreenUrl = GRAFANA_HOME_SCREEN;
+
+    /** @type {string} Sets the grafana runtime screen URL */
+    this.grafanaRuntimeScreenUrl = GRAFANA_RUNTIME_SCREEN;
+
+    /** @type {string} Sets the grafana addon screen URL */
+    this.grafanaAddonScreenUrl = GRAFANA_ADDON_SCREEN;
   }
 
   _getDashboards() {
     return [
       {
         title: i18n('cc-grafana-info.screenshot.organisation.title'),
-        url: GRAFANA_HOME_SCREEN,
+        url: this.grafanaHomeScreenUrl,
         description: i18n('cc-grafana-info.screenshot.organisation.description'),
         alt: i18n('cc-grafana-info.screenshot.organisation.alt'),
       },
       {
         title: i18n('cc-grafana-info.screenshot.runtime.title'),
-        url: GRAFANA_RUNTIME_SCREEN,
+        url: this.grafanaRuntimeScreenUrl,
         description: i18n('cc-grafana-info.screenshot.runtime.description'),
         alt: i18n('cc-grafana-info.screenshot.runtime.alt'),
       },
       {
         title: i18n('cc-grafana-info.screenshot.addon.title'),
-        url: GRAFANA_ADDON_SCREEN,
+        url: this.grafanaAddonScreenUrl,
         description: i18n('cc-grafana-info.screenshot.addon.description'),
         alt: i18n('cc-grafana-info.screenshot.addon.alt'),
       },
@@ -152,7 +168,7 @@ export class CcGrafanaInfo extends LitElement {
                     `
                   : html`
                       <div>
-                        <cc-link href="${this.state.info.link}" image="${GRAFANA_LOGO_URL}">
+                        <cc-link href="${this.state.info.link}" image="${this.grafanaLogoUrl}">
                           <span>${i18n('cc-grafana-info.link.grafana')}</span>
                         </cc-link>
                       </div>
