@@ -9,7 +9,7 @@ import '../cc-icon/cc-icon.js';
 import '../cc-link/cc-link.js';
 import '../cc-notice/cc-notice.js';
 
-const ELASTICSEARCH_LOGO_URL = 'https://assets.clever-cloud.com/logos/elastic.svg';
+const ELASTIC_LOGO_URL = 'https://assets.clever-cloud.com/logos/elastic.svg';
 const KIBANA_LOGO_URL = 'https://assets.clever-cloud.com/logos/elasticsearch-kibana.svg';
 const APM_LOGO_URL = 'https://assets.clever-cloud.com/logos/elasticsearch-apm.svg';
 const ELASTICSEARCH_DOCUMENTATION = generateDocsHref('/addons/elastic/');
@@ -37,6 +37,9 @@ const linksSortOrder = ['elasticsearch', 'kibana', 'apm'];
 export class CcElasticsearchInfo extends LitElement {
   static get properties() {
     return {
+      apmLogoUrl: { type: String, attribute: 'apm-logo-url' },
+      elasticLogoUrl: { type: String, attribute: 'elastic-logo-url' },
+      kibanaLogoUrl: { type: String, attribute: 'kibana-logo-url' },
       state: { type: Object },
     };
   }
@@ -49,6 +52,15 @@ export class CcElasticsearchInfo extends LitElement {
       type: 'loading',
       links: [{ type: 'elasticsearch' }, { type: 'kibana' }, { type: 'apm' }],
     };
+
+    /** @type {string} Sets the Elastic logo */
+    this.elasticLogoUrl = ELASTIC_LOGO_URL;
+
+    /** @type {string} Sets the Kibana logo */
+    this.kibanaLogoUrl = KIBANA_LOGO_URL;
+
+    /** @type {string} Sets the APM logo */
+    this.apmLogoUrl = APM_LOGO_URL;
   }
 
   /**
@@ -75,11 +87,11 @@ export class CcElasticsearchInfo extends LitElement {
   _getLogo(linkType) {
     switch (linkType) {
       case 'elasticsearch':
-        return ELASTICSEARCH_LOGO_URL;
+        return this.elasticLogoUrl;
       case 'kibana':
-        return KIBANA_LOGO_URL;
+        return this.kibanaLogoUrl;
       case 'apm':
-        return APM_LOGO_URL;
+        return this.apmLogoUrl;
     }
   }
 
