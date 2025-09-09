@@ -165,3 +165,22 @@ export const redisData = {
   },
   deploymentStatus: 'active'
 };
+
+/** @type {Addon} */
+export const kubernetesData = {
+  providerName: 'Kubernetes',
+  providerLogoUrl: 'https://img.icons8.com/?size=100&id=cvzmaEA4kC0o&format=png&color=000000',
+  name: 'my-kubernetes',
+  id: 'kubernetes_807d9f82-242b-4cd9-ac9f-96c73c1d074f',
+  zone: {
+    type: 'loaded',
+    ...ZONE,
+  },
+  configLink: 'https://example.com/kubeconfig.json',
+  actions: {
+    restart: true,
+    rebuildAndRestart: true,
+  },
+  productStatus: 'Alpha',
+  deploymentStatus: 'active'
+};
