@@ -25,6 +25,7 @@ const JENKINS_DOCUMENTATION = generateDocsHref('/deploy/addon/jenkins/');
 export class CcJenkinsInfo extends LitElement {
   static get properties() {
     return {
+      jenkinsLogoUrl: { type: String, attribute: 'jenkins-logo-url' },
       state: { type: Object },
     };
   }
@@ -34,6 +35,9 @@ export class CcJenkinsInfo extends LitElement {
 
     /** @type {JenkinsInfoState} Sets the Jenkins info state. */
     this.state = { type: 'loading' };
+
+    /** @type {string} Sets the Jenkins logo */
+    this.jenkinsLogoUrl = JENKINS_LOGO_URL;
   }
 
   render() {
@@ -56,7 +60,7 @@ export class CcJenkinsInfo extends LitElement {
           <div slot="title">${i18n('cc-jenkins-info.open-jenkins.title')}</div>
           <div slot="info">${i18n('cc-jenkins-info.open-jenkins.text')}</div>
           <div class="one-line-form">
-            <cc-link href="${jenkinsLink}" image="${JENKINS_LOGO_URL}" ?skeleton=${skeleton}>
+            <cc-link href="${jenkinsLink}" image="${this.jenkinsLogoUrl}" ?skeleton=${skeleton}>
               <span>${i18n('cc-jenkins-info.open-jenkins.link')}</span>
             </cc-link>
           </div>
