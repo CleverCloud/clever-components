@@ -34,6 +34,7 @@ const HEPTAPOD_LOGO_URL = 'https://assets.clever-cloud.com/logos/heptapod.svg';
 export class CcHeptapodInfo extends LitElement {
   static get properties() {
     return {
+      heptapodLogoUrl: { type: String, attribute: 'heptapod-logo-url' },
       state: { type: Object },
     };
   }
@@ -43,6 +44,9 @@ export class CcHeptapodInfo extends LitElement {
 
     /** @type {HeptapodInfoState} Set the state of the component. */
     this.state = { type: 'loading' };
+
+    /** @type {string} Sets the heptapod logo in the header */
+    this.heptapodLogoUrl = HEPTAPOD_LOGO_URL;
   }
 
   render() {
@@ -50,7 +54,7 @@ export class CcHeptapodInfo extends LitElement {
       <cc-block>
         <div slot="header-title">Heptapod</div>
         <div slot="content" class="header">
-          <img class="header-logo" src=${HEPTAPOD_LOGO_URL} alt="heptapod logo" title="heptapod logo" />
+          <img class="header-logo" src=${this.heptapodLogoUrl} alt="heptapod logo" title="heptapod logo" />
           <div class="header-content">
             <div>Heptapod</div>
             <div><cc-link href="https://heptapod.host">https://heptapod.host</cc-link></div>
