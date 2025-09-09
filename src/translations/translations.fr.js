@@ -264,12 +264,18 @@ export const translations = {
   'cc-addon-header.error': `Une erreur est survenue pendant le chargement des informations de l'add-on.`,
   'cc-addon-header.logs.link': `Voir les logs`,
   'cc-addon-header.rebuild.error': `Une erreur est survenue pendant le re-build de l'add-on.`,
-  'cc-addon-header.rebuild.success.message': /** @param {{logsUrl: string}} _*/ ({ logsUrl }) =>
-    sanitize`Le processus de re-build et de redémarrage de votre add-on et de ses services associés est en cours.  Consultez les <cc-link href="${logsUrl}">logs</cc-link> ou la <cc-link href="${generateDocsHref('/addons/keycloak/')}">documentation</cc-link> pour plus d'informations.`,
+  'cc-addon-header.rebuild.success.message': /** @param {{logsUrl: string, docsUrl: string}} _ */ ({
+    logsUrl,
+    docsUrl,
+  }) =>
+    sanitize`Le processus de re-build et de redémarrage de votre add-on et de ses services associés est en cours.  Consultez les <cc-link href="${logsUrl}">logs</cc-link> ou la <cc-link href=${docsUrl}>documentation</cc-link> pour plus d'informations.`,
   'cc-addon-header.rebuild.success.title': `Re-build et redémarrage en cours`,
   'cc-addon-header.restart.error': `Une erreur est survenue pendant le redémarrage de l'add-on.`,
-  'cc-addon-header.restart.success.message': /** @param {{logsUrl: string}} _*/ ({ logsUrl }) =>
-    sanitize`Le processus de redémarrage de votre add-on et de ses services associés est en cours. Consultez les <cc-link href="${logsUrl}">logs</cc-link> ou la <cc-link href="${generateDocsHref('/addons/keycloak/')}">documentation</cc-link> pour plus d'informations.`,
+  'cc-addon-header.restart.success.message': /** @param {{logsUrl: string, docsUrl: string}} _ */ ({
+    logsUrl,
+    docsUrl,
+  }) =>
+    sanitize`Le processus de redémarrage de votre add-on et de ses services associés est en cours. Consultez les <cc-link href="${logsUrl}">logs</cc-link> ou la <cc-link href=${docsUrl}>documentation</cc-link> pour plus d'informations.`,
   'cc-addon-header.restart.success.title': `Redémarrage en cours`,
   'cc-addon-header.state-msg.deployment-failed': `Le déploiement de l'add-on a échoué.`,
   'cc-addon-header.state-msg.deployment-is-active': `Votre add-on est disponible !`,
