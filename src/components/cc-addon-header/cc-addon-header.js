@@ -150,6 +150,13 @@ export class CcAddonHeader extends LitElement {
                 </cc-link>
               `,
             )}
+            ${!isStringEmpty(addonInfo.configLink)
+              ? html`
+                  <cc-link mode="button" href="${addonInfo.configLink}" ?skeleton=${skeleton} download
+                    >${i18n('cc-addon-header.action.get-config')}
+                  </cc-link>
+                `
+              : ''}
             ${addonInfo.actions?.restart === true
               ? html`
                   <cc-button

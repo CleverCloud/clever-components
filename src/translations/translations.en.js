@@ -246,6 +246,7 @@ export const translations = {
   'cc-addon-features.title': `Features`,
   //#endregion
   //#region cc-addon-header
+  'cc-addon-header.action.get-config': `Get Kubeconfig`,
   'cc-addon-header.action.open-addon': /** @param {{ linkName: string }} _ */ ({ linkName }) => `Open ${linkName}`,
   'cc-addon-header.action.restart': `Restart`,
   'cc-addon-header.action.restart-rebuild': `Re-build and restart`,
@@ -259,7 +260,7 @@ export const translations = {
   'cc-addon-header.restart.success.message': /** @param {{logsUrl: string}} _*/ ({ logsUrl }) =>
     sanitize`The process of restarting your add-on and its linked services is in progress. See the <cc-link href="${logsUrl}">logs</cc-link> or the <cc-link href="${generateDocsHref('/addons/keycloak/')}">documentation</cc-link> for more information.`,
   'cc-addon-header.restart.success.title': `Restart in progress`,
-  'cc-addon-header.state-msg.deployment-failed': `The deployement failed.`,
+  'cc-addon-header.state-msg.deployment-failed': `The deployment has failed`,
   'cc-addon-header.state-msg.deployment-is-active': `Your add-on is active!`,
   'cc-addon-header.state-msg.deployment-is-deploying': `Your add-on is deploying…`,
   'cc-addon-header.state-msg.unknown-state': `Unknown state, try to restart the add-on or contact our support if you have additional questions.`,
