@@ -1,6 +1,7 @@
 import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { iconRemixInformationFill as iconInfo } from '../../assets/cc-remix.icons.js';
+import { getAssetUrl } from '../../lib/assets-url.js';
 import { generateDocsHref } from '../../lib/utils.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
 import { i18n } from '../../translations/translation.js';
@@ -17,7 +18,7 @@ const SKELETON_STATISTICS = {
 };
 
 const HEPTAPOD_DOCUMENTATION = generateDocsHref('/addons/heptapod/');
-const HEPTAPOD_LOGO_URL = 'https://assets.clever-cloud.com/logos/heptapod.svg';
+const HEPTAPOD_LOGO_URL = getAssetUrl('/logos/heptapod.svg');
 
 /**
  * @typedef {import('./cc-heptapod-info.types.js').Statistics} Statistics
