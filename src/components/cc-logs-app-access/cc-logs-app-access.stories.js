@@ -29,7 +29,7 @@ const d = new Date();
 const IPS = ['192.168.12.1', '192.168.48.157', '192.85.8.63'];
 const LOCATIONS = ['|', 'FR|Paris', 'GB|London', 'FR|Nantes', 'FR|Brive-la-Gaillarde'];
 const ENDPOINTS = ['GET|/ping', 'GET|/orga/12', 'POST|/orga', 'GET|/profile', 'PUT|/profile'];
-const STATUS = ['100', '200', '301', '404', '500'];
+const STATUS = ['100', '200', '301', '404', '500', '1512'];
 
 /**
  * @param {number} index

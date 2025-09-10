@@ -37,6 +37,9 @@ const CUSTOM_METADATA_RENDERERS = {
      */
     function getIntent() {
       const statusCode = Number(metadata.value);
+      if (statusCode >= 600) {
+        return 'neutral';
+      }
       if (statusCode >= 500) {
         return 'danger';
       }
@@ -55,7 +58,7 @@ const CUSTOM_METADATA_RENDERERS = {
 
     return {
       intent: getIntent(),
-      text: metadata.value,
+      size: 3,
     };
   },
 };
