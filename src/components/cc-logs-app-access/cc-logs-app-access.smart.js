@@ -175,8 +175,8 @@ function convertLog(log) {
     message: http.request.path,
     metadata: [
       { name: 'ip', value: source.ip },
-      { name: 'country', value: source.countryCode ?? '??' },
-      { name: 'city', value: source.city ?? '??' },
+      { name: 'country', value: source.countryCode ?? '' },
+      { name: 'city', value: source.city ?? '' },
       { name: 'method', value: http.request.method },
       { name: 'status', value: http.response.statusCode },
     ],
