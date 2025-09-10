@@ -1,5 +1,6 @@
 import { css, html, LitElement } from 'lit';
 import { iconRemixInformationFill as iconInfo } from '../../assets/cc-remix.icons.js';
+import { getAssetUrl } from '../../lib/assets-url.js';
 import { generateDocsHref } from '../../lib/utils.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
 import { i18n } from '../../translations/translation.js';
@@ -13,10 +14,10 @@ import '../cc-notice/cc-notice.js';
 /** @type {{ [key: string]: null }} */
 const SKELETON_INFO = { matomoUrl: null, phpUrl: null, mysqlUrl: null, redisUrl: null };
 
-const MATOMO_LOGO_URL = 'https://assets.clever-cloud.com/logos/matomo.svg';
-const PHP_LOGO_URL = 'https://assets.clever-cloud.com/logos/php.svg';
-const MYSQL_LOGO_URL = 'https://assets.clever-cloud.com/logos/mysql.svg';
-const REDIS_LOGO_URL = 'https://assets.clever-cloud.com/logos/redis.svg';
+const MATOMO_LOGO_URL = getAssetUrl('/logos/matomo.svg');
+const PHP_LOGO_URL = getAssetUrl('/logos/php.svg');
+const MYSQL_LOGO_URL = getAssetUrl('/logos/mysql.svg');
+const REDIS_LOGO_URL = getAssetUrl('/logos/redis.svg');
 const MATOMO_DOCUMENTATION = generateDocsHref('/deploy/addon/matomo/');
 
 /**
