@@ -1,3 +1,4 @@
+import { getAssetUrl } from '../../lib/assets-url.js';
 import { shiftDateField } from '../../lib/date/date-utils.js';
 import { makeStory, storyWait } from '../../stories/lib/make-story.js';
 import './cc-token-oauth-list.js';
@@ -28,7 +29,7 @@ const baseTokens = [
     creationDate: shiftDateField(NOW, 'D', -180),
     expirationDate: shiftDateField(NOW, 'D', 32), // does not expire soon (32 days)
     lastUsedDate: shiftDateField(NOW, 'D', -30),
-    imageUrl: 'https://assets.clever-cloud.com/logos/clever-tools.svg',
+    imageUrl: getAssetUrl('/logos/clever-tools.svg'),
   },
   {
     type: 'idle',
@@ -37,7 +38,7 @@ const baseTokens = [
     creationDate: shiftDateField(NOW, 'D', -90),
     expirationDate: shiftDateField(NOW, 'D', 45), // does not expire soon (45 days)
     lastUsedDate: shiftDateField(NOW, 'D', -7),
-    imageUrl: 'https://assets.clever-cloud.com/logos/matomo.svg',
+    imageUrl: getAssetUrl('/logos/matomo.svg'),
   },
   {
     type: 'idle',
@@ -46,7 +47,7 @@ const baseTokens = [
     creationDate: shiftDateField(NOW, 'D', -240),
     expirationDate: shiftDateField(NOW, 'D', 6), // expires soon (6 days)
     lastUsedDate: shiftDateField(NOW, 'D', -10),
-    imageUrl: 'https://assets.clever-cloud.com/logos/grafana.svg',
+    imageUrl: getAssetUrl('/logos/grafana.svg'),
   },
   {
     type: 'idle',
@@ -55,7 +56,7 @@ const baseTokens = [
     creationDate: shiftDateField(NOW, 'D', -30),
     expirationDate: shiftDateField(NOW, 'D', 2), // expires soon (2 days)
     lastUsedDate: shiftDateField(NOW, 'D', -2),
-    imageUrl: 'https://assets.clever-cloud.com/login-assets/img/logo.svg',
+    imageUrl: getAssetUrl('/login-assets/img/logo.svg'),
   },
   {
     type: 'idle',
@@ -64,7 +65,7 @@ const baseTokens = [
     creationDate: shiftDateField(NOW, 'D', -30),
     expirationDate: shiftDateField(NOW, 'D', 2), // expires soon (2 days)
     lastUsedDate: shiftDateField(NOW, 'D', -2),
-    imageUrl: 'https://assets.clever-cloud.com/logos/clever-tools.svg',
+    imageUrl: getAssetUrl('/logos/clever-tools.svg'),
   },
 ];
 

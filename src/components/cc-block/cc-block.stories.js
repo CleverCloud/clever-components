@@ -1,4 +1,5 @@
 import { iconRemixInformationFill as iconInfo } from '../../assets/cc-remix.icons.js';
+import { getAssetUrl } from '../../lib/assets-url.js';
 import { makeStory } from '../../stories/lib/make-story.js';
 import '../cc-button/cc-button.js';
 import '../cc-input-text/cc-input-text.js';
@@ -38,7 +39,7 @@ export const image = makeStory(conf, {
   /** @type {Array<Partial<CcBlock>>} */
   items: [
     {
-      image: 'https://assets.clever-cloud.com/logos/nodejs.svg',
+      image: getAssetUrl('/logos/nodejs.svg'),
       innerHTML: htmlExample,
     },
   ],
@@ -49,7 +50,7 @@ export const imageSlotted = makeStory(conf, {
   items: [
     {
       innerHTML: `
-      <img slot="header-icon" src="https://assets.clever-cloud.com/logos/nodejs.svg" alt="Nodejs logo">
+      <img slot="header-icon" src="${getAssetUrl('/logos/nodejs.svg')}" alt="Nodejs logo">
       <div slot="header-title">This is my block</div>
       <div slot="content">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque feugiat dui at leo porta dignissim. Etiam ut purus ultrices, pulvinar tellus quis, cursus massa. Mauris dignissim accumsan ex, at vestibulum lectus fermentum id. Quisque nec magna arcu. Quisque in metus sed erat sodales euismod eget id purus. Sed sagittis rhoncus mauris. Ut sit amet urna ac nunc semper porta. Nam ut felis eu velit luctus rutrum. Nam leo nisl, molestie a varius non, ullamcorper sit amet tortor. Donec in convallis ex. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Praesent hendrerit venenatis erat, eu malesuada nulla viverra eu. Curabitur porta risus augue, non rutrum lectus hendrerit a.</div>
       <div slot="content">Sed volutpat dolor nec rutrum vulputate. Interdum et malesuada fames ac ante ipsum primis in faucibus. Integer rhoncus turpis orci, at tempor tortor scelerisque varius. Integer nec fermentum dui. Integer vitae dolor sit amet erat ullamcorper elementum. Donec blandit lacinia erat, vitae blandit libero ornare id. In luctus odio a lacus dignissim, id posuere tortor lacinia. Pellentesque sed massa ac tellus tincidunt rutrum. Praesent commodo enim nibh, ut consectetur tortor consequat non. Aliquam mi enim, mattis eu velit quis, sollicitudin fringilla ex. Donec at augue ultrices, porta justo in, mattis tortor. Nunc sollicitudin nisi eget urna condimentum semper. Pellentesque sagittis quam eu mollis viverra. Proin tincidunt auctor nibh quis suscipit.</div>
@@ -89,7 +90,7 @@ If you set both \`image\` and \`icon\` properties, the \`image\` property will b
   /** @type {Array<Partial<CcBlock>>} */
   items: [
     {
-      image: 'https://assets.clever-cloud.com/logos/nodejs.svg',
+      image: getAssetUrl('/logos/nodejs.svg'),
       icon: iconInfo,
       innerHTML: htmlExample,
     },
@@ -173,7 +174,7 @@ export const imageAndOpen = makeStory(conf, {
   /** @type {Array<Partial<CcBlock>>} */
   items: [
     {
-      image: 'https://assets.clever-cloud.com/logos/nodejs.svg',
+      image: getAssetUrl('/logos/nodejs.svg'),
       innerHTML: htmlExample,
       toggle: 'open',
     },

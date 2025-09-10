@@ -1,4 +1,5 @@
 import { iconRemixShieldKeyholeFill as iconEncryptionAtRest } from '../../assets/cc-remix.icons.js';
+import { getAssetUrl } from '../../lib/assets-url.js';
 import { makeStory } from '../../stories/lib/make-story.js';
 
 export default {
@@ -19,7 +20,7 @@ Donec rutrum ante vel dolor bibendum, eu pretium velit gravida</div>
 
 const optionExample = {
   heading: 'My Option',
-  logo: 'https://assets.clever-cloud.com/logos/elasticsearch-kibana.svg',
+  logo: getAssetUrl('/logos/elasticsearch-kibana.svg'),
 };
 
 const conf = {

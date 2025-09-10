@@ -1,3 +1,4 @@
+import { getAssetUrl } from '../../lib/assets-url.js';
 import { makeStory, storyWait } from '../../stories/lib/make-story.js';
 import './cc-oauth-consumer-form.js';
 
@@ -17,7 +18,7 @@ const NEW_OAUTH_CONSUMER = {
   url: 'https://www.example.com/home',
   baseUrl: 'https://www.example.com',
   description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit.',
-  picture: 'https://assets.clever-cloud.com/infra/clever-cloud-square.svg',
+  picture: getAssetUrl('/infra/clever-cloud-square.svg'),
   rights: {
     almighty: false,
     accessOrganisations: true,
@@ -55,7 +56,7 @@ const oAuthConsumerData = {
   url: 'https://www.example.com/home',
   baseUrl: 'https://www.example.com',
   description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit.',
-  picture: 'https://assets.clever-cloud.com/infra/clever-cloud-square.svg',
+  picture: getAssetUrl('/infra/clever-cloud-square.svg'),
   rights: {
     almighty: false,
     accessOrganisations: true,

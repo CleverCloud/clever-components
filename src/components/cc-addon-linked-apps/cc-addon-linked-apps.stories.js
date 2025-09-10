@@ -1,3 +1,4 @@
+import { getAssetUrl } from '../../lib/assets-url.js';
 import { makeStory, storyWait } from '../../stories/lib/make-story.js';
 import './cc-addon-linked-apps.smart.js';
 
@@ -50,28 +51,28 @@ const linkedApplications = [
     name: 'My Node JS Prod Application',
     link: '/organisations/uuid_foo/applications/uuid_bar',
     variantName: 'Node',
-    variantLogoUrl: 'https://assets.clever-cloud.com/logos/nodejs.svg',
+    variantLogoUrl: getAssetUrl('/logos/nodejs.svg'),
     zone: ZONE_PAR,
   },
   {
     name: 'My Awesome Java app for my API',
     link: '/organisations/uuid_foo/applications/uuid_bar',
     variantName: 'Java + Maven',
-    variantLogoUrl: 'https://assets.clever-cloud.com/logos/maven.svg',
+    variantLogoUrl: getAssetUrl('/logos/maven.svg'),
     zone: ZONE_PAR,
   },
   {
     name: 'My Dev PHP frontend',
     link: '/organisations/uuid_foo/applications/uuid_bar',
     variantName: 'PHP',
-    variantLogoUrl: 'https://assets.clever-cloud.com/logos/php.svg',
+    variantLogoUrl: getAssetUrl('/logos/php.svg'),
     zone: ZONE_MTL,
   },
   {
     name: 'My Awesome Scala API',
     link: '/organisations/uuid_foo/applications/uuid_bar',
     variantName: 'Scala + SBT',
-    variantLogoUrl: 'https://assets.clever-cloud.com/logos/scala.svg',
+    variantLogoUrl: getAssetUrl('/logos/scala.svg'),
     zone: ZONE_MTL,
   },
 ];

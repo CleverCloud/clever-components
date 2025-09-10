@@ -1,3 +1,4 @@
+import { getAssetUrl } from '../../lib/assets-url.js';
 import { ZONE } from '../../stories/fixtures/zones.js';
 import { makeStory, storyWait } from '../../stories/lib/make-story.js';
 import './cc-header-addon.js';
@@ -34,7 +35,7 @@ const addonStateLoaded = {
   name: 'Awesome addon (PROD)',
   provider: {
     name: 'PostgreSQL Addon',
-    logoUrl: 'https://assets.clever-cloud.com/logos/pgsql.svg',
+    logoUrl: getAssetUrl('/logos/pgsql.svg'),
   },
   plan: {
     name: 'XS_SML',
@@ -53,7 +54,7 @@ const addonConfigStateLoaded = {
   name: 'My config add-on',
   provider: {
     name: 'Configuration provider',
-    logoUrl: 'https://assets.clever-cloud.com/logos/configprovider.svg',
+    logoUrl: getAssetUrl('/logos/configprovider.svg'),
   },
   plan: {
     name: 'Standard',

@@ -1,5 +1,6 @@
 import { html } from 'lit';
 import { iconRemixAlertFill as iconAlert } from '../../assets/cc-remix.icons.js';
+import { getAssetUrl } from '../../lib/assets-url.js';
 import { makeStory } from '../../stories/lib/make-story.js';
 import './cc-addon-option-form.js';
 
@@ -26,14 +27,14 @@ export default {
 const optionsExamples = [
   {
     title: 'Kibana',
-    logo: 'https://assets.clever-cloud.com/logos/elasticsearch-kibana.svg',
+    logo: getAssetUrl('/logos/elasticsearch-kibana.svg'),
     description: htmlExample,
     enabled: false,
     name: 'kibana',
   },
   {
     title: 'APM',
-    logo: 'https://assets.clever-cloud.com/logos/elasticsearch-apm.svg',
+    logo: getAssetUrl('/logos/elasticsearch-apm.svg'),
     description: htmlExample,
     enabled: true,
     name: 'apm',
