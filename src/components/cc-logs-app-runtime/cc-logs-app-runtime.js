@@ -22,19 +22,9 @@ const CUSTOM_METADATA_RENDERERS = {
       hidden: true,
     };
   },
-  instance: (metadata) => {
-    const size = 18;
-
-    let value = metadata.value;
-    if (metadata.value.length > size) {
-      value = metadata.value.substring(0, size - 1) + '.';
-    }
-
-    return {
-      strong: true,
-      text: value,
-      size: size,
-    };
+  instance: {
+    strong: true,
+    size: 18,
   },
 };
 
