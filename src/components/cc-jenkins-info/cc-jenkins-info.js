@@ -1,5 +1,6 @@
 import { css, html, LitElement } from 'lit';
 import { iconRemixInformationFill as iconInfo } from '../../assets/cc-remix.icons.js';
+import { getAssetUrl } from '../../lib/assets-url.js';
 import { generateDocsHref } from '../../lib/utils.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
 import { i18n } from '../../translations/translation.js';
@@ -10,7 +11,7 @@ import '../cc-img/cc-img.js';
 import '../cc-link/cc-link.js';
 import '../cc-notice/cc-notice.js';
 
-const JENKINS_LOGO_URL = 'https://assets.clever-cloud.com/logos/jenkins.svg';
+const JENKINS_LOGO_URL = getAssetUrl('/logos/jenkins.svg');
 const JENKINS_DOCUMENTATION = generateDocsHref('/deploy/addon/jenkins/');
 
 /**
