@@ -1,11 +1,12 @@
 import { css, html, LitElement } from 'lit';
 import { iconRemixAlertFill as iconAlert } from '../../assets/cc-remix.icons.js';
+import { getAssetUrl } from '../../lib/assets-url.js';
 import { ccAddonEncryptionAtRestOption } from '../../templates/cc-addon-encryption-at-rest-option/cc-addon-encryption-at-rest-option.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-addon-option-form/cc-addon-option-form.js';
 
-const KIBANA_LOGO_URL = 'https://assets.clever-cloud.com/logos/elasticsearch-kibana.svg';
-const APM_LOGO_URL = 'https://assets.clever-cloud.com/logos/elasticsearch-apm.svg';
+const KIBANA_LOGO_URL = getAssetUrl('/logos/elasticsearch-kibana.svg');
+const APM_LOGO_URL = getAssetUrl('/logos/elasticsearch-apm.svg');
 
 /**
  * @typedef {import('../common.types.js').AddonOption} AddonOption
