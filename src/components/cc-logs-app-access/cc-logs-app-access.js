@@ -22,18 +22,8 @@ const CUSTOM_METADATA_RENDERERS = {
   country: {
     size: 2,
   },
-  city: (metadata) => {
-    const size = 12;
-
-    let value = metadata.value;
-    if (metadata.value.length > size) {
-      value = metadata.value.substring(0, size - 1) + '\u2026';
-    }
-
-    return {
-      text: value,
-      size: size,
-    };
+  city: {
+    size: 12,
   },
   method: (metadata) => {
     return {

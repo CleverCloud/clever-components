@@ -13,7 +13,7 @@ import defaultPalette from '../../lib/ansi/palettes/default.js';
 import { copyToClipboard, prepareLinesOfCodeForClipboard } from '../../lib/clipboard.js';
 import { hasClass } from '../../lib/dom.js';
 import { notifySuccess } from '../../lib/notifications.js';
-import { isStringEmpty } from '../../lib/utils.js';
+import { isStringEmpty, truncateString } from '../../lib/utils.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-badge/cc-badge.js';
 import '../cc-button/cc-button.js';
@@ -954,6 +954,7 @@ export class CcLogs extends LitElement {
 
     const text = this._getMetadataText(metadata, metadataRendering);
     const size = metadataRendering.size ?? 0;
+    const truncatedText = typeof size === 'number' && size > 0 ? truncateString(text, size) : text;
     const classInfo = {
       metadata: true,
       strong: metadataRendering.strong,
@@ -961,7 +962,7 @@ export class CcLogs extends LitElement {
     };
 
     // Keep this in one line to avoid any extra whitespace.
-    return html`<span class="${classMap(classInfo)}" style="min-width: ${size}ch;">${text}</span>`;
+    return html`<span class="${classMap(classInfo)}" style="min-width: ${size}ch;">${truncatedText}</span>`;
   }
 
   /**
