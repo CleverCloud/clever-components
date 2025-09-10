@@ -163,23 +163,11 @@ class SmartController extends LogsStream {
  * @return {Log}
  */
 function convertLog(log) {
-  const { id, date, source } = log;
-  let { http } = log;
+  const { id, date, source, http } = log;
 
   if (http == null) {
-    console.log(`"http" property is null for log`, log);
-    http = {
-      request: {
-        method: '???',
-        path: '???',
-      },
-      response: {
-        statusCode: '???',
-      },
-    };
+    return null;
   }
-
-  const country = source.countryCode ?? '??';
 
   return {
     id: id,
@@ -187,7 +175,7 @@ function convertLog(log) {
     message: http.request.path,
     metadata: [
       { name: 'ip', value: source.ip },
-      { name: 'country', value: country },
+      { name: 'country', value: source.countryCode ?? '??' },
       { name: 'city', value: source.city ?? '??' },
       { name: 'method', value: http.request.method },
       { name: 'status', value: http.response.statusCode },

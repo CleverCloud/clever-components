@@ -92,7 +92,7 @@ export class LogsStream {
 
   /**
    * @param {number} _rawLog The raw log coming from the API
-   * @return {L|Promise<L>} A log that can be appended to the view
+   * @return {L|null|Promise<L|null>} A log that can be appended to the view or `null` if the log could not be converted
    * @protected
    * @abstract
    */
@@ -258,6 +258,9 @@ export class LogsStream {
   async #onStreamLogEvent(rawLog) {
     this.#waitingTimer.stop();
     const convertedLog = await this._convertLog(rawLog);
+    if (convertedLog == null) {
+      return;
+    }
     if (this.#progress.isEmpty()) {
       this._appendLogs([convertedLog]);
     } else {
