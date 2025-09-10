@@ -27,7 +27,7 @@ const CUSTOM_METADATA_RENDERERS = {
 
     let value = metadata.value;
     if (metadata.value.length > size) {
-      value = metadata.value.substring(0, size - 1) + '.';
+      value = metadata.value.substring(0, size - 1) + '\u2026';
     }
 
     return {
