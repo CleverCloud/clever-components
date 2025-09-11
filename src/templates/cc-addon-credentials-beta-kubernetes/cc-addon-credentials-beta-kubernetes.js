@@ -4,10 +4,14 @@ import '../../components/cc-block-details/cc-block-details.js';
 import '../../components/cc-code/cc-code.js';
 import '../../components/cc-icon/cc-icon.js';
 import '../../components/cc-link/cc-link.js';
+import { cliCommandsStyles } from '../../styles/cli-commands.js';
 import { i18n } from '../../translations/translation.js';
 
-// eslint-disable lit/prefer-static-styles
+/* eslint-disable lit/prefer-static-styles */
 export const ccAddonCredentialsBetaKubernetes = () => html`
+  <style>
+    ${cliCommandsStyles}
+  </style>
   <cc-block-details slot="footer-credentials">
     <div slot="button-text">${i18n('cc-block-details.cli.text')}</div>
     <div slot="link">
