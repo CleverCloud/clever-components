@@ -17,8 +17,8 @@ const DATE_RANGE_SELECTION_OPTIONS = [
   { label: 'yesterday', value: 'yesterday', range: { type: 'preset', preset: 'yesterday' } },
 ];
 
-const INITIAL_OWNER = 'orga_540caeb6-521c-4a19-a955-efe6da35d142';
-const INITIAL_ADDON = 'mysql_13fad7db-da7b-4a99-84ae-bbe71a4e2e08';
+const INITIAL_OWNER = 'orga_2eb942c9-ae24-40fe-9e4c-53c9982a02b1';
+const INITIAL_ADDON = 'postgresql_f0e6a134-885f-4cc6-8cf7-31bab52e6076';
 
 /**
  * @typedef {import('../../src/components/cc-smart-container/cc-smart-container.js').CcSmartContainer} CcSmartContainer
@@ -47,7 +47,7 @@ class CcLogsAddonRuntimeSandbox extends LitElement {
   _onFormSubmit(formData) {
     this._smartContainerRef.value.context = {
       ownerId: formData.ownerId,
-      addonId: formData.addonId,
+      realAddonId: formData.realAddonId,
       dateRangeSelection: DATE_RANGE_SELECTION_OPTIONS.find((o) => o.value === formData.dateRangeSelection)?.range,
     };
   }
@@ -56,7 +56,7 @@ class CcLogsAddonRuntimeSandbox extends LitElement {
     return html`
       <form class="ctrl-top" style="align-items: normal" ${ref(this._formRef)} ${formSubmit(this._onFormSubmit)}>
         <cc-input-text label="ownerId" name="ownerId" value=${INITIAL_OWNER} required></cc-input-text>
-        <cc-input-text label="addonId" name="addonId" value=${INITIAL_ADDON} required></cc-input-text>
+        <cc-input-text label="realAddonId" name="realAddonId" value=${INITIAL_ADDON} required></cc-input-text>
         <cc-select
           .options=${DATE_RANGE_SELECTION_OPTIONS}
           label="dateRangeSelection"

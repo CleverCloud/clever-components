@@ -19,7 +19,7 @@ title: '💡 Smart'
 |----------------------|:------------------------:|:--------:|---------------------------------------------|---------|
 | `apiConfig`          |       `ApiConfig`        |   Yes    | Object with API configuration (target host) |         |
 | `ownerId`            |         `string`         |   Yes    | UUID prefixed with `orga_` or `user_`       |         |
-| `addonId`            |         `string`         |   Yes    | Real addon ID                               |         |
+| `realAddonId`        |         `string`         |   Yes    | Real addon ID                               |         |
 | `dateRangeSelection` | `LogsDateRangeSelection` |    No    | Initial date range                          |         |
 
 ```ts
@@ -50,6 +50,8 @@ interface LogsDateRangeSelectionCustom {
   since: string;
   until: string;
 }
+
+type LogsDateRangePresetType = 'lastHour' | 'last4Hours' | 'last7Days' | 'today' | 'yesterday';
 ```
 
 ## 🌐 API endpoints
@@ -70,7 +72,7 @@ interface LogsDateRangeSelectionCustom {
       OAUTH_CONSUMER_SECRET: "",
     },
     "ownerId": "",
-    "addonId": "",
+    "realAddonId": "",
   }'>
   <cc-logs-addon-runtime-beta></cc-logs-addon-runtime-beta>
 <cc-smart-container>
