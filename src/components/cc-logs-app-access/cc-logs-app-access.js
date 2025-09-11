@@ -22,18 +22,8 @@ const CUSTOM_METADATA_RENDERERS = {
   country: {
     size: 2,
   },
-  city: (metadata) => {
-    const size = 12;
-
-    let value = metadata.value;
-    if (metadata.value.length > size) {
-      value = metadata.value.substring(0, size - 1) + '.';
-    }
-
-    return {
-      text: value,
-      size: size,
-    };
+  city: {
+    size: 12,
   },
   method: (metadata) => {
     return {
@@ -47,6 +37,9 @@ const CUSTOM_METADATA_RENDERERS = {
      */
     function getIntent() {
       const statusCode = Number(metadata.value);
+      if (statusCode >= 600) {
+        return 'neutral';
+      }
       if (statusCode >= 500) {
         return 'danger';
       }
@@ -65,7 +58,7 @@ const CUSTOM_METADATA_RENDERERS = {
 
     return {
       intent: getIntent(),
-      text: metadata.value,
+      size: 3,
     };
   },
 };

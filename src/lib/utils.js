@@ -230,6 +230,22 @@ export function isStringBlank(string) {
 }
 
 /**
+ * Truncate a string to the given length.
+ * @param {string} string
+ * @param {number} maxLength
+ * @param {string} [suffix]
+ */
+export function truncateString(string, maxLength, suffix = '\u2026') {
+  if (maxLength <= 0) {
+    throw new Error('maxLength must be greater than 0');
+  }
+  if (string.length <= maxLength) {
+    return string;
+  }
+  return string.slice(0, maxLength - suffix.length) + suffix;
+}
+
+/**
  *
  * @param {number} delay
  * @return {Promise<unknown>} a Promise that resolves when the given delay is timed out.
