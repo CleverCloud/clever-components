@@ -5,7 +5,6 @@ import {
   getAllSourceFiles,
   getMainFiles,
   importMetaUrlAssetsPlugin,
-  minifyPlugin,
   minifyStylesheet,
   SOURCE_DIR,
   terserPlugin,
@@ -49,8 +48,6 @@ export default {
     importMetaUrlAssetsPlugin(),
     // minify JS
     terserPlugin(),
-    // minify HTML and CSS inside components
-    minifyPlugin(),
     // add and minify default theme
     copy({
       targets: [

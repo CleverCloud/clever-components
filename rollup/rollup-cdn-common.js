@@ -7,7 +7,6 @@ import {
   getMainFiles,
   importMetaUrlAssetsPlugin,
   manualChunkOptions,
-  minifyPlugin,
   minifyStylesheet,
   terserPlugin,
   treeshakeOptions,
@@ -53,8 +52,6 @@ export function getCdnRollupConfig(cdnEntryName, minifyJs) {
       resolve(),
       // minify JS (if required)
       minifyJs && terserPlugin(),
-      // minify HTML and CSS inside components
-      minifyPlugin(),
       // add and minify default theme
       stylesAssetsPlugin({
         transform: (stylesheet) => minifyStylesheet(stylesheet),
