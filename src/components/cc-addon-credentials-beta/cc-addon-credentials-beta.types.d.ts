@@ -24,7 +24,7 @@ type Tabs = {
   [key in TabName & string]?: Array<AddonCredential>;
 };
 
-export type TabName = 'default' | 'api' | 'direct' | 'elastic' | 'apm' | 'kibana';
+export type TabName = 'default' | 'admin' | 'api' | 'direct' | 'elastic' | 'apm' | 'kibana';
 
 // Copies from cc-header-addon-beta, will need to mutualize
 export interface RawAddon {

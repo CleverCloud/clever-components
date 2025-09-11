@@ -172,6 +172,7 @@ export const translations = {
   'cc-addon-credentials.title': /** @param {{name: string}} _ */ ({ name }) => `${name} credentials`,
   //#endregion
   //#region cc-addon-credentials-beta
+  'cc-addon-credentials-beta.choice.admin': `admin`,
   'cc-addon-credentials-beta.choice.api': `API`,
   'cc-addon-credentials-beta.choice.apm': `APM`,
   'cc-addon-credentials-beta.choice.default': `Default`,
@@ -179,6 +180,7 @@ export const translations = {
   'cc-addon-credentials-beta.choice.elastic': `Elastic`,
   'cc-addon-credentials-beta.choice.kibana': `Kibana`,
   'cc-addon-credentials-beta.doc-link.keycloak': `Keycloak - Documentation`,
+  'cc-addon-credentials-beta.doc-link.otoroshi': `Otoroshi - Documentation`,
   'cc-addon-credentials-beta.error': `Something went wrong while loading the add-on information.`,
   'cc-addon-credentials-beta.heading': `Access`,
   'cc-addon-credentials-beta.ng.disabling.error': `Something went wrong while trying to disable the Network Group`,
