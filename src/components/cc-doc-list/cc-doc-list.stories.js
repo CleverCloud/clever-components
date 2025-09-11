@@ -1,3 +1,4 @@
+import { getAssetUrl } from '../../lib/assets-url.js';
 import { makeStory, storyWait } from '../../stories/lib/make-story.js';
 import './cc-doc-list.js';
 
@@ -30,43 +31,39 @@ const conf = {
 const DOCS_ITEMS = [
   {
     heading: 'ruby',
-    icons: ['https://assets.clever-cloud.com/logos/ruby.svg'],
+    icons: [getAssetUrl('/logos/ruby.svg')],
     description:
       'Run your Ruby and Ruby on Rails applications. Compatible with Rake, Sidekiq and Active Storage for Cellar.',
     link: '#',
   },
   {
     heading: 'Java',
-    icons: [
-      'https://assets.clever-cloud.com/logos/java-jar.svg',
-      'https://assets.clever-cloud.com/logos/maven.svg',
-      'https://assets.clever-cloud.com/logos/play2.svg',
-    ],
+    icons: [getAssetUrl('/logos/java-jar.svg'), getAssetUrl('/logos/maven.svg'), getAssetUrl('/logos/play2.svg')],
     description: 'Deploy Java runtimes with your specific process (Jar or War) or build tools (Maven, SBT…).',
     link: '#',
   },
   {
     heading: 'python',
-    icons: ['https://assets.clever-cloud.com/logos/python.svg'],
+    icons: [getAssetUrl('/logos/python.svg')],
     description: 'Python runtimes, perfect for deploying simple Python services or complex Django applications.',
     link: '#',
   },
   {
     heading: 'php',
-    icons: ['https://assets.clever-cloud.com/logos/php.svg'],
+    icons: [getAssetUrl('/logos/php.svg')],
     description:
       'PHP is deployable with both Git and SFTP in version 7.x and 8.x. Need extensions? Check our already installed extensions or ask the support for it.',
     link: '#',
   },
   {
     heading: 'Go',
-    icons: ['https://assets.clever-cloud.com/logos/go.svg'],
+    icons: [getAssetUrl('/logos/go.svg')],
     description: 'Deploy Golang applications on Clever Cloud with the support of go modules, go build or go get.',
     link: '#',
   },
   {
     heading: 'JavaScript Runtimes',
-    icons: ['https://assets.clever-cloud.com/logos/nodejs.svg', 'https://assets.clever-cloud.com/logos/meteor.svg'],
+    icons: [getAssetUrl('/logos/nodejs.svg'), getAssetUrl('/logos/meteor.svg')],
     description:
       'Clever Cloud supports Node.js, Meteor and Deno runtimes in a elegant and performant way. Compatible with statsd for advanced statistics, like counters and timers. ',
     link: '#',

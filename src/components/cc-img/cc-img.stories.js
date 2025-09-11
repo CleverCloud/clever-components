@@ -1,3 +1,4 @@
+import { getAssetUrl } from '../../lib/assets-url.js';
 import { makeStory, storyWait } from '../../stories/lib/make-story.js';
 import './cc-img.js';
 
@@ -36,22 +37,22 @@ export const imageFitContain = makeStory(conf, {
   items: [
     {
       a11yName: 'CC',
-      src: 'https://assets.clever-cloud.com/infra/clever-cloud.svg',
+      src: getAssetUrl('/infra/clever-cloud.svg'),
       style: 'border: 1px solid #000; height: 7em; width: 2em;',
     },
     {
       a11yName: 'CC',
-      src: 'https://assets.clever-cloud.com/infra/clever-cloud.svg',
+      src: getAssetUrl('/infra/clever-cloud.svg'),
       style: 'border: 1px solid #000; height: 2em; width: 7em;',
     },
     {
       a11yName: 'CC',
-      src: 'https://assets.clever-cloud.com/infra/clever-cloud.svg',
+      src: getAssetUrl('/infra/clever-cloud.svg'),
       style: 'border: 1px solid #000; height: 7em; width: 2em; --cc-img-fit: contain;',
     },
     {
       a11yName: 'CC',
-      src: 'https://assets.clever-cloud.com/infra/clever-cloud.svg',
+      src: getAssetUrl('/infra/clever-cloud.svg'),
       style: 'border: 1px solid #000; height: 2em; width: 7em; --cc-img-fit: contain;',
     },
   ],

@@ -1,3 +1,5 @@
+import { getAssetUrl } from './assets-url.js';
+
 /**
  * @typedef {import('../components/common.types.js').AddonProvider} AddonProvider
  * @typedef {import('../components/common.types.js').RawAddonProvider} RawAddonProvider
@@ -350,7 +352,7 @@ export function getRunnerProduct(productId) {
         slug: 'jenkins-runner',
         name: 'Jenkins runner',
         deployType: 'docker',
-        logo: 'https://assets.clever-cloud.com/logos/jenkins.svg',
+        logo: getAssetUrl('/logos/jenkins.svg'),
       },
       description: 'Jenkins runner',
       flavors: [
@@ -373,7 +375,7 @@ export function getRunnerProduct(productId) {
         slug: 'heptapod-runner',
         name: 'Heptapod runner',
         deployType: 'docker',
-        logo: 'https://assets.clever-cloud.com/logos/heptapod.svg',
+        logo: getAssetUrl('/logos/heptapod.svg'),
       },
       description: 'Heptapod runner',
       flavors: [

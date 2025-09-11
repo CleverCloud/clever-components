@@ -1,3 +1,4 @@
+import { getAssetUrl } from '../../lib/assets-url.js';
 import { makeStory } from '../../stories/lib/make-story.js';
 import './cc-order-summary.js';
 
@@ -64,7 +65,7 @@ const appBaseAriaLiveConfigDatas = [
 const appBaseDatas = {
   name: 'Front-end application',
   logo: {
-    url: 'https://assets.clever-cloud.com/logos/nodejs.svg',
+    url: getAssetUrl('/logos/nodejs.svg'),
     alt: 'NodeJS logo',
   },
   configuration: appBaseConfigDatas,
@@ -79,7 +80,7 @@ const appInnerHTML = `
 const addonBaseDatas = {
   name: 'Customer orders database',
   logo: {
-    url: 'https://assets.clever-cloud.com/logos/pgsql.svg',
+    url: getAssetUrl('/logos/pgsql.svg'),
     alt: 'PostgreSQL logo',
   },
   configuration: [

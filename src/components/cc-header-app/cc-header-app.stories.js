@@ -1,3 +1,4 @@
+import { getAssetUrl } from '../../lib/assets-url.js';
 import { ZONE } from '../../stories/fixtures/zones.js';
 import { makeStory, storyWait } from '../../stories/lib/make-story.js';
 import './cc-header-app.js';
@@ -42,7 +43,7 @@ function appWithTypeLoadedAndZone(variantName, variantLogoName, commit = COMMIT_
     name: `Awesome ${variantName} app (PROD)`,
     commit,
     variantName,
-    variantLogo: `https://assets.clever-cloud.com/logos/${variantLogoName}.svg`,
+    variantLogo: getAssetUrl(`/logos/${variantLogoName}.svg`),
     lastDeploymentLogsUrl: '/url/to/logs?id=fe726a13-345b-46d1-9101-f4f232479122',
     zone: ZONE,
   };

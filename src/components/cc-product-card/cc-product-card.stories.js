@@ -1,4 +1,5 @@
 import { html, render } from 'lit';
+import { getAssetUrl } from '../../lib/assets-url.js';
 import { makeStory } from '../../stories/lib/make-story.js';
 import './cc-product-card.js';
 
@@ -62,13 +63,13 @@ const PRODUCTS_LIST = [
       'Deploy your Python and Django applications on Nginx + WSGI with automatic dependency management (via pip) and Celery tasks support.',
   },
   {
-    iconUrl: 'https://assets.clever-cloud.com/logos/php.svg',
+    iconUrl: getAssetUrl('/logos/php.svg'),
     name: 'PHP',
     description:
       'Deploy your PHP applications and static sites on Apache2 + PHP-FPM with automatic dependency management (via composer).',
   },
   {
-    iconUrl: 'https://assets.clever-cloud.com/logos/ruby.svg',
+    iconUrl: getAssetUrl('/logos/ruby.svg'),
     name: 'Ruby',
     description:
       'Deploy your Ruby applications on Nginx + Puma with automatic dependency management (via Rake, gem...) and Sidekiq tasks support.',

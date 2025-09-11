@@ -1,3 +1,4 @@
+import { getAssetUrl } from '../../lib/assets-url.js';
 import { makeStory, storyWait } from '../../stories/lib/make-story.js';
 import './cc-addon-credentials.js';
 
@@ -24,7 +25,7 @@ export const defaultStory = makeStory(conf, {
     {
       type: 'elasticsearch',
       name: 'Elasticsearch',
-      image: 'https://assets.clever-cloud.com/logos/elastic.svg',
+      image: getAssetUrl('/logos/elastic.svg'),
       credentials,
     },
   ],
@@ -35,7 +36,7 @@ export const skeleton = makeStory(conf, {
     {
       type: 'elasticsearch',
       name: 'Elasticsearch',
-      image: 'https://assets.clever-cloud.com/logos/elastic.svg',
+      image: getAssetUrl('/logos/elastic.svg'),
       credentials: credentialsSkeleton,
     },
   ],
@@ -46,7 +47,7 @@ export const error = makeStory(conf, {
     {
       type: 'elasticsearch',
       name: 'Elasticsearch',
-      image: 'https://assets.clever-cloud.com/logos/elastic.svg',
+      image: getAssetUrl('/logos/elastic.svg'),
       error: true,
     },
   ],
@@ -57,7 +58,7 @@ export const dataLoadedWithKibana = makeStory(conf, {
     {
       type: 'kibana',
       name: 'Kibana',
-      image: 'https://assets.clever-cloud.com/logos/elasticsearch-kibana.svg',
+      image: getAssetUrl('/logos/elasticsearch-kibana.svg'),
       toggle: 'close',
       credentials: [
         { type: 'host', value: 'my-host.services.clever-cloud.com', secret: false },
@@ -74,7 +75,7 @@ export const dataLoadedWithApm = makeStory(conf, {
       type: 'apm',
       name: 'APM',
       toggle: 'close',
-      image: 'https://assets.clever-cloud.com/logos/elasticsearch-apm.svg',
+      image: getAssetUrl('/logos/elasticsearch-apm.svg'),
       credentials: [
         { type: 'user', value: 'my-super-user', secret: false },
         { type: 'password', value: 'my-super-password', secret: true },
@@ -90,7 +91,7 @@ export const dataLoadedWithPulsar = makeStory(conf, {
       type: 'pulsar',
       name: 'Pulsar',
       toggle: 'open',
-      image: 'https://assets.clever-cloud.com/logos/pulsar.svg',
+      image: getAssetUrl('/logos/pulsar.svg'),
       credentials: [
         { type: 'url', value: 'pulsar+ssl://url:port', secret: false },
         { type: 'auth-token', value: 'my-awesome-token', secret: true },
@@ -105,7 +106,7 @@ export const dataLoadedWithMateriaKv = makeStory(conf, {
       type: 'materia-kv',
       name: 'Materia KV',
       toggle: 'off',
-      image: 'https://assets.clever-cloud.com/logos/materia-db-kv.png',
+      image: getAssetUrl('/logos/materia-db-kv.png'),
       credentials: [
         { type: 'host', value: 'example.com', secret: false },
         { type: 'port', value: '6379', secret: false },
@@ -125,13 +126,13 @@ export const simulations = makeStory(conf, {
     {
       type: 'elasticsearch',
       name: 'Elasticsearch',
-      image: 'https://assets.clever-cloud.com/logos/elastic.svg',
+      image: getAssetUrl('/logos/elastic.svg'),
       credentials: credentialsSkeleton,
     },
     {
       type: 'apm',
       name: 'APM',
-      image: 'https://assets.clever-cloud.com/logos/elasticsearch-apm.svg',
+      image: getAssetUrl('/logos/elasticsearch-apm.svg'),
       credentials: [
         { type: 'user', secret: false },
         { type: 'password', secret: true },

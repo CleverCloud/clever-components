@@ -1,3 +1,4 @@
+import { getAssetUrl } from '../../lib/assets-url.js';
 import { makeStory } from '../../stories/lib/make-story.js';
 import './cc-product-list.js';
 
@@ -81,7 +82,7 @@ const PRODUCTS = [
         description:
           'Deploy your JVM based applications (Java, Scala, GraalVM...) with automatic build and dependency management (Maven, Gradle, SBT, Ant...).',
         searchTerms: ['JVM'],
-        iconUrl: 'https://assets.clever-cloud.com/logos/scala.svg',
+        iconUrl: getAssetUrl('/logos/scala.svg'),
         url: '',
         apiId: 'sbt',
       },
@@ -90,7 +91,7 @@ const PRODUCTS = [
         description:
           'Deploy and run any Java ARchive file with automatic build. Some configuration files or environment variable are needed to specify the the JAR path.',
         searchTerms: ['☕', 'JVM'],
-        iconUrl: 'https://assets.clever-cloud.com/logos/java-jar.svg',
+        iconUrl: getAssetUrl('/logos/java-jar.svg'),
         url: '',
         apiId: 'jar',
       },
@@ -99,7 +100,7 @@ const PRODUCTS = [
         description:
           'Deploy your yur Java Maven projects with automatic build and dependency management. Some configuration files or environment variable are needed.',
         searchTerms: ['Java', '☕', 'JVM'],
-        iconUrl: 'https://assets.clever-cloud.com/logos/maven.svg',
+        iconUrl: getAssetUrl('/logos/maven.svg'),
         url: '',
         apiId: 'maven',
       },
@@ -108,7 +109,7 @@ const PRODUCTS = [
         description:
           'Deploy and run your JEE applications packaged as WAR or EAR with the container you want (Tomcat, Jetty, Glassfish, JBoss, Paraya…).',
         searchTerms: ['☕', 'JVM'],
-        iconUrl: 'https://assets.clever-cloud.com/logos/java-war.svg',
+        iconUrl: getAssetUrl('/logos/java-war.svg'),
         url: '',
         apiId: 'war',
       },
@@ -117,7 +118,7 @@ const PRODUCTS = [
         description:
           'Deploy your Java application with Play framework in version 1. Play framework’s goal is to ease development while sticking with Java.',
         searchTerms: ['Java', '☕', 'JVM'],
-        iconUrl: 'https://assets.clever-cloud.com/logos/play1.svg',
+        iconUrl: getAssetUrl('/logos/play1.svg'),
         url: '',
         apiId: 'play1',
       },
@@ -126,7 +127,7 @@ const PRODUCTS = [
         description:
           'Deploy your based applications with Play 2.0, a Java and Scala framework that integrates the components and APIs you need for modern development.',
         searchTerms: ['Java', 'Scala', '☕', 'JVM'],
-        iconUrl: 'https://assets.clever-cloud.com/logos/play2.svg',
+        iconUrl: getAssetUrl('/logos/play2.svg'),
         url: '',
         apiId: 'play2',
       },
@@ -135,7 +136,7 @@ const PRODUCTS = [
         description:
           'Deploy your JVM based applications with Gradle, a project automation tool that builds upon the concepts of Apache Ant and Apache Maven.',
         searchTerms: ['Java', '☕', 'JVM'],
-        iconUrl: 'https://assets.clever-cloud.com/logos/gradle.svg',
+        iconUrl: getAssetUrl('/logos/gradle.svg'),
         url: '',
         apiId: 'gradle',
       },
@@ -258,7 +259,7 @@ const PRODUCTS = [
         description:
           'Create one or several Cellar buckets, a distributed object storage service, compatible with the AWS S3 protocol (signature V4) to store and persist files.',
         searchTerms: ['S3', 'Distributed'],
-        iconUrl: 'https://assets.clever-cloud.com/logos/cellar.svg',
+        iconUrl: getAssetUrl('/logos/cellar.svg'),
         url: '',
         apiId: 'cellar-addon',
       },
@@ -267,7 +268,7 @@ const PRODUCTS = [
         description:
           'Mount a FS Bucket to persist files within an application folder. It is compatible with SFTP and comes with a GUI for manipulating files.',
         searchTerms: ['FTP'],
-        iconUrl: 'https://assets.clever-cloud.com/logos/fsbucket.svg',
+        iconUrl: getAssetUrl('/logos/fsbucket.svg'),
         url: '',
         apiId: 'fs-bucket',
       },
@@ -285,7 +286,7 @@ const PRODUCTS = [
         description:
           'Start a Jenkins server, automating software build, test, and deployment. Flexible integration with various tools through plugins',
         searchTerms: ['CI/CD', 'Runners'],
-        iconUrl: 'https://assets.clever-cloud.com/logos/jenkins.svg',
+        iconUrl: getAssetUrl('/logos/jenkins.svg'),
         url: '',
         apiId: 'jenkins',
       },
@@ -294,7 +295,7 @@ const PRODUCTS = [
         description:
           'Start the components for a pre-built Matomo: the open-source web analytics platform providing tracking and reporting features on website visitors.',
         searchTerms: ['Statistics', 'Reporting'],
-        iconUrl: 'https://assets.clever-cloud.com/logos/matomo.svg',
+        iconUrl: getAssetUrl('/logos/matomo.svg'),
         url: '',
         apiId: 'addon-matomo',
       },
@@ -321,7 +322,7 @@ const PRODUCTS = [
         description:
           'Create a Pulsar topic, an open-source, distributed messaging and streaming platform, built on the publish-subscribe pattern.',
         searchTerms: ['Distributed', 'Messaging', 'Streaming', 'pub/sub', 'topic'],
-        iconUrl: 'https://assets.clever-cloud.com/logos/pulsar.svg',
+        iconUrl: getAssetUrl('/logos/pulsar.svg'),
         url: '',
         apiId: 'addon-pulsar',
       },
