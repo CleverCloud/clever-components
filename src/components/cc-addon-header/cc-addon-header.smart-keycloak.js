@@ -6,6 +6,7 @@ import { fakeString } from '../../lib/fake-strings.js';
 import { notify, notifyError } from '../../lib/notifications.js';
 import { sendToApi } from '../../lib/send-to-api.js';
 import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
+import { generateDocsHref } from '../../lib/utils.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-smart-container/cc-smart-container.js';
 import './cc-addon-header.js';
@@ -34,7 +35,8 @@ defineSmartComponent({
     const { apiConfig, ownerId, addonId, productStatus } = context;
     const api = new Api(apiConfig, ownerId, addonId, signal);
     let logsUrl = '';
-    const docName = 'keycloak';
+    const docsName = 'keycloak';
+    const docsUrl = generateDocsHref(`/addons/${docsName}/`);
 
     updateComponent('state', {
       type: 'loading',
@@ -96,7 +98,7 @@ defineSmartComponent({
         .then(() => {
           notify({
             intent: 'success',
-            message: i18n('cc-addon-header.restart.success.message', { logsUrl, docName }),
+            message: i18n('cc-addon-header.restart.success.message', { logsUrl, docsUrl }),
             title: i18n('cc-addon-header.restart.success.title'),
             options: {
               timeout: 0,
@@ -125,7 +127,7 @@ defineSmartComponent({
         .then(() => {
           notify({
             intent: 'success',
-            message: i18n('cc-addon-header.rebuild.success.message', { logsUrl, docName }),
+            message: i18n('cc-addon-header.rebuild.success.message', { logsUrl, docsUrl }),
             title: i18n('cc-addon-header.rebuild.success.title'),
             options: {
               timeout: 0,
