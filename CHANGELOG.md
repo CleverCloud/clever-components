@@ -5,6 +5,60 @@ title: 'Changelog'
 
 # Changelog
 
+## [21.0.0](https://github.com/CleverCloud/clever-components/compare/20.0.1...21.0.0) (2025-09-11)
+
+
+### ⚠ BREAKING CHANGES
+
+* **cc-zone-picker:** use `cc-picker-option` for the implementation
+* **cc-plan-picker:** use `cc-picker` for the implementation
+
+### 🚀 Features
+
+* **cc-addon-admin:** add smart part ([d875908](https://github.com/CleverCloud/clever-components/commit/d875908dd2477fe4b38d9036d970d2d0012fbdaa))
+* **cc-addon-credentials-beta:** init component ([5dc6fb4](https://github.com/CleverCloud/clever-components/commit/5dc6fb461b09160a9618e8b06748d9dbc7fa7a65))
+* **cc-addon-credentials-content:** init component ([002f7a1](https://github.com/CleverCloud/clever-components/commit/002f7a17bd06ceae43658b8dea49b99c29f059b3))
+* **cc-addon-elasticsearch-options:** allow customizing logo base URL ([ee2604f](https://github.com/CleverCloud/clever-components/commit/ee2604fa5e22000dd86bf5a1e5ad059332c3edfe)), closes [#1531](https://github.com/CleverCloud/clever-components/issues/1531)
+* **cc-addon-header:** init component ([a1cce35](https://github.com/CleverCloud/clever-components/commit/a1cce353b20c56fd6ad6ba6476d672e4a34aa1c9))
+* **cc-elasticsearch-info:** allow customizing logo base URL ([e116c39](https://github.com/CleverCloud/clever-components/commit/e116c399857c4cd42e3a0aa80ba16abf2ef08e60)), closes [#1531](https://github.com/CleverCloud/clever-components/issues/1531)
+* **cc-env-var-linked-services:** add smart part ([bc31678](https://github.com/CleverCloud/clever-components/commit/bc316784cc1f0cdbb53ec1c66970c71707e544fd))
+* **cc-grafana-info:** allow customizing logo base URL ([4d75eb6](https://github.com/CleverCloud/clever-components/commit/4d75eb660d57dab055416459d2052dfa3d33ae0c)), closes [#1531](https://github.com/CleverCloud/clever-components/issues/1531)
+* **cc-heptapod-info:** allow customizing logo base URL ([82eeed9](https://github.com/CleverCloud/clever-components/commit/82eeed9413301129bd9dd620f218650a5f5452a4)), closes [#1531](https://github.com/CleverCloud/clever-components/issues/1531)
+* **cc-jenkins-info:** allow customizing logo base URL ([7841408](https://github.com/CleverCloud/clever-components/commit/7841408ba32939bca5475f4f29de9fca47e193c5)), closes [#1531](https://github.com/CleverCloud/clever-components/issues/1531)
+* **cc-link:** add `download` attribute to handle download links ([5f5adb6](https://github.com/CleverCloud/clever-components/commit/5f5adb605053fb219765b75659af057abb58dad7)), closes [#1461](https://github.com/CleverCloud/clever-components/issues/1461)
+* **cc-logs-app-access:** fallback city and country to empty string ([4afb2a2](https://github.com/CleverCloud/clever-components/commit/4afb2a221db7caff5d1c9b2d33d1bec18c8e1c01))
+* **cc-logs-app-access:** skip non-http access logs ([16ceb37](https://github.com/CleverCloud/clever-components/commit/16ceb37047acaec204b50dac5dc4a999e6b7c7db))
+* **cc-logs-app-access:** truncate status to 3 chars ([d14b900](https://github.com/CleverCloud/clever-components/commit/d14b9008f574f5a7473c5f89236393e61316a8f0))
+* **cc-logs-app-access:** use ellipsis char when truncating city ([f5ba839](https://github.com/CleverCloud/clever-components/commit/f5ba8393a5e0dfcf3f5791e1e458029f20a29e0c))
+* **cc-logs-app-runtime:** use ellipsis char when truncating instance ([9ec8a97](https://github.com/CleverCloud/clever-components/commit/9ec8a97253ff8a95c24ce619ec6e3e9f139e073f))
+* **cc-matomo-info:** allow customizing logo base URL ([a538e3b](https://github.com/CleverCloud/clever-components/commit/a538e3bd6a9f6e867493fbe5c0874d32b27b0fb3)), closes [#1531](https://github.com/CleverCloud/clever-components/issues/1531)
+* **cc-picker-option:** init component ([2939f3b](https://github.com/CleverCloud/clever-components/commit/2939f3b9bd272912c37df4c63e4ab9cee52bbec6))
+* **cc-picker:** init component ([f7e24b7](https://github.com/CleverCloud/clever-components/commit/f7e24b766e7d570fd0841eb60568b7096a45cbdd))
+* **cc-pricing-*:** allow customizing logo base URL ([be409f3](https://github.com/CleverCloud/clever-components/commit/be409f3051775a3fb2349b7b27b6e87bd1b4dffe)), closes [#1531](https://github.com/CleverCloud/clever-components/issues/1531)
+* **cc-zone:** allow customizing logo base URL ([b6615cd](https://github.com/CleverCloud/clever-components/commit/b6615cda3f20c13b8089bc8c22e25bd4582bfd45)), closes [#1531](https://github.com/CleverCloud/clever-components/issues/1531)
+* **tokens:** add & update border related tokens ([53e246b](https://github.com/CleverCloud/clever-components/commit/53e246b7ff6ea9c40cb8cf73aa8105d2a5b28e4a))
+* **tokens:** add disabled text color token ([f3e7e8c](https://github.com/CleverCloud/clever-components/commit/f3e7e8cd67bb4cc7e22690af69ad4e9f9fa1e256))
+
+
+### 🐛 Bug Fixes
+
+* **cc-addon-backups:** allow using the delete feature in french ([a5be563](https://github.com/CleverCloud/clever-components/commit/a5be5630a51f05acd7916f9048303c791ce07b16)), closes [#1508](https://github.com/CleverCloud/clever-components/issues/1508)
+* **cc-block-details:** improve responsive ([cf1c87a](https://github.com/CleverCloud/clever-components/commit/cf1c87a0d805227b58a6b49b80756bbd7ccdf604)), closes [#1450](https://github.com/CleverCloud/clever-components/issues/1450)
+* **cc-env-var-form.smart-env-var-app:** set timeout for restart toast ([2fcd51e](https://github.com/CleverCloud/clever-components/commit/2fcd51e38277c0d25ac5aaf170bfea1c23466073)), closes [#1520](https://github.com/CleverCloud/clever-components/issues/1520)
+* **cc-env-var-form:** display restart button only if app has already been deployed ([cd74765](https://github.com/CleverCloud/clever-components/commit/cd74765d9f93f719bc509c30d5d10a1bdd6c9014))
+* **cc-link:** only display download `cc-icon` on default mode ([e5bc7d2](https://github.com/CleverCloud/clever-components/commit/e5bc7d2109a7de78d5d26b62f245feaf2b7b9f1a))
+* **cc-logs-addon-runtime:** use real addon id ([5fd57db](https://github.com/CleverCloud/clever-components/commit/5fd57db0b8c28b20378b1ea4ee9dbe4294ea52f3))
+* **cc-notice:** align icon to top when no heading is present ([1a4114c](https://github.com/CleverCloud/clever-components/commit/1a4114c2a50c6013452bdba2e826ca6ab5c3be6d)), closes [#828](https://github.com/CleverCloud/clever-components/issues/828)
+* **tokens:** set proper design token implementation ([26304be](https://github.com/CleverCloud/clever-components/commit/26304bec3b67ffc7a90d32105b98877e4b1c9f57))
+* **translations:** adjust typography for english translations ([2b70bc8](https://github.com/CleverCloud/clever-components/commit/2b70bc8bdcef6ce97749bd69e61430526b02b5a9))
+* **translations:** adjust typography for french translations ([9fde9e7](https://github.com/CleverCloud/clever-components/commit/9fde9e73e0eac8ad6bde40c3f7260aaa440396aa))
+
+
+### 🛠 Code Refactoring
+
+* **cc-plan-picker:** use `cc-picker` for the implementation ([34e43be](https://github.com/CleverCloud/clever-components/commit/34e43bee4b8acea3303863fe94af080069f74ba5))
+* **cc-zone-picker:** use `cc-picker-option` for the implementation ([9069de3](https://github.com/CleverCloud/clever-components/commit/9069de38faafb0bc5d159de10517e2abe4ae27b6))
+
 ## [20.0.1](https://github.com/CleverCloud/clever-components/compare/20.0.0...20.0.1) (2025-08-07)
 
 
