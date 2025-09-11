@@ -58,6 +58,8 @@ export class CcAddonCredentialsBeta extends LitElement {
    */
   _getToggleChoiceLabel(toggleChoiceValue) {
     switch (toggleChoiceValue) {
+      case 'admin':
+        return i18n('cc-addon-credentials-beta.choice.admin');
       case 'api':
         return i18n('cc-addon-credentials-beta.choice.api');
       case 'apm':
@@ -94,8 +96,11 @@ export class CcAddonCredentialsBeta extends LitElement {
 
   /** @param {CcAddonCredentialsBetaPropertyValues} changedProperties */
   willUpdate(changedProperties) {
-    if (changedProperties.has('state') && this.state.type !== 'error' && this._selectedTabName == null) {
-      this._selectedTabName = /** @type {TabName} */ (Object.keys(this.state.tabs)[0]);
+    if (changedProperties.has('state') && this.state.type !== 'error') {
+      const tabNames = Object.keys(this.state.tabs);
+      if (tabNames.length > 0 && (this._selectedTabName == null || !tabNames.includes(this._selectedTabName))) {
+        this._selectedTabName = /** @type {TabName} */ (tabNames[0]);
+      }
     }
   }
 
