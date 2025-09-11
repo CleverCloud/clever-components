@@ -11,9 +11,7 @@ import { generateDocsHref } from '../../lib/utils.js';
 import '../cc-smart-container/cc-smart-container.js';
 import './cc-addon-info.js';
 
-/**
- * @type {Record<string, { name: string; logoUrl: string; getAppId: (addonDetails: ElasticAddonInfo) => string }>}
- */
+/** @type {Record<string, { name: string; logoUrl: string; getAppId: (addonDetails: ElasticAddonInfo) => string }>} */
 const SERVICE_CONFIG = {
   kibana: {
     name: 'Kibana',
@@ -28,7 +26,7 @@ const SERVICE_CONFIG = {
 };
 
 /**
- * @param {ElasticAddonInfo['services'][0]} service
+ * @param {ElasticAddonInfo['services'][number]} service
  * @param {ElasticAddonInfo} addonDetails
  * @param {string} appOverviewUrlPattern
  * @return {LinkedService}
@@ -58,6 +56,7 @@ const SKELETON_DATA = {
   creationDate: '2025-08-06 15:03:00',
   plan: 'XS',
   // Remove encryption since it's not part of the addon features
+  // TODO: reinstate encryption
   features: [
     {
       code: 'cpu',
@@ -114,15 +113,25 @@ defineSmartComponent({
     appOverviewUrlPattern: { type: String },
     scalabilityUrlPattern: { type: String },
     // Grafana may be disabled in some environments
-    grafanaLink: { type: Object, optional: true },
+    grafanaBaseLink: { type: String, optional: true },
+    // Grafana may be disabled in some environments
+    grafanaConsoleLink: { type: String, optional: true },
   },
   /**
    * @param {OnContextUpdateArgs} _
    */
   onContextUpdate({ context, updateComponent, signal }) {
-    const { apiConfig, ownerId, addonId, appOverviewUrlPattern, scalabilityUrlPattern, grafanaLink } = context;
+    const {
+      apiConfig,
+      ownerId,
+      addonId,
+      appOverviewUrlPattern,
+      scalabilityUrlPattern,
+      grafanaBaseLink,
+      grafanaConsoleLink,
+    } = context;
 
-    const api = new Api({ apiConfig, ownerId, addonId, grafanaLink, signal });
+    const api = new Api({ apiConfig, ownerId, addonId, grafanaBaseLink, grafanaConsoleLink, signal });
 
     updateComponent('state', { type: 'loading', ...SKELETON_DATA });
 
@@ -160,14 +169,16 @@ class Api {
    * @param {ApiConfig} config.apiConfig - API configuration
    * @param {string} config.ownerId - Owner identifier
    * @param {string} config.addonId - Addon identifier
-   * @param {{ base: string; console: string; }} [config.grafanaLink] - Grafana link info
+   * @param {string} [config.grafanaBaseLink] - Base url to build a grafana link to the app
+   * @param {string} [config.grafanaConsoleLink] - Link to the page where grafana can be enabled within the console
    * @param {AbortSignal} config.signal - Signal to abort calls
    */
-  constructor({ apiConfig, ownerId, addonId, grafanaLink, signal }) {
+  constructor({ apiConfig, ownerId, addonId, grafanaBaseLink, grafanaConsoleLink, signal }) {
     this._apiConfig = apiConfig;
     this._ownerId = ownerId;
     this._addonId = addonId;
-    this._grafanaLink = grafanaLink;
+    this._grafanaBaseLink = grafanaBaseLink;
+    this._grafanaConsoleLink = grafanaConsoleLink;
     this._realId = null;
     this._signal = signal;
   }
@@ -179,7 +190,6 @@ class Api {
     );
   }
 
-  // TODO: also handle cases where grafana is not enabled (with grafana link from console)
   /**
    * @param {Object} parameters
    * @param {string} parameters.appId
@@ -191,7 +201,7 @@ class Api {
       .then(sendToApi({ apiConfig: this._apiConfig, signal }))
       .then(
         /** @param {{id: string}} grafanaOrg*/ (grafanaOrg) => {
-          const grafanaLink = new URL('/d/runtime/application-runtime', this._grafanaLink.base);
+          const grafanaLink = new URL('/d/runtime/application-runtime', this._grafanaBaseLink);
           grafanaLink.searchParams.set('orgId', grafanaOrg.id);
           grafanaLink.searchParams.set('var-SELECT_APP', appId);
           return grafanaLink.toString();
@@ -201,8 +211,7 @@ class Api {
         /** @param {Error & { response?: { status?: number }}} error */
         (error) => {
           if (error.response?.status === 404) {
-            // FIXME: should use a consoleGrafanaUrlPattern because the console doen't know about this app
-            return this._grafanaLink.console;
+            return this._grafanaConsoleLink;
           }
           return error;
         },
@@ -225,9 +234,10 @@ class Api {
     const rawAddon = await this._getAddon();
     const addonDetails = await this._getAddonDetails(rawAddon.provider.id);
     const isKibanaEnabled = addonDetails.services.some((service) => service.name === 'kibana' && service.enabled);
-    const grafanaAppLink = isKibanaEnabled
-      ? await this._getGrafanaAppLink({ appId: addonDetails.kibana_application, signal: this._signal })
-      : null;
+    const grafanaAppLink =
+      isKibanaEnabled && this._grafanaBaseLink != null && this._grafanaConsoleLink != null
+        ? await this._getGrafanaAppLink({ appId: addonDetails.kibana_application, signal: this._signal })
+        : null;
 
     return { rawAddon, addonDetails, grafanaAppLink, isKibanaEnabled };
   }
