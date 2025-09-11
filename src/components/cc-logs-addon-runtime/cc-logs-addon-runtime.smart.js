@@ -21,14 +21,14 @@ defineSmartComponent({
   params: {
     apiConfig: { type: Object },
     ownerId: { type: String },
-    addonId: { type: String },
+    realAddonId: { type: String },
     dateRangeSelection: { type: Object, optional: true },
   },
   /**
    * @param {OnContextUpdateArgs} args
    */
   onContextUpdate({ component, context, onEvent, updateComponent, signal }) {
-    const { apiConfig, ownerId, addonId, dateRangeSelection } = context;
+    const { apiConfig, ownerId, realAddonId, dateRangeSelection } = context;
 
     if (dateRangeSelection != null) {
       updateComponent('dateRangeSelection', dateRangeSelection);
@@ -37,7 +37,7 @@ defineSmartComponent({
     const controller = new SmartController({
       apiConfig,
       ownerId,
-      addonId,
+      addonId: realAddonId,
       component,
       updateComponent,
     });
