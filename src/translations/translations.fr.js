@@ -183,6 +183,7 @@ export const translations = {
   'cc-addon-credentials.title': /** @param {{name: string}} _ */ ({ name }) => `Identifiants ${name}`,
   //#endregion
   //#region cc-addon-credentials-beta
+  'cc-addon-credentials-beta.choice.admin': `admin`,
   'cc-addon-credentials-beta.choice.api': `API`,
   'cc-addon-credentials-beta.choice.apm': `APM`,
   'cc-addon-credentials-beta.choice.default': `Par défaut`,
@@ -190,6 +191,7 @@ export const translations = {
   'cc-addon-credentials-beta.choice.elastic': `Elastic`,
   'cc-addon-credentials-beta.choice.kibana': `Kibana`,
   'cc-addon-credentials-beta.doc-link.keycloak': `Keycloak - Documentation`,
+  'cc-addon-credentials-beta.doc-link.otoroshi': `Otoroshi - Documentation`,
   'cc-addon-credentials-beta.error': `Une erreur est survenue pendant le chargement des informations de l'add-on.`,
   'cc-addon-credentials-beta.heading': `Accès`,
   'cc-addon-credentials-beta.ng.disabling.error': `Une erreur est survenue lors de la désactivation du Network Group`,
