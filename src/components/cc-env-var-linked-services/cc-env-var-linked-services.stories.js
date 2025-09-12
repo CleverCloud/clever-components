@@ -14,20 +14,29 @@ export default {
   component: 'cc-env-var-linked-services',
 };
 
+/**
+ * @typedef {import('./cc-env-var-linked-services.js').CcEnvVarLinkedServices} CcEnvVarLinkedServices
+ */
+
 const conf = {
   component: 'cc-env-var-linked-services',
 };
 
 export const defaultStory = makeStory(conf, {
+  /** @type {Partial<CcEnvVarLinkedServices>[]} */
   items: [
     {
       type: 'addon',
       appName: 'Foobar backend python',
       state: {
         type: 'loaded',
-        servicesStates: [
-          { name: 'My Awesome PG database', type: 'loaded', variables: VARIABLES_FULL },
-          { name: 'Redis cache (PROD)', type: 'loaded', variables: VARIABLES_FULL },
+        services: [
+          {
+            id: 'addon_01234567-89ab-cdef-0123-456789abcde0',
+            name: 'My Awesome PG database',
+            variables: VARIABLES_FULL,
+          },
+          { id: 'addon_01234567-89ab-cdef-0123-456789abcde1', name: 'Redis cache (PROD)', variables: VARIABLES_FULL },
         ],
       },
     },
@@ -36,10 +45,22 @@ export const defaultStory = makeStory(conf, {
       appName: 'Foobar backend python',
       state: {
         type: 'loaded',
-        servicesStates: [
-          { name: 'The mighty maven Java app', type: 'loaded', variables: VARIABLES_FULL },
-          { name: 'Node.js frontend preprod', type: 'loaded', variables: VARIABLES_FULL },
-          { name: 'Auth gateway for backend', type: 'loaded', variables: VARIABLES_FULL },
+        services: [
+          {
+            id: 'app_01234567-89ab-cdef-0123-456789abcde0',
+            name: 'The mighty maven Java app',
+            variables: VARIABLES_FULL,
+          },
+          {
+            id: 'app_01234567-89ab-cdef-0123-456789abcde1',
+            name: 'Node.js frontend preprod',
+            variables: VARIABLES_FULL,
+          },
+          {
+            id: 'app_01234567-89ab-cdef-0123-456789abcde2',
+            name: 'Auth gateway for backend',
+            variables: VARIABLES_FULL,
+          },
         ],
       },
     },
@@ -47,6 +68,7 @@ export const defaultStory = makeStory(conf, {
 });
 
 export const loadingWithLinkedAddons = makeStory(conf, {
+  /** @type {Partial<CcEnvVarLinkedServices>[]} */
   items: [
     {
       type: 'addon',
@@ -57,6 +79,7 @@ export const loadingWithLinkedAddons = makeStory(conf, {
 });
 
 export const loadingWithLinkedApps = makeStory(conf, {
+  /** @type {Partial<CcEnvVarLinkedServices>[]} */
   items: [
     {
       type: 'app',
@@ -66,69 +89,43 @@ export const loadingWithLinkedApps = makeStory(conf, {
   ],
 });
 
-export const loadedWithSomeLoadingLinkedAddons = makeStory(conf, {
-  items: [
-    {
-      type: 'addon',
-      appName: 'Foobar backend python',
-      state: {
-        type: 'loaded',
-        servicesStates: [
-          { name: 'My Awesome PG database', type: 'loading' },
-          { name: 'Redis cache (PROD)', type: 'loaded', variables: VARIABLES_FULL },
-        ],
-      },
-    },
-  ],
-});
-
-export const loadedWithSomeLoadingLinkedApps = makeStory(conf, {
-  items: [
-    {
-      type: 'app',
-      appName: 'Foobar backend python',
-      state: {
-        type: 'loaded',
-        servicesStates: [
-          { name: 'The mighty maven Java app', type: 'loading' },
-          { name: 'Node.js frontend preprod', type: 'loaded', variables: VARIABLES_FULL },
-          { name: 'Auth gateway for backend', type: 'loading' },
-        ],
-      },
-    },
-  ],
-});
-
 export const loadedWithEmptyLinkedAddons = makeStory(conf, {
+  /** @type {Partial<CcEnvVarLinkedServices>[]} */
   items: [
     {
       type: 'addon',
       appName: 'Foobar backend python',
-      state: { type: 'loaded', servicesStates: [] },
+      state: { type: 'loaded', services: [] },
     },
   ],
 });
 
 export const loadedWithEmptyLinkedApps = makeStory(conf, {
+  /** @type {Partial<CcEnvVarLinkedServices>[]} */
   items: [
     {
       type: 'app',
       appName: 'Foobar backend python',
-      state: { type: 'loaded', servicesStates: [] },
+      state: { type: 'loaded', services: [] },
     },
   ],
 });
 
 export const loadedWithLinkedAddons = makeStory(conf, {
+  /** @type {Partial<CcEnvVarLinkedServices>[]} */
   items: [
     {
       type: 'addon',
       appName: 'Foobar backend python',
       state: {
         type: 'loaded',
-        servicesStates: [
-          { name: 'My Awesome PG database', variables: VARIABLES_FULL },
-          { name: 'Redis cache (PROD)', variables: VARIABLES_FULL },
+        services: [
+          {
+            id: 'addon_01234567-89ab-cdef-0123-456789abcde0',
+            name: 'My Awesome PG database',
+            variables: VARIABLES_FULL,
+          },
+          { id: 'addon_01234567-89ab-cdef-0123-456789abcde1', name: 'Redis cache (PROD)', variables: VARIABLES_FULL },
         ],
       },
     },
@@ -136,16 +133,29 @@ export const loadedWithLinkedAddons = makeStory(conf, {
 });
 
 export const loadedWithLinkedApps = makeStory(conf, {
+  /** @type {Partial<CcEnvVarLinkedServices>[]} */
   items: [
     {
       type: 'app',
       appName: 'Foobar backend python',
       state: {
         type: 'loaded',
-        servicesStates: [
-          { name: 'The mighty maven Java app', variables: VARIABLES_FULL },
-          { name: 'Node.js frontend preprod', variables: VARIABLES_FULL },
-          { name: 'Auth gateway for backend', variables: VARIABLES_FULL },
+        services: [
+          {
+            id: 'app_01234567-89ab-cdef-0123-456789abcde0',
+            name: 'The mighty maven Java app',
+            variables: VARIABLES_FULL,
+          },
+          {
+            id: 'app_01234567-89ab-cdef-0123-456789abcde1',
+            name: 'Node.js frontend preprod',
+            variables: VARIABLES_FULL,
+          },
+          {
+            id: 'app_01234567-89ab-cdef-0123-456789abcde2',
+            name: 'Auth gateway for backend',
+            variables: VARIABLES_FULL,
+          },
         ],
       },
     },
@@ -153,102 +163,78 @@ export const loadedWithLinkedApps = makeStory(conf, {
 });
 
 export const errorWithLinkedAddons = makeStory(conf, {
+  /** @type {Partial<CcEnvVarLinkedServices>[]} */
   items: [{ type: 'addon', appName: 'Foobar backend python', state: { type: 'error' } }],
 });
 
-export const errorWithOneLinkedAddon = makeStory(conf, {
-  items: [
-    {
-      type: 'addon',
-      appName: 'Foobar backend python',
-      state: {
-        type: 'loaded',
-        servicesStates: [
-          { name: 'My Awesome PG database', type: 'error' },
-          { name: 'Redis cache (PROD)', type: 'loaded', variables: VARIABLES_FULL },
-        ],
-      },
-    },
-  ],
-});
-
 export const errorWithLinkedApps = makeStory(conf, {
+  /** @type {Partial<CcEnvVarLinkedServices>[]} */
   items: [{ type: 'app', appName: 'Foobar backend python', state: { type: 'error' } }],
 });
 
-export const errorWithOneLinkedApp = makeStory(conf, {
-  items: [
-    {
-      type: 'app',
-      appName: 'Foobar backend python',
-      state: {
-        type: 'loaded',
-        servicesStates: [
-          { name: 'The mighty maven Java app', type: 'loaded', variables: VARIABLES_FULL },
-          { name: 'Node.js frontend preprod', type: 'error' },
-          { name: 'Auth gateway for backend', type: 'loaded', variables: VARIABLES_FULL },
-        ],
-      },
-    },
-  ],
-});
-
 export const simulationsWithAddons = makeStory(conf, {
+  /** @type {Partial<CcEnvVarLinkedServices>[]} */
   items: [
     {
       type: 'addon',
       appName: 'Foobar backend python',
+      state: { type: 'loading' },
     },
   ],
   simulations: [
-    storyWait(2000, ([component]) => {
-      component.state = {
-        type: 'loaded',
-        servicesStates: [
-          { name: 'My Awesome PG database', type: 'loading' },
-          { name: 'Redis cache (PROD)', type: 'loading' },
-        ],
-      };
-    }),
-    storyWait(2000, ([component]) => {
-      component.state = {
-        type: 'loaded',
-        servicesStates: [
-          { name: 'My Awesome PG database', type: 'loaded', variables: VARIABLES_FULL },
-          { name: 'Redis cache (PROD)', type: 'error' },
-        ],
-      };
-    }),
+    storyWait(
+      2000,
+      /** @param {CcEnvVarLinkedServices[]} components */ ([component]) => {
+        component.state = {
+          type: 'loaded',
+          services: [
+            {
+              id: 'addon_01234567-89ab-cdef-0123-456789abcde0',
+              name: 'My Awesome PG database',
+              variables: VARIABLES_FULL,
+            },
+            { id: 'addon_01234567-89ab-cdef-0123-456789abcde1', name: 'Redis cache (PROD)', variables: VARIABLES_FULL },
+          ],
+        };
+      },
+    ),
   ],
 });
 
 export const simulationsWithLinkedApps = makeStory(conf, {
+  /** @type {Partial<CcEnvVarLinkedServices>[]} */
   items: [
     {
       type: 'app',
       appName: 'Foobar backend python',
+      state: { type: 'loading' },
     },
   ],
   simulations: [
-    storyWait(2000, ([component]) => {
-      component.state = {
-        type: 'loaded',
-        servicesStates: [
-          { name: 'The mighty maven Java app', type: 'loading' },
-          { name: 'Node.js frontend preprod', type: 'loading' },
-          { name: 'Auth gateway for backend', type: 'loading' },
-        ],
-      };
-    }),
-    storyWait(2000, ([component]) => {
-      component.state = {
-        type: 'loaded',
-        servicesStates: [
-          { name: 'The mighty maven Java app', type: 'loaded', variables: VARIABLES_FULL },
-          { name: 'Node.js frontend preprod', type: 'loaded', variables: VARIABLES_FULL },
-          { name: 'Auth gateway for backend', type: 'error' },
-        ],
-      };
-    }),
+    storyWait(
+      2000,
+      /** @param {CcEnvVarLinkedServices[]} components */ ([component]) => {
+        component.state = {
+          type: 'loaded',
+          services: [
+            {
+              id: 'app_01234567-89ab-cdef-0123-456789abcde0',
+              name: 'The mighty maven Java app',
+              variables: VARIABLES_FULL,
+            },
+            {
+              id: 'app_01234567-89ab-cdef-0123-456789abcde1',
+              name: 'Node.js frontend preprod',
+              variables: VARIABLES_FULL,
+            },
+            {
+              id: 'app_01234567-89ab-cdef-0123-456789abcde2',
+              name: 'Auth gateway for backend',
+              variables: VARIABLES_FULL,
+            },
+          ],
+        };
+      },
+    ),
   ],
 });
