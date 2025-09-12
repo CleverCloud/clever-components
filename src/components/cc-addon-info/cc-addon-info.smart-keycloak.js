@@ -66,7 +66,9 @@ defineSmartComponent({
     addonDashboardUrlPattern: { type: String },
     scalabilityUrlPattern: { type: String },
     // Grafana may be disabled in some environments
-    grafanaLink: { type: Object, optional: true },
+    grafanaBaseLink: { type: String, optional: true },
+    // Grafana may be disabled in some environments
+    grafanaConsoleLink: { type: String, optional: true },
     logsUrlPattern: { type: String },
   },
   /**
@@ -80,62 +82,73 @@ defineSmartComponent({
       appOverviewUrlPattern,
       addonDashboardUrlPattern,
       scalabilityUrlPattern,
-      grafanaLink,
+      grafanaBaseLink,
+      grafanaConsoleLink,
     } = context;
     let logsUrl = '';
 
-    // FIXME: shouldn't the defineSmartComponent function handle deserialization?
-    const api = new Api({ apiConfig, ownerId, addonId, grafanaLink: JSON.parse(grafanaLink), signal });
+    const api = new Api({ apiConfig, ownerId, addonId, grafanaBaseLink, grafanaConsoleLink, signal });
 
     updateComponent('state', { type: 'loading', ...SKELETON_DATA });
 
+    /**
+     * @param {object} data
+     * @param {RawAddon} data.addonInfo
+     * @param {KeycloakOperatorInfo} data.operator
+     * @param {OperatorVersionInfo} data.operatorVersionInfo
+     * @param {string} data.grafanaAppLink
+     */
+    function setComponentStateLoaded({ operatorVersionInfo, addonInfo, grafanaAppLink, operator }) {
+      const javaAppId = operator.resources.entrypoint;
+      logsUrl = context.logsUrlPattern.replace(':id', javaAppId);
+
+      updateComponent('state', {
+        type: 'loaded',
+        version: operatorVersionInfo.needUpdate
+          ? {
+              stateType: 'update-available',
+              installed: operatorVersionInfo.installed,
+              available: operatorVersionInfo.available.filter((version) => version !== operatorVersionInfo.installed),
+              changelogLink: `${generateDevHubHref('/changelog')}`,
+            }
+          : {
+              stateType: 'up-to-date',
+              installed: operatorVersionInfo.installed,
+            },
+        creationDate: addonInfo.creationDate,
+        openGrafanaLink: grafanaAppLink,
+        openScalabilityLink: scalabilityUrlPattern.replace(':id', operator.resources.entrypoint),
+        linkedServices: [
+          {
+            type: 'app',
+            name: 'Java',
+            // hardcoded right now because if we want to rely on the API, we need to fetch all the applications in order to find the variantLogo for this specific app?!
+            logoUrl: 'https://assets.clever-cloud.com/logos/java-jar.svg',
+            link: appOverviewUrlPattern.replace(':id', operator.resources.entrypoint),
+          },
+          {
+            type: 'addon',
+            name: 'PostgreSQL',
+            logoUrl: 'https://assets.clever-cloud.com/logos/pgsql.svg',
+            link: addonDashboardUrlPattern.replace(':id', operator.resources.pgsqlId),
+          },
+          {
+            type: 'addon',
+            name: 'FS Bucket',
+            logoUrl: 'https://assets.clever-cloud.com/logos/fsbucket.svg',
+            link: addonDashboardUrlPattern.replace(':id', operator.resources.fsbucketId),
+          },
+        ],
+        docUrlLink: generateDocsHref('/addons/keycloak'),
+      });
+    }
+
     api
       .getAddonInfo()
-      .then(({ addonInfo, operator, operatorVersionInfo, grafanaAppLink }) => {
-        const javaAppId = operator.resources.entrypoint;
-        logsUrl = context.logsUrlPattern.replace(':id', javaAppId);
-        updateComponent('state', {
-          type: 'loaded',
-          version: operatorVersionInfo.needUpdate
-            ? {
-                stateType: 'update-available',
-                installed: operatorVersionInfo.installed,
-                available: operatorVersionInfo.available,
-                changelogLink: `${generateDevHubHref('/changelog')}`,
-              }
-            : {
-                stateType: 'up-to-date',
-                installed: operatorVersionInfo.installed,
-              },
-          creationDate: addonInfo.creationDate,
-          openGrafanaLink: grafanaAppLink,
-          openScalabilityLink: scalabilityUrlPattern.replace(':id', operator.resources.entrypoint),
-          linkedServices: [
-            {
-              type: 'app',
-              name: 'Java',
-              // hardcoded right now because if we want to rely on the API, we need to fetch all the applications in order to find the variantLogo for this specific app?!
-              logoUrl: 'https://assets.clever-cloud.com/logos/java-jar.svg',
-              link: appOverviewUrlPattern.replace(':id', operator.resources.entrypoint),
-            },
-            {
-              type: 'addon',
-              name: 'PostgreSQL',
-              logoUrl: 'https://assets.clever-cloud.com/logos/pgsql.svg',
-              link: addonDashboardUrlPattern.replace(':id', operator.resources.pgsqlId),
-            },
-            {
-              type: 'addon',
-              name: 'FS Bucket',
-              logoUrl: 'https://assets.clever-cloud.com/logos/fsbucket.svg',
-              link: addonDashboardUrlPattern.replace(':id', operator.resources.fsbucketId),
-            },
-          ],
-          docUrlLink: generateDocsHref('/addons/keycloak'),
-        });
-      })
+      .then((data) => setComponentStateLoaded(data))
       .catch((error) => {
         console.error(error);
+        updateComponent('state', { type: 'error' });
       });
 
     onEvent('cc-addon-version-change', (targetVersion) => {
@@ -152,17 +165,11 @@ defineSmartComponent({
 
       api
         .updateOperatorVersion(targetVersion)
-        .then(() => {
-          updateComponent(
-            'state',
-            /** @param {CcAddonInfoStateLoaded & { version: AddonVersionStateUpToDate }} state */
-            (state) => {
-              state.version = {
-                stateType: 'up-to-date',
-                installed: targetVersion,
-              };
-            },
-          );
+        .then(async () => {
+          // FIXME: what should we do if it fails? Also should we only checkOperatorVersion instead? But what do we do if it fails?
+          // FIXME: we need to close the dialog, either through a state or imperative API :thinking:
+          const data = await api.getAddonInfo();
+          setComponentStateLoaded(data);
           notifySuccess(i18n('cc-addon-info.version.update.success', { logsUrl }));
         })
         .catch((error) => {
@@ -189,14 +196,16 @@ class Api {
    * @param {ApiConfig} config.apiConfig - API configuration
    * @param {string} config.ownerId - Owner identifier
    * @param {string} config.addonId - Addon identifier
-   * @param {{ base: string; console: string; }} [config.grafanaLink] - Grafana link info
+   * @param {string} [config.grafanaBaseLink] - Base url to build a grafana link to the app
+   * @param {string} [config.grafanaConsoleLink] - Link to the page where grafana can be enabled within the console
    * @param {AbortSignal} config.signal - Signal to abort calls
    */
-  constructor({ apiConfig, ownerId, addonId, grafanaLink, signal }) {
+  constructor({ apiConfig, ownerId, addonId, grafanaBaseLink, grafanaConsoleLink, signal }) {
     this._apiConfig = apiConfig;
     this._ownerId = ownerId;
     this._addonId = addonId;
-    this._grafanaLink = grafanaLink;
+    this._grafanaBaseLink = grafanaBaseLink;
+    this._grafanaConsoleLink = grafanaConsoleLink;
     this._realId = null;
     this._signal = signal;
   }
@@ -222,13 +231,12 @@ class Api {
    * @param {string} realId
    * @returns {Promise<OperatorVersionInfo>}
    */
-  _getOperatorVersionInfo(providerId, realId) {
+  getOperatorVersionInfo(providerId, realId) {
     return checkOperatorVersion({ providerId, realId }).then(
       sendToApi({ apiConfig: this._apiConfig, signal: this._signal }),
     );
   }
 
-  // TODO: also handle cases where grafana is not enabled (with grafana link from console)
   /**
    * @param {Object} parameters
    * @param {string} parameters.appId
@@ -240,7 +248,7 @@ class Api {
       .then(sendToApi({ apiConfig: this._apiConfig, signal }))
       .then(
         /** @param {{id: string}} grafanaOrg*/ (grafanaOrg) => {
-          const grafanaLink = new URL('/d/runtime/application-runtime', this._grafanaLink.base);
+          const grafanaLink = new URL('/d/runtime/application-runtime', this._grafanaBaseLink);
           grafanaLink.searchParams.set('orgId', grafanaOrg.id);
           grafanaLink.searchParams.set('var-SELECT_APP', appId);
           return grafanaLink.toString();
@@ -250,8 +258,7 @@ class Api {
         /** @param {Error & { response?: { status?: number }}} error */
         (error) => {
           if (error.response?.status === 404) {
-            // FIXME: should use a consoleGrafanaUrlPattern because the console doen't know about this app
-            return this._grafanaLink.console;
+            return this._grafanaConsoleLink;
           }
           return error;
         },
@@ -277,9 +284,9 @@ class Api {
     // Fetch operator with realId,
     const [operator, operatorVersionInfo] = await Promise.all([
       this._getOperator(this._providerId, this._realId),
-      this._getOperatorVersionInfo(this._providerId, this._realId),
+      this.getOperatorVersionInfo(this._providerId, this._realId),
     ]);
-    const isGrafanaGloballyEnabled = this._grafanaLink != null;
+    const isGrafanaGloballyEnabled = this._grafanaConsoleLink != null && this._grafanaBaseLink != null;
     const grafanaAppLink = isGrafanaGloballyEnabled
       ? await this._getGrafanaAppLink({ appId: operator.resources.entrypoint, signal: this._signal })
       : null;
