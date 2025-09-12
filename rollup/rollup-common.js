@@ -3,7 +3,6 @@ import CleanCSS from 'clean-css';
 import glob from 'glob';
 import path from 'path';
 import clear from 'rollup-plugin-clear';
-import minifyTemplateLiterals from 'rollup-plugin-minify-html-literals';
 import { terser } from 'rollup-plugin-terser';
 import visualizer from 'rollup-plugin-visualizer';
 import SVGO from 'svgo';
@@ -118,27 +117,6 @@ export function importMetaUrlAssetsPlugin() {
 export function terserPlugin() {
   return terser({
     output: { comments: false },
-  });
-}
-
-export function minifyPlugin() {
-  return minifyTemplateLiterals({
-    failOnError: true,
-    // Trying to minify shoelace components for CDN release leads to a parser error
-    exclude: ['**/shoelace/**/*.js'],
-    options: {
-      minifyOptions: {
-        caseSensitive: true,
-        collapseWhitespace: true,
-        removeAttributeQuotes: true,
-        removeComments: true,
-        removeRedundantAttributes: true,
-        // This clearly DOES NOT work well with template strings and lit-element
-        sortAttributes: false,
-        sortClassName: true,
-        minifyCSS: true,
-      },
-    },
   });
 }
 
