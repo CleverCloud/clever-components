@@ -257,6 +257,7 @@ export const translations = {
   'cc-addon-features.title': `Spécifications`,
   //#endregion
   //#region cc-addon-header
+  'cc-addon-header.action.get-config': `Obtenir le Kubeconfig`,
   'cc-addon-header.action.open-addon': /** @param {{ linkName: string }} _ */ ({ linkName }) => `Ouvrir ${linkName}`,
   'cc-addon-header.action.restart': `Redémarrer`,
   'cc-addon-header.action.restart-rebuild': `Re-build et redémarrer`,
