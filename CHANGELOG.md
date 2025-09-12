@@ -5,6 +5,13 @@ title: 'Changelog'
 
 # Changelog
 
+## [21.0.1](https://github.com/CleverCloud/clever-components/compare/21.0.0...21.0.1) (2025-09-12)
+
+
+### 🐛 Bug Fixes
+
+* stop minifying HTML & CSS ([33475a1](https://github.com/CleverCloud/clever-components/commit/33475a180315ed98cdaf035f564121ec5451859d)), closes [#1539](https://github.com/CleverCloud/clever-components/issues/1539)
+
 ## [21.0.0](https://github.com/CleverCloud/clever-components/compare/20.0.1...21.0.0) (2025-09-11)
 
 
