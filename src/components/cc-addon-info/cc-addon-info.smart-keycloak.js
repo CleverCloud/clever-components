@@ -104,17 +104,7 @@ defineSmartComponent({
 
       updateComponent('state', {
         type: 'loaded',
-        version: operatorVersionInfo.needUpdate
-          ? {
-              stateType: 'update-available',
-              installed: operatorVersionInfo.installed,
-              available: operatorVersionInfo.available.filter((version) => version !== operatorVersionInfo.installed),
-              changelogLink: `${generateDevHubHref('/changelog')}`,
-            }
-          : {
-              stateType: 'up-to-date',
-              installed: operatorVersionInfo.installed,
-            },
+        version: formatVersionState(operatorVersionInfo),
         creationDate: addonInfo.creationDate,
         openGrafanaLink: grafanaAppLink,
         openScalabilityLink: scalabilityUrlPattern.replace(':id', operator.resources.entrypoint),
@@ -165,14 +155,31 @@ defineSmartComponent({
 
       api
         .updateOperatorVersion(targetVersion)
-        .then(async () => {
-          // FIXME: what should we do if it fails? Also should we only checkOperatorVersion instead? But what do we do if it fails?
+        .then(() => {
+          notifySuccess(
+            i18n('cc-addon-info.version.update.success.content', { logsUrl }),
+            i18n('cc-addon-info.version.update.success.heading', { version: targetVersion }),
+          );
           // FIXME: we need to close the dialog, either through a state or imperative API :thinking:
-          const data = await api.getAddonInfo();
-          setComponentStateLoaded(data);
-          notifySuccess(i18n('cc-addon-info.version.update.success', { logsUrl }));
+          // Once update has been requested, we need to fetch up to date version info to refresh the UI
+          api
+            .getOperatorVersionInfo()
+            .then((operatorVersionInfo) => {
+              updateComponent(
+                'state',
+                /** @param {CcAddonInfoStateLoaded} state */
+                (state) => {
+                  state.version = formatVersionState(operatorVersionInfo);
+                },
+              );
+            })
+            .catch((error) => {
+              console.error(error);
+              notifyError(i18n('cc-addon-info.version.update.refresh.error'));
+            });
         })
         .catch((error) => {
+          console.dir({ error });
           updateComponent(
             'state',
             /** @param {CcAddonInfoStateLoaded & { version: AddonVersionStateUpdateAvailable | AddonVersionStateRequestingUpdate }} state */
@@ -226,13 +233,9 @@ class Api {
     return getOperator({ providerId, realId }).then(sendToApi({ apiConfig: this._apiConfig, signal: this._signal }));
   }
 
-  /**
-   * @param {string} providerId
-   * @param {string} realId
-   * @returns {Promise<OperatorVersionInfo>}
-   */
-  getOperatorVersionInfo(providerId, realId) {
-    return checkOperatorVersion({ providerId, realId }).then(
+  /** @returns {Promise<OperatorVersionInfo>} */
+  getOperatorVersionInfo() {
+    return checkOperatorVersion({ providerId: this._providerId, realId: this._realId }).then(
       sendToApi({ apiConfig: this._apiConfig, signal: this._signal }),
     );
   }
@@ -267,10 +270,9 @@ class Api {
 
   /** @param {string} targetVersion */
   updateOperatorVersion(targetVersion) {
-    return updateOperatorVersion(
-      { providerId: this._providerId, realId: this._realId },
-      { targetVersion: targetVersion },
-    ).then(sendToApi({ apiConfig: this._apiConfig }));
+    return updateOperatorVersion({ providerId: this._providerId, realId: this._realId }, { targetVersion }).then(
+      sendToApi({ apiConfig: this._apiConfig }),
+    );
   }
 
   /**
@@ -284,7 +286,7 @@ class Api {
     // Fetch operator with realId,
     const [operator, operatorVersionInfo] = await Promise.all([
       this._getOperator(this._providerId, this._realId),
-      this.getOperatorVersionInfo(this._providerId, this._realId),
+      this.getOperatorVersionInfo(),
     ]);
     const isGrafanaGloballyEnabled = this._grafanaConsoleLink != null && this._grafanaBaseLink != null;
     const grafanaAppLink = isGrafanaGloballyEnabled
@@ -337,4 +339,24 @@ export function updateOperatorVersion(params, body) {
     // no queryParams
     body,
   });
+}
+
+/**
+ * @param {OperatorVersionInfo} operatorVersionInfo
+ * @returns {CcAddonInfoStateLoaded['version']}
+ **/
+function formatVersionState(operatorVersionInfo) {
+  if (operatorVersionInfo.needUpdate) {
+    return {
+      stateType: 'update-available',
+      installed: operatorVersionInfo.installed,
+      available: operatorVersionInfo.available.filter((version) => version !== operatorVersionInfo.installed),
+      changelogLink: `${generateDevHubHref('/changelog')}`,
+    };
+  }
+
+  return {
+    stateType: 'up-to-date',
+    installed: operatorVersionInfo.installed,
+  };
 }

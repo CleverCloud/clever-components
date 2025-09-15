@@ -1,7 +1,7 @@
 import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
-import { createRef, ref } from 'lit/directives/ref.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { createRef, ref } from 'lit/directives/ref.js';
 import {
   iconRemixCloseLine as iconClose,
   iconRemixInformationFill as iconInfo,
@@ -51,6 +51,7 @@ const GRAFANA_LOGO_URL = 'https://assets.clever-cloud.com/logos/grafana.svg';
  * @typedef {import('../common.types.js').FormattedFeature} FormattedFeature
  * @typedef {import('lit/directives/ref.js').Ref<HTMLDialogElement>} HTMLDialogElementRef
  * @typedef {import('lit/directives/ref.js').Ref<HTMLElement>} HTMLElementRef
+ * @typedef {import('lit').PropertyValues<CcAddonInfo>} CcAddonInfoPropertyValues
  */
 
 /**
@@ -137,7 +138,7 @@ export class CcAddonInfo extends LitElement {
     if (skeleton) {
       return fakeString(15);
     }
-    
+
     switch (service.type) {
       case 'app':
         return i18n('cc-addon-info.service.name.app', { name: service.name });
@@ -159,6 +160,19 @@ export class CcAddonInfo extends LitElement {
 
   _onVersionDialogClose() {
     this._versionDialogRef.value.close();
+  }
+
+  /** @param {CcAddonInfoPropertyValues} changedProperties */
+  updated(changedProperties) {
+    const oldState = changedProperties.get('state');
+    if (
+      oldState?.type === 'loaded' &&
+      oldState?.version.stateType === 'requesting-update' &&
+      this.state.type === 'loaded' &&
+      this.state.version.stateType === 'update-available'
+    ) {
+      this._versionDialogRef.value.close();
+    }
   }
 
   render() {
@@ -283,7 +297,10 @@ export class CcAddonInfo extends LitElement {
                       ${this.state.linkedServices.map((service) => {
                         return html`
                           <li class="linked-service__li">
-                            <cc-img src="${ifDefined(skeleton ? undefined : service.logoUrl)}" ?skeleton=${skeleton}></cc-img>
+                            <cc-img
+                              src="${ifDefined(skeleton ? undefined : service.logoUrl)}"
+                              ?skeleton=${skeleton}
+                            ></cc-img>
                             <cc-link href="${service.link}" ?skeleton=${skeleton}
                               >${this._getServiceType(service, skeleton)}
                             </cc-link>

@@ -263,6 +263,7 @@ export const translations = {
   'cc-addon-header.state-msg.deployment-is-active': `Your add-on is active!`,
   'cc-addon-header.state-msg.deployment-is-deploying': `Your add-on is deploying…`,
   'cc-addon-header.state-msg.unknown-state': `Unknown state, try to restart the add-on or contact our support if you have additional questions.`,
+  //#endregion
   //#region cc-addon-info
   'cc-addon-info.billing.heading': `Billing`,
   'cc-addon-info.creation-date.heading': `Creation date`,
@@ -321,8 +322,11 @@ export const translations = {
   'cc-addon-info.version.heading': `Version`,
   'cc-addon-info.version.update.error': /** @param {{logsUrl: string}} _*/ ({ logsUrl }) =>
     sanitize`Something went wrong while updating the version. See the application live <cc-link href="${logsUrl}">logs</cc-link>.`,
-  'cc-addon-info.version.update.success': /** @param {{logsUrl: string}} _*/ ({ logsUrl }) =>
-    sanitize`<strong>Update of the requested version in progress</strong><br>An updated and rebuild phase is in progress. See the application live <cc-link href="${logsUrl}">logs</cc-link>.`,
+  'cc-addon-info.version.update.refresh.error': `Something went wrong while fetching updated version information. Refresh the page to get up-to-date information.`,
+  'cc-addon-info.version.update.success.content': /** @param {{logsUrl: string}} _*/ ({ logsUrl }) =>
+    sanitize`An update and rebuild phase is in progress. See the application live <cc-link href="${logsUrl}">logs</cc-link>.`,
+  'cc-addon-info.version.update.success.heading': /** @param {{ version: string }} _ */ ({ version }) =>
+    `Update to ${version} in progress`,
   //#endregion
   //#region cc-addon-jenkins-options
   'cc-addon-jenkins-options.description': `Choose the options you want for your Jenkins add-on.`,

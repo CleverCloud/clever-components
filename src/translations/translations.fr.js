@@ -274,6 +274,7 @@ export const translations = {
   'cc-addon-header.state-msg.deployment-is-active': `Votre add-on est disponible !`,
   'cc-addon-header.state-msg.deployment-is-deploying': `L'add-on est en cours de déploiement…`,
   'cc-addon-header.state-msg.unknown-state': `État inconnu, essayez de redémarrer l'add-on ou de contacter notre support si vous avez des questions.`,
+  //#endregion
   //#region cc-addon-info
   'cc-addon-info.billing.heading': `Facturation`,
   'cc-addon-info.creation-date.heading': `Date de création`,
@@ -332,8 +333,11 @@ export const translations = {
   'cc-addon-info.version.heading': `Version`,
   'cc-addon-info.version.update.error': /** @param {{logsUrl: string}} _*/ ({ logsUrl }) =>
     sanitize`Une erreur est survenue pendant la mise à jour de la version. Voir les <cc-link href="${logsUrl}">logs</cc-link> de l'application.`,
-  'cc-addon-info.version.update.success': /** @param {{logsUrl: string}} _*/ ({ logsUrl }) =>
-    sanitize`<strong>Mise à jour de la version demandée en cours</strong><br>Une mise à jour avec rebuild est en cours. Voir les <cc-link href="${logsUrl}">logs</cc-link> de l'application.`,
+  'cc-addon-info.version.update.refresh.error': `Une erreur est survenue lors de la récupération des versions. Rafraîchissez votre page pour consuler les informations à jour.`,
+  'cc-addon-info.version.update.success.content': /** @param {{logsUrl: string}} _*/ ({ logsUrl }) =>
+    sanitize`La mise à jour et le redémarrage de l'application est en cours. Consultez les <cc-link href="${logsUrl}">logs</cc-link>.`,
+  'cc-addon-info.version.update.success.heading': /** @param {{ version: string }} _ */ ({ version }) =>
+    `Mise à jour vers "${version}" en cours`,
   //#endregion
   //#region cc-addon-jenkins-options
   'cc-addon-jenkins-options.description': `Sélectionnez les options que vous souhaitez pour votre add-on Jenkins.`,
