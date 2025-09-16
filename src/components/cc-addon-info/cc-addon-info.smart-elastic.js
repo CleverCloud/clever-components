@@ -11,6 +11,8 @@ import { generateDocsHref } from '../../lib/utils.js';
 import '../cc-smart-container/cc-smart-container.js';
 import './cc-addon-info.js';
 
+// FIXME: grafana logic needs to be updated (use keycloak as an example)
+
 /** @type {Record<string, { name: string; logoUrl: string; getAppId: (addonDetails: ElasticAddonInfo) => string }>} */
 const SERVICE_CONFIG = {
   kibana: {

@@ -51,6 +51,7 @@ const GRAFANA_LOGO_URL = 'https://assets.clever-cloud.com/logos/grafana.svg';
  * @typedef {import('../common.types.js').FormattedFeature} FormattedFeature
  * @typedef {import('lit/directives/ref.js').Ref<HTMLDialogElement>} HTMLDialogElementRef
  * @typedef {import('lit/directives/ref.js').Ref<HTMLElement>} HTMLElementRef
+ * @typedef {import('lit/directives/ref.js').Ref<HTMLFormElement>} HTMLFormElementRef
  * @typedef {import('lit').PropertyValues<CcAddonInfo>} CcAddonInfoPropertyValues
  */
 
@@ -80,6 +81,9 @@ export class CcAddonInfo extends LitElement {
 
     /** @type {HTMLElementRef} */
     this._versionTextRef = createRef();
+
+    /** @type {HTMLFormElementRef} */
+    this._versionFormRef = createRef();
 
     new LostFocusController(this, 'dialog', () => {
       this._versionTextRef.value?.focus();
@@ -164,14 +168,13 @@ export class CcAddonInfo extends LitElement {
 
   /** @param {CcAddonInfoPropertyValues} changedProperties */
   updated(changedProperties) {
-    const oldState = changedProperties.get('state');
-    if (
-      oldState?.type === 'loaded' &&
-      oldState?.version.stateType === 'requesting-update' &&
-      this.state.type === 'loaded' &&
-      this.state.version.stateType === 'update-available'
-    ) {
+    const previousState = changedProperties.get('state');
+    const wasRequestingUpdate =
+      previousState?.type === 'loaded' && previousState?.version.stateType === 'requesting-update';
+    const isNotRequestingUpdate = this.state.type === 'loaded' && this.state.version.stateType !== 'requesting-update';
+    if (wasRequestingUpdate && isNotRequestingUpdate) {
       this._versionDialogRef.value.close();
+      this._versionFormRef.value.reset();
     }
   }
 
@@ -334,6 +337,7 @@ export class CcAddonInfo extends LitElement {
       label: availableVersion,
       value: availableVersion,
     }));
+    const lastSelectOption = selectOptions.slice(-1)[0];
 
     return html`
       <dialog aria-labelledby="dialog-heading" ${ref(this._versionDialogRef)}>
@@ -349,14 +353,14 @@ export class CcAddonInfo extends LitElement {
         </cc-button>
         <div class="dialog-heading" id="dialog-heading">${i18n('cc-addon-info.version.dialog.heading')}</div>
         <div class="dialog-desc">${i18n('cc-addon-info.version.dialog.desc', { url: changelogLink })}</div>
-        <form ${formSubmit(this._onUpdateVersionRequested.bind(this))}>
+        <form ${formSubmit(this._onUpdateVersionRequested.bind(this))} ${ref(this._versionFormRef)}>
           <div class="dialog-form">
             <p>${i18n('cc-addon-info.version.dialog.select.desc', { currentVersion: installed })}</p>
             <cc-select
               .options="${selectOptions}"
               .label="${i18n('cc-addon-info.version.dialog.select.label')}"
-              .value="${selectOptions[0].value}"
-              .resetValue="${selectOptions[0].value}"
+              .value="${lastSelectOption.value}"
+              .resetValue="${lastSelectOption.value}"
               name="version"
               inline
             >

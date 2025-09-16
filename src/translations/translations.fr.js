@@ -331,8 +331,7 @@ export const translations = {
     `Sélectionnez la version cible à mettre à jour à partir de ${currentVersion}`,
   'cc-addon-info.version.dialog.select.label': () => sanitize`<strong>vers</strong>`,
   'cc-addon-info.version.heading': `Version`,
-  'cc-addon-info.version.update.error': /** @param {{logsUrl: string}} _*/ ({ logsUrl }) =>
-    sanitize`Une erreur est survenue pendant la mise à jour de la version. Voir les <cc-link href="${logsUrl}">logs</cc-link> de l'application.`,
+  'cc-addon-info.version.update.error': `Une erreur est survenue pendant la mise à jour de la version`,
   'cc-addon-info.version.update.refresh.error': `Une erreur est survenue lors de la récupération des versions. Rafraîchissez votre page pour consuler les informations à jour.`,
   'cc-addon-info.version.update.success.content': /** @param {{logsUrl: string}} _*/ ({ logsUrl }) =>
     sanitize`La mise à jour et le redémarrage de l'application est en cours. Consultez les <cc-link href="${logsUrl}">logs</cc-link>.`,

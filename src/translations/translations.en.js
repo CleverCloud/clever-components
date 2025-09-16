@@ -320,8 +320,7 @@ export const translations = {
     `Select the target version to update from ${currentVersion}`,
   'cc-addon-info.version.dialog.select.label': () => sanitize`<strong>to</strong>`,
   'cc-addon-info.version.heading': `Version`,
-  'cc-addon-info.version.update.error': /** @param {{logsUrl: string}} _*/ ({ logsUrl }) =>
-    sanitize`Something went wrong while updating the version. See the application live <cc-link href="${logsUrl}">logs</cc-link>.`,
+  'cc-addon-info.version.update.error': `Something went wrong while updating the version`,
   'cc-addon-info.version.update.refresh.error': `Something went wrong while fetching updated version information. Refresh the page to get up-to-date information.`,
   'cc-addon-info.version.update.success.content': /** @param {{logsUrl: string}} _*/ ({ logsUrl }) =>
     sanitize`An update and rebuild phase is in progress. See the application live <cc-link href="${logsUrl}">logs</cc-link>.`,

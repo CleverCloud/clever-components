@@ -160,8 +160,9 @@ defineSmartComponent({
             i18n('cc-addon-info.version.update.success.content', { logsUrl }),
             i18n('cc-addon-info.version.update.success.heading', { version: targetVersion }),
           );
-          // FIXME: we need to close the dialog, either through a state or imperative API :thinking:
           // Once update has been requested, we need to fetch up to date version info to refresh the UI
+          // The API is optimistic, when a version update is requested, it becomes the add-on current version even if the deployment is still running
+          // We could update the version number ourselves without fetching again but we need to know if new updates are available or not (users may update to a version that is not the latest)
           api
             .getOperatorVersionInfo()
             .then((operatorVersionInfo) => {
@@ -190,7 +191,7 @@ defineSmartComponent({
               };
             },
           );
-          notifyError(i18n('cc-addon-info.version.update.error', { logsUrl }));
+          notifyError(i18n('cc-addon-info.version.update.error'));
           console.error(error);
         });
     });
@@ -250,7 +251,8 @@ class Api {
     return getGrafanaOrganisation({ id: this._ownerId })
       .then(sendToApi({ apiConfig: this._apiConfig, signal }))
       .then(
-        /** @param {{id: string}} grafanaOrg*/ (grafanaOrg) => {
+        /** @param {{id: string}} grafanaOrg*/
+        (grafanaOrg) => {
           const grafanaLink = new URL('/d/runtime/application-runtime', this._grafanaBaseLink);
           grafanaLink.searchParams.set('orgId', grafanaOrg.id);
           grafanaLink.searchParams.set('var-SELECT_APP', appId);
