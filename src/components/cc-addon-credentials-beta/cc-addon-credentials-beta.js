@@ -50,7 +50,7 @@ export class CcAddonCredentialsBeta extends LitElement {
     this.state = { type: 'loading', tabs: { default: [] } };
 
     /** @type {TabName} */
-    this._selectedTabName = null;
+    this._selectedTabName = 'default';
   }
 
   /**
@@ -94,13 +94,9 @@ export class CcAddonCredentialsBeta extends LitElement {
     this._selectedTabName = tabName;
   }
 
-  /** @param {CcAddonCredentialsBetaPropertyValues} changedProperties */
-  willUpdate(changedProperties) {
-    if (changedProperties.has('state') && this.state.type !== 'error') {
-      const tabNames = Object.keys(this.state.tabs);
-      if (tabNames.length > 0 && (this._selectedTabName == null || !tabNames.includes(this._selectedTabName))) {
-        this._selectedTabName = /** @type {TabName} */ (tabNames[0]);
-      }
+  willUpdate() {
+    if (this.state.type === 'loading') {
+      this._selectedTabName = /** @type {TabName} */ (Object.keys(this.state.tabs)[0]);
     }
   }
 
@@ -124,6 +120,7 @@ export class CcAddonCredentialsBeta extends LitElement {
                 .value="${this._selectedTabName}"
                 @cc-select="${this._onTabSelect}"
                 slot="header-right"
+                ?disabled="${skeleton}"
               ></cc-toggle>
             `
           : ''}
