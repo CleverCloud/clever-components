@@ -7,27 +7,33 @@ import { notifyError, notifySuccess } from '../../lib/notifications.js';
 import { i18n } from '../../translations/translation.js';
 import './cc-addon-credentials-beta.js';
 
-/** @type {AddonCredential[]} */
-const SKELETON_DATA = [
-  {
-    code: 'user',
-    value: 'fake-skeleton',
+/** @type {AddonCredentialsBetaStateLoading} */
+const LOADING_STATE = {
+  type: 'loading',
+  tabs: {
+    default: [
+      {
+        code: 'user',
+        value: 'fake-skeleton',
+      },
+      {
+        code: 'password',
+        value: 'fake-skeleton',
+      },
+      {
+        code: 'ng',
+        value: {
+          status: 'disabled',
+        },
+      },
+    ],
   },
-  {
-    code: 'password',
-    value: 'fake-skeleton',
-  },
-  {
-    code: 'ng',
-    value: {
-      status: 'disabled',
-    },
-  },
-];
+};
 
 /**
  * @typedef {import('./cc-addon-credentials-beta.js').CcAddonCredentialsBeta} CcAddonCredentialsBeta
  * @typedef {import('./cc-addon-credentials-beta.types.js').AddonCredentialsBetaStateLoaded} AddonCredentialsBetaStateLoaded
+ * @typedef {import('./cc-addon-credentials-beta.types.js').AddonCredentialsBetaStateLoading} AddonCredentialsBetaStateLoading
  * @typedef {import('./cc-addon-credentials-beta.types.js').RawAddon} RawAddon
  * @typedef {import('./cc-addon-credentials-beta.types.js').KeycloakOperatorInfo} KeycloakOperatorInfo
  * @typedef {import('../cc-addon-credentials-content/cc-addon-credentials-content.types.js').AddonCredential} AddonCredential
@@ -72,12 +78,7 @@ defineSmartComponent({
       );
     }
 
-    updateComponent('state', {
-      type: 'loading',
-      tabs: {
-        default: SKELETON_DATA,
-      },
-    });
+    updateComponent('state', LOADING_STATE);
     updateComponent('docLink', {
       text: i18n('cc-addon-credentials-beta.doc-link.keycloak'),
       href: 'https://www.clever-cloud.com/developers/doc/addons/keycloak/',
