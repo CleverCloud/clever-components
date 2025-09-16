@@ -3,31 +3,54 @@ import { defineSmartComponent } from '../../lib/smart/define-smart-component.js'
 import '../cc-smart-container/cc-smart-container.js';
 // @ts-expect-error FIXME: remove when clever-client exports types
 import { get as getAddon } from '@clevercloud/client/esm/api/v2/addon.js';
+import { fakeString } from '../../lib/fake-strings.js';
 import { notifyError, notifySuccess } from '../../lib/notifications.js';
 import { i18n } from '../../translations/translation.js';
 import './cc-addon-credentials-beta.js';
 
-/** @type {AddonCredential[]} */
-const SKELETON_DATA = [
-  {
-    code: 'user',
-    value: 'fake-skeleton',
+/** @type {AddonCredentialsBetaStateLoading} */
+const LOADING_STATE = {
+  type: 'loading',
+  tabs: {
+    admin: [
+      {
+        code: 'user',
+        value: fakeString(10),
+      },
+      {
+        code: 'password',
+        value: fakeString(10),
+      },
+      {
+        code: 'ng',
+        value: { status: 'disabled' },
+      },
+    ],
+    api: [
+      {
+        code: 'api-client-user',
+        value: fakeString(10),
+      },
+      {
+        code: 'api-client-secret',
+        value: fakeString(10),
+      },
+      {
+        code: 'api-url',
+        value: fakeString(10),
+      },
+      {
+        code: 'ng',
+        value: { status: 'disabled' },
+      },
+    ],
   },
-  {
-    code: 'password',
-    value: 'fake-skeleton',
-  },
-  {
-    code: 'ng',
-    value: {
-      status: 'disabled',
-    },
-  },
-];
+};
 
 /**
  * @typedef {import('./cc-addon-credentials-beta.js').CcAddonCredentialsBeta} CcAddonCredentialsBeta
  * @typedef {import('./cc-addon-credentials-beta.types.js').AddonCredentialsBetaStateLoaded} AddonCredentialsBetaStateLoaded
+ * @typedef {import('./cc-addon-credentials-beta.types.js').AddonCredentialsBetaStateLoading} AddonCredentialsBetaStateLoading
  * @typedef {import('./cc-addon-credentials-beta.types.js').RawAddon} RawAddon
  * @typedef {import('./cc-addon-credentials-beta.types.js').OtoroshiOperatorInfo} OtoroshiOperatorInfo
  * @typedef {import('../cc-addon-credentials-content/cc-addon-credentials-content.types.js').AddonCredential} AddonCredential
@@ -58,26 +81,26 @@ defineSmartComponent({
         'state',
         /** @param {AddonCredentialsBetaStateLoaded} state */
         (state) => {
-          state.tabs.default = [...state.tabs.default].map((addonInfo) => {
-            if (addonInfo.code === 'ng') {
-              if (typeof newNgInfoOrCallback === 'function') {
-                return newNgInfoOrCallback(addonInfo);
-              } else {
-                return newNgInfoOrCallback;
-              }
-            }
-            return addonInfo;
-          });
+          state.tabs = Object.fromEntries(
+            Object.entries(state.tabs).map(([tabName, tabValue]) => [
+              tabName,
+              tabValue.map((addonInfo) => {
+                if (addonInfo.code === 'ng') {
+                  if (typeof newNgInfoOrCallback === 'function') {
+                    return newNgInfoOrCallback(addonInfo);
+                  } else {
+                    return newNgInfoOrCallback;
+                  }
+                }
+                return addonInfo;
+              }),
+            ]),
+          );
         },
       );
     }
 
-    updateComponent('state', {
-      type: 'loading',
-      tabs: {
-        default: SKELETON_DATA,
-      },
-    });
+    updateComponent('state', LOADING_STATE);
     updateComponent('docLink', {
       text: i18n('cc-addon-credentials-beta.doc-link.otoroshi'),
       href: 'https://www.clever-cloud.com/developers/doc/addons/otoroshi/',
@@ -115,6 +138,10 @@ defineSmartComponent({
               {
                 code: 'api-url',
                 value: operator.envVars.CC_OTOROSHI_API_URL,
+              },
+              {
+                code: 'ng',
+                value: formatNgData(operator.features.networkGroup),
               },
             ],
           },
