@@ -5,6 +5,34 @@ title: 'Changelog'
 
 # Changelog
 
+## [22.0.0](https://github.com/CleverCloud/clever-components/compare/21.0.1...22.0.0) (2025-09-18)
+
+
+### ⚠ BREAKING CHANGES
+
+* **cc-env-var-linked-services:** split smart component by type
+* **cc-env-var-linked-services:** the properties have changed
+    * `state.servicesState` property has been renamed to `state.services`
+    * `state.servicesState[].type` has been removed
+
+### 🚀 Features
+
+* **cc-addon-header:** add `configLink` property to the state ([9e85e89](https://github.com/CleverCloud/clever-components/commit/9e85e89f10219a41cd36d191caad5a1e0781ab10))
+* **cc-addon-header:** add Kubernetes to the stories ([742eaed](https://github.com/CleverCloud/clever-components/commit/742eaed684c9639462d6a01ec26bf48ca2461832))
+* **cc-env-var-form:** add `linked-app` and `linked-addon` context ([69668c1](https://github.com/CleverCloud/clever-components/commit/69668c13ab5872a7e9bcbd2a409f1b813ba526bd))
+* **cc-env-var-linked-services:** display CLI examples ([2b51e0d](https://github.com/CleverCloud/clever-components/commit/2b51e0da24d6f27deeb89d86c2c13ca563bd3a99))
+
+
+### 🐛 Bug Fixes
+
+* **cc-addon-header:** make documentation link dynamic ([982cba2](https://github.com/CleverCloud/clever-components/commit/982cba2c56b775c49e1d15b904f87ffb6d62e45c))
+
+
+### 🛠 Code Refactoring
+
+* **cc-env-var-linked-services:** simplify state ([dae473a](https://github.com/CleverCloud/clever-components/commit/dae473a6922b4ef701fe7b1dd513ed417f4a5bb0))
+* **cc-env-var-linked-services:** split smart component by type ([3ca8588](https://github.com/CleverCloud/clever-components/commit/3ca8588cb791869a54b68810a2f9e9cfac561a7b))
+
 ## [21.0.1](https://github.com/CleverCloud/clever-components/compare/21.0.0...21.0.1) (2025-09-12)
 
 
