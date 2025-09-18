@@ -106,6 +106,23 @@ export interface KeycloakOperatorInfo {
   envVars: Record<string, string>;
 }
 
+export interface MetabaseOperatorInfo {
+  resourceId: string;
+  addonId: string;
+  name: string;
+  ownerId: string;
+  plan: string;
+  version: string;
+  javaVersion: string;
+  accessUrl: string;
+  availableVersions: string[];
+  resources: {
+    entrypoint: string;
+    pgsqlId: string;
+  };
+  envVars: Record<string, string>;
+}
+
 export interface OperatorVersionInfo {
   available: string[];
   installed: string;
