@@ -17,6 +17,7 @@ title: '💡 Smart'
 | Name                         | Payload                       | Details                                                                                                                             |
 | ---------------------------- | ----------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
 | `cc-addon-was-deleted`       | `{ id: string, name: string}` | Fired when the add-on has been deleted successfully.<br/>Should be used to redirect to another page                                 |
+| `cc-addon-name-was-changed`  | `{ id: string, name: string}` | Fired when the add-on name has been changed successfully.<br/>Should be used to refresh the menu                                    |
 
 ## ⚙️ Params
 
