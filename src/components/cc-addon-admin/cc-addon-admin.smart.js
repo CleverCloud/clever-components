@@ -61,6 +61,10 @@ defineSmartComponent({
           (error) => {
             console.error(error);
             notifyError(i18n('cc-addon-admin.update-name.error'));
+            updateComponent('state', (state) => ({
+              ...state,
+              type: 'loaded',
+            }));
           },
         );
     });
@@ -84,6 +88,10 @@ defineSmartComponent({
           /** @param {Error} error */
           (error) => {
             console.error(error);
+            updateComponent('state', (state) => ({
+              ...state,
+              type: 'loaded',
+            }));
             notifyError(i18n('cc-addon-admin.update-tags.error'));
           },
         );
@@ -97,6 +105,10 @@ defineSmartComponent({
       api
         .onDeleteAddon({ ownerId, addonId })
         .then(() => {
+          updateComponent('state', (state) => ({
+            ...state,
+            type: 'loaded',
+          }));
           notifySuccess(i18n('cc-addon-admin.delete.success', { name }));
         })
         .catch((error) => {
