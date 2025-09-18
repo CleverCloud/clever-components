@@ -16,6 +16,12 @@ import { CcAddonOptionFormSubmitEvent } from '../components/cc-addon-option-form
 import { CcAddonOptionChangeEvent } from '../components/cc-addon-option/cc-addon-option.events.js';
 import { CcBreadcrumbClickEvent } from '../components/cc-breadcrumbs/cc-breadcrumbs.events.js';
 import {
+  CcCellarBucketCreateEvent,
+  CcCellarBucketDeleteEvent,
+  CcCellarBucketHideEvent,
+  CcCellarBucketShowEvent,
+} from '../components/cc-cellar-explorer/cc-cellar-explorer.events.js';
+import {
   CcDomainAddEvent,
   CcDomainDeleteEvent,
   CcDomainMarkAsPrimaryEvent,
@@ -180,6 +186,10 @@ declare global {
     'cc-application-start': CcApplicationStartEvent;
     'cc-application-stop': CcApplicationStopEvent;
     'cc-breadcrumb-click': CcBreadcrumbClickEvent;
+    'cc-cellar-bucket-create': CcCellarBucketCreateEvent;
+    'cc-cellar-bucket-delete': CcCellarBucketDeleteEvent;
+    'cc-cellar-bucket-hide': CcCellarBucketHideEvent;
+    'cc-cellar-bucket-show': CcCellarBucketShowEvent;
     'cc-click': CcClickEvent;
     'cc-deployment-cancel': CcDeploymentCancelEvent;
     'cc-domain-add': CcDomainAddEvent;
