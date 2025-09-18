@@ -6,9 +6,12 @@ import { fakeString } from '../../lib/fake-strings.js';
 import { notify, notifyError } from '../../lib/notifications.js';
 import { sendToApi } from '../../lib/send-to-api.js';
 import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
+import { generateDocsHref } from '../../lib/utils.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-smart-container/cc-smart-container.js';
 import './cc-addon-header.js';
+
+const DOCS_URL = generateDocsHref(`/addons/keycloak`);
 
 /**
  * @typedef {import('./cc-addon-header.types.js').RawAddon} RawAddon
@@ -95,7 +98,7 @@ defineSmartComponent({
         .then(() => {
           notify({
             intent: 'success',
-            message: i18n('cc-addon-header.restart.success.message', { logsUrl }),
+            message: i18n('cc-addon-header.restart.success.message', { logsUrl, docsUrl: DOCS_URL }),
             title: i18n('cc-addon-header.restart.success.title'),
             options: {
               timeout: 0,
@@ -124,7 +127,7 @@ defineSmartComponent({
         .then(() => {
           notify({
             intent: 'success',
-            message: i18n('cc-addon-header.rebuild.success.message', { logsUrl }),
+            message: i18n('cc-addon-header.rebuild.success.message', { logsUrl, docsUrl: DOCS_URL }),
             title: i18n('cc-addon-header.rebuild.success.title'),
             options: {
               timeout: 0,
