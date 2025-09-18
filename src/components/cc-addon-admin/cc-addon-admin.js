@@ -1,4 +1,9 @@
 import { css, html, LitElement } from 'lit';
+import { createRef, ref } from 'lit/directives/ref.js';
+import { iconRemixCloseLine as iconClose } from '../../assets/cc-remix.icons.js';
+import { formSubmit } from '../../lib/form/form-submit-directive.js';
+import { Validation } from '../../lib/form/validation.js';
+import { accessibilityStyles } from '../../styles/accessibility.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-block-section/cc-block-section.js';
 import '../cc-block/cc-block.js';
@@ -15,6 +20,8 @@ import { CcAddonDeleteEvent, CcAddonNameChangeEvent, CcAddonTagsChangeEvent } fr
  * @typedef {import('../cc-input-text/cc-input-text.events.js').CcTagsChangeEvent} CcTagsChangeEvent
  * @typedef {import('lit').PropertyValues<CcAddonAdmin>} CcAddonAdminPropertyValues
  * @typedef {import('lit').TemplateResult<1>} TemplateResult
+ * @typedef {import('lit/directives/ref.js').Ref<HTMLDialogElement>} HTMLDialogElementRef
+ * @typedef {import('lit/directives/ref.js').Ref<HTMLFormElement>} HTMLFormElementRef
  */
 
 /**
@@ -50,12 +57,36 @@ export class CcAddonAdmin extends LitElement {
 
     /** @type {string[]|null} Sets the value of the `tags` input field */
     this._tags = null;
+
+    /** @type {HTMLDialogElementRef} */
+    this._confirmDeletionDialogRef = createRef();
+
+    /** @type {HTMLFormElementRef} */
+    this._confirmDeletionFormRef = createRef();
+
+    this._addonNameConfirmationValidator = {
+      /**
+       * @param {string} value
+       * @return {Validation}
+       */
+      validate: (value) => {
+        if (this.state.type === 'loaded' && this.state.name === value) {
+          return Validation.VALID;
+        }
+
+        return Validation.invalid('no-match');
+      },
+    };
+  }
+
+  _onDeleteRequest() {
+    this._confirmDeletionDialogRef.value.showModal();
   }
 
   /** @private */
   _onDeleteSubmit() {
     if (this.state.type === 'loaded') {
-      this.dispatchEvent(new CcAddonDeleteEvent({ id: this.state.id, name: this.state.name, confirmed: false }));
+      this.dispatchEvent(new CcAddonDeleteEvent({ id: this.state.id, name: this.state.name }));
     }
   }
 
@@ -85,6 +116,10 @@ export class CcAddonAdmin extends LitElement {
     this.dispatchEvent(new CcAddonTagsChangeEvent({ tags: this._tags }));
   }
 
+  _onDialogClose() {
+    this._confirmDeletionDialogRef.value.close();
+  }
+
   /**
    * @param {CcAddonAdminPropertyValues} changedProperties
    */
@@ -95,6 +130,18 @@ export class CcAddonAdmin extends LitElement {
 
     if (changedProperties.has('state') && 'tags' in this.state) {
       this._tags = this.state.tags;
+    }
+  }
+
+  /** @param {CcAddonAdminPropertyValues} changedProperties */
+  updated(changedProperties) {
+    // when the add-on has been deleted, we need to close the dialog & reset the form
+    const previousState = changedProperties.get('state');
+    const wasDeleting = previousState?.type === 'deleting';
+    const isNotDeleting = this.state.type !== 'deleting';
+    if (wasDeleting && isNotDeleting) {
+      this._confirmDeletionDialogRef.value?.close();
+      this._confirmDeletionFormRef.value?.reset();
     }
   }
 
@@ -186,16 +233,64 @@ export class CcAddonAdmin extends LitElement {
             ?skeleton=${isSkeleton}
             ?disabled=${isFormDisabled && state.type !== 'deleting'}
             ?waiting=${state.type === 'deleting'}
-            @cc-click=${this._onDeleteSubmit}
+            @cc-click=${this._onDeleteRequest}
             >${i18n('cc-addon-admin.delete')}</cc-button
           >
         </div>
       </cc-block-section>
+
+      ${this.state.type === 'loaded' || this.state.type === 'deleting'
+        ? this._renderDeleteConfirmationDialog(this.state.name, this.state.type === 'deleting')
+        : ''}
+    `;
+  }
+
+  /**
+   * @param {string} addonName
+   * @param {boolean} isDeleting
+   */
+  _renderDeleteConfirmationDialog(addonName, isDeleting) {
+    const customErrorMessages = { 'no-match': i18n('cc-addon-admin.delete.dialog.error', { name: addonName }) };
+    return html`
+      <dialog
+        aria-labelledby="dialog-heading"
+        closedby="any"
+        ${ref(this._confirmDeletionDialogRef)}
+        slot="content-body"
+      >
+        <button class="dialog-close" @click=${this._onDialogClose} ?disabled="${isDeleting}">
+          <span class="visually-hidden">${i18n('cc-addon-admin.delete.dialog.close')}</span>
+          <cc-icon .icon="${iconClose}"></cc-icon>
+        </button>
+        <div class="dialog-heading" id="dialog-heading">${i18n('cc-addon-admin.delete.dialog.heading')}</div>
+        <p class="dialog-desc">${i18n('cc-addon-admin.delete.dialog.desc')}</p>
+        <form class="dialog-form" ${formSubmit(this._onDeleteSubmit.bind(this))} ${ref(this._confirmDeletionFormRef)}>
+          <cc-input-text
+            label="${i18n('cc-addon-admin.delete.dialog.label')}"
+            required
+            name="confirmation"
+            ?readonly="${isDeleting}"
+            .customValidator="${this._addonNameConfirmationValidator}"
+            .customErrorMessages="${customErrorMessages}"
+          >
+            <p slot="help">${addonName}</p>
+          </cc-input-text>
+          <div class="dialog-form__actions">
+            <cc-button type="button" outlined primary @cc-click="${this._onDialogClose}" ?disabled="${isDeleting}">
+              ${i18n('cc-addon-admin.delete.dialog.cancel')}
+            </cc-button>
+            <cc-button type="submit" danger .waiting="${isDeleting}">
+              ${i18n('cc-addon-admin.delete.dialog.confirm')}
+            </cc-button>
+          </div>
+        </form>
+      </dialog>
     `;
   }
 
   static get styles() {
     return [
+      accessibilityStyles,
       // language=CSS
       css`
         :host {
@@ -217,6 +312,97 @@ export class CcAddonAdmin extends LitElement {
 
         .danger-desc p {
           margin: 0;
+        }
+
+        dialog {
+          border: none;
+          border-radius: var(--cc-border-radius-default, 0.25em);
+          box-shadow: 2px 4px 8px 0 rgb(0 0 0 / 12%);
+          box-sizing: border-box;
+          padding: 4em;
+          width: min(38em, 80%);
+        }
+
+        /* stylelint-disable-next-line media-feature-range-notation */
+        @media screen and (max-width: 38em) {
+          dialog {
+            padding: 1em;
+          }
+        }
+
+        ::backdrop {
+          background: rgb(30 30 30 / 55%);
+        }
+
+        @supports (backdrop-filter: blur(5px)) {
+          ::backdrop {
+            backdrop-filter: blur(5px);
+            background: rgb(30 30 30 / 35%);
+          }
+        }
+
+        .dialog-close {
+          background: none;
+          border: none;
+          border-radius: var(--cc-border-radius-default, 0.25em);
+          color: var(--cc-color-text-weak);
+          cursor: pointer;
+          padding: 0.5em;
+          position: absolute;
+          right: 1.5em;
+          top: 1.5em;
+
+          --cc-icon-size: 1.4em;
+        }
+
+        .dialog-close:disabled {
+          opacity: var(--cc-opacity-when-disabled, 0.65);
+        }
+
+        /* stylelint-disable-next-line media-feature-range-notation */
+        @media screen and (max-width: 38em) {
+          .dialog-close {
+            right: 0.5em;
+            top: 0.5em;
+          }
+        }
+
+        .dialog-close:focus-visible {
+          outline: var(--cc-focus-outline);
+          outline-offset: var(--cc-focus-outline-offset, 2px);
+        }
+
+        .dialog-heading {
+          border-bottom: solid 1px var(--cc-color-border-neutral-weak);
+          color: var(--cc-color-text-primary-strongest);
+          font-weight: bold;
+          margin-bottom: 1.25em;
+          padding-bottom: 1.25em;
+        }
+
+        .dialog-desc {
+          margin-bottom: 1.25em;
+        }
+
+        .dialog-form {
+          display: grid;
+        }
+
+        .dialog-form__actions {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 1em;
+          justify-content: end;
+          margin-top: 3.75em;
+        }
+
+        /* stylelint-disable-next-line media-feature-range-notation */
+        @media screen and (max-width: 38em) {
+          .dialog-form__actions {
+            display: grid;
+            justify-content: stretch;
+            margin-top: 2em;
+          }
         }
       `,
     ];

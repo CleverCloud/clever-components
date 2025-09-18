@@ -76,8 +76,18 @@ export const translations = {
   'cc-addon-admin.delete-backups': `Backups are kept according to the retention policy.`,
   'cc-addon-admin.delete-disclaimer': `Deleting this add-on makes it immediately unavailable.`,
   'cc-addon-admin.delete-vm': `The virtual machine will be stopped within 24 hours.`,
-  'cc-addon-admin.delete.error': `Something went wrong while deleting your add-on.`,
-  'cc-addon-admin.delete.success': `Your add-on has been deleted successfully.`,
+  'cc-addon-admin.delete.dialog.cancel': `Cancel`,
+  'cc-addon-admin.delete.dialog.close': `Close`,
+  'cc-addon-admin.delete.dialog.confirm': `Delete the add-on`,
+  'cc-addon-admin.delete.dialog.desc': `Be aware that by removing this add-on, all the data related to it may be lost. Please refer to the add-on provider terms of usage for more details.`,
+  'cc-addon-admin.delete.dialog.error': /** @param {{ name: string }} _ */ ({ name }) =>
+    `Invalid value. Enter "${name}" as value`,
+  'cc-addon-admin.delete.dialog.heading': `Confirm deletion`,
+  'cc-addon-admin.delete.dialog.label': `Enter the add-on name`,
+  'cc-addon-admin.delete.error': /** @param {{ name: string }} _ */ ({ name }) =>
+    `Something went wrong while deleting the "${name}" add-on.`,
+  'cc-addon-admin.delete.success': /** @param {{ name: string }} _ */ ({ name }) =>
+    `The "${name}" add-on has been deleted successfully.`,
   'cc-addon-admin.error-loading': `Something went wrong while loading add-on info.`,
   'cc-addon-admin.heading.name': `Name`,
   'cc-addon-admin.heading.tags': `Tags`,
