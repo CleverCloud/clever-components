@@ -57,3 +57,16 @@ export class CcAddonWasDeletedEvent extends CcEvent {
     super(CcAddonWasDeletedEvent.TYPE, detail);
   }
 }
+
+/**
+ * Dispatched when an addon name change has been changed successfully.
+ * @extends {CcEvent<{id: string, name: string}>}
+ */
+export class CcAddonNameWasChangedEvent extends CcEvent {
+  static TYPE = 'cc-addon-name-was-changed';
+
+  /** @param {{ id: string, name: string }} detail */
+  constructor(detail) {
+    super(CcAddonNameWasChangedEvent.TYPE, detail);
+  }
+}

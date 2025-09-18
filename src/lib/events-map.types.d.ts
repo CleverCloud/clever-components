@@ -2,6 +2,7 @@
 import {
   CcAddonDeleteEvent,
   CcAddonNameChangeEvent,
+  CcAddonNameWasChangedEvent,
   CcAddonTagsChangeEvent,
   CcAddonWasDeletedEvent,
 } from '../components/cc-addon-admin/cc-addon-admin.events.js';
@@ -164,6 +165,7 @@ declare global {
   interface GlobalEventHandlersEventMap {
     'cc-addon-delete': CcAddonDeleteEvent;
     'cc-addon-name-change': CcAddonNameChangeEvent;
+    'cc-addon-name-was-changed': CcAddonNameWasChangedEvent;
     'cc-addon-option-change': CcAddonOptionChangeEvent;
     'cc-addon-option-form-submit': CcAddonOptionFormSubmitEvent;
     'cc-addon-rebuild': CcAddonRebuildEvent;
