@@ -12,6 +12,12 @@ title: '💡 Smart'
   <tr><td><strong>Requires auth</strong> <td>Yes
 </table>
 
+## 👋️ Events fired
+
+| Name                         | Payload                       | Details                                                                                                                             |
+| ---------------------------- | ----------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
+| `cc-addon-was-deleted`       | `{ id: string, name: string}` | Fired when the add-on has been deleted successfully.<br/>Should be used to redirect to another page                                 |
+
 ## ⚙️ Params
 
 | Name        | Type        | Details                                                     | Default |

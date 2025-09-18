@@ -6,6 +6,7 @@ import { notifyError, notifySuccess } from '../../lib/notifications.js';
 import { sendToApi } from '../../lib/send-to-api.js';
 import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
 import '../cc-smart-container/cc-smart-container.js';
+import { CcAddonWasDeletedEvent } from './cc-addon-admin.events.js';
 import './cc-addon-admin.js';
 
 /**
@@ -25,7 +26,7 @@ defineSmartComponent({
   /**
    * @param {OnContextUpdateArgs} args
    */
-  onContextUpdate({ context, onEvent, updateComponent, signal }) {
+  onContextUpdate({ component, context, onEvent, updateComponent, signal }) {
     const { apiConfig, ownerId, addonId } = context;
     const api = new Api({ apiConfig, signal });
 
@@ -110,6 +111,7 @@ defineSmartComponent({
             type: 'loaded',
           }));
           notifySuccess(i18n('cc-addon-admin.delete.success', { name }));
+          component.dispatchEvent(new CcAddonWasDeletedEvent({ id, name }));
         })
         .catch((error) => {
           console.error(error);
