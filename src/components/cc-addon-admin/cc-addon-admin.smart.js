@@ -71,22 +71,21 @@ defineSmartComponent({
         .catch(() => notifyError(i18n('cc-addon-admin.update-tags.error')));
     });
 
-    onEvent('cc-addon-delete', ({ confirmed }) => {
-      if (confirmed) {
-        updateComponent('state', (state) => ({
-          ...state,
-          type: 'deleting',
-        }));
-        api
-          .onDeleteAddon({ ownerId, addonId })
-          .then(() => {
-            notifySuccess(i18n('cc-addon-admin.delete.success'));
-          })
-          .catch(() => {
-            notifyError(i18n('cc-addon-admin.delete.error'));
-            updateComponent('state', (prevState) => ({ ...prevState, type: 'loaded' }));
-          });
-      }
+    onEvent('cc-addon-delete', ({ id, name }) => {
+      updateComponent('state', (state) => ({
+        ...state,
+        type: 'deleting',
+      }));
+      api
+        .onDeleteAddon({ ownerId, addonId })
+        .then(() => {
+          notifySuccess(i18n('cc-addon-admin.delete.success', { name }));
+        })
+        .catch((error) => {
+          console.error(error);
+          notifyError(i18n('cc-addon-admin.delete.error', { name }));
+          updateComponent('state', (prevState) => ({ ...prevState, type: 'loaded' }));
+        });
     });
   },
 });
