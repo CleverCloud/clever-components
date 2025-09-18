@@ -31,9 +31,15 @@ defineSmartComponent({
 
     updateComponent('state', { type: 'loading' });
 
-    api.fetchAddonAndTags({ ownerId, addonId }).then(({ addon, tags }) => {
-      updateComponent('state', { type: 'loaded', id: addon.id, name: addon.name, tags });
-    });
+    api
+      .fetchAddonAndTags({ ownerId, addonId })
+      .then(({ addon, tags }) => {
+        updateComponent('state', { type: 'loaded', id: addon.id, name: addon.name, tags });
+      })
+      .catch((error) => {
+        console.error(error);
+        updateComponent('state', { type: 'error' });
+      });
 
     onEvent('cc-addon-name-change', ({ name }) => {
       updateComponent('state', (state) => ({
@@ -50,7 +56,13 @@ defineSmartComponent({
             type: 'loaded',
           }));
         })
-        .catch(() => notifyError(i18n('cc-addon-admin.update-name.error')));
+        .catch(
+          /** @param {Error} error */
+          (error) => {
+            console.error(error);
+            notifyError(i18n('cc-addon-admin.update-name.error'));
+          },
+        );
     });
 
     onEvent('cc-addon-tags-change', ({ tags }) => {
@@ -68,7 +80,13 @@ defineSmartComponent({
             type: 'loaded',
           }));
         })
-        .catch(() => notifyError(i18n('cc-addon-admin.update-tags.error')));
+        .catch(
+          /** @param {Error} error */
+          (error) => {
+            console.error(error);
+            notifyError(i18n('cc-addon-admin.update-tags.error'));
+          },
+        );
     });
 
     onEvent('cc-addon-delete', ({ id, name }) => {
