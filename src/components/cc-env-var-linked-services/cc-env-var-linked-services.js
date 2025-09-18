@@ -7,8 +7,6 @@ import '../cc-notice/cc-notice.js';
 /**
  * @typedef {import('./cc-env-var-linked-services.types.js').EnvVarLinkedServicesState} EnvVarLinkedServicesState
  * @typedef {import('./cc-env-var-linked-services.types.js').EnvVarLinkedServicesType} EnvVarLinkedServicesType
- * @typedef {import('./cc-env-var-linked-services.types.js').LinkedServiceState} LinkedServiceState
- * @typedef {import('../cc-env-var-form/cc-env-var-form.types.js').EnvVarFormState} EnvVarFormState
  */
 
 /**
@@ -23,7 +21,7 @@ export class CcEnvVarLinkedServices extends LitElement {
     return {
       appName: { type: String, attribute: 'app-name' },
       state: { type: Object },
-      type: { type: String },
+      type: { type: String, reflect: true },
     };
   }
 
@@ -104,20 +102,6 @@ export class CcEnvVarLinkedServices extends LitElement {
     }
   }
 
-  /**
-   * @param {LinkedServiceState} linkedServiceState
-   * @return {EnvVarFormState}
-   */
-  _getEnvVarFormState(linkedServiceState) {
-    if (linkedServiceState.type === 'loading') {
-      return { type: 'loading' };
-    }
-    if (linkedServiceState.type === 'error') {
-      return { type: 'error' };
-    }
-    return { type: 'loaded', variables: linkedServiceState.variables, validationMode: 'simple' };
-  }
-
   render() {
     if (this.state.type === 'error') {
       return html`
@@ -131,22 +115,26 @@ export class CcEnvVarLinkedServices extends LitElement {
       return html` <div class="loading"><cc-loader></cc-loader><span>${this._getLoadingMessage()}</span></div> `;
     }
 
-    const servicesStates = this.state.servicesStates;
+    const services = this.state.services;
 
-    if (servicesStates.length === 0) {
+    if (services.length === 0) {
       return html` <div class="empty-msg">${this._getEmptyMessage()}</div> `;
     }
 
+    const context = this.type === 'addon' ? 'linked-addon' : 'linked-app';
+
     return html`
       <div class="service-list">
-        ${servicesStates.map(
-          (serviceState) => html`
+        ${services.map(
+          (service) => html`
             <cc-env-var-form
               readonly
-              .state=${this._getEnvVarFormState(serviceState)}
-              heading=${this._getServiceHeading(serviceState.name)}
+              context="${context}"
+              resource-id="${service.id}"
+              .state=${{ type: 'loaded', variables: service.variables, validationMode: 'simple' }}
+              heading=${this._getServiceHeading(service.name)}
             >
-              ${this._getServiceDescription(serviceState.name)}
+              ${this._getServiceDescription(service.name)}
             </cc-env-var-form>
           `,
         )}

@@ -451,6 +451,30 @@ export class CcEnvVarForm extends LitElement {
                           </dd>
                         `
                       : ''}
+                    ${this.context === 'linked-addon'
+                      ? html`
+                          <dt>${i18n('cc-env-var-form.cli.content.list-var-command')}</dt>
+                          <dd>
+                            <cc-code>clever addon env ${this.resourceId}</cc-code>
+                          </dd>
+                          <dt>${i18n('cc-env-var-form.cli.content.get-file-var-command')}</dt>
+                          <dd>
+                            <cc-code>clever addon env ${this.resourceId} -F shell</cc-code>
+                          </dd>
+                        `
+                      : ''}
+                    ${this.context === 'linked-app'
+                      ? html`
+                          <dt>${i18n('cc-env-var-form.cli.content.list-var-command')}</dt>
+                          <dd>
+                            <cc-code>clever env --app ${this.resourceId}</cc-code>
+                          </dd>
+                          <dt>${i18n('cc-env-var-form.cli.content.get-file-var-command')}</dt>
+                          <dd>
+                            <cc-code>clever env --app ${this.resourceId} -F shell</cc-code>
+                          </dd>
+                        `
+                      : ''}
                   </dl>
                 </div>
               </cc-block-details>
