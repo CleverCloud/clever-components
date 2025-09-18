@@ -330,8 +330,6 @@ export const translations = {
   'cc-addon-info.version.heading': `Version`,
   'cc-addon-info.version.update.error': `Something went wrong while updating the version`,
   'cc-addon-info.version.update.refresh.error': `Something went wrong while fetching updated version information. Refresh the page to get up-to-date information.`,
-  'cc-addon-info.version.update.success': /** @param {{logsUrl: string}} _*/ ({ logsUrl }) =>
-    sanitize`<strong>Update of the requested version in progress</strong><br>An updated and rebuild phase is in progress. See the application live <cc-link href="${logsUrl}">logs</cc-link>.`,
   'cc-addon-info.version.update.success.content': /** @param {{logsUrl: string}} _*/ ({ logsUrl }) =>
     sanitize`An update and rebuild phase is in progress. See the application live <cc-link href="${logsUrl}">logs</cc-link>.`,
   'cc-addon-info.version.update.success.heading': /** @param {{ version: string }} _ */ ({ version }) =>

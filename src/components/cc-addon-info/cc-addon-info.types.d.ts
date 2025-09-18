@@ -105,6 +105,32 @@ export interface KeycloakOperatorInfo {
   envVars: Record<string, string>;
 }
 
+export interface OtoroshiOperatorInfo {
+  resourceId: string;
+  addonId: string;
+  name: string;
+  ownerId: string;
+  plan: string;
+  version: string;
+  javaVersion: string;
+  accessUrl: string;
+  api: {
+    url: string;
+    user: string;
+    secret: string;
+    openapi: string;
+  };
+  availableVersions: string[];
+  resources: {
+    entrypoint: string;
+    redisId: string;
+  };
+  features: {
+    networkGroup: null;
+  };
+  envVars: Record<string, string>;
+}
+
 export interface OperatorVersionInfo {
   available: string[];
   installed: string;

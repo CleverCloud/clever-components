@@ -341,8 +341,6 @@ export const translations = {
   'cc-addon-info.version.heading': `Version`,
   'cc-addon-info.version.update.error': `Une erreur est survenue pendant la mise à jour de la version`,
   'cc-addon-info.version.update.refresh.error': `Une erreur est survenue lors de la récupération des versions. Rafraîchissez votre page pour consuler les informations à jour.`,
-  'cc-addon-info.version.update.success': /** @param {{logsUrl: string}} _*/ ({ logsUrl }) =>
-    sanitize`<strong>Mise à jour de la version demandée en cours</strong><br>Une mise à jour avec rebuild est en cours. Voir les <cc-link href="${logsUrl}">logs</cc-link> de l'application.`,
   'cc-addon-info.version.update.success.content': /** @param {{logsUrl: string}} _*/ ({ logsUrl }) =>
     sanitize`La mise à jour et le redémarrage de l'application est en cours. Consultez les <cc-link href="${logsUrl}">logs</cc-link>.`,
   'cc-addon-info.version.update.success.heading': /** @param {{ version: string }} _ */ ({ version }) =>
