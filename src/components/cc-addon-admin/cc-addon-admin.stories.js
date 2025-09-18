@@ -54,7 +54,7 @@ export const waitingWithUpdatingName = makeStory(conf, {
     {
       /** @type {AddonAdminStateUpdatingName}*/
       state: {
-        type: 'updatingName',
+        type: 'updating-name',
         ...addon,
       },
     },
@@ -66,7 +66,7 @@ export const waitingWithUpdatingTags = makeStory(conf, {
     {
       /** @type {AddonAdminStateUpdatingTags}*/
       state: {
-        type: 'updatingTags',
+        type: 'updating-tags',
         ...addon,
       },
     },
@@ -179,7 +179,7 @@ export const simulations = makeStory(conf, {
       /** @param {CcAddonAdmin[]} components */
       ([component]) => {
         component.state = {
-          type: 'updatingName',
+          type: 'updating-name',
           name: 'My new Addon Name',
           tags: addon.tags,
         };
@@ -212,7 +212,7 @@ export const simulations = makeStory(conf, {
       /** @param {CcAddonAdmin[]} components */
       ([component]) => {
         component.state = {
-          type: 'updatingTags',
+          type: 'updating-tags',
           name: 'My new Addon Name',
           tags: [...addon.tags, 'new-tag'],
         };
