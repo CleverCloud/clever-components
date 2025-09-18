@@ -3,6 +3,7 @@ import {
   CcAddonDeleteEvent,
   CcAddonNameChangeEvent,
   CcAddonTagsChangeEvent,
+  CcAddonWasDeletedEvent,
 } from '../components/cc-addon-admin/cc-addon-admin.events.js';
 import {
   CcNgDisable,
@@ -167,6 +168,7 @@ declare global {
     'cc-addon-rebuild': CcAddonRebuildEvent;
     'cc-addon-restart': CcAddonRestartEvent;
     'cc-addon-tags-change': CcAddonTagsChangeEvent;
+    'cc-addon-was-deleted': CcAddonWasDeletedEvent;
     'cc-api-error': CcApiErrorEvent;
     'cc-application-restart': CcApplicationRestartEvent;
     'cc-application-start': CcApplicationStartEvent;
