@@ -39,7 +39,7 @@ defineSmartComponent({
       updateComponent('state', (state) => ({
         ...state,
         name,
-        type: 'updatingName',
+        type: 'updating-name',
       }));
       api
         .onUpdateName({ ownerId, addonId, name })
@@ -57,7 +57,7 @@ defineSmartComponent({
       updateComponent('state', (state) => ({
         ...state,
         tags,
-        type: 'updatingTags',
+        type: 'updating-tags',
       }));
       api
         .onUpdateTags({ ownerId, addonId, tags })

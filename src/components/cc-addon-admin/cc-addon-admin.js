@@ -120,7 +120,7 @@ export class CcAddonAdmin extends LitElement {
    */
   _renderContent(state) {
     const isSkeleton = state.type === 'loading';
-    const isSaving = state.type === 'updatingTags' || state.type === 'updatingName' || state.type === 'deleting';
+    const isSaving = state.type === 'updating-tags' || state.type === 'updating-name' || state.type === 'deleting';
     const isFormDisabled = state.type === 'loading' || isSaving;
     const shouldShowBackupsText = !this.noDangerZoneBackupText;
     const shouldShowVmText = !this.noDangerZoneVmText;
@@ -141,8 +141,8 @@ export class CcAddonAdmin extends LitElement {
           <cc-button
             primary
             ?skeleton=${isSkeleton}
-            ?disabled=${isFormDisabled && state.type !== 'updatingName'}
-            ?waiting=${state.type === 'updatingName'}
+            ?disabled=${isFormDisabled && state.type !== 'updating-name'}
+            ?waiting=${state.type === 'updating-name'}
             @cc-click=${this._onNameSubmit}
             >${i18n('cc-addon-admin.update')}</cc-button
           >
@@ -165,8 +165,8 @@ export class CcAddonAdmin extends LitElement {
           <cc-button
             primary
             ?skeleton=${isSkeleton}
-            ?disabled=${isFormDisabled && state.type !== 'updatingTags'}
-            ?waiting=${state.type === 'updatingTags'}
+            ?disabled=${isFormDisabled && state.type !== 'updating-tags'}
+            ?waiting=${state.type === 'updating-tags'}
             @cc-click=${this._onTagsSubmit}
             >${i18n('cc-addon-admin.tags-update')}</cc-button
           >
