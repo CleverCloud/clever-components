@@ -54,6 +54,7 @@ const sandboxes = [
   'cc-logs-addon-runtime',
   'forms',
   'cc-kv-explorer',
+  'cc-cellar-explorer',
 ];
 
 const $listContainer = document.querySelector('.sandboxes-list');
