@@ -87,8 +87,18 @@ export const translations = {
   'cc-addon-admin.delete-backups': `Les sauvegardes sont gardées suivant la politique de rétention.`,
   'cc-addon-admin.delete-disclaimer': `Supprimer cet add-on le rend immédiatement indisponible.`,
   'cc-addon-admin.delete-vm': `La machine virtuelle sera arrêtée sous 24 heures.`,
-  'cc-addon-admin.delete.error': `Une erreur est survenue lors de la suppression de votre add-on.`,
-  'cc-addon-admin.delete.success': `Votre add-on a bien été supprimé.`,
+  'cc-addon-admin.delete.dialog.cancel': `Annuler`,
+  'cc-addon-admin.delete.dialog.close': `Fermer`,
+  'cc-addon-admin.delete.dialog.confirm': `Supprimer l'add-on`,
+  'cc-addon-admin.delete.dialog.desc': `En supprimant cet add-on, vous risquez de perdre toutes ses données. Veuillez consulter les conditions générales d'utilisation du fournisseur de cet add-on pour plus d'informations.`,
+  'cc-addon-admin.delete.dialog.error': /** @param {{ name: string }} _ */ ({ name }) =>
+    `Valeur invalide. Saisissez "${name}" comme valeur`,
+  'cc-addon-admin.delete.dialog.heading': `Confirmation de suppression`,
+  'cc-addon-admin.delete.dialog.label': `Saisissez le nom de l'add-on`,
+  'cc-addon-admin.delete.error': /** @param {{ name: string }} _ */ ({ name }) =>
+    `Une erreur est survenue lors de la suppression de l'add-on "${name}".`,
+  'cc-addon-admin.delete.success': /** @param {{ name: string }} _ */ ({ name }) =>
+    `L'add-on "${name}" a bien été supprimé.`,
   'cc-addon-admin.error-loading': `Une erreur est survenue pendant le chargement des informations de l'add-on.`,
   'cc-addon-admin.heading.name': `Nom`,
   'cc-addon-admin.heading.tags': `Tags`,
