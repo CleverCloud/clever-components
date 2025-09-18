@@ -418,6 +418,9 @@ export const translations = {
   //#region cc-button
   'cc-button.cancel': `Click to cancel`,
   //#endregion
+  //#region cc-cellar-explorer
+  'cc-cellar-explorer.date': /** @param {{date: string}} _ */ ({ date }) => formatDateOnly(date),
+  //#endregion
   //#region cc-clipboard
   'cc-clipboard.copied': `The text has been copied`,
   'cc-clipboard.copy': /** @param {{text: string}} _ */ ({ text }) =>

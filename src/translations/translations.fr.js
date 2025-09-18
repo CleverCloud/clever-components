@@ -429,6 +429,9 @@ export const translations = {
   //#region cc-button
   'cc-button.cancel': `Cliquez pour annuler`,
   //#endregion
+  //#region cc-cellar-explorer
+  'cc-cellar-explorer.date': /** @param {{date: string}} _ */ ({ date }) => formatDateOnly(date),
+  //#endregion
   //#region cc-clipboard
   'cc-clipboard.copied': `Le texte a été copié`,
   'cc-clipboard.copy': /** @param {{text: string}} _ */ ({ text }) =>
