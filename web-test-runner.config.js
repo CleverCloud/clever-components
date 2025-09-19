@@ -2,9 +2,9 @@ import json from '@rollup/plugin-json';
 import { rollupAdapter } from '@web/dev-server-rollup';
 import { chromeLauncher, defaultReporter, summaryReporter } from '@web/test-runner';
 import { globSync } from 'tinyglobby';
-import { cemAnalyzerPlugin } from './wds/cem-analyzer-plugin.js';
-import { testStoriesPlugin } from './wds/test-stories-plugin.js';
-import { commonjsPluginWithConfig, esbuildBundlePluginWithConfig } from './wds/wds-common.js';
+import { cemAnalyzerPlugin } from './web-test-runner/cem-analyzer-plugin.js';
+import { storyFileToA11yTestsFilePlugin } from './web-test-runner/story-file-to-a11y-tests-file-plugin.js';
+import { commonjsPluginWithConfig, esbuildBundlePluginWithConfig } from './web-test-runner/wds-common.js';
 
 // sets the language used by the headless browser
 // normally we'd set it through the `chromeLauncher` options but it makes the debug mode crash
@@ -57,13 +57,13 @@ export default {
       files: ['test/**/*.test.*'],
     },
     // Create a named group for every test file to enable running single tests. If a story file is `cc-example-component.stories.js`
-    // then you can run `npm run test:group stories:cc-example-component` to run only that component's stories tests.
+    // then you can run `npm run test:group a11y:cc-example-component` to run only that component's a11y tests.
     // If a test file is `cc-example-component.test.js`, then you can run `npm run test:group test:cc-example-component to run only that component's unit tests.
     // adapted from https://github.com/shoelace-style/shoelace/blob/next/web-test-runner.config.js
     ...globSync(['src/components/**/*.stories.js', 'src/components/**/*.test.js']).map((path) => {
-      const groups = path.match(/^.*\/(?<fileName>.*)\.(?<fileType>.*)\.js/).groups;
+      const { fileType, fileName } = path.match(/^.*\/(?<fileName>.*)\.(?<fileType>.*)\.js/).groups;
       return {
-        name: `${groups.fileType}:${groups.fileName}`,
+        name: `${fileType === 'test' ? fileType : 'a11y'}:${fileName}`,
         files: path,
       };
     }),
@@ -85,6 +85,6 @@ export default {
     rollupAdapter(json()),
     esbuildBundlePluginWithConfig,
     commonjsPluginWithConfig,
-    testStoriesPlugin,
+    storyFileToA11yTestsFilePlugin,
   ],
 };

@@ -288,3 +288,22 @@ export function generateDevHubHref(path = '') {
   // we want the path to always be appended after the existing path of the base URL so we remove the first '/' so that it's considered relative
   return new URL(path.replace(/^\//, ''), CC_DEV_HUB_BASE_URL).href;
 }
+
+/**
+ * Checks if a given DOM element is currently visible within a given container's bounds.
+ *
+ * @param {Element} element - The element to check for visibility.
+ * @param {Element} container - The container element to check visibility against.
+ * @returns {boolean} true if the element is fully visible within the container's bounds, false otherwise.
+ */
+export function isVisibleInContainer(element, container) {
+  const elementRect = element.getBoundingClientRect();
+  const containerRect = container.getBoundingClientRect();
+
+  return (
+    elementRect.top >= containerRect.top &&
+    elementRect.left >= containerRect.left &&
+    elementRect.bottom <= containerRect.bottom &&
+    elementRect.right <= containerRect.right
+  );
+}
