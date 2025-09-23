@@ -42,9 +42,9 @@ interface ApiConfig {
 |----------|------------------------------------------------------------------------|---------|
 | `GET`    | `/v2/organisations/${ownerId}/addons/${addonId}`                       | Default |
 | `GET`    | `/v4/addon-providers/${providerId}/addons/${realId}`                   | Default |
-| `GET`    | `/v4/addon-providers/${providerId}/addons/${realId}/version/check`     | Default |
 | `GET`    | `/v4/saas/organisations/${ownerId}/grafana`                            | Default |
-| `POST`   | `/v4/addon-providers/${providerId}/addons/${realId}/version/update`    | Default |
+
+Note: Unlike other addon smart components, this implementation does not support version updates. The version is retrieved from the operator information and displayed as "up-to-date" only.
 
 
 ## ⬇️️ Examples

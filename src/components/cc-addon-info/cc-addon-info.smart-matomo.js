@@ -4,10 +4,8 @@ import { get as getAddon } from '@clevercloud/client/esm/api/v2/addon.js';
 // @ts-expect-error FIXME: remove when clever-client exports types
 import { getGrafanaOrganisation } from '@clevercloud/client/esm/api/v4/saas.js';
 import { getAssetUrl } from '../../lib/assets-url.js';
-import { notifyError, notifySuccess } from '../../lib/notifications.js';
 import { sendToApi } from '../../lib/send-to-api.js';
-import { generateDevHubHref, generateDocsHref } from '../../lib/utils.js';
-import { i18n } from '../../translations/translation.js';
+import { generateDocsHref } from '../../lib/utils.js';
 import '../cc-smart-container/cc-smart-container.js';
 import './cc-addon-info.js';
 
@@ -72,7 +70,7 @@ defineSmartComponent({
     logsUrlPattern: { type: String },
   },
   /** @param {OnContextUpdateArgs} _ */
-  onContextUpdate({ context, onEvent, updateComponent, signal }) {
+  onContextUpdate({ context, updateComponent, signal }) {
     const {
       apiConfig,
       ownerId,
@@ -90,13 +88,13 @@ defineSmartComponent({
 
     api
       .getAddonInfo()
-      .then(({ operatorVersionInfo, addonInfo, grafanaAppLink, operator }) => {
+      .then(({ addonInfo, grafanaAppLink, operator, operatorVersion }) => {
         const phpAppId = operator.resources.entrypoint;
         logsUrl = context.logsUrlPattern.replace(':id', phpAppId);
 
         updateComponent('state', {
           type: 'loaded',
-          version: formatVersionState(operatorVersionInfo),
+          version: { stateType: 'up-to-date', installed: operatorVersion },
           creationDate: addonInfo.creationDate,
           openGrafanaLink: grafanaAppLink,
           openScalabilityLink: scalabilityUrlPattern.replace(':id', operator.resources.entrypoint),
@@ -127,60 +125,6 @@ defineSmartComponent({
         console.error(error);
         updateComponent('state', { type: 'error' });
       });
-
-    onEvent('cc-addon-version-change', (targetVersion) => {
-      updateComponent(
-        'state',
-        /** @param {CcAddonInfoStateLoaded & { version: AddonVersionStateUpdateAvailable | AddonVersionStateRequestingUpdate }} state */
-        (state) => {
-          state.version = {
-            ...state.version,
-            stateType: 'requesting-update',
-          };
-        },
-      );
-
-      api
-        .updateOperatorVersion(targetVersion)
-        .then(() => {
-          notifySuccess(
-            i18n('cc-addon-info.version.update.success.content', { logsUrl }),
-            i18n('cc-addon-info.version.update.success.heading', { version: targetVersion }),
-          );
-          // Once update has been requested, we need to fetch up to date version info to refresh the UI
-          // The API is optimistic, when a version update is requested, it becomes the add-on current version even if the deployment is still running
-          // We could update the version number ourselves without fetching again but we need to know if new updates are available or not (users may update to a version that is not the latest)
-          api
-            .getOperatorVersionInfo()
-            .then((operatorVersionInfo) => {
-              updateComponent(
-                'state',
-                /** @param {CcAddonInfoStateLoaded} state */
-                (state) => {
-                  state.version = formatVersionState(operatorVersionInfo);
-                },
-              );
-            })
-            .catch((error) => {
-              console.error(error);
-              notifyError(i18n('cc-addon-info.version.update.refresh.error'));
-            });
-        })
-        .catch((error) => {
-          updateComponent(
-            'state',
-            /** @param {CcAddonInfoStateLoaded & { version: AddonVersionStateUpdateAvailable | AddonVersionStateRequestingUpdate }} state */
-            (state) => {
-              state.version = {
-                ...state.version,
-                stateType: 'update-available',
-              };
-            },
-          );
-          notifyError(i18n('cc-addon-info.version.update.error'));
-          console.error(error);
-        });
-    });
   },
 });
 
@@ -254,15 +198,8 @@ class Api {
       );
   }
 
-  /** @param {string} targetVersion */
-  updateOperatorVersion(targetVersion) {
-    return updateOperatorVersion({ providerId: this._providerId, realId: this._realId }, { targetVersion }).then(
-      sendToApi({ apiConfig: this._apiConfig }),
-    );
-  }
-
   /**
-   * @return {Promise<{addonInfo: RawAddon, operator: MatomoOperatorInfo, operatorVersionInfo: OperatorVersionInfo, grafanaAppLink: string}>}
+   * @return {Promise<{addonInfo: RawAddon, operator: MatomoOperatorInfo, operatorVersion: string, grafanaAppLink: string}>}
    */
   async getAddonInfo() {
     // Fetch addon to get realId,
@@ -271,18 +208,14 @@ class Api {
     this._providerId = /** @type {import('../common.types.js').RawAddonProvider} */ rawAddon.provider.id;
     // Fetch operator with realId,
     const operator = await this._getOperator(this._providerId, this._realId);
-    const operatorVersionInfo = {
-      installed: operator.version,
-      available: operator.availableVersions,
-      latest: operator.availableVersions[operator.availableVersions.length - 1],
-      needUpdate: operator.availableVersions.some((v) => v !== operator.version),
-    };
+    const operatorVersion = operator.version;
+
     const grafanaAppLink =
       this._grafanaLink != null
         ? await this._getGrafanaAppLink({ appId: operator.resources.entrypoint, signal: this._signal })
         : null;
 
-    return { addonInfo: rawAddon, operator, operatorVersionInfo, grafanaAppLink };
+    return { addonInfo: rawAddon, operator, operatorVersion, grafanaAppLink };
   }
 }
 
@@ -312,41 +245,4 @@ function checkOperatorVersion(params) {
     // no queryParams
     // no body
   });
-}
-
-/**
- * @param {object} params
- * @param {string} params.providerId
- * @param {string} params.realId
- * @param {object} body
- */
-export function updateOperatorVersion(params, body) {
-  // no multipath for /self or /organisations/{id}
-  return Promise.resolve({
-    method: 'post',
-    url: `/v4/addon-providers/${params.providerId}/addons/${params.realId}/version/update`,
-    headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
-    // no queryParams
-    body,
-  });
-}
-
-/**
- * @param {OperatorVersionInfo} operatorVersionInfo
- * @returns {CcAddonInfoStateLoaded['version']}
- **/
-function formatVersionState(operatorVersionInfo) {
-  if (operatorVersionInfo.needUpdate) {
-    return {
-      stateType: 'update-available',
-      installed: operatorVersionInfo.installed,
-      available: operatorVersionInfo.available.filter((version) => version !== operatorVersionInfo.installed),
-      changelogLink: `${generateDevHubHref('/changelog')}`,
-    };
-  }
-
-  return {
-    stateType: 'up-to-date',
-    installed: operatorVersionInfo.installed,
-  };
 }
