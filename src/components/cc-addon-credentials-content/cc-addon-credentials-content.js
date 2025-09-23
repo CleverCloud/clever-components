@@ -241,8 +241,9 @@ export class CcAddonCredentialsContent extends LitElement {
         }
 
         dt {
-          flex: 0 1 21em;
+          flex: 1 1 33%;
           font-weight: bold;
+          max-width: 21em;
         }
 
         dd {
