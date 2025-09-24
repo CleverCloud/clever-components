@@ -97,7 +97,8 @@
           "copy",
           "paste",
           "transitionend"
-        ]
+        ],
+        "globalAttributes": ["closedby"]
       }
     ]
   }
