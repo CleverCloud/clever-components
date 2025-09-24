@@ -58,7 +58,7 @@ defineSmartComponent({
         'state',
         /** @param {AddonCredentialsBetaStateLoaded} state */
         (state) => {
-          state.tabs.default = [...state.tabs.default].map((addonInfo) => {
+          state.tabs.default.credentials = [...state.tabs.default.credentials].map((addonInfo) => {
             if (addonInfo.code === 'ng') {
               if (typeof newNgInfoOrCallback === 'function') {
                 return newNgInfoOrCallback(addonInfo);
@@ -133,6 +133,23 @@ defineSmartComponent({
               id: updatedOperator.features.networkGroup.id,
             },
           });
+          updateComponent(
+            'state',
+            /** @param {AddonCredentialsBetaStateLoaded} state */
+            (state) => {
+              state.tabs.default.cliContent = [
+                i18n('cc-addon-credentials-beta.cli.ng.intro'),
+                {
+                  heading: i18n('cc-addon-credentials-beta.cli.ng.view.heading'),
+                  command: i18n('cc-addon-credentials-beta.cli.ng.view.command'),
+                },
+                {
+                  heading: i18n('cc-addon-credentials-beta.cli.ng.manage.heading'),
+                  command: i18n('cc-addon-credentials-beta.cli.ng.manage.command'),
+                },
+              ];
+            },
+          );
 
           notifySuccess(i18n('cc-addon-credentials-beta.ng.enabling.success'));
         })
@@ -166,6 +183,13 @@ defineSmartComponent({
               status: 'disabled',
             },
           });
+          updateComponent(
+            'state',
+            /** @param {AddonCredentialsBetaStateLoaded} state */
+            (state) => {
+              state.tabs.default.cliContent = null;
+            },
+          );
           notifySuccess(i18n('cc-addon-credentials-beta.ng.disabling.success'));
         })
         .catch((error) => {

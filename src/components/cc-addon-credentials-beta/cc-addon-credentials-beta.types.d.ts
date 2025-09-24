@@ -21,8 +21,16 @@ export interface AddonCredentialsBetaStateError {
 }
 
 type Tabs = {
-  [key in TabName & string]?: Array<AddonCredential>;
+  [key in TabName & string]?: {
+    credentials: Array<AddonCredential>;
+    cliContent?: Array<CliCommand | string | Node>;
+  };
 };
+
+export interface CliCommand {
+  heading: string | Node;
+  command: string | Node;
+}
 
 export type TabName = 'default' | 'api' | 'direct' | 'elastic' | 'apm' | 'kibana';
 
