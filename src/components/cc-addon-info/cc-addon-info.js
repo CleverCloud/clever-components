@@ -131,7 +131,7 @@ export class CcAddonInfo extends LitElement {
           shared: feature.value.shared,
         });
       case 'string':
-        return feature.value.toString();
+        return feature.value?.toString();
     }
   }
 
@@ -164,11 +164,11 @@ export class CcAddonInfo extends LitElement {
   }
 
   _onVersionDialogOpen() {
-    this._versionDialogRef.value.showModal();
+    this._versionDialogRef.value?.showModal();
   }
 
   _onVersionDialogClose() {
-    this._versionDialogRef.value.close();
+    this._versionDialogRef.value?.close();
   }
 
   /** @param {CcAddonInfoPropertyValues} changedProperties */
@@ -176,8 +176,8 @@ export class CcAddonInfo extends LitElement {
     // when a version has been updated, we need to close the dialog & reset the form
     const previousState = changedProperties.get('state');
     const wasRequestingUpdate =
-      previousState?.type === 'loaded' && previousState?.version.stateType === 'requesting-update';
-    const isNotRequestingUpdate = this.state.type === 'loaded' && this.state.version.stateType !== 'requesting-update';
+      previousState?.type === 'loaded' && previousState?.version?.stateType === 'requesting-update';
+    const isNotRequestingUpdate = this.state.type === 'loaded' && this.state.version?.stateType !== 'requesting-update';
     if (wasRequestingUpdate && isNotRequestingUpdate) {
       this._versionDialogRef.value?.close();
       this._versionFormRef.value?.reset();
