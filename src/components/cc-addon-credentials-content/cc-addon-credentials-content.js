@@ -148,7 +148,7 @@ export class CcAddonCredentialsContent extends LitElement {
   _renderCredential({ code, value }, skeleton) {
     const label = this._getLabelFromCode(code);
     return html`
-      <div class="credential">
+      <div class="credential ${classMap({ 'credential--align-center': credentialsToDisplayAsInput.has(code) })}">
         <dt>${label}</dt>
         <dd>
           ${credentialsToDisplayAsString.has(code)
@@ -229,11 +229,15 @@ export class CcAddonCredentialsContent extends LitElement {
         }
 
         .credential {
-          align-items: center;
+          align-items: baseline;
           display: flex;
           flex-wrap: wrap;
           gap: 0.5em;
           padding-block: 1em;
+        }
+
+        .credential--align-center {
+          align-items: center;
         }
 
         .credential:not(:last-of-type) {
