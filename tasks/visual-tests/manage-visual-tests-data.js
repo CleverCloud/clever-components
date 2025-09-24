@@ -76,10 +76,10 @@ async function checkForLastExpectationUpdate() {
     const baseCommitSha = process.env.BASE_COMMIT_SHA;
 
     console.log('Current base commit: ' + baseCommitSha);
-    console.log('Last report expectation commit: ' + expectationMetadata.commitSha);
+    console.log('Last report expectation commit: ' + expectationMetadata.commitReference);
     console.log('Last report expectation update: ' + expectationMetadata.lastUpdated);
 
-    const shouldUpdateExpectation = baseCommitSha !== expectationMetadata.commitSha;
+    const shouldUpdateExpectation = baseCommitSha !== expectationMetadata.commitReference;
 
     if (process.env.GITHUB_OUTPUT != null) {
       appendFileSync(process.env.GITHUB_OUTPUT, `should-update-expectation=${shouldUpdateExpectation}\n`);
