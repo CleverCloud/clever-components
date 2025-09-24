@@ -4,6 +4,7 @@ import '../cc-smart-container/cc-smart-container.js';
 // @ts-expect-error FIXME: remove when clever-client exports types
 import { get as getAddon } from '@clevercloud/client/esm/api/v2/addon.js';
 import { notifyError, notifySuccess } from '../../lib/notifications.js';
+import { generateDocsHref } from '../../lib/utils.js';
 import { i18n } from '../../translations/translation.js';
 import './cc-addon-credentials-beta.js';
 
@@ -80,7 +81,7 @@ defineSmartComponent({
     });
     updateComponent('docLink', {
       text: i18n('cc-addon-credentials-beta.doc-link.keycloak'),
-      href: 'https://www.clever-cloud.com/developers/doc/addons/keycloak/',
+      href: generateDocsHref('/doc/addons/keycloak/'),
     });
 
     api
@@ -103,10 +104,6 @@ defineSmartComponent({
                 value: formatNgData(operator.features.networkGroup),
               },
             ],
-          },
-          docLink: {
-            text: 'Keycloak - Documentation',
-            href: 'https://www.clever-cloud.com/developers/doc/addons/keycloak/',
           },
         });
       })
