@@ -346,16 +346,17 @@ export const storyWithFullWidthContainer = makeStory(conf, {
 });
 ```
 
-## Manage accessibility tests
+## Manage visual tests
 
-Most component story files are tested automatically to check for accessibility issues through Web Test Runner.
-You only need to create test files if you want to test aspects of a component other than its stories.
+Most component story files are tested automatically to check for visual changes through Web Test Runner.
 
-These accessibility tests are managed directly within the story files themselves through configuration options.
+These visual tests are managed directly within the story files themselves through configuration options.
 
-<cc-notice intent="warning" message="By default, accessibility tests are disabled in stories containing simulations"></cc-notice>
+The tests are run in CI when you add the `run-visual-tests` label to a PR.
 
-### How to disable accessibility tests for a specific story?
+<cc-notice intent="warning" message="By default, visual tests are disabled in stories containing simulations"></cc-notice>
+
+### How to disable visual tests for a specific story?
 
 To disable accessibility tests in a story file, you need to add a `tests` property to the story configuration.
 You can disable tests either for all stories in a component or for individual stories.
@@ -368,7 +369,7 @@ You can disable tests either for all stories in a component or for individual st
 const conf = {
   component: 'cc-example-component',
   tests: {
-    accessibility: {
+    visual: {
       enable: false,
     }
   }
@@ -389,6 +390,57 @@ const conf = {
 
 export const myStory = makeStory(conf, {
   tests: {
+    visual: {
+      enable: false,
+    }
+  },
+  items: [...]
+});
+```
+
+## Manage accessibility tests
+
+Most component story files are tested automatically to check for accessibility issues through Web Test Runner.
+You only need to create test files if you want to test aspects of a component other than its stories.
+
+These accessibility tests are managed directly within the story files themselves through configuration options.
+
+<cc-notice intent="warning" message="By default, accessibility tests are disabled in stories containing simulations"></cc-notice>
+
+### How to disable accessibility tests for a specific story?
+
+To disable accessibility tests in a story file, you need to add a `tests` property to the story configuration.
+You can disable tests either for all stories in a component or for individual stories.
+
+#### Disable for all stories in a component
+
+```javascript
+// cc-example-component.stories.js
+
+const conf = {
+  component: 'cc-example-component',
+  tests: {
+    accessibility: {
+      enable: false,
+    }
+  }
+};
+
+export const myStory = makeStory(conf, {
+  items: [...]
+});
+```
+
+#### Disable for a specific story
+
+```javascript
+// cc-example-component.stories.js
+const conf = {
+  component: 'cc-example-component',
+};
+
+export const myStory = makeStory(conf, {
+  tests: {
     accessibility: {
       enable: false,
     }
@@ -399,12 +451,12 @@ export const myStory = makeStory(conf, {
 
 This is particularly useful for components that are purely for layout purposes or don't implement any semantics or interactions.
 
-## How to ignore specific accessibility rules
+### How to ignore specific accessibility rules
 
 To ignore specific accessibility rules in a story file, you can use the `ignoredRules` property in the accessibility test configuration.
 You can ignore rules either for all stories in a component or for individual stories.
 
-### Ignore rules for all stories in a component
+#### Ignore rules for all stories in a component
 
 ```javascript
 // cc-example-component.stories.js
@@ -423,7 +475,7 @@ export const myStory = makeStory(conf, {
 });
 ```
 
-### Ignore rules for a specific story
+#### Ignore rules for a specific story
 
 ```javascript
 // cc-example-component.stories.js

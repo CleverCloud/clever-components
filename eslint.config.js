@@ -1,4 +1,5 @@
 // @ts-nocheck
+import babelParser from '@babel/eslint-parser';
 import { includeIgnoreFile } from '@eslint/compat';
 import html from '@html-eslint/eslint-plugin';
 import globals from 'globals';
@@ -62,10 +63,12 @@ export default [
       'rollup/**/*.js',
       'cem/**/*.js',
       'web-test-runner.config.js',
-      'wds/**/*.js',
+      'web-test-runner.config*.js',
+      'web-test-runner/**/*.js',
       'src/stories/lib/smart-auth-plugin.js',
       'test-mocha/**/*.*js',
       '.storybook/**/*.js',
+      '.github/**/*.js',
     ],
     languageOptions: {
       globals: {
@@ -90,8 +93,10 @@ export default [
       'rollup/**/*.js',
       'cem/**/*.js',
       'web-test-runner.config.js',
-      'wds/**/*.js',
+      'web-test-runner.visual-tests.config.js',
+      'web-test-runner/**/*.js',
       '.storybook/**/*.js',
+      '.github/**/*.js',
     ],
     rules: {
       'import-x/no-extraneous-dependencies': [
@@ -113,6 +118,22 @@ export default [
           ignore: ['custom-elements.json'],
         },
       ],
+    },
+  },
+  {
+    name: 'import-attributes',
+    files: ['tasks/visual-tests/*.js'],
+    languageOptions: {
+      sourceType: 'module',
+      parser: babelParser,
+      parserOptions: {
+        requireConfigFile: false,
+        babelOptions: {
+          configFile: false,
+          babelrc: false,
+          plugins: ['@babel/plugin-syntax-import-attributes'],
+        },
+      },
     },
   },
 ];

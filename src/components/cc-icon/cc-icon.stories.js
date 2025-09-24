@@ -121,6 +121,9 @@ export const remixIcons = makeStory(conf, {
     accessibility: {
       enable: false,
     },
+    visual: {
+      enable: false,
+    },
   },
   css: ICONS_LAYOUT_CSS,
   dom: (container) => {
@@ -131,6 +134,9 @@ export const remixIcons = makeStory(conf, {
 export const cleverIcons = makeStory(conf, {
   tests: {
     accessibility: {
+      enable: false,
+    },
+    visual: {
       enable: false,
     },
   },
