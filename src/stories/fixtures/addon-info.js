@@ -10,6 +10,7 @@ export const matomoInfo = {
   version: {
     installed: '5.3.0',
     stateType: 'up-to-date',
+    latest: '5.3.0',
   },
   creationDate: '2025-06-15T10:30:00Z',
   openGrafanaLink: 'https://grafana.example.com',
@@ -42,6 +43,7 @@ export const metabaseInfo = {
   version: {
     installed: '55',
     stateType: 'up-to-date',
+    latest: '55',
   },
   creationDate: '2025-06-15T10:30:00Z',
   openGrafanaLink: 'https://grafana.example.com',
@@ -68,6 +70,7 @@ export const keycloakInfo = {
   version: {
     installed: '26.3.0',
     stateType: 'up-to-date',
+    latest: '26.3.0',
   },
   creationDate: '2025-06-15T10:30:00Z',
   openGrafanaLink: 'https://grafana.example.com',
@@ -100,6 +103,7 @@ export const otoroshiInfo = {
   version: {
     installed: '17.4.0',
     stateType: 'up-to-date',
+    latest: '17.4.0',
   },
   creationDate: '2025-06-15T10:30:00Z',
   openGrafanaLink: 'https://grafana.example.com',
@@ -132,6 +136,7 @@ export const jenkinsInfo = {
   version: {
     installed: '2.516.2',
     stateType: 'up-to-date',
+    latest: '2.516.2',
   },
   plan: 'XXS',
   features: [
@@ -165,6 +170,7 @@ export const elasticInfo = {
   version: {
     installed: '9.1.2',
     stateType: 'up-to-date',
+    latest: '9.1.2',
   },
   plan: 'M',
   features: [
@@ -214,6 +220,7 @@ export const pulsarInfo = {
   version: {
     installed: '4.0.6',
     stateType: 'up-to-date',
+    latest: '4.0.6',
   },
   creationDate: '2025-06-15T10:30:00Z',
   docUrlLink: generateDocsHref('addons/pulsar'),
@@ -237,6 +244,7 @@ export const mysqlInfo = {
   version: {
     installed: '8.0.44',
     stateType: 'up-to-date',
+    latest: '8.0.44',
   },
   plan: 'XXS_SML',
   features: [
@@ -270,6 +278,7 @@ export const postgresqlInfo = {
   version: {
     installed: '17.6',
     stateType: 'up-to-date',
+    latest: '17.6',
   },
   plan: 'XXS_SML',
   features: [
@@ -309,6 +318,7 @@ export const redisInfo = {
   version: {
     installed: '8.2.1',
     stateType: 'up-to-date',
+    latest: '8.2.1',
   },
   plan: 'S',
   features: [
@@ -347,6 +357,7 @@ export const mongodbInfo = {
   version: {
     installed: '8.0',
     stateType: 'up-to-date',
+    latest: '8.0',
   },
   plan: 'S',
   features: [
@@ -403,6 +414,7 @@ export const kubernetesInfo = {
   version: {
     installed: '1.33',
     stateType: 'up-to-date',
+    latest: '1.33',
   },
   creationDate: '2025-06-15T10:30:00Z',
   docUrlLink: generateDevHubHref('guides/kubernetes-operator/'),
