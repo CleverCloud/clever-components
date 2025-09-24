@@ -179,7 +179,7 @@ export const translations = {
   'cc-addon-credentials-beta.choice.elastic': `Elastic`,
   'cc-addon-credentials-beta.choice.kibana': `Kibana`,
   'cc-addon-credentials-beta.doc-link.keycloak': `Keycloak - Documentation`,
-  'cc-addon-credentials-beta.error': `Something went wrong while loading the add-on information.`,
+  'cc-addon-credentials-beta.error': `Something went wrong while loading add-on information.`,
   'cc-addon-credentials-beta.heading': `Access`,
   'cc-addon-credentials-beta.ng.disabling.error': `Something went wrong while trying to disable the Network Group`,
   'cc-addon-credentials-beta.ng.disabling.success': `The Network Group has been successfully disabled`,
