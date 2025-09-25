@@ -305,8 +305,8 @@
 
   /*region border radius */
   /* Beware: since we use `em` units, the computed value of these tokens might vary even within the same component */
-  --cc-border-radius-default: 0.25em;
-  --cc-border-radius-small: 0.15em;
+  --cc-border-radius-default: 1.75em;
+  --cc-border-radius-small: 0.85em;
   /*endregion */
 
   /*region Miscellaneous*/
@@ -320,7 +320,7 @@
 
   /*region Form*/
   /* vertical space between different form controls */
-  --cc-form-controls-gap: 2em;
+  --cc-form-controls-gap: 4em;
 
   /* horizontal space between the start of the line and the form control, label excluded */
   --cc-form-controls-indent: 34px;
