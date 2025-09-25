@@ -179,8 +179,8 @@ export class CcAddonInfo extends LitElement {
       previousState?.type === 'loaded' && previousState?.version.stateType === 'requesting-update';
     const isNotRequestingUpdate = this.state.type === 'loaded' && this.state.version.stateType !== 'requesting-update';
     if (wasRequestingUpdate && isNotRequestingUpdate) {
-      this._versionDialogRef.value.close();
-      this._versionFormRef.value.reset();
+      this._versionDialogRef.value?.close();
+      this._versionFormRef.value?.reset();
     }
   }
 

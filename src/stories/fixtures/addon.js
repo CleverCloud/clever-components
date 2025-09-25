@@ -1,188 +1,421 @@
 import { getAssetUrl } from '../../lib/assets-url.js';
-import { ZONE } from "./zones.js";
+import { generateDevHubHref, generateDocsHref } from '../../lib/utils.js';
 
 /**
- * @typedef {import('../../components/cc-addon-header/cc-addon-header.types.js').Addon} Addon
+ * @typedef {import('../../components/cc-addon-info/cc-addon-info.types.js').AddonInfoStateBaseProperties} AddonInfoStateBaseProperties
  */
 
-/** @type {Addon} */
-export const configProviderData = {
-  providerName: 'Configuration provider',
-  providerLogoUrl: getAssetUrl('/logos/configprovider.svg'),
-  name: 'my-config',
-  id: 'config_59xml9zd-f1rg-2jj2-z733-p564812374122',
-  zone: {
-    type: 'loaded',
-    ...ZONE,
+/** @type {AddonInfoStateBaseProperties} */
+export const matomoInfo = {
+  version: {
+    installed: '5.3.0',
+    stateType: 'up-to-date',
+    latest: '5.3.0',
   },
-};
-
-/** @type {Addon} */
-export const pulsarData = {
-  providerName: 'Pulsar',
-  providerLogoUrl: getAssetUrl('/logos/pulsar.svg'),
-  name: 'my-pulsar',
-  id: 'pulsar_695g1427-sn3t-0200-36mw-h56983vb3653',
-  zone: {
-    type: 'loaded',
-    ...ZONE,
-  },
-  logsUrl: 'https://example.com/logs',
-};
-
-/** @type {Addon} */
-export const jenkinsData = {
-  providerName: 'Jenkins',
-  providerLogoUrl: getAssetUrl('/logos/jenkins.svg'),
-  name: 'my-jenkins',
-  id: 'jenkins_fgh7evv9-q21m-9129-mm3b-04f77lo56w36',
-  zone: {
-    type: 'loaded',
-    ...ZONE,
-  },
-  logsUrl: 'https://example.com/logs',
-  openLinks: [
+  creationDate: '2025-06-15T10:30:00Z',
+  openGrafanaLink: 'https://grafana.example.com',
+  openScalabilityLink: 'https://scalability.example.com',
+  linkedServices: [
     {
-      url: 'https://example.com/logs',
-      name: 'Jenkins',
+      type: 'app',
+      name: 'PHP',
+      logoUrl: getAssetUrl('/logos/php.svg'),
+      link: 'https://example.com/app',
+    },
+    {
+      type: 'addon',
+      name: 'MySQL add-on',
+      logoUrl: getAssetUrl('/logos/mysql.svg'),
+      link: 'https://example.com/addon',
+    },
+    {
+      type: 'addon',
+      name: 'Redis add-on',
+      logoUrl: getAssetUrl('/logos/redis.svg'),
+      link: 'https://example.com/addon',
     },
   ],
-};
+  docUrlLink: generateDocsHref('addons/matomo'),
+}
 
-/** @type {Addon} */
-export const elasticData = {
-  providerName: 'Elastic Stack',
-  providerLogoUrl: getAssetUrl('/logos/elastic.svg'),
-  name: 'my-elastic',
-  id: 'elasticsearch_23694507-44yt-023u-ib5o-6vc7d0mp99a2',
-  zone: {
-    type: 'loaded',
-    ...ZONE,
+/** @type {AddonInfoStateBaseProperties} */
+export const metabaseInfo = {
+  version: {
+    installed: '55',
+    stateType: 'up-to-date',
+    latest: '55',
   },
-  logsUrl: 'https://example.com/logs',
-  openLinks: [
+  creationDate: '2025-06-15T10:30:00Z',
+  openGrafanaLink: 'https://grafana.example.com',
+  openScalabilityLink: 'https://scalability.example.com',
+  linkedServices: [
     {
-      url: 'https://example.com/logs',
-      name: 'APM',
+      type: 'app',
+      name: 'Java',
+      logoUrl: getAssetUrl('/logos/java-jar.svg'),
+      link: 'https://example.com/app',
     },
     {
-      url: 'https://example.com/logs',
+      type: 'addon',
+      name: 'PostgreSQL add-on',
+      logoUrl: getAssetUrl('/logos/pgsql.svg'),
+      link: 'https://example.com/addon',
+    },
+  ],
+  docUrlLink: generateDocsHref('addons/metabase'),
+}
+
+/** @type {AddonInfoStateBaseProperties} */
+export const keycloakInfo = {
+  version: {
+    installed: '26.3.0',
+    stateType: 'up-to-date',
+    latest: '26.3.0',
+  },
+  creationDate: '2025-06-15T10:30:00Z',
+  openGrafanaLink: 'https://grafana.example.com',
+  openScalabilityLink: 'https://scalability.example.com',
+  linkedServices: [
+    {
+      type: 'app',
+      name: 'Java',
+      logoUrl: getAssetUrl('/logos/java-jar.svg'),
+      link: 'https://example.com/app',
+    },
+    {
+      type: 'addon',
+      name: 'PostgreSQL add-on',
+      logoUrl: getAssetUrl('/logos/pgsql.svg'),
+      link: 'https://example.com/addon',
+    },
+    {
+      type: 'addon',
+      name: 'FS Bucket add-on',
+      logoUrl: getAssetUrl('/logos/fsbucket.svg'),
+      link: 'https://example.com/addon',
+    },
+  ],
+  docUrlLink: generateDocsHref('addons/keycloak'),
+}
+
+/** @type {AddonInfoStateBaseProperties} */
+export const otoroshiInfo = {
+  version: {
+    installed: '17.4.0',
+    stateType: 'up-to-date',
+    latest: '17.4.0',
+  },
+  creationDate: '2025-06-15T10:30:00Z',
+  openGrafanaLink: 'https://grafana.example.com',
+  openScalabilityLink: 'https://scalability.example.com',
+  linkedServices: [
+    {
+      type: 'app',
+      name: 'Java',
+      logoUrl: getAssetUrl('/logos/java-jar.svg'),
+      link: 'https://example.com/app',
+    },
+    {
+      type: 'addon',
+      name: 'Redis add-on',
+      logoUrl: getAssetUrl('/logos/redis.svg'),
+      link: 'https://example.com/addon',
+    },
+  ],
+  docUrlLink: generateDocsHref('addons/otoroshi'),
+}
+
+/** @type {AddonInfoStateBaseProperties} */
+export const materiaInfo = {
+  creationDate: '2025-06-15T10:30:00Z',
+  docUrlLink: generateDocsHref('addons/materia-kv'),
+}
+
+/** @type {AddonInfoStateBaseProperties} */
+export const jenkinsInfo = {
+  version: {
+    installed: '2.516.2',
+    stateType: 'up-to-date',
+    latest: '2.516.2',
+  },
+  plan: 'XXS',
+  features: [
+    {
+      code: 'cpu',
+      type: 'number',
+      value: '2',
+    },
+    {
+      code: 'memory',
+      type: 'bytes',
+      value: '4294967296',
+    },
+    {
+      code: 'disk-size',
+      type: 'bytes',
+      value: '42949672960',
+    },
+    {
+      code: 'encryption-at-rest',
+      type: 'boolean',
+      value: 'true',
+    },
+  ],
+  creationDate: '2025-06-15T10:30:00Z',
+  docUrlLink: generateDocsHref('addons/jenkins'),
+}
+
+/** @type {AddonInfoStateBaseProperties} */
+export const elasticInfo = {
+  version: {
+    installed: '9.1.2',
+    stateType: 'up-to-date',
+    latest: '9.1.2',
+  },
+  plan: 'M',
+  features: [
+    {
+      code: 'cpu',
+      type: 'number',
+      value: '2',
+    },
+    {
+      code: 'memory',
+      type: 'bytes',
+      value: '4294967296',
+    },
+    {
+      code: 'disk-size',
+      type: 'bytes',
+      value: '128849018880',
+    },
+    {
+      code: 'encryption-at-rest',
+      type: 'boolean',
+      value: 'true',
+    },
+  ],
+  creationDate: '2025-06-15T10:30:00Z',
+  openGrafanaLink: 'https://grafana.example.com',
+  openScalabilityLink: 'https://scalability.example.com',
+  linkedServices: [
+    {
+      type: 'app',
       name: 'Kibana',
+      logoUrl: getAssetUrl('/logos/elasticsearch-kibana.svg'),
+      link: 'https://example.com/app',
     },
-  ],
-};
-
-/** @type {Addon} */
-export const matomoData = {
-  providerName: 'Matomo Analytics',
-  providerLogoUrl: getAssetUrl('/logos/matomo.svg'),
-  name: 'my-matomo',
-  id: 'matomo_0985go7t-2kda-6dv2-x978-h63r45o11q6p',
-  zone: {
-    type: 'loaded',
-    ...ZONE,
-  },
-  logsUrl: 'https://example.com/logs',
-  openLinks: [
     {
-      url: 'https://example.com/logs',
-      name: 'Matomo',
+      type: 'app',
+      name: 'APM',
+      logoUrl: getAssetUrl('/logos/elasticsearch-apm.svg'),
+      link: 'https://example.com/addon',
     },
   ],
-  actions: {
-    restart: true,
-    rebuildAndRestart: true,
-  },
-};
+  docUrlLink: generateDocsHref('addons/elastic'),
+}
 
-/** @type {Addon} */
-export const keycloakData = {
-  providerName: 'Keycloak',
-  providerLogoUrl: 'https://cc-keycloak.cellar-c2.services.clever-cloud.com/keycloak_logo.svg',
-  name: 'my-keycloak',
-  id: 'keycloak_511f6k82-9r44-6w90-86s3-az6m5kvyy478',
-  zone: {
-    type: 'loaded',
-    ...ZONE,
+/** @type {AddonInfoStateBaseProperties} */
+export const pulsarInfo = {
+  version: {
+    installed: '4.0.6',
+    stateType: 'up-to-date',
+    latest: '4.0.6',
   },
-  logsUrl: 'https://example.com/logs',
-  openLinks: [
+  creationDate: '2025-06-15T10:30:00Z',
+  docUrlLink: generateDocsHref('addons/pulsar'),
+}
+
+/** @type {AddonInfoStateBaseProperties} */
+export const configInfo = {
+  creationDate: '2025-06-15T10:30:00Z',
+  docUrlLink: generateDocsHref('addons/config-provider'),
+}
+
+/** @type {AddonInfoStateBaseProperties} */
+export const mailpaceInfo = {
+  plan: 'XS',
+  creationDate: '2025-06-15T10:30:00Z',
+  docUrlLink: generateDocsHref('addons/mailpace'),
+}
+
+/** @type {AddonInfoStateBaseProperties} */
+export const mysqlInfo = {
+  version: {
+    installed: '8.0.44',
+    stateType: 'up-to-date',
+    latest: '8.0.44',
+  },
+  plan: 'XXS_SML',
+  features: [
     {
-      url: 'https://example.com/logs',
-      name: 'Keycloak',
+      code: 'cpu',
+      type: 'number',
+      value: '1',
     },
-  ],
-  actions: {
-    restart: true,
-    rebuildAndRestart: true,
-  },
-  productStatus: 'Tech Preview',
-};
-
-/** @type {Addon} */
-export const materiaData = {
-  providerName: 'Materia',
-  providerLogoUrl: getAssetUrl('/logos/materia-db-kv.png'),
-  name: 'my-materia',
-  id: 'kv_54PE021ROIUTYZ8GH4DFGMB33Z',
-  zone: {
-    type: 'loaded',
-    ...ZONE,
-  },
-  logsUrl: 'https://example.com/logs',
-  openLinks: [
     {
-      url: 'https://example.com/logs',
-      name: 'KV Explorer',
+      code: 'memory',
+      type: 'bytes',
+      value: '536870912',
     },
-  ],
-  actions: {
-    restart: false,
-    rebuildAndRestart: false,
-  },
-  productStatus: 'Alpha',
-};
-
-/** @type {Addon} */
-export const redisData = {
-  providerName: 'Redis',
-  providerLogoUrl: getAssetUrl('/logos/redis.svg'),
-  name: 'my-redis',
-  id: 'redis_236590c14-5119-4aca-9888-3b16523486b',
-  zone: {
-    type: 'loaded',
-    ...ZONE,
-  },
-  logsUrl: 'https://example.com/logs',
-  openLinks: [
     {
-      url: 'https://example.com/logs',
-      name: 'KV Explorer',
+      code: 'connection-limit',
+      type: 'number',
+      value: '15',
+    },
+    {
+      code: 'max-db-size',
+      type: 'bytes',
+      value: '536870912',
     },
   ],
-  actions: {
-    restart: false,
-    rebuildAndRestart: false,
-  },
-  deploymentStatus: 'active'
-};
+  creationDate: '2025-06-15T10:30:00Z',
+  docUrlLink: generateDocsHref('addons/mysql'),
+}
 
-/** @type {Addon} */
-export const kubernetesData = {
-  providerName: 'Kubernetes',
-  // FIXME: change the provider logo URL once Kubernetes has been uploaded to static assets
-  providerLogoUrl: 'https://img.icons8.com/?size=100&id=cvzmaEA4kC0o&format=png&color=000000',
-  name: 'my-kubernetes',
-  id: 'kubernetes_807d9f82-242b-4cd9-ac9f-96c73c1d074f',
-  zone: {
-    type: 'loaded',
-    ...ZONE,
+/** @type {AddonInfoStateBaseProperties} */
+export const postgresqlInfo = {
+  version: {
+    installed: '17.6',
+    stateType: 'up-to-date',
+    latest: '17.6',
   },
-  configLink: 'https://example.com/kubeconfig.json',
-  actions: {
-    restart: true,
-    rebuildAndRestart: true,
+  plan: 'XXS_SML',
+  features: [
+    {
+      code: 'cpu',
+      type: 'number',
+      value: '1',
+    },
+    {
+      code: 'memory',
+      type: 'bytes',
+      value: '536870912',
+    },
+    {
+      code: 'connection-limit',
+      type: 'number',
+      value: '45',
+    },
+    {
+      code: 'max-db-size',
+      type: 'bytes',
+      value: '1073741824',
+    },
+    {
+      code: 'encryption-at-rest',
+      type: 'boolean',
+      value: 'true',
+    },
+  ],
+  creationDate: '2025-06-15T10:30:00Z',
+  role: 'Primary',
+  docUrlLink: generateDocsHref('addons/postgresql'),
+}
+
+/** @type {AddonInfoStateBaseProperties} */
+export const redisInfo = {
+  version: {
+    installed: '8.2.1',
+    stateType: 'up-to-date',
+    latest: '8.2.1',
   },
-  productStatus: 'Alpha',
-  deploymentStatus: 'active'
-};
+  plan: 'S',
+  features: [
+    {
+      code: 'cpu',
+      type: 'number',
+      value: '1',
+    },
+    {
+      code: 'disk-size',
+      type: 'bytes',
+      value: '134217728',
+    },
+    {
+      code: 'connection-limit',
+      type: 'number',
+      value: '100',
+    },
+    {
+      code: 'databases',
+      type: 'number',
+      value: '1',
+    },
+    {
+      code: 'encryption-at-rest',
+      type: 'boolean',
+      value: 'true',
+    },
+  ],
+  creationDate: '2025-06-15T10:30:00Z',
+  docUrlLink: generateDocsHref('addons/redis'),
+}
+
+/** @type {AddonInfoStateBaseProperties} */
+export const mongodbInfo = {
+  version: {
+    installed: '8.0',
+    stateType: 'up-to-date',
+    latest: '8.0',
+  },
+  plan: 'S',
+  features: [
+    {
+      code: 'cpu',
+      type: 'number',
+      value: '2',
+    },
+    {
+      code: 'memory',
+      type: 'bytes',
+      value: '2147483648',
+    },
+    {
+      code: 'max-db-size',
+      type: 'bytes',
+      value: '16106127360',
+    },
+    {
+      code: 'encryption-at-rest',
+      type: 'boolean',
+      value: 'true',
+    },
+  ],
+  creationDate: '2025-06-15T10:30:00Z',
+  docUrlLink: generateDocsHref('addons/mongodb'),
+}
+
+/** @type {AddonInfoStateBaseProperties} */
+export const azimuttInfo = {
+  plan: 'BASIC',
+  features: [
+    {
+      code: 'users',
+      type: 'number',
+      value: '1',
+    },
+    {
+      code: 'data-exploration',
+      type: 'boolean',
+      value: 'true',
+    },
+    {
+      code: 'db-analysis',
+      type: 'string',
+      value: 'PREVIEW',
+    },
+  ],
+  creationDate: '2025-06-15T10:30:00Z',
+}
+
+/** @type {AddonInfoStateBaseProperties} */
+export const kubernetesInfo = {
+  version: {
+    installed: '1.33',
+    stateType: 'up-to-date',
+    latest: '1.33',
+  },
+  creationDate: '2025-06-15T10:30:00Z',
+  docUrlLink: generateDevHubHref('guides/kubernetes-operator/'),
+}

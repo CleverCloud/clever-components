@@ -289,9 +289,8 @@ export const translations = {
   'cc-addon-info.creation-date.heading': `Date de création`,
   'cc-addon-info.creation-date.human-friendly-date': /** @param {{ date: string | number }} _ */ ({ date }) =>
     formatDatetime(date),
-  'cc-addon-info.doc-link.otoroshi': `Otoroshi - Documentation`,
-  'cc-addon-info.documentation.text': `Voir la  documentation`,
   'cc-addon-info.doc-link.keycloak': `Keycloak - Documentation`,
+  'cc-addon-info.doc-link.otoroshi': `Otoroshi - Documentation`,
   'cc-addon-info.error': `Une erreur est survenue pendant le chargement des informations de l'add-on.`,
   'cc-addon-info.feature.connection-limit': `Limite de connexions`,
   'cc-addon-info.feature.cpu': `vCPUs`,
@@ -342,7 +341,6 @@ export const translations = {
   'cc-addon-info.version.dialog.select.label': () => sanitize`<strong>vers</strong>`,
   'cc-addon-info.version.heading': `Version`,
   'cc-addon-info.version.update.error': `Une erreur est survenue pendant la mise à jour de la version`,
-  'cc-addon-info.version.update.refresh.error': `Une erreur est survenue lors de la récupération des versions. Rafraîchissez votre page pour consuler les informations à jour.`,
   'cc-addon-info.version.update.success.content': /** @param {{logsUrl: string}} _*/ ({ logsUrl }) =>
     sanitize`La mise à jour et le redémarrage de l'application est en cours. Consultez les <cc-link href="${logsUrl}">logs</cc-link>.`,
   'cc-addon-info.version.update.success.heading': /** @param {{ version: string }} _ */ ({ version }) =>

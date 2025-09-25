@@ -180,8 +180,8 @@ export const translations = {
   'cc-addon-credentials-beta.choice.elastic': `Elastic`,
   'cc-addon-credentials-beta.choice.kibana': `Kibana`,
   'cc-addon-credentials-beta.doc-link.keycloak': `Keycloak - Documentation`,
-  'cc-addon-credentials-beta.error': `Something went wrong while loading add-on information.`,
   'cc-addon-credentials-beta.doc-link.otoroshi': `Otoroshi - Documentation`,
+  'cc-addon-credentials-beta.error': `Something went wrong while loading add-on information.`,
   'cc-addon-credentials-beta.heading': `Access`,
   'cc-addon-credentials-beta.ng.disabling.error': `Something went wrong while trying to disable the Network Group`,
   'cc-addon-credentials-beta.ng.disabling.success': `The Network Group has been successfully disabled`,
@@ -278,9 +278,8 @@ export const translations = {
   'cc-addon-info.creation-date.heading': `Creation date`,
   'cc-addon-info.creation-date.human-friendly-date': /** @param {{ date: string | number }} _ */ ({ date }) =>
     formatDatetime(date),
-  'cc-addon-info.doc-link.otoroshi': `Otoroshi - Documentation`,
-  'cc-addon-info.documentation.text': `See documentation`,
   'cc-addon-info.doc-link.keycloak': `Keycloak - Documentation`,
+  'cc-addon-info.doc-link.otoroshi': `Otoroshi - Documentation`,
   'cc-addon-info.error': `Something went wrong while loading add-on information.`,
   'cc-addon-info.feature.connection-limit': `Connection limit`,
   'cc-addon-info.feature.cpu': `vCPUs`,
@@ -331,7 +330,6 @@ export const translations = {
   'cc-addon-info.version.dialog.select.label': () => sanitize`<strong>to</strong>`,
   'cc-addon-info.version.heading': `Version`,
   'cc-addon-info.version.update.error': `Something went wrong while updating the version`,
-  'cc-addon-info.version.update.refresh.error': `Something went wrong while fetching updated version information. Refresh the page to get up-to-date information.`,
   'cc-addon-info.version.update.success.content': /** @param {{logsUrl: string}} _*/ ({ logsUrl }) =>
     sanitize`An update and rebuild phase is in progress. See the application live <cc-link href="${logsUrl}">logs</cc-link>.`,
   'cc-addon-info.version.update.success.heading': /** @param {{ version: string }} _ */ ({ version }) =>
