@@ -11,40 +11,14 @@ import { i18n } from '../../translations/translation.js';
 import '../cc-smart-container/cc-smart-container.js';
 import './cc-addon-info.js';
 
-/** @type {CcAddonInfoStateLoading} */
-const LOADING_STATE = {
-  type: 'loading',
-  version: {
-    stateType: 'up-to-date',
-    installed: '0.0.0',
-  },
-  creationDate: '2025-08-06 15:03:00',
-  openGrafanaLink: 'https://example.com',
-  openScalabilityLink: '/placeholder',
-  linkedServices: [
-    {
-      type: 'app',
-      name: 'Java',
-      logoUrl: null,
-      link: 'https://example.com',
-    },
-    {
-      type: 'addon',
-      name: 'Redis',
-      logoUrl: null,
-      link: 'https://example.com',
-    },
-  ],
-};
-
 /**
  * @typedef {import('./cc-addon-info.js').CcAddonInfo} CcAddonInfo
- * @typedef {import('./cc-addon-info.types.js').CcAddonInfoStateLoaded} CcAddonInfoStateLoaded
- * @typedef {import('./cc-addon-info.types.js').CcAddonInfoStateLoading} CcAddonInfoStateLoading
+ * @typedef {import('./cc-addon-info.types.js').AddonInfoStateLoaded} AddonInfoStateLoaded
+ * @typedef {import('./cc-addon-info.types.js').AddonInfoStateLoading} AddonInfoStateLoading
  * @typedef {import('./cc-addon-info.types.js').AddonVersionStateUpdateAvailable} AddonVersionStateUpdateAvailable
  * @typedef {import('./cc-addon-info.types.js').AddonVersionStateUpToDate} AddonVersionStateUpToDate
  * @typedef {import('./cc-addon-info.types.js').AddonVersionStateRequestingUpdate} AddonVersionStateRequestingUpdate
- * @typedef {import('./cc-addon-info.types.js').BaseProperties} BaseProperties
+ * @typedef {import('./cc-addon-info.types.js').AddonInfoStateBaseProperties} AddonInfoStateBaseProperties
  * @typedef {import('./cc-addon-info.types.js').RawAddon} RawAddon
  * @typedef {import('./cc-addon-info.types.js').OtoroshiOperatorInfo} OtoroshiOperatorInfo
  * @typedef {import('./cc-addon-info.types.js').OperatorVersionInfo} OperatorVersionInfo
@@ -80,7 +54,39 @@ defineSmartComponent({
 
     const api = new Api({ apiConfig, ownerId, addonId, grafanaLink, signal });
 
+    /** @type {AddonInfoStateLoading} */
+    const LOADING_STATE = {
+      type: 'loading',
+      version: {
+        stateType: 'up-to-date',
+        installed: '0.0.0',
+        latest: '0.0.0',
+      },
+      creationDate: '2025-08-06 15:03:00',
+      // if Grafana is totally disabled within the console, do not display a skeleton for grafana link
+      openGrafanaLink: grafanaLink != null ? 'https://example.com' : null,
+      openScalabilityLink: '/placeholder',
+      linkedServices: [
+        {
+          type: 'app',
+          name: 'Java',
+          logoUrl: null,
+          link: 'https://example.com',
+        },
+        {
+          type: 'addon',
+          name: 'Redis',
+          logoUrl: null,
+          link: 'https://example.com',
+        },
+      ],
+    };
+
     updateComponent('state', LOADING_STATE);
+    updateComponent('docLink', {
+      text: i18n('cc-addon-info.doc-link.otoroshi'),
+      href: generateDocsHref('/addons/otoroshi'),
+    });
 
     api
       .getAddonInfo()
@@ -93,13 +99,13 @@ defineSmartComponent({
           version: formatVersionState(operatorVersionInfo),
           creationDate: addonInfo.creationDate,
           openGrafanaLink: grafanaAppLink,
-          openScalabilityLink: scalabilityUrlPattern.replace(':id', operator.resources.entrypoint),
+          openScalabilityLink: scalabilityUrlPattern.replace(':id', javaAppId),
           linkedServices: [
             {
               type: 'app',
               name: 'Java',
               logoUrl: getAssetUrl('/logos/java-jar.svg'),
-              link: appOverviewUrlPattern.replace(':id', operator.resources.entrypoint),
+              link: appOverviewUrlPattern.replace(':id', javaAppId),
             },
             {
               type: 'addon',
@@ -108,7 +114,6 @@ defineSmartComponent({
               link: addonDashboardUrlPattern.replace(':id', operator.resources.redisId),
             },
           ],
-          docUrlLink: generateDocsHref('/addons/otoroshi'),
         });
       })
       .catch((error) => {
@@ -119,7 +124,7 @@ defineSmartComponent({
     onEvent('cc-addon-version-change', (targetVersion) => {
       updateComponent(
         'state',
-        /** @param {CcAddonInfoStateLoaded & { version: AddonVersionStateUpdateAvailable | AddonVersionStateRequestingUpdate }} state */
+        /** @param {AddonInfoStateLoaded & { version: AddonVersionStateUpdateAvailable | AddonVersionStateRequestingUpdate }} state */
         (state) => {
           state.version = {
             ...state.version,
@@ -130,34 +135,29 @@ defineSmartComponent({
 
       api
         .updateOperatorVersion(targetVersion)
-        .then(() => {
+        .then(({ availableVersions }) => {
           notifySuccess(
             i18n('cc-addon-info.version.update.success.content', { logsUrl }),
             i18n('cc-addon-info.version.update.success.heading', { version: targetVersion }),
           );
-          // Once update has been requested, we need to fetch up to date version info to refresh the UI
-          // The API is optimistic, when a version update is requested, it becomes the add-on current version even if the deployment is still running
-          // We could update the version number ourselves without fetching again but we need to know if new updates are available or not (users may update to a version that is not the latest)
-          api
-            .getOperatorVersionInfo()
-            .then((operatorVersionInfo) => {
-              updateComponent(
-                'state',
-                /** @param {CcAddonInfoStateLoaded} state */
-                (state) => {
-                  state.version = formatVersionState(operatorVersionInfo);
-                },
-              );
-            })
-            .catch((error) => {
-              console.error(error);
-              notifyError(i18n('cc-addon-info.version.update.refresh.error'));
-            });
+          updateComponent(
+            'state',
+            /** @param {AddonInfoStateLoaded} state */
+            (state) => {
+              const needUpdate = targetVersion !== state.version.latest;
+              state.version = formatVersionState({
+                installed: targetVersion,
+                available: availableVersions,
+                latest: state.version.latest,
+                needUpdate,
+              });
+            },
+          );
         })
         .catch((error) => {
           updateComponent(
             'state',
-            /** @param {CcAddonInfoStateLoaded & { version: AddonVersionStateUpdateAvailable | AddonVersionStateRequestingUpdate }} state */
+            /** @param {AddonInfoStateLoaded & { version: AddonVersionStateUpdateAvailable | AddonVersionStateRequestingUpdate }} state */
             (state) => {
               state.version = {
                 ...state.version,
@@ -242,7 +242,10 @@ class Api {
       );
   }
 
-  /** @param {string} targetVersion */
+  /**
+   * @param {string} targetVersion
+   * @returns {Promise<OtoroshiOperatorInfo>}
+   **/
   updateOperatorVersion(targetVersion) {
     return updateOperatorVersion({ providerId: this._providerId, realId: this._realId }, { targetVersion }).then(
       sendToApi({ apiConfig: this._apiConfig }),
@@ -318,7 +321,7 @@ export function updateOperatorVersion(params, body) {
 
 /**
  * @param {OperatorVersionInfo} operatorVersionInfo
- * @returns {CcAddonInfoStateLoaded['version']}
+ * @returns {AddonInfoStateLoaded['version']}
  **/
 function formatVersionState(operatorVersionInfo) {
   if (operatorVersionInfo.needUpdate) {
@@ -326,6 +329,7 @@ function formatVersionState(operatorVersionInfo) {
       stateType: 'update-available',
       installed: operatorVersionInfo.installed,
       available: operatorVersionInfo.available.filter((version) => version !== operatorVersionInfo.installed),
+      latest: operatorVersionInfo.latest,
       changelogLink: `${generateDevHubHref('/changelog')}`,
     };
   }
@@ -333,5 +337,6 @@ function formatVersionState(operatorVersionInfo) {
   return {
     stateType: 'up-to-date',
     installed: operatorVersionInfo.installed,
+    latest: operatorVersionInfo.latest,
   };
 }
