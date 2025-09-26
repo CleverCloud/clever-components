@@ -85,34 +85,6 @@ export interface RawAddon {
   configKeys: string[];
 }
 
-export interface KeycloakOperatorInfo {
-  resourceId: string;
-  addonId: string;
-  name: string;
-  ownerId: string;
-  plan: string;
-  version: string;
-  javaVersion: string;
-  accessUrl: string;
-  availableVersions: string[];
-  resources: {
-    entrypoint: string;
-    fsbucketId: string;
-    pgsqlId: string;
-  };
-  features: {
-    networkGroup: null;
-  };
-  envVars: Record<string, string>;
-}
-
-export interface OperatorVersionInfo {
-  available: string[];
-  installed: string;
-  latest: string;
-  needUpdate: boolean;
-}
-
 export interface ElasticAddonInfo {
   id: string;
   app_id: string;
