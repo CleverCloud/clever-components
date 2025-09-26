@@ -62,7 +62,7 @@ defineSmartComponent({
 
         updateComponent('state', {
           type: 'loaded',
-          providerName: rawAddon.provider.name,
+          providerId: rawAddon.provider.name,
           providerLogoUrl: rawAddon.provider.logoUrl,
           name: rawAddon.name,
           id: rawAddon.realId,
