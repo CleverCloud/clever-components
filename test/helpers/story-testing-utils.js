@@ -141,7 +141,7 @@ export async function cancelAnimations(elements) {
  *
  * @param {Array<HTMLElement>} elements
  */
-export async function waitForAllImagesLoaded(elements, timeoutMs = 2000) {
+export async function waitForAllImagesLoaded(elements, timeoutMs = 5000) {
   const allImages = /** @type {Array<HTMLImageElement>} */ (
     elements.filter((element) => element instanceof HTMLImageElement)
   );
