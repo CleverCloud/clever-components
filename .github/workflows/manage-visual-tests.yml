@@ -223,7 +223,7 @@ jobs:
           VISUAL_TESTS_CELLAR_SECRET_KEY: ${{ secrets.VISUAL_TESTS_CELLAR_SECRET_KEY }}
 
       - name: '[Run] Create or edit PR comment'
-        run: node ./.github/scripts/create-or-edit-comment.js
+        run: node ./.github/scripts/manage-comment.js create-or-edit
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           MARKER: ${{ env.VISUAL_TESTS_REPORT_COMMENT_ID }}
@@ -279,7 +279,7 @@ jobs:
 
       - name: '[Run] Create clean up comment'
         if: github.event.action == 'closed'
-        run: node ./.github/scripts/create-or-edit-comment.js
+        run: node ./.github/scripts/manage-comment.js create
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           MESSAGE: |
@@ -291,7 +291,7 @@ jobs:
 
       - name: '[Run] Delete report comment'
         if: github.event.action == 'unlabeled'
-        run: node ./.github/scripts/delete-comment.js
+        run: node ./.github/scripts/manage-comment.js delete
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           MARKER: ${{ env.VISUAL_TESTS_REPORT_COMMENT_ID }}
