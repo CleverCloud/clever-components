@@ -6,6 +6,7 @@ import { notifyError, notifySuccess } from '../../lib/notifications.js';
 import { sendToApi } from '../../lib/send-to-api.js';
 import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
 import '../cc-smart-container/cc-smart-container.js';
+import { CcAddonNameWasChangedEvent, CcAddonWasDeletedEvent } from './cc-addon-admin.events.js';
 import './cc-addon-admin.js';
 
 /**
@@ -25,39 +26,56 @@ defineSmartComponent({
   /**
    * @param {OnContextUpdateArgs} args
    */
-  onContextUpdate({ context, onEvent, updateComponent, signal }) {
+  onContextUpdate({ component, context, onEvent, updateComponent, signal }) {
     const { apiConfig, ownerId, addonId } = context;
     const api = new Api({ apiConfig, signal });
 
     updateComponent('state', { type: 'loading' });
 
-    api.fetchAddonAndTags({ ownerId, addonId }).then(({ addon, tags }) => {
-      updateComponent('state', { type: 'loaded', id: addon.id, name: addon.name, tags });
-    });
+    api
+      .fetchAddonAndTags({ ownerId, addonId })
+      .then(({ addon, tags }) => {
+        updateComponent('state', { type: 'loaded', id: addon.id, name: addon.name, tags });
+      })
+      .catch((error) => {
+        console.error(error);
+        updateComponent('state', { type: 'error' });
+      });
 
     onEvent('cc-addon-name-change', ({ name }) => {
       updateComponent('state', (state) => ({
         ...state,
         name,
-        type: 'updatingName',
+        type: 'updating-name',
       }));
       api
         .onUpdateName({ ownerId, addonId, name })
         .then(() => {
           notifySuccess(i18n('cc-addon-admin.update-name.success'));
+          component.dispatchEvent(new CcAddonNameWasChangedEvent({ id: addonId, name }));
           updateComponent('state', (state) => ({
             ...state,
             type: 'loaded',
           }));
         })
-        .catch(() => notifyError(i18n('cc-addon-admin.update-name.error')));
+        .catch(
+          /** @param {Error} error */
+          (error) => {
+            console.error(error);
+            notifyError(i18n('cc-addon-admin.update-name.error'));
+            updateComponent('state', (state) => ({
+              ...state,
+              type: 'loaded',
+            }));
+          },
+        );
     });
 
     onEvent('cc-addon-tags-change', ({ tags }) => {
       updateComponent('state', (state) => ({
         ...state,
         tags,
-        type: 'updatingTags',
+        type: 'updating-tags',
       }));
       api
         .onUpdateTags({ ownerId, addonId, tags })
@@ -68,25 +86,39 @@ defineSmartComponent({
             type: 'loaded',
           }));
         })
-        .catch(() => notifyError(i18n('cc-addon-admin.update-tags.error')));
+        .catch(
+          /** @param {Error} error */
+          (error) => {
+            console.error(error);
+            updateComponent('state', (state) => ({
+              ...state,
+              type: 'loaded',
+            }));
+            notifyError(i18n('cc-addon-admin.update-tags.error'));
+          },
+        );
     });
 
-    onEvent('cc-addon-delete', ({ confirmed }) => {
-      if (confirmed) {
-        updateComponent('state', (state) => ({
-          ...state,
-          type: 'deleting',
-        }));
-        api
-          .onDeleteAddon({ ownerId, addonId })
-          .then(() => {
-            notifySuccess(i18n('cc-addon-admin.delete.success'));
-          })
-          .catch(() => {
-            notifyError(i18n('cc-addon-admin.delete.error'));
-            updateComponent('state', (prevState) => ({ ...prevState, type: 'loaded' }));
-          });
-      }
+    onEvent('cc-addon-delete', ({ id, name }) => {
+      updateComponent('state', (state) => ({
+        ...state,
+        type: 'deleting',
+      }));
+      api
+        .onDeleteAddon({ ownerId, addonId })
+        .then(() => {
+          updateComponent('state', (state) => ({
+            ...state,
+            type: 'loaded',
+          }));
+          notifySuccess(i18n('cc-addon-admin.delete.success', { name }));
+          component.dispatchEvent(new CcAddonWasDeletedEvent({ id, name }));
+        })
+        .catch((error) => {
+          console.error(error);
+          notifyError(i18n('cc-addon-admin.delete.error', { name }));
+          updateComponent('state', (prevState) => ({ ...prevState, type: 'loaded' }));
+        });
     });
   },
 });

@@ -23,11 +23,11 @@ export interface AddonAdminStateDeleting extends AddonAdminStateBase {
 }
 
 export interface AddonAdminStateUpdatingName extends AddonAdminStateBase {
-  type: 'updatingName';
+  type: 'updating-name';
 }
 
 export interface AddonAdminStateUpdatingTags extends AddonAdminStateBase {
-  type: 'updatingTags';
+  type: 'updating-tags';
 }
 
 interface AddonAdminStateBase {

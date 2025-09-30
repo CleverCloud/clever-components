@@ -22,6 +22,7 @@ const conf = {
  */
 
 const addon = {
+  id: 'addon_xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx',
   name: 'Awesome addon (PROD)',
   tags: ['foo:bar', 'simple-tag'],
 };
@@ -54,7 +55,7 @@ export const waitingWithUpdatingName = makeStory(conf, {
     {
       /** @type {AddonAdminStateUpdatingName}*/
       state: {
-        type: 'updatingName',
+        type: 'updating-name',
         ...addon,
       },
     },
@@ -66,7 +67,7 @@ export const waitingWithUpdatingTags = makeStory(conf, {
     {
       /** @type {AddonAdminStateUpdatingTags}*/
       state: {
-        type: 'updatingTags',
+        type: 'updating-tags',
         ...addon,
       },
     },
@@ -168,6 +169,7 @@ export const simulations = makeStory(conf, {
       /** @param {CcAddonAdmin[]} components */
       ([component]) => {
         component.state = {
+          id: 'addon_xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx',
           type: 'loaded',
           name: 'My new Addon Name',
           tags: addon.tags,
@@ -179,7 +181,8 @@ export const simulations = makeStory(conf, {
       /** @param {CcAddonAdmin[]} components */
       ([component]) => {
         component.state = {
-          type: 'updatingName',
+          id: 'addon_xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx',
+          type: 'updating-name',
           name: 'My new Addon Name',
           tags: addon.tags,
         };
@@ -190,6 +193,7 @@ export const simulations = makeStory(conf, {
       /** @param {CcAddonAdmin[]} components */
       ([component]) => {
         component.state = {
+          id: 'addon_xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx',
           type: 'loaded',
           name: 'My new Addon Name',
           tags: addon.tags,
@@ -201,6 +205,7 @@ export const simulations = makeStory(conf, {
       /** @param {CcAddonAdmin[]} components */
       ([component]) => {
         component.state = {
+          id: 'addon_xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx',
           type: 'loaded',
           name: 'My new Addon Name',
           tags: [...addon.tags, 'new-tag'],
@@ -212,7 +217,8 @@ export const simulations = makeStory(conf, {
       /** @param {CcAddonAdmin[]} components */
       ([component]) => {
         component.state = {
-          type: 'updatingTags',
+          id: 'addon_xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx',
+          type: 'updating-tags',
           name: 'My new Addon Name',
           tags: [...addon.tags, 'new-tag'],
         };
@@ -223,6 +229,7 @@ export const simulations = makeStory(conf, {
       /** @param {CcAddonAdmin[]} components */
       ([component]) => {
         component.state = {
+          id: 'addon_xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx',
           type: 'loaded',
           name: 'My new Addon Name',
           tags: [...addon.tags, 'new-tag'],
@@ -234,6 +241,7 @@ export const simulations = makeStory(conf, {
       /** @param {CcAddonAdmin[]} components */
       ([component]) => {
         component.state = {
+          id: 'addon_xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx',
           type: 'deleting',
           name: 'My new Addon Name',
           tags: [...addon.tags, 'new-tag'],
