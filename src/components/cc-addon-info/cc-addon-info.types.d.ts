@@ -17,6 +17,12 @@ export interface AddonInfoStateError {
 export interface AddonInfoStateBaseProperties {
   version?: AddonVersionState;
   plan?: string;
+  description?: string;
+  subnet?: string;
+  lastIp?: string;
+  numberOfMembers?: number;
+  numberOfPeers?: number;
+  tags?: string[];
   specifications?: Array<FormattedFeature>;
   encryption?: boolean;
   creationDate: string | number;

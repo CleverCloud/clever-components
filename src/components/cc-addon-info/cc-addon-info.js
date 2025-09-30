@@ -14,6 +14,7 @@ import { accessibilityStyles } from '../../styles/accessibility.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-block/cc-block.js';
+import '../cc-clipboard/cc-clipboard.js';
 import '../cc-dialog-confirm-actions/cc-dialog-confirm-actions.js';
 import '../cc-dialog/cc-dialog.js';
 import '../cc-link/cc-link.js';
@@ -475,6 +476,28 @@ export class CcAddonInfo extends LitElement {
 
         .billing__container {
           display: none;
+        }
+
+        .tag-list {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 1em;
+        }
+
+        .tag {
+          --color: var(--cc-color-bg-soft, #eee);
+
+          background-color: var(--color);
+          border-radius: 3px;
+          box-shadow: 0 0 0 2px var(--color);
+          font-family: var(--cc-font-family-monospace, monospace);
+          padding: 0.2em 0.5em;
+        }
+
+        .tag-list.skeleton .tag {
+          background-color: #bbb;
+          box-shadow: none;
+          color: transparent;
         }
 
         slot[name='linked-services'] {

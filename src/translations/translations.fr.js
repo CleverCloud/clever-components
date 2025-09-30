@@ -312,6 +312,13 @@ export const translations = {
   'cc-addon-info.creation-date.heading': `Date de création`,
   'cc-addon-info.creation-date.human-friendly-date': /** @param {{ date: string | number }} _ */ ({ date }) =>
     formatDatetime(date),
+<<<<<<< HEAD
+||||||| parent of 2033ec41 (feat: dashboard)
+  'cc-addon-info.doc-link.config-provider': `Configuration Provider - Documentation`,
+=======
+  'cc-addon-info.description.heading': `Description`,
+  'cc-addon-info.doc-link.config-provider': `Configuration Provider - Documentation`,
+>>>>>>> 2033ec41 (feat: dashboard)
   'cc-addon-info.doc-link.elastic': `Elastic Stack - Documentation`,
   'cc-addon-info.doc-link.jenkins': `Jenkins - Documentation`,
   'cc-addon-info.doc-link.keycloak': `Keycloak - Documentation`,
@@ -325,6 +332,9 @@ export const translations = {
   'cc-addon-info.error': `Une erreur est survenue pendant le chargement des informations`,
   'cc-addon-info.grafana.link': `Ouvrir Grafana`,
   'cc-addon-info.heading': `Informations`,
+  'cc-addon-info.last-ip.heading': `Dernière IP`,
+  'cc-addon-info.nb-of-members.heading': `Nombre de membres`,
+  'cc-addon-info.nb-of-peers.heading': `Nombre de pairs`,
   'cc-addon-info.plan.heading': `Plan`,
   'cc-addon-info.resources.heading': `Ressources`,
   'cc-addon-info.role.heading': `Rôle`,
@@ -332,6 +342,7 @@ export const translations = {
   'cc-addon-info.scalability.link': `Configurer la scalabilité`,
   'cc-addon-info.service.name.addon': /** @param {{name: string}} _ */ ({ name }) => `Add-on ${name}`,
   'cc-addon-info.service.name.app': /** @param {{name: string}} _ */ ({ name }) => `Application ${name}`,
+<<<<<<< HEAD
   'cc-addon-info.specification.connection-limit': `Limite de connexions`,
   'cc-addon-info.specification.cpu': `vCPUs`,
   'cc-addon-info.specification.data-exploration': `Exploration des données`,
@@ -349,6 +360,11 @@ export const translations = {
   'cc-addon-info.specification.plan': `Plan`,
   'cc-addon-info.specification.users': `Utilisateurs`,
   'cc-addon-info.specification.version': `Version`,
+||||||| parent of 2033ec41 (feat: dashboard)
+=======
+  'cc-addon-info.subnet.heading': `Sous-réseau`,
+  'cc-addon-info.tags.heading': `Tags`,
+>>>>>>> 2033ec41 (feat: dashboard)
   'cc-addon-info.type.boolean': /** @param {{boolean: boolean}} _ */ ({ boolean }) => `${boolean ? 'Oui' : 'Non'}`,
   'cc-addon-info.type.boolean-shared': /** @param {{shared: boolean}} _ */ ({ shared }) =>
     `${shared ? 'Partagé' : 'Dédié'}`,
@@ -1306,6 +1322,17 @@ export const translations = {
   'cc-matomo-info.open-matomo.link': `Accéder à Matomo`,
   'cc-matomo-info.open-matomo.text': `Vous pouvez accéder à votre Matomo en utilisant votre compte Clever Cloud. Tous les membres de l'organisation peuvent également accéder au service grâce à leur propre compte.`,
   'cc-matomo-info.open-matomo.title': `Accéder à Matomo`,
+  //#endregion
+  //#region cc-network-group-dashboard
+  'cc-network-group-dashboard.danger-zone.btn': `Supprimer le Network Group`,
+  'cc-network-group-dashboard.danger-zone.desc': `La suppression de ce Network Group est une action permanente. Tous les membres seront dissociés et supprimés.`,
+  'cc-network-group-dashboard.danger-zone.dialog.confirm-input-label': `Saissez le nom du Network Group`,
+  'cc-network-group-dashboard.danger-zone.dialog.desc': `La suppression de ce Network group est une action permanente. Tous les membres et pairs associés seront supprimés. Cette action ne peut pas être annulée. Assurez-vous d'avoir migré ou reconfiguré toutes les dépendances avant de continuer.`,
+  'cc-network-group-dashboard.danger-zone.dialog.heading': `Confirmer la suppression`,
+  'cc-network-group-dashboard.danger-zone.error': `Une erreur est survenue pendant le chargement des informations.`,
+  'cc-network-group-dashboard.danger-zone.heading': `Zone de danger`,
+  'cc-network-group-dashboard.delete.error': `Une erreur est survenue lors de la suppression du Network Group.`,
+  'cc-network-group-dashboard.delete.success': `Le Network Group a été supprimé avec succès.`,
   //#endregion
   //#region cc-network-group-linked-resources
   'cc-network-group-linked-resources.cli...': ``,
