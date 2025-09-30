@@ -12,6 +12,7 @@ import {
   metabaseInfo,
   mongodbInfo,
   mysqlInfo,
+  networkGroupInfo,
   otoroshiInfo,
   postgresqlInfo,
   pulsarInfo,
@@ -492,6 +493,77 @@ export const kubernetes = makeStory(conf, {
 `,
     },
   ],
+});
+
+export const networkGroup = makeStory(conf, {
+  /** @type {Partial<CcAddonInfo>[]} */
+  items: [
+    {
+      /** @type {AddonInfoStateLoaded} */
+      state: {
+        type: 'loaded',
+        ...networkGroupInfo,
+      },
+    },
+    {
+      /** @type {AddonInfoStateLoading} */
+      state: {
+        type: 'loading',
+        ...networkGroupInfo,
+      },
+    },
+  ],
+});
+
+export const updateAvailable = makeStory(conf, {
+  items: [
+    {
+      /** @type {AddonInfoStateLoaded} */
+      state: {
+        type: 'loaded',
+        version: {
+          latest: '1.3.0',
+          installed: '1.2.3',
+          stateType: 'update-available',
+          available: ['1.2.4', '1.3.0'],
+          changelogLink: 'https://example.com/changelog',
+        },
+        plan: 'DEV',
+        features: [
+          {
+            code: 'cpu',
+            type: 'number',
+            value: '1',
+          },
+          {
+            code: 'memory',
+            type: 'bytes',
+            value: '17179869184',
+          },
+          {
+            code: 'disk-size',
+            type: 'bytes',
+            value: '483183820800',
+          },
+          {
+            code: 'connection-limit',
+            type: 'number',
+            value: '15',
+          },
+        ],
+        creationDate: '2023-01-15T10:30:00Z',
+        openGrafanaLink: 'https://grafana.example.com',
+        openScalabilityLink: 'https://scalability.example.com',
+      },
+      innerHTML: `
+        <p slot="billing"><strong>This add-on is free but its dependencies, mentioned above, are billed based on their consumptions,</strong> just like other applications and add-ons.</p>`,
+    },
+  ],
+  /** @param {CcAddonInfo} component */
+  onUpdateComplete(component) {
+    const openerCcButton = component.shadowRoot.querySelector('cc-button[primary][outlined]');
+    openerCcButton.shadowRoot.querySelector('button').click();
+  },
 });
 
 export const updateAvailableWithOpenVersionDialog = makeStory(conf, {

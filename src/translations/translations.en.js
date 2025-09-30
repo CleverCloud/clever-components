@@ -304,6 +304,7 @@ export const translations = {
   'cc-addon-info.creation-date.heading': `Creation date`,
   'cc-addon-info.creation-date.human-friendly-date': /** @param {{ date: string | number }} _ */ ({ date }) =>
     formatDatetime(date),
+  'cc-addon-info.description.heading': `Description`,
   'cc-addon-info.doc-link.config-provider': `Configuration Provider - Documentation`,
   'cc-addon-info.doc-link.elastic': `Elastic Stack - Documentation`,
   'cc-addon-info.doc-link.jenkins': `Jenkins - Documentation`,
@@ -334,6 +335,9 @@ export const translations = {
   'cc-addon-info.feature.version': `Version`,
   'cc-addon-info.grafana.link': `Open Grafana`,
   'cc-addon-info.heading': `Information`,
+  'cc-addon-info.last-ip.heading': `Last IP`,
+  'cc-addon-info.nb-of-members.heading': `Number of members`,
+  'cc-addon-info.nb-of-peers.heading': `Number of peers`,
   'cc-addon-info.plan.heading': `Plan`,
   'cc-addon-info.resources.heading': `Resources`,
   'cc-addon-info.role.heading': `Role`,
@@ -341,6 +345,8 @@ export const translations = {
   'cc-addon-info.scalability.link': `Configure scalability`,
   'cc-addon-info.service.name.addon': /** @param {{name: string}} _ */ ({ name }) => `${name} add-on`,
   'cc-addon-info.service.name.app': /** @param {{name: string}} _ */ ({ name }) => `${name} application`,
+  'cc-addon-info.subnet.heading': `Subnet`,
+  'cc-addon-info.tags.heading': `Tags`,
   'cc-addon-info.type.boolean': /** @param {{boolean: boolean}} _ */ ({ boolean }) => `${boolean ? 'Yes' : 'No'}`,
   'cc-addon-info.type.boolean-shared': /** @param {{shared: boolean}} _ */ ({ shared }) =>
     `${shared ? 'Shared' : 'Dedicated'}`,
@@ -1224,6 +1230,17 @@ export const translations = {
   'cc-matomo-info.open-matomo.link': `Access Matomo`,
   'cc-matomo-info.open-matomo.text': `You can access your Matomo using your Clever Cloud account. Organisation members can also access the Matomo service.`,
   'cc-matomo-info.open-matomo.title': `Access Matomo`,
+  //#endregion
+  //#region cc-network-group-dashboard
+  'cc-network-group-dashboard.danger-zone.btn': `Delete Network Group`,
+  'cc-network-group-dashboard.danger-zone.desc': `Deleting this network group is a permanent action. All members associated with this group will be removed.`,
+  'cc-network-group-dashboard.danger-zone.dialog.confirm-input-label': `Enter the Network Group name`,
+  'cc-network-group-dashboard.danger-zone.dialog.desc': `Deleting this network group is a permanent action. All members associated with this group will be removed. All existing peers linked to this group will be disconnected. This action cannot be undone. Make sure you have migrated or reconfigured any dependencies before proceeding.`,
+  'cc-network-group-dashboard.danger-zone.dialog.heading': `Confirm deletion`,
+  'cc-network-group-dashboard.danger-zone.error': `Something went wrong while loading information.`,
+  'cc-network-group-dashboard.danger-zone.heading': `Danger Zone`,
+  'cc-network-group-dashboard.delete.error': `Something went wrong while deleting the network group.`,
+  'cc-network-group-dashboard.delete.success': `The network group has been deleted successfully.`,
   //#endregion
   //#region cc-network-group-linked-resources
   'cc-network-group-linked-resources.cli...': ``,

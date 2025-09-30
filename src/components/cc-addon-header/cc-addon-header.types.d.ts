@@ -13,7 +13,6 @@ interface BaseProperties {
   providerLogoUrl: string;
   name: string;
   id: string;
-  zone: ZoneStateLoaded;
 }
 
 interface OptionalProperties {
@@ -29,6 +28,7 @@ interface OptionalProperties {
     href: string;
     fileName: string;
   };
+  zone?: ZoneStateLoaded;
 }
 
 interface OpenLink {

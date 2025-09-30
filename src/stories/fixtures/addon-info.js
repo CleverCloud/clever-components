@@ -418,3 +418,13 @@ export const kubernetesInfo = {
   creationDate: '2025-06-15T10:30:00Z',
   docUrlLink: getDevHubUrl('guides/kubernetes-operator'),
 }
+
+export const networkGroupInfo = {
+  creationDate: '2025-08-06 15:03:00',
+  description: 'This is my network group used for internal services communication.',
+  subnet: '10.0.0.1/24',
+  lastIp: '10.0.0.1/22',
+  numberOfMembers: 4,
+  numberOfPeers: 16,
+  tags: ['production', 'internal', 'critical'],
+}
