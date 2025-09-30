@@ -258,8 +258,6 @@ jobs:
     steps:
       - name: '[Prepare] Checkout'
         uses: actions/checkout@v4
-        with:
-          ref: ${{ github.event.pull_request.head.ref }}
 
       - name: '[Prepare] Setup Node.js'
         uses: actions/setup-node@v4
@@ -274,6 +272,7 @@ jobs:
         id: delete-report-and-assets
         run: node ./tasks/visual-tests/manage-visual-tests-data.js delete
         env:
+          BRANCH_NAME: ${{ github.event.pull_request.head.ref }}
           VISUAL_TESTS_CELLAR_KEY_ID: ${{ secrets.VISUAL_TESTS_CELLAR_KEY_ID }}
           VISUAL_TESTS_CELLAR_SECRET_KEY: ${{ secrets.VISUAL_TESTS_CELLAR_SECRET_KEY }}
 
