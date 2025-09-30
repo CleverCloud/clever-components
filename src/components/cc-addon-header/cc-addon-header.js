@@ -29,7 +29,7 @@ const STATUS_ICON = {
 
 /** @type {Partial<CcAddonHeaderStateLoaded>} */
 const SKELETON_ADDON_INFO = {
-  providerName: fakeString(15),
+  providerId: fakeString(15),
   providerLogoUrl: null,
   name: fakeString(15),
   id: fakeString(15),
@@ -123,7 +123,7 @@ export class CcAddonHeader extends LitElement {
               class="logo"
               ?skeleton=${skeleton}
               src=${ifDefined(addonInfo.providerLogoUrl)}
-              a11y-name=${addonInfo.providerName}
+              a11y-name=${addonInfo.providerId}
             ></cc-img>
 
             <div class="details">

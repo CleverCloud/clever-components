@@ -9,7 +9,7 @@ export type CcAddonHeaderState =
   | CcAddonHeaderStateRebuilding;
 
 interface BaseProperties {
-  providerName: string;
+  providerId: string;
   providerLogoUrl: string;
   name: string;
   id: string;
@@ -65,27 +65,6 @@ export interface RawAddon {
   plan: AddonPlan;
   creationDate: number;
   configKeys: string[];
-}
-
-export interface RawOperator {
-  resourceId: string;
-  addonId: string;
-  name: string;
-  ownerId: string;
-  plan: string;
-  version: string;
-  javaVersion: string;
-  accessUrl: string;
-  availableVersions: string[];
-  resources: {
-    entrypoint: string;
-    fsbucketId: string;
-    pgsqlId: string;
-  };
-  features: {
-    networkGroup?: string;
-  };
-  envVars: Record<string, string>;
 }
 
 export type Addon = BaseProperties & OptionalProperties;
