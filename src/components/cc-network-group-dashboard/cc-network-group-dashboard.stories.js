@@ -1,0 +1,76 @@
+import { getAssetUrl } from '../../lib/assets-url.js';
+import { makeStory } from '../../stories/lib/make-story.js';
+import './cc-network-group-dashboard.js';
+
+export default {
+  tags: ['autodocs'],
+  title: '🛠 Network Group/<cc-network-group-dashboard>',
+  component: 'cc-network-group-dashboard',
+};
+
+const conf = {
+  component: 'cc-network-group-dashboard',
+};
+
+/**
+ * @import { CcNetworkGroupDashboard } from './cc-network-group-dashboard.js'
+ * @import { CcInputText } from '../cc-input-text/cc-input-text.js'
+ */
+
+const baseItem = {
+  id: 'ng_XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX',
+  name: 'My Network Group',
+  providerId: 'network-group',
+  providerLogoUrl: getAssetUrl('icons/clever-cloud.svg'),
+  creationDate: '2025-08-06 15:03:00',
+  description: 'This is my network group used for internal services communication.',
+  subnet: '10.0.0.0/16',
+  lastIp: '10.0.0.1/24',
+  numberOfMembers: 4,
+  numberOfPeers: 16,
+  tags: ['production', 'internal', 'critical'],
+};
+
+export const defaultStory = makeStory(conf, {
+  /** @type {Partial<CcNetworkGroupDashboard>[]} */
+  items: [
+    {
+      state: {
+        type: 'loaded',
+        ...baseItem,
+      },
+    },
+  ],
+});
+
+export const deleting = makeStory(conf, {
+  /** @type {Partial<CcNetworkGroupDashboard>[]} */
+  items: [
+    {
+      state: {
+        type: 'deleting',
+        ...baseItem,
+      },
+    },
+  ],
+  /** @param {CcNetworkGroupDashboard} component */
+  onUpdateComplete: (component) => {
+    const ccButton = component.shadowRoot.querySelector('cc-button[danger]');
+    const deleteButton = ccButton.shadowRoot.querySelector('button');
+    const dialogConfrimForm = component.shadowRoot.querySelector('cc-dialog-confirm-form');
+    /** @type {CcInputText} */
+    const confirmInputText = dialogConfrimForm.shadowRoot.querySelector('cc-input-text');
+    confirmInputText.value = component.state.name;
+    deleteButton.click();
+  },
+});
+
+export const loading = makeStory(conf, {
+  /** @type {Partial<CcNetworkGroupDashboard>[]} */
+  items: [{ state: { type: 'loading' } }],
+});
+
+export const error = makeStory(conf, {
+  /** @type {Partial<CcNetworkGroupDashboard>[]} */
+  items: [{ state: { type: 'error' } }],
+});

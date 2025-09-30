@@ -97,6 +97,7 @@ import {
   CcMapMarkerEnterEvent,
   CcMapMarkerLeaveEvent,
 } from '../components/cc-map/cc-map.events.js';
+import { CcNetworkGroupDeleteEvent } from '../components/cc-network-group-dashboard/cc-network-group-dashboard.events.js';
 import { CcNoticeDismissEvent } from '../components/cc-notice/cc-notice.events.js';
 import {
   CcOauthConsumerChangeEvent,
@@ -250,6 +251,7 @@ declare global {
     'cc-map-marker-enter': CcMapMarkerEnterEvent;
     'cc-map-marker-leave': CcMapMarkerLeaveEvent;
     'cc-multi-select': CcMultiSelectEvent;
+    'cc-network-group-delete': CcNetworkGroupDeleteEvent;
     'cc-ng-disable': CcNgDisable;
     'cc-ng-enable': CcNgEnable;
     'cc-notice-dismiss': CcNoticeDismissEvent;

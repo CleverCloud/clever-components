@@ -14,6 +14,7 @@ import { accessibilityStyles } from '../../styles/accessibility.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-block/cc-block.js';
+import '../cc-clipboard/cc-clipboard.js';
 import '../cc-dialog-confirm-actions/cc-dialog-confirm-actions.js';
 import '../cc-dialog/cc-dialog.js';
 import '../cc-link/cc-link.js';
@@ -243,6 +244,70 @@ export class CcAddonInfo extends LitElement {
             </div>
           </div>
 
+          ${this.state.description != null
+            ? html`
+                <div class="section">
+                  <strong class="heading">${i18n('cc-addon-info.description.heading')}</strong>
+                  <div class="value">
+                    <p class="${classMap({ skeleton })}">${this.state.description}</p>
+                  </div>
+                </div>
+              `
+            : ''}
+          ${this.state.subnet != null
+            ? html`
+                <div class="section">
+                  <strong class="heading">${i18n('cc-addon-info.subnet.heading')}</strong>
+                  <div class="value">
+                    <p class="${classMap({ skeleton })}">${this.state.subnet}</p>
+                    ${!skeleton ? html`<cc-clipboard value="${this.state.subnet}"></cc-clipboard>` : ''}
+                  </div>
+                </div>
+              `
+            : ''}
+          ${this.state.lastIp != null
+            ? html`
+                <div class="section">
+                  <strong class="heading">${i18n('cc-addon-info.last-ip.heading')}</strong>
+                  <div class="value">
+                    <p class="${classMap({ skeleton })}">${this.state.lastIp}</p>
+                    ${!skeleton ? html`<cc-clipboard value="${this.state.lastIp}"></cc-clipboard>` : ''}
+                  </div>
+                </div>
+              `
+            : ''}
+          ${this.state.numberOfMembers != null
+            ? html`
+                <div class="section">
+                  <strong class="heading">${i18n('cc-addon-info.nb-of-members.heading')}</strong>
+                  <div class="value">
+                    <p class="${classMap({ skeleton })}">${this.state.numberOfMembers}</p>
+                  </div>
+                </div>
+              `
+            : ''}
+          ${this.state.numberOfPeers != null
+            ? html`
+                <div class="section">
+                  <strong class="heading">${i18n('cc-addon-info.nb-of-peers.heading')}</strong>
+                  <div class="value">
+                    <p class="${classMap({ skeleton })}">${this.state.numberOfPeers}</p>
+                  </div>
+                </div>
+              `
+            : ''}
+          ${this.state.tags != null && this.state.tags.length > 0
+            ? html`
+                <div class="section">
+                  <strong class="heading">${i18n('cc-addon-info.tags.heading')}</strong>
+                  <div class="value">
+                    <p class="tag-list ${classMap({ skeleton })}">
+                      ${this.state.tags.map((tag) => html`<span class="tag">${tag}</span>`)}
+                    </p>
+                  </div>
+                </div>
+              `
+            : ''}
           ${this.state.role != null
             ? html`
                 <div class="section">
@@ -464,6 +529,28 @@ export class CcAddonInfo extends LitElement {
 
         .billing__container {
           display: none;
+        }
+
+        .tag-list {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 1em;
+        }
+
+        .tag {
+          --color: var(--cc-color-bg-soft, #eee);
+
+          background-color: var(--color);
+          border-radius: 3px;
+          box-shadow: 0 0 0 2px var(--color);
+          font-family: var(--cc-font-family-monospace, monospace);
+          padding: 0.2em 0.5em;
+        }
+
+        .tag-list.skeleton .tag {
+          background-color: #bbb;
+          box-shadow: none;
+          color: transparent;
         }
 
         slot[name='linked-services'] {
