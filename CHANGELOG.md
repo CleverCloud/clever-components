@@ -5,6 +5,52 @@ title: 'Changelog'
 
 # Changelog
 
+## [22.0.0](https://github.com/CleverCloud/clever-components/compare/21.0.1...22.0.0) (2025-09-30)
+
+
+### ⚠ BREAKING CHANGES
+
+* **cc-addon-admin:** the `cc-addon-delete` event payload has changed
+    - The `confirmed: boolean` property has been removed since it is not
+      longer necessary
+* **cc-addon-admin:** use snake-case for all state types
+* **cc-env-var-linked-services:** split smart component by type
+* **cc-env-var-linked-services:** the properties have changed
+    * `state.servicesState` property has been renamed to `state.services`
+    * `state.servicesState[].type` has been removed
+
+### 🚀 Features
+
+* **cc-addon-admin:** add modal to confirm deletion ([01645e7](https://github.com/CleverCloud/clever-components/commit/01645e72a3033467547aa809baebf3591f95362b))
+* **cc-addon-admin:** dispatch `cc-addon-name-was-changed` event ([70a16ad](https://github.com/CleverCloud/clever-components/commit/70a16add07ac8aac8de2e6ca1f0028a3a6c954cc))
+* **cc-addon-admin:** dispatch `cc-addon-was-deleted` event ([397ffb6](https://github.com/CleverCloud/clever-components/commit/397ffb6ff528fa8ac65d2374e394a64009e4656d))
+* **cc-addon-credentials-content:** make credentials labels more responsive ([7d6e380](https://github.com/CleverCloud/clever-components/commit/7d6e38003adab1ff5549ce2b3236e37ff09b825a))
+* **cc-addon-header:** add `configLink` property to the state ([9e85e89](https://github.com/CleverCloud/clever-components/commit/9e85e89f10219a41cd36d191caad5a1e0781ab10))
+* **cc-addon-header:** add Kubernetes to the stories ([742eaed](https://github.com/CleverCloud/clever-components/commit/742eaed684c9639462d6a01ec26bf48ca2461832))
+* **cc-addon-info:** init component ([2476db9](https://github.com/CleverCloud/clever-components/commit/2476db93e8704f3cdf268c84ed713d3424c09d91))
+* **cc-env-var-form:** add `linked-app` and `linked-addon` context ([69668c1](https://github.com/CleverCloud/clever-components/commit/69668c13ab5872a7e9bcbd2a409f1b813ba526bd))
+* **cc-env-var-linked-services:** display CLI examples ([2b51e0d](https://github.com/CleverCloud/clever-components/commit/2b51e0da24d6f27deeb89d86c2c13ca563bd3a99))
+* **cc-expand:** support `prefers-reduced-motion` ([8d68b07](https://github.com/CleverCloud/clever-components/commit/8d68b074431994801149320824e334e67f95aaf0))
+* **cc-img-comparator:** init component ([0dfd3d3](https://github.com/CleverCloud/clever-components/commit/0dfd3d30e4856181a2769bc79a91c7e4bb76b6a9))
+* **cc-visual-tests-report-entry:** init component ([1c4b09c](https://github.com/CleverCloud/clever-components/commit/1c4b09c6eda3a2f613f0ba42a189008d61ed5aff))
+* **cc-visual-tests-report-menu:** init component ([4e754b9](https://github.com/CleverCloud/clever-components/commit/4e754b98b1bb3d2baebb69c921bb1348616a1e86))
+* **cc-visual-tests-report:** init component ([3c9511b](https://github.com/CleverCloud/clever-components/commit/3c9511bb332426560253fc8b4458e86a8df67db4))
+
+
+### 🐛 Bug Fixes
+
+* **cc-addon-admin.smart:** set component back to `loaded` after API error ([17c8255](https://github.com/CleverCloud/clever-components/commit/17c8255430e9a488b1ed2768daddcba631e54bda))
+* **cc-addon-admin.smart:** set component in error when loading fails ([ebd13d3](https://github.com/CleverCloud/clever-components/commit/ebd13d37311f519125ca149f270c3fef05634eaa))
+* **cc-addon-credentials-content:** improve alignment for long values ([7679034](https://github.com/CleverCloud/clever-components/commit/7679034b08c332431cba0eb99a7502e0450be3d6))
+* **cc-addon-header:** make documentation link dynamic ([982cba2](https://github.com/CleverCloud/clever-components/commit/982cba2c56b775c49e1d15b904f87ffb6d62e45c))
+
+
+### 🛠 Code Refactoring
+
+* **cc-addon-admin:** use snake-case for all state types ([534a6c8](https://github.com/CleverCloud/clever-components/commit/534a6c86bef2dc77212a00a278213eb2125bac97))
+* **cc-env-var-linked-services:** simplify state ([dae473a](https://github.com/CleverCloud/clever-components/commit/dae473a6922b4ef701fe7b1dd513ed417f4a5bb0))
+* **cc-env-var-linked-services:** split smart component by type ([3ca8588](https://github.com/CleverCloud/clever-components/commit/3ca8588cb791869a54b68810a2f9e9cfac561a7b))
+
 ## [21.0.1](https://github.com/CleverCloud/clever-components/compare/21.0.0...21.0.1) (2025-09-12)
 
 
