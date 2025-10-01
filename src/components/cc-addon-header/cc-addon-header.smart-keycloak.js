@@ -28,8 +28,7 @@ defineSmartComponent({
   /** @param {OnContextUpdateArgs} args */
   onContextUpdate({ context, updateComponent, onEvent, signal }) {
     const { apiConfig, ownerId, addonId, productStatus } = context;
-    const providerId = PROVIDER_ID;
-    const api = new CcAddonHeaderClient({ apiConfig, ownerId, addonId, providerId: providerId, signal });
+    const api = new CcAddonHeaderClient({ apiConfig, ownerId, addonId, providerId: PROVIDER_ID, signal });
     let logsUrl = '';
 
     updateComponent('state', {
