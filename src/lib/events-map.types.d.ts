@@ -14,6 +14,7 @@ import { CcAddonRebuildEvent, CcAddonRestartEvent } from '../components/cc-addon
 import { CcAddonVersionChangeEvent } from '../components/cc-addon-info/cc-addon-info.events.js';
 import { CcAddonOptionFormSubmitEvent } from '../components/cc-addon-option-form/cc-addon-option-form.events.js';
 import { CcAddonOptionChangeEvent } from '../components/cc-addon-option/cc-addon-option.events.js';
+import { CcDialogCloseEvent, CcDialogOpenEvent } from '../components/cc-dialog/cc-dialog.events.js';
 import {
   CcDomainAddEvent,
   CcDomainDeleteEvent,
@@ -96,6 +97,7 @@ import {
   CcMapMarkerEnterEvent,
   CcMapMarkerLeaveEvent,
 } from '../components/cc-map/cc-map.events.js';
+import { CcNetworkGroupMemberUnlinkEvent } from '../components/cc-network-group-linked-resources/cc-network-group-linked-resources.events.js';
 import { CcNoticeDismissEvent } from '../components/cc-notice/cc-notice.events.js';
 import {
   CcOauthConsumerChangeEvent,
@@ -179,6 +181,8 @@ declare global {
     'cc-application-stop': CcApplicationStopEvent;
     'cc-click': CcClickEvent;
     'cc-deployment-cancel': CcDeploymentCancelEvent;
+    'cc-dialog-close': CcDialogCloseEvent;
+    'cc-dialog-open': CcDialogOpenEvent;
     'cc-domain-add': CcDomainAddEvent;
     'cc-domain-delete': CcDomainDeleteEvent;
     'cc-domain-mark-as-primary': CcDomainMarkAsPrimaryEvent;
@@ -238,6 +242,7 @@ declare global {
     'cc-map-marker-enter': CcMapMarkerEnterEvent;
     'cc-map-marker-leave': CcMapMarkerLeaveEvent;
     'cc-multi-select': CcMultiSelectEvent;
+    'cc-network-group-member-unlink': CcNetworkGroupMemberUnlinkEvent;
     'cc-ng-disable': CcNgDisable;
     'cc-ng-enable': CcNgEnable;
     'cc-notice-dismiss': CcNoticeDismissEvent;

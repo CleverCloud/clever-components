@@ -60,6 +60,12 @@ export class LostFocusController {
 
     // compare elements to the previous one and check if some elements have been removed
     const removedElements = previousElements.filter((e) => !this.elements.includes(e));
+    // console.log({
+    //   removedElements,
+    //   activeElement: this.activeElement,
+    //   prev: this.elements,
+    //   new: this.elements,
+    // });
     if (removedElements.length > 0) {
       // among these removed elements, find the one containing the focused element
       // elementWithFocus may not be the focused element itself, it can be the element matching the query selector containing the focused element.
