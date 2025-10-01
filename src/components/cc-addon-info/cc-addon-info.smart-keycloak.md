@@ -50,7 +50,7 @@ interface GrafanaLink {
 | `GET`    | `/v4/addon-providers/addon-keycloak/addons/${realId}`                     | Default |
 | `GET`    | `/v4/addon-providers/addon-keycloak/addons/${realId}/version/check`       | Default |
 | `GET`    | `/v2/organisations/${ownerId}/grafana`                                    | Default |
-| `POST`   | `/v4/addon-providers/addon-${providerId}/addons/${realId}/version/update` | Default |
+| `POST`   | `/v4/addon-providers/addon-keycloak/addons/${realId}/version/update` | Default |
 
 ## ⬇️️ Examples
 
