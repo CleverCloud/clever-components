@@ -107,7 +107,7 @@ export class CcNetworkGroupLinkedResources extends LitElement {
           </div>
           <!-- FIXME: link is not really relevant since it can only accessed by member peers -->
           <div class="member-list__member-card__header__domain">
-            <cc-link href="${memberHref}">${member.domainName}</cc-link>
+            <span>${member.domainName}</span>
             <cc-clipboard value="${member.domainName}"></cc-clipboard>
           </div>
           <button class="member-list__member-card__header__peers-btn" aria-expanded="false">
@@ -122,7 +122,7 @@ export class CcNetworkGroupLinkedResources extends LitElement {
         <div id="${member.id}-peers" class="member-list__member-card__peer-list">
           ${member.peerList.map((peer) => this._renderPeer(peer))}
         </div>
-        <cc-button danger outlined @cc-click="${this._onUnlinkMember}">
+        <cc-button class="member-list__member-card__unlink-btn" danger outlined @cc-click="${this._onUnlinkMember}">
           ${i18n('cc-network-group-linked-resources.member.unlink')}
         </cc-button>
       </div>
@@ -135,34 +135,34 @@ export class CcNetworkGroupLinkedResources extends LitElement {
       <div class="member-list__member-card__peer-list__peer-card">
         <span class="member-list__member-card__peer-list__peer-card__label">${peer.label}</span>
         <div class="member-list__member-card__peer-list__peer-card__metadata">
-          <span class="member-list__member-card__peer-list__peer-card__metadata__id">
+          <div class="member-list__member-card__peer-list__peer-card__metadata__id">
             <cc-icon
               .icon="${iconId}"
               a11y-name="${i18n('cc-network-group-linked-resources.peer.metadata.id')}"
             ></cc-icon>
-            ${peer.id}
-          </span>
-          <span class="member-list__member-card__peer-list__peer-card__metadata__key">
+            <span>${peer.id}</span>
+          </div>
+          <div class="member-list__member-card__peer-list__peer-card__metadata__key">
             <cc-icon
               .icon="${iconKey}"
               a11y-name="${i18n('cc-network-group-linked-resources.peer.metadata.key')}"
             ></cc-icon>
-            ${peer.publicKey}
-          </span>
-          <span class="member-list__member-card__peer-list__peer-card__metadata__ip">
+            <span>${peer.publicKey}</span>
+          </div>
+          <div class="member-list__member-card__peer-list__peer-card__metadata__ip">
             <cc-icon
               .icon="${iconIp}"
               a11y-name="${i18n('cc-network-group-linked-resources.peer.metadata.ip')}"
             ></cc-icon>
-            ${peer.ip}
-          </span>
-          <span class="member-list__member-card__peer-list__peer-card__metadata__peer-type">
+            <span>${peer.ip}</span>
+          </div>
+          <div class="member-list__member-card__peer-list__peer-card__metadata__peer-type">
             <cc-icon
               .icon="${iconPeerType}"
               a11y-name="${i18n('cc-network-group-linked-resources.peer.metadata.peer-type')}"
             ></cc-icon>
-            ${peer.type}
-          </span>
+            <span>${peer.type}</span>
+          </div>
         </div>
       </div>
     `;
@@ -200,10 +200,13 @@ export class CcNetworkGroupLinkedResources extends LitElement {
         .member-list__member-card {
           border: solid 1px var(--cc-color-border-neutral-weak);
           border-radius: var(--cc-border-radius-default, 0.25em);
+          display: grid;
+          gap: 0.5em;
           padding: 1em;
         }
 
         .member-list__member-card__header {
+          align-items: baseline;
           display: grid;
           grid-template-areas:
             'identity peers-btn'
@@ -213,10 +216,16 @@ export class CcNetworkGroupLinkedResources extends LitElement {
 
         .member-list__member-card__header__identity {
           align-items: center;
+          align-self: center;
           display: flex;
           flex-wrap: wrap;
           gap: 0.5em;
           grid-area: identity;
+        }
+
+        .member-list__member-card__header__identity__label {
+          color: var(--cc-color-text-primary-strongest);
+          font-weight: bold;
         }
 
         .member-list__member-card__header__identity__logo {
@@ -226,9 +235,16 @@ export class CcNetworkGroupLinkedResources extends LitElement {
         }
 
         .member-list__member-card__header__domain {
+          align-items: center;
           display: flex;
           gap: 1em;
           grid-area: domain;
+          overflow: hidden;
+          white-space: nowrap;
+        }
+
+        .member-list__member-card__header__domain cc-link {
+          text-overflow: ellipsis;
         }
 
         .member-list__member-card__header__peers-btn {
@@ -244,6 +260,14 @@ export class CcNetworkGroupLinkedResources extends LitElement {
 
         .member-list__member-card__header__peer-btn__arrow-icon {
           --cc-icon-size: 2.3em;
+        }
+
+        .member-list__member-card__unlink-btn {
+          justify-self: flex-end;
+        }
+
+        .member-list__member-card__peer-list__peer-card__metadata__key {
+          word-break: break-all;
         }
       `,
     ];
