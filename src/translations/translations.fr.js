@@ -220,6 +220,7 @@ export const translations = {
   'cc-addon-credentials-content.code.direct-uri': `URI directe`,
   'cc-addon-credentials-content.code.host': `Hôte`,
   'cc-addon-credentials-content.code.initial-password': `Mot de passe initial`,
+  'cc-addon-credentials-content.code.initial-user': `Utilisateur initial`,
   'cc-addon-credentials-content.code.network-group-multi-instances': `Multi-instances sécurisé`,
   'cc-addon-credentials-content.code.network-group-standard': `Network Group`,
   'cc-addon-credentials-content.code.password': `Mot de passe`,
