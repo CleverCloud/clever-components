@@ -298,7 +298,7 @@ export class CcAddonInfo extends LitElement {
           ${this.state.linkedServices != null && this.state.linkedServices.length > 0
             ? html`
                 <div class="section">
-                  <strong class="heading">${i18n('cc-addon-info.linked-services.heading')}</strong>
+                  <strong class="heading">${i18n('cc-addon-info.resources.heading')}</strong>
                   <div class="value linked-services__content">
                     <ul>
                       ${this.state.linkedServices.map((service) => {
