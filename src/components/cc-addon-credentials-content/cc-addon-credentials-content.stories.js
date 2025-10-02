@@ -43,6 +43,16 @@ export const dataLoadedWithNetworkGroupEnabled = makeStory(conf, {
       credentials: [
         {
           code: 'ng',
+          kind: 'standard',
+          value: { status: 'enabled', id: 'ng-fake-id-038917' },
+        },
+      ],
+    },
+    {
+      credentials: [
+        {
+          code: 'ng',
+          kind: 'multi-instances',
           value: { status: 'enabled', id: 'ng-fake-id-038917' },
         },
       ],
@@ -57,6 +67,17 @@ export const dataLoadedWithNetworkGroupDisabled = makeStory(conf, {
       credentials: [
         {
           code: 'ng',
+          kind: 'standard',
+          value: { status: 'disabled' },
+        },
+      ],
+    },
+
+    {
+      credentials: [
+        {
+          code: 'ng',
+          kind: 'multi-instances',
           value: { status: 'disabled' },
         },
       ],
@@ -71,6 +92,17 @@ export const waitingWithEnablingNetworkGroup = makeStory(conf, {
       credentials: [
         {
           code: 'ng',
+          kind: 'standard',
+          value: { status: 'enabling' },
+        },
+      ],
+    },
+
+    {
+      credentials: [
+        {
+          code: 'ng',
+          kind: 'multi-instances',
           value: { status: 'enabling' },
         },
       ],
@@ -85,6 +117,17 @@ export const waitingWithDisablingNetworkGroup = makeStory(conf, {
       credentials: [
         {
           code: 'ng',
+          kind: 'standard',
+          value: { status: 'disabling', id: 'ng-fake-id-038917' },
+        },
+      ],
+    },
+
+    {
+      credentials: [
+        {
+          code: 'ng',
+          kind: 'multi-instances',
           value: { status: 'disabling', id: 'ng-fake-id-038917' },
         },
       ],
@@ -115,7 +158,10 @@ export const simulationsWithEnablingNetworkGroup = makeStory(conf, {
   /** @type {Partial<CcAddonCredentialsItems>[]} */
   items: [
     {
-      credentials: [{ code: 'ng', value: { status: 'disabled' } }],
+      credentials: [
+        { code: 'ng', kind: 'standard', value: { status: 'disabled' } },
+        { code: 'ng', kind: 'multi-instances', value: { status: 'disabled' } },
+      ],
       skeleton: true,
     },
   ],
@@ -134,6 +180,14 @@ export const simulationsWithEnablingNetworkGroup = makeStory(conf, {
         component.credentials = [
           {
             code: 'ng',
+            kind: 'standard',
+            value: {
+              status: 'enabling',
+            },
+          },
+          {
+            code: 'ng',
+            kind: 'multi-instances',
             value: {
               status: 'enabling',
             },
@@ -148,6 +202,15 @@ export const simulationsWithEnablingNetworkGroup = makeStory(conf, {
         component.credentials = [
           {
             code: 'ng',
+            kind: 'standard',
+            value: {
+              status: 'enabled',
+              id: 'fake-ng-id-03918',
+            },
+          },
+          {
+            code: 'ng',
+            kind: 'multi-instances',
             value: {
               status: 'enabled',
               id: 'fake-ng-id-03918',
@@ -163,7 +226,10 @@ export const simulationsWithDisablingNetworkGroup = makeStory(conf, {
   /** @type {Partial<CcAddonCredentialsItems>[]} */
   items: [
     {
-      credentials: [{ code: 'ng', value: { status: 'disabled' } }],
+      credentials: [
+        { code: 'ng', kind: 'standard', value: { status: 'disabled' } },
+        { code: 'ng', kind: 'multi-instances', value: { status: 'disabled' } },
+      ],
       skeleton: true,
     },
   ],
@@ -176,9 +242,18 @@ export const simulationsWithDisablingNetworkGroup = makeStory(conf, {
         component.credentials = [
           {
             code: 'ng',
+            kind: 'standard',
             value: {
               status: 'enabled',
               id: 'fake-ng-id-03918',
+            },
+          },
+          {
+            code: 'ng',
+            kind: 'multi-instances',
+            value: {
+              status: 'enabled',
+              id: 'fake-ng-id-03919',
             },
           },
         ];
@@ -192,6 +267,15 @@ export const simulationsWithDisablingNetworkGroup = makeStory(conf, {
         component.credentials = [
           {
             code: 'ng',
+            kind: 'standard',
+            value: {
+              id,
+              status: 'disabling',
+            },
+          },
+          {
+            code: 'ng',
+            kind: 'multi-instances',
             value: {
               id,
               status: 'disabling',
@@ -207,6 +291,14 @@ export const simulationsWithDisablingNetworkGroup = makeStory(conf, {
         component.credentials = [
           {
             code: 'ng',
+            kind: 'standard',
+            value: {
+              status: 'disabled',
+            },
+          },
+          {
+            code: 'ng',
+            kind: 'multi-instances',
             value: {
               status: 'disabled',
             },

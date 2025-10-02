@@ -191,10 +191,10 @@ export const translations = {
   'cc-addon-credentials-beta.doc-link.keycloak': `Keycloak - Documentation`,
   'cc-addon-credentials-beta.error': `Something went wrong while loading add-on information.`,
   'cc-addon-credentials-beta.heading': `Access`,
-  'cc-addon-credentials-beta.ng.disabling.error': `Something went wrong while trying to disable the Network Group`,
-  'cc-addon-credentials-beta.ng.disabling.success': `The Network Group has been successfully disabled`,
-  'cc-addon-credentials-beta.ng.enabling.error': `Something went wrong while trying to enable the Network Group`,
-  'cc-addon-credentials-beta.ng.enabling.success': `The Network Group has been successfully enabled`,
+  'cc-addon-credentials-beta.ng-multi-instances.disabling.error': `Something went wrong while trying to disable the secure multi-instances`,
+  'cc-addon-credentials-beta.ng-multi-instances.disabling.success': `The secure multi-instances have been successfully disabled`,
+  'cc-addon-credentials-beta.ng-multi-instances.enabling.error': `Something went wrong while trying to enable the secure multi-instances`,
+  'cc-addon-credentials-beta.ng-multi-instances.enabling.success': `The secure multi-instances have been successfully enabled`,
   //#endregion
   //#region cc-addon-credentials-content
   'cc-addon-credentials-content.code.api-client-secret': `API client secret`,
@@ -209,7 +209,8 @@ export const translations = {
   'cc-addon-credentials-content.code.direct-uri': `Direct URI`,
   'cc-addon-credentials-content.code.host': `Host`,
   'cc-addon-credentials-content.code.initial-password': `Initial password`,
-  'cc-addon-credentials-content.code.network-group': `Network group`,
+  'cc-addon-credentials-content.code.network-group-multi-instances': `Secure multi-instances`,
+  'cc-addon-credentials-content.code.network-group-standard': `Network group`,
   'cc-addon-credentials-content.code.password': `Password`,
   'cc-addon-credentials-content.code.port': `Port`,
   'cc-addon-credentials-content.code.tenant': `Tenant`,
@@ -217,7 +218,8 @@ export const translations = {
   'cc-addon-credentials-content.code.uri': `URI`,
   'cc-addon-credentials-content.code.user': `User`,
   'cc-addon-credentials-content.ng.disable': `Disable`,
-  'cc-addon-credentials-content.ng.enable': `Enable the Network Group`,
+  'cc-addon-credentials-content.ng.enable-multi-instances': `Enable the secure multi-instances`,
+  'cc-addon-credentials-content.ng.enable-standard': `Enable the Network Group`,
   //#endregion
   //#region cc-addon-elasticsearch-options
   'cc-addon-elasticsearch-options.additional-cost': () =>

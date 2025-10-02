@@ -78,9 +78,10 @@ export class CcAddonCredentialsContent extends LitElement {
    * Returns the translated label for a given credential code.
    *
    * @param {AddonCredential['code']} code - The code of the access credential
+   * @param {AddonCredentialNg['kind']} [ngKind] - The network group credential kind.
    * @returns {string} The translated label
    */
-  _getLabelFromCode(code) {
+  _getLabelFromCode(code, ngKind) {
     switch (code) {
       case 'api-client-secret':
         return i18n('cc-addon-credentials-content.code.api-client-secret');
@@ -107,7 +108,9 @@ export class CcAddonCredentialsContent extends LitElement {
       case 'initial-password':
         return i18n('cc-addon-credentials-content.code.initial-password');
       case 'ng':
-        return i18n('cc-addon-credentials-content.code.network-group');
+        return ngKind === 'standard'
+          ? i18n('cc-addon-credentials-content.code.network-group-standard')
+          : i18n('cc-addon-credentials-content.code.network-group-multi-instances');
       case 'password':
         return i18n('cc-addon-credentials-content.code.password');
       case 'port':
@@ -145,32 +148,34 @@ export class CcAddonCredentialsContent extends LitElement {
    * @param {AddonCredential} credential - The addon credential to render.
    * @param {boolean} skeleton - Whether to display the credential in skeleton state.
    */
-  _renderCredential({ code, value }, skeleton) {
-    const label = this._getLabelFromCode(code);
+  _renderCredential(credential, skeleton) {
+    const label = this._getLabelFromCode(credential.code, credential.code === 'ng' ? credential.kind : null);
     return html`
-      <div class="credential ${classMap({ 'credential--align-center': credentialsToDisplayAsInput.has(code) })}">
+      <div
+        class="credential ${classMap({ 'credential--align-center': credentialsToDisplayAsInput.has(credential.code) })}"
+      >
         <dt>${label}</dt>
         <dd>
-          ${credentialsToDisplayAsString.has(code)
+          ${credentialsToDisplayAsString.has(credential.code)
             ? html`
-                <span class="${classMap({ skeleton })}">${value}</span>
-                ${!skeleton ? html`<cc-clipboard .value="${value}"></cc-clipboard>` : ''}
+                <span class="${classMap({ skeleton })}">${credential.value}</span>
+                ${!skeleton ? html`<cc-clipboard .value="${credential.value}"></cc-clipboard>` : ''}
               `
             : ''}
-          ${credentialsToDisplayAsInput.has(code)
+          ${credentialsToDisplayAsInput.has(credential.code)
             ? html`
                 <cc-input-text
                   label="${label}"
                   hidden-label
                   clipboard
                   secret
-                  .value="${value}"
+                  .value="${credential.value}"
                   readonly
                   ?skeleton="${skeleton}"
                 ></cc-input-text>
               `
             : ''}
-          ${code === 'ng' ? this._renderNgCredential(value, skeleton) : ''}
+          ${credential.code === 'ng' ? this._renderNgCredential(credential.value, credential.kind, skeleton) : ''}
         </dd>
       </div>
     `;
@@ -178,9 +183,10 @@ export class CcAddonCredentialsContent extends LitElement {
 
   /**
    * @param {AddonCredentialNg['value']} ngCredential - The network group credential value.
+   * @param {AddonCredentialNg['kind']} ngKind - The network group credential kind.
    * @param {boolean} skeleton - Whether to display in skeleton state.
    **/
-  _renderNgCredential(ngCredential, skeleton) {
+  _renderNgCredential(ngCredential, ngKind, skeleton) {
     if (ngCredential.status === 'enabled' || ngCredential.status === 'disabling') {
       return html`
         <span class="${classMap({ skeleton })}">${ngCredential.id}</span>
@@ -193,7 +199,11 @@ export class CcAddonCredentialsContent extends LitElement {
           .waiting="${ngCredential.status === 'disabling'}"
         >
           ${i18n('cc-addon-credentials-content.ng.disable')}
-          <span class="visually-hidden">${i18n('cc-addon-credentials-content.code.network-group')}</span>
+          <span class="visually-hidden"
+            >${ngKind === 'standard'
+              ? i18n('cc-addon-credentials-content.code.network-group-standard')
+              : i18n('cc-addon-credentials-content.code.network-group-multi-instances')}</span
+          >
         </cc-button>
       `;
     }
@@ -206,7 +216,9 @@ export class CcAddonCredentialsContent extends LitElement {
         ?skeleton="${skeleton}"
         .waiting="${ngCredential.status === 'enabling'}"
       >
-        ${i18n('cc-addon-credentials-content.ng.enable')}
+        ${ngKind === 'standard'
+          ? i18n('cc-addon-credentials-content.ng.enable-standard')
+          : i18n('cc-addon-credentials-content.ng.enable-multi-instances')}
       </cc-button>
     `;
   }

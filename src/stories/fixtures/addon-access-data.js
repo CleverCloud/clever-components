@@ -74,6 +74,14 @@ export const BASE_ADDON_ACCESS_ITEMS = [
   },
   {
     code: 'ng',
+    kind: 'standard',
+    value: {
+      status: 'disabled',
+    },
+  },
+  {
+    code: 'ng',
+    kind: 'multi-instances',
     value: {
       status: 'disabled',
     },
