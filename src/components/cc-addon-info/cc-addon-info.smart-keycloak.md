@@ -21,7 +21,6 @@ title: '💡 Smart (Keycloak)'
 | `addonId`                     | `string`      | ID of the add-on                                                                                |           |
 | `appOverviewUrlPattern`       | `string`      | Pattern for the application overview url                                                        |           |
 | `addonDashboardUrlPattern`    | `string`      | Pattern for the addon dashboard url                                                             |           |
-| `scalabilityUrlPattern`       | `string`      | Pattern for the scalability url                                                                 |           |
 | `grafanaLink`                 | `GrafanaLink` | Grafana configuration object (may be disabled in some environments)                             | Optional  |
 | `logsUrlPattern`              | `string`      | Pattern for the logs url (Example : `/organisations/${ownerId}/applications/${appId}/logs`)     |           |
 
@@ -67,7 +66,6 @@ interface GrafanaLink {
     "addonId": "addon_XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX",
     "appOverviewUrlPattern": "/organisations/orga_XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX/applications/:id",
     "addonDashboardUrlPattern": "/organisations/orga_3547a882-d464-4c34-8168-addons/:id", 
-    "scalabilityUrlPattern": "/organisations/orga_XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX/applications/:id/settings",
     "grafanaLink": {
       "base": "https://grafana.services.example.com",
       "console": "https://console.example.com/organisations/orga_XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX/grafana"

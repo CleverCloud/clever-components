@@ -27,21 +27,12 @@ defineSmartComponent({
     addonId: { type: String },
     appOverviewUrlPattern: { type: String },
     addonDashboardUrlPattern: { type: String },
-    scalabilityUrlPattern: { type: String },
     grafanaLink: { type: Object, optional: true },
     logsUrlPattern: { type: String },
   },
   /** @param {OnContextUpdateArgs} _ */
   onContextUpdate({ context, onEvent, updateComponent, signal }) {
-    const {
-      apiConfig,
-      ownerId,
-      addonId,
-      appOverviewUrlPattern,
-      addonDashboardUrlPattern,
-      scalabilityUrlPattern,
-      grafanaLink,
-    } = context;
+    const { apiConfig, ownerId, addonId, appOverviewUrlPattern, addonDashboardUrlPattern, grafanaLink } = context;
     let logsUrl = '';
 
     const api = new CcAddonInfoClient({ apiConfig, ownerId, addonId, providerId: PROVIDER_ID, grafanaLink, signal });
@@ -57,7 +48,6 @@ defineSmartComponent({
       creationDate: '2025-08-06 15:03:00',
       // if Grafana is totally disabled within the console, do not display a skeleton for grafana link
       openGrafanaLink: grafanaLink != null ? 'https://example.com' : null,
-      openScalabilityLink: '/placeholder',
       linkedServices: [
         {
           type: 'app',
@@ -97,7 +87,6 @@ defineSmartComponent({
           version: formatVersionState(operatorVersionInfo),
           creationDate: addonInfo.creationDate,
           openGrafanaLink: grafanaAppLink,
-          openScalabilityLink: scalabilityUrlPattern.replace(':id', javaAppId),
           linkedServices: [
             {
               type: 'app',
