@@ -161,6 +161,7 @@ export class CcNetworkGroupLinkedResources extends LitElement {
               .icon="${iconPeerType}"
               a11y-name="${i18n('cc-network-group-linked-resources.peer.metadata.peer-type')}"
             ></cc-icon>
+            <!-- TODO: i18n -->
             <span>${peer.type}</span>
           </div>
         </div>
@@ -208,6 +209,7 @@ export class CcNetworkGroupLinkedResources extends LitElement {
         .member-list__member-card__header {
           align-items: baseline;
           display: grid;
+          gap: 1em;
           grid-template-areas:
             'identity peers-btn'
             'domain domain';
@@ -240,11 +242,12 @@ export class CcNetworkGroupLinkedResources extends LitElement {
           gap: 1em;
           grid-area: domain;
           overflow: hidden;
-          white-space: nowrap;
         }
 
-        .member-list__member-card__header__domain cc-link {
+        .member-list__member-card__header__domain span {
+          overflow: hidden;
           text-overflow: ellipsis;
+          white-space: nowrap;
         }
 
         .member-list__member-card__header__peers-btn {
@@ -252,22 +255,56 @@ export class CcNetworkGroupLinkedResources extends LitElement {
           background: none;
           border: none;
           border-radius: var(--cc-border-radius-default);
+          cursor: pointer;
           display: flex;
           font-style: italic;
           gap: 1em;
           grid-area: peers-btn;
+          padding: 0;
         }
 
         .member-list__member-card__header__peer-btn__arrow-icon {
-          --cc-icon-size: 2.3em;
+          --cc-icon-size: 2em;
         }
 
         .member-list__member-card__unlink-btn {
           justify-self: flex-end;
         }
 
+        .member-list__member-card__peer-list {
+          display: grid;
+          gap: 0.5em;
+        }
+
+        .member-list__member-card__peer-list__peer-card {
+          background-color: var(--cc-color-bg-neutral);
+          border: solid 1px var(--cc-color-border-neutral-weak);
+          border-radius: var(--cc-border-radius-default);
+          display: grid;
+          gap: 1em;
+          padding: 1em;
+        }
+
+        .member-list__member-card__peer-list__peer-card__label {
+          font-weight: bold;
+        }
+
+        .member-list__member-card__peer-list__peer-card__metadata {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 1em;
+        }
+
+        .member-list__member-card__peer-list__peer-card__metadata__key span {
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+
+        .member-list__member-card__peer-list__peer-card__metadata__id,
         .member-list__member-card__peer-list__peer-card__metadata__key {
-          word-break: break-all;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
         }
       `,
     ];
