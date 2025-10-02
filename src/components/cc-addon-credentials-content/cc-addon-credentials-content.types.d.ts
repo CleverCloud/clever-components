@@ -7,6 +7,7 @@ export type AddonCredential =
 
 export interface AddonCredentialNg {
   code: 'ng';
+  kind: 'standard' | 'multi-instances';
   value: AddonCredentialNgDisabled | AddonCredentialNgDisabling | AddonCredentialNgEnabled | AddonCredentialNgEnabling;
 }
 
