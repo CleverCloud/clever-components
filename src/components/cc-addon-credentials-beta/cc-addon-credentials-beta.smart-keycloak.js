@@ -18,6 +18,7 @@ const SKELETON_DATA = [
   },
   {
     code: 'ng',
+    kind: 'multi-instances',
     value: {
       status: 'disabled',
     },
@@ -100,6 +101,7 @@ defineSmartComponent({
     onEvent('cc-ng-enable', () => {
       updateNg({
         code: 'ng',
+        kind: 'multi-instances',
         value: {
           status: 'enabling',
         },
@@ -110,29 +112,32 @@ defineSmartComponent({
         .then((updatedOperator) => {
           updateNg({
             code: 'ng',
+            kind: 'multi-instances',
             value: {
               status: 'enabled',
               id: updatedOperator.features.networkGroup.id,
             },
           });
 
-          notifySuccess(i18n('cc-addon-credentials-beta.ng.enabling.success'));
+          notifySuccess(i18n('cc-addon-credentials-beta.ng-multi-instances.enabling.success'));
         })
         .catch((error) => {
           console.error(error);
           updateNg({
             code: 'ng',
+            kind: 'multi-instances',
             value: {
               status: 'disabled',
             },
           });
-          notifyError(i18n('cc-addon-credentials-beta.ng.enabling.error'));
+          notifyError(i18n('cc-addon-credentials-beta.ng-multi-instances.enabling.error'));
         });
     });
 
     onEvent('cc-ng-disable', () => {
       updateNg((addonInfo) => ({
         code: 'ng',
+        kind: 'multi-instances',
         value: {
           id: /** @type {AddonCredentialNgEnabled} */ (addonInfo.value).id,
           status: 'disabling',
@@ -144,22 +149,25 @@ defineSmartComponent({
         .then(() => {
           updateNg({
             code: 'ng',
+            kind: 'multi-instances',
             value: {
               status: 'disabled',
             },
           });
-          notifySuccess(i18n('cc-addon-credentials-beta.ng.disabling.success'));
+          notifySuccess(i18n('cc-addon-credentials-beta.ng-multi-instances.disabling.success'));
         })
         .catch((error) => {
           console.error(error);
           updateNg((addonInfo) => ({
             code: 'ng',
+            kind: 'multi-instances',
             value: {
               id: /** @type {AddonCredentialNgEnabled} */ (addonInfo.value).id,
+              kind: 'multi-instances',
               status: 'enabled',
             },
           }));
-          notifyError(i18n('cc-addon-credentials-beta.ng.disabling.error'));
+          notifyError(i18n('cc-addon-credentials-beta.ng-multi-instances.disabling.error'));
         });
     });
   },
@@ -209,6 +217,7 @@ class Api extends CcAddonCredentialsBetaClient {
       },
       {
         code: 'ng',
+        kind: 'multi-instances',
         value: formatNgData(operator.features.networkGroup),
       },
     ];

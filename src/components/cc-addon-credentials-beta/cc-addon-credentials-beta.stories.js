@@ -20,11 +20,21 @@ const conf = {
 
 /**
  * Helper to filter items from the base fixture based on their codes.
- * @param {Array<AddonCredentialCode|AddonCredentialNg['code']>} codes
+ * @param {Array<AddonCredentialCode|Pick<AddonCredentialNg, 'code' | 'kind'>>} codesOrCredentials
  * @returns {import('../cc-addon-credentials-content/cc-addon-credentials-content.types.js').AddonCredential[]}
  */
-const getFilteredAddonCredentials = (codes) => {
-  return BASE_ADDON_ACCESS_ITEMS.filter((credential) => codes.includes(credential.code));
+const getFilteredAddonCredentials = (codesOrCredentials) => {
+  return BASE_ADDON_ACCESS_ITEMS.filter((credential) => {
+    if (credential.code === 'ng') {
+      return codesOrCredentials.some(
+        (codeOrCredential) =>
+          typeof codeOrCredential !== 'string' &&
+          codeOrCredential.code === 'ng' &&
+          codeOrCredential.kind === credential.kind,
+      );
+    }
+    return codesOrCredentials.includes(credential.code);
+  });
 };
 
 export const defaultStory = makeStory(conf, {
@@ -34,7 +44,13 @@ export const defaultStory = makeStory(conf, {
       state: {
         type: 'loaded',
         tabs: {
-          default: getFilteredAddonCredentials(['user', 'password', 'token', 'ng']),
+          default: getFilteredAddonCredentials([
+            'user',
+            'password',
+            'token',
+            { code: 'ng', kind: 'standard' },
+            { code: 'ng', kind: 'multi-instances' },
+          ]),
         },
       },
       docLink: {
@@ -52,7 +68,13 @@ export const dataLoadedWithTabs = makeStory(conf, {
       state: {
         type: 'loaded',
         tabs: {
-          default: getFilteredAddonCredentials(['user', 'password', 'token', 'ng']),
+          default: getFilteredAddonCredentials([
+            'user',
+            'password',
+            'token',
+            { code: 'ng', kind: 'standard' },
+            { code: 'ng', kind: 'multi-instances' },
+          ]),
           direct: getFilteredAddonCredentials(['direct-host', 'direct-port', 'direct-uri']),
           api: getFilteredAddonCredentials([
             'api-client-user',
@@ -81,7 +103,13 @@ export const loading = makeStory(conf, {
       state: {
         type: 'loading',
         tabs: {
-          default: getFilteredAddonCredentials(['user', 'password', 'token', 'ng']),
+          default: getFilteredAddonCredentials([
+            'user',
+            'password',
+            'token',
+            { code: 'ng', kind: 'standard' },
+            { code: 'ng', kind: 'multi-instances' },
+          ]),
         },
       },
       docLink: {
@@ -99,7 +127,13 @@ export const loadingWithTabs = makeStory(conf, {
       state: {
         type: 'loading',
         tabs: {
-          default: getFilteredAddonCredentials(['user', 'password', 'token', 'ng']),
+          default: getFilteredAddonCredentials([
+            'user',
+            'password',
+            'token',
+            { code: 'ng', kind: 'standard' },
+            { code: 'ng', kind: 'multi-instances' },
+          ]),
           direct: getFilteredAddonCredentials(['direct-host', 'direct-port', 'direct-uri']),
           api: getFilteredAddonCredentials([
             'api-client-user',
@@ -137,7 +171,13 @@ export const simulationWithLoadingSuccess = makeStory(conf, {
       state: {
         type: 'loading',
         tabs: {
-          default: getFilteredAddonCredentials(['user', 'password', 'token', 'ng']),
+          default: getFilteredAddonCredentials([
+            'user',
+            'password',
+            'token',
+            { code: 'ng', kind: 'standard' },
+            { code: 'ng', kind: 'multi-instances' },
+          ]),
         },
       },
       docLink: {
@@ -154,7 +194,13 @@ export const simulationWithLoadingSuccess = makeStory(conf, {
         component.state = {
           type: 'loaded',
           tabs: {
-            default: getFilteredAddonCredentials(['user', 'password', 'token', 'ng']),
+            default: getFilteredAddonCredentials([
+              'user',
+              'password',
+              'token',
+              { code: 'ng', kind: 'standard' },
+              { code: 'ng', kind: 'multi-instances' },
+            ]),
           },
         };
       },
@@ -205,7 +251,13 @@ export const simulationsWithLoadingError = makeStory(conf, {
       state: {
         type: 'loading',
         tabs: {
-          default: getFilteredAddonCredentials(['user', 'password', 'token', 'ng']),
+          default: getFilteredAddonCredentials([
+            'user',
+            'password',
+            'token',
+            { code: 'ng', kind: 'standard' },
+            { code: 'ng', kind: 'multi-instances' },
+          ]),
         },
       },
       docLink: {
@@ -234,7 +286,11 @@ export const simulationsWithNetworkGroupStatus = makeStory(conf, {
       state: {
         type: 'loaded',
         tabs: {
-          default: getFilteredAddonCredentials(['user', 'ng']),
+          default: getFilteredAddonCredentials([
+            'user',
+            { code: 'ng', kind: 'standard' },
+            { code: 'ng', kind: 'multi-instances' },
+          ]),
         },
       },
       docLink: {
@@ -253,7 +309,8 @@ export const simulationsWithNetworkGroupStatus = makeStory(conf, {
           tabs: {
             default: [
               { code: 'user', value: 'toto' },
-              { code: 'ng', value: { status: 'enabling' } },
+              { code: 'ng', kind: 'standard', value: { status: 'enabling' } },
+              { code: 'ng', kind: 'multi-instances', value: { status: 'enabling' } },
             ],
           },
         };
@@ -268,7 +325,8 @@ export const simulationsWithNetworkGroupStatus = makeStory(conf, {
           tabs: {
             default: [
               { code: 'user', value: 'toto' },
-              { code: 'ng', value: { status: 'enabled', id: 'fake-ng-id-12345' } },
+              { code: 'ng', kind: 'standard', value: { status: 'enabled', id: 'fake-ng-id-12345' } },
+              { code: 'ng', kind: 'multi-instances', value: { status: 'enabled', id: 'fake-ng-id-12346' } },
             ],
           },
         };
@@ -283,7 +341,8 @@ export const simulationsWithNetworkGroupStatus = makeStory(conf, {
           tabs: {
             default: [
               { code: 'user', value: 'toto' },
-              { code: 'ng', value: { status: 'disabling', id: 'fake-ng-id-12345' } },
+              { code: 'ng', kind: 'standard', value: { status: 'disabling', id: 'fake-ng-id-12345' } },
+              { code: 'ng', kind: 'multi-instances', value: { status: 'disabling', id: 'fake-ng-id-12346' } },
             ],
           },
         };
@@ -298,7 +357,8 @@ export const simulationsWithNetworkGroupStatus = makeStory(conf, {
           tabs: {
             default: [
               { code: 'user', value: 'toto' },
-              { code: 'ng', value: { status: 'disabled' } },
+              { code: 'ng', kind: 'standard', value: { status: 'disabled' } },
+              { code: 'ng', kind: 'multi-instances', value: { status: 'disabled' } },
             ],
           },
         };
