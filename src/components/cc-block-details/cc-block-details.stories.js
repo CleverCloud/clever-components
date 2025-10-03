@@ -53,7 +53,7 @@ export const defaultStory = makeStory(conf, {
 
 const openHtmlExample = `
   ${ccBlockHtmlExample}
-  <cc-block-details is-open=true slot="footer-left">
+  <cc-block-details is-open slot="footer-left">
     <div slot="button-text">Command line</div>
     <a slot="link" href="">See documentation</a>
     <div slot="content">${ccBlockDetailsContent}</a></div>
