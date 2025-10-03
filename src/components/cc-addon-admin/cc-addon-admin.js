@@ -223,12 +223,16 @@ export class CcAddonAdmin extends LitElement {
       <cc-block-section slot="content-body">
         <div slot="title" class="danger">${i18n('cc-addon-admin.danger-zone')}</div>
         <div slot="info" class="danger-desc">
-          <p>${i18n('cc-addon-admin.delete-disclaimer')}</p>
-          ${shouldShowVmText && shouldShowBackupsText
-            ? html`<p>${i18n('cc-addon-admin.delete-vm-and-backups')}</p>`
-            : ''}
-          ${shouldShowVmText && !shouldShowBackupsText ? html`<p>${i18n('cc-addon-admin.delete-vm')}</p>` : ''}
-          ${shouldShowBackupsText && !shouldShowVmText ? html`<p>${i18n('cc-addon-admin.delete-backups')}</p>` : ''}
+          <p>
+            <span>${i18n('cc-addon-admin.delete-disclaimer')}</span>
+            ${shouldShowVmText && shouldShowBackupsText
+              ? html`<span>${i18n('cc-addon-admin.delete-vm-and-backups')}</span>`
+              : ''}
+            ${shouldShowVmText && !shouldShowBackupsText ? html`<span>${i18n('cc-addon-admin.delete-vm')}</span>` : ''}
+            ${shouldShowBackupsText && !shouldShowVmText
+              ? html`<span>${i18n('cc-addon-admin.delete-backups')}</span>`
+              : ''}
+          </p>
         </div>
         <div>
           <cc-button
