@@ -80,7 +80,7 @@ defineSmartComponent({
     });
     updateComponent('docLink', {
       text: i18n('cc-addon-credentials-beta.doc-link.keycloak'),
-      href: generateDocsHref('/doc/addons/keycloak/'),
+      href: generateDocsHref('/addons/keycloak/#secured-multi-instances'),
     });
 
     api
