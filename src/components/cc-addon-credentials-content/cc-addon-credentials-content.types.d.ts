@@ -47,4 +47,5 @@ type AddonCredentialCode =
   | 'database-name'
   | 'cluster-full-name'
   | 'uri'
-  | 'tenant';
+  | 'tenant'
+  | 'initial-user';

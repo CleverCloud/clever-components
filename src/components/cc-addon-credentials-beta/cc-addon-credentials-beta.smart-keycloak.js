@@ -208,11 +208,11 @@ class Api extends CcAddonCredentialsBetaClient {
     const operator = /** @type {KeycloakOperatorInfo} */ (await this.getAddonWithOperator());
     return [
       {
-        code: 'user',
+        code: 'initial-user',
         value: operator.envVars.CC_KEYCLOAK_ADMIN,
       },
       {
-        code: 'password',
+        code: 'initial-password',
         value: operator.envVars.CC_KEYCLOAK_ADMIN_DEFAULT_PASSWORD,
       },
       {
