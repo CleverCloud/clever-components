@@ -200,7 +200,7 @@ export const translations = {
   'cc-addon-credentials-beta.choice.direct': `Direct`,
   'cc-addon-credentials-beta.choice.elastic': `Elastic`,
   'cc-addon-credentials-beta.choice.kibana': `Kibana`,
-  'cc-addon-credentials-beta.doc-link.keycloak': `Keycloak - Documentation`,
+  'cc-addon-credentials-beta.doc-link.keycloak': `Multi-instances sécurisé - Documentation`,
   'cc-addon-credentials-beta.error': `Une erreur est survenue pendant le chargement des informations de l'add-on.`,
   'cc-addon-credentials-beta.heading': `Accès`,
   'cc-addon-credentials-beta.ng-multi-instances.disabling.error': `Une erreur est survenue lors de la désactivation du multi-instances sécurisé`,
