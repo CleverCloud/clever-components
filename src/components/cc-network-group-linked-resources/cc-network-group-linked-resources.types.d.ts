@@ -28,6 +28,7 @@ export interface NetworkGroupMember {
   peerList: NetworkGroupPeer[]; // could be an empty array
 }
 
+// TODO: if external, we need to provide a link to download the config
 export interface NetworkGroupPeer {
   id: string;
   label: string;

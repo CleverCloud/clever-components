@@ -1,7 +1,6 @@
 import { css, html, LitElement } from 'lit';
-import { classMap } from 'lit/directives/class-map.js';
 import {
-  iconRemixArrowRightSLine as iconArrowRight,
+  iconRemixArrowUpSLine as iconArrowUp,
   iconRemixHashtag as iconId,
   iconRemixInformationFill as iconInfo,
   iconRemixInstallLine as iconIp,
@@ -23,13 +22,13 @@ import '../cc-notice/cc-notice.js';
  * @typedef {import('./cc-network-group-linked-resources.types.js').NetworkGroupLinkedResourcesState} NetworkGroupLinkedResourcesState
  * @typedef {import('./cc-network-group-linked-resources.types.js').NetworkGroupMember} NetworkGroupMember
  * @typedef {import('./cc-network-group-linked-resources.types.js').NetworkGroupPeer} NetworkGroupPeer
+ * @typedef {import('lit').PropertyValues<CcNetworkGroupLinkedResources>} CcNetworkGroupLinkedResourcesPropertyValues
  */
 
 export class CcNetworkGroupLinkedResources extends LitElement {
   static get properties() {
     return {
       state: { type: Object },
-      _openMemberIdsList: { type: Array, state: true },
     };
   }
 
@@ -38,22 +37,10 @@ export class CcNetworkGroupLinkedResources extends LitElement {
 
     /** @type {NetworkGroupLinkedResourcesState} Sets the state of the component */
     this.state = { type: 'loading' };
-
-    /** @type {string[]} */
-    this._openMemberIdsList = [];
   }
 
   _onUnlinkMember() {
     // TODO: display dialog
-  }
-
-  /** @param {string} memberId */
-  _onToggleOpenMember(memberId) {
-    if (this._openMemberIdsList.includes(memberId)) {
-      this._openMemberIdsList = this._openMemberIdsList.filter((openMemberId) => openMemberId !== memberId);
-    } else {
-      this._openMemberIdsList = [...this._openMemberIdsList, memberId];
-    }
   }
 
   render() {
@@ -77,7 +64,9 @@ export class CcNetworkGroupLinkedResources extends LitElement {
             : ''}
           ${this.state.type === 'loaded' && this.state.memberList.length > 0
             ? html`
-                <div class="member-list">${this.state.memberList.map((member) => this._renderMember(member))}</div>
+                <div class="member-list">
+                  ${this.state.memberList.map((member, index) => this._renderMember(member, index === 0))}
+                </div>
               `
             : ''}
         </div>
@@ -104,54 +93,53 @@ export class CcNetworkGroupLinkedResources extends LitElement {
     `;
   }
 
-  /** @param {NetworkGroupMember} member */
-  _renderMember(member) {
-    // TODO: remove?
-    const memberHref = new URL(`https://${member.domainName}`).href;
-    const isMemberOpen = this._openMemberIdsList.includes(member.id);
-    const peersSectionId = `${member.id}--peer-list`;
+  /**
+   * @param {NetworkGroupMember} member
+   * @param {boolean} isOpenByDefault
+   **/
+  _renderMember(member, isOpenByDefault) {
     return html`
       <div class="member-list__member-card">
-        <div class="member-list__member-card__header">
-          <div class="member-list__member-card__header__identity">
-            <cc-img
-              class="member-list__member-card__header__identity__logo"
-              src="${member.logo.url}"
-              a11y-name="${member.logo.a11yName}"
-            >
-            </cc-img>
-            <span class="member-list__member-card__header__identity__label">${member.label}</span>
-          </div>
-          <!-- FIXME: link is not really relevant since it can only accessed by member peers -->
-          <div class="member-list__member-card__header__domain">
-            <span>${member.domainName}</span>
-            <cc-clipboard value="${member.domainName}"></cc-clipboard>
-          </div>
-          <button
-            class="member-list__member-card__header__peers-btn"
-            aria-expanded="${isMemberOpen}"
-            aria-controls="${peersSectionId}"
-            @click="${() => this._onToggleOpenMember(member.id)}"
-          >
-            <span class="member-list__member-card__header__peers-btn__nb">
+        <details class="member-list__member-card__details" ?open="${isOpenByDefault}">
+          <summary class="member-list__member-card__details__header">
+            <div class="member-list__member-card__details__header__identity">
+              <cc-img
+                class="member-list__member-card__details__header__identity__logo"
+                src="${member.logo.url}"
+                a11y-name="${member.logo.a11yName}"
+              >
+              </cc-img>
+              <span class="member-list__member-card__details__header__identity__label">${member.label}</span>
+            </div>
+            <span class="member-list__member-card__details__header__peers-btn__nb">
               ${i18n('cc-network-group-linked-resources.member.nb-of-peers', {
                 nbOfPeers: member.peerList.length,
               })}
             </span>
-            <cc-icon class="member-list__member-card__header__peer-btn__arrow-icon" .icon="${iconArrowRight}"></cc-icon>
-          </button>
+            <cc-icon class="member-list__member-card__details__header__arrow-icon" .icon="${iconArrowUp}"></cc-icon>
+          </summary>
+          <div class="member-list__member-card__details__domain">
+            <!-- FIXME: link is not really relevant since it can only accessed by member peers -->
+            <span>${member.domainName}</span>
+            <cc-clipboard value="${member.domainName}"></cc-clipboard>
+          </div>
+          <div class="member-list__member-card__details__peer-list">
+            ${member.peerList.map((peer) => this._renderPeer(peer))}
+          </div>
+          <cc-button
+            class="member-list__member-card__details__unlink-btn"
+            danger
+            outlined
+            @cc-click="${this._onUnlinkMember}"
+          >
+            ${i18n('cc-network-group-linked-resources.member.unlink')}
+          </cc-button>
+        </details>
+        <div class="member-list__member-card__domain">
+          <!-- FIXME: link is not really relevant since it can only accessed by member peers -->
+          <span>${member.domainName}</span>
+          <cc-clipboard value="${member.domainName}"></cc-clipboard>
         </div>
-        <div
-          id="${peersSectionId}"
-          class="member-list__member-card__peer-list ${classMap({
-            'member-list__member-card__peer-list--open': isMemberOpen,
-          })}"
-        >
-          ${member.peerList.map((peer) => this._renderPeer(peer))}
-        </div>
-        <cc-button class="member-list__member-card__unlink-btn" danger outlined @cc-click="${this._onUnlinkMember}">
-          ${i18n('cc-network-group-linked-resources.member.unlink')}
-        </cc-button>
       </div>
     `;
   }
@@ -159,31 +147,31 @@ export class CcNetworkGroupLinkedResources extends LitElement {
   /** @param {NetworkGroupPeer} peer */
   _renderPeer(peer) {
     return html`
-      <div class="member-list__member-card__peer-list__peer-card">
-        <span class="member-list__member-card__peer-list__peer-card__label">${peer.label}</span>
-        <div class="member-list__member-card__peer-list__peer-card__metadata">
-          <div class="member-list__member-card__peer-list__peer-card__metadata__id">
+      <div class="member-list__member-card__details__peer-list__peer-card">
+        <span class="member-list__member-card__details__peer-list__peer-card__label">${peer.label}</span>
+        <div class="member-list__member-card__details__peer-list__peer-card__metadata">
+          <div class="member-list__member-card__details__peer-list__peer-card__metadata__id">
             <cc-icon
               .icon="${iconId}"
               a11y-name="${i18n('cc-network-group-linked-resources.peer.metadata.id')}"
             ></cc-icon>
             <span>${peer.id}</span>
           </div>
-          <div class="member-list__member-card__peer-list__peer-card__metadata__key">
+          <div class="member-list__member-card__details__peer-list__peer-card__metadata__key">
             <cc-icon
               .icon="${iconKey}"
               a11y-name="${i18n('cc-network-group-linked-resources.peer.metadata.key')}"
             ></cc-icon>
             <span>${peer.publicKey}</span>
           </div>
-          <div class="member-list__member-card__peer-list__peer-card__metadata__ip">
+          <div class="member-list__member-card__details__peer-list__peer-card__metadata__ip">
             <cc-icon
               .icon="${iconIp}"
               a11y-name="${i18n('cc-network-group-linked-resources.peer.metadata.ip')}"
             ></cc-icon>
             <span>${peer.ip}</span>
           </div>
-          <div class="member-list__member-card__peer-list__peer-card__metadata__peer-type">
+          <div class="member-list__member-card__details__peer-list__peer-card__metadata__peer-type">
             <cc-icon
               .icon="${iconPeerType}"
               a11y-name="${i18n('cc-network-group-linked-resources.peer.metadata.peer-type')}"
@@ -228,56 +216,79 @@ export class CcNetworkGroupLinkedResources extends LitElement {
         .member-list__member-card {
           border: solid 1px var(--cc-color-border-neutral-weak);
           border-radius: var(--cc-border-radius-default, 0.25em);
-          display: grid;
-          gap: 0.5em;
           padding: 1em;
         }
 
-        .member-list__member-card__header {
-          align-items: baseline;
-          display: grid;
+        .member-list__member-card__details__header {
+          align-items: center;
+          cursor: pointer;
+          display: flex;
           gap: 1em;
-          grid-template-areas:
-            'identity peers-btn'
-            'domain domain';
-          grid-template-columns: 1fr auto;
+          margin: -1em;
+          padding: 0.5em 1em;
         }
 
-        .member-list__member-card__header__identity {
+        .member-list__member-card__details__header__arrow-icon {
+          --cc-icon-size: 2em;
+
+          transition: all 0.3s;
+        }
+
+        .member-list__member-card__details__header:hover {
+          background-color: var(--cc-color-bg-neutral-hovered);
+        }
+
+        .member-list__member-card__details:not([open]) .member-list__member-card__details__header__arrow-icon {
+          transform: rotate(180deg);
+          transition: all 0.3s;
+        }
+
+        /* TODO: more complex than that, we need a rotate when :hover not open, a rotate when :hover open */
+        .member-list__member-card__details__header:hover .member-list__member-card__details__header__arrow-icon {
+          transform: rotate(360deg);
+          transition: all 0.3s;
+        }
+
+        .member-list__member-card__details__header__identity {
           align-items: center;
           align-self: center;
           display: flex;
+          flex: 1 1 auto;
           flex-wrap: wrap;
           gap: 0.5em;
-          grid-area: identity;
         }
 
-        .member-list__member-card__header__identity__label {
+        .member-list__member-card__details__header__identity__label {
           color: var(--cc-color-text-primary-strongest);
           font-weight: bold;
         }
 
-        .member-list__member-card__header__identity__logo {
+        .member-list__member-card__details__header__identity__logo {
           border-radius: var(--cc-border-radius-small, 0.15em);
           height: 1.5em;
           width: 1.5em;
         }
 
-        .member-list__member-card__header__domain {
+        .member-list__member-card__domain,
+        .member-list__member-card__details__domain {
           align-items: center;
           display: flex;
           gap: 1em;
-          grid-area: domain;
+          margin-top: 1.5em;
           overflow: hidden;
         }
 
-        .member-list__member-card__header__domain span {
+        details[open] + .member-list__member-card__domain {
+          display: none;
+        }
+
+        .member-list__member-card__details__header__domain span {
           overflow: hidden;
           text-overflow: ellipsis;
           white-space: nowrap;
         }
 
-        .member-list__member-card__header__peers-btn {
+        .member-list__member-card__details__header__peers-btn {
           align-items: center;
           background: none;
           border: none;
@@ -286,33 +297,27 @@ export class CcNetworkGroupLinkedResources extends LitElement {
           display: flex;
           font-style: italic;
           gap: 1em;
-          grid-area: peers-btn;
           padding: 0.5em;
         }
 
-        .member-list__member-card__header__peers-btn:focus-visible {
+        .member-list__member-card__details__header__peers-btn:focus-visible {
           outline: var(--cc-focus-outline);
           outline-offset: var(--cc-focus-outline-offset);
         }
 
-        .member-list__member-card__header__peer-btn__arrow-icon {
-          --cc-icon-size: 2em;
+        .member-list__member-card__details__unlink-btn {
+          display: block;
+          margin-left: auto;
+          width: fit-content;
         }
 
-        .member-list__member-card__unlink-btn {
-          justify-self: flex-end;
-        }
-
-        .member-list__member-card__peer-list {
-          display: none;
-          gap: 0.5em;
-        }
-
-        .member-list__member-card__peer-list--open {
+        .member-list__member-card__details__peer-list {
           display: grid;
+          gap: 0.5em;
+          margin-block: 1em;
         }
 
-        .member-list__member-card__peer-list__peer-card {
+        .member-list__member-card__details__peer-list__peer-card {
           background-color: var(--cc-color-bg-neutral);
           border: solid 1px var(--cc-color-border-neutral-weak);
           border-radius: var(--cc-border-radius-default);
@@ -321,23 +326,23 @@ export class CcNetworkGroupLinkedResources extends LitElement {
           padding: 1em;
         }
 
-        .member-list__member-card__peer-list__peer-card__label {
+        .member-list__member-card__details__peer-list__peer-card__label {
           font-weight: bold;
         }
 
-        .member-list__member-card__peer-list__peer-card__metadata {
+        .member-list__member-card__details__peer-list__peer-card__metadata {
           display: flex;
           flex-wrap: wrap;
           gap: 1em;
         }
 
-        .member-list__member-card__peer-list__peer-card__metadata__key span {
+        .member-list__member-card__details__peer-list__peer-card__metadata__key span {
           overflow: hidden;
           text-overflow: ellipsis;
         }
 
-        .member-list__member-card__peer-list__peer-card__metadata__id,
-        .member-list__member-card__peer-list__peer-card__metadata__key {
+        .member-list__member-card__details__peer-list__peer-card__metadata__id,
+        .member-list__member-card__details__peer-list__peer-card__metadata__key {
           overflow: hidden;
           text-overflow: ellipsis;
           white-space: nowrap;
