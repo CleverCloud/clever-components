@@ -192,10 +192,10 @@ export const translations = {
   'cc-addon-credentials-beta.doc-link.keycloak': `Secured multi-instances - Documentation`,
   'cc-addon-credentials-beta.error': `Something went wrong while loading add-on information.`,
   'cc-addon-credentials-beta.heading': `Access`,
-  'cc-addon-credentials-beta.ng-multi-instances.disabling.error': `Something went wrong while trying to disable the secured multi-instances`,
-  'cc-addon-credentials-beta.ng-multi-instances.disabling.success': `The secured multi-instances have been successfully disabled`,
-  'cc-addon-credentials-beta.ng-multi-instances.enabling.error': `Something went wrong while trying to enable the secured multi-instances`,
-  'cc-addon-credentials-beta.ng-multi-instances.enabling.success': `The secured multi-instances have been successfully enabled`,
+  'cc-addon-credentials-beta.ng-multi-instances.disabling.error': `Something went wrong while trying to disable secured multi-instances`,
+  'cc-addon-credentials-beta.ng-multi-instances.disabling.success': `Secured multi-instances have been successfully disabled`,
+  'cc-addon-credentials-beta.ng-multi-instances.enabling.error': `Something went wrong while trying to enable secured multi-instances`,
+  'cc-addon-credentials-beta.ng-multi-instances.enabling.success': `Secured multi-instances have been successfully enabled`,
   //#endregion
   //#region cc-addon-credentials-content
   'cc-addon-credentials-content.code.api-client-secret': `API client secret`,
@@ -211,7 +211,7 @@ export const translations = {
   'cc-addon-credentials-content.code.host': `Host`,
   'cc-addon-credentials-content.code.initial-password': `Initial password`,
   'cc-addon-credentials-content.code.initial-user': `Initial User`,
-  'cc-addon-credentials-content.code.network-group-multi-instances': `Secure multi-instances`,
+  'cc-addon-credentials-content.code.network-group-multi-instances': `Secured multi-instances`,
   'cc-addon-credentials-content.code.network-group-standard': `Network group`,
   'cc-addon-credentials-content.code.password': `Password`,
   'cc-addon-credentials-content.code.port': `Port`,
@@ -220,7 +220,7 @@ export const translations = {
   'cc-addon-credentials-content.code.uri': `URI`,
   'cc-addon-credentials-content.code.user': `User`,
   'cc-addon-credentials-content.ng.disable': `Disable`,
-  'cc-addon-credentials-content.ng.enable-multi-instances': `Enable the secure multi-instances`,
+  'cc-addon-credentials-content.ng.enable-multi-instances': `Enable secured multi-instances`,
   'cc-addon-credentials-content.ng.enable-standard': `Enable the Network Group`,
   //#endregion
   //#region cc-addon-elasticsearch-options
