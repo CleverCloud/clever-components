@@ -1,4 +1,5 @@
 import { css, html, LitElement } from 'lit';
+import { classMap } from 'lit/directives/class-map.js';
 import {
   iconRemixArrowRightSLine as iconArrowRight,
   iconRemixHashtag as iconId,
@@ -28,6 +29,7 @@ export class CcNetworkGroupLinkedResources extends LitElement {
   static get properties() {
     return {
       state: { type: Object },
+      _openMemberIdsList: { type: Array, state: true },
     };
   }
 
@@ -36,10 +38,22 @@ export class CcNetworkGroupLinkedResources extends LitElement {
 
     /** @type {NetworkGroupLinkedResourcesState} Sets the state of the component */
     this.state = { type: 'loading' };
+
+    /** @type {string[]} */
+    this._openMemberIdsList = [];
   }
 
   _onUnlinkMember() {
     // TODO: display dialog
+  }
+
+  /** @param {string} memberId */
+  _onToggleOpenMember(memberId) {
+    if (this._openMemberIdsList.includes(memberId)) {
+      this._openMemberIdsList = this._openMemberIdsList.filter((openMemberId) => openMemberId !== memberId);
+    } else {
+      this._openMemberIdsList = [...this._openMemberIdsList, memberId];
+    }
   }
 
   render() {
@@ -92,7 +106,10 @@ export class CcNetworkGroupLinkedResources extends LitElement {
 
   /** @param {NetworkGroupMember} member */
   _renderMember(member) {
+    // TODO: remove?
     const memberHref = new URL(`https://${member.domainName}`).href;
+    const isMemberOpen = this._openMemberIdsList.includes(member.id);
+    const peersSectionId = `${member.id}--peer-list`;
     return html`
       <div class="member-list__member-card">
         <div class="member-list__member-card__header">
@@ -110,7 +127,12 @@ export class CcNetworkGroupLinkedResources extends LitElement {
             <span>${member.domainName}</span>
             <cc-clipboard value="${member.domainName}"></cc-clipboard>
           </div>
-          <button class="member-list__member-card__header__peers-btn" aria-expanded="false">
+          <button
+            class="member-list__member-card__header__peers-btn"
+            aria-expanded="${isMemberOpen}"
+            aria-controls="${peersSectionId}"
+            @click="${() => this._onToggleOpenMember(member.id)}"
+          >
             <span class="member-list__member-card__header__peers-btn__nb">
               ${i18n('cc-network-group-linked-resources.member.nb-of-peers', {
                 nbOfPeers: member.peerList.length,
@@ -119,7 +141,12 @@ export class CcNetworkGroupLinkedResources extends LitElement {
             <cc-icon class="member-list__member-card__header__peer-btn__arrow-icon" .icon="${iconArrowRight}"></cc-icon>
           </button>
         </div>
-        <div id="${member.id}-peers" class="member-list__member-card__peer-list">
+        <div
+          id="${peersSectionId}"
+          class="member-list__member-card__peer-list ${classMap({
+            'member-list__member-card__peer-list--open': isMemberOpen,
+          })}"
+        >
           ${member.peerList.map((peer) => this._renderPeer(peer))}
         </div>
         <cc-button class="member-list__member-card__unlink-btn" danger outlined @cc-click="${this._onUnlinkMember}">
@@ -260,7 +287,12 @@ export class CcNetworkGroupLinkedResources extends LitElement {
           font-style: italic;
           gap: 1em;
           grid-area: peers-btn;
-          padding: 0;
+          padding: 0.5em;
+        }
+
+        .member-list__member-card__header__peers-btn:focus-visible {
+          outline: var(--cc-focus-outline);
+          outline-offset: var(--cc-focus-outline-offset);
         }
 
         .member-list__member-card__header__peer-btn__arrow-icon {
@@ -272,8 +304,12 @@ export class CcNetworkGroupLinkedResources extends LitElement {
         }
 
         .member-list__member-card__peer-list {
-          display: grid;
+          display: none;
           gap: 0.5em;
+        }
+
+        .member-list__member-card__peer-list--open {
+          display: grid;
         }
 
         .member-list__member-card__peer-list__peer-card {
