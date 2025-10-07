@@ -5,6 +5,20 @@ title: 'Changelog'
 
 # Changelog
 
+## [22.1.0](https://github.com/CleverCloud/clever-components/compare/22.0.0...22.1.0) (2025-10-07)
+
+
+### 🚀 Features
+
+* **cc-addon-admin:** improve danger zone deletion texts ([9e41f2f](https://github.com/CleverCloud/clever-components/commit/9e41f2fc9dd09ff4ebccb41a1ed32a7df6f35199)), closes [#1564](https://github.com/CleverCloud/clever-components/issues/1564)
+* **cc-addon-admin:** remove line breaks from danger zone texts ([b76ec1c](https://github.com/CleverCloud/clever-components/commit/b76ec1c4342a4bdda9a63c481c3b84b7b9a347c5)), closes [#1564](https://github.com/CleverCloud/clever-components/issues/1564)
+* **cc-addon-credentials-beta.smart-keycloak:** use `initial-user` and `initial-password` ([4336c8d](https://github.com/CleverCloud/clever-components/commit/4336c8d0e95c3d332d80f151bb09b9b9e5c5f286))
+* **cc-addon-credentials-beta:** change Keycloak docs URL and text ([9e59df4](https://github.com/CleverCloud/clever-components/commit/9e59df469cf13ae2e7433f89dc0fb0c920fc8564))
+* **cc-addon-credentials-beta:** use multi-instances network group for Keycloak ([0502bbd](https://github.com/CleverCloud/clever-components/commit/0502bbd68b5073c35ce44179cd1eb94fd7a405df))
+* **cc-addon-credentials-content:** add network group kind support ([391c46b](https://github.com/CleverCloud/clever-components/commit/391c46b16687eedd0e6ff8b394df25ed882b5375))
+* **cc-addon-info:** i18n change ([8a44320](https://github.com/CleverCloud/clever-components/commit/8a4432064e3b53d18a0252307712a8e4eb293a0b))
+* **cc-addon-info:** remove `openScalabilityLink` prop for Keycloak ([1d17494](https://github.com/CleverCloud/clever-components/commit/1d1749479342103414526e94c0e27d7c88604273))
+
 ## [22.0.0](https://github.com/CleverCloud/clever-components/compare/21.0.1...22.0.0) (2025-09-30)
 
 
