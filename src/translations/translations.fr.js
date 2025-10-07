@@ -282,14 +282,14 @@ export const translations = {
     logsUrl,
     docsUrl,
   }) =>
-    sanitize`Le processus de re-build et de redémarrage de votre add-on et de ses services associés est en cours.  Consultez les <cc-link href="${logsUrl}">logs</cc-link> ou la <cc-link href=${docsUrl}>documentation</cc-link> pour plus d'informations.`,
+    sanitize`Le processus de re-build et de redémarrage de votre add-on et de ses ressources est en cours.  Consultez les <cc-link href="${logsUrl}">logs</cc-link> ou la <cc-link href=${docsUrl}>documentation</cc-link> pour plus d'informations.`,
   'cc-addon-header.rebuild.success.title': `Re-build et redémarrage en cours`,
   'cc-addon-header.restart.error': `Une erreur est survenue pendant le redémarrage de l'add-on.`,
   'cc-addon-header.restart.success.message': /** @param {{logsUrl: string, docsUrl: string}} _ */ ({
     logsUrl,
     docsUrl,
   }) =>
-    sanitize`Le processus de redémarrage de votre add-on et de ses services associés est en cours. Consultez les <cc-link href="${logsUrl}">logs</cc-link> ou la <cc-link href=${docsUrl}>documentation</cc-link> pour plus d'informations.`,
+    sanitize`Le processus de redémarrage de votre add-on et de ses ressources est en cours. Consultez les <cc-link href="${logsUrl}">logs</cc-link> ou la <cc-link href=${docsUrl}>documentation</cc-link> pour plus d'informations.`,
   'cc-addon-header.restart.success.title': `Redémarrage en cours`,
   'cc-addon-header.state-msg.deployment-failed': `Le déploiement de l'add-on a échoué.`,
   'cc-addon-header.state-msg.deployment-is-active': `Votre add-on est disponible !`,
