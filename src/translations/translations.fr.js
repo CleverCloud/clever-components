@@ -302,6 +302,7 @@ export const translations = {
   'cc-addon-info.creation-date.human-friendly-date': /** @param {{ date: string | number }} _ */ ({ date }) =>
     formatDatetime(date),
   'cc-addon-info.doc-link.keycloak': `Keycloak - Documentation`,
+  'cc-addon-info.doc-link.otoroshi': `Otoroshi - Documentation`,
   'cc-addon-info.error': `Une erreur est survenue pendant le chargement des informations de l'add-on.`,
   'cc-addon-info.feature.connection-limit': `Limite de connexions`,
   'cc-addon-info.feature.cpu': `vCPUs`,

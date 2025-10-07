@@ -201,8 +201,7 @@ export const otoroshi = makeStory(conf, {
         ...otoroshiInfo,
       },
       innerHTML: `
-        <p slot="billing">Services and management fees are added to the price of these resources. <strong>During the discovery phase, these fees are offered free of charge</strong>.</p>
-        <p slot="linked-services"><em>Otoroshi, easy to configure and hosted on our services, is now generally available. It deploys a Java application and a Redis add-on. You can scale them as you grow.</em></p>
+        <p slot="billing">Operator services and management fees are added to the price of these resources.<br><strong>During the discovery phase, these fees are offered free of charge</strong>.</p>
 `,
     },
     {
@@ -212,8 +211,7 @@ export const otoroshi = makeStory(conf, {
         ...otoroshiInfo,
       },
       innerHTML: `
-        <p slot="billing">Services and management fees are added to the price of these resources. <strong>During the discovery phase, these fees are offered free of charge</strong>.</p>
-        <p slot="linked-services"><em>Otoroshi, easy to configure and hosted on our services, is now generally available. It deploys a Java application and a Redis add-on. You can scale them as you grow.</em></p>
+        <p slot="billing">Operator services and management fees are added to the price of these resources.<br><strong>During the discovery phase, these fees are offered free of charge</strong>.</p>
 `,
     },
   ],
