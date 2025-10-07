@@ -183,6 +183,7 @@ export const translations = {
   'cc-addon-credentials.title': /** @param {{name: string}} _ */ ({ name }) => `${name} credentials`,
   //#endregion
   //#region cc-addon-credentials-beta
+  'cc-addon-credentials-beta.choice.admin': `Admin`,
   'cc-addon-credentials-beta.choice.api': `API`,
   'cc-addon-credentials-beta.choice.apm': `APM`,
   'cc-addon-credentials-beta.choice.default': `Default`,
@@ -190,12 +191,17 @@ export const translations = {
   'cc-addon-credentials-beta.choice.elastic': `Elastic`,
   'cc-addon-credentials-beta.choice.kibana': `Kibana`,
   'cc-addon-credentials-beta.doc-link.keycloak': `Secured multi-instances - Documentation`,
+  'cc-addon-credentials-beta.doc-link.otoroshi': `Otoroshi - Documentation`,
   'cc-addon-credentials-beta.error': `Something went wrong while loading add-on information.`,
   'cc-addon-credentials-beta.heading': `Access`,
-  'cc-addon-credentials-beta.ng-multi-instances.disabling.error': `Something went wrong while trying to disable secured multi-instances`,
-  'cc-addon-credentials-beta.ng-multi-instances.disabling.success': `Secured multi-instances have been successfully disabled`,
-  'cc-addon-credentials-beta.ng-multi-instances.enabling.error': `Something went wrong while trying to enable secured multi-instances`,
-  'cc-addon-credentials-beta.ng-multi-instances.enabling.success': `Secured multi-instances have been successfully enabled`,
+  'cc-addon-credentials-beta.ng-multi-instances.disabling.error': `Something went wrong while trying to disable the secured multi-instances`,
+  'cc-addon-credentials-beta.ng-multi-instances.disabling.success': `The secured multi-instances have been successfully disabled`,
+  'cc-addon-credentials-beta.ng-multi-instances.enabling.error': `Something went wrong while trying to enable the secured multi-instances`,
+  'cc-addon-credentials-beta.ng-multi-instances.enabling.success': `The secured multi-instances have been successfully enabled`,
+  'cc-addon-credentials-beta.ng-standard.disabling.error': `Something went wrong while trying to disable the Network Group`,
+  'cc-addon-credentials-beta.ng-standard.disabling.success': `The Network Group has been successfully disabled`,
+  'cc-addon-credentials-beta.ng-standard.enabling.error': `Something went wrong while trying to enable the Network Group`,
+  'cc-addon-credentials-beta.ng-standard.enabling.success': `The Network Group has been successfully enabled`,
   //#endregion
   //#region cc-addon-credentials-content
   'cc-addon-credentials-content.code.api-client-secret': `API client secret`,

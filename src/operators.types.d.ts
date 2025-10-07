@@ -70,6 +70,12 @@ export interface OtoroshiOperatorInfo {
   version: string;
   javaVersion: string;
   accessUrl: string;
+  api: {
+    url: string;
+    user: string;
+    secret: string;
+    openapi: string;
+  };
   availableVersions: string[];
   resources: {
     entrypoint: string;
