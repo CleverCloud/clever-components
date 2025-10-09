@@ -47,8 +47,7 @@ export const defaultStory = makeStory(conf, {
         ...matomoInfo,
       },
       innerHTML: `
-        <p slot="billing"><strong>This add-on is free but its dependencies, mentioned above, are billed based on their consumptions,</strong> just like other applications and add-ons.</p>
-        <p slot="linked-services"><em>The Matomo add-on is a meta add-on. It provides you with a PHP application, a MySQL add-on and a Redis add-on. They appear in your organisation just like your other applications and add-ons. You can still configure them as you like. For example, you may want to change the PHP application's domain or migrate the MySQL add-on to a bigger plan.</em></p>
+        <p slot="billing">Operator services and management fees are added to the price of these resources.<br><strong>During the discovery phase, these fees are offered free of charge</strong>.</p>
 `,
     },
   ],
@@ -119,9 +118,8 @@ export const matomo = makeStory(conf, {
         ...matomoInfo,
       },
       innerHTML: `
-        <p slot="billing"><strong>This add-on is free but its dependencies, mentioned above, are billed based on their consumptions,</strong> just like other applications and add-ons.</p>
-        <p slot="linked-services"><em>The Matomo add-on is a meta add-on. It provides you with a PHP application, a MySQL add-on and a Redis add-on. They appear in your organisation just like your other applications and add-ons. You can still configure them as you like. For example, you may want to change the PHP application's domain or migrate the MySQL add-on to a bigger plan.</em></p>
-`,
+        <p slot="billing">Operator services and management fees are added to the price of these resources.<br><strong>During the discovery phase, these fees are offered free of charge</strong>.</p>
+       `,
     },
     {
       /** @type {AddonInfoStateLoading} */
@@ -130,8 +128,7 @@ export const matomo = makeStory(conf, {
         ...matomoInfo,
       },
       innerHTML: `
-        <p slot="billing"><strong>This add-on is free but its dependencies, mentioned above, are billed based on their consumptions,</strong> just like other applications and add-ons.</p>
-        <p slot="linked-services"><em>The Matomo add-on is a meta add-on. It provides you with a PHP application, a MySQL add-on and a Redis add-on. They appear in your organisation just like your other applications and add-ons. You can still configure them as you like. For example, you may want to change the PHP application's domain or migrate the MySQL add-on to a bigger plan.</em></p>
+        <p slot="billing">Operator services and management fees are added to the price of these resources.<br><strong>During the discovery phase, these fees are offered free of charge</strong>.</p>
 `,
     },
   ],
