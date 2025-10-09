@@ -144,8 +144,7 @@ export const metabase = makeStory(conf, {
         ...metabaseInfo,
       },
       innerHTML: `
-        <p slot="billing">Discover Metabase at no extra cost. Services and management fees are added to the price of these resources. <strong>During the discovery phase, these fees are offered free of charge.</strong></p>
-        <p slot="linked-services"><em>Metabase, easy to configure and hosted on our services, is now generally available. It deploys a Java application and a PostgreSQL add-on. You can scale them as you grow.</em></p>
+        <p slot="billing">Operator services and management fees are added to the price of these resources.<br><strong>During the discovery phase, these fees are offered free of charge</strong>.</p>
 `,
     },
     {
@@ -155,8 +154,7 @@ export const metabase = makeStory(conf, {
         ...metabaseInfo,
       },
       innerHTML: `
-        <p slot="billing">Discover Metabase at no extra cost. Services and management fees are added to the price of these resources. <strong>During the discovery phase, these fees are offered free of charge.</strong></p>
-        <p slot="linked-services"><em>Metabase, easy to configure and hosted on our services, is now generally available. It deploys a Java application and a PostgreSQL add-on. You can scale them as you grow.</em></p>
+        <p slot="billing">Operator services and management fees are added to the price of these resources.<br><strong>During the discovery phase, these fees are offered free of charge</strong>.</p>
 `,
     },
   ],
