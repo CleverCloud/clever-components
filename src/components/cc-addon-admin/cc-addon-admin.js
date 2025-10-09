@@ -266,6 +266,49 @@ export class CcAddonAdmin extends LitElement {
     `;
   }
 
+  /**
+   * @param {string} addonName
+   * @param {boolean} isDeleting
+   */
+  // _renderDeleteConfirmationDialog(addonName, isDeleting) {
+  //   const customErrorMessages = { 'no-match': i18n('cc-addon-admin.delete.dialog.error', { name: addonName }) };
+  //   return html`
+  //     <dialog
+  //       aria-labelledby="dialog-heading"
+  //       closedby="any"
+  //       ${ref(this._confirmDeletionDialogRef)}
+  //       slot="content-body"
+  //     >
+  //       <button class="dialog-close" @click=${this._onDialogClose} ?disabled="${isDeleting}">
+  //         <span class="visually-hidden">${i18n('cc-addon-admin.delete.dialog.close')}</span>
+  //         <cc-icon .icon="${iconClose}"></cc-icon>
+  //       </button>
+  //       <div class="dialog-heading" id="dialog-heading">${i18n('cc-addon-admin.delete.dialog.heading')}</div>
+  //       <p class="dialog-desc">${i18n('cc-addon-admin.delete.dialog.desc')}</p>
+  //       <form class="dialog-form" ${formSubmit(this._onDeleteSubmit.bind(this))} ${ref(this._confirmDeletionFormRef)}>
+  //         <cc-input-text
+  //           label="${i18n('cc-addon-admin.delete.dialog.label')}"
+  //           required
+  //           name="confirmation"
+  //           ?readonly="${isDeleting}"
+  //           .customValidator="${this._addonNameConfirmationValidator}"
+  //           .customErrorMessages="${customErrorMessages}"
+  //         >
+  //           <p slot="help">${addonName}</p>
+  //         </cc-input-text>
+  //         <div class="dialog-form__actions">
+  //           <cc-button type="button" outlined primary @cc-click="${this._onDialogClose}" ?disabled="${isDeleting}">
+  //             ${i18n('cc-addon-admin.delete.dialog.cancel')}
+  //           </cc-button>
+  //           <cc-button type="submit" danger .waiting="${isDeleting}">
+  //             ${i18n('cc-addon-admin.delete.dialog.confirm')}
+  //           </cc-button>
+  //         </div>
+  //       </form>
+  //     </dialog>
+  //   `;
+  // }
+
   static get styles() {
     return [
       accessibilityStyles,
