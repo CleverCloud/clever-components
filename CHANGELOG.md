@@ -5,6 +5,19 @@ title: 'Changelog'
 
 # Changelog
 
+## [22.2.0](https://github.com/CleverCloud/clever-components/compare/22.1.0...22.2.0) (2025-10-09)
+
+
+### 🚀 Features
+
+* **cc-addon-credentials-beta:** add Otoroshi ([29550c1](https://github.com/CleverCloud/clever-components/commit/29550c1c828a986fb02b9ade6e6ac18a29381cb1))
+* **cc-addon-header:** add Matomo ([1a2744f](https://github.com/CleverCloud/clever-components/commit/1a2744f3148e50b91e1c366dbc465b1c079f9479))
+* **cc-addon-header:** add Metabase ([067b4c3](https://github.com/CleverCloud/clever-components/commit/067b4c3e51e31df2b2db3e9da80483074e872fd4))
+* **cc-addon-header:** add Otoroshi ([74f87b6](https://github.com/CleverCloud/clever-components/commit/74f87b655645f39eb16619542b6276e8055a8061))
+* **cc-addon-info:** add Matomo ([f3b2fe6](https://github.com/CleverCloud/clever-components/commit/f3b2fe6908114b09f43894fc0dcf8123e1f29b9d))
+* **cc-addon-info:** add Metabase ([997ead8](https://github.com/CleverCloud/clever-components/commit/997ead825a9f364ff643020db4aeec452d5acc54))
+* **cc-addon-info:** add Otoroshi ([d7be437](https://github.com/CleverCloud/clever-components/commit/d7be43765f1d2e096fa097fa172677233c324789))
+
 ## [22.1.0](https://github.com/CleverCloud/clever-components/compare/22.0.0...22.1.0) (2025-10-07)
 
 
