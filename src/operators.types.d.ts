@@ -122,3 +122,21 @@ export interface OtoroshiOperatorInfo {
     SESSION_SECURE_ONLY: string;
   };
 }
+
+export interface MatomoOperatorInfo {
+  resourceId: string;
+  addonId: string;
+  name: string;
+  ownerId: string;
+  plan: string;
+  version: string;
+  phpVersion: string;
+  accessUrl: string;
+  availableVersions: string[];
+  resources: {
+    entrypoint: string;
+    mysqlId: string;
+    redisId: string;
+  };
+  envVars: Record<string, string>;
+}
