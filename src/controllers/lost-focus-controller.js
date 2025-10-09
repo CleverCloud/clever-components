@@ -40,7 +40,7 @@ export class LostFocusController {
    * @param {LitElement} host the custom element
    * @param {string} selector the query selector that will select the elements we want to listen to
    * @param {LostFocusCallback} callback the callback to be called when focus is lost
-   * @param {() => Promise<void>} [additionalWaiter] optional function that returns a Promise to wait for before checking for removed elements (e.g. to wait for some async rendering to be done)
+   * @param {() => Promise<unknown>} [additionalWaiter] optional function that returns a Promise to wait for before checking for removed elements (e.g. to wait for some async rendering to be done)
    */
   constructor(host, selector, callback, additionalWaiter) {
     host.addController(this);

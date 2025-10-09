@@ -1230,6 +1230,31 @@ export const translations = {
   'cc-matomo-info.open-matomo.text': `Vous pouvez accéder à votre Matomo en utilisant votre compte Clever Cloud. Tous les membres de l'organisation peuvent également accéder au service grâce à leur propre compte.`,
   'cc-matomo-info.open-matomo.title': `Accéder à Matomo`,
   //#endregion
+  //#region cc-network-group-linked-resources
+  'cc-network-group-linked-resources.cli...': ``,
+  'cc-network-group-linked-resources.cli.content.instruction': getCliInstructions,
+  'cc-network-group-linked-resources.cli.heading': `Gérez vos membres et pairs depuis la CLI`,
+  'cc-network-group-linked-resources.documentation.text': `Network Groups - Documentation`,
+  'cc-network-group-linked-resources.error': `Une erreur est survenue pendant le chargement des informations du Network Group`,
+  'cc-network-group-linked-resources.heading': `Membres et Pairs`,
+  'cc-network-group-linked-resources.intro': `Un membre est une ressource connectée à un network group : cela peut être une application, un module complémentaire ou même un service externe. Chaque membre est identifié et possède un nom de domaine dédié au sein du réseau privé. Un pair est une instance concrète de ce membre. Tous les pairs du même groupe de réseau peuvent communiquer entre eux via un tunnel sécurisé sur tous les ports, ce qui permet une interconnexion privée et cryptée entre les ressources.`,
+  'cc-network-group-linked-resources.member-list.empty': `Aucun membre n'est associé à ce Network Group`,
+  'cc-network-group-linked-resources.member.logo.a11y-name.external': `Externe`,
+  'cc-network-group-linked-resources.member.nb-of-peers': /** @param {{ nbOfPeers: number}} _ */ ({ nbOfPeers }) =>
+    `${nbOfPeers} ${plural(nbOfPeers, 'pair')}`,
+  'cc-network-group-linked-resources.member.unlink': `Dissocier le membre`,
+  'cc-network-group-linked-resources.member.unlink.error': `Une erreur est survenue pendant la dissociation du membre du Network Group`,
+  'cc-network-group-linked-resources.member.unlink.success': `Le membre a bien été dissocié du Network Group`,
+  'cc-network-group-linked-resources.peer.metadata.id': `Identifiant`,
+  'cc-network-group-linked-resources.peer.metadata.ip': `Adresse IP`,
+  'cc-network-group-linked-resources.peer.metadata.key': `Clé publique`,
+  'cc-network-group-linked-resources.peer.metadata.peer-type': `Type de pair`,
+  'cc-network-group-linked-resources.unlink.dialog.cancel-btn': `Annuler`,
+  'cc-network-group-linked-resources.unlink.dialog.close': `Fermer`,
+  'cc-network-group-linked-resources.unlink.dialog.desc': `La dissociation d'un membre de votre Network Group dissocie également tous ses pairs. Souhaitez-vous continuer\u00A0?`,
+  'cc-network-group-linked-resources.unlink.dialog.heading': `Confirmer la dissociation`,
+  'cc-network-group-linked-resources.unlink.dialog.unlink-btn': `Confirmer et dissocier`,
+  //#endregion
   //#region cc-notice
   'cc-notice.close': `Fermer cette notice`,
   'cc-notice.icon-alt.danger': `Erreur`,

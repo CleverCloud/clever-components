@@ -1217,6 +1217,31 @@ export const translations = {
   'cc-matomo-info.open-matomo.text': `You can access your Matomo using your Clever Cloud account. Organisation members can also access the Matomo service.`,
   'cc-matomo-info.open-matomo.title': `Access Matomo`,
   //#endregion
+  //#region cc-network-group-linked-resources
+  'cc-network-group-linked-resources.cli...': ``,
+  'cc-network-group-linked-resources.cli.content.instruction': getCliInstructions,
+  'cc-network-group-linked-resources.cli.heading': `Manage your Members and Peers from the CLI`,
+  'cc-network-group-linked-resources.documentation.text': `Network Groups - Documentation`,
+  'cc-network-group-linked-resources.error': `Something went wrong while loading the Network Group info`,
+  'cc-network-group-linked-resources.heading': `Members and Peers`,
+  'cc-network-group-linked-resources.intro': `A member is a resource connected to a Network Group: it can be an application, an add-on, or even an external service. Each member is identified and has a dedicated domain name within the private network. A peer is a concrete instance of this member. All peers in the same Network Group can communicate with each other via a secure tunnel on all ports, which allows for private and encrypted interconnection between resources.`,
+  'cc-network-group-linked-resources.member-list.empty': `You don’t have any member linked to your Network Group`,
+  'cc-network-group-linked-resources.member.logo.a11y-name.external': `External`,
+  'cc-network-group-linked-resources.member.nb-of-peers': /** @param {{ nbOfPeers: number}} _ */ ({ nbOfPeers }) =>
+    `${nbOfPeers} ${plural(nbOfPeers, 'peer')}`,
+  'cc-network-group-linked-resources.member.unlink': `Unlink member`,
+  'cc-network-group-linked-resources.member.unlink.error': `Something went wrong while unlinking the Network Group member`,
+  'cc-network-group-linked-resources.member.unlink.success': `The Network Group member has been unlinked successfully`,
+  'cc-network-group-linked-resources.peer.metadata.id': `Identifier`,
+  'cc-network-group-linked-resources.peer.metadata.ip': `Ip address`,
+  'cc-network-group-linked-resources.peer.metadata.key': `Public key`,
+  'cc-network-group-linked-resources.peer.metadata.peer-type': `Peer type`,
+  'cc-network-group-linked-resources.unlink.dialog.cancel-btn': `Cancel`,
+  'cc-network-group-linked-resources.unlink.dialog.close': `Close`,
+  'cc-network-group-linked-resources.unlink.dialog.desc': `Unlinking a member from your Network Group also unlinks all its peers. Are you sure you want to continue?`,
+  'cc-network-group-linked-resources.unlink.dialog.heading': `Confirm unlink`,
+  'cc-network-group-linked-resources.unlink.dialog.unlink-btn': `Confirm and unlink`,
+  //#endregion
   //#region cc-notice
   'cc-notice.close': `Close this notice`,
   'cc-notice.icon-alt.danger': `Error`,
