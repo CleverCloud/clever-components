@@ -192,7 +192,13 @@ export class CcPicker extends CcFormControlElement {
     const hasErrorMessage = this.errorMessage != null && this.errorMessage !== '';
 
     return html`
-      <fieldset class="fieldset" @input=${this._onTileSelect} ${ref(this._pickerRef)} tabindex="-1">
+      <fieldset
+        class="fieldset"
+        ?autofocus=${this.autofocus}
+        @input=${this._onTileSelect}
+        ${ref(this._pickerRef)}
+        tabindex="-1"
+      >
         <div class="fieldset-content">
           <legend class="legend">
             <span class="legend-text">${this.label}</span>
