@@ -194,6 +194,7 @@ export const translations = {
   'cc-addon-credentials.title': /** @param {{name: string}} _ */ ({ name }) => `Identifiants ${name}`,
   //#endregion
   //#region cc-addon-credentials-beta
+  'cc-addon-credentials-beta.choice.admin': `Admin`,
   'cc-addon-credentials-beta.choice.api': `API`,
   'cc-addon-credentials-beta.choice.apm': `APM`,
   'cc-addon-credentials-beta.choice.default': `Par défaut`,
@@ -201,12 +202,17 @@ export const translations = {
   'cc-addon-credentials-beta.choice.elastic': `Elastic`,
   'cc-addon-credentials-beta.choice.kibana': `Kibana`,
   'cc-addon-credentials-beta.doc-link.keycloak': `Multi-instances sécurisé - Documentation`,
+  'cc-addon-credentials-beta.doc-link.otoroshi': `Otoroshi - Documentation`,
   'cc-addon-credentials-beta.error': `Une erreur est survenue pendant le chargement des informations de l'add-on.`,
   'cc-addon-credentials-beta.heading': `Accès`,
   'cc-addon-credentials-beta.ng-multi-instances.disabling.error': `Une erreur est survenue lors de la désactivation du multi-instances sécurisé`,
   'cc-addon-credentials-beta.ng-multi-instances.disabling.success': `Le multi-instances sécurisé a été désactivé avec succès`,
   'cc-addon-credentials-beta.ng-multi-instances.enabling.error': `Une erreur est survenue lors de l'activation du multi-instances sécurisé`,
   'cc-addon-credentials-beta.ng-multi-instances.enabling.success': `Le multi-instances sécurisé a été activé avec succès`,
+  'cc-addon-credentials-beta.ng-standard.disabling.error': `Une erreur est survenue lors de la désactivation du Network Group`,
+  'cc-addon-credentials-beta.ng-standard.disabling.success': `Le Network Group a été désactivé avec succès`,
+  'cc-addon-credentials-beta.ng-standard.enabling.error': `Une erreur est survenue lors de l'activation du Network Group`,
+  'cc-addon-credentials-beta.ng-standard.enabling.success': `Le Network Group a été activé avec succès`,
   //#endregion
   //#region cc-addon-credentials-content
   'cc-addon-credentials-content.code.api-client-secret': `Secret du client API`,
@@ -302,6 +308,7 @@ export const translations = {
   'cc-addon-info.creation-date.human-friendly-date': /** @param {{ date: string | number }} _ */ ({ date }) =>
     formatDatetime(date),
   'cc-addon-info.doc-link.keycloak': `Keycloak - Documentation`,
+  'cc-addon-info.doc-link.otoroshi': `Otoroshi - Documentation`,
   'cc-addon-info.error': `Une erreur est survenue pendant le chargement des informations de l'add-on.`,
   'cc-addon-info.feature.connection-limit': `Limite de connexions`,
   'cc-addon-info.feature.cpu': `vCPUs`,
