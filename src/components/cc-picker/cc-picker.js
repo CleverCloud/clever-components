@@ -48,6 +48,7 @@ export class CcPicker extends CcFormControlElement {
   static get properties() {
     return {
       ...super.properties,
+      autofocus: { type: Boolean },
       disabled: { type: Boolean, reflect: true },
       inline: { type: Boolean, reflect: true },
       label: { type: String },
@@ -64,6 +65,9 @@ export class CcPicker extends CcFormControlElement {
 
   constructor() {
     super();
+
+    /** @type {boolean} Automatically focus the picker when the page loads. **Note:** Using this attribute is generally discouraged for accessibility reasons. See [MDN autofocus accessibility concerns](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Global_attributes/autofocus#accessibility_concerns) for more information. */
+    this.autofocus = false;
 
     /** @type {boolean} Whether the component should be disabled (default: 'false') */
     this.disabled = false;
@@ -173,7 +177,7 @@ export class CcPicker extends CcFormControlElement {
     const hasErrorMessage = this.errorMessage != null && this.errorMessage !== '';
 
     return html`
-      <fieldset class="fieldset" @input=${this._onTileSelect} ${ref(this._pickerRef)} tabindex="-1">
+      <fieldset class="fieldset" ?autofocus=${this.autofocus} @input=${this._onTileSelect} ${ref(this._pickerRef)} tabindex="-1">
         <div class="fieldset-content">
           <legend class="legend">
             <span class="legend-text">${this.label}</span>
