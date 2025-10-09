@@ -175,8 +175,7 @@ export const keycloak = makeStory(conf, {
         ...keycloakInfo,
       },
       innerHTML: `
-        <p slot="billing">Services and management fees are added to the price of these resources.<strong>During the discovery phase, these fees are offered free of charge</strong>.</p>
-        <p slot="linked-services"><em>Keycloak, built with <a href="https://please-open.it/">Please Open It</a> and hosted on our services, is now generally available. It deploys a Java application, a PostgreSQL add-on and a FS Bucket. You can scale them as you grow.</em></p>
+        <p slot="billing">Keycloak, built with <cc-link href="https://please-open.it/">Please Open It</cc-link> and hosted on our services, is now generally available.<br>Operator services and management fees are added to the price of these resources.<br><strong>During the discovery phase, these fees are offered free of charge</strong>.</p>
 `,
     },
     {
@@ -186,8 +185,7 @@ export const keycloak = makeStory(conf, {
         ...keycloakInfo,
       },
       innerHTML: `
-        <p slot="billing">Services and management fees are added to the price of these resources.<strong>During the discovery phase, these fees are offered free of charge</strong>.</p>
-        <p slot="linked-services"><em>Keycloak, built with <a href="https://please-open.it/">Please Open It</a> and hosted on our services, is now generally available. It deploys a Java application, a PostgreSQL add-on and a FS Bucket. You can scale them as you grow.</em></p>
+         <p slot="billing">Keycloak, built with <cc-link href="https://please-open.it/">Please Open It</cc-link> and hosted on our services, is now generally available.<br>Operator services and management fees are added to the price of these resources.<br><strong>During the discovery phase, these fees are offered free of charge</strong>.</p>
 `,
     },
   ],
