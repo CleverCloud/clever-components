@@ -48,6 +48,7 @@ window.addEventListener('cc-notify', (event) => {
 const sandboxes = [
   'cc-ansi-palette',
   'cc-logs',
+  'cc-table',
   'cc-product-card',
   'cc-logs-app-runtime',
   'cc-logs-app-access',

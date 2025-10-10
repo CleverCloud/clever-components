@@ -4,6 +4,7 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-icon/cc-icon.js';
+import { subtle } from '../cc-link/cc-link.stories.js';
 import { CcClickEvent } from '../common.events.js';
 
 /**
@@ -61,6 +62,7 @@ export class CcButton extends LitElement {
       outlined: { type: Boolean },
       primary: { type: Boolean },
       skeleton: { type: Boolean },
+      subtle: { type: Boolean },
       success: { type: Boolean },
       type: { type: String },
       waiting: { type: Boolean, reflect: true },
@@ -111,6 +113,9 @@ export class CcButton extends LitElement {
 
     /** @type {boolean} Sets button UI as _outlined_ (no background and colored border). */
     this.outlined = false;
+
+    /** @type {boolean} Sets button UI as _subtle_ (no background no colored border). */
+    this.subtle = false;
 
     /** @type {boolean} Sets button UI _mode_ to primary. */
     this.primary = false;
@@ -256,6 +261,8 @@ export class CcButton extends LitElement {
     // simple mode is default when no value or when there are multiple conflicting values
     const simple = !primary && !success && !warning && !danger && !this.link;
     const hasIcon = this.image != null || this.icon != null;
+    // outlined is not default except in simple mode
+    const outlined = (this.outlined || simple) && !this.link && !subtle;
 
     // those are exclusive, only one can be set at a time
     // we chose this over one attribute named "mode" so it would be easier to write/use
@@ -266,8 +273,8 @@ export class CcButton extends LitElement {
       warning,
       danger,
       simple,
-      // outlined is not default except in simple mode
-      outlined: (this.outlined || simple) && !this.link,
+      outlined,
+      subtle: this.subtle && !this.link,
       skeleton: this.skeleton,
       'img-only': hasIcon && this.hideText,
       'txt-only': !hasIcon,
@@ -401,6 +408,12 @@ export class CcButton extends LitElement {
           color: var(--btn-color);
         }
 
+        .subtle {
+          background-color: transparent;
+          color: var(--btn-color);
+          border: 0;
+        }
+
         .circle {
           border-radius: 50%;
         }
@@ -425,7 +438,7 @@ export class CcButton extends LitElement {
           outline-offset: var(--cc-focus-outline-offset, 2px);
         }
 
-        .btn:not([aria-disabled='true']):hover {
+        .btn:not([aria-disabled='true']):not(.subtle):hover {
           box-shadow: 0 1px 3px rgb(0 0 0 / 40%);
         }
 
