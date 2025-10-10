@@ -12,10 +12,23 @@ import { CcDialogCloseEvent, CcDialogOpenEvent } from './cc-dialog.events.js';
  * @typedef {import('lit/directives/ref.js').Ref<HTMLDialogElement>} HTMLDialogElementRef
  */
 
+/**
+ *
+ * @cc-dialog-cancel
+ * @cc-dialog-confirm
+ *
+ */
 export class CcDialog extends LitElement {
   static get properties() {
     return {
+      cancelLabel: { type: String, attribute: 'cancel-label' },
+      confirmInputLabel: { type: String, attribute: 'confirm-input-label' },
+      confirmText: { type: String, attribute: 'confirm-text' },
+      desc: { type: String },
+      heading: { type: String },
       open: { type: Boolean, reflect: true },
+      submitIntent: { type: String, attribute: 'submit-intent' },
+      submitLabel: { type: String, attribute: 'submit-label' },
     };
   }
 
@@ -24,6 +37,15 @@ export class CcDialog extends LitElement {
 
     /** @type {boolean} Displays or hides the dialog */
     this.open = false;
+
+    /** @type {string|null} Sets the va  */
+    this.confirmationInput = null;
+    this.confirmInputLabel = null;
+    this.submitLabel = null;
+    this.submitIntent = null;
+    this.cancelLabel = null;
+    this.heading = null;
+    this.desc = null;
 
     /** @type {HTMLDialogElementRef} */
     this._dialogRef = createRef();
@@ -42,7 +64,6 @@ export class CcDialog extends LitElement {
 
     if (changedProperties.has('open') && this.open) {
       this._lastFocusedElement = findActiveElement();
-      console.log('opening', this._dialogRef.value);
       this._dialogRef.value?.showModal();
       // FIXME: might be weird to dispatch since the component cannot open by itself
       this.dispatchEvent(new CcDialogOpenEvent());
@@ -111,7 +132,8 @@ export class CcDialog extends LitElement {
           border-radius: var(--cc-border-radius-default, 0.25em);
           box-shadow: 2px 4px 8px 0 rgb(0 0 0 / 12%);
           box-sizing: border-box;
-          container-type: inline-size;
+          /* IMPORTANT: used by the component itself and shared dialog-form-actions styles */
+          container: dialog / inline-size;
           padding: 0;
           width: min(38em, 80%);
         }
@@ -120,7 +142,7 @@ export class CcDialog extends LitElement {
           padding: 4em;
         }
 
-        @container (max-width: 37em) {
+        @container dialog (max-width: 37em) {
           .dialog-padding-wrapper {
             padding: 1em;
           }
@@ -155,7 +177,7 @@ export class CcDialog extends LitElement {
           opacity: var(--cc-opacity-when-disabled, 0.65);
         }
 
-        @container (max-width: 37em) {
+        @container dialog (max-width: 37em) {
           .dialog-close {
             right: 0.5em;
             top: 0.5em;
@@ -179,22 +201,6 @@ export class CcDialog extends LitElement {
         .dialog-desc {
           display: block;
           margin-bottom: 1.25em;
-        }
-
-        .dialog-actions {
-          display: flex;
-          flex-wrap: wrap;
-          gap: 1em;
-          justify-content: end;
-          margin-top: 3.75em;
-        }
-
-        @container (max-width: 37em) {
-          .dialog-actions {
-            display: grid;
-            justify-content: stretch;
-            margin-top: 2em;
-          }
         }
       `,
     ];

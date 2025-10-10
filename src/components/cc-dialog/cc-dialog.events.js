@@ -22,10 +22,15 @@ export class CcDialogCloseEvent extends CcEvent {
   static TYPE = 'cc-dialog-close';
 
   constructor() {
-    super(CcDialogOpenEvent.TYPE);
+    super(CcDialogCloseEvent.TYPE);
   }
 }
 
+/**
+ * Dispatched when the focus is lost.
+ *
+ * @extends {CcEvent}
+ */
 export class CcLostFocusEvent extends CcEvent {
   static TYPE = 'cc-lost-focus';
 

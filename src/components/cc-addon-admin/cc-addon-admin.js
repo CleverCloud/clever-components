@@ -1,10 +1,10 @@
 import { css, html, LitElement } from 'lit';
 import { createRef } from 'lit/directives/ref.js';
 import { accessibilityStyles } from '../../styles/accessibility.js';
-import { ccDialogConfirmForm } from '../../templates/cc-dialog-confirm-form/cc-dialog-confirm-form.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-block-section/cc-block-section.js';
 import '../cc-block/cc-block.js';
+import '../cc-dialog-confirmation-form/cc-dialog-confirmation-form.js';
 import '../cc-dialog/cc-dialog.js';
 import '../cc-input-text/cc-input-text.js';
 import '../cc-loader/cc-loader.js';
@@ -247,14 +247,16 @@ export class CcAddonAdmin extends LitElement {
       <cc-dialog ?open=${isOpen} slot="content-body" @cc-dialog-close=${this._onDialogClose}>
         <div slot="heading">${i18n('cc-addon-admin.delete.dialog.heading')}</div>
         <p slot="content">${i18n('cc-addon-admin.delete.dialog.desc')}</p>
-        ${ccDialogConfirmForm({
-          inputLabel: i18n('cc-addon-admin.delete.dialog.label'),
-          cancelLabel: i18n('cc-addon-admin.delete.dialog.cancel'),
-          confirmText: addonName,
-          onConfirm: this._onDeleteSubmit.bind(this),
-          confirmLabel: i18n('cc-addon-admin.delete.dialog.confirm'),
-          onCancel: this._onDialogClose.bind(this),
-        })}
+        <cc-dialog-confirmation-form
+          confirm-input-label="${i18n('cc-addon-admin.delete.dialog.label')}"
+          cancel-label="${i18n('cc-addon-admin.delete.dialog.cancel')}"
+          confirm-text-to-input="${addonName}"
+          submit-label="${i18n('cc-addon-admin.delete.dialog.confirm')}"
+          submit-intent="danger"
+          autofocus-input
+          slot="content"
+        >
+        </cc-dialog-confirmation-form>
       </cc-dialog>
     `;
   }
