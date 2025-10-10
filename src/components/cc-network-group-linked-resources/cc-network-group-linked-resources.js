@@ -58,34 +58,19 @@ export class CcNetworkGroupLinkedResources extends LitElement {
     /** @type {string|null} Used to track the id of the member to unlink to dispatch the proper event payload */
     this._memberIdToUnlink = null;
 
-    new LostFocusController(
-      this,
-      '[data-member-id], cc-dialog[open]',
-      ({ suggestedElement, focusedElement, index, removedElement }) => {
-        console.log('LOST FOCUS', { suggestedElement, focusedElement, index, removedElement });
-        if (suggestedElement instanceof HTMLElement) {
-          suggestedElement.querySelector('summary').focus();
-        } else {
-          this._emptyTextRef.value?.focus();
-        }
-      },
-    );
-
-    // new ListFocusManagementController(
-    //   this,
-    //   '[data-member-id]',
-    //   ({ suggestedElement, lastRemovedElementIndex, removedElements }) => {
-    //     if (suggestedElement instanceof HTMLElement) {
-    //       console.log(suggestedElement.querySelector('summary'));
-    //
-    //       this._confirmUnlinkDialogRef.value?.updateComplete.then(() => {
-    //         suggestedElement.querySelector('summary').focus();
-    //       });
-    //     } else {
-    //       this._emptyTextRef.value?.focus();
-    //     }
-    //   },
-    // );
+    new LostFocusController(this, '[data-member-id] details, cc-dialog[open]', ({ suggestedElement }) => {
+      if (suggestedElement instanceof HTMLDetailsElement) {
+        const elementToFocus = /** @type {HTMLElement|null} */ (
+          suggestedElement.open
+            ? suggestedElement.querySelector('cc-button[danger]')
+            : suggestedElement.querySelector('summary')
+        );
+        console.log(elementToFocus);
+        elementToFocus?.focus();
+      } else {
+        this._emptyTextRef.value?.focus();
+      }
+    });
   }
 
   /** @param {string} memberIdToUnlink */
@@ -99,6 +84,7 @@ export class CcNetworkGroupLinkedResources extends LitElement {
   }
 
   _onDialogClose() {
+    console.log('CLOSE DIALOG');
     this._memberIdToUnlink = null;
   }
 
@@ -123,6 +109,7 @@ export class CcNetworkGroupLinkedResources extends LitElement {
     const isUnlinking = this.state.type === 'unlinking';
 
     return html`
+      ${this._renderUnlinkDialog(this._memberIdToUnlink, this.state.type === 'unlinking')}
       <cc-block>
         <div slot="header-title">${i18n('cc-network-group-linked-resources.heading')}</div>
         <div slot="content">
@@ -153,7 +140,6 @@ export class CcNetworkGroupLinkedResources extends LitElement {
               `
             : ''}
         </div>
-        ${this._renderUnlinkDialog(this._memberIdToUnlink, this.state.type === 'unlinking')}
         <cc-block-details slot="footer-left">
           <div slot="button-text">${i18n('cc-block-details.cli.text')}</div>
           <div slot="link">
@@ -289,12 +275,7 @@ export class CcNetworkGroupLinkedResources extends LitElement {
    **/
   _renderUnlinkDialog(memberIdToUnlink, isUnlinking) {
     return html`
-      <cc-dialog
-        slot="content"
-        ?open="${memberIdToUnlink != null}"
-        @cancel="${this._onDialogClose}"
-        ${ref(this._confirmUnlinkDialogRef)}
-      >
+      <cc-dialog ?open="${memberIdToUnlink != null}" @cc-dialog-close="${this._onDialogClose}">
         <div slot="heading">${i18n('cc-network-group-linked-resources.unlink.dialog.heading')}</div>
         <p slot="content">${i18n('cc-network-group-linked-resources.unlink.dialog.desc')}</p>
         <div slot="actions">
