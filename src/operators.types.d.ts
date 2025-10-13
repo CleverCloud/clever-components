@@ -140,3 +140,21 @@ export interface MatomoOperatorInfo {
   };
   envVars: Record<string, string>;
 }
+
+export interface KubernetesOperatorInfo {
+  resourceId: string;
+  addonId: string;
+  name: string;
+  ownerId: string;
+  plan: string;
+  version: string;
+  availableVersions: string[];
+  resources: {
+    clusterId: string;
+    externalApiServerUrl: string;
+    networkGroupId: string;
+    clusterDns: string;
+    status: string;
+  };
+  envVars: Record<string, string>;
+}
