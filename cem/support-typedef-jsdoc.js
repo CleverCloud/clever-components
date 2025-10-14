@@ -1,198 +1,268 @@
-import { readFileSync } from 'fs';
-import path from 'path';
 import ts from 'typescript';
-import {
-  convertInterface,
-  findInterfacesFromExtends,
-  findPathAndTypesFromImports,
-  findSubtypes,
-  findTypePath,
-  getTypesFromClass,
-} from './support-typedef-jsdoc-utils.js';
 
-const ROOT_DIR = process.cwd();
-
-export default function supportTypedefJsdoc() {
-  // Map that contains a `type-path` as a key and has its markdown interface as a value.
-  const typesStore = new Map();
-  // Map that contains for a type file path the corresponding AST and code as a string.
-  // e.g: {'projectfolder/src/component/x.d.ts' => {code: thesourcecode, ast: theast}}
-  const fileCache = new Map();
-  // Foreach component it retrieves the correct file component and the types associated
-  // e.g: {'projectfolder/src/component/x.d.ts' => [foo, bar],  'projectfolder/src/component/y.d.ts' => [foobar, baz]}
-  const moduleTypeCache = new Map();
-
-  function convertImports(ts, imports) {
-    const markdownInterfaces = [];
-
-    // type-cc-x.d.ts => [Foo, Bar...]
-    imports.forEach((typesSet, filename) => {
-      let sourceCode;
-      let sourceAst;
-
-      const inMemoryType = fileCache.get(filename);
-      if (inMemoryType == null) {
-        try {
-          sourceCode = readFileSync(filename).toString();
-        } catch (e) {
-          console.error(e);
-          return;
-        }
-        sourceAst = ts.createSourceFile(filename, sourceCode, ts.ScriptTarget.ES2015, true);
-        fileCache.set(filename, { code: sourceCode, ast: sourceAst });
-      } else {
-        sourceCode = inMemoryType.code;
-        sourceAst = inMemoryType.ast;
-      }
-
-      const typesFromSet = Array.from(typesSet);
-      // Find the imports and their associated types in the parent file
-      const interfaceImports = findPathAndTypesFromImports(ts, filename);
-
-      interfaceImports.forEach((interfaceImport) => {
-        let importSourceCode;
-        try {
-          importSourceCode = readFileSync(interfaceImport.path).toString();
-        } catch (e) {
-          console.error(e);
-          return;
-        }
-        // We append the source code of the parent type file with the source code of the imports
-        sourceCode += importSourceCode;
-      });
-      // Then we create an AST with this big source code with all the interfaces
-      // sourceAst = ts.createSourceFile('ast', sourceCode, ts.ScriptTarget.ES2015, true);
-
-      const tsProgram = ts.createProgram([moduleDoc.path], {
-        target: ts.ScriptTarget.ES2020,
-        checkJs: true,
-        allowJs: true,
-        module: ts.ModuleKind.NodeNext,
-      });
-
-      // Find the subtypes for base types.
-      const subtypes = findSubtypes(ts, sourceAst, typesFromSet);
-      typesFromSet.push(...subtypes);
-
-      const foundExtends = findInterfacesFromExtends(ts, sourceAst);
-      foundExtends.forEach((fromExtend) => {
-        // We need to take the interfaces that are extended from an interface we need and their relatives.
-        // Imagine we need Foo, and it extends Bar, we will add Bar to our types needed.
-        // But if Bar itself extends Baz we will also add Baz as its related to Bar that we need.
-        if (typesFromSet.includes(fromExtend.interface)) {
-          typesFromSet.push(fromExtend.extends, ...fromExtend.relatives);
-        }
-      });
-
-      // Find the subtypes for the extended interfaces
-      const subTypesFromExt = findSubtypes(ts, sourceAst, typesFromSet);
-      typesFromSet.push(...subTypesFromExt);
-
-      const filteredTypes = Array.from(new Set(typesFromSet));
-
-      filteredTypes.forEach((type) => {
-        if (typesStore.has(`${type}-${filename}`)) {
-          markdownInterfaces.push(typesStore.get(`${type}-${filename}`));
-        } else {
-          const typeDisplay = convertInterface(ts, sourceAst, sourceCode, type, filename);
-          if (typeDisplay != null) {
-            markdownInterfaces.push(typeDisplay);
-            typesStore?.set(`${type}-${filename}`, typeDisplay);
-          }
-        }
-      });
-    });
-
-    return markdownInterfaces.join('\n');
+/**
+ * Recursively expands a TypeScript type into a readable string representation
+ * @param {ts.Type} type - The type to expand
+ * @param {ts.TypeChecker} checker - The type checker instance
+ * @param {ts.Node} parentNode - Parent node for context
+ * @param {number} depth - Current recursion depth
+ * @param {number} maxDepth - Maximum recursion depth
+ * @returns {string} Expanded type representation
+ */
+function getExpandedType(type, checker, parentNode, depth = 0, maxDepth = 5) {
+  // Prevent infinite recursion
+  if (depth > maxDepth) {
+    return checker.typeToString(type);
   }
 
+  // Get the string representation early to check for primitives and built-ins
+  const typeString = checker.typeToString(type);
+
+  // Check if this is a primitive type using TypeScript's type flags
+  if (
+    type.flags & ts.TypeFlags.String ||
+    type.flags & ts.TypeFlags.Number ||
+    type.flags & ts.TypeFlags.Boolean ||
+    type.flags & ts.TypeFlags.Null ||
+    type.flags & ts.TypeFlags.Undefined ||
+    type.flags & ts.TypeFlags.Void ||
+    type.flags & ts.TypeFlags.Any ||
+    type.flags & ts.TypeFlags.Unknown ||
+    type.flags & ts.TypeFlags.Never ||
+    type.flags & ts.TypeFlags.ESSymbol ||
+    type.flags & ts.TypeFlags.BigInt ||
+    type.flags & ts.TypeFlags.StringLiteral ||
+    type.flags & ts.TypeFlags.NumberLiteral ||
+    type.flags & ts.TypeFlags.BooleanLiteral ||
+    type.flags & ts.TypeFlags.BigIntLiteral
+  ) {
+    return typeString;
+  }
+
+  // Don't expand common built-in global types and library types
+  const symbol = type.getSymbol();
+  if (symbol) {
+    const name = symbol.getName();
+    const builtInTypes = [
+      'String',
+      'Number',
+      'Boolean',
+      'RegExp',
+      'Date',
+      'Error',
+      'Promise',
+      'Map',
+      'Set',
+      'WeakMap',
+      'WeakSet',
+      'Array',
+      'ReadonlyArray',
+      'Function',
+      'Object',
+      'AnimateController', // @lit-labs/motion
+      'Chart', // chart.js
+      // DOM types
+      'Node',
+      'Element',
+      'HTMLElement',
+      'Document',
+      'Window',
+      'EventTarget',
+    ];
+    if (builtInTypes.includes(name)) {
+      return typeString;
+    }
+  }
+
+  // Handle union types (e.g., string | number)
+  if (type.isUnion()) {
+    return type.types.map((t) => getExpandedType(t, checker, parentNode, depth, maxDepth)).join(' | ');
+  }
+
+  // Handle intersection types (e.g., A & B)
+  if (type.isIntersection()) {
+    return type.types.map((t) => getExpandedType(t, checker, parentNode, depth, maxDepth)).join(' & ');
+  }
+
+  // Handle array types
+  if (checker.isArrayType(type)) {
+    const typeArgs = checker.getTypeArguments(type);
+    if (typeArgs && typeArgs.length > 0) {
+      const elementType = getExpandedType(typeArgs[0], checker, parentNode, depth + 1, maxDepth);
+      return `Array<${elementType}>`;
+    }
+  }
+
+  // Handle object types (interfaces, type literals, classes)
+  const props = type.getProperties();
+  if (props.length > 0) {
+    const indent = '  '.repeat(depth + 1);
+    const closeIndent = '  '.repeat(depth);
+
+    const propStrings = props.map((prop) => {
+      const propType = checker.getTypeOfSymbolAtLocation(prop, parentNode);
+      const propName = prop.getName();
+      const isOptional = (prop.flags & ts.SymbolFlags.Optional) !== 0;
+      const expandedPropType = getExpandedType(propType, checker, parentNode, depth + 1, maxDepth);
+
+      return `${indent}${propName}${isOptional ? '?' : ''}: ${expandedPropType}`;
+    });
+
+    return `{\n${propStrings.join(';\n')}\n${closeIndent}}`;
+  }
+
+  // Fallback to default string representation
+  return typeString;
+}
+
+/**
+ * Extracts type information for class properties from constructor assignments
+ * @param {ts.ClassDeclaration} classNode - The class node to extract types from
+ * @param {ts.TypeChecker} checker - The type checker instance
+ * @returns {Array<{name: string, type: string, jsDoc: string}>} Array of property information
+ */
+function extractTypesFromClass(classNode, checker) {
+  const properties = [];
+
+  // Find the constructor
+  const constructor = classNode.members.find((member) => ts.isConstructorDeclaration(member));
+
+  if (!constructor || !constructor.body) {
+    return properties;
+  }
+
+  // Iterate through constructor statements to find property assignments
+  for (const statement of constructor.body.statements) {
+    if (!ts.isExpressionStatement(statement)) {
+      continue;
+    }
+
+    const expr = statement.expression;
+
+    // Look for: this.propertyName = value
+    if (
+      ts.isBinaryExpression(expr) &&
+      expr.operatorToken.kind === ts.SyntaxKind.EqualsToken &&
+      ts.isPropertyAccessExpression(expr.left) &&
+      expr.left.expression.kind === ts.SyntaxKind.ThisKeyword
+    ) {
+      const propName = expr.left.name.getText();
+
+      // Skip private properties (starting with _)
+      if (propName.startsWith('_')) {
+        continue;
+      }
+
+      console.log(`[typedef-jsdoc] Analyzing property: ${propName}`);
+
+      // Get the type at this location
+      const type = checker.getTypeAtLocation(expr.left.name);
+      console.log(`[typedef-jsdoc] Got type for ${propName}, expanding...`);
+      const expandedType = getExpandedType(type, checker, expr.left.name);
+      console.log(`[typedef-jsdoc] Expanded type for ${propName}: ${expandedType}`);
+
+      // Get JSDoc comment from the statement
+      let jsDoc = '';
+      if (statement.jsDoc && statement.jsDoc.length > 0) {
+        jsDoc = statement.jsDoc[0].comment || '';
+        if (typeof jsDoc !== 'string') {
+          jsDoc = ts.displayPartsToString(jsDoc);
+        }
+      }
+
+      properties.push({
+        name: propName,
+        type: expandedType,
+        jsDoc: jsDoc,
+      });
+    }
+  }
+
+  return properties;
+}
+
+export default function supportTypedefJsdoc() {
   return {
     name: 'support-typedef-jsdoc',
-    moduleLinkPhase({ moduleDoc }) {
-      let sourceCode;
-      let sourceAst;
-
-      try {
-        sourceCode = readFileSync(moduleDoc.path).toString();
-      } catch (e) {
-        console.error(e);
+    async moduleLinkPhase({ moduleDoc }) {
+      // Skip files that we don't need to process
+      if (
+        moduleDoc.path.includes('.events.js') ||
+        moduleDoc.path.includes('.smart.js') ||
+        moduleDoc.path.includes('.client.js')
+      ) {
         return;
       }
-      sourceAst = ts.createSourceFile(moduleDoc.path, sourceCode, ts.ScriptTarget.ES2015, true);
 
-      for (const statement of sourceAst.statements) {
-        if (statement.kind !== ts.SyntaxKind.ClassDeclaration) {
+      // Access the shared TypeScript program and type checker from the config
+      const tsProgram = global.__CEM_PROGRAM__;
+      const checker = global.__CEM_TYPE_CHECKER__;
+
+      if (!tsProgram || !checker) {
+        console.error(
+          '[typedef-jsdoc] ERROR: TypeScript program not available. Make sure overrideModuleCreation is configured.',
+        );
+        return;
+      }
+
+      // Get the source file from the shared program
+      const sourceFile = tsProgram.getSourceFile(moduleDoc.path);
+
+      if (!sourceFile) {
+        console.warn(`[typedef-jsdoc] WARNING: Could not find source file for ${moduleDoc.path}`);
+        return;
+      }
+
+      // Iterate through all class declarations
+      for (const statement of sourceFile.statements) {
+        if (!ts.isClassDeclaration(statement) || !statement.name) {
           continue;
         }
 
-        // New module so we clear the cache for that module.
-        moduleTypeCache.clear();
+        const componentName = statement.name.getText();
 
-        const componentName = statement.name.escapedText;
-        // Check if the class we're currently looking at is a component, we don't want to pick validators for example.
-        if (
-          statement?.heritageClauses?.[0].types[0].expression.escapedText !== 'LitElement' &&
-          statement?.heritageClauses?.[0].types[0].expression.escapedText !== 'CcFormControlElement'
-        ) {
+        // Check if the class is a Lit component
+        const isLitComponent =
+          statement?.heritageClauses?.[0]?.types[0]?.expression?.getText() === 'LitElement' ||
+          statement?.heritageClauses?.[0]?.types[0]?.expression?.getText() === 'CcFormControlElement';
+
+        if (!isLitComponent) {
           continue;
         }
 
-        const types = getTypesFromClass(statement, ts);
+        // Extract all properties with their types using the type checker
+        const properties = extractTypesFromClass(statement, checker);
 
-        if (types.length === 0) {
-          return;
+        if (properties.length === 0) {
+          continue;
         }
 
-        // type checker chaque type
-        const checker = tsProgram.getTypeChecker();
-        const resolvedTypes = types.map((typeNode) => {
-          console.log('Before type checker', typeNode);
-          const resolvedType = checker.getTypeAtLocation(typeNode);
-          console.log('After type checker', typeNode);
-          return resolvedType;
-        });
+        // Generate markdown documentation for properties
+        const propertyDocs = properties
+          .map((prop) => {
+            let doc = `#### \`${prop.name}\`\n\n`;
 
-        console.log(resolvedTypes);
-
-        // This finds the comment where the imports are located
-        const typeDefNode = statement?.jsDoc?.filter((statement) =>
-          statement.tags?.find((tag) => tag.kind === ts.SyntaxKind.JSDocTypedefTag),
-        )?.[0];
-
-        const moduleDir = path.parse(moduleDoc.path).dir;
-
-        // Check the jsDoc of the class and find the imports
-        typeDefNode?.tags?.forEach((tag) => {
-          // Extract the path from the @typedef import
-          const typePath = findTypePath(tag, ROOT_DIR, moduleDir);
-
-          // If an import is not correct, warn the plugin user.
-          if (typePath == null) {
-            console.warn(`[${componentName}] - There's a problem with one of your @typedef - ${tag.getText()}`);
-            process.exitCode = 1;
-            return;
-          }
-
-          // Extract the type from the @typedef import
-          const typeDefDisplay = tag.name.getText();
-
-          const type = types.find((type) => type === typeDefDisplay);
-
-          if (type != null) {
-            if (!moduleTypeCache.has(typePath)) {
-              moduleTypeCache.set(typePath, new Set());
+            if (prop.jsDoc) {
+              doc += `${prop.jsDoc}\n\n`;
             }
-            moduleTypeCache.get(typePath).add(type);
-          }
-        });
 
-        // Now that we have the types, and the path of where the types are located
-        // We can convert the imports to md types
-        const convertedImports = convertImports(ts, moduleTypeCache);
-        const displayText = convertedImports ? '### Type Definitions\n\n' + convertedImports : '';
-        const declaration = moduleDoc.declarations.find((declaration) => declaration.name === statement.name.getText());
+            doc += '**Type:**\n\n```ts\n' + prop.type + '\n```';
 
-        declaration.description = declaration.description + '\n\n' + displayText;
+            return doc;
+          })
+          .join('\n\n');
+
+        console.log('propertyDocs', propertyDocs);
+        const displayText = propertyDocs ? '### Properties\n\n' + propertyDocs : '';
+
+        // Find the corresponding declaration in the moduleDoc
+        const declaration = moduleDoc.declarations.find((declaration) => declaration.name === componentName);
+
+        if (declaration) {
+          declaration.description = declaration.description + '\n\n' + displayText;
+        }
+
+        console.log('FINISHED ANALYZING', sourceFile.fileName);
       }
     },
   };
