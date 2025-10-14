@@ -1,10 +1,13 @@
 import { readFileSync } from 'fs';
+import path from 'path';
 import ts from 'typescript';
 import {
   convertInterface,
   findInterfacesFromExtends,
   findPathAndTypesFromImports,
   findSubtypes,
+  findTypePath,
+  getTypesFromClass,
 } from './support-typedef-jsdoc-utils.js';
 
 const ROOT_DIR = process.cwd();
@@ -58,7 +61,14 @@ export default function supportTypedefJsdoc() {
         sourceCode += importSourceCode;
       });
       // Then we create an AST with this big source code with all the interfaces
-      sourceAst = ts.createSourceFile('ast', sourceCode, ts.ScriptTarget.ES2015, true);
+      // sourceAst = ts.createSourceFile('ast', sourceCode, ts.ScriptTarget.ES2015, true);
+
+      const tsProgram = ts.createProgram([moduleDoc.path], {
+        target: ts.ScriptTarget.ES2020,
+        checkJs: true,
+        allowJs: true,
+        module: ts.ModuleKind.NodeNext,
+      });
 
       // Find the subtypes for base types.
       const subtypes = findSubtypes(ts, sourceAst, typesFromSet);
@@ -99,45 +109,91 @@ export default function supportTypedefJsdoc() {
   return {
     name: 'support-typedef-jsdoc',
     moduleLinkPhase({ moduleDoc }) {
-      const classDeclaration = moduleDoc.declarations.find((declaration) => declaration.kind === 'class');
-      const properties = classDeclaration.members.filter((member) => member.kind === 'field');
-      // console.log(moduleDoc);
-      // console.log(properties);
-      const tsProgram = ts.createProgram([moduleDoc.path], {
-        target: ts.ScriptTarget.ES2020,
-        checkJs: true,
-        allowJs: true,
-        module: ts.ModuleKind.NodeNext,
-      });
-      const fileAst = tsProgram.getSourceFile(moduleDoc.path);
-      const classes = fileAst.statements.filter(ts.isClassDeclaration);
-      const checker = tsProgram.getTypeChecker();
-      const classSymbol = checker.getSymbolAtLocation(classes[0].name);
+      let sourceCode;
+      let sourceAst;
 
-      const rootSymbols = checker.getRootSymbols(classSymbol);
-      const classType = checker.getDeclaredTypeOfSymbol(classSymbol);
+      try {
+        sourceCode = readFileSync(moduleDoc.path).toString();
+      } catch (e) {
+        console.error(e);
+        return;
+      }
+      sourceAst = ts.createSourceFile(moduleDoc.path, sourceCode, ts.ScriptTarget.ES2015, true);
 
-      // Get only declared properties (not inherited, not methods)
-      const declaredProperties = [];
-      if (classSymbol.members) {
-        classSymbol.members.forEach((member, key) => {
-          if (key !== '__constructor' && member.flags & ts.SymbolFlags.Property) {
-            const memberType = checker.getTypeOfSymbolAtLocation(member, member.valueDeclaration);
-            const jsdoc = member
-              .getDocumentationComment(checker)
-              .map((part) => part.text)
-              .join('');
-            declaredProperties.push({
-              name: key,
-              type: checker.typeToString(memberType, undefined, ts.TypeFormatFlags.InTypeAlias),
-              // Doesn't work, jsdoc isn't picked up
-              jsdoc: jsdoc || undefined,
-            });
+      for (const statement of sourceAst.statements) {
+        if (statement.kind !== ts.SyntaxKind.ClassDeclaration) {
+          continue;
+        }
+
+        // New module so we clear the cache for that module.
+        moduleTypeCache.clear();
+
+        const componentName = statement.name.escapedText;
+        // Check if the class we're currently looking at is a component, we don't want to pick validators for example.
+        if (
+          statement?.heritageClauses?.[0].types[0].expression.escapedText !== 'LitElement' &&
+          statement?.heritageClauses?.[0].types[0].expression.escapedText !== 'CcFormControlElement'
+        ) {
+          continue;
+        }
+
+        const types = getTypesFromClass(statement, ts);
+
+        if (types.length === 0) {
+          return;
+        }
+
+        // type checker chaque type
+        const checker = tsProgram.getTypeChecker();
+        const resolvedTypes = types.map((typeNode) => {
+          console.log('Before type checker', typeNode);
+          const resolvedType = checker.getTypeAtLocation(typeNode);
+          console.log('After type checker', typeNode);
+          return resolvedType;
+        });
+
+        console.log(resolvedTypes);
+
+        // This finds the comment where the imports are located
+        const typeDefNode = statement?.jsDoc?.filter((statement) =>
+          statement.tags?.find((tag) => tag.kind === ts.SyntaxKind.JSDocTypedefTag),
+        )?.[0];
+
+        const moduleDir = path.parse(moduleDoc.path).dir;
+
+        // Check the jsDoc of the class and find the imports
+        typeDefNode?.tags?.forEach((tag) => {
+          // Extract the path from the @typedef import
+          const typePath = findTypePath(tag, ROOT_DIR, moduleDir);
+
+          // If an import is not correct, warn the plugin user.
+          if (typePath == null) {
+            console.warn(`[${componentName}] - There's a problem with one of your @typedef - ${tag.getText()}`);
+            process.exitCode = 1;
+            return;
+          }
+
+          // Extract the type from the @typedef import
+          const typeDefDisplay = tag.name.getText();
+
+          const type = types.find((type) => type === typeDefDisplay);
+
+          if (type != null) {
+            if (!moduleTypeCache.has(typePath)) {
+              moduleTypeCache.set(typePath, new Set());
+            }
+            moduleTypeCache.get(typePath).add(type);
           }
         });
-      }
 
-      console.log('Declared properties only:', declaredProperties);
+        // Now that we have the types, and the path of where the types are located
+        // We can convert the imports to md types
+        const convertedImports = convertImports(ts, moduleTypeCache);
+        const displayText = convertedImports ? '### Type Definitions\n\n' + convertedImports : '';
+        const declaration = moduleDoc.declarations.find((declaration) => declaration.name === statement.name.getText());
+
+        declaration.description = declaration.description + '\n\n' + displayText;
+      }
     },
   };
 }

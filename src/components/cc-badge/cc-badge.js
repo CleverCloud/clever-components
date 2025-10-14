@@ -5,6 +5,7 @@ import { skeletonStyles } from '../../styles/skeleton.js';
 import '../cc-icon/cc-icon.js';
 
 /**
+ * @import { BadgeWeight } from './cc-badge.types.js';
  * @typedef {import('./cc-badge.types.js').BadgeIntent} BadgeIntent
  * @typedef {import('../common.types.js').IconModel} IconModel
  */
@@ -34,7 +35,7 @@ export class CcBadge extends LitElement {
     /** @type {boolean} Sets the badge to a bubble style. Should only be used to display 1 or 2 digits figures. */
     this.circle = false;
 
-    /** @type {IconModel|null} If set, enables icon mode and displays the required icon in the <cc-icon> component. */
+    /** @type {IconModel} If set, enables icon mode and displays the required icon in the <cc-icon> component. */
     this.icon = null;
 
     /** @type {string|null} Sets the `a11y-name` attribute value on the `<cc-icon>` tag. Only use if the icon conveys additional info compared to surrounding text. Check the `<cc-icon>` documentation for more details. */

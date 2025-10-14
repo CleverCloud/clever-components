@@ -41,6 +41,7 @@ function getTypesFromJsDocCommentNode(node, ts) {
 
   // Retrieve only the first @type found
   const rawType = node.tags[0].typeExpression.type;
+  return rawType;
 
   const isUnionType = rawType.kind === ts.SyntaxKind.UnionType;
   const isTupleType = rawType.kind === ts.SyntaxKind.TupleType;
