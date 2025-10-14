@@ -246,13 +246,12 @@ export default function supportTypedefJsdoc() {
               doc += `${prop.jsDoc}\n\n`;
             }
 
-            doc += '**Type:**\n\n```ts\n' + prop.type + '\n```';
+            doc += '**Type:**\n\n```typescript\n' + prop.type + '\n```';
 
             return doc;
           })
           .join('\n\n');
 
-        console.log('propertyDocs', propertyDocs);
         const displayText = propertyDocs ? '### Properties\n\n' + propertyDocs : '';
 
         // Find the corresponding declaration in the moduleDoc
