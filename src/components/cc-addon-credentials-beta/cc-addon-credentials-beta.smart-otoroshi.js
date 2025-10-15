@@ -39,6 +39,10 @@ const LOADING_STATE = {
         value: fakeString(10),
       },
       {
+        code: 'open-api-url',
+        value: fakeString(10),
+      },
+      {
         code: 'ng',
         kind: 'standard',
         value: { status: 'disabled' },
@@ -240,6 +244,10 @@ class Api extends CcAddonCredentialsBetaClient {
         {
           code: 'api-url',
           value: operator.api.url,
+        },
+        {
+          code: 'open-api-url',
+          value: operator.api.openapi,
         },
         {
           code: 'ng',

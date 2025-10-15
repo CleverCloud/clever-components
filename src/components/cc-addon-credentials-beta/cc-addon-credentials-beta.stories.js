@@ -82,6 +82,7 @@ export const dataLoadedWithTabs = makeStory(conf, {
             'api-url',
             'api-key',
             'api-password',
+            'open-api-url',
           ]),
           elastic: getFilteredAddonCredentials(['host', 'user', 'password']),
           kibana: getFilteredAddonCredentials(['user', 'password']),
