@@ -47,6 +47,8 @@ defineSmartComponent({
       .then(({ rawAddon, operator, zone }) => {
         const scalaAppId = operator.resources.entrypoint;
         logsUrl = context.logsUrlPattern.replace(':id', scalaAppId);
+        console.log('operator:', operator);
+        console.log('rawAddon:', rawAddon);
 
         updateComponent('state', {
           type: 'loaded',
