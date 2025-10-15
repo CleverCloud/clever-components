@@ -5,6 +5,18 @@ title: 'Changelog'
 
 # Changelog
 
+## [22.3.0](https://github.com/CleverCloud/clever-components/compare/22.2.0...22.3.0) (2025-10-15)
+
+
+### 🚀 Features
+
+* **cc-addon-credentials-beta.smart-keycloak:** adapt to the new state shape ([c30e54c](https://github.com/CleverCloud/clever-components/commit/c30e54ca597b44747b82c490e6ee1c3fbfad3a55))
+* **cc-addon-credentials-beta.smart-otoroshi:** adapt to the new state shape ([3690cac](https://github.com/CleverCloud/clever-components/commit/3690cac13e248bb3bc98d5b23e689990b3aa3918))
+* **cc-addon-credentials-beta.smart-otoroshi:** set specific `docLink` per tab ([01437aa](https://github.com/CleverCloud/clever-components/commit/01437aa407c1e94761c2ce9a7e3f26306a12227c))
+* **cc-addon-credentials-beta.smart:** add support for `open-api-url` credential ([57daf94](https://github.com/CleverCloud/clever-components/commit/57daf945410045c99147f4480263719fc490b60b))
+* **cc-addon-credentials-beta:** allow specifying one `docLink` per tab ([524cf56](https://github.com/CleverCloud/clever-components/commit/524cf567c67c658ab19c29c9f40d44c83bd463c7))
+* **cc-addon-credentials-content:** add support for `open-api-url` credential ([36bfa35](https://github.com/CleverCloud/clever-components/commit/36bfa35ae66a876c570da12669890b4afac623f9))
+
 ## [22.2.0](https://github.com/CleverCloud/clever-components/compare/22.1.0...22.2.0) (2025-10-09)
 
 
