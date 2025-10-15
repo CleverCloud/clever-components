@@ -23,6 +23,7 @@ const credentialsToDisplayAsString = new Set([
   'cluster-full-name',
   'api-client-user',
   'initial-user',
+  'open-api-url',
 ]);
 /** @type {Set<AddonCredential['code']>} */
 const credentialsToDisplayAsInput = new Set([
@@ -126,6 +127,8 @@ export class CcAddonCredentialsContent extends LitElement {
         return i18n('cc-addon-credentials-content.code.user');
       case 'initial-user':
         return i18n('cc-addon-credentials-content.code.initial-user');
+      case 'open-api-url':
+        return i18n('cc-addon-credentials-content.code.open-api-url');
       default:
         return code;
     }

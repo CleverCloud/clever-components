@@ -48,4 +48,5 @@ type AddonCredentialCode =
   | 'cluster-full-name'
   | 'uri'
   | 'tenant'
-  | 'initial-user';
+  | 'initial-user'
+  | 'open-api-url';

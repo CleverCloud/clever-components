@@ -230,6 +230,7 @@ export const translations = {
   'cc-addon-credentials-content.code.initial-user': `Utilisateur initial`,
   'cc-addon-credentials-content.code.network-group-multi-instances': `Multi-instances sécurisé`,
   'cc-addon-credentials-content.code.network-group-standard': `Network Group`,
+  'cc-addon-credentials-content.code.open-api-url': `URL OpenAPI`,
   'cc-addon-credentials-content.code.password': `Mot de passe`,
   'cc-addon-credentials-content.code.port': `Port`,
   'cc-addon-credentials-content.code.tenant': `Tenant`,
