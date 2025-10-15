@@ -159,6 +159,36 @@ export function findTypePath(importTag, ts, moduleFilePath) {
   return null;
 }
 
+export function extractImportsFromImportTag(importTag, ts, moduleFilePath) {
+  // @import {Type1, Type2} from './path'
+  // importTag.importClause.namedBindings.elements contains the types
+  // importTag.moduleSpecifier.text contains the module path
+
+  const moduleSpecifier = importTag.moduleSpecifier?.text;
+  const namedBindings = importTag.importClause?.namedBindings;
+
+  if (!moduleSpecifier || !namedBindings) {
+    return null;
+  }
+
+  // Use TypeScript's module resolution
+  const compilerOptions = {
+    moduleResolution: ts.ModuleResolutionKind.NodeJs,
+    allowJs: true,
+  };
+
+  const result = ts.resolveModuleName(moduleSpecifier, moduleFilePath, compilerOptions, ts.sys);
+
+  if (!result.resolvedModule) {
+    return null;
+  }
+
+  const resolvedPath = result.resolvedModule.resolvedFileName;
+  const types = namedBindings.elements?.map((el) => el.name?.getText()).filter(Boolean) || [];
+
+  return { path: resolvedPath, types };
+}
+
 export function findSubtypes(ts, node, types, parents) {
   const subtypes = [];
 
