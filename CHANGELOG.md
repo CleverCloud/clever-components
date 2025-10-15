@@ -5,6 +5,13 @@ title: 'Changelog'
 
 # Changelog
 
+## [22.3.1](https://github.com/CleverCloud/clever-components/compare/22.3.0...22.3.1) (2025-10-15)
+
+
+### 🐛 Bug Fixes
+
+* **cc-addon-header:** add missing `a11y-desc` on `cc-link` ([4efabb9](https://github.com/CleverCloud/clever-components/commit/4efabb96abedb8f9d83dd98792d88d1cf64ab83f))
+
 ## [22.3.0](https://github.com/CleverCloud/clever-components/compare/22.2.0...22.3.0) (2025-10-15)
 
 
