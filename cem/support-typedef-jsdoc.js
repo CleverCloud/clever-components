@@ -1,5 +1,4 @@
 import { readFileSync } from 'fs';
-import path from 'path';
 import ts from 'typescript';
 import {
   convertInterface,
@@ -9,8 +8,6 @@ import {
   findTypePath,
   getTypesFromClass,
 } from './support-typedef-jsdoc-utils.js';
-
-const ROOT_DIR = process.cwd();
 
 export default function supportTypedefJsdoc() {
   // Map that contains a `type-path` as a key and has its markdown interface as a value.
@@ -141,12 +138,10 @@ export default function supportTypedefJsdoc() {
           statement.tags?.find((tag) => tag.kind === ts.SyntaxKind.JSDocTypedefTag),
         )?.[0];
 
-        const moduleDir = path.parse(moduleDoc.path).dir;
-
         // Check the jsDoc of the class and find the imports
         typeDefNode?.tags?.forEach((tag) => {
           // Extract the path from the @typedef import
-          const typePath = findTypePath(tag, ROOT_DIR, moduleDir);
+          const typePath = findTypePath(tag, ts, moduleDoc.path);
 
           // If an import is not correct, warn the plugin user.
           if (typePath == null) {
