@@ -145,7 +145,12 @@ export class CcAddonHeader extends LitElement {
           <div class="actions">
             ${addonInfo.openLinks?.map(
               (link) => html`
-                <cc-link mode="button" href="${link.url}" ?skeleton=${skeleton}>
+                <cc-link
+                  mode="button"
+                  href="${link.url}"
+                  a11y-desc="${i18n('cc-addon-header.action.open-addon', { linkName: link.name })}"
+                  ?skeleton=${skeleton}
+                >
                   ${i18n('cc-addon-header.action.open-addon', { linkName: link.name })}
                 </cc-link>
               `,
