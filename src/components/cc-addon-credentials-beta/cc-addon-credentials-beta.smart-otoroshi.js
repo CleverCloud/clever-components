@@ -283,11 +283,11 @@ class Api extends CcAddonCredentialsBetaClient {
     return [
       {
         code: 'user',
-        value: operator.envVars.CC_OTOROSHI_INITIAL_ADMIN_LOGIN,
+        value: operator.initialCredentials.user,
       },
       {
         code: 'password',
-        value: operator.envVars.CC_OTOROSHI_INITIAL_ADMIN_PASSWORD,
+        value: operator.initialCredentials.password,
       },
       {
         code: 'ng',

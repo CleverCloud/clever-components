@@ -88,6 +88,10 @@ export interface OtoroshiOperatorInfo {
   features: {
     networkGroup: null;
   };
+  initialCredentials: {
+    user: string;
+    password: string;
+  };
   envVars: {
     ADMIN_API_CLIENT_ID: string;
     ADMIN_API_CLIENT_SECRET: string;
