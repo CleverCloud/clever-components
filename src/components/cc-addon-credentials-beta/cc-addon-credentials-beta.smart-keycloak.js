@@ -214,11 +214,11 @@ class Api extends CcAddonCredentialsBetaClient {
     return [
       {
         code: 'initial-user',
-        value: operator.envVars.CC_KEYCLOAK_ADMIN,
+        value: operator.initialCredentials.user,
       },
       {
         code: 'initial-password',
-        value: operator.envVars.CC_KEYCLOAK_ADMIN_DEFAULT_PASSWORD,
+        value: operator.initialCredentials.password,
       },
       {
         code: 'ng',
