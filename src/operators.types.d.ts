@@ -43,6 +43,10 @@ export interface KeycloakOperatorInfo {
   features: {
     networkGroup: null;
   };
+  initialCredentials: {
+    user: string;
+    password: string;
+  };
   envVars: {
     CC_KEYCLOAK_ADMIN: string;
     CC_RUN_COMMAND: string;
@@ -83,6 +87,10 @@ export interface OtoroshiOperatorInfo {
   };
   features: {
     networkGroup: null;
+  };
+  initialCredentials: {
+    user: string;
+    password: string;
   };
   envVars: {
     ADMIN_API_CLIENT_ID: string;

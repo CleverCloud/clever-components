@@ -73,6 +73,10 @@ export const BASE_ADDON_ACCESS_ITEMS = [
     value: 'tenant-value',
   },
   {
+    code: 'open-api-url',
+    value: 'https://open-api-url.example.com/',
+  },
+  {
     code: 'ng',
     kind: 'standard',
     value: {

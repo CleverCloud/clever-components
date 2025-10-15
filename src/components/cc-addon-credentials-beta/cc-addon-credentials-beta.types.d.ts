@@ -21,7 +21,13 @@ export interface AddonCredentialsBetaStateError {
 }
 
 type Tabs = {
-  [key in TabName & string]?: Array<AddonCredential>;
+  [key in TabName & string]?: {
+    content: Array<AddonCredential>;
+    docLink: {
+      text: string;
+      href: string;
+    };
+  };
 };
 
 export type TabName = 'default' | 'admin' | 'api' | 'direct' | 'elastic' | 'apm' | 'kibana';

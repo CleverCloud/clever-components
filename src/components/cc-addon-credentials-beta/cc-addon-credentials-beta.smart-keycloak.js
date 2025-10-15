@@ -6,29 +6,41 @@ import '../cc-smart-container/cc-smart-container.js';
 import { CcAddonCredentialsBetaClient } from './cc-addon-credentials-beta.client.js';
 import './cc-addon-credentials-beta.js';
 
-/** @type {AddonCredential[]} */
-const SKELETON_DATA = [
-  {
-    code: 'user',
-    value: 'fake-skeleton',
-  },
-  {
-    code: 'password',
-    value: 'fake-skeleton',
-  },
-  {
-    code: 'ng',
-    kind: 'multi-instances',
-    value: {
-      status: 'disabled',
+/** @type {AddonCredentialsBetaStateLoading} */
+const LOADING_STATE = {
+  type: 'loading',
+  tabs: {
+    default: {
+      content: [
+        {
+          code: 'user',
+          value: 'fake-skeleton',
+        },
+        {
+          code: 'password',
+          value: 'fake-skeleton',
+        },
+        {
+          code: 'ng',
+          kind: 'multi-instances',
+          value: {
+            status: 'disabled',
+          },
+        },
+      ],
+      docLink: {
+        text: i18n('cc-addon-credentials-beta.doc-link.keycloak'),
+        href: generateDocsHref('/addons/keycloak/#secured-multi-instances'),
+      },
     },
   },
-];
+};
 const PROVIDER_ID = 'keycloak';
 
 /**
  * @typedef {import('./cc-addon-credentials-beta.js').CcAddonCredentialsBeta} CcAddonCredentialsBeta
  * @typedef {import('./cc-addon-credentials-beta.types.js').AddonCredentialsBetaStateLoaded} AddonCredentialsBetaStateLoaded
+ * @typedef {import('./cc-addon-credentials-beta.types.js').AddonCredentialsBetaStateLoading} AddonCredentialsBetaStateLoading
  * @typedef {import('../cc-addon-credentials-content/cc-addon-credentials-content.types.js').AddonCredential} AddonCredential
  * @typedef {import('../cc-addon-credentials-content/cc-addon-credentials-content.types.js').AddonCredentialNg} AddonCredentialNg
  * @typedef {import('../cc-addon-credentials-content/cc-addon-credentials-content.types.js').AddonCredentialNgEnabled} AddonCredentialNgEnabled
@@ -58,7 +70,7 @@ defineSmartComponent({
         'state',
         /** @param {AddonCredentialsBetaStateLoaded} state */
         (state) => {
-          state.tabs.default = [...state.tabs.default].map((addonInfo) => {
+          state.tabs.default.content = [...state.tabs.default.content].map((addonInfo) => {
             if (addonInfo.code === 'ng') {
               if (typeof newNgInfoOrCallback === 'function') {
                 return newNgInfoOrCallback(addonInfo);
@@ -72,26 +84,19 @@ defineSmartComponent({
       );
     }
 
-    updateComponent('state', {
-      type: 'loading',
-      tabs: {
-        default: SKELETON_DATA,
-      },
-    });
-    updateComponent('docLink', {
-      text: i18n('cc-addon-credentials-beta.doc-link.keycloak'),
-      href: generateDocsHref('/addons/keycloak/#secured-multi-instances'),
-    });
+    updateComponent('state', LOADING_STATE);
 
     api
       .getCredentials()
       .then((credentials) => {
-        updateComponent('state', {
-          type: 'loaded',
-          tabs: {
-            default: credentials,
+        updateComponent(
+          'state',
+          /** @param {AddonCredentialsBetaStateLoaded|AddonCredentialsBetaStateLoading} state */
+          (state) => {
+            state.type = 'loaded';
+            state.tabs.default.content = credentials;
           },
-        });
+        );
       })
       .catch((error) => {
         console.error(error);
@@ -209,11 +214,11 @@ class Api extends CcAddonCredentialsBetaClient {
     return [
       {
         code: 'initial-user',
-        value: operator.envVars.CC_KEYCLOAK_ADMIN,
+        value: operator.initialCredentials.user,
       },
       {
         code: 'initial-password',
-        value: operator.envVars.CC_KEYCLOAK_ADMIN_DEFAULT_PASSWORD,
+        value: operator.initialCredentials.password,
       },
       {
         code: 'ng',

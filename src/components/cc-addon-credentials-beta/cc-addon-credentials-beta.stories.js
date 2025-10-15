@@ -44,18 +44,17 @@ export const defaultStory = makeStory(conf, {
       state: {
         type: 'loaded',
         tabs: {
-          default: getFilteredAddonCredentials([
-            'user',
-            'password',
-            'token',
-            { code: 'ng', kind: 'standard' },
-            { code: 'ng', kind: 'multi-instances' },
-          ]),
+          default: {
+            content: getFilteredAddonCredentials([
+              'user',
+              'password',
+              'token',
+              { code: 'ng', kind: 'standard' },
+              { code: 'ng', kind: 'multi-instances' },
+            ]),
+            docLink: { text: 'Fake Add-on documentation', href: '#' },
+          },
         },
-      },
-      docLink: {
-        text: 'Fake Add-on documentation',
-        href: '#',
       },
     },
   ],
@@ -68,29 +67,94 @@ export const dataLoadedWithTabs = makeStory(conf, {
       state: {
         type: 'loaded',
         tabs: {
-          default: getFilteredAddonCredentials([
-            'user',
-            'password',
-            'token',
-            { code: 'ng', kind: 'standard' },
-            { code: 'ng', kind: 'multi-instances' },
-          ]),
-          direct: getFilteredAddonCredentials(['direct-host', 'direct-port', 'direct-uri']),
-          api: getFilteredAddonCredentials([
-            'api-client-user',
-            'api-client-secret',
-            'api-url',
-            'api-key',
-            'api-password',
-          ]),
-          elastic: getFilteredAddonCredentials(['host', 'user', 'password']),
-          kibana: getFilteredAddonCredentials(['user', 'password']),
-          apm: getFilteredAddonCredentials(['user', 'password', 'token']),
+          default: {
+            content: getFilteredAddonCredentials([
+              'user',
+              'password',
+              'token',
+              { code: 'ng', kind: 'standard' },
+              { code: 'ng', kind: 'multi-instances' },
+            ]),
+            docLink: { text: 'Fake Add-on documentation', href: '#' },
+          },
+          direct: {
+            content: getFilteredAddonCredentials(['direct-host', 'direct-port', 'direct-uri']),
+            docLink: { text: 'Fake Add-on documentation', href: '#' },
+          },
+          api: {
+            content: getFilteredAddonCredentials([
+              'api-client-user',
+              'api-client-secret',
+              'api-url',
+              'api-key',
+              'api-password',
+              'open-api-url',
+            ]),
+            docLink: { text: 'Fake Add-on documentation', href: '#' },
+          },
+          elastic: {
+            content: getFilteredAddonCredentials(['host', 'user', 'password']),
+            docLink: { text: 'Fake Add-on documentation', href: '#' },
+          },
+          kibana: {
+            content: getFilteredAddonCredentials(['user', 'password']),
+            docLink: { text: 'Fake Add-on documentation', href: '#' },
+          },
+          apm: {
+            content: getFilteredAddonCredentials(['user', 'password', 'token']),
+            docLink: { text: 'Fake Add-on documentation', href: '#' },
+          },
         },
       },
-      docLink: {
-        text: 'Fake Add-on documentation',
-        href: '#',
+    },
+  ],
+});
+
+export const dataLoadedWithDifferentDocLinksPerTab = makeStory(conf, {
+  /** @type {Partial<CcAddonCredentialsBeta>[]} */
+  items: [
+    {
+      state: {
+        type: 'loaded',
+        tabs: {
+          default: {
+            content: getFilteredAddonCredentials([
+              'user',
+              'password',
+              'token',
+              { code: 'ng', kind: 'standard' },
+              { code: 'ng', kind: 'multi-instances' },
+            ]),
+            docLink: { text: 'Fake Doc Link for default tab', href: '#' },
+          },
+          direct: {
+            content: getFilteredAddonCredentials(['direct-host', 'direct-port', 'direct-uri']),
+            docLink: { text: 'Fake Doc Link for direct tab', href: '#' },
+          },
+          api: {
+            content: getFilteredAddonCredentials([
+              'api-client-user',
+              'api-client-secret',
+              'api-url',
+              'api-key',
+              'api-password',
+              'open-api-url',
+            ]),
+            docLink: { text: 'Fake Doc Link for api tab', href: '#' },
+          },
+          elastic: {
+            content: getFilteredAddonCredentials(['host', 'user', 'password']),
+            docLink: { text: 'Fake Doc Link for elastic tab', href: '#' },
+          },
+          kibana: {
+            content: getFilteredAddonCredentials(['user', 'password']),
+            docLink: { text: 'Fake Doc Link for kibana tab', href: '#' },
+          },
+          apm: {
+            content: getFilteredAddonCredentials(['user', 'password', 'token']),
+            docLink: { text: 'Fake Doc Link for apm tab', href: '#' },
+          },
+        },
       },
     },
   ],
@@ -103,18 +167,17 @@ export const loading = makeStory(conf, {
       state: {
         type: 'loading',
         tabs: {
-          default: getFilteredAddonCredentials([
-            'user',
-            'password',
-            'token',
-            { code: 'ng', kind: 'standard' },
-            { code: 'ng', kind: 'multi-instances' },
-          ]),
+          default: {
+            content: getFilteredAddonCredentials([
+              'user',
+              'password',
+              'token',
+              { code: 'ng', kind: 'standard' },
+              { code: 'ng', kind: 'multi-instances' },
+            ]),
+            docLink: { text: 'Fake Add-on documentation', href: '#' },
+          },
         },
-      },
-      docLink: {
-        text: 'Fake Add-on documentation',
-        href: '#',
       },
     },
   ],
@@ -127,29 +190,43 @@ export const loadingWithTabs = makeStory(conf, {
       state: {
         type: 'loading',
         tabs: {
-          default: getFilteredAddonCredentials([
-            'user',
-            'password',
-            'token',
-            { code: 'ng', kind: 'standard' },
-            { code: 'ng', kind: 'multi-instances' },
-          ]),
-          direct: getFilteredAddonCredentials(['direct-host', 'direct-port', 'direct-uri']),
-          api: getFilteredAddonCredentials([
-            'api-client-user',
-            'api-client-secret',
-            'api-url',
-            'api-key',
-            'api-password',
-          ]),
-          elastic: getFilteredAddonCredentials(['host', 'user', 'password']),
-          kibana: getFilteredAddonCredentials(['user', 'password']),
-          apm: getFilteredAddonCredentials(['user', 'password', 'token']),
+          default: {
+            content: getFilteredAddonCredentials([
+              'user',
+              'password',
+              'token',
+              { code: 'ng', kind: 'standard' },
+              { code: 'ng', kind: 'multi-instances' },
+            ]),
+            docLink: { text: 'Fake Add-on documentation', href: '#' },
+          },
+          direct: {
+            content: getFilteredAddonCredentials(['direct-host', 'direct-port', 'direct-uri']),
+            docLink: { text: 'Fake Add-on documentation', href: '#' },
+          },
+          api: {
+            content: getFilteredAddonCredentials([
+              'api-client-user',
+              'api-client-secret',
+              'api-url',
+              'api-key',
+              'api-password',
+            ]),
+            docLink: { text: 'Fake Add-on documentation', href: '#' },
+          },
+          elastic: {
+            content: getFilteredAddonCredentials(['host', 'user', 'password']),
+            docLink: { text: 'Fake Add-on documentation', href: '#' },
+          },
+          kibana: {
+            content: getFilteredAddonCredentials(['user', 'password']),
+            docLink: { text: 'Fake Add-on documentation', href: '#' },
+          },
+          apm: {
+            content: getFilteredAddonCredentials(['user', 'password', 'token']),
+            docLink: { text: 'Fake Add-on documentation', href: '#' },
+          },
         },
-      },
-      docLink: {
-        text: 'Fake Add-on documentation',
-        href: '#',
       },
     },
   ],
@@ -171,18 +248,17 @@ export const simulationWithLoadingSuccess = makeStory(conf, {
       state: {
         type: 'loading',
         tabs: {
-          default: getFilteredAddonCredentials([
-            'user',
-            'password',
-            'token',
-            { code: 'ng', kind: 'standard' },
-            { code: 'ng', kind: 'multi-instances' },
-          ]),
+          default: {
+            content: getFilteredAddonCredentials([
+              'user',
+              'password',
+              'token',
+              { code: 'ng', kind: 'standard' },
+              { code: 'ng', kind: 'multi-instances' },
+            ]),
+            docLink: { text: 'Fake Add-on documentation', href: '#' },
+          },
         },
-      },
-      docLink: {
-        text: 'Fake Add-on documentation',
-        href: '#',
       },
     },
   ],
@@ -194,13 +270,16 @@ export const simulationWithLoadingSuccess = makeStory(conf, {
         component.state = {
           type: 'loaded',
           tabs: {
-            default: getFilteredAddonCredentials([
-              'user',
-              'password',
-              'token',
-              { code: 'ng', kind: 'standard' },
-              { code: 'ng', kind: 'multi-instances' },
-            ]),
+            default: {
+              content: getFilteredAddonCredentials([
+                'user',
+                'password',
+                'token',
+                { code: 'ng', kind: 'standard' },
+                { code: 'ng', kind: 'multi-instances' },
+              ]),
+              docLink: { text: 'Fake Add-on documentation', href: '#' },
+            },
           },
         };
       },
@@ -215,14 +294,19 @@ export const simulationsWithTabsAndLoadingSuccess = makeStory(conf, {
       state: {
         type: 'loading',
         tabs: {
-          elastic: getFilteredAddonCredentials(['host', 'user', 'password']),
-          kibana: getFilteredAddonCredentials(['user', 'password']),
-          apm: getFilteredAddonCredentials(['user', 'password', 'token']),
+          elastic: {
+            content: getFilteredAddonCredentials(['host', 'user', 'password']),
+            docLink: { text: 'Fake Add-on documentation', href: '#' },
+          },
+          kibana: {
+            content: getFilteredAddonCredentials(['user', 'password']),
+            docLink: { text: 'Fake Add-on documentation', href: '#' },
+          },
+          apm: {
+            content: getFilteredAddonCredentials(['user', 'password', 'token']),
+            docLink: { text: 'Fake Add-on documentation', href: '#' },
+          },
         },
-      },
-      docLink: {
-        text: 'Fake Add-on documentation',
-        href: '#',
       },
     },
   ],
@@ -234,9 +318,18 @@ export const simulationsWithTabsAndLoadingSuccess = makeStory(conf, {
         component.state = {
           type: 'loaded',
           tabs: {
-            elastic: getFilteredAddonCredentials(['host', 'user', 'password']),
-            kibana: getFilteredAddonCredentials(['user', 'password']),
-            apm: getFilteredAddonCredentials(['user', 'password', 'token']),
+            elastic: {
+              content: getFilteredAddonCredentials(['host', 'user', 'password']),
+              docLink: { text: 'Fake Add-on documentation', href: '#' },
+            },
+            kibana: {
+              content: getFilteredAddonCredentials(['user', 'password']),
+              docLink: { text: 'Fake Add-on documentation', href: '#' },
+            },
+            apm: {
+              content: getFilteredAddonCredentials(['user', 'password', 'token']),
+              docLink: { text: 'Fake Add-on documentation', href: '#' },
+            },
           },
         };
       },
@@ -251,18 +344,17 @@ export const simulationsWithLoadingError = makeStory(conf, {
       state: {
         type: 'loading',
         tabs: {
-          default: getFilteredAddonCredentials([
-            'user',
-            'password',
-            'token',
-            { code: 'ng', kind: 'standard' },
-            { code: 'ng', kind: 'multi-instances' },
-          ]),
+          default: {
+            content: getFilteredAddonCredentials([
+              'user',
+              'password',
+              'token',
+              { code: 'ng', kind: 'standard' },
+              { code: 'ng', kind: 'multi-instances' },
+            ]),
+            docLink: { text: 'Fake Add-on documentation', href: '#' },
+          },
         },
-      },
-      docLink: {
-        text: 'Fake Add-on documentation',
-        href: '#',
       },
     },
   ],
@@ -286,16 +378,15 @@ export const simulationsWithNetworkGroupStatus = makeStory(conf, {
       state: {
         type: 'loaded',
         tabs: {
-          default: getFilteredAddonCredentials([
-            'user',
-            { code: 'ng', kind: 'standard' },
-            { code: 'ng', kind: 'multi-instances' },
-          ]),
+          default: {
+            content: getFilteredAddonCredentials([
+              'user',
+              { code: 'ng', kind: 'standard' },
+              { code: 'ng', kind: 'multi-instances' },
+            ]),
+            docLink: { text: 'Fake Add-on documentation', href: '#' },
+          },
         },
-      },
-      docLink: {
-        text: 'Fake Add-on documentation',
-        href: '#',
       },
     },
   ],
@@ -307,11 +398,14 @@ export const simulationsWithNetworkGroupStatus = makeStory(conf, {
         component.state = {
           type: 'loaded',
           tabs: {
-            default: [
-              { code: 'user', value: 'toto' },
-              { code: 'ng', kind: 'standard', value: { status: 'enabling' } },
-              { code: 'ng', kind: 'multi-instances', value: { status: 'enabling' } },
-            ],
+            default: {
+              content: [
+                { code: 'user', value: 'toto' },
+                { code: 'ng', kind: 'standard', value: { status: 'enabling' } },
+                { code: 'ng', kind: 'multi-instances', value: { status: 'enabling' } },
+              ],
+              docLink: { text: 'Fake Add-on documentation', href: '#' },
+            },
           },
         };
       },
@@ -323,11 +417,14 @@ export const simulationsWithNetworkGroupStatus = makeStory(conf, {
         component.state = {
           type: 'loaded',
           tabs: {
-            default: [
-              { code: 'user', value: 'toto' },
-              { code: 'ng', kind: 'standard', value: { status: 'enabled', id: 'fake-ng-id-12345' } },
-              { code: 'ng', kind: 'multi-instances', value: { status: 'enabled', id: 'fake-ng-id-12346' } },
-            ],
+            default: {
+              content: [
+                { code: 'user', value: 'toto' },
+                { code: 'ng', kind: 'standard', value: { status: 'enabled', id: 'fake-ng-id-12345' } },
+                { code: 'ng', kind: 'multi-instances', value: { status: 'enabled', id: 'fake-ng-id-12346' } },
+              ],
+              docLink: { text: 'Fake Add-on documentation', href: '#' },
+            },
           },
         };
       },
@@ -339,11 +436,14 @@ export const simulationsWithNetworkGroupStatus = makeStory(conf, {
         component.state = {
           type: 'loaded',
           tabs: {
-            default: [
-              { code: 'user', value: 'toto' },
-              { code: 'ng', kind: 'standard', value: { status: 'disabling', id: 'fake-ng-id-12345' } },
-              { code: 'ng', kind: 'multi-instances', value: { status: 'disabling', id: 'fake-ng-id-12346' } },
-            ],
+            default: {
+              content: [
+                { code: 'user', value: 'toto' },
+                { code: 'ng', kind: 'standard', value: { status: 'disabling', id: 'fake-ng-id-12345' } },
+                { code: 'ng', kind: 'multi-instances', value: { status: 'disabling', id: 'fake-ng-id-12346' } },
+              ],
+              docLink: { text: 'Fake Add-on documentation', href: '#' },
+            },
           },
         };
       },
@@ -355,11 +455,14 @@ export const simulationsWithNetworkGroupStatus = makeStory(conf, {
         component.state = {
           type: 'loaded',
           tabs: {
-            default: [
-              { code: 'user', value: 'toto' },
-              { code: 'ng', kind: 'standard', value: { status: 'disabled' } },
-              { code: 'ng', kind: 'multi-instances', value: { status: 'disabled' } },
-            ],
+            default: {
+              content: [
+                { code: 'user', value: 'toto' },
+                { code: 'ng', kind: 'standard', value: { status: 'disabled' } },
+                { code: 'ng', kind: 'multi-instances', value: { status: 'disabled' } },
+              ],
+              docLink: { text: 'Fake Add-on documentation', href: '#' },
+            },
           },
         };
       },
