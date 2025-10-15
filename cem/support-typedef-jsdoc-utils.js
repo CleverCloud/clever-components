@@ -136,7 +136,7 @@ function isVarInitWithDoc(node, ts, gatherPrivate = false) {
   return isVarInit && hasJsDoc && hasTypeIdentifier && (!isFieldPrivate || gatherPrivate);
 }
 
-export function findTypePath(importTag, rootDir, moduleDir) {
+export function findTypePath(importTag, ts, moduleFilePath) {
   // Remove leading and ending quotes
   const typeRelativePath = importTag.typeExpression?.type?.argument?.literal.getText().slice(1, -1);
 
@@ -144,10 +144,19 @@ export function findTypePath(importTag, rootDir, moduleDir) {
     return null;
   }
 
-  const { dir: typeDir, name: typeFileName } = path.parse(typeRelativePath);
-  const typeToTs = convertToTSExt(typeFileName);
+  // Use TypeScript's module resolution
+  const compilerOptions = {
+    moduleResolution: ts.ModuleResolutionKind.NodeJs,
+    allowJs: true,
+  };
 
-  return path.resolve(rootDir, moduleDir, typeDir, typeToTs);
+  const result = ts.resolveModuleName(typeRelativePath, moduleFilePath, compilerOptions, ts.sys);
+
+  if (result.resolvedModule) {
+    return result.resolvedModule.resolvedFileName;
+  }
+
+  return null;
 }
 
 export function findSubtypes(ts, node, types, parents) {
@@ -275,27 +284,30 @@ export function findPathAndTypesFromImports(ts, filePath, ancestors = null) {
   const imports = [];
   let sourceCode = '';
 
-  const parsedPath = path.parse(filePath);
-  const formattedFilePath = path.resolve(parsedPath.dir, convertToTSExt(filePath));
-
-  const currentAncestors = ancestors == null ? [formattedFilePath] : ancestors;
+  const currentAncestors = ancestors == null ? [filePath] : ancestors;
 
   // Open file
   try {
-    sourceCode = readFileSync(formattedFilePath).toString();
+    sourceCode = readFileSync(filePath).toString();
   } catch (e) {
     console.error(e);
     return [];
   }
 
   // transform to AST
-  const sourceAst = ts.createSourceFile(formattedFilePath, sourceCode, ts.ScriptTarget.ES2015, true);
+  const sourceAst = ts.createSourceFile(filePath, sourceCode, ts.ScriptTarget.ES2015, true);
 
   // Gather only imports from the AST
   const importsDeclaration = sourceAst.statements.filter((node) => node.kind === ts.SyntaxKind.ImportDeclaration);
   if (importsDeclaration == null) {
     return [];
   }
+
+  // Use TypeScript's module resolution
+  const compilerOptions = {
+    moduleResolution: ts.ModuleResolutionKind.NodeJs,
+    allowJs: true,
+  };
 
   importsDeclaration.forEach((importNode) => {
     const types = [];
@@ -305,14 +317,18 @@ export function findPathAndTypesFromImports(ts, filePath, ancestors = null) {
       return;
     }
 
-    const parsedImportPath = path.parse(importFile);
+    const result = ts.resolveModuleName(importFile, filePath, compilerOptions, ts.sys);
 
-    const formattedImportPath = path.join(parsedPath.dir, parsedImportPath.dir, convertToTSExt(parsedImportPath.base));
+    if (!result.resolvedModule) {
+      return;
+    }
 
-    if (!currentAncestors.includes(formattedImportPath)) {
+    const resolvedPath = result.resolvedModule.resolvedFileName;
+
+    if (!currentAncestors.includes(resolvedPath)) {
       importNode.importClause.namedBindings.elements.forEach((nodeType) => types.push(nodeType.getText()));
-      imports.push({ types, path: formattedImportPath });
-      imports.push(...findPathAndTypesFromImports(ts, formattedImportPath, [...currentAncestors, formattedImportPath]));
+      imports.push({ types, path: resolvedPath });
+      imports.push(...findPathAndTypesFromImports(ts, resolvedPath, [...currentAncestors, resolvedPath]));
     }
   });
   return imports;
