@@ -10,44 +10,56 @@ import './cc-addon-credentials-beta.js';
 const LOADING_STATE = {
   type: 'loading',
   tabs: {
-    admin: [
-      {
-        code: 'user',
-        value: fakeString(10),
+    admin: {
+      content: [
+        {
+          code: 'user',
+          value: fakeString(10),
+        },
+        {
+          code: 'password',
+          value: fakeString(10),
+        },
+        {
+          code: 'ng',
+          kind: 'standard',
+          value: { status: 'disabled' },
+        },
+      ],
+      docLink: {
+        text: i18n('cc-addon-credentials-beta.doc-link.otoroshi'),
+        href: 'https://www.clever-cloud.com/developers/doc/addons/otoroshi/',
       },
-      {
-        code: 'password',
-        value: fakeString(10),
+    },
+    api: {
+      content: [
+        {
+          code: 'api-client-user',
+          value: fakeString(10),
+        },
+        {
+          code: 'api-client-secret',
+          value: fakeString(10),
+        },
+        {
+          code: 'api-url',
+          value: fakeString(10),
+        },
+        {
+          code: 'open-api-url',
+          value: fakeString(10),
+        },
+        {
+          code: 'ng',
+          kind: 'standard',
+          value: { status: 'disabled' },
+        },
+      ],
+      docLink: {
+        text: i18n('cc-addon-credentials-beta.doc-link.otoroshi'),
+        href: 'https://www.clever-cloud.com/developers/doc/addons/otoroshi/',
       },
-      {
-        code: 'ng',
-        kind: 'standard',
-        value: { status: 'disabled' },
-      },
-    ],
-    api: [
-      {
-        code: 'api-client-user',
-        value: fakeString(10),
-      },
-      {
-        code: 'api-client-secret',
-        value: fakeString(10),
-      },
-      {
-        code: 'api-url',
-        value: fakeString(10),
-      },
-      {
-        code: 'open-api-url',
-        value: fakeString(10),
-      },
-      {
-        code: 'ng',
-        kind: 'standard',
-        value: { status: 'disabled' },
-      },
-    ],
+    },
   },
 };
 const PROVIDER_ID = 'otoroshi';
@@ -88,16 +100,19 @@ defineSmartComponent({
           state.tabs = Object.fromEntries(
             Object.entries(state.tabs).map(([tabName, tabValue]) => [
               tabName,
-              tabValue.map((addonInfo) => {
-                if (addonInfo.code === 'ng') {
-                  if (typeof newNgInfoOrCallback === 'function') {
-                    return newNgInfoOrCallback(addonInfo);
-                  } else {
-                    return newNgInfoOrCallback;
+              {
+                ...tabValue,
+                content: tabValue.content.map((addonInfo) => {
+                  if (addonInfo.code === 'ng') {
+                    if (typeof newNgInfoOrCallback === 'function') {
+                      return newNgInfoOrCallback(addonInfo);
+                    } else {
+                      return newNgInfoOrCallback;
+                    }
                   }
-                }
-                return addonInfo;
-              }),
+                  return addonInfo;
+                }),
+              },
             ]),
           );
         },
@@ -105,18 +120,26 @@ defineSmartComponent({
     }
 
     updateComponent('state', LOADING_STATE);
-    updateComponent('docLink', {
-      text: i18n('cc-addon-credentials-beta.doc-link.otoroshi'),
-      href: 'https://www.clever-cloud.com/developers/doc/addons/otoroshi/',
-    });
 
     api
       .getAllCredentials()
       .then((tabs) => {
-        updateComponent('state', {
-          type: 'loaded',
-          tabs,
-        });
+        updateComponent(
+          'state',
+          /** @param {AddonCredentialsBetaStateLoaded|AddonCredentialsBetaStateLoading} state */
+          (state) => {
+            state.type = 'loaded';
+            state.tabs = Object.fromEntries(
+              Object.entries(state.tabs).map(([tabName, tabValue]) => [
+                tabName,
+                {
+                  ...tabValue,
+                  content: tabs[/** @type {'admin'|'api'} */ (tabName)],
+                },
+              ]),
+            );
+          },
+        );
       })
       .catch((error) => {
         console.error(error);
