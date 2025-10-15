@@ -1,6 +1,7 @@
 import { fakeString } from '../../lib/fake-strings.js';
 import { notifyError, notifySuccess } from '../../lib/notifications.js';
 import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
+import { generateDocsHref } from '../../lib/utils.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-smart-container/cc-smart-container.js';
 import { CcAddonCredentialsBetaClient } from './cc-addon-credentials-beta.client.js';
@@ -27,8 +28,8 @@ const LOADING_STATE = {
         },
       ],
       docLink: {
-        text: i18n('cc-addon-credentials-beta.doc-link.otoroshi'),
-        href: 'https://www.clever-cloud.com/developers/doc/addons/otoroshi/',
+        text: i18n('cc-addon-credentials-beta.doc-link.otoroshi-ng'),
+        href: generateDocsHref('/addons/otoroshi/#use-otoroshi-in-a-network-group'),
       },
     },
     api: {
@@ -56,8 +57,8 @@ const LOADING_STATE = {
         },
       ],
       docLink: {
-        text: i18n('cc-addon-credentials-beta.doc-link.otoroshi'),
-        href: 'https://www.clever-cloud.com/developers/doc/addons/otoroshi/',
+        text: i18n('cc-addon-credentials-beta.doc-link.otoroshi-api'),
+        href: generateDocsHref('/addons/otoroshi/#manage-otoroshi-from-its-api'),
       },
     },
   },
