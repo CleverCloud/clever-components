@@ -120,3 +120,10 @@ export interface ElasticAddonInfo {
     },
   ];
 }
+
+export interface AddonVersionInfo {
+  available: string[];
+  installed: string;
+  latest: string;
+  needUpdate: boolean;
+}
