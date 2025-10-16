@@ -1,3 +1,4 @@
+import { sendToApi } from '../../lib/send-to-api.js';
 import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
 import { generateDevHubHref } from '../../lib/utils.js';
 import { i18n } from '../../translations/translation.js';
@@ -96,4 +97,27 @@ class Api extends CcAddonCredentialsBetaClient {
       },
     ]);
   }
+
+  /**
+   * @param {string} clusterId
+   * @return {Promise<string>}
+   */
+  getKubeConfig(clusterId) {
+    return getKubeConfig({ ownerId: this._ownerId, clusterId }).then(
+      sendToApi({ apiConfig: this._apiConfig, signal: this._signal }),
+    );
+  }
+}
+
+// FIXME: remove and use the clever-client call from the new clever-client
+/** @param {{ ownerId: string, clusterId: string }} params */
+function getKubeConfig(params) {
+  // no multipath for /self or /organisations/{id}
+  return Promise.resolve({
+    method: 'get',
+    url: `/v4/kubernetes/organisations/${params.ownerId}/clusters/${params.clusterId}/kubeconfig.yaml`,
+    headers: { Accept: 'text/plain, application/x-yaml, */*' },
+    // no queryParams
+    // no body
+  });
 }
