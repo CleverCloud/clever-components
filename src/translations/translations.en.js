@@ -190,6 +190,7 @@ export const translations = {
   'cc-addon-credentials-beta.choice.direct': `Direct`,
   'cc-addon-credentials-beta.choice.elastic': `Elastic`,
   'cc-addon-credentials-beta.choice.kibana': `Kibana`,
+  'cc-addon-credentials-beta.doc-link.elastic': `Elastic - Documentation`,
   'cc-addon-credentials-beta.doc-link.keycloak': `Secured multi-instances - Documentation`,
   'cc-addon-credentials-beta.doc-link.otoroshi': `Otoroshi - Documentation`,
   'cc-addon-credentials-beta.error': `Something went wrong while loading add-on information.`,
