@@ -307,6 +307,7 @@ export const translations = {
   'cc-addon-info.creation-date.heading': `Date de création`,
   'cc-addon-info.creation-date.human-friendly-date': /** @param {{ date: string | number }} _ */ ({ date }) =>
     formatDatetime(date),
+  'cc-addon-info.doc-link.elastic': `Elastic Stack - Documentation`,
   'cc-addon-info.doc-link.keycloak': `Keycloak - Documentation`,
   'cc-addon-info.doc-link.matomo': `Matomo - Documentation`,
   'cc-addon-info.doc-link.metabase': `Metabase - Documentation`,
