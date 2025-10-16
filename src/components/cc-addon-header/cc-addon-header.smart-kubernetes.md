@@ -35,13 +35,14 @@ interface ApiConfig {
 
 ## 🌐 API endpoints
 
-| Method   | URL                                                              | Cache?  |
-|----------|------------------------------------------------------------------|---------|
-| `GET`    | `/v2/organisations/${ownerId}/addons/${addonId}`                 | Default |
-| `GET`    | `/v4/products/zones/${zoneName}`                                 | Default |
-| `GET`    | `/v4/addon-providers/addon-kubernetes/addons/${realId}`          | Default |
-| `POST`   | `/v4/addon-providers/addon-kubernetes/addons/${realId}/reboot`   | Default |
-| `POST`   | `/v4/addon-providers/addon-kubernetes/addons/${realId}/rebuild`  | Default |
+| Method   | URL                                                                           | Cache?  |
+|----------|-------------------------------------------------------------------------------|---------|
+| `GET`    | `/v2/organisations/${ownerId}/addons/${addonId}`                              | Default |
+| `GET`    | `/v4/products/zones/${zoneName}`                                              | Default |
+| `GET`    | `/v4/addon-providers/addon-kubernetes/addons/${realId}`                       | Default |
+| `GET`    | `/v4/kubernetes/organisations/${ownerId}/clusters/${clusterId}/kubeconfig.yaml` | Default |
+| `POST`   | `/v4/addon-providers/addon-kubernetes/addons/${realId}/reboot`                | Default |
+| `POST`   | `/v4/addon-providers/addon-kubernetes/addons/${realId}/rebuild`               | Default |
 
 
 ## ⬇️️ Examples
