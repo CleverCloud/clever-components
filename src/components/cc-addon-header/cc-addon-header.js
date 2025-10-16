@@ -152,7 +152,7 @@ export class CcAddonHeader extends LitElement {
             )}
             ${!isStringEmpty(addonInfo.configLink)
               ? html`
-                  <cc-link mode="button" href="${addonInfo.configLink}" ?skeleton=${skeleton} download
+                  <cc-link mode="button" href="${addonInfo.configLink}" ?skeleton=${skeleton} download="kubeconfig.yaml"
                     >${i18n('cc-addon-header.action.get-config')}
                   </cc-link>
                 `
