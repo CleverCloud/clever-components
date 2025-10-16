@@ -138,6 +138,9 @@ defineSmartComponent({
     api
       .getElasticAddonInfo()
       .then(({ rawAddon, addonDetails, grafanaAppLink, isKibanaEnabled }) => {
+        console.log('rawAddon:', rawAddon);
+        console.log('addonDetails:', addonDetails);
+
         // Get standard features from plan
         const features = formatAddonFeatures(rawAddon.plan.features, ['cpu', 'memory', 'disk-size']);
 
