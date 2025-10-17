@@ -1,6 +1,7 @@
 import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { skeleton } from '../../directives/skeleton.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
 import '../cc-icon/cc-icon.js';
 
@@ -61,12 +62,11 @@ export class CcBadge extends LitElement {
       success: this.intent === 'success',
       warning: this.intent === 'warning',
       danger: this.intent === 'danger',
-      skeleton: this.skeleton,
       circle: this.circle,
     };
 
     return html`
-      <span class="cc-badge ${classMap(modes)}">
+      <span class="cc-badge ${classMap(modes)}" ${skeleton(this.skeleton)}>
         ${this.icon != null
           ? html` <cc-icon .icon=${this.icon} a11y-name=${ifDefined(this.iconA11yName)}></cc-icon> `
           : ''}
