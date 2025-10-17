@@ -1,10 +1,15 @@
 import { css, html, LitElement } from 'lit';
 import { createRef, ref } from 'lit/directives/ref.js';
 import { iconRemixCloseLine as iconClose } from '../../assets/cc-remix.icons.js';
+import { formSubmit } from '../../lib/form/form-submit-directive.js';
+import { Validation } from '../../lib/form/validation.js';
 import { findActiveElement } from '../../lib/shadow-dom-utils.js';
+import { isStringEmpty } from '../../lib/utils.js';
 import { accessibilityStyles } from '../../styles/accessibility.js';
 import { i18n } from '../../translations/translation.js';
+import '../cc-button/cc-button.js';
 import '../cc-icon/cc-icon.js';
+import '../cc-input-text/cc-input-text.js';
 import { CcDialogCloseEvent, CcDialogOpenEvent } from './cc-dialog.events.js';
 
 /**
@@ -14,38 +19,66 @@ import { CcDialogCloseEvent, CcDialogOpenEvent } from './cc-dialog.events.js';
 
 /**
  *
- * @cc-dialog-cancel
- * @cc-dialog-confirm
- *
  */
 export class CcDialog extends LitElement {
   static get properties() {
     return {
+      autofocusInput: { type: Boolean, attribute: 'autofocus-input' },
       cancelLabel: { type: String, attribute: 'cancel-label' },
       confirmInputLabel: { type: String, attribute: 'confirm-input-label' },
-      confirmText: { type: String, attribute: 'confirm-text' },
+      confirmTextToInput: { type: String, attribute: 'confirm-text-to-input' },
       desc: { type: String },
       heading: { type: String },
       open: { type: Boolean, reflect: true },
       submitIntent: { type: String, attribute: 'submit-intent' },
       submitLabel: { type: String, attribute: 'submit-label' },
+      waiting: { type: Boolean, reflect: true },
     };
   }
 
   constructor() {
     super();
 
+    /** @type {boolean} Automatically focuses the input when the dialog is opened */
+    this.autofocusInput = false;
+
+    /** @type {string|null} Sets Text that needs to be matched by the user, also visible in the help text below the input */
+    this.confirmTextToInput = null;
+
+    /** @type {string|null} Sets the label for the confirm text input */
+    this.confirmInputLabel = null;
+
+    /** @type {string|null} Sets the label for the cancel button */
+    this.cancelLabel = null;
+
     /** @type {boolean} Displays or hides the dialog */
     this.open = false;
 
-    /** @type {string|null} Sets the va  */
-    this.confirmationInput = null;
-    this.confirmInputLabel = null;
+    /** @type {string|null} Sets the label for the submit button */
     this.submitLabel = null;
-    this.submitIntent = null;
-    this.cancelLabel = null;
-    this.heading = null;
-    this.desc = null;
+
+    /** @type {'primary'|'danger'} Sets the color of the submit button */
+    this.submitIntent = 'primary';
+
+    /** @type {boolean} Disables the form inputs and buttons, and shows a loading indicator in the submit button */
+    this.waiting = false;
+
+    /** @type {boolean} Prevents the dialog from being closed by the close button & clicks outsides */
+    this.waiting = false;
+
+    /** @type {import('../../lib/form/validation.js').Validator} */
+    this._confirmValidator = {
+      validate: (value) => {
+        if (this.confirmTextToInput === value) {
+          return Validation.VALID;
+        }
+        return Validation.invalid('no-match');
+      },
+    };
+
+    this._customErrorMessages = {
+      'no-match': () => i18n('cc-addon-admin.delete.dialog.error', { name: this.confirmTextToInput }),
+    };
 
     /** @type {HTMLDialogElementRef} */
     this._dialogRef = createRef();
@@ -79,6 +112,9 @@ export class CcDialog extends LitElement {
   }
 
   _onDialogClose() {
+    if (this.waiting) {
+      return;
+    }
     this.open = false;
   }
 
@@ -86,36 +122,82 @@ export class CcDialog extends LitElement {
     if (this._lastFocusedElement instanceof HTMLElement && this._lastFocusedElement.isConnected) {
       this._lastFocusedElement.focus();
     }
+    // TODO: dispatch some event to warn that focus lost?
   }
 
   disconnectedCallback() {
     super.disconnectedCallback();
-    this.dispatchEvent(new CcDialogCloseEvent());
-    if (this._lastFocusedElement instanceof HTMLElement && this._lastFocusedElement.isConnected) {
-      this._lastFocusedElement.focus();
-    }
-    // TODO: dispatch some event to warn that focus lost?
+    this._tryToFocusOpeningElement();
   }
 
   render() {
-    // TODO: disabled close btn?
-    // TODO: confirm form
     return html`
       <dialog aria-labelledby="dialog-heading" closedby="any" ${ref(this._dialogRef)} @cancel="${this._onDialogClose}">
         <div class="dialog-padding-wrapper">
-          <button class="dialog-close" @click="${this._onDialogClose}">
+          <button class="dialog-close" ?disabled="${this.waiting}" @click="${this._onDialogClose}">
             <span class="visually-hidden">${i18n('cc-dialog.close')}</span>
             <cc-icon .icon="${iconClose}"></cc-icon>
           </button>
           <slot name="heading" class="dialog-heading" id="dialog-heading"></slot>
           <slot name="content" class="dialog-content"></slot>
-          <slot name="actions" class="dialog-actions"></slot>
-          <slot name="form">
-            <slot name="form-content" class="dialog-content"></slot>
-            <slot name="form-actions" class="dialog-actions"></slot>
-          </slot>
+          ${!isStringEmpty(this.confirmInputLabel) && !isStringEmpty(this.confirmTextToInput)
+            ? this._renderConfirmForm()
+            : ''}
+          ${isStringEmpty(this.confirmInputLabel) && isStringEmpty(this.confirmTextToInput)
+            ? html`
+                <slot name="actions" class="dialog-actions">
+                  ${!isStringEmpty(this.submitLabel)
+                    ? html`
+                        <cc-button outlined @click="${this._onDialogClose}" ?disabled="${this.waiting}">
+                          ${this.cancelLabel}
+                        </cc-button>
+                        <cc-button
+                          ?primary="${this.submitIntent === 'primary'}"
+                          ?danger="${this.submitIntent === 'danger'}"
+                          type="submit"
+                          ?waiting="${this.waiting}"
+                        >
+                          ${this.submitLabel}
+                        </cc-button>
+                      `
+                    : ''}
+                </slot>
+              `
+            : ''}
         </div>
       </dialog>
+    `;
+  }
+
+  _renderConfirmForm() {
+    return html`
+      <form ${formSubmit()}>
+        <div class="dialog-content">
+          <cc-input-text
+            label="${this.confirmInputLabel}"
+            name="confirmation-input"
+            required
+            .customValidator="${this._confirmValidator}"
+            .customErrorMessages="${this._customErrorMessages}"
+            ?autofocus="${this.autofocusInput}"
+          >
+            <p slot="help">${this.confirmTextToInput}</p>
+          </cc-input-text>
+        </div>
+        <div class="dialog-actions">
+          <cc-button outlined @click="${this._onDialogClose}" ?disabled="${this.waiting}">
+            ${this.cancelLabel}
+          </cc-button>
+          <cc-button
+            ?primary="${this.submitIntent === 'primary'}"
+            ?danger="${this.submitIntent === 'danger'}"
+            type="submit"
+            ?waiting="${this.waiting}"
+          >
+            ${this.submitLabel}
+          </cc-button>
+        </div>
+      </form>
     `;
   }
 
@@ -132,7 +214,6 @@ export class CcDialog extends LitElement {
           border-radius: var(--cc-border-radius-default, 0.25em);
           box-shadow: 2px 4px 8px 0 rgb(0 0 0 / 12%);
           box-sizing: border-box;
-          /* IMPORTANT: used by the component itself and shared dialog-form-actions styles */
           container: dialog / inline-size;
           padding: 0;
           width: min(38em, 80%);
@@ -201,6 +282,22 @@ export class CcDialog extends LitElement {
         .dialog-desc {
           display: block;
           margin-bottom: 1.25em;
+        }
+
+        .dialog-actions {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 1em;
+          justify-content: end;
+          margin-top: 3.75em;
+        }
+
+        @container dialog (max-width: 37em) {
+          .dialog-actions {
+            display: grid;
+            justify-content: stretch;
+            margin-top: 2em;
+          }
         }
       `,
     ];
