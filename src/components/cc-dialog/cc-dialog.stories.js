@@ -423,62 +423,8 @@ export const programmaticControl = makeStory(conf, {
   },
 });
 
-export const openByDefault = makeStory(conf, {
-  /** @param {HTMLElement} container */
-  dom: (container) => {
-    render(
-      html`
-        <cc-dialog
-          open
-          heading="Already Open"
-          content-body="This dialog was opened automatically."
-          submit-label="Close"
-        >
-          open
-        </cc-dialog>
-      `,
-      container,
-    );
-  },
-});
-
-// ========================================
-// ACCESSIBILITY STORIES
-// ========================================
-
-export const withAutofocusInput = makeStory(conf, {
-  /** @param {HTMLElement} container */
-  dom: (container) => {
-    render(
-      html`
-        <cc-button @cc-click="${() => getDialog(container).show()}" primary>Open Login Form</cc-button>
-        <cc-dialog heading="Login">
-          open
-          <form slot="content">
-            <cc-input-text
-              autofocus
-              name="email"
-              label="Email"
-              placeholder="Enter your email"
-              type="email"
-            ></cc-input-text>
-            <cc-input-text
-              name="password"
-              label="Password"
-              placeholder="Enter your password"
-              type="password"
-            ></cc-input-text>
-          </form>
-          <div slot="actions">
-            <cc-button @cc-click="${() => getDialog(container).hide()}" outlined>Cancel</cc-button>
-            <cc-button primary>Login</cc-button>
-          </div>
-        </cc-dialog>
-      `,
-      container,
-    );
-  },
-});
+// TODO: confirm
+// TODO: focus management with list of items
 
 /**
  * @param {HTMLElement} container

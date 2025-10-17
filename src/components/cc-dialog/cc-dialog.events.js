@@ -27,6 +27,19 @@ export class CcDialogCloseEvent extends CcEvent {
 }
 
 /**
+ * Dispatched when the user confirms using the submit button
+ *
+ * @extends {CcEvent}
+ */
+export class CcDialogConfirmEvent extends CcEvent {
+  static TYPE = 'cc-dialog-confirm';
+
+  constructor() {
+    super(CcDialogConfirmEvent.TYPE);
+  }
+}
+
+/**
  * Dispatched when the focus is lost.
  *
  * @extends {CcEvent}

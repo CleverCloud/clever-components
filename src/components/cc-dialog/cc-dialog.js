@@ -12,7 +12,7 @@ import { i18n } from '../../translations/translation.js';
 import '../cc-button/cc-button.js';
 import '../cc-icon/cc-icon.js';
 import '../cc-input-text/cc-input-text.js';
-import { CcDialogCloseEvent, CcDialogOpenEvent } from './cc-dialog.events.js';
+import { CcDialogCloseEvent, CcDialogConfirmEvent, CcDialogOpenEvent } from './cc-dialog.events.js';
 
 /**
  * @typedef {import('lit').PropertyValues<CcDialog>} CcDialogPropertyValues
@@ -127,6 +127,10 @@ export class CcDialog extends LitElement {
     this.open = false;
   }
 
+  _onDialogConfirm() {
+    this.dispatchEvent(new CcDialogConfirmEvent());
+  }
+
   _tryToFocusOpeningElement() {
     if (this._lastFocusedElement instanceof HTMLElement && this._lastFocusedElement.isConnected) {
       this._lastFocusedElement.focus();
@@ -151,10 +155,8 @@ export class CcDialog extends LitElement {
             <slot name="heading" class="dialog-heading" id="dialog-heading">
               ${!isStringEmpty(this.heading) ? this.heading : ''}
             </slot>
-            <div class="flex-gap">
-              <slot name="content-body" class="dialog-content-body">
-                ${!isStringEmpty(this.contentBody) ? this.contentBody : ''}
-              </slot>
+            <div class="dialog-content-body-wrapper">
+              <slot name="content-body"> ${!isStringEmpty(this.contentBody) ? this.contentBody : ''} </slot>
               ${!isStringEmpty(this.confirmInputLabel) && !isStringEmpty(this.confirmTextToInput)
                 ? this._renderConfirmForm()
                 : ''}
@@ -178,6 +180,7 @@ export class CcDialog extends LitElement {
                             ?danger="${this.submitIntent === 'danger'}"
                             type="submit"
                             ?waiting="${this.waiting}"
+                            @cc-click="${this._onDialogConfirm}"
                           >
                             ${this.submitLabel}
                           </cc-button>
@@ -194,7 +197,7 @@ export class CcDialog extends LitElement {
 
   _renderConfirmForm() {
     return html`
-      <form ${formSubmit()}>
+      <form ${formSubmit(this._onDialogConfirm.bind(this))}>
         <cc-input-text
           label="${this.confirmInputLabel}"
           name="confirmation-input"
@@ -301,11 +304,7 @@ export class CcDialog extends LitElement {
           padding-bottom: 1.25em;
         }
 
-        .dialog-content-body {
-          display: block;
-        }
-
-        .flex-gap {
+        .dialog-content-body-wrapper {
           display: flex;
           flex-direction: column;
           gap: 1em;
