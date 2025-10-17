@@ -15,6 +15,7 @@ import { CcDialogCloseEvent, CcDialogOpenEvent } from './cc-dialog.events.js';
 /**
  * @typedef {import('lit').PropertyValues<CcDialog>} CcDialogPropertyValues
  * @typedef {import('lit/directives/ref.js').Ref<HTMLDialogElement>} HTMLDialogElementRef
+ * @typedef {import('../../lib/form/validation.js').Validator} Validator
  */
 
 /**
@@ -27,7 +28,7 @@ export class CcDialog extends LitElement {
       cancelLabel: { type: String, attribute: 'cancel-label' },
       confirmInputLabel: { type: String, attribute: 'confirm-input-label' },
       confirmTextToInput: { type: String, attribute: 'confirm-text-to-input' },
-      desc: { type: String },
+      content: { type: String },
       heading: { type: String },
       open: { type: Boolean, reflect: true },
       submitIntent: { type: String, attribute: 'submit-intent' },
@@ -51,22 +52,25 @@ export class CcDialog extends LitElement {
     /** @type {string|null} Sets the label for the cancel button */
     this.cancelLabel = null;
 
+    /** @type {string|null} Sets the heading of the dialog as long as the heading slot is unused */
+    this.heading = null;
+
+    /** @type {string|null} Sets the content of the dialog below the heading as long as the content slot is unused */
+    this.content = null;
+
     /** @type {boolean} Displays or hides the dialog */
     this.open = false;
 
-    /** @type {string|null} Sets the label for the submit button */
+    /** @type {string|null} Sets the label for the submit button and displays a generic cancel button next to it */
     this.submitLabel = null;
 
     /** @type {'primary'|'danger'} Sets the color of the submit button */
     this.submitIntent = 'primary';
 
-    /** @type {boolean} Disables the form inputs and buttons, and shows a loading indicator in the submit button */
+    /** @type {boolean} Disables the form inputs and buttons, and shows a loading indicator for the submit button */
     this.waiting = false;
 
-    /** @type {boolean} Prevents the dialog from being closed by the close button & clicks outsides */
-    this.waiting = false;
-
-    /** @type {import('../../lib/form/validation.js').Validator} */
+    /** @type {Validator} */
     this._confirmValidator = {
       validate: (value) => {
         if (this.confirmTextToInput === value) {
@@ -111,7 +115,8 @@ export class CcDialog extends LitElement {
     this.open = false;
   }
 
-  _onDialogClose() {
+  _onDialogClose(e) {
+    e?.preventDefault();
     if (this.waiting) {
       return;
     }
@@ -138,17 +143,16 @@ export class CcDialog extends LitElement {
             <span class="visually-hidden">${i18n('cc-dialog.close')}</span>
             <cc-icon .icon="${iconClose}"></cc-icon>
           </button>
-          <slot name="heading" class="dialog-heading" id="dialog-heading"></slot>
-          <slot name="content" class="dialog-content"></slot>
-          ${!isStringEmpty(this.confirmInputLabel) && !isStringEmpty(this.confirmTextToInput)
-            ? this._renderConfirmForm()
-            : ''}
+          <slot name="heading" class="dialog-heading" id="dialog-heading">
+            ${!isStringEmpty(this.heading) ? this.heading : ''}
+          </slot>
+          <slot name="content" class="dialog-content"> ${!isStringEmpty(this.content) ? this.content : ''} </slot>
           ${isStringEmpty(this.confirmInputLabel) && isStringEmpty(this.confirmTextToInput)
             ? html`
                 <slot name="actions" class="dialog-actions">
                   ${!isStringEmpty(this.submitLabel)
                     ? html`
-                        <cc-button outlined @click="${this._onDialogClose}" ?disabled="${this.waiting}">
+                        <cc-button outlined @cc-click="${this._onDialogClose}" ?disabled="${this.waiting}">
                           ${this.cancelLabel}
                         </cc-button>
                         <cc-button
@@ -163,6 +167,9 @@ export class CcDialog extends LitElement {
                     : ''}
                 </slot>
               `
+            : ''}
+          ${!isStringEmpty(this.confirmInputLabel) && !isStringEmpty(this.confirmTextToInput)
+            ? this._renderConfirmForm()
             : ''}
         </div>
       </dialog>
