@@ -415,6 +415,7 @@ export const translations = {
   'cc-datetime-relative.title': /** @param {{date: string|number}} _ */ ({ date }) => formatDate(date),
   //#endregion
   //#region cc-dialog
+  'cc-dialog.cancel': `Cancel`,
   'cc-dialog.close': `Close`,
   //#endregion
   //#region cc-doc-card

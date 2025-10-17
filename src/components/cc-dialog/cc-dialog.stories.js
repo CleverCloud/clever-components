@@ -1,4 +1,5 @@
 import { html, render } from 'lit';
+import { iconRemixImageCircleFill as imageIcon } from '../../assets/cc-remix.icons.js';
 import { makeStory } from '../../stories/lib/make-story.js';
 import '../cc-button/cc-button.js';
 import '../cc-input-text/cc-input-text.js';
@@ -36,7 +37,7 @@ export const defaultStory = makeStory(conf, {
         <cc-dialog
           open
           heading="Welcome"
-          content="This is a simple dialog using only properties."
+          content-body="This is a simple dialog using only properties."
           submit-label="Got it"
           cancel-label="Close"
         ></cc-dialog>
@@ -55,7 +56,7 @@ export const submitIntentWithPrimary = makeStory(conf, {
         <cc-dialog
           open
           heading="Save Changes"
-          content="Are you sure you want to save these changes?"
+          content-body="Are you sure you want to save these changes?"
           submit-label="Save"
           cancel-label="Cancel"
           submit-intent="primary"
@@ -75,7 +76,7 @@ export const submitIntentWithDanger = makeStory(conf, {
         <cc-dialog
           open
           heading="Delete Resource"
-          content="Are you sure you want to delete this resource? This action cannot be undone."
+          content-body="Are you sure you want to delete this resource? This action cannot be undone."
           submit-label="Delete"
           cancel-label="Cancel"
           submit-intent="danger"
@@ -86,7 +87,26 @@ export const submitIntentWithDanger = makeStory(conf, {
   },
 });
 
-export const waitingState = makeStory(conf, {
+export const submitWithCustomCancelLabel = makeStory(conf, {
+  /** @param {HTMLElement} container */
+  dom: (container) => {
+    render(
+      html`
+        <cc-button @cc-click="${() => getDialog(container).show()}" danger>Delete Resource</cc-button>
+        <cc-dialog
+          open
+          heading="Delete Resource"
+          content-body="Are you sure you want to delete this resource? This action cannot be undone."
+          submit-label="Delete"
+          cancel-label="Discard"
+        ></cc-dialog>
+      `,
+      container,
+    );
+  },
+});
+
+export const waitingStateWithNoSubmit = makeStory(conf, {
   /** @param {HTMLElement} container */
   dom: (container) => {
     render(
@@ -95,15 +115,59 @@ export const waitingState = makeStory(conf, {
         <cc-dialog
           open
           waiting
-          heading="Processing"
-          content="Click Submit to see the waiting state."
-          submit-label="Submit"
-          cancel-label="Cancel"
+          heading="Waiting"
+          content-body="Users cannot close this dialog as long as it's in waiting mode. Most legitimate usecases should contain a submit button or confirm form."
         >
         </cc-dialog>
       `,
       container,
     );
+  },
+});
+
+export const waitingStateWithSubmit = makeStory(conf, {
+  /** @param {HTMLElement} container */
+  dom: (container) => {
+    render(
+      html`
+        <cc-button @cc-click="${() => getDialog(container).show()}" primary>Process Action</cc-button>
+        <cc-dialog
+          open
+          waiting
+          heading="Waiting"
+          content-body="Users cannot close this dialog as long as it's in waiting mode."
+          submit-label="Submit"
+        >
+        </cc-dialog>
+      `,
+      container,
+    );
+  },
+});
+
+export const waitingStateWithConfirmForm = makeStory(conf, {
+  /** @param {HTMLElement} container */
+  dom: (container) => {
+    render(
+      html`
+        <cc-button @cc-click="${() => getDialog(container).show()}" primary>Process Action</cc-button>
+        <cc-dialog
+          open
+          waiting
+          heading="Waiting"
+          confirm-input-label="Enter a value"
+          confirm-text-to-input="a value"
+          submit-label="Submit"
+        >
+          <p slot="content-body">Text slotted into content-body</p>
+        </cc-dialog>
+      `,
+      container,
+    );
+    const ccDialogElement = getDialog(container);
+    ccDialogElement.updateComplete.then(() => {
+      ccDialogElement.shadowRoot.querySelector('cc-input-text').value = 'a value';
+    });
   },
 });
 
@@ -113,27 +177,16 @@ export const waitingState = makeStory(conf, {
 // These stories demonstrate using slots for rich, custom content.
 // Use slots when you need complex markup, forms, or styled content.
 
-export const headingSlot = makeStory(conf, {
-  docs: `
-Demonstrates the \`heading\` slot for rich heading content.
-Use this when you need icons, badges, or styled headings.
-  `,
+export const slotWithHeading = makeStory(conf, {
   /** @param {HTMLElement} container */
   dom: (container) => {
     render(
       html`
         <cc-button @cc-click="${() => getDialog(container).show()}" primary>Open Custom Heading</cc-button>
-        <cc-dialog>
-          open
-          <div slot="heading" style="display: flex; align-items: center; gap: 0.5em;">
-            <span>🎉</span>
-            <span>Success!</span>
-          </div>
-          <div slot="content">
-            <p>Your operation completed successfully.</p>
-          </div>
-          <div slot="actions">
-            <cc-button @cc-click="${() => getDialog(container).hide()}" primary>OK</cc-button>
+        <cc-dialog open content-body="Content passed through the content-body prop">
+          <div slot="heading">
+            <cc-icon .icon="${imageIcon}" a11y-name="An icon to show that you may slot other HTML elements"></cc-icon>
+            <span>Slotted heading with HTML elements!</span>
           </div>
         </cc-dialog>
       `,
@@ -142,29 +195,18 @@ Use this when you need icons, badges, or styled headings.
   },
 });
 
-export const contentSlot = makeStory(conf, {
-  docs: `
-Demonstrates the \`content\` slot for rich content.
-Use this when you need forms, lists, or complex layouts.
-  `,
+export const slotWithContentBody = makeStory(conf, {
   /** @param {HTMLElement} container */
   dom: (container) => {
     render(
       html`
         <cc-button @cc-click="${() => getDialog(container).show()}" primary>Open Form</cc-button>
-        <cc-dialog>
-          open
-          <div slot="heading">Create New Item</div>
-          <div slot="content">
-            <cc-input-text label="Name" placeholder="Enter name" required></cc-input-text>
-            <cc-input-text label="Description" placeholder="Enter description" multi></cc-input-text>
+        <cc-dialog open heading="Heading passed through the heading prop">
+          <div slot="content-body">
             <cc-notice intent="info">
-              <div slot="message">All fields are required.</div>
+              <div slot="message">This notice is slotted into content-body.</div>
             </cc-notice>
-          </div>
-          <div slot="actions">
-            <cc-button @cc-click="${() => getDialog(container).hide()}" outlined>Cancel</cc-button>
-            <cc-button primary>Create</cc-button>
+            <p style="margin-bottom: 0; margin-top: 2em;">This content is slotted into content-body</p>
           </div>
         </cc-dialog>
       `,
@@ -173,26 +215,22 @@ Use this when you need forms, lists, or complex layouts.
   },
 });
 
-export const actionsSlot = makeStory(conf, {
-  docs: `
-Demonstrates the \`actions\` slot for custom button layouts.
-Use this when you need multiple buttons or custom action arrangements.
-  `,
+export const slotWithActions = makeStory(conf, {
   /** @param {HTMLElement} container */
   dom: (container) => {
     render(
       html`
         <cc-button @cc-click="${() => getDialog(container).show()}" primary>Open Multi-Action</cc-button>
-        <cc-dialog>
+        <cc-dialog
           open
+          heading="Heading passed through the heading prop"
+          content-body="Content passed through the content-body prop"
+        >
           <div slot="heading">Choose an Action</div>
-          <div slot="content">
-            <p>You can save your work, save and continue, or discard changes.</p>
-          </div>
           <div slot="actions">
-            <cc-button @cc-click="${() => getDialog(container).hide()}" outlined>Discard</cc-button>
-            <cc-button success>Save</cc-button>
-            <cc-button primary>Save & Continue</cc-button>
+            <cc-button outlined>Save and come back later</cc-button>
+            <cc-button danger>Delete draft</cc-button>
+            <cc-button primary>Publish</cc-button>
           </div>
         </cc-dialog>
       `,
@@ -201,23 +239,18 @@ Use this when you need multiple buttons or custom action arrangements.
   },
 });
 
-export const defaultSlot = makeStory(conf, {
-  docs: `
-Demonstrates the default slot for complete customization.
-Use this when you need full control over the dialog layout and styling.
-  `,
+export const slotWithReplacingAllContent = makeStory(conf, {
   /** @param {HTMLElement} container */
   dom: (container) => {
     render(
       html`
         <cc-button @cc-click="${() => getDialog(container).show()}" primary>Open Custom Dialog</cc-button>
-        <cc-dialog>
-          open
-          <div style="padding: 2em;">
+        <cc-dialog open>
+          <div slot="content" style="padding: 1em;">
             <h2 style="margin-top: 0; color: #3b82f6;">Fully Custom</h2>
-            <p>This dialog uses the default slot for complete customization.</p>
+            <p>This dialog uses the content slot for complete customization.</p>
             <p>You have full control over layout, styling, and structure.</p>
-            <div style="display: flex; gap: 1em; margin-top: 2em; justify-content: flex-end;">
+            <div style="display: flex; gap: 1em; margin-top: 2em;">
               <cc-button @cc-click="${() => getDialog(container).hide()}" outlined>Cancel</cc-button>
               <cc-button primary>OK</cc-button>
             </div>
@@ -234,12 +267,27 @@ Use this when you need full control over the dialog layout and styling.
 // ========================================
 // These stories demonstrate the type-to-confirm pattern for dangerous operations.
 
-export const confirmToDelete = makeStory(conf, {
-  docs: `
-Demonstrates the confirmation pattern using \`confirm-text-to-input\` and \`confirm-input-label\`.
-This creates a type-to-confirm flow, perfect for irreversible destructive actions.
-The user must type the exact text to enable the submit button.
-  `,
+export const confirmForm = makeStory(conf, {
+  /** @param {HTMLElement} container */
+  dom: (container) => {
+    render(
+      html`
+        <cc-button @cc-click="${() => getDialog(container).show()}" danger>Delete my-app</cc-button>
+        <cc-dialog
+          open
+          heading="Archive Application"
+          content-body="This action may be reverted at any time."
+          confirm-text-to-input="my-app"
+          confirm-input-label="Type the application name to confirm"
+          submit-label="Archive Application"
+        ></cc-dialog>
+      `,
+      container,
+    );
+  },
+});
+
+export const confirmFormWithDangerSubmit = makeStory(conf, {
   /** @param {HTMLElement} container */
   dom: (container) => {
     render(
@@ -248,7 +296,7 @@ The user must type the exact text to enable the submit button.
         <cc-dialog
           open
           heading="Delete Application"
-          content="This will permanently delete the application 'my-app' and all its data. This action cannot be undone."
+          content-body="This will permanently delete the application 'my-app' and all its data. This action cannot be undone."
           confirm-text-to-input="my-app"
           confirm-input-label="Type the application name to confirm"
           submit-label="Delete Application"
@@ -261,14 +309,7 @@ The user must type the exact text to enable the submit button.
   },
 });
 
-export const confirmToDeleteWithAutofocus = makeStory(conf, {
-  docs: `
-Same as confirmToDelete but with \`autofocus-input\` enabled.
-The confirmation input will be automatically focused when the dialog opens.
-
-**Note:** Using autofocus is generally discouraged for accessibility reasons.
-See MDN's autofocus accessibility concerns for more information.
-  `,
+export const confirmToDeleteWithInputAutofocus = makeStory(conf, {
   /** @param {HTMLElement} container */
   dom: (container) => {
     render(
@@ -277,11 +318,10 @@ See MDN's autofocus accessibility concerns for more information.
         <cc-dialog
           open
           heading="Delete Database"
-          content="This will permanently delete the database 'production-db' and all its data. This action cannot be undone."
+          content-body="This will permanently delete the database 'production-db' and all its data. This action cannot be undone."
           confirm-text-to-input="production-db"
           confirm-input-label="Type 'production-db' to confirm deletion"
           submit-label="Delete Database"
-          cancel-label="Cancel"
           submit-intent="danger"
           autofocus-input
         ></cc-dialog>
@@ -291,81 +331,62 @@ See MDN's autofocus accessibility concerns for more information.
   },
 });
 
-// ========================================
-// MIXED APPROACH STORIES
-// ========================================
-// These stories show when to mix props and slots effectively.
-
-export const propsWithSlotContent = makeStory(conf, {
-  docs: `
-Shows using props for structure (heading, buttons) while using the content slot for rich content.
-This is a good balance for most use cases.
-  `,
-  /** @param {HTMLElement} container */
-  dom: (container) => {
-    render(
-      html`
-        <cc-button @cc-click="${() => getDialog(container).show()}" primary>Show Warning</cc-button>
-        <cc-dialog
-          open
-          heading="Important Warning"
-          submit-label="I Understand"
-          cancel-label="Cancel"
-          submit-intent="primary"
-        >
-          <div slot="content">
-            <cc-notice intent="warning">
-              <div slot="message">This action will affect all connected services.</div>
-            </cc-notice>
-            <p>Proceeding will:</p>
-            <ul>
-              <li>Restart all running instances</li>
-              <li>Disconnect active sessions</li>
-              <li>Clear cached data</li>
-            </ul>
-            <p>Are you sure you want to continue?</p>
-          </div>
-        </cc-dialog>
-      `,
-      container,
-    );
-  },
-});
-
 export const longContent = makeStory(conf, {
-  docs: `
-Shows how the dialog handles longer content with scrolling.
-  `,
   /** @param {HTMLElement} container */
   dom: (container) => {
     render(
       html`
         <cc-button @cc-click="${() => getDialog(container).show()}" primary>View Terms</cc-button>
-        <cc-dialog heading="Terms and Conditions" submit-label="Accept" cancel-label="Decline">
-          open
-          <div slot="content">
+        <cc-dialog open heading="Terms and Conditions" submit-label="Accept" cancel-label="Decline">
+          <div slot="content-body">
             <p>Please read these terms carefully before proceeding.</p>
-            <h3>1. Introduction</h3>
+            <h2>1. Introduction</h2>
             <p>
               Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et
               dolore magna aliqua.
             </p>
-            <h3>2. Usage Rights</h3>
+            <h2>2. Usage Rights</h2>
             <p>
               Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
               consequat.
             </p>
-            <h3>3. Limitations</h3>
+            <h2>3. Limitations</h2>
             <p>
               Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
             </p>
-            <h3>4. Privacy</h3>
+            <h2>4. Privacy</h2>
             <p>
               Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est
               laborum.
             </p>
-            <h3>5. Changes to Terms</h3>
+            <h2>5. Changes to Terms</h2>
             <p>We reserve the right to modify these terms at any time.</p>
+            <h2>6. Termination</h2>
+            <p>
+              We may terminate or suspend access to our service immediately, without prior notice or liability, for any
+              reason whatsoever.
+            </p>
+            <h2>7. Governing Law</h2>
+            <p>
+              These terms shall be governed and construed in accordance with the laws of the jurisdiction, without
+              regard to its conflict of law provisions.
+            </p>
+            <h2>8. Intellectual Property</h2>
+            <p>
+              The service and its original content, features, and functionality are and will remain the exclusive
+              property of the company and its licensors.
+            </p>
+            <h2>9. Indemnification</h2>
+            <p>
+              You agree to defend, indemnify and hold harmless the company and its licensee and licensors from and
+              against any and all claims, damages, obligations, losses, liabilities, costs or debt, and expenses.
+            </p>
+            <h2>10. Contact Information</h2>
+            <p>If you have any questions about these Terms, please contact us at support@example.com.</p>
+            <h3>10.1. Support Hours</h3>
+            <p>Our support team is available Monday to Friday, 9am to 5pm.</p>
+            <h3>10.2. Feedback</h3>
+            <p>We welcome your feedback and suggestions to improve our service.</p>
           </div>
         </cc-dialog>
       `,
@@ -379,10 +400,6 @@ Shows how the dialog handles longer content with scrolling.
 // ========================================
 
 export const programmaticControl = makeStory(conf, {
-  docs: `
-Demonstrates programmatic control using \`show()\` and \`hide()\` methods.
-You can also control the dialog via the \`open\` property.
-  `,
   /** @param {HTMLElement} container */
   dom: (container) => {
     render(
@@ -394,7 +411,7 @@ You can also control the dialog via the \`open\` property.
             Toggle via open property
           </cc-button>
         </div>
-        <cc-dialog heading="Programmatic Control" content="This dialog can be controlled programmatically.">
+        <cc-dialog heading="Programmatic Control" content-body="This dialog can be controlled programmatically.">
           open
           <div slot="actions">
             <cc-button @cc-click="${() => getDialog(container).hide()}" primary>Close</cc-button>
@@ -407,14 +424,16 @@ You can also control the dialog via the \`open\` property.
 });
 
 export const openByDefault = makeStory(conf, {
-  docs: `
-Shows a dialog that is open by default using the \`open\` attribute.
-  `,
   /** @param {HTMLElement} container */
   dom: (container) => {
     render(
       html`
-        <cc-dialog open heading="Already Open" content="This dialog was opened automatically." submit-label="Close">
+        <cc-dialog
+          open
+          heading="Already Open"
+          content-body="This dialog was opened automatically."
+          submit-label="Close"
+        >
           open
         </cc-dialog>
       `,
@@ -428,13 +447,6 @@ Shows a dialog that is open by default using the \`open\` attribute.
 // ========================================
 
 export const withAutofocusInput = makeStory(conf, {
-  docs: `
-Demonstrates autofocus on form inputs within the dialog.
-
-**Important:** Using autofocus is generally discouraged for accessibility reasons.
-Users with screen readers may find it disorienting. Only use when appropriate.
-See [MDN autofocus accessibility concerns](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Global_attributes/autofocus#accessibility_concerns).
-  `,
   /** @param {HTMLElement} container */
   dom: (container) => {
     render(
@@ -467,10 +479,6 @@ See [MDN autofocus accessibility concerns](https://developer.mozilla.org/en-US/d
     );
   },
 });
-
-// ========================================
-// HELPER FUNCTIONS
-// ========================================
 
 /**
  * @param {HTMLElement} container
