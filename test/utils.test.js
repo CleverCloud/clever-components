@@ -1,14 +1,5 @@
 import { expect } from '@bundled-es-modules/chai';
-import {
-  clampNumber,
-  generateDevHubHref,
-  generateDocsHref,
-  groupBy,
-  isStringBlank,
-  isStringEmpty,
-  randomString,
-  range,
-} from '../src/lib/utils.js';
+import { clampNumber, groupBy, isStringBlank, isStringEmpty, randomString, range } from '../src/lib/utils.js';
 
 describe('range function', function () {
   it('should return array', function () {
@@ -133,33 +124,5 @@ describe('groupBy function', () => {
     const grouped = groupBy([], (o) => o.prop?.toUpperCase());
 
     expect(grouped).to.eql({});
-  });
-});
-
-describe('generateDocsHref', () => {
-  it('should append /doc/ and path to base URL without trailing slash', () => {
-    expect(generateDocsHref('foo/bar')).to.equal('https://www.clever.cloud/developers/doc/foo/bar');
-  });
-
-  it('should handle path with leading slash', () => {
-    expect(generateDocsHref('/foo/bar')).to.equal('https://www.clever.cloud/developers/doc/foo/bar');
-  });
-
-  it('should handle empty path', () => {
-    expect(generateDocsHref()).to.equal('https://www.clever.cloud/developers/doc/');
-  });
-});
-
-describe('generateDevHubHref', () => {
-  it('should append path to base URL without trailing slash', () => {
-    expect(generateDevHubHref('foo/bar')).to.equal('https://www.clever.cloud/developers/foo/bar');
-  });
-
-  it('should handle path with leading slash', () => {
-    expect(generateDevHubHref('/foo/bar')).to.equal('https://www.clever.cloud/developers/foo/bar');
-  });
-
-  it('should handle empty path', () => {
-    expect(generateDevHubHref()).to.equal('https://www.clever.cloud/developers/');
   });
 });
