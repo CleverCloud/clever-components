@@ -8,7 +8,7 @@ import {
   iconRemixFlowChart as iconWorkflow,
 } from '../../assets/cc-remix.icons.js';
 import { DateFormatter } from '../../lib/date/date-formatter.js';
-import { generateDevHubHref } from '../../lib/utils.js';
+import { getDevHubUrl } from '../../lib/dev-hub-url.js';
 import { accessibilityStyles } from '../../styles/accessibility.js';
 import '../cc-block-section/cc-block-section.js';
 import '../cc-block/cc-block.js';
@@ -123,7 +123,7 @@ export class CcVisualTestsReport extends LitElement {
         <header>
           <a
             class="storybook-link"
-            href="${generateDevHubHref('clever-components/?path=/docs/readme--docs')}"
+            href="${getDevHubUrl('clever-components/?path=/docs/readme--docs')}"
             title="Clever Components - Storybook - new window"
             target="_blank"
             rel="noopener"

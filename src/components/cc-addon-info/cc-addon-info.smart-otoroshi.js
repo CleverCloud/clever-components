@@ -1,7 +1,7 @@
 import { getAssetUrl } from '../../lib/assets-url.js';
+import { getDocUrl } from '../../lib/dev-hub-url.js';
 import { notifyError, notifySuccess } from '../../lib/notifications.js';
 import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
-import { generateDocsHref } from '../../lib/utils.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-smart-container/cc-smart-container.js';
 import { CcAddonInfoClient, formatVersionState } from './cc-addon-info.client.js';
@@ -76,7 +76,7 @@ defineSmartComponent({
     updateComponent('state', LOADING_STATE);
     updateComponent('docLink', {
       text: i18n('cc-addon-info.doc-link.otoroshi'),
-      href: generateDocsHref('/addons/otoroshi'),
+      href: getDocUrl('/addons/otoroshi'),
     });
 
     api

@@ -1,7 +1,7 @@
 import { css, html, LitElement } from 'lit';
 import { iconRemixInformationFill as iconInfo } from '../../assets/cc-remix.icons.js';
 import { getAssetUrl } from '../../lib/assets-url.js';
-import { generateDocsHref } from '../../lib/utils.js';
+import { getDocUrl } from '../../lib/dev-hub-url.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-block-section/cc-block-section.js';
 import '../cc-block/cc-block.js';
@@ -16,7 +16,7 @@ const GRAFANA_LOGO_URL = getAssetUrl('/logos/grafana.svg');
 const GRAFANA_HOME_SCREEN = getAssetUrl('/grafana/screens/home.png');
 const GRAFANA_RUNTIME_SCREEN = getAssetUrl('/grafana/screens/runtime.png');
 const GRAFANA_ADDON_SCREEN = getAssetUrl('/grafana/screens/addon.png');
-const GRAFANA_DOCUMENTATION = generateDocsHref('/metrics');
+const GRAFANA_DOCUMENTATION = getDocUrl('/metrics');
 
 /**
  * @typedef {import('./cc-grafana-info.types.js').GrafanaInfoState} GrafanaInfoState

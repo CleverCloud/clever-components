@@ -1,7 +1,7 @@
 import { css, html, LitElement } from 'lit';
 import { iconRemixInformationFill as iconInfo } from '../../assets/cc-remix.icons.js';
 import { getAssetUrl } from '../../lib/assets-url.js';
-import { generateDocsHref } from '../../lib/utils.js';
+import { getDocUrl } from '../../lib/dev-hub-url.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-block-section/cc-block-section.js';
@@ -18,7 +18,7 @@ const MATOMO_LOGO_URL = getAssetUrl('/logos/matomo.svg');
 const PHP_LOGO_URL = getAssetUrl('/logos/php.svg');
 const MYSQL_LOGO_URL = getAssetUrl('/logos/mysql.svg');
 const REDIS_LOGO_URL = getAssetUrl('/logos/redis.svg');
-const MATOMO_DOCUMENTATION = generateDocsHref('/deploy/addon/matomo/');
+const MATOMO_DOCUMENTATION = getDocUrl('/deploy/addon/matomo');
 
 /**
  * @typedef {import('./cc-matomo-info.types.js').MatomoInfoState} MatomoInfoState

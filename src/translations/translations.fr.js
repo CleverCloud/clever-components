@@ -1,3 +1,4 @@
+import { getDevHubUrl, getDocUrl } from '../lib/dev-hub-url.js';
 import {
   prepareFormatDate,
   prepareFormatDateOnly,
@@ -15,7 +16,6 @@ import {
 } from '../lib/i18n/i18n-number.js';
 import { sanitize } from '../lib/i18n/i18n-sanitize.js';
 import { preparePlural } from '../lib/i18n/i18n-string.js';
-import { generateDevHubHref, generateDocsHref } from '../lib/utils.js';
 
 /**
  * @typedef {import('../components/common.types.js').Flavor} Flavor
@@ -77,7 +77,7 @@ function formatFlavor(flavor) {
 }
 
 const getCliInstructions = () =>
-  sanitize`Pour installer les Clever Tools (CLI), suivez les instructions de la <cc-link href="${generateDocsHref('/cli/install/')}" a11y-desc="documentation - Installer les Clever Tools - en Anglais">documentation</cc-link>.`;
+  sanitize`Pour installer les Clever Tools (CLI), suivez les instructions de la <cc-link href="${getDocUrl('/cli/install')}" a11y-desc="documentation - Installer les Clever Tools - en Anglais">documentation</cc-link>.`;
 
 export const translations = {
   //#region cc-addon-admin
@@ -264,7 +264,7 @@ export const translations = {
   //#endregion
   //#region cc-addon-encryption-at-rest-option
   'cc-addon-encryption-at-rest-option.description': () =>
-    sanitize`Le chiffrement au repos chiffre l'intégralité du disque de données afin de ne pas y stocker d'informations en clair. Grâce à cette sécurité, l'accès physique au disque empêchera toute lecture des données stockées. Plus d'information dans notre <cc-link href="${generateDocsHref('/administrate/encryption-at-rest/')}">documentation</cc-link>.`,
+    sanitize`Le chiffrement au repos chiffre l'intégralité du disque de données afin de ne pas y stocker d'informations en clair. Grâce à cette sécurité, l'accès physique au disque empêchera toute lecture des données stockées. Plus d'information dans notre <cc-link href="${getDocUrl('/administrate/encryption-at-rest')}">documentation</cc-link>.`,
   'cc-addon-encryption-at-rest-option.title': `Chiffrement au repos`,
   //#endregion
   //#region cc-addon-features
@@ -446,12 +446,12 @@ export const translations = {
   //#endregion
   //#region cc-domain-management
   'cc-domain-management.certif.automated': () =>
-    sanitize`Que vous utilisiez <code>cleverapps.io</code> ou vos propres noms de domaine avec les applications hébergées par Clever Cloud, un certificat Let's Encrypt est automatiquement généré et renouvelé pour l'accès HTTPS/TLS. Vous n'avez rien à faire. Pour les cas spécifiques, reportez-vous à notre <cc-link href="${generateDocsHref('/administrate/ssl/')}" lang="en">documentation</cc-link>.`,
+    sanitize`Que vous utilisiez <code>cleverapps.io</code> ou vos propres noms de domaine avec les applications hébergées par Clever Cloud, un certificat Let's Encrypt est automatiquement généré et renouvelé pour l'accès HTTPS/TLS. Vous n'avez rien à faire. Pour les cas spécifiques, reportez-vous à notre <cc-link href="${getDocUrl('/administrate/ssl')}" lang="en">documentation</cc-link>.`,
   'cc-domain-management.certif.custom': () =>
     sanitize`Vous pouvez fournir votre propre certificat grâce au <cc-link href="https://api.clever-cloud.com/v2/certificates/new">gestionnaire de certificats Clever Cloud</cc-link>.`,
   'cc-domain-management.certif.heading': `Sécurisez votre application`,
   'cc-domain-management.dns.a.desc': () =>
-    sanitize`<p>Si vous choisissez d'utiliser des enregistrements de type <code>A</code>, par exemple pour un domaine racine (APEX), vous devrez vous-même assurer leur mise à jour. Pensez à suivre notre <cc-link href="${generateDevHubHref('/changelog')}" lang="en">changelog</cc-link> ou à lire la documentation de notre <cc-link href="${generateDevHubHref('/api/v4/#load-balancers')}" lang="en">API v4</cc-link> pour cela.</p>`,
+    sanitize`<p>Si vous choisissez d'utiliser des enregistrements de type <code>A</code>, par exemple pour un domaine racine (APEX), vous devrez vous-même assurer leur mise à jour. Pensez à suivre notre <cc-link href="${getDevHubUrl('/changelog')}" lang="en">changelog</cc-link> ou à lire la documentation de notre <cc-link href="${getDevHubUrl('/api/v4/#load-balancers')}" lang="en">API v4</cc-link> pour cela.</p>`,
   'cc-domain-management.dns.a.heading': `Enregistrements A`,
   'cc-domain-management.dns.a.label': `Valeurs d'enregistrement A`,
   'cc-domain-management.dns.cli.content.diag-conf-command': `Commande pour diagnostiquer l'installation actuelle\u00A0:`,
@@ -465,7 +465,7 @@ export const translations = {
   'cc-domain-management.dns.documentation.text': `Enregistrements DNS - Documentation`,
   'cc-domain-management.dns.heading': `Configurez vos DNS`,
   'cc-domain-management.dns.info.desc': () =>
-    sanitize`Si vous bénéficiez d'un <span lang="en">load balancer</span> dédié, référez-vous à sa configuration ou <cc-link href="/ticket-center-choice">contactez le support</cc-link>. Notre équipe pourra également vous aider pour commander un tel service. Pour un domaine sans sous-domaine (APEX) ou un sous-domaine avec sa propre zone DNS, référez-vous à notre <cc-link href="${generateDocsHref('/administrate/domain-names/')}">documentation</cc-link>.`,
+    sanitize`Si vous bénéficiez d'un <span lang="en">load balancer</span> dédié, référez-vous à sa configuration ou <cc-link href="/ticket-center-choice">contactez le support</cc-link>. Notre équipe pourra également vous aider pour commander un tel service. Pour un domaine sans sous-domaine (APEX) ou un sous-domaine avec sa propre zone DNS, référez-vous à notre <cc-link href="${getDocUrl('/administrate/domain-names')}">documentation</cc-link>.`,
   'cc-domain-management.dns.info.heading': `Load balancers dédiés et cas spécifiques`,
   'cc-domain-management.dns.loading-error': `Une erreur est survenue pendant le chargement des informations DNS`,
   'cc-domain-management.form.domain.error.contains-path': /** @param {{path: string}} _ */ ({ path }) =>
@@ -478,7 +478,7 @@ export const translations = {
     sanitize`Par exemple\u00A0: <code>example.com</code>, <code>*.example.com</code> ou <code>example.cleverapps.io</code>`,
   'cc-domain-management.form.domain.label': `Nom de domaine`,
   'cc-domain-management.form.info.cleverapps': () =>
-    sanitize`Par défaut, une application se voit attribuer un nom de domaine de type <code>app_id.cleverapps.io</code>. Vous pouvez le supprimer ou changer le sous-domaine librement, mais <code>xxx.cleverapps.io</code> doit uniquement être utilisé à des fins de test (voir notre <cc-link href="${generateDocsHref('/administrate/domain-names/#testing-with-cleverappsio-domain')}">documentation</cc-link>).`,
+    sanitize`Par défaut, une application se voit attribuer un nom de domaine de type <code>app_id.cleverapps.io</code>. Vous pouvez le supprimer ou changer le sous-domaine librement, mais <code>xxx.cleverapps.io</code> doit uniquement être utilisé à des fins de test (voir notre <cc-link href="${getDocUrl('/administrate/domain-names/#testing-with-cleverappsio-domain')}">documentation</cc-link>).`,
   'cc-domain-management.form.info.docs': `Vous pouvez associer un ou plusieurs noms de domaines à votre application. Le domaine principal sera utilisé dans les liens de la Console et dans les e-mails qui vous seront envoyés. Plusieurs applications peuvent partager un même domaine, chacune avec un sous-domaine et/ou une route spécifique.`,
   'cc-domain-management.form.path.help': () => sanitize`Par exemple\u00A0: <code>/api</code> ou <code>/blog</code>`,
   'cc-domain-management.form.path.label': `Route`,
@@ -590,7 +590,7 @@ export const translations = {
   'cc-env-var-create.errors.invalid-name': /** @param {{name: string}} _ */ ({ name }) =>
     sanitize`Le nom <code>${name}</code> n'est pas valide`,
   'cc-env-var-create.info.java-prop': /** @param {{name: string}} _ */ ({ name }) =>
-    sanitize`La variable <code>${name}</code> sera injecté sous forme de propriété Java et non en tant que variable d'environnement, <cc-link href="${generateDocsHref('/develop/env-variables/#environment-variables-rules-and-formats')}">plus de détails</cc-link>`,
+    sanitize`La variable <code>${name}</code> sera injecté sous forme de propriété Java et non en tant que variable d'environnement, <cc-link href="${getDocUrl('/develop/env-variables/#environment-variables-rules-and-formats')}">plus de détails</cc-link>`,
   'cc-env-var-create.name.label': `Nom de la variable`,
   'cc-env-var-create.value.label': `Valeur de la variable`,
   //#endregion
@@ -608,9 +608,9 @@ export const translations = {
   'cc-env-var-editor-expert.errors.line': `ligne`,
   'cc-env-var-editor-expert.errors.unknown': `Erreur inconnue`,
   'cc-env-var-editor-expert.example': () =>
-    sanitize`Format\u00A0: <code>NOM_DE_LA_VARIABLE="valeur de la variable"</code> <br> Chaque variable doit être séparée par des sauts de ligne, <cc-link href="${generateDocsHref('/develop/env-variables/#format')}">en savoir plus</cc-link>.`,
+    sanitize`Format\u00A0: <code>NOM_DE_LA_VARIABLE="valeur de la variable"</code> <br> Chaque variable doit être séparée par des sauts de ligne, <cc-link href="${getDocUrl('/develop/env-variables/#format')}">en savoir plus</cc-link>.`,
   'cc-env-var-editor-expert.info.java-prop': /** @param {{name: string}} _ */ ({ name }) =>
-    sanitize`La variable <code>${name}</code> sera injecté sous forme de propriété Java et non en tant que variable d'environnement, <cc-link href="${generateDocsHref('/develop/env-variables/#environment-variables-rules-and-formats')}">plus de détails</cc-link>`,
+    sanitize`La variable <code>${name}</code> sera injecté sous forme de propriété Java et non en tant que variable d'environnement, <cc-link href="${getDocUrl('/develop/env-variables/#environment-variables-rules-and-formats')}">plus de détails</cc-link>`,
   'cc-env-var-editor-expert.label': `Edition des variables. Format\u00A0: NOM_DE_LA_VARIABLE="valeur de la variable". Chaque variable doit être séparée par des sauts de ligne.`,
   //#endregion
   //#region cc-env-var-editor-json
@@ -625,9 +625,9 @@ export const translations = {
     sanitize`Le nom <code>${name}</code> n'est pas valide en mode strict`,
   'cc-env-var-editor-json.errors.unknown': `Erreur inconnue`,
   'cc-env-var-editor-json.example': () =>
-    sanitize`Format\u00A0: <code>{ "name": "NOM_DE_LA_VARIABLE", "value": "valeur de la variable" }</code> <br> Tableau d'objets respectant le format ci-dessus, <cc-link href="${generateDocsHref('/develop/env-variables/#format')}">en savoir plus</cc-link>.`,
+    sanitize`Format\u00A0: <code>{ "name": "NOM_DE_LA_VARIABLE", "value": "valeur de la variable" }</code> <br> Tableau d'objets respectant le format ci-dessus, <cc-link href="${getDocUrl('/develop/env-variables/#format')}">en savoir plus</cc-link>.`,
   'cc-env-var-editor-json.info.java-prop': /** @param {{name: string}} _ */ ({ name }) =>
-    sanitize`La variable <code>${name}</code> sera injecté sous forme de propriété Java et non en tant que variable d'environnement, <cc-link href="${generateDocsHref('/develop/env-variables/#environment-variables-rules-and-formats')}">plus de détails</cc-link>`,
+    sanitize`La variable <code>${name}</code> sera injecté sous forme de propriété Java et non en tant que variable d'environnement, <cc-link href="${getDocUrl('/develop/env-variables/#environment-variables-rules-and-formats')}">plus de détails</cc-link>`,
   'cc-env-var-editor-json.label': `Edition des variables. Tableau d'objets respectant le format\u00A0: { "name": "NOM_DE_LA_VARIABLE", "value": "valeur de la variable" }.`,
   //#endregion
   //#region cc-env-var-editor-simple
@@ -642,11 +642,11 @@ export const translations = {
     `,
   'cc-env-var-form.cli.content.list-var-command': `Lister les variables d'environnement\u00A0:`,
   'cc-env-var-form.description.config-provider': /** @param {{addonName: string}} _ */ ({ addonName }) =>
-    sanitize`Configuration publiée pour les applications dépendantes. <cc-link href="${generateDocsHref('/deploy/addon/config-provider/')}">En savoir plus</cc-link><br>Ces seront injectées en tant que variables d'environnement dans les applications qui ont l'add-on <strong>${addonName}</strong> dans leurs services liés.<br>À chaque fois que vous mettez à jour les changements, toutes les applications dépendantes seront redémarrées automatiquement.`,
+    sanitize`Configuration publiée pour les applications dépendantes. <cc-link href="${getDocUrl('/deploy/addon/config-provider')}">En savoir plus</cc-link><br>Ces seront injectées en tant que variables d'environnement dans les applications qui ont l'add-on <strong>${addonName}</strong> dans leurs services liés.<br>À chaque fois que vous mettez à jour les changements, toutes les applications dépendantes seront redémarrées automatiquement.`,
   'cc-env-var-form.description.env-var': /** @param {{appName: string}} _ */ ({ appName }) =>
     sanitize`Ces variables seront injectées en tant que variables d'environnement dans l'application <strong>${appName}</strong>.`,
   'cc-env-var-form.description.exposed-config': /** @param {{appName: string}} _ */ ({ appName }) =>
-    sanitize`Configuration publiée pour les applications dépendantes. <cc-link href="${generateDocsHref('/administrate/service-dependencies/#exposed-configuration')}">En savoir plus</cc-link><br>Ces variables ne seront pas injectées dans l'application <strong>${appName}</strong>, elles seront injectées en tant que variables d'environnement dans les applications qui ont <strong>${appName}</strong> dans leurs services liés.`,
+    sanitize`Configuration publiée pour les applications dépendantes. <cc-link href="${getDocUrl('/administrate/service-dependencies/#exposed-configuration')}">En savoir plus</cc-link><br>Ces variables ne seront pas injectées dans l'application <strong>${appName}</strong>, elles seront injectées en tant que variables d'environnement dans les applications qui ont <strong>${appName}</strong> dans leurs services liés.`,
   'cc-env-var-form.documentation.text': `Variables d’environnement - Référence`,
   'cc-env-var-form.error.loading': `Une erreur est survenue pendant le chargement des variables.`,
   'cc-env-var-form.heading.config-provider': `Variables`,
@@ -1332,7 +1332,7 @@ export const translations = {
   'cc-orga-member-list.invite.email.label': `Adresse e-mail`,
   'cc-orga-member-list.invite.heading': `Inviter un membre`,
   'cc-orga-member-list.invite.info': () =>
-    sanitize`Plus d'informations à propos des rôles sur la page <cc-link href="${generateDocsHref('/account/organizations/#roles-and-privileges')}">Rôles et organisations (en anglais)</cc-link>`,
+    sanitize`Plus d'informations à propos des rôles sur la page <cc-link href="${getDocUrl('/account/organizations/#roles-and-privileges')}">Rôles et organisations (en anglais)</cc-link>`,
   'cc-orga-member-list.invite.role.accounting': `Comptable`,
   'cc-orga-member-list.invite.role.admin': `Admin`,
   'cc-orga-member-list.invite.role.developer': `Développeur`,
@@ -1858,7 +1858,7 @@ export const translations = {
   'cc-token-api-list.empty': `Vous n'avez aucun token d'API, ou aucun d'eux n'est actif. Créez un nouveau token\u00A0:`,
   'cc-token-api-list.error': `Une erreur est survenue pendant le chargement des tokens d'API`,
   'cc-token-api-list.intro': () =>
-    sanitize`Ci-dessous la liste des <cc-link href="${generateDevHubHref('/developers/api/howto/#request-the-api')}" a11y-desc="Tokens d'API - Documentation">tokens d'API</cc-link> associés à votre compte et leurs informations. Vous pouvez les révoquer si nécessaire.`,
+    sanitize`Ci-dessous la liste des <cc-link href="${getDevHubUrl('/developers/api/howto/#request-the-api')}" a11y-desc="Tokens d'API - Documentation">tokens d'API</cc-link> associés à votre compte et leurs informations. Vous pouvez les révoquer si nécessaire.`,
   'cc-token-api-list.link.doc': `Tokens d'API - Documentation`,
   'cc-token-api-list.main-heading': `Tokens d'API`,
   'cc-token-api-list.no-password.create-password-btn': `Ajouter un mot de passe`,
@@ -1903,7 +1903,7 @@ export const translations = {
   'cc-token-oauth-list.empty': `Aucune application tierce n'est liée à votre compte`,
   'cc-token-oauth-list.error': `Une erreur est survenue pendant le chargement des tokens OAuth`,
   'cc-token-oauth-list.intro': () =>
-    sanitize`Ci-dessous la liste des applications tierces liées à votre compte et leurs informations. Vous pouvez révoquer leurs <cc-link href="${generateDevHubHref('/developers/api/howto/#oauth1')}" a11y-desc="tokens OAuth - Documentation">tokens OAuth</cc-link> si vous le souhaitez.`,
+    sanitize`Ci-dessous la liste des applications tierces liées à votre compte et leurs informations. Vous pouvez révoquer leurs <cc-link href="${getDevHubUrl('/developers/api/howto/#oauth1')}" a11y-desc="tokens OAuth - Documentation">tokens OAuth</cc-link> si vous le souhaitez.`,
   'cc-token-oauth-list.link.doc': `Tokens OAuth - Documentation`,
   'cc-token-oauth-list.main-heading': `Tokens OAuth`,
   'cc-token-oauth-list.revoke-all-tokens': `Révoquer tous les tokens OAuth`,

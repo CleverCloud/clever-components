@@ -1,6 +1,6 @@
 import { css, html, LitElement } from 'lit';
 import { iconRemixInformationFill as iconInfo } from '../../assets/cc-remix.icons.js';
-import { generateDocsHref } from '../../lib/utils.js';
+import { getDocUrl } from '../../lib/dev-hub-url.js';
 import { cliCommandsStyles } from '../../styles/cli-commands.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-badge/cc-badge.js';
@@ -11,7 +11,7 @@ import '../cc-link/cc-link.js';
 import '../cc-notice/cc-notice.js';
 import '../cc-tcp-redirection/cc-tcp-redirection.js';
 
-const TCP_REDIRECTION_DOCUMENTATION = generateDocsHref('/administrate/tcp-redirections/');
+const TCP_REDIRECTION_DOCUMENTATION = getDocUrl('/administrate/tcp-redirections');
 
 /** @type {TcpRedirectionStateLoading[]} */
 const SKELETON_REDIRECTIONS = [{ type: 'loading' }, { type: 'loading' }];
