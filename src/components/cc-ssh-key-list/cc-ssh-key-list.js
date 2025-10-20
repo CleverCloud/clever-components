@@ -9,11 +9,12 @@ import {
   iconRemixKey_2Fill as iconKey,
 } from '../../assets/cc-remix.icons.js';
 import { LostFocusController } from '../../controllers/lost-focus-controller.js';
+import { getDocUrl } from '../../lib/dev-hub-url.js';
 import { fakeString } from '../../lib/fake-strings.js';
 import { focusBySelector } from '../../lib/focus-helper.js';
 import { formSubmit } from '../../lib/form/form-submit-directive.js';
 import { Validation } from '../../lib/form/validation.js';
-import { generateDocsHref, sortBy } from '../../lib/utils.js';
+import { sortBy } from '../../lib/utils.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-badge/cc-badge.js';
@@ -27,7 +28,7 @@ import '../cc-link/cc-link.js';
 import '../cc-notice/cc-notice.js';
 import { CcSshKeyCreateEvent, CcSshKeyDeleteEvent, CcSshKeyImportEvent } from './cc-ssh-key-list.events.js';
 
-const SSH_KEY_DOCUMENTATION = generateDocsHref('/account/ssh-keys-management/');
+const SSH_KEY_DOCUMENTATION = getDocUrl('/account/ssh-keys-management');
 
 /**
  * @type {SshKeyState[]}

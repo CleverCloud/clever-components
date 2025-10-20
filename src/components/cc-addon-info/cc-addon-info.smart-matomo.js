@@ -1,7 +1,7 @@
 import { getAssetUrl } from '../../lib/assets-url.js';
+import { getDocUrl } from '../../lib/dev-hub-url.js';
 import { sendToApi } from '../../lib/send-to-api.js';
 import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
-import { generateDocsHref } from '../../lib/utils.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-smart-container/cc-smart-container.js';
 import { CcAddonInfoClient } from './cc-addon-info.client.js';
@@ -87,7 +87,7 @@ defineSmartComponent({
     updateComponent('state', LOADING_STATE);
     updateComponent('docLink', {
       text: i18n('cc-addon-info.doc-link.matomo'),
-      href: generateDocsHref('/addons/matomo'),
+      href: getDocUrl('/addons/matomo'),
     });
 
     api

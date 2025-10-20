@@ -1,4 +1,4 @@
-import { generateDocsHref } from '../../lib/utils.js';
+import { getDocUrl } from '../../lib/dev-hub-url.js';
 import {
   azimuttInfo,
   configInfo,
@@ -222,7 +222,7 @@ export const materia = makeStory(conf, {
         ...materiaInfo,
       },
       innerHTML: `
-        <p slot="billing">Materia KV uses our next generation of serverless distributed database, synchronously-replicated. Free of charge during testing phases, it will be available on a pay-as-you-go flexible pricing. Develop with ease, it's compatible with third-party protocols, such as Redis: <a href="${generateDocsHref('/doc/addons/materia-kv/')}">learn more.</a></p>
+        <p slot="billing">Materia KV uses our next generation of serverless distributed database, synchronously-replicated. Free of charge during testing phases, it will be available on a pay-as-you-go flexible pricing. Develop with ease, it's compatible with third-party protocols, such as Redis: <a href="${getDocUrl('/addons/materia-kv')}">learn more.</a></p>
 `,
     },
     {
@@ -232,7 +232,7 @@ export const materia = makeStory(conf, {
         ...materiaInfo,
       },
       innerHTML: `
-        <p slot="billing">Materia KV uses our next generation of serverless distributed database, synchronously-replicated. Free of charge during testing phases, it will be available on a pay-as-you-go flexible pricing. Develop with ease, it's compatible with third-party protocols, such as Redis: <a href="${generateDocsHref('/doc/addons/materia-kv/')}">learn more.</a></p>
+        <p slot="billing">Materia KV uses our next generation of serverless distributed database, synchronously-replicated. Free of charge during testing phases, it will be available on a pay-as-you-go flexible pricing. Develop with ease, it's compatible with third-party protocols, such as Redis: <a href="${getDocUrl('/addons/materia-kv')}">learn more.</a></p>
 `,
     },
   ],

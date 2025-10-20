@@ -2,7 +2,7 @@ import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { iconRemixInformationFill as iconInfo } from '../../assets/cc-remix.icons.js';
 import { getAssetUrl } from '../../lib/assets-url.js';
-import { generateDocsHref } from '../../lib/utils.js';
+import { getDocUrl } from '../../lib/dev-hub-url.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-block/cc-block.js';
@@ -13,7 +13,7 @@ import '../cc-notice/cc-notice.js';
 const ELASTICSEARCH_LOGO_URL = getAssetUrl('/logos/elastic.svg');
 const KIBANA_LOGO_URL = getAssetUrl('/logos/elasticsearch-kibana.svg');
 const APM_LOGO_URL = getAssetUrl('/logos/elasticsearch-apm.svg');
-const ELASTICSEARCH_DOCUMENTATION = generateDocsHref('/addons/elastic/');
+const ELASTICSEARCH_DOCUMENTATION = getDocUrl('/addons/elastic');
 const linksSortOrder = ['elasticsearch', 'kibana', 'apm'];
 
 /**

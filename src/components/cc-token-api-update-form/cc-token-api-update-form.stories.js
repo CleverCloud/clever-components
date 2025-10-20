@@ -1,8 +1,8 @@
-import { generateDocsHref } from '../../lib/utils.js';
+import { getDocUrl } from '../../lib/dev-hub-url.js';
 import { makeStory, storyWait } from '../../stories/lib/make-story.js';
 import './cc-token-api-update-form.js';
 
-const CC_TOKEN_API_LIST_STORY_HREF = generateDocsHref(
+const CC_TOKEN_API_LIST_STORY_HREF = getDocUrl(
   '/clever-components/?path=/story/🛠-profile-cc-token-api-list--default-story',
 );
 
