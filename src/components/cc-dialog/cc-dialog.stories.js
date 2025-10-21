@@ -1,5 +1,6 @@
 import { html, render } from 'lit';
 import { iconRemixImageCircleFill as imageIcon } from '../../assets/cc-remix.icons.js';
+import '../../stories/fixtures/my-dialog-list-example.js';
 import { makeStory } from '../../stories/lib/make-story.js';
 import '../cc-button/cc-button.js';
 import '../cc-input-text/cc-input-text.js';
@@ -15,18 +16,13 @@ export default {
 
 /**
  * @typedef {import('./cc-dialog.js').CcDialog} CcDialog
+ * @typedef {import('../../stories/fixtures/my-dialog-list-example.js').MyDialogListExample} MyDialogListExample
  */
 
 const conf = {
   component: 'cc-dialog',
   displayMode: 'flex-wrap',
 };
-
-// ========================================
-// PROPERTY-BASED STORIES
-// ========================================
-// These stories demonstrate using component properties for simple configurations.
-// Use props when you need basic text content and standard button layouts.
 
 export const defaultStory = makeStory(conf, {
   /** @param {HTMLElement} container */
@@ -392,6 +388,30 @@ export const longContent = makeStory(conf, {
       `,
       container,
     );
+  },
+});
+
+export const focusManagementAfterDeletion = makeStory(conf, {
+  /** @param {HTMLElement} container */
+  dom: (container) => {
+    const items = [
+      { id: 'item1', name: 'Item 1' },
+      { id: 'item2', name: 'Item 2' },
+      { id: 'item3', name: 'Item 3' },
+      { id: 'item4', name: 'Item 4' },
+      { id: 'item5', name: 'Item 5' },
+    ];
+
+    render(
+      html`<my-dialog-list-example .items="${items}" @remove-item="${removeItem}"></my-dialog-list-example>`,
+      container,
+    );
+
+    /** @param {CustomEvent<{id: string, name: string }> & { currentTarget: MyDialogListExample }} event */
+    function removeItem(event) {
+      const myListEl = event.currentTarget;
+      myListEl.items = myListEl.items.filter((item) => item.id !== event.detail.id);
+    }
   },
 });
 

@@ -34,6 +34,12 @@ export default [
       },
     },
     ...cleverCloud.configs.browser,
+    rules: {
+      'import-x/no-extraneous-dependencies': [
+        'error',
+        { devDependencies: true, optionalDependencies: false, peerDependencies: false },
+      ],
+    },
   },
   i18nPlugin.configs.recommended,
   wcCleverCloud,

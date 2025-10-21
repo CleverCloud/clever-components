@@ -12,7 +12,7 @@ import { findActiveElement, isParentOf } from '../lib/shadow-dom-utils.js';
 
 /**
  * @typedef {Object} LostFocusEvent
- * @property {Element} removedElement the element that has been removed from DOM
+ * @property {Element[]} removedElements the element that has been removed from DOM
  * @property {Element} focusedElement the element that had focus just before removal (can be the removedElement itself or one of its children)
  * @property {number} index the index of the removedElement (before removal)
  * @property {Element|null} suggestedElement the element that we suggest to gain focus
@@ -53,6 +53,8 @@ export class LostFocusController {
   async hostUpdated() {
     await this.additionalWaiter?.();
 
+    const currentActiveElement = findActiveElement();
+
     // keep the previous elements because we will want to compare with the new ones
     const previousElements = this.elements;
     // get the elements we are interested in
@@ -60,6 +62,7 @@ export class LostFocusController {
 
     // compare elements to the previous one and check if some elements have been removed
     const removedElements = previousElements.filter((e) => !this.elements.includes(e));
+    console.log({ elements: this.elements, previousElements, removedElements });
     if (removedElements.length > 0) {
       // among these removed elements, find the one containing the focused element
       // elementWithFocus may not be the focused element itself, it can be the element matching the query selector containing the focused element.
@@ -68,14 +71,14 @@ export class LostFocusController {
       );
       if (elementWithFocus != null) {
         // we find the index of the removed element in the previous list
-        const index = previousElements.indexOf(elementWithFocus);
+        const index = previousElements.indexOf(removedElements[0]);
 
         // we suggest a new element to have the focus
         const suggestedElementIndex = Math.min(this.elements.length - 1, index);
         const suggestedElement = suggestedElementIndex > -1 ? this.elements[suggestedElementIndex] : null;
 
         this.callback({
-          removedElement: elementWithFocus,
+          removedElements,
           focusedElement: this.activeElement,
           index: index,
           suggestedElement,
