@@ -31,6 +31,7 @@ export class CcDialog extends LitElement {
       confirmInputLabel: { type: String, attribute: 'confirm-input-label' },
       confirmTextToInput: { type: String, attribute: 'confirm-text-to-input' },
       contentBody: { type: String, attribute: 'content-body' },
+      getNextOpeningElement: { type: Object, attribute: false },
       heading: { type: String },
       open: { type: Boolean, reflect: true },
       submitIntent: { type: String, attribute: 'submit-intent' },
@@ -97,16 +98,23 @@ export class CcDialog extends LitElement {
   updated(changedProperties) {
     if (changedProperties.get('open') === true && !this.open) {
       this._dialogRef.value?.close();
+      console.log('WAS OPEN so focusing');
       this._tryToFocusOpeningElement();
       this.dispatchEvent(new CcDialogCloseEvent());
     }
 
     if (changedProperties.has('open') && this.open) {
       this._lastFocusedElement = findActiveElement();
+
       this._dialogRef.value?.showModal();
       // FIXME: might be weird to dispatch since the component cannot open by itself
       this.dispatchEvent(new CcDialogOpenEvent());
     }
+  }
+
+  _setLastFocusElements() {
+    this._lastFocusedElement = findActiveElement();
+    this._nextOpeningElement = this.getNextOpeningElement(this._lastFocusedElement);
   }
 
   show() {
@@ -136,6 +144,8 @@ export class CcDialog extends LitElement {
       this._lastFocusedElement.focus();
     }
     // TODO: dispatch some event to warn that focus lost?
+    console.log(this._lastFocusedElement);
+    this._lastFocusedElement.ariaChecked;
   }
 
   disconnectedCallback() {
