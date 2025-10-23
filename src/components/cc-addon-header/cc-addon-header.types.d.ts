@@ -79,4 +79,6 @@ export interface KubeInfo {
   description?: string | null;
   tag?: string | null;
   status: string;
+  creationDate: string;
+  version: string;
 }
