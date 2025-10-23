@@ -284,6 +284,7 @@ export const translations = {
   'cc-addon-header.action.restart': `Redémarrer`,
   'cc-addon-header.action.restart-rebuild': `Re-build et redémarrer`,
   'cc-addon-header.error': `Une erreur est survenue pendant le chargement des informations`,
+  'cc-addon-header.error.fetch-kubeconfig': `Une erreur est survenue lors du rafraîchissement du lien Kubeconfig, veuillez raffraîchir la page`,
   'cc-addon-header.logs.link': `Voir les logs`,
   'cc-addon-header.rebuild.error': `Une erreur est survenue pendant le re-build de l'add-on`,
   'cc-addon-header.rebuild.success.message': /** @param {{logsUrl: string, docsUrl: string}} _ */ ({
@@ -300,8 +301,8 @@ export const translations = {
     sanitize`Le processus de redémarrage de votre add-on et de ses ressources est en cours. Consultez les <cc-link href="${logsUrl}">logs</cc-link> ou la <cc-link href=${docsUrl}>documentation</cc-link> pour plus d'informations.`,
   'cc-addon-header.restart.success.title': `Redémarrage en cours`,
   'cc-addon-header.state-msg.deployment-failed': `Le déploiement a échoué`,
-  'cc-addon-header.state-msg.deployment-is-active': /** @param {{ productName: string }} _ */ ({ productName }) =>
-    `Votre ${productName === 'kubernetes' ? 'cluster' : 'instance'} ${productName} est disponible !`,
+  'cc-addon-header.state-msg.deployment-is-active': /** @param {{ productId: string }} _ */ ({ productId }) =>
+    `Votre ${productId === 'kubernetes' ? 'cluster' : 'instance'} ${productId} est disponible !`,
   'cc-addon-header.state-msg.deployment-is-deploying': `En cours de déploiement…`,
   'cc-addon-header.state-msg.unknown-state': `État inconnu, essayez de redémarrer ou de contacter notre support si vous avez des questions`,
   //#endregion

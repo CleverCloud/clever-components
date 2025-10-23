@@ -273,6 +273,7 @@ export const translations = {
   'cc-addon-header.action.restart': `Restart`,
   'cc-addon-header.action.restart-rebuild': `Re-build and restart`,
   'cc-addon-header.error': `Something went wrong while loading information`,
+  'cc-addon-header.error.fetch-kubeconfig': `An error occurred while refreshing the Kubeconfig link, please refresh the page.`,
   'cc-addon-header.logs.link': `View logs`,
   'cc-addon-header.rebuild.error': `Something went wrong while rebuilding the add-on.`,
   'cc-addon-header.rebuild.success.message': /** @param {{logsUrl: string, docsUrl: string}} _ */ ({
@@ -289,8 +290,8 @@ export const translations = {
     sanitize`The process of restarting your add-on and its resources is in progress. See the <cc-link href="${logsUrl}">logs</cc-link> or the <cc-link href=${docsUrl}>documentation</cc-link> for more information.`,
   'cc-addon-header.restart.success.title': `Restart in progress`,
   'cc-addon-header.state-msg.deployment-failed': `Deployment failed`,
-  'cc-addon-header.state-msg.deployment-is-active': /** @param {{ productName: string }} _ */ ({ productName }) =>
-    `${productName} ${productName === 'kubernetes' ? 'cluster' : 'instance'} is active`,
+  'cc-addon-header.state-msg.deployment-is-active': /** @param {{ providerId: string }} _ */ ({ providerId }) =>
+    `${providerId} ${providerId === 'kubernetes' ? 'cluster' : 'instance'} is active`,
   'cc-addon-header.state-msg.deployment-is-deploying': `Deployment in progress`,
   'cc-addon-header.state-msg.unknown-state': `Unknown state, try to restart or contact our support if you have additional questions.`,
   //#endregion
