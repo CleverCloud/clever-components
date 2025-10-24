@@ -5,6 +5,13 @@ title: 'Changelog'
 
 # Changelog
 
+## [22.3.2](https://github.com/CleverCloud/clever-components/compare/22.3.1...22.3.2) (2025-10-24)
+
+
+### 🐛 Bug Fixes
+
+* **cc-article-list:** update article feed URLs to `clever.cloud` domain ([bef3b03](https://github.com/CleverCloud/clever-components/commit/bef3b03d40a9c51cc3834f48dbe90f27c0e92c5e))
+
 ## [22.3.1](https://github.com/CleverCloud/clever-components/compare/22.3.0...22.3.1) (2025-10-15)
 
 
