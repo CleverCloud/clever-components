@@ -51,8 +51,8 @@ defineSmartComponent({
 async function fetchArticleList({ signal, lang, limit = 9 }) {
   const url =
     lang === 'fr'
-      ? 'https://www.clever-cloud.com/fr/feed/?format=excerpt'
-      : 'https://www.clever-cloud.com/feed/?format=excerpt';
+      ? 'https://www.clever.cloud/fr/feed/?format=excerpt'
+      : 'https://www.clever.cloud/feed/?format=excerpt';
 
   const requestParams = {
     method: 'get',
