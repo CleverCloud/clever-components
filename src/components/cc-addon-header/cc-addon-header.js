@@ -25,6 +25,7 @@ const STATUS_ICON = {
   deploying: iconDeploying,
   active: iconActive,
   failed: iconDeploymentFailed,
+  deleted: null,
 };
 
 /** @type {Partial<CcAddonHeaderStateLoaded>} */
@@ -155,9 +156,13 @@ export class CcAddonHeader extends LitElement {
                 </cc-link>
               `,
             )}
-            ${!isStringEmpty(addonInfo.configLink)
+            ${addonInfo.configLink != null
               ? html`
-                  <cc-link mode="button" href="${addonInfo.configLink}" ?skeleton=${skeleton} download
+                  <cc-link
+                    mode="button"
+                    href="${addonInfo.configLink.href}"
+                    ?skeleton=${skeleton}
+                    download="${addonInfo.configLink.fileName}"
                     >${i18n('cc-addon-header.action.get-config')}
                   </cc-link>
                 `
