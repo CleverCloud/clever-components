@@ -1,13 +1,13 @@
+import { getDocUrl } from '../../lib/dev-hub-url.js';
 import { fakeString } from '../../lib/fake-strings.js';
 import { notify, notifyError } from '../../lib/notifications.js';
 import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
-import { generateDocsHref } from '../../lib/utils.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-smart-container/cc-smart-container.js';
 import { CcAddonHeaderClient } from './cc-addon-header.client.js';
 import './cc-addon-header.js';
 
-const DOCS_URL = generateDocsHref(`/addons/matomo`);
+const DOCS_URL = getDocUrl(`/addons/matomo`);
 const PROVIDER_ID = 'matomo';
 
 /**

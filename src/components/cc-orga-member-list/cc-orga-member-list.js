@@ -4,9 +4,9 @@ import { createRef, ref } from 'lit/directives/ref.js';
 import { repeat } from 'lit/directives/repeat.js';
 import { iconRemixInformationFill as iconInfo } from '../../assets/cc-remix.icons.js';
 import { LostFocusController } from '../../controllers/lost-focus-controller.js';
+import { getDocUrl } from '../../lib/dev-hub-url.js';
 import { formSubmit } from '../../lib/form/form-submit-directive.js';
 import { Validation } from '../../lib/form/validation.js';
-import { generateDocsHref } from '../../lib/utils.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-badge/cc-badge.js';
 import '../cc-block-section/cc-block-section.js';
@@ -21,7 +21,7 @@ import { CcOrgaMemberCard } from '../cc-orga-member-card/cc-orga-member-card.js'
 import '../cc-select/cc-select.js';
 import { CcOrgaMemberInviteEvent } from './cc-orga-member-list.events.js';
 
-const ORGA_MEMBER_DOCUMENTATION = generateDocsHref('/account/administrate-organization/');
+const ORGA_MEMBER_DOCUMENTATION = getDocUrl('/account/administrate-organization');
 
 /**
  * @typedef {import('./cc-orga-member-list.types.js').OrgaMemberListState} OrgaMemberListState

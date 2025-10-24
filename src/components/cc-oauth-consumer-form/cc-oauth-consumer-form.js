@@ -2,11 +2,11 @@ import { css, html, LitElement } from 'lit';
 import { createRef, ref } from 'lit/directives/ref.js';
 import { iconRemixInformationFill as iconInfo } from '../../assets/cc-remix.icons.js';
 import { ResizeController } from '../../controllers/resize-controller.js';
+import { getDevHubUrl } from '../../lib/dev-hub-url.js';
 import { fakeString } from '../../lib/fake-strings.js';
 import { formSubmit } from '../../lib/form/form-submit-directive.js';
 import { getFormDataMap } from '../../lib/form/form-utils.js';
 import { Validation } from '../../lib/form/validation.js';
-import { generateDevHubHref } from '../../lib/utils.js';
 import { accessibilityStyles } from '../../styles/accessibility.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-block-section/cc-block-section.js';
@@ -22,7 +22,7 @@ import {
 
 const BREAKPOINTS = [450, 550, 750];
 
-const OAUTH_CONSUMER_DOCUMENTATION = generateDevHubHref('/api/howto/#oauth1');
+const OAUTH_CONSUMER_DOCUMENTATION = getDevHubUrl('/api/howto/#oauth1');
 
 const URL_VALIDATOR = {
   /**

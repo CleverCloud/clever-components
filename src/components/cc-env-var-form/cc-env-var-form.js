@@ -1,6 +1,6 @@
 import { css, html, LitElement } from 'lit';
 import { iconRemixInformationFill as iconInfo } from '../../assets/cc-remix.icons.js';
-import { generateDocsHref } from '../../lib/utils.js';
+import { getDocUrl } from '../../lib/dev-hub-url.js';
 import { cliCommandsStyles } from '../../styles/cli-commands.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-block-details/cc-block-details.js';
@@ -17,7 +17,7 @@ import '../cc-notice/cc-notice.js';
 import '../cc-toggle/cc-toggle.js';
 import { CcEnvVarFormSubmitEvent } from './cc-env-var-form.events.js';
 
-const ENV_VAR_DOCUMENTATION = generateDocsHref('/reference/reference-environment-variables/');
+const ENV_VAR_DOCUMENTATION = getDocUrl('/reference/reference-environment-variables');
 
 /**
  * @typedef {import('./cc-env-var-form.types.js').EnvVarFormContextType} EnvVarFormContextType

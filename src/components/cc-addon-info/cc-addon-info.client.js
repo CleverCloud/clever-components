@@ -4,8 +4,8 @@ import { get as getAddon } from '@clevercloud/client/esm/api/v2/addon.js';
 import { getGrafanaOrganisation } from '@clevercloud/client/esm/api/v4/saas.js';
 // @ts-expect-error FIXME: remove when clever-client exports types
 import { ONE_SECOND } from '@clevercloud/client/esm/with-cache.js';
+import { getDevHubUrl } from '../../lib/dev-hub-url.js';
 import { sendToApi } from '../../lib/send-to-api.js';
-import { generateDevHubHref } from '../../lib/utils.js';
 
 /**
  * @typedef {import('./cc-addon-info.types.js').AddonInfoStateLoaded} AddonInfoStateLoaded
@@ -178,7 +178,7 @@ export function formatVersionState(operatorVersionInfo) {
       installed: operatorVersionInfo.installed,
       available: operatorVersionInfo.available.filter((version) => version !== operatorVersionInfo.installed),
       latest: operatorVersionInfo.latest,
-      changelogLink: `${generateDevHubHref('/changelog')}`,
+      changelogLink: `${getDevHubUrl('/changelog')}`,
     };
   }
 
