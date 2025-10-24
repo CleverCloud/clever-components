@@ -1,5 +1,7 @@
 // @ts-expect-error FIXME: remove when clever-client exports types
-import { getAddon as getAddonDetails } from '@clevercloud/client/esm/api/v2/providers.js';
+import { getAddon as getAddonProvider } from '@clevercloud/client/esm/api/v2/providers.js';
+// @ts-expect-error FIXME: remove when clever-client exports types
+import { ONE_SECOND } from '@clevercloud/client/esm/with-cache.js';
 import { sendToApi } from '../../lib/send-to-api.js';
 import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
 import { generateDocsHref } from '../../lib/utils.js';
@@ -12,44 +14,62 @@ import './cc-addon-credentials-beta.js';
 const LOADING_STATE = {
   type: 'loading',
   tabs: {
-    elastic: [
-      {
-        code: 'host',
-        value: 'fake-skeleton',
+    elastic: {
+      content: [
+        {
+          code: 'host',
+          value: 'fake-skeleton',
+        },
+        {
+          code: 'user',
+          value: 'fake-skeleton',
+        },
+        {
+          code: 'password',
+          value: 'fake-skeleton',
+        },
+      ],
+      docLink: {
+        text: i18n('cc-addon-credentials-beta.doc-link.elastic'),
+        href: generateDocsHref('/addons/elastic/'),
       },
-      {
-        code: 'user',
-        value: 'fake-skeleton',
+    },
+    kibana: {
+      content: [
+        {
+          code: 'user',
+          value: 'fake-skeleton',
+        },
+        {
+          code: 'password',
+          value: 'fake-skeleton',
+        },
+      ],
+      docLink: {
+        text: i18n('cc-addon-credentials-beta.doc-link.elastic-kibana'),
+        href: generateDocsHref('/addons/elastic/#kibana'),
       },
-      {
-        code: 'password',
-        value: 'fake-skeleton',
+    },
+    apm: {
+      content: [
+        {
+          code: 'user',
+          value: 'fake-skeleton',
+        },
+        {
+          code: 'password',
+          value: 'fake-skeleton',
+        },
+        {
+          code: 'token',
+          value: 'fake-skeleton',
+        },
+      ],
+      docLink: {
+        text: i18n('cc-addon-credentials-beta.doc-link.elastic-apm'),
+        href: generateDocsHref('/addons/elastic/#elastic-apm'),
       },
-    ],
-    kibana: [
-      {
-        code: 'user',
-        value: 'fake-skeleton',
-      },
-      {
-        code: 'password',
-        value: 'fake-skeleton',
-      },
-    ],
-    apm: [
-      {
-        code: 'user',
-        value: 'fake-skeleton',
-      },
-      {
-        code: 'password',
-        value: 'fake-skeleton',
-      },
-      {
-        code: 'token',
-        value: 'fake-skeleton',
-      },
-    ],
+    },
   },
 };
 const PROVIDER_ID = 'es-addon';
@@ -58,7 +78,7 @@ const PROVIDER_ID = 'es-addon';
  * @typedef {import('./cc-addon-credentials-beta.js').CcAddonCredentialsBeta} CcAddonCredentialsBeta
  * @typedef {import('./cc-addon-credentials-beta.types.js').AddonCredentialsBetaStateLoaded} AddonCredentialsBetaStateLoaded
  * @typedef {import('./cc-addon-credentials-beta.types.js').AddonCredentialsBetaStateLoading} AddonCredentialsBetaStateLoading
- * @typedef {import('./cc-addon-credentials-beta.types.js').ElasticAddonInfo} ElasticAddonInfo
+ * @typedef {import('./cc-addon-credentials-beta.types.js').ElasticProviderInfo} ElasticProviderInfo
  * @typedef {import('../cc-addon-credentials-content/cc-addon-credentials-content.types.js').AddonCredential} AddonCredential
  * @typedef {import('../cc-addon-credentials-content/cc-addon-credentials-content.types.js').AddonCredentialNg} AddonCredentialNg
  * @typedef {import('../cc-addon-credentials-content/cc-addon-credentials-content.types.js').AddonCredentialNgEnabled} AddonCredentialNgEnabled
@@ -82,18 +102,26 @@ defineSmartComponent({
     const api = new Api({ apiConfig, ownerId, addonId, signal });
 
     updateComponent('state', LOADING_STATE);
-    updateComponent('docLink', {
-      text: i18n('cc-addon-credentials-beta.doc-link.elastic'),
-      href: generateDocsHref('/addons/elastic/'),
-    });
 
     api
       .getAllCredentials()
       .then((tabs) => {
-        updateComponent('state', {
-          type: 'loaded',
-          tabs,
-        });
+        updateComponent(
+          'state',
+          /** @param {AddonCredentialsBetaStateLoaded|AddonCredentialsBetaStateLoading} state */
+          (state) => {
+            state.type = 'loaded';
+            state.tabs = Object.fromEntries(
+              Object.entries(state.tabs).map(([tabName, tabValue]) => [
+                tabName,
+                {
+                  ...tabValue,
+                  content: tabs[/** @type {'elastic'|'kibana'|'apm'} */ (tabName)],
+                },
+              ]),
+            );
+          },
+        );
       })
       .catch((error) => {
         console.error(error);
@@ -117,10 +145,12 @@ class Api extends CcAddonCredentialsBetaClient {
   /**
    *
    * @param {string} providerId
-   * @returns {Promise<ElasticAddonInfo>}
+   * @returns {Promise<ElasticProviderInfo>}
    */
-  _getAddonDetails(providerId) {
-    return getAddonDetails({ providerId, addonId: this._addonId }).then(sendToApi({ apiConfig: this._apiConfig }));
+  _getAddonProvider(providerId) {
+    return getAddonProvider({ providerId, addonId: this._addonId }).then(
+      sendToApi({ apiConfig: this._apiConfig, signal: this._signal, cacheDelay: ONE_SECOND }),
+    );
   }
 
   /**
@@ -128,47 +158,47 @@ class Api extends CcAddonCredentialsBetaClient {
    * @return {Promise<AddonCredential[]>}
    */
   async getCredentials(tabType) {
-    const rawAddon = await this._getAddon();
-    const addonDetails = await this._getAddonDetails(rawAddon.provider.id);
+    // const rawAddon = await this._getAddon();
+    const addonProvider = await this._getAddonProvider(this._providerId);
     if (tabType === 'elastic') {
       return [
         {
           code: 'host',
-          value: addonDetails.config.host,
+          value: addonProvider.config.host,
         },
         {
           code: 'user',
-          value: addonDetails.config.user,
+          value: addonProvider.config.user,
         },
         {
           code: 'password',
-          value: addonDetails.config.password,
+          value: addonProvider.config.password,
         },
       ];
     } else if (tabType === 'kibana') {
       return [
         {
           code: 'user',
-          value: addonDetails.config.kibana_user,
+          value: addonProvider.config.kibana_user,
         },
         {
           code: 'password',
-          value: addonDetails.config.kibana_password,
+          value: addonProvider.config.kibana_password,
         },
       ];
     }
     return [
       {
         code: 'user',
-        value: addonDetails.config.apm_user,
+        value: addonProvider.config.apm_user,
       },
       {
         code: 'password',
-        value: addonDetails.config.apm_password,
+        value: addonProvider.config.apm_password,
       },
       {
         code: 'token',
-        value: addonDetails.config.apm_auth_token,
+        value: addonProvider.config.apm_auth_token,
       },
     ];
   }

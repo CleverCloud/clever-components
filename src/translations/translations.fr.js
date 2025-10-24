@@ -202,6 +202,8 @@ export const translations = {
   'cc-addon-credentials-beta.choice.elastic': `Elastic`,
   'cc-addon-credentials-beta.choice.kibana': `Kibana`,
   'cc-addon-credentials-beta.doc-link.elastic': `Elastic - Documentation`,
+  'cc-addon-credentials-beta.doc-link.elastic-apm': `Elastic APM - Documentation`,
+  'cc-addon-credentials-beta.doc-link.elastic-kibana': `Kibana - Documentation`,
   'cc-addon-credentials-beta.doc-link.keycloak': `Multi-instances sécurisé - Documentation`,
   'cc-addon-credentials-beta.doc-link.otoroshi-api': `Gérer Otoroshi via son API - Documentation`,
   'cc-addon-credentials-beta.doc-link.otoroshi-ng': `Otoroshi dans un Network Group - Documentation`,

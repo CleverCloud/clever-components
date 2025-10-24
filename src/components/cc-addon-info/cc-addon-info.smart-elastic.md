@@ -42,11 +42,11 @@ interface GrafanaLink {
 
 ## 🌐 API endpoints
 
-| Method   | URL                                                   | Cache?  |
-|----------|-------------------------------------------------------|---------|
-| `GET`    | `/v2/organisations/${ownerId}/addons/${addonId}`      | Default |
-| `GET`    | `/v4/addon-providers/es-addon/addons/${addonId}`      | Default |
-| `GET`    | `/v2/organisations/${ownerId}/grafana`                | Default |
+| Method | URL                                                   | Cache?     |
+|--------|-------------------------------------------------------|------------|
+| `GET`  | `/v2/organisations/${ownerId}/addons/${addonId}`      | Default    |
+| `GET`  | `/v2/providers/es-addon/addons/${addonId}`            | 1 second   |
+| `GET`  | `/v2/organisations/${ownerId}/grafana`                | Default    |
 
 
 ## ⬇️️ Examples

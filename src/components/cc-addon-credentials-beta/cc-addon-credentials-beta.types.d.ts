@@ -45,7 +45,7 @@ export interface RawAddon {
   configKeys: string[];
 }
 
-export interface ElasticAddonInfo {
+export interface ElasticProviderInfo {
   id: string;
   app_id: string;
   plan: string;

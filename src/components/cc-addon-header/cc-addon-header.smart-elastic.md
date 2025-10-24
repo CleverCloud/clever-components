@@ -14,12 +14,12 @@ title: '💡 Smart (Elastic)'
 
 ## ⚙️ Params
 
-| Name             | Type        | Details                                                                                       | Default  |
-|------------------|-------------|-----------------------------------------------------------------------------------------------|----------|
-| `apiConfig`      | `ApiConfig` | Object with API configuration (target host, tokens...)                                        |          |
-| `ownerId`        | `string`    | UUID prefixed with orga_                                                                      |          |
-| `addonId`        | `string`    | ID of the add-on                                                                              |          |
-| `logsUrlPattern` | `string`    | Pattern for the logs url (Example : `/organisations/${ownerId}/applications/${appId}/logs`)   |          |
+| Name             | Type        | Details                                                                                       | Default |
+|------------------|-------------|-----------------------------------------------------------------------------------------------|---------|
+| `apiConfig`      | `ApiConfig` | Object with API configuration (target host, tokens...)                                        |         |
+| `ownerId`        | `string`    | UUID prefixed with orga_                                                                      |         |
+| `addonId`        | `string`    | ID of the add-on                                                                              |         |
+| `logsUrlPattern` | `string`    | Pattern for the logs url (Example : `/organisations/${ownerId}/applications/${appId}/logs`)   |         |
 
 
   ```ts

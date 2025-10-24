@@ -1,11 +1,13 @@
 import { fakeString } from '../../lib/fake-strings.js';
-import { sendToApi } from '../../lib/send-to-api.js';
 import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
 import '../cc-smart-container/cc-smart-container.js';
 import { CcAddonHeaderClient } from './cc-addon-header.client.js';
 import './cc-addon-header.js';
 // @ts-expect-error FIXME: remove when clever-client exports types
-import { getAddon as getProvider } from '@clevercloud/client/esm/api/v2/providers.js';
+import { getAddon as getAddonProvider } from '@clevercloud/client/esm/api/v2/providers.js';
+// @ts-expect-error FIXME: remove when clever-client exports types
+import { ONE_SECOND } from '@clevercloud/client/esm/with-cache.js';
+import { sendToApi } from '../../lib/send-to-api.js';
 
 const PROVIDER_ID = 'es-addon';
 
@@ -13,7 +15,7 @@ const PROVIDER_ID = 'es-addon';
  * @typedef {import('./cc-addon-header.js').CcAddonHeader} CcAddonHeader
  * @typedef {import('./cc-addon-header.types.js').RawAddon} RawAddon
  * @typedef {import('../cc-zone/cc-zone.types.js').ZoneStateLoaded} ZoneStateLoaded
- * @typedef {import('../../operators.types.js').ElasticProviderInfo} ElasticProviderInfo
+ * @typedef {import('./cc-addon-header.types.d.ts').ElasticProviderInfo} ElasticProviderInfo
  * @typedef {import('../../lib/smart/smart-component.types.js').OnContextUpdateArgs<CcAddonHeader>} OnContextUpdateArgs
  * @typedef {import('../../lib/send-to-api.js').ApiConfig} ApiConfig
  */
@@ -104,12 +106,10 @@ class Api extends CcAddonHeaderClient {
     super({ apiConfig, ownerId, addonId, providerId: PROVIDER_ID, signal });
   }
 
-  /**
-   * @return {Promise<ElasticProviderInfo>}
-   */
-  getAddonProvider() {
-    return getProvider({ providerId: this._provider, addonId: this._addonId }).then(
-      sendToApi({ apiConfig: this._apiConfig, signal: this._signal }),
+  /** @return {Promise<ElasticProviderInfo>} */
+  _getAddonProvider() {
+    return getAddonProvider({ providerId: this._provider, addonId: this._addonId }).then(
+      sendToApi({ apiConfig: this._apiConfig, signal: this._signal, cacheDelay: ONE_SECOND }),
     );
   }
 
@@ -118,9 +118,9 @@ class Api extends CcAddonHeaderClient {
    */
   async getProviderWithZone() {
     const rawAddon = await this.getAddon();
-    console.log('rawAddon:', rawAddon);
-    const [rawProvider, zone] = await Promise.all([this.getAddonProvider(), this.getZone(rawAddon.region)]);
-    console.log('rawProvider:', rawProvider);
+    // console.log('rawAddon:', rawAddon);
+    const [rawProvider, zone] = await Promise.all([this._getAddonProvider(), this.getZone(rawAddon.region)]);
+    // console.log('rawProvider:', rawProvider);
     return { rawAddon, rawProvider, zone };
   }
 }
