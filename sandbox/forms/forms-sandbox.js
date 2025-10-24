@@ -72,17 +72,9 @@ export class FormsSandbox extends LitElement {
 
   /**
    * @param {string} demo
-   * @return {string}
-   */
-  _getDemoFilePath(demo) {
-    return `./form-demo-${demo}.js`;
-  }
-
-  /**
-   * @param {string} demo
    */
   _loadDemo(demo) {
-    import(this._getDemoFilePath(demo)).then(() => {
+    import(`./form-demo-${demo}.js`).then(() => {
       this._demo = demo;
       localStorage.setItem('cc-sandbox-form-demo', demo);
       this._event = null;
