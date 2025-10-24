@@ -124,6 +124,7 @@ import {
   CcPricingTemporalityChangeEvent,
   CcPricingZoneChangeEvent,
 } from '../components/cc-pricing-page/cc-pricing-page.events.js';
+import { CcRangeSelectorSelectCustom } from '../components/cc-range-selector/cc-range-selector.events.js';
 import {
   CcSshKeyCreateEvent,
   CcSshKeyDeleteEvent,
@@ -142,6 +143,7 @@ import {
 import {
   CcClickEvent,
   CcPasswordResetEvent,
+  CcRangeSelectEvent,
   CcRequestSubmitEvent,
   CcToggleEvent,
   CcTokenRevokeEvent,
@@ -263,6 +265,8 @@ declare global {
     'cc-pricing-temporality-change': CcPricingTemporalityChangeEvent;
     'cc-pricing-zone-change': CcPricingZoneChangeEvent;
     'cc-product-create': CcProductCreateEvent;
+    'cc-range-select': CcRangeSelectEvent;
+    'cc-range-selector-select-custom': CcRangeSelectorSelectCustom;
     'cc-request-submit': CcRequestSubmitEvent;
     'cc-select': CcSelectEvent;
     'cc-ssh-key-create': CcSshKeyCreateEvent;

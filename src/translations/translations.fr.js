@@ -1585,6 +1585,12 @@ export const translations = {
   'cc-product-list.search-empty': `Aucun produit ne correspond à vos critères de recherche.`,
   'cc-product-list.search-label': `Chercher un produit`,
   //#endregion
+  //#region cc-range-selector
+  'cc-range-selector.custom': `Personnaliser`,
+  'cc-range-selector.error.empty': `Ce champ est obligatoire.`,
+  'cc-range-selector.error.invalid-selection': `Sélection invalide.`,
+  'cc-range-selector.required': `obligatoire`,
+  //#endregion
   //#region cc-select
   'cc-select.error.empty': `Sélectionnez une valeur`,
   'cc-select.required': `obligatoire`,

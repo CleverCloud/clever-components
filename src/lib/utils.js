@@ -265,3 +265,32 @@ export function isVisibleInContainer(element, container) {
     elementRect.right <= containerRect.right
   );
 }
+
+/**
+ * Trims elements from both the start and end of an array based on a condition function.
+ * Removes consecutive elements from the beginning and end that match the condition,
+ * while preserving all middle elements (including those that match the condition).
+ *
+ * @param {Array<any>} array - The array to trim
+ * @param {Function} condition - Function that returns true for elements to trim
+ * @returns {Array<any>} A new array with matching elements removed from both ends
+ */
+export function trimArray(array, condition) {
+  if (array == null) {
+    return [];
+  }
+
+  let start = 0;
+  let end = array.length - 1;
+
+  while (start <= end && condition(array[start])) {
+    start++;
+  }
+
+  // Find first non-matching from end
+  while (end >= start && condition(array[end])) {
+    end--;
+  }
+
+  return array.slice(start, end + 1);
+}

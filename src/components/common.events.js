@@ -32,6 +32,21 @@ export class CcSelectEvent extends CcEvent {
 }
 
 /**
+ * Dispatched when a range selection changes.
+ * @extends {CcEvent<string[]>}
+ */
+export class CcRangeSelectEvent extends CcEvent {
+  static TYPE = 'cc-range-select';
+
+  /**
+   * @param {string[]} detail
+   */
+  constructor(detail) {
+    super(CcRangeSelectEvent.TYPE, detail);
+  }
+}
+
+/**
  * Dispatched when a multi selection changes.
  * @extends {CcEvent<Array<T>>}
  * @template {string} T
