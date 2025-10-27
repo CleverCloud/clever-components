@@ -38,7 +38,7 @@ interface ApiConfig {
 |----------|----------------------------------------------------------------|---------|
 | `GET`    | `/v2/organisations/${ownerId}/addons/${addonId}`               | Default |
 | `GET`    | `/v4/products/zones?ownerId=${ownerId}`                        | Default |
-| `GET`    | `/v2/providers/es-addon/${addonId}`                            | Default |
+| `GET`    | `/v2/providers/es-addon/addons/${addonId}`                     | Default |
 
 
 ## ⬇️️ Examples
