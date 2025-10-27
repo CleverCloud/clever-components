@@ -306,6 +306,7 @@ export const translations = {
   'cc-addon-info.doc-link.matomo': `Matomo - Documentation`,
   'cc-addon-info.doc-link.metabase': `Metabase - Documentation`,
   'cc-addon-info.doc-link.otoroshi': `Otoroshi - Documentation`,
+  'cc-addon-info.doc-link.pulsar': `Pulsar - Documentation`,
   'cc-addon-info.error': `Something went wrong while loading add-on information.`,
   'cc-addon-info.feature.connection-limit': `Connection limit`,
   'cc-addon-info.feature.cpu': `vCPUs`,
