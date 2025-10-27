@@ -146,6 +146,10 @@ export class CcLogsAppRuntime extends LitElement {
     this._messageFilter = detail;
   }
 
+  _onLogInspect() {
+    this._messageFilter = { value: '', mode: this._messageFilter?.mode ?? 'loose' };
+  }
+
   /* endregion */
 
   /**
@@ -264,6 +268,7 @@ export class CcLogsAppRuntime extends LitElement {
         ?strip-ansi=${this.options['strip-ansi']}
         .timezone=${this.options.timezone}
         ?wrap-lines=${this.options['wrap-lines']}
+        @cc-log-inspect=${this._onLogInspect}
       >
         <div slot="header" class="logs-header">
           <cc-logs-date-range-selector-beta
