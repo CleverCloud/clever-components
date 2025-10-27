@@ -211,6 +211,17 @@ export class LogsController {
     return this._logs.filter((log) => this._selection.has(log));
   }
 
+  /**
+   * @return {number} The index of the first selected log, or `-1` if no log is selected.
+   */
+  getFirstSelectedLogIndex() {
+    if (this._selection.size === 0) {
+      return -1;
+    }
+    const firstSelectedLog = this._selection.values().next().value;
+    return this._logs.findIndex((log) => firstSelectedLog === log);
+  }
+
   // endregion
 
   // region focus
