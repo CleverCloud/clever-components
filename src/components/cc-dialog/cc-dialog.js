@@ -1,10 +1,6 @@
 import { css, html, LitElement } from 'lit';
-import { classMap } from 'lit/directives/class-map.js';
 import { createRef, ref } from 'lit/directives/ref.js';
 import { iconRemixCloseLine as iconClose } from '../../assets/cc-remix.icons.js';
-import { hasSlottedChildren } from '../../directives/has-slotted-children.js';
-import { formSubmit } from '../../lib/form/form-submit-directive.js';
-import { Validation } from '../../lib/form/validation.js';
 import { findActiveElement } from '../../lib/shadow-dom-utils.js';
 import { isStringEmpty } from '../../lib/utils.js';
 import { accessibilityStyles } from '../../styles/accessibility.js';
@@ -26,33 +22,15 @@ import { CcDialogCloseEvent, CcDialogConfirmEvent, CcDialogOpenEvent } from './c
 export class CcDialog extends LitElement {
   static get properties() {
     return {
-      autofocusInput: { type: Boolean, attribute: 'autofocus-input' },
-      cancelLabel: { type: String, attribute: 'cancel-label' },
-      confirmInputLabel: { type: String, attribute: 'confirm-input-label' },
-      confirmTextToInput: { type: String, attribute: 'confirm-text-to-input' },
       contentBody: { type: String, attribute: 'content-body' },
       heading: { type: String },
       open: { type: Boolean, reflect: true },
-      submitIntent: { type: String, attribute: 'submit-intent' },
-      submitLabel: { type: String, attribute: 'submit-label' },
       waiting: { type: Boolean, reflect: true },
     };
   }
 
   constructor() {
     super();
-
-    /** @type {boolean} Automatically focuses the input when the dialog is opened */
-    this.autofocusInput = false;
-
-    /** @type {string|null} Sets Text that needs to be matched by the user, also visible in the help text below the input. Required for the confirm form to be displayed */
-    this.confirmTextToInput = null;
-
-    /** @type {string|null} Sets the label for the confirm text input. Required for the confirm form to be displayed */
-    this.confirmInputLabel = null;
-
-    /** @type {string|null} Sets the label for the cancel button */
-    this.cancelLabel = null;
 
     /** @type {string|null} Sets the heading of the dialog as long as the heading slot is unused */
     this.heading = null;
@@ -63,28 +41,8 @@ export class CcDialog extends LitElement {
     /** @type {boolean} Displays or hides the dialog */
     this.open = false;
 
-    /** @type {string|null} Sets the label for the submit button and displays a generic cancel button next to it */
-    this.submitLabel = null;
-
-    /** @type {'primary'|'danger'} Sets the color of the submit button */
-    this.submitIntent = 'primary';
-
     /** @type {boolean} Disables the form inputs and buttons, and shows a loading indicator for the submit button */
     this.waiting = false;
-
-    /** @type {Validator} */
-    this._confirmValidator = {
-      validate: (value) => {
-        if (this.confirmTextToInput === value) {
-          return Validation.VALID;
-        }
-        return Validation.invalid('no-match');
-      },
-    };
-
-    this._customErrorMessages = {
-      'no-match': () => i18n('cc-addon-admin.delete.dialog.error', { name: this.confirmTextToInput }),
-    };
 
     /** @type {HTMLDialogElementRef} */
     this._dialogRef = createRef();
@@ -165,72 +123,11 @@ export class CcDialog extends LitElement {
             </slot>
             <div class="dialog-content-body-wrapper">
               <slot name="content-body"> ${!isStringEmpty(this.contentBody) ? this.contentBody : ''} </slot>
-              ${!isStringEmpty(this.confirmInputLabel) && !isStringEmpty(this.confirmTextToInput)
-                ? this._renderConfirmForm()
-                : ''}
+              <slot name="dialog-form"></slot>
             </div>
-            ${isStringEmpty(this.confirmInputLabel) && isStringEmpty(this.confirmTextToInput)
-              ? html`
-                  <slot
-                    name="actions"
-                    class="dialog-actions ${classMap({
-                      'dialog-actions--with-content': !isStringEmpty(this.submitLabel),
-                    })}"
-                    ${hasSlottedChildren()}
-                  >
-                    ${!isStringEmpty(this.submitLabel)
-                      ? html`
-                          <cc-button outlined @cc-click="${this._onDialogClose}" ?disabled="${this.waiting}">
-                            ${isStringEmpty(this.cancelLabel) ? i18n('cc-dialog.cancel') : this.cancelLabel}
-                          </cc-button>
-                          <cc-button
-                            ?primary="${this.submitIntent === 'primary'}"
-                            ?danger="${this.submitIntent === 'danger'}"
-                            type="submit"
-                            ?waiting="${this.waiting}"
-                            @cc-click="${this._onDialogConfirm}"
-                          >
-                            ${this.submitLabel}
-                          </cc-button>
-                        `
-                      : ''}
-                  </slot>
-                `
-              : ''}
           </div>
         </slot>
       </dialog>
-    `;
-  }
-
-  _renderConfirmForm() {
-    return html`
-      <form ${formSubmit(this._onDialogConfirm.bind(this))}>
-        <cc-input-text
-          label="${this.confirmInputLabel}"
-          name="confirmation-input"
-          required
-          .customValidator="${this._confirmValidator}"
-          .customErrorMessages="${this._customErrorMessages}"
-          ?autofocus="${this.autofocusInput}"
-          ?readonly="${this.waiting}"
-        >
-          <p slot="help">${this.confirmTextToInput}</p>
-        </cc-input-text>
-        <div class="dialog-actions dialog-actions--with-content">
-          <cc-button outlined @click="${this._onDialogClose}" ?disabled="${this.waiting}">
-            ${isStringEmpty(this.cancelLabel) ? i18n('cc-dialog.cancel') : this.cancelLabel}
-          </cc-button>
-          <cc-button
-            ?primary="${this.submitIntent === 'primary'}"
-            ?danger="${this.submitIntent === 'danger'}"
-            type="submit"
-            ?waiting="${this.waiting}"
-          >
-            ${this.submitLabel}
-          </cc-button>
-        </div>
-      </form>
     `;
   }
 
@@ -316,33 +213,6 @@ export class CcDialog extends LitElement {
           display: flex;
           flex-direction: column;
           gap: 1em;
-        }
-
-        cc-input-text {
-          width: 100%;
-        }
-
-        .dialog-actions {
-          display: flex;
-          flex-wrap: wrap;
-          gap: 1em;
-          justify-content: end;
-        }
-
-        .dialog-actions[actions-is-slotted],
-        .dialog-actions--with-content {
-          margin-top: 2.75em;
-        }
-
-        @container dialog (max-width: 37em) {
-          .dialog-actions {
-            display: grid;
-            justify-content: stretch;
-          }
-
-          .dialog-actions--with-content {
-            margin-top: 2em;
-          }
         }
       `,
     ];

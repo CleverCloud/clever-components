@@ -4,6 +4,7 @@ import { accessibilityStyles } from '../../styles/accessibility.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-block-section/cc-block-section.js';
 import '../cc-block/cc-block.js';
+import '../cc-dialog-confirmation-form/cc-dialog-confirmation-form.js';
 import '../cc-dialog/cc-dialog.js';
 import '../cc-input-text/cc-input-text.js';
 import '../cc-loader/cc-loader.js';
@@ -249,10 +250,18 @@ export class CcAddonAdmin extends LitElement {
         @cc-dialog-close=${this._onDialogClose}
         heading="${i18n('cc-addon-admin.delete.dialog.heading')}"
         content-body="${i18n('cc-addon-admin.delete.dialog.desc')}"
-        confirm-text-to-input="${addonName}"
         ?waiting="${isDeleting}"
         @cc-dialog-confirm=${this._onDeleteSubmit}
       >
+        <cc-dialog-confirmation-form
+          slot="dialog-form"
+          confirm-text-to-input="${addonName}"
+          confirm-input-label="${i18n('cc-addon-admin.delete.dialog.label')}"
+          submit-label="${i18n('cc-addon-admin.delete.dialog.confirm')}"
+          submit-intent="danger"
+          autofocus-input
+          ?waiting="${isDeleting}"
+        ></cc-dialog-confirmation-form>
       </cc-dialog>
     `;
   }
