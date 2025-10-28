@@ -4,6 +4,7 @@ import path from 'path';
 import ts from 'typescript';
 import {
   convertInterface,
+  extractImportsFromImportTag,
   findCustomType,
   findInterfacesFromExtends,
   findPathAndTypesFromImports,
@@ -192,26 +193,28 @@ describe('CEM', function () {
   describe('findPath()', function () {
     const importsNode = classNode.jsDoc[0].tags;
     const importLength = importsNode.length;
+    const moduleFilePath = path.resolve(ROOT_DIR, MODULE_DIR, 'cc-test-component.js');
 
     it('should retrieve the @typedef filePath from the first one in the test file.', function () {
-      const filePath = findTypePath(importsNode[0], ROOT_DIR, MODULE_DIR);
+      const filePath = findTypePath(importsNode[0], ts, moduleFilePath);
       expect(filePath).to.equal(`${ROOT_DIR}/${MODULE_DIR}/cc-test-component.types.d.ts`);
     });
 
     it('should retrieve the common @typedef filePath located at the end of the test file.', function () {
-      const filePath = findTypePath(importsNode[importLength - 1], ROOT_DIR, MODULE_DIR);
+      const filePath = findTypePath(importsNode[importLength - 1], ts, moduleFilePath);
       expect(filePath).to.equal(`${ROOT_DIR}/${MODULE_DIR}/common.types.d.ts`);
     });
 
     it('should return null if the filePath is incorrect.', function () {
-      const filePath = findTypePath(importsNode[importLength - 2], ROOT_DIR, MODULE_DIR);
+      const filePath = findTypePath(importsNode[importLength - 2], ts, moduleFilePath);
       expect(filePath).to.equal(null);
     });
   });
 
   describe('findSubtypes()', function () {
     const importsNode = classNode.jsDoc[0].tags;
-    const filePath = findTypePath(importsNode[0], ROOT_DIR, MODULE_DIR);
+    const moduleFilePath = path.resolve(ROOT_DIR, MODULE_DIR, 'cc-test-component.js');
+    const filePath = findTypePath(importsNode[0], ts, moduleFilePath);
     const sourceCode = readFileSync(filePath).toString();
     const sourceAst = ts.createSourceFile(filePath, sourceCode, ts.ScriptTarget.ES2015, true);
 
@@ -277,7 +280,8 @@ describe('CEM', function () {
   describe('convertInterface()', function () {
     it('should return the needed interface in the type file for a given interface name.', function () {
       const importsNode = classNode.jsDoc[0].tags;
-      const filePath = findTypePath(importsNode[0], ROOT_DIR, MODULE_DIR);
+      const moduleFilePath = path.resolve(ROOT_DIR, MODULE_DIR, 'cc-test-component.js');
+      const filePath = findTypePath(importsNode[0], ts, moduleFilePath);
       const sourceCode = readFileSync(filePath).toString();
       const sourceAst = ts.createSourceFile(filePath, sourceCode, ts.ScriptTarget.ES2015, true);
       const interfaceStr = convertInterface(ts, sourceAst, sourceCode, 'TheInterface', filePath);
@@ -316,7 +320,7 @@ describe('CEM', function () {
 
   describe('findPathAndTypesFromImports()', function () {
     it('should return an array with all the imports filePath', function () {
-      const file = 'cc-test-component.types.js';
+      const file = 'cc-test-component.types.d.ts';
       const pathFile = path.resolve(ROOT_DIR, MODULE_DIR, file);
       const rootPath = path.resolve(ROOT_DIR, MODULE_DIR);
 
@@ -330,6 +334,56 @@ describe('CEM', function () {
           path: `${rootPath}/cem-test-import/cc-test-imports-sub.types.d.ts`,
         },
       ]);
+    });
+  });
+
+  describe('extractImportsFromImportTag()', function () {
+    const filenameWithImport = 'test-mocha/cem/fixtures/cc-test-component-with-import.js';
+    const sourceCodeWithImport = fs.readFileSync(filenameWithImport, { encoding: 'utf-8' });
+    const sourceAstWithImport = ts.createSourceFile(
+      filenameWithImport,
+      sourceCodeWithImport,
+      ts.ScriptTarget.ES2015,
+      true,
+    );
+    const classNodeWithImport = sourceAstWithImport.statements.find(
+      (node) => node.kind === ts.SyntaxKind.ClassDeclaration,
+    );
+    const moduleFilePath = path.resolve(ROOT_DIR, MODULE_DIR, 'cc-test-component-with-import.js');
+
+    it('should extract module path and types from @import tag', function () {
+      const importTags =
+        classNodeWithImport?.jsDoc?.flatMap(
+          (doc) => doc.tags?.filter((tag) => tag.kind === ts.SyntaxKind.JSDocImportTag) || [],
+        ) || [];
+
+      const firstImportTag = importTags[0];
+      const result = extractImportsFromImportTag(firstImportTag, ts, moduleFilePath);
+
+      expect(result).to.not.be.null;
+      expect(result.path).to.equal(`${ROOT_DIR}/${MODULE_DIR}/cc-test-component.types.d.ts`);
+      expect(result.types).to.have.members(['Foo', 'Bar']);
+    });
+
+    it('should handle multiple types from same module', function () {
+      const importTags =
+        classNodeWithImport?.jsDoc?.flatMap(
+          (doc) => doc.tags?.filter((tag) => tag.kind === ts.SyntaxKind.JSDocImportTag) || [],
+        ) || [];
+
+      const secondImportTag = importTags[1];
+      const result = extractImportsFromImportTag(secondImportTag, ts, moduleFilePath);
+
+      expect(result).to.not.be.null;
+      expect(result.path).to.equal(`${ROOT_DIR}/${MODULE_DIR}/cc-test-component.types.d.ts`);
+      expect(result.types).to.have.members(['TheInterface']);
+    });
+
+    it('should return null for invalid import tag', function () {
+      const invalidTag = { moduleSpecifier: null, importClause: null };
+      const result = extractImportsFromImportTag(invalidTag, ts, moduleFilePath);
+
+      expect(result).to.be.null;
     });
   });
 });

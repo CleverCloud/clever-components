@@ -1,16 +1,14 @@
 import { readFileSync } from 'fs';
-import path from 'path';
 import ts from 'typescript';
 import {
   convertInterface,
+  extractImportsFromImportTag,
   findInterfacesFromExtends,
   findPathAndTypesFromImports,
   findSubtypes,
   findTypePath,
   getTypesFromClass,
 } from './support-typedef-jsdoc-utils.js';
-
-const ROOT_DIR = process.cwd();
 
 export default function supportTypedefJsdoc() {
   // Map that contains a `type-path` as a key and has its markdown interface as a value.
@@ -136,36 +134,68 @@ export default function supportTypedefJsdoc() {
           return;
         }
 
-        // This finds the comment where the imports are located
+        // This finds the comment where the @typedef imports are located
         const typeDefNode = statement?.jsDoc?.filter((statement) =>
           statement.tags?.find((tag) => tag.kind === ts.SyntaxKind.JSDocTypedefTag),
         )?.[0];
 
-        const moduleDir = path.parse(moduleDoc.path).dir;
+        // Check the jsDoc of the class and find the @typedef imports
+        typeDefNode?.tags
+          ?.filter((tag) => tag.kind === ts.SyntaxKind.JSDocTypedefTag)
+          .forEach((tag) => {
+            // Extract the path from the @typedef import
+            const typePath = findTypePath(tag, ts, moduleDoc.path);
 
-        // Check the jsDoc of the class and find the imports
-        typeDefNode?.tags?.forEach((tag) => {
-          // Extract the path from the @typedef import
-          const typePath = findTypePath(tag, ROOT_DIR, moduleDir);
+            // If an import is not correct, warn the plugin user.
+            if (typePath == null) {
+              console.warn(`[${componentName}] - There's a problem with one of your @typedef - ${tag.getText()}`);
+              process.exitCode = 1;
+              return;
+            }
+
+            // Extract the type from the @typedef import
+            const typeDefDisplay = tag.name.getText();
+
+            const type = types.find((type) => type === typeDefDisplay);
+
+            if (type != null) {
+              if (!moduleTypeCache.has(typePath)) {
+                moduleTypeCache.set(typePath, new Set());
+              }
+              moduleTypeCache.get(typePath).add(type);
+            }
+          });
+
+        // Find all @import tags
+        const importTags =
+          statement?.jsDoc?.flatMap(
+            (doc) => doc.tags?.filter((tag) => tag.kind === ts.SyntaxKind.JSDocImportTag) || [],
+          ) || [];
+
+        // Process @import tags
+        importTags.forEach((tag) => {
+          const importData = extractImportsFromImportTag(tag, ts, moduleDoc.path);
 
           // If an import is not correct, warn the plugin user.
-          if (typePath == null) {
-            console.warn(`[${componentName}] - There's a problem with one of your @typedef - ${tag.getText()}`);
+          if (importData == null) {
+            console.warn(`[${componentName}] - There's a problem with one of your @import - ${tag.getText()}`);
             process.exitCode = 1;
             return;
           }
 
-          // Extract the type from the @typedef import
-          const typeDefDisplay = tag.name.getText();
+          const { path: typePath, types: importedTypes } = importData;
 
-          const type = types.find((type) => type === typeDefDisplay);
+          // Check which imported types are actually used in the component
+          importedTypes.forEach((importedType) => {
+            const type = types.find((type) => type === importedType);
 
-          if (type != null) {
-            if (!moduleTypeCache.has(typePath)) {
-              moduleTypeCache.set(typePath, new Set());
+            if (type != null) {
+              if (!moduleTypeCache.has(typePath)) {
+                moduleTypeCache.set(typePath, new Set());
+              }
+              moduleTypeCache.get(typePath).add(type);
             }
-            moduleTypeCache.get(typePath).add(type);
-          }
+          });
         });
 
         // Now that we have the types, and the path of where the types are located
