@@ -9,11 +9,11 @@ import { getAddon as getAddonProvider } from '@clevercloud/client/esm/api/v2/pro
 import { ONE_SECOND } from '@clevercloud/client/esm/with-cache.js';
 import { sendToApi } from '../../lib/send-to-api.js';
 
-const PROVIDER_ID = 'es-addon';
+const PROVIDER_ID = 'jenkins';
 
 /**
  * @typedef {import('./cc-addon-header.js').CcAddonHeader} CcAddonHeader
- * @typedef {import('./cc-addon-header.types.js').ElasticProviderInfo} ElasticProviderInfo
+ * @typedef {import('./cc-addon-header.types.js').JenkinsProviderInfo} JenkinsProviderInfo
  * @typedef {import('./cc-addon-header.types.js').RawAddon} RawAddon
  * @typedef {import('../cc-zone/cc-zone.types.js').ZoneStateLoaded} ZoneStateLoaded
  * @typedef {import('../../lib/smart/smart-component.types.js').OnContextUpdateArgs<CcAddonHeader>} OnContextUpdateArgs
@@ -21,7 +21,7 @@ const PROVIDER_ID = 'es-addon';
  */
 
 defineSmartComponent({
-  selector: 'cc-addon-header[smart-mode=elastic]',
+  selector: 'cc-addon-header[smart-mode=jenkins]',
   params: {
     apiConfig: { type: Object },
     ownerId: { type: String },
@@ -50,24 +50,7 @@ defineSmartComponent({
       .getProviderWithZone()
       .then(({ rawAddon, rawProvider, zone }) => {
         logsUrl = context.logsUrlPattern.replace(':id', rawAddon.id);
-
-        const openLinks = [];
-        const apmService = rawProvider.services.find((service) => service.name === 'apm');
-        if (apmService?.enabled && rawProvider.config.host) {
-          const apmUrl = `https://kibana-${rawProvider.config.host}/app/apm`;
-          openLinks.push({
-            name: 'APM',
-            url: apmUrl,
-          });
-        }
-        const kibanaService = rawProvider.services.find((service) => service.name === 'kibana');
-        if (kibanaService?.enabled && rawProvider.config.host) {
-          const kibanaUrl = `https://kibana-${rawProvider.config.host}/`;
-          openLinks.push({
-            name: 'KIBANA',
-            url: kibanaUrl,
-          });
-        }
+        const jenkinsUrl = `https://${rawProvider.host}`;
 
         updateComponent('state', {
           type: 'loaded',
@@ -77,7 +60,12 @@ defineSmartComponent({
           id: rawAddon.realId,
           zone,
           logsUrl,
-          openLinks,
+          openLinks: [
+            {
+              name: 'JENKINS',
+              url: jenkinsUrl,
+            },
+          ],
         });
       })
       .catch((error) => {
@@ -101,7 +89,7 @@ class Api extends CcAddonHeaderClient {
     super({ apiConfig, ownerId, addonId, providerId: PROVIDER_ID, signal });
   }
 
-  /** @return {Promise<ElasticProviderInfo>} */
+  /** @return {Promise<JenkinsProviderInfo>} */
   _getAddonProvider() {
     return getAddonProvider({ providerId: this._provider, addonId: this._addonId }).then(
       sendToApi({ apiConfig: this._apiConfig, signal: this._signal, cacheDelay: ONE_SECOND }),
@@ -109,7 +97,7 @@ class Api extends CcAddonHeaderClient {
   }
 
   /**
-   * @return {Promise<{rawAddon: RawAddon, rawProvider: ElasticProviderInfo, zone: ZoneStateLoaded}>}
+   * @return {Promise<{rawAddon: RawAddon, rawProvider: JenkinsProviderInfo, zone: ZoneStateLoaded}>}
    */
   async getProviderWithZone() {
     const rawAddon = await this.getAddon();
