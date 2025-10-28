@@ -47,6 +47,7 @@ export class CcToggle extends LitElement {
   static get properties() {
     return {
       /** @required */
+      autofocus: { type: Boolean },
       choices: { type: Array },
       disabled: { type: Boolean },
       hideText: { type: Boolean, attribute: 'hide-text' },
@@ -61,6 +62,9 @@ export class CcToggle extends LitElement {
 
   constructor() {
     super();
+
+    /** @type {boolean} Automatically focus the first input when the page loads. **Note:** Using this attribute is generally discouraged for accessibility reasons. See [MDN autofocus accessibility concerns](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Global_attributes/autofocus#accessibility_concerns) for more information. */
+    this.autofocus = false;
 
     /** @type {Choice[]|null} Sets the list of choices. */
     this.choices = null;
@@ -136,7 +140,7 @@ export class CcToggle extends LitElement {
           ${repeat(
             this.choices,
             ({ value }) => value,
-            ({ label, image, value }) => html`
+            ({ label, image, value }, index) => html`
               <!--
               If the name=null, the name of the native <input> will be 'toggle'. In order to navigate through a group of inputs using the arrow keys, each <input> must have the same name value.
             -->
@@ -145,6 +149,7 @@ export class CcToggle extends LitElement {
                 name=${this.name ?? 'toggle'}
                 .value=${value}
                 id=${value}
+                ?autofocus=${this.autofocus && index === 0}
                 ?disabled=${this.disabled}
                 .checked=${isChecked(value)}
                 @change=${this._onChange}
