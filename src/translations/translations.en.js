@@ -193,7 +193,7 @@ export const translations = {
   'cc-addon-credentials-beta.doc-link.keycloak': `Secured multi-instances - Documentation`,
   'cc-addon-credentials-beta.doc-link.otoroshi-api': `Manage Otoroshi from its API - Documentation`,
   'cc-addon-credentials-beta.doc-link.otoroshi-ng': `Otoroshi in a Network Group - Documentation`,
-  'cc-addon-credentials-beta.error': `Something went wrong while loading add-on information.`,
+  'cc-addon-credentials-beta.error': `Something went wrong while loading information`,
   'cc-addon-credentials-beta.heading': `Access`,
   'cc-addon-credentials-beta.ng-multi-instances.disabling.error': `Something went wrong while trying to disable the secured multi-instances`,
   'cc-addon-credentials-beta.ng-multi-instances.disabling.success': `The secured multi-instances have been successfully disabled`,
