@@ -314,7 +314,7 @@ export const translations = {
   'cc-addon-info.doc-link.matomo': `Matomo - Documentation`,
   'cc-addon-info.doc-link.metabase': `Metabase - Documentation`,
   'cc-addon-info.doc-link.otoroshi': `Otoroshi - Documentation`,
-  'cc-addon-info.error': `Une erreur est survenue pendant le chargement des informations de l'add-on.`,
+  'cc-addon-info.error': `Une erreur est survenue pendant le chargement des informations`,
   'cc-addon-info.feature.connection-limit': `Limite de connexions`,
   'cc-addon-info.feature.cpu': `vCPUs`,
   'cc-addon-info.feature.data-exploration': `Exploration des données`,
