@@ -10,8 +10,8 @@ import {
 } from '../../assets/cc-remix.icons.js';
 import { LostFocusController } from '../../controllers/lost-focus-controller.js';
 import { ResizeController } from '../../controllers/resize-controller.js';
+import { getDevHubUrl } from '../../lib/dev-hub-url.js';
 import { isExpirationClose } from '../../lib/tokens.js';
-import { generateDevHubHref } from '../../lib/utils.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-badge/cc-badge.js';
 import '../cc-block/cc-block.js';
@@ -127,7 +127,7 @@ export class CcTokenOauthList extends LitElement {
           </div>
         </div>
         <div slot="footer-right">
-          <cc-link slot="link" href="${generateDevHubHref('/api/howto/#oauth1')}" .icon="${iconInfo}">
+          <cc-link slot="link" href="${getDevHubUrl('/api/howto/#oauth1')}" .icon="${iconInfo}">
             <span>${i18n('cc-token-oauth-list.link.doc')}</span>
           </cc-link>
         </div>

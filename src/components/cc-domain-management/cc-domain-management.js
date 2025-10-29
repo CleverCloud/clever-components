@@ -11,6 +11,7 @@ import {
   iconRemixFlaskLine as iconTest,
 } from '../../assets/cc-remix.icons.js';
 import { LostFocusController } from '../../controllers/lost-focus-controller.js';
+import { getDocUrl } from '../../lib/dev-hub-url.js';
 import {
   DomainParseError,
   getDomainUrl,
@@ -21,7 +22,6 @@ import {
   sortDomains,
 } from '../../lib/domain.js';
 import { focusBySelector } from '../../lib/focus-helper.js';
-import { generateDocsHref } from '../../lib/utils.js';
 import { accessibilityStyles } from '../../styles/accessibility.js';
 import { cliCommandsStyles } from '../../styles/cli-commands.js';
 import { i18n } from '../../translations/translation.js';
@@ -37,11 +37,11 @@ import '../cc-loader/cc-loader.js';
 import '../cc-notice/cc-notice.js';
 import { CcDomainAddEvent, CcDomainDeleteEvent, CcDomainMarkAsPrimaryEvent } from './cc-domain-management.events.js';
 
-const DOMAIN_NAMES_DOCUMENTATION = generateDocsHref(
+const DOMAIN_NAMES_DOCUMENTATION = getDocUrl(
   '/administrate/domain-names/#using-a-cleverappsio-free-domain-with-built-in-ssl',
 );
-const TLS_CERTIFICATES_DOCUMENTATION = generateDocsHref('/administrate/ssl/');
-const DNS_DOCUMENTATION = generateDocsHref('/administrate/domain-names/');
+const TLS_CERTIFICATES_DOCUMENTATION = getDocUrl('/administrate/ssl');
+const DNS_DOCUMENTATION = getDocUrl('/administrate/domain-names');
 
 /**
  * @typedef {import('./cc-domain-management.types.js').DomainManagementDnsInfoState} DomainManagementDnsInfoState
