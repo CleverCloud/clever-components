@@ -696,6 +696,17 @@ export const translations = {
   'cc-env-var-linked-services.loading.app': /** @param {{appName: string}} _ */ ({ appName }) =>
     sanitize`Loading configuration exposed by applications linked to <strong>${appName}</strong>...`,
   //#endregion
+  //#region cc-feature-list
+  'cc-feature-list.documentation-link': `See documentation`,
+  'cc-feature-list.error': `Something went wrong while loading available experimental features`,
+  'cc-feature-list.feedback-link': `Share feedback`,
+  'cc-feature-list.no-data': `No experimental features are available at this time`,
+  'cc-feature-list.notice': `Remember to reload your page after making changes in order to apply them`,
+  'cc-feature-list.status.alpha': `Alpha`,
+  'cc-feature-list.status.beta': `Beta`,
+  'cc-feature-list.status.preview': `Preview`,
+  'cc-feature-list.title': `Experimental Features`,
+  //#endregion
   //#region cc-grafana-info
   'cc-grafana-info.disable-description': `Disabling Grafana will delete and end all accesses to this Grafana organisation. You will still be able to create another one.`,
   'cc-grafana-info.disable-title': `Disable Grafana`,

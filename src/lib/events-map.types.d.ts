@@ -37,6 +37,7 @@ import {
   CcEnvVarDeleteEvent,
   CcEnvVarKeepEvent,
 } from '../components/cc-env-var-input/cc-env-var-input.events.js';
+import { CcFeatureSettingChangeEvent } from '../components/cc-feature-list/cc-feature-list.events.js';
 import { CcGrafanaResetEvent, CcGrafanaToggleEvent } from '../components/cc-grafana-info/cc-grafana-info.events.js';
 import {
   CcApplicationRestartEvent,
@@ -195,6 +196,7 @@ declare global {
     'cc-env-var-keep': CcEnvVarKeepEvent;
     'cc-env-vars-was-updated': CcEnvVarsWasUpdatedEvent;
     'cc-error-message-change': CcErrorMessageChangeEvent;
+    'cc-feature-setting-change': CcFeatureSettingChangeEvent;
     'cc-form-invalid': CcFormInvalidEvent;
     'cc-form-valid': CcFormValidEvent;
     'cc-grafana-reset': CcGrafanaResetEvent;
