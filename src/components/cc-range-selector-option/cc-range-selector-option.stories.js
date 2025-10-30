@@ -17,26 +17,26 @@ export const defaultStates = makeStory(conf, {
     {
       pointer: true,
       innerHTML: `
-        <span slot="body">Default</span>
+        <span>Default</span>
       `,
     },
     {
       disabled: true,
       innerHTML: `
-        <span slot="body">Disabled</span>
+        <span>Disabled</span>
       `,
     },
     {
       readonly: true,
       innerHTML: `
-        <span slot="body">Readonly</span>
+        <span>Readonly</span>
       `,
     },
     {
       error: true,
       pointer: true,
       innerHTML: `
-        <span slot="body">Error</span>
+        <span>Error</span>
       `,
     },
   ],
@@ -49,28 +49,28 @@ export const selectedStates = makeStory(conf, {
       selected: true,
       pointer: true,
       innerHTML: `
-        <span slot="body">Default</span>
+        <span>Default</span>
       `,
     },
     {
       disabled: true,
       selected: true,
       innerHTML: `
-        <span slot="body">Disabled</span>
+        <span>Disabled</span>
       `,
     },
     {
       readonly: true,
       selected: true,
       innerHTML: `
-        <span slot="body">Readonly</span>
+        <span>Readonly</span>
       `,
     },
     {
       error: true,
       selected: true,
       innerHTML: `
-        <span slot="body">Error</span>
+        <span>Error</span>
       `,
     },
   ],
@@ -82,14 +82,14 @@ export const draggingStates = makeStory(conf, {
     {
       dragging: true,
       innerHTML: `
-        <span slot="body">Default</span>
+        <span>Default</span>
       `,
     },
     {
       dragging: true,
       error: true,
       innerHTML: `
-        <span slot="body">Error</span>
+        <span>Error</span>
       `,
     },
   ],

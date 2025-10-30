@@ -726,7 +726,7 @@ export class CcRangeSelector extends CcFormControlElement {
             @mouseup=${() => this._onOptionMouseUp(indexes.current, option)}
             @mouseenter=${() => this._onOptionMouseEnter(indexes.current, option)}
           >
-            <span slot="body">${body}</span>
+            <span>${body}</span>
           </cc-range-selector-option>
         </label>
         <div class="arrow-wrapper ${classMap({ 'arrow-visible': isModeRange && !isLastOption })}">
@@ -760,7 +760,7 @@ export class CcRangeSelector extends CcFormControlElement {
             ?dragging=${!isDisabled && inRangeWhileDragging}
             ?pointer=${hasPointer}
           >
-            <span slot="body" part="btn-custom">${i18n('cc-range-selector.custom')}</span>
+            <span part="btn-custom">${i18n('cc-range-selector.custom')}</span>
           </cc-range-selector-option>
         </button>
         <div class="arrow-wrapper">
