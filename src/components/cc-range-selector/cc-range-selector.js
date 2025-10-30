@@ -126,7 +126,7 @@ export class CcRangeSelector extends CcFormControlElement {
     /** @type {string} The current value of the selector for single mode. */
     this.value = null;
 
-    /** @type {RangeSelectorSelection | null} The current boudaries of the selector for range mode - stores boundary values (start and end) of the selection. */
+    /** @type {RangeSelectorSelection | null} The current boundaries of the selector for range mode - stores boundary values (start and end) of the selection. */
     this.selection = null;
 
     /** @type {HTMLElementRef} */
