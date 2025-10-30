@@ -10,7 +10,7 @@ import { classMap } from 'lit/directives/class-map.js';
  *
  * @cssdisplay inline-flex
  *
- * @slot body - Content displayed as the main part of the tile. This slot should contain the option's label or visual content and should not be empty.
+ * @slot - Content displayed as the main part of the tile. This slot should contain the option's label or visual content and should not be empty.
  */
 export class CcRangeSelectorOption extends LitElement {
   static get properties() {
@@ -65,7 +65,7 @@ export class CcRangeSelectorOption extends LitElement {
 
     return html`
       <div class="wrapper ${classMap(classes)}">
-        <slot name="body"></slot>
+        <slot></slot>
       </div>
     `;
   }
@@ -93,7 +93,7 @@ export class CcRangeSelectorOption extends LitElement {
         /* endregion */
 
         /* region body section */
-        ::slotted([slot='body']) {
+        ::slotted(*) {
           background-color: var(--cc-color-bg-neutral, #f5f5f5);
           border: 0.125em dotted var(--cc-color-bg-neutral, #f5f5f5);
           color: var(--cc-color-text-default, #262626);
@@ -104,32 +104,32 @@ export class CcRangeSelectorOption extends LitElement {
         /* endregion */
 
         /* region common states */
-        .disabled ::slotted([slot='body']) {
+        .disabled ::slotted(*) {
           background-color: var(--cc-color-bg-default, #fff);
           border-color: var(--cc-color-bg-neutral, #f5f5f5);
           border-style: solid;
           color: var(--cc-color-text-disabled, #595959);
         }
 
-        .readonly ::slotted([slot='body']) {
+        .readonly ::slotted(*) {
           background-color: var(--cc-color-bg-neutral-active, #d9d9d9);
           border-color: var(--cc-color-bg-neutral-active, #d9d9d9);
         }
 
-        .selected ::slotted([slot='body']) {
+        .selected ::slotted(*) {
           background-color: var(--cc-color-bg-primary, #3569aa);
           border-color: var(--cc-color-bg-primary, #3569aa);
           color: var(--cc-color-text-inverted, #fff);
         }
 
-        .dragging ::slotted([slot='body']) {
+        .dragging ::slotted(*) {
           background-color: var(--cc-color-bg-primary-weaker, #e6eff8);
           border-color: var(--cc-color-bg-primary, #3569aa);
           color: var(--cc-color-text-primary-strong, #002c9d);
           user-select: none;
         }
 
-        .error ::slotted([slot='body']) {
+        .error ::slotted(*) {
           background-color: var(--cc-color-bg-danger-weaker, #ffe4e1);
           border-color: var(--cc-color-bg-danger-weaker, #ffe4e1);
           color: var(--cc-color-text-danger, #be242d);
@@ -137,7 +137,7 @@ export class CcRangeSelectorOption extends LitElement {
         /* endregion */
 
         /* region selected & disabled */
-        .selected.disabled ::slotted([slot='body']) {
+        .selected.disabled ::slotted(*) {
           background-color: var(--color-grey-60, #737373);
           border-color: var(--color-grey-60, #737373);
           color: var(--cc-color-text-inverted, #fff);
@@ -145,7 +145,7 @@ export class CcRangeSelectorOption extends LitElement {
         /* endregion */
 
         /* region selected & readonly */
-        .selected.readonly ::slotted([slot='body']) {
+        .selected.readonly ::slotted(*) {
           background-color: var(--cc-color-bg-primary-weak, #cedcff);
           border-color: var(--cc-color-bg-primary-weak, #cedcff);
           color: var(--cc-color-text-primary-strong, #002c9d);
@@ -153,7 +153,7 @@ export class CcRangeSelectorOption extends LitElement {
         /* endregion */
 
         /* region selected & error */
-        .selected.error ::slotted([slot='body']) {
+        .selected.error ::slotted(*) {
           background-color: var(--cc-color-bg-danger, #be242d);
           border-color: var(--cc-color-bg-danger, #be242d);
           color: var(--cc-color-text-inverted, #fff);
@@ -161,7 +161,7 @@ export class CcRangeSelectorOption extends LitElement {
         /* endregion */
 
         /* region dragging & error */
-        .dragging.error ::slotted([slot='body']) {
+        .dragging.error ::slotted(*) {
           border-color: var(--cc-color-bg-danger, #be242d);
         }
         /* endregion */
@@ -169,12 +169,12 @@ export class CcRangeSelectorOption extends LitElement {
         /* region hover */
         /* Hover state only applies when option is in its default interactive state
            (not disabled, readonly, error, selected, or dragging) */
-        .wrapper:not(.selected, .dragging, .disabled, .readonly, .error) :hover::slotted([slot='body']) {
+        .wrapper:not(.selected, .dragging, .disabled, .readonly, .error) :hover::slotted(*) {
           background-color: var(--cc-color-bg-neutral-hovered, #e7e7e7);
           border-color: var(--cc-color-bg-neutral-hovered, #e7e7e7);
         }
 
-        .wrapper.error:not(.selected, .dragging) :hover::slotted([slot='body']) {
+        .wrapper.error:not(.selected, .dragging) :hover::slotted(*) {
           background-color: var(--cc-color-bg-danger-weak, #fbc8c2);
           border-color: var(--cc-color-bg-danger-weak, #fbc8c2);
         }
