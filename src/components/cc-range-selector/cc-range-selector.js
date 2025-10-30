@@ -144,7 +144,7 @@ export class CcRangeSelector extends CcFormControlElement {
       invalidSelection: () => i18n('cc-range-selector.error.invalid-selection'),
     };
 
-    this._onOutsideClickHandler = new EventHandler(window, 'click', (event) => {
+    const onOutsideClick = (/** @type {Event} */ event) => {
       if (!this._dragCtrl.isDragging()) {
         return;
       }
@@ -156,7 +156,9 @@ export class CcRangeSelector extends CcFormControlElement {
           this.selection = this._dragCtrl.getPreviousSelection();
         }
       }
-    });
+    };
+    this._onOutsideClickHandler = new EventHandler(window, 'click', onOutsideClick);
+    this._onCcButtonClickHandler = new EventHandler(window, 'cc-click', onOutsideClick);
 
     this._isCustomOptionActive = false;
   }
@@ -164,11 +166,13 @@ export class CcRangeSelector extends CcFormControlElement {
   connectedCallback() {
     super.connectedCallback();
     this._onOutsideClickHandler.connect();
+    this._onCcButtonClickHandler.connect();
   }
 
   disconnectedCallback() {
     super.disconnectedCallback();
     this._onOutsideClickHandler.disconnect();
+    this._onCcButtonClickHandler.disconnect();
   }
 
   /**
