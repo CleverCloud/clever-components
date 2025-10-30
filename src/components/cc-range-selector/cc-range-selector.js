@@ -10,8 +10,8 @@ import { accessibilityStyles } from '../../styles/accessibility.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-icon/cc-icon.js';
 import '../cc-range-selector-option/cc-range-selector-option.js';
-import { CcRangeSelectEvent, CcSelectEvent } from '../common.events.js';
-import { CcRangeSelectorSelectCustom } from './cc-range-selector.events.js';
+import { CcSelectEvent } from '../common.events.js';
+import { CcRangeSelectEvent, CcRangeSelectorSelectCustom } from './cc-range-selector.events.js';
 import { RangeSelectorDraggingController } from './range-selector-dragging-controller.js';
 
 /**
