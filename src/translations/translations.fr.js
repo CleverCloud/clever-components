@@ -301,8 +301,8 @@ export const translations = {
     sanitize`Le processus de redémarrage de votre add-on et de ses ressources est en cours. Consultez les <cc-link href="${logsUrl}">logs</cc-link> ou la <cc-link href=${docsUrl}>documentation</cc-link> pour plus d'informations.`,
   'cc-addon-header.restart.success.title': `Redémarrage en cours`,
   'cc-addon-header.state-msg.deployment-failed': `Le déploiement a échoué`,
-  'cc-addon-header.state-msg.deployment-is-active': /** @param {{ productId: string }} _ */ ({ productId }) =>
-    `Votre ${productId === 'kubernetes' ? 'cluster' : 'instance'} ${productId} est disponible !`,
+  'cc-addon-header.state-msg.deployment-is-active': /** @param {{ providerId: string }} _ */ ({ providerId }) =>
+    `Votre ${providerId === 'kubernetes' ? 'cluster' : 'instance'} ${providerId} est disponible !`,
   'cc-addon-header.state-msg.deployment-is-deploying': `En cours de déploiement…`,
   'cc-addon-header.state-msg.unknown-state': `État inconnu, essayez de redémarrer ou de contacter notre support si vous avez des questions`,
   //#endregion
