@@ -116,7 +116,10 @@ export class CcAddonHeader extends LitElement {
     const isRestarting = this.state.type === 'restarting';
     const isRebuilding = this.state.type === 'rebuilding';
     const deploymentStatus = this.state.deploymentStatus;
-    const providerId = this.state.type === 'loaded' ? this.state.providerId : '';
+    const providerId =
+      this.state.type === 'loaded' || this.state.type === 'restarting' || this.state.type === 'rebuilding'
+        ? this.state.providerId
+        : '';
 
     return html`
       <cc-block>
