@@ -5,6 +5,19 @@ title: 'Changelog'
 
 # Changelog
 
+## [22.4.0](https://github.com/CleverCloud/clever-components/compare/22.3.2...22.4.0) (2025-10-30)
+
+
+### 🚀 Features
+
+* **cc-addon-credentials-beta:** remove add-on specificity from error messages ([2c77662](https://github.com/CleverCloud/clever-components/commit/2c77662ec6aed84cc7ec055dfb178c63289fb693))
+* **cc-addon-header.smart-kubernetes:** init ([b1f8b92](https://github.com/CleverCloud/clever-components/commit/b1f8b9265a59e762b46ec8bcbc0471ed895da924))
+* **cc-addon-header:** remove add-on specificity from error messages ([eaee5da](https://github.com/CleverCloud/clever-components/commit/eaee5da4beab7d20fbd2529a75f66fff217da499))
+* **cc-addon-info.smart-kubernetes:** init ([6a0d37c](https://github.com/CleverCloud/clever-components/commit/6a0d37c716d5f74d81ae83b4add6415f3e0d16c7))
+* **cc-addon-info:** remove add-on specificity from error messages ([dcfff02](https://github.com/CleverCloud/clever-components/commit/dcfff0232682e75bc421f5eafd68ec15882ae8db))
+* **cem:** add support for [@import](https://github.com/import) JSDoc syntax ([ebef10b](https://github.com/CleverCloud/clever-components/commit/ebef10b33a2560f902a4e5fd0041798ef6ffbea1))
+* **lib/dev-hub-url:** allow overriding dev hub & doc base URLs ([0d1f46d](https://github.com/CleverCloud/clever-components/commit/0d1f46de343cd03ebfc35612bce552a59720f7d5)), closes [#1579](https://github.com/CleverCloud/clever-components/issues/1579)
+
 ## [22.3.2](https://github.com/CleverCloud/clever-components/compare/22.3.1...22.3.2) (2025-10-24)
 
 
