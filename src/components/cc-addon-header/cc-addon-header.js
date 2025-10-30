@@ -25,6 +25,7 @@ const STATUS_ICON = {
   deploying: iconDeploying,
   active: iconActive,
   failed: iconDeploymentFailed,
+  deleted: null,
 };
 
 /** @type {Partial<CcAddonHeaderStateLoaded>} */
@@ -72,15 +73,16 @@ export class CcAddonHeader extends LitElement {
 
   /**
    * @param {DeploymentStatus} deploymentStatus
+   * @param {string} providerId
    * @returns {string}
    * @private
    */
-  _getStatusMsg(deploymentStatus) {
+  _getStatusMsg(deploymentStatus, providerId) {
     if (deploymentStatus === 'deploying') {
       return i18n('cc-addon-header.state-msg.deployment-is-deploying');
     }
     if (deploymentStatus === 'active') {
-      return i18n('cc-addon-header.state-msg.deployment-is-active');
+      return i18n('cc-addon-header.state-msg.deployment-is-active', { providerId });
     }
     if (deploymentStatus === 'failed') {
       return i18n('cc-addon-header.state-msg.deployment-failed');
@@ -114,6 +116,7 @@ export class CcAddonHeader extends LitElement {
     const isRestarting = this.state.type === 'restarting';
     const isRebuilding = this.state.type === 'rebuilding';
     const deploymentStatus = this.state.deploymentStatus;
+    const providerId = this.state.type === 'loaded' ? this.state.providerId : '';
 
     return html`
       <cc-block>
@@ -155,9 +158,13 @@ export class CcAddonHeader extends LitElement {
                 </cc-link>
               `,
             )}
-            ${!isStringEmpty(addonInfo.configLink)
+            ${addonInfo.configLink != null
               ? html`
-                  <cc-link mode="button" href="${addonInfo.configLink}" ?skeleton=${skeleton} download
+                  <cc-link
+                    mode="button"
+                    href="${addonInfo.configLink.href}"
+                    ?skeleton=${skeleton}
+                    download="${addonInfo.configLink.fileName}"
                     >${i18n('cc-addon-header.action.get-config')}
                   </cc-link>
                 `
@@ -200,7 +207,7 @@ export class CcAddonHeader extends LitElement {
                   .icon=${STATUS_ICON[deploymentStatus]}
                   ?skeleton=${skeleton}
                 ></cc-icon>
-                <span class=${classMap({ skeleton })}> ${this._getStatusMsg(deploymentStatus)} </span>
+                <span class=${classMap({ skeleton })}> ${this._getStatusMsg(deploymentStatus, providerId)} </span>
               `
             : ''}
           ${!isStringEmpty(addonInfo.logsUrl)

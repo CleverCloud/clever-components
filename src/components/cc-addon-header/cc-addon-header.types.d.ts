@@ -25,7 +25,10 @@ interface OptionalProperties {
   };
   productStatus?: string;
   deploymentStatus?: DeploymentStatus;
-  configLink?: string;
+  configLink?: {
+    href: string;
+    fileName: string;
+  };
 }
 
 interface OpenLink {
@@ -33,7 +36,7 @@ interface OpenLink {
   name: string;
 }
 
-export type DeploymentStatus = 'deploying' | 'active' | 'failed';
+export type DeploymentStatus = 'deploying' | 'active' | 'failed' | 'deleted';
 
 export interface CcAddonHeaderStateLoading extends OptionalProperties {
   type: 'loading';
@@ -68,3 +71,14 @@ export interface RawAddon {
 }
 
 export type Addon = BaseProperties & OptionalProperties;
+
+export interface KubeInfo {
+  id: string;
+  tenantId: string;
+  name: string;
+  description?: string | null;
+  tag?: string | null;
+  status: string;
+  creationDate: string;
+  version: string;
+}

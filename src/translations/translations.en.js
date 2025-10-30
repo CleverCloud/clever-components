@@ -193,7 +193,7 @@ export const translations = {
   'cc-addon-credentials-beta.doc-link.keycloak': `Secured multi-instances - Documentation`,
   'cc-addon-credentials-beta.doc-link.otoroshi-api': `Manage Otoroshi from its API - Documentation`,
   'cc-addon-credentials-beta.doc-link.otoroshi-ng': `Otoroshi in a Network Group - Documentation`,
-  'cc-addon-credentials-beta.error': `Something went wrong while loading add-on information.`,
+  'cc-addon-credentials-beta.error': `Something went wrong while loading information`,
   'cc-addon-credentials-beta.heading': `Access`,
   'cc-addon-credentials-beta.ng-multi-instances.disabling.error': `Something went wrong while trying to disable the secured multi-instances`,
   'cc-addon-credentials-beta.ng-multi-instances.disabling.success': `The secured multi-instances have been successfully disabled`,
@@ -272,7 +272,8 @@ export const translations = {
   'cc-addon-header.action.open-addon': /** @param {{ linkName: string }} _ */ ({ linkName }) => `Open ${linkName}`,
   'cc-addon-header.action.restart': `Restart`,
   'cc-addon-header.action.restart-rebuild': `Re-build and restart`,
-  'cc-addon-header.error': `Something went wrong while loading add-on info.`,
+  'cc-addon-header.error': `Something went wrong while loading information`,
+  'cc-addon-header.error.fetch-kubeconfig': `An error occurred while refreshing the Kubeconfig link, please refresh the page.`,
   'cc-addon-header.logs.link': `View logs`,
   'cc-addon-header.rebuild.error': `Something went wrong while rebuilding the add-on.`,
   'cc-addon-header.rebuild.success.message': /** @param {{logsUrl: string, docsUrl: string}} _ */ ({
@@ -288,10 +289,11 @@ export const translations = {
   }) =>
     sanitize`The process of restarting your add-on and its resources is in progress. See the <cc-link href="${logsUrl}">logs</cc-link> or the <cc-link href=${docsUrl}>documentation</cc-link> for more information.`,
   'cc-addon-header.restart.success.title': `Restart in progress`,
-  'cc-addon-header.state-msg.deployment-failed': `The deployment has failed`,
-  'cc-addon-header.state-msg.deployment-is-active': `Your add-on is active!`,
-  'cc-addon-header.state-msg.deployment-is-deploying': `Your add-on is deploying…`,
-  'cc-addon-header.state-msg.unknown-state': `Unknown state, try to restart the add-on or contact our support if you have additional questions.`,
+  'cc-addon-header.state-msg.deployment-failed': `Deployment failed`,
+  'cc-addon-header.state-msg.deployment-is-active': /** @param {{ providerId: string }} _ */ ({ providerId }) =>
+    `${providerId} ${providerId === 'kubernetes' ? 'cluster' : 'instance'} is active`,
+  'cc-addon-header.state-msg.deployment-is-deploying': `Deployment in progress`,
+  'cc-addon-header.state-msg.unknown-state': `Unknown state, try to restart or contact our support if you have additional questions.`,
   //#endregion
   //#region cc-addon-info
   'cc-addon-info.billing.heading': `Billing`,
@@ -299,10 +301,11 @@ export const translations = {
   'cc-addon-info.creation-date.human-friendly-date': /** @param {{ date: string | number }} _ */ ({ date }) =>
     formatDatetime(date),
   'cc-addon-info.doc-link.keycloak': `Keycloak - Documentation`,
+  'cc-addon-info.doc-link.kubernetes': `Kubernetes - Documentation`,
   'cc-addon-info.doc-link.matomo': `Matomo - Documentation`,
   'cc-addon-info.doc-link.metabase': `Metabase - Documentation`,
   'cc-addon-info.doc-link.otoroshi': `Otoroshi - Documentation`,
-  'cc-addon-info.error': `Something went wrong while loading add-on information.`,
+  'cc-addon-info.error': `Something went wrong while loading information`,
   'cc-addon-info.feature.connection-limit': `Connection limit`,
   'cc-addon-info.feature.cpu': `vCPUs`,
   'cc-addon-info.feature.data-exploration': `Data Exploration`,
