@@ -5,6 +5,13 @@ title: 'Changelog'
 
 # Changelog
 
+## [22.4.2](https://github.com/CleverCloud/clever-components/compare/22.4.1...22.4.2) (2025-10-31)
+
+
+### 🐛 Bug Fixes
+
+* **skeleton:** set `animation:none` for all elements by default ([451c49e](https://github.com/CleverCloud/clever-components/commit/451c49e8ba03de353c4cad8f9c7eff676765dbfe)), closes [#1111](https://github.com/CleverCloud/clever-components/issues/1111)
+
 ## [22.4.1](https://github.com/CleverCloud/clever-components/compare/22.4.0...22.4.1) (2025-10-30)
 
 
