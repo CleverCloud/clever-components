@@ -65,6 +65,10 @@ defineSmartComponent({
       controller.discardOverflow();
     });
 
+    onEvent('cc-log-inspect', () => {
+      controller.pause();
+    });
+
     controller.init();
   },
 });

@@ -1041,6 +1041,7 @@ export const translations = {
   'cc-logs.copied': /** @param {{count: number}} _ */ ({ count }) =>
     `${plural(count, 'Copiée')} (${count} ${plural(count, 'ligne')})`,
   'cc-logs.copy': `Copier`,
+  'cc-logs.inspect': `Inspecter`,
   'cc-logs.select-button.label': /** @param {{index: number}} _ */ ({ index }) => `Sélectionner la ligne ${index}`,
   'cc-logs.unselect-button.label': /** @param {{index: number}} _ */ ({ index }) => `Désélectionner la ligne ${index}`,
   //#endregion

@@ -85,6 +85,10 @@ defineSmartComponent({
       controller.discardOverflow();
     });
 
+    onEvent('cc-log-inspect', () => {
+      controller.pause();
+    });
+
     if (deploymentId != null) {
       controller.initByDeploymentId(deploymentId);
     } else if (dateRangeSelection != null) {

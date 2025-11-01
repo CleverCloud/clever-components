@@ -5,6 +5,7 @@ import { join } from 'lit/directives/join.js';
 import { createRef, ref } from 'lit/directives/ref.js';
 import {
   iconRemixFileCopyLine as iconCopy,
+  iconRemixFocus_2Line as iconInspect,
   iconRemixCheckboxBlankCircleFill as iconSelected,
 } from '../../assets/cc-remix.icons.js';
 import { ansiPaletteStyle } from '../../lib/ansi/ansi-palette-style.js';
@@ -20,7 +21,7 @@ import '../cc-button/cc-button.js';
 import '../cc-icon/cc-icon.js';
 import '../cc-loader/cc-loader.js';
 import '../cc-notice/cc-notice.js';
-import { CcLogsFollowChangeEvent } from './cc-logs.events.js';
+import { CcLogInspectEvent, CcLogsFollowChangeEvent } from './cc-logs.events.js';
 import { DateDisplayer } from './date-displayer.js';
 import { LogsController } from './logs-controller.js';
 import { LogsInputController } from './logs-input-controller.js';
@@ -683,6 +684,24 @@ export class CcLogs extends LitElement {
 
   // endregion
 
+  // region Inspect logic
+
+  _onInspectLogButtonClick() {
+    if (this._logsCtrl.isSelectionEmpty()) {
+      return;
+    }
+
+    const selectedLog = this._logsCtrl.getSelectedLogs()[0];
+    const logIndex = this._logsCtrl.getFirstSelectedLogIndex();
+    this.dispatchEvent(new CcLogInspectEvent(selectedLog));
+
+    this._logsRef.value.layoutComplete.then(() => {
+      this._logsRef.value.element(logIndex)?.scrollIntoView({ block: 'center' });
+    });
+  }
+
+  // endregion
+
   // region Follow logic
 
   /**
@@ -864,9 +883,18 @@ export class CcLogs extends LitElement {
           @wheel=${this._onWheel}
         ></lit-virtualizer>
         ${!this._logsCtrl.isSelectionEmpty()
-          ? html` <cc-button class="copy_button" .icon=${iconCopy} @cc-click=${this._onCopySelectionToClipboard}>
-              ${i18n('cc-logs.copy')}
-            </cc-button>`
+          ? html` <div class="floating_buttons">
+              <cc-button .icon=${iconCopy} @cc-click=${this._onCopySelectionToClipboard}>
+                ${i18n('cc-logs.copy')}
+              </cc-button>
+              ${!isStringEmpty(this.messageFilter)
+                ? html`
+                    <cc-button .icon=${iconInspect} @cc-click=${this._onInspectLogButtonClick}>
+                      ${i18n('cc-logs.inspect')}
+                    </cc-button>
+                  `
+                : ''}
+            </div>`
           : null}
       </div>
     `;
@@ -1082,7 +1110,7 @@ export class CcLogs extends LitElement {
           opacity: 1;
         }
 
-        .copy_button {
+        .floating_buttons {
           position: absolute;
           right: 1em;
           top: 0.5em;
