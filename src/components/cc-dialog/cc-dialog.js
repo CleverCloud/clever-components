@@ -2,7 +2,6 @@ import { css, html, LitElement } from 'lit';
 import { createRef, ref } from 'lit/directives/ref.js';
 import { iconRemixCloseLine as iconClose } from '../../assets/cc-remix.icons.js';
 import { findActiveElement } from '../../lib/shadow-dom-utils.js';
-import { isStringEmpty } from '../../lib/utils.js';
 import { accessibilityStyles } from '../../styles/accessibility.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-button/cc-button.js';
@@ -22,27 +21,24 @@ import { CcDialogCloseEvent, CcDialogConfirmEvent, CcDialogOpenEvent } from './c
 export class CcDialog extends LitElement {
   static get properties() {
     return {
-      contentBody: { type: String, attribute: 'content-body' },
+      closedBy: { type: String, attribute: 'closed-by' },
       heading: { type: String },
+      hiddenCloseButton: { type: Boolean, attribute: 'hidden-close-button' },
       open: { type: Boolean, reflect: true },
-      waiting: { type: Boolean, reflect: true },
     };
   }
 
   constructor() {
     super();
 
-    /** @type {string|null} Sets the heading of the dialog as long as the heading slot is unused */
-    this.heading = null;
+    /** @type {'any'|'closerequest'|'none'} Indicates which action closes the dialog (see https://developer.mozilla.org/en-US/docs/Web/API/HTMLDialogElement/closedBy for more information) */
+    this.closedBy = 'any';
 
-    /** @type {string|null} Sets the content of the dialog below the heading as long as the content slot is unused */
-    this.contentBody = null;
+    /** @type {boolean} Hides the close button when true */
+    this.hiddenCloseButton = false;
 
     /** @type {boolean} Displays or hides the dialog */
     this.open = false;
-
-    /** @type {boolean} Disables the form inputs and buttons, and shows a loading indicator for the submit button */
-    this.waiting = false;
 
     /** @type {HTMLDialogElementRef} */
     this._dialogRef = createRef();
@@ -81,13 +77,9 @@ export class CcDialog extends LitElement {
     this.open = false;
   }
 
-  // TODO: we're not blocking esc, should we?
   /** @param {Event} e */
   _onDialogClose(e) {
     e?.preventDefault();
-    if (this.waiting) {
-      return;
-    }
     this.open = false;
   }
 
@@ -111,22 +103,26 @@ export class CcDialog extends LitElement {
 
   render() {
     return html`
-      <dialog aria-labelledby="dialog-heading" closedby="any" ${ref(this._dialogRef)} @cancel="${this._onDialogClose}">
-        <slot name="content">
-          <div class="dialog-padding">
-            <button class="dialog-close" ?disabled="${this.waiting}" @click="${this._onDialogClose}">
-              <span class="visually-hidden">${i18n('cc-dialog.close')}</span>
-              <cc-icon .icon="${iconClose}"></cc-icon>
-            </button>
-            <slot name="heading" class="dialog-heading" id="dialog-heading">
-              ${!isStringEmpty(this.heading) ? this.heading : ''}
-            </slot>
-            <div class="dialog-content-body-wrapper">
-              <slot name="content-body"> ${!isStringEmpty(this.contentBody) ? this.contentBody : ''} </slot>
-              <slot name="dialog-form"></slot>
-            </div>
+      <dialog
+        aria-labelledby="dialog-heading"
+        closedby="${this.closedBy}"
+        ${ref(this._dialogRef)}
+        @cancel="${this._onDialogClose}"
+      >
+        <div class="dialog-padding">
+          ${!this.hiddenCloseButton
+            ? html`
+                <button class="dialog-close" @click="${this._onDialogClose}">
+                  <span class="visually-hidden">${i18n('cc-dialog.close')}</span>
+                  <cc-icon .icon="${iconClose}"></cc-icon>
+                </button>
+              `
+            : ''}
+          <slot name="heading" class="dialog-heading" id="dialog-heading"></slot>
+          <div class="dialog-content-body-wrapper">
+            <slot></slot>
           </div>
-        </slot>
+        </div>
       </dialog>
     `;
   }
