@@ -70,7 +70,7 @@ export class CcAddonHeaderClient {
   /** @returns {Promise<{ rawAddon: RawAddon, zone: ZoneStateLoaded }>} */
   async getAddonWithZone() {
     const rawAddon = await this.getAddon();
-    this._realId = rawAddon.realId;
+    // this._realId = rawAddon.realId;
     const zone = await this.getZone(rawAddon.region);
 
     return { rawAddon, zone };
