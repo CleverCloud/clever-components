@@ -180,7 +180,7 @@
   },
   "customElements": "dist/custom-elements.json",
   "volta": {
-    "node": "22.17.1",
-    "npm": "11.4.2"
+    "node": "24.11.1",
+    "npm": "11.6.2"
   }
 }

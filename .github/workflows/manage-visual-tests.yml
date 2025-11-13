@@ -31,10 +31,10 @@ jobs:
       stories-groups: ${{ steps.get-stories-groups.outputs.stories-groups }}
     steps:
       - name: '[Prepare] Checkout'
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: '[Prepare] Setup Node.js'
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version-file: 'package.json'
           cache: 'npm'
@@ -58,10 +58,10 @@ jobs:
       last-expectation-update-local: ${{ steps.check-for-expectation-update.outputs.last-expectation-update-local }}
     steps:
       - name: '[Prepare] Checkout'
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: '[Prepare] Setup Node.js'
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version-file: 'package.json'
           cache: 'npm'
@@ -93,12 +93,12 @@ jobs:
         stories-group: ${{ fromJson(needs.split-into-groups.outputs.stories-groups) }}
     steps:
       - name: '[Prepare] Checkout base commit'
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           ref: ${{ github.event.pull_request.base.sha }}
 
       - name: '[Prepare] Setup Node.js'
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version-file: 'package.json'
           cache: 'npm'
@@ -135,12 +135,12 @@ jobs:
         stories-group: ${{ fromJson(needs.split-into-groups.outputs.stories-groups) }}
     steps:
       - name: '[Prepare] Checkout latest commit'
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           ref: ${{ github.event.pull_request.head.ref }}
 
       - name: '[Prepare] Setup Node.js'
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version-file: 'package.json'
           cache: 'npm'
@@ -163,7 +163,7 @@ jobs:
           echo "last-actual-update-local=$(TZ=Europe/Paris date +'%Y-%m-%d %H:%M:%S')" >> $GITHUB_OUTPUT
 
       - name: '[Run] Upload report to GitHub Actions Artifacts'
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: results-${{ matrix.stories-group }}
           path: ${{ env.VISUAL_TESTS_REPORTS_DIR }}/${{ env.VISUAL_TESTS_RAW_REPORT_NAME }}
@@ -180,12 +180,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: '[Prepare] Checkout latest commit'
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           ref: ${{ github.event.pull_request.head.ref }}
 
       - name: '[Prepare] Setup Node.js'
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version-file: 'package.json'
           cache: 'npm'
@@ -194,7 +194,7 @@ jobs:
         run: npm ci
 
       - name: '[Prepare] Download reports from GitHub Actions Artifacts'
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v6
         with:
           path: ${{ env.VISUAL_TESTS_REPORTS_DIR }}
           pattern: results-*
@@ -257,10 +257,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: '[Prepare] Checkout'
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: '[Prepare] Setup Node.js'
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version-file: 'package.json'
           cache: 'npm'

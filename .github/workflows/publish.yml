@@ -13,46 +13,45 @@ jobs:
       prerelease: ${{ steps.version_parse.outputs.prerelease }}
       skip-publish: ${{ steps.version_parse.outputs.skip-publish }}
     steps:
-      - name: 'Decode version from tag'
-        id: version_regex
-        uses: KyoriPowered/action-regex-match@v3
+      - name: '[Prepare] Checkout'
+        uses: actions/checkout@v5
+      - name: '[Prepare] Setup Node.js'
+        uses: actions/setup-node@v6
         with:
-          text: ${{ github.ref_name }}
-          regex: '^(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)(?:-(beta)\.(?:0|[1-9]\d*))?$'
-      - name: 'Parse version'
+          node-version-file: 'package.json'
+      - name: 'Parse version from tag'
         id: version_parse
-        if: steps.version_regex.outputs.match != ''
-        run: |
-          echo "prerelease=${{ steps.version_regex.outputs.group1 }}" >> $GITHUB_OUTPUT
-          echo "version=${{ steps.version_regex.outputs.match }}" >> $GITHUB_OUTPUT
-          echo "skip-publish=false" >> $GITHUB_OUTPUT
+        run: node .github/scripts/parse-version-from-tag.js
+        env:
+          stringToParse: ${{ github.ref_name }}
   publish-npm:
     name: 'Publish package to npm.js'
     needs: pre-publish
     if: needs.pre-publish.outputs.skip-publish == 'false'
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
     steps:
       - name: '[Prepare] Checkout'
-        uses: actions/checkout@v3
+        uses: actions/checkout@v5
         with:
           fetch-depth: 0
           ref: ${{ github.ref_name }}
       - name: '[Prepare] Setup Node.js'
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v6
         with:
           node-version-file: 'package.json'
           cache: 'npm'
+          registry-url: 'https://registry.npmjs.org'
       - name: '[Prepare] Extract NPM tag'
         id: npm_tag
         run: p=${{ needs.pre-publish.outputs.prerelease }} && echo "tag=${p:-latest}" >> $GITHUB_OUTPUT
       - name: '[Prepare] Install dependencies'
         run: npm ci
       - name: '[Publish] version ${{ github.ref_name }} with tag ${{ steps.npm_tag.outputs.tag }}'
-        env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
-          npm config set //registry.npmjs.org/:_authToken ${NPM_TOKEN}
-          npm publish --access public --tag ${{ steps.npm_tag.outputs.tag }}
+          npm publish --access public --provenance --tag ${{ steps.npm_tag.outputs.tag }}
   publish-cdn:
     name: 'Publish CDN to CleverCloud'
     needs: pre-publish
@@ -60,12 +59,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: '[Prepare] Checkout'
-        uses: actions/checkout@v3
+        uses: actions/checkout@v5
         with:
           fetch-depth: 0
           ref: ${{ github.ref_name }}
       - name: '[Prepare] Setup Node.js'
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v6
         with:
           node-version-file: 'package.json'
           cache: 'npm'
