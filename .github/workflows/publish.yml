@@ -29,6 +29,9 @@ jobs:
     needs: pre-publish
     if: needs.pre-publish.outputs.skip-publish == 'false'
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
     steps:
       - name: '[Prepare] Checkout'
         uses: actions/checkout@v5
@@ -40,17 +43,15 @@ jobs:
         with:
           node-version-file: 'package.json'
           cache: 'npm'
+          registry-url: 'https://registry.npmjs.org'
       - name: '[Prepare] Extract NPM tag'
         id: npm_tag
         run: p=${{ needs.pre-publish.outputs.prerelease }} && echo "tag=${p:-latest}" >> $GITHUB_OUTPUT
       - name: '[Prepare] Install dependencies'
         run: npm ci
       - name: '[Publish] version ${{ github.ref_name }} with tag ${{ steps.npm_tag.outputs.tag }}'
-        env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
-          npm config set //registry.npmjs.org/:_authToken ${NPM_TOKEN}
-          npm publish --access public --tag ${{ steps.npm_tag.outputs.tag }}
+          npm publish --access public --provenance --tag ${{ steps.npm_tag.outputs.tag }}
   publish-cdn:
     name: 'Publish CDN to CleverCloud'
     needs: pre-publish
