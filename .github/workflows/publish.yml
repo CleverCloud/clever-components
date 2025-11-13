@@ -13,19 +13,17 @@ jobs:
       prerelease: ${{ steps.version_parse.outputs.prerelease }}
       skip-publish: ${{ steps.version_parse.outputs.skip-publish }}
     steps:
-      - name: 'Decode version from tag'
-        id: version_regex
-        uses: KyoriPowered/action-regex-match@v3
+      - name: '[Prepare] Checkout'
+        uses: actions/checkout@v5
+      - name: '[Prepare] Setup Node.js'
+        uses: actions/setup-node@v6
         with:
-          text: ${{ github.ref_name }}
-          regex: '^(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)(?:-(beta)\.(?:0|[1-9]\d*))?$'
-      - name: 'Parse version'
+          node-version-file: 'package.json'
+      - name: 'Parse version from tag'
         id: version_parse
-        if: steps.version_regex.outputs.match != ''
-        run: |
-          echo "prerelease=${{ steps.version_regex.outputs.group1 }}" >> $GITHUB_OUTPUT
-          echo "version=${{ steps.version_regex.outputs.match }}" >> $GITHUB_OUTPUT
-          echo "skip-publish=false" >> $GITHUB_OUTPUT
+        run: node .github/scripts/parse-version-from-tag.js
+        env:
+          stringToParse: ${{ github.ref_name }}
   publish-npm:
     name: 'Publish package to npm.js'
     needs: pre-publish
