@@ -61,7 +61,7 @@ jobs:
 
       - name: '[Finalize] Add comment'
         if: steps.check_preview.outputs.exists == 'no'
-        uses: actions/github-script@v6
+        uses: actions/github-script@v8
         env:
           PREVIEW_BASE_URL: https://clever-components-preview.cellar-c2.services.clever-cloud.com
           BRANCH: ${{ github.event.pull_request.head.ref }}
@@ -101,7 +101,7 @@ jobs:
           PREVIEWS_CELLAR_SECRET_KEY: ${{ secrets.PREVIEWS_CELLAR_SECRET_KEY }}
 
       - name: '[Finalize] Add comment'
-        uses: actions/github-script@v6
+        uses: actions/github-script@v8
         with:
           script: |
             await github.rest.issues.createComment({
