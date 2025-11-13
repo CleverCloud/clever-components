@@ -1,34 +1,27 @@
 on:
+  workflow_run:
+    workflows: ['Tests and build']
+    types:
+      - completed
   pull_request:
     types:
-      - synchronize
-      - opened
       - closed
 name: Preview
 jobs:
-  wait_for_build:
-    name: 'Wait for build to succeed'
-    if: |
-      (github.event.action == 'synchronize' || github.event.action == 'opened') && 
-      github.event.repository.fork == false && 
-      !startsWith(github.event.pull_request.head.ref, 'release-please--')
-    runs-on: ubuntu-latest
-    steps:
-      - name: 'Wait for build to succeed'
-        uses: lewagon/wait-on-check-action@v1.3.1
-        with:
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
-          check-name: test
-          ref: ${{ github.event.pull_request.head.sha }}
-          allowed-conclusions: success
   publish:
     name: 'Publish Preview'
-    needs: wait_for_build
+    if: |
+      github.event_name == 'workflow_run' &&
+      github.event.workflow_run.conclusion == 'success' &&
+      github.event.workflow_run.event == 'pull_request' &&
+      github.event.repository.fork == false &&
+      !startsWith(github.event.workflow_run.head_branch, 'release-please--')
     runs-on: ubuntu-latest
     steps:
       - name: '[Prepare] Checkout'
         uses: actions/checkout@v5
         with:
+          ref: ${{ github.event.workflow_run.head_sha }}
           fetch-depth: 0
       - name: '[Prepare] Setup Node.js'
         uses: actions/setup-node@v6
@@ -46,7 +39,7 @@ jobs:
             echo "exists=no" >> $GITHUB_OUTPUT
           fi
         env:
-          BRANCH: ${{ github.event.pull_request.head.ref }}
+          BRANCH: ${{ github.event.workflow_run.head_branch }}
           PREVIEWS_CELLAR_KEY_ID: ${{ secrets.PREVIEWS_CELLAR_KEY_ID }}
           PREVIEWS_CELLAR_SECRET_KEY: ${{ secrets.PREVIEWS_CELLAR_SECRET_KEY }}
 
@@ -55,7 +48,7 @@ jobs:
       - name: '[Run] Publish preview'
         run: npm run preview:publish "${BRANCH}"
         env:
-          BRANCH: ${{ github.event.pull_request.head.ref }}
+          BRANCH: ${{ github.event.workflow_run.head_branch }}
           PREVIEWS_CELLAR_KEY_ID: ${{ secrets.PREVIEWS_CELLAR_KEY_ID }}
           PREVIEWS_CELLAR_SECRET_KEY: ${{ secrets.PREVIEWS_CELLAR_SECRET_KEY }}
 
@@ -64,13 +57,14 @@ jobs:
         uses: actions/github-script@v8
         env:
           PREVIEW_BASE_URL: https://clever-components-preview.cellar-c2.services.clever-cloud.com
-          BRANCH: ${{ github.event.pull_request.head.ref }}
+          BRANCH: ${{ github.event.workflow_run.head_branch }}
         with:
           script: |
+            const prNumber = context.payload.workflow_run.pull_requests[0].number;
             await github.rest.issues.createComment({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              issue_number: context.issue.number,
+              issue_number: prNumber,
               body: `🔎 A preview has been automatically published : ${process.env.PREVIEW_BASE_URL}/${process.env.BRANCH}/index.html.\n\n_This preview will be deleted once this PR is closed._`
             });
   delete:
