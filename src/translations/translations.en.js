@@ -194,6 +194,7 @@ export const translations = {
   'cc-addon-credentials-beta.doc-link.elastic-apm': `Elastic APM - Documentation`,
   'cc-addon-credentials-beta.doc-link.elastic-kibana': `Kibana - Documentation`,
   'cc-addon-credentials-beta.doc-link.keycloak': `Secured multi-instances - Documentation`,
+  'cc-addon-credentials-beta.doc-link.materia-kv': `Materia KV - Documentation`,
   'cc-addon-credentials-beta.doc-link.otoroshi-api': `Manage Otoroshi from its API - Documentation`,
   'cc-addon-credentials-beta.doc-link.otoroshi-ng': `Otoroshi in a Network Group - Documentation`,
   'cc-addon-credentials-beta.error': `Something went wrong while loading information`,
