@@ -86,7 +86,6 @@ export class CcBlockDetails extends LitElement {
           font-size: 1em;
           grid-area: button;
           padding: 0.25em 0.6em 0.35em;
-          transition: all 0.3s;
         }
 
         :host([is-open]) .button {
@@ -98,6 +97,12 @@ export class CcBlockDetails extends LitElement {
         .button:hover {
           border: solid 1px var(--cc-color-border-neutral-strong, #8c8c8c);
           border-radius: var(--cc-border-radius-default, 0.25em);
+          transition: all 0.3s;
+        }
+
+        .button:focus-visible {
+          outline: var(--cc-focus-outline, #000 solid 2px);
+          outline-offset: var(--cc-focus-outline-offset, 2px);
         }
 
         .button cc-icon {
