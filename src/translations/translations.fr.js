@@ -317,6 +317,7 @@ export const translations = {
   'cc-addon-info.doc-link.elastic': `Elastic Stack - Documentation`,
   'cc-addon-info.doc-link.keycloak': `Keycloak - Documentation`,
   'cc-addon-info.doc-link.kubernetes': `Kubernetes - Documentation`,
+  'cc-addon-info.doc-link.materia-kv': `Materia KV - Documentation`,
   'cc-addon-info.doc-link.matomo': `Matomo - Documentation`,
   'cc-addon-info.doc-link.metabase': `Metabase - Documentation`,
   'cc-addon-info.doc-link.otoroshi': `Otoroshi - Documentation`,
