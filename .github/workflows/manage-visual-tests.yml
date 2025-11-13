@@ -163,7 +163,7 @@ jobs:
           echo "last-actual-update-local=$(TZ=Europe/Paris date +'%Y-%m-%d %H:%M:%S')" >> $GITHUB_OUTPUT
 
       - name: '[Run] Upload report to GitHub Actions Artifacts'
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: results-${{ matrix.stories-group }}
           path: ${{ env.VISUAL_TESTS_REPORTS_DIR }}/${{ env.VISUAL_TESTS_RAW_REPORT_NAME }}
