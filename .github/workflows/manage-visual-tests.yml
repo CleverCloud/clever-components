@@ -34,7 +34,7 @@ jobs:
         uses: actions/checkout@v5
 
       - name: '[Prepare] Setup Node.js'
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version-file: 'package.json'
           cache: 'npm'
@@ -61,7 +61,7 @@ jobs:
         uses: actions/checkout@v5
 
       - name: '[Prepare] Setup Node.js'
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version-file: 'package.json'
           cache: 'npm'
@@ -98,7 +98,7 @@ jobs:
           ref: ${{ github.event.pull_request.base.sha }}
 
       - name: '[Prepare] Setup Node.js'
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version-file: 'package.json'
           cache: 'npm'
@@ -140,7 +140,7 @@ jobs:
           ref: ${{ github.event.pull_request.head.ref }}
 
       - name: '[Prepare] Setup Node.js'
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version-file: 'package.json'
           cache: 'npm'
@@ -185,7 +185,7 @@ jobs:
           ref: ${{ github.event.pull_request.head.ref }}
 
       - name: '[Prepare] Setup Node.js'
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version-file: 'package.json'
           cache: 'npm'
@@ -260,7 +260,7 @@ jobs:
         uses: actions/checkout@v5
 
       - name: '[Prepare] Setup Node.js'
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version-file: 'package.json'
           cache: 'npm'

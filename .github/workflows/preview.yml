@@ -31,7 +31,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: '[Prepare] Setup Node.js'
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v6
         with:
           node-version-file: 'package.json'
           cache: 'npm'
@@ -86,7 +86,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: '[Prepare] Setup Node.js'
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v6
         with:
           node-version-file: 'package.json'
           cache: 'npm'
