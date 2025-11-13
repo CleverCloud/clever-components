@@ -118,3 +118,16 @@ export interface ElasticProviderInfo {
     },
   ];
 }
+
+export interface MateriaKvInfo {
+  id: string;
+  clusterId: string;
+  ownerId: string;
+  kind: string;
+  plan: string;
+  host: string;
+  port: number;
+  token: string;
+  tokenId: string;
+  status: string;
+}
