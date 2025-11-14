@@ -63,6 +63,7 @@ export class CcDialogConfirmationForm extends LitElement {
   }
 
   _onCancel() {
+    // TODO: check that it works because it doesn't bubble by default I believe
     this.dispatchEvent(new Event('cancel'));
   }
 

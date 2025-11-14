@@ -1,7 +1,9 @@
 import { css, html, LitElement } from 'lit';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { createRef, ref } from 'lit/directives/ref.js';
 import { iconRemixCloseLine as iconClose } from '../../assets/cc-remix.icons.js';
 import { findActiveElement } from '../../lib/shadow-dom-utils.js';
+import { isStringEmpty } from '../../lib/utils.js';
 import { accessibilityStyles } from '../../styles/accessibility.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-button/cc-button.js';
@@ -10,6 +12,7 @@ import '../cc-input-text/cc-input-text.js';
 import { CcDialogCloseEvent, CcDialogConfirmEvent, CcDialogOpenEvent } from './cc-dialog.events.js';
 
 /**
+ * @typedef {import('../common.types.d.ts').IconModel} IconModel
  * @typedef {import('lit').PropertyValues<CcDialog>} CcDialogPropertyValues
  * @typedef {import('lit/directives/ref.js').Ref<HTMLDialogElement>} HTMLDialogElementRef
  * @typedef {import('../../lib/form/validation.js').Validator} Validator
@@ -24,6 +27,8 @@ export class CcDialog extends LitElement {
       closedBy: { type: String, attribute: 'closed-by' },
       heading: { type: String },
       hiddenCloseButton: { type: Boolean, attribute: 'hidden-close-button' },
+      icon: { type: Object },
+      iconA11yName: { type: String, attribute: 'icon-a11y-name' },
       open: { type: Boolean, reflect: true },
     };
   }
@@ -34,8 +39,17 @@ export class CcDialog extends LitElement {
     /** @type {'any'|'closerequest'|'none'} Indicates which action closes the dialog (see https://developer.mozilla.org/en-US/docs/Web/API/HTMLDialogElement/closedBy for more information) */
     this.closedBy = 'any';
 
+    /** @type {string|null} Heading text displayed at the top of the dialog. If you need more complex heading content, use the `heading` slot instead. */
+    this.heading = null;
+
     /** @type {boolean} Hides the close button when true */
     this.hiddenCloseButton = false;
+
+    /** @type {IconModel|null} Sets the icon before the heading using a `<cc-icon>`. Icon is hidden if nullish. */
+    this.icon = null;
+
+    /** @type {string|null} Only use this prop if your icon provides information that is not already given in its surrounding text. */
+    this.iconA11yName = null;
 
     /** @type {boolean} Displays or hides the dialog */
     this.open = false;
@@ -93,7 +107,6 @@ export class CcDialog extends LitElement {
     }
     // TODO: dispatch some event to warn that focus lost?
     console.log(this._lastFocusedElement);
-    this._lastFocusedElement.ariaChecked;
   }
 
   disconnectedCallback() {
@@ -118,7 +131,18 @@ export class CcDialog extends LitElement {
                 </button>
               `
             : ''}
-          <slot name="heading" class="dialog-heading" id="dialog-heading"></slot>
+          <div class="dialog-heading-wrapper">
+            ${this.icon
+              ? html`
+                  <cc-icon
+                    class="dialog-heading-icon"
+                    .icon="${this.icon}"
+                    a11y-name="${ifDefined(this.iconA11yName)}"
+                  ></cc-icon>
+                `
+              : ''}
+            ${!isStringEmpty(this.heading) ? this.heading : html`<slot name="heading" id="dialog-heading"></slot>`}
+          </div>
           <div class="dialog-content-body-wrapper">
             <slot></slot>
           </div>
@@ -196,11 +220,13 @@ export class CcDialog extends LitElement {
           outline-offset: var(--cc-focus-outline-offset, 2px);
         }
 
-        .dialog-heading {
+        .dialog-heading-wrapper {
+          align-items: center;
           border-bottom: solid 1px var(--cc-color-border-neutral-weak);
           color: var(--cc-color-text-primary-strongest);
-          display: block;
+          display: flex;
           font-weight: bold;
+          gap: 0.5em;
           margin-bottom: 1.25em;
           padding-bottom: 1.25em;
         }
