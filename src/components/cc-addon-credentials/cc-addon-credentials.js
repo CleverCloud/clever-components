@@ -7,10 +7,9 @@ import '../cc-input-text/cc-input-text.js';
 import '../cc-notice/cc-notice.js';
 
 /**
- * @typedef {import('./cc-addon-credentials.types.js').Credential} Credential
- * @typedef {import('./cc-addon-credentials.types.js').AddonType} AddonType
- * @typedef {import('../cc-block/cc-block.types.js').BlockToggleState} BlockToggleState
- * @typedef {import('../common.events.js').CcToggleEvent} CcToggleEvent
+ * @import { Credential, AddonType } from './cc-addon-credentials.types.js'
+ * @import { BlockToggleState } from '../cc-block/cc-block.types.js'
+ * @import { CcToggleEvent } from '../common.events.js'
  */
 
 /**

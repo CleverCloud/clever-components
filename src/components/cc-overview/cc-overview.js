@@ -4,7 +4,7 @@ import { ResizeController } from '../../controllers/resize-controller.js';
 // ceiled width with 275px tiles and 1em (16px) gap
 const BREAKPOINTS = [570, 860, 1150];
 /**
- * @typedef {import('./cc-overview.types.js').OverviewModeType} OverviewModeType
+ * @import { OverviewModeType } from './cc-overview.types.js'
  */
 
 /**

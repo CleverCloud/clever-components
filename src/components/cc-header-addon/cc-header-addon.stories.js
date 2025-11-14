@@ -20,11 +20,8 @@ const conf = {
 };
 
 /**
- * @typedef {import('./cc-header-addon.js').CcHeaderAddon} CcHeaderAddon
- * @typedef {import('./cc-header-addon.types.js').HeaderAddonStateLoaded} HeaderAddonStateLoaded
- * @typedef {import('./cc-header-addon.types.js').HeaderAddonStateLoadedWithVersion} HeaderAddonStateLoadedWithVersion
- * @typedef {import('./cc-header-addon.types.js').HeaderAddonStateLoading} HeaderAddonStateLoading
- * @typedef {import('./cc-header-addon.types.js').HeaderAddonStateError} HeaderAddonStateError
+ * @import { CcHeaderAddon } from './cc-header-addon.js'
+ * @import { HeaderAddonStateLoaded, HeaderAddonStateLoadedWithVersion, HeaderAddonStateLoading, HeaderAddonStateError } from './cc-header-addon.types.js'
  */
 
 /** @type {HeaderAddonStateLoadedWithVersion} */

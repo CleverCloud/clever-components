@@ -8,7 +8,7 @@ export default {
 };
 
 /**
- * @typedef {import('./cc-kv-terminal.js').CcKvTerminal} CcKvConsole
+ * @import { CcKvTerminal as CcKvConsole } from './cc-kv-terminal.js'
  */
 
 const conf = {

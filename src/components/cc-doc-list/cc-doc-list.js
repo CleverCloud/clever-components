@@ -6,7 +6,7 @@ import '../cc-notice/cc-notice.js';
 const DOC_SKELETON_NUMBER = 9;
 
 /**
- * @typedef {import('./cc-doc-list.types.js').DocListState} DocListState
+ * @import { DocListState } from './cc-doc-list.types.js'
  */
 
 /**

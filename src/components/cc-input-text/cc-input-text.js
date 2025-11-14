@@ -17,13 +17,10 @@ import { CcTagsChangeEvent } from './cc-input-text.events.js';
 const TAG_SEPARATOR = ' ';
 
 /**
- * @typedef {import('lit/directives/ref.js').Ref<HTMLInputElement|HTMLTextAreaElement>} HTMLInputOrTextareaElementRef
- * @typedef {import('lit/directives/ref.js').Ref<HTMLElement>} HTMLElementRef
- * @typedef {import('../../lib/events.types.js').EventWithTarget<HTMLInputElement|HTMLTextAreaElement>} HTMLInputOrTextareaEvent
- * @typedef {import('../../lib/events.types.js').GenericEventWithTarget<KeyboardEvent,HTMLInputElement|HTMLTextAreaElement>} HTMLInputOrTextareaKeyboardEvent
- * @typedef {import('../../lib/form/validation.types.js').Validator} Validator
- * @typedef {import('../../lib/form/validation.types.js').ErrorMessageMap} ErrorMessageMap
- * @typedef {import('../../lib/form/form.types.js').FormControlData} FormControlData
+ * @import { Validator, ErrorMessageMap } from '../../lib/form/validation.types.js'
+ * @import { FormControlData } from '../../lib/form/form.types.js'
+ * @import { Ref } from 'lit/directives/ref.js'
+ * @import { EventWithTarget, GenericEventWithTarget } from '../../lib/events.types.js'
  */
 
 /**
@@ -125,10 +122,10 @@ export class CcInputText extends CcFormControlElement {
     /** @type {string} Sets `value` attribute on inner native input element or textarea's inner content. */
     this.value = '';
 
-    /** @type {HTMLElementRef} */
+    /** @type {Ref<HTMLElement>} */
     this._errorRef = createRef();
 
-    /** @type {HTMLInputOrTextareaElementRef} */
+    /** @type {Ref<HTMLInputElement|HTMLTextAreaElement>} */
     this._inputRef = createRef();
 
     /** @type {boolean} */
@@ -242,7 +239,7 @@ export class CcInputText extends CcFormControlElement {
   }
 
   /**
-   * @param {HTMLInputOrTextareaEvent} e
+   * @param {EventWithTarget<HTMLInputElement|HTMLTextAreaElement>} e
    */
   _onInput(e) {
     // If tags mode is enabled, we want to prevent/remove line breaks
@@ -266,7 +263,7 @@ export class CcInputText extends CcFormControlElement {
   }
 
   /**
-   * @param {HTMLInputOrTextareaEvent} e
+   * @param {EventWithTarget<HTMLInputElement|HTMLTextAreaElement>} e
    */
   _onFocus(e) {
     if (this.readonly) {
@@ -281,7 +278,7 @@ export class CcInputText extends CcFormControlElement {
   /**
    * Stop propagation of keydown and keypress events (to prevent conflicts with shortcuts)
    *
-   * @param {HTMLInputOrTextareaKeyboardEvent} e
+   * @param {GenericEventWithTarget<KeyboardEvent,HTMLInputElement|HTMLTextAreaElement>} e
    */
   _onKeyEvent(e) {
     if (e.type === 'keydown' || e.type === 'keypress') {

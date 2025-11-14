@@ -13,13 +13,11 @@ const DEFAULT_ERROR_MESSAGES = {
 };
 
 /**
- * @typedef {import('./cc-select.types.js').Option} Option
- * @typedef {import('lit/directives/ref.js').Ref<HTMLSelectElement>} HTMLSelectElementRef
- * @typedef {import('lit/directives/ref.js').Ref<HTMLElement>} HTMLElementRef
- * @typedef {import('lit').PropertyValues<CcSelect>} CcSelectPropertyValues
- * @typedef {import('../../lib/events.types.js').EventWithTarget<HTMLSelectElement>} HTMLSelectElementEvent
- * @typedef {import('../../lib/form/validation.types.js').Validator} Validator
- * @typedef {import('../../lib/form/validation.types.js').ErrorMessageMap} ErrorMessageMap
+ * @import { Option } from './cc-select.types.js'
+ * @import { Validator, ErrorMessageMap } from '../../lib/form/validation.types.js'
+ * @import { Ref } from 'lit/directives/ref.js'
+ * @import { PropertyValues } from 'lit'
+ * @import { EventWithTarget } from '../../lib/events.types.js'
  */
 
 /**
@@ -90,10 +88,10 @@ export class CcSelect extends CcFormControlElement {
     /** @type {string|null} Sets the selected value of the element. This prop should always be set. It should always match one of the option values. */
     this.value = null;
 
-    /** @type {HTMLElementRef} */
+    /** @type {Ref<HTMLElement>} */
     this._errorRef = createRef();
 
-    /** @type {HTMLSelectElementRef} */
+    /** @type {Ref<HTMLSelectElement>} */
     this._selectRef = createRef();
   }
 
@@ -149,7 +147,7 @@ export class CcSelect extends CcFormControlElement {
   }
 
   /**
-   * @param {HTMLSelectElementEvent} e
+   * @param {EventWithTarget<HTMLSelectElement>} e
    */
   _onSelectInput(e) {
     this.value = e.target.value;
@@ -157,7 +155,7 @@ export class CcSelect extends CcFormControlElement {
   }
 
   /**
-   * @param {CcSelectPropertyValues} changedProperties
+   * @param {PropertyValues<CcSelect>} changedProperties
    */
   updated(changedProperties) {
     /*

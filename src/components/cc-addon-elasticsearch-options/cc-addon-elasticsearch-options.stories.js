@@ -12,7 +12,7 @@ const conf = {
 };
 
 /**
- * @typedef {import('./cc-addon-elasticsearch-options.js').CcAddonElasticsearchOptions} CcAddonElasticsearchOptions
+ * @import { CcAddonElasticsearchOptions } from './cc-addon-elasticsearch-options.js'
  */
 
 export const defaultStory = makeStory(conf, {

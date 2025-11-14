@@ -10,12 +10,9 @@ import './cc-addon-info.js';
 const PROVIDER_ID = 'keycloak';
 
 /**
- * @typedef {import('./cc-addon-info.js').CcAddonInfo} CcAddonInfo
- * @typedef {import('./cc-addon-info.types.js').AddonInfoStateLoaded} AddonInfoStateLoaded
- * @typedef {import('./cc-addon-info.types.js').AddonInfoStateLoading} AddonInfoStateLoading
- * @typedef {import('./cc-addon-info.types.js').AddonVersionStateUpdateAvailable} AddonVersionStateUpdateAvailable
- * @typedef {import('./cc-addon-info.types.js').AddonVersionStateRequestingUpdate} AddonVersionStateRequestingUpdate
- * @typedef {import('../../lib/smart/smart-component.types.js').OnContextUpdateArgs<CcAddonInfo>} OnContextUpdateArgs
+ * @import { CcAddonInfo } from './cc-addon-info.js'
+ * @import { AddonInfoStateLoaded, AddonInfoStateLoading, AddonVersionStateUpdateAvailable, AddonVersionStateRequestingUpdate } from './cc-addon-info.types.js'
+ * @import { OnContextUpdateArgs } from '../../lib/smart/smart-component.types.js'
  */
 
 defineSmartComponent({
@@ -29,7 +26,7 @@ defineSmartComponent({
     grafanaLink: { type: Object, optional: true },
     logsUrlPattern: { type: String },
   },
-  /** @param {OnContextUpdateArgs} _ */
+  /** @param {OnContextUpdateArgs<CcAddonInfo>} _ */
   onContextUpdate({ context, onEvent, updateComponent, signal }) {
     const { apiConfig, ownerId, addonId, appOverviewUrlPattern, addonDashboardUrlPattern, grafanaLink } = context;
     let logsUrl = '';

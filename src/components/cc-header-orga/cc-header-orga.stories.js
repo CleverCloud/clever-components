@@ -18,10 +18,8 @@ const conf = {
 };
 
 /**
- * @typedef {import('./cc-header-orga.js').CcHeaderOrga} CcHeaderOrga
- * @typedef {import('./cc-header-orga.types.js').HeaderOrgaStateLoaded} HeaderOrgaStateLoaded
- * @typedef {import('./cc-header-orga.types.js').HeaderOrgaStateLoading} HeaderOrgaStateLoading
- * @typedef {import('./cc-header-orga.types.js').HeaderOrgaStateError} HeaderOrgaStateError
+ * @import { CcHeaderOrga } from './cc-header-orga.js'
+ * @import { HeaderOrgaStateLoaded, HeaderOrgaStateLoading, HeaderOrgaStateError } from './cc-header-orga.types.js'
  */
 
 /** @type {HeaderOrgaStateLoaded} */

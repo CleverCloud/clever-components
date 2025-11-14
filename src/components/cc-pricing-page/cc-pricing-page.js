@@ -7,18 +7,12 @@ const DEFAULT_CURRENCY = 'EUR';
 const DEFAULT_TEMPORALITY = { type: '30-days', digits: 2 };
 
 /**
- * @typedef {import('../cc-pricing-estimation/cc-pricing-estimation.js').CcPricingEstimation} CcPricingEstimation
- * @typedef {import('../cc-pricing-header/cc-pricing-header.js').CcPricingHeader} CcPricingHeader
- * @typedef {import('../cc-pricing-page/cc-pricing-page.events.js').CcPricingPlanAddEvent} CcPricingPlanAddEvent
- * @typedef {import('../cc-pricing-page/cc-pricing-page.events.js').CcPricingCurrencyChangeEvent} CcPricingCurrencyChangeEvent
- * @typedef {import('../cc-pricing-page/cc-pricing-page.events.js').CcPricingTemporalityChangeEvent} CcPricingTemporalityChangeEvent
- * @typedef {import('../cc-pricing-page/cc-pricing-page.events.js').CcPricingQuantityChangeEvent} CcPricingQuantityChangeEvent
- * @typedef {import('../cc-pricing-page/cc-pricing-page.events.js').CcPricingPlanDeleteEvent} CcPricingPlanDeleteEvent
- * @typedef {import('../cc-pricing-product/cc-pricing-product.js').CcPricingProduct} CcPricingProduct
- * @typedef {import('./cc-pricing-page.types.js').SelectedPlansById} SelectedPlansById
- * @typedef {import('../common.types.js').Plan} Plan
- * @typedef {import('../common.types.js').ConsumptionPlan} ConsumptionPlan
- * @typedef {import('../common.types.js').Temporality} Temporality
+ * @import { CcPricingEstimation } from '../cc-pricing-estimation/cc-pricing-estimation.js'
+ * @import { CcPricingHeader } from '../cc-pricing-header/cc-pricing-header.js'
+ * @import { CcPricingPlanAddEvent, CcPricingCurrencyChangeEvent, CcPricingTemporalityChangeEvent, CcPricingQuantityChangeEvent, CcPricingPlanDeleteEvent } from '../cc-pricing-page/cc-pricing-page.events.js'
+ * @import { CcPricingProduct } from '../cc-pricing-product/cc-pricing-product.js'
+ * @import { SelectedPlansById } from './cc-pricing-page.types.js'
+ * @import { Plan, ConsumptionPlan, Temporality } from '../common.types.js'
  */
 
 /**

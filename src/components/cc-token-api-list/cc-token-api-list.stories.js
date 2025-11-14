@@ -10,8 +10,8 @@ export default {
 };
 
 /**
- * @typedef {import('./cc-token-api-list.js').CcTokenApiList} CcTokenApiList
- * @typedef {import('./cc-token-api-list.types.js').ApiTokenState} ApiTokenState
+ * @import { CcTokenApiList } from './cc-token-api-list.js'
+ * @import { ApiTokenState } from './cc-token-api-list.types.js'
  */
 
 const conf = {

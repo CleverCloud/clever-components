@@ -38,10 +38,8 @@ const SKELETON_ADDON_INFO = {
 };
 
 /**
- * @typedef {import('./cc-addon-header.types.js').CcAddonHeaderState} CcAddonHeaderState
- * @typedef {import('./cc-addon-header.types.js').CcAddonHeaderStateLoaded} CcAddonHeaderStateLoaded
- * @typedef {import('./cc-addon-header.types.js').DeploymentStatus} DeploymentStatus
- * @typedef {import('../common.types.js').IconModel} IconModel
+ * @import { CcAddonHeaderState, CcAddonHeaderStateLoaded, DeploymentStatus } from './cc-addon-header.types.js'
+ * @import { IconModel } from '../common.types.js'
  */
 
 /**

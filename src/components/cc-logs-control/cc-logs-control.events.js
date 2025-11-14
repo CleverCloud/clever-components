@@ -1,7 +1,7 @@
 import { CcEvent } from '../../lib/events.js';
 
 /**
- * @typedef {import('./cc-logs-control.types.js').LogsOptionsChangeEventData} LogsOptionsChangeEventData
+ * @import { LogsOptionsChangeEventData } from './cc-logs-control.types.js'
  */
 
 /**

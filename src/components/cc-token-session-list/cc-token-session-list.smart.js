@@ -9,15 +9,10 @@ import '../cc-smart-container/cc-smart-container.js';
 import './cc-token-session-list.js';
 
 /**
- * @typedef {import('./cc-token-session-list.js').CcTokenSessionList} CcTokenSessionList
- * @typedef {import('./cc-token-session-list.types.js').SessionToken} SessionToken
- * @typedef {import('./cc-token-session-list.types.js').SessionTokenState} SessionTokenState
- * @typedef {import('./cc-token-session-list.types.js').SessionTokenStateIdle} SessionTokenStateIdle
- * @typedef {import('./cc-token-session-list.types.js').TokenSessionListStateLoaded} TokenSessionListStateLoaded
- * @typedef {import('./cc-token-session-list.types.js').TokenSessionListStateRevokingAll} TokenSessionListStateRevokingAll
- * @typedef {import('./cc-token-session-list.types.js').RawTokenData} RawTokenData
- * @typedef {import('../../lib/send-to-api.types.js').ApiConfig} ApiConfig
- * @typedef {import('../../lib/smart/smart-component.types.js').OnContextUpdateArgs<CcTokenSessionList>} OnContextUpdateArgs
+ * @import { CcTokenSessionList } from './cc-token-session-list.js'
+ * @import { SessionToken, SessionTokenState, SessionTokenStateIdle, TokenSessionListStateLoaded, TokenSessionListStateRevokingAll, RawTokenData } from './cc-token-session-list.types.js'
+ * @import { ApiConfig } from '../../lib/send-to-api.types.js'
+ * @import { OnContextUpdateArgs } from '../../lib/smart/smart-component.types.js'
  */
 
 defineSmartComponent({
@@ -25,7 +20,7 @@ defineSmartComponent({
   params: {
     apiConfig: { type: Object },
   },
-  /** @param {OnContextUpdateArgs} args */
+  /** @param {OnContextUpdateArgs<CcTokenSessionList>} args */
   onContextUpdate({ component, context, onEvent, updateComponent }) {
     const { apiConfig } = context;
     const api = new Api(apiConfig);

@@ -19,10 +19,8 @@ const conf = {
 };
 
 /**
- * @typedef {import('./cc-zone-input.js').CcZoneInput} CcZoneInput
- * @typedef {import('./cc-zone-input.types.js').ZoneInputStateLoaded} ZoneInputStateLoaded
- * @typedef {import('./cc-zone-input.types.js').ZoneInputStateLoading} ZoneInputStateLoading
- * @typedef {import('./cc-zone-input.types.js').ZoneInputStateError} ZoneInputStateError
+ * @import { CcZoneInput } from './cc-zone-input.js'
+ * @import { ZoneInputStateLoaded, ZoneInputStateLoading, ZoneInputStateError } from './cc-zone-input.types.js'
  */
 
 export const defaultStory = makeStory(conf, {

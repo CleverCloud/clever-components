@@ -3,7 +3,7 @@ import { makeStory, storyWait } from '../../stories/lib/make-story.js';
 import './cc-input-number.js';
 
 /**
- * @typedef {import('./cc-input-number.js').CcInputNumber} CcInputNumber
+ * @import { CcInputNumber } from './cc-input-number.js'
  */
 
 const baseItems = [

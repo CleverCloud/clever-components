@@ -29,9 +29,8 @@ import '../cc-notice/cc-notice.js';
 import { CcPasswordResetEvent, CcTokenRevokeEvent } from '../common.events.js';
 
 /**
- * @typedef {import('./cc-token-api-list.types.js').ApiTokenState} ApiTokenState
- * @typedef {import('./cc-token-api-list.types.js').TokenApiListState} TokenApiListState
- * @typedef {import('lit/directives/ref.js').Ref<HTMLAnchorElement>} RefHTMLAnchorElement
+ * @import { ApiTokenState, TokenApiListState } from './cc-token-api-list.types.js'
+ * @import { Ref } from 'lit/directives/ref.js'
  */
 
 /**
@@ -63,7 +62,7 @@ export class CcTokenApiList extends LitElement {
     /** @type {TokenApiListState} Sets the state of the component */
     this.state = { type: 'loading' };
 
-    /** @type {RefHTMLAnchorElement} */
+    /** @type {Ref<HTMLAnchorElement>} */
     this._createApiTokenLinkWhenEmptyRef = createRef();
 
     new ResizeController(this, {

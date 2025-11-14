@@ -9,9 +9,8 @@ import '../cc-notice/cc-notice.js';
 import { CcEnvVarCreateEvent } from './cc-env-var-create.events.js';
 
 /**
- * @typedef {import('../common.types.js').EnvVar} EnvVar
- * @typedef {import('../common.types.js').EnvVarValidationMode} EnvVarValidationMode
- * @typedef {import('../cc-input-text/cc-input-text.js').CcInputText} CcInputText
+ * @import { EnvVarValidationMode } from '../common.types.js'
+ * @import { CcInputText } from '../cc-input-text/cc-input-text.js'
  */
 
 /**

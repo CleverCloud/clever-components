@@ -9,15 +9,10 @@ import '../cc-smart-container/cc-smart-container.js';
 import './cc-token-api-list.js';
 
 /**
- * @typedef {import('./cc-token-api-list.js').CcTokenApiList} CcTokenApiList
- * @typedef {import('./cc-token-api-list.types.js').TokenApiListStateLoaded} TokenApiListStateLoaded
- * @typedef {import('./cc-token-api-list.types.js').ApiTokenStateIdle} ApiTokenStateIdle
- * @typedef {import('./cc-token-api-list.types.js').ApiTokenState} ApiTokenState
- * @typedef {import('./cc-token-api-list.types.js').ApiToken} ApiToken
- * @typedef {import('./cc-token-api-list.types.js').RawApiToken} RawApiToken
- * @typedef {import('../../lib/smart/smart-component.types.js').OnContextUpdateArgs<CcTokenApiList>} OnContextUpdateArgs
- * @typedef {import('../../lib/send-to-api.types.js').ApiConfig} ApiConfig
- * @typedef {import('../../lib/send-to-api.types.js').AuthBridgeConfig} AuthBridgeConfig
+ * @import { CcTokenApiList } from './cc-token-api-list.js'
+ * @import { TokenApiListStateLoaded, ApiTokenStateIdle, ApiTokenState, ApiToken, RawApiToken } from './cc-token-api-list.types.js'
+ * @import { ApiConfig, AuthBridgeConfig } from '../../lib/send-to-api.types.js'
+ * @import { OnContextUpdateArgs } from '../../lib/smart/smart-component.types.js'
  */
 
 defineSmartComponent({
@@ -25,7 +20,7 @@ defineSmartComponent({
   params: {
     apiConfig: { type: Object },
   },
-  /** @param {OnContextUpdateArgs} args */
+  /** @param {OnContextUpdateArgs<CcTokenApiList>} args */
   onContextUpdate({ context, onEvent, updateComponent }) {
     const { apiConfig } = context;
     const api = new Api(apiConfig);

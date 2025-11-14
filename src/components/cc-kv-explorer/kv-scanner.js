@@ -1,5 +1,5 @@
 /**
- * @typedef {import('./kv-utils.js').Abortable} Abortable
+ * @import { Abortable } from './kv-utils.js'
  */
 
 /**

@@ -24,12 +24,8 @@ const conf = {
 };
 
 /**
- * @typedef {import('./cc-addon-header.types.js').CcAddonHeaderStateLoaded} CcAddonHeaderStateLoaded
- * @typedef {import('./cc-addon-header.types.js').CcAddonHeaderStateError} CcAddonHeaderStateError
- * @typedef {import('./cc-addon-header.types.js').CcAddonHeaderStateLoading} CcAddonHeaderStateLoading
- * @typedef {import('./cc-addon-header.types.js').CcAddonHeaderStateRestarting} CcAddonHeaderStateRestarting
- * @typedef {import('./cc-addon-header.types.js').CcAddonHeaderStateRebuilding} CcAddonHeaderStateRebuilding
- * @typedef {import('./cc-addon-header.js').CcAddonHeader} CcAddonHeader
+ * @import { CcAddonHeaderStateLoaded, CcAddonHeaderStateError, CcAddonHeaderStateLoading, CcAddonHeaderStateRestarting, CcAddonHeaderStateRebuilding } from './cc-addon-header.types.js'
+ * @import { CcAddonHeader } from './cc-addon-header.js'
  */
 
 export const defaultStory = makeStory(conf, {

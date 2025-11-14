@@ -4,17 +4,12 @@ import { KvScanner } from './kv-scanner.js';
 import { matchKvPattern } from './kv-utils.js';
 
 /**
- * @typedef {import('./cc-kv-explorer.js').CcKvExplorer} CcKvExplorer
- * @typedef {import('./cc-kv-explorer.types.js').CcKvExplorerDetailState} CcKvExplorerDetailState
- * @typedef {import('./cc-kv-explorer.types.js').CcKvExplorerDetailStateEditHash} CcKvExplorerDetailStateEditHash
- * @typedef {import('./cc-kv-explorer.types.js').CcKvKeyValueHash} CcKvKeyValueHash
- * @typedef {import('./kv-client.js').KvClient} KvClient
- * @typedef {import('../cc-kv-hash-explorer/cc-kv-hash-explorer.types.js').CcKvHashElementState} CcKvHashElementState
- * @typedef {import('../cc-kv-hash-explorer/cc-kv-hash-explorer.types.js').CcKvHashExplorerState} CcKvHashExplorerState
- * @typedef {import('../cc-kv-hash-explorer/cc-kv-hash-explorer.types.js').CcKvHashExplorerStateLoading} CcKvHashExplorerStateLoading
- * @typedef {import('../cc-kv-hash-explorer/cc-kv-hash-explorer.types.js').CcKvHashExplorerAddFormState} CcKvHashExplorerAddFormState
- * @typedef {import('./kv-utils.js').Abortable} Abortable
- * @typedef {import('../common.types.js').ObjectOrFunction<CcKvExplorerDetailState>} CcKvExplorerDetailStateUpdater
+ * @import { CcKvExplorer } from './cc-kv-explorer.js'
+ * @import { CcKvExplorerDetailState, CcKvExplorerDetailStateEditHash, CcKvKeyValueHash } from './cc-kv-explorer.types.js'
+ * @import { KvClient } from './kv-client.js'
+ * @import { CcKvHashElementState, CcKvHashExplorerState, CcKvHashExplorerStateLoading, CcKvHashExplorerAddFormState } from '../cc-kv-hash-explorer/cc-kv-hash-explorer.types.js'
+ * @import { Abortable } from './kv-utils.js'
+ * @import { ObjectOrFunction } from '../common.types.js'
  */
 
 /**
@@ -24,7 +19,7 @@ export class KvKeyEditorHashCtrl extends KvKeyEditorCtrl {
   /**
    * @param {string} keyName
    * @param {CcKvExplorer} component
-   * @param {(stateUpdater: CcKvExplorerDetailStateUpdater) => void} updateDetailState
+   * @param {(stateUpdater: ObjectOrFunction<CcKvExplorerDetailState>) => void} updateDetailState
    * @param {KvClient} kvClient
    * @param {Abortable} abortable
    */

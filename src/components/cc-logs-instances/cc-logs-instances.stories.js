@@ -88,10 +88,8 @@ export default {
 };
 
 /**
- * @typedef {import('./cc-logs-instances.js').CcLogsInstances} CcLogsInstances
- * @typedef {import('./cc-logs-instances.types.js').Instance} Instance
- * @typedef {import('./cc-logs-instances.types.js').GhostInstance} GhostInstance
- * @typedef {import('./cc-logs-instances.types.js').Deployment} Deployment
+ * @import { CcLogsInstances } from './cc-logs-instances.js'
+ * @import { Instance, GhostInstance, Deployment } from './cc-logs-instances.types.js'
  */
 
 const conf = {

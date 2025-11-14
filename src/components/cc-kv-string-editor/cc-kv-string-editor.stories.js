@@ -8,7 +8,7 @@ export default {
 };
 
 /**
- * @typedef {import('./cc-kv-string-editor.js').CcKvStringEditor} CcKvStringEditor
+ * @import { CcKvStringEditor } from './cc-kv-string-editor.js'
  */
 
 const conf = {

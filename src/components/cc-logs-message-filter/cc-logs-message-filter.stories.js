@@ -8,7 +8,7 @@ export default {
 };
 
 /**
- * @typedef {import('./cc-logs-message-filter.js').CcLogsMessageFilter} CcLogsMessageFilter
+ * @import { CcLogsMessageFilter } from './cc-logs-message-filter.js'
  */
 
 const conf = {

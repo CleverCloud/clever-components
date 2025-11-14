@@ -19,8 +19,7 @@ const conf = {
 };
 
 /**
- * @typedef {import('./cc-invoice-table.types.js').InvoiceTableStateLoaded} InvoiceTableStateLoaded
- * @typedef {import('./cc-invoice-table.types.js').InvoiceTableStateLoading} InvoiceTableStateLoading
+ * @import { InvoiceTableStateLoaded, InvoiceTableStateLoading } from './cc-invoice-table.types.js'
  */
 
 export const defaultStory = makeStory(conf, {

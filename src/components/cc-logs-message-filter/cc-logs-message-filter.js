@@ -6,12 +6,9 @@ import '../cc-input-text/cc-input-text.js';
 import { CcLogsMessageFilterChangeEvent } from './cc-logs-message-filter.events.js';
 
 /**
- * @typedef {import('./cc-logs-message-filter.types.js').LogsMessageFilterValue} LogsMessageFilterValue
- * @typedef {import('../cc-logs/cc-logs.types.js').LogMessageFilterMode} LogMessageFilterMode
- * @typedef {import('lit/directives/ref.js').Ref<HTMLElement>} HTMLElementRef
- * @typedef {import('lit').TemplateResult<1>} TemplateResult
- * @typedef {import('lit').PropertyValues<CcLogsMessageFilter>} PropertyValues
- */
+ * @import { LogsMessageFilterValue } from './cc-logs-message-filter.types.js'
+ * @import { LogMessageFilterMode } from '../cc-logs/cc-logs.types.js'
+ * @import { PropertyValues } from 'lit' */
 
 /**
  * A component that displays a text input dedicated to logs filtering.
@@ -91,7 +88,7 @@ export class CcLogsMessageFilter extends LitElement {
   }
 
   /**
-   * @param {PropertyValues} changedProperties
+   * @param {PropertyValues<CcLogsMessageFilter>} changedProperties
    */
   willUpdate(changedProperties) {
     if (changedProperties.has('filter')) {

@@ -19,11 +19,9 @@ const conf = {
 };
 
 /**
- * @typedef {import('./cc-article-list.js').CcArticleList} CcArticleList
- * @typedef {import('./cc-article-list.types.js').ArticleListStateLoaded} ArticleListStateLoaded
- * @typedef {import('./cc-article-list.types.js').ArticleListStateLoading} ArticleListStateLoading
- * @typedef {import('./cc-article-list.types.js').ArticleListStateError} ArticleListStateError
- * @typedef {import('../cc-article-card/cc-article-card.types.js').ArticleCard} ArticleCard
+ * @import { CcArticleList } from './cc-article-list.js'
+ * @import { ArticleListStateLoaded, ArticleListStateLoading, ArticleListStateError } from './cc-article-list.types.js'
+ * @import { ArticleCard } from '../cc-article-card/cc-article-card.types.js'
  */
 
 /** @type {ArticleCard[]} */

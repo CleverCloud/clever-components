@@ -49,9 +49,7 @@ const MANAGE_RIGHT_KEYS = [
 const BREAKPOINTS = [460, 550];
 
 /**
- * @typedef {import('./cc-oauth-consumer-info.types.js').OauthConsumerInfoState} OauthConsumerInfoState
- * @typedef {import('./cc-oauth-consumer-info.types.js').OauthConsumerInfoStateLoaded} OauthConsumerInfoStateLoaded
- * @typedef {import('./cc-oauth-consumer-info.types.js').OauthConsumerRights} OauthConsumerRights
+ * @import { OauthConsumerInfoState, OauthConsumerInfoStateLoaded, OauthConsumerRights } from './cc-oauth-consumer-info.types.js'
  */
 
 /**

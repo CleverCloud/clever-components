@@ -16,12 +16,7 @@ import { CcTcpRedirectionCreateEvent, CcTcpRedirectionDeleteEvent } from './cc-t
 const SKELETON_REDIRECTION = { namespace: 'default', isPrivate: false };
 
 /**
- * @typedef {import('./cc-tcp-redirection.types.js').TcpRedirectionState} TcpRedirectionState
- * @typedef {import('./cc-tcp-redirection.types.js').TcpRedirectionStateLoaded} TcpRedirectionStateLoaded
- * @typedef {import('./cc-tcp-redirection.types.js').TcpRedirectionStateWaiting} TcpRedirectionStateWaiting
- * @typedef {import('./cc-tcp-redirection.types.js').CreateTcpRedirection} CreateTcpRedirection
- * @typedef {import('./cc-tcp-redirection.types.js').DeleteTcpRedirection} DeleteTcpRedirection
- * @typedef {import('./cc-tcp-redirection.types.js').TcpRedirection} TcpRedirection
+ * @import { TcpRedirectionState, TcpRedirectionStateLoaded, TcpRedirectionStateWaiting, TcpRedirection } from './cc-tcp-redirection.types.js'
  */
 
 /**

@@ -3,7 +3,7 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import '../cc-loader/cc-loader.js';
 
 /**
- * @typedef {import('./cc-html-frame.types.js').IframeSandbox} IframeSandbox
+ * @import { IframeSandbox } from './cc-html-frame.types.js'
  */
 
 /**

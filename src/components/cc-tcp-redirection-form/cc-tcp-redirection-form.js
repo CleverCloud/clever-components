@@ -17,12 +17,9 @@ const TCP_REDIRECTION_DOCUMENTATION = getDocUrl('/administrate/tcp-redirections'
 const SKELETON_REDIRECTIONS = [{ type: 'loading' }, { type: 'loading' }];
 
 /**
- * @typedef {import('./cc-tcp-redirection-form.types.js').TcpRedirectionFormContextType} TcpRedirectionFormContextType
- * @typedef {import('./cc-tcp-redirection-form.types.js').TcpRedirectionFormState} TcpRedirectionFormState
- * @typedef {import('../cc-tcp-redirection/cc-tcp-redirection.types.js').TcpRedirectionStateLoading} TcpRedirectionStateLoading
- * @typedef {import('../cc-tcp-redirection/cc-tcp-redirection.types.js').CreateTcpRedirection} CreateTcpRedirection
- * @typedef {import('../cc-tcp-redirection/cc-tcp-redirection.types.js').DeleteTcpRedirection} DeleteTcpRedirection
- * @typedef {import('../cc-block/cc-block.types.js').BlockToggleState} BlockToggleState
+ * @import { TcpRedirectionFormContextType, TcpRedirectionFormState } from './cc-tcp-redirection-form.types.js'
+ * @import { TcpRedirectionStateLoading } from '../cc-tcp-redirection/cc-tcp-redirection.types.js'
+ * @import { BlockToggleState } from '../cc-block/cc-block.types.js'
  */
 
 /**

@@ -19,7 +19,7 @@ const GRAFANA_ADDON_SCREEN = getAssetUrl('/grafana/screens/addon.png');
 const GRAFANA_DOCUMENTATION = getDocUrl('/metrics');
 
 /**
- * @typedef {import('./cc-grafana-info.types.js').GrafanaInfoState} GrafanaInfoState
+ * @import { GrafanaInfoState } from './cc-grafana-info.types.js'
  */
 
 /**

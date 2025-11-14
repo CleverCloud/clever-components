@@ -21,10 +21,7 @@ const HEPTAPOD_DOCUMENTATION = getDocUrl('/addons/heptapod');
 const HEPTAPOD_LOGO_URL = getAssetUrl('/logos/heptapod.svg');
 
 /**
- * @typedef {import('./cc-heptapod-info.types.js').Statistics} Statistics
- * @typedef {import('./cc-heptapod-info.types.js').HeptapodInfoState} HeptapodInfoState
- * @typedef {import('./cc-heptapod-info.types.js').HeptapodInfoStateLoaded} HeptapodInfoStateLoaded
- * @typedef {import('./cc-heptapod-info.types.js').HeptapodInfoStateLoading} HeptapodInfoStateLoading
+ * @import { Statistics, HeptapodInfoState } from './cc-heptapod-info.types.js'
  */
 
 /**

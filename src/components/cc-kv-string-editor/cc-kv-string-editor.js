@@ -6,8 +6,8 @@ import '../cc-input-text/cc-input-text.js';
 import { CcKvStringValueUpdateEvent } from './cc-kv-string-editor.events.js';
 
 /**
- * @typedef {import('./cc-kv-string-editor.types.js').CcKvKeyStringEditorState} CcKvKeyStringEditorState
- * @typedef {import('lit').PropertyValues<CcKvStringEditor>} PropertyValues
+ * @import { CcKvKeyStringEditorState } from './cc-kv-string-editor.types.js'
+ * @import { PropertyValues } from 'lit'
  */
 
 /**
@@ -65,7 +65,7 @@ export class CcKvStringEditor extends LitElement {
   }
 
   /**
-   * @param {PropertyValues} changedProperties
+   * @param {PropertyValues<CcKvStringEditor>} changedProperties
    */
   willUpdate(changedProperties) {
     if (changedProperties.has('state')) {

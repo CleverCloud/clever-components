@@ -16,8 +16,7 @@ const statusIcon = {
 };
 
 /**
- * @typedef {import('./cc-tile-instances.types.js').TileInstancesState} TileInstancesState
- * @typedef {import('./cc-tile-instances.types.js').InstanceState} InstanceState
+ * @import { TileInstancesState, InstanceState } from './cc-tile-instances.types.js'
  */
 
 /**

@@ -21,9 +21,8 @@ const conf = {
 };
 
 /**
- * @typedef {import('./cc-zone-picker.js').CcZonePicker} CcZonePicker
- * @typedef {import('./cc-zone-picker.types.js').ZoneItem} ZoneItem
- * @typedef {import('./cc-zone-picker.types.js').ZoneSection} ZoneSection
+ * @import { CcZonePicker } from './cc-zone-picker.js'
+ * @import { ZoneItem, ZoneSection } from './cc-zone-picker.types.js'
  */
 
 /** @type {ZoneItem[]} */

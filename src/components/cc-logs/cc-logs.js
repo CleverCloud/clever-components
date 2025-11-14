@@ -74,23 +74,15 @@ class TemporaryFunctionDisabler {
 }
 
 /**
- * @typedef {import('./cc-logs.types.js').Log} Log
- * @typedef {import('./cc-logs.types.js').Metadata} Metadata
- * @typedef {import('./cc-logs.types.js').MetadataFilter} MetadataFilter
- * @typedef {import('./cc-logs.types.js').MetadataRenderer} MetadataRenderer
- * @typedef {import('./cc-logs.types.js').MetadataRendering} MetadataRendering
- * @typedef {import('./cc-logs.types.js').LogMessageFilterMode} LogMessageFilterMode
- * @typedef {import('./date-display.types.js').DateDisplay} DateDisplay
- * @typedef {import('../../lib/ansi/ansi.types.js').AnsiPalette} AnsiPalette
- * @typedef {import('../../lib/date/date.types.js').Timezone} Timezone
- * @typedef {import('../../lib/events.types.js').EventWithTarget<HTMLButtonElement>} HTMLButtonElementEvent
- * @typedef {import('../../lib/events.types.js').GenericEventWithTarget<MouseEvent>} HTMLElementMouseEvent
- * @typedef {import('@lit-labs/virtualizer/events.js').RangeChangedEvent} RangeChangedEvent
- * @typedef {import('@lit-labs/virtualizer/events.js').VisibilityChangedEvent} VisibilityChangedEvent
- * @typedef {import('@lit-labs/virtualizer/LitVirtualizer.js').LitVirtualizer} Virtualizer
- * @typedef {import('lit').PropertyValues<CcLogs>} CcLogsPropertyValues
- * @typedef {import('lit').TemplateResult<1>} TemplateResult
- * @typedef {import('lit/directives/ref.js').Ref<Virtualizer>} VirtualizerRef
+ * @import { Log, Metadata, MetadataFilter, MetadataRenderer, MetadataRendering, LogMessageFilterMode } from './cc-logs.types.js'
+ * @import { DateDisplay } from './date-display.types.js'
+ * @import { AnsiPalette } from '../../lib/ansi/ansi.types.js'
+ * @import { Timezone } from '../../lib/date/date.types.js'
+ * @import { RangeChangedEvent, VisibilityChangedEvent } from '@lit-labs/virtualizer/events.js'
+ * @import { LitVirtualizer as Virtualizer } from '@lit-labs/virtualizer/LitVirtualizer.js'
+ * @import { TemplateResult, PropertyValues } from 'lit'
+ * @import { EventWithTarget, GenericEventWithTarget } from '../../lib/events.types.js'
+ * @import { Ref } from 'lit/directives/ref.js'
  */
 
 /**
@@ -301,7 +293,7 @@ export class CcLogs extends LitElement {
     /** @type {LogsController} */
     this._logsCtrl = new LogsController(this);
 
-    /** @type {VirtualizerRef} A reference to the logs' container. */
+    /** @type {Ref<Virtualizer>} A reference to the logs' container. */
     this._logsRef = createRef();
 
     /** @type {DateDisplayer} */
@@ -371,7 +363,7 @@ export class CcLogs extends LitElement {
    * In cases handled programmatically (when moving focus with arrow keys), the focus is already set.
    * But, this is needed when users click on the select button.
    *
-   * @param {HTMLButtonElementEvent} e
+   * @param {EventWithTarget<HTMLButtonElement>} e
    */
   _onFocusLog(e) {
     const button = e.target;
@@ -602,7 +594,7 @@ export class CcLogs extends LitElement {
    * It clears the selection when users click on the logs container but not in the gutter area.
    * It also handles triple click: selects the whole log line (including timestamp and metadata)
    *
-   * @param {HTMLElementMouseEvent} e
+   * @param {GenericEventWithTarget<MouseEvent>} e
    */
   _onClick(e) {
     if (e.detail === 3) {
@@ -792,7 +784,7 @@ export class CcLogs extends LitElement {
   // endregion
 
   /**
-   * @param {CcLogsPropertyValues} changedProperties
+   * @param {PropertyValues<CcLogs>} changedProperties
    */
   willUpdate(changedProperties) {
     if (changedProperties.has('dateDisplay') || changedProperties.has('timezone')) {
@@ -821,7 +813,7 @@ export class CcLogs extends LitElement {
   }
 
   /**
-   * @param {CcLogsPropertyValues} _changedProperties
+   * @param {PropertyValues<CcLogs>} _changedProperties
    */
   updated(_changedProperties) {
     if (this._logsRef.value != null) {

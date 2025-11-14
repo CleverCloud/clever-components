@@ -10,8 +10,8 @@ import '../cc-img/cc-img.js';
 import { CcToggleEvent } from '../common.events.js';
 
 /**
- * @typedef {import('../common.types.js').IconModel} IconModel
- * @typedef {import('./cc-block.types.js').BlockToggleState} BlockToggleState
+ * @import { IconModel } from '../common.types.js'
+ * @import { BlockToggleState } from './cc-block.types.js'
  */
 
 /**
