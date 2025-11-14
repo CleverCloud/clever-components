@@ -1,6 +1,7 @@
 import { LitElement, css, html } from 'lit';
 import { formSubmit } from '../../lib/form/form-submit-directive.js';
 import { Validation } from '../../lib/form/validation.js';
+import { isStringEmpty } from '../../lib/utils.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-button/cc-button.js';
 import { CcDialogConfirmEvent } from '../cc-dialog/cc-dialog.events.js';
@@ -10,6 +11,15 @@ import '../cc-input-text/cc-input-text.js';
  * @typedef {import('../../lib/form/validation.types.js').Validator} Validator
  */
 
+/**
+ * A form component to be used inside a `<cc-dialog>` for confirmation actions.
+ *
+ * The form has two possible modes:
+ * - Simple confirmation with Cancel and Confirm buttons (when `confirmInputLabel` and `confirmTextToInput` are both nullish),
+ * - Confirmation with an additional text input that requires the user to type a specific text to enable the Confirm button (when both `confirmInputLabel` and `confirmTextToInput` are provided).
+ *
+ * @cssdisplay block
+ */
 export class CcDialogConfirmationForm extends LitElement {
   static get properties() {
     return {
@@ -29,13 +39,13 @@ export class CcDialogConfirmationForm extends LitElement {
     /** @type {boolean} Automatically focuses the input when the dialog is opened */
     this.autofocusInput = false;
 
-    /** @type {string|null} Sets Text that needs to be matched by the user, also visible in the help text below the input */
+    /** @type {string|null} Sets Text that needs to be matched by the user, also visible in the help text below the input. Note: You must provide a value if you want the confirm input to be displayed. */
     this.confirmTextToInput = null;
 
-    /** @type {string|null} Sets the label for the confirm text input */
+    /** @type {string|null} Sets the label for the confirm text input. Note: You must provide a value if you want the confirm input to be displayed. */
     this.confirmInputLabel = null;
 
-    /** @type {string|null} Sets the label for the cancel button */
+    /** @type {string|null} Sets the label for the cancel button. Optional, only provide a value if you want to override the default label of the cancel button. */
     this.cancelLabel = null;
 
     /** @type {string|null} Sets the label for the submit button */
@@ -72,6 +82,10 @@ export class CcDialogConfirmationForm extends LitElement {
   }
 
   render() {
+    if (isStringEmpty(this.confirmTextToInput) || isStringEmpty(this.confirmInputLabel)) {
+      return this._renderDialogActions();
+    }
+
     return html`
       <form ${formSubmit(this._onConfirm.bind(this))}>
         <div class="dialog-content">
@@ -85,21 +99,29 @@ export class CcDialogConfirmationForm extends LitElement {
           >
             <p slot="help">${this.confirmTextToInput}</p>
           </cc-input-text>
-        </div>
-        <div class="dialog-actions">
-          <cc-button outlined @click="${this._onCancel}" ?disabled="${this.waiting}">
-            ${this.cancelLabel ?? i18n('cc-dialog.cancel')}
-          </cc-button>
-          <cc-button
-            ?primary="${this.submitIntent === 'primary'}"
-            ?danger="${this.submitIntent === 'danger'}"
-            type="submit"
-            ?waiting="${this.waiting}"
-          >
-            ${this.submitLabel}
-          </cc-button>
+          ${this._renderDialogActions()}
         </div>
       </form>
+    `;
+  }
+
+  _renderDialogActions() {
+    // TODO: check that `_onConfirm` is not called twice when used inside a form with formSubmit directive
+    return html`
+      <div class="dialog-actions">
+        <cc-button outlined @click="${this._onCancel}" ?disabled="${this.waiting}">
+          ${!isStringEmpty(this.cancelLabel) ? this.cancelLabel : i18n('cc-dialog.cancel')}
+        </cc-button>
+        <cc-button
+          ?primary="${this.submitIntent === 'primary'}"
+          ?danger="${this.submitIntent === 'danger'}"
+          type="submit"
+          ?waiting="${this.waiting}"
+          @cc-click="${this._onConfirm}"
+        >
+          ${this.submitLabel}
+        </cc-button>
+      </div>
     `;
   }
 

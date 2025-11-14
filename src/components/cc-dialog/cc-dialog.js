@@ -115,6 +115,7 @@ export class CcDialog extends LitElement {
   }
 
   render() {
+    // TODO: heading wrapper only if heading or slotted heading + icon in slotted heading?
     return html`
       <dialog
         aria-labelledby="dialog-heading"
