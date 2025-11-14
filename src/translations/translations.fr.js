@@ -735,7 +735,7 @@ export const translations = {
   'cc-grafana-info.screenshot.addon.title': `Aperçu du tableau de bord d'add-on`,
   'cc-grafana-info.screenshot.organisation.alt': `Capture d'écran d'un tableau de bord d'organisation dans Grafana`,
   'cc-grafana-info.screenshot.organisation.description': () =>
-    sanitize`Ce tableau de bord comprend plusieurs graphiques pour une organisation Clever Cloud. <br> Il fournit un graphique résumant le nombre d'<strong>applications (runtimes) et d'add-ons déployés</strong>. Il contient également le nombre de services <strong>par type</strong> ou <strong>par plan (flavor)</strong>. <br> Le <strong>graphique d'état</strong> affiche un état pour tous les déploiements effectués durant la plage de temps de Grafana. <br> Et enfin, il est possible de récupérerer des <strong>liens globaux et spécifiques</strong> (triés par nombre de requêtes) pour accéder au tableau de bord d'une application (runtime) ou d'un add-on.`,
+    sanitize`Ce tableau de bord comprend plusieurs graphiques pour une organisation Clever Cloud. <br> Il fournit un graphique résumant le nombre d'<strong>applications (runtimes) et d'add-ons déployés</strong>. Il contient également le nombre de services <strong>par type</strong> ou <strong>par plan (flavor)</strong>. <br> Le <strong>graphique d'état</strong> affiche un état pour tous les déploiements effectués durant la plage de temps de Grafana. <br> Et enfin, il est possible de récupérer des <strong>liens globaux et spécifiques</strong> (triés par nombre de requêtes) pour accéder au tableau de bord d'une application (runtime) ou d'un add-on.`,
   'cc-grafana-info.screenshot.organisation.title': `Aperçu du tableau de bord d'organisation`,
   'cc-grafana-info.screenshot.runtime.alt': `Capture d'écran d'un tableau de bord d'application (runtime) dans Grafana`,
   'cc-grafana-info.screenshot.runtime.description': () =>
@@ -1372,7 +1372,7 @@ export const translations = {
   'cc-payment-warning.generic.default-payment-method-is-expired': /** @param {{orgaName: string}} _ */ ({ orgaName }) =>
     sanitize`<strong>${orgaName}</strong> a un moyen de paiement enregistré mais il est expiré.`,
   'cc-payment-warning.generic.no-default-payment-method': /** @param {{orgaName: string}} _ */ ({ orgaName }) =>
-    sanitize`<strong>${orgaName}</strong> a des moyens de payments enregistrés mais aucun d'entre eux n'est défini par défaut.`,
+    sanitize`<strong>${orgaName}</strong> a des moyens de paiements enregistrés mais aucun d'entre eux n'est défini par défaut.`,
   'cc-payment-warning.generic.no-payment-method': /** @param {{orgaName: string}} _ */ ({ orgaName }) =>
     sanitize`<strong>${orgaName}</strong> n'a aucun moyen de paiement enregistré.`,
   'cc-payment-warning.home': /** @param {{orgaCount: number}} _ */ ({ orgaCount }) => {
@@ -1383,7 +1383,7 @@ export const translations = {
   'cc-payment-warning.orga.default-payment-method-is-expired': `Pour éviter tout risque de suspension de vos services et de suppression de vos données, merci d'ajouter un moyen de paiement valide et de le définir par défaut.`,
   'cc-payment-warning.orga.default-payment-method-is-expired.title': `Attention\u202f! Votre moyen de paiement est expiré`,
   'cc-payment-warning.orga.no-default-payment-method': `Pour éviter tout risque de suspension de vos services et de suppression de vos données, merci de définir un de vos moyen de paiement par défaut.`,
-  'cc-payment-warning.orga.no-default-payment-method.title': `Attention\u202f! Vous avez des moyens de payments enregistrés, mais aucun d'entre eux n'est défini par défaut`,
+  'cc-payment-warning.orga.no-default-payment-method.title': `Attention\u202f! Vous avez des moyens de paiements enregistrés, mais aucun d'entre eux n'est défini par défaut`,
   'cc-payment-warning.orga.no-payment-method': `Pour éviter tout risque de suspension de vos services et de suppression de vos données, merci d'ajouter un moyen de paiement valide et de le définir par défaut.`,
   'cc-payment-warning.orga.no-payment-method.title': `Attention\u202f! Vous n'avez aucun moyen de paiement enregistré`,
   //#endregion
