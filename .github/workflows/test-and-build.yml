@@ -33,8 +33,6 @@ jobs:
         run: npm run components:check-lit
       - name: '[Code quality] Check types'
         run: npm run typecheck
-      - name: '[Code quality] Check types imports'
-        run: npm run components:check-type-imports
       - name: '[Code quality] Check Stylelint'
         run: npm run stylelint
       - name: '[Code quality] Check Prettier (formatting)'

@@ -75,12 +75,6 @@ This project provides a series of tasks you can run as [npm scripts](https://doc
 
 * Check components with [lit-analyzer](https://github.com/runem/lit-analyzer), a code analyzer specific to Lit.
 
-## `npm run components:check-type-imports`
-
-* Check that each component has:
-  * types present in `@fires` event are imported.
-  * types present in the constructor are imported.
-
 ## `npm run components:docs`
 
 * Generate [Custom Elements Manifest](https://github.com/webcomponents/custom-elements-manifest) with [CEM analyzer](https://github.com/open-wc/custom-elements-manifest/tree/master/packages/analyzer) in `dist`.
