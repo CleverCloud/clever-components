@@ -24,22 +24,12 @@ import { CcOrgaMemberInviteEvent } from './cc-orga-member-list.events.js';
 const ORGA_MEMBER_DOCUMENTATION = getDocUrl('/account/administrate-organization');
 
 /**
- * @typedef {import('./cc-orga-member-list.types.js').OrgaMemberListState} OrgaMemberListState
- * @typedef {import('./cc-orga-member-list.types.js').OrgaMemberListStateLoaded} OrgaMemberListStateLoaded
- * @typedef {import('./cc-orga-member-list.types.js').ListAuthorisations} ListAuthorisations
- * @typedef {import('./cc-orga-member-list.types.js').InviteMemberFormState} InviteMemberFormState
- * @typedef {import('../cc-orga-member-card/cc-orga-member-card.events.js').CcOrgaMemberUpdateEvent} CcOrgaMemberUpdateEvent
- * @typedef {import('../cc-orga-member-card/cc-orga-member-card.events.js').CcOrgaMemberEditToggleEvent} CcOrgaMemberEditToggleEvent
- * @typedef {import('../cc-orga-member-card/cc-orga-member-card.types.js').OrgaMemberCardState} OrgaMemberCardState
- * @typedef {import('../cc-orga-member-card/cc-orga-member-card.types.js').OrgaMember} OrgaMember
- * @typedef {import('../cc-orga-member-card/cc-orga-member-card.types.js').OrgaMemberRole} OrgaMemberRole
- * @typedef {import('../../lib/form/validation.types.js').Validator} Validator
- * @typedef {import('../../lib/form/validation.types.js').Validity} Validity
- * @typedef {import('../cc-input-text/cc-input-text.js').CcInputText} CcInputText
- * @typedef {import('lit').TemplateResult<1>} TemplateResult
- * @typedef {import('lit').PropertyValues<CcOrgaMemberList>} CcOrgaMemberListPropertyValues
- * @typedef {import('lit/directives/ref.js').Ref<HTMLElement>} HTMLElementRef
- * @typedef {import('lit/directives/ref.js').Ref<HTMLFormElement>} HTMLFormElementRef
+ * @import { OrgaMemberListState, OrgaMemberListStateLoaded, ListAuthorisations, InviteMemberFormState } from './cc-orga-member-list.types.js'
+ * @import { CcOrgaMemberUpdateEvent, CcOrgaMemberEditToggleEvent } from '../cc-orga-member-card/cc-orga-member-card.events.js'
+ * @import { OrgaMemberCardState, OrgaMember, OrgaMemberRole } from '../cc-orga-member-card/cc-orga-member-card.types.js'
+ * @import { Validator, Validity } from '../../lib/form/validation.types.js'
+ * @import { TemplateResult, PropertyValues } from 'lit'
+ * @import { Ref } from 'lit/directives/ref.js'
  */
 
 /**
@@ -85,11 +75,11 @@ export class CcOrgaMemberList extends LitElement {
     /** @type {OrgaMemberListState} Sets the state of the member list. */
     this.memberListState = { type: 'loading' };
 
-    /** @type {HTMLFormElementRef} */
+    /** @type {Ref<HTMLFormElement>} */
     this._inviteMemberFormRef = createRef();
-    /** @type {HTMLElementRef} */
+    /** @type {Ref<HTMLElement>} */
     this._memberListHeadingRef = createRef();
-    /** @type {HTMLElementRef} */
+    /** @type {Ref<HTMLElement>} */
     this._noResultMessageRef = createRef();
 
     new LostFocusController(this, 'cc-orga-member-card', ({ suggestedElement }) => {
@@ -317,7 +307,7 @@ export class CcOrgaMemberList extends LitElement {
   /**
    * Everytime we render a new list, remove the "last-admin" error if the list contains more than 1 admin.
    *
-   * @param {CcOrgaMemberListPropertyValues} changedProperties
+   * @param {PropertyValues<CcOrgaMemberList>} changedProperties
    */
   willUpdate(changedProperties) {
     const updateNotRelatedToMembers = !changedProperties.has('memberListState');

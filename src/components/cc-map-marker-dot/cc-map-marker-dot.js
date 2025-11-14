@@ -1,7 +1,7 @@
 import { css, html, LitElement } from 'lit';
 
 /**
- * @typedef {import('lit').PropertyValues<CcMapMarkerDot>} CcMapMarkerDotPropertyValues
+ * @import { PropertyValues } from 'lit'
  */
 
 // Generated with https://components.ai/color-scale/
@@ -89,7 +89,7 @@ export class CcMapMarkerDot extends LitElement {
     return COLOR_PALETTE[colorIndex];
   }
 
-  /** @param {CcMapMarkerDotPropertyValues} changedProperties */
+  /** @param {PropertyValues<CcMapMarkerDot>} changedProperties */
   willUpdate(changedProperties) {
     if (changedProperties.has('count')) {
       this._color = this._getColorFromCount(this.count);

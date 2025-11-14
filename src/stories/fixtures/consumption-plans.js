@@ -1,5 +1,5 @@
 /**
- * @typedef {import("../../components/cc-pricing-product-consumption/cc-pricing-product-consumption.types.js").PricingProductConsumptionStateLoaded} PricingProductConsumptionStateLoaded
+ * @import { PricingProductConsumptionStateLoaded } from '../../components/cc-pricing-product-consumption/cc-pricing-product-consumption.types.js'
  */
 
 const THIRTY_DAYS_IN_HOURS = 24 * 30;

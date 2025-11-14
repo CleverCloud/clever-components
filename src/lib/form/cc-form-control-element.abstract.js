@@ -5,12 +5,9 @@ import { CcErrorMessageChangeEvent } from './form.events.js';
 import { combineValidators } from './validation.js';
 
 /**
- * @typedef {import('./validation.types.js').ErrorMessage} ErrorMessage
- * @typedef {import('./validation.types.js').ErrorMessageMap} ErrorMessageMap
- * @typedef {import('./validation.types.js').Validator} Validator
- * @typedef {import('./validation.types.js').Validity} Validity
- * @typedef {import('../form/form.types.js').FormControlData} FormControlData
- * @typedef {import('lit').PropertyValues<CcFormControlElement>} FormControlElementPropertyValues
+ * @import { ErrorMessage, ErrorMessageMap, Validator, Validity } from './validation.types.js'
+ * @import { FormControlData } from '../form/form.types.js'
+ * @import { PropertyValues } from 'lit'
  */
 
 /**
@@ -313,7 +310,7 @@ export class CcFormControlElement extends LitElement {
   /* endregion */
 
   /**
-   * @param {FormControlElementPropertyValues} changedProperties
+   * @param {PropertyValues<CcFormControlElement>} changedProperties
    */
   updated(changedProperties) {
     let shouldValidate = false;

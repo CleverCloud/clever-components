@@ -1,5 +1,5 @@
 /**
- * @typedef {import('../components/common.types.js').Zone} Zone
+ * @import { Zone } from '../components/common.types.js'
  */
 
 const CLEVER_CLOUD_ZONE = 'infra:clever-cloud';

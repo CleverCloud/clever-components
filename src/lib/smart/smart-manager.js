@@ -2,14 +2,11 @@ import { objectEquals } from '../utils.js';
 import { COMPONENTS, CURRENT_CONTEXT, LAST_CONTEXT } from './smart-symbols.js';
 
 /**
- * @typedef {import('./smart-component.types.d.ts').SmartContainer} SmartContainer
- * @typedef {import('./smart-component.types.d.ts').SmartComponent} SmartComponent
- * @typedef {import('./smart-component.types.d.ts').SmartContext} SmartContext
- * @typedef {import('./smart-component.types.d.ts').SmartDefinitionParam} SmartDefinitionParam
+ * @import { SmartContainer, SmartComponent, SmartContext, SmartDefinitionParam } from './smart-component.types.d.ts'
  */
 
 /**
- * @typedef {import('./smart-component.types.d.ts').SmartComponentCoreDefinition<T>} SmartComponentCoreDefinition
+ * @import { SmartComponentCoreDefinition } from './smart-component.types.d.ts'
  * @template {SmartComponent} T
  */
 

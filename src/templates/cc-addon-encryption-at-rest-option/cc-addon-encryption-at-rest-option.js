@@ -4,8 +4,7 @@ import '../../components/cc-icon/cc-icon.js';
 import { i18n } from '../../translations/translation.js';
 
 /**
- * @typedef {import('../../components/common.types.js').EncryptionAddonOption} EncryptionAddonOption
- * @typedef {import('../../components/common.types.js').AddonOptionWithMetadata} AddonOptionWithMetadata
+ * @import { EncryptionAddonOption, AddonOptionWithMetadata } from '../../components/common.types.js'
  */
 
 /** @type {(option: EncryptionAddonOption) => AddonOptionWithMetadata & EncryptionAddonOption} */

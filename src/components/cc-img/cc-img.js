@@ -4,7 +4,7 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
 
 /**
- * @typedef {import('lit').PropertyValues<CcImg>} CcImgPropertyValues
+ * @import { PropertyValues } from 'lit'
  */
 
 /**
@@ -60,7 +60,7 @@ export class CcImg extends LitElement {
     this.skeleton = false;
   }
 
-  /** @param {CcImgPropertyValues} changedProperties */
+  /** @param {PropertyValues<CcImg>} changedProperties */
   willUpdate(changedProperties) {
     if (changedProperties.has('src')) {
       this._error = false;

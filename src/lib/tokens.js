@@ -1,5 +1,5 @@
 /**
- * @typedef {import("./tokens.types.js").ExpirationWarningThresholds} ExpirationWarningThresholds
+ * @import { ExpirationWarningThresholds } from './tokens.types.js'
  */
 
 /** @type {ExpirationWarningThresholds} */

@@ -18,7 +18,7 @@ const conf = {
 };
 
 /**
- * @typedef {import('./cc-visual-tests-report-entry.js').CcVisualTestsReportEntry} CcVisualTestsReportEntry
+ * @import { CcVisualTestsReportEntry } from './cc-visual-tests-report-entry.js'
  */
 
 const visualTestResult = visualTestsResults.find(({ id }) => id === 'cc-article-list-data-loaded-desktop-chromium');

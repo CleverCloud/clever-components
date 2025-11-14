@@ -4,10 +4,10 @@ import '../cc-smart-container/cc-smart-container.js';
 import './cc-invoice.js';
 
 /**
- * @typedef {import('./cc-invoice.js').CcInvoice} CcInvoice
- * @typedef {import('../common.types.js').Invoice} Invoice
- * @typedef {import('../../lib/send-to-api.js').ApiConfig} ApiConfig
- * @typedef {import('../../lib/smart/smart-component.types.js').OnContextUpdateArgs<CcInvoice>} OnContextUpdateArgs
+ * @import { CcInvoice } from './cc-invoice.js'
+ * @import { Invoice } from '../common.types.js'
+ * @import { ApiConfig } from '../../lib/send-to-api.types.js'
+ * @import { OnContextUpdateArgs } from '../../lib/smart/smart-component.types.js'
  */
 
 defineSmartComponent({
@@ -18,7 +18,7 @@ defineSmartComponent({
     invoiceNumber: { type: String },
   },
   /**
-   * @param {OnContextUpdateArgs} args
+   * @param {OnContextUpdateArgs<CcInvoice>} args
    */
   onContextUpdate({ context, updateComponent, signal }) {
     const { apiConfig, ownerId, invoiceNumber } = context;

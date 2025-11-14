@@ -9,13 +9,9 @@ import '../cc-smart-container/cc-smart-container.js';
 import { CcTokenApiCreationForm } from './cc-token-api-creation-form.js';
 
 /**
- * @typedef {import('./cc-token-api-creation-form.types.js').TokenApiCreationFormStateLoadedConfiguration} TokenApiCreationFormStateLoadedConfiguration
- * @typedef {import('./cc-token-api-creation-form.types.js').TokenApiCreationFormStateLoadedValidation} TokenApiCreationFormStateLoadedValidation
- * @typedef {import('./cc-token-api-creation-form.types.js').TokenApiCreationFormStateLoadedCopy} TokenApiCreationFormStateLoadedCopy
- * @typedef {import('./cc-token-api-creation-form.types.js').TokenApiCreationFormStateCreating} TokenApiCreationFormStateCreating
- * @typedef {import('../../lib/send-to-api.types.js').ApiConfig} ApiConfig
- * @typedef {import('../../lib/send-to-api.types.js').AuthBridgeConfig} AuthBridgeConfig
- * @typedef {import('../../lib/smart/smart-component.types.js').OnContextUpdateArgs<CcTokenApiCreationForm>} OnContextUpdateArgs
+ * @import { TokenApiCreationFormStateLoadedConfiguration, TokenApiCreationFormStateLoadedValidation, TokenApiCreationFormStateLoadedCopy, TokenApiCreationFormStateCreating } from './cc-token-api-creation-form.types.js'
+ * @import { ApiConfig, AuthBridgeConfig } from '../../lib/send-to-api.types.js'
+ * @import { OnContextUpdateArgs } from '../../lib/smart/smart-component.types.js'
  */
 
 defineSmartComponent({
@@ -23,7 +19,7 @@ defineSmartComponent({
   params: {
     apiConfig: { type: Object },
   },
-  /** @param {OnContextUpdateArgs} args */
+  /** @param {OnContextUpdateArgs<CcTokenApiCreationForm>} args */
   onContextUpdate({ component, context, onEvent, updateComponent }) {
     const { apiConfig } = context;
     const api = new Api(apiConfig);

@@ -1,7 +1,7 @@
 import { CcEvent } from '../../lib/events.js';
 
 /**
- * @typedef {import('./cc-logs-message-filter.types.js').LogsMessageFilterValue} LogsMessageFilterValue
+ * @import { LogsMessageFilterValue } from './cc-logs-message-filter.types.js'
  */
 
 /**

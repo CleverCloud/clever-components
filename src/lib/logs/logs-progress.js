@@ -1,9 +1,8 @@
 import { isLive } from '../date/date-range-utils.js';
 
 /**
- * @typedef {import('./logs-stream.types.js').AbstractLog} AbstractLog
- * @typedef {import('./logs-stream.types.js').LogsProgressValue} LogsProgressValue
- * @typedef {import('../date/date-range.types.js').DateRange} DateRange
+ * @import { AbstractLog, LogsProgressValue } from './logs-stream.types.js'
+ * @import { DateRange } from '../date/date-range.types.js'
  */
 
 /**

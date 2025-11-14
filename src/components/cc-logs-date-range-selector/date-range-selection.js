@@ -1,6 +1,6 @@
 /**
- * @typedef {import('./cc-logs-date-range-selector.types.js').LogsDateRangeSelection} LogsDateRangeSelection
- * @typedef {import('../../lib/date/date-range.types.js').DateRange} DateRange
+ * @import { LogsDateRangeSelection } from './cc-logs-date-range-selector.types.js'
+ * @import { DateRange } from '../../lib/date/date-range.types.js'
  */
 
 import { getRangeToNow, lastXDays, today, yesterday } from '../../lib/date/date-range-utils.js';

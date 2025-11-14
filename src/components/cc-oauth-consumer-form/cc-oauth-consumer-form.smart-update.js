@@ -10,14 +10,11 @@ import { CcOauthConsumerWasDeletedEvent, CcOauthConsumerWasUpdatedEvent } from '
 import './cc-oauth-consumer-form.js';
 
 /**
- * @typedef {import('./cc-oauth-consumer-form.js').CcOauthConsumerForm} CcOauthConsumerForm
- * @typedef {import('./cc-oauth-consumer-form.types.js').OauthConsumerFormStateIdleUpdate} OauthConsumerFormStateIdleUpdate
- * @typedef {import('./cc-oauth-consumer-form.types.js').OauthConsumerWithoutKeyAndSecret} OauthConsumerWithoutKeyAndSecret
- * @typedef {import('../cc-oauth-consumer-info/cc-oauth-consumer-info.types.js').OauthConsumer} OauthConsumer
- * @typedef {import('../cc-oauth-consumer-info/cc-oauth-consumer-info.types.js').OauthConsumerRights} OauthConsumerRights
- * @typedef {import('../cc-oauth-consumer-info/cc-oauth-consumer-info.types.js').RawOauthConsumer} RawOauthConsumer
- * @typedef {import('../../lib/send-to-api.types.js').ApiConfig} ApiConfig
- * @typedef {import('../../lib/smart/smart-component.types.js').OnContextUpdateArgs<CcOauthConsumerForm>} OnContextUpdateArgs
+ * @import { CcOauthConsumerForm } from './cc-oauth-consumer-form.js'
+ * @import { OauthConsumerWithoutKeyAndSecret } from './cc-oauth-consumer-form.types.js'
+ * @import { OauthConsumerRights, RawOauthConsumer } from '../cc-oauth-consumer-info/cc-oauth-consumer-info.types.js'
+ * @import { ApiConfig } from '../../lib/send-to-api.types.js'
+ * @import { OnContextUpdateArgs } from '../../lib/smart/smart-component.types.js'
  */
 
 /** @type {OauthConsumerRights} */
@@ -43,7 +40,7 @@ defineSmartComponent({
     ownerId: { type: String },
     key: { type: String },
   },
-  /** @param {OnContextUpdateArgs} args */
+  /** @param {OnContextUpdateArgs<CcOauthConsumerForm>} args */
   onContextUpdate({ context, updateComponent, onEvent, component }) {
     const { apiConfig, ownerId, key } = context;
     const api = new Api(apiConfig, ownerId, key);

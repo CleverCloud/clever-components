@@ -1,7 +1,7 @@
 import { CcEvent } from '../../lib/events.js';
 
 /**
- * @typedef {import('./cc-token-api-update-form.types.js').CcTokenChangePayload} CcTokenChangePayload
+ * @import { CcTokenChangePayload } from './cc-token-api-update-form.types.js'
  */
 
 /**

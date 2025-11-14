@@ -13,7 +13,7 @@ const conf = {
 };
 
 /**
- * @typedef {import('./cc-img-comparator.js').CcImgComparator} CcImgComparator
+ * @import { CcImgComparator } from './cc-img-comparator.js'
  */
 
 /**

@@ -7,6 +7,8 @@ import remark2Html from 'remark-html';
 import remarkParse from 'remark-parse';
 import unified from 'unified';
 
+// FIXME: We're using `@typedef` instead of `@import` here due to a false positive from TS
+// See: https://github.com/microsoft/TypeScript/issues/60908/
 /**
  * @typedef {import('vite').Plugin} Plugin
  */

@@ -1,8 +1,8 @@
 import { focusFirstFormControlWithError } from './form-utils.js';
 
 /**
- * @typedef {import('lit').LitElement} LitElement
- * @typedef {import('lit/directives/ref.js').Ref<HTMLFormElement>} HTMLFormElementRef
+ * @import { LitElement } from 'lit'
+ * @import { Ref } from 'lit/directives/ref.js'
  */
 
 /**
@@ -13,7 +13,7 @@ export class FormErrorFocusController {
   /**
    *
    * @param {LitElement} host
-   * @param {HTMLFormElementRef} formRef
+   * @param {Ref<HTMLFormElement>} formRef
    * @param {() => Object} getErrors
    */
   constructor(host, formRef, getErrors) {

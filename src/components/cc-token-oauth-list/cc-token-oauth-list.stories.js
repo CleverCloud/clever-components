@@ -10,8 +10,8 @@ export default {
 };
 
 /**
- * @typedef {import('./cc-token-oauth-list.js').CcTokenOauthList} CcTokenOauthList
- * @typedef {import('./cc-token-oauth-list.types.js').OauthTokenState} OauthTokenState
+ * @import { CcTokenOauthList } from './cc-token-oauth-list.js'
+ * @import { OauthTokenState } from './cc-token-oauth-list.types.js'
  */
 
 const conf = {

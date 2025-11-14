@@ -16,15 +16,12 @@ const SKELETON_ZONES = new Array(6).fill();
 const BREAKPOINTS = [600];
 
 /**
- * @typedef {import('./cc-zone-input.types.js').ZoneInputState} ZoneInputState
- * @typedef {import('./cc-zone-input.types.js').ZoneInputPoint} ZoneInputPoint
- * @typedef {import('./cc-zone-input.types.js').ZonePointMarkerState} ZonePointMarkerState
- * @typedef {import('../cc-map/cc-map.js').CcMap} CcMap
- * @typedef {import('../cc-map/cc-map.events.js').CcMapMarkerEnterEvent} CcMapMarkerEnterEvent
- * @typedef {import('../cc-map/cc-map.events.js').CcMapMarkerClickEvent} CcMapMarkerClickEvent
- * @typedef {import('../common.types.js').Zone} Zone
- * @typedef {import('lit/directives/ref.js').Ref<CcMap>} CcMapRef
- * @typedef {import('lit').PropertyValues<CcZoneInput>} CcZoneInputPropertyValues
+ * @import { ZoneInputState, ZoneInputPoint, ZonePointMarkerState } from './cc-zone-input.types.js'
+ * @import { CcMap } from '../cc-map/cc-map.js'
+ * @import { CcMapMarkerEnterEvent, CcMapMarkerClickEvent } from '../cc-map/cc-map.events.js'
+ * @import { Zone } from '../common.types.js'
+ * @import { Ref } from 'lit/directives/ref.js'
+ * @import { PropertyValues } from 'lit'
  */
 
 /**
@@ -57,7 +54,7 @@ export class CcZoneInput extends LitElement {
     /** @type {ZoneInputState} Sets the state of the component. */
     this.state = { type: 'loading' };
 
-    /** @type {CcMapRef} */
+    /** @type {Ref<CcMap>} */
     this._ccMapRef = createRef();
 
     /** @type {string|null} */
@@ -208,7 +205,7 @@ export class CcZoneInput extends LitElement {
 
   /**
    * updated and not willUpdate because we need this._ccMapRef before
-   * @param {CcZoneInputPropertyValues} changedProperties
+   * @param {PropertyValues<CcZoneInput>} changedProperties
    */
   updated(changedProperties) {
     if (changedProperties.has('selected') && this.state.type !== 'error') {
@@ -225,7 +222,7 @@ export class CcZoneInput extends LitElement {
     super.updated(changedProperties);
   }
 
-  /** @param {CcZoneInputPropertyValues} changedProperties */
+  /** @param {PropertyValues<CcZoneInput>} changedProperties */
   willUpdate(changedProperties) {
     if (changedProperties.has('state') && this.state.type === 'loaded') {
       this._sortedZones = sortZones(this.state.zones);

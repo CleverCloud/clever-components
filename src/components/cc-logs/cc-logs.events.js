@@ -1,7 +1,7 @@
 import { CcEvent } from '../../lib/events.js';
 
 /**
- * @typedef {import('./cc-logs.types.js').Log} Log
+ * @import { Log } from './cc-logs.types.js'
  */
 
 /**

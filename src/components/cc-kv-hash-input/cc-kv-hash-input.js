@@ -8,11 +8,9 @@ import '../cc-button/cc-button.js';
 import '../cc-input-text/cc-input-text.js';
 
 /**
- * @typedef {import('../../lib/events.types.js').EventWithTarget} EventWithTarget
- * @typedef {import('../../lib/events.types.js').GenericEventWithTarget<InputEvent, HTMLInputElement>} HTMLInputElementEvent
- * @typedef {import('../../lib/form/form.types.js').FormControlData} FormControlData
- * @typedef {import('../../lib/form/form.types.js').FormDataMap} FormDataMap
- * @typedef {import('lit').PropertyValues<CcKvHashInput>} PropertyValues
+ * @import { EventWithTarget, GenericEventWithTarget } from '../../lib/events.types.js'
+ * @import { FormControlData, FormDataMap } from '../../lib/form/form.types.js'
+ * @import { PropertyValues } from 'lit'
  */
 
 /**
@@ -148,7 +146,7 @@ export class CcKvHashInput extends CcFormControlElement {
   }
 
   /**
-   * @param {HTMLInputElementEvent} e
+   * @param {GenericEventWithTarget<InputEvent, HTMLInputElement>} e
    */
   _onFieldInput(e) {
     const index = Number.parseInt(e.target.dataset.index);
@@ -156,7 +154,7 @@ export class CcKvHashInput extends CcFormControlElement {
   }
 
   /**
-   * @param {HTMLInputElementEvent} e
+   * @param {GenericEventWithTarget<InputEvent, HTMLInputElement>} e
    */
   _onValueInput(e) {
     const index = Number.parseInt(e.target.dataset.index);
@@ -164,7 +162,7 @@ export class CcKvHashInput extends CcFormControlElement {
   }
 
   /**
-   * @param {PropertyValues} changedProperties
+   * @param {PropertyValues<CcKvHashInput>} changedProperties
    */
   willUpdate(changedProperties) {
     if (changedProperties.has('value')) {

@@ -1,8 +1,7 @@
 import { CcEvent } from '../../lib/events.js';
 
 /**
- * @typedef {import('./cc-ssh-key-list.types.js').NewKey} NewKey
- * @typedef {import('./cc-ssh-key-list.types.js').GithubSshKey} GithubSshKey
+ * @import { NewKey, GithubSshKey } from './cc-ssh-key-list.types.js'
  */
 
 /**

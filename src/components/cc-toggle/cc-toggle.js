@@ -5,8 +5,8 @@ import { repeat } from 'lit/directives/repeat.js';
 import { CcMultiSelectEvent, CcSelectEvent } from '../common.events.js';
 
 /**
- * @typedef {import('./cc-toggle.types.js').Choice} Choice
- * @typedef {import('../../lib/events.types.js').EventWithTarget<HTMLInputElement>} HTMLInputElementEvent
+ * @import { Choice } from './cc-toggle.types.js'
+ * @import { EventWithTarget } from '../../lib/events.types.js'
  */
 
 /**
@@ -94,7 +94,7 @@ export class CcToggle extends LitElement {
     this.value = null;
   }
 
-  /** @param {HTMLInputElementEvent} e */
+  /** @param {EventWithTarget<HTMLInputElement>} e */
   _onChange(e) {
     if (this.multipleValues == null) {
       this.value = e.target.value;

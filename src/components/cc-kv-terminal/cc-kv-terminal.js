@@ -10,14 +10,11 @@ import '../cc-icon/cc-icon.js';
 import { CcKvCommandExecuteEvent, CcKvTerminalStateChangeEvent } from './cc-kv-terminal.events.js';
 
 /**
- * @typedef {import('./cc-kv-terminal.types.js').CcKvTerminalState} CcKvTerminalState
- * @typedef {import('./cc-kv-terminal.types.js').CcKvCommandContentItem} CcKvCommandContentItem
- * @typedef {import('../../lib/events.types.js').GenericEventWithTarget<KeyboardEvent,HTMLInputElement>} HTMLInputKeyboardEvent
- * @typedef {import('lit').PropertyValues<CcKvTerminal>} CcKvTerminalPropertyValues
- * @typedef {import('lit/directives/ref.js').Ref<HTMLDivElement>} HTMLDivElementRef
- * @typedef {import('lit/directives/ref.js').Ref<HTMLInputElement>} HTMLInputElementRef
- * @typedef {import('lit/directives/ref.js').Ref<Virtualizer>} VirtualizerRef
- * @typedef {import('@lit-labs/virtualizer/LitVirtualizer.js').LitVirtualizer} Virtualizer
+ * @import { CcKvTerminalState, CcKvCommandContentItem } from './cc-kv-terminal.types.js'
+ * @import { LitVirtualizer as Virtualizer } from '@lit-labs/virtualizer/LitVirtualizer.js'
+ * @import { GenericEventWithTarget } from '../../lib/events.types.js'
+ * @import { PropertyValues } from 'lit'
+ * @import { Ref } from 'lit/directives/ref.js'
  */
 
 /**
@@ -52,13 +49,13 @@ export class CcKvTerminal extends LitElement {
     /** @type {number|null} */
     this._cmdHistoryIndex = null;
 
-    /** @type {HTMLInputElementRef} */
+    /** @type {Ref<HTMLInputElement>} */
     this._promptRef = createRef();
 
-    /** @type {VirtualizerRef} */
+    /** @type {Ref<Virtualizer>} */
     this._historyRef = createRef();
 
-    /** @type {HTMLDivElementRef} */
+    /** @type {Ref<HTMLDivElement>} */
     this._scrollerRef = createRef();
 
     // this is for lit-virtualizer
@@ -133,7 +130,7 @@ export class CcKvTerminal extends LitElement {
   }
 
   /**
-   * @param {HTMLInputKeyboardEvent} e
+   * @param {GenericEventWithTarget<KeyboardEvent,HTMLInputElement>} e
    */
   _onShellPromptKeyDown(e) {
     e.stopPropagation();
@@ -222,7 +219,7 @@ export class CcKvTerminal extends LitElement {
   }
 
   /**
-   * @param {CcKvTerminalPropertyValues} changedProperties
+   * @param {PropertyValues<CcKvTerminal>} changedProperties
    */
   async updated(changedProperties) {
     if (changedProperties.has('state') && this.state.type === 'idle') {

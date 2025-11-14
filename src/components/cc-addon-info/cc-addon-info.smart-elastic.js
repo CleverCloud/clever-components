@@ -41,13 +41,10 @@ function getServiceData(serviceName, addonProvider, appOverviewUrlPattern) {
 }
 
 /**
- * @typedef {import('./cc-addon-info.js').CcAddonInfo} CcAddonInfo
- * @typedef {import('./cc-addon-info.types.js').AddonInfoStateLoading} AddonInfoStateLoading
- * @typedef {import('./cc-addon-info.types.js').ElasticAddonInfo} ElasticAddonInfo
- * @typedef {import('./cc-addon-info.types.js').LinkedService} LinkedService
- * @typedef {import('./cc-addon-info.types.js').RawAddon} RawAddon
- * @typedef {import('../../lib/smart/smart-component.types.js').OnContextUpdateArgs<CcAddonInfo>} OnContextUpdateArgs
- * @typedef {import('../../lib/send-to-api.types.js').ApiConfig} ApiConfig
+ * @import { CcAddonInfo } from './cc-addon-info.js'
+ * @import { AddonInfoStateLoading, ElasticAddonInfo, LinkedService, RawAddon } from './cc-addon-info.types.js'
+ * @import { ApiConfig } from '../../lib/send-to-api.types.js'
+ * @import { OnContextUpdateArgs } from '../../lib/smart/smart-component.types.js'
  */
 
 defineSmartComponent({
@@ -61,7 +58,7 @@ defineSmartComponent({
     grafanaLink: { type: Object, optional: true },
   },
   /**
-   * @param {OnContextUpdateArgs} _
+   * @param {OnContextUpdateArgs<CcAddonInfo>} _
    */
   onContextUpdate({ context, updateComponent, signal }) {
     const { apiConfig, ownerId, addonId, appOverviewUrlPattern, scalabilityUrlPattern, grafanaLink } = context;

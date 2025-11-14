@@ -19,8 +19,7 @@ import { CcTokenChangeEvent } from './cc-token-api-update-form.events.js';
 const SKELETON_VALUES = { name: '', description: '' };
 
 /**
- * @typedef {import('./cc-token-api-update-form.types.js').TokenApiUpdateFormState} TokenApiUpdateFormState
- * @typedef {import('./cc-token-api-update-form.types.js').FormValues} FormValues
+ * @import { TokenApiUpdateFormState, FormValues } from './cc-token-api-update-form.types.js'
  */
 
 /**

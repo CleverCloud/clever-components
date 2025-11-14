@@ -5,9 +5,8 @@ import { skeletonStyles } from '../../styles/skeleton.js';
 import '../cc-icon/cc-icon.js';
 
 /**
- * @typedef {import('./cc-badge.types.js').BadgeIntent} BadgeIntent
- * @typedef {import('./cc-badge.types.js').BadgeWeight} BadgeWeight
- * @typedef {import('../common.types.js').IconModel} IconModel
+ * @import { BadgeIntent, BadgeWeight } from './cc-badge.types.js'
+ * @import { IconModel } from '../common.types.js'
  */
 
 /**

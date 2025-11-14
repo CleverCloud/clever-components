@@ -8,9 +8,8 @@ export default {
 };
 
 /**
- * @typedef {import('./cc-token-session-list.js').CcTokenSessionList} CcTokenSessionList
- * @typedef {import('./cc-token-session-list.types.js').SessionTokenStateIdle} SessionTokenStateIdle
- * @typedef {import('./cc-token-session-list.types.js').SessionToken} SessionToken
+ * @import { CcTokenSessionList } from './cc-token-session-list.js'
+ * @import { SessionTokenStateIdle, SessionToken } from './cc-token-session-list.types.js'
  */
 
 const conf = {

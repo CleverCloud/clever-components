@@ -11,10 +11,12 @@ import { ONE_DAY } from '@clevercloud/client/esm/with-cache.js';
 import { sendToApi } from './send-to-api.js';
 import { asyncMap } from './utils.js';
 
+// FIXME: We're using `@typedef` instead of `@import` here due to a false positive from TS
+// See: https://github.com/microsoft/TypeScript/issues/60908/
 /**
  * @typedef {import('./send-to-api.types.js').ApiConfig} ApiConfig
  * @typedef {import('../components/common.types.js').Invoice} Invoice
- * @typedef {import('./product.js').PriceSystem} PriceSystem
+ * @typedef {import('../components/common.types.js').PriceSystem} PriceSystem
  */
 
 /**

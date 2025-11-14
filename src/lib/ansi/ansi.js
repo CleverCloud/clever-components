@@ -3,7 +3,7 @@ import { css, html, unsafeCSS } from 'lit';
 import { MemoryCache } from '../memory-cache.js';
 
 /**
- * @typedef {import('./ansi.types.js').AnsiPart} AnsiPart
+ * @import { AnsiPart } from './ansi.types.js'
  */
 
 /** @type {AnsiParser} - Lazy loaded parser */

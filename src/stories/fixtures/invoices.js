@@ -1,7 +1,5 @@
 /**
- * @typedef {import('../../components/common.types.js').Invoice} Invoice
- * @typedef {import('../../components/common.types.js').InvoiceStatusType} InvoiceStatusType
- * @typedef {import('../../components/common.types.js').InvoiceType} InvoiceType
+ * @import { Invoice, InvoiceStatusType, InvoiceType } from '../../components/common.types.js'
  * @typedef {'01' | '02' | '03' | '04' | '05' | '06' | '07' | '08' | '09' | '10' | '11' | '12'} MonthNumberAsString
  */
 

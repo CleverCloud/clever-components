@@ -1,7 +1,7 @@
 import { getContrastRatio, hexToRgb, isDark } from '../color.js';
 
 /**
- * @typedef {import('./ansi.types.js').AnsiPalette} AnsiPalette
+ * @import { AnsiPalette } from './ansi.types.js'
  * @typedef {keyof AnsiPalette} ColorsType
  */
 

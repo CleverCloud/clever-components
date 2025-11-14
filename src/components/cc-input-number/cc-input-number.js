@@ -14,13 +14,10 @@ import '../cc-icon/cc-icon.js';
 import { CcInputEvent, CcRequestSubmitEvent } from '../common.events.js';
 
 /**
- * @typedef {import('lit/directives/ref.js').Ref<HTMLInputElement>} HTMLInputElementRef
- * @typedef {import('lit/directives/ref.js').Ref<HTMLElement>} HTMLElementRef
- * @typedef {import('../../lib/events.types.js').EventWithTarget<HTMLInputElement>} HTMLInputElementEvent
- * @typedef {import('../../lib/events.types.js').GenericEventWithTarget<KeyboardEvent, HTMLInputElement>} HTMLInputElementKeyEvent
- * @typedef {import('../../lib/form/validation.types.js').ErrorMessageMap} ErrorMessageMap
- * @typedef {import('../../lib/form/validation.types.js').Validator} Validator
- * @typedef {import('../../lib/form/form.types.js').FormControlData} FormControlData
+ * @import { ErrorMessageMap, Validator } from '../../lib/form/validation.types.js'
+ * @import { FormControlData } from '../../lib/form/form.types.js'
+ * @import { Ref } from 'lit/directives/ref.js'
+ * @import { EventWithTarget, GenericEventWithTarget } from '../../lib/events.types.js'
  */
 
 /**
@@ -111,10 +108,10 @@ export class CcInputNumber extends CcFormControlElement {
     /** @type {number|null} Sets `value` attribute on inner native input number element. */
     this.value = null;
 
-    /** @type {HTMLElementRef} */
+    /** @type {Ref<HTMLElement>} */
     this._errorRef = createRef();
 
-    /** @type {HTMLInputElementRef} */
+    /** @type {Ref<HTMLInputElement>} */
     this._inputRef = createRef();
 
     /** @type {ErrorMessageMap} */
@@ -189,7 +186,7 @@ export class CcInputNumber extends CcFormControlElement {
   /* endregion */
 
   /**
-   * @param {HTMLInputElementEvent} e
+   * @param {EventWithTarget<HTMLInputElement>} e
    */
   _onInput(e) {
     this.value = e.target.valueAsNumber;
@@ -197,7 +194,7 @@ export class CcInputNumber extends CcFormControlElement {
   }
 
   /**
-   * @param {HTMLInputElementEvent} e
+   * @param {EventWithTarget<HTMLInputElement>} e
    */
   _onFocus(e) {
     if (this.readonly) {
@@ -208,7 +205,7 @@ export class CcInputNumber extends CcFormControlElement {
   /**
    * Stop propagation of keydown and keypress events (to prevent conflicts with shortcuts)
    *
-   * @param {HTMLInputElementKeyEvent} e
+   * @param {GenericEventWithTarget<KeyboardEvent, HTMLInputElement>} e
    */
   _onKeyEvent(e) {
     if (e.type === 'keydown' || e.type === 'keypress') {

@@ -1,12 +1,12 @@
 import { focusBySelector } from '../focus-helper.js';
 import { CcFormControlElement } from './cc-form-control-element.abstract.js';
 
+// FIXME: We're using `@typedef` instead of `@import` here due to a false positive from TS
+// See: https://github.com/microsoft/TypeScript/issues/60908/
 /**
  * @typedef {import('./form.types.js').FormDataMap} FormDataMap
- * @typedef {import('./form.types.js').FormControlData} InputData
  * @typedef {import('./form.types.js').FormControlElementLike} FormControlElementLike
  * @typedef {import('./validation.types.js').ErrorMessage} ErrorMessage
- * @typedef {import('lit').LitElement} LitElement
  */
 
 /**

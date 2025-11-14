@@ -1,6 +1,6 @@
 /* eslint-disable camelcase */
 /**
- * @typedef {import("../../components/common.types.js").PriceSystem} PriceSystem
+ * @import { PriceSystem } from '../../components/common.types.js'
  */
 
 /** @type {PriceSystem} */

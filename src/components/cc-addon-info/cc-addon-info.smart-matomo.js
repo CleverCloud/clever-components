@@ -10,18 +10,11 @@ import './cc-addon-info.js';
 const PROVIDER_ID = 'matomo';
 
 /**
- * @typedef {import('./cc-addon-info.js').CcAddonInfo} CcAddonInfo
- * @typedef {import('./cc-addon-info.types.js').AddonInfoStateLoaded} AddonInfoStateLoaded
- * @typedef {import('./cc-addon-info.types.js').AddonInfoStateLoading} AddonInfoStateLoading
- * @typedef {import('./cc-addon-info.types.js').AddonVersionStateUpdateAvailable} AddonVersionStateUpdateAvailable
- * @typedef {import('./cc-addon-info.types.js').AddonVersionStateUpToDate} AddonVersionStateUpToDate
- * @typedef {import('./cc-addon-info.types.js').AddonVersionStateRequestingUpdate} AddonVersionStateRequestingUpdate
- * @typedef {import('./cc-addon-info.types.js').AddonInfoStateBaseProperties} AddonInfoStateBaseProperties
- * @typedef {import('./cc-addon-info.types.js').RawAddon} RawAddon
- * @typedef {import('../../operators.types.js').MatomoOperatorInfo} MatomoOperatorInfo
- * @typedef {import('../../operators.types.js').OperatorVersionInfo} OperatorVersionInfo
- * @typedef {import('../../lib/smart/smart-component.types.js').OnContextUpdateArgs<CcAddonInfo>} OnContextUpdateArgs
- * @typedef {import('../../lib/send-to-api.types.js').ApiConfig} ApiConfig
+ * @import { CcAddonInfo } from './cc-addon-info.js'
+ * @import { AddonInfoStateLoading, RawAddon } from './cc-addon-info.types.js'
+ * @import { MatomoOperatorInfo, OperatorVersionInfo } from '../../operators.types.js'
+ * @import { ApiConfig } from '../../lib/send-to-api.types.js'
+ * @import { OnContextUpdateArgs } from '../../lib/smart/smart-component.types.js'
  */
 
 defineSmartComponent({
@@ -36,7 +29,7 @@ defineSmartComponent({
     grafanaLink: { type: Object, optional: true },
     logsUrlPattern: { type: String },
   },
-  /** @param {OnContextUpdateArgs} _ */
+  /** @param {OnContextUpdateArgs<CcAddonInfo>} _ */
   onContextUpdate({ context, updateComponent, signal }) {
     const {
       apiConfig,

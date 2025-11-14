@@ -8,10 +8,9 @@ import '../cc-smart-container/cc-smart-container.js';
 import './cc-article-list.js';
 
 /**
- * @typedef {import('./cc-article-list.js').CcArticleList} CcArticleList
- * @typedef {import('../cc-article-card/cc-article-card.types.js').ArticleCard} ArticleCard
- * @typedef {import('../../lib/send-to-api.js').ApiConfig} ApiConfig
- * @typedef {import('../../lib/smart/smart-component.types.js').OnContextUpdateArgs<CcArticleList>} OnContextUpdateArgs
+ * @import { CcArticleList } from './cc-article-list.js'
+ * @import { ArticleCard } from '../cc-article-card/cc-article-card.types.js'
+ * @import { OnContextUpdateArgs } from '../../lib/smart/smart-component.types.js'
  */
 
 const FOUR_HOURS = 1000 * 60 * 60 * 4;
@@ -23,7 +22,7 @@ defineSmartComponent({
     limit: { type: Number },
   },
   /**
-   * @param {OnContextUpdateArgs} args
+   * @param {OnContextUpdateArgs<CcArticleList>} args
    */
   onContextUpdate({ context, updateComponent, signal }) {
     updateComponent('state', { type: 'loading' });

@@ -16,17 +16,16 @@ import '../cc-logs-message-filter/cc-logs-message-filter.js';
 import '../cc-notice/cc-notice.js';
 
 /**
- * @typedef {import('./cc-logs-addon-runtime.types.js').LogsAddonRuntimeState} LogsAddonRuntimeState
- * @typedef {import('../cc-logs-control/cc-logs-control.js').CcLogsControl} CcLogsControl
- * @typedef {import('../cc-logs-control/cc-logs-control.types.js').LogsOptions} LogsOptions
- * @typedef {import('../cc-logs/cc-logs.types.js').Log} Log
- * @typedef {import('../cc-logs-date-range-selector/cc-logs-date-range-selector.types.js').LogsDateRangeSelection} LogsDateRangeSelection
- * @typedef {import('../cc-logs-date-range-selector/cc-logs-date-range-selector.events.js').CcLogsDateRangeSelectionChangeEvent} CcLogsDateRangeSelectionChangeEvent
- * @typedef {import('../cc-logs-message-filter/cc-logs-message-filter.types.js').LogsMessageFilterValue} LogsMessageFilterValue
- * @typedef {import('../cc-logs-message-filter/cc-logs-message-filter.events.js').CcLogsMessageFilterChangeEvent} CcLogsMessageFilterChangeEvent
- * @typedef {import('lit/directives/ref.js').Ref<CcLogsControl>} CcLogsControlRef
- * @typedef {import('lit').PropertyValues<CcLogsAddonRuntime>} PropertyValues
- * @typedef {import('lit').TemplateResult<1>} TemplateResult
+ * @import { LogsAddonRuntimeState } from './cc-logs-addon-runtime.types.js'
+ * @import { CcLogsControl } from '../cc-logs-control/cc-logs-control.js'
+ * @import { LogsOptions } from '../cc-logs-control/cc-logs-control.types.js'
+ * @import { Log } from '../cc-logs/cc-logs.types.js'
+ * @import { LogsDateRangeSelection } from '../cc-logs-date-range-selector/cc-logs-date-range-selector.types.js'
+ * @import { CcLogsDateRangeSelectionChangeEvent } from '../cc-logs-date-range-selector/cc-logs-date-range-selector.events.js'
+ * @import { LogsMessageFilterValue } from '../cc-logs-message-filter/cc-logs-message-filter.types.js'
+ * @import { CcLogsMessageFilterChangeEvent } from '../cc-logs-message-filter/cc-logs-message-filter.events.js'
+ * @import { TemplateResult } from 'lit'
+ * @import { Ref } from 'lit/directives/ref.js'
  */
 
 /**
@@ -77,7 +76,7 @@ export class CcLogsAddonRuntime extends LitElement {
       streamState: { type: 'idle' },
     };
 
-    /** @type {CcLogsControlRef} */
+    /** @type {Ref<CcLogsControl>} */
     this._logsRef = createRef();
 
     /** @type {LogsMessageFilterValue} */

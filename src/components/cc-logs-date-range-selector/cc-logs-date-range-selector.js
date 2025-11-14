@@ -24,18 +24,15 @@ import { dateRangeSelectionToDateRange } from './date-range-selection.js';
 const OPTIONS = ['live', 'lastHour', 'last4Hours', 'today', 'yesterday', 'last7Days', 'custom'];
 
 /**
- * @typedef {import('./cc-logs-date-range-selector.types.js').LogsDateRangeSelection} LogsDateRangeSelection
- * @typedef {import('./cc-logs-date-range-selector.types.js').LogsDateRangeSelectOption} LogsDateRangeSelectOption
- * @typedef {import('../common.types.js').IconModel} IconModel
- * @typedef {import('../cc-input-date/cc-input-date.js').CcInputDate} CcInputDate
- * @typedef {import('../cc-popover/cc-popover.js').CcPopover} CcPopover
- * @typedef {import('../../lib/form/form.types.js').FormDataMap} FormDataMap
- * @typedef {import('../../lib/date/date.types.js').Timezone} Timezone
- * @typedef {import('../../lib/date/date-range.types.js').DateRange} DateRange
- * @typedef {import('lit/directives/ref.js').Ref<CcPopover>} CcPopoverRef
- * @typedef {import('lit/directives/ref.js').Ref<CcInputDate>} CcInputDateRef
- * @typedef {import('lit').PropertyValues<CcLogsDateRangeSelector>} PropertyValues
- * @typedef {import('lit').TemplateResult<1>} TemplateResult
+ * @import { LogsDateRangeSelection, LogsDateRangeSelectOption } from './cc-logs-date-range-selector.types.js'
+ * @import { IconModel } from '../common.types.js'
+ * @import { CcPopover } from '../cc-popover/cc-popover.js'
+ * @import { CcInputDate } from '../cc-input-date/cc-input-date.js'
+ * @import { FormDataMap } from '../../lib/form/form.types.js'
+ * @import { Timezone } from '../../lib/date/date.types.js'
+ * @import { DateRange } from '../../lib/date/date-range.types.js'
+ * @import { TemplateResult, PropertyValues } from 'lit'
+ * @import { Ref } from 'lit/directives/ref.js'
  */
 
 /**
@@ -80,13 +77,13 @@ export class CcLogsDateRangeSelector extends LitElement {
     /** @type {LogsDateRangeSelectOption} The option always in sync with the `value` */
     this._selectedOption = this._getOption(this.value);
 
-    /** @type {{until: CcInputDateRef , since: CcInputDateRef}} */
+    /** @type {{until: Ref<CcInputDate> , since: Ref<CcInputDate>}} */
     this._customDateRangeRefs = {
       since: createRef(),
       until: createRef(),
     };
 
-    /** @type {CcPopoverRef} */
+    /** @type {Ref<CcPopover>} */
     this._optionSelectorRef = createRef();
 
     // for form submission
@@ -221,7 +218,7 @@ export class CcLogsDateRangeSelector extends LitElement {
   /* endregion */
 
   /**
-   * @param {PropertyValues} changedProperties
+   * @param {PropertyValues<CcLogsDateRangeSelector>} changedProperties
    */
   willUpdate(changedProperties) {
     if (changedProperties.has('value')) {

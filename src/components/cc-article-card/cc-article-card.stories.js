@@ -19,9 +19,8 @@ const conf = {
 };
 
 /**
- * @typedef {import('./cc-article-card.js').CcArticleCard} CcArticleCard
- * @typedef {import('./cc-article-card.types.js').ArticleCardStateLoaded} ArticleCardStateLoaded
- * @typedef {import('./cc-article-card.types.js').ArticleCardStateLoading} ArticleCardStateLoading
+ * @import { CcArticleCard } from './cc-article-card.js'
+ * @import { ArticleCardStateLoaded, ArticleCardStateLoading } from './cc-article-card.types.js'
  */
 
 /** @type {{ state: ArticleCardStateLoaded }} */

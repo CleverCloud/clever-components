@@ -10,9 +10,7 @@ import '../cc-img/cc-img.js';
 import { CcProductCreateEvent } from './cc-order-summary.events.js';
 
 /**
- * @typedef {import('./cc-order-summary.types.js').ConfigurationItem} ConfigurationItem
- * @typedef {import('./cc-order-summary.types.js').LogoInfos} LogoInfos
- * @typedef {import('./cc-order-summary.types.js').OrderSummary} OrderSummary
+ * @import { ConfigurationItem, OrderSummary } from './cc-order-summary.types.js'
  */
 
 /**

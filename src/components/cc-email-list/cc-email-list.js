@@ -43,17 +43,12 @@ const SKELETON_PRIMARY_EMAIL = {
 const SKELETON_SECONDARY_EMAILS = [];
 
 /**
- * @typedef {import('./cc-email-list.types.js').EmailListState} EmailListState
- * @typedef {import('./cc-email-list.types.js').PrimaryAddressState} PrimaryAddressState
- * @typedef {import('./cc-email-list.types.js').SecondaryAddressState} SecondaryAddressState
- * @typedef {import('./cc-email-list.types.js').AddEmailFormState} AddEmailFormState
- * @typedef {import('./cc-email-list.types.js').AddEmailError} AddEmailError
- * @typedef {import('../cc-input-text/cc-input-text.js').CcInputText} CcInputText
- * @typedef {import('lit/directives/ref.js').Ref<CcInputText>} CcInputTextRef
- * @typedef {import('lit/directives/ref.js').Ref<HTMLFormElement>} HTMLFormElementRef
- * @typedef {import('lit').TemplateResult<1>} TemplateResult
- * @typedef {import('../../lib/form/form.types.js').FormDataMap} FormDataMap
- * @typedef {import('../../lib/form/validation.types.js').ErrorMessage} ErrorMessage
+ * @import { EmailListState, PrimaryAddressState, SecondaryAddressState, AddEmailFormState, AddEmailError } from './cc-email-list.types.js'
+ * @import { CcInputText } from '../cc-input-text/cc-input-text.js'
+ * @import { FormDataMap } from '../../lib/form/form.types.js'
+ * @import { ErrorMessage } from '../../lib/form/validation.types.js'
+ * @import { TemplateResult } from 'lit'
+ * @import { Ref } from 'lit/directives/ref.js'
  */
 
 /**
@@ -101,10 +96,10 @@ export class CcEmailList extends LitElement {
     /** @type {EmailListState} State of the component. */
     this.emailListState = { type: 'loading' };
 
-    /** @type {CcInputTextRef} */
+    /** @type {Ref<CcInputText>} */
     this._addressInputRef = createRef();
 
-    /** @type {HTMLFormElementRef} */
+    /** @type {Ref<HTMLFormElement>} */
     this._formRef = createRef();
 
     new LostFocusController(this, '.secondary', ({ suggestedElement }) => {

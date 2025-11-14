@@ -12,8 +12,8 @@ import '../cc-icon/cc-icon.js';
 import { CcNoticeDismissEvent } from './cc-notice.events.js';
 
 /**
- * @typedef {import('./cc-notice.types.js').NoticeIntent} NoticeIntent
- * @typedef {import('../common.types.js').IconModel} IconModel
+ * @import { NoticeIntent } from './cc-notice.types.js'
+ * @import { IconModel } from '../common.types.js'
  */
 
 /**

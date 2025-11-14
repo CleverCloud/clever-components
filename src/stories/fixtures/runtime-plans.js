@@ -3,8 +3,7 @@ import { formatRuntimeProduct } from '../../lib/product.js';
 import { rawPriceSystemEuro } from './price-system.js';
 
 /**
- * @typedef {import('../../components/common.types.js').Instance} Instance
- * @typedef {import('../../components/common.types.js').PriceSystem} PriceSystem
+ * @import { Instance, PriceSystem } from '../../components/common.types.js'
  */
 
 /* eslint-disable camelcase */

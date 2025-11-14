@@ -15,7 +15,7 @@ const JENKINS_LOGO_URL = getAssetUrl('/logos/jenkins.svg');
 const JENKINS_DOCUMENTATION = getDocUrl('/deploy/addon/jenkins');
 
 /**
- * @typedef {import('./cc-jenkins-info.types.js').JenkinsInfoState} JenkinsInfoState
+ * @import { JenkinsInfoState } from './cc-jenkins-info.types.js'
  */
 
 /**

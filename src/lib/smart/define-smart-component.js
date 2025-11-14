@@ -3,10 +3,7 @@ import { defineSmartComponentCore } from './smart-manager.js';
 import { META } from './smart-symbols.js';
 
 /**
- * @typedef {import('./smart-component.types.js').SmartContainer} SmartContainer
- * @typedef {import('./smart-component.types.js').SmartComponent} SmartComponent
- * @typedef {import('./smart-component.types.js').SmartContext} SmartContext
- * @typedef {import('./smart-component.types.js').OnEventCallback} OnEventCallback
+ * @import { SmartContainer, SmartComponent, SmartContext, OnEventCallback } from './smart-component.types.js'
  */
 
 /**

@@ -12,6 +12,8 @@ import { withCache } from '@clevercloud/client/esm/with-cache.js';
 import { withOptions } from '@clevercloud/client/esm/with-options.js';
 import { CcApiErrorEvent } from './send-to-api.events.js';
 
+// FIXME: We're using `@typedef` instead of `@import` here due to a false positive from TS
+// See: https://github.com/microsoft/TypeScript/issues/60908/
 /**
  * @typedef {import('./send-to-api.types.js').ApiConfig} ApiConfig
  * @typedef {import('./send-to-api.types.js').Warp10ApiConfig} Warp10ApiConfig

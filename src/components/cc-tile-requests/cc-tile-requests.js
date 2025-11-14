@@ -17,13 +17,9 @@ Chart.register(BarController, BarElement, Tooltip, CategoryScale, LinearScale, T
 const SKELETON_REQUESTS = Array.from(new Array(24)).map(() => [0, 0, 1]);
 
 /**
- * @typedef {import('./cc-tile-requests.types.js').RequestsData} RequestsData
- * @typedef {import('./cc-tile-requests.types.js').TileRequestsState} TileRequestsState
- * @typedef {import('./cc-tile-requests.types.js').TileRequestsStateLoaded} TileRequestsStateLoaded
- * @typedef {import('./cc-tile-requests.types.js').TileRequestsStateLoading} TileRequestsStateLoading
- * @typedef {import('./cc-tile-requests.types.js').TileRequestsStateError} TileRequestsStateError
- * @typedef {import('lit/directives/ref.js').Ref<HTMLCanvasElement>} RefCanvas
- * @typedef {import('lit').PropertyValues<CcTileRequests>} CcTileRequestsPropertyValues
+ * @import { RequestsData, TileRequestsState } from './cc-tile-requests.types.js'
+ * @import { Ref } from 'lit/directives/ref.js'
+ * @import { PropertyValues } from 'lit'
  */
 
 /**
@@ -60,7 +56,7 @@ export class CcTileRequests extends LitElement {
     /** @type {number} */
     this._barCount = 6;
 
-    /** @type {RefCanvas} */
+    /** @type {Ref<HTMLCanvasElement>} */
     this._ctxRef = createRef();
 
     /** @type {boolean} */
@@ -235,7 +231,7 @@ export class CcTileRequests extends LitElement {
   }
 
   // updated and not udpate because we need this._chart before
-  /** @param {CcTileRequestsPropertyValues} changedProperties */
+  /** @param {PropertyValues<CcTileRequests>} changedProperties */
   updated(changedProperties) {
     if (changedProperties.has('state') && (this.state.type === 'loaded' || this.state.type === 'loading')) {
       this._refreshChart();

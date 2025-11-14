@@ -12,11 +12,8 @@ const conf = {
 };
 
 /**
- * @typedef {import('./cc-addon-features.js').CcAddonFeatures} CcAddonFeatures
- * @typedef {import('./cc-addon-features.types.js').AddonFeaturesStateLoaded} AddonFeaturesStateLoaded
- * @typedef {import('./cc-addon-features.types.js').AddonFeaturesStateLoading} AddonFeaturesStateLoading
- * @typedef {import('./cc-addon-features.types.js').AddonFeaturesStateError} AddonFeaturesStateError
- * @typedef {import('./cc-addon-features.types.js').AddonFeature} AddonFeature
+ * @import { CcAddonFeatures } from './cc-addon-features.js'
+ * @import { AddonFeaturesStateLoaded, AddonFeaturesStateLoading, AddonFeaturesStateError, AddonFeature } from './cc-addon-features.types.js'
  */
 
 /** @type {AddonFeature[]} */

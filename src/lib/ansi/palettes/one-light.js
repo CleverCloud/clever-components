@@ -1,5 +1,5 @@
 /**
- * @typedef {import('../ansi.types.js').AnsiPalette} AnsiPalette
+ * @import { AnsiPalette } from '../ansi.types.js'
  */
 
 /** @type {AnsiPalette} */

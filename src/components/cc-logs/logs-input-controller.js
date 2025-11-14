@@ -21,9 +21,8 @@ const DRAG_ANIMATION_PERIOD_INTERVAL = DRAG_ANIMATION_PERIOD_MS_MAX - DRAG_ANIMA
 const DRAG_ANIMATION_LOG_OFFSET_INTERVAL = DRAG_ANIMATION_LOG_OFFSET_MAX - DRAG_ANIMATION_LOG_OFFSET_MIN;
 
 /**
- * @typedef {import('./cc-logs.js').CcLogs} CcLogs
- * @typedef {import('../../lib/events.types.js').GenericEventWithTarget<MouseEvent>} HTMLElementMouseEvent
- * @typedef {import('../../lib/events.types.js').GenericEventWithTarget<KeyboardEvent>} HTMLElementKeyboardEvent
+ * @import { CcLogs } from './cc-logs.js'
+ * @import { GenericEventWithTarget } from '../../lib/events.types.js'
  */
 
 /**
@@ -62,7 +61,7 @@ export class LogsInputController {
   // region Keyboard navigation
 
   /**
-   * @param {HTMLElementKeyboardEvent} e
+   * @param {GenericEventWithTarget<KeyboardEvent>} e
    */
   onKeyDown(e) {
     if (e.key === 'Escape') {
@@ -120,7 +119,7 @@ export class LogsInputController {
   }
 
   /**
-   * @param {HTMLElementKeyboardEvent} e
+   * @param {GenericEventWithTarget<KeyboardEvent>} e
    */
   onKeyUp(e) {
     if (e.key === 'Control' || e.key === 'Meta') {
@@ -133,7 +132,7 @@ export class LogsInputController {
   }
 
   /**
-   * @param {HTMLElementMouseEvent} e
+   * @param {GenericEventWithTarget<MouseEvent>} e
    */
   onClick(e) {
     // When a drag stop happens, the mouse is released and Chrome & Safari consider that a click event happened on the container.
@@ -145,7 +144,7 @@ export class LogsInputController {
   }
 
   /**
-   * @param {HTMLElementMouseEvent} e
+   * @param {GenericEventWithTarget<MouseEvent>} e
    */
   onClickLog(e) {
     // We don't want to pollute the parent click listener

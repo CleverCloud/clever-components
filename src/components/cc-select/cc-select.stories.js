@@ -3,7 +3,7 @@ import { makeStory, storyWait } from '../../stories/lib/make-story.js';
 import './cc-select.js';
 
 /**
- * @typedef {import('./cc-select.js').CcSelect} CcSelect
+ * @import { CcSelect } from './cc-select.js'
  */
 
 const baseOptions = [

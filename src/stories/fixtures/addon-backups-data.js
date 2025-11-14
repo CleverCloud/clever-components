@@ -1,5 +1,5 @@
 /**
- * @typedef {import('../../components/cc-addon-backups/cc-addon-backups.types.js').AddonBackupsStateLoaded} AddonBackupsStateLoaded
+ * @import { AddonBackupsStateLoaded } from '../../components/cc-addon-backups/cc-addon-backups.types.js'
  */
 
 /** @type {AddonBackupsStateLoaded} */

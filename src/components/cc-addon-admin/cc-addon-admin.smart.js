@@ -10,10 +10,10 @@ import { CcAddonNameWasChangedEvent, CcAddonWasDeletedEvent } from './cc-addon-a
 import './cc-addon-admin.js';
 
 /**
- * @typedef {import('./cc-addon-admin.js').CcAddonAdmin} CcAddonAdmin
- * @typedef {import('../common.types.js').Addon} Addon
- * @typedef {import('../../lib/send-to-api.js').ApiConfig} ApiConfig
- * @typedef {import('../../lib/smart/smart-component.types.js').OnContextUpdateArgs<CcAddonAdmin>} OnContextUpdateArgs
+ * @import { CcAddonAdmin } from './cc-addon-admin.js'
+ * @import { Addon } from '../common.types.js'
+ * @import { ApiConfig } from '../../lib/send-to-api.types.js'
+ * @import { OnContextUpdateArgs } from '../../lib/smart/smart-component.types.js'
  */
 
 defineSmartComponent({
@@ -24,7 +24,7 @@ defineSmartComponent({
     addonId: { type: String },
   },
   /**
-   * @param {OnContextUpdateArgs} args
+   * @param {OnContextUpdateArgs<CcAddonAdmin>} args
    */
   onContextUpdate({ component, context, onEvent, updateComponent, signal }) {
     const { apiConfig, ownerId, addonId } = context;

@@ -8,11 +8,11 @@ import '../cc-smart-container/cc-smart-container.js';
 import './cc-addon-info.js';
 
 /**
- * @typedef {import('./cc-addon-info.js').CcAddonInfo} CcAddonInfo
- * @typedef {import('./cc-addon-info.types.js').AddonInfoStateLoading} AddonInfoStateLoading
- * @typedef {import('../cc-addon-header/cc-addon-header.types.js').KubeInfo} KubeInfo
- * @typedef {import('../../lib/smart/smart-component.types.js').OnContextUpdateArgs<CcAddonInfo>} OnContextUpdateArgs
- * @typedef {import('../../lib/send-to-api.types.js').ApiConfig} ApiConfig
+ * @import { CcAddonInfo } from './cc-addon-info.js'
+ * @import { AddonInfoStateLoading } from './cc-addon-info.types.js'
+ * @import { KubeInfo } from '../cc-addon-header/cc-addon-header.types.js'
+ * @import { ApiConfig } from '../../lib/send-to-api.types.js'
+ * @import { OnContextUpdateArgs } from '../../lib/smart/smart-component.types.js'
  */
 
 /** @type {AddonInfoStateLoading} */
@@ -33,7 +33,7 @@ defineSmartComponent({
     ownerId: { type: String },
     kubernetesId: { type: String },
   },
-  /** @param {OnContextUpdateArgs} _ */
+  /** @param {OnContextUpdateArgs<CcAddonInfo>} _ */
   onContextUpdate({ context, updateComponent, signal }) {
     const { apiConfig, ownerId, kubernetesId } = context;
 

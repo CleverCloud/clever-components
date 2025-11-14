@@ -1,7 +1,7 @@
 import { CcEvent } from '../../lib/events.js';
 
 /**
- * @typedef {import('../common.types.js').MapModeType} MapModeType
+ * @import { MapModeType } from '../common.types.js'
  */
 
 /**

@@ -29,15 +29,10 @@ const SKELETON_BACKUPS = {
 };
 
 /**
- * @typedef {import('./cc-addon-backups.types.js').Backup} Backup
- * @typedef {import('./cc-addon-backups.types.js').OverlayType} OverlayType
- * @typedef {import('./cc-addon-backups.types.js').AddonBackupsState} AddonBackupsState
- * @typedef {import('./cc-addon-backups.types.js').AddonBackupsStateLoaded} AddonBackupsStateLoaded
- * @typedef {import('./cc-addon-backups.types.js').AddonBackupsStateLoading} AddonBackupsStateLoading
- * @typedef {import('./cc-addon-backups.types.js').ProviderId} ProviderId
- * @typedef {import('../cc-button/cc-button.js').CcButton} CcButton
- * @typedef {import('../../lib/events.types.js').EventWithTarget<CcButton>} CcButtonClickEvent
- * @typedef {import('lit').TemplateResult<1>} TemplateResult
+ * @import { Backup, OverlayType, AddonBackupsState, AddonBackupsStateLoaded, AddonBackupsStateLoading, ProviderId } from './cc-addon-backups.types.js'
+ * @import { CcButton } from '../cc-button/cc-button.js'
+ * @import { TemplateResult } from 'lit'
+ * @import { EventWithTarget } from '../../lib/events.types.js'
  */
 
 /**
@@ -243,7 +238,7 @@ export class CcAddonBackups extends LitElement {
    * @private
    */
   _onOpenOverlay(type, backup) {
-    /** @param {CcButtonClickEvent} e */
+    /** @param {EventWithTarget<CcButton>} e */
     return (e) => {
       this._overlayType = type;
       this._selectedBackup = backup;

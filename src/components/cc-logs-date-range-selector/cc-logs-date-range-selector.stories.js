@@ -8,7 +8,7 @@ export default {
 };
 
 /**
- * @typedef {import('./cc-logs-date-range-selector.js').CcLogsDateRangeSelector} CcLogsDateRangeSelector
+ * @import { CcLogsDateRangeSelector } from './cc-logs-date-range-selector.js'
  */
 
 const conf = {

@@ -1,8 +1,7 @@
 import { CcEvent } from '../../lib/events.js';
 
 /**
- * @typedef {import('./cc-kv-hash-explorer.types.js').CcKvHashExplorerState} CcKvHashExplorerState
- * @typedef {import('./cc-kv-hash-explorer.types.js').CcKvHashElement} CcKvHashElement
+ * @import { CcKvHashExplorerState, CcKvHashElement } from './cc-kv-hash-explorer.types.js'
  */
 
 /**

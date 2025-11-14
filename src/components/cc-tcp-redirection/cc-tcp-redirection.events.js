@@ -1,8 +1,7 @@
 import { CcEvent } from '../../lib/events.js';
 
 /**
- * @typedef {import('./cc-tcp-redirection.types.js').CreateTcpRedirection} CreateTcpRedirection
- * @typedef {import('./cc-tcp-redirection.types.js').DeleteTcpRedirection} DeleteTcpRedirection
+ * @import { CreateTcpRedirection, DeleteTcpRedirection } from './cc-tcp-redirection.types.js'
  */
 
 /**

@@ -7,8 +7,8 @@ import './cc-addon-header.js';
 const PROVIDER_ID = 'kv';
 
 /**
- * @typedef {import('./cc-addon-header.js').CcAddonHeader} CcAddonHeader
- * @typedef {import('../../lib/smart/smart-component.types.js').OnContextUpdateArgs<CcAddonHeader>} OnContextUpdateArgs
+ * @import { CcAddonHeader } from './cc-addon-header.js'
+ * @import { OnContextUpdateArgs } from '../../lib/smart/smart-component.types.js'
  */
 
 defineSmartComponent({
@@ -21,7 +21,7 @@ defineSmartComponent({
     productStatus: { type: String, optional: true },
   },
 
-  /** @param {OnContextUpdateArgs} args */
+  /** @param {OnContextUpdateArgs<CcAddonHeader>} args */
   onContextUpdate({ context, updateComponent, signal }) {
     const { apiConfig, ownerId, addonId, productStatus } = context;
     const api = new CcAddonHeaderClient({ apiConfig, ownerId, addonId, providerId: PROVIDER_ID, signal });

@@ -1,5 +1,5 @@
 /**
- * @typedef {import('lit').LitElement} LitElement
+ * @import { LitElement } from 'lit'
  */
 
 /**

@@ -12,13 +12,8 @@ const conf = {
 };
 
 /**
- * @typedef {import('./cc-addon-admin.js').CcAddonAdmin} CcAddonAdmin
- * @typedef {import('./cc-addon-admin.types.js').AddonAdminStateLoaded} AddonAdminStateLoaded
- * @typedef {import('./cc-addon-admin.types.js').AddonAdminStateLoading} AddonAdminStateLoading
- * @typedef {import('./cc-addon-admin.types.js').AddonAdminStateError} AddonAdminStateError
- * @typedef {import('./cc-addon-admin.types.js').AddonAdminStateUpdatingName} AddonAdminStateUpdatingName
- * @typedef {import('./cc-addon-admin.types.js').AddonAdminStateUpdatingTags} AddonAdminStateUpdatingTags
- * @typedef {import('./cc-addon-admin.types.js').AddonAdminStateDeleting} AddonAdminStateDeleting
+ * @import { CcAddonAdmin } from './cc-addon-admin.js'
+ * @import { AddonAdminStateLoaded, AddonAdminStateLoading, AddonAdminStateError, AddonAdminStateUpdatingName, AddonAdminStateUpdatingTags, AddonAdminStateDeleting } from './cc-addon-admin.types.js'
  */
 
 const addon = {

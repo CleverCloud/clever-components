@@ -21,10 +21,8 @@ const conf = {
 };
 
 /**
- * @typedef {import('./cc-addon-backups.js').CcAddonBackups} CcAddonBackups
- * @typedef {import('./cc-addon-backups.types.js').AddonBackupsStateLoaded} AddonBackupsStateLoaded
- * @typedef {import('./cc-addon-backups.types.js').AddonBackupsStateLoading} AddonBackupsStateLoading
- * @typedef {import('./cc-addon-backups.types.js').AddonBackupsStateError} AddonBackupsStateError
+ * @import { CcAddonBackups } from './cc-addon-backups.js'
+ * @import { AddonBackupsStateLoaded, AddonBackupsStateLoading, AddonBackupsStateError } from './cc-addon-backups.types.js'
  */
 
 export const defaultStory = makeStory(conf, {

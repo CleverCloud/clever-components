@@ -81,16 +81,12 @@ const MANAGE_RIGHT_KEYS = [
 ];
 
 /**
- * @typedef {import('./cc-oauth-consumer-form.types.js').OauthConsumerFormState} OauthConsumerFormState
- * @typedef {import('./cc-oauth-consumer-form.types.js').OauthConsumerWithoutKeyAndSecret} OauthConsumerWithoutKeyAndSecret
- * @typedef {import('./cc-oauth-consumer-form.types.js').OauthConsumerFormData} OauthConsumerFormData
- * @typedef {import('../cc-oauth-consumer-info/cc-oauth-consumer-info.types.js').OauthConsumer} OauthConsumer
- * @typedef {import('../cc-oauth-consumer-info/cc-oauth-consumer-info.types.js').OauthConsumerRights} OauthConsumerRights
- * @typedef {import('lit').PropertyValues<CcOauthConsumerForm>} CcOauthConsumerFormPropertyValues
- * @typedef {import('lit').TemplateResult<1>} TemplateResult
- * @typedef {import('lit/directives/ref.js').Ref<HTMLFormElement>} HTMLFormElementRef
- * @typedef {import('../../lib/events.types.js').EventWithTarget<HTMLInputElement>} HTMLInputEvent
- * @typedef {import('../../lib/form/validation.types.js').Validity} Validity
+ * @import { OauthConsumerFormState, OauthConsumerWithoutKeyAndSecret, OauthConsumerFormData } from './cc-oauth-consumer-form.types.js'
+ * @import { OauthConsumerRights } from '../cc-oauth-consumer-info/cc-oauth-consumer-info.types.js'
+ * @import { Validity } from '../../lib/form/validation.types.js'
+ * @import { TemplateResult, PropertyValues } from 'lit'
+ * @import { Ref } from 'lit/directives/ref.js'
+ * @import { EventWithTarget } from '../../lib/events.types.js'
  */
 
 /**
@@ -115,7 +111,7 @@ export class CcOauthConsumerForm extends LitElement {
     /** @type {Boolean} */
     this._shouldDisplayCheckboxGroupError = false;
 
-    /** @type {HTMLFormElementRef} */
+    /** @type {Ref<HTMLFormElement>} */
     this._formRef = createRef();
 
     this._customErrorMessages = { invalidUrl: i18n('cc-oauth-consumer-form.info.url.error') };
@@ -126,7 +122,7 @@ export class CcOauthConsumerForm extends LitElement {
   }
 
   /**
-   * @param {HTMLInputEvent} e
+   * @param {EventWithTarget<HTMLInputElement>} e
    * @param {string} sectionSelector
    */
   _handleSelectAllClick(e, sectionSelector) {
@@ -138,12 +134,12 @@ export class CcOauthConsumerForm extends LitElement {
     });
   }
 
-  /** @param {HTMLInputEvent} e */
+  /** @param {EventWithTarget<HTMLInputElement>} e */
   _handleSelectAllAccessClick(e) {
     this._handleSelectAllClick(e, '.access-rights-section');
   }
 
-  /** @param {HTMLInputEvent} e */
+  /** @param {EventWithTarget<HTMLInputElement>} e */
   _handleSelectAllManageClick(e) {
     this._handleSelectAllClick(e, '.manage-rights-section');
   }
@@ -289,7 +285,7 @@ export class CcOauthConsumerForm extends LitElement {
 
   /**
    * This is needed when we retrieve the data from the API on 'idle-update' state
-   * @param {CcOauthConsumerFormPropertyValues} changedProperties
+   * @param {PropertyValues<CcOauthConsumerForm>} changedProperties
    */
   updated(changedProperties) {
     if (changedProperties.has('state') && (this.state.type === 'idle-update' || this.state.type === 'idle-create')) {

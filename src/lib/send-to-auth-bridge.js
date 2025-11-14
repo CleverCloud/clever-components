@@ -8,7 +8,7 @@ import { withCache } from '@clevercloud/client/esm/with-cache.js';
 import { withOptions } from '@clevercloud/client/esm/with-options.js';
 
 /**
- * @typedef {import('./send-to-api.types.js').AuthBridgeConfig} AuthBridgeConfig
+ * @import { AuthBridgeConfig } from './send-to-api.types.js'
  */
 
 /**

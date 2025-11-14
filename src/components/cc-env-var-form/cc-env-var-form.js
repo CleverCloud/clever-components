@@ -20,13 +20,10 @@ import { CcEnvVarFormSubmitEvent } from './cc-env-var-form.events.js';
 const ENV_VAR_DOCUMENTATION = getDocUrl('/reference/reference-environment-variables');
 
 /**
- * @typedef {import('./cc-env-var-form.types.js').EnvVarFormContextType} EnvVarFormContextType
- * @typedef {import('./cc-env-var-form.types.js').EnvVarFormState} EnvVarFormState
- * @typedef {import('./cc-env-var-form.types.js').EnvVarFormMode} EnvVarFormMode
- * @typedef {import('./cc-env-var-form.events.js').CcEnvChangeEvent} CcEnvChangeEvent
- * @typedef {import('../common.types.js').EnvVarEditorState} EnvVarEditorState
- * @typedef {import('../common.types.js').EnvVar} EnvVar
- * @typedef {import('lit').PropertyValues<CcEnvVarForm>} CcEnvVarFormPropertyValues
+ * @import { EnvVarFormContextType, EnvVarFormState, EnvVarFormMode } from './cc-env-var-form.types.js'
+ * @import { CcEnvChangeEvent } from './cc-env-var-form.events.js'
+ * @import { EnvVarEditorState, EnvVar } from '../common.types.js'
+ * @import { PropertyValues } from 'lit'
  */
 
 /**
@@ -250,7 +247,7 @@ export class CcEnvVarForm extends LitElement {
     };
   }
 
-  /** @param {CcEnvVarFormPropertyValues} changedProperties */
+  /** @param {PropertyValues<CcEnvVarForm>} changedProperties */
   willUpdate(changedProperties) {
     if (changedProperties.has('context') || changedProperties.has('addonName') || changedProperties.has('appName')) {
       if (this.context === 'env-var-app') {

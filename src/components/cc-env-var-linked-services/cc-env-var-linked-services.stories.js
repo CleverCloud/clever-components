@@ -15,7 +15,7 @@ export default {
 };
 
 /**
- * @typedef {import('./cc-env-var-linked-services.js').CcEnvVarLinkedServices} CcEnvVarLinkedServices
+ * @import { CcEnvVarLinkedServices } from './cc-env-var-linked-services.js'
  */
 
 const conf = {

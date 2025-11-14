@@ -13,10 +13,8 @@ import '../cc-toggle/cc-toggle.js';
 import { CcFeatureSettingChangeEvent } from './cc-feature-list.events.js';
 
 /**
- * @typedef {import('./cc-feature-list.types.d.ts').Feature} Feature
- * @typedef {import('./cc-feature-list.types.d.ts').FeatureListState} FeatureListState
- * @typedef {import('./cc-feature-list.types.d.ts').FeatureStatus} FeatureStatus
- * @typedef {import('lit').TemplateResult<1>} TemplateResult
+ * @import { Feature, FeatureListState, FeatureStatus } from './cc-feature-list.types.d.ts'
+ * @import { TemplateResult } from 'lit'
  */
 
 /**
@@ -70,7 +68,7 @@ export class CcFeatureList extends LitElement {
 
   /**
    * @param {Feature} feature
-   * @return {TemplateResult}
+   * @return {TemplateResult<1>}
    * @private
    */
   _renderFeature(feature) {

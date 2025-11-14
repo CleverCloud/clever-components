@@ -18,10 +18,8 @@ const SKELETON_ZONE = {
 };
 
 /**
- * @typedef {import('./cc-zone.types.js').ZoneState} ZoneState
- * @typedef {import('./cc-zone.types.js').ZoneStateLoaded} ZoneStateLoaded
- * @typedef {import('./cc-zone.types.js').ZoneModeType} ZoneModeType
- * @typedef {import('../common.types.js').Zone} Zone
+ * @import { ZoneState, ZoneModeType } from './cc-zone.types.js'
+ * @import { Zone } from '../common.types.js'
  */
 
 /**

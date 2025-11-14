@@ -1,9 +1,5 @@
 /**
- * @typedef {import('./ansi.types.js').AnsiPalette} AnsiPalette
- */
-
-/**
- * @param {AnsiPalette} palette - The palette
+ * @param {import('./ansi.types.js').AnsiPalette} palette - The palette
  * @return {string} - The CSS style corresponding to the given palette.
  */
 export function ansiPaletteStyle(palette) {

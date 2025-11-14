@@ -25,9 +25,7 @@ const conf = {
 };
 
 /**
- * @typedef {import('./cc-tcp-redirection.types.js').TcpRedirectionStateLoaded} TcpRedirectionStateLoaded
- * @typedef {import('./cc-tcp-redirection.types.js').TcpRedirectionStateLoading} TcpRedirectionStateLoading
- * @typedef {import('./cc-tcp-redirection.types.js').TcpRedirectionStateWaiting} TcpRedirectionStateWaiting
+ * @import { TcpRedirectionStateLoaded, TcpRedirectionStateLoading, TcpRedirectionStateWaiting } from './cc-tcp-redirection.types.js'
  */
 export const defaultStory = makeStory(conf, {
   /** @type {{state: TcpRedirectionStateLoaded}[]} */

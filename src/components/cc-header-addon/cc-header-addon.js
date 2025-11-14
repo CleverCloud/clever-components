@@ -28,9 +28,8 @@ const SKELETON_ADDON = {
 const SKELETON_VERSION = fakeString(5);
 
 /**
- * @typedef {import('./cc-header-addon.types.js').HeaderAddonState} HeaderAddonState
- * @typedef {import('../cc-zone/cc-zone.types.js').ZoneState} ZoneState
- * @typedef {import('../common.types.js').Addon} Addon
+ * @import { HeaderAddonState } from './cc-header-addon.types.js'
+ * @import { Addon } from '../common.types.js'
  */
 
 /**

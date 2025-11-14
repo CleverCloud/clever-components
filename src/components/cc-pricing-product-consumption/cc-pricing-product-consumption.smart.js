@@ -5,9 +5,9 @@ import '../cc-smart-container/cc-smart-container.js';
 import './cc-pricing-product-consumption.js';
 
 /**
- * @typedef {import('./cc-pricing-product-consumption.js').CcPricingProductConsumption} CcPricingProductConsumption
- * @typedef {import('../../lib/send-to-api.types.js').ApiConfig} ApiConfig
- * @typedef {import('../../lib/smart/smart-component.types.js').OnContextUpdateArgs<CcPricingProductConsumption>} OnContextUpdateArgs
+ * @import { CcPricingProductConsumption } from './cc-pricing-product-consumption.js'
+ * @import { ApiConfig } from '../../lib/send-to-api.types.js'
+ * @import { OnContextUpdateArgs } from '../../lib/smart/smart-component.types.js'
  */
 
 defineSmartComponent({
@@ -19,7 +19,7 @@ defineSmartComponent({
     currency: { type: String, optional: true },
   },
   /**
-   * @param {OnContextUpdateArgs} args
+   * @param {OnContextUpdateArgs<CcPricingProductConsumption>} args
    */
   onContextUpdate({ updateComponent, context, signal }) {
     const { apiConfig, productId, zoneId = 'par', currency = 'EUR' } = context;

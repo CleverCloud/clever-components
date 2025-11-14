@@ -6,10 +6,10 @@ import '../cc-smart-container/cc-smart-container.js';
 import './cc-env-var-form.js';
 
 /**
- * @typedef {import('./cc-env-var-form.js').CcEnvVarForm} CcEnvVarForm
- * @typedef {import('../common.types.js').EnvVar} EnvVar
- * @typedef {import('../../lib/send-to-api.js').ApiConfig} ApiConfig
- * @typedef {import('../../lib/smart/smart-component.types.js').OnContextUpdateArgs<CcEnvVarForm>} OnContextUpdateArgs
+ * @import { CcEnvVarForm } from './cc-env-var-form.js'
+ * @import { EnvVar } from '../common.types.js'
+ * @import { ApiConfig } from '../../lib/send-to-api.types.js'
+ * @import { OnContextUpdateArgs } from '../../lib/smart/smart-component.types.js'
  */
 
 defineSmartComponent({
@@ -20,7 +20,7 @@ defineSmartComponent({
     addonId: { type: String },
   },
   /**
-   * @param {OnContextUpdateArgs} args
+   * @param {OnContextUpdateArgs<CcEnvVarForm>} args
    */
   onContextUpdate({ context, updateComponent, signal }) {
     const { apiConfig, ownerId, addonId } = context;

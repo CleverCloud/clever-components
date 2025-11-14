@@ -9,8 +9,7 @@ export default {
 };
 
 /**
- * @typedef {import('./cc-order-summary.types.js').ConfigurationItem} ConfigurationItem
- * @typedef {import('./cc-order-summary.types.js').OrderSummary} OrderSummary
+ * @import { ConfigurationItem, OrderSummary } from './cc-order-summary.types.js'
  */
 
 const conf = {

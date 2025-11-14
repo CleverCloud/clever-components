@@ -10,12 +10,11 @@ import '../cc-smart-container/cc-smart-container.js';
 import './cc-addon-linked-apps.js';
 
 /**
- * @typedef {import('./cc-addon-linked-apps.js').CcAddonLinkedApps} CcAddonLinkedApps
- * @typedef {import('./cc-addon-linked-apps.types.js').AddonLinkedAppsStateLoaded} AddonLinkedAppsStateLoaded
- * @typedef {import('./cc-addon-linked-apps.types.js').LinkedApplication} LinkedApplication
- * @typedef {import('../common.types.js').Zone} Zone
- * @typedef {import('../../lib/send-to-api.js').ApiConfig} ApiConfig
- * @typedef {import('../../lib/smart/smart-component.types.js').OnContextUpdateArgs<CcAddonLinkedApps>} OnContextUpdateArgs
+ * @import { CcAddonLinkedApps } from './cc-addon-linked-apps.js'
+ * @import { LinkedApplication } from './cc-addon-linked-apps.types.js'
+ * @import { Zone } from '../common.types.js'
+ * @import { ApiConfig } from '../../lib/send-to-api.types.js'
+ * @import { OnContextUpdateArgs } from '../../lib/smart/smart-component.types.js'
  * @typedef {{ variant: { logo: string, name: string }}} Instance
  * @typedef {{ name: string, instance: Instance, id: string, zone: string }} RawApp
  */
@@ -28,7 +27,7 @@ defineSmartComponent({
     addonId: { type: String },
   },
   /**
-   * @param {OnContextUpdateArgs} args
+   * @param {OnContextUpdateArgs<CcAddonLinkedApps>} args
    */
   onContextUpdate({ context, updateComponent, signal }) {
     updateComponent('state', { type: 'loading' });

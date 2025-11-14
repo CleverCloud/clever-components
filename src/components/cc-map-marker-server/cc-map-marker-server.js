@@ -1,7 +1,7 @@
 import { css, LitElement, svg } from 'lit';
 
 /**
- * @typedef {import('./cc-map-marker-server.types.js').MarkerStateType} MarkerStateType
+ * @import { MarkerStateType } from './cc-map-marker-server.types.js'
  */
 
 /**

@@ -10,10 +10,9 @@ export default {
 };
 
 /**
- * @typedef {import('./cc-logs-app-runtime.js').CcLogsAppRuntime} CcLogsAppRuntime
- * @typedef {import('../cc-logs/cc-logs.types.js').Log} Log
- * @typedef {import('../cc-logs-instances/cc-logs-instances.types.js').Deployment} Deployment
- * @typedef {import('../cc-logs-instances/cc-logs-instances.types.js').Instance} Instance
+ * @import { CcLogsAppRuntime } from './cc-logs-app-runtime.js'
+ * @import { Log } from '../cc-logs/cc-logs.types.js'
+ * @import { Deployment, Instance } from '../cc-logs-instances/cc-logs-instances.types.js'
  */
 
 const conf = {

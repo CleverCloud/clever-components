@@ -3,9 +3,7 @@ import { formatAddonProduct } from '../../lib/product.js';
 import { rawPriceSystemEuro } from './price-system.js';
 
 /**
- * @typedef {import('../../components/common.types.js').FormattedFeature} FormattedFeature
- * @typedef {import('../../components/common.types.js').RawAddonProvider} RawAddonProvider
- * @typedef {import('../../components/common.types.js').PriceSystem} PriceSystem
+ * @import { FormattedFeature, RawAddonProvider, PriceSystem } from '../../components/common.types.js'
  */
 
 /* prettier-ignore */

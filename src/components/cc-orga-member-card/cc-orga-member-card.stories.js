@@ -29,8 +29,8 @@ const conf = {
 };
 
 /**
- * @typedef {import('./cc-orga-member-card.js').CcOrgaMemberCard} CcOrgaMemberCard
- * @typedef {import('./cc-orga-member-card.types.js').OrgaMemberCardStateLoaded} OrgaMemberCardStateLoaded
+ * @import { CcOrgaMemberCard } from './cc-orga-member-card.js'
+ * @import { OrgaMemberCardStateLoaded } from './cc-orga-member-card.types.js'
  */
 
 export const defaultStory = makeStory(conf, {

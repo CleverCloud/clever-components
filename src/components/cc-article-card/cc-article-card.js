@@ -17,8 +17,7 @@ const SKELETON_INFO = {
 };
 
 /**
- * @typedef {import('./cc-article-card.types.js').ArticleCardState} ArticleCardState
- * @typedef {import('./cc-article-card.types.js').ArticleCard} ArticleCard
+ * @import { ArticleCardState, ArticleCard } from './cc-article-card.types.js'
  */
 
 /**

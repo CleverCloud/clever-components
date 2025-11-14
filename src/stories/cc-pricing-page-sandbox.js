@@ -32,24 +32,19 @@ const FEATURES_TO_DISPLAY = [
 ];
 
 /**
- * @typedef {import('../components/cc-pricing-page/cc-pricing-page.js').CcPricingPage} CcPricingPage
- * @typedef {import('../components/cc-pricing-header/cc-pricing-header.js').CcPricingHeader} CcPricingHeader
- * @typedef {import('../components/common.types.js').Temporality} Temporality
- * @typedef {import('../components/cc-pricing-estimation/cc-pricing-estimation.js').CcPricingEstimation} CcPricingEstimation
- * @typedef {import('../components/cc-pricing-estimation/cc-pricing-estimation.types.js').PricingEstimationState} PricingEstimationState
- * @typedef {import('../components/cc-pricing-page/cc-pricing-page.events.js').CcPricingCurrencyChangeEvent} CcPricingCurrencyChangeEvent
- * @typedef {import('../components/cc-pricing-product/cc-pricing-product.types.js').PricingProductState} PricingProductState
- * @typedef {import('../components/cc-pricing-product-consumption/cc-pricing-product-consumption.types.js').PricingProductConsumptionStateLoaded} PricingProductConsumptionStateLoaded
- * @typedef {import('../components/cc-pricing-product-consumption/cc-pricing-product-consumption.types.js').PricingProductConsumptionState} PricingProductConsumptionState
- * @typedef {import('../components/common.types.js').PriceSystem} PriceSystem
- * @typedef {import('../components/cc-pricing-estimation/cc-pricing-estimation.types.js').PricingEstimationStateLoaded} PricingEstimationStateLoaded
- * @typedef {import('../components/common.types.js').FormattedFeature} FormattedFeature
- * @typedef {import('lit/directives/ref.js').Ref<CcPricingEstimation>} RefCcPricingEstimation
+ * @import { CcPricingPage } from '../components/cc-pricing-page/cc-pricing-page.js'
+ * @import { CcPricingHeader } from '../components/cc-pricing-header/cc-pricing-header.js'
+ * @import { Temporality, PriceSystem, FormattedFeature } from '../components/common.types.js'
+ * @import { CcPricingEstimation } from '../components/cc-pricing-estimation/cc-pricing-estimation.js'
+ * @import { PricingEstimationState, PricingEstimationStateLoaded } from '../components/cc-pricing-estimation/cc-pricing-estimation.types.js'
+ * @import { CcPricingCurrencyChangeEvent } from '../components/cc-pricing-page/cc-pricing-page.events.js'
+ * @import { PricingProductState } from '../components/cc-pricing-product/cc-pricing-product.types.js'
+ * @import { PricingProductConsumptionStateLoaded, PricingProductConsumptionState } from '../components/cc-pricing-product-consumption/cc-pricing-product-consumption.types.js'
+ * @import { Ref } from 'lit/directives/ref.js'
+ * @import { TemplateResult, PropertyValues } from 'lit'
  * @typedef {Parameters<typeof getFullProductRuntime>[0]} RuntimeProductId
  * @typedef {Parameters<typeof getFullProductAddon>[0]} AddonProductId
  * @typedef {'cellar' | 'fsbucket' | 'pulsar' | 'heptapod'} ConsumptionProductId
- * @typedef {import('lit').TemplateResult<1>} TemplateResult
- * @typedef {import('lit').PropertyValues<CcPricingPageSandbox>} CcPricingPageSandboxPropertyValues
  */
 
 export class CcPricingPageSandbox extends LitElement {
@@ -122,7 +117,7 @@ export class CcPricingPageSandbox extends LitElement {
     /** @type {PriceSystem} */
     this._priceSystem = CcPricingPageSandbox.PRICE_SYSTEMS[this.selectedCurrency];
 
-    /** @type {RefCcPricingEstimation} */
+    /** @type {Ref<CcPricingEstimation>} */
     this._pricingEstimationRef = createRef();
 
     this._resizeController = new ResizeController(this, { widthBreakpoints: [BREAKPOINT] });
@@ -166,7 +161,7 @@ export class CcPricingPageSandbox extends LitElement {
     this.selectedCurrency = /** @type {typeof this._currencies[number]} */ (currency);
   }
 
-  /** @param {CcPricingPageSandboxPropertyValues} changedProperties */
+  /** @param {PropertyValues<CcPricingPageSandbox>} changedProperties */
   willUpdate(changedProperties) {
     if (changedProperties.has('selectedCurrency')) {
       this._priceSystem = CcPricingPageSandbox.PRICE_SYSTEMS[this.selectedCurrency];
@@ -225,7 +220,7 @@ export class CcPricingPageSandbox extends LitElement {
 
   /**
    * @param {PricingEstimationState['type']} stateType
-   * @returns {TemplateResult}
+   * @returns {TemplateResult<1>}
    */
   _renderPriceHeader(stateType) {
     const state =
@@ -249,7 +244,7 @@ export class CcPricingPageSandbox extends LitElement {
 
   /**
    * @param {PricingEstimationState['type']} stateType
-   * @returns {TemplateResult}
+   * @returns {TemplateResult<1>}
    */
   _renderPricingEstimation(stateType) {
     /** @type {PricingEstimationState} */
@@ -277,7 +272,7 @@ export class CcPricingPageSandbox extends LitElement {
   /**
    * @param {PricingProductState['type']} stateType
    * @param {RuntimeProductId} runtimeProductId
-   * @returns {TemplateResult}
+   * @returns {TemplateResult<1>}
    */
   _renderRuntimePricingProduct(stateType, runtimeProductId) {
     /** @type {PricingProductState} */
@@ -295,7 +290,7 @@ export class CcPricingPageSandbox extends LitElement {
   /**
    * @param {PricingProductState['type']} stateType
    * @param {Exclude<AddonProductId, 'cellar-addon' | 'fsbucket'>} addonProductId
-   * @returns {TemplateResult}
+   * @returns {TemplateResult<1>}
    */
   _renderAddonPricingProduct(stateType, addonProductId) {
     /** @type {PricingProductState} */

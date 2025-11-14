@@ -1,6 +1,6 @@
 /**
- * @typedef {import('./cc-product-list.types.js').Product} Product
- * @typedef {import('hanbi').Stub<() => void>} Stub
+ * @import { Product } from './cc-product-list.types.js'
+ * @import { Stub } from 'hanbi'
  */
 
 import { expect } from '@bundled-es-modules/chai';
@@ -22,7 +22,7 @@ function generateProduct({ name = '', description = '', searchTerms = [] }) {
 }
 
 describe('ProductsController()', function () {
-  /** @type {Stub} */
+  /** @type {Stub<() => void>} */
   let requestUpdateSpy;
 
   /** @type {ProductsController} */

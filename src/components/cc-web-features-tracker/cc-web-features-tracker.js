@@ -24,12 +24,8 @@ import '../cc-toggle/cc-toggle.js';
 const TODAY = new Date();
 
 /**
- * @typedef {import('./cc-web-features-tracker.types.js').WebFeaturesTrackerState} WebFeaturesTrackerState
- * @typedef {import('./cc-web-features-tracker.types.js').FeatureStatus} FeatureStatus
- * @typedef {import('./cc-web-features-tracker.types.js').FormattedFeature} FormattedFeature
- * @typedef {import('./cc-web-features-tracker.types.js').BrowserSupported} BrowserSupported
- * @typedef {import('./cc-web-features-tracker.types.js').BrowserUnsupported} BrowserUnsupported
- * @typedef {import('lit').PropertyValues<CcWebFeaturesTracker>} CcWebFeaturesTrackerPropertyValues
+ * @import { WebFeaturesTrackerState, FeatureStatus, FormattedFeature, BrowserSupported, BrowserUnsupported } from './cc-web-features-tracker.types.js'
+ * @import { PropertyValues } from 'lit'
  */
 
 /**
@@ -104,7 +100,7 @@ export class CcWebFeaturesTracker extends LitElement {
     });
   }
 
-  /** @param {CcWebFeaturesTrackerPropertyValues} changedProperties */
+  /** @param {PropertyValues<CcWebFeaturesTracker>} changedProperties */
   willUpdate(changedProperties) {
     if (changedProperties.has('state') && this.state.type === 'loaded') {
       this._webFeatures = this.state.webFeatures.map((webFeature) => ({

@@ -1,7 +1,7 @@
 import { findActiveElement, isParentOf } from '../lib/shadow-dom-utils.js';
 
 /**
- * @typedef {import('lit').LitElement} LitElement
+ * @import { LitElement } from 'lit'
  */
 
 /**

@@ -59,15 +59,10 @@ const INSTANCE_RUNNING_STATES = ['UP', 'MIGRATION_IN_PROGRESS', 'TASK_IN_PROGRES
 const DEPLOYMENT_WIP_STATES = ['QUEUED', 'WORK_IN_PROGRESS'];
 
 /**
- * @typedef {import('./cc-logs-instances.types.js').LogsInstancesState} LogsInstancesState
- * @typedef {import('./cc-logs-instances.types.js').DeploymentState} DeploymentState
- * @typedef {import('./cc-logs-instances.types.js').Deployment} Deployment
- * @typedef {import('./cc-logs-instances.types.js').InstanceState} InstanceState
- * @typedef {import('./cc-logs-instances.types.js').Instance} Instance
- * @typedef {import('./cc-logs-instances.types.js').GhostInstance} GhostInstance
- * @typedef {import('../common.types.js').IconModel} IconModel
- * @typedef {import('../../lib/events.types.js').EventWithTarget<HTMLInputElement>} HTMLInputElementEvent
- * @typedef {import('../../lib/i18n/i18n.types.js').Translated} Translated
+ * @import { LogsInstancesState, DeploymentState, Deployment, InstanceState, Instance, GhostInstance } from './cc-logs-instances.types.js'
+ * @import { IconModel } from '../common.types.js'
+ * @import { Translated } from '../../lib/i18n/i18n.types.js'
+ * @import { EventWithTarget } from '../../lib/events.types.js'
  */
 
 /**
@@ -111,7 +106,7 @@ export class CcLogsInstances extends LitElement {
   }
 
   /**
-   * @param {HTMLInputElementEvent} e
+   * @param {EventWithTarget<HTMLInputElement>} e
    */
   _onInstanceClick(e) {
     if (this.state.state === 'loaded') {

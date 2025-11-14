@@ -37,10 +37,9 @@ const COLORS = /** @type {const} */ ({
 const SKELETON_STATUS_CODES = { 200: 1 };
 
 /**
- * @typedef {import('./cc-tile-status-codes.types.js').TileStatusCodesState} TileStatusCodesState
- * @typedef {import('./cc-tile-status-codes.types.js').StatusCodesData} StatusCodesData
- * @typedef {import('lit').PropertyValues<CcTileStatusCodes>} CcTileStatusCodesChangedProperties
- * @typedef {import('lit/directives/ref.js').Ref<HTMLCanvasElement>} RefCanvas
+ * @import { TileStatusCodesState, StatusCodesData } from './cc-tile-status-codes.types.js'
+ * @import { PropertyValues } from 'lit'
+ * @import { Ref } from 'lit/directives/ref.js'
  */
 
 /**
@@ -77,7 +76,7 @@ export class CcTileStatusCodes extends LitElement {
     /** @type {boolean} */
     this._skeleton = false;
 
-    /** @type {RefCanvas} */
+    /** @type {Ref<HTMLCanvasElement>} */
     this._refCanvas = createRef();
   }
 
@@ -172,7 +171,7 @@ export class CcTileStatusCodes extends LitElement {
   /**
    * updated and not willUpdate because we need this._chart before
    *
-   * @param {CcTileStatusCodesChangedProperties} changedProperties
+   * @param {PropertyValues<CcTileStatusCodes>} changedProperties
    */
   updated(changedProperties) {
     if (changedProperties.has('state')) {

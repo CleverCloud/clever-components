@@ -10,12 +10,11 @@ import { getBackups } from '@clevercloud/client/esm/api/v2/backups.js';
 import { getAddon as getAddonFromProvider } from '@clevercloud/client/esm/api/v4/addon-providers.js';
 
 /**
- * @typedef {import('../common.types.js').Addon} Addon
- * @typedef {import('../common.types.js').AddonProvider} AddonProvider
- * @typedef {import('./cc-addon-backups.js').CcAddonBackups} CcAddonBackups
- * @typedef {import('./cc-addon-backups.types.js').Backup} Backup
- * @typedef {import('../../lib/send-to-api.types.js').ApiConfig} ApiConfig
- * @typedef {import('../../lib/smart/smart-component.types.js').OnContextUpdateArgs<CcAddonBackups>} OnContextUpdateArgs
+ * @import { Addon } from '../common.types.js'
+ * @import { CcAddonBackups } from './cc-addon-backups.js'
+ * @import { Backup } from './cc-addon-backups.types.js'
+ * @import { ApiConfig } from '../../lib/send-to-api.types.js'
+ * @import { OnContextUpdateArgs } from '../../lib/smart/smart-component.types.js'
  */
 defineSmartComponent({
   selector: 'cc-addon-backups',
@@ -25,7 +24,7 @@ defineSmartComponent({
     addonId: { type: String },
   },
   /**
-   * @param {OnContextUpdateArgs} args
+   * @param {OnContextUpdateArgs<CcAddonBackups>} args
    */
   async onContextUpdate({ context, updateComponent, signal }) {
     const { apiConfig, ownerId, addonId } = context;

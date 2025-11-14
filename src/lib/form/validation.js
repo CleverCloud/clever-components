@@ -1,9 +1,10 @@
+// FIXME: We're using `@typedef` instead of `@import` here due to a false positive from TS
+// See: https://github.com/microsoft/TypeScript/issues/60908/
 /**
  * @typedef {import('./validation.types.js').ValidValidity} ValidValidity
  * @typedef {import('./validation.types.js').InvalidValidity} InvalidValidity
  * @typedef {import('./validation.types.js').Validator} Validator
  * @typedef {import('./validation.types.js').Validity} Validity
- * @typedef {import('./validation.types.js').ErrorMessage} ErrorMessage
  */
 
 export class Validation {

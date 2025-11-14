@@ -8,7 +8,7 @@ export default {
 };
 
 /**
- * @typedef {import('./cc-kv-hash-input.js').CcKvHashInput} CcKvHashInput
+ * @import { CcKvHashInput } from './cc-kv-hash-input.js'
  */
 
 const conf = {

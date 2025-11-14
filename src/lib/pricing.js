@@ -1,8 +1,6 @@
 /**
- * @typedef {import('./pricing.types.js').PricingSimulatorState} PricingSimulatorState
- * @typedef {import('../components/common.types.js').PricingSection} PricingSection
- * @typedef {import('../components/common.types.js').SectionType} SectionType
- * @typedef {import('../components/common.types.js').PricingInterval} PricingInterval
+ * @import { PricingSimulatorState } from './pricing.types.js'
+ * @import { PricingSection, SectionType, PricingInterval } from '../components/common.types.js'
  */
 
 /**

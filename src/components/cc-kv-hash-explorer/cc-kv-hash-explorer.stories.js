@@ -8,8 +8,8 @@ export default {
 };
 
 /**
- * @typedef {import('./cc-kv-hash-explorer.js').CcKvHashExplorer} CcKvHashExplorer
- * @typedef {import('../cc-input-text/cc-input-text.js').CcInputText} CcInputText
+ * @import { CcKvHashExplorer } from './cc-kv-hash-explorer.js'
+ * @import { CcInputText } from '../cc-input-text/cc-input-text.js'
  */
 
 const conf = {

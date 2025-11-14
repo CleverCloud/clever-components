@@ -55,14 +55,9 @@ const SKELETON_APP_INFO = {
 };
 
 /**
- * @typedef {import('./cc-header-app.types.js').HeaderAppState} HeaderAppState
- * @typedef {import('./cc-header-app.types.js').LastUserAction} LastUserAction
- * @typedef {import('./cc-header-app.types.js').HeaderAppStateLoaded} HeaderAppStateLoaded
- * @typedef {import('../cc-zone/cc-zone.types.js').ZoneState} ZoneState
- * @typedef {import('../common.types.js').IconModel} IconModel
- * @typedef {import('../common.types.js').App} App
- * @typedef {import('../common.types.js').AppStatus} AppStatus
- * @typedef {import('lit').PropertyValues<CcHeaderApp>} CcHeaderAppChangedProperties
+ * @import { HeaderAppState, LastUserAction, HeaderAppStateLoaded } from './cc-header-app.types.js'
+ * @import { IconModel, AppStatus } from '../common.types.js'
+ * @import { PropertyValues } from 'lit'
  */
 
 /**
@@ -194,7 +189,7 @@ export class CcHeaderApp extends LitElement {
   }
 
   /**
-   * @param {CcHeaderAppChangedProperties} changedProperties
+   * @param {PropertyValues<CcHeaderApp>} changedProperties
    */
   willUpdate(changedProperties) {
     if (changedProperties.has('state') && this.state.type === 'loading') {

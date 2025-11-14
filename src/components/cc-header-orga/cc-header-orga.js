@@ -13,9 +13,9 @@ import '../cc-link/cc-link.js';
 import '../cc-notice/cc-notice.js';
 
 /**
- * @typedef {import('./cc-header-orga.types.js').HeaderOrgaState} HeaderOrgaState
- * @typedef {import('../../lib/events.types.js').EventWithTarget<HTMLSlotElement>} SlotEventWithTarget
- * @typedef {import('lit').TemplateResult<1>} TemplateResult
+ * @import { HeaderOrgaState } from './cc-header-orga.types.js'
+ * @import { TemplateResult } from 'lit'
+ * @import { EventWithTarget } from '../../lib/events.types.js'
  */
 
 /**
@@ -59,7 +59,7 @@ export class CcHeaderOrga extends LitElement {
    * Returns a function that sets or removes the 'slot' attribute on a slot element based on whether it has assigned nodes.
    *
    * @param {string} slotName - The name of the slot to set if the element has assigned nodes.
-   * @returns {(e: SlotEventWithTarget) => void} A function that handles the slot change event.
+   * @returns {(e: EventWithTarget<HTMLSlotElement>) => void} A function that handles the slot change event.
    */
   _setSlotAttributeIfHasAssignedNodes(slotName) {
     return (e) => {

@@ -1,7 +1,7 @@
 import { CcEvent } from '../../lib/events.js';
 
 /**
- * @typedef {import('./cc-env-var-input.types.js').EnvVarName} EnvVarName
+ * @import { EnvVarName } from './cc-env-var-input.types.js'
  */
 
 /**
