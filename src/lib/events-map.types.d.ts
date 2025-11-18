@@ -14,6 +14,7 @@ import { CcAddonRebuildEvent, CcAddonRestartEvent } from '../components/cc-addon
 import { CcAddonVersionChangeEvent } from '../components/cc-addon-info/cc-addon-info.events.js';
 import { CcAddonOptionFormSubmitEvent } from '../components/cc-addon-option-form/cc-addon-option-form.events.js';
 import { CcAddonOptionChangeEvent } from '../components/cc-addon-option/cc-addon-option.events.js';
+import { CcBreadcrumbClickEvent } from '../components/cc-breadcrumbs/cc-breadcrumbs.events.js';
 import {
   CcDomainAddEvent,
   CcDomainDeleteEvent,
@@ -177,6 +178,7 @@ declare global {
     'cc-application-restart': CcApplicationRestartEvent;
     'cc-application-start': CcApplicationStartEvent;
     'cc-application-stop': CcApplicationStopEvent;
+    'cc-breadcrumb-click': CcBreadcrumbClickEvent;
     'cc-click': CcClickEvent;
     'cc-deployment-cancel': CcDeploymentCancelEvent;
     'cc-domain-add': CcDomainAddEvent;
