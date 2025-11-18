@@ -130,6 +130,7 @@ import {
   CcSshKeyDeleteEvent,
   CcSshKeyImportEvent,
 } from '../components/cc-ssh-key-list/cc-ssh-key-list.events.js';
+import { CcTableSortEvent } from '../components/cc-table/cc-table.events.js';
 import {
   CcTcpRedirectionCreateEvent,
   CcTcpRedirectionDeleteEvent,
@@ -270,6 +271,7 @@ declare global {
     'cc-ssh-key-create': CcSshKeyCreateEvent;
     'cc-ssh-key-delete': CcSshKeyDeleteEvent;
     'cc-ssh-key-import': CcSshKeyImportEvent;
+    'cc-table-sort': CcTableSortEvent;
     'cc-tags-change': CcTagsChangeEvent;
     'cc-tcp-redirection-create': CcTcpRedirectionCreateEvent;
     'cc-tcp-redirection-delete': CcTcpRedirectionDeleteEvent;
