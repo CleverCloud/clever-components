@@ -20,7 +20,6 @@ const PROVIDER_ID = 'jenkins';
  * @typedef {import('./cc-addon-info.types.js').RawAddon} RawAddon
  * @typedef {import('../../lib/smart/smart-component.types.js').OnContextUpdateArgs<CcAddonInfo>} OnContextUpdateArgs
  * @typedef {import('../../lib/send-to-api.types.js').ApiConfig} ApiConfig
- * @typedef {import('../../lib/send-to-api.types.js').AuthBridgeConfig} AuthBridgeConfig
  */
 
 defineSmartComponent({
@@ -50,7 +49,6 @@ defineSmartComponent({
       },
       creationDate: '2025-08-06 15:03:00',
       plan: 'XS',
-      // Remove encryption since it's not part of the addon features
       features: [
         {
           code: 'cpu',
@@ -84,16 +82,14 @@ defineSmartComponent({
     api
       .getJenkinsAddonInfo()
       .then(({ rawAddon, addonProvider }) => {
-        // Get standard features from plan
         const features = formatAddonFeatures(rawAddon.plan.features, ['cpu', 'memory', 'disk-size']);
 
-        // Add encryption feature from addonProvider
         const encryptionFeature = addonProvider.features.find((f) => f.name === 'encryption');
         if (encryptionFeature) {
           features.push({
             code: 'encryption-at-rest',
             type: 'boolean',
-            value: `encryptionFeature.enabled`,
+            value: 'encryptionFeature.enabled',
           });
         }
 
@@ -122,11 +118,10 @@ class Api extends CcAddonInfoClient {
    * @param {ApiConfig} config.apiConfig - API configuration
    * @param {string} config.ownerId - Owner identifier
    * @param {string} config.addonId - Addon identifier
-   * @param {{ base: string, console: string }} [config.grafanaLink] - Base url to build a grafana link to the app
    * @param {AbortSignal} config.signal - Signal to abort calls
    */
-  constructor({ apiConfig, ownerId, addonId, grafanaLink, signal }) {
-    super({ apiConfig, ownerId, addonId, providerId: PROVIDER_ID, grafanaLink, signal });
+  constructor({ apiConfig, ownerId, addonId, signal }) {
+    super({ apiConfig, ownerId, addonId, providerId: PROVIDER_ID, signal });
   }
 
   /**

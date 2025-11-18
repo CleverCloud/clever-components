@@ -21,7 +21,7 @@ const PROVIDER_ID = 'jenkins';
  */
 
 defineSmartComponent({
-  selector: 'cc-addon-header[smart-mode=jenkins]',
+  selector: 'cc-addon-header[smart-mode="jenkins"]',
   params: {
     apiConfig: { type: Object },
     ownerId: { type: String },
