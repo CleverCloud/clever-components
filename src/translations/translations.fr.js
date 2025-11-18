@@ -742,6 +742,9 @@ export const translations = {
     sanitize`Ce tableau de bord comprend un <strong>panneau de présentation</strong> pour obtenir des informations rapides sur une application, ainsi que plusieurs panneaux présentant leurs métriques système. <br> Il fournit un graphique reprenant l'état <strong>du processeur, de la mémoire, des disques et du réseau</strong>. <br> Pour chaque groupe de métriques, le panneau contient des graphes d'utilisation, des jauges ou encore un indicateur de remplissage (basé sur le résultat d'une prédiction linéaire effectuée sur les données de l'intervalle de temps fixé dans Grafana). Cet indicateur donne la durée attendue avant que les métriques ne dépassent 90%.`,
   'cc-grafana-info.screenshot.runtime.title': `Aperçu du tableau de bord d'application (runtime)`,
   //#endregion
+  //#region cc-grid
+  'cc-grid.sort': `Trier`,
+  //#endregion
   //#region cc-header-addon
   'cc-header-addon.creation-date': `Date de création`,
   'cc-header-addon.creation-date.full': /** @param {{date: string|number}} _ */ ({ date }) => formatDate(date),

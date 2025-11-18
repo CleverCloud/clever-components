@@ -733,6 +733,9 @@ export const translations = {
     sanitize`This dashboard features an <strong>overview panel</strong> to get quick information about an application, as well as several panels about its system metrics. <br> It provides several graphs summarizing the state of <strong>CPU, memory, disks and network</strong>. <br> For each of these metric types, you will retrieve usage graphs, gauges, as well as the result of a simple linear prediction done on the elapsed Grafana time interval. This linear prediction yields the expected duration for the metric to reach 90%.`,
   'cc-grafana-info.screenshot.runtime.title': `Application runtime dashboard preview`,
   //#endregion
+  //#region cc-grid
+  'cc-grid.sort': `Sort`,
+  //#endregion
   //#region cc-header-addon
   'cc-header-addon.creation-date': `Creation date`,
   'cc-header-addon.creation-date.full': /** @param {{date: string|number}} _ */ ({ date }) => formatDate(date),
