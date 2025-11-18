@@ -39,6 +39,7 @@ import {
 } from '../components/cc-env-var-input/cc-env-var-input.events.js';
 import { CcFeatureSettingChangeEvent } from '../components/cc-feature-list/cc-feature-list.events.js';
 import { CcGrafanaResetEvent, CcGrafanaToggleEvent } from '../components/cc-grafana-info/cc-grafana-info.events.js';
+import { CcGridSortEvent } from '../components/cc-grid/cc-grid.events.js';
 import {
   CcApplicationRestartEvent,
   CcApplicationStartEvent,
@@ -214,6 +215,7 @@ declare global {
     'cc-form-valid': CcFormValidEvent;
     'cc-grafana-reset': CcGrafanaResetEvent;
     'cc-grafana-toggle': CcGrafanaToggleEvent;
+    'cc-grid-sort': CcGridSortEvent;
     'cc-input': CcInputEvent;
     'cc-kv-command-execute': CcKvCommandExecuteEvent;
     'cc-kv-hash-element-add': CcKvHashElementAddEvent;
