@@ -27,7 +27,7 @@ const LOADING_STATE = {
       ],
       docLink: {
         text: i18n('cc-addon-credentials-beta.doc-link.materia-kv'),
-        href: getDocUrl('/addons/materia-kv/'),
+        href: getDocUrl('/addons/materia-kv'),
       },
     },
   },

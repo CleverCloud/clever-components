@@ -12,7 +12,7 @@ const PROVIDER_ID = 'kv';
  */
 
 defineSmartComponent({
-  selector: 'cc-addon-header[smart-mode=materia-kv]',
+  selector: 'cc-addon-header[smart-mode="materia-kv"]',
   params: {
     apiConfig: { type: Object },
     ownerId: { type: String },
