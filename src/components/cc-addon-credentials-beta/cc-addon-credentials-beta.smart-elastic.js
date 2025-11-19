@@ -31,7 +31,7 @@ const LOADING_STATE = {
       ],
       docLink: {
         text: i18n('cc-addon-credentials-beta.doc-link.elastic'),
-        href: getDocUrl('/addons/elastic/'),
+        href: getDocUrl('/addons/elastic'),
       },
     },
     kibana: {
@@ -102,7 +102,7 @@ defineSmartComponent({
 
     api
       .getAllCredentials()
-      .then(({ elastic, kibana, apm, enabledServices }) => {
+      .then(({ elastic, kibana, apm }) => {
         updateComponent(
           'state',
           /** @param {AddonCredentialsBetaStateLoaded|AddonCredentialsBetaStateLoading} state */
@@ -117,14 +117,14 @@ defineSmartComponent({
               },
             };
 
-            if (enabledServices.kibana) {
+            if (kibana != null) {
               updatedTabs.kibana = {
                 ...state.tabs.kibana,
                 content: kibana,
               };
             }
 
-            if (enabledServices.apm) {
+            if (apm != null) {
               updatedTabs.apm = {
                 ...state.tabs.apm,
                 content: apm,
@@ -171,51 +171,53 @@ class Api extends CcAddonCredentialsBetaClient {
    */
   async getCredentials(tabType) {
     const addonProvider = await this._getAddonProvider(this._providerId);
-    if (tabType === 'elastic') {
-      return [
-        {
-          code: 'host',
-          value: addonProvider.config.host,
-        },
-        {
-          code: 'user',
-          value: addonProvider.config.user,
-        },
-        {
-          code: 'password',
-          value: addonProvider.config.password,
-        },
-      ];
-    } else if (tabType === 'kibana') {
-      return [
-        {
-          code: 'user',
-          value: addonProvider.config.kibana_user,
-        },
-        {
-          code: 'password',
-          value: addonProvider.config.kibana_password,
-        },
-      ];
+    switch (tabType) {
+      case 'elastic':
+        return [
+          {
+            code: 'host',
+            value: addonProvider.config.host,
+          },
+          {
+            code: 'user',
+            value: addonProvider.config.user,
+          },
+          {
+            code: 'password',
+            value: addonProvider.config.password,
+          },
+        ];
+      case 'kibana':
+        return [
+          {
+            code: 'user',
+            value: addonProvider.config.kibana_user,
+          },
+          {
+            code: 'password',
+            value: addonProvider.config.kibana_password,
+          },
+        ];
+      case 'apm':
+        return [
+          {
+            code: 'user',
+            value: addonProvider.config.apm_user,
+          },
+          {
+            code: 'password',
+            value: addonProvider.config.apm_password,
+          },
+          {
+            code: 'token',
+            value: addonProvider.config.apm_auth_token,
+          },
+        ];
     }
-    return [
-      {
-        code: 'user',
-        value: addonProvider.config.apm_user,
-      },
-      {
-        code: 'password',
-        value: addonProvider.config.apm_password,
-      },
-      {
-        code: 'token',
-        value: addonProvider.config.apm_auth_token,
-      },
-    ];
   }
 
   /**
-   * @return {Promise<{elastic: AddonCredential[], kibana: AddonCredential[], apm: AddonCredential[], enabledServices: {kibana: boolean, apm: boolean}}>}
+   * @return {Promise<{elastic: AddonCredential[], kibana: AddonCredential[] | null, apm: AddonCredential[] | null}>}
    */
   async getAllCredentials() {
     const addonProvider = await this._getAddonProvider(this._providerId);
@@ -228,18 +230,14 @@ class Api extends CcAddonCredentialsBetaClient {
 
     const [elasticCredentials, kibanaCredentials, apmCredentials] = await Promise.all([
       this.getCredentials('elastic'),
-      this.getCredentials('kibana'),
-      this.getCredentials('apm'),
+      isKibanaEnabled ? this.getCredentials('kibana') : null,
+      isApmEnabled ? this.getCredentials('apm') : null,
     ]);
 
     return {
       elastic: elasticCredentials,
       kibana: kibanaCredentials,
       apm: apmCredentials,
-      enabledServices: {
-        kibana: isKibanaEnabled,
-        apm: isApmEnabled,
-      },
     };
   }
 }

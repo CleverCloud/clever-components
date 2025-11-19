@@ -34,11 +34,11 @@ interface ApiConfig {
 
 ## 🌐 API endpoints
 
-| Method   | URL                                                            | Cache?  |
-|----------|----------------------------------------------------------------|---------|
-| `GET`    | `/v2/organisations/${ownerId}/addons/${addonId}`               | Default |
-| `GET`    | `/v4/products/zones?ownerId=${ownerId}`                        | Default |
-| `GET`    | `/v2/providers/es-addon/${addonId}`                            | Default |
+| Method   | URL                                                            | Cache?   |
+|----------|----------------------------------------------------------------|----------|
+| `GET`    | `/v2/organisations/${ownerId}/addons/${addonId}`               | 1 second |
+| `GET`    | `/v4/products/zones?ownerId=${ownerId}`                        | 1 second |
+| `GET`    | `/v2/providers/es-addon/${addonId}`                            | 1 second |
 
 
 ## ⬇️️ Examples

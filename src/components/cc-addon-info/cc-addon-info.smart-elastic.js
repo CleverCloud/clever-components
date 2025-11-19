@@ -11,40 +11,33 @@ import '../cc-smart-container/cc-smart-container.js';
 import { CcAddonInfoClient } from './cc-addon-info.client.js';
 import './cc-addon-info.js';
 
-/** @type {Record<string, { name: string; logoUrl: string; getAppId: (addonProvider: ElasticAddonInfo) => string }>} */
-const SERVICE_CONFIG = {
-  kibana: {
-    name: 'Kibana',
-    logoUrl: 'https://assets.clever-cloud.com/logos/elasticsearch-kibana.svg',
-    getAppId: (addonProvider) => addonProvider.kibana_application,
-  },
-  apm: {
-    name: 'APM',
-    logoUrl: 'https://assets.clever-cloud.com/logos/elasticsearch-apm.svg',
-    getAppId: (addonProvider) => addonProvider.apm_application,
-  },
-};
-
 const PROVIDER_ID = 'es-addon';
 
 /**
- * @param {ElasticAddonInfo['services'][number]} service
+ * @param {string} serviceName
  * @param {ElasticAddonInfo} addonProvider
  * @param {string} appOverviewUrlPattern
  * @return {LinkedService}
  */
-function getServiceData(service, addonProvider, appOverviewUrlPattern) {
-  const config = SERVICE_CONFIG[service.name];
-  if (!config) {
-    throw new Error(`Unknown service type: ${service.name}`);
+function getServiceData(serviceName, addonProvider, appOverviewUrlPattern) {
+  switch (serviceName) {
+    case 'kibana':
+      return {
+        type: 'app',
+        name: 'Kibana',
+        logoUrl: 'https://assets.clever-cloud.com/logos/elasticsearch-kibana.svg',
+        link: appOverviewUrlPattern.replace(':id', addonProvider.kibana_application),
+      };
+    case 'apm':
+      return {
+        type: 'app',
+        name: 'APM',
+        logoUrl: 'https://assets.clever-cloud.com/logos/elasticsearch-apm.svg',
+        link: appOverviewUrlPattern.replace(':id', addonProvider.apm_application),
+      };
+    default:
+      return null;
   }
-
-  return {
-    type: 'app',
-    name: config.name,
-    logoUrl: config.logoUrl,
-    link: appOverviewUrlPattern.replace(':id', config.getAppId(addonProvider)),
-  };
 }
 
 /**
@@ -88,8 +81,6 @@ defineSmartComponent({
       },
       creationDate: '2025-08-06 15:03:00',
       plan: 'XS',
-      // Remove encryption since it's not part of the addon features
-      // TODO: reinstate encryption
       features: [
         {
           code: 'cpu',
@@ -130,7 +121,7 @@ defineSmartComponent({
       ],
     };
 
-    updateComponent('state', { type: 'loading', ...LOADING_STATE });
+    updateComponent('state', LOADING_STATE);
     updateComponent('docLink', {
       text: i18n('cc-addon-info.doc-link.elastic'),
       href: getDocUrl('/addons/elastic'),
@@ -148,7 +139,7 @@ defineSmartComponent({
           features.push({
             code: 'encryption-at-rest',
             type: 'boolean',
-            value: `encryptionFeature.enabled`,
+            value: encryptionFeature.enabled ? 'true' : 'false',
           });
         }
 
@@ -168,7 +159,7 @@ defineSmartComponent({
             : null,
           linkedServices: addonProvider.services
             .filter((service) => service.enabled)
-            .map((service) => getServiceData(service, addonProvider, appOverviewUrlPattern)),
+            .map((service) => getServiceData(service.name, addonProvider, appOverviewUrlPattern)),
         });
       })
       .catch((error) => {

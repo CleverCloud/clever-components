@@ -57,7 +57,7 @@ defineSmartComponent({
 
         const openLinks = [];
         const apmService = rawProvider.services.find((service) => service.name === 'apm');
-        if (apmService?.enabled && rawProvider.config.host) {
+        if (apmService?.enabled && rawProvider.config.host != null) {
           const apmUrl = `https://kibana-${rawProvider.config.host}/app/apm`;
           openLinks.push({
             name: 'APM',
@@ -65,7 +65,7 @@ defineSmartComponent({
           });
         }
         const kibanaService = rawProvider.services.find((service) => service.name === 'kibana');
-        if (kibanaService?.enabled && rawProvider.config.host) {
+        if (kibanaService?.enabled && rawProvider.config.host != null) {
           const kibanaUrl = `https://kibana-${rawProvider.config.host}/`;
           openLinks.push({
             name: 'KIBANA',
