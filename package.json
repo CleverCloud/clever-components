@@ -176,7 +176,7 @@
     "ts-lit-plugin": "^2.0.2",
     "typescript": "^5.8.3",
     "unified": "^9.2.1",
-    "vite": "^7.0.5"
+    "vite": "^7.2.2"
   },
   "customElements": "dist/custom-elements.json",
   "volta": {
