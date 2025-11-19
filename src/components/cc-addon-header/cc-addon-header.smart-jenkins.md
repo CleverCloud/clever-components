@@ -19,7 +19,7 @@ title: '💡 Smart (Jenkins)'
 | `apiConfig`      | `ApiConfig` | Object with API configuration (target host, tokens...)                                  |         |
 | `ownerId`        | `string`    | UUID prefixed with orga_                                                                |         |
 | `addonId`        | `string`    | ID of the add-on                                                                        |         |
-| `logsUrlPattern` | `string`    | Pattern for the logs url (Example : `/organisations/${ownerId}/addons/${appId}/logs`)   |         |
+| `logsUrlPattern` | `string`    | Pattern for the logs url (Example : `/organisations/${ownerId}/addons/${addonId}/logs`) |         |
 
 
   ```ts
@@ -34,11 +34,11 @@ interface ApiConfig {
 
 ## 🌐 API endpoints
 
-| Method   | URL                                              | Cache?     |
-|----------|--------------------------------------------------|------------|
-| `GET`    | `/v2/organisations/${ownerId}/addons/${addonId}` | Default    |
-| `GET`    | `/v4/products/zones?ownerId=${ownerId}`          | Default    |
-| `GET`    | `/v2/providers/jenkins/addons/${addonId}`        | 1 second   |
+| Method   | URL                                              | Cache?      |
+|----------|--------------------------------------------------|-------------|
+| `GET`    | `/v2/organisations/${ownerId}/addons/${addonId}` | 1 second    |
+| `GET`    | `/v4/products/zones/${zoneName}`                 | 1 second    |
+| `GET`    | `/v2/providers/jenkins/${addonId}`               | 1 second    |
 
 
 ## ⬇️️ Examples

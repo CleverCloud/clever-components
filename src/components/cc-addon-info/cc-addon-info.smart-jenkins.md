@@ -32,10 +32,10 @@ interface ApiConfig {
 
 ## 🌐 API endpoints
 
-| Method | URL                                                   | Cache?     |
-|--------|-------------------------------------------------------|------------|
-| `GET`  | `/v2/organisations/${ownerId}/addons/${addonId}`      | 1 second   |
-| `GET`  | `/v2/providers/jenkins/addons/${addonId}`             | 1 second   |
+| Method | URL                                              | Cache?     |
+|--------|--------------------------------------------------|------------|
+| `GET`  | `/v2/organisations/${ownerId}/addons/${addonId}` | 1 second   |
+| `GET`  | `/v2/providers/jenkins/${addonId}`               | 1 second   |
 
 
 ## ⬇️️ Examples
