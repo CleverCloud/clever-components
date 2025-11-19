@@ -124,10 +124,10 @@ class Api extends CcAddonCredentialsBetaClient {
     const addonProvider = /** @type {PulsarProviderInfo} */ (await this._getAddonProvider(realId));
     const addonCluster = await this._getCluster(addonProvider.cluster_id);
     let url;
-    if (addonCluster.pulsar_tls_port) {
+    if (addonCluster.pulsar_tls_port != null) {
       url = `pulsar+ssl://${addonCluster.url}:${addonCluster.pulsar_tls_port}`;
-    } else if (addonCluster.pulsar_port) {
-      url = `pulsar+ssl://${addonCluster.url}:${addonCluster.pulsar_tls_port}`;
+    } else if (addonCluster.pulsar_port != null) {
+      url = `pulsar+ssl://${addonCluster.url}:${addonCluster.pulsar_port}`;
     } else {
       throw new Error('Missing TLS port and default port');
     }
