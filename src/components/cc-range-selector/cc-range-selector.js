@@ -332,29 +332,26 @@ export class CcRangeSelector extends CcFormControlElement {
       return;
     }
 
-    const value = e.target.value;
+    const index = Number(e.target.value);
     if (this._isModeSingle()) {
       // Single mode: immediate selection on input
-      this.value = value;
+      this.value = this.options.at(index).value;
       this.dispatchEvent(new CcSelectEvent(this.value));
       this._isCustomOptionActive = false;
     } else {
-      // Range mode: keyboard interaction requires two inputs to define a range
-      const index = this.options.findIndex((option) => option.value === e.target.value);
-
-      if (!this._dragCtrl.isDragging()) {
-        // First input: start drag at this index (drag start)
-        this._dragCtrl.setPreviousSelection(this.selection);
-        this._dragCtrl.start(index);
-      } else {
-        // Second input: update end index and apply selection (drag end)
-        this._dragCtrl.update(index);
-
-        // Only apply if range spans multiple options
-        if (this._dragCtrl.getSize() > 0) {
-          this._applyRangeSelection();
-          this._isCustomOptionActive = false;
-        }
+      const currentStartIndex = this.options.findIndex((option) => option.value === this.selection?.startValue);
+      const currentEndIndex = this.options.findIndex((option) => option.value === this.selection?.endValue);
+      if (e.target.id === 'start-input') {
+        this.selection = {
+          startValue: this.options.at(index).value,
+          endValue: index >= currentEndIndex ? this.options.at(currentEndIndex + 1).value : this.selection?.endValue,
+        };
+      } else if (e.target.id === 'end-input') {
+        this.selection = {
+          startValue:
+            index <= currentStartIndex ? this.options.at(currentStartIndex - 1).value : this.selection?.startValue,
+          endValue: this.options.at(index).value,
+        };
       }
     }
   }
@@ -454,13 +451,35 @@ export class CcRangeSelector extends CcFormControlElement {
   }
 
   /**
-   * Prevents default click behavior in range mode to avoid input event collision
-   * @param {MouseEvent} e
+   * Handles click on an option.
+   * For range mode: determines which boundary (start or end) to move based on proximity to clicked index.
+   * @param {string} value
    * @private
    */
-  _onOptionClick(e) {
-    if (this._isModeRange()) {
-      e.preventDefault();
+  _onOptionClick(value) {
+    this._selectorRef.value.focus();
+    if (this._isModeSingle()) {
+      this.value = value;
+    } else {
+      const clickedIndex = this._getOptionIndexFromValue(value);
+      const { first: startIndex, last: endIndex } = this._getSelectionIndexes();
+
+      // Calculate distances from clicked index to both boundaries
+      const distanceToStart = Math.abs(clickedIndex - startIndex);
+      const distanceToEnd = Math.abs(clickedIndex - endIndex);
+
+      // If clicked index is closer to start, update start; otherwise update end
+      if (distanceToStart < distanceToEnd) {
+        this.selection = {
+          startValue: value,
+          endValue: this.selection?.endValue,
+        };
+      } else {
+        this.selection = {
+          startValue: this.selection?.startValue,
+          endValue: value,
+        };
+      }
     }
   }
 
@@ -597,6 +616,8 @@ export class CcRangeSelector extends CcFormControlElement {
     const shouldHighlightArrow = !this._dragCtrl.isDragging() && !isLast && isSelected;
 
     return {
+      'is-start': isFirst,
+      'is-end': isLast,
       'is-selected': isSelected,
       'is-error': isError,
       'range-continues-right': rangeHasRightContinuation,
@@ -619,10 +640,48 @@ export class CcRangeSelector extends CcFormControlElement {
     const isModeSingle = this._isModeSingle();
     const isModeRange = this._isModeRange();
 
+    if (isModeSingle) {
+      const value = this.options.findIndex((option) => option.value === this.value);
+      return html`
+        <input
+          class="visually-hidden"
+          type="range"
+          min="0"
+          max="${this.options.length - 1}"
+          .value="${value}"
+          aria-valuetext="${this.value}"
+          aria-describedby="help-id error-id"
+          @input="${this._onControlInput}"
+          ${ref(this._selectorRef)}
+        />
+        ${this.options.map((option, index) =>
+          this._renderOption(option, hasErrorMessage, {
+            indexes: {
+              first,
+              current: index,
+              last,
+            },
+            isModeSingle,
+            isModeRange,
+            isLastOption: index === this.options.length - 1,
+            nextOption: this.options.at(index + 1),
+          }),
+        )}
+      `;
+    }
+
+    const startValue =
+      this.selection != null ? this.options.findIndex((option) => option.value === this.selection?.startValue) : 0;
+    const endValue =
+      this.selection != null
+        ? this.options.findIndex((option) => option.value === this.selection?.endValue)
+        : startValue + 1;
+    const maxStartValue = endValue - 1;
+    const minEndValue = maxStartValue + 1;
+
     return html`
       <fieldset
         class="fieldset ${classMap({ 'is-error': hasErrorMessage })}"
-        @input=${this._onControlInput}
         ${ref(this._selectorRef)}
         role="${isModeRange ? 'group' : 'radiogroup'}"
         tabindex="-1"
@@ -632,6 +691,32 @@ export class CcRangeSelector extends CcFormControlElement {
             <span class="legend-text">${this.label}</span>
             ${this.required ? html` <span class="required">${i18n('cc-range-selector.required')}</span> ` : ''}
           </legend>
+          <label for="start-input" class="visually-hidden">${i18n('cc-range-selector.label.start')}</label>
+          <input
+            id="start-input"
+            class="visually-hidden"
+            type="range"
+            min="0"
+            max="${this.options.length - 2}"
+            .value="${startValue}"
+            aria-valuetext="${this.selection?.startValue}"
+            aria-describedby="help-id error-id"
+            @input="${this._onControlInput}"
+            ${ref(this._selectorRef)}
+          />
+          <label for="end-input" class="visually-hidden">${i18n('cc-range-selector.label.end')}</label>
+          <input
+            id="end-input"
+            class="visually-hidden"
+            type="range"
+            min="1"
+            max="${this.options.length - 1}"
+            .value="${endValue}"
+            aria-valuetext="${this.selection?.endValue}"
+            aria-describedby="help-id error-id"
+            @input="${this._onControlInput}"
+            ${ref(this._selectorRef)}
+          />
 
           <div class="options" part="options">
             ${this.options.map((option, index) =>
@@ -707,17 +792,7 @@ export class CcRangeSelector extends CcFormControlElement {
 
     return html`
       <div class="option-wrapper ${classMap(classes)} ">
-        <input
-          class="hidden-input visually-hidden"
-          type="${isModeSingle ? 'radio' : 'checkbox'}"
-          id="${id}"
-          name="${this.name}"
-          .value=${value}
-          .checked=${isSelected}
-          ?disabled=${isDisabled || (this.readonly && !isSelected)}
-          aria-describedby="help-id error-id"
-        />
-        <label class="option-label" for="${id}">
+        <div class="option-label">
           <cc-range-selector-option
             ?disabled=${isDisabled}
             ?readonly=${this.readonly}
@@ -725,14 +800,11 @@ export class CcRangeSelector extends CcFormControlElement {
             ?selected=${isSelected}
             ?dragging=${!isDisabled && inRangeWhileDragging}
             ?pointer=${hasPointer}
-            @click=${this._onOptionClick}
-            @mousedown=${() => this._onOptionMouseDown(indexes.current, option)}
-            @mouseup=${() => this._onOptionMouseUp(indexes.current, option)}
-            @mouseenter=${() => this._onOptionMouseEnter(indexes.current, option)}
+            @click=${() => this._onOptionClick(option.value)}
           >
             <span>${body}</span>
           </cc-range-selector-option>
-        </label>
+        </div>
         <div class="arrow-wrapper ${classMap({ 'arrow-visible': isModeRange && !isLastOption })}">
           <cc-icon class="arrow-icon" .icon=${iconArrow}></cc-icon>
         </div>
@@ -816,6 +888,17 @@ export class CcRangeSelector extends CcFormControlElement {
           padding: 0;
           text-align: initial;
         }
+
+        /* first input focused => is-first */
+        #start-input:focus-visible ~ .options .option-wrapper.is-start cc-range-selector-option {
+          outline: var(--cc-focus-outline, #3569aa solid 2px);
+          outline-offset: var(--cc-focus-outline-offset, 2px);
+        }
+        /* last input focused => is-end */
+        #end-input:focus-visible ~ .options .option-wrapper.is-end cc-range-selector-option {
+          outline: var(--cc-focus-outline, #3569aa solid 2px);
+          outline-offset: var(--cc-focus-outline-offset, 2px);
+        }
         /* endregion */
 
         /* region legend */
@@ -856,6 +939,7 @@ export class CcRangeSelector extends CcFormControlElement {
         .option-wrapper {
           align-items: stretch;
           display: inline-flex;
+          user-select: none;
         }
 
         .option-wrapper > .option-label {

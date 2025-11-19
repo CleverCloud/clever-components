@@ -1565,6 +1565,8 @@ export const translations = {
   'cc-range-selector.custom': `Customize`,
   'cc-range-selector.error.empty': `This field is required.`,
   'cc-range-selector.error.invalid-selection': `Invalid selection.`,
+  'cc-range-selector.label.end': `Select an end value`,
+  'cc-range-selector.label.start': `Select a start value`,
   'cc-range-selector.required': `required`,
   //#endregion
   //#region cc-select

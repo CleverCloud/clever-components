@@ -33,6 +33,10 @@ const DEFAULT_SELECTOR_RANGE = {
   mode: 'range',
   name: 'range-selector',
   options: OPTIONS_DEFAULT,
+  selection: {
+    startValue: OPTIONS_DEFAULT[0].value,
+    endValue: OPTIONS_DEFAULT[1].value,
+  },
 };
 
 const DEFAULT_SELECTOR_SINGLE = {
@@ -40,6 +44,7 @@ const DEFAULT_SELECTOR_SINGLE = {
   mode: 'single',
   name: 'single-selector',
   options: OPTIONS_DEFAULT,
+  value: OPTIONS_DEFAULT[0].value,
 };
 
 export default {
@@ -58,52 +63,6 @@ export const defaultStory = makeStory(conf, {
       ...DEFAULT_SELECTOR_RANGE,
       innerHTML: `
         <p slot="help">Default</p>
-      `,
-    },
-    {
-      ...DEFAULT_SELECTOR_RANGE,
-      disabled: true,
-      innerHTML: `
-        <p slot="help">Disabled</p>
-      `,
-    },
-    {
-      ...DEFAULT_SELECTOR_RANGE,
-      selection: {
-        startValue: 'mar',
-        endValue: 'jeu',
-      },
-      innerHTML: `
-        <p slot="help">With default value</p>
-      `,
-    },
-    {
-      ...DEFAULT_SELECTOR_RANGE,
-      disabled: true,
-      selection: {
-        startValue: 'mar',
-        endValue: 'jeu',
-      },
-      innerHTML: `
-        <p slot="help">Disabled with default value</p>
-      `,
-    },
-    {
-      ...DEFAULT_SELECTOR_RANGE,
-      readonly: true,
-      innerHTML: `
-        <p slot="help">Readonly</p>
-      `,
-    },
-    {
-      ...DEFAULT_SELECTOR_RANGE,
-      readonly: true,
-      selection: {
-        startValue: 'mar',
-        endValue: 'jeu',
-      },
-      innerHTML: `
-        <p slot="help">Readonly with default value</p>
       `,
     },
   ],

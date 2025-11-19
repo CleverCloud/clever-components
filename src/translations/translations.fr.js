@@ -1589,6 +1589,8 @@ export const translations = {
   'cc-range-selector.custom': `Personnaliser`,
   'cc-range-selector.error.empty': `Ce champ est obligatoire.`,
   'cc-range-selector.error.invalid-selection': `Sélection invalide.`,
+  'cc-range-selector.label.end': `Sélectionnez une valeur de fin`,
+  'cc-range-selector.label.start': `Sélectionnez une valeur de début`,
   'cc-range-selector.required': `obligatoire`,
   //#endregion
   //#region cc-select
