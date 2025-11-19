@@ -15,7 +15,7 @@ const credentialsToDisplayAsString = new Set([
   'api-url',
   'port',
   'host',
-  'tenant',
+  'tenant-namespace',
   'api-key',
   'direct-host',
   'direct-port',
@@ -118,8 +118,8 @@ export class CcAddonCredentialsContent extends LitElement {
         return i18n('cc-addon-credentials-content.code.password');
       case 'port':
         return i18n('cc-addon-credentials-content.code.port');
-      case 'tenant':
-        return i18n('cc-addon-credentials-content.code.tenant');
+      case 'tenant-namespace':
+        return i18n('cc-addon-credentials-content.code.tenant-namespace');
       case 'token':
         return i18n('cc-addon-credentials-content.code.token');
       case 'uri':

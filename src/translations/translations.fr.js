@@ -238,7 +238,7 @@ export const translations = {
   'cc-addon-credentials-content.code.open-api-url': `URL OpenAPI`,
   'cc-addon-credentials-content.code.password': `Mot de passe`,
   'cc-addon-credentials-content.code.port': `Port`,
-  'cc-addon-credentials-content.code.tenant': `Tenant`,
+  'cc-addon-credentials-content.code.tenant-namespace': `Tenant/Namespace`,
   'cc-addon-credentials-content.code.token': `Jeton`,
   'cc-addon-credentials-content.code.uri': `URI`,
   'cc-addon-credentials-content.code.url': `URL`,

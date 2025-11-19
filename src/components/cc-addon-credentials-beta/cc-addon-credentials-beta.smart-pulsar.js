@@ -23,7 +23,7 @@ const LOADING_STATE = {
           value: 'fake-skeleton',
         },
         {
-          code: 'tenant',
+          code: 'tenant-namespace',
           value: 'fake-skeleton',
         },
       ],
@@ -123,18 +123,26 @@ class Api extends CcAddonCredentialsBetaClient {
     const realId = rawAddon.realId;
     const addonProvider = /** @type {PulsarProviderInfo} */ (await this._getAddonProvider(realId));
     const addonCluster = await this._getCluster(addonProvider.cluster_id);
+    let url;
+    if (addonCluster.pulsar_tls_port) {
+      url = `pulsar+ssl://${addonCluster.url}:${addonCluster.pulsar_tls_port}`;
+    } else if (addonCluster.pulsar_port) {
+      url = `pulsar+ssl://${addonCluster.url}:${addonCluster.pulsar_tls_port}`;
+    } else {
+      throw new Error('Missing TLS port and default port');
+    }
     return [
       {
         code: 'url',
-        value: addonCluster.url,
+        value: url,
       },
       {
         code: 'token',
         value: addonProvider.token,
       },
       {
-        code: 'tenant',
-        value: addonProvider.tenant,
+        code: 'tenant-namespace',
+        value: `${addonProvider.tenant}/${rawAddon.realId}`,
       },
     ];
   }
