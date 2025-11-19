@@ -15,7 +15,7 @@ const PROVIDER_ID = 'addon-pulsar';
  */
 
 defineSmartComponent({
-  selector: 'cc-addon-header[smart-mode=pulsar]',
+  selector: 'cc-addon-header[smart-mode="pulsar"]',
   params: {
     apiConfig: { type: Object },
     ownerId: { type: String },

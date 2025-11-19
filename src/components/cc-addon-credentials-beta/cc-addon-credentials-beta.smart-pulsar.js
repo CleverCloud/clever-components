@@ -29,7 +29,7 @@ const LOADING_STATE = {
       ],
       docLink: {
         text: i18n('cc-addon-credentials-beta.doc-link.pulsar'),
-        href: getDocUrl('/addons/pulsar/'),
+        href: getDocUrl('/addons/pulsar'),
       },
     },
   },
