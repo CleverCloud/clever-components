@@ -10,6 +10,7 @@ import { CcApiErrorEvent } from '../../lib/send-to-api.events.js';
  * @typedef {import('./cc-cellar-explorer.types.js').CellarEndpoint} CellarEndpoint
  * @typedef {import('./cc-cellar-explorer.types.js').CellarBucket} CellarBucket
  * @typedef {import('./cc-cellar-explorer.types.js').CellarBucketsListResponse} CellarBucketsListResponse
+ * @typedef {import('./cc-cellar-explorer.types.js').CellarObjectsListResponse} CellarObjectsListResponse
  * @typedef {import('../../lib/send-to-api.js').ApiConfig} ApiConfig
  */
 
@@ -64,6 +65,46 @@ export class CellarExplorerClient {
    */
   clearBucket(bucketName) {
     return this.#send(`/cellar/bucket/_clear`, { name: bucketName }, false);
+  }
+
+  /**
+   * @param {string} bucketName
+   * @param {Array<string>} path
+   * @param {string} [cursor]
+   * @returns {Promise<CellarObjectsListResponse>}
+   */
+  listObjects(bucketName, path, cursor) {
+    return this.#send(`/cellar/object/_list`, { bucketName, prefix: pathToString(path), cursor, count: 3 }, true);
+  }
+
+  /**
+   *
+   * @param {string} bucketName
+   * @param {Array<string>} path
+   * @param {File} file
+   */
+  async uploadObject(bucketName, path, file) {
+    const formData = new FormData();
+    formData.append('bucketName', bucketName);
+    formData.append('host', this._cellarEndpoint.host);
+    formData.append('accessKeyId', this._cellarEndpoint.accessKeyId);
+    formData.append('secretAccessKey', this._cellarEndpoint.secretAccessKey);
+    formData.append('file', file, encodeURIComponent(`${pathToString(path)}${file.name}`));
+
+    // @ts-ignore
+    const response = await Promise.resolve({
+      method: 'post',
+      url: '/cellar/object/_upload',
+      headers: { Accept: 'application/json' },
+      body: formData,
+    })
+      .then(prefixUrl(this._url))
+      .then(withOptions({ signal: this._signal }))
+      .then(request)
+      .catch((error) => {
+        window.dispatchEvent(new CcApiErrorEvent(error));
+        throw new CellarExplorerError(error.responseBody.code, error.responseBody.message, error.responseBody.context);
+      });
   }
 
   /**
@@ -130,4 +171,14 @@ export function isCellarExplorerError(error) {
  */
 export function isCellarExplorerErrorWithCode(error, code) {
   return isCellarExplorerError(error) && error.code === code;
+}
+
+/**
+ * @param {Array<string>} path
+ */
+export function pathToString(path) {
+  if (path == null || path.length === 0) {
+    return '';
+  }
+  return path.join('/') + '/';
 }

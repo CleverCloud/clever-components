@@ -5,7 +5,7 @@ import './cc-cellar-explorer.js';
 import { getAllEnvVars } from '@clevercloud/client/esm/api/v2/addon.js';
 import { notifyError, notifySuccess } from '../../lib/notifications.js';
 import { sendToApi } from '../../lib/send-to-api.js';
-import { CellarExplorerClient, isCellarExplorerErrorWithCode } from './cc-cellar-explorer.client.js';
+import { CellarExplorerClient, isCellarExplorerErrorWithCode, pathToString } from './cc-cellar-explorer.client.js';
 
 /**
  * @typedef {import('./cc-cellar-explorer.js').CcCellarExplorer} CcCellarExplorer
@@ -42,7 +42,7 @@ defineSmartComponent({
         const cellarClient = new CellarExplorerClient(cellarProxyUrl, cellarEndpoint, signal);
 
         function refreshBuckets() {
-          updateComponent('state', { type: 'loaded', list: { type: 'loading', level: 'buckets' } });
+          updateComponent('state', { type: 'loaded', list: { type: 'loading', path: [], level: 'buckets' } });
 
           cellarClient
             .listBuckets()
@@ -58,7 +58,7 @@ defineSmartComponent({
             })
             .catch((error) => {
               console.log(error);
-              updateComponent('state', { type: 'loaded', list: { type: 'error', level: 'buckets' } });
+              updateComponent('state', { type: 'loaded', list: { type: 'error', path: [], level: 'buckets' } });
             });
         }
 
@@ -160,6 +160,169 @@ defineSmartComponent({
               }
               console.log(error);
               notifyError(`Failed to delete bucket ${bucketName}`);
+            });
+        });
+
+        /** @type {{bucketName: string, path: Array<string>}} */
+        let ctx = {
+          bucketName: null,
+          path: null,
+        };
+        /** @type {Array<string>} */
+        let pages = [];
+        /** @type {string} */
+        let previousCursor = null;
+        /** @type {string} */
+        let nextCursor = null;
+
+        onEvent('cc-cellar-home-navigate', () => {
+          refreshBuckets();
+          ctx = { bucketName: null, path: null };
+        });
+
+        onEvent('cc-cellar-object-navigate', ({ bucketName, path }) => {
+          ctx = { bucketName, path };
+          pages = [];
+          previousCursor = null;
+          nextCursor = null;
+
+          updateComponent('state', {
+            type: 'loaded',
+            list: {
+              type: 'loading',
+              level: 'objects',
+              bucket: bucketName,
+              path,
+            },
+          });
+
+          const pathString = pathToString(path);
+
+          cellarClient
+            .listObjects(bucketName, path)
+            .then((response) => {
+              nextCursor = response.cursor;
+              console.log({ pages, previousCursor, nextCursor });
+
+              updateComponent('state', {
+                type: 'loaded',
+                list: {
+                  type: 'loaded',
+                  level: 'objects',
+                  bucket: bucketName,
+                  path,
+                  items: response.content.map((item) => {
+                    return { state: 'idle', ...item, name: item.name.substring(pathString.length) };
+                  }),
+                  hasNext: nextCursor != null,
+                  hasPrevious: false,
+                },
+              });
+            })
+            .catch((error) => {
+              console.log(error);
+              notifyError(`Failed to navigate into folder ${bucketName}/${path.join('/')}`);
+            });
+        });
+
+        onEvent('cc-cellar-object-next-page', () => {
+          const { bucketName, path } = ctx;
+
+          updateComponent('state', {
+            type: 'loaded',
+            list: {
+              type: 'loading',
+              level: 'objects',
+              bucket: bucketName,
+              path,
+            },
+          });
+
+          const pathString = pathToString(path);
+
+          cellarClient
+            .listObjects(bucketName, path, nextCursor)
+            .then((response) => {
+              pages.push(previousCursor);
+              previousCursor = nextCursor;
+              nextCursor = response.cursor;
+              console.log({ pages, previousCursor, nextCursor });
+
+              updateComponent('state', {
+                type: 'loaded',
+                list: {
+                  type: 'loaded',
+                  level: 'objects',
+                  bucket: bucketName,
+                  path,
+                  items: response.content.map((item) => {
+                    return { state: 'idle', ...item, name: item.name.substring(pathString.length) };
+                  }),
+                  hasNext: nextCursor != null,
+                  hasPrevious: true,
+                },
+              });
+            })
+            .catch((error) => {
+              console.log(error);
+              notifyError(`Failed to navigate into folder ${bucketName}/${path.join('/')}`);
+            });
+        });
+
+        onEvent('cc-cellar-object-previous-page', () => {
+          const { bucketName, path } = ctx;
+
+          updateComponent('state', {
+            type: 'loaded',
+            list: {
+              type: 'loading',
+              level: 'objects',
+              bucket: bucketName,
+              path,
+            },
+          });
+
+          const pathString = pathToString(path);
+
+          const cursor = pages.pop();
+          cellarClient
+            .listObjects(bucketName, path, cursor)
+            .then((response) => {
+              previousCursor = pages.length > 0 ? pages[pages.length - 1] : null;
+              nextCursor = response.cursor;
+              console.log({ pages, previousCursor, nextCursor });
+
+              updateComponent('state', {
+                type: 'loaded',
+                list: {
+                  type: 'loaded',
+                  level: 'objects',
+                  bucket: bucketName,
+                  path,
+                  items: response.content.map((item) => {
+                    return { state: 'idle', ...item, name: item.name.substring(pathString.length) };
+                  }),
+                  hasNext: nextCursor != null,
+                  hasPrevious: pages.length > 0,
+                },
+              });
+            })
+            .catch((error) => {
+              console.log(error);
+              notifyError(`Failed to navigate into folder ${bucketName}/${path.join('/')}`);
+            });
+        });
+
+        onEvent('cc-cellar-object-upload', ({ bucketName, path, file }) => {
+          console.log(path);
+          cellarClient
+            .uploadObject(bucketName, path, file)
+            .then((response) => {
+              console.log(response);
+            })
+            .catch((error) => {
+              console.log(error);
+              notifyError(`Failed to upload into ${bucketName}/${path.join('/')}`);
             });
         });
       })

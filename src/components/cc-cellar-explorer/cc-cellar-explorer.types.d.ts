@@ -16,16 +16,21 @@ export interface CellarExplorerStateLoaded {
 export type CellarExplorerItemsListState =
   | CellarExplorerItemsListStateLoading
   | CellarExplorerItemsListStateError
-  | CellarExplorerItemsListStateBucketsLoaded;
+  | CellarExplorerItemsListStateBucketsLoaded
+  | CellarExplorerItemsListStateObjectsLoaded;
 
 export interface CellarExplorerItemsListStateLoading {
   type: 'loading';
-  level: 'buckets'; // or objects
+  bucket?: string;
+  path?: Array<string>;
+  level: 'buckets' | 'objects';
 }
 
 export interface CellarExplorerItemsListStateError {
   type: 'error';
-  level: 'buckets'; // or objects
+  bucket?: string;
+  path?: Array<string>;
+  level: 'buckets' | 'objects';
 }
 
 export interface CellarExplorerItemsListStateBucketsLoaded {
@@ -34,23 +39,33 @@ export interface CellarExplorerItemsListStateBucketsLoaded {
   items: Array<CellarItemStateBucket>;
 }
 
+export interface CellarExplorerItemsListStateObjectsLoaded {
+  type: 'loaded';
+  path: Array<string>;
+  bucket: string;
+  level: 'objects';
+  items: Array<CellarItemStateDirectory | CellarItemStateObject>;
+  hasNext: boolean;
+  hasPrevious: boolean;
+}
+
 export type CellarItemState<S, T> = T & {
   state: S;
 };
 
 export type CellarItemStateBucket = CellarItemState<CellarBucketStateType, CellarItemBucket>;
+export type CellarItemStateObject = CellarItemState<CellarObjectStateType, CellarItemObject>;
+export type CellarItemStateDirectory = CellarItemState<CellarDirectoryStateType, CellarItemDirectory>;
 export type CellarBucketStateType = 'idle' | 'showing' | 'shown' | 'deleting';
 export interface CellarItemBucket extends CellarBucket {
   type: 'bucket';
 }
 
-export interface CellarItemObject {
-  type: 'object';
-}
+export type CellarObjectStateType = 'idle' | 'showing' | 'shown' | 'deleting';
+export interface CellarItemObject extends CellarObject {}
 
-export interface CellarItemFolder {
-  type: 'folder';
-}
+export type CellarDirectoryStateType = 'idle';
+export interface CellarItemDirectory extends CellarDirectory {}
 
 //-- API
 
@@ -66,6 +81,11 @@ export interface CellarBucketsListResponse {
   total: number;
 }
 
+export interface CellarObjectsListResponse {
+  cursor?: string;
+  content: Array<CellarObject | CellarDirectory>;
+}
+
 export interface CellarBucket {
   name: string;
   creationDate: string;
@@ -73,4 +93,18 @@ export interface CellarBucket {
   objectsCount: number;
   sizeInBytes: number;
   versioning?: 'disabled' | 'enabled' | 'suspended';
+}
+
+export interface CellarObject {
+  type: 'file';
+  name: string;
+  fullName: string;
+  lastUpdatedDate: string;
+  contentLength: number;
+}
+
+export interface CellarDirectory {
+  type: 'directory';
+  name: string;
+  fullName: string;
 }

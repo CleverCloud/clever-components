@@ -5,11 +5,17 @@ import {
   iconRemixArchiveLine as iconBucket,
   iconRemixCloseLine as iconClose,
   iconRemixDeleteBin_6Line as iconDelete,
+  iconRemixFolderOpenLine as iconDirectory,
+  iconRemixFileLine as iconFile,
+  iconRemixHome_3Line as iconHouse,
   iconRemixMoreFill as iconMore,
+  iconRemixArrowRightSFill as iconNext,
+  iconRemixArrowLeftSFill as iconPrevious,
 } from '../../assets/cc-remix.icons.js';
 import { formSubmit } from '../../lib/form/form-submit-directive.js';
 import { formatBytesSize } from '../../lib/utils.js';
 import { i18n } from '../../translations/translation.js';
+import '../cc-breadcrumbs/cc-breadcrumbs.js';
 import '../cc-button/cc-button.js';
 import '../cc-clipboard/cc-clipboard.js';
 import '../cc-icon/cc-icon.js';
@@ -21,6 +27,11 @@ import {
   CcCellarBucketDeleteEvent,
   CcCellarBucketHideEvent,
   CcCellarBucketShowEvent,
+  CcCellarHomeNavigateHomeEvent,
+  CcCellarObjectNavigateEvent,
+  CcCellarObjectNextPageEvent,
+  CcCellarObjectPreviousPageEvent,
+  CcCellarObjectUploadEvent,
 } from './cc-cellar-explorer.events.js';
 
 /**
@@ -28,6 +39,11 @@ import {
  * @typedef {import('./cc-cellar-explorer.types.js').CellarExplorerItemsListState} CellarExplorerItemsListState
  * @typedef {import('./cc-cellar-explorer.types.js').CellarExplorerItemsListStateBucketsLoaded} CellarExplorerItemsListStateBucketsLoaded
  * @typedef {import('./cc-cellar-explorer.types.js').CellarItemStateBucket} CellarItemStateBucket
+ * @typedef {import('./cc-cellar-explorer.types.js').CellarItemStateObject} CellarItemStateObject
+ * @typedef {import('./cc-cellar-explorer.types.js').CellarItemStateDirectory} CellarItemStateDirectory
+ * @typedef {import('../cc-breadcrumbs/cc-breadcrumbs.events.js').CcBreadcrumbClickEvent} CcBreadcrumbClickEvent
+ * @typedef {import('../cc-table/cc-table.types.js').CcTableColumnDefinition<CellarItemStateBucket>} BucketColumnDefinition
+ * @typedef {import('../cc-table/cc-table.types.js').CcTableColumnDefinition<CellarItemStateObject|CellarItemStateDirectory>} ObjectColumnDefinition
  * @typedef {import('lit').TemplateResult<1>} TemplateResult
  */
 
@@ -80,6 +96,60 @@ export class CcCellarExplorer extends LitElement {
     this.dispatchEvent(new CcCellarBucketDeleteEvent(bucketName));
   }
 
+  /**
+   * @param {string} bucketName
+   */
+  _onBucketClick(bucketName) {
+    this.dispatchEvent(new CcCellarObjectNavigateEvent({ bucketName }));
+  }
+
+  /**
+   * @param {string} bucketName
+   * @param {Array<string>} path
+   */
+  _onDirectoryClick(bucketName, path) {
+    this.dispatchEvent(new CcCellarObjectNavigateEvent({ bucketName, path }));
+  }
+
+  /**
+   * @param {CcBreadcrumbClickEvent} event
+   * @private
+   */
+  _onPathClick(event) {
+    const path = event.detail.path;
+
+    if (path.length === 0) {
+      return;
+    }
+
+    if (path.length === 1) {
+      this.dispatchEvent(new CcCellarHomeNavigateHomeEvent());
+    }
+    const bucketName = path[1];
+    if (path.length === 2) {
+      this._onBucketClick(bucketName);
+    } else if (path.length > 2) {
+      this._onDirectoryClick(bucketName, path.slice(2));
+    }
+  }
+
+  /**
+   * @param {string} objectName
+   */
+  _onDisplayObjectDetailRequested(objectName) {
+    // this.dispatchEvent(new CcCellarBucketShowEvent(bucketName));
+  }
+
+  /**
+   *
+   * @param {string} bucketName
+   * @param {Array<string>} path
+   * @param {File} file
+   */
+  _onUpload(bucketName, path, file) {
+    this.dispatchEvent(new CcCellarObjectUploadEvent({ bucketName, path, file }));
+  }
+
   render() {
     if (this.state.type === 'loading') {
       // todo i18n + spinner
@@ -103,6 +173,10 @@ export class CcCellarExplorer extends LitElement {
   _renderListHeading(state) {
     if (state.level === 'buckets') {
       return this._renderListHeadingForBuckets(state);
+    }
+
+    if (state.level === 'objects') {
+      return this._renderListHeadingForObjects(state.bucket, state.path, state);
     }
 
     return html``;
@@ -135,12 +209,48 @@ export class CcCellarExplorer extends LitElement {
   }
 
   /**
+   * @param {string} bucketName
+   * @param {Array<string>} path
+   * @param {CellarExplorerItemsListState} state
+   * @returns {TemplateResult}
+   */
+  _renderListHeadingForObjects(bucketName, path, state) {
+    // todo: do we need to display the buckets count ?
+    if (state.level === 'objects') {
+      return html`
+        <div class="list-heading">
+          ${this._renderPath(bucketName, path)}
+          <div>
+            <input
+              type="file"
+              id="MyGreatFileUploadHidedButton"
+              @change=${(event) => this._onUpload(bucketName, path, event.target.files[0])}
+              style="display:none;"
+            />
+            <cc-button
+              primary
+              .icon=${iconAdd}
+              @cc-click=${() => this.shadowRoot.getElementById('MyGreatFileUploadHidedButton').click()}
+              >Upload<!-- todo i18n --></cc-button
+            >
+          </div>
+        </div>
+      `;
+    }
+
+    return html``;
+  }
+
+  /**
    * @param {CellarExplorerItemsListState} state
    * @returns {TemplateResult}
    */
   _renderList(state) {
     if (state.level === 'buckets') {
       return this._renderListOfBuckets(state);
+    }
+    if (state.level === 'objects') {
+      return this._renderListOfObjects(state.bucket, state.path, state);
     }
 
     return html``;
@@ -189,6 +299,82 @@ export class CcCellarExplorer extends LitElement {
     return html`<cc-table .columns=${bucketColumns} .items=${state.items}>
       <div slot="empty"><!-- todo: i18n -->No buckets!</div>
     </cc-table>`;
+  }
+
+  /**
+   * @param {string} bucketName
+   * @param {Array<string>} path
+   * @param {CellarExplorerItemsListState} state
+   * @returns {TemplateResult}
+   */
+  _renderListOfObjects(bucketName, path, state) {
+    if (state.type === 'loading') {
+      // todo i18n
+      return html` Loading list of objects... `;
+    }
+    if (state.type === 'error') {
+      // todo i18n
+      return html`<cc-notice intent="warning" message="Error while loading the list of objects"></cc-notice>`;
+    }
+
+    /** @type {Array<ObjectColumnDefinition>} */
+    const columns = [
+      {
+        header: 'Name',
+        renderer: (objState) => {
+          if (objState.type === 'directory') {
+            return html`<div part="icon-and-label">
+              <cc-icon .icon=${iconDirectory}></cc-icon>
+              <cc-button link @cc-click=${() => this._onDirectoryClick(bucketName, [...(path ?? []), objState.name])}
+                >${objState.name}</cc-button
+              >
+            </div> `;
+          }
+          return html`<div part="icon-and-label">
+            <cc-icon .icon=${iconFile}></cc-icon>
+            ${objState.name}
+          </div>`;
+        },
+        width: '1fr',
+      },
+      {
+        header: 'Last update',
+        renderer: (state) => {
+          if (state.type === 'directory') {
+            return '';
+          }
+          return this._renderDate(state.lastUpdatedDate);
+        },
+      },
+      {
+        header: 'Size',
+        renderer: (state) => {
+          if (state.type === 'directory') {
+            return '';
+          }
+          return formatBytesSize(state.contentLength);
+        },
+      },
+      {
+        header: '',
+        renderer: (state) => {
+          if (state.type === 'directory') {
+            return '';
+          }
+          return html`<cc-button
+            .icon=${iconMore}
+            hide-text
+            .waiting="${state.state === 'showing'}"
+            @cc-click=${() => this._onDisplayObjectDetailRequested(state.name)}
+          ></cc-button>`;
+        },
+      },
+    ];
+
+    return html`<cc-table .columns=${columns} .items=${state.items}>
+        <div slot="empty"><!-- todo: i18n -->No objects!</div>
+      </cc-table>
+      ${this._renderPaginator(state.hasPrevious, state.hasNext)} `;
   }
 
   /**
@@ -312,6 +498,49 @@ export class CcCellarExplorer extends LitElement {
     return i18n('cc-cellar-explorer.date', { date });
   }
 
+  /**
+   * @param {string} bucketName
+   * @param {Array<string>} path
+   * @returns {TemplateResult}
+   */
+  _renderPath(bucketName, path) {
+    const items = [
+      { value: 'home', label: '', icon: iconHouse, iconA11yName: 'List of buckets' },
+      { value: bucketName, icon: iconBucket },
+      ...(path ?? []).map((p) => ({ value: p, icon: iconDirectory })),
+    ];
+
+    return html`<cc-breadcrumbs .items=${items} @cc-breadcrumb-click=${this._onPathClick}></cc-breadcrumbs>`;
+  }
+
+  /**
+   * @param {boolean} hasPrevious
+   * @param {boolean} hasNext
+   * @returns {TemplateResult}
+   * @private
+   */
+  _renderPaginator(hasPrevious, hasNext) {
+    if (!hasPrevious && !hasNext) {
+      return html``;
+    }
+    return html`<div class="paginator">
+      <cc-button
+        hide-text
+        .icon=${iconPrevious}
+        .disabled=${!hasPrevious}
+        @cc-click=${() => this.dispatchEvent(new CcCellarObjectPreviousPageEvent())}
+        >Previous</cc-button
+      >
+      <cc-button
+        hide-text
+        .icon=${iconNext}
+        .disabled=${!hasNext}
+        @cc-click=${() => this.dispatchEvent(new CcCellarObjectNextPageEvent())}
+        >Next</cc-button
+      >
+    </div>`;
+  }
+
   static get styles() {
     return [
       // language=CSS
@@ -343,6 +572,10 @@ export class CcCellarExplorer extends LitElement {
           font-size: 1.2em;
           flex: 1;
           color: var(--cc-color-text-primary-strongest, #000);
+        }
+
+        cc-breadcrumbs {
+          flex: 1;
         }
 
         cc-table {

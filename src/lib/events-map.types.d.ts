@@ -20,6 +20,11 @@ import {
   CcCellarBucketDeleteEvent,
   CcCellarBucketHideEvent,
   CcCellarBucketShowEvent,
+  CcCellarHomeNavigateHomeEvent,
+  CcCellarObjectNavigateEvent,
+  CcCellarObjectNextPageEvent,
+  CcCellarObjectPreviousPageEvent,
+  CcCellarObjectUploadEvent,
 } from '../components/cc-cellar-explorer/cc-cellar-explorer.events.js';
 import {
   CcDomainAddEvent,
@@ -190,6 +195,11 @@ declare global {
     'cc-cellar-bucket-delete': CcCellarBucketDeleteEvent;
     'cc-cellar-bucket-hide': CcCellarBucketHideEvent;
     'cc-cellar-bucket-show': CcCellarBucketShowEvent;
+    'cc-cellar-home-navigate': CcCellarHomeNavigateHomeEvent;
+    'cc-cellar-object-navigate': CcCellarObjectNavigateEvent;
+    'cc-cellar-object-next-page': CcCellarObjectNextPageEvent;
+    'cc-cellar-object-previous-page': CcCellarObjectPreviousPageEvent;
+    'cc-cellar-object-upload': CcCellarObjectUploadEvent;
     'cc-click': CcClickEvent;
     'cc-deployment-cancel': CcDeploymentCancelEvent;
     'cc-domain-add': CcDomainAddEvent;
