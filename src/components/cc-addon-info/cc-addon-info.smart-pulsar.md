@@ -34,7 +34,7 @@ interface ApiConfig {
 
 | Method | URL                                                              | Cache?     |
 |--------|------------------------------------------------------------------|------------|
-| `GET`  | `/v2/organisations/${ownerId}/addons/${addonId}`                 | Default    |
+| `GET`  | `/v2/organisations/${ownerId}/addons/${addonId}`                 | 1 second   |
 | `GET`  | `/v4/addon-providers/addon-pulsar/addons/${realId}`              | 1 second   |
 | `GET`  | `/v4/addon-providers/addon-pulsar/clusters/${clusterId}`         | 1 second   |
 

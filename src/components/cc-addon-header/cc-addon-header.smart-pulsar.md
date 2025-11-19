@@ -36,9 +36,8 @@ interface ApiConfig {
 
 | Method   | URL                                                            | Cache?  |
 |----------|----------------------------------------------------------------|---------|
-| `GET`    | `/v2/organisations/${ownerId}/addons/${addonId}`               | Default |
-| `GET`    | `/v4/products/zones?ownerId=${ownerId}`                        | Default |
-| `GET`    | `/v4/addon-providers/addon-pulsar/addons/${addonId}`           | Default |
+| `GET`    | `/v2/organisations/${ownerId}/addons/${addonId}`               | 1 second |
+| `GET`    | `/v4/products/zones/${zoneName}`                               | 1 second |
 
 
 ## ⬇️️ Examples
