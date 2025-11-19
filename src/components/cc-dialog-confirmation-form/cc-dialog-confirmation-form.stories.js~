@@ -3,7 +3,7 @@ import './cc-dialog-confirmation-form.js';
 
 export default {
   tags: ['autodocs'],
-  title: 'ðŸ§¬ Atoms/<cc-dialog-confirmation-form>',
+  title: '=à Dialog/<cc-dialog-confirmation-form>',
   component: 'cc-dialog-confirmation-form',
 };
 
@@ -114,6 +114,12 @@ export const waitingWithInput = makeStory(conf, {
       waiting: true,
     },
   ],
+  /** @param {CcDialogConfirmationForm} component */
+  onUpdateComplete: (component) => {
+    // TODO: not working
+  const input = component.shadowRoot.querySelector('cc-input-text');
+    input.value = 'my-app';
+  },
 });
 
 export const simulationsWithSubmit = makeStory(conf, {
@@ -141,4 +147,3 @@ export const simulationsWithSubmit = makeStory(conf, {
     ),
   ],
 });
-

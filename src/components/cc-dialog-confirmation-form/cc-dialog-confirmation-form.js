@@ -96,6 +96,7 @@ export class CcDialogConfirmationForm extends LitElement {
             .customValidator="${this._confirmValidator}"
             .customErrorMessages="${this._customErrorMessages}"
             ?autofocus="${this.autofocusInput}"
+            ?readonly="${this.waiting}"
           >
             <p slot="help">${this.confirmTextToInput}</p>
           </cc-input-text>

@@ -65,7 +65,6 @@ export class CcDialog extends LitElement {
   updated(changedProperties) {
     if (changedProperties.get('open') === true && !this.open) {
       this._dialogRef.value?.close();
-      console.log('WAS OPEN so focusing');
       this._tryToFocusOpeningElement();
       this.dispatchEvent(new CcDialogCloseEvent());
     }
