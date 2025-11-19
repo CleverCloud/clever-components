@@ -21,7 +21,7 @@ const PROVIDER_ID = 'es-addon';
  */
 
 defineSmartComponent({
-  selector: 'cc-addon-header[smart-mode=elastic]',
+  selector: 'cc-addon-header[smart-mode="elastic"]',
   params: {
     apiConfig: { type: Object },
     ownerId: { type: String },
