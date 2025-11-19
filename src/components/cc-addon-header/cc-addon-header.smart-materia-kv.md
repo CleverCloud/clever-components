@@ -14,13 +14,13 @@ title: '💡 Smart (Materia KV)'
 
 ## ⚙️ Params
 
-| Name                 | Type        | Details                                                                                             | Default  |
-|----------------------|-------------|-----------------------------------------------------------------------------------------------------|----------|
-| `apiConfig`          | `ApiConfig` | Object with API configuration (target host, tokens...)                                              |          |
-| `ownerId`            | `string`    | UUID prefixed with orga_                                                                            |          |
-| `addonId`            | `string`    | ID of the add-on                                                                                    |          |
-| `explorerUrlPattern` | `string`    | Pattern for the logs url (Example : `/organisations/${ownerId}/addons/${addonId}/materia-explorer`) |          |
-| `productStatus`      | `string`    | Maturity status of the product                                                                      | Optional |
+| Name                 | Type        | Details                                                                                                 | Default  |
+|----------------------|-------------|---------------------------------------------------------------------------------------------------------|----------|
+| `apiConfig`          | `ApiConfig` | Object with API configuration (target host, tokens...)                                                  |          |
+| `ownerId`            | `string`    | UUID prefixed with orga_                                                                                |          |
+| `addonId`            | `string`    | ID of the add-on                                                                                        |          |
+| `explorerUrlPattern` | `string`    | Pattern for the explorer url (Example : `/organisations/${ownerId}/addons/${addonId}/materia-explorer`) |          |
+| `productStatus`      | `string`    | Maturity status of the product                                                                          | Optional |
 
 
   ```ts
@@ -35,11 +35,10 @@ interface ApiConfig {
 
 ## 🌐 API endpoints
 
-| Method   | URL                                                                       | Cache?  |
-|----------|---------------------------------------------------------------------------|---------|
-| `GET`    | `/v2/organisations/${ownerId}/addons/${addonId}`                          | Default |
-| `GET`    | `/v4/products/zones?ownerId=${ownerId}`                                   | Default |
-| `GET`    | `/v4/materia/organisations/${ownerId}/materia/databases/${materiaKvId}`   | Default |
+| Method   | URL                                              | Cache?   |
+|----------|--------------------------------------------------|----------|
+| `GET`    | `/v2/organisations/${ownerId}/addons/${addonId}` | 1 second |
+| `GET`    | `/v4/products/zones/${zoneName}`                 | 1 second |
 
 
 ## ⬇️️ Examples
@@ -55,7 +54,7 @@ interface ApiConfig {
     },
     "ownerId": "",
     "addonId": "",
-    "logsUrlPattern": "",
+    "explorerUrlPattern": "",
     "productStatus": "",
 }'>
   <cc-addon-header smart-mode="materia-kv"></cc-addon-header>
