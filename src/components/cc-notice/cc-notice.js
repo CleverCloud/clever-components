@@ -150,31 +150,39 @@ export class CcNotice extends LitElement {
         }
 
         :host([intent='success']) .wrapper {
-          --cc-icon-color: var(--cc-color-text-success);
-
           background-color: var(--cc-color-bg-success-weaker);
           border: 1px solid var(--cc-color-border-success-weak);
         }
 
-        :host([intent='warning']) .wrapper {
-          --cc-icon-color: var(--cc-color-text-warning);
+        :host([intent='success']) .notice-icon {
+          --cc-icon-color: var(--cc-color-text-success);
+        }
 
+        :host([intent='warning']) .wrapper {
           background-color: var(--cc-color-bg-warning-weaker);
           border: 1px solid var(--cc-color-border-warning-weak);
         }
 
-        :host([intent='info']) .wrapper {
-          --cc-icon-color: var(--cc-color-text-primary);
+        :host([intent='warning']) .notice-icon {
+          --cc-icon-color: var(--cc-color-text-warning);
+        }
 
+        :host([intent='info']) .wrapper {
           background-color: var(--cc-color-bg-primary-weaker);
           border: 1px solid var(--cc-color-border-primary-weak);
         }
 
-        :host([intent='danger']) .wrapper {
-          --cc-icon-color: var(--cc-color-text-danger);
+        :host([intent='info']) .notice-icon {
+          --cc-icon-color: var(--cc-color-text-primary);
+        }
 
+        :host([intent='danger']) .wrapper {
           background-color: var(--cc-color-bg-danger-weaker);
           border: 1px solid var(--cc-color-border-danger-weaker);
+        }
+
+        :host([intent='danger']) .notice-icon {
+          --cc-icon-color: var(--cc-color-text-danger);
         }
 
         .wrapper.closeable {
