@@ -11,7 +11,7 @@ const PROVIDER_ID = 'config-provider';
  */
 
 defineSmartComponent({
-  selector: 'cc-addon-header[smart-mode=config-provider]',
+  selector: 'cc-addon-header[smart-mode="config-provider"]',
   params: {
     apiConfig: { type: Object },
     ownerId: { type: String },

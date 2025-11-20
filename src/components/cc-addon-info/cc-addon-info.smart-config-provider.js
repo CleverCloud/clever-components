@@ -36,7 +36,7 @@ defineSmartComponent({
       creationDate: '2025-08-06 15:03:00',
     };
 
-    updateComponent('state', { type: 'loading', ...LOADING_STATE });
+    updateComponent('state', LOADING_STATE);
     updateComponent('docLink', {
       text: i18n('cc-addon-info.doc-link.config-provider'),
       href: getDocUrl('/addons/config-provider'),
