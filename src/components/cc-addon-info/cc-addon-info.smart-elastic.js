@@ -48,7 +48,6 @@ function getServiceData(serviceName, addonProvider, appOverviewUrlPattern) {
  * @typedef {import('./cc-addon-info.types.js').RawAddon} RawAddon
  * @typedef {import('../../lib/smart/smart-component.types.js').OnContextUpdateArgs<CcAddonInfo>} OnContextUpdateArgs
  * @typedef {import('../../lib/send-to-api.types.js').ApiConfig} ApiConfig
- * @typedef {import('../../lib/send-to-api.types.js').AuthBridgeConfig} AuthBridgeConfig
  */
 
 defineSmartComponent({
