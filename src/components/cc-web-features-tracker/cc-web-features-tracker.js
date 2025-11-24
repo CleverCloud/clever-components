@@ -167,7 +167,7 @@ export class CcWebFeaturesTracker extends LitElement {
         : ''}
       ${hasCanBeUsedAsPolyfill
         ? html`<cc-notice intent="warning">
-            <cc-icon slot="icon" .icon=${iconTools} size="lg"></cc-icon>
+            <cc-icon slot="icon" class="notice-icon" .icon=${iconTools} size="lg"></cc-icon>
             <div slot="message">Features with the tools icons can be used but requires a polyfill</div>
           </cc-notice>`
         : ''}
@@ -481,6 +481,10 @@ export class CcWebFeaturesTracker extends LitElement {
           align-items: center;
           display: flex;
           gap: 0.5em;
+        }
+
+        .notice-icon {
+          --cc-icon-color: var(--cc-color-text-warning);
         }
 
         .browser-support {
