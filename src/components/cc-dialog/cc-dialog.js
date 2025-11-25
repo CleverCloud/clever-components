@@ -1,4 +1,5 @@
 import { css, html, LitElement } from 'lit';
+import { classMap } from 'lit/directives/class-map.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { createRef, ref } from 'lit/directives/ref.js';
 import { iconRemixCloseLine as iconClose } from '../../assets/cc-remix.icons.js';
@@ -37,6 +38,7 @@ export class CcDialog extends LitElement {
       headingIcon: { type: Object, attribute: 'heading-icon' },
       headingIconA11yName: { type: String, attribute: 'heading-icon-a11y-name' },
       hiddenCloseButton: { type: Boolean, attribute: 'hidden-close-button' },
+      hiddenHeading: { type: Boolean, attribute: 'hidden-heading' },
       open: { type: Boolean, reflect: true },
     };
   }
@@ -47,11 +49,18 @@ export class CcDialog extends LitElement {
     /** @type {'any'|'closerequest'|'none'} Indicates which action closes the dialog (see https://developer.mozilla.org/en-US/docs/Web/API/HTMLDialogElement/closedBy for more information) */
     this.closedBy = 'any';
 
-    /** @type {string|null} Heading text displayed at the top of the dialog. If you need more complex heading content, use the `heading` slot instead. */
+    /** @type {string|null} Heading text displayed at the top of the dialog.
+     * You must always set this property with a relevant value since it's used to identify the dialog for accessibility.
+     * Use the `hiddenHeading` prop to hide it visually if needed.
+     * If you need more complex heading content, use the `heading` slot instead.
+     */
     this.heading = null;
 
     /** @type {boolean} Hides the close button when true */
     this.hiddenCloseButton = false;
+
+    /** @type {boolean} Hides the heading when true. Even when hidden, the heading is used as the dialog accessible name. */
+    this.hiddenHeading = false;
 
     /** @type {IconModel|null} Sets the icon before the heading using a `<cc-icon>`. Icon is hidden if nullish. */
     this.headingIcon = null;
@@ -139,38 +148,19 @@ export class CcDialog extends LitElement {
               </button>
             `
           : ''}
-        ${!isStringEmpty(this.heading)
-          ? html`
-              <div class="dialog-heading-wrapper">
-                ${this.headingIcon != null
-                  ? html`
-                      <cc-icon
-                        class="dialog-heading-icon"
-                        .icon="${this.headingIcon}"
-                        a11y-name="${ifDefined(this.headingIconA11yName)}"
-                      ></cc-icon>
-                    `
-                  : ''}
-                <span id="dialog-heading">${this.heading}</span>
-              </div>
-            `
-          : ''}
-        ${isStringEmpty(this.heading)
-          ? html`
-              <div class="dialog-heading-wrapper">
-                ${this.headingIcon != null
-                  ? html`
-                      <cc-icon
-                        class="dialog-heading-icon"
-                        .icon="${this.headingIcon}"
-                        a11y-name="${ifDefined(this.headingIconA11yName)}"
-                      ></cc-icon>
-                    `
-                  : ''}
-                <slot name="heading" id="dialog-heading"></slot>
-              </div>
-            `
-          : ''}
+        <div class="dialog-heading-wrapper ${classMap({ 'visually-hidden': this.hiddenHeading })}">
+          ${this.headingIcon != null
+            ? html`
+                <cc-icon
+                  class="dialog-heading-icon"
+                  .icon="${this.headingIcon}"
+                  a11y-name="${ifDefined(this.headingIconA11yName)}"
+                ></cc-icon>
+              `
+            : ''}
+          ${isStringEmpty(this.heading) ? html`<slot name="heading" id="dialog-heading"></slot>` : ''}
+          ${!isStringEmpty(this.heading) ? html` <span id="dialog-heading">${this.heading}</span>` : ''}
+        </div>
         <div class="dialog-content-body-wrapper">
           <slot></slot>
         </div>
@@ -238,10 +228,6 @@ export class CcDialog extends LitElement {
         .dialog-heading-wrapper cc-icon,
         .dialog-close cc-icon {
           flex: 0 0 auto;
-        }
-
-        .dialog-close:disabled {
-          opacity: var(--cc-opacity-when-disabled, 0.65);
         }
 
         .dialog-close:focus-visible {

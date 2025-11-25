@@ -2,7 +2,7 @@ import { html, render } from 'lit';
 import { iconRemixImageCircleFill as imageIcon } from '../../assets/cc-remix.icons.js';
 import { makeStory } from '../../stories/lib/make-story.js';
 import '../cc-button/cc-button.js';
-import { CcDialogConfirmationForm } from '../cc-dialog-confirmation-form/cc-dialog-confirmation-form.js';
+import '../cc-dialog-confirmation-form/cc-dialog-confirmation-form.js';
 import '../cc-notice/cc-notice.js';
 import './cc-dialog.js';
 
@@ -14,7 +14,7 @@ export default {
 
 /**
  * @typedef {import('./cc-dialog.js').CcDialog} CcDialog
- * @typedef {import('../cc-dialog-confirmation-form/cc-dialog-confirmation-form.js').CcDialogConfirmationForm}.CcDialogConfirmationForm
+ * @typedef {import('../cc-dialog-confirmation-form/cc-dialog-confirmation-form.js').CcDialogConfirmationForm} CcDialogConfirmationForm
  */
 
 const conf = {
@@ -60,14 +60,14 @@ export const withIcon = makeStory(conf, {
   },
 });
 
-export const withNoHeading = makeStory(conf, {
+export const withHiddenHeading = makeStory(conf, {
   /** @param {HTMLElement} container */
   dom: (container) => {
     render(
       html`
         <cc-button @cc-click="${() => getDialog(container).show()}" primary>Open Dialog with Icon</cc-button>
-        <cc-dialog open>
-          <p slot="content">This dialog has no heading.</p>
+        <cc-dialog open hidden-heading heading="A dialog with no visible heading">
+          <p>This dialog has no heading.</p>
         </cc-dialog>
       `,
       container,
@@ -156,21 +156,6 @@ export const slotWithRichContent = makeStory(conf, {
             <div slot="message">This notice is part of the dialog content.</div>
           </cc-notice>
           <p style="margin-top: 1em;">You can slot any content you need into the dialog body.</p>
-        </cc-dialog>
-      `,
-      container,
-    );
-  },
-});
-
-export const slotWithCustomActions = makeStory(conf, {
-  /** @param {HTMLElement} container */
-  dom: (container) => {
-    render(
-      html`
-        <cc-button @cc-click="${() => getDialog(container).show()}" primary>Open Multi-Action</cc-button>
-        <cc-dialog open heading="Choose an Action">
-          <p>What would you like to do?</p>
           <div style="display: flex; justify-content: end; gap: 1em; margin-top: 1.5em;">
             <cc-button @cc-click="${() => getDialog(container).hide()}" outlined>Cancel</cc-button>
             <cc-button>Save Draft</cc-button>
@@ -183,7 +168,7 @@ export const slotWithCustomActions = makeStory(conf, {
   },
 });
 
-export const longContent = makeStory(conf, {
+export const withLongContentAndScroll = makeStory(conf, {
   /** @param {HTMLElement} container */
   dom: (container) => {
     render(
@@ -242,7 +227,7 @@ export const longContent = makeStory(conf, {
   },
 });
 
-export const programmaticControl = makeStory(conf, {
+export const imperativeApi = makeStory(conf, {
   /** @param {HTMLElement} container */
   dom: (container) => {
     render(
@@ -255,35 +240,6 @@ export const programmaticControl = makeStory(conf, {
         </div>
         <cc-dialog open heading="Programmatic Control">
           <p>This dialog can be controlled programmatically using the show(), hide() methods or the open property.</p>
-        </cc-dialog>
-      `,
-      container,
-    );
-  },
-});
-
-export const listeningToCloseEvent = makeStory(conf, {
-  /** @param {HTMLElement} container */
-  dom: (container) => {
-    const onClose = () => {
-      const output = container.querySelector('#close-event-output');
-      const timestamp = new Date().toLocaleTimeString();
-      output.textContent = `Dialog closed at ${timestamp}`;
-    };
-
-    render(
-      html`
-        <div style="display: flex; flex-direction: column; gap: 1em;">
-          <cc-button @cc-click="${() => getDialog(container).show()}" primary>Open Dialog</cc-button>
-          <div
-            id="close-event-output"
-            style="padding: 1em; background: var(--cc-color-bg-neutral); border-radius: 0.25em;"
-          >
-            Close the dialog to see the event output
-          </div>
-        </div>
-        <cc-dialog open heading="Close Event Demo" @cc-dialog-close="${onClose}">
-          <p>Close this dialog to see the cc-dialog-close event being fired.</p>
         </cc-dialog>
       `,
       container,
@@ -332,7 +288,7 @@ export const simpleConfirmation = makeStory(conf, {
         <cc-dialog open heading="Demo with confirmation form" @cc-dialog-close="${onClose}">
           <cc-notice intent="info">
             <div slot="message">
-              You could add some message to highlight important information before the confirmation form.
+              See stories of the <code>cc-dialog-confirmation-form</code> component for more examples.
             </div>
           </cc-notice>
           <p style="margin: 0">This is a simple confirmation without input validation.</p>
@@ -387,7 +343,7 @@ export const confirmationForm = makeStory(conf, {
         <cc-dialog open heading="Demo with confirmation form" @cc-dialog-close="${onClose}">
           <cc-notice intent="info">
             <div slot="message">
-              You could add some message to highlight important information before the confirmation form.
+              See stories of the <code>cc-dialog-confirmation-form</code> component for more examples.
             </div>
           </cc-notice>
           <cc-dialog-confirmation-form
