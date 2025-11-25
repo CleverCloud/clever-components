@@ -1,14 +1,16 @@
-import { LitElement, css, html } from 'lit';
+import { LitElement, css, html, nothing } from 'lit';
+import { createRef, ref } from 'lit/directives/ref.js';
 import { formSubmit } from '../../lib/form/form-submit-directive.js';
 import { Validation } from '../../lib/form/validation.js';
 import { isStringEmpty } from '../../lib/utils.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-button/cc-button.js';
-import { CcDialogConfirmEvent } from '../cc-dialog/cc-dialog.events.js';
 import '../cc-input-text/cc-input-text.js';
+import { CcDialogConfirmEvent } from './cc-dialog-confirmation-form.events.js';
 
 /**
  * @typedef {import('../../lib/form/validation.types.js').Validator} Validator
+ * @typedef {import('lit/directives/ref.js').Ref<HTMLFormElement>} HTMLFormElementRef
  */
 
 /**
@@ -70,24 +72,32 @@ export class CcDialogConfirmationForm extends LitElement {
     this._customErrorMessages = {
       'no-match': () => i18n('cc-addon-admin.delete.dialog.error', { name: this.confirmTextToInput }),
     };
+
+    /** @type {HTMLFormElementRef} */
+    this._formRef = createRef();
   }
 
   _onCancel() {
-    // TODO: check that it works because it doesn't bubble by default I believe
-    this.dispatchEvent(new Event('cancel'));
+    console.log('cancel event dispatched');
+    this.dispatchEvent(new Event('cancel', { bubbles: true, composed: true }));
   }
 
   _onConfirm() {
+    console.log('confirm event dispatched');
     this.dispatchEvent(new CcDialogConfirmEvent());
+  }
+
+  resetForm() {
+    this._formRef.value?.reset();
   }
 
   render() {
     if (isStringEmpty(this.confirmTextToInput) || isStringEmpty(this.confirmInputLabel)) {
-      return this._renderDialogActions();
+      return this._renderDialogActions(true);
     }
 
     return html`
-      <form ${formSubmit(this._onConfirm.bind(this))}>
+      <form ${formSubmit(this._onConfirm.bind(this))} ${ref(this._formRef)}>
         <div class="dialog-content">
           <cc-input-text
             label="${this.confirmInputLabel}"
@@ -100,17 +110,19 @@ export class CcDialogConfirmationForm extends LitElement {
           >
             <p slot="help">${this.confirmTextToInput}</p>
           </cc-input-text>
-          ${this._renderDialogActions()}
+          ${this._renderDialogActions(false)}
         </div>
       </form>
     `;
   }
 
-  _renderDialogActions() {
-    // TODO: check that `_onConfirm` is not called twice when used inside a form with formSubmit directive
+  /** @param {boolean} shouldAttachHandler */
+  _renderDialogActions(shouldAttachHandler) {
+    const clickHandlerOrNothing = shouldAttachHandler ? this._onConfirm : nothing;
+
     return html`
       <div class="dialog-actions">
-        <cc-button outlined @click="${this._onCancel}" ?disabled="${this.waiting}">
+        <cc-button outlined @cc-click="${this._onCancel}" ?disabled="${this.waiting}">
           ${!isStringEmpty(this.cancelLabel) ? this.cancelLabel : i18n('cc-dialog.cancel')}
         </cc-button>
         <cc-button
@@ -118,7 +130,7 @@ export class CcDialogConfirmationForm extends LitElement {
           ?danger="${this.submitIntent === 'danger'}"
           type="submit"
           ?waiting="${this.waiting}"
-          @cc-click="${this._onConfirm}"
+          @cc-click="${clickHandlerOrNothing}"
         >
           ${this.submitLabel}
         </cc-button>

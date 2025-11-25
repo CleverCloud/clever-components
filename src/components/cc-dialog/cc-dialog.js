@@ -9,7 +9,7 @@ import { i18n } from '../../translations/translation.js';
 import '../cc-button/cc-button.js';
 import '../cc-icon/cc-icon.js';
 import '../cc-input-text/cc-input-text.js';
-import { CcDialogCloseEvent, CcDialogConfirmEvent, CcDialogOpenEvent } from './cc-dialog.events.js';
+import { CcDialogCloseEvent } from './cc-dialog.events.js';
 
 /**
  * @typedef {import('../common.types.d.ts').IconModel} IconModel
@@ -19,16 +19,24 @@ import { CcDialogCloseEvent, CcDialogConfirmEvent, CcDialogOpenEvent } from './c
  */
 
 /**
- * TODO: dialog-confirm / dialog-close or hide or cancel
+ * A modal dialog component with optional heading, icon, and close button.
+ * Can be opened or closed programmatically or by user action.
+ *
+ * If both the `heading` prop and the `heading` slot are set, the prop takes precedence.
+ *
+ * @cssdisplay contents
+ *
+ * @slot Default slot for dialog content.
+ * @slot heading - Slot for custom heading content.
  */
 export class CcDialog extends LitElement {
   static get properties() {
     return {
       closedBy: { type: String, attribute: 'closed-by' },
       heading: { type: String },
+      headingIcon: { type: Object, attribute: 'heading-icon' },
+      headingIconA11yName: { type: String, attribute: 'heading-icon-a11y-name' },
       hiddenCloseButton: { type: Boolean, attribute: 'hidden-close-button' },
-      icon: { type: Object },
-      iconA11yName: { type: String, attribute: 'icon-a11y-name' },
       open: { type: Boolean, reflect: true },
     };
   }
@@ -46,10 +54,10 @@ export class CcDialog extends LitElement {
     this.hiddenCloseButton = false;
 
     /** @type {IconModel|null} Sets the icon before the heading using a `<cc-icon>`. Icon is hidden if nullish. */
-    this.icon = null;
+    this.headingIcon = null;
 
     /** @type {string|null} Only use this prop if your icon provides information that is not already given in its surrounding text. */
-    this.iconA11yName = null;
+    this.headingIconA11yName = null;
 
     /** @type {boolean} Displays or hides the dialog */
     this.open = false;
@@ -73,8 +81,6 @@ export class CcDialog extends LitElement {
       this._lastFocusedElement = findActiveElement();
 
       this._dialogRef.value?.showModal();
-      // FIXME: might be weird to dispatch since the component cannot open by itself
-      this.dispatchEvent(new CcDialogOpenEvent());
     }
   }
 
@@ -82,22 +88,21 @@ export class CcDialog extends LitElement {
     this._lastFocusedElement = findActiveElement();
   }
 
+  /** Opens the dialog by setting the `open` property to true. */
   show() {
     this.open = true;
   }
 
+  /** Closes the dialog by setting the `open` property to false. */
   hide() {
     this.open = false;
   }
 
   /** @param {Event} e */
   _onDialogClose(e) {
+    // Prevent the native dialog close (`cancel` event) to manage it through the `open` property
     e?.preventDefault();
     this.open = false;
-  }
-
-  _onDialogConfirm() {
-    this.dispatchEvent(new CcDialogConfirmEvent());
   }
 
   _tryToFocusOpeningElement() {
@@ -110,42 +115,64 @@ export class CcDialog extends LitElement {
 
   disconnectedCallback() {
     super.disconnectedCallback();
-    this._tryToFocusOpeningElement();
+    // Restore focus to the element that opened the dialog in case the dialog is removed while open
+    // This can happen when the dialog is inside a conditional template in which case the native dialog does not support focus restoration
+    if (this.open) {
+      this._tryToFocusOpeningElement();
+    }
   }
 
   render() {
-    // TODO: heading wrapper only if heading or slotted heading + icon in slotted heading?
     return html`
       <dialog
         aria-labelledby="dialog-heading"
         closedby="${this.closedBy}"
+        part="dialog"
         ${ref(this._dialogRef)}
         @cancel="${this._onDialogClose}"
       >
-        <div class="dialog-padding">
-          ${!this.hiddenCloseButton
-            ? html`
-                <button class="dialog-close" @click="${this._onDialogClose}">
-                  <span class="visually-hidden">${i18n('cc-dialog.close')}</span>
-                  <cc-icon .icon="${iconClose}"></cc-icon>
-                </button>
-              `
-            : ''}
-          <div class="dialog-heading-wrapper">
-            ${this.icon
-              ? html`
-                  <cc-icon
-                    class="dialog-heading-icon"
-                    .icon="${this.icon}"
-                    a11y-name="${ifDefined(this.iconA11yName)}"
-                  ></cc-icon>
-                `
-              : ''}
-            ${!isStringEmpty(this.heading) ? this.heading : html`<slot name="heading" id="dialog-heading"></slot>`}
-          </div>
-          <div class="dialog-content-body-wrapper">
-            <slot></slot>
-          </div>
+        ${!this.hiddenCloseButton
+          ? html`
+              <button class="dialog-close" @click="${this._onDialogClose}">
+                <span class="visually-hidden">${i18n('cc-dialog.close')}</span>
+                <cc-icon .icon="${iconClose}"></cc-icon>
+              </button>
+            `
+          : ''}
+        ${!isStringEmpty(this.heading)
+          ? html`
+              <div class="dialog-heading-wrapper">
+                ${this.headingIcon != null
+                  ? html`
+                      <cc-icon
+                        class="dialog-heading-icon"
+                        .icon="${this.headingIcon}"
+                        a11y-name="${ifDefined(this.headingIconA11yName)}"
+                      ></cc-icon>
+                    `
+                  : ''}
+                <span id="dialog-heading">${this.heading}</span>
+              </div>
+            `
+          : ''}
+        ${isStringEmpty(this.heading)
+          ? html`
+              <div class="dialog-heading-wrapper">
+                ${this.headingIcon != null
+                  ? html`
+                      <cc-icon
+                        class="dialog-heading-icon"
+                        .icon="${this.headingIcon}"
+                        a11y-name="${ifDefined(this.headingIconA11yName)}"
+                      ></cc-icon>
+                    `
+                  : ''}
+                <slot name="heading" id="dialog-heading"></slot>
+              </div>
+            `
+          : ''}
+        <div class="dialog-content-body-wrapper">
+          <slot></slot>
         </div>
       </dialog>
     `;
@@ -156,7 +183,10 @@ export class CcDialog extends LitElement {
       accessibilityStyles,
       css`
         :host {
-          display: block;
+          display: contents;
+
+          --cc-dialog-padding-xl: 4em;
+          --cc-dialog-padding-sm: 2em;
         }
 
         dialog {
@@ -164,18 +194,15 @@ export class CcDialog extends LitElement {
           border-radius: var(--cc-border-radius-default, 0.25em);
           box-shadow: 2px 4px 8px 0 rgb(0 0 0 / 12%);
           box-sizing: border-box;
-          container: dialog / inline-size;
-          padding: 0;
+          padding: var(--cc-dialog-padding);
           width: min(38em, 80%);
+
+          --cc-dialog-padding: var(--cc-dialog-padding-xl);
         }
 
-        .dialog-padding {
-          padding: 4em;
-        }
-
-        @container dialog (max-width: 37em) {
-          .dialog-padding {
-            padding: 1em;
+        @media screen and (width <= 25em) {
+          dialog {
+            --cc-dialog-padding: var(--cc-dialog-padding-sm);
           }
         }
 
@@ -191,28 +218,30 @@ export class CcDialog extends LitElement {
         }
 
         .dialog-close {
+          align-items: center;
           background: none;
           border: none;
           border-radius: var(--cc-border-radius-default, 0.25em);
           color: var(--cc-color-text-weak);
           cursor: pointer;
-          padding: 0.5em;
+          display: flex;
+          height: 2em;
+          justify-content: center;
           position: absolute;
-          right: 1.5em;
-          top: 1.5em;
+          right: calc(var(--cc-dialog-padding) / 2.5);
+          top: calc(var(--cc-dialog-padding) / 2.5);
+          width: 2em;
 
-          --cc-icon-size: 1.4em;
+          --cc-icon-size: 1.5em;
+        }
+
+        .dialog-heading-wrapper cc-icon,
+        .dialog-close cc-icon {
+          flex: 0 0 auto;
         }
 
         .dialog-close:disabled {
           opacity: var(--cc-opacity-when-disabled, 0.65);
-        }
-
-        @container dialog (max-width: 37em) {
-          .dialog-close {
-            right: 0.5em;
-            top: 0.5em;
-          }
         }
 
         .dialog-close:focus-visible {

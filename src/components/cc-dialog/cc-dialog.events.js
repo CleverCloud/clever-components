@@ -1,19 +1,6 @@
 import { CcEvent } from '../../lib/events.js';
 
 /**
- * Dispatched when the dialog is opened.
- *
- * @extends {CcEvent}
- */
-export class CcDialogOpenEvent extends CcEvent {
-  static TYPE = 'cc-dialog-open';
-
-  constructor() {
-    super(CcDialogOpenEvent.TYPE);
-  }
-}
-
-/**
  * Dispatched when the dialog is closed.
  *
  * @extends {CcEvent}
@@ -23,19 +10,6 @@ export class CcDialogCloseEvent extends CcEvent {
 
   constructor() {
     super(CcDialogCloseEvent.TYPE);
-  }
-}
-
-/**
- * Dispatched when the user confirms using the submit button
- *
- * @extends {CcEvent}
- */
-export class CcDialogConfirmEvent extends CcEvent {
-  static TYPE = 'cc-dialog-confirm';
-
-  constructor() {
-    super(CcDialogConfirmEvent.TYPE);
   }
 }
 
