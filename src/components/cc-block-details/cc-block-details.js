@@ -81,11 +81,13 @@ export class CcBlockDetails extends LitElement {
           align-items: center;
           background-color: transparent;
           border: solid 1px transparent;
+          border-radius: var(--cc-border-radius-default, 0.25em);
           display: flex;
           font-family: inherit;
           font-size: 1em;
           grid-area: button;
           padding: 0.25em 0.6em 0.35em;
+          z-index: 1;
         }
 
         :host([is-open]) .button {
@@ -96,13 +98,12 @@ export class CcBlockDetails extends LitElement {
 
         .button:hover {
           border: solid 1px var(--cc-color-border-neutral-strong, #8c8c8c);
-          border-radius: var(--cc-border-radius-default, 0.25em);
           transition: all 0.3s;
         }
 
         .button:focus-visible {
+          border: none;
           outline: var(--cc-focus-outline, #000 solid 2px);
-          outline-offset: var(--cc-focus-outline-offset, 2px);
         }
 
         .button cc-icon {
