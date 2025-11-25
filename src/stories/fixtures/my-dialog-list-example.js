@@ -4,6 +4,7 @@ import { repeat } from "lit/directives/repeat.js";
 import { LostFocusController } from "../../controllers/lost-focus-controller.js";
 import "../../components/cc-dialog/cc-dialog.js";
 import "../../components/cc-button/cc-button.js";
+import "../../components/cc-dialog-confirmation-form/cc-dialog-confirmation-form";
 
 /**
  * @typedef {import('../../components/cc-dialog/cc-dialog.js').CcDialog} CcDialog
@@ -82,11 +83,15 @@ export class MyDialogListExample extends LitElement {
       <cc-dialog
         ?open="${this._itemToRemove != null}"
         heading="Confirm removal of ${this._itemToRemove?.name}"
-        submit-label="Remove"
-        submit-intent="danger"
         @cc-dialog-close="${this._onDialogClose}"
         @cc-dialog-confirm="${this._onRemoveConfirm}"
       >
+        <cc-dialog-confirmation-form
+          submit-label="Remove"
+          submit-intent="danger"
+          confirm-text-to-input="${this._itemToRemove?.name}"
+          confirm-input-label="Type the item name to confirm removal"
+        ></cc-dialog-confirmation-form>
       </cc-dialog>
       <ul id="item-list">
         ${repeat(

@@ -1,5 +1,6 @@
 import { html, render } from 'lit';
 import { iconRemixImageCircleFill as imageIcon } from '../../assets/cc-remix.icons.js';
+import '../../stories/fixtures/my-dialog-list-example.js';
 import { makeStory } from '../../stories/lib/make-story.js';
 import '../cc-button/cc-button.js';
 import '../cc-dialog-confirmation-form/cc-dialog-confirmation-form.js';
@@ -15,6 +16,7 @@ export default {
 /**
  * @typedef {import('./cc-dialog.js').CcDialog} CcDialog
  * @typedef {import('../cc-dialog-confirmation-form/cc-dialog-confirmation-form.js').CcDialogConfirmationForm} CcDialogConfirmationForm
+ * @typedef {import('../../stories/fixtures/my-dialog-list-example.js').MyDialogListExample} MyDialogListExample
  */
 
 const conf = {
@@ -138,29 +140,6 @@ export const slotWithHeading = makeStory(conf, {
             <span>Slotted heading with HTML elements!</span>
           </div>
           <p>Content goes in the default slot.</p>
-        </cc-dialog>
-      `,
-      container,
-    );
-  },
-});
-
-export const slotWithRichContent = makeStory(conf, {
-  /** @param {HTMLElement} container */
-  dom: (container) => {
-    render(
-      html`
-        <cc-button @cc-click="${() => getDialog(container).show()}" primary>Open Rich Content</cc-button>
-        <cc-dialog open heading="Rich Content">
-          <cc-notice intent="info">
-            <div slot="message">This notice is part of the dialog content.</div>
-          </cc-notice>
-          <p style="margin-top: 1em;">You can slot any content you need into the dialog body.</p>
-          <div style="display: flex; justify-content: end; gap: 1em; margin-top: 1.5em;">
-            <cc-button @cc-click="${() => getDialog(container).hide()}" outlined>Cancel</cc-button>
-            <cc-button>Save Draft</cc-button>
-            <cc-button primary>Publish</cc-button>
-          </div>
         </cc-dialog>
       `,
       container,
@@ -358,6 +337,30 @@ export const confirmationForm = makeStory(conf, {
       `,
       container,
     );
+  },
+});
+
+export const focusManagementAfterDeletion = makeStory(conf, {
+  /** @param {HTMLElement} container */
+  dom: (container) => {
+    const items = [
+      { id: 'item1', name: 'Item 1' },
+      { id: 'item2', name: 'Item 2' },
+      { id: 'item3', name: 'Item 3' },
+      { id: 'item4', name: 'Item 4' },
+      { id: 'item5', name: 'Item 5' },
+    ];
+
+    render(
+      html`<my-dialog-list-example .items="${items}" @remove-item="${removeItem}"></my-dialog-list-example>`,
+      container,
+    );
+
+    /** @param {CustomEvent<{id: string, name: string }> & { currentTarget: MyDialogListExample }} event */
+    function removeItem(event) {
+      const myListEl = event.currentTarget;
+      myListEl.items = myListEl.items.filter((item) => item.id !== event.detail.id);
+    }
   },
 });
 
