@@ -314,6 +314,7 @@ export const translations = {
   'cc-addon-info.creation-date.heading': `Date de création`,
   'cc-addon-info.creation-date.human-friendly-date': /** @param {{ date: string | number }} _ */ ({ date }) =>
     formatDatetime(date),
+  'cc-addon-info.doc-link.cellar': `Cellar - Documentation`,
   'cc-addon-info.doc-link.elastic': `Elastic Stack - Documentation`,
   'cc-addon-info.doc-link.keycloak': `Keycloak - Documentation`,
   'cc-addon-info.doc-link.kubernetes': `Kubernetes - Documentation`,
@@ -347,6 +348,12 @@ export const translations = {
   'cc-addon-info.scalability.link': `Configurer la scalabilité`,
   'cc-addon-info.service.name.addon': /** @param {{name: string}} _ */ ({ name }) => `Add-on ${name}`,
   'cc-addon-info.service.name.app': /** @param {{name: string}} _ */ ({ name }) => `Application ${name}`,
+  'cc-addon-info.total-content.buckets': `Buckets`,
+  'cc-addon-info.total-content.heading': `Contenu total`,
+  'cc-addon-info.total-content.objects': `Objets`,
+  'cc-addon-info.traffic.heading': `Traffic`,
+  'cc-addon-info.traffic.inbound': `Entrant`,
+  'cc-addon-info.traffic.outbound': `Sortant`,
   'cc-addon-info.type.boolean': /** @param {{boolean: boolean}} _ */ ({ boolean }) => `${boolean ? 'Oui' : 'Non'}`,
   'cc-addon-info.type.boolean-shared': /** @param {{shared: boolean}} _ */ ({ shared }) =>
     `${shared ? 'Partagé' : 'Dédié'}`,
@@ -357,6 +364,8 @@ export const translations = {
       ? sanitize`<em title="Accès au vCPU moins prioritaire">${formatNumber(lang, cpu)}<code>*</code></em>`
       : formatNumber(lang, cpu);
   },
+  'cc-addon-info.used-spaces.heading': `Espaces utilisés`,
+  'cc-addon-info.used-spaces.size': `Taille`,
   'cc-addon-info.version.btn': `Mise à jour disponible`,
   'cc-addon-info.version.dialog.btn.cancel': `Annuler`,
   'cc-addon-info.version.dialog.btn.submit': `Mettre à jour et rebuild`,

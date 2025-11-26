@@ -24,6 +24,17 @@ export interface AddonInfoStateBaseProperties {
   openScalabilityLink?: string;
   linkedServices?: Array<LinkedService>;
   docUrlLink?: string;
+  totalContent?: {
+    buckets: number;
+    objects: number;
+  };
+  traffic?: {
+    inbound: string;
+    outbound: string;
+  };
+  usedSpaces?: {
+    size: string;
+  };
 }
 
 export type AddonVersionState =
