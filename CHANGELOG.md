@@ -5,6 +5,28 @@ title: 'Changelog'
 
 # Changelog
 
+## [22.5.0](https://github.com/CleverCloud/clever-components/compare/22.4.1...22.5.0) (2025-11-27)
+
+
+### 🚀 Features
+
+* **cc-feature-list:** init component ([89474fd](https://github.com/CleverCloud/clever-components/commit/89474fd641803b4e251de1aaecc5b43d9a6f9a1a))
+* **cc-logs-addon-runtime:** add log inspect feature ([c61d5ed](https://github.com/CleverCloud/clever-components/commit/c61d5ed4bd53047e0dc81c866e2a61ed9c39ce92)), closes [#1017](https://github.com/CleverCloud/clever-components/issues/1017)
+* **cc-logs-app-access:** add log inspect feature ([06d8018](https://github.com/CleverCloud/clever-components/commit/06d8018acbe124ddaf0ee746ce4afab68b71923e)), closes [#1017](https://github.com/CleverCloud/clever-components/issues/1017)
+* **cc-logs-app-runtime:** add log inspect feature ([6d16170](https://github.com/CleverCloud/clever-components/commit/6d1617041c79843a418e48d3981a808a971ca85b)), closes [#1017](https://github.com/CleverCloud/clever-components/issues/1017)
+* **cc-logs:** add log inspect feature ([b82e012](https://github.com/CleverCloud/clever-components/commit/b82e0124b632bd24c2fbd2d156226ad7ee03136c)), closes [#1017](https://github.com/CleverCloud/clever-components/issues/1017)
+
+
+### 🐛 Bug Fixes
+
+* **cc-block-details:** improve focus outline and button transition ([4359f68](https://github.com/CleverCloud/clever-components/commit/4359f68a819aeeef59201b257be6b4b46a46d34b)), closes [#1547](https://github.com/CleverCloud/clever-components/issues/1547)
+* **cc-notice:** set --cc-icon-color only on the icon controlled by the cc-notice ([5e22a30](https://github.com/CleverCloud/clever-components/commit/5e22a302db390b2b97c09c388bb2d2538c8a292e))
+* **map:** update geojson features ([6fbf648](https://github.com/CleverCloud/clever-components/commit/6fbf648e81b72c365aabb71262d4bc3638bdf96b))
+* **skeleton:** set `animation:none` for all elements by default ([451c49e](https://github.com/CleverCloud/clever-components/commit/451c49e8ba03de353c4cad8f9c7eff676765dbfe)), closes [#1111](https://github.com/CleverCloud/clever-components/issues/1111)
+* **storybook:** update to proper group name ([2ba2877](https://github.com/CleverCloud/clever-components/commit/2ba2877c3974b2e0b39b1cc9900642979a40dfff))
+* **translations:** typos ([c171e51](https://github.com/CleverCloud/clever-components/commit/c171e51b80317a04da48982340e2c5fd2556390d))
+* **types:** use lowercase string primitive ([8fd08b3](https://github.com/CleverCloud/clever-components/commit/8fd08b3f304e82bd308433900d1a40c50f357f19))
+
 ## [22.4.1](https://github.com/CleverCloud/clever-components/compare/22.4.0...22.4.1) (2025-10-30)
 
 
