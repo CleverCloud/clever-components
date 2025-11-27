@@ -90,7 +90,7 @@ import {
   CcLogsLoadingResumeEvent,
 } from '../components/cc-logs-loading-progress/cc-logs-loading-progress.events.js';
 import { CcLogsMessageFilterChangeEvent } from '../components/cc-logs-message-filter/cc-logs-message-filter.events.js';
-import { CcLogsFollowChangeEvent } from '../components/cc-logs/cc-logs.events.js';
+import { CcLogInspectEvent, CcLogsFollowChangeEvent } from '../components/cc-logs/cc-logs.events.js';
 import { CcLogsmapModeChangeEvent } from '../components/cc-logsmap/cc-logsmap.events.js';
 import {
   CcMapMarkerClickEvent,
@@ -226,6 +226,7 @@ declare global {
     'cc-kv-set-load-more': CcKvSetLoadMoreEvent;
     'cc-kv-string-value-update': CcKvStringValueUpdateEvent;
     'cc-kv-terminal-state-change': CcKvTerminalStateChangeEvent;
+    'cc-log-inspect': CcLogInspectEvent;
     'cc-logs-date-range-selection-change': CcLogsDateRangeSelectionChangeEvent;
     'cc-logs-follow-change': CcLogsFollowChangeEvent;
     'cc-logs-instances-selection-change': CcLogsInstancesSelectionChangeEvent;

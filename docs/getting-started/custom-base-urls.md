@@ -1,5 +1,5 @@
 ---
-kind: '🚀 Getting started'
+kind: '🏡 Getting started'
 title: 'Customizing base URLs'
 ---
 
@@ -65,4 +65,3 @@ setAssetsBaseUrl('https://cdn.example.com');
 import '@clevercloud/components/dist/cc-addon-info.js';
 import '@clevercloud/components/dist/cc-invoice-list.js';
 ```
-

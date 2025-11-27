@@ -8,7 +8,7 @@ const DIGIT_SEPARATOR = '_';
  * pascalCase('dot.case'); //=> 'DotCase'
  * pascalCase('PascalCase'); //=> 'PascalCase'
  * pascalCase('version 1.2.10'); //=> 'Version_1_2_1_0'
- * @param {String} input
+ * @param {string} input
  * @returns {String}
  */
 export function pascalCase(input) {
@@ -22,7 +22,7 @@ export function pascalCase(input) {
  * stringToWordArray('dot.case'); //=> ['dot', 'case']
  * stringToWordArray('PascalCase'); //=> ['Pascal', 'Case']
  * stringToWordArray('version 1.2.10'); //=> ['version', '1', '2', '10']
- * @param {String} input
+ * @param {string} input
  * @returns {string[]}
  */
 function stringToWordArray(input) {
@@ -47,7 +47,7 @@ function stringToWordArray(input) {
  * pascalCaseTransform('STRING'); //=> 'String'
  * pascalCaseTransform('0string'); //=> '0string'
  * pascalCaseTransform('0string', true); //=> '_0string'
- * @param {String} input
+ * @param {string} input
  * @param {Boolean} enableDigitPrefix
  * @returns {string}
  */

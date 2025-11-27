@@ -4,7 +4,7 @@
 
 /**
  * Parse an RSS feed XML document into a list of articles.
- * @param {String} xmlStr - Raw XML document (RSS feed) as a string.
+ * @param {string} xmlStr - Raw XML document (RSS feed) as a string.
  * @param {Number} limit - Limit the number of articles from the feed.
  * @returns {Array<ArticleCard>}
  */

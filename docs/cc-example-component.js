@@ -96,7 +96,7 @@ export class CcExampleComponent extends LitElement {
   // Use JSDoc to document your method.
   /**
    * Documentation of this awesome method.
-   * @param {String} foo - Docs for foo.
+   * @param {string} foo - Docs for foo.
    * @param {Boolean} bar - Docs for bar.
    */
   publicMethod(foo, bar) {

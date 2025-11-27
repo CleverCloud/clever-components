@@ -12,6 +12,11 @@ export const skeletonStyles = css`
     }
   }
 
+  /* FIXME: temporary solution for Safari until we build a directive for skeletons. See https://github.com/CleverCloud/clever-components/issues/1111 for more info */
+  * {
+    animation: none;
+  }
+
   .skeleton {
     animation-direction: alternate;
     animation-duration: 500ms;

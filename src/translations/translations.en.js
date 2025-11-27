@@ -844,7 +844,7 @@ export const translations = {
   //#endregion
   //#region cc-invoice-list
   'cc-invoice-list.documentation.text': `Clever Cloud billing - Documentation`,
-  'cc-invoice-list.error': `An error occured while loading invoices.`,
+  'cc-invoice-list.error': `An error occurred while loading invoices.`,
   'cc-invoice-list.pending': `Pending invoices`,
   'cc-invoice-list.pending.no-invoices': `No pending invoices at the moment.`,
   'cc-invoice-list.processed': `Paid invoices`,
@@ -873,7 +873,7 @@ export const translations = {
   //#endregion
   //#region cc-jenkins-info
   'cc-jenkins-info.documentation.text': `Jenkins - Documentation`,
-  'cc-jenkins-info.error': `An error occured while fetching the information about this add-on.`,
+  'cc-jenkins-info.error': `An error occurred while fetching the information about this add-on.`,
   'cc-jenkins-info.info': `Info`,
   'cc-jenkins-info.open-jenkins.link': `Access Jenkins`,
   'cc-jenkins-info.open-jenkins.text': `Access Jenkins using the Clever Cloud SSO (Single Sign-On). Organisation members can also access the Jenkins service.`,
@@ -1039,6 +1039,7 @@ export const translations = {
   //#region cc-logs
   'cc-logs.copied': /** @param {{count: number}} _ */ ({ count }) => `Copied (${count} ${plural(count, 'line')})`,
   'cc-logs.copy': `Copy`,
+  'cc-logs.inspect': `Inspect`,
   'cc-logs.select-button.label': /** @param {{index: number}} _ */ ({ index }) => `Select the line ${index}`,
   'cc-logs.unselect-button.label': /** @param {{index: number}} _ */ ({ index }) => `Unselect the line ${index}`,
   //#endregion
@@ -1185,7 +1186,7 @@ export const translations = {
   `,
   'cc-matomo-info.about.title': `About`,
   'cc-matomo-info.documentation.text': `Matomo - Documentation`,
-  'cc-matomo-info.error': `An error occured while fetching the information about this add-on.`,
+  'cc-matomo-info.error': `An error occurred while fetching the information about this add-on.`,
   'cc-matomo-info.heading': `This Matomo add-on provides all required dependencies to get started.`,
   'cc-matomo-info.info': `Info`,
   'cc-matomo-info.link.mysql': `Access the MySQL add-on`,

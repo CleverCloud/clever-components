@@ -1,6 +1,6 @@
 {
   "name": "@clevercloud/components",
-  "version": "22.4.0",
+  "version": "22.4.1",
   "description": "Collection of Web Components by Clever Cloud",
   "license": "Apache-2.0",
   "keywords": [
@@ -180,7 +180,7 @@
   },
   "customElements": "dist/custom-elements.json",
   "volta": {
-    "node": "22.17.1",
-    "npm": "11.4.2"
+    "node": "24.11.1",
+    "npm": "11.6.2"
   }
 }

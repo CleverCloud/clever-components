@@ -198,7 +198,7 @@ function disconnectComponent(container, definition, component) {
 /**
  *
  * @param {Element} element
- * @param {String} selector
+ * @param {string} selector
  * @return {Element}
  */
 function closestParent(element, selector) {

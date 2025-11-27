@@ -5,6 +5,13 @@ title: 'Changelog'
 
 # Changelog
 
+## [22.4.1](https://github.com/CleverCloud/clever-components/compare/22.4.0...22.4.1) (2025-10-30)
+
+
+### 🐛 Bug Fixes
+
+* **cc-addon-header.smart-kubernetes:** set provider name in status message ([71256cf](https://github.com/CleverCloud/clever-components/commit/71256cff5855ca3123e52a170665f4e16502049a))
+
 ## [22.4.0](https://github.com/CleverCloud/clever-components/compare/22.3.2...22.4.0) (2025-10-30)
 
 

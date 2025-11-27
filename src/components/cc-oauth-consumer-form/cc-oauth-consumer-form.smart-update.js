@@ -132,8 +132,8 @@ defineSmartComponent({
 class Api {
   /**
    * @param {ApiConfig} apiConfig
-   * @param {String} ownerId
-   * @param {String} key
+   * @param {string} ownerId
+   * @param {string} key
    */
   constructor(apiConfig, ownerId, key) {
     this._apiConfig = apiConfig;
