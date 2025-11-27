@@ -705,6 +705,17 @@ export const translations = {
   'cc-env-var-linked-services.loading.app': /** @param {{appName: string}} _ */ ({ appName }) =>
     sanitize`Chargement de la configuration publiée par les applications liées à <strong>${appName}</strong>…`,
   //#endregion
+  //#region cc-feature-list
+  'cc-feature-list.documentation-link': `Voir la documentation`,
+  'cc-feature-list.error': `Une erreur s'est produite lors du chargement des fonctionnalités expérimentales disponibles`,
+  'cc-feature-list.feedback-link': `Donnez votre avis`,
+  'cc-feature-list.no-data': `Aucune fonctionnalité expérimentale n'est disponible pour le moment`,
+  'cc-feature-list.notice': `Pensez à recharger votre page après avoir fait des modifications afin de les appliquer`,
+  'cc-feature-list.status.alpha': `Alpha`,
+  'cc-feature-list.status.beta': `Beta`,
+  'cc-feature-list.status.preview': `Aperçu`,
+  'cc-feature-list.title': `Fonctionnalités expérimentales`,
+  //#endregion
   //#region cc-grafana-info
   'cc-grafana-info.disable-description': `Désactiver Grafana supprimera et mettra fin aux accès à l'organisation du Grafana. Vous pourrez toujours recréer une nouvelle organisation Grafana.`,
   'cc-grafana-info.disable-title': `Désactiver Grafana`,
