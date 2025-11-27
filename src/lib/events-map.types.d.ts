@@ -14,12 +14,8 @@ import { CcAddonRebuildEvent, CcAddonRestartEvent } from '../components/cc-addon
 import { CcAddonVersionChangeEvent } from '../components/cc-addon-info/cc-addon-info.events.js';
 import { CcAddonOptionFormSubmitEvent } from '../components/cc-addon-option-form/cc-addon-option-form.events.js';
 import { CcAddonOptionChangeEvent } from '../components/cc-addon-option/cc-addon-option.events.js';
-import {
-  CcDialogCloseEvent,
-  CcDialogConfirmEvent,
-  CcDialogOpenEvent,
-  CcLostFocusEvent,
-} from '../components/cc-dialog/cc-dialog.events.js';
+import { CcDialogConfirmEvent } from '../components/cc-dialog-confirmation-form/cc-dialog-confirmation-form.events.js';
+import { CcDialogCloseEvent, CcDialogFocusRestorationFail } from '../components/cc-dialog/cc-dialog.events.js';
 import {
   CcDomainAddEvent,
   CcDomainDeleteEvent,
@@ -187,7 +183,7 @@ declare global {
     'cc-deployment-cancel': CcDeploymentCancelEvent;
     'cc-dialog-close': CcDialogCloseEvent;
     'cc-dialog-confirm': CcDialogConfirmEvent;
-    'cc-dialog-open': CcDialogOpenEvent;
+    'cc-dialog-focus-restoration-fail': CcDialogFocusRestorationFail;
     'cc-domain-add': CcDomainAddEvent;
     'cc-domain-delete': CcDomainDeleteEvent;
     'cc-domain-mark-as-primary': CcDomainMarkAsPrimaryEvent;
@@ -244,7 +240,6 @@ declare global {
     'cc-logs-message-filter-change': CcLogsMessageFilterChangeEvent;
     'cc-logs-options-change': CcLogsOptionsChangeEvent;
     'cc-logsmap-mode-change': CcLogsmapModeChangeEvent;
-    'cc-lost-focus': CcLostFocusEvent;
     'cc-map-marker-click': CcMapMarkerClickEvent;
     'cc-map-marker-enter': CcMapMarkerEnterEvent;
     'cc-map-marker-leave': CcMapMarkerLeaveEvent;

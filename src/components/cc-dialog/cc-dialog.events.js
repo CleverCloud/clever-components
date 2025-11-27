@@ -16,12 +16,13 @@ export class CcDialogCloseEvent extends CcEvent {
 /**
  * Dispatched when the focus is lost.
  *
- * @extends {CcEvent}
+ * @extends {CcEvent<Element>}
  */
-export class CcLostFocusEvent extends CcEvent {
-  static TYPE = 'cc-lost-focus';
+export class CcDialogFocusRestorationFail extends CcEvent {
+  static TYPE = 'cc-dialog-focus-restoration-fail';
 
-  constructor() {
-    super(CcLostFocusEvent.TYPE);
+  /** @param {Element} element - the element that it tried to restore focus on */
+  constructor(element) {
+    super(CcDialogFocusRestorationFail.TYPE, element);
   }
 }

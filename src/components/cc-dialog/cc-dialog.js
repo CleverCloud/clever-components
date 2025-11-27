@@ -10,7 +10,7 @@ import { i18n } from '../../translations/translation.js';
 import '../cc-button/cc-button.js';
 import '../cc-icon/cc-icon.js';
 import '../cc-input-text/cc-input-text.js';
-import { CcDialogCloseEvent } from './cc-dialog.events.js';
+import { CcDialogCloseEvent, CcDialogFocusRestorationFail } from './cc-dialog.events.js';
 
 /**
  * @typedef {import('../common.types.d.ts').IconModel} IconModel
@@ -117,9 +117,10 @@ export class CcDialog extends LitElement {
   _tryToFocusOpeningElement() {
     if (this._lastFocusedElement instanceof HTMLElement && this._lastFocusedElement.isConnected) {
       this._lastFocusedElement.focus();
+      // TODO: Should we check that the focus was successful, would be more robust I guess?
+    } else {
+      this.dispatchEvent(new CcDialogFocusRestorationFail(this._lastFocusedElement));
     }
-    // TODO: dispatch some event to warn that focus lost?
-    console.log(this._lastFocusedElement);
   }
 
   disconnectedCallback() {
