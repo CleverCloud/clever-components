@@ -1,7 +1,6 @@
 import json from '@rollup/plugin-json';
 import { rollupAdapter } from '@web/dev-server-rollup';
 import { chromeLauncher, defaultReporter, summaryReporter } from '@web/test-runner';
-import { globSync } from 'tinyglobby';
 import { cemAnalyzerPlugin } from './web-test-runner/cem-analyzer-plugin.js';
 import { storyFileToA11yTestsFilePlugin } from './web-test-runner/story-file-to-a11y-tests-file-plugin.js';
 import { commonjsPluginWithConfig, esbuildBundlePluginWithConfig } from './web-test-runner/wds-common.js';
@@ -51,23 +50,23 @@ export default {
       timeout: '10000',
     },
   },
-  groups: [
-    {
-      name: 'unit',
-      files: ['test/**/*.test.*'],
-    },
-    // Create a named group for every test file to enable running single tests. If a story file is `cc-example-component.stories.js`
-    // then you can run `npm run test:group a11y:cc-example-component` to run only that component's a11y tests.
-    // If a test file is `cc-example-component.test.js`, then you can run `npm run test:group test:cc-example-component to run only that component's unit tests.
-    // adapted from https://github.com/shoelace-style/shoelace/blob/next/web-test-runner.config.js
-    ...globSync(['src/components/**/*.stories.js', 'src/components/**/*.test.js']).map((path) => {
-      const { fileType, fileName } = path.match(/^.*\/(?<fileName>.*)\.(?<fileType>.*)\.js/).groups;
-      return {
-        name: `${fileType === 'test' ? fileType : 'a11y'}:${fileName}`,
-        files: path,
-      };
-    }),
-  ],
+  // groups: [
+  //   {
+  //     name: 'unit',
+  //     files: ['test/**/*.test.*'],
+  //   },
+  //   // Create a named group for every test file to enable running single tests. If a story file is `cc-example-component.stories.js`
+  //   // then you can run `npm run test:group a11y:cc-example-component` to run only that component's a11y tests.
+  //   // If a test file is `cc-example-component.test.js`, then you can run `npm run test:group test:cc-example-component to run only that component's unit tests.
+  //   // adapted from https://github.com/shoelace-style/shoelace/blob/next/web-test-runner.config.js
+  //   ...globSync(['src/components/**/*.stories.js', 'src/components/**/*.test.js']).map((path) => {
+  //     const { fileType, fileName } = path.match(/^.*\/(?<fileName>.*)\.(?<fileType>.*)\.js/).groups;
+  //     return {
+  //       name: `${fileType === 'test' ? fileType : 'a11y'}:${fileName}`,
+  //       files: path,
+  //     };
+  //   }),
+  // ],
   testRunnerHtml: (testFramework) => `
     <!DOCTYPE html>
     <html>
