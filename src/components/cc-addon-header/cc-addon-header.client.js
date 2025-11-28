@@ -67,6 +67,14 @@ export class CcAddonHeaderClient {
     return { rawAddon, operator, zone };
   }
 
+  /** @returns {Promise<{ rawAddon: RawAddon, zone: ZoneStateLoaded }>} */
+  async getAddonWithZone() {
+    const rawAddon = await this.getAddon();
+    const zone = await this.getZone(rawAddon.region);
+
+    return { rawAddon, zone };
+  }
+
   /** @return {Promise<void>} */
   async restartAddon() {
     return rebootOperator({ provider: this._provider, realId: this._realId }).then(
