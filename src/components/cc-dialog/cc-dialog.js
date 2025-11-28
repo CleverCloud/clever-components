@@ -29,6 +29,11 @@ import { CcDialogCloseEvent, CcDialogFocusRestorationFail } from './cc-dialog.ev
  *
  * @slot Default slot for dialog content.
  * @slot heading - Slot for custom heading content.
+ *
+ * @cssprop {Padding} --cc-dialog-padding-xl - Sets the value of the padding CSS property when viewport is large (defaults: `4em`).
+ * @cssprop {Padding} --cc-dialog-padding-sm - Sets the value of the padding CSS property when viewport is narrow (defaults: `2em`).
+ * @cssprop {Padding} --cc-dialog-padding - Sets the value of the padding CSS property whatever the viewport size may be (defaults: `var(--cc-dialog-padding-xl` or `var(--cc-dialog-padding-sm)` depending on the viewport)`).
+ * @cssprop {Width} --cc-dialog-width - Sets the value of the width CSS property (defaults: `38em`). Note that the dialog width will never exceed 80% of the viewport width.
  */
 export class CcDialog extends LitElement {
   static get properties() {
@@ -186,7 +191,7 @@ export class CcDialog extends LitElement {
           box-shadow: 2px 4px 8px 0 rgb(0 0 0 / 12%);
           box-sizing: border-box;
           padding: var(--cc-dialog-padding);
-          width: min(38em, 80%);
+          width: min(var(--cc-dialog-width, 38em), 80%);
 
           --cc-dialog-padding: var(--cc-dialog-padding-xl);
         }
