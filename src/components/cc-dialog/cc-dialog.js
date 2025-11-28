@@ -196,7 +196,8 @@ export class CcDialog extends LitElement {
           --cc-dialog-padding: var(--cc-dialog-padding-xl);
         }
 
-        @media screen and (width <= 25em) {
+        /* stylelint-disable-next-line media-feature-range-notation */
+        @media screen and (max-width: 25em) {
           dialog {
             --cc-dialog-padding: var(--cc-dialog-padding-sm);
           }
