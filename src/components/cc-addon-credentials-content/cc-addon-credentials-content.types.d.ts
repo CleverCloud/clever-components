@@ -49,4 +49,7 @@ type AddonCredentialCode =
   | 'uri'
   | 'tenant'
   | 'initial-user'
-  | 'open-api-url';
+  | 'open-api-url'
+  | 'key-id'
+  | 'key-secret'
+  | 'download-file';

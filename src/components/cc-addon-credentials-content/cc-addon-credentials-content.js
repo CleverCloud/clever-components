@@ -7,6 +7,7 @@ import { i18n } from '../../translations/translation.js';
 import '../cc-button/cc-button.js';
 import '../cc-clipboard/cc-clipboard.js';
 import '../cc-input-text/cc-input-text.js';
+import '../cc-link/cc-link.js';
 import { CcNgDisable, CcNgEnable } from './cc-addon-credentials-content.events.js';
 
 /** @type {Set<AddonCredential['code']>} */
@@ -24,6 +25,7 @@ const credentialsToDisplayAsString = new Set([
   'api-client-user',
   'initial-user',
   'open-api-url',
+  'key-id',
 ]);
 /** @type {Set<AddonCredential['code']>} */
 const credentialsToDisplayAsInput = new Set([
@@ -34,6 +36,7 @@ const credentialsToDisplayAsInput = new Set([
   'api-password',
   'token',
   'api-client-secret',
+  'key-secret',
 ]);
 
 /**
@@ -129,6 +132,12 @@ export class CcAddonCredentialsContent extends LitElement {
         return i18n('cc-addon-credentials-content.code.initial-user');
       case 'open-api-url':
         return i18n('cc-addon-credentials-content.code.open-api-url');
+      case 'key-id':
+        return i18n('cc-addon-credentials-content.code.key-id');
+      case 'key-secret':
+        return i18n('cc-addon-credentials-content.code.key-secret');
+      case 'download-file':
+        return i18n('cc-addon-credentials-content.code.download-file');
       default:
         return code;
     }
@@ -140,6 +149,10 @@ export class CcAddonCredentialsContent extends LitElement {
 
   _onNgDisable() {
     this.dispatchEvent(new CcNgDisable());
+  }
+
+  _onRenewSecret() {
+    console.log('renewing secret');
   }
 
   render() {
@@ -179,7 +192,16 @@ export class CcAddonCredentialsContent extends LitElement {
                   readonly
                   ?skeleton="${skeleton}"
                 ></cc-input-text>
+                ${credential.code === 'key-secret'
+                  ? html`<cc-button class="buttons" outlined @cc-click=${this._onRenewSecret}
+                      >${i18n('cc-addon-credentials-beta.renew-secret')}</cc-button
+                    >`
+                  : ''}
               `
+            : ''}
+          <!--TODO: add href when API available-->
+          ${credential.code === 'download-file'
+            ? html` <cc-link href="#" download="">${i18n('cc-addon-credentials-beta.download-s3cfg-file')}</cc-link> `
             : ''}
           ${credential.code === 'ng' ? this._renderNgCredential(credential.value, credential.kind, skeleton) : ''}
         </dd>
