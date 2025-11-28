@@ -88,8 +88,6 @@ export const translations = {
   'cc-addon-admin.delete-disclaimer': `Supprimer cet add-on le rend immédiatement indisponible.`,
   'cc-addon-admin.delete-vm': `La base de données est conservée 24 heures.`,
   'cc-addon-admin.delete-vm-and-backups': `La base de données est conservée 24 heures, les sauvegardes suivant la politique de rétention.`,
-  'cc-addon-admin.delete.dialog.cancel': `Annuler`,
-  'cc-addon-admin.delete.dialog.close': `Fermer`,
   'cc-addon-admin.delete.dialog.confirm': `Supprimer l'add-on`,
   'cc-addon-admin.delete.dialog.desc': `En supprimant cet add-on, vous risquez de perdre toutes ses données. Veuillez consulter les conditions générales d'utilisation du fournisseur de cet add-on pour plus d'informations.`,
   'cc-addon-admin.delete.dialog.error': /** @param {{ name: string }} _ */ ({ name }) =>
@@ -121,7 +119,6 @@ export const translations = {
       Vous pouvez gérer les sauvegardes directement depuis votre terminal en utilisant les commandes ci-dessous.
     `,
   'cc-addon-backups.cli.content.list-backups-command': `Lister les sauvegardes de bases de données disponibles\u00A0:`,
-  'cc-addon-backups.close-btn': `Fermer ce panneau`,
   'cc-addon-backups.command-password': `Cette commande vous demandera votre mot de passe, le voici\u00A0:`,
   'cc-addon-backups.delete': /** @param {{createdAt: string|number}} _ */ ({ createdAt }) =>
     sanitize`Supprimer la sauvegarde du <strong title="${formatDate(createdAt)}">${formatDatetime(createdAt)}</strong>`,
@@ -354,9 +351,7 @@ export const translations = {
       : formatNumber(lang, cpu);
   },
   'cc-addon-info.version.btn': `Mise à jour disponible`,
-  'cc-addon-info.version.dialog.btn.cancel': `Annuler`,
   'cc-addon-info.version.dialog.btn.submit': `Mettre à jour et rebuild`,
-  'cc-addon-info.version.dialog.close': `Fermer`,
   'cc-addon-info.version.dialog.desc': /** @param {{ url: string }} _ */ ({ url }) =>
     sanitize`Une ou plusieurs nouvelles versions sont disponibles. Choisissez la version que vous souhaitez appliquer et confirmez pour rebuild et redémarrer application. Consultez notre <cc-link href="${url}">Changelog</cc-link> pour en savoir plus.`,
   'cc-addon-info.version.dialog.heading': `Mise à jour disponible`,

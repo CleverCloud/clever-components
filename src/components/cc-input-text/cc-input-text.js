@@ -53,6 +53,7 @@ export class CcInputText extends CcFormControlElement {
   static get properties() {
     return {
       ...super.properties,
+      // eslint-disable-next-line lit/no-native-attributes
       autofocus: { type: Boolean },
       clipboard: { type: Boolean, reflect: true },
       disabled: { type: Boolean, reflect: true },

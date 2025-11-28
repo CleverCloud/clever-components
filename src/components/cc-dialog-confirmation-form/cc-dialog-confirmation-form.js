@@ -122,7 +122,7 @@ export class CcDialogConfirmationForm extends LitElement {
 
     return html`
       <div class="dialog-actions">
-        <cc-button outlined @cc-click="${this._onCancel}" ?disabled="${this.waiting}">
+        <cc-button outlined @cc-click="${this._onCancel}" ?disabled="${this.waiting}" type="reset">
           ${!isStringEmpty(this.cancelLabel) ? this.cancelLabel : i18n('cc-dialog.cancel')}
         </cc-button>
         <cc-button

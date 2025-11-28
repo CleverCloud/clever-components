@@ -199,7 +199,9 @@ describe('lost-focus-controller', () => {
         // eslint-disable-next-line wc/max-elements-per-file
         class extends LitElement {
           static get properties() {
-            return { items: { type: Array }, items: { type: Array }, items: { type: Array } };
+            // the property sort plugin duplicates the items property
+            // prettier-ignore
+            return { items: { type: Array } };
           }
 
           constructor() {

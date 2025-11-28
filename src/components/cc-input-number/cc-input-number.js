@@ -49,6 +49,7 @@ export class CcInputNumber extends CcFormControlElement {
   static get properties() {
     return {
       ...super.properties,
+      // eslint-disable-next-line lit/no-native-attributes
       autofocus: { type: Boolean },
       controls: { type: Boolean },
       disabled: { type: Boolean, reflect: true },

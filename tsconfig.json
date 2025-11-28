@@ -99,7 +99,7 @@
           "transitionend",
           "cancel"
         ],
-        "globalAttributes": ["closedby"]
+        "globalAttributes": ["closedby", "autofocus"]
       }
     ]
   }

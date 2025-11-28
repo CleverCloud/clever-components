@@ -50,6 +50,7 @@ export class CcButton extends LitElement {
       a11yExpanded: { type: Boolean, attribute: 'a11y-expanded', reflect: true },
       a11yName: { type: String, attribute: 'a11y-name' },
       a11yPressed: { type: Boolean, attribute: 'a11y-pressed', reflect: true },
+      // eslint-disable-next-line lit/no-native-attributes
       autofocus: { type: Boolean },
       circle: { type: Boolean },
       danger: { type: Boolean },

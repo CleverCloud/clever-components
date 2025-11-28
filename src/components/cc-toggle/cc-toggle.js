@@ -47,6 +47,7 @@ export class CcToggle extends LitElement {
   static get properties() {
     return {
       /** @required */
+      // eslint-disable-next-line lit/no-native-attributes
       autofocus: { type: Boolean },
       choices: { type: Array },
       disabled: { type: Boolean },

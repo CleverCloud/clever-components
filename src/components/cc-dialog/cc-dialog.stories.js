@@ -1,6 +1,5 @@
 import { html, render } from 'lit';
 import { iconRemixImageCircleFill as imageIcon } from '../../assets/cc-remix.icons.js';
-import '../../stories/fixtures/my-dialog-list-example.js';
 import { makeStory } from '../../stories/lib/make-story.js';
 import '../cc-button/cc-button.js';
 import '../cc-dialog-confirmation-form/cc-dialog-confirmation-form.js';
@@ -16,7 +15,6 @@ export default {
 /**
  * @typedef {import('./cc-dialog.js').CcDialog} CcDialog
  * @typedef {import('../cc-dialog-confirmation-form/cc-dialog-confirmation-form.js').CcDialogConfirmationForm} CcDialogConfirmationForm
- * @typedef {import('../../stories/fixtures/my-dialog-list-example.js').MyDialogListExample} MyDialogListExample
  */
 
 const conf = {

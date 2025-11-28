@@ -77,8 +77,6 @@ export const translations = {
   'cc-addon-admin.delete-disclaimer': `Deleting this add-on makes it immediately unavailable.`,
   'cc-addon-admin.delete-vm': `The database is kept 24 hours.`,
   'cc-addon-admin.delete-vm-and-backups': `The database is kept 24 hours, backups according to the retention policy.`,
-  'cc-addon-admin.delete.dialog.cancel': `Cancel`,
-  'cc-addon-admin.delete.dialog.close': `Close`,
   'cc-addon-admin.delete.dialog.confirm': `Delete the add-on`,
   'cc-addon-admin.delete.dialog.desc': `Be aware that by removing this add-on, all the data related to it may be lost. Please refer to the add-on provider terms of usage for more details.`,
   'cc-addon-admin.delete.dialog.error': /** @param {{ name: string }} _ */ ({ name }) =>
@@ -110,7 +108,6 @@ export const translations = {
       You can manage backups directly from your terminal using the commands below.
     `,
   'cc-addon-backups.cli.content.list-backups-command': `Download a database backup:`,
-  'cc-addon-backups.close-btn': `Close this panel`,
   'cc-addon-backups.command-password': `This command will ask for your password, here it is:`,
   'cc-addon-backups.delete': /** @param {{createdAt: string|number}} _ */ ({ createdAt }) =>
     sanitize`Delete the backup from <strong title="${formatDate(createdAt)}">${formatDatetime(createdAt)}</strong>`,
@@ -343,9 +340,7 @@ export const translations = {
       : formatNumber(lang, cpu);
   },
   'cc-addon-info.version.btn': `Update available`,
-  'cc-addon-info.version.dialog.btn.cancel': `Cancel`,
   'cc-addon-info.version.dialog.btn.submit': `Update and rebuild`,
-  'cc-addon-info.version.dialog.close': `Close`,
   'cc-addon-info.version.dialog.desc': /** @param {{ url: string }} _ */ ({ url }) =>
     sanitize`One or more new versions are available. Choose the version you wish to apply and confirm to start and rebuild the application. Learn more in our <cc-link href="${url}">Changelog</cc-link>.`,
   'cc-addon-info.version.dialog.heading': `Update available`,
