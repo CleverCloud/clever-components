@@ -190,6 +190,9 @@ export const translations = {
   'cc-addon-credentials-beta.choice.direct': `Direct`,
   'cc-addon-credentials-beta.choice.elastic': `Elastic`,
   'cc-addon-credentials-beta.choice.kibana': `Kibana`,
+  'cc-addon-credentials-beta.doc-link.elastic': `Elastic - Documentation`,
+  'cc-addon-credentials-beta.doc-link.elastic-apm': `Elastic APM - Documentation`,
+  'cc-addon-credentials-beta.doc-link.elastic-kibana': `Kibana - Documentation`,
   'cc-addon-credentials-beta.doc-link.keycloak': `Secured multi-instances - Documentation`,
   'cc-addon-credentials-beta.doc-link.otoroshi-api': `Manage Otoroshi from its API - Documentation`,
   'cc-addon-credentials-beta.doc-link.otoroshi-ng': `Otoroshi in a Network Group - Documentation`,
@@ -300,6 +303,7 @@ export const translations = {
   'cc-addon-info.creation-date.heading': `Creation date`,
   'cc-addon-info.creation-date.human-friendly-date': /** @param {{ date: string | number }} _ */ ({ date }) =>
     formatDatetime(date),
+  'cc-addon-info.doc-link.elastic': `Elastic Stack - Documentation`,
   'cc-addon-info.doc-link.keycloak': `Keycloak - Documentation`,
   'cc-addon-info.doc-link.kubernetes': `Kubernetes - Documentation`,
   'cc-addon-info.doc-link.matomo': `Matomo - Documentation`,
