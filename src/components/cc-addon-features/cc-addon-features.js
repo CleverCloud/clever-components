@@ -28,12 +28,8 @@ const SKELETON_FEATURES = [
 ];
 
 /**
- * @typedef {import('./cc-addon-features.types.js').AddonFeature} AddonFeature
- * @typedef {import('./cc-addon-features.types.js').AddonFeaturesState} AddonFeaturesState
- * @typedef {import('./cc-addon-features.types.js').AddonFeaturesStateLoading} AddonFeaturesStateLoading
- * @typedef {import('./cc-addon-features.types.js').AddonFeaturesStateLoaded} AddonFeaturesStateLoaded
- * @typedef {import('./cc-addon-features.types.js').AddonFeatureWithIcon} AddonFeatureWithIcon
- * @typedef {import('../common.types.js').IconModel} IconModel
+ * @import { AddonFeature, AddonFeaturesState, AddonFeatureWithIcon } from './cc-addon-features.types.js'
+ * @import { IconModel } from '../common.types.js'
  */
 
 /**

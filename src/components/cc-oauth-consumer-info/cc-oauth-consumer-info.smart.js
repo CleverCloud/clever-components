@@ -7,12 +7,10 @@ import '../cc-smart-container/cc-smart-container.js';
 import './cc-oauth-consumer-info.js';
 
 /**
- * @typedef {import('./cc-oauth-consumer-info.js').CcOauthConsumerInfo} CcOauthConsumerInfo
- * @typedef {import('./cc-oauth-consumer-info.types.js').OauthConsumerInfoStateLoaded} OauthConsumerInfoStateLoaded
- * @typedef {import('./cc-oauth-consumer-info.types.js').OauthConsumerRights} OauthConsumerRights
- * @typedef {import('./cc-oauth-consumer-info.types.js').RawOauthConsumer} RawOauthConsumer
- * @typedef {import('../../lib/send-to-api.types.js').ApiConfig} ApiConfig
- * @typedef {import('../../lib/smart/smart-component.types.js').OnContextUpdateArgs<CcOauthConsumerInfo>} OnContextUpdateArgs
+ * @import { CcOauthConsumerInfo } from './cc-oauth-consumer-info.js'
+ * @import { OauthConsumerRights, RawOauthConsumer } from './cc-oauth-consumer-info.types.js'
+ * @import { ApiConfig } from '../../lib/send-to-api.types.js'
+ * @import { OnContextUpdateArgs } from '../../lib/smart/smart-component.types.js'
  */
 
 /** @type {OauthConsumerRights} */
@@ -40,7 +38,7 @@ defineSmartComponent({
   },
 
   /**
-   * @param {OnContextUpdateArgs} args
+   * @param {OnContextUpdateArgs<CcOauthConsumerInfo>} args
    */
   onContextUpdate({ context, updateComponent }) {
     const { apiConfig, ownerId, key } = context;

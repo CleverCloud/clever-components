@@ -51,13 +51,10 @@ const SKELETON_REQUESTS = Array.from(new Array(NUMBER_OF_POINTS)).map((_, index)
 });
 
 /**
- * @typedef {import('./cc-tile-metrics.types.js').TileMetricsMetricsState} TileMetricsMetricsState
- * @typedef {import('./cc-tile-metrics.types.js').TileMetricsGrafanaLinkState} TileMetricsGrafanaLinkState
- * @typedef {import('./cc-tile-metrics.types.js').MetricsData} MetricsData
- * @typedef {import('./cc-tile-metrics.types.js').Metric} Metric
- * @typedef {import('lit/directives/ref.js').Ref<HTMLCanvasElement>} RefCanvas
- * @typedef {import('lit').PropertyValues<CcTileMetrics>} CcTileMetricsPropertyValues
- * @typedef {import('chart.js').ChartData} ChartData
+ * @import { TileMetricsMetricsState, TileMetricsGrafanaLinkState, MetricsData, Metric } from './cc-tile-metrics.types.js'
+ * @import { ChartData } from 'chart.js'
+ * @import { Ref } from 'lit/directives/ref.js'
+ * @import { PropertyValues } from 'lit'
  */
 
 /**
@@ -100,10 +97,10 @@ export class CcTileMetrics extends LitElement {
     /** @type {boolean} */
     this._docsPanelVisible = false;
 
-    /** @type {RefCanvas} */
+    /** @type {Ref<HTMLCanvasElement>} */
     this._cpuCtxRef = createRef();
 
-    /** @type {RefCanvas} */
+    /** @type {Ref<HTMLCanvasElement>} */
     this._memCtxRef = createRef();
 
     new ResizeController(this, {
@@ -248,7 +245,7 @@ export class CcTileMetrics extends LitElement {
 
   /**
    * We rely on updated instead of willUpdate because we need this._cpuChart and this._memChart before
-   * @param {CcTileMetricsPropertyValues} changedProperties
+   * @param {PropertyValues<CcTileMetrics>} changedProperties
    */
   updated(changedProperties) {
     if (changedProperties.has('metricsState')) {

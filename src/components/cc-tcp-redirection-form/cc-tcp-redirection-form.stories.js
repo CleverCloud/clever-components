@@ -13,11 +13,8 @@ const conf = {
 };
 
 /**
- * @typedef {import('./cc-tcp-redirection-form.js').CcTcpRedirectionForm} CcTcpRedirectionForm
- * @typedef {import('./cc-tcp-redirection-form.types.js').TcpRedirectionFormStateLoaded} TcpRedirectionFormStateLoaded
- * @typedef {import('./cc-tcp-redirection-form.types.js').TcpRedirectionFormStateLoading} TcpRedirectionFormStateLoading
- * @typedef {import('./cc-tcp-redirection-form.types.js').TcpRedirectionFormStateError} TcpRedirectionFormStateError
- * @typedef {import('./cc-tcp-redirection-form.types.js').TcpRedirectionFormContextType} TcpRedirectionFormContextType
+ * @import { CcTcpRedirectionForm } from './cc-tcp-redirection-form.js'
+ * @import { TcpRedirectionFormStateLoaded, TcpRedirectionFormStateLoading, TcpRedirectionFormStateError, TcpRedirectionFormContextType } from './cc-tcp-redirection-form.types.js'
  */
 export const defaultStory = makeStory(conf, {
   items: [

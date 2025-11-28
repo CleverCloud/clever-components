@@ -16,11 +16,8 @@ const SKELETON_SCALABILITY = {
 };
 
 /**
- * @typedef {import('./cc-tile-scalability.types.js').TileScalabilityState} TileScalabilityState
- * @typedef {import('./cc-tile-scalability.types.js').TileScalabilityStateLoading} TileScalabilityStateLoading
- * @typedef {import('./cc-tile-scalability.types.js').TileScalabilityStateLoaded} TileScalabilityStateLoaded
- * @typedef {import('../common.types.js').Scalability} Scalability
- * @typedef {import('../common.types.js').Flavor} Flavor
+ * @import { TileScalabilityState } from './cc-tile-scalability.types.js'
+ * @import { Scalability, Flavor } from '../common.types.js'
  */
 
 /**

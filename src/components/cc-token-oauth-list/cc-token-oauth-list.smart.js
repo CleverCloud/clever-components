@@ -9,14 +9,11 @@ import '../cc-smart-container/cc-smart-container.js';
 import './cc-token-oauth-list.js';
 
 /**
- * @typedef {import('./cc-token-oauth-list.js').CcTokenOauthList} CcTokenOauthList
- * @typedef {import('./cc-token-oauth-list.types.js').OauthTokenState} OauthTokenState
- * @typedef {import('./cc-token-oauth-list.types.js').TokenOauthListStateLoaded} TokenOauthListStateLoaded
- * @typedef {import('./cc-token-oauth-list.types.js').TokenOauthListStateRevokingAll} TokenOauthListStateRevokingAll
- * @typedef {import('./cc-token-oauth-list.types.js').OauthToken} OauthToken
- * @typedef {import('../cc-token-session-list/cc-token-session-list.types.js').RawTokenData} RawTokenData
- * @typedef {import('../../lib/send-to-api.types.js').ApiConfig} ApiConfig
- * @typedef {import('../../lib/smart/smart-component.types.js').OnContextUpdateArgs<CcTokenOauthList>} OnContextUpdateArgs
+ * @import { CcTokenOauthList } from './cc-token-oauth-list.js'
+ * @import { OauthTokenState, TokenOauthListStateLoaded, TokenOauthListStateRevokingAll, OauthToken } from './cc-token-oauth-list.types.js'
+ * @import { RawTokenData } from '../cc-token-session-list/cc-token-session-list.types.js'
+ * @import { ApiConfig } from '../../lib/send-to-api.types.js'
+ * @import { OnContextUpdateArgs } from '../../lib/smart/smart-component.types.js'
  */
 
 defineSmartComponent({
@@ -25,7 +22,7 @@ defineSmartComponent({
     apiConfig: { type: Object },
     authBridgeConsumerKey: { type: String },
   },
-  /** @param {OnContextUpdateArgs} args */
+  /** @param {OnContextUpdateArgs<CcTokenOauthList>} args */
   onContextUpdate({ component, context, onEvent, updateComponent }) {
     const { apiConfig, authBridgeConsumerKey } = context;
     const api = new Api(apiConfig, authBridgeConsumerKey);

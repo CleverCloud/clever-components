@@ -11,8 +11,8 @@ const DOCS_URL = getDocUrl(`/addons/keycloak`);
 const PROVIDER_ID = 'keycloak';
 
 /**
- * @typedef {import('./cc-addon-header.js').CcAddonHeader} CcAddonHeader
- * @typedef {import('../../lib/smart/smart-component.types.js').OnContextUpdateArgs<CcAddonHeader>} OnContextUpdateArgs
+ * @import { CcAddonHeader } from './cc-addon-header.js'
+ * @import { OnContextUpdateArgs } from '../../lib/smart/smart-component.types.js'
  */
 
 defineSmartComponent({
@@ -25,7 +25,7 @@ defineSmartComponent({
     productStatus: { type: String, optional: true },
   },
 
-  /** @param {OnContextUpdateArgs} args */
+  /** @param {OnContextUpdateArgs<CcAddonHeader>} args */
   onContextUpdate({ context, updateComponent, onEvent, signal }) {
     const { apiConfig, ownerId, addonId, productStatus } = context;
     const api = new CcAddonHeaderClient({ apiConfig, ownerId, addonId, providerId: PROVIDER_ID, signal });

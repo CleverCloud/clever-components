@@ -1,9 +1,7 @@
 import { CcEvent } from '../../lib/events.js';
 
 /**
- * @typedef {import('./cc-orga-member-card.types.js').ToggleEditing} ToggleEditing
- * @typedef {import('./cc-orga-member-card.types.js').OrgaMember} OrgaMember
- * @typedef {import('./cc-orga-member-card.types.js').UpdateMember} UpdateMember
+ * @import { ToggleEditing, OrgaMember, UpdateMember } from './cc-orga-member-card.types.js'
  */
 
 /**

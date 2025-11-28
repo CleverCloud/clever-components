@@ -1,7 +1,7 @@
 import { CcEvent } from '../../lib/events.js';
 
 /**
- * @typedef {import('./cc-token-api-creation-form.types.js').NewToken} NewToken
+ * @import { NewToken } from './cc-token-api-creation-form.types.js'
  */
 
 /**

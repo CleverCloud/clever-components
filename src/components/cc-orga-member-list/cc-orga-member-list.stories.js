@@ -69,10 +69,9 @@ export default {
 };
 
 /**
- * @typedef {import('./cc-orga-member-list.js').CcOrgaMemberList} CcOrgaMemberList
- * @typedef {import('./cc-orga-member-list.types.js').OrgaMemberListStateLoaded} OrgaMemberListStateLoaded
- * @typedef {import('./cc-orga-member-list.types.js').Authorisations} Authorisations
- * @typedef {import('../cc-input-text/cc-input-text.js').CcInputText} CcInputText
+ * @import { CcOrgaMemberList } from './cc-orga-member-list.js'
+ * @import { OrgaMemberListStateLoaded, Authorisations } from './cc-orga-member-list.types.js'
+ * @import { CcInputText } from '../cc-input-text/cc-input-text.js'
  */
 
 const conf = {

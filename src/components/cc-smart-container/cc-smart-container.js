@@ -2,10 +2,8 @@ import { css, html, LitElement } from 'lit';
 import { defineSmartComponentCore, observeContainer, updateContext } from '../../lib/smart/smart-manager.js';
 
 /**
- * @typedef {import('../../lib/smart/smart-component.types.d.ts').SmartContainer} SmartContainer
- * @typedef {import('../../lib/smart/smart-component.types.d.ts').SmartContext} SmartContext
- * @typedef {import('../../lib/smart/smart-component.types.d.ts').SmartComponent} SmartComponent
- * @typedef {import('lit').PropertyValues<CcSmartContainer>} CcSmartContainerPropertyValues
+ * @import { SmartContainer, SmartContext } from '../../lib/smart/smart-component.types.d.ts'
+ * @import { PropertyValues } from 'lit'
  */
 
 // Special case to propagate/merge contexts trough containers
@@ -50,7 +48,7 @@ export class CcSmartContainer extends LitElement {
   }
 
   /**
-   * @param {CcSmartContainerPropertyValues} _changedProperties
+   * @param {PropertyValues<CcSmartContainer>} _changedProperties
    */
   willUpdate(_changedProperties) {
     updateContext(this, { ...this.parentContext, ...this.context });

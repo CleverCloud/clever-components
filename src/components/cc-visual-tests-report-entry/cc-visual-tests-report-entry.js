@@ -41,9 +41,8 @@ const VIEWPORT_ICONS = /** @type {const} */ ({
 });
 
 /**
- * @typedef {import('../cc-visual-tests-report/visual-tests-report.types.js').VisualTestResult} VisualTestResult
- * @typedef {import('../cc-visual-tests-report/visual-tests-report.types.js').VisualTestScreenshots} VisualTestScreenshots
- * @typedef {import('../cc-toggle/cc-toggle.types.js').Choice} Choice
+ * @import { VisualTestResult, VisualTestScreenshots } from '../cc-visual-tests-report/visual-tests-report.types.js'
+ * @import { Choice } from '../cc-toggle/cc-toggle.types.js'
  */
 
 /**

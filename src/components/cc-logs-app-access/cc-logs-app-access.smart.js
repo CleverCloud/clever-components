@@ -7,13 +7,12 @@ import '../cc-smart-container/cc-smart-container.js';
 import './cc-logs-app-access.js';
 
 /**
- * @typedef {import('./cc-logs-app-access.js').CcLogsAppAccess} CcLogsAppAccess
- * @typedef {import('../cc-logs/cc-logs.types.js').Log} Log
- * @typedef {import('../../lib/date/date-range.types.js').DateRange} DateRange
- * @typedef {import('../../lib/logs/logs-stream.types.js').LogsStreamState} LogsStreamState
- * @typedef {import('../../lib/send-to-api.types.js').ApiConfig} ApiConfig
- * @typedef {import('../../lib/smart/smart-component.types.js').OnContextUpdateArgs<CcLogsAppAccess>} OnContextUpdateArgs
- * @typedef {import('../../lib/smart/smart-component.types.js').UpdateComponentCallback<CcLogsAppAccess>} UpdateComponentCallback
+ * @import { CcLogsAppAccess } from './cc-logs-app-access.js'
+ * @import { Log } from '../cc-logs/cc-logs.types.js'
+ * @import { DateRange } from '../../lib/date/date-range.types.js'
+ * @import { LogsStreamState } from '../../lib/logs/logs-stream.types.js'
+ * @import { ApiConfig } from '../../lib/send-to-api.types.js'
+ * @import { OnContextUpdateArgs, UpdateComponentCallback } from '../../lib/smart/smart-component.types.js'
  */
 
 defineSmartComponent({
@@ -25,7 +24,7 @@ defineSmartComponent({
     dateRangeSelection: { type: Object, optional: true },
   },
   /**
-   * @param {OnContextUpdateArgs} args
+   * @param {OnContextUpdateArgs<CcLogsAppAccess>} args
    */
   onContextUpdate({ component, context, onEvent, updateComponent, signal }) {
     const { apiConfig, ownerId, appId, dateRangeSelection } = context;
@@ -83,7 +82,7 @@ class SmartController extends LogsStream {
    * @param {string} _.ownerId
    * @param {string} _.appId
    * @param {CcLogsAppAccess} _.component
-   * @param {UpdateComponentCallback} _.updateComponent
+   * @param {UpdateComponentCallback<CcLogsAppAccess>} _.updateComponent
    */
   constructor({ apiConfig, ownerId, appId, component, updateComponent }) {
     super(component.limit);

@@ -21,8 +21,7 @@ export default {
 };
 
 /**
- * @typedef {import('./cc-token-api-creation-form.types.js').TokenApiCreationFormStateLoaded} TokenApiCreationFormStateLoaded
- * @typedef {import('./cc-token-api-creation-form.types.js').TokenApiCreationFormStateCreating} TokenApiCreationFormStateCreating
+ * @import { TokenApiCreationFormStateLoaded, TokenApiCreationFormStateCreating } from './cc-token-api-creation-form.types.js'
  */
 
 const conf = {

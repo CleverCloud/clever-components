@@ -1,7 +1,7 @@
 import { CcEvent } from '../../lib/events.js';
 
 /**
- * @typedef {import('../common.types.js').AddonOptionStates} AddonOptionStates
+ * @import { AddonOptionStates } from '../common.types.js'
  */
 
 /**

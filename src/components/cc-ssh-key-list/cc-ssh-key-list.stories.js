@@ -55,11 +55,9 @@ export default {
 };
 
 /**
- * @typedef {import('./cc-ssh-key-list.js').CcSshKeyList} CcSshKeyList
- * @typedef {import('./cc-ssh-key-list.types.js').SshKeyState} SshKeyState
- * @typedef {import('./cc-ssh-key-list.types.js').SshKeyListStateLoadedAndLinked} SshKeyListStateLoadedAndLinked
- * @typedef {import('./cc-ssh-key-list.types.js').NewKey} NewKey
- * @typedef {import('../cc-input-text/cc-input-text.js').CcInputText} CcInputText
+ * @import { CcSshKeyList } from './cc-ssh-key-list.js'
+ * @import { SshKeyState, SshKeyListStateLoadedAndLinked, NewKey } from './cc-ssh-key-list.types.js'
+ * @import { CcInputText } from '../cc-input-text/cc-input-text.js'
  */
 
 const conf = {

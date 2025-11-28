@@ -8,7 +8,7 @@ import {
 import '../cc-icon/cc-icon.js';
 
 /**
- * @typedef {import('./cc-picker-option.types.js').PickerOptionSelectionStyle} PickerOptionSelectionStyle
+ * @import { PickerOptionSelectionStyle } from './cc-picker-option.types.js'
  */
 
 /**

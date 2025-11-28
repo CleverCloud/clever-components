@@ -18,9 +18,8 @@ const conf = {
 };
 
 /**
- * @typedef {import('./cc-doc-card.js').CcDocCard} CcDocCard
- * @typedef {import('./cc-doc-card.types.js').DocCardStateLoaded} DocCardStateLoaded
- * @typedef {import('./cc-doc-card.types.js').DocCardStateLoading} DocCardStateLoading
+ * @import { CcDocCard } from './cc-doc-card.js'
+ * @import { DocCardStateLoaded, DocCardStateLoading } from './cc-doc-card.types.js'
  */
 
 const DEFAULT_CARD = {

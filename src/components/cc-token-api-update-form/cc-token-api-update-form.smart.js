@@ -7,10 +7,10 @@ import { CcTokenWasUpdatedEvent } from './cc-token-api-update-form.events.js';
 import './cc-token-api-update-form.js';
 
 /**
- * @typedef {import('./cc-token-api-update-form.js').CcTokenApiUpdateForm} CcTokenApiUpdateForm
- * @typedef {import('./cc-token-api-update-form.types.js').CcTokenChangePayload} CcTokenChangePayload
- * @typedef {import('../../lib/smart/smart-component.types.js').OnContextUpdateArgs<CcTokenApiUpdateForm>} OnContextUpdateArgs
- * @typedef {import('../../lib/send-to-api.types.js').AuthBridgeConfig} AuthBridgeConfig
+ * @import { CcTokenApiUpdateForm } from './cc-token-api-update-form.js'
+ * @import { CcTokenChangePayload } from './cc-token-api-update-form.types.js'
+ * @import { AuthBridgeConfig } from '../../lib/send-to-api.types.js'
+ * @import { OnContextUpdateArgs } from '../../lib/smart/smart-component.types.js'
  */
 
 defineSmartComponent({
@@ -19,7 +19,7 @@ defineSmartComponent({
     apiConfig: { type: Object },
     apiTokenId: { type: String },
   },
-  /** @param {OnContextUpdateArgs} args */
+  /** @param {OnContextUpdateArgs<CcTokenApiUpdateForm>} args */
   onContextUpdate({ context, component, onEvent, updateComponent }) {
     const { apiConfig, apiTokenId } = context;
     const api = new Api(apiConfig, apiTokenId);

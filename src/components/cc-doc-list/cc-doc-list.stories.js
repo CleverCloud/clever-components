@@ -19,12 +19,9 @@ const conf = {
 };
 
 /**
- * @typedef {import('./cc-doc-list.js').CcDocList} CcDocList
- * @typedef {import('./cc-doc-list.types.js').DocListStateLoaded} DocListStateLoaded
- * @typedef {import('./cc-doc-list.types.js').DocListStateLoading} DocListStateLoading
- * @typedef {import('./cc-doc-list.types.js').DocListStateError} DocListStateError
- * @typedef {import('../cc-doc-card/cc-doc-card.types.js').DocCardStateLoaded} DocCardStateLoaded
- * @typedef {import('../cc-doc-card/cc-doc-card.types.js').DocCard} DocCard
+ * @import { CcDocList } from './cc-doc-list.js'
+ * @import { DocListStateLoaded, DocListStateLoading, DocListStateError } from './cc-doc-list.types.js'
+ * @import { DocCardStateLoaded, DocCard } from '../cc-doc-card/cc-doc-card.types.js'
  */
 
 /** @type {DocCard[]} */

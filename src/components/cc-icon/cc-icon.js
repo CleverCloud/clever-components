@@ -3,9 +3,9 @@ import { unsafeSVG } from 'lit/directives/unsafe-svg.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
 
 /**
- * @typedef {import('../common.types.js').IconModel} IconModel
- * @typedef {import('./cc-icon.types.js').IconSize} IconSize
- * @typedef {import('lit').PropertyValues<CcIcon>} CcIconPropertyValues
+ * @import { IconModel } from '../common.types.js'
+ * @import { IconSize } from './cc-icon.types.js'
+ * @import { PropertyValues } from 'lit'
  */
 
 /**
@@ -65,7 +65,7 @@ export class CcIcon extends LitElement {
     this.skeleton = false;
   }
 
-  /** @param {CcIconPropertyValues} changedProperties */
+  /** @param {PropertyValues<CcIcon>} changedProperties */
   updated(changedProperties) {
     const shouldPatchSvg = changedProperties.has('a11yName') || changedProperties.has('icon');
     const svg = this.shadowRoot.querySelector('svg');

@@ -27,9 +27,8 @@ const conf = {
 };
 
 /**
- * @typedef {import('./cc-tile-metrics.js').CcTileMetrics} CcTileMetrics
- * @typedef {import('./cc-tile-metrics.types.js').TileMetricsMetricsStateLoaded} TileMetricsStateLoaded
- * @typedef {import('./cc-tile-metrics.types.js').Metric} Metric
+ * @import { CcTileMetrics } from './cc-tile-metrics.js'
+ * @import { TileMetricsMetricsStateLoaded as TileMetricsStateLoaded, Metric } from './cc-tile-metrics.types.js'
  */
 
 /** @type {Array<Partial<CcTileMetrics>>} */

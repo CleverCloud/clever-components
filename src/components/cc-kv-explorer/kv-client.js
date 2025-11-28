@@ -6,8 +6,9 @@ import { request } from '@clevercloud/client/esm/request.fetch.js';
 import { withOptions } from '@clevercloud/client/esm/with-options.js';
 
 /**
- * @typedef {import('./cc-kv-explorer.types.js').CcKvKeyType} CcKvKeyType
- * @typedef {import('../common.types.js').ValueOrArray<string|number|null>} CommandResult
+ * @import { CcKvKeyType } from './cc-kv-explorer.types.js'
+ * @import { ValueOrArray } from '../common.types.js'
+ * @typedef {ValueOrArray<string|number|null>} CommandResult
  */
 
 /**

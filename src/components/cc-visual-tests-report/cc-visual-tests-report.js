@@ -22,9 +22,8 @@ import '../cc-visual-tests-report-menu/cc-visual-tests-report-menu.js';
 const DATE_FORMATTER_SHORT = new DateFormatter('datetime-short', 'local');
 
 /**
- * @typedef {import('./visual-tests-report.types.js').VisualTestsReport} VisualTestsReport
- * @typedef {import('./visual-tests-report.types.js').VisualTestResult} VisualTestResult
- * @typedef {import('lit').PropertyValues<CcVisualTestsReport>} CcVisualTestsReportPropertyValues
+ * @import { VisualTestsReport, VisualTestResult } from './visual-tests-report.types.js'
+ * @import { PropertyValues } from 'lit'
  * @typedef {import('lit/directives/ref.js').Ref<HTMLElement & { tagName: 'MAIN' }>} HTMLMainElementRef
  */
 
@@ -100,7 +99,7 @@ export class CcVisualTestsReport extends LitElement {
     this._mainElementRef.value?.focus();
   }
 
-  /** @param {CcVisualTestsReportPropertyValues} changedProperties */
+  /** @param {PropertyValues<CcVisualTestsReport>} changedProperties */
   willUpdate(changedProperties) {
     if (changedProperties.has('report')) {
       this._sortedTestResults = this._sortTestResults(this.report.results);

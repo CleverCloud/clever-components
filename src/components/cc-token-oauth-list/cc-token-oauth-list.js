@@ -21,9 +21,8 @@ import '../cc-notice/cc-notice.js';
 import { CcTokenRevokeEvent, CcTokensRevokeAllEvent } from '../common.events.js';
 
 /**
- * @typedef {import('./cc-token-oauth-list.types.js').TokenOauthListState} TokenOauthListState
- * @typedef {import('./cc-token-oauth-list.types.js').OauthTokenState} OauthTokenState
- * @typedef {import('lit/directives/ref.js').Ref<HTMLDivElement>} RefHTMLDivElement
+ * @import { TokenOauthListState, OauthTokenState } from './cc-token-oauth-list.types.js'
+ * @import { Ref } from 'lit/directives/ref.js'
  */
 
 /**
@@ -46,7 +45,7 @@ export class CcTokenOauthList extends LitElement {
     /** @type {TokenOauthListState} The state of the component */
     this.state = { type: 'loading' };
 
-    /** @type {RefHTMLDivElement} */
+    /** @type {Ref<HTMLDivElement>} */
     this._emptyMessageRef = createRef();
 
     new ResizeController(this, {

@@ -25,12 +25,9 @@ const conf = {
 };
 
 /**
- * @typedef {import('./cc-tile-scalability.js').CcTileScalability} CcTileScalability
- * @typedef {import('./cc-tile-scalability.types.js').TileScalabilityStateLoaded} TileScalabilityStateLoaded
- * @typedef {import('./cc-tile-scalability.types.js').TileScalabilityStateLoading} TileScalabilityStateLoading
- * @typedef {import('./cc-tile-scalability.types.js').TileScalabilityStateError} TileScalabilityStateError
- * @typedef {import('../common.types.js').Flavor} Flavor
- * @typedef {import('../common.types.js').Scalability} Scalability
+ * @import { CcTileScalability } from './cc-tile-scalability.js'
+ * @import { TileScalabilityStateLoaded, TileScalabilityStateLoading, TileScalabilityStateError } from './cc-tile-scalability.types.js'
+ * @import { Flavor, Scalability } from '../common.types.js'
  */
 
 /** @type {{ [key: string]: Flavor}} Flavor */

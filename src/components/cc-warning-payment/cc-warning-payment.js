@@ -6,8 +6,7 @@ import '../cc-link/cc-link.js';
 import '../cc-notice/cc-notice.js';
 
 /**
- * @typedef {import('./cc-warning-payment.types.js').PaymentMethodError} PaymentMethodError
- * @typedef {import('./cc-warning-payment.types.js').PaymentWarningModeType} PaymentWarningModeType
+ * @import { PaymentMethodError, PaymentWarningModeType } from './cc-warning-payment.types.js'
  */
 
 /**

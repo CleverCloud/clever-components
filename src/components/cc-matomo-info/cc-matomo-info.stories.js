@@ -12,10 +12,8 @@ const conf = {
 };
 
 /**
- * @typedef {import('./cc-matomo-info.js').CcMatomoInfo} CcMatomoInfo
- * @typedef {import('./cc-matomo-info.types.js').MatomoInfoStateLoaded} MatomoInfoStateLoaded
- * @typedef {import('./cc-matomo-info.types.js').MatomoInfoStateLoading} MatomoInfoStateLoading
- * @typedef {import('./cc-matomo-info.types.js').MatomoInfoStateError} MatomoInfoStateError
+ * @import { CcMatomoInfo } from './cc-matomo-info.js'
+ * @import { MatomoInfoStateLoaded, MatomoInfoStateLoading, MatomoInfoStateError } from './cc-matomo-info.types.js'
  */
 
 const matomoUrl = 'https://my-matomo.example.com';

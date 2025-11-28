@@ -15,11 +15,8 @@ const SKELETON_VARIABLES = [
 ];
 
 /**
- * @typedef {import('../common.types.js').EnvVarEditorState} EnvVarEditorState
- * @typedef {import('../common.types.js').EnvVarParseError} EnvVarParseError
- * @typedef {import('../common.types.js').EnvVarRawError} EnvVarRawError
- * @typedef {import('../common.types.js').EnvVar} EnvVar
- * @typedef {import('lit').PropertyValues<CcEnvVarEditorExpert>} CcEnvVarEditorExpertPropertyValues
+ * @import { EnvVarEditorState, EnvVarParseError, EnvVarRawError, EnvVar } from '../common.types.js'
+ * @import { PropertyValues } from 'lit'
  */
 
 /**
@@ -123,7 +120,7 @@ export class CcEnvVarEditorExpert extends LitElement {
     this.dispatchEvent(new CcEnvChangeEvent(variables));
   }
 
-  /** @param {CcEnvVarEditorExpertPropertyValues} changedProperties */
+  /** @param {PropertyValues<CcEnvVarEditorExpert>} changedProperties */
   willUpdate(changedProperties) {
     if (changedProperties.has('state')) {
       this._skeleton = this.state.type === 'loading';

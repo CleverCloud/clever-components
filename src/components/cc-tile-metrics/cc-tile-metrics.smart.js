@@ -8,12 +8,10 @@ import { getGrafanaOrganisation } from '@clevercloud/client/esm/api/v4/saas.js';
 import { getOrganisationApplicationMetrics } from '@clevercloud/client/esm/api/v4/resources.js';
 
 /**
- * @typedef {import('./cc-tile-metrics.js').CcTileMetrics} CcTileMetrics
- * @typedef {import('./cc-tile-metrics.types.js').RawMetric} RawMetric
- * @typedef {import('./cc-tile-metrics.types.js').MetricsData} MetricsData
- * @typedef {import('./cc-tile-metrics.types.js').Metric} Metric
- * @typedef {import('../../lib/send-to-api.types.js').ApiConfig} ApiConfig
- * @typedef {import('../../lib/smart/smart-component.types.js').OnContextUpdateArgs<CcTileMetrics>} OnContextUpdateArgs
+ * @import { CcTileMetrics } from './cc-tile-metrics.js'
+ * @import { RawMetric, MetricsData, Metric } from './cc-tile-metrics.types.js'
+ * @import { ApiConfig } from '../../lib/send-to-api.types.js'
+ * @import { OnContextUpdateArgs } from '../../lib/smart/smart-component.types.js'
  */
 
 const NUMBER_OF_POINTS = 24;
@@ -27,7 +25,7 @@ defineSmartComponent({
     grafanaLink: { type: Object, optional: true },
   },
   /**
-   * @param {OnContextUpdateArgs} args
+   * @param {OnContextUpdateArgs<CcTileMetrics>} args
    */
   onContextUpdate({ context, updateComponent, signal }) {
     const { apiConfig, ownerId, appId, grafanaLink } = context;

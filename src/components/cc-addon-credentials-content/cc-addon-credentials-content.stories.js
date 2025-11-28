@@ -13,8 +13,8 @@ const conf = {
 };
 
 /**
- * @typedef {import('./cc-addon-credentials-content.js').CcAddonCredentialsContent} CcAddonCredentialsItems
- * @typedef {import('./cc-addon-credentials-content.types.js').AddonCredentialNgEnabled} AddonCredentialsItemsNetworkGroupEnabled
+ * @import { CcAddonCredentialsContent as CcAddonCredentialsItems } from './cc-addon-credentials-content.js'
+ * @import { AddonCredentialNgEnabled as AddonCredentialsItemsNetworkGroupEnabled } from './cc-addon-credentials-content.types.js'
  */
 
 export const defaultStory = makeStory(conf, {
