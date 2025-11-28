@@ -120,3 +120,30 @@ export interface ElasticAddonInfo {
     },
   ];
 }
+
+export interface AddonVersionInfo {
+  available: string[];
+  installed: string;
+  latest: string;
+  needUpdate: boolean;
+}
+
+export interface JenkinsProviderInfo {
+  id: string;
+  app_id: string;
+  owner_id: string;
+  plan: string;
+  zone: string;
+  creation_date: string;
+  status: string;
+  host: string;
+  user: string;
+  password: string;
+  version: string;
+  features: [
+    {
+      name: string;
+      enabled: boolean;
+    },
+  ];
+}
