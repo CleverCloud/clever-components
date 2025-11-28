@@ -30,6 +30,8 @@ import { CcDialogCloseEvent, CcDialogFocusRestorationFail } from './cc-dialog.ev
  * @slot Default slot for dialog content.
  * @slot heading - Slot for custom heading content.
  *
+ * @csspart dialog - Styles the dialog element, can be used to modify it's positioning, size, layout.
+ *
  * @cssprop {Padding} --cc-dialog-padding-xl - Sets the value of the padding CSS property when viewport is large (defaults: `4em`).
  * @cssprop {Padding} --cc-dialog-padding-sm - Sets the value of the padding CSS property when viewport is narrow (defaults: `2em`).
  * @cssprop {Padding} --cc-dialog-padding - Sets the value of the padding CSS property whatever the viewport size may be (defaults: `var(--cc-dialog-padding-xl` or `var(--cc-dialog-padding-sm)` depending on the viewport)`).
