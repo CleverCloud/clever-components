@@ -124,3 +124,19 @@ export interface PulsarClusterInfo {
   support_cold_storage: true;
   supported_plans: Array<string>;
 }
+
+export interface CellarInfo {
+  id: string;
+  resourceId: string;
+  name: string;
+  ownerId: string;
+  plan: string;
+  status: string;
+  creationDate: string;
+}
+
+export interface CellarCredentials {
+  host: string;
+  keyId: string;
+  keySecret: string;
+}

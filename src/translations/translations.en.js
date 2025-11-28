@@ -192,6 +192,7 @@ export const translations = {
   'cc-addon-credentials-beta.doc-link.keycloak': `Secured multi-instances - Documentation`,
   'cc-addon-credentials-beta.doc-link.otoroshi-api': `Manage Otoroshi from its API - Documentation`,
   'cc-addon-credentials-beta.doc-link.otoroshi-ng': `Otoroshi in a Network Group - Documentation`,
+  'cc-addon-credentials-beta.download-s3cfg-file': `Download a pre-filled s3cfg file`,
   'cc-addon-credentials-beta.error': `Something went wrong while loading information`,
   'cc-addon-credentials-beta.heading': `Access`,
   'cc-addon-credentials-beta.ng-multi-instances.disabling.error': `Something went wrong while trying to disable the secured multi-instances`,
@@ -202,6 +203,7 @@ export const translations = {
   'cc-addon-credentials-beta.ng-standard.disabling.success': `The Network Group has been successfully disabled`,
   'cc-addon-credentials-beta.ng-standard.enabling.error': `Something went wrong while trying to enable the Network Group`,
   'cc-addon-credentials-beta.ng-standard.enabling.success': `The Network Group has been successfully enabled`,
+  'cc-addon-credentials-beta.renew-secret': `Renew secret`,
   //#endregion
   //#region cc-addon-credentials-content
   'cc-addon-credentials-content.code.api-client-secret': `API client secret`,
@@ -214,9 +216,12 @@ export const translations = {
   'cc-addon-credentials-content.code.direct-host': `Direct host`,
   'cc-addon-credentials-content.code.direct-port': `Direct port`,
   'cc-addon-credentials-content.code.direct-uri': `Direct URI`,
+  'cc-addon-credentials-content.code.download-file': `Download File`,
   'cc-addon-credentials-content.code.host': `Host`,
   'cc-addon-credentials-content.code.initial-password': `Initial password`,
   'cc-addon-credentials-content.code.initial-user': `Initial User`,
+  'cc-addon-credentials-content.code.key-id': `Key ID`,
+  'cc-addon-credentials-content.code.key-secret': `Key Secret`,
   'cc-addon-credentials-content.code.network-group-multi-instances': `Secured multi-instances`,
   'cc-addon-credentials-content.code.network-group-standard': `Network group`,
   'cc-addon-credentials-content.code.open-api-url': `OpenAPI URL`,
@@ -301,7 +306,6 @@ export const translations = {
   'cc-addon-info.creation-date.human-friendly-date': /** @param {{ date: string | number }} _ */ ({ date }) =>
     formatDatetime(date),
   'cc-addon-info.doc-link.cellar': `Cellar - Documentation`,
-  'cc-addon-info.doc-link.config-provider': `Configuration Provider - Documentation`,
   'cc-addon-info.doc-link.elastic': `Elastic Stack - Documentation`,
   'cc-addon-info.doc-link.jenkins': `Jenkins - Documentation`,
   'cc-addon-info.doc-link.keycloak': `Keycloak - Documentation`,
