@@ -2,8 +2,8 @@ import { elementUpdated, expect, fixture, nextFrame } from '@open-wc/testing';
 import * as hanbi from 'hanbi';
 import { html } from 'lit';
 import { typeText } from '../../../test/helpers/element-helper.js';
-import { CcDialogConfirmEvent } from './cc-dialog-confirmation-form.events.js';
 import '../cc-dialog/cc-dialog.js';
+import { CcDialogConfirmEvent } from './cc-dialog-confirmation-form.events.js';
 import './cc-dialog-confirmation-form.js';
 
 // Helper: Get internal input from shadow root

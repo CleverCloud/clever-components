@@ -705,7 +705,9 @@ export const errorWithMismatchedInput = makeStory(conf, {
           </div>
         </div>
         <cc-dialog open heading="Delete Application" @cc-dialog-close="${onClose}">
-          <p style="margin: 0">This story demonstrates the error state when the input doesn't match the required text.</p>
+          <p style="margin: 0">
+            This story demonstrates the error state when the input doesn't match the required text.
+          </p>
           <cc-dialog-confirmation-form
             submit-label="Delete"
             submit-intent="danger"
@@ -793,7 +795,9 @@ export const simulationsWithInputSuccess = makeStory(conf, {
       1000,
       /** @param {HTMLElement[]} containers */
       ([container]) => {
-        const input = container.querySelector('cc-dialog-confirmation-form')?.shadowRoot?.querySelector('cc-input-text');
+        const input = container
+          .querySelector('cc-dialog-confirmation-form')
+          ?.shadowRoot?.querySelector('cc-input-text');
         if (input) {
           input.value = 'm';
         }
@@ -803,7 +807,9 @@ export const simulationsWithInputSuccess = makeStory(conf, {
       1200,
       /** @param {HTMLElement[]} containers */
       ([container]) => {
-        const input = container.querySelector('cc-dialog-confirmation-form')?.shadowRoot?.querySelector('cc-input-text');
+        const input = container
+          .querySelector('cc-dialog-confirmation-form')
+          ?.shadowRoot?.querySelector('cc-input-text');
         if (input) {
           input.value = 'my';
         }
@@ -813,7 +819,9 @@ export const simulationsWithInputSuccess = makeStory(conf, {
       1400,
       /** @param {HTMLElement[]} containers */
       ([container]) => {
-        const input = container.querySelector('cc-dialog-confirmation-form')?.shadowRoot?.querySelector('cc-input-text');
+        const input = container
+          .querySelector('cc-dialog-confirmation-form')
+          ?.shadowRoot?.querySelector('cc-input-text');
         if (input) {
           input.value = 'my-';
         }
@@ -823,7 +831,9 @@ export const simulationsWithInputSuccess = makeStory(conf, {
       1600,
       /** @param {HTMLElement[]} containers */
       ([container]) => {
-        const input = container.querySelector('cc-dialog-confirmation-form')?.shadowRoot?.querySelector('cc-input-text');
+        const input = container
+          .querySelector('cc-dialog-confirmation-form')
+          ?.shadowRoot?.querySelector('cc-input-text');
         if (input) {
           input.value = 'my-a';
         }
@@ -833,7 +843,9 @@ export const simulationsWithInputSuccess = makeStory(conf, {
       1800,
       /** @param {HTMLElement[]} containers */
       ([container]) => {
-        const input = container.querySelector('cc-dialog-confirmation-form')?.shadowRoot?.querySelector('cc-input-text');
+        const input = container
+          .querySelector('cc-dialog-confirmation-form')
+          ?.shadowRoot?.querySelector('cc-input-text');
         if (input) {
           input.value = 'my-ap';
         }
@@ -843,7 +855,9 @@ export const simulationsWithInputSuccess = makeStory(conf, {
       2000,
       /** @param {HTMLElement[]} containers */
       ([container]) => {
-        const input = container.querySelector('cc-dialog-confirmation-form')?.shadowRoot?.querySelector('cc-input-text');
+        const input = container
+          .querySelector('cc-dialog-confirmation-form')
+          ?.shadowRoot?.querySelector('cc-input-text');
         if (input) {
           input.value = 'my-app';
         }
@@ -945,7 +959,9 @@ export const simulationsWithInputError = makeStory(conf, {
       1000,
       /** @param {HTMLElement[]} containers */
       ([container]) => {
-        const input = container.querySelector('cc-dialog-confirmation-form')?.shadowRoot?.querySelector('cc-input-text');
+        const input = container
+          .querySelector('cc-dialog-confirmation-form')
+          ?.shadowRoot?.querySelector('cc-input-text');
         if (input) {
           input.value = 'w';
         }
@@ -955,7 +971,9 @@ export const simulationsWithInputError = makeStory(conf, {
       1200,
       /** @param {HTMLElement[]} containers */
       ([container]) => {
-        const input = container.querySelector('cc-dialog-confirmation-form')?.shadowRoot?.querySelector('cc-input-text');
+        const input = container
+          .querySelector('cc-dialog-confirmation-form')
+          ?.shadowRoot?.querySelector('cc-input-text');
         if (input) {
           input.value = 'wr';
         }
@@ -965,7 +983,9 @@ export const simulationsWithInputError = makeStory(conf, {
       1400,
       /** @param {HTMLElement[]} containers */
       ([container]) => {
-        const input = container.querySelector('cc-dialog-confirmation-form')?.shadowRoot?.querySelector('cc-input-text');
+        const input = container
+          .querySelector('cc-dialog-confirmation-form')
+          ?.shadowRoot?.querySelector('cc-input-text');
         if (input) {
           input.value = 'wro';
         }
@@ -975,7 +995,9 @@ export const simulationsWithInputError = makeStory(conf, {
       1600,
       /** @param {HTMLElement[]} containers */
       ([container]) => {
-        const input = container.querySelector('cc-dialog-confirmation-form')?.shadowRoot?.querySelector('cc-input-text');
+        const input = container
+          .querySelector('cc-dialog-confirmation-form')
+          ?.shadowRoot?.querySelector('cc-input-text');
         if (input) {
           input.value = 'wron';
         }
@@ -985,7 +1007,9 @@ export const simulationsWithInputError = makeStory(conf, {
       1800,
       /** @param {HTMLElement[]} containers */
       ([container]) => {
-        const input = container.querySelector('cc-dialog-confirmation-form')?.shadowRoot?.querySelector('cc-input-text');
+        const input = container
+          .querySelector('cc-dialog-confirmation-form')
+          ?.shadowRoot?.querySelector('cc-input-text');
         if (input) {
           input.value = 'wrong';
         }
@@ -1001,4 +1025,3 @@ export const simulationsWithInputError = makeStory(conf, {
     ),
   ],
 });
-

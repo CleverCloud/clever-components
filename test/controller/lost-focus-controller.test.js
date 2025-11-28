@@ -12,65 +12,65 @@ describe('lost-focus-controller', () => {
      * @return {Promise<{element: Element, spy: Stub}>}
      */
     const createElement = async () => {
-    const spy = hanbi.spy();
+      const spy = hanbi.spy();
 
-    const ce = defineCE(
-      class extends LitElement {
-        static get properties() {
-          return {
-            items: { type: Array },
-          };
-        }
+      const ce = defineCE(
+        class extends LitElement {
+          static get properties() {
+            return {
+              items: { type: Array },
+            };
+          }
 
-        constructor() {
-          super();
-          this.items = ['1', '2', '3'];
+          constructor() {
+            super();
+            this.items = ['1', '2', '3'];
 
-          new LostFocusController(this, '.item', (event) => {
-            spy.handler(event);
-          });
-        }
+            new LostFocusController(this, '.item', (event) => {
+              spy.handler(event);
+            });
+          }
 
-        removeItem(it) {
-          this.items = this.items.filter((item) => item !== it);
-        }
+          removeItem(it) {
+            this.items = this.items.filter((item) => item !== it);
+          }
 
-        clear() {
-          this.items = [];
-        }
+          clear() {
+            this.items = [];
+          }
 
-        focusHeader() {
-          this.shadowRoot.querySelector('.header').focus();
-        }
+          focusHeader() {
+            this.shadowRoot.querySelector('.header').focus();
+          }
 
-        focusItem(it) {
-          this.getItemElement(it)?.focus();
-        }
+          focusItem(it) {
+            this.getItemElement(it)?.focus();
+          }
 
-        focusItemButton(it) {
-          this.getItemElement(it)?.querySelector('button').focus();
-        }
+          focusItemButton(it) {
+            this.getItemElement(it)?.querySelector('button').focus();
+          }
 
-        getItemElement(it) {
-          return this.shadowRoot.querySelector(`[data-item="${it}"]`);
-        }
+          getItemElement(it) {
+            return this.shadowRoot.querySelector(`[data-item="${it}"]`);
+          }
 
-        render() {
-          return html`
-            <div class="header"></div>
-            ${repeat(
-              this.items,
-              (item) => item,
-              (item) => {
-                return html` <div tabindex="0" class="item" data-item="${item}"><button>${item}</button></div> `;
-              },
-            )}
-          `;
-        }
-      },
-    );
+          render() {
+            return html`
+              <div class="header"></div>
+              ${repeat(
+                this.items,
+                (item) => item,
+                (item) => {
+                  return html` <div tabindex="0" class="item" data-item="${item}"><button>${item}</button></div> `;
+                },
+              )}
+            `;
+          }
+        },
+      );
 
-    const element = await fixture(`<${ce}></${ce}>`);
+      const element = await fixture(`<${ce}></${ce}>`);
 
       return { element, spy };
     };
@@ -199,7 +199,7 @@ describe('lost-focus-controller', () => {
         // eslint-disable-next-line wc/max-elements-per-file
         class extends LitElement {
           static get properties() {
-            return { items: { type: Array } };
+            return { items: { type: Array }, items: { type: Array }, items: { type: Array } };
           }
 
           constructor() {
