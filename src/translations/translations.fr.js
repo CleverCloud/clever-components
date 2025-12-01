@@ -559,6 +559,9 @@ export const translations = {
   'cc-domain-management.new-window': `Nouvelle fenêtre`,
   'cc-domain-management.tls.certificates.documentation.text': `Certificats TLS - Documentation`,
   //#endregion
+  //#region cc-drawer
+  'cc-drawer.close': `Fermer`,
+  //#endregion
   //#region cc-elasticsearch-info
   'cc-elasticsearch-info.documentation.text': `Elasticsearch - Documentation`,
   'cc-elasticsearch-info.error': `Une erreur est survenue pendant le chargement des liens des add-on liés à cette application.`,
