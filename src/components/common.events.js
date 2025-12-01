@@ -16,6 +16,18 @@ export class CcToggleEvent extends CcEvent {
 }
 
 /**
+ * Dispatched when an element is closed.
+ * @extends {CcEvent}
+ */
+export class CcCloseEvent extends CcEvent {
+  static TYPE = 'cc-close';
+
+  constructor() {
+    super(CcCloseEvent.TYPE);
+  }
+}
+
+/**
  * Dispatched when a single selection changes.
  * @extends {CcEvent<T>}
  * @template {string} T

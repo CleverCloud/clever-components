@@ -143,6 +143,7 @@ import {
 } from '../components/cc-token-api-update-form/cc-token-api-update-form.events.js';
 import {
   CcClickEvent,
+  CcCloseEvent,
   CcPasswordResetEvent,
   CcRequestSubmitEvent,
   CcToggleEvent,
@@ -181,6 +182,7 @@ declare global {
     'cc-application-stop': CcApplicationStopEvent;
     'cc-breadcrumb-click': CcBreadcrumbClickEvent;
     'cc-click': CcClickEvent;
+    'cc-close': CcCloseEvent;
     'cc-deployment-cancel': CcDeploymentCancelEvent;
     'cc-domain-add': CcDomainAddEvent;
     'cc-domain-delete': CcDomainDeleteEvent;
