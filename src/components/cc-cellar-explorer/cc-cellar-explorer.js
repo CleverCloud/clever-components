@@ -1,0 +1,475 @@
+import { css, html, LitElement } from 'lit';
+import { createRef, ref } from 'lit/directives/ref.js';
+import {
+  iconRemixAddFill as iconAdd,
+  iconRemixArchiveLine as iconBucket,
+  iconRemixDeleteBin_6Line as iconDelete,
+  iconRemixMoreFill as iconMore,
+} from '../../assets/cc-remix.icons.js';
+import { formSubmit } from '../../lib/form/form-submit-directive.js';
+import { accessibilityStyles } from '../../styles/accessibility.js';
+import { i18n } from '../../translations/translation.js';
+import '../cc-button/cc-button.js';
+import '../cc-clipboard/cc-clipboard.js';
+import '../cc-drawer/cc-drawer.js';
+import '../cc-grid/cc-grid.js';
+import '../cc-icon/cc-icon.js';
+import '../cc-input-text/cc-input-text.js';
+import '../cc-notice/cc-notice.js';
+import {
+  CcCellarBucketCreateEvent,
+  CcCellarBucketDeleteEvent,
+  CcCellarBucketHideEvent,
+  CcCellarBucketShowEvent,
+} from './cc-cellar-explorer.events.js';
+
+/**
+ * @typedef {import('./cc-cellar-explorer.types.js').CellarExplorerState} CellarExplorerState
+ * @typedef {import('./cc-cellar-explorer.types.js').CellarExplorerItemsListState} CellarExplorerItemsListState
+ * @typedef {import('./cc-cellar-explorer.types.js').CellarExplorerItemsListStateBucketsLoaded} CellarExplorerItemsListStateBucketsLoaded
+ * @typedef {import('./cc-cellar-explorer.types.js').CellarItemStateBucket} CellarItemStateBucket
+ * @typedef {import('./cc-cellar-explorer.types.js').CellarItemStateBucketDetails} CellarItemStateBucketDetails
+ * @typedef {import('../cc-grid/cc-grid.types.js').CcGridColumnDefinition<CellarItemStateBucket>} BucketColumnDefinition
+ * @typedef {import('../common.events.js').CcToggleEvent} CcToggleEvent
+ * @typedef {import('lit').PropertyValues<CcCellarExplorer>} PropertyValues
+ * @typedef {import('lit').TemplateResult<1>} TemplateResult
+ * @typedef {import('lit/directives/ref.js').Ref<HTMLDialogElement>} HTMLDialogElementRef
+ */
+
+/**
+ * A component that allows to navigate through a Cellar addon.
+ *
+ * @cssdisplay block
+ */
+export class CcCellarExplorer extends LitElement {
+  static get properties() {
+    return {
+      state: { type: Object },
+      _showDetails: { type: Boolean, state: true },
+    };
+  }
+
+  constructor() {
+    super();
+
+    /** @type {CellarExplorerState} Sets state. */
+    this.state = { type: 'loading' };
+
+    /** @type {boolean} */
+    this._showDetails = false;
+
+    this._createBucketFormRef = createRef();
+    /** @type {HTMLDialogElementRef} */
+    this._dialogRef = createRef();
+  }
+
+  /**
+   * @param {{bucketName: string}} formData
+   */
+  _onCreateBucketRequested({ bucketName }) {
+    this.dispatchEvent(new CcCellarBucketCreateEvent({ bucketName }));
+  }
+
+  /**
+   * @param {string} bucketName
+   */
+  _onDisplayBucketDetailRequested(bucketName) {
+    this.dispatchEvent(new CcCellarBucketShowEvent(bucketName));
+  }
+
+  _onCloseBucketDetails() {
+    this.dispatchEvent(new CcCellarBucketHideEvent());
+  }
+
+  /**
+   * @param {string} bucketName
+   */
+  _onDeleteBucketRequested(bucketName) {
+    // todo: add confirmation modal (use cc-dialog)
+    this.dispatchEvent(new CcCellarBucketHideEvent());
+    this.dispatchEvent(new CcCellarBucketDeleteEvent(bucketName));
+  }
+
+  // /**
+  //  * @param {PropertyValues} changedProperties
+  //  */
+  // willUpdate(changedProperties) {
+  //   if (changedProperties.has('state')) {
+  //     this._showDetails =
+  //       this.state.type === 'loaded' &&
+  //       this.state.list.level === 'buckets' &&
+  //       this.state.list.type === 'loaded' &&
+  //       this.state.list.details != null;
+  //   }
+  // }
+  //
+  // /**
+  //  * @param {PropertyValues} changedProperties
+  //  */
+  // updated(changedProperties) {
+  //   if (changedProperties.has('_showDetails')) {
+  //     if (this._showDetails) {
+  //       this._dialogRef.value?.showModal();
+  //     } else {
+  //       this._dialogRef.value?.close();
+  //     }
+  //   }
+  // }
+
+  render() {
+    if (this.state.type === 'loading') {
+      // todo i18n + spinner
+      return html` Loading... `;
+    }
+    if (this.state.type === 'error') {
+      // todo i18n
+      return html`<cc-notice intent="warning" message=" Error while loading component"></cc-notice>`;
+    }
+
+    return html`<div class="wrapper">
+      ${this._renderListHeading(this.state.list)} ${this._renderList(this.state.list)}
+      ${this._renderDetail(this.state.list)}
+    </div>`;
+  }
+
+  /**
+   * @param {CellarExplorerItemsListState} state
+   * @returns {TemplateResult}
+   */
+  _renderListHeading(state) {
+    if (state.level === 'buckets') {
+      return this._renderListHeadingForBuckets(state);
+    }
+
+    return html``;
+  }
+
+  /**
+   * @param {CellarExplorerItemsListState} state
+   * @returns {TemplateResult}
+   */
+  _renderListHeadingForBuckets(state) {
+    // todo: do we need to display the buckets count ?
+    if (state.level === 'buckets') {
+      return html`
+        <div class="list-heading">
+          <div class="list-heading--title">List of buckets<!-- todo i18n --></div>
+          <div>
+            <!-- todo put this into a modal (keep only the button to open the modal) -->
+            <!-- todo make the bucketName required -->
+            <!-- todo handle error messages coming from the server -->
+            <form ${formSubmit(this._onCreateBucketRequested.bind(this))} ${ref(this._createBucketFormRef)}>
+              <cc-input-text inline label="Bucket Name" name="bucketName"></cc-input-text>
+              <cc-button primary type="submit" .icon=${iconAdd}>Create Bucket<!-- todo i18n --></cc-button>
+            </form>
+          </div>
+        </div>
+      `;
+    }
+
+    return html``;
+  }
+
+  /**
+   * @param {CellarExplorerItemsListState} state
+   * @returns {TemplateResult}
+   */
+  _renderList(state) {
+    if (state.level === 'buckets') {
+      return this._renderListOfBuckets(state);
+    }
+
+    return html``;
+  }
+
+  /**
+   * @param {CellarExplorerItemsListState} state
+   * @returns {TemplateResult}
+   */
+  _renderListOfBuckets(state) {
+    if (state.type === 'loading') {
+      // todo i18n
+      return html` Loading list of buckets... `;
+    }
+    if (state.type === 'error') {
+      // todo i18n
+      return html`<cc-notice intent="warning" message="Error while loading the list of buckets"></cc-notice>`;
+    }
+
+    /** @type {Array<BucketColumnDefinition>} */
+    const bucketColumns = [
+      {
+        header: 'Bucket name',
+        cellAt: (bucketState) => ({
+          type: 'text',
+          value: bucketState.name,
+          icon: iconBucket,
+        }),
+        width: 'minmax(max-content, 1fr)',
+        sort: 'none',
+      },
+      {
+        header: 'Last update',
+        cellAt: (bucketState) => ({
+          type: 'text',
+          value: this._renderDate(bucketState.lastUpdatedDate),
+        }),
+        width: 'max-content',
+        volatile: true,
+        sort: 'desc',
+      },
+      {
+        header: 'Size',
+        cellAt: (bucketState) => ({
+          type: 'text',
+          value: this._renderSize(bucketState.sizeInBytes),
+        }),
+        width: 'max-content',
+        align: 'end',
+        volatile: true,
+        sort: 'asc',
+      },
+      {
+        header: 'Objects',
+        cellAt: (bucketState) => ({
+          type: 'text',
+          value: this._renderObjectsCount(bucketState.objectsCount),
+        }),
+        width: 'max-content',
+        align: 'end',
+        volatile: true,
+      },
+      {
+        header: '',
+        cellAt: (bucketState) => ({
+          type: 'button',
+          value: `show details for bucket ${bucketState.name}`,
+          icon: iconMore,
+          waiting: bucketState.state === 'fetching',
+          onClick: () => this._onDisplayBucketDetailRequested(bucketState.name),
+        }),
+        width: 'max-content',
+      },
+    ];
+
+    return html`<cc-grid .columns=${bucketColumns} .items=${state.items}>
+      <div slot="empty"><!-- todo: i18n -->No buckets!</div>
+    </cc-grid>`;
+  }
+
+  /**
+   * @param {CellarExplorerItemsListState} state
+   * @returns {TemplateResult}
+   */
+  _renderDetail(state) {
+    if (state.type === 'loading' || state.type === 'error') {
+      return html``;
+    }
+    if (state.level === 'buckets') {
+      return html`<cc-drawer
+        heading="Bucket details"
+        ?open=${state.details != null}
+        @cc-close=${this._onCloseBucketDetails}
+      >
+        ${this._renderDetailForBucket(state.details)}
+      </cc-drawer>`;
+    }
+    return html``;
+  }
+
+  /**
+   * @param {CellarItemStateBucketDetails} details
+   * @returns {TemplateResult}
+   */
+  _renderDetailForBucket(details) {
+    if (details == null) {
+      return html``;
+    }
+
+    return html`<div class="details-wrapper">
+      <div class="details-icon-wrapper">
+        <cc-icon .icon=${iconBucket}></cc-icon>
+        <div>${details.name}</div>
+      </div>
+
+      <div class="details-sub-title">Actions<!-- todo i18n --></div>
+      <div class="details-actions">
+        <!-- todo stretch the button -->
+        <!-- todo add a confirmation modal -->
+        <cc-button
+          danger
+          .icon=${iconDelete}
+          @cc-click=${() => this._onDeleteBucketRequested(details.name)}
+          .waiting=${details.state === 'deleting'}
+          .disabled=${details.objectsCount > 0 && details.state !== 'deleting'}
+          >Delete bucket<!-- todo i18n --></cc-button
+        >
+        <br />
+        ${details.objectsCount > 0
+          ? // todo: i18n
+            html`<cc-notice message="Bucket must be empty to delete it" intent="info"></cc-notice>`
+          : ''}
+      </div>
+
+      <div class="details-sub-title">Bucket overview<!-- todo i18n --></div>
+
+      <dl class="details-overview-list">
+        <!-- todo i18n -->
+        <dt><span>Number of objects</span></dt>
+        <dd>${this._renderObjectsCount(details.objectsCount)}</dd>
+
+        <!-- todo i18n -->
+        <dt><span>Size</span></dt>
+        <dd>${this._renderSize(details.sizeInBytes)}</dd>
+
+        <!-- todo i18n -->
+        <dt><span>Creation date</span></dt>
+        <!-- todo render full date with time -->
+        <dd>${this._renderDate(details.creationDate)}</dd>
+
+        <!-- todo i18n -->
+        <dt><span>Last modify</span></dt>
+        <!-- todo render full date with time -->
+        <dd>${this._renderDate(details.lastUpdatedDate)}</dd>
+
+        <!-- todo i18n -->
+        <dt><span>Versioning</span></dt>
+        <!-- todo i18n (3 possible values: disabled, enabled, suspended) -->
+        <dd>${details.versioning}</dd>
+      </dl>
+    </div>`;
+  }
+
+  /**
+   * @param {string} date
+   */
+  _renderDate(date) {
+    if (date == null) {
+      return '';
+    }
+    return i18n('cc-cellar-explorer.date', { date });
+  }
+
+  /**
+   * @param {number} size
+   */
+  _renderSize(size) {
+    if (size == null || isNaN(size)) {
+      return '';
+    }
+    return i18n('cc-cellar-explorer.size', { size });
+  }
+
+  /**
+   * @param {number} count
+   */
+  _renderObjectsCount(count) {
+    if (count == null || isNaN(count)) {
+      return '';
+    }
+    return i18n('cc-cellar-explorer.count', { count });
+  }
+
+  static get styles() {
+    return [
+      accessibilityStyles,
+      // language=CSS
+      css`
+        :host {
+          display: block;
+        }
+
+        .wrapper {
+          background-color: var(--cc-color-bg-default, #fff);
+          border: 1px solid var(--cc-color-border-neutral, #aaa);
+          border-radius: var(--cc-border-radius-default, 0.25em);
+          height: calc(100% - 2em);
+          display: flex;
+          flex-direction: column;
+          padding: 1em;
+          gap: 1em;
+        }
+
+        .list-heading {
+          display: flex;
+          align-items: center;
+          margin-bottom: 1em;
+        }
+
+        .list-heading--title {
+          font-weight: 700;
+          font-size: 1.2em;
+          flex: 1;
+          color: var(--cc-color-text-primary-strongest, #000);
+        }
+
+        cc-grid {
+          flex: 1;
+          border: 1px solid var(--cc-color-border-neutral-weak, #aaa);
+          border-radius: var(--cc-border-radius-small, 0.15em);
+          min-height: 0;
+        }
+
+        .details-wrapper {
+          display: flex;
+          flex-direction: column;
+          width: 25em;
+        }
+
+        .details-wrapper .details-icon-wrapper {
+          border: 1px solid var(--cc-color-border-neutral, #aaa);
+          border-radius: var(--cc-border-radius-default, 0.25em);
+          display: flex;
+          flex-direction: column;
+          align-content: center;
+          align-items: center;
+          color: var(--cc-color-text-primary-strongest, #000);
+          padding: 1em;
+          gap: 1em;
+          font-weight: 700;
+        }
+
+        .details-wrapper .details-icon-wrapper cc-icon {
+          width: 5em;
+          height: 5em;
+        }
+
+        .details-wrapper .details-sub-title {
+          display: flex;
+          align-items: center;
+          margin-bottom: 1em;
+          margin-top: 2em;
+          padding-bottom: 0.5em;
+          border-bottom: 1px solid var(--cc-color-border-primary-weak, #aaa);
+          font-weight: bold;
+        }
+
+        .details-wrapper .details-actions {
+          display: flex;
+          flex-direction: column;
+          gap: 0.5em;
+        }
+
+        .details-wrapper .details-overview-list {
+          display: flex;
+          flex-direction: column;
+          margin: 0;
+        }
+
+        .details-wrapper .details-overview-list dt {
+          font-size: 0.94em;
+          font-weight: bold;
+          margin-bottom: 0.25em;
+        }
+
+        .details-wrapper .details-overview-list dd {
+          font-size: 0.94em;
+          margin: 0 0 1em 0;
+        }
+      `,
+    ];
+  }
+}
+
+// eslint-disable-next-line wc/tag-name-matches-class
+window.customElements.define('cc-cellar-explorer-beta', CcCellarExplorer);
