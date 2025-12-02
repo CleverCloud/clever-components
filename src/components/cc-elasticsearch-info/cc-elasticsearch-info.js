@@ -17,13 +17,8 @@ const ELASTICSEARCH_DOCUMENTATION = getDocUrl('/addons/elastic');
 const linksSortOrder = ['elasticsearch', 'kibana', 'apm'];
 
 /**
- * @typedef {import('./cc-elasticsearch-info.types.js').ElasticSearchInfoState} ElasticSearchInfoState
- * @typedef {import('./cc-elasticsearch-info.types.js').ElasticSearchInfoStateLoaded} ElasticSearchInfoStateLoaded
- * @typedef {import('./cc-elasticsearch-info.types.js').ElasticSearchInfoStateLoading} ElasticSearchInfoStateLoading
- * @typedef {import('./cc-elasticsearch-info.types.js').LinkType} LinkType
- * @typedef {import('./cc-elasticsearch-info.types.js').LinkLoading} LinkLoading
- * @typedef {import('./cc-elasticsearch-info.types.js').LinkLoaded} LinkLoaded
- * @typedef {import('lit').TemplateResult<1>} TemplateResult
+ * @import { ElasticSearchInfoState, LinkType, LinkLoading, LinkLoaded } from './cc-elasticsearch-info.types.js'
+ * @import { TemplateResult } from 'lit'
  */
 
 /**

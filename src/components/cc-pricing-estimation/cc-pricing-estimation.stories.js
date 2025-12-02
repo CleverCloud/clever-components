@@ -17,10 +17,8 @@ const conf = {
 };
 
 /**
- * @typedef {import('./cc-pricing-estimation.js').CcPricingEstimation} CcPricingEstimation
- * @typedef {import('./cc-pricing-estimation.types.js').PricingEstimationStateLoaded} PricingEstimationStateLoaded
- * @typedef {import('./cc-pricing-estimation.types.js').RuntimePlanWithQuantity} RuntimePlanWithQuantity
- * @typedef {import('./cc-pricing-estimation.types.js').CountablePlanWithQuantity} CountablePlanWithQuantity
+ * @import { CcPricingEstimation } from './cc-pricing-estimation.js'
+ * @import { PricingEstimationStateLoaded, RuntimePlanWithQuantity, CountablePlanWithQuantity } from './cc-pricing-estimation.types.js'
  */
 
 const pricesInEuro = formatEstimationPrices(rawPriceSystemEuro);

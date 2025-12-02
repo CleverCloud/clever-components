@@ -2,7 +2,7 @@ import { css, html, LitElement } from 'lit';
 import { i18n } from '../../translations/translation.js';
 
 /**
- * @typedef {import('./cc-beta.types.js').PositionType} PositionType
+ * @import { PositionType } from './cc-beta.types.js'
  */
 
 /**

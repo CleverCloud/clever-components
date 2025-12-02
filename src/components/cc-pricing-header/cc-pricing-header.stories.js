@@ -13,11 +13,9 @@ const conf = {
 };
 
 /**
- * @typedef {import('./cc-pricing-header.js').CcPricingHeader} CcPricingHeader
- * @typedef {import('./cc-pricing-header.types.js').PricingHeaderStateLoaded} PricingHeaderStateLoaded
- * @typedef {import('./cc-pricing-header.types.js').PricingHeaderStateLoading} PricingHeaderStateLoading
- * @typedef {import('./cc-pricing-header.types.js').PricingHeaderStateError} PricingHeaderStateError
- * @typedef {import('../common.types.js').Temporality} Temporality
+ * @import { CcPricingHeader } from './cc-pricing-header.js'
+ * @import { PricingHeaderStateLoaded, PricingHeaderStateLoading, PricingHeaderStateError } from './cc-pricing-header.types.js'
+ * @import { Temporality } from '../common.types.js'
  */
 
 /** @type {Partial<CcPricingHeader>} */

@@ -1,8 +1,7 @@
 import { CcEvent } from '../../lib/events.js';
 
 /**
- * @typedef {import('./cc-domain-management.types.js').NewDomain} NewDomain
- * @typedef {import('./cc-domain-management.types.js').DomainInfo} DomainInfo
+ * @import { NewDomain, DomainInfo } from './cc-domain-management.types.js'
  */
 
 /**

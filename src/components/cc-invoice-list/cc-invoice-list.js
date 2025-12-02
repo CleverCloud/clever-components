@@ -37,8 +37,8 @@ function maxFromStrings(numbersAsStrings) {
 }
 
 /**
- * @typedef {import('./cc-invoice-list.types.js').InvoiceListState} InvoiceListState
- * @typedef {import('lit').TemplateResult<1>} TemplateResult
+ * @import { InvoiceListState } from './cc-invoice-list.types.js'
+ * @import { TemplateResult } from 'lit'
  */
 
 /**

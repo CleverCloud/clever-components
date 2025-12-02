@@ -18,10 +18,8 @@ const conf = {
 };
 
 /**
- * @typedef {import('./cc-zone.js').CcZone} CcZone
- * @typedef {import('./cc-zone.types.js').ZoneStateLoaded} ZoneStateLoaded
- * @typedef {import('./cc-zone.types.js').ZoneStateLoading} ZoneStateLoading
- * @typedef {import('./cc-zone.types.js').ZoneModeType} ZoneModeType
+ * @import { CcZone } from './cc-zone.js'
+ * @import { ZoneStateLoaded, ZoneStateLoading, ZoneModeType } from './cc-zone.types.js'
  */
 
 /** @type {ZoneStateLoaded} */

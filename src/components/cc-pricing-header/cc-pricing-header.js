@@ -26,10 +26,10 @@ const DEFAULT_CURRENCY = 'EUR';
 const DEFAULT_TEMPORALITY = { type: '30-days', digits: 2 };
 
 /**
- * @typedef {import('./cc-pricing-header.types.js').PricingHeaderState} PricingHeaderState
- * @typedef {import('../common.types.js').Temporality} Temporality
- * @typedef {import('../../lib/events.types.js').EventWithTarget<SlSelect>} SlSelectEvent
- * @typedef {import('@shoelace-style/shoelace').SlSelect} SlSelect
+ * @import { PricingHeaderState } from './cc-pricing-header.types.js'
+ * @import { Temporality } from '../common.types.js'
+ * @import { SlSelect } from '@shoelace-style/shoelace'
+ * @import { EventWithTarget } from '../../lib/events.types.js'
  */
 
 /**
@@ -100,7 +100,7 @@ export class CcPricingHeader extends LitElement {
    * Retrieves the currency corresponding to the selected currency code.
    * Dispatches a `cc-pricing-currency-change` event with the currency as its payload.
    *
-   * @param {SlSelectEvent} e - the event that called this method
+   * @param {EventWithTarget<SlSelect>} e - the event that called this method
    */
   _onCurrencyChange(e) {
     this.selectedCurrency = /** @type {string} */ (e.target.value);
@@ -111,7 +111,7 @@ export class CcPricingHeader extends LitElement {
    * Retrieves the temporality corresponding to the selected temporality type.
    * Dispatches a `cc-pricing-temporality-change` event with the temporality as its payload.
    *
-   * @param {SlSelectEvent} e - the event that called this method
+   * @param {EventWithTarget<SlSelect>} e - the event that called this method
    */
   _onTemporalityChange(e) {
     const temporality = this.temporalities.find((t) => t.type === e.target.value);
@@ -122,7 +122,7 @@ export class CcPricingHeader extends LitElement {
    * Retrieves the zone id from the event payload.
    * Dispatches a `cc-pricing-zone-change` event with the zone id as its payload.
    *
-   * @param {SlSelectEvent} e - the event that called this method
+   * @param {EventWithTarget<SlSelect>} e - the event that called this method
    */
   _onZoneChange(e) {
     const zoneId = /** @type {string} */ (e.target.value);

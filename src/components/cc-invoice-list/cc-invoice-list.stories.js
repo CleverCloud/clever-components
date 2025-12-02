@@ -14,10 +14,8 @@ const conf = {
 };
 
 /**
- * @typedef {import('./cc-invoice-list.js').CcInvoiceList} CcInvoiceList
- * @typedef {import('./cc-invoice-list.types.js').InvoiceListStateLoaded} InvoiceListStateLoaded
- * @typedef {import('./cc-invoice-list.types.js').InvoiceListStateLoading} InvoiceListStateLoading
- * @typedef {import('./cc-invoice-list.types.js').InvoiceListStateError} InvoiceListStateError
+ * @import { CcInvoiceList } from './cc-invoice-list.js'
+ * @import { InvoiceListStateLoaded, InvoiceListStateLoading, InvoiceListStateError } from './cc-invoice-list.types.js'
  */
 
 export const defaultStory = makeStory(conf, {

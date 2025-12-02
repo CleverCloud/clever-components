@@ -5,10 +5,10 @@ import '../cc-smart-container/cc-smart-container.js';
 import './cc-pricing-estimation.js';
 
 /**
- * @typedef {import('./cc-pricing-estimation.js').CcPricingEstimation} CcPricingEstimation
- * @typedef {import('./cc-pricing-estimation.types.js').PricingEstimationStateLoaded} PricingEstimationStateLoaded
- * @typedef {import('../../lib/send-to-api.types.js').ApiConfig} ApiConfig
- * @typedef {import('../../lib/smart/smart-component.types.js').OnContextUpdateArgs<CcPricingEstimation>} OnContextUpdateArgs
+ * @import { CcPricingEstimation } from './cc-pricing-estimation.js'
+ * @import { PricingEstimationStateLoaded } from './cc-pricing-estimation.types.js'
+ * @import { ApiConfig } from '../../lib/send-to-api.types.js'
+ * @import { OnContextUpdateArgs } from '../../lib/smart/smart-component.types.js'
  */
 
 defineSmartComponent({
@@ -19,7 +19,7 @@ defineSmartComponent({
     currency: { type: String, optional: true },
   },
   /**
-   * @param {OnContextUpdateArgs} args
+   * @param {OnContextUpdateArgs<CcPricingEstimation>} args
    */
   onContextUpdate({ container, context, onEvent, updateComponent, signal }) {
     const { apiConfig, zoneId = 'par', currency = 'EUR' } = context;

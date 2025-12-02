@@ -13,7 +13,7 @@ const conf = {
 };
 
 /**
- * @typedef {import('./cc-pricing-product-consumption.js').CcPricingProductConsumption} CcPricingProductConsumption
+ * @import { CcPricingProductConsumption } from './cc-pricing-product-consumption.js'
  */
 
 export const defaultStory = makeStory(conf, {

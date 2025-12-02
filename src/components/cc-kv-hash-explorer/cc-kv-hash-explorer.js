@@ -43,16 +43,13 @@ const SKELETON_ELEMENTS = Array(5)
 const LOAD_MORE_THRESHOLD = 5;
 
 /**
- * @typedef {import('./cc-kv-hash-explorer.types.js').CcKvHashExplorerState} CcKvHashExplorerState
- * @typedef {import('./cc-kv-hash-explorer.types.js').CcKvHashElementState} CcKvHashElementState
- * @typedef {import('../cc-input-text/cc-input-text.js').CcInputText} CcInputText
- * @typedef {import('../../lib/events.types.js').EventWithTarget} EventWithTarget
- * @typedef {import('lit').TemplateResult<1>} TemplateResult
- * @typedef {import('lit/directives/ref.js').Ref<CcInputText>} CcInputTextRef
- * @typedef {import('lit/directives/ref.js').Ref<HTMLFormElement>} HTMLFormElementRef
- * @typedef {import('lit/directives/ref.js').Ref<Virtualizer>} VirtualizerRef
- * @typedef {import('@lit-labs/virtualizer/events.js').VisibilityChangedEvent} VisibilityChangedEvent
- * @typedef {import('@lit-labs/virtualizer/LitVirtualizer.js').LitVirtualizer} Virtualizer
+ * @import { CcKvHashExplorerState, CcKvHashElementState } from './cc-kv-hash-explorer.types.js'
+ * @import { CcInputText } from '../cc-input-text/cc-input-text.js'
+ * @import { EventWithTarget } from '../../lib/events.types.js'
+ * @import { VisibilityChangedEvent } from '@lit-labs/virtualizer/events.js'
+ * @import { LitVirtualizer as Virtualizer } from '@lit-labs/virtualizer/LitVirtualizer.js'
+ * @import { TemplateResult } from 'lit'
+ * @import { Ref } from 'lit/directives/ref.js'
  */
 
 /**
@@ -87,13 +84,13 @@ export class CcKvHashExplorer extends LitElement {
     /** @type {CcKvHashExplorerState} - The state of the component */
     this.state = { type: 'loading' };
 
-    /** @type {HTMLFormElementRef} */
+    /** @type {Ref<HTMLFormElement>} */
     this._addFormRef = createRef();
 
-    /** @type {CcInputTextRef} */
+    /** @type {Ref<CcInputText>} */
     this._editElementValueRef = createRef();
 
-    /** @type {VirtualizerRef} */
+    /** @type {Ref<Virtualizer>} */
     this._elementsRef = createRef();
 
     new LostFocusController(

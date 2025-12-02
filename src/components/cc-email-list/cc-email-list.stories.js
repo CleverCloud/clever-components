@@ -35,10 +35,8 @@ export default {
 };
 
 /**
- * @typedef {import('./cc-email-list.js').CcEmailList} CcEmailList
- * @typedef {import('./cc-email-list.types.js').EmailListStateLoaded} EmailsListStateLoaded
- * @typedef {import('./cc-email-list.types.js').PrimaryAddressState} PrimaryAddressState
- * @typedef {import('./cc-email-list.types.js').SecondaryAddressState} SecondaryAddressState
+ * @import { CcEmailList } from './cc-email-list.js'
+ * @import { EmailListStateLoaded as EmailsListStateLoaded, PrimaryAddressState, SecondaryAddressState } from './cc-email-list.types.js'
  */
 
 const conf = {

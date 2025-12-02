@@ -91,19 +91,12 @@ function dateStateValid(date) {
 }
 
 /**
- * @typedef {import('../../lib/date/date.types.js').Timezone} Timezone
- * @typedef {import('./cc-input-date.types.js').InputDateValueState} InputDateValueState
- * @typedef {import('./cc-input-date.types.js').InputDateValueStateEmpty} InputDateValueStateEmpty
- * @typedef {import('./cc-input-date.types.js').InputDateValueStateNaD} InputDateValueStateNaD
- * @typedef {import('./cc-input-date.types.js').InputDateValueStateValid} InputDateValueStateValid
- * @typedef {import('../../lib/form/validation.types.js').Validity} Validity
- * @typedef {import('../../lib/form/validation.types.js').Validator} Validator
- * @typedef {import('../../lib/form/validation.types.js').ErrorMessageMap} ErrorMessageMap
- * @typedef {import('lit/directives/ref.js').Ref<HTMLInputElement>} HTMLInputElementRef
- * @typedef {import('lit/directives/ref.js').Ref<HTMLElement>} HTMLElementRef
- * @typedef {import('lit').PropertyValues<CcInputDate>} CcInputDatePropertyValues
- * @typedef {import('../../lib/events.types.js').EventWithTarget<HTMLInputElement>} HTMLInputElementEvent
- * @typedef {import('../../lib/events.types.js').GenericEventWithTarget<KeyboardEvent, HTMLInputElement>} HTMLInputElementKeyboardEvent
+ * @import { Timezone } from '../../lib/date/date.types.js'
+ * @import { InputDateValueState, InputDateValueStateEmpty, InputDateValueStateNaD, InputDateValueStateValid } from './cc-input-date.types.js'
+ * @import { Validator, ErrorMessageMap } from '../../lib/form/validation.types.js'
+ * @import { Ref } from 'lit/directives/ref.js'
+ * @import { PropertyValues } from 'lit'
+ * @import { EventWithTarget, GenericEventWithTarget } from '../../lib/events.types.js'
  */
 
 /**
@@ -188,10 +181,10 @@ export class CcInputDate extends CcFormControlElement {
     /** @type {string|Date|null} Sets `value` attribute on inner native input element. */
     this.value = null;
 
-    /** @type {HTMLElementRef} */
+    /** @type {Ref<HTMLElement>} */
     this._errorRef = createRef();
 
-    /** @type {HTMLInputElementRef} */
+    /** @type {Ref<HTMLInputElement>} */
     this._inputRef = createRef();
 
     /**
@@ -410,7 +403,7 @@ export class CcInputDate extends CcFormControlElement {
   /* region Event handling */
 
   /**
-   * @param {HTMLInputElementEvent} e
+   * @param {EventWithTarget<HTMLInputElement>} e
    */
   _onInput(e) {
     const inputValue = e.target.value;
@@ -418,7 +411,7 @@ export class CcInputDate extends CcFormControlElement {
   }
 
   /**
-   * @param {HTMLInputElementEvent} e
+   * @param {EventWithTarget<HTMLInputElement>} e
    */
   _onFocus(e) {
     if (this.readonly) {
@@ -427,7 +420,7 @@ export class CcInputDate extends CcFormControlElement {
   }
 
   /**
-   * @param {HTMLInputElementKeyboardEvent} e
+   * @param {GenericEventWithTarget<KeyboardEvent, HTMLInputElement>} e
    */
   _onKeyEvent(e) {
     // Stop propagation of keydown and keypress events (to prevent conflicts with shortcuts)
@@ -473,7 +466,7 @@ export class CcInputDate extends CcFormControlElement {
   /* endregion */
 
   /**
-   * @param {CcInputDatePropertyValues} changedProperties
+   * @param {PropertyValues<CcInputDate>} changedProperties
    */
   willUpdate(changedProperties) {
     if (changedProperties.has('timezone')) {

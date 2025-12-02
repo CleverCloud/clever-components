@@ -13,12 +13,9 @@ const conf = {
 };
 
 /**
- * @typedef {import('./cc-addon-linked-apps.js').CcAddonLinkedApps} CcAddonLinkedApps
- * @typedef {import('./cc-addon-linked-apps.types.js').AddonLinkedAppsStateLoaded} AddonLinkedAppsStateLoaded
- * @typedef {import('./cc-addon-linked-apps.types.js').AddonLinkedAppsStateLoading} AddonLinkedAppsStateLoading
- * @typedef {import('./cc-addon-linked-apps.types.js').AddonLinkedAppsStateError} AddonLinkedAppsStateError
- * @typedef {import('./cc-addon-linked-apps.types.js').LinkedApplication} LinkedApplication
- * @typedef {import('../cc-zone/cc-zone.types.js').ZoneStateLoaded} ZoneStateLoaded
+ * @import { CcAddonLinkedApps } from './cc-addon-linked-apps.js'
+ * @import { AddonLinkedAppsStateLoaded, AddonLinkedAppsStateLoading, AddonLinkedAppsStateError, LinkedApplication } from './cc-addon-linked-apps.types.js'
+ * @import { ZoneStateLoaded } from '../cc-zone/cc-zone.types.js'
  */
 
 /** @type {ZoneStateLoaded} */

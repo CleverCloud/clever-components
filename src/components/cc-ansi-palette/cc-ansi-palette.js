@@ -13,9 +13,8 @@ import '../cc-input-text/cc-input-text.js';
 const COLORS = /** @type {const} */ (['red', 'green', 'yellow', 'blue', 'magenta', 'cyan']);
 
 /**
- * @typedef {import('../../lib/ansi/ansi.types.js').AnsiPalette} AnsiPalette
- * @typedef {import('../../lib/ansi/ansi.types.js').ColorName} ColorName
- * @typedef {import('lit').PropertyValues<CcAnsiPalette>} CcAnsiPalettePropertyValues
+ * @import { AnsiPalette, ColorName } from '../../lib/ansi/ansi.types.js'
+ * @import { PropertyValues } from 'lit'
  */
 
 /**
@@ -42,7 +41,7 @@ export class CcAnsiPalette extends LitElement {
     this._analysis = null;
   }
 
-  /** @param {CcAnsiPalettePropertyValues} changedProperties */
+  /** @param {PropertyValues<CcAnsiPalette>} changedProperties */
   willUpdate(changedProperties) {
     if (changedProperties.has('palette')) {
       this._style = ansiPaletteStyle(this.palette).replaceAll(';', ';\n').slice(0, -1);

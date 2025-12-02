@@ -8,7 +8,7 @@ export default {
 };
 
 /**
- * @typedef {import('./cc-kv-list-input.js').CcKvListInput} CcKvListInput
+ * @import { CcKvListInput } from './cc-kv-list-input.js'
  */
 
 const conf = {

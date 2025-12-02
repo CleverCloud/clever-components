@@ -12,11 +12,8 @@ const conf = {
 };
 
 /**
- * @typedef {import('./cc-elasticsearch-info.js').CcElasticsearchInfo} CcElasticsearchInfo
- * @typedef {import('./cc-elasticsearch-info.types.js').ElasticSearchInfoStateLoaded} ElasticSearchInfoStateLoaded
- * @typedef {import('./cc-elasticsearch-info.types.js').ElasticSearchInfoStateLoading} ElasticSearchInfoStateLoading
- * @typedef {import('./cc-elasticsearch-info.types.js').ElasticSearchInfoStateError} ElasticSearchInfoStateError
- * @typedef {import('./cc-elasticsearch-info.types.js').LinkLoaded} LinkLoaded
+ * @import { CcElasticsearchInfo } from './cc-elasticsearch-info.js'
+ * @import { ElasticSearchInfoStateLoaded, ElasticSearchInfoStateLoading, ElasticSearchInfoStateError, LinkLoaded } from './cc-elasticsearch-info.types.js'
  */
 
 /** @type {LinkLoaded} */

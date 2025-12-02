@@ -12,10 +12,8 @@ const conf = {
 };
 
 /**
- * @typedef {import('./cc-invoice.types.js').InvoiceStateLoaded} InvoiceStateLoaded
- * @typedef {import('./cc-invoice.types.js').InvoiceStateLoading} InvoiceStateLoading
- * @typedef {import('./cc-invoice.types.js').InvoiceStateError} InvoiceStateError
- * @typedef {import('./cc-invoice.js').CcInvoice} CcInvoice
+ * @import { InvoiceStateLoaded, InvoiceStateLoading, InvoiceStateError } from './cc-invoice.types.js'
+ * @import { CcInvoice } from './cc-invoice.js'
  *
  */
 

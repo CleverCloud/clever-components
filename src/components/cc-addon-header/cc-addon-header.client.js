@@ -7,10 +7,10 @@ import { sendToApi } from '../../lib/send-to-api.js';
 import { ONE_SECOND } from '@clevercloud/client/esm/with-cache.js';
 
 /**
- * @typedef {import('./cc-addon-header.types.js').RawAddon} RawAddon
- * @typedef {import('../cc-zone/cc-zone.types.js').ZoneStateLoaded} ZoneStateLoaded
- * @typedef {import('../../operators.types.js').RawOperator} RawOperator
- * @typedef {import('../../lib/send-to-api.types.js').ApiConfig} ApiConfig
+ * @import { RawAddon } from './cc-addon-header.types.js'
+ * @import { ZoneStateLoaded } from '../cc-zone/cc-zone.types.js'
+ * @import { RawOperator } from '../../operators.types.js'
+ * @import { ApiConfig } from '../../lib/send-to-api.types.js'
  */
 
 export class CcAddonHeaderClient {

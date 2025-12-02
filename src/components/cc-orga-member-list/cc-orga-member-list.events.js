@@ -1,8 +1,8 @@
 import { CcEvent } from '../../lib/events.js';
 
 /**
- * @typedef {import('./cc-orga-member-list.types.js').InviteMember} InviteMember
- * @typedef {import('../cc-orga-member-card/cc-orga-member-card.types.js').OrgaMember} OrgaMember
+ * @import { InviteMember } from './cc-orga-member-list.types.js'
+ * @import { OrgaMember } from '../cc-orga-member-card/cc-orga-member-card.types.js'
  */
 
 /**

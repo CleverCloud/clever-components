@@ -3,7 +3,7 @@ import { makeStory, storyWait } from '../../stories/lib/make-story.js';
 import './cc-input-date.js';
 
 /**
- * @typedef {import('./cc-input-date.js').CcInputDate} CcInputDate
+ * @import { CcInputDate } from './cc-input-date.js'
  */
 
 const baseItems = [

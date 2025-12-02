@@ -6,10 +6,7 @@ import '../cc-button/cc-button.js';
 import '../cc-input-text/cc-input-text.js';
 import { CcEnvVarChangeEvent, CcEnvVarDeleteEvent, CcEnvVarKeepEvent } from './cc-env-var-input.events.js';
 
-/**
- * @typedef {import('./cc-env-var-input.types.js').EnvVarName} EnvVarName
- * @typedef {import('../common.types.js').EnvVar} EnvVar
- */
+/** */
 
 /**
  * A small input to manipulate an environment variable.

@@ -17,20 +17,15 @@ import '../cc-smart-container/cc-smart-container.js';
 import './cc-logs-app-runtime.js';
 
 /**
- * @typedef {import('./cc-logs-app-runtime.js').CcLogsAppRuntime} CcLogsAppRuntime
- * @typedef {import('./cc-logs-app-runtime.types.js').LogsAppRuntimeState} LogsAppRuntimeState
- * @typedef {import('./cc-logs-app-runtime.types.js').LogsAppRuntimeStateLoaded} LogsAppRuntimeStateLoaded
- * @typedef {import('../cc-logs/cc-logs.types.js').Log} Log
- * @typedef {import('../cc-logs-date-range-selector/cc-logs-date-range-selector.types.js').LogsDateRangeSelection} LogsDateRangeSelection
- * @typedef {import('../cc-logs-instances/cc-logs-instances.types.js').Instance} Instance
- * @typedef {import('../cc-logs-instances/cc-logs-instances.types.js').GhostInstance} GhostInstance
- * @typedef {import('../cc-logs-instances/cc-logs-instances.types.js').Deployment} Deployment
- * @typedef {import('../cc-logs-instances/cc-logs-instances.types.js').DeploymentState} DeploymentState
- * @typedef {import('../../lib/send-to-api.types.js').ApiConfig} ApiConfig
- * @typedef {import('../../lib/date/date-range.types.js').DateRange} DateRange
- * @typedef {import('../../lib/logs/logs-stream.types.js').LogsStreamState} LogsStreamState
- * @typedef {import('../../lib/smart/smart-component.types.js').UpdateComponentCallback<CcLogsAppRuntime>} UpdateComponentCallback
- * @typedef {import('../../lib/smart/smart-component.types.js').OnContextUpdateArgs<CcLogsAppRuntime>} OnContextUpdateArgs
+ * @import { CcLogsAppRuntime } from './cc-logs-app-runtime.js'
+ * @import { LogsAppRuntimeState } from './cc-logs-app-runtime.types.js'
+ * @import { Log } from '../cc-logs/cc-logs.types.js'
+ * @import { LogsDateRangeSelection } from '../cc-logs-date-range-selector/cc-logs-date-range-selector.types.js'
+ * @import { Instance, GhostInstance, Deployment, DeploymentState } from '../cc-logs-instances/cc-logs-instances.types.js'
+ * @import { ApiConfig } from '../../lib/send-to-api.types.js'
+ * @import { DateRange } from '../../lib/date/date-range.types.js'
+ * @import { LogsStreamState } from '../../lib/logs/logs-stream.types.js'
+ * @import { UpdateComponentCallback, OnContextUpdateArgs } from '../../lib/smart/smart-component.types.js'
  */
 
 const INSTANCES_REFRESH_RATE = 2000;
@@ -45,7 +40,7 @@ defineSmartComponent({
     dateRangeSelection: { type: Object, optional: true },
   },
   /**
-   * @param {OnContextUpdateArgs} args
+   * @param {OnContextUpdateArgs<CcLogsAppRuntime>} args
    */
   onContextUpdate({ component, context, onEvent, updateComponent, signal }) {
     const { apiConfig, ownerId, appId, deploymentId, dateRangeSelection } = context;
@@ -109,7 +104,7 @@ class SmartController extends LogsStream {
    * @param {string} _.ownerId
    * @param {string} _.appId
    * @param {CcLogsAppRuntime} _.component
-   * @param {UpdateComponentCallback} _.updateComponent
+   * @param {UpdateComponentCallback<CcLogsAppRuntime>} _.updateComponent
    */
   constructor({ apiConfig, ownerId, appId, component, updateComponent }) {
     super(component.limit);

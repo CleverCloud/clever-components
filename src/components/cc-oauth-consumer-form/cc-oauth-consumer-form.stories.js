@@ -36,18 +36,10 @@ const NEW_OAUTH_CONSUMER = {
 };
 
 /**
- * @typedef {import('./cc-oauth-consumer-form.js').CcOauthConsumerForm} CcOauthConsumerForm
- * @typedef {import('./cc-oauth-consumer-form.types.js').OauthConsumerFormStateIdleCreate} OauthConsumerFormStateIdleCreate
- * @typedef {import('./cc-oauth-consumer-form.types.js').OauthConsumerFormStateUpdating} OauthConsumerFormStateUpdating
- * @typedef {import('./cc-oauth-consumer-form.types.js').OauthConsumerFormStateCreating} OauthConsumerFormStateCreating
- * @typedef {import('./cc-oauth-consumer-form.types.js').OauthConsumerFormStateIdleUpdate} OauthConsumerFormStateIdleUpdate
- * @typedef {import('./cc-oauth-consumer-form.types.js').OauthConsumerFormStateLoading} OauthConsumerFormStateLoading
- * @typedef {import('./cc-oauth-consumer-form.types.js').OauthConsumerFormStateError} OauthConsumerFormStateError
- * @typedef {import('./cc-oauth-consumer-form.types.js').OauthConsumerFormStateDeleting} OauthConsumerFormStateDeleting
- * @typedef {import('./cc-oauth-consumer-form.types.js').OauthConsumerWithoutKeyAndSecret} OauthConsumerWithoutKeyAndSecret
- * @typedef {import('../cc-oauth-consumer-info/cc-oauth-consumer-info.types.js').OauthConsumer} OauthConsumer
- * @typedef {import('../cc-oauth-consumer-info/cc-oauth-consumer-info.types.js').OauthConsumerRights} OauthConsumerRights
- * @typedef {import('../cc-input-text/cc-input-text.js').CcInputText} CcInputText
+ * @import { CcOauthConsumerForm } from './cc-oauth-consumer-form.js'
+ * @import { OauthConsumerFormStateIdleCreate, OauthConsumerFormStateUpdating, OauthConsumerFormStateCreating, OauthConsumerFormStateIdleUpdate, OauthConsumerFormStateLoading, OauthConsumerFormStateError, OauthConsumerFormStateDeleting, OauthConsumerWithoutKeyAndSecret } from './cc-oauth-consumer-form.types.js'
+ * @import { OauthConsumer, OauthConsumerRights } from '../cc-oauth-consumer-info/cc-oauth-consumer-info.types.js'
+ * @import { CcInputText } from '../cc-input-text/cc-input-text.js'
  */
 
 /** @type {OauthConsumer} */

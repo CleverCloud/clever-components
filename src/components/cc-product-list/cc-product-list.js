@@ -8,9 +8,8 @@ import '../cc-product-card/cc-product-card.js';
 import { ProductsController } from './products-controller.js';
 
 /**
- * @typedef {import('lit').PropertyValues<CcProductList>} CcProductListPropertyValues
- * @typedef {import('./cc-product-list.types.js').ProductsCategory} ProductsCategory
- * @typedef {import('lit').TemplateResult<1>} TemplateResult
+ * @import { ProductsCategory } from './cc-product-list.types.js'
+ * @import { TemplateResult, PropertyValues } from 'lit'
  */
 
 /**
@@ -58,7 +57,7 @@ export class CcProductList extends LitElement {
   }
 
   /**
-   * @param {CcProductListPropertyValues} changedProperties
+   * @param {PropertyValues<CcProductList>} changedProperties
    */
   willUpdate(changedProperties) {
     if (changedProperties.has('productsByCategories')) {

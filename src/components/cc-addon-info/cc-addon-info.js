@@ -44,16 +44,11 @@ const FEATURES_I18N = {
 const GRAFANA_LOGO_URL = getAssetUrl('/logos/grafana.svg');
 
 /**
- * @typedef {import('./cc-addon-info.types.js').AddonInfoState} AddonInfoState
- * @typedef {import('./cc-addon-info.types.js').AddonVersionStateUpdateAvailable} AddonVersionStateUpdateAvailable
- * @typedef {import('./cc-addon-info.types.js').AddonVersionStateRequestingUpdate} AddonVersionStateRequestingUpdate
- * @typedef {import('./cc-addon-info.types.js').LinkedService} LinkedService
- * @typedef {import('../cc-select/cc-select.types.js').Option} Option
- * @typedef {import('../common.types.js').FormattedFeature} FormattedFeature
- * @typedef {import('lit/directives/ref.js').Ref<HTMLDialogElement>} HTMLDialogElementRef
- * @typedef {import('lit/directives/ref.js').Ref<HTMLElement>} HTMLElementRef
- * @typedef {import('lit/directives/ref.js').Ref<HTMLFormElement>} HTMLFormElementRef
- * @typedef {import('lit').PropertyValues<CcAddonInfo>} CcAddonInfoPropertyValues
+ * @import { AddonInfoState, AddonVersionStateUpdateAvailable, AddonVersionStateRequestingUpdate, LinkedService } from './cc-addon-info.types.js'
+ * @import { Option } from '../cc-select/cc-select.types.js'
+ * @import { FormattedFeature } from '../common.types.js'
+ * @import { Ref } from 'lit/directives/ref.js'
+ * @import { PropertyValues } from 'lit'
  */
 
 /**
@@ -81,13 +76,13 @@ export class CcAddonInfo extends LitElement {
     /** @type {AddonInfoState} Sets the state of the component*/
     this.state = { type: 'loading', creationDate: '2025-08-04 15:03:02' };
 
-    /** @type {HTMLDialogElementRef} */
+    /** @type {Ref<HTMLDialogElement>} */
     this._versionDialogRef = createRef();
 
-    /** @type {HTMLElementRef} */
+    /** @type {Ref<HTMLElement>} */
     this._versionTextRef = createRef();
 
-    /** @type {HTMLFormElementRef} */
+    /** @type {Ref<HTMLFormElement>} */
     this._versionFormRef = createRef();
 
     new LostFocusController(this, 'dialog', () => {
@@ -171,7 +166,7 @@ export class CcAddonInfo extends LitElement {
     this._versionDialogRef.value?.close();
   }
 
-  /** @param {CcAddonInfoPropertyValues} changedProperties */
+  /** @param {PropertyValues<CcAddonInfo>} changedProperties */
   updated(changedProperties) {
     // when a version has been updated, we need to close the dialog & reset the form
     const previousState = changedProperties.get('state');

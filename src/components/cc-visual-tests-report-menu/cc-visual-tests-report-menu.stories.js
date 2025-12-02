@@ -24,7 +24,7 @@ const conf = {
 };
 
 /**
- * @typedef {import('./cc-visual-tests-report-menu.js').CcVisualTestsReportMenu} CcVisualTestsReportMenu
+ * @import { CcVisualTestsReportMenu } from './cc-visual-tests-report-menu.js'
  */
 
 export const defaultStory = makeStory(conf, {

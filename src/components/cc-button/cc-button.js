@@ -7,10 +7,10 @@ import '../cc-icon/cc-icon.js';
 import { CcClickEvent } from '../common.events.js';
 
 /**
- * @typedef {import('../common.types.js').IconModel} IconModel
- * @typedef {import('../../lib/events.types.js').GenericEventWithTarget<MouseEvent, HTMLButtonElement>} ButtonClickEvent
- * @typedef {import('lit').PropertyValues<CcButton>} CcButtonPropertyValues
- * @typedef {import('lit/directives/class-map.js').ClassInfo} ClassInfo
+ * @import { IconModel } from '../common.types.js'
+ * @import { ClassInfo } from 'lit/directives/class-map.js'
+ * @import { GenericEventWithTarget } from '../../lib/events.types.js'
+ * @import { PropertyValues } from 'lit'
  */
 
 /**
@@ -186,7 +186,7 @@ export class CcButton extends LitElement {
    * That's why we emit custom "cc-click"
    * It's also easier to handle for the delay mechanism
    *
-   * @param {ButtonClickEvent} e
+   * @param {GenericEventWithTarget<MouseEvent, HTMLButtonElement>} e
    */
   _onClick(e) {
     e.stopPropagation();
@@ -230,7 +230,7 @@ export class CcButton extends LitElement {
   }
 
   /**
-   * @param {CcButtonPropertyValues} changedProperties
+   * @param {PropertyValues<CcButton>} changedProperties
    */
   willUpdate(changedProperties) {
     if (changedProperties.has('disabled')) {

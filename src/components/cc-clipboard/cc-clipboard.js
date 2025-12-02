@@ -7,10 +7,6 @@ import { i18n } from '../../translations/translation.js';
 import '../cc-icon/cc-icon.js';
 
 /**
- * @typedef {import('lit').PropertyValues<CcClipboard>} CcClipboardPropertyValues
- */
-
-/**
  * A component to copy text to clipboard with visual feedback.
  *
  * ## Details

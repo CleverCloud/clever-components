@@ -1,7 +1,7 @@
 import { CcEvent } from '../../lib/events.js';
 
 /**
- * @typedef {import('../common.types.js').Point} Point
+ * @import { Point } from '../common.types.js'
  */
 
 /**

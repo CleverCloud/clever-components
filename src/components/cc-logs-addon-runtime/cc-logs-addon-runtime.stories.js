@@ -8,8 +8,8 @@ export default {
 };
 
 /**
- * @typedef {import('./cc-logs-addon-runtime.js').CcLogsAddonRuntime} CcLogsAddonRuntime
- * @typedef {import('../cc-logs/cc-logs.types.js').Log} Log
+ * @import { CcLogsAddonRuntime } from './cc-logs-addon-runtime.js'
+ * @import { Log } from '../cc-logs/cc-logs.types.js'
  */
 
 const conf = {

@@ -17,13 +17,10 @@ const UNAUTHORISED_ADMIN_ADDITION = 6451;
 const UNAUTHORISED_ADMIN_DELETION = 6452;
 
 /**
- * @typedef {import('./cc-orga-member-list.types.js').OrgaMemberListStateLoaded} OrgaMemberListStateLoaded
- * @typedef {import('./cc-orga-member-list.types.js').InviteMemberFormState} InviteMemberFormState
- * @typedef {import('../cc-orga-member-card/cc-orga-member-card.types.js').OrgaMember} OrgaMember
- * @typedef {import('../cc-orga-member-card/cc-orga-member-card.types.js').OrgaMemberRole} OrgaMemberRole
- * @typedef {import('../cc-orga-member-card/cc-orga-member-card.types.js').OrgaMemberCardState} OrgaMemberCardState
- * @typedef {import('../../lib/send-to-api.types.js').ApiConfig} ApiConfig
- * @typedef {import('../../lib/smart/smart-component.types.js').OnContextUpdateArgs<CcOrgaMemberList>} OnContextUpdateArgs
+ * @import { OrgaMemberListStateLoaded } from './cc-orga-member-list.types.js'
+ * @import { OrgaMember, OrgaMemberRole, OrgaMemberCardState } from '../cc-orga-member-card/cc-orga-member-card.types.js'
+ * @import { ApiConfig } from '../../lib/send-to-api.types.js'
+ * @import { OnContextUpdateArgs } from '../../lib/smart/smart-component.types.js'
  */
 
 defineSmartComponent({
@@ -33,7 +30,7 @@ defineSmartComponent({
     ownerId: { type: String },
   },
   /**
-   * @param {OnContextUpdateArgs} args
+   * @param {OnContextUpdateArgs<CcOrgaMemberList>} args
    */
   onContextUpdate({ component, context, onEvent, updateComponent, signal }) {
     const { apiConfig, ownerId } = context;

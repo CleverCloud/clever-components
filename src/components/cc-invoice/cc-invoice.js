@@ -18,8 +18,7 @@ const SKELETON_INVOICE = {
 };
 
 /**
- * @typedef {import('./cc-invoice.types.js').InvoiceState} InvoiceState
- * @typedef {import('./cc-invoice.types.js').InvoiceStateLoaded} InvoiceStateLoaded
+ * @import { InvoiceState, InvoiceStateLoaded } from './cc-invoice.types.js'
  */
 
 /**

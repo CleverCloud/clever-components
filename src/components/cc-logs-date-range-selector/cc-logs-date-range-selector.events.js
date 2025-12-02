@@ -1,7 +1,7 @@
 import { CcEvent } from '../../lib/events.js';
 
 /**
- * @typedef {import('./cc-logs-date-range-selector.types.js').LogsDateRangeSelectionChangeEventData} LogsDateRangeSelectionChangeEventData
+ * @import { LogsDateRangeSelectionChangeEventData } from './cc-logs-date-range-selector.types.js'
  */
 
 /**

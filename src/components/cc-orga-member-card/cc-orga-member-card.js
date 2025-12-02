@@ -33,15 +33,10 @@ const BREAKPOINT_TINY = 350;
 const BREAKPOINTS = [BREAKPOINT_TINY, BREAKPOINT_SMALL, BREAKPOINT_MEDIUM];
 
 /**
- * @typedef {import('./cc-orga-member-card.types.js').CardAuthorisations} CardAuthorisations
- * @typedef {import('./cc-orga-member-card.types.js').OrgaMemberCardState} OrgaMemberCardState
- * @typedef {import('./cc-orga-member-card.types.js').ToggleEditing} ToggleEditing
- * @typedef {import('./cc-orga-member-card.types.js').OrgaMember} OrgaMember
- * @typedef {import('./cc-orga-member-card.types.js').OrgaMemberRole} OrgaMemberRole
- * @typedef {import('../cc-button/cc-button.js').CcButton} CcButton
- * @typedef {import('../cc-select/cc-select.js').CcSelect} CcSelect
- * @typedef {import('lit/directives/ref.js').Ref<CcButton>} RefCcButton
- * @typedef {import('lit/directives/ref.js').Ref<CcSelect>} RefCcSelect
+ * @import { CardAuthorisations, OrgaMemberCardState, OrgaMember, OrgaMemberRole } from './cc-orga-member-card.types.js'
+ * @import { CcButton } from '../cc-button/cc-button.js'
+ * @import { CcSelect } from '../cc-select/cc-select.js'
+ * @import { Ref } from 'lit/directives/ref.js'
  */
 
 /**
@@ -86,12 +81,12 @@ export class CcOrgaMemberCard extends LitElement {
       isCurrentUser: false,
     };
 
-    /** @type {RefCcButton} */
+    /** @type {Ref<CcButton>} */
     this._deleteButtonRef = createRef();
 
     this._newRole = null;
 
-    /** @type {RefCcSelect} */
+    /** @type {Ref<CcSelect>} */
     this._roleRef = createRef();
 
     /**

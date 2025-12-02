@@ -3,7 +3,7 @@ import { makeStory, storyWait } from '../../stories/lib/make-story.js';
 import './cc-input-text.js';
 
 /**
- * @typedef {import('./cc-input-text.js').CcInputText} CcInputText
+ * @import { CcInputText } from './cc-input-text.js'
  */
 
 function widthContent(chars) {

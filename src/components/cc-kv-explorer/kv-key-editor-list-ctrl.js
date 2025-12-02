@@ -2,17 +2,12 @@ import { KvKeyEditorCtrl } from './kv-key-editor-ctrl.js';
 import { KvScanner } from './kv-scanner.js';
 
 /**
- * @typedef {import('./cc-kv-explorer.js').CcKvExplorer} CcKvExplorer
- * @typedef {import('./cc-kv-explorer.types.js').CcKvExplorerDetailState} CcKvExplorerDetailState
- * @typedef {import('./cc-kv-explorer.types.js').CcKvExplorerDetailStateEditList} CcKvExplorerDetailStateEditList
- * @typedef {import('./cc-kv-explorer.types.js').CcKvKeyValueList} CcKvKeyValueList
- * @typedef {import('./kv-client.js').KvClient} KvClient
- * @typedef {import('../cc-kv-list-explorer/cc-kv-list-explorer.types.js').CcKvListElementState} CcKvListElementState
- * @typedef {import('../cc-kv-list-explorer/cc-kv-list-explorer.types.js').CcKvListExplorerState} CcKvListExplorerState
- * @typedef {import('../cc-kv-list-explorer/cc-kv-list-explorer.types.js').CcKvListExplorerStateLoading} CcKvListExplorerStateLoading
- * @typedef {import('../cc-kv-list-explorer/cc-kv-list-explorer.types.js').CcKvListExplorerAddFormState} CcKvListExplorerAddFormState
- * @typedef {import('./kv-utils.js').Abortable} Abortable
- * @typedef {import('../common.types.js').ObjectOrFunction<CcKvExplorerDetailState>} CcKvExplorerDetailStateUpdater
+ * @import { CcKvExplorer } from './cc-kv-explorer.js'
+ * @import { CcKvExplorerDetailState, CcKvExplorerDetailStateEditList, CcKvKeyValueList } from './cc-kv-explorer.types.js'
+ * @import { KvClient } from './kv-client.js'
+ * @import { CcKvListElementState, CcKvListExplorerState, CcKvListExplorerStateLoading, CcKvListExplorerAddFormState } from '../cc-kv-list-explorer/cc-kv-list-explorer.types.js'
+ * @import { Abortable } from './kv-utils.js'
+ * @import { ObjectOrFunction } from '../common.types.js'
  */
 
 /**
@@ -22,7 +17,7 @@ export class KvKeyEditorListCtrl extends KvKeyEditorCtrl {
   /**
    * @param {string} keyName
    * @param {CcKvExplorer} component
-   * @param {(stateUpdater: CcKvExplorerDetailStateUpdater) => void} updateDetailState
+   * @param {(stateUpdater: ObjectOrFunction<CcKvExplorerDetailState>) => void} updateDetailState
    * @param {KvClient} kvClient
    * @param {Abortable} abortable
    */

@@ -3,19 +3,9 @@ import '../cc-smart-container/cc-smart-container.js';
 import './cc-web-features-tracker.js';
 
 /**
- * @typedef {import('./cc-web-features-tracker.js').CcWebFeaturesTracker} CcWebFeaturesTracker
- * @typedef {import('../../lib/smart/smart-component.types.js').OnContextUpdateArgs<CcWebFeaturesTracker>} OnContextUpdateArgs
- * @typedef {import('./cc-web-features-tracker.types.js').WebFeatures} WebFeatures
- * @typedef {import('./cc-web-features-tracker.types.js').BcdFeatureCompatInfo} BcdFeatureCompatInfo
- * @typedef {import('./cc-web-features-tracker.types.js').BcdBrowserInfo} BcdBrowserInfo
- * @typedef {import('./cc-web-features-tracker.types.js').BaselineFeatureData} BaselineFeatureData
- * @typedef {import('./cc-web-features-tracker.types.js').FormattedFeature} FormattedFeature
- * @typedef {import('./cc-web-features-tracker.types.js').Browser} Browser
- * @typedef {import('./cc-web-features-tracker.types.js').BrowserSupported} BrowserSupported
- * @typedef {import('./cc-web-features-tracker.types.js').BrowserUnsupported} BrowserUnsupported
- * @typedef {import('./cc-web-features-tracker.types.js').FeatureStatus} FeatureStatus
- * @typedef {import('./cc-web-features-tracker.types.js').FeatureJson} FeatureJson
- * @typedef {import('./cc-web-features-tracker.types.js').SkeletonWebFeature} SkeletonWebFeature
+ * @import { CcWebFeaturesTracker } from './cc-web-features-tracker.js'
+ * @import { WebFeatures, BcdFeatureCompatInfo, BcdBrowserInfo, BaselineFeatureData, FormattedFeature, Browser, BrowserSupported, BrowserUnsupported, FeatureStatus, FeatureJson, SkeletonWebFeature } from './cc-web-features-tracker.types.js'
+ * @import { OnContextUpdateArgs } from '../../lib/smart/smart-component.types.js'
  */
 
 defineSmartComponent({
@@ -23,7 +13,7 @@ defineSmartComponent({
   params: {
     trackedWebFeatures: { type: Object },
   },
-  /** @param {OnContextUpdateArgs} args */
+  /** @param {OnContextUpdateArgs<CcWebFeaturesTracker>} args */
   onContextUpdate({ context, updateComponent, signal }) {
     const { trackedWebFeatures } = /** @type {{ trackedWebFeatures: WebFeatures }} */ (context);
 

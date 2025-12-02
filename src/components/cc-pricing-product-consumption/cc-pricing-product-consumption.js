@@ -40,15 +40,9 @@ const ICONS = {
 };
 
 /**
- * @typedef {import('../common.types.js').ActionType} ActionType
- * @typedef {import('../common.types.js').SectionType} SectionType
- * @typedef {import('../common.types.js').PricingSection} PricingSection
- * @typedef {import('../common.types.js').PricingInterval} PricingInterval
- * @typedef {import('../common.types.js').Plan} Plan
- * @typedef {import('../common.types.js').ConsumptionPlan} ConsumptionPlan
- * @typedef {import('./cc-pricing-product-consumption.types.js').PricingProductConsumptionState} PricingProductConsumptionState
- * @typedef {import('./cc-pricing-product-consumption.types.js').SectionStates} SectionStates
- * @typedef {import('lit').PropertyValues<CcPricingProductConsumption>} CcPricingProductConsumptionPropertyValues
+ * @import { ActionType, SectionType, PricingSection, PricingInterval, ConsumptionPlan } from '../common.types.js'
+ * @import { PricingProductConsumptionState, SectionStates } from './cc-pricing-product-consumption.types.js'
+ * @import { PropertyValues } from 'lit'
  */
 
 /**
@@ -329,7 +323,7 @@ export class CcPricingProductConsumption extends LitElement {
     this.requestUpdate();
   }
 
-  /** @param {CcPricingProductConsumptionPropertyValues} changedProperties */
+  /** @param {PropertyValues<CcPricingProductConsumption>} changedProperties */
   willUpdate(changedProperties) {
     // This is not done within the `render` function because we only want to reset this value in specific cases.
     // We reset the simulator & section states only if the product has changed.

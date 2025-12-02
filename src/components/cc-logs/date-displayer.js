@@ -2,10 +2,8 @@ import { DateFormatter } from '../../lib/date/date-formatter.js';
 import { MemoryCache } from '../../lib/memory-cache.js';
 
 /**
- * @typedef {import('./date-display.types.js').DateDisplay} DateDisplay
- * @typedef {import('../../lib/date/date.types.js').DateFormattedPart} DateFormattedPart
- * @typedef {import('../../lib/date/date.types.js').DateFormattedParts} DateFormattedParts
- * @typedef {import('../../lib/date/date.types.js').Timezone} Timezone
+ * @import { DateDisplay } from './date-display.types.js'
+ * @import { DateFormattedPart, DateFormattedParts, Timezone } from '../../lib/date/date.types.js'
  */
 
 /** @type {Array<DateFormattedPart>} */
