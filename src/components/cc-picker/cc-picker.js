@@ -2,6 +2,7 @@ import { css, html } from 'lit';
 import { createRef, ref } from 'lit/directives/ref.js';
 import { CcFormControlElement } from '../../lib/form/cc-form-control-element.abstract.js';
 import { RequiredValidator } from '../../lib/form/validation.js';
+import { isStringEmpty } from '../../lib/utils.js';
 import { accessibilityStyles } from '../../styles/accessibility.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-picker-option/cc-picker-option.js';
@@ -46,6 +47,8 @@ export class CcPicker extends CcFormControlElement {
   static get properties() {
     return {
       ...super.properties,
+      // eslint-disable-next-line lit/no-native-attributes
+      autofocus: { type: Boolean },
       disabled: { type: Boolean, reflect: true },
       inline: { type: Boolean, reflect: true },
       label: { type: String },
@@ -62,6 +65,9 @@ export class CcPicker extends CcFormControlElement {
 
   constructor() {
     super();
+
+    /** @type {boolean} Automatically focus the picker when the page loads. **Note:** Using this attribute is generally discouraged for accessibility reasons. See [MDN autofocus accessibility concerns](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Global_attributes/autofocus#accessibility_concerns) for more information. */
+    this.autofocus = false;
 
     /** @type {boolean} Whether the component should be disabled (default: 'false') */
     this.disabled = false;
@@ -163,6 +169,21 @@ export class CcPicker extends CcFormControlElement {
     this.dispatchEvent(new CcSelectEvent(this.value));
   }
 
+  /**
+   * @param {number} index
+   * @param {string} value
+   * @return {boolean}
+   * @private
+   */
+  _shouldAutoFocus(index, value) {
+    if (!isStringEmpty(this.value)) {
+      return this.value === value;
+    }
+
+    const firstFocusableIndex = this.options.findIndex((option) => !option.disabled);
+    return index === firstFocusableIndex;
+  }
+
   render() {
     if (this.options?.length === 0) {
       return '';
@@ -179,7 +200,7 @@ export class CcPicker extends CcFormControlElement {
           </legend>
 
           <div class="tiles" part="tiles">
-            ${this.options.map((option) => this._renderOption(option, hasErrorMessage))}
+            ${this.options.map((option, index) => this._renderOption(option, hasErrorMessage, index))}
           </div>
 
           <div class="help-container" id="help-id">
@@ -197,14 +218,16 @@ export class CcPicker extends CcFormControlElement {
   /**
    * @param {PickerOption} option
    * @param {boolean} isError
+   * @param {number} index
    * @private
    */
-  _renderOption(option, isError) {
+  _renderOption(option, isError, index) {
     const { body, footer, value, disabled } = option;
     const id = this.name + '-' + value;
     const isChecked = this.value === value;
     const isDisabled = this.disabled || disabled;
     const isReadonly = !isChecked && !isDisabled && this.readonly;
+    const isAutofocus = this.autofocus && this._shouldAutoFocus(index, value);
 
     return html`
       <input
@@ -216,6 +239,7 @@ export class CcPicker extends CcFormControlElement {
         .checked=${isChecked}
         ?disabled=${isDisabled || (isReadonly && !isChecked)}
         aria-describedby="help-id error-id"
+        ?autofocus=${isAutofocus}
       />
       <label for="${id}">
         <cc-picker-option
