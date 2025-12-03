@@ -76,12 +76,8 @@ export const translations = {
   'cc-addon-admin.delete-disclaimer': `Deleting this add-on makes it immediately unavailable.`,
   'cc-addon-admin.delete-vm': `The database is kept 24 hours.`,
   'cc-addon-admin.delete-vm-and-backups': `The database is kept 24 hours, backups according to the retention policy.`,
-  'cc-addon-admin.delete.dialog.cancel': `Cancel`,
-  'cc-addon-admin.delete.dialog.close': `Close`,
   'cc-addon-admin.delete.dialog.confirm': `Delete the add-on`,
   'cc-addon-admin.delete.dialog.desc': `Be aware that by removing this add-on, all the data related to it may be lost. Please refer to the add-on provider terms of usage for more details.`,
-  'cc-addon-admin.delete.dialog.error': /** @param {{ name: string }} _ */ ({ name }) =>
-    `Invalid value. Enter "${name}" as value`,
   'cc-addon-admin.delete.dialog.heading': `Confirm deletion`,
   'cc-addon-admin.delete.dialog.label': `Enter the add-on name`,
   'cc-addon-admin.delete.error': /** @param {{ name: string }} _ */ ({ name }) =>
