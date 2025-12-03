@@ -49,6 +49,8 @@ export class CcInputNumber extends CcFormControlElement {
   static get properties() {
     return {
       ...super.properties,
+      // eslint-disable-next-line lit/no-native-attributes
+      autofocus: { type: Boolean },
       controls: { type: Boolean },
       disabled: { type: Boolean, reflect: true },
       hiddenLabel: { type: Boolean, attribute: 'hidden-label' },
@@ -69,6 +71,9 @@ export class CcInputNumber extends CcFormControlElement {
 
   constructor() {
     super();
+
+    /** @type {boolean} Automatically focus the input when the page loads. **Note:** Using this attribute is generally discouraged for accessibility reasons. See [MDN autofocus accessibility concerns](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Global_attributes/autofocus#accessibility_concerns) for more information. */
+    this.autofocus = false;
 
     /** @type {boolean} Sets the control mode with a decrement and increment buttons. */
     this.controls = false;
@@ -278,6 +283,7 @@ export class CcInputNumber extends CcFormControlElement {
             id="input-id"
             type="number"
             class="input ${classMap({ error: hasErrorMessage })}"
+            ?autofocus=${this.autofocus}
             ?disabled=${this.disabled || this.skeleton}
             ?readonly=${this.readonly}
             min=${this.min ?? ''}
