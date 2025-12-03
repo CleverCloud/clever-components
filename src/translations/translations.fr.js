@@ -116,10 +116,11 @@ export const translations = {
       Vous pouvez gérer les sauvegardes directement depuis votre terminal en utilisant les commandes ci-dessous.
     `,
   'cc-addon-backups.cli.content.list-backups-command': `Lister les sauvegardes de bases de données disponibles\u00A0:`,
-  'cc-addon-backups.close-btn': `Fermer ce panneau`,
   'cc-addon-backups.command-password': `Cette commande vous demandera votre mot de passe, le voici\u00A0:`,
   'cc-addon-backups.delete': /** @param {{createdAt: string|number}} _ */ ({ createdAt }) =>
     sanitize`Supprimer la sauvegarde du <strong title="${formatDate(createdAt)}">${formatDatetime(createdAt)}</strong>`,
+  'cc-addon-backups.delete-command-label': `Commande de suppression`,
+  'cc-addon-backups.delete-command-password-label': `Mot de passe pour la commande de suppression`,
   'cc-addon-backups.delete.btn': `supprimer…`,
   'cc-addon-backups.delete.manual.description.es-addon': () =>
     sanitize`Vous pouvez supprimer cette sauvegarde manuellement grâce à l'outil <cc-link href="https://curl.se/docs/">cURL</cc-link> en exécutant cette commande\u00A0:`,
@@ -148,6 +149,8 @@ export const translations = {
   'cc-addon-backups.loading-error': `Une erreur est survenue pendant le chargement des sauvegardes.`,
   'cc-addon-backups.restore': /** @param {{createdAt: string|number}} _ */ ({ createdAt }) =>
     sanitize`Restaurer la sauvegarde du <strong title="${formatDate(createdAt)}">${formatDatetime(createdAt)}</strong>`,
+  'cc-addon-backups.restore-command-label': `Commande de restauration`,
+  'cc-addon-backups.restore-command-password-label': `Mot de passe pour la commande de restauration`,
   'cc-addon-backups.restore.btn': `restaurer…`,
   'cc-addon-backups.restore.manual.description.es-addon': () =>
     sanitize`Vous pouvez restaurer cette sauvegarde manuellement grâce à l'outil <cc-link href="https://curl.se/docs/">cURL</cc-link> en exécutant cette commande\u00A0:`,
