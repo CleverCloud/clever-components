@@ -105,10 +105,11 @@ export const translations = {
       You can manage backups directly from your terminal using the commands below.
     `,
   'cc-addon-backups.cli.content.list-backups-command': `Download a database backup:`,
-  'cc-addon-backups.close-btn': `Close this panel`,
   'cc-addon-backups.command-password': `This command will ask for your password, here it is:`,
   'cc-addon-backups.delete': /** @param {{createdAt: string|number}} _ */ ({ createdAt }) =>
     sanitize`Delete the backup from <strong title="${formatDate(createdAt)}">${formatDatetime(createdAt)}</strong>`,
+  'cc-addon-backups.delete-command-label': `Delete command`,
+  'cc-addon-backups.delete-command-password-label': `Delete command password`,
   'cc-addon-backups.delete.btn': `delete...`,
   'cc-addon-backups.delete.manual.description.es-addon': () =>
     sanitize`You can delete this backup using <cc-link href="https://curl.se/docs/">cURL</cc-link> by executing this command:`,
@@ -137,6 +138,8 @@ export const translations = {
   'cc-addon-backups.loading-error': `Something went wrong while loading the backups.`,
   'cc-addon-backups.restore': /** @param {{createdAt: string|number}} _ */ ({ createdAt }) =>
     sanitize`Restore the backup from <strong title="${formatDate(createdAt)}">${formatDatetime(createdAt)}</strong>`,
+  'cc-addon-backups.restore-command-label': `Restore command`,
+  'cc-addon-backups.restore-command-password-label': `Restore command password`,
   'cc-addon-backups.restore.btn': `restore...`,
   'cc-addon-backups.restore.manual.description.es-addon': () =>
     sanitize`You can restore this backup using <cc-link href="https://curl.se/docs/">cURL</cc-link> by executing this command:`,
