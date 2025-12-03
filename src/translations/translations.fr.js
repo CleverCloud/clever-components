@@ -445,6 +445,10 @@ export const translations = {
   //#region cc-dialog-confirm-actions
   'cc-dialog-confirm-actions.cancel': `Annuler`,
   //#endregion
+  //#region cc-dialog-confirm-form
+  'cc-dialog-confirm-form.error': /** @param {{ name: string }} _ */ ({ name }) =>
+    `Valeur invalide. Saisissez "${name}" comme valeur`,
+  //#endregion
   //#region cc-doc-card
   'cc-doc-card.link': /** @param {{link: string, product: string}} _ */ ({ link, product }) =>
     sanitize`<cc-link href=${link} a11y-desc="Lire la documentation - ${product}">Lire la documentation</cc-link>`,
