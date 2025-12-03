@@ -1,7 +1,10 @@
+import { CcDialogFocusRestorationFail } from '../components/cc-dialog/cc-dialog.events.js';
+import { EventHandler } from '../lib/events.js';
 import { findActiveElement, isParentOf } from '../lib/shadow-dom-utils.js';
 
 /**
  * @import { LitElement } from 'lit'
+ * @import { ReactiveController} from 'lit'
  */
 
 /**
@@ -24,16 +27,20 @@ import { findActiveElement, isParentOf } from '../lib/shadow-dom-utils.js';
  * You provide a query selector which will select the elements for which you're tracking removal.
  *
  * You provide a callback that will be fired when one of these elements is removed from the DOM.
- * The callback is fired only if the deleted element had focus (or one of its children had focus)
+ * The callback is fired in two situations:
+ * 1. When the deleted element had focus (or one of its children had focus) at the time of removal
+ * 2. When a cc-dialog fails to restore focus to an element that was removed (via cc-dialog-focus-restoration-fail event)
  *
  * The callback will suggest a new element to focus. It suggests the nearest element matching the same query selector.
+ *
+ * @implements {ReactiveController}
  */
 export class LostFocusController {
   /**
    * @param {LitElement} host the custom element
    * @param {string} selector the query selector that will select the elements we want to listen to
-   * @param {LostFocusCallback} callback
-   * @param {() => Promise<void>} [additionalWaiter]
+   * @param {LostFocusCallback} callback the callback to be called when focus is lost
+   * @param {() => Promise<void>} [additionalWaiter] optional function that returns a Promise to wait for before checking for removed elements (e.g. to wait for some async rendering to be done)
    */
   constructor(host, selector, callback, additionalWaiter) {
     host.addController(this);
@@ -41,8 +48,37 @@ export class LostFocusController {
     this.selector = selector;
     /** @type {Array<Element>} */
     this.elements = [];
+    /** @type {Array<Element>} */
+    this.previousElements = [];
     this.callback = callback;
     this.additionalWaiter = additionalWaiter;
+  }
+
+  hostConnected() {
+    this.eventHandler = new EventHandler(
+      this.host,
+      CcDialogFocusRestorationFail.TYPE,
+      /** @param {CcDialogFocusRestorationFail} event */
+      async ({ detail: elementThatFailedToFocus }) => {
+        await this.additionalWaiter?.();
+        // compare elements to the previous one and check if some elements have been removed
+        const removedElements = this.previousElements.filter((e) => !this.elements.includes(e));
+        // find if the element the dialog tried to focus is part of what's been removed
+        // may not be the focused element itself, it can be the element matching the query selector containing the focused element.
+        const closestRemovedElement = removedElements.find(
+          (e) => e === elementThatFailedToFocus || isParentOf(e, elementThatFailedToFocus),
+        );
+        if (closestRemovedElement != null) {
+          this._onFocusLost(closestRemovedElement);
+        }
+      },
+    );
+
+    this.eventHandler.connect();
+  }
+
+  hostDisconnected() {
+    this.eventHandler?.disconnect();
   }
 
   hostUpdate() {
@@ -54,12 +90,13 @@ export class LostFocusController {
     await this.additionalWaiter?.();
 
     // keep the previous elements because we will want to compare with the new ones
-    const previousElements = this.elements;
+    this.previousElements = this.elements;
     // get the elements we are interested in
     this.elements = Array.from(this.host.shadowRoot.querySelectorAll(this.selector));
 
     // compare elements to the previous one and check if some elements have been removed
-    const removedElements = previousElements.filter((e) => !this.elements.includes(e));
+    const removedElements = this.previousElements.filter((e) => !this.elements.includes(e));
+
     if (removedElements.length > 0) {
       // among these removed elements, find the one containing the focused element
       // elementWithFocus may not be the focused element itself, it can be the element matching the query selector containing the focused element.
@@ -67,20 +104,21 @@ export class LostFocusController {
         (e) => e === this.activeElement || isParentOf(e, this.activeElement),
       );
       if (elementWithFocus != null) {
-        // we find the index of the removed element in the previous list
-        const index = previousElements.indexOf(elementWithFocus);
-
-        // we suggest a new element to have the focus
-        const suggestedElementIndex = Math.min(this.elements.length - 1, index);
-        const suggestedElement = suggestedElementIndex > -1 ? this.elements[suggestedElementIndex] : null;
-
-        this.callback({
-          removedElement: elementWithFocus,
-          focusedElement: this.activeElement,
-          index: index,
-          suggestedElement,
-        });
+        this._onFocusLost(elementWithFocus);
       }
     }
+  }
+
+  /** @param {Element} removedElement */
+  _onFocusLost(removedElement) {
+    const index = this.previousElements.indexOf(removedElement);
+    const suggestedElementIndex = Math.min(this.elements.length - 1, index);
+    const suggestedElement = this.elements[suggestedElementIndex] ?? null;
+    this.callback({
+      removedElement,
+      focusedElement: this.activeElement,
+      index: index,
+      suggestedElement,
+    });
   }
 }
