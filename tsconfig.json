@@ -96,7 +96,8 @@
           "wheel",
           "copy",
           "paste",
-          "transitionend"
+          "transitionend",
+          "cancel"
         ],
         "globalAttributes": ["closedby", "autofocus"]
       }

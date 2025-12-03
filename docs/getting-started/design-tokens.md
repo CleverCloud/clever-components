@@ -48,34 +48,35 @@ As our design tokens only exist (for now) as CSS values, keys will be listed as 
 
 #### Background
 
-| Key                               | Default value          | Matching choice |
-|:----------------------------------|:-----------------------|:----------------|
-| `--cc-color-bg-danger`            | `--color-red-100`      | `#be242d`       |
-| `--cc-color-bg-danger-hovered`    | `--color-red-30`       | `#fbc8c2`       |
-| `--cc-color-bg-danger-weak`       | `--color-red-30`       | `#fbc8c2`       |
-| `--cc-color-bg-danger-weaker`     | `--color-red-10`       | `#ffe4e1`       |
-| `--cc-color-bg-default`           | `--color-white`        | `#ffffff`       |
-| `--cc-color-bg-neutral`           | `--color-grey-10`      | `#f5f5f5`       |
-| `--cc-color-bg-neutral-alt`       | `--color-grey-15`      | `#e7e7e7`       |
-| `--cc-color-bg-neutral-active`    | `--color-grey-20`      | `#d9d9d9`       |
-| `--cc-color-bg-neutral-disabled`  | `--color-grey-15`      | `#e7e7e7`       |
-| `--cc-color-bg-neutral-hovered`   | `--color-grey-15`      | `#e7e7e7`       |
-| `--cc-color-bg-neutral-readonly`  | `--color-grey-10`      | `#f5f5f5`       |
-| `--cc-color-bg-primary`           | `--color-blue-60`      | `#3569aa`       |
-| `--cc-color-bg-primary-hovered`   | `--color-blue-20`      | `#ccd4dc`       |
-| `--cc-color-bg-primary-weak`      | `--color-blue-30`      | `#cedcff`       |
-| `--cc-color-bg-primary-weaker`    | `--color-blue-10`      | `#e6eff8`       |
-| `--cc-color-bg-primary-highlight` | `--color-blue-70`      | `#0061bd`       |
-| `--cc-color-bg-soft`              | `--color-purple-light` | `#e0e0ff`       |
-| `--cc-color-bg-strong`            | `--color-blue-100`     | `#012a51`       |
-| `--cc-color-bg-success`           | `--color-green-100`    | `#098846`       |
-| `--cc-color-bg-success-hovered`   | `--color-green-20`     | `#c3dab7`       |
-| `--cc-color-bg-success-weak`      | `--color-green-30`     | `#baf0be`       |
-| `--cc-color-bg-success-weaker`    | `--color-green-10`     | `#e3ffd6`       |
-| `--cc-color-bg-warning`           | `--color-orange-100`   | `#c15807`       |
-| `--cc-color-bg-warning-hovered`   | `--color-orange-20`    | `#d9d4ad`       |
-| `--cc-color-bg-warning-weak`      | `--color-orange-30`    | `#fcf3b5`       |
-| `--cc-color-bg-warning-weaker`    | `--color-orange-10`    | `#fff9cb`       |
+| Key                                 | Default value            | Matching choice    |
+| :---------------------------------- | :----------------------- | :----------------- |
+| `--cc-color-bg-backdrop`            | `#1e1e1e8c`              | `#1e1e1e8c`        |
+| `--cc-color-bg-danger`              | `--color-red-100`        | `#be242d`          |
+| `--cc-color-bg-danger-hovered`      | `--color-red-30`         | `#fbc8c2`          |
+| `--cc-color-bg-danger-weak`         | `--color-red-30`         | `#fbc8c2`          |
+| `--cc-color-bg-danger-weaker`       | `--color-red-10`         | `#ffe4e1`          |
+| `--cc-color-bg-default`             | `--color-white`          | `#ffffff`          |
+| `--cc-color-bg-neutral`             | `--color-grey-10`        | `#f5f5f5`          |
+| `--cc-color-bg-neutral-alt`         | `--color-grey-15`        | `#e7e7e7`          |
+| `--cc-color-bg-neutral-active`      | `--color-grey-20`        | `#d9d9d9`          |
+| `--cc-color-bg-neutral-disabled`    | `--color-grey-15`        | `#e7e7e7`          |
+| `--cc-color-bg-neutral-hovered`     | `--color-grey-15`        | `#e7e7e7`          |
+| `--cc-color-bg-neutral-readonly`    | `--color-grey-10`        | `#f5f5f5`          |
+| `--cc-color-bg-primary`             | `--color-blue-60`        | `#3569aa`          |
+| `--cc-color-bg-primary-hovered`     | `--color-blue-20`        | `#ccd4dc`          |
+| `--cc-color-bg-primary-weak`        | `--color-blue-30`        | `#cedcff`          |
+| `--cc-color-bg-primary-weaker`      | `--color-blue-10`        | `#e6eff8`          |
+| `--cc-color-bg-primary-highlight`   | `--color-blue-70`        | `#0061bd`          |
+| `--cc-color-bg-soft`                | `--color-purple-light`   | `#e0e0ff`          |
+| `--cc-color-bg-strong`              | `--color-blue-100`       | `#012a51`          |
+| `--cc-color-bg-success`             | `--color-green-100`      | `#098846`          |
+| `--cc-color-bg-success-hovered`     | `--color-green-20`       | `#c3dab7`          |
+| `--cc-color-bg-success-weak`        | `--color-green-30`       | `#baf0be`          |
+| `--cc-color-bg-success-weaker`      | `--color-green-10`       | `#e3ffd6`          |
+| `--cc-color-bg-warning`             | `--color-orange-100`     | `#c15807`          |
+| `--cc-color-bg-warning-hovered`     | `--color-orange-20`      | `#d9d4ad`          |
+| `--cc-color-bg-warning-weak`        | `--color-orange-30`      | `#fcf3b5`          |
+| `--cc-color-bg-warning-weaker`      | `--color-orange-10`      | `#fff9cb`          |
 
 #### Border
 
@@ -133,4 +134,10 @@ As our design tokens only exist (for now) as CSS values, keys will be listed as 
 
 | Key                          | Default value |
 |:-----------------------------|:--------------|
-| `--cc-opacity-when-disabled` | `0.65em`      |
+| `--cc-opacity-when-disabled` | `0.65`        |
+
+### Blur decisions
+
+| Key                 | Default value |
+|:--------------------|:--------------|
+| `--cc-blur-default` | `blur(5px)`   |

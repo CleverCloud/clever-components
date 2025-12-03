@@ -1,6 +1,61 @@
 import { CcEvent } from '../lib/events.js';
 
 /**
+ * Dispatched when a component is closed.
+ *
+ * @extends {CcEvent}
+ */
+export class CcCloseEvent extends CcEvent {
+  static TYPE = 'cc-close';
+
+  constructor() {
+    super(CcCloseEvent.TYPE);
+  }
+}
+
+/**
+ * Dispatched when you need to request a component to close itself.
+ * For instance, when the user clicks the cancel button inside a dialog.
+ *
+ * @extends {CcEvent}
+ */
+export class CcCloseRequest extends CcEvent {
+  static TYPE = 'cc-close-request';
+
+  constructor() {
+    super(CcCloseRequest.TYPE);
+  }
+}
+
+
+/**
+ * Dispatched when a component is opened.
+ *
+ * @extends {CcEvent}
+ */
+export class CcOpenEvent extends CcEvent {
+  static TYPE = 'cc-open';
+
+  constructor() {
+    super(CcOpenEvent.TYPE);
+  }
+}
+
+/**
+ * Dispatched when the focus is lost.
+ *
+ * @extends {CcEvent<Element>}
+ */
+export class CcFocusRestorationFail extends CcEvent {
+  static TYPE = 'cc-focus-restoration-fail';
+
+  /** @param {Element} element - the element that it tried to restore focus on */
+  constructor(element) {
+    super(CcFocusRestorationFail.TYPE, element);
+  }
+}
+
+/**
  * Dispatched when an element is toggled.
  * @extends {CcEvent<{isOpen: boolean}>}
  */

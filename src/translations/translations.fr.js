@@ -449,6 +449,9 @@ export const translations = {
   'cc-datetime-relative.distance': /** @param {{date: string|number}} _ */ ({ date }) => formatDistanceToNow(date),
   'cc-datetime-relative.title': /** @param {{date: string|number}} _ */ ({ date }) => formatDate(date),
   //#endregion
+  //#region cc-dialog
+  'cc-dialog.close': `Fermer`,
+  //#endregion
   //#region cc-doc-card
   'cc-doc-card.link': /** @param {{link: string, product: string}} _ */ ({ link, product }) =>
     sanitize`<cc-link href=${link} a11y-desc="Lire la documentation - ${product}">Lire la documentation</cc-link>`,
