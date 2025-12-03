@@ -342,9 +342,7 @@ export const translations = {
       : formatNumber(lang, cpu);
   },
   'cc-addon-info.version.btn': `Update available`,
-  'cc-addon-info.version.dialog.btn.cancel': `Cancel`,
   'cc-addon-info.version.dialog.btn.submit': `Update and rebuild`,
-  'cc-addon-info.version.dialog.close': `Close`,
   'cc-addon-info.version.dialog.desc': /** @param {{ url: string }} _ */ ({ url }) =>
     sanitize`One or more new versions are available. Choose the version you wish to apply and confirm to start and rebuild the application. Learn more in our <cc-link href="${url}">Changelog</cc-link>.`,
   'cc-addon-info.version.dialog.heading': `Update available`,

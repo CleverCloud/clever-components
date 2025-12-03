@@ -353,9 +353,7 @@ export const translations = {
       : formatNumber(lang, cpu);
   },
   'cc-addon-info.version.btn': `Mise à jour disponible`,
-  'cc-addon-info.version.dialog.btn.cancel': `Annuler`,
   'cc-addon-info.version.dialog.btn.submit': `Mettre à jour et rebuild`,
-  'cc-addon-info.version.dialog.close': `Fermer`,
   'cc-addon-info.version.dialog.desc': /** @param {{ url: string }} _ */ ({ url }) =>
     sanitize`Une ou plusieurs nouvelles versions sont disponibles. Choisissez la version que vous souhaitez appliquer et confirmez pour rebuild et redémarrer application. Consultez notre <cc-link href="${url}">Changelog</cc-link> pour en savoir plus.`,
   'cc-addon-info.version.dialog.heading': `Mise à jour disponible`,
