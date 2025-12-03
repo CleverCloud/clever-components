@@ -261,6 +261,36 @@ export const dataLoadedWithJenkinsAndBigbackups = makeStory(conf, {
   ],
 });
 
+export const dataLoadedWithRestoreDialogOpen = makeStory(conf, {
+  items: [
+    {
+      addonId: 'addon_3f9b1c8e-2d7a-4c4f-91a6-8bde78f4a21b',
+      /** @type {AddonBackupsStateLoaded} */
+      state: backupsNewElasticsearchState,
+    },
+  ],
+  /** @param {CcAddonBackups} component */
+  onUpdateComplete(component) {
+    const ccButton = component.shadowRoot.querySelector('cc-button[link]');
+    ccButton.shadowRoot.querySelector('button').click();
+  },
+});
+
+export const dataLoadedWithDeleteDialogOpen = makeStory(conf, {
+  items: [
+    {
+      addonId: 'addon_3f9b1c8e-2d7a-4c4f-91a6-8bde78f4a21b',
+      /** @type {AddonBackupsStateLoaded} */
+      state: backupsNewElasticsearchState,
+    },
+  ],
+  /** @param {CcAddonBackups} component */
+  onUpdateComplete(component) {
+    const ccButton = component.shadowRoot.querySelector('cc-button[link] ~ cc-button[link]');
+    ccButton.shadowRoot.querySelector('button').click();
+  },
+});
+
 export const simulations = makeStory(conf, {
   items: [{}, {}, {}],
   simulations: [
