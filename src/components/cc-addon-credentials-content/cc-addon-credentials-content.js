@@ -15,7 +15,7 @@ const credentialsToDisplayAsString = new Set([
   'api-url',
   'port',
   'host',
-  'tenant',
+  'tenant-namespace',
   'api-key',
   'direct-host',
   'direct-port',
@@ -24,6 +24,7 @@ const credentialsToDisplayAsString = new Set([
   'api-client-user',
   'initial-user',
   'open-api-url',
+  'url',
 ]);
 /** @type {Set<AddonCredential['code']>} */
 const credentialsToDisplayAsInput = new Set([
@@ -117,8 +118,8 @@ export class CcAddonCredentialsContent extends LitElement {
         return i18n('cc-addon-credentials-content.code.password');
       case 'port':
         return i18n('cc-addon-credentials-content.code.port');
-      case 'tenant':
-        return i18n('cc-addon-credentials-content.code.tenant');
+      case 'tenant-namespace':
+        return i18n('cc-addon-credentials-content.code.tenant-namespace');
       case 'token':
         return i18n('cc-addon-credentials-content.code.token');
       case 'uri':
@@ -129,6 +130,8 @@ export class CcAddonCredentialsContent extends LitElement {
         return i18n('cc-addon-credentials-content.code.initial-user');
       case 'open-api-url':
         return i18n('cc-addon-credentials-content.code.open-api-url');
+      case 'url':
+        return i18n('cc-addon-credentials-content.code.url');
       default:
         return code;
     }

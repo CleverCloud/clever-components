@@ -120,3 +120,27 @@ export interface ElasticAddonInfo {
     },
   ];
 }
+
+export interface AddonVersionInfo {
+  available: string[];
+  installed: string;
+  latest: string;
+  needUpdate: boolean;
+}
+
+export interface PulsarProviderInfo {
+  id: string;
+  owner_id: string;
+  tenant: string;
+  namespace: string;
+  cluster_id: string;
+  token: string;
+  creation_date: string;
+  ask_for_deletion_date?: string;
+  deletion_date?: string;
+  status: string;
+  plan: string;
+  cold_storage_id: string;
+  cold_storage_linked: boolean;
+  cold_storage_must_be_provided: boolean;
+}
