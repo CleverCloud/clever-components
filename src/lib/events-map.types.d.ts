@@ -144,6 +144,7 @@ import {
   CcClickEvent,
   CcCloseEvent,
   CcCloseRequest,
+  CcConfirmEvent,
   CcFocusRestorationFail,
   CcOpenEvent,
   CcPasswordResetEvent,
@@ -185,6 +186,7 @@ declare global {
     'cc-click': CcClickEvent;
     'cc-close': CcCloseEvent;
     'cc-close-request': CcCloseRequest;
+    'cc-confirm': CcConfirmEvent;
     'cc-deployment-cancel': CcDeploymentCancelEvent;
     'cc-domain-add': CcDomainAddEvent;
     'cc-domain-delete': CcDomainDeleteEvent;

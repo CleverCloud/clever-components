@@ -27,6 +27,18 @@ export class CcCloseRequest extends CcEvent {
   }
 }
 
+/**
+ * Dispatched when the user confirms using the enter key from the input field or by clicking the confirm button.
+ *
+ * @extends {CcEvent}
+ */
+export class CcConfirmEvent extends CcEvent {
+  static TYPE = 'cc-confirm';
+
+  constructor() {
+    super(CcConfirmEvent.TYPE);
+  }
+}
 
 /**
  * Dispatched when a component is opened.
