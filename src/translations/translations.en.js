@@ -449,6 +449,10 @@ export const translations = {
   'cc-domain-management.certif.custom': () =>
     sanitize`You can provide your own certificate by using the <cc-link href="https://api.clever-cloud.com/v2/certificates/new">Clever Cloud Certificate Manager</cc-link>.`,
   'cc-domain-management.certif.heading': `Secure your application`,
+  'cc-domain-management.delete-dialog.confirm-button': `Delete`,
+  'cc-domain-management.delete-dialog.desc': `By deleting this domain name, your application will immediatly become unreachable from that specific domain name.`,
+  'cc-domain-management.delete-dialog.heading': `Remove the domain name`,
+  'cc-domain-management.delete-dialog.input-label': `Enter the domain name to confirm its deletion`,
   'cc-domain-management.dns.a.desc': () =>
     sanitize`<p>If you choose to use <code>A</code> records, for instance with a root domain (APEX), you'll need to update them yourself. Follow our <cc-link href="${getDevHubUrl('/changelog')}">changelog</cc-link> or check our <cc-link href="${getDevHubUrl('/api/v4/#load-balancers')}">v4 API documentation</cc-link> for this.</p>`,
   'cc-domain-management.dns.a.heading': `A records`,

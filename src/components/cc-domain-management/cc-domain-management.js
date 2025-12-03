@@ -31,6 +31,9 @@ import '../cc-block-section/cc-block-section.js';
 import '../cc-block/cc-block.js';
 import '../cc-button/cc-button.js';
 import '../cc-code/cc-code.js';
+import '../cc-dialog-confirm-form/cc-dialog-confirm-form.js';
+import '../cc-dialog/cc-dialog.js';
+import '../cc-icon/cc-icon.js';
 import '../cc-input-text/cc-input-text.js';
 import '../cc-link/cc-link.js';
 import '../cc-loader/cc-loader.js';
@@ -56,6 +59,7 @@ const DNS_DOCUMENTATION = getDocUrl('/administrate/domain-names');
  * @typedef {import('lit').TemplateResult<1>} TemplateResult
  * @typedef {import('lit/directives/ref.js').Ref<CcInputText>} RefCcInputText
  * @typedef {import('lit/directives/ref.js').Ref<HTMLParagraphElement>} RefHTMLParagraphElement
+ * @typedef {import('./cc-domain-management.types.js').DomainState} DomainState
  */
 
 /**
@@ -70,6 +74,7 @@ export class CcDomainManagement extends LitElement {
       dnsInfoState: { type: Object, attribute: 'dns-info-state' },
       domainFormState: { type: Object, attribute: 'domain-form-state' },
       domainListState: { type: Object, attribute: 'domain-list-state' },
+      _idOfDomainToDelete: { type: String, state: true },
       _sortedDomains: { type: Array, state: true },
     };
   }
@@ -106,6 +111,9 @@ export class CcDomainManagement extends LitElement {
 
     /** @type {RefCcInputText} */
     this._domainInputRef = createRef();
+
+    /** @type {string|null} Used to display the deletion dialog when set with a value other than null. */
+    this._idOfDomainToDelete = null;
 
     /** @type {RefHTMLParagraphElement} */
     this._emptyMessageRef = createRef();
@@ -256,17 +264,9 @@ export class CcDomainManagement extends LitElement {
     return () => this.dispatchEvent(new CcDomainMarkAsPrimaryEvent(domainInfo));
   }
 
-  /** @param {FormattedDomainInfo} formattedDomainInfo */
-  _onDelete(formattedDomainInfo) {
-    /** @type {DomainInfo} */
-    const domainInfo = {
-      id: formattedDomainInfo.id,
-      hostname: formattedDomainInfo.hostname,
-      pathPrefix: formattedDomainInfo.pathPrefix,
-      isWildcard: formattedDomainInfo.isWildcard,
-      isPrimary: formattedDomainInfo.isPrimary,
-    };
-    return () => this.dispatchEvent(new CcDomainDeleteEvent(domainInfo));
+  /** @param {string} domainId */
+  _onDeleteRequest(domainId) {
+    return () => (this._idOfDomainToDelete = domainId);
   }
 
   /** @param {CcInputEvent} event */
@@ -327,6 +327,11 @@ export class CcDomainManagement extends LitElement {
   }
 
   render() {
+    const domainToDelete =
+      this.domainListState.type === 'loaded' && this._idOfDomainToDelete != null
+        ? this.domainListState.domains.find((domain) => domain.id === this._idOfDomainToDelete)
+        : null;
+
     return html`
       <div class="wrapper">
         <cc-block>
@@ -386,6 +391,8 @@ export class CcDomainManagement extends LitElement {
             </div>
           </cc-block-details>
         </cc-block>
+
+        ${this._renderDeleteDomainDialog(domainToDelete)}
 
         <cc-block>
           <div slot="header-title">${i18n('cc-domain-management.certif.heading')}</div>
@@ -537,6 +544,7 @@ export class CcDomainManagement extends LitElement {
   _renderDomain(domainInfo, isOneRowMarkingPrimary) {
     const {
       type: domainItemStateType,
+      id,
       hostname,
       pathPrefix,
       isWildcard,
@@ -634,7 +642,7 @@ export class CcDomainManagement extends LitElement {
             .icon=${iconDelete}
             hide-text
             circle
-            @cc-click=${this._onDelete(domainInfo)}
+            @cc-click=${this._onDeleteRequest(id)}
           >
             ${i18n('cc-domain-management.list.btn.delete.text')}
           </cc-button>
@@ -675,6 +683,56 @@ export class CcDomainManagement extends LitElement {
           ></cc-input-text>
         </div>
       </cc-block-section>
+    `;
+  }
+
+  _onDeleteDialogClose() {
+    this._idOfDomainToDelete = null;
+  }
+
+  /** @param {DomainState} domainToDelete */
+  _onDeleteConfirm(domainToDelete) {
+    if (this.domainListState.type !== 'loaded' || domainToDelete == null) {
+      return;
+    }
+
+    const domainInfo = {
+      id: domainToDelete.id,
+      hostname: domainToDelete.hostname,
+      pathPrefix: domainToDelete.pathPrefix,
+      isWildcard: domainToDelete.isWildcard,
+      isPrimary: domainToDelete.isPrimary,
+    };
+
+    this.dispatchEvent(new CcDomainDeleteEvent(domainInfo));
+  }
+
+  /** @param {DomainState|null} domainToDelete */
+  _renderDeleteDomainDialog(domainToDelete) {
+    return html`
+      <cc-dialog
+        ?open="${domainToDelete != null}"
+        heading="${i18n('cc-domain-management.delete-dialog.heading')}"
+        @cc-dialog-close="${this._onDeleteDialogClose}"
+      >
+        ${domainToDelete != null
+          ? html`
+              <p>${i18n('cc-domain-management.delete-dialog.desc')}</p>
+              <cc-dialog-confirm-form
+                submit-label="${i18n('cc-domain-management.delete-dialog.confirm-button')}"
+                submit-intent="danger"
+                confirm-text-to-input="${getHostWithWildcard(
+                  domainToDelete.hostname + domainToDelete.pathPrefix,
+                  domainToDelete.isWildcard,
+                )}"
+                confirm-input-label="${i18n('cc-domain-management.delete-dialog.input-label')}"
+                ?waiting="${domainToDelete.type === 'deleting'}"
+                @cc-dialog-confirm="${() => this._onDeleteConfirm(domainToDelete)}"
+              >
+              </cc-dialog-confirm-form>
+            `
+          : ''}
+      </cc-dialog>
     `;
   }
 
