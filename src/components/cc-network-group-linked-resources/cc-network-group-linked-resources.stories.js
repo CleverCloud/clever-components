@@ -54,6 +54,17 @@ const networkGroupMembers = [
       url: getAssetUrl('/logos/jenkins.svg'), // FIXME: we need a logo to represent external members
       a11yName: 'Node.js',
     },
+    peerList: [],
+  },
+  {
+    id: 'external_c8916d58-1881-4bc1-a7ca-fc8052629f2c',
+    label: 'Parent of flo-nixos',
+    domainName: 'external_c8916d58-1881-4bc1-a7ca-fc8052629f2c.m.ng_b625776f-8d36-495e-9088-02c22ebebf87.cc-ng.cloud',
+    kind: 'EXTERNAL',
+    logo: {
+      url: getAssetUrl('/logos/jenkins.svg'), // FIXME: we need a logo to represent external members
+      a11yName: 'Node.js',
+    },
     peerList: [
       {
         id: '7392f881-1abe-4729-94b7-ebc73342ed31',

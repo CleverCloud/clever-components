@@ -10,7 +10,7 @@ import {
   iconRemixRadioButtonLine as iconPeerType,
 } from '../../assets/cc-remix.icons.js';
 import { LostFocusController } from '../../controllers/lost-focus-controller.js';
-import { generateDocsHref } from '../../lib/utils.js';
+import { getDevHubUrl } from '../../lib/dev-hub-url.js';
 import { accessibilityStyles } from '../../styles/accessibility.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-block-details/cc-block-details.js';
@@ -18,6 +18,7 @@ import '../cc-block/cc-block.js';
 import '../cc-button/cc-button.js';
 import '../cc-clipboard/cc-clipboard.js';
 import '../cc-code/cc-code.js';
+import '../cc-dialog-confirm-actions/cc-dialog-confirm-actions.js';
 import '../cc-dialog/cc-dialog.js';
 import '../cc-img/cc-img.js';
 import '../cc-link/cc-link.js';
@@ -58,17 +59,19 @@ export class CcNetworkGroupLinkedResources extends LitElement {
     /** @type {string|null} Used to track the id of the member to unlink to dispatch the proper event payload */
     this._memberIdToUnlink = null;
 
-    new LostFocusController(this, '[data-member-id] details, cc-dialog[open]', ({ suggestedElement }) => {
-      if (suggestedElement instanceof HTMLDetailsElement) {
-        const elementToFocus = /** @type {HTMLElement|null} */ (
-          suggestedElement.open
-            ? suggestedElement.querySelector('cc-button[danger]')
-            : suggestedElement.querySelector('summary')
-        );
-        console.log(elementToFocus);
-        elementToFocus?.focus();
-      } else {
+    new LostFocusController(this, '.member-card', ({ suggestedElement }) => {
+      if (suggestedElement == null) {
         this._emptyTextRef.value?.focus();
+        return;
+      }
+
+      /** @type {CcButton} */
+      const deleteBtnElement = suggestedElement.querySelector('cc-button[danger]');
+      const detailsElement = suggestedElement.querySelector('details');
+      if (suggestedElement.classList.contains('member-card--with-peers') && !detailsElement?.open) {
+        detailsElement.querySelector('summary')?.focus();
+      } else {
+        deleteBtnElement?.focus();
       }
     });
   }
@@ -84,15 +87,13 @@ export class CcNetworkGroupLinkedResources extends LitElement {
   }
 
   _onDialogClose() {
-    console.log('CLOSE DIALOG');
     this._memberIdToUnlink = null;
   }
 
   /** @param {CcNetworkGroupLinkedResourcesPropertyValues} changedProperties */
   willUpdate(changedProperties) {
     // when the member has been unlinked (or if it failed), we need to close the dialog
-    const previousState = changedProperties.get('state');
-    const wasUnlinking = previousState?.type === 'unlinking';
+    const wasUnlinking = changedProperties.get('state')?.type === 'unlinking';
     const isNotUnlinking = this.state.type !== 'unlinking';
     if (wasUnlinking && isNotUnlinking) {
       this._memberIdToUnlink = null;
@@ -109,7 +110,6 @@ export class CcNetworkGroupLinkedResources extends LitElement {
     const isUnlinking = this.state.type === 'unlinking';
 
     return html`
-      ${this._renderUnlinkDialog(this._memberIdToUnlink, this.state.type === 'unlinking')}
       <cc-block>
         <div slot="header-title">${i18n('cc-network-group-linked-resources.heading')}</div>
         <div slot="content">
@@ -143,7 +143,7 @@ export class CcNetworkGroupLinkedResources extends LitElement {
         <cc-block-details slot="footer-left">
           <div slot="button-text">${i18n('cc-block-details.cli.text')}</div>
           <div slot="link">
-            <cc-link href="${generateDocsHref('/cli/network-groups')}" .icon="${iconInfo}">
+            <cc-link href="${getDevHubUrl('/cli/network-groups')}" .icon="${iconInfo}">
               ${i18n('cc-network-group-linked-resources.documentation.text')}
             </cc-link>
           </div>
@@ -160,6 +160,7 @@ export class CcNetworkGroupLinkedResources extends LitElement {
           </div>
         </cc-block-details>
       </cc-block>
+      ${this._renderUnlinkDialog(this._memberIdToUnlink, isUnlinking)}
     `;
   }
 
@@ -171,36 +172,77 @@ export class CcNetworkGroupLinkedResources extends LitElement {
    * @param {boolean} _.isThisMemberUnlinking
    **/
   _renderMember({ member, isOpenByDefault, isOneMemberUnlinking, isThisMemberUnlinking }) {
-    return html`
-      <div class="member-list__member-card" data-member-id="${member.id}">
-        <details class="member-list__member-card__details" ?open="${isOpenByDefault}" data-member-id="${member.id}">
-          <summary class="member-list__member-card__details__header" tabindex="0">
-            <div class="member-list__member-card__details__header__identity">
+    if (member.peerList.length === 0) {
+      return html`
+        <div class="member-card member-card--without-peers" tabindex="-1">
+          <div class="member-card--without-peers__header">
+            <div class="member-card--without-peers__header__identity">
               <cc-img
-                class="member-list__member-card__details__header__identity__logo"
+                class="member-card--without-peers__header__identity__logo"
                 src="${member.logo.url}"
                 a11y-name="${member.logo.a11yName}"
               >
               </cc-img>
-              <span class="member-list__member-card__details__header__identity__label">${member.label}</span>
+              <span class="member-card--without-peers__header__identity__label">${member.label}</span>
             </div>
-            <span class="member-list__member-card__details__header__peers-btn__nb">
+
+            <span class="member-card--without-peers__header__peers-btn__nb">
               ${i18n('cc-network-group-linked-resources.member.nb-of-peers', {
                 nbOfPeers: member.peerList.length,
               })}
             </span>
-            <cc-icon class="member-list__member-card__details__header__arrow-icon" .icon="${iconArrowUp}"></cc-icon>
+          </div>
+
+          <div class="member-card--without-peers__footer">
+            <div class="member-card--without-peers__footer__domain">
+              <!-- FIXME: link is not really relevant since it can only accessed by member peers -->
+              <span>${member.domainName}</span>
+              <cc-clipboard value="${member.domainName}"></cc-clipboard>
+            </div>
+
+            <cc-button
+              class="member-card---without-peers__footer__unlink-btn"
+              danger
+              outlined
+              @cc-click="${() => this._onUnlinkMemberRequest(member.id)}"
+              ?disabled="${isOneMemberUnlinking && !isThisMemberUnlinking}"
+              ?waiting="${isThisMemberUnlinking}"
+            >
+              ${i18n('cc-network-group-linked-resources.member.unlink')}
+            </cc-button>
+          </div>
+        </div>
+      `;
+    }
+    return html`
+      <div class="member-card member-card--with-peers" tabindex="-1">
+        <details class="member-card--with-peers__details" ?open="${isOpenByDefault}">
+          <!-- FIXME: cannot remember why we need the tabindex on summary, check and document -->
+          <summary class="member-card--with-peers__details__header" tabindex="0">
+            <div class="member-card--with-peers__details__header__identity">
+              <cc-img
+                class="member-card--with-peers__details__header__identity__logo"
+                src="${member.logo.url}"
+                a11y-name="${member.logo.a11yName}"
+              >
+              </cc-img>
+              <span class="member-card--with-peers__details__header__identity__label">${member.label}</span>
+            </div>
+            <span class="member-card--with-peers__details__header__peers__nb">
+              ${i18n('cc-network-group-linked-resources.member.nb-of-peers', {
+                nbOfPeers: member.peerList.length,
+              })}
+            </span>
+            <cc-icon class="member-card--with-peers__details__header__arrow-icon" .icon="${iconArrowUp}"></cc-icon>
           </summary>
-          <div class="member-list__member-card__details__domain">
+          <div class="member-card--with-peers__details__domain">
             <!-- FIXME: link is not really relevant since it can only accessed by member peers -->
             <span>${member.domainName}</span>
             <cc-clipboard value="${member.domainName}"></cc-clipboard>
           </div>
-          <div class="member-list__member-card__details__peer-list">
-            ${member.peerList.map((peer) => this._renderPeer(peer))}
-          </div>
+          <div class="peer-list">${member.peerList.map((peer) => this._renderPeer(peer))}</div>
           <cc-button
-            class="member-list__member-card__details__unlink-btn"
+            class="member-card--with-peers__details__unlink-btn"
             danger
             outlined
             @cc-click="${() => this._onUnlinkMemberRequest(member.id)}"
@@ -210,7 +252,7 @@ export class CcNetworkGroupLinkedResources extends LitElement {
             ${i18n('cc-network-group-linked-resources.member.unlink')}
           </cc-button>
         </details>
-        <div class="member-list__member-card__domain">
+        <div class="member-card--with-peers__domain">
           <!-- FIXME: link is not really relevant since it can only accessed by member peers -->
           <span>${member.domainName}</span>
           <cc-clipboard value="${member.domainName}"></cc-clipboard>
@@ -222,10 +264,10 @@ export class CcNetworkGroupLinkedResources extends LitElement {
   /** @param {NetworkGroupPeer} peer */
   _renderPeer(peer) {
     return html`
-      <div class="member-list__member-card__details__peer-list__peer-card">
-        <span class="member-list__member-card__details__peer-list__peer-card__label">${peer.label}</span>
-        <dl class="member-list__member-card__details__peer-list__peer-card__metadata">
-          <div class="member-list__member-card__details__peer-list__peer-card__metadata__id">
+      <div class="peer-card">
+        <span class="peer-card__label">${peer.label}</span>
+        <dl class="metadata-list">
+          <div class="metadata-item metadata-item--id">
             <dt>
               <cc-icon
                 .icon="${iconId}"
@@ -234,7 +276,7 @@ export class CcNetworkGroupLinkedResources extends LitElement {
             </dt>
             <dd><span>${peer.id}</span></dd>
           </div>
-          <div class="member-list__member-card__details__peer-list__peer-card__metadata__key">
+          <div class="metadata-item metadata-item--key">
             <dt>
               <cc-icon
                 .icon="${iconKey}"
@@ -243,7 +285,7 @@ export class CcNetworkGroupLinkedResources extends LitElement {
             </dt>
             <dd><span>${peer.publicKey}</span></dd>
           </div>
-          <div class="member-list__member-card__details__peer-list__peer-card__metadata__ip">
+          <div class="metadata-item metadata-item--ip">
             <dt>
               <cc-icon
                 .icon="${iconIp}"
@@ -252,7 +294,7 @@ export class CcNetworkGroupLinkedResources extends LitElement {
             </dt>
             <dd><span>${peer.ip}</span></dd>
           </div>
-          <div class="member-list__member-card__details__peer-list__peer-card__metadata__peer-type">
+          <div class="metadata-item metadata-item--peer-type">
             <dt>
               <cc-icon
                 .icon="${iconPeerType}"
@@ -275,22 +317,19 @@ export class CcNetworkGroupLinkedResources extends LitElement {
    **/
   _renderUnlinkDialog(memberIdToUnlink, isUnlinking) {
     return html`
-      <cc-dialog ?open="${memberIdToUnlink != null}" @cc-dialog-close="${this._onDialogClose}">
-        <div slot="heading">${i18n('cc-network-group-linked-resources.unlink.dialog.heading')}</div>
-        <p slot="content">${i18n('cc-network-group-linked-resources.unlink.dialog.desc')}</p>
-        <div slot="actions">
-          <cc-button outlined @cc-click="${this._onDialogClose}" ?disabled="${isUnlinking}">
-            ${i18n('cc-network-group-linked-resources.unlink.dialog.cancel-btn')}
-          </cc-button>
-          <cc-button
-            class="dialog-unlink-btn"
-            danger
-            @cc-click="${() => this._onUnlinkMember(memberIdToUnlink)}"
-            ?waiting="${isUnlinking}"
-          >
-            ${i18n('cc-network-group-linked-resources.unlink.dialog.unlink-btn')}
-          </cc-button>
-        </div>
+      <cc-dialog
+        ?open="${memberIdToUnlink != null}"
+        heading="${i18n('cc-network-group-linked-resources.unlink.dialog.heading')}"
+        @cc-dialog-close="${this._onDialogClose}"
+      >
+        <p>${i18n('cc-network-group-linked-resources.unlink.dialog.desc')}</p>
+        <cc-dialog-confirm-actions
+          submit-label="${i18n('cc-network-group-linked-resources.unlink.dialog.unlink-btn')}"
+          submit-intent="danger"
+          @cc-dialog-confirm="${() => this._onUnlinkMember(memberIdToUnlink)}"
+          ?waiting="${isUnlinking}"
+        >
+        </cc-dialog-confirm-actions>
       </cc-dialog>
     `;
   }
@@ -301,6 +340,14 @@ export class CcNetworkGroupLinkedResources extends LitElement {
       css`
         :host {
           display: block;
+        }
+
+        dl,
+        dd,
+        dt {
+          font-weight: normal;
+          margin: 0;
+          padding: 0;
         }
 
         .intro {
@@ -326,49 +373,57 @@ export class CcNetworkGroupLinkedResources extends LitElement {
           gap: 0.5em;
         }
 
-        .member-list__member-card {
+        .member-card {
           border: solid 1px var(--cc-color-border-neutral-weak);
           border-radius: var(--cc-border-radius-default, 0.25em);
           padding: 1em;
         }
 
-        .member-list__member-card__details__header {
-          align-items: center;
-          cursor: pointer;
+        .member-card--without-peers__header,
+        .member-card--with-peers__details__header {
           display: flex;
           gap: 1em;
-          margin: -1em;
-          padding: 0.5em 1em;
         }
 
-        .member-list__member-card__details__header__arrow-icon {
+        .member-card--with-peers__details__header {
+          cursor: pointer;
+          margin: -1em -1em 0.5em;
+          padding: 1em;
+        }
+
+        .member-card--without-peers__header {
+          justify-content: space-between;
+        }
+
+        .member-card--with-peers__details__header__arrow-icon {
           --cc-icon-size: 2em;
 
           transition: all 0.3s;
         }
 
-        .member-list__member-card__details__header:hover {
+        .member-card--with-peers__details__header:hover {
           background-color: var(--cc-color-bg-neutral-hovered);
         }
 
-        .member-list__member-card__details__header:focus {
+        .member-card--with-peers__details__header:focus {
           border-radius: var(--cc-border-radius-default, 0.25em);
           outline: var(--cc-focus-outline);
           outline-offset: var(--cc-focus-outline-offset);
         }
 
-        .member-list__member-card__details:not([open]) .member-list__member-card__details__header__arrow-icon {
+        .member-card--with-peers__details:not([open]) .member-card--with-peers__details__header__arrow-icon {
           transform: rotate(180deg);
           transition: all 0.3s;
         }
 
         /* TODO: more complex than that, we need a rotate when :hover not open, a rotate when :hover open */
-        .member-list__member-card__details__header:hover .member-list__member-card__details__header__arrow-icon {
+        .member-card--with-peers__details__header:hover .member-card--with-peers__details__header__arrow-icon {
           transform: rotate(360deg);
           transition: all 0.3s;
         }
 
-        .member-list__member-card__details__header__identity {
+        .member-card--without-peers__header__identity,
+        .member-card--with-peers__details__header__identity {
           align-items: center;
           align-self: center;
           display: flex;
@@ -377,97 +432,102 @@ export class CcNetworkGroupLinkedResources extends LitElement {
           gap: 0.5em;
         }
 
-        .member-list__member-card__details__header__identity__label {
+        .member-card--with-peers__details__header__identity__label {
           color: var(--cc-color-text-primary-strongest);
+          flex: 1 1 0;
           font-weight: bold;
         }
 
-        .member-list__member-card__details__header__identity__logo {
+        .member-card--without-peers__header__identity__logo,
+        .member-card--with-peers__details__header__identity__logo {
           border-radius: var(--cc-border-radius-small, 0.15em);
           height: 1.5em;
           width: 1.5em;
         }
 
-        .member-list__member-card__domain,
-        .member-list__member-card__details__domain {
+        .member-card--without-peers__footer {
           align-items: center;
           display: flex;
+          flex-wrap: wrap;
           gap: 1em;
-          margin-top: 1.5em;
-          overflow: hidden;
+          justify-content: space-between;
+          margin-top: 1em;
         }
 
-        details[open] + .member-list__member-card__domain {
+        .member-card--with-peers__domain cc-clipboard,
+        .member-card--without-peers__footer__domain cc-clipboard,
+        .member-card--with-peers__details__domain cc-clipboard {
+          display: inline-block;
+          vertical-align: middle;
+        }
+
+        details[open] + .member-card--with-peers__domain {
           display: none;
         }
 
-        .member-list__member-card__details__header__domain span {
-          overflow: hidden;
-          text-overflow: ellipsis;
-          white-space: nowrap;
-        }
-
-        .member-list__member-card__details__header__peers-btn {
+        .member-card--with-peers__details__header__peers__nb {
           align-items: center;
           background: none;
           border: none;
           border-radius: var(--cc-border-radius-default);
           cursor: pointer;
           display: flex;
+          flex: 0 0 auto;
           font-style: italic;
           gap: 1em;
           padding: 0.5em;
         }
 
-        .member-list__member-card__details__header__peers-btn:focus-visible {
+        .member-card--with-peers__details__header__peers-btn:focus-visible {
           outline: var(--cc-focus-outline);
           outline-offset: var(--cc-focus-outline-offset);
         }
 
-        .member-list__member-card__details__unlink-btn {
+        .member-card--with-peers__details__unlink-btn {
           display: block;
           margin-left: auto;
           width: fit-content;
         }
 
-        .member-list__member-card__details__peer-list {
+        .peer-list {
           display: grid;
           gap: 0.5em;
           margin-block: 1em;
         }
 
-        .member-list__member-card__details__peer-list__peer-card {
+        .peer-card {
           background-color: var(--cc-color-bg-neutral);
           border: solid 1px var(--cc-color-border-neutral-weak);
           border-radius: var(--cc-border-radius-default);
+          container: peer-card / inline-size;
           display: grid;
           gap: 1em;
           padding: 1em;
         }
 
-        .member-list__member-card__details__peer-list__peer-card__label {
+        .peer-card__label {
           font-weight: bold;
         }
 
-        .member-list__member-card__details__peer-list__peer-card__metadata {
+        .metadata-list {
           display: flex;
           flex-wrap: wrap;
           gap: 1em;
         }
 
-        .member-list__member-card__details__peer-list__peer-card__metadata__key span {
-          overflow: hidden;
-          text-overflow: ellipsis;
+        @container peer-card (max-width: 10em) {
+          .metadata-list {
+            flex-direction: column;
+          }
         }
 
-        .member-list__member-card__details__peer-list__peer-card__metadata__id,
-        .member-list__member-card__details__peer-list__peer-card__metadata__key {
-          overflow: hidden;
-          text-overflow: ellipsis;
-          white-space: nowrap;
+        .metadata-item {
+          display: flex;
+          gap: 0.5em;
+          word-break: break-all;
         }
 
-        cc-dialog p[slot='content'] {
+        cc-dialog p {
           margin: 0;
         }
 
