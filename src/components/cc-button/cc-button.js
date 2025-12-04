@@ -50,6 +50,8 @@ export class CcButton extends LitElement {
       a11yExpanded: { type: Boolean, attribute: 'a11y-expanded', reflect: true },
       a11yName: { type: String, attribute: 'a11y-name' },
       a11yPressed: { type: Boolean, attribute: 'a11y-pressed', reflect: true },
+      // eslint-disable-next-line lit/no-native-attributes
+      autofocus: { type: Boolean },
       circle: { type: Boolean },
       danger: { type: Boolean },
       delay: { type: Number },
@@ -84,6 +86,9 @@ export class CcButton extends LitElement {
 
     /** @type {null|boolean} Sets aria-pressed on the inner `button` element. */
     this.a11yPressed = null;
+
+    /** @type {boolean} Automatically focus the button when the page loads. **Note:** Using this attribute is generally discouraged for accessibility reasons. See [MDN autofocus accessibility concerns](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Global_attributes/autofocus#accessibility_concerns) for more information. */
+    this.autofocus = false;
 
     /** @type {boolean} Sets button UI to a circle form when in `hide-text` and `image` mode. */
     this.circle = false;
@@ -281,6 +286,7 @@ export class CcButton extends LitElement {
     return html`
       <button
         type="${this.type}"
+        ?autofocus=${this.autofocus}
         tabindex="${ifDefined(tabIndex)}"
         class=${classMap(modes)}
         aria-disabled="${this.disabled || this.skeleton || this.waiting}"

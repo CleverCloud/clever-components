@@ -53,6 +53,8 @@ export class CcInputText extends CcFormControlElement {
   static get properties() {
     return {
       ...super.properties,
+      // eslint-disable-next-line lit/no-native-attributes
+      autofocus: { type: Boolean },
       clipboard: { type: Boolean, reflect: true },
       disabled: { type: Boolean, reflect: true },
       hiddenLabel: { type: Boolean, attribute: 'hidden-label' },
@@ -77,6 +79,9 @@ export class CcInputText extends CcFormControlElement {
 
   constructor() {
     super();
+
+    /** @type {boolean} Automatically focus the input when the page loads. **Note:** Using this attribute is generally discouraged for accessibility reasons. See [MDN autofocus accessibility concerns](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Global_attributes/autofocus#accessibility_concerns) for more information. */
+    this.autofocus = false;
 
     /** @type {boolean} Adds a copy-to-clipboard button (when not disabled and not skeleton). */
     this.clipboard = false;
@@ -351,6 +356,7 @@ export class CcInputText extends CcFormControlElement {
                   class="input ${classMap({ 'input-tags': this._tagsEnabled, error: hasErrorMessage })}"
                   style="--rows: ${rows}"
                   rows=${rows}
+                  ?autofocus=${this.autofocus}
                   ?disabled=${this.disabled || this.skeleton}
                   ?readonly=${this.readonly}
                   .value=${value}
@@ -379,6 +385,7 @@ export class CcInputText extends CcFormControlElement {
                   id="input-id"
                   type=${this.secret && !this._showSecret ? 'password' : 'text'}
                   class="input ${classMap({ error: hasErrorMessage })}"
+                  ?autofocus=${this.autofocus}
                   ?disabled=${this.disabled || this.skeleton}
                   ?readonly=${this.readonly}
                   .value=${value}

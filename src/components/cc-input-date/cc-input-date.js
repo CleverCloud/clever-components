@@ -129,6 +129,8 @@ export class CcInputDate extends CcFormControlElement {
   static get properties() {
     return {
       ...super.properties,
+      // eslint-disable-next-line lit/no-native-attributes
+      autofocus: { type: Boolean },
       disabled: { type: Boolean, reflect: true },
       hiddenLabel: { type: Boolean, attribute: 'hidden-label' },
       inline: { type: Boolean, reflect: true },
@@ -149,6 +151,9 @@ export class CcInputDate extends CcFormControlElement {
 
   constructor() {
     super();
+
+    /** @type {boolean} Automatically focus the input when the page loads. **Note:** Using this attribute is generally discouraged for accessibility reasons. See [MDN autofocus accessibility concerns](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Global_attributes/autofocus#accessibility_concerns) for more information. */
+    this.autofocus = false;
 
     /** @type {boolean} Sets `disabled` attribute on inner native `<input>` element. If you want to temporarily disable the input during an API call, use `readonly` instead so that focus is maintained. */
     this.disabled = false;
@@ -525,6 +530,7 @@ export class CcInputDate extends CcFormControlElement {
             ${ref(this._inputRef)}
             type="text"
             class="input ${classMap({ error: hasErrorMessage })}"
+            ?autofocus=${this.autofocus}
             ?disabled=${this.disabled || this.skeleton}
             ?readonly=${this.readonly}
             .value=${live(this._formatValue())}

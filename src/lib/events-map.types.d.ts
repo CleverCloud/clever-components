@@ -14,6 +14,12 @@ import { CcAddonRebuildEvent, CcAddonRestartEvent } from '../components/cc-addon
 import { CcAddonVersionChangeEvent } from '../components/cc-addon-info/cc-addon-info.events.js';
 import { CcAddonOptionFormSubmitEvent } from '../components/cc-addon-option-form/cc-addon-option-form.events.js';
 import { CcAddonOptionChangeEvent } from '../components/cc-addon-option/cc-addon-option.events.js';
+import { CcDialogConfirmEvent } from '../components/cc-dialog-confirm-actions/cc-dialog-confirm-actions.events.js';
+import {
+  CcDialogCloseEvent,
+  CcDialogCloseRequestEvent,
+  CcDialogFocusRestorationFail,
+} from '../components/cc-dialog/cc-dialog.events.js';
 import {
   CcDomainAddEvent,
   CcDomainDeleteEvent,
@@ -180,6 +186,10 @@ declare global {
     'cc-application-stop': CcApplicationStopEvent;
     'cc-click': CcClickEvent;
     'cc-deployment-cancel': CcDeploymentCancelEvent;
+    'cc-dialog-close': CcDialogCloseEvent;
+    'cc-dialog-close-request': CcDialogCloseRequestEvent;
+    'cc-dialog-confirm': CcDialogConfirmEvent;
+    'cc-dialog-focus-restoration-fail': CcDialogFocusRestorationFail;
     'cc-domain-add': CcDomainAddEvent;
     'cc-domain-delete': CcDomainDeleteEvent;
     'cc-domain-mark-as-primary': CcDomainMarkAsPrimaryEvent;

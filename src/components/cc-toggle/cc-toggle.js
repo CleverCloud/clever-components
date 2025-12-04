@@ -47,6 +47,8 @@ export class CcToggle extends LitElement {
   static get properties() {
     return {
       /** @required */
+      // eslint-disable-next-line lit/no-native-attributes
+      autofocus: { type: Boolean },
       choices: { type: Array },
       disabled: { type: Boolean },
       hideText: { type: Boolean, attribute: 'hide-text' },
@@ -61,6 +63,9 @@ export class CcToggle extends LitElement {
 
   constructor() {
     super();
+
+    /** @type {boolean} Automatically focus the first input when the page loads. **Note:** Using this attribute is generally discouraged for accessibility reasons. See [MDN autofocus accessibility concerns](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Global_attributes/autofocus#accessibility_concerns) for more information. */
+    this.autofocus = false;
 
     /** @type {Choice[]|null} Sets the list of choices. */
     this.choices = null;
@@ -111,6 +116,25 @@ export class CcToggle extends LitElement {
     }
   }
 
+  /**
+   * @param {string} value
+   * @param {number} index
+   * @returns {boolean}
+   */
+  _shouldAutoFocus(value, index) {
+    if (!this.autofocus) {
+      return false;
+    }
+
+    if (this.multipleValues == null) {
+      // if single mode, focus the selected value or the first one if none selected
+      return this.value === value || index === 0;
+    } else {
+      // if multiple mode, focus the first checkbox
+      return index === 0;
+    }
+  }
+
   render() {
     const classes = {
       disabled: this.disabled,
@@ -136,7 +160,7 @@ export class CcToggle extends LitElement {
           ${repeat(
             this.choices,
             ({ value }) => value,
-            ({ label, image, value }) => html`
+            ({ label, image, value }, index) => html`
               <!--
               If the name=null, the name of the native <input> will be 'toggle'. In order to navigate through a group of inputs using the arrow keys, each <input> must have the same name value.
             -->
@@ -145,6 +169,7 @@ export class CcToggle extends LitElement {
                 name=${this.name ?? 'toggle'}
                 .value=${value}
                 id=${value}
+                ?autofocus=${this._shouldAutoFocus(value, index)}
                 ?disabled=${this.disabled}
                 .checked=${isChecked(value)}
                 @change=${this._onChange}
