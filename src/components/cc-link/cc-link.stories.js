@@ -21,12 +21,12 @@ const conf = {
 export const defaultStory = makeStory(conf, {
   items: [
     {
-      href: 'https://www.clever-cloud.com',
-      innerHTML: 'Visit Clever Cloud',
+      href: 'https://example.com',
+      innerHTML: 'Visit Example',
     },
     {
-      href: 'https://www.clever-cloud.com',
-      innerHTML: 'Visit Clever Cloud',
+      href: 'https://example.com',
+      innerHTML: 'Visit Example',
       skeleton: true,
     },
   ],
@@ -55,13 +55,13 @@ export const button = makeStory(conf, {
   items: [
     {
       mode: 'button',
-      href: 'https://clever-cloud.com',
+      href: 'https://example.com',
       innerHTML: 'edit the informations',
     },
     {
       skeleton: true,
       mode: 'button',
-      href: 'https://clever-cloud.com',
+      href: 'https://example.com',
       innerHTML: 'edit the informations',
     },
   ],
@@ -71,13 +71,13 @@ export const buttonWithFullWidth = makeStory(conf, {
   items: [
     {
       mode: 'button',
-      href: 'https://clever-cloud.com',
+      href: 'https://example.com',
       innerHTML: 'edit the informations',
     },
     {
       skeleton: true,
       mode: 'button',
-      href: 'https://clever-cloud.com',
+      href: 'https://example.com',
       innerHTML: 'edit the informations',
     },
   ],
@@ -113,9 +113,9 @@ export const downloadLink = makeStory(conf, {
 export const withA11yDesc = makeStory(conf, {
   items: [
     {
-      href: 'https://www.clever-cloud.com',
-      a11yDesc: 'Go to Clever Cloud website',
-      innerHTML: 'Visit Clever Cloud',
+      href: 'https://example.com',
+      a11yDesc: 'Go to Example website',
+      innerHTML: 'Visit Example',
     },
     {
       href: '/dashboard',
@@ -128,10 +128,10 @@ export const withA11yDesc = makeStory(conf, {
 export const withIcon = makeStory(conf, {
   items: [
     {
-      href: 'https://www.clever-cloud.com',
-      a11yDesc: 'Go to Clever Cloud website',
+      href: 'https://example.com',
+      a11yDesc: 'Go to Example website',
       icon: iconInfo,
-      innerHTML: 'Visit Clever Cloud',
+      innerHTML: 'Visit Example',
     },
   ],
 });
@@ -139,10 +139,10 @@ export const withIcon = makeStory(conf, {
 export const withImage = makeStory(conf, {
   items: [
     {
-      href: 'https://www.clever-cloud.com',
-      a11yDesc: 'Go to Clever Cloud website',
+      href: 'https://example.com',
+      a11yDesc: 'Go to Example website',
       image: infoSvg,
-      innerHTML: 'Visit Clever Cloud',
+      innerHTML: 'Visit Example',
     },
   ],
 });
@@ -150,11 +150,11 @@ export const withImage = makeStory(conf, {
 export const withImageAndIcon = makeStory(conf, {
   items: [
     {
-      href: 'https://www.clever-cloud.com',
-      a11yDesc: 'Go to Clever Cloud website',
+      href: 'https://example.com',
+      a11yDesc: 'Go to Example website',
       icon: iconInfo,
       image: infoSvg,
-      innerHTML: 'Visit Clever Cloud',
+      innerHTML: 'Visit Example',
     },
   ],
 });
@@ -171,8 +171,8 @@ export const internalLink = makeStory(conf, {
 export const withHtmlContent = makeStory(conf, {
   items: [
     {
-      href: 'https://www.clever-cloud.com',
-      innerHTML: 'Visit <strong>Clever Cloud</strong>',
+      href: 'https://example.com',
+      innerHTML: 'Visit <strong>Example</strong>',
     },
   ],
 });
