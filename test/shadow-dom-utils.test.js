@@ -1,7 +1,7 @@
 import { expect } from '@bundled-es-modules/chai';
 import { defineCE, fixture } from '@open-wc/testing-helpers';
 import { LitElement, html } from 'lit';
-import { findActiveElement, isParentOf } from '../src/lib/shadow-dom-utils.js';
+import { findActiveElement, isParentOf, querySelectorDeep } from '../src/lib/shadow-dom-utils.js';
 
 describe('shadow-dom-utils', () => {
   const ce = defineCE(
@@ -81,6 +81,64 @@ describe('shadow-dom-utils', () => {
     it('should return true when child is deep inside a custom element', async () => {
       const element = await fixture(`<${ce}><${ce}><${ce} id="child"></${ce}></${ce}></${ce}>`);
       expect(isParentOf(element, document.querySelector('#child').getButtonElement())).to.equal(true);
+    });
+  });
+
+  describe('querySelectorDeep', () => {
+    it('should return element when selector matches in root', async () => {
+      const element = await fixture(`<div><span id="target"></span></div>`);
+      expect(querySelectorDeep('#target', element)).to.equal(element.querySelector('#target'));
+    });
+
+    it('should return null when selector does not match anything', async () => {
+      const element = await fixture(`<div></div>`);
+      expect(querySelectorDeep('#nonexistent', element)).to.equal(null);
+    });
+
+    it('should return first element when multiple elements match', async () => {
+      const element = await fixture(
+        `<div><span class="item" id="first"></span><span class="item" id="second"></span></div>`,
+      );
+      expect(querySelectorDeep('.item', element)).to.equal(element.querySelector('#first'));
+    });
+
+    it('should find element inside a custom element shadow DOM', async () => {
+      const element = await fixture(`<${ce}></${ce}>`);
+      expect(querySelectorDeep('button', element)).to.equal(element.getButtonElement());
+    });
+
+    it('should find element deep inside nested custom elements', async () => {
+      const element = await fixture(`<${ce}><${ce}><${ce} id="deepChild"></${ce}></${ce}></${ce}>`);
+      expect(querySelectorDeep('button', element)).to.equal(element.getButtonElement());
+    });
+
+    it('should find slotted content', async () => {
+      const element = await fixture(`<${ce}><span id="slotted"></span></${ce}>`);
+      expect(querySelectorDeep('#slotted', element)).to.equal(element.querySelector('#slotted'));
+    });
+
+    it('should work with a custom root element', async () => {
+      const element = await fixture(
+        `<div><div id="branch1"><span id="target"></span></div><div id="branch2"></div></div>`,
+      );
+      const branch1 = element.querySelector('#branch1');
+      const branch2 = element.querySelector('#branch2');
+      expect(querySelectorDeep('#target', branch1)).to.equal(element.querySelector('#target'));
+      expect(querySelectorDeep('#target', branch2)).to.equal(null);
+    });
+
+    it('should return null when searching in an empty root', async () => {
+      const element = await fixture(`<div></div>`);
+      expect(querySelectorDeep('*', element)).to.equal(null);
+    });
+
+    it('should work with different selector types', async () => {
+      const element = await fixture(`<div><span id="by-id" class="by-class" data-test="value"></span></div>`);
+      const target = element.querySelector('#by-id');
+      expect(querySelectorDeep('#by-id', element)).to.equal(target);
+      expect(querySelectorDeep('.by-class', element)).to.equal(target);
+      expect(querySelectorDeep('span', element)).to.equal(target);
+      expect(querySelectorDeep('[data-test]', element)).to.equal(target);
     });
   });
 });

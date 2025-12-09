@@ -3,7 +3,7 @@ import { classMap } from 'lit/directives/class-map.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { createRef, ref } from 'lit/directives/ref.js';
 import { iconRemixCloseLine as iconClose } from '../../assets/cc-remix.icons.js';
-import { findActiveElement } from '../../lib/shadow-dom-utils.js';
+import { findActiveElement, querySelectorDeep } from '../../lib/shadow-dom-utils.js';
 import { isStringEmpty } from '../../lib/utils.js';
 import { accessibilityStyles } from '../../styles/accessibility.js';
 import { i18n } from '../../translations/translation.js';
@@ -100,6 +100,7 @@ export class CcDialog extends LitElement {
     if (isOpening) {
       this._openerElement = findActiveElement();
       this._dialogRef.value?.showModal();
+      this._autofocusOnOpen();
       this.dispatchEvent(new CcOpenEvent());
     }
   }
@@ -119,6 +120,13 @@ export class CcDialog extends LitElement {
     // Prevent the native dialog close (`cancel` event) to manage it through the `open` property
     e?.preventDefault();
     this.open = false;
+  }
+
+  _autofocusOnOpen() {
+    const elementWithAutofocus = querySelectorDeep('[autofocus]', this);
+    if (elementWithAutofocus instanceof HTMLElement) {
+      elementWithAutofocus.focus();
+    }
   }
 
   _tryToFocusOpenerElement() {
