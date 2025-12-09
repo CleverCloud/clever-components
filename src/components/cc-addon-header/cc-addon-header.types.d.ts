@@ -82,3 +82,39 @@ export interface KubeInfo {
   creationDate: string;
   version: string;
 }
+
+export interface ElasticProviderInfo {
+  id: string;
+  app_id: string;
+  plan: string;
+  zone: string;
+  config: {
+    host: string;
+    user: string;
+    password: string;
+    apm_user: string;
+    apm_password: string;
+    apm_auth_token: string;
+    kibana_user: string;
+    kibana_password: string;
+  };
+  owner_id: string;
+  version: string;
+  backups: {
+    kibana_snapshots_url: string;
+  };
+  kibana_application: string;
+  apm_application: string;
+  services: [
+    {
+      name: string;
+      enabled: boolean;
+    },
+  ];
+  features: [
+    {
+      name: string;
+      enabled: boolean;
+    },
+  ];
+}
