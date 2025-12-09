@@ -72,3 +72,27 @@ export function elementsFromPoint(x, y, root = document) {
   }
   return elements;
 }
+
+/**
+ * Deep querySelector that can pierce shadow DOM boundaries.
+ *
+ * @param {string} selector
+ * @param {Element|ShadowRoot} [root]
+ * @return {Element|null}
+ */
+export function querySelectorDeep(selector, root = document.body) {
+  const elements = root.querySelectorAll(selector);
+
+  if (elements.length > 0) {
+    return elements[0];
+  }
+
+  const elementsWithShadow = [...root.querySelectorAll('*')].filter((el) => el.shadowRoot != null);
+  for (const el of elementsWithShadow) {
+    const elementMatchingSelector = querySelectorDeep(selector, el.shadowRoot);
+    if (elementMatchingSelector != null) {
+      return elementMatchingSelector;
+    }
+  }
+  return null;
+}
