@@ -50,7 +50,7 @@ export class CcAddonHeaderClient {
    * @return {Promise<ZoneStateLoaded>}
    */
   getZone(zoneName) {
-    return getZone({ zoneName }).then(
+    return getZone({ zoneName, ownerId: this._ownerId }).then(
       sendToApi({ apiConfig: this._apiConfig, signal: this._signal, cacheDelay: ONE_SECOND }),
     );
   }
