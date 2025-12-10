@@ -1,0 +1,58 @@
+import { getDocUrl } from '../../lib/dev-hub-url.js';
+import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
+import { i18n } from '../../translations/translation.js';
+import '../cc-smart-container/cc-smart-container.js';
+import { CcAddonInfoClient } from './cc-addon-info.client.js';
+import './cc-addon-info.js';
+
+const PROVIDER_ID = 'kv';
+
+/**
+ * @typedef {import('./cc-addon-info.js').CcAddonInfo} CcAddonInfo
+ * @typedef {import('./cc-addon-info.types.js').AddonInfoStateLoading} AddonInfoStateLoading
+ * @typedef {import('../../lib/smart/smart-component.types.js').OnContextUpdateArgs<CcAddonInfo>} OnContextUpdateArgs
+ */
+
+defineSmartComponent({
+  selector: 'cc-addon-info[smart-mode="materia-kv"]',
+  params: {
+    apiConfig: { type: Object },
+    ownerId: { type: String },
+    addonId: { type: String },
+  },
+  /**
+   * @param {OnContextUpdateArgs} _
+   */
+  onContextUpdate({ context, updateComponent, signal }) {
+    const { apiConfig, ownerId, addonId } = context;
+
+    const api = new CcAddonInfoClient({ apiConfig, ownerId, addonId, providerId: PROVIDER_ID, signal });
+
+    /**
+     * @type {AddonInfoStateLoading}
+     */
+    const LOADING_STATE = {
+      type: 'loading',
+      creationDate: '2025-08-06 15:03:00',
+    };
+
+    updateComponent('state', { type: 'loading', ...LOADING_STATE });
+    updateComponent('docLink', {
+      text: i18n('cc-addon-info.doc-link.materia-kv'),
+      href: getDocUrl('/addons/materia-kv'),
+    });
+
+    api
+      ._getAddon()
+      .then((rawAddon) => {
+        updateComponent('state', {
+          type: 'loaded',
+          creationDate: rawAddon.creationDate,
+        });
+      })
+      .catch((error) => {
+        console.error(error);
+        updateComponent('state', { type: 'error' });
+      });
+  },
+});
