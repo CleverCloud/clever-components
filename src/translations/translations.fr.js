@@ -1627,7 +1627,6 @@ export const translations = {
   //#region cc-range-selector
   'cc-range-selector.custom': `Personnaliser`,
   'cc-range-selector.error.empty': `Sélectionnez une valeur`,
-  'cc-range-selector.error.invalid-selection': `Sélection invalide`,
   'cc-range-selector.required': `obligatoire`,
   //#endregion
   //#region cc-select
