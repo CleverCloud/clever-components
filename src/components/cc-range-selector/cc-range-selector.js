@@ -23,6 +23,7 @@ import { RangeSelectorDraggingController } from './range-selector-dragging-contr
  * @typedef {import('../../lib/form/validation.types.js').Validator} Validator
  * @typedef {import('../../lib/form/validation.types.js').ErrorMessageMap} ErrorMessageMap
  * @typedef {import('../../lib/form/form.types.js').FormControlData} FormControlData
+ * @typedef {import('lit').PropertyValues<CcRangeSelector>} CcRangeSelectorPropertyValues
  * @typedef {import('lit/directives/class-map.js').ClassInfo} ClassInfo
  * @typedef {import('lit/directives/ref.js').Ref<HTMLElement>} HTMLElementRef
  * @typedef {import('lit/directives/ref.js').Ref<HTMLFieldSetElement>} HTMLFieldSetElementRef
@@ -169,33 +170,33 @@ export class CcRangeSelector extends CcFormControlElement {
   }
 
   /**
-   * Lifecycle method called after the first render.
    * Trims disabled options from the start and end of the selected range.
    * This ensures that the selection doesn't visually include leading or trailing disabled options.
+   * @param {CcRangeSelectorPropertyValues} changedProperties
    */
-  firstUpdated() {
+  willUpdate(changedProperties) {
+    if (!changedProperties.has('selection') && !changedProperties.has('options')) {
+      return;
+    }
+
     if (this.disabled || this.selection == null) {
       return;
     }
 
-    // Get full array, trim it, then convert back to boundary values
-    const valuesArray = this._getValuesArray();
-    if (valuesArray.length === 0) {
-      return;
-    }
-
+    const valuesArray = this._getValuesArray(/* includeDisabled */ true);
     const trimmedArray = trimArray(valuesArray, (/** @type {string} */ value) => {
       return this.options?.find((option) => option.value === value)?.disabled;
     });
 
-    if (trimmedArray.length === 0) {
-      this.selection = null;
-    } else {
-      // Update boundary values with trimmed range
-      this.selection = {
-        startValue: trimmedArray.at(0),
-        endValue: trimmedArray.at(-1),
-      };
+    // Only trim if not already clean (prevent loops)
+    if (trimmedArray.length !== valuesArray.length) {
+      this.selection =
+        trimmedArray.length === 0
+          ? null
+          : {
+              startValue: trimmedArray.at(0),
+              endValue: trimmedArray.at(-1),
+            };
     }
   }
 
