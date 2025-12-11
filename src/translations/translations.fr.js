@@ -87,12 +87,8 @@ export const translations = {
   'cc-addon-admin.delete-disclaimer': `Supprimer cet add-on le rend immédiatement indisponible.`,
   'cc-addon-admin.delete-vm': `La base de données est conservée 24 heures.`,
   'cc-addon-admin.delete-vm-and-backups': `La base de données est conservée 24 heures, les sauvegardes suivant la politique de rétention.`,
-  'cc-addon-admin.delete.dialog.cancel': `Annuler`,
-  'cc-addon-admin.delete.dialog.close': `Fermer`,
   'cc-addon-admin.delete.dialog.confirm': `Supprimer l'add-on`,
   'cc-addon-admin.delete.dialog.desc': `En supprimant cet add-on, vous risquez de perdre toutes ses données. Veuillez consulter les conditions générales d'utilisation du fournisseur de cet add-on pour plus d'informations.`,
-  'cc-addon-admin.delete.dialog.error': /** @param {{ name: string }} _ */ ({ name }) =>
-    `Valeur invalide. Saisissez "${name}" comme valeur`,
   'cc-addon-admin.delete.dialog.heading': `Confirmation de suppression`,
   'cc-addon-admin.delete.dialog.label': `Saisissez le nom de l'add-on`,
   'cc-addon-admin.delete.error': /** @param {{ name: string }} _ */ ({ name }) =>
@@ -120,10 +116,11 @@ export const translations = {
       Vous pouvez gérer les sauvegardes directement depuis votre terminal en utilisant les commandes ci-dessous.
     `,
   'cc-addon-backups.cli.content.list-backups-command': `Lister les sauvegardes de bases de données disponibles\u00A0:`,
-  'cc-addon-backups.close-btn': `Fermer ce panneau`,
   'cc-addon-backups.command-password': `Cette commande vous demandera votre mot de passe, le voici\u00A0:`,
   'cc-addon-backups.delete': /** @param {{createdAt: string|number}} _ */ ({ createdAt }) =>
     sanitize`Supprimer la sauvegarde du <strong title="${formatDate(createdAt)}">${formatDatetime(createdAt)}</strong>`,
+  'cc-addon-backups.delete-command-label': `Commande de suppression`,
+  'cc-addon-backups.delete-command-password-label': `Mot de passe pour la commande de suppression`,
   'cc-addon-backups.delete.btn': `supprimer…`,
   'cc-addon-backups.delete.manual.description.es-addon': () =>
     sanitize`Vous pouvez supprimer cette sauvegarde manuellement grâce à l'outil <cc-link href="https://curl.se/docs/">cURL</cc-link> en exécutant cette commande\u00A0:`,
@@ -152,6 +149,8 @@ export const translations = {
   'cc-addon-backups.loading-error': `Une erreur est survenue pendant le chargement des sauvegardes.`,
   'cc-addon-backups.restore': /** @param {{createdAt: string|number}} _ */ ({ createdAt }) =>
     sanitize`Restaurer la sauvegarde du <strong title="${formatDate(createdAt)}">${formatDatetime(createdAt)}</strong>`,
+  'cc-addon-backups.restore-command-label': `Commande de restauration`,
+  'cc-addon-backups.restore-command-password-label': `Mot de passe pour la commande de restauration`,
   'cc-addon-backups.restore.btn': `restaurer…`,
   'cc-addon-backups.restore.manual.description.es-addon': () =>
     sanitize`Vous pouvez restaurer cette sauvegarde manuellement grâce à l'outil <cc-link href="https://curl.se/docs/">cURL</cc-link> en exécutant cette commande\u00A0:`,
@@ -364,9 +363,7 @@ export const translations = {
       : formatNumber(lang, cpu);
   },
   'cc-addon-info.version.btn': `Mise à jour disponible`,
-  'cc-addon-info.version.dialog.btn.cancel': `Annuler`,
   'cc-addon-info.version.dialog.btn.submit': `Mettre à jour et rebuild`,
-  'cc-addon-info.version.dialog.close': `Fermer`,
   'cc-addon-info.version.dialog.desc': /** @param {{ url: string }} _ */ ({ url }) =>
     sanitize`Une ou plusieurs nouvelles versions sont disponibles. Choisissez la version que vous souhaitez appliquer et confirmez pour rebuild et redémarrer application. Consultez notre <cc-link href="${url}">Changelog</cc-link> pour en savoir plus.`,
   'cc-addon-info.version.dialog.heading': `Mise à jour disponible`,
@@ -449,6 +446,16 @@ export const translations = {
   'cc-datetime-relative.distance': /** @param {{date: string|number}} _ */ ({ date }) => formatDistanceToNow(date),
   'cc-datetime-relative.title': /** @param {{date: string|number}} _ */ ({ date }) => formatDate(date),
   //#endregion
+  //#region cc-dialog
+  'cc-dialog.close': `Fermer`,
+  //#endregion
+  //#region cc-dialog-confirm-actions
+  'cc-dialog-confirm-actions.cancel': `Annuler`,
+  //#endregion
+  //#region cc-dialog-confirm-form
+  'cc-dialog-confirm-form.error': /** @param {{ name: string }} _ */ ({ name }) =>
+    `Valeur invalide. Saisissez "${name}" comme valeur`,
+  //#endregion
   //#region cc-doc-card
   'cc-doc-card.link': /** @param {{link: string, product: string}} _ */ ({ link, product }) =>
     sanitize`<cc-link href=${link} a11y-desc="Lire la documentation - ${product}">Lire la documentation</cc-link>`,
@@ -463,6 +470,10 @@ export const translations = {
   'cc-domain-management.certif.custom': () =>
     sanitize`Vous pouvez fournir votre propre certificat grâce au <cc-link href="https://api.clever-cloud.com/v2/certificates/new">gestionnaire de certificats Clever Cloud</cc-link>.`,
   'cc-domain-management.certif.heading': `Sécurisez votre application`,
+  'cc-domain-management.delete-dialog.confirm-button': `Supprimer`,
+  'cc-domain-management.delete-dialog.desc': `Supprimer ce nom de domain rendra immédiatement votre application inaccessible depuis ce dernier.`,
+  'cc-domain-management.delete-dialog.heading': `Supprimer le nom de domaine`,
+  'cc-domain-management.delete-dialog.input-label': `Saisissez le nom de domaine pour confirmer la suppression`,
   'cc-domain-management.dns.a.desc': () =>
     sanitize`<p>Si vous choisissez d'utiliser des enregistrements de type <code>A</code>, par exemple pour un domaine racine (APEX), vous devrez vous-même assurer leur mise à jour. Pensez à suivre notre <cc-link href="${getDevHubUrl('/changelog')}" lang="en">changelog</cc-link> ou à lire la documentation de notre <cc-link href="${getDevHubUrl('/api/v4/#load-balancers')}" lang="en">API v4</cc-link> pour cela.</p>`,
   'cc-domain-management.dns.a.heading': `Enregistrements A`,

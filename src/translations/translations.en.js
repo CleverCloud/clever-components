@@ -76,12 +76,8 @@ export const translations = {
   'cc-addon-admin.delete-disclaimer': `Deleting this add-on makes it immediately unavailable.`,
   'cc-addon-admin.delete-vm': `The database is kept 24 hours.`,
   'cc-addon-admin.delete-vm-and-backups': `The database is kept 24 hours, backups according to the retention policy.`,
-  'cc-addon-admin.delete.dialog.cancel': `Cancel`,
-  'cc-addon-admin.delete.dialog.close': `Close`,
   'cc-addon-admin.delete.dialog.confirm': `Delete the add-on`,
   'cc-addon-admin.delete.dialog.desc': `Be aware that by removing this add-on, all the data related to it may be lost. Please refer to the add-on provider terms of usage for more details.`,
-  'cc-addon-admin.delete.dialog.error': /** @param {{ name: string }} _ */ ({ name }) =>
-    `Invalid value. Enter "${name}" as value`,
   'cc-addon-admin.delete.dialog.heading': `Confirm deletion`,
   'cc-addon-admin.delete.dialog.label': `Enter the add-on name`,
   'cc-addon-admin.delete.error': /** @param {{ name: string }} _ */ ({ name }) =>
@@ -109,10 +105,11 @@ export const translations = {
       You can manage backups directly from your terminal using the commands below.
     `,
   'cc-addon-backups.cli.content.list-backups-command': `Download a database backup:`,
-  'cc-addon-backups.close-btn': `Close this panel`,
   'cc-addon-backups.command-password': `This command will ask for your password, here it is:`,
   'cc-addon-backups.delete': /** @param {{createdAt: string|number}} _ */ ({ createdAt }) =>
     sanitize`Delete the backup from <strong title="${formatDate(createdAt)}">${formatDatetime(createdAt)}</strong>`,
+  'cc-addon-backups.delete-command-label': `Delete command`,
+  'cc-addon-backups.delete-command-password-label': `Delete command password`,
   'cc-addon-backups.delete.btn': `delete...`,
   'cc-addon-backups.delete.manual.description.es-addon': () =>
     sanitize`You can delete this backup using <cc-link href="https://curl.se/docs/">cURL</cc-link> by executing this command:`,
@@ -141,6 +138,8 @@ export const translations = {
   'cc-addon-backups.loading-error': `Something went wrong while loading the backups.`,
   'cc-addon-backups.restore': /** @param {{createdAt: string|number}} _ */ ({ createdAt }) =>
     sanitize`Restore the backup from <strong title="${formatDate(createdAt)}">${formatDatetime(createdAt)}</strong>`,
+  'cc-addon-backups.restore-command-label': `Restore command`,
+  'cc-addon-backups.restore-command-password-label': `Restore command password`,
   'cc-addon-backups.restore.btn': `restore...`,
   'cc-addon-backups.restore.manual.description.es-addon': () =>
     sanitize`You can restore this backup using <cc-link href="https://curl.se/docs/">cURL</cc-link> by executing this command:`,
@@ -353,9 +352,7 @@ export const translations = {
       : formatNumber(lang, cpu);
   },
   'cc-addon-info.version.btn': `Update available`,
-  'cc-addon-info.version.dialog.btn.cancel': `Cancel`,
   'cc-addon-info.version.dialog.btn.submit': `Update and rebuild`,
-  'cc-addon-info.version.dialog.close': `Close`,
   'cc-addon-info.version.dialog.desc': /** @param {{ url: string }} _ */ ({ url }) =>
     sanitize`One or more new versions are available. Choose the version you wish to apply and confirm to start and rebuild the application. Learn more in our <cc-link href="${url}">Changelog</cc-link>.`,
   'cc-addon-info.version.dialog.heading': `Update available`,
@@ -438,6 +435,16 @@ export const translations = {
   'cc-datetime-relative.distance': /** @param {{date: string|number}} _ */ ({ date }) => formatDistanceToNow(date),
   'cc-datetime-relative.title': /** @param {{date: string|number}} _ */ ({ date }) => formatDate(date),
   //#endregion
+  //#region cc-dialog
+  'cc-dialog.close': `Close`,
+  //#endregion
+  //#region cc-dialog-confirm-actions
+  'cc-dialog-confirm-actions.cancel': `Cancel`,
+  //#endregion
+  //#region cc-dialog-confirm-form
+  'cc-dialog-confirm-form.error': /** @param {{ name: string }} _ */ ({ name }) =>
+    `Invalid value. Enter "${name}" as value`,
+  //#endregion
   //#region cc-doc-card
   'cc-doc-card.link': /** @param {{link: string, product: string}} _ */ ({ link, product }) =>
     sanitize`<cc-link href=${link} a11y-desc="Read the documentation - ${product}">Read the documentation</cc-link>`,
@@ -452,6 +459,10 @@ export const translations = {
   'cc-domain-management.certif.custom': () =>
     sanitize`You can provide your own certificate by using the <cc-link href="https://api.clever-cloud.com/v2/certificates/new">Clever Cloud Certificate Manager</cc-link>.`,
   'cc-domain-management.certif.heading': `Secure your application`,
+  'cc-domain-management.delete-dialog.confirm-button': `Delete`,
+  'cc-domain-management.delete-dialog.desc': `By deleting this domain name, your application will immediatly become unreachable from that specific domain name.`,
+  'cc-domain-management.delete-dialog.heading': `Remove the domain name`,
+  'cc-domain-management.delete-dialog.input-label': `Enter the domain name to confirm its deletion`,
   'cc-domain-management.dns.a.desc': () =>
     sanitize`<p>If you choose to use <code>A</code> records, for instance with a root domain (APEX), you'll need to update them yourself. Follow our <cc-link href="${getDevHubUrl('/changelog')}">changelog</cc-link> or check our <cc-link href="${getDevHubUrl('/api/v4/#load-balancers')}">v4 API documentation</cc-link> for this.</p>`,
   'cc-domain-management.dns.a.heading': `A records`,

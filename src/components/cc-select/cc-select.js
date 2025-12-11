@@ -42,6 +42,8 @@ export class CcSelect extends CcFormControlElement {
   static get properties() {
     return {
       ...super.properties,
+      // eslint-disable-next-line lit/no-native-attributes
+      autofocus: { type: Boolean },
       disabled: { type: Boolean, reflect: true },
       inline: { type: Boolean, reflect: true },
       /** @required */
@@ -58,6 +60,9 @@ export class CcSelect extends CcFormControlElement {
 
   constructor() {
     super();
+
+    /** @type {boolean} Automatically focus the select when the page loads. **Note:** Using this attribute is generally discouraged for accessibility reasons. See [MDN autofocus accessibility concerns](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Global_attributes/autofocus#accessibility_concerns) for more information. */
+    this.autofocus = false;
 
     /** @type {boolean} Sets `disabled` attribute on inner native `<select>` element. */
     this.disabled = false;
@@ -182,6 +187,7 @@ export class CcSelect extends CcFormControlElement {
         <select
           id="input-id"
           class="${classMap({ error: hasErrorMessage })}"
+          ?autofocus=${this.autofocus}
           ?disabled=${this.disabled}
           aria-describedby="help-id error-id"
           @input=${this._onSelectInput}

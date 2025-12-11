@@ -1,69 +1,9 @@
-import { css, html, LitElement, render } from 'lit';
-import { repeat } from 'lit/directives/repeat.js';
+import { html, render } from 'lit';
 import '../components/cc-button/cc-button.js';
-import { LostFocusController } from './lost-focus-controller.js';
+import '../components/cc-dialog/cc-dialog.js';
+import '../stories/fixtures/my-list-with-dialog.js';
+import '../stories/fixtures/my-list.js';
 import docStoryModule from './lost-focus-controller.md';
-
-// eslint-disable-next-line wc/file-name-matches-element
-class MyList extends LitElement {
-  static get properties() {
-    return {
-      items: { type: Array },
-    };
-  }
-
-  constructor() {
-    super();
-    this.items = [];
-
-    new LostFocusController(this, '.item', ({ suggestedElement }) => {
-      suggestedElement?.querySelector('cc-button').focus();
-    });
-  }
-
-  _onRemove(event) {
-    const item = event.currentTarget.dataset.name;
-    event.currentTarget.waiting = true;
-    setTimeout(() => {
-      this.items = this.items.filter((e) => e !== item);
-    }, 2000);
-  }
-
-  focus() {
-    this.shadowRoot.querySelector('cc-button').focus();
-  }
-
-  firstUpdated(_changedProperties) {
-    setTimeout(() => this.focus());
-  }
-
-  render() {
-    return repeat(
-      this.items,
-      (item) => item,
-      (item) => {
-        return html`
-          <div class="item">
-            <cc-button @cc-click=${this._onRemove} data-name="${item}">Remove</cc-button>
-            <span>${item}</span>
-          </div>
-        `;
-      },
-    );
-  }
-
-  static get styles() {
-    return [
-      // language=CSS
-      css`
-        div {
-          margin-bottom: 0.2em;
-        }
-      `,
-    ];
-  }
-}
-window.customElements.define('my-list', MyList);
 
 export default {
   title: '🕹️ Controllers/LostFocusController',
@@ -93,8 +33,51 @@ export const defaultStory = () => {
       }
     </style>
     <div class="main">
-      <div class="title">Try deleting item and see the focus automatically placed on the next button</div>
+      <div class="title">Try deleting an item and see the focus automatically placed on the next button</div>
       <my-list .items=${items}></my-list>
+      <div class="title">Click the button below to reset the list items</div>
+      <cc-button @cc-click=${onReset}>reset</cc-button>
+    </div>
+  `;
+  /* eslint-enable lit/prefer-static-styles */
+
+  render(template, storyDom);
+
+  return storyDom;
+};
+
+export const withDialog = () => {
+  const storyDom = document.createElement('div');
+  const items = Array.from({ length: 10 }, (_, i) => `Item ${i + 1}`);
+
+  const onReset = () => {
+    render(template, storyDom);
+    setTimeout(() => storyDom.querySelector('my-list-with-dialog').focus(), 10);
+  };
+
+  /* eslint-disable lit/prefer-static-styles */
+  const template = html`
+    <style>
+      .main {
+        margin: 1em;
+      }
+      cc-button {
+        margin-top: 0.3em;
+      }
+    </style>
+    <div class="main">
+      <div class="title">
+        This demonstrates focus restoration when deletion happens via a dialog confirmation.
+        <br />
+        When you confirm deletion:
+        <ul>
+          <li>The dialog tries to restore focus to the delete button that opened it</li>
+          <li>But that button no longer exists (it was deleted)</li>
+          <li>The dialog dispatches a focus-restoration-fail event</li>
+          <li>The LostFocusController handles this and focuses the next item's button</li>
+        </ul>
+      </div>
+      <my-list-with-dialog .items=${items}></my-list-with-dialog>
       <div class="title">Click the button below to reset the list items</div>
       <cc-button @cc-click=${onReset}>reset</cc-button>
     </div>

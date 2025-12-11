@@ -3,11 +3,9 @@ import { classMap } from 'lit/directives/class-map.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { createRef, ref } from 'lit/directives/ref.js';
 import {
-  iconRemixCloseLine as iconClose,
   iconRemixInformationFill as iconInfo,
   iconRemixSettings_3Line as iconUpdate,
 } from '../../assets/cc-remix.icons.js';
-import { LostFocusController } from '../../controllers/lost-focus-controller.js';
 import { hasSlottedChildren } from '../../directives/has-slotted-children.js';
 import { getAssetUrl } from '../../lib/assets-url.js';
 import { fakeString } from '../../lib/fake-strings.js';
@@ -16,6 +14,8 @@ import { accessibilityStyles } from '../../styles/accessibility.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-block/cc-block.js';
+import '../cc-dialog-confirm-actions/cc-dialog-confirm-actions.js';
+import '../cc-dialog/cc-dialog.js';
 import '../cc-link/cc-link.js';
 import '../cc-notice/cc-notice.js';
 import '../cc-select/cc-select.js';
@@ -64,6 +64,7 @@ export class CcAddonInfo extends LitElement {
     return {
       docLink: { type: Object, attribute: 'doc-link' },
       state: { type: Object },
+      _isVersionDialogOpen: { type: Boolean, state: true },
     };
   }
 
@@ -76,6 +77,9 @@ export class CcAddonInfo extends LitElement {
     /** @type {AddonInfoState} Sets the state of the component*/
     this.state = { type: 'loading', creationDate: '2025-08-04 15:03:02' };
 
+    /** @type {boolean} */
+    this._isVersionDialogOpen = false;
+
     /** @type {Ref<HTMLDialogElement>} */
     this._versionDialogRef = createRef();
 
@@ -84,10 +88,6 @@ export class CcAddonInfo extends LitElement {
 
     /** @type {Ref<HTMLFormElement>} */
     this._versionFormRef = createRef();
-
-    new LostFocusController(this, 'dialog', () => {
-      this._versionTextRef.value?.focus();
-    });
   }
 
   /**
@@ -159,11 +159,11 @@ export class CcAddonInfo extends LitElement {
   }
 
   _onVersionDialogOpen() {
-    this._versionDialogRef.value?.showModal();
+    this._isVersionDialogOpen = true;
   }
 
   _onVersionDialogClose() {
-    this._versionDialogRef.value?.close();
+    this._isVersionDialogOpen = false;
   }
 
   /** @param {PropertyValues<CcAddonInfo>} changedProperties */
@@ -174,8 +174,7 @@ export class CcAddonInfo extends LitElement {
       previousState?.type === 'loaded' && previousState?.version?.stateType === 'requesting-update';
     const isNotRequestingUpdate = this.state.type === 'loaded' && this.state.version?.stateType !== 'requesting-update';
     if (wasRequestingUpdate && isNotRequestingUpdate) {
-      this._versionDialogRef.value?.close();
-      this._versionFormRef.value?.reset();
+      this._isVersionDialogOpen = false;
     }
   }
 
@@ -207,7 +206,7 @@ export class CcAddonInfo extends LitElement {
                           >
                             ${i18n('cc-addon-info.version.btn')}
                           </cc-button>
-                          ${this._renderVersionDialog(this.state.version)}
+                          ${this._isVersionDialogOpen ? this._renderVersionDialog(this.state.version) : ''}
                         `
                       : ''}
                   </div>
@@ -334,18 +333,15 @@ export class CcAddonInfo extends LitElement {
       label: availableVersion,
       value: availableVersion,
     }));
+    const isRequestingUpdate = stateType === 'requesting-update';
 
     return html`
-      <dialog aria-labelledby="dialog-heading" closedby="any" ${ref(this._versionDialogRef)}>
-        <button
-          class="dialog-close"
-          @click=${this._onVersionDialogClose}
-          ?disabled="${stateType === 'requesting-update'}"
-        >
-          <span class="visually-hidden">${i18n('cc-addon-info.version.dialog.close')}</span>
-          <cc-icon .icon="${iconClose}"></cc-icon>
-        </button>
-        <div class="dialog-heading" id="dialog-heading">${i18n('cc-addon-info.version.dialog.heading')}</div>
+      <cc-dialog
+        heading="${i18n('cc-addon-info.version.dialog.heading')}"
+        open
+        @cc-dialog-close="${this._onVersionDialogClose}"
+        @cc-dialog-focus-restoration-fail="${() => this._versionTextRef.value?.focus()}"
+      >
         <div class="dialog-desc">${i18n('cc-addon-info.version.dialog.desc', { url: changelogLink })}</div>
         <form ${formSubmit(this._onUpdateVersionRequested.bind(this))} ${ref(this._versionFormRef)}>
           <div class="dialog-form">
@@ -361,27 +357,20 @@ export class CcAddonInfo extends LitElement {
               .resetValue="${latest}"
               name="version"
               inline
+              ?disabled="${isRequestingUpdate}"
             >
               <p slot="help" class="visually-hidden">
                 ${i18n('cc-addon-info.version.dialog.select.help', { currentVersion: installed })}
               </p>
             </cc-select>
           </div>
-          <div class="dialog-form__actions">
-            <cc-button
-              primary
-              outlined
-              type="reset"
-              @cc-click="${this._onVersionDialogClose}"
-              ?disabled="${stateType === 'requesting-update'}"
-              >${i18n('cc-addon-info.version.dialog.btn.cancel')}</cc-button
-            >
-            <cc-button primary type="submit" ?waiting="${stateType === 'requesting-update'}"
-              >${i18n('cc-addon-info.version.dialog.btn.submit')}</cc-button
-            >
-          </div>
+          <cc-dialog-confirm-actions
+            submit-label="${i18n('cc-addon-info.version.dialog.btn.submit')}"
+            ?waiting="${isRequestingUpdate}"
+            @cc-dialog-confirm="${() => this._versionFormRef.value.requestSubmit()}"
+          ></cc-dialog-confirm-actions>
         </form>
-      </dialog>
+      </cc-dialog>
     `;
   }
 
@@ -524,72 +513,6 @@ export class CcAddonInfo extends LitElement {
           gap: 0.5em;
         }
 
-        dialog {
-          border: none;
-          border-radius: var(--cc-border-radius-default, 0.25em);
-          box-shadow: 2px 4px 8px 0 rgb(0 0 0 / 12%);
-          box-sizing: border-box;
-          padding: 4em;
-          width: min(38em, 80%);
-        }
-
-        /* stylelint-disable-next-line media-feature-range-notation */
-        @media screen and (max-width: 38em) {
-          dialog {
-            padding: 1em;
-          }
-        }
-
-        ::backdrop {
-          background: rgb(30 30 30 / 55%);
-        }
-
-        @supports (backdrop-filter: blur(5px)) {
-          ::backdrop {
-            backdrop-filter: blur(5px);
-            background: rgb(30 30 30 / 35%);
-          }
-        }
-
-        .dialog-close {
-          background: none;
-          border: none;
-          border-radius: var(--cc-border-radius-default, 0.25em);
-          color: var(--cc-color-text-weak);
-          cursor: pointer;
-          padding: 0.5em;
-          position: absolute;
-          right: 1.5em;
-          top: 1.5em;
-
-          --cc-icon-size: 1.4em;
-        }
-
-        /* stylelint-disable-next-line media-feature-range-notation */
-        @media screen and (max-width: 38em) {
-          .dialog-close {
-            right: 0.5em;
-            top: 0.5em;
-          }
-        }
-
-        .dialog-close:disabled {
-          opacity: var(--cc-opacity-when-disabled);
-        }
-
-        .dialog-close:focus-visible {
-          outline: var(--cc-focus-outline);
-          outline-offset: var(--cc-focus-outline-offset, 2px);
-        }
-
-        .dialog-heading {
-          border-bottom: solid 1px var(--cc-color-border-neutral-weak);
-          color: var(--cc-color-text-primary-strongest);
-          font-weight: bold;
-          margin-bottom: 1.25em;
-          padding-bottom: 1.25em;
-        }
-
         .dialog-desc {
           margin-bottom: 1.25em;
         }
@@ -604,23 +527,6 @@ export class CcAddonInfo extends LitElement {
         .dialog-form__version-from {
           display: flex;
           gap: 1em;
-        }
-
-        .dialog-form__actions {
-          display: flex;
-          flex-wrap: wrap;
-          gap: 1em;
-          justify-content: end;
-          margin-top: 3.75em;
-        }
-
-        /* stylelint-disable-next-line media-feature-range-notation */
-        @media screen and (max-width: 38em) {
-          .dialog-form__actions {
-            display: grid;
-            justify-content: stretch;
-            margin-top: 2em;
-          }
         }
 
         .dialog-form cc-select {

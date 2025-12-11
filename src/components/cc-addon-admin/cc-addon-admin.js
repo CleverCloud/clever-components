@@ -1,12 +1,11 @@
 import { css, html, LitElement } from 'lit';
-import { createRef, ref } from 'lit/directives/ref.js';
-import { iconRemixCloseLine as iconClose } from '../../assets/cc-remix.icons.js';
-import { formSubmit } from '../../lib/form/form-submit-directive.js';
 import { Validation } from '../../lib/form/validation.js';
 import { accessibilityStyles } from '../../styles/accessibility.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-block-section/cc-block-section.js';
 import '../cc-block/cc-block.js';
+import '../cc-dialog-confirm-form/cc-dialog-confirm-form.js';
+import '../cc-dialog/cc-dialog.js';
 import '../cc-input-text/cc-input-text.js';
 import '../cc-loader/cc-loader.js';
 import '../cc-notice/cc-notice.js';
@@ -16,7 +15,6 @@ import { CcAddonDeleteEvent, CcAddonNameChangeEvent, CcAddonTagsChangeEvent } fr
  * @import { AddonAdminState, AddonAdminStateLoaded, AddonAdminStateLoading, AddonAdminStateSaving } from './cc-addon-admin.types.js'
  * @import { CcTagsChangeEvent } from '../cc-input-text/cc-input-text.events.js'
  * @import { TemplateResult, PropertyValues } from 'lit'
- * @import { Ref } from 'lit/directives/ref.js'
  */
 
 /**
@@ -30,6 +28,7 @@ export class CcAddonAdmin extends LitElement {
       noDangerZoneBackupText: { type: Boolean, attribute: 'no-danger-zone-backup-text' },
       noDangerZoneVmText: { type: Boolean, attribute: 'no-danger-zone-vm-text' },
       state: { type: Object },
+      _isDialogOpen: { type: Boolean, state: true },
       _name: { type: String, state: true },
       _tags: { type: Array, state: true },
     };
@@ -53,12 +52,6 @@ export class CcAddonAdmin extends LitElement {
     /** @type {string[]|null} Sets the value of the `tags` input field */
     this._tags = null;
 
-    /** @type {Ref<HTMLDialogElement>} */
-    this._confirmDeletionDialogRef = createRef();
-
-    /** @type {Ref<HTMLFormElement>} */
-    this._confirmDeletionFormRef = createRef();
-
     this._addonNameConfirmationValidator = {
       /**
        * @param {string} value
@@ -75,7 +68,7 @@ export class CcAddonAdmin extends LitElement {
   }
 
   _onDeleteRequest() {
-    this._confirmDeletionDialogRef.value.showModal();
+    this._isDialogOpen = true;
   }
 
   /** @private */
@@ -112,7 +105,7 @@ export class CcAddonAdmin extends LitElement {
   }
 
   _onDialogClose() {
-    this._confirmDeletionDialogRef.value.close();
+    this._isDialogOpen = false;
   }
 
   /**
@@ -135,8 +128,7 @@ export class CcAddonAdmin extends LitElement {
     const wasDeleting = previousState?.type === 'deleting';
     const isNotDeleting = this.state.type !== 'deleting';
     if (wasDeleting && isNotDeleting) {
-      this._confirmDeletionDialogRef.value?.close();
-      this._confirmDeletionFormRef.value?.reset();
+      this._isDialogOpen = false;
     }
   }
 
@@ -242,7 +234,7 @@ export class CcAddonAdmin extends LitElement {
       </cc-block-section>
 
       ${this.state.type === 'loaded' || this.state.type === 'deleting'
-        ? this._renderDeleteConfirmationDialog(this.state.name, this.state.type === 'deleting')
+        ? this._renderDeleteConfirmationDialog(this.state.name, this.state.type === 'deleting', this._isDialogOpen)
         : ''}
     `;
   }
@@ -250,43 +242,27 @@ export class CcAddonAdmin extends LitElement {
   /**
    * @param {string} addonName
    * @param {boolean} isDeleting
+   * @param {boolean} isOpen
    */
-  _renderDeleteConfirmationDialog(addonName, isDeleting) {
-    const customErrorMessages = { 'no-match': i18n('cc-addon-admin.delete.dialog.error', { name: addonName }) };
+  _renderDeleteConfirmationDialog(addonName, isDeleting, isOpen) {
     return html`
-      <dialog
-        aria-labelledby="dialog-heading"
-        closedby="any"
-        ${ref(this._confirmDeletionDialogRef)}
+      <cc-dialog
+        ?open=${isOpen}
         slot="content-body"
+        @cc-dialog-close=${this._onDialogClose}
+        heading="${i18n('cc-addon-admin.delete.dialog.heading')}"
+        @cc-dialog-confirm=${this._onDeleteSubmit}
       >
-        <button class="dialog-close" @click=${this._onDialogClose} ?disabled="${isDeleting}">
-          <span class="visually-hidden">${i18n('cc-addon-admin.delete.dialog.close')}</span>
-          <cc-icon .icon="${iconClose}"></cc-icon>
-        </button>
-        <div class="dialog-heading" id="dialog-heading">${i18n('cc-addon-admin.delete.dialog.heading')}</div>
-        <p class="dialog-desc">${i18n('cc-addon-admin.delete.dialog.desc')}</p>
-        <form class="dialog-form" ${formSubmit(this._onDeleteSubmit.bind(this))} ${ref(this._confirmDeletionFormRef)}>
-          <cc-input-text
-            label="${i18n('cc-addon-admin.delete.dialog.label')}"
-            required
-            name="confirmation"
-            ?readonly="${isDeleting}"
-            .customValidator="${this._addonNameConfirmationValidator}"
-            .customErrorMessages="${customErrorMessages}"
-          >
-            <p slot="help">${addonName}</p>
-          </cc-input-text>
-          <div class="dialog-form__actions">
-            <cc-button type="button" outlined primary @cc-click="${this._onDialogClose}" ?disabled="${isDeleting}">
-              ${i18n('cc-addon-admin.delete.dialog.cancel')}
-            </cc-button>
-            <cc-button type="submit" danger .waiting="${isDeleting}">
-              ${i18n('cc-addon-admin.delete.dialog.confirm')}
-            </cc-button>
-          </div>
-        </form>
-      </dialog>
+        <p>${i18n('cc-addon-admin.delete.dialog.desc')}</p>
+        <cc-dialog-confirm-form
+          confirm-text-to-input="${addonName}"
+          confirm-input-label="${i18n('cc-addon-admin.delete.dialog.label')}"
+          submit-label="${i18n('cc-addon-admin.delete.dialog.confirm')}"
+          submit-intent="danger"
+          autofocus-input
+          ?waiting="${isDeleting}"
+        ></cc-dialog-confirm-form>
+      </cc-dialog>
     `;
   }
 
