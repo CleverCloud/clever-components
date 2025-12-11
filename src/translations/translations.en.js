@@ -1604,7 +1604,6 @@ export const translations = {
   //#region cc-range-selector
   'cc-range-selector.custom': `Customize`,
   'cc-range-selector.error.empty': `You must select a value`,
-  'cc-range-selector.error.invalid-selection': `Invalid selection`,
   'cc-range-selector.required': `required`,
   //#endregion
   //#region cc-select

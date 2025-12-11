@@ -4,7 +4,7 @@ import { createRef, ref } from 'lit/directives/ref.js';
 import { iconRemixArrowRightDoubleFill as iconArrow } from '../../assets/cc-remix.icons.js';
 import { EventHandler } from '../../lib/events.js';
 import { CcFormControlElement } from '../../lib/form/cc-form-control-element.abstract.js';
-import { RequiredValidator, Validation, combineValidators, createValidator } from '../../lib/form/validation.js';
+import { RequiredValidator } from '../../lib/form/validation.js';
 import { trimArray } from '../../lib/utils.js';
 import { accessibilityStyles } from '../../styles/accessibility.js';
 import { i18n } from '../../translations/translation.js';
@@ -135,7 +135,6 @@ export class CcRangeSelector extends CcFormControlElement {
     /** @type {ErrorMessageMap} */
     this._errorMessages = {
       empty: () => i18n('cc-range-selector.error.empty'),
-      invalidSelection: () => i18n('cc-range-selector.error.invalid-selection'),
     };
 
     const onOutsideClick = (/** @type {Event} */ event) => {
@@ -170,7 +169,7 @@ export class CcRangeSelector extends CcFormControlElement {
   }
 
   /**
-   * Trims disabled options from the start and end of the selected range.
+   * Validates selection and trims disabled options from the start and end of the selected range.
    * This ensures that the selection doesn't visually include leading or trailing disabled options.
    * @param {CcRangeSelectorPropertyValues} changedProperties
    */
@@ -181,6 +180,32 @@ export class CcRangeSelector extends CcFormControlElement {
 
     if (this.disabled || this.selection == null) {
       return;
+    }
+
+    // Validate selection in range mode - this can only happen if set programmatically with invalid values
+    if (this._isModeRange()) {
+      const indexes = this._getSelectionIndexes();
+
+      if (indexes.start === -1) {
+        throw new Error(
+          `Invalid selection: startValue "${this.selection.startValue}" not found in options. Available values: ${this.options?.map((o) => o.value).join(', ')}`,
+        );
+      }
+      if (indexes.end === -1) {
+        throw new Error(
+          `Invalid selection: endValue "${this.selection.endValue}" not found in options. Available values: ${this.options?.map((o) => o.value).join(', ')}`,
+        );
+      }
+      if (indexes.start > indexes.end) {
+        throw new Error(
+          `Invalid selection: startValue "${this.selection.startValue}" comes after endValue "${this.selection.endValue}" in options array`,
+        );
+      }
+      if (indexes.start === indexes.end) {
+        throw new Error(
+          `Invalid selection: startValue and endValue are the same ("${this.selection.startValue}"). Use mode="single" with value="${this.selection.startValue}" for single selection`,
+        );
+      }
     }
 
     const valuesArray = this._getValuesArray(/* includeDisabled */ true);
@@ -241,19 +266,7 @@ export class CcRangeSelector extends CcFormControlElement {
    * @protected
    */
   _getValidator() {
-    return combineValidators([
-      this.required ? new RequiredValidator() : null,
-      createValidator(() => {
-        const indexes = this._getSelectionIndexes();
-        if (!this.required && this.selection == null) {
-          return Validation.VALID;
-        }
-        if (indexes.first == null || indexes.last == null || indexes.first >= indexes.last) {
-          return Validation.invalid('invalidSelection');
-        }
-        return Validation.VALID;
-      }),
-    ]);
+    return this.required ? new RequiredValidator() : null;
   }
 
   /**

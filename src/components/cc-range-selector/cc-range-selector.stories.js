@@ -163,32 +163,6 @@ export const errorWithRequired = makeStory(conf, {
   },
 });
 
-export const errorWithInvalidSelection = makeStory(conf, {
-  items: [
-    {
-      ...DEFAULT_SELECTOR_RANGE,
-      selection: {},
-      innerHTML: `
-        <p slot="help">Empty selection (as in not empty object)</p>
-      `,
-    },
-    {
-      ...DEFAULT_SELECTOR_RANGE,
-      selection: {
-        startValue: 'jeu',
-        endValue: 'mar',
-      },
-      innerHTML: `
-        <p slot="help">Selection end value before start value</p>
-      `,
-    },
-  ],
-  /** @param {CcRangeSelector} component */
-  onUpdateComplete: (component) => {
-    component.reportInlineValidity();
-  },
-});
-
 export const withCustomOption = makeStory(conf, {
   items: [
     {
