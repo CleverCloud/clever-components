@@ -9,12 +9,8 @@ export default {
 };
 
 /**
- * @typedef {import('./cc-web-features-tracker.types.js').WebFeaturesTrackerState} WebFeaturesTrackerState
- * @typedef {import('./cc-web-features-tracker.types.js').WebFeaturesTrackerStateLoaded} WebFeaturesTrackerStateLoaded
- * @typedef {import('./cc-web-features-tracker.types.js').WebFeaturesTrackerStateLoading} WebFeaturesTrackerStateLoading
- * @typedef {import('./cc-web-features-tracker.types.js').WebFeaturesTrackerStateError} WebFeaturesTrackerStateError
- * @typedef {import('./cc-web-features-tracker.types.js').FormattedFeature} FormattedFeature
- * @typedef {import('./cc-web-features-tracker.js').CcWebFeaturesTracker} CcWebFeaturesTracker
+ * @import { WebFeaturesTrackerState, WebFeaturesTrackerStateLoaded, WebFeaturesTrackerStateLoading, WebFeaturesTrackerStateError, FormattedFeature } from './cc-web-features-tracker.types.js'
+ * @import { CcWebFeaturesTracker } from './cc-web-features-tracker.js'
  */
 
 const conf = {

@@ -13,9 +13,8 @@ export default {
 };
 
 /**
- * @typedef {import('./cc-token-api-update-form.js').CcTokenApiUpdateForm} CcTokenApiUpdateForm
- * @typedef {import('./cc-token-api-update-form.types.js').TokenApiUpdateFormStateLoaded} TokenApiUpdateFormStateLoaded
- * @typedef {import('./cc-token-api-update-form.types.js').TokenApiUpdateFormStateUpdating} TokenApiUpdateFormStateUpdating
+ * @import { CcTokenApiUpdateForm } from './cc-token-api-update-form.js'
+ * @import { TokenApiUpdateFormStateLoaded, TokenApiUpdateFormStateUpdating } from './cc-token-api-update-form.types.js'
  */
 
 const conf = {

@@ -13,9 +13,8 @@ const conf = {
 };
 
 /**
- * @typedef {import('./cc-addon-credentials-beta.js').CcAddonCredentialsBeta} CcAddonCredentialsBeta
- * @typedef {import('../cc-addon-credentials-content/cc-addon-credentials-content.types.js').AddonCredentialCode} AddonCredentialCode
- * @typedef {import('../cc-addon-credentials-content/cc-addon-credentials-content.types.js').AddonCredentialNg} AddonCredentialNg
+ * @import { CcAddonCredentialsBeta } from './cc-addon-credentials-beta.js'
+ * @import { AddonCredentialCode, AddonCredentialNg } from '../cc-addon-credentials-content/cc-addon-credentials-content.types.js'
  */
 
 /**

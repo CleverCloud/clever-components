@@ -15,12 +15,9 @@ const SKELETON_VARIABLES = [
 ];
 
 /**
- * @typedef {import('../common.types.js').EnvVarEditorState} EnvVarEditorState
- * @typedef {import('../common.types.js').EnvVar} EnvVar
- * @typedef {import('../cc-env-var-create/cc-env-var-create.events.js').CcEnvVarCreateEvent} CcEnvVarCreateEvent
- * @typedef {import('../cc-env-var-input/cc-env-var-input.events.js').CcEnvVarChangeEvent} CcEnvVarChangeEvent
- * @typedef {import('../cc-env-var-input/cc-env-var-input.events.js').CcEnvVarDeleteEvent} CcEnvVarDeleteEvent
- * @typedef {import('../cc-env-var-input/cc-env-var-input.events.js').CcEnvVarKeepEvent} CcEnvVarKeepEvent
+ * @import { EnvVarEditorState, EnvVar } from '../common.types.js'
+ * @import { CcEnvVarCreateEvent } from '../cc-env-var-create/cc-env-var-create.events.js'
+ * @import { CcEnvVarChangeEvent, CcEnvVarDeleteEvent, CcEnvVarKeepEvent } from '../cc-env-var-input/cc-env-var-input.events.js'
  */
 
 /**

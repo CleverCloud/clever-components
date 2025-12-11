@@ -2,7 +2,7 @@ import { getAssetUrl } from '../../lib/assets-url.js';
 import { getDevHubUrl, getDocUrl } from '../../lib/dev-hub-url.js';
 
 /**
- * @typedef {import('../../components/cc-addon-info/cc-addon-info.types.js').AddonInfoStateBaseProperties} AddonInfoStateBaseProperties
+ * @import { AddonInfoStateBaseProperties } from '../../components/cc-addon-info/cc-addon-info.types.js'
  */
 
 /** @type {AddonInfoStateBaseProperties} */

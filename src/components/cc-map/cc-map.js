@@ -11,12 +11,9 @@ import '../cc-loader/cc-loader.js';
 import { CcMapMarkerClickEvent, CcMapMarkerEnterEvent, CcMapMarkerLeaveEvent } from './cc-map.events.js';
 
 /**
- * @typedef {import('../common.types.js').HeatmapPoint} HeatmapPoint
- * @typedef {import('../common.types.js').MapModeType} MapModeType
- * @typedef {import('../common.types.js').Point} Point
- * @typedef {import('./cc-map.types.js').CachedPoint} CachedPoint
- * @typedef {import('./cc-map.types.js').MapIconElement} MapIconElement
- * @typedef {import('lit').PropertyValues<CcMap>} CcMapPropertyValues
+ * @import { HeatmapPoint, MapModeType, Point } from '../common.types.js'
+ * @import { CachedPoint, MapIconElement } from './cc-map.types.js'
+ * @import { PropertyValues } from 'lit'
  */
 
 /**
@@ -291,7 +288,7 @@ export class CcMap extends LitElement {
   /**
    * updated and not willUdpate because we need this._map before
    *
-   * @param {CcMapPropertyValues} changedProperties
+   * @param {PropertyValues<CcMap>} changedProperties
    */
   updated(changedProperties) {
     if (changedProperties.has('centerLat') || changedProperties.has('centerLon')) {

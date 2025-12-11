@@ -13,11 +13,12 @@ const MAX_RETRY_COUNT = 10;
 const WAITING_TIMEOUT_LIVE = 2000;
 const WAITING_TIMEOUT_COLD = 8000;
 
+// FIXME: We're using `@typedef` instead of `@import` here due to a false positive from TS
+// See: https://github.com/microsoft/TypeScript/issues/60908/
 /**
  * @typedef {import('./logs-stream.types.js').AbstractLog} AbstractLog
  * @typedef {import('./logs-stream.types.js').LogsStreamState} LogsStreamState
  * @typedef {import('./logs-stream.types.js').LogsStreamStateRunning} LogsStreamStateRunning
- * @typedef {import('./logs-stream.types.js').LogsStreamStatePaused} LogsStreamStatePaused
  * @typedef {import('./logs-stream.types.js').LogsSse} LogsSse
  * @typedef {import('../date/date-range.types.js').DateRange} DateRange
  */

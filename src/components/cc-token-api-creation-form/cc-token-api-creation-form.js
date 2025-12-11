@@ -40,19 +40,12 @@ const DURATION_TO_NB_OF_DAYS_MAP = new Map([
 ]);
 
 /**
- * @typedef {import('./cc-token-api-creation-form.types.js').TokenApiCreationFormState} TokenApiCreationFormState
- * @typedef {import('./cc-token-api-creation-form.types.js').TokenApiCreationFormStateLoaded} TokenApiCreationFormStateLoaded
- * @typedef {import('./cc-token-api-creation-form.types.js').TokenApiCreationFormStateLoadedValidation} TokenApiCreationFormStateLoadedValidation
- * @typedef {import('./cc-token-api-creation-form.types.js').Expiration} Expiration
- * @typedef {import('./cc-token-api-creation-form.types.js').ExpirationPreset} ExpirationPreset
- * @typedef {import('./cc-token-api-creation-form.types.js').ExpirationDurationOptions} ExpirationDurationOptions
- * @typedef {import('./cc-token-api-creation-form.types.js').FormValues} FormValues
- * @typedef {import('../cc-input-text/cc-input-text.js').CcInputText} CcInputText
- * @typedef {import('../cc-input-date/cc-input-date.js').CcInputDate} CcInputDate
- * @typedef {import('../../lib/events.types.js').EventWithTarget<CcInputText | CcInputDate>} EventWithCcFormControlTarget
- * @typedef {import('lit').PropertyValues<CcTokenApiCreationForm>} CcTokenApiCreationFormPropertyValues
- * @typedef {import('lit/directives/ref.js').Ref<HTMLFormElement>} HTMLFormElementRef
- * @typedef {import('lit/directives/ref.js').Ref<CcInputDate>} CcInputDateRef
+ * @import { TokenApiCreationFormState, TokenApiCreationFormStateLoaded, TokenApiCreationFormStateLoadedValidation, Expiration, ExpirationPreset, ExpirationDurationOptions, FormValues } from './cc-token-api-creation-form.types.js'
+ * @import { CcInputText } from '../cc-input-text/cc-input-text.js'
+ * @import { CcInputDate } from '../cc-input-date/cc-input-date.js'
+ * @import { EventWithTarget } from '../../lib/events.types.js'
+ * @import { PropertyValues } from 'lit'
+ * @import { Ref } from 'lit/directives/ref.js'
  */
 
 /**
@@ -105,10 +98,10 @@ export class CcTokenApiCreationForm extends LitElement {
     /** @type {TokenApiCreationFormState} Sets the state of the component */
     this.state = { type: 'loading' };
 
-    /** @type {HTMLFormElementRef} */
+    /** @type {Ref<HTMLFormElement>} */
     this._configurationFormRef = createRef();
 
-    /** @type {CcInputDateRef} */
+    /** @type {Ref<CcInputDate>} */
     this._expirationDateInputRef = createRef();
 
     this._expirationDateErrorMessages = {
@@ -126,7 +119,7 @@ export class CcTokenApiCreationForm extends LitElement {
         }),
     };
 
-    /** @type {HTMLFormElementRef} */
+    /** @type {Ref<HTMLFormElement>} */
     this._validationFormRef = createRef();
 
     new FormErrorFocusController(this, this._validationFormRef, () =>
@@ -240,7 +233,7 @@ export class CcTokenApiCreationForm extends LitElement {
     this.dispatchEvent(new CcTokenCreateEvent(newToken));
   }
 
-  /** @param {CcTokenApiCreationFormPropertyValues} changedProperties */
+  /** @param {PropertyValues<CcTokenApiCreationForm>} changedProperties */
   willUpdate(changedProperties) {
     if (
       changedProperties.has('state') &&
@@ -254,7 +247,7 @@ export class CcTokenApiCreationForm extends LitElement {
     }
   }
 
-  /** @param {CcTokenApiCreationFormPropertyValues} changedProperties */
+  /** @param {PropertyValues<CcTokenApiCreationForm>} changedProperties */
   updated(changedProperties) {
     if (changedProperties.has('state') && this.state.type === 'loaded') {
       // Handle focus in case `prefers-reduced-motion: reduce` is active because `transitionend` event is not triggered
@@ -272,7 +265,7 @@ export class CcTokenApiCreationForm extends LitElement {
     }
   }
 
-  /** @param {EventWithCcFormControlTarget & { detail: string }} event */
+  /** @param {EventWithTarget<CcInputText | CcInputDate> & { detail: string }} event */
   _onInput(event) {
     if (this.state.type !== 'loaded' || this.state.activeStep === 'copy') {
       return;

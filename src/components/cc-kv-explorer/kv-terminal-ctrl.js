@@ -1,14 +1,14 @@
 /**
- * @typedef {import('./cc-kv-explorer.js').CcKvExplorer} CcKvExplorer
- * @typedef {import('./kv-client.js').KvClient} KvClient
- * @typedef {import('../cc-kv-terminal/cc-kv-terminal.types.js').CcKvTerminalState} CcKvTerminalState
- * @typedef {import('../common.types.js').ObjectOrFunction<CcKvTerminalState>} CcKvTerminalStateUpdater
+ * @import { CcKvExplorer } from './cc-kv-explorer.js'
+ * @import { KvClient } from './kv-client.js'
+ * @import { CcKvTerminalState } from '../cc-kv-terminal/cc-kv-terminal.types.js'
+ * @import { ObjectOrFunction } from '../common.types.js'
  */
 
 export class KvTerminalCtrl {
   /**
    * @param {CcKvExplorer} component
-   * @param {(stateUpdater: CcKvTerminalStateUpdater) => void} updateTerminalState
+   * @param {(stateUpdater: ObjectOrFunction<CcKvTerminalState>) => void} updateTerminalState
    * @param {KvClient} kvClient
    */
   constructor(component, updateTerminalState, kvClient) {

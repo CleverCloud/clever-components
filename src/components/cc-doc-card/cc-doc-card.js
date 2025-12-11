@@ -15,8 +15,7 @@ const SKELETON_INFO = {
 };
 
 /**
- * @typedef {import('./cc-doc-card.types.js').DocCardState} DocCardState
- * @typedef {import('./cc-doc-card.types.js').DocCard} DocCard
+ * @import { DocCardState, DocCard } from './cc-doc-card.types.js'
  */
 
 /**

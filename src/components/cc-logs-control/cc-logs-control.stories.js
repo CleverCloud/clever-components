@@ -11,7 +11,7 @@ export default {
 };
 
 /**
- * @typedef {import('./cc-logs-control.js').CcLogsControl} CcLogsControl
+ * @import { CcLogsControl } from './cc-logs-control.js'
  */
 
 const conf = {

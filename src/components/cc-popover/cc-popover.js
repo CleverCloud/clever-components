@@ -5,12 +5,11 @@ import '../cc-button/cc-button.js';
 import { CcToggleEvent } from '../common.events.js';
 
 /**
- * @typedef {import('../common.types.js').IconModel} IconModel
- * @typedef {import('./cc-popover.types.js').PopoverPosition} PopoverPosition
- * @typedef {import('../cc-button/cc-button.js').CcButton} CcButton
- * @typedef {import('lit/directives/ref.js').Ref<CcButton>} RefCcButton
- * @typedef {import('lit/directives/ref.js').Ref<HTMLDivElement>} RefDiv
- * @typedef {import('lit').PropertyValues<CcPopover>} CcPopoverPropertyValues
+ * @import { IconModel } from '../common.types.js'
+ * @import { PopoverPosition } from './cc-popover.types.js'
+ * @import { CcButton } from '../cc-button/cc-button.js'
+ * @import { Ref } from 'lit/directives/ref.js'
+ * @import { PropertyValues } from 'lit'
  */
 
 /**
@@ -91,10 +90,10 @@ export class CcPopover extends LitElement {
     /** @type {PopoverPosition} Sets the position of the popover relative to the `button` element. */
     this.position = 'bottom-left';
 
-    /** @type {RefDiv} */
+    /** @type {Ref<HTMLDivElement>} */
     this._contentRef = createRef();
 
-    /** @type {RefCcButton} */
+    /** @type {Ref<CcButton>} */
     this._buttonRef = createRef();
 
     this._onOutsideClickHandler = new EventHandler(window, 'click', (event) => {
@@ -187,7 +186,7 @@ export class CcPopover extends LitElement {
 
   // region Lit lifecycle
 
-  /** @param {CcPopoverPropertyValues} changedProperties */
+  /** @param {PropertyValues<CcPopover>} changedProperties */
   updated(changedProperties) {
     if (changedProperties.has('isOpen')) {
       if (this.isOpen) {

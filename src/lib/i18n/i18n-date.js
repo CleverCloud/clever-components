@@ -1,7 +1,5 @@
 /**
- * @typedef {import('./i18n.types.js').DateFormatter} DateFormatter
- * @typedef {import('./i18n.types.js').DateUnit} DateUnit
- * @typedef {import('./i18n.types.js').RelativeTimeFormatFunction} RelativeTimeFormatFunction
+ * @import { DateFormatter, DateUnit, RelativeTimeFormatFunction } from './i18n.types.js'
  */
 
 /** @type {Array<{unit: DateUnit, duration: number}>} */

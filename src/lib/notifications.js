@@ -1,7 +1,7 @@
 import { CcNotifyEvent } from './notifications.events.js';
 
 /**
- * @typedef {import('../components/common.types.js').Notification} Notification
+ * @import { Notification } from '../components/common.types.js'
  */
 
 /**

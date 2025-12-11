@@ -9,8 +9,8 @@ export default {
 };
 
 /**
- * @typedef {import('./cc-logs-app-access.js').CcLogsAppAccess} CcAccessLogs
- * @typedef {import('../cc-logs/cc-logs.types.js').Log} Log
+ * @import { CcLogsAppAccess as CcAccessLogs } from './cc-logs-app-access.js'
+ * @import { Log } from '../cc-logs/cc-logs.types.js'
  */
 
 const conf = {

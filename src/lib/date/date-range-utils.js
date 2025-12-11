@@ -1,5 +1,7 @@
 import { shiftDateField } from './date-utils.js';
 
+// FIXME: We're using `@typedef` instead of `@import` here due to a false positive from TS
+// See: https://github.com/microsoft/TypeScript/issues/60908/
 /**
  * @typedef {import('./date-range.types.js').DateRange} DateRange
  * @typedef {import('./date-range.types.js').RawDateRange} RawDateRange

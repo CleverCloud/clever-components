@@ -1,7 +1,7 @@
 import { CcEvent } from '../../lib/events.js';
 
 /**
- * @typedef {import('./cc-oauth-consumer-form.types.js').OauthConsumerWithoutKeyAndSecret} OauthConsumerWithoutKeyAndSecret
+ * @import { OauthConsumerWithoutKeyAndSecret } from './cc-oauth-consumer-form.types.js'
  */
 
 /**

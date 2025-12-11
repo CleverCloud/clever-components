@@ -3,9 +3,7 @@ import { makeStory } from '../../stories/lib/make-story.js';
 import './cc-oauth-consumer-info.js';
 
 /**
- * @typedef {import('./cc-oauth-consumer-info.types.js').OauthConsumerInfoStateLoading} OauthConsumerInfoStateLoading
- * @typedef {import('./cc-oauth-consumer-info.types.js').OauthConsumerInfoStateError} OauthConsumerInfoStateError
- * @typedef {import('./cc-oauth-consumer-info.types.js').OauthConsumerInfoStateLoaded} OauthConsumerInfoStateLoaded
+ * @import { OauthConsumerInfoStateLoading, OauthConsumerInfoStateError, OauthConsumerInfoStateLoaded } from './cc-oauth-consumer-info.types.js'
  */
 
 /** @type {OauthConsumerInfoStateLoaded} */

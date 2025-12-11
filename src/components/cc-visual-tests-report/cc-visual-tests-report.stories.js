@@ -26,8 +26,8 @@ const conf = {
 };
 
 /**
- * @typedef {import('./cc-visual-tests-report.js').CcVisualTestsReport} CcVisualTestsReport
- * @typedef {import('./visual-tests-report.types.js').VisualTestsReport} VisualTestsReport
+ * @import { CcVisualTestsReport } from './cc-visual-tests-report.js'
+ * @import { VisualTestsReport } from './visual-tests-report.types.js'
  */
 
 /** @type {VisualTestsReport} */

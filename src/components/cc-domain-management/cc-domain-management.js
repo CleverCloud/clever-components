@@ -44,18 +44,10 @@ const TLS_CERTIFICATES_DOCUMENTATION = getDocUrl('/administrate/ssl');
 const DNS_DOCUMENTATION = getDocUrl('/administrate/domain-names');
 
 /**
- * @typedef {import('./cc-domain-management.types.js').DomainManagementDnsInfoState} DomainManagementDnsInfoState
- * @typedef {import('./cc-domain-management.types.js').DomainManagementListState} DomainManagementListState
- * @typedef {import('./cc-domain-management.types.js').DomainManagementFormState} DomainManagementFormState
- * @typedef {import('./cc-domain-management.types.js').DomainManagementFormStateIdle} DomainManagementFormStateIdle
- * @typedef {import('./cc-domain-management.types.js').FormattedDomainInfo} FormattedDomainInfo
- * @typedef {import('./cc-domain-management.types.js').DomainInfo} DomainInfo
- * @typedef {import('./cc-domain-management.types.js').FormError} FormError
- * @typedef {import('../cc-input-text/cc-input-text.js').CcInputText} CcInputText
- * @typedef {import('lit').PropertyValues<CcDomainManagement>} CcDomainManagementPropertyValues
- * @typedef {import('lit').TemplateResult<1>} TemplateResult
- * @typedef {import('lit/directives/ref.js').Ref<CcInputText>} RefCcInputText
- * @typedef {import('lit/directives/ref.js').Ref<HTMLParagraphElement>} RefHTMLParagraphElement
+ * @import { DomainManagementDnsInfoState, DomainManagementListState, DomainManagementFormState, DomainManagementFormStateIdle, FormattedDomainInfo, DomainInfo, FormError } from './cc-domain-management.types.js'
+ * @import { CcInputText } from '../cc-input-text/cc-input-text.js'
+ * @import { TemplateResult, PropertyValues } from 'lit'
+ * @import { Ref } from 'lit/directives/ref.js'
  */
 
 /**
@@ -104,10 +96,10 @@ export class CcDomainManagement extends LitElement {
     /** @type {DomainManagementListState} Sets the state of the domain list section. */
     this.domainListState = { type: 'loading' };
 
-    /** @type {RefCcInputText} */
+    /** @type {Ref<CcInputText>} */
     this._domainInputRef = createRef();
 
-    /** @type {RefHTMLParagraphElement} */
+    /** @type {Ref<HTMLParagraphElement>} */
     this._emptyMessageRef = createRef();
 
     /** @type {FormattedDomainInfo[]|null} */
@@ -299,7 +291,7 @@ export class CcDomainManagement extends LitElement {
     };
   }
 
-  /** @param {CcDomainManagementPropertyValues} changedProperties */
+  /** @param {PropertyValues<CcDomainManagement>} changedProperties */
   willUpdate(changedProperties) {
     if (
       changedProperties.has('domainFormState') &&

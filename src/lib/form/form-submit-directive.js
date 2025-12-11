@@ -3,17 +3,15 @@ import { AsyncDirective, directive, PartType } from 'lit/async-directive.js';
 import { EventHandler } from '../events.js';
 import { formSubmitHandler } from './form-submit-handler.js';
 
+// FIXME: We're using `@typedef` instead of `@import` here due to a false positive from TS
+// See: https://github.com/microsoft/TypeScript/issues/60908/
 /**
  * @typedef {import('lit/async-directive.js').PartInfo} PartInfo
- * @typedef {import('lit/async-directive.js').ElementPartInfo} ElementPartInfo
  * @typedef {import('lit/async-directive.js').Part} Part
  * @typedef {import('lit/async-directive.js').ElementPart} ElementPart
- * @typedef {import('lit/async-directive.js').DirectiveResult} DirectiveResult
  * @typedef {import('./form.types.js').HTMLFormElementEvent} HTMLFormElementEvent
- * @typedef {import('./form.types.js').SubmitHandlerCallbacks} SubmitHandlerCallbacks
  * @typedef {import('./form.types.js').OnValidCallback} OnValidCallback
  * @typedef {import('./form.types.js').OnInvalidCallback} OnInvalidCallback
- * @typedef {import('../events.js').EventHandler<HTMLFormElementEvent>} FormEventHandler
  */
 
 class FormSubmitDirective extends AsyncDirective {
@@ -25,7 +23,7 @@ class FormSubmitDirective extends AsyncDirective {
 
     /** @type {HTMLFormElement} */
     this._formElement = null;
-    /** @type {FormEventHandler} */
+    /** @type {EventHandler<HTMLFormElementEvent>} */
     this._eventHandler = null;
   }
 

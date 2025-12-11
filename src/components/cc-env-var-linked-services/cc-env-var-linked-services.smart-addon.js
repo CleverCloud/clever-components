@@ -6,10 +6,10 @@ import '../cc-smart-container/cc-smart-container.js';
 import './cc-env-var-linked-services.js';
 
 /**
- * @typedef {import('./cc-env-var-linked-services.js').CcEnvVarLinkedServices} CcEnvVarLinkedServices
- * @typedef {import('./cc-env-var-linked-services.types.js').LinkedService} LinkedService
- * @typedef {import('../../lib/send-to-api.js').ApiConfig} ApiConfig
- * @typedef {import('../../lib/smart/smart-component.types.js').OnContextUpdateArgs<CcEnvVarLinkedServices>} OnContextUpdateArgs
+ * @import { CcEnvVarLinkedServices } from './cc-env-var-linked-services.js'
+ * @import { LinkedService } from './cc-env-var-linked-services.types.js'
+ * @import { ApiConfig } from '../../lib/send-to-api.types.js'
+ * @import { OnContextUpdateArgs } from '../../lib/smart/smart-component.types.js'
  */
 
 defineSmartComponent({
@@ -20,7 +20,7 @@ defineSmartComponent({
     appId: { type: String },
   },
   /**
-   * @param {OnContextUpdateArgs} args
+   * @param {OnContextUpdateArgs<CcEnvVarLinkedServices>} args
    */
   onContextUpdate({ context, updateComponent, signal }) {
     const { apiConfig, ownerId, appId } = context;

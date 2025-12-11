@@ -1,10 +1,6 @@
 /**
- * @typedef {import('./cc-logs.types.js').Log} Log
- * @typedef {import('./cc-logs.types.js').LogFilter} LogFilter
- * @typedef {import('./cc-logs.types.js').MetadataFilter} MetadataFilter
- * @typedef {import('./cc-logs.types.js').LogMessageFilter} LogMessageFilter
- * @typedef {import('./cc-logs.types.js').LogMessageFilterMode} LogMessageFilterMode
- * @typedef {import('./cc-logs.js').CcLogs} CcLogs
+ * @import { Log, LogFilter, MetadataFilter, LogMessageFilter } from './cc-logs.types.js'
+ * @import { CcLogs } from './cc-logs.js'
  */
 
 import { parseRegex } from '../../lib/regex-parse.js';

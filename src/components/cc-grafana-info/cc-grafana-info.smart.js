@@ -9,13 +9,10 @@ import '../cc-smart-container/cc-smart-container.js';
 import './cc-grafana-info.js';
 
 /**
- * @typedef {import('./cc-grafana-info.js').CcGrafanaInfo} CcGrafanaInfo
- * @typedef {import('./cc-grafana-info.types.js').GrafanaInfoState} GrafanaInfoState
- * @typedef {import('./cc-grafana-info.types.js').GrafanaInfoStateLoaded} GrafanaInfoStateLoaded
- * @typedef {import('./cc-grafana-info.types.js').GrafanaInfoEnabled} GrafanaInfoEnabled
- * @typedef {import('./cc-grafana-info.types.js').GrafanaInfoDisabled} GrafanaInfoDisabled
- * @typedef {import('../../lib/send-to-api.js').ApiConfig} ApiConfig
- * @typedef {import('../../lib/smart/smart-component.types.js').OnContextUpdateArgs<CcGrafanaInfo>} OnContextUpdateArgs
+ * @import { CcGrafanaInfo } from './cc-grafana-info.js'
+ * @import { GrafanaInfoStateLoaded, GrafanaInfoEnabled, GrafanaInfoDisabled } from './cc-grafana-info.types.js'
+ * @import { ApiConfig } from '../../lib/send-to-api.types.js'
+ * @import { OnContextUpdateArgs } from '../../lib/smart/smart-component.types.js'
  */
 
 defineSmartComponent({
@@ -26,7 +23,7 @@ defineSmartComponent({
     grafanaBaseLink: { type: String },
   },
   /**
-   * @param {OnContextUpdateArgs} args
+   * @param {OnContextUpdateArgs<CcGrafanaInfo>} args
    */
   onContextUpdate({ context, updateComponent, onEvent, signal }) {
     const { apiConfig, ownerId, grafanaBaseLink } = context;

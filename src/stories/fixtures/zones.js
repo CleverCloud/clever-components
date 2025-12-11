@@ -1,4 +1,6 @@
-/** @typedef {import('../../components/common.types.js').Zone} Zone */
+/**
+ * @import { Zone } from '../../components/common.types.js'
+*/
 
 /** @type {Zone[]} */
 export const ZONES = [

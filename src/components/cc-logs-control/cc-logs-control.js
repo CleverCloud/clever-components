@@ -37,20 +37,15 @@ const PALETTES = {
 };
 
 /**
- * @typedef {import('./cc-logs-control.types.js').LogsMetadataDisplay} LogsMetadataDisplay
- * @typedef {import('./cc-logs-control.types.js').LogsControlPalette} LogsControlPalette
- * @typedef {import('./cc-logs-control.types.js').LogsOptions} LogsOptions
- * @typedef {import('../cc-logs/cc-logs.types.js').LogMessageFilterMode} LogMessageFilterMode
- * @typedef {import('../cc-logs/date-display.types.js').DateDisplay} DateDisplay
- * @typedef {import('../cc-logs/cc-logs.js').CcLogs} CcLogs
- * @typedef {import('../cc-logs/cc-logs.types.js').Log} Log
- * @typedef {import('../cc-logs/cc-logs.types.js').MetadataFilter} MetadataFilter
- * @typedef {import('../cc-logs/cc-logs.types.js').MetadataRenderer} MetadataRenderer
- * @typedef {import('../../lib/date/date.types.js').Timezone} Timezone
- * @typedef {import('../../lib/events.types.js').EventWithTarget<HTMLInputElement>} HTMLInputElementEvent
- * @typedef {import('../../lib/i18n/i18n.types.js').Translated} Translated
- * @typedef {import('lit').PropertyValues<CcLogsControl>} PropertyValues
- * @typedef {import('lit/directives/ref.js').Ref<CcLogs>} CcLogsRef
+ * @import { LogsMetadataDisplay, LogsControlPalette, LogsOptions } from './cc-logs-control.types.js'
+ * @import { LogMessageFilterMode, Log, MetadataFilter, MetadataRenderer } from '../cc-logs/cc-logs.types.js'
+ * @import { DateDisplay } from '../cc-logs/date-display.types.js'
+ * @import { CcLogs } from '../cc-logs/cc-logs.js'
+ * @import { Timezone } from '../../lib/date/date.types.js'
+ * @import { Translated } from '../../lib/i18n/i18n.types.js'
+ * @import { EventWithTarget } from '../../lib/events.types.js'
+ * @import { PropertyValues } from 'lit'
+ * @import { Ref } from 'lit/directives/ref.js'
  */
 
 /**
@@ -137,7 +132,7 @@ export class CcLogsControl extends LitElement {
     /** @type {boolean} Whether to wrap long lines. */
     this.wrapLines = false;
 
-    /** @type {CcLogsRef} */
+    /** @type {Ref<CcLogs>} */
     this._logsRef = createRef();
 
     /** @type {{[key: string]: MetadataRenderer}} The resolved metadata renderers to use for displaying metadata. */
@@ -179,7 +174,7 @@ export class CcLogsControl extends LitElement {
   }
 
   /**
-   * @param {HTMLInputElementEvent} event
+   * @param {EventWithTarget<HTMLInputElement>} event
    */
   _onStripAnsiChange(event) {
     this.stripAnsi = event.target.checked;
@@ -187,7 +182,7 @@ export class CcLogsControl extends LitElement {
   }
 
   /**
-   * @param {HTMLInputElementEvent} event
+   * @param {EventWithTarget<HTMLInputElement>} event
    */
   _onWrapLinesChange(event) {
     this.wrapLines = event.target.checked;
@@ -211,7 +206,7 @@ export class CcLogsControl extends LitElement {
   }
 
   /**
-   * @param {HTMLInputElementEvent} event
+   * @param {EventWithTarget<HTMLInputElement>} event
    */
   _onMetadataChange(event) {
     const name = event.target.dataset.name;
@@ -295,7 +290,7 @@ export class CcLogsControl extends LitElement {
   /* endregion */
 
   /**
-   * @param {PropertyValues} changedProperties
+   * @param {PropertyValues<CcLogsControl>} changedProperties
    */
   willUpdate(changedProperties) {
     if (changedProperties.has('metadataRenderers') || changedProperties.has('metadataDisplay')) {

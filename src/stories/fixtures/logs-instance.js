@@ -2,12 +2,7 @@ import { randomString } from '../../lib/utils.js';
 import { shiftDateField } from '../../lib/date/date-utils.js';
 
 /**
- * @typedef {import('../../components/cc-logs-instances/cc-logs-instances.types.js').Instance} Instance
- * @typedef {import('../../components/cc-logs-instances/cc-logs-instances.types.js').GhostInstance} GhostInstance
- * @typedef {import('../../components/cc-logs-instances/cc-logs-instances.types.js').InstanceKind} InstanceKind
- * @typedef {import('../../components/cc-logs-instances/cc-logs-instances.types.js').InstanceState} InstanceState
- * @typedef {import('../../components/cc-logs-instances/cc-logs-instances.types.js').Deployment} Deployment
- * @typedef {import('../../components/cc-logs-instances/cc-logs-instances.types.js').DeploymentState} DeploymentState
+ * @import { Instance, GhostInstance, InstanceKind, InstanceState, Deployment, DeploymentState } from '../../components/cc-logs-instances/cc-logs-instances.types.js'
  */
 
 /**

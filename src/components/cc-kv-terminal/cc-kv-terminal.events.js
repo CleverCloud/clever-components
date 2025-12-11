@@ -1,7 +1,7 @@
 import { CcEvent } from '../../lib/events.js';
 
 /**
- * @typedef {import('./cc-kv-terminal.types.js').CcKvTerminalState} CcKvTerminalState
+ * @import { CcKvTerminalState } from './cc-kv-terminal.types.js'
  */
 
 /**

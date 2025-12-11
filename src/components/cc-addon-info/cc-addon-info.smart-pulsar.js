@@ -11,13 +11,11 @@ import './cc-addon-info.js';
 const PROVIDER_ID = 'addon-pulsar';
 
 /**
- * @typedef {import('./cc-addon-info.js').CcAddonInfo} CcAddonInfo
- * @typedef {import('./cc-addon-info.types.js').AddonInfoStateLoading} AddonInfoStateLoading
- * @typedef {import('./cc-addon-info.types.d.ts').PulsarProviderInfo} PulsarProviderInfo
- * @typedef {import('./cc-addon-info.types.js').RawAddon} RawAddon
- * @typedef {import('../../lib/smart/smart-component.types.js').OnContextUpdateArgs<CcAddonInfo>} OnContextUpdateArgs
- * @typedef {import('../../lib/send-to-api.types.js').ApiConfig} ApiConfig
- * @typedef {import('../../lib/send-to-api.types.js').AuthBridgeConfig} AuthBridgeConfig
+ * @import { CcAddonInfo } from './cc-addon-info.js'
+ * @import { AddonInfoStateLoading, RawAddon } from './cc-addon-info.types.js'
+ * @import { PulsarProviderInfo } from './cc-addon-info.types.d.ts'
+ * @import { ApiConfig } from '../../lib/send-to-api.types.js'
+ * @import { OnContextUpdateArgs } from '../../lib/smart/smart-component.types.js'
  */
 
 defineSmartComponent({
@@ -28,7 +26,7 @@ defineSmartComponent({
     addonId: { type: String },
   },
   /**
-   * @param {OnContextUpdateArgs} _
+   * @param {OnContextUpdateArgs<CcAddonInfo>} _
    */
   onContextUpdate({ context, updateComponent, signal }) {
     const { apiConfig, ownerId, addonId } = context;

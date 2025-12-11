@@ -9,18 +9,12 @@ import { KvKeysCtrl } from './kv-keys-ctrl.js';
 import { KvTerminalCtrl } from './kv-terminal-ctrl.js';
 
 /**
- * @typedef {import('./cc-kv-explorer.js').CcKvExplorer} CcKvExplorer
- * @typedef {import('./cc-kv-explorer.types.js').CcKvExplorerState} CcKvExplorerState
- * @typedef {import('./cc-kv-explorer.types.js').CcKvExplorerStateLoaded} CcKvExplorerStateLoaded
- * @typedef {import('./cc-kv-explorer.types.js').CcKvExplorerStateLoadingKeys} CcKvExplorerStateLoadingKeys
- * @typedef {import('./cc-kv-explorer.types.js').CcKvExplorerDetailState} CcKvExplorerDetailState
- * @typedef {import('./cc-kv-explorer.types.js').CcKvExplorerDetailStateAdd} CcKvExplorerDetailStateAdd
- * @typedef {import('./cc-kv-explorer.types.js').CcKvExplorerDetailStateEdit} CcKvExplorerDetailStateEdit
- * @typedef {import('./kv-key-editor-hash-ctrl.js').KvKeyEditorHashCtrl} KvKeyEditorHashCtrl
- * @typedef {import('./kv-key-editor-list-ctrl.js').KvKeyEditorListCtrl} KvKeyEditorListCtrl
- * @typedef {import('./kv-key-editor-set-ctrl.js').KvKeyEditorSetCtrl} KvKeyEditorSetCtrl
- * @typedef {import('./kv-key-editor-string-ctrl.js').KvKeyEditorStringCtrl} KvKeyEditorStringCtrl
- * @typedef {import('../../lib/smart/smart-component.types.js').OnContextUpdateArgs<CcKvExplorer>} OnContextUpdateArgs
+ * @import { CcKvExplorer } from './cc-kv-explorer.js'
+ * @import { KvKeyEditorHashCtrl } from './kv-key-editor-hash-ctrl.js'
+ * @import { KvKeyEditorListCtrl } from './kv-key-editor-list-ctrl.js'
+ * @import { KvKeyEditorSetCtrl } from './kv-key-editor-set-ctrl.js'
+ * @import { KvKeyEditorStringCtrl } from './kv-key-editor-string-ctrl.js'
+ * @import { OnContextUpdateArgs } from '../../lib/smart/smart-component.types.js'
  */
 
 defineSmartComponent({
@@ -29,7 +23,7 @@ defineSmartComponent({
     kvApiConfig: { type: Object },
   },
   /**
-   * @param {OnContextUpdateArgs} args
+   * @param {OnContextUpdateArgs<CcKvExplorer>} args
    */
   async onContextUpdate({ component, context, onEvent, updateComponent, signal }) {
     const { kvApiConfig } = context;

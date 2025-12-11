@@ -13,10 +13,8 @@ import '../cc-notice/cc-notice.js';
 import '../cc-toggle/cc-toggle.js';
 
 /**
- * @typedef {import('./cc-addon-credentials-beta.types.js').AddonCredentialsBetaState} AddonCredentialsBetaState
- * @typedef {import('./cc-addon-credentials-beta.types.js').TabName} TabName
- * @typedef {import('../cc-toggle/cc-toggle.types.js').Choice} Choice
- * @typedef {import('lit').PropertyValues<CcAddonCredentialsBeta>} CcAddonCredentialsBetaPropertyValues
+ * @import { AddonCredentialsBetaState, TabName } from './cc-addon-credentials-beta.types.js'
+ * @import { Choice } from '../cc-toggle/cc-toggle.types.js'
  */
 
 /**

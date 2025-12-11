@@ -13,9 +13,7 @@ const conf = {
 };
 
 /**
- * @typedef {import('./cc-feature-list.types.d.ts').FeatureListStateLoaded} FeatureListStateLoaded
- * @typedef {import('./cc-feature-list.types.d.ts').FeatureListStateLoading} FeatureListStateLoading
- * @typedef {import('./cc-feature-list.types.d.ts').FeatureListStateError} FeatureListStateError
+ * @import { FeatureListStateLoaded, FeatureListStateLoading, FeatureListStateError } from './cc-feature-list.types.d.ts'
  */
 
 export const defaultStory = makeStory(conf, {

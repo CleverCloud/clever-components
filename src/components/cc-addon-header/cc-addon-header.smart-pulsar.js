@@ -7,11 +7,11 @@ import './cc-addon-header.js';
 const PROVIDER_ID = 'addon-pulsar';
 
 /**
- * @typedef {import('./cc-addon-header.js').CcAddonHeader} CcAddonHeader
- * @typedef {import('./cc-addon-header.types.js').RawAddon} RawAddon
- * @typedef {import('../cc-zone/cc-zone.types.js').ZoneStateLoaded} ZoneStateLoaded
- * @typedef {import('../../lib/smart/smart-component.types.js').OnContextUpdateArgs<CcAddonHeader>} OnContextUpdateArgs
- * @typedef {import('../../lib/send-to-api.js').ApiConfig} ApiConfig
+ * @import { CcAddonHeader } from './cc-addon-header.js'
+ * @import { RawAddon } from './cc-addon-header.types.js'
+ * @import { ZoneStateLoaded } from '../cc-zone/cc-zone.types.js'
+ * @import { ApiConfig } from '../../lib/send-to-api.types.js'
+ * @import { OnContextUpdateArgs } from '../../lib/smart/smart-component.types.js'
  */
 
 defineSmartComponent({
@@ -23,7 +23,7 @@ defineSmartComponent({
     productStatus: { type: String, optional: true },
   },
 
-  /** @param {OnContextUpdateArgs} args */
+  /** @param {OnContextUpdateArgs<CcAddonHeader>} args */
   onContextUpdate({ context, updateComponent, signal }) {
     const { apiConfig, ownerId, addonId, productStatus } = context;
     const api = new Api({ apiConfig, ownerId, addonId, signal });

@@ -23,12 +23,9 @@ const conf = {
 };
 
 /**
- * @typedef {import('./cc-header-app.js').CcHeaderApp} CcHeaderApp
- * @typedef {import('./cc-header-app.types.js').HeaderAppStateLoaded} HeaderAppStateLoaded
- * @typedef {import('./cc-header-app.types.js').HeaderAppStateLoading} HeaderAppStateLoading
- * @typedef {import('./cc-header-app.types.js').HeaderAppStateError} HeaderAppStateError
- * @typedef {import('../common.types.js').App} App
- * @typedef {import('../common.types.js').Zone} Zone
+ * @import { CcHeaderApp } from './cc-header-app.js'
+ * @import { HeaderAppStateLoaded, HeaderAppStateLoading, HeaderAppStateError } from './cc-header-app.types.js'
+ * @import { App, Zone } from '../common.types.js'
  */
 
 /**

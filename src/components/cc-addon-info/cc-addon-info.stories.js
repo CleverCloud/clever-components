@@ -27,10 +27,8 @@ export default {
 };
 
 /**
- * @typedef {import('./cc-addon-info.js').CcAddonInfo} CcAddonInfo
- * @typedef {import('./cc-addon-info.types.js').AddonInfoStateLoaded} AddonInfoStateLoaded
- * @typedef {import('./cc-addon-info.types.js').AddonInfoStateLoading} AddonInfoStateLoading
- * @typedef {import('./cc-addon-info.types.js').AddonInfoStateError} AddonInfoStateError
+ * @import { CcAddonInfo } from './cc-addon-info.js'
+ * @import { AddonInfoStateLoaded, AddonInfoStateLoading, AddonInfoStateError } from './cc-addon-info.types.js'
  */
 
 const conf = {

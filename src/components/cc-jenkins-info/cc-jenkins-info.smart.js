@@ -6,10 +6,10 @@ import '../cc-smart-container/cc-smart-container.js';
 import './cc-jenkins-info.js';
 
 /**
- * @typedef {import('./cc-jenkins-info.js').CcJenkinsInfo} CcJenkinsInfo
- * @typedef {import('./cc-jenkins-info.types.js').JenkinsInfoStateLoaded} JenkinsInfoStateLoaded
- * @typedef {import('../../lib/send-to-api.js').ApiConfig} ApiConfig
- * @typedef {import('../../lib/smart/smart-component.types.js').OnContextUpdateArgs<CcJenkinsInfo>} OnContextUpdateArgs
+ * @import { CcJenkinsInfo } from './cc-jenkins-info.js'
+ * @import { JenkinsInfoStateLoaded } from './cc-jenkins-info.types.js'
+ * @import { ApiConfig } from '../../lib/send-to-api.types.js'
+ * @import { OnContextUpdateArgs } from '../../lib/smart/smart-component.types.js'
  */
 
 defineSmartComponent({
@@ -19,7 +19,7 @@ defineSmartComponent({
     addonId: { type: String },
   },
   /**
-   * @param {OnContextUpdateArgs} args
+   * @param {OnContextUpdateArgs<CcJenkinsInfo>} args
    */
   onContextUpdate({ context, updateComponent, signal }) {
     const { apiConfig, addonId } = context;

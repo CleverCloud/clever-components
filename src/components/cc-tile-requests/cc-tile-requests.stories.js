@@ -22,11 +22,8 @@ const conf = {
 };
 
 /**
- * @typedef {import('./cc-tile-requests.js').CcTileRequests} CcTileRequests
- * @typedef {import('./cc-tile-requests.types.js').RequestsData} RequestsData
- * @typedef {import('./cc-tile-requests.types.js').TileRequestsStateLoaded} TileRequestsStateLoaded
- * @typedef {import('./cc-tile-requests.types.js').TileRequestsStateError} TileRequestsStateError
- * @typedef {import('./cc-tile-requests.types.js').TileRequestsStateLoading} TileRequestsStateLoading
+ * @import { CcTileRequests } from './cc-tile-requests.js'
+ * @import { RequestsData, TileRequestsStateLoaded, TileRequestsStateError, TileRequestsStateLoading } from './cc-tile-requests.types.js'
  */
 
 const REQUESTS_COUNTS_BIG = [

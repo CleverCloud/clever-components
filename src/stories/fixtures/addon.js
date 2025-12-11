@@ -2,7 +2,7 @@ import { getAssetUrl } from '../../lib/assets-url.js';
 import { ZONE } from "./zones.js";
 
 /**
- * @typedef {import('../../components/cc-addon-header/cc-addon-header.types.js').Addon} Addon
+ * @import { Addon } from '../../components/cc-addon-header/cc-addon-header.types.js'
  */
 
 /** @type {Addon} */

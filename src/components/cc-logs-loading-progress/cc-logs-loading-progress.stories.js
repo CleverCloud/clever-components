@@ -8,7 +8,7 @@ export default {
 };
 
 /**
- * @typedef {import('./cc-logs-loading-progress.js').CcLogsLoadingProgress} CcLogsLoadingProgress
+ * @import { CcLogsLoadingProgress } from './cc-logs-loading-progress.js'
  */
 
 const conf = {

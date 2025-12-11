@@ -14,13 +14,11 @@ const DEFAULT_ERROR_MESSAGES = {
 };
 
 /**
- * @typedef {import('./cc-picker.types.js').PickerOption} PickerOption
- * @typedef {import('../cc-picker-option/cc-picker-option.types.js').PickerOptionSelectionStyle} PickerOptionSelectionStyle
- * @typedef {import('../../lib/events.types.js').GenericEventWithTarget<InputEvent, HTMLInputElement>} HTMLInputElementEvent
- * @typedef {import('../../lib/form/validation.types.js').Validator} Validator
- * @typedef {import('../../lib/form/validation.types.js').ErrorMessageMap} ErrorMessageMap
- * @typedef {import('lit/directives/ref.js').Ref<HTMLElement>} HTMLElementRef
- * @typedef {import('lit/directives/ref.js').Ref<HTMLSelectElement>} HTMLSelectElementRef
+ * @import { PickerOption } from './cc-picker.types.js'
+ * @import { PickerOptionSelectionStyle } from '../cc-picker-option/cc-picker-option.types.js'
+ * @import { Validator, ErrorMessageMap } from '../../lib/form/validation.types.js'
+ * @import { GenericEventWithTarget } from '../../lib/events.types.js'
+ * @import { Ref } from 'lit/directives/ref.js'
  */
 
 /**
@@ -94,10 +92,10 @@ export class CcPicker extends CcFormControlElement {
     /** @type {string|null} Current selected value */
     this.value = null;
 
-    /** @type {HTMLElementRef} */
+    /** @type {Ref<HTMLElement>} */
     this._errorRef = createRef();
 
-    /** @type {HTMLSelectElementRef} */
+    /** @type {Ref<HTMLSelectElement>} */
     this._pickerRef = createRef();
   }
 
@@ -153,7 +151,7 @@ export class CcPicker extends CcFormControlElement {
   }
 
   /**
-   * @param {HTMLInputElementEvent} e
+   * @param {GenericEventWithTarget<InputEvent, HTMLInputElement>} e
    * @private
    */
   _onTileSelect(e) {

@@ -8,8 +8,8 @@ export default {
 };
 
 /**
- * @typedef {import('./cc-kv-set-explorer.js').CcKvSetExplorer} CcKvSetExplorer
- * @typedef {import('../cc-input-text/cc-input-text.js').CcInputText} CcInputText
+ * @import { CcKvSetExplorer } from './cc-kv-set-explorer.js'
+ * @import { CcInputText } from '../cc-input-text/cc-input-text.js'
  */
 
 const conf = {

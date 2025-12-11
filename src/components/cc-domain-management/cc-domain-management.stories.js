@@ -9,17 +9,8 @@ export default {
 };
 
 /**
- * @typedef {import('./cc-domain-management.types.js').DomainStateDeleting} DomainStateDeleting
- * @typedef {import('./cc-domain-management.types.js').DomainStateMarkingPrimary} DomainStateMarkingPrimary
- * @typedef {import('./cc-domain-management.types.js').DomainManagementDnsInfoStateLoaded} DomainManagementDnsInfoStateLoaded
- * @typedef {import('./cc-domain-management.types.js').DomainManagementDnsInfoStateLoading} DomainManagementDnsInfoStateLoading
- * @typedef {import('./cc-domain-management.types.js').DomainManagementDnsInfoStateError} DomainManagementDnsInfoStateError
- * @typedef {import('./cc-domain-management.types.js').DomainManagementListStateLoaded} DomainManagementListStateLoaded
- * @typedef {import('./cc-domain-management.types.js').DomainManagementListStateLoading} DomainManagementListStateLoading
- * @typedef {import('./cc-domain-management.types.js').DomainManagementListStateError} DomainManagementListStateError
- * @typedef {import('./cc-domain-management.types.js').DomainManagementFormStateIdle} DomainManagementFormStateIdle
- * @typedef {import('./cc-domain-management.types.js').DomainManagementFormStateAdding} DomainManagementFormStateAdding
- * @typedef {import('./cc-domain-management.js').CcDomainManagement} CcDomainManagement
+ * @import { DomainStateDeleting, DomainStateMarkingPrimary, DomainManagementDnsInfoStateLoaded, DomainManagementDnsInfoStateLoading, DomainManagementDnsInfoStateError, DomainManagementListStateLoaded, DomainManagementListStateLoading, DomainManagementListStateError, DomainManagementFormStateIdle, DomainManagementFormStateAdding } from './cc-domain-management.types.js'
+ * @import { CcDomainManagement } from './cc-domain-management.js'
  */
 
 const conf = {

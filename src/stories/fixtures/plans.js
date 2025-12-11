@@ -5,7 +5,7 @@ import {
 } from '../../assets/cc-remix.icons.js';
 
 /**
-* @typedef {import('../../../src/components/cc-plan-picker/cc-plan-picker.types.js').PlanItem} PlanItem
+ * @import { PlanItem } from '../../../src/components/cc-plan-picker/cc-plan-picker.types.js'
 */
 
 /** @type {PlanItem[]}  **/

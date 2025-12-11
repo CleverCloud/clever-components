@@ -13,12 +13,9 @@ import { getDefaultLoadBalancersDnsInfo } from '@clevercloud/client/esm/api/v4/l
 import { CcDomainPrimaryChangeEvent } from './cc-domain-management.events.js';
 
 /**
- * @typedef {import('./cc-domain-management.types.js').DomainManagementListStateLoaded} DomainManagementListStateLoaded
- * @typedef {import('./cc-domain-management.types.js').DomainStateIdle} DomainStateIdle
- * @typedef {import('./cc-domain-management.types.js').DomainState} DomainState
- * @typedef {import('./cc-domain-management.types.js').DomainInfo} DomainInfo
- * @typedef {import('../../lib/send-to-api.js').ApiConfig} ApiConfig
- * @typedef {import('../../lib/smart/smart-component.types.js').OnContextUpdateArgs<CcDomainManagement>} OnContextUpdateArgs
+ * @import { DomainManagementListStateLoaded, DomainStateIdle, DomainState, DomainInfo } from './cc-domain-management.types.js'
+ * @import { ApiConfig } from '../../lib/send-to-api.types.js'
+ * @import { OnContextUpdateArgs } from '../../lib/smart/smart-component.types.js'
  * @typedef {{ fqdn: string }} RawDomainFromApi
  * @typedef {Omit<DomainInfo, 'isPrimary'>} DomainInfoWithoutIsPrimary
  */
@@ -31,7 +28,7 @@ defineSmartComponent({
     ownerId: { type: String },
   },
   /**
-   * @param {OnContextUpdateArgs} args
+   * @param {OnContextUpdateArgs<CcDomainManagement>} args
    */
   onContextUpdate({ component, context, onEvent, updateComponent, signal }) {
     const { apiConfig, appId, ownerId } = context;

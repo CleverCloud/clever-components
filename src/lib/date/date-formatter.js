@@ -1,9 +1,9 @@
+// FIXME: We're using `@typedef` instead of `@import` here due to a false positive from TS
+// See: https://github.com/microsoft/TypeScript/issues/60908/
 /**
  * @typedef {import('./date.types.js').DateFormat} DateFormat
  * @typedef {import('./date.types.js').Timezone} Timezone
  * @typedef {import('./date.types.js').DateFormattedParts} DateFormattedParts
- * @typedef {import('./date.types.js').DateFormattedPart} DateFormattedPart
- * @typedef {import('./date.types.js').DatePart} DatePart
  * @typedef {import('./date.types.js').DateParts} DateParts
  */
 

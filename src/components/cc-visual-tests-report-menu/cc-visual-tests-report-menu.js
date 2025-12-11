@@ -12,11 +12,10 @@ import { enhanceStoryName } from '../../stories/lib/story-names.js';
 import '../cc-icon/cc-icon.js';
 
 /**
- * @typedef {import('../cc-visual-tests-report/visual-tests-report.types.js').VisualTestResult} VisualTestResult
- * @typedef {import('./cc-visual-tests-report-menu.types.js').VisualTestsReportMenuEntries} VisualTestsReportMenuEntries
- * @typedef {import('../../lib/events.types.js').EventWithTarget<HTMLAnchorElement>} HTMLAnchorEvent
- * @typedef {import('lit').PropertyValues<CcVisualTestsReportMenu>} CcVisualTestsReportMenuPropertyValues
- * @typedef {import('lit/directives/ref.js').Ref<HTMLUListElement>} HTMLUListElementRef
+ * @import { VisualTestResult } from '../cc-visual-tests-report/visual-tests-report.types.js'
+ * @import { VisualTestsReportMenuEntries } from './cc-visual-tests-report-menu.types.js'
+ * @import { PropertyValues } from 'lit'
+ * @import { Ref } from 'lit/directives/ref.js'
  */
 
 /**
@@ -57,7 +56,7 @@ export class CcVisualTestsReportMenu extends LitElement {
     /** @type {Array<VisualTestResult['id']>} */
     this._testsResultsIds = [];
 
-    /** @type {HTMLUListElementRef} */
+    /** @type {Ref<HTMLUListElement>} */
     this._componentListRef = createRef();
   }
 
@@ -139,7 +138,7 @@ export class CcVisualTestsReportMenu extends LitElement {
     this._activeMenuEntry = { ...this._activeMenuEntry, story: isAlreadyActive ? null : kebabCasedStoryName };
   }
 
-  /** @param {CcVisualTestsReportMenuPropertyValues} changedProperties */
+  /** @param {PropertyValues<CcVisualTestsReportMenu>} changedProperties */
   willUpdate(changedProperties) {
     if (changedProperties.has('testsResults') && this.testsResults.length > 0) {
       const sortedResults = this._sortTestResults(this.testsResults);
@@ -161,7 +160,7 @@ export class CcVisualTestsReportMenu extends LitElement {
     }
   }
 
-  /** @param {CcVisualTestsReportMenuPropertyValues} changedProperties */
+  /** @param {PropertyValues<CcVisualTestsReportMenu>} changedProperties */
   updated(changedProperties) {
     if (changedProperties.has('activeTestResultId') && this.activeTestResultId != null) {
       /**

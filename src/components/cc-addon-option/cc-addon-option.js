@@ -6,7 +6,7 @@ import '../cc-toggle/cc-toggle.js';
 import { CcAddonOptionChangeEvent } from './cc-addon-option.events.js';
 
 /**
- * @typedef {import('../common.types.js').IconModel} IconModel
+ * @import { IconModel } from '../common.types.js'
  */
 
 /**

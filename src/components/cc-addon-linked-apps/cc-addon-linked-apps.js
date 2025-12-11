@@ -16,12 +16,10 @@ const SKELETON_APPLICATIONS = [
 ];
 
 /**
- * @typedef {import('./cc-addon-linked-apps.types.js').AddonLinkedAppsState} AddonLinkedAppsState
- * @typedef {import('./cc-addon-linked-apps.types.js').LinkedApplication} LinkedApplication
- * @typedef {import('../cc-zone/cc-zone.types.js').ZoneStateLoaded} ZoneStateLoaded
- * @typedef {import('../cc-zone/cc-zone.types.js').ZoneStateLoading} ZoneStateLoading
- * @typedef {import('../common.types.js').Zone} Zone
- * @typedef {import('lit').TemplateResult<1>} TemplateResult
+ * @import { AddonLinkedAppsState, LinkedApplication } from './cc-addon-linked-apps.types.js'
+ * @import { ZoneStateLoaded, ZoneStateLoading } from '../cc-zone/cc-zone.types.js'
+ * @import { Zone } from '../common.types.js'
+ * @import { TemplateResult } from 'lit'
  */
 
 /**

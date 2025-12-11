@@ -1,9 +1,8 @@
 import { CcEvent } from '../events.js';
 
 /**
- * @typedef {import('./form.types.js').FormValidity} FormValidity
- * @typedef {import('./form.types.js').FormDataMap} FormSubmittedData
- * @typedef {import('./validation.types.js').ErrorMessage} ErrorMessage
+ * @import { FormValidity, FormDataMap as FormSubmittedData } from './form.types.js'
+ * @import { ErrorMessage } from './validation.types.js'
  */
 
 /**

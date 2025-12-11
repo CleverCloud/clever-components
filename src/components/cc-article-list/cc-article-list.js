@@ -6,7 +6,7 @@ import '../cc-notice/cc-notice.js';
 const ARTICLE_SKELETON_NUMBER = 9;
 
 /**
- * @typedef {import('./cc-article-list.types.js').ArticleListState} ArticleListState
+ * @import { ArticleListState } from './cc-article-list.types.js'
  */
 
 /**

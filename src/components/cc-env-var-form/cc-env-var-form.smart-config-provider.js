@@ -10,14 +10,11 @@ import './cc-env-var-form.js';
 import { getConfigProviderEnv, updateConfigProviderEnv } from '@clevercloud/client/esm/api/v4/addon.js';
 
 /**
- * @typedef {import('./cc-env-var-form.js').CcEnvVarForm} CcEnvVarForm
- * @typedef {import('./cc-env-var-form.types.js').EnvVarFormState} EnvVarFormState
- * @typedef {import('./cc-env-var-form.types.js').EnvVarFormStateLoaded} EnvVarFormStateLoaded
- * @typedef {import('./cc-env-var-form.types.js').EnvVarFormStateSaving} EnvVarFormStateSaving
- * @typedef {import('../common.types.js').EnvVar} EnvVar
- * @typedef {import('../common.types.js').Addon} Addon
- * @typedef {import('../../lib/send-to-api.js').ApiConfig} ApiConfig
- * @typedef {import('../../lib/smart/smart-component.types.js').OnContextUpdateArgs<CcEnvVarForm>} OnContextUpdateArgs
+ * @import { CcEnvVarForm } from './cc-env-var-form.js'
+ * @import { EnvVarFormState, EnvVarFormStateLoaded, EnvVarFormStateSaving } from './cc-env-var-form.types.js'
+ * @import { EnvVar, Addon } from '../common.types.js'
+ * @import { ApiConfig } from '../../lib/send-to-api.types.js'
+ * @import { OnContextUpdateArgs } from '../../lib/smart/smart-component.types.js'
  */
 
 defineSmartComponent({
@@ -28,7 +25,7 @@ defineSmartComponent({
     addonId: { type: String },
   },
   /**
-   * @param {OnContextUpdateArgs} args
+   * @param {OnContextUpdateArgs<CcEnvVarForm>} args
    */
   onContextUpdate({ context, onEvent, updateComponent, signal }) {
     const { apiConfig, ownerId, addonId } = context;

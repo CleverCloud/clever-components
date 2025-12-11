@@ -1,9 +1,7 @@
 import { CcEvent } from '../../lib/events.js';
 
 /**
- * @typedef {import('./cc-kv-list-explorer.types.js').CcKvListExplorerState} CcKvListExplorerState
- * @typedef {import('./cc-kv-list-explorer.types.js').CcKvListElement} CcKvListElement
- * @typedef {import('./cc-kv-list-explorer.types.js').CcKvListElementAddDetail} CcKvListElementAddDetail
+ * @import { CcKvListExplorerState, CcKvListElement, CcKvListElementAddDetail } from './cc-kv-list-explorer.types.js'
  */
 
 /**

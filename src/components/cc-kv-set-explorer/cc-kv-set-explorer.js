@@ -35,14 +35,12 @@ const SKELETON_ELEMENTS = Array(5)
 const LOAD_MORE_THRESHOLD = 5;
 
 /**
- * @typedef {import('./cc-kv-set-explorer.types.js').CcKvSetExplorerState} CcKvSetExplorerState
- * @typedef {import('./cc-kv-set-explorer.types.js').CcKvSetElementState} CcKvSetElementState
- * @typedef {import('../../lib/events.types.js').EventWithTarget} EventWithTarget
- * @typedef {import('lit').TemplateResult<1>} TemplateResult
- * @typedef {import('lit/directives/ref.js').Ref<HTMLFormElement>} HTMLFormElementRef
- * @typedef {import('lit/directives/ref.js').Ref<Virtualizer>} VirtualizerRef
- * @typedef {import('@lit-labs/virtualizer/events.js').VisibilityChangedEvent} VisibilityChangedEvent
- * @typedef {import('@lit-labs/virtualizer/LitVirtualizer.js').LitVirtualizer} Virtualizer
+ * @import { CcKvSetExplorerState, CcKvSetElementState } from './cc-kv-set-explorer.types.js'
+ * @import { EventWithTarget } from '../../lib/events.types.js'
+ * @import { VisibilityChangedEvent } from '@lit-labs/virtualizer/events.js'
+ * @import { LitVirtualizer as Virtualizer } from '@lit-labs/virtualizer/LitVirtualizer.js'
+ * @import { TemplateResult } from 'lit'
+ * @import { Ref } from 'lit/directives/ref.js'
  */
 
 /**
@@ -76,10 +74,10 @@ export class CcKvSetExplorer extends LitElement {
     /** @type {CcKvSetExplorerState} - The state of the component */
     this.state = { type: 'loading' };
 
-    /** @type {HTMLFormElementRef} */
+    /** @type {Ref<HTMLFormElement>} */
     this._addFormRef = createRef();
 
-    /** @type {VirtualizerRef} */
+    /** @type {Ref<Virtualizer>} */
     this._elementsRef = createRef();
 
     new LostFocusController(

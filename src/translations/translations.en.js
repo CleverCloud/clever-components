@@ -18,8 +18,7 @@ import { sanitize } from '../lib/i18n/i18n-sanitize.js';
 import { preparePlural } from '../lib/i18n/i18n-string.js';
 
 /**
- * @typedef {import('../components/common.types.js').Flavor} Flavor
- * @typedef {import('../components/common.types.js').FlavorWithMonthlyCost} FlavorWithMonthlyCost
+ * @import { Flavor, FlavorWithMonthlyCost } from '../components/common.types.js'
  */
 
 export const lang = 'en';

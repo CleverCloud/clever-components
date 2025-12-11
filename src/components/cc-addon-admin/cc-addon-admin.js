@@ -13,15 +13,10 @@ import '../cc-notice/cc-notice.js';
 import { CcAddonDeleteEvent, CcAddonNameChangeEvent, CcAddonTagsChangeEvent } from './cc-addon-admin.events.js';
 
 /**
- * @typedef {import('./cc-addon-admin.types.js').AddonAdminState} AddonAdminState
- * @typedef {import('./cc-addon-admin.types.js').AddonAdminStateLoaded} AddonAdminStateLoaded
- * @typedef {import('./cc-addon-admin.types.js').AddonAdminStateLoading} AddonAdminStateLoading
- * @typedef {import('./cc-addon-admin.types.js').AddonAdminStateSaving} AddonAdminStateSaving
- * @typedef {import('../cc-input-text/cc-input-text.events.js').CcTagsChangeEvent} CcTagsChangeEvent
- * @typedef {import('lit').PropertyValues<CcAddonAdmin>} CcAddonAdminPropertyValues
- * @typedef {import('lit').TemplateResult<1>} TemplateResult
- * @typedef {import('lit/directives/ref.js').Ref<HTMLDialogElement>} HTMLDialogElementRef
- * @typedef {import('lit/directives/ref.js').Ref<HTMLFormElement>} HTMLFormElementRef
+ * @import { AddonAdminState, AddonAdminStateLoaded, AddonAdminStateLoading, AddonAdminStateSaving } from './cc-addon-admin.types.js'
+ * @import { CcTagsChangeEvent } from '../cc-input-text/cc-input-text.events.js'
+ * @import { TemplateResult, PropertyValues } from 'lit'
+ * @import { Ref } from 'lit/directives/ref.js'
  */
 
 /**
@@ -58,10 +53,10 @@ export class CcAddonAdmin extends LitElement {
     /** @type {string[]|null} Sets the value of the `tags` input field */
     this._tags = null;
 
-    /** @type {HTMLDialogElementRef} */
+    /** @type {Ref<HTMLDialogElement>} */
     this._confirmDeletionDialogRef = createRef();
 
-    /** @type {HTMLFormElementRef} */
+    /** @type {Ref<HTMLFormElement>} */
     this._confirmDeletionFormRef = createRef();
 
     this._addonNameConfirmationValidator = {
@@ -121,7 +116,7 @@ export class CcAddonAdmin extends LitElement {
   }
 
   /**
-   * @param {CcAddonAdminPropertyValues} changedProperties
+   * @param {PropertyValues<CcAddonAdmin>} changedProperties
    */
   willUpdate(changedProperties) {
     if (changedProperties.has('state') && 'name' in this.state) {
@@ -133,7 +128,7 @@ export class CcAddonAdmin extends LitElement {
     }
   }
 
-  /** @param {CcAddonAdminPropertyValues} changedProperties */
+  /** @param {PropertyValues<CcAddonAdmin>} changedProperties */
   updated(changedProperties) {
     // when the add-on has been deleted, we need to close the dialog & reset the form
     const previousState = changedProperties.get('state');

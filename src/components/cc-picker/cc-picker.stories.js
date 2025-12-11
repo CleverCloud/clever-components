@@ -2,7 +2,7 @@ import { makeStory } from '../../stories/lib/make-story.js';
 import './cc-picker.js';
 
 /**
- * @typedef {import('./cc-picker.js').CcPicker} CcPicker
+ * @import { CcPicker } from './cc-picker.js'
  */
 
 const DEFAULT_ITEM = {

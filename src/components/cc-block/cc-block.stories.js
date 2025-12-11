@@ -13,7 +13,7 @@ export default {
 };
 
 /**
- * @typedef {import('./cc-block.js').CcBlock} CcBlock
+ * @import { CcBlock } from './cc-block.js'
  */
 
 const htmlExample = `

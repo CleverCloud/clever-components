@@ -11,13 +11,10 @@ import '../cc-smart-container/cc-smart-container.js';
 import './cc-email-list.js';
 
 /**
- * @typedef {import('./cc-email-list.js').CcEmailList} CcEmailList
- * @typedef {import('./cc-email-list.types.js').EmailListStateLoaded} EmailListStateLoaded
- * @typedef {import('./cc-email-list.types.js').SecondaryAddressState} SecondaryAddressState
- * @typedef {import('./cc-email-list.types.js').AddEmailFormState} AddEmailFormState
- * @typedef {import('./cc-email-list.types.js').AddEmailError} AddEmailError
- * @typedef {import('../../lib/send-to-api.types.js').ApiConfig} ApiConfig
- * @typedef {import('../../lib/smart/smart-component.types.js').OnContextUpdateArgs<CcEmailList>} OnContextUpdateArgs
+ * @import { CcEmailList } from './cc-email-list.js'
+ * @import { EmailListStateLoaded, SecondaryAddressState, AddEmailFormState, AddEmailError } from './cc-email-list.types.js'
+ * @import { ApiConfig } from '../../lib/send-to-api.types.js'
+ * @import { OnContextUpdateArgs } from '../../lib/smart/smart-component.types.js'
  */
 
 defineSmartComponent({
@@ -26,7 +23,7 @@ defineSmartComponent({
     apiConfig: { type: Object },
   },
   /**
-   * @param {OnContextUpdateArgs} args
+   * @param {OnContextUpdateArgs<CcEmailList>} args
    */
   onContextUpdate({ component, context, onEvent, updateComponent, signal }) {
     updateComponent('emailListState', { type: 'loading' });

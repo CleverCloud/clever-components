@@ -4,7 +4,7 @@ import { i18n } from '../../translations/translation.js';
 import '../cc-addon-option-form/cc-addon-option-form.js';
 
 /**
- * @typedef {import('../common.types.js').EncryptionAddonOption} EncryptionAddonOption
+ * @import { EncryptionAddonOption } from '../common.types.js'
  */
 
 /**

@@ -12,11 +12,10 @@ import '../cc-smart-container/cc-smart-container.js';
 import './cc-tile-status-codes.js';
 
 /**
- * @typedef {import('./cc-tile-status-codes.js').CcTileStatusCodes} CcTileStatusCodes
- * @typedef {import('./cc-tile-status-codes.types.js').StatusCodesData} StatusCodesData
- * @typedef {import('../../lib/send-to-api.types.js').ApiConfig} ApiConfig
- * @typedef {import('../../lib/send-to-api.types.js').Warp10ApiConfig} Warp10ApiConfig
- * @typedef {import('../../lib/smart/smart-component.types.js').OnContextUpdateArgs<CcTileStatusCodes>} OnContextUpdateArgs
+ * @import { CcTileStatusCodes } from './cc-tile-status-codes.js'
+ * @import { StatusCodesData } from './cc-tile-status-codes.types.js'
+ * @import { ApiConfig, Warp10ApiConfig } from '../../lib/send-to-api.types.js'
+ * @import { OnContextUpdateArgs } from '../../lib/smart/smart-component.types.js'
  */
 
 defineSmartComponent({
@@ -27,7 +26,7 @@ defineSmartComponent({
     appId: { type: String, optional: true },
   },
   /**
-   * @param {OnContextUpdateArgs} args
+   * @param {OnContextUpdateArgs<CcTileStatusCodes>} args
    */
   onContextUpdate({ context, updateComponent, signal }) {
     const { apiConfig, ownerId, appId } = context;

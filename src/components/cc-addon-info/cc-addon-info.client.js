@@ -8,12 +8,9 @@ import { getDevHubUrl } from '../../lib/dev-hub-url.js';
 import { sendToApi } from '../../lib/send-to-api.js';
 
 /**
- * @typedef {import('./cc-addon-info.types.js').AddonInfoStateLoaded} AddonInfoStateLoaded
- * @typedef {import('./cc-addon-info.types.js').RawAddon} RawAddon
- * @typedef {import('../../operators.types.js').OperatorVersionInfo} OperatorVersionInfo
- * @typedef {import('../../operators.types.js').RawOperator} RawOperator
- * @typedef {import('../../lib/send-to-api.types.js').ApiConfig} ApiConfig
- * @typedef {import('../../lib/send-to-api.types.js').AuthBridgeConfig} AuthBridgeConfig
+ * @import { AddonInfoStateLoaded, RawAddon } from './cc-addon-info.types.js'
+ * @import { OperatorVersionInfo, RawOperator } from '../../operators.types.js'
+ * @import { ApiConfig } from '../../lib/send-to-api.types.js'
  */
 
 export class CcAddonInfoClient {

@@ -21,9 +21,8 @@ const REDIS_LOGO_URL = getAssetUrl('/logos/redis.svg');
 const MATOMO_DOCUMENTATION = getDocUrl('/deploy/addon/matomo');
 
 /**
- * @typedef {import('./cc-matomo-info.types.js').MatomoInfoState} MatomoInfoState
- * @typedef {import('../common.types.js').IconModel} IconModel
- * @typedef {import('lit').TemplateResult<1>} TemplateResult
+ * @import { MatomoInfoState } from './cc-matomo-info.types.js'
+ * @import { TemplateResult } from 'lit'
  */
 
 /**

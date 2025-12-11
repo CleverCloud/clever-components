@@ -4,7 +4,7 @@ import '../cc-clipboard/cc-clipboard.js';
 import '../cc-icon/cc-icon.js';
 
 /**
- * @typedef {import('../../lib/events.types.js').EventWithTarget<HTMLSlotElement>} SlotChangeEvent
+ * @import { EventWithTarget } from '../../lib/events.types.js'
  */
 
 /**
@@ -31,7 +31,7 @@ export class CcCode extends LitElement {
   }
 
   /**
-   * @param {SlotChangeEvent} e
+   * @param {EventWithTarget<HTMLSlotElement>} e
    * @private
    */
   _onSlotchange(e) {

@@ -4,10 +4,9 @@ import '../cc-smart-container/cc-smart-container.js';
 import './cc-invoice-list.js';
 
 /**
- * @typedef {import('./cc-invoice-list.js').CcInvoiceList} CcInvoiceList
- * @typedef {import('../common.types.js').Invoice} Invoice
- * @typedef {import('../../lib/send-to-api.types.js').ApiConfig} ApiConfig
- * @typedef {import('../../lib/smart/smart-component.types.js').OnContextUpdateArgs<CcInvoiceList>} OnContextUpdateArgs
+ * @import { CcInvoiceList } from './cc-invoice-list.js'
+ * @import { Invoice } from '../common.types.js'
+ * @import { OnContextUpdateArgs } from '../../lib/smart/smart-component.types.js'
  */
 
 defineSmartComponent({
@@ -17,7 +16,7 @@ defineSmartComponent({
     ownerId: { type: String },
   },
   /**
-   * @param {OnContextUpdateArgs} args
+   * @param {OnContextUpdateArgs<CcInvoiceList>} args
    */
   onContextUpdate({ context, updateComponent, signal }) {
     updateComponent('state', { type: 'loading' });

@@ -52,16 +52,12 @@ const DEFAULT_CURRENCY = 'EUR';
 const DEFAULT_TEMPORALITY = { type: '30-days', digits: 2 };
 
 /**
- * @typedef {import('./cc-pricing-estimation.types.js').PricingEstimationState} PricingStateEstimation
- * @typedef {import('./cc-pricing-estimation.types.js').RuntimePlanWithQuantity} RuntimePlanWithQuantity
- * @typedef {import('./cc-pricing-estimation.types.js').CountablePlanWithQuantity} CountablePlanWithQuantity
- * @typedef {import('../common.types.js').PricingSection} PricingSection
- * @typedef {import('../common.types.js').FormattedFeature} FormattedFeature
- * @typedef {import('../common.types.js').Temporality} Temporality
- * @typedef {import('@shoelace-style/shoelace').SlSelect} SlSelect
- * @typedef {import('../../lib/events.types.js').EventWithTarget<SlSelect>} SlSelectEvent
- * @typedef {import('lit/directives/ref.js').Ref<HTMLParagraphElement>} HTMLParagraphElementRef
- * @typedef {import('lit').PropertyValues<CcPricingEstimation>} CcPricingEstimationPropertyValues
+ * @import { PricingEstimationState as PricingStateEstimation, RuntimePlanWithQuantity, CountablePlanWithQuantity } from './cc-pricing-estimation.types.js'
+ * @import { PricingSection, FormattedFeature, Temporality } from '../common.types.js'
+ * @import { SlSelect } from '@shoelace-style/shoelace'
+ * @import { EventWithTarget } from '../../lib/events.types.js'
+ * @import { Ref } from 'lit/directives/ref.js'
+ * @import { PropertyValues } from 'lit'
  */
 
 /**
@@ -134,7 +130,7 @@ export class CcPricingEstimation extends LitElement {
     /** @type {Array<RuntimePlanWithQuantity|CountablePlanWithQuantity>} Sets the list of selected plans with their quantity. */
     this._selectedPlansWithPrices = [];
 
-    /** @type {HTMLParagraphElementRef} */
+    /** @type {Ref<HTMLParagraphElement>} */
     this._totalRef = createRef();
 
     new LostFocusController(this, '.plan', ({ suggestedElement }) => {
@@ -336,7 +332,7 @@ export class CcPricingEstimation extends LitElement {
   /**
    * Dispatches a `cc-pricing-currency-change` event with the currency as payload.
    *
-   * @param {SlSelectEvent} e - the event that called this method
+   * @param {EventWithTarget<SlSelect>} e - the event that called this method
    */
   _onCurrencyChange(e) {
     this.dispatchEvent(new CcPricingCurrencyChangeEvent(/** @type {string} */ (e.target.value)));
@@ -380,7 +376,7 @@ export class CcPricingEstimation extends LitElement {
   /**
    * Dispatches a `cc-pricing-temporality-change` event with the selected temporality as its payload.
    *
-   * @param {SlSelectEvent} e - the event that called this method
+   * @param {EventWithTarget<SlSelect>} e - the event that called this method
    */
   _onTemporalityChange(e) {
     const temporality = this.temporalities.find((t) => t.type === e.target.value);
@@ -424,7 +420,7 @@ export class CcPricingEstimation extends LitElement {
     });
   }
 
-  /** @param {CcPricingEstimationPropertyValues} changedProperties */
+  /** @param {PropertyValues<CcPricingEstimation>} changedProperties */
   willUpdate(changedProperties) {
     // This is not done within the `render` function because we only want to reset this value in specific cases.
     // If `isToggleEnabled` is set to true, we need to make sure the content is hidden by default

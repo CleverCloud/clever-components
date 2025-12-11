@@ -14,7 +14,7 @@ import '../cc-icon/cc-icon.js';
 import { CcToastDismissEvent } from './cc-toast.events.js';
 
 /**
- * @typedef {import('../common.types.js').NotificationIntent} NotificationIntent
+ * @import { NotificationIntent } from '../common.types.js'
  */
 
 /**

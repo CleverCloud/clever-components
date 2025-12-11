@@ -7,11 +7,8 @@ import '../cc-link/cc-link.js';
 import { CcAddonOptionFormSubmitEvent } from './cc-addon-option-form.events.js';
 
 /**
- * @typedef {import('../cc-addon-option/cc-addon-option.js').CcAddonOption} CcAddonOption
- * @typedef {import('../cc-addon-option/cc-addon-option.events.js').CcAddonOptionChangeEvent} CcAddonOptionChangeEvent
- * @typedef {import('../common.types.js').AddonOptionStates} AddonOptionStates
- * @typedef {import('../common.types.js').AddonOption} AddonOption
- * @typedef {import('../common.types.js').AddonOptionWithMetadata} AddonOptionWithMetadata
+ * @import { CcAddonOptionChangeEvent } from '../cc-addon-option/cc-addon-option.events.js'
+ * @import { AddonOptionStates, AddonOptionWithMetadata } from '../common.types.js'
  */
 
 /**

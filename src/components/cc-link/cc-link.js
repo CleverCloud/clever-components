@@ -9,8 +9,8 @@ import '../cc-icon/cc-icon.js';
 import '../cc-img/cc-img.js';
 
 /**
- * @typedef {import('../common.types.js').IconModel} IconModel
- * @typedef {import('../../lib/events.types.js').EventWithTarget<HTMLSlotElement>} SlotChangeEvent
+ * @import { IconModel } from '../common.types.js'
+ * @import { EventWithTarget } from '../../lib/events.types.js'
  */
 
 /**
@@ -122,7 +122,7 @@ export class CcLink extends LitElement {
   }
 
   /**
-   * @param {SlotChangeEvent} e
+   * @param {EventWithTarget<HTMLSlotElement>} e
    * @private
    */
   _onSlotChange(e) {

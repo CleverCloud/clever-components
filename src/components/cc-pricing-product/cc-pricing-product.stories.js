@@ -15,9 +15,8 @@ const conf = {
 };
 
 /**
- * @typedef {import('./cc-pricing-product.js').CcPricingProduct} CcPricingProduct
- * @typedef {import('../common.types.js').Plan} Plan
- * @typedef {import('../common.types.js').FormattedFeature} FormattedFeature
+ * @import { CcPricingProduct } from './cc-pricing-product.js'
+ * @import { Plan, FormattedFeature } from '../common.types.js'
  */
 
 /** @type {Array<FormattedFeature['code']>} */

@@ -38,8 +38,7 @@ const credentialsToDisplayAsInput = new Set([
 ]);
 
 /**
- * @typedef {import('./cc-addon-credentials-content.types.js').AddonCredential} AddonCredential
- * @typedef {import('./cc-addon-credentials-content.types.js').AddonCredentialNg} AddonCredentialNg
+ * @import { AddonCredential, AddonCredentialNg } from './cc-addon-credentials-content.types.js'
  */
 
 /**

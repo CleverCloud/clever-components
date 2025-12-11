@@ -1,8 +1,7 @@
 import { randomString } from '../../lib/utils.js';
 
 /**
- * @typedef {import('../../components/cc-domain-management/cc-domain-management.types.js').DomainStateIdle} DomainStateIdle
- * @typedef {import('../../components/cc-domain-management/cc-domain-management.types.js').DomainManagementDnsInfoStateLoaded} DomainManagementDnsInfoStateLoaded
+ * @import { DomainStateIdle, DomainManagementDnsInfoStateLoaded } from '../../components/cc-domain-management/cc-domain-management.types.js'
  */
 
 export const randomDomainName = randomString(5).toLowerCase();

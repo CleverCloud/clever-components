@@ -10,13 +10,9 @@ import '../cc-picker-option/cc-picker-option.js';
 import { CcSelectEvent } from '../common.events.js';
 
 /**
- * @typedef {import('./cc-zone-picker.types.js').ZoneItem} ZoneItem
- * @typedef {import('./cc-zone-picker.types.js').ZoneSection} ZoneSection
- * @typedef {import('./cc-zone-picker.types.js').SingleZoneSection} SingleZoneSection
- * @typedef {import('./cc-zone-picker.types.js').ZonesSections} ZonesSections
- * @typedef {import('../../lib/events.types.js').EventWithTarget<HTMLInputElement>} HTMLInputElementEvent
- * @typedef {import('lit').PropertyValues} CcZonePickerPropertyValues
- * @typedef {import('lit').TemplateResult<1>} TemplateResult
+ * @import { ZoneItem, ZoneSection, SingleZoneSection, ZonesSections } from './cc-zone-picker.types.js'
+ * @import { PropertyValues as CcZonePickerPropertyValues, TemplateResult } from 'lit'
+ * @import { EventWithTarget } from '../../lib/events.types.js'
  */
 
 /**
@@ -67,7 +63,7 @@ export class CcZonePicker extends CcFormControlElement {
   set errorMessage(_) {}
 
   /**
-   * @param {HTMLInputElementEvent} e
+   * @param {EventWithTarget<HTMLInputElement>} e
    */
   _onZoneSelect(e) {
     if (this.readonly) {

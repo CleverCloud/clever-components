@@ -6,10 +6,8 @@ import '../cc-toggle/cc-toggle.js';
 import { CcLogsmapModeChangeEvent } from './cc-logsmap.events.js';
 
 /**
- * @typedef {import('./cc-logsmap.types.js').PointsOptions} PointsOptions
- * @typedef {import('../common.types.js').HeatmapPoint} HeatmapPoint
- * @typedef {import('../common.types.js').MapModeType} MapModeType
- * @typedef {import('../common.types.js').Point} Point
+ * @import { PointsOptions } from './cc-logsmap.types.js'
+ * @import { HeatmapPoint, MapModeType, Point } from '../common.types.js'
  */
 
 /**

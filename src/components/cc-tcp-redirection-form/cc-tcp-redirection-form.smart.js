@@ -10,15 +10,11 @@ import '../cc-smart-container/cc-smart-container.js';
 import './cc-tcp-redirection-form.js';
 
 /**
- * @typedef {import('./cc-tcp-redirection-form.js').CcTcpRedirectionForm} CcTcpRedirectionForm
- * @typedef {import('../cc-tcp-redirection/cc-tcp-redirection.types.js').TcpRedirection} TcpRedirection
- * @typedef {import('../cc-tcp-redirection/cc-tcp-redirection.types.js').TcpRedirectionState} TcpRedirectionState
- * @typedef {import('../cc-tcp-redirection/cc-tcp-redirection.types.js').TcpRedirectionStateLoaded} TcpRedirectionStateLoaded
- * @typedef {import('../cc-tcp-redirection-form/cc-tcp-redirection-form.types.js').TcpRedirectionFormState} TcpRedirectionFormState
- * @typedef {import('../cc-tcp-redirection-form/cc-tcp-redirection-form.types.js').TcpRedirectionFormStateLoaded} TcpRedirectionFormStateLoaded
- * @typedef {import('../cc-tcp-redirection/cc-tcp-redirection.types.js').TcpRedirectionStateWaiting} TcpRedirectionStateWaiting
- * @typedef {import('../../lib/send-to-api.js').ApiConfig} ApiConfig
- * @typedef {import('../../lib/smart/smart-component.types.js').OnContextUpdateArgs<CcTcpRedirectionForm>} OnContextUpdateArgs
+ * @import { CcTcpRedirectionForm } from './cc-tcp-redirection-form.js'
+ * @import { TcpRedirection, TcpRedirectionState } from '../cc-tcp-redirection/cc-tcp-redirection.types.js'
+ * @import { TcpRedirectionFormStateLoaded } from '../cc-tcp-redirection-form/cc-tcp-redirection-form.types.js'
+ * @import { ApiConfig } from '../../lib/send-to-api.types.js'
+ * @import { OnContextUpdateArgs } from '../../lib/smart/smart-component.types.js'
  * @typedef {[{namespace: string}]} NamespacesApiPayload
  * @typedef {[{namespace: string, port: number}]} RedirectionsApiPayload
  */
@@ -33,7 +29,7 @@ defineSmartComponent({
     appId: { type: String },
   },
   /**
-   * @param {OnContextUpdateArgs} args
+   * @param {OnContextUpdateArgs<CcTcpRedirectionForm>} args
    */
   onContextUpdate({ context, onEvent, updateComponent, signal }) {
     const { apiConfig, ownerId, appId } = context;

@@ -8,12 +8,14 @@ import {
 import { CcFormInvalidEvent, CcFormValidEvent } from './form.events.js';
 import { Validation } from './validation.js';
 
+// FIXME: We're using `@typedef` instead of `@import` here due to a false positive from TS
+// See: https://github.com/microsoft/TypeScript/issues/60908/
 /**
- * @typedef {import('./validation.types.js').Validity} Validity
  * @typedef {import('./form.types.js').HTMLFormElementEvent} HTMLFormElementEvent
  * @typedef {import('./form.types.js').FormValidity} FormValidity
- * @typedef {import('./form.types.js').FormDataMap} FormSubmittedData
+ * @typedef {import('./form.types.js').FormDataMap} FormDataMap
  * @typedef {import('./form.types.js').SubmitHandlerCallbacks} SubmitHandlerCallbacks
+ * @typedef {import('./validation.types.js').Validity} Validity
  */
 
 /**

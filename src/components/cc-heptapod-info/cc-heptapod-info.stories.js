@@ -18,12 +18,8 @@ const conf = {
 };
 
 /**
- * @typedef {import('./cc-heptapod-info.js').CcHeptapodInfo} CcHeptapodInfo
- * @typedef {import('./cc-heptapod-info.types.js').HeptapodInfoStateLoaded} HeptapodInfoStateLoaded
- * @typedef {import('./cc-heptapod-info.types.js').HeptapodInfoStateLoading} HeptapodInfoStateLoading
- * @typedef {import('./cc-heptapod-info.types.js').HeptapodInfoStateError} HeptapodInfoStateError
- * @typedef {import('./cc-heptapod-info.types.js').HeptapodInfoStateNotUsed} HeptapodInfoStateNotUsed
- * @typedef {import('./cc-heptapod-info.types.js').Statistics} Statistics
+ * @import { CcHeptapodInfo } from './cc-heptapod-info.js'
+ * @import { HeptapodInfoStateLoaded, HeptapodInfoStateLoading, HeptapodInfoStateError, HeptapodInfoStateNotUsed, Statistics } from './cc-heptapod-info.types.js'
  */
 
 /** @type {Statistics} */

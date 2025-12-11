@@ -40,50 +40,25 @@ import {
 } from './cc-kv-explorer.events.js';
 
 /**
- * @typedef {import('./cc-kv-explorer.types.js').CcKvExplorerState} CcKvExplorerState
- * @typedef {import('./cc-kv-explorer.types.js').CcKvExplorerStateLoaded} CcKvExplorerStateLoaded
- * @typedef {import('./cc-kv-explorer.types.js').CcKvExplorerStateLoadingKeys} CcKvExplorerStateLoadingKeys
- * @typedef {import('./cc-kv-explorer.types.js').CcKvExplorerStateFiltering} CcKvExplorerStateFiltering
- * @typedef {import('./cc-kv-explorer.types.js').CcKvExplorerStateRefreshing} CcKvExplorerStateRefreshing
- * @typedef {import('./cc-kv-explorer.types.js').CcKvExplorerStateErrorKeys} CcKvExplorerStateErrorKeys
- * @typedef {import('./cc-kv-explorer.types.js').CcKvExplorerDetailState} CcKvExplorerDetailState
- * @typedef {import('./cc-kv-explorer.types.js').CcKvExplorerKeyAddFormState} CcKvExplorerKeyAddFormState
- * @typedef {import('./cc-kv-explorer.types.js').CcKvKeyFilter} CcKvKeyFilter
- * @typedef {import('./cc-kv-explorer.types.js').CcKvKeyState} CcKvKeyState
- * @typedef {import('./cc-kv-explorer.types.js').CcKvKeyType} CcKvKeyType
- * @typedef {import('./cc-kv-explorer.types.js').CcKvKey} CcKvKey
- * @typedef {import('./cc-kv-explorer.types.js').CcKvKeyValue} CcKvKeyValue
- * @typedef {import('../cc-kv-string-editor/cc-kv-string-editor.types.js').CcKvKeyStringEditorState} CcKvKeyStringEditorState
- * @typedef {import('../cc-kv-hash-explorer/cc-kv-hash-explorer.js').CcKvHashExplorer} CcKvHashExplorer
- * @typedef {import('../cc-kv-hash-explorer/cc-kv-hash-explorer.types.js').CcKvHashExplorerState} CcKvHashExplorerState
- * @typedef {import('../cc-kv-hash-explorer/cc-kv-hash-explorer.events.js').CcKvHashExplorerStateChangeEvent} CcKvHashExplorerStateChangeEvent
- * @typedef {import('../cc-kv-list-explorer/cc-kv-list-explorer.js').CcKvListExplorer} CcKvListExplorer
- * @typedef {import('../cc-kv-list-explorer/cc-kv-list-explorer.types.js').CcKvListExplorerState} CcKvListExplorerState
- * @typedef {import('../cc-kv-list-explorer/cc-kv-list-explorer.events.js').CcKvListExplorerStateChangeEvent} CcKvListExplorerStateChangeEvent
- * @typedef {import('../cc-kv-set-explorer/cc-kv-set-explorer.js').CcKvSetExplorer} CcKvSetExplorer
- * @typedef {import('../cc-kv-set-explorer/cc-kv-set-explorer.types.js').CcKvSetExplorerState} CcKvSetExplorerState
- * @typedef {import('../cc-kv-terminal/cc-kv-terminal.types.js').CcKvTerminalState} CcKvTerminalState
- * @typedef {import('../cc-kv-terminal/cc-kv-terminal.events.js').CcKvTerminalStateChangeEvent} CcKvTerminalStateChangeEvent
- * @typedef {import('../cc-button/cc-button.js').CcButton} CcButton
- * @typedef {import('../cc-input-text/cc-input-text.js').CcInputText} CcInputText
- * @typedef {import('../cc-select/cc-select.js').CcSelect} CcSelect
- * @typedef {import('../../lib/events.types.js').GenericEventWithTarget<InputEvent, HTMLInputElement>} HTMLInputElementEvent
- * @typedef {import('../../lib/events.types.js').GenericEventWithTarget<KeyboardEvent,HTMLInputElement>} HTMLInputKeyboardEvent
- * @typedef {import('../../lib/events.types.js').EventWithTarget} EventWithTarget
- * @typedef {import('../../lib/events.types.js').EventWithTarget<CcInputText>} CcInputTextInputEvent
- * @typedef {import('../../lib/events.types.js').EventWithTarget<CcSelect>} CcSelectChangeEvent
- * @typedef {import('../../lib/form/form.types.js').FormDataMap} FormDataMap
- * @typedef {import('lit').TemplateResult<1>} TemplateResult
- * @typedef {import('lit').PropertyValues<CcKvExplorer>} CcKvExplorerPropertyValues
- * @typedef {import('lit/directives/ref.js').Ref<HTMLFormElement>} HTMLFormElementRef
- * @typedef {import('lit/directives/ref.js').Ref<CcKvHashExplorer>} CcKvHashExplorerRef
- * @typedef {import('lit/directives/ref.js').Ref<CcKvListExplorer>} CcKvListExplorerRef
- * @typedef {import('lit/directives/ref.js').Ref<CcKvSetExplorer>} CcKvSetExplorerRef
- * @typedef {import('lit/directives/ref.js').Ref<CcButton>} CcButtonRef
- * @typedef {import('lit/directives/ref.js').Ref<HTMLInputElement>} HTMLInputElementRef
- * @typedef {import('lit/directives/ref.js').Ref<Virtualizer>} VirtualizerRef
- * @typedef {import('@lit-labs/virtualizer/events.js').VisibilityChangedEvent} VisibilityChangedEvent
- * @typedef {import('@lit-labs/virtualizer/LitVirtualizer.js').LitVirtualizer} Virtualizer
+ * @import { CcKvExplorerState, CcKvExplorerStateLoaded, CcKvExplorerStateLoadingKeys, CcKvExplorerStateFiltering, CcKvExplorerStateRefreshing, CcKvExplorerStateErrorKeys, CcKvExplorerDetailState, CcKvExplorerKeyAddFormState, CcKvKeyFilter, CcKvKeyState, CcKvKeyType, CcKvKey } from './cc-kv-explorer.types.js'
+ * @import { CcKvKeyStringEditorState } from '../cc-kv-string-editor/cc-kv-string-editor.types.js'
+ * @import { CcKvHashExplorer } from '../cc-kv-hash-explorer/cc-kv-hash-explorer.js'
+ * @import { CcKvHashExplorerState } from '../cc-kv-hash-explorer/cc-kv-hash-explorer.types.js'
+ * @import { CcKvHashExplorerStateChangeEvent } from '../cc-kv-hash-explorer/cc-kv-hash-explorer.events.js'
+ * @import { CcKvListExplorer } from '../cc-kv-list-explorer/cc-kv-list-explorer.js'
+ * @import { CcKvListExplorerState } from '../cc-kv-list-explorer/cc-kv-list-explorer.types.js'
+ * @import { CcKvListExplorerStateChangeEvent } from '../cc-kv-list-explorer/cc-kv-list-explorer.events.js'
+ * @import { CcKvSetExplorer } from '../cc-kv-set-explorer/cc-kv-set-explorer.js'
+ * @import { CcKvSetExplorerState } from '../cc-kv-set-explorer/cc-kv-set-explorer.types.js'
+ * @import { CcKvTerminalState } from '../cc-kv-terminal/cc-kv-terminal.types.js'
+ * @import { CcKvTerminalStateChangeEvent } from '../cc-kv-terminal/cc-kv-terminal.events.js'
+ * @import { CcButton } from '../cc-button/cc-button.js'
+ * @import { EventWithTarget, GenericEventWithTarget } from '../../lib/events.types.js'
+ * @import { FormDataMap } from '../../lib/form/form.types.js'
+ * @import { VisibilityChangedEvent } from '@lit-labs/virtualizer/events.js'
+ * @import { LitVirtualizer as Virtualizer } from '@lit-labs/virtualizer/LitVirtualizer.js'
+ * @import { TemplateResult, PropertyValues } from 'lit'
+ * @import { Ref } from 'lit/directives/ref.js'
  */
 
 /**
@@ -132,28 +107,28 @@ export class CcKvExplorer extends LitElement {
     /** @type {Array<CcKvKeyType>} */
     this.supportedTypes = ['string', 'hash', 'list', 'set'];
 
-    /** @type {CcButtonRef} */
+    /** @type {Ref<CcButton>} */
     this._addButtonRef = createRef();
 
     /** @type {CcKvKeyType} */
     this._addFormSelectedType = this.supportedTypes[0];
 
-    /** @type {HTMLFormElementRef} */
+    /** @type {Ref<HTMLFormElement>} */
     this._filterFormRef = createRef();
 
-    /** @type {HTMLFormElementRef} */
+    /** @type {Ref<HTMLFormElement>} */
     this._addFormRef = createRef();
 
-    /** @type {VirtualizerRef} */
+    /** @type {Ref<Virtualizer>} */
     this._keysRef = createRef();
 
-    /** @type {CcKvHashExplorerRef} */
+    /** @type {Ref<CcKvHashExplorer>} */
     this._hashEditor = createRef();
 
-    /** @type {CcKvListExplorerRef} */
+    /** @type {Ref<CcKvListExplorer>} */
     this._listEditor = createRef();
 
-    /** @type {CcKvSetExplorerRef} */
+    /** @type {Ref<CcKvSetExplorer>} */
     this._setEditor = createRef();
 
     /** @type {CcKvKeyType | 'all'} */
@@ -362,7 +337,7 @@ export class CcKvExplorer extends LitElement {
   }
 
   /**
-   * @param {HTMLInputElementEvent} e
+   * @param {GenericEventWithTarget<InputEvent, HTMLInputElement>} e
    */
   _onSelectedKeyChange(e) {
     if (this.state.type !== 'loaded') {
@@ -525,7 +500,7 @@ export class CcKvExplorer extends LitElement {
   }
 
   /**
-   * @param {CcKvExplorerPropertyValues} changedProperties
+   * @param {PropertyValues<CcKvExplorer>} changedProperties
    */
   willUpdate(changedProperties) {
     if (changedProperties.has('supportedTypes')) {

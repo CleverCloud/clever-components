@@ -16,7 +16,7 @@ export default {
 };
 
 /**
- * @typedef {import('./cc-plan-picker.js').CcPlanPicker} CcPlanPicker
+ * @import { CcPlanPicker } from './cc-plan-picker.js'
  */
 
 const conf = {

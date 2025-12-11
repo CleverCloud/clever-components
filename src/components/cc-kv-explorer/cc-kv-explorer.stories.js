@@ -26,9 +26,8 @@ export default {
 };
 
 /**
- * @typedef {import('./cc-kv-explorer.js').CcKvExplorer} CcKvExplorer
- * @typedef {import('./cc-kv-explorer.types.js').CcKvKeyState} CcKvKeyState
- * @typedef {import('./cc-kv-explorer.types.js').CcKvKeyType} CcKvKeyType
+ * @import { CcKvExplorer } from './cc-kv-explorer.js'
+ * @import { CcKvKeyState, CcKvKeyType } from './cc-kv-explorer.types.js'
  */
 
 const conf = {

@@ -1,5 +1,5 @@
 /**
- * @typedef {import('vite').Plugin} Plugin
+ * @import { Plugin } from 'vite'
  */
 
 /**

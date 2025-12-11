@@ -10,14 +10,11 @@ import '../cc-smart-container/cc-smart-container.js';
 import './cc-pricing-product.js';
 
 /**
- * @typedef {import('./cc-pricing-product.js').CcPricingProduct} CcPricingProduct
- * @typedef {import('./cc-pricing-product.types.js').PricingProductStateLoaded} PricingProductStateLoaded
- * @typedef {import('../common.types.js').FormattedFeature} FormattedFeature
- * @typedef {import('../common.types.js').RawAddonProvider} RawAddonProvider
- * @typedef {import('../common.types.js').Zone} Zone
- * @typedef {import('../common.types.js').Instance} Instance
- * @typedef {import('../../lib/send-to-api.types.js').ApiConfig} ApiConfig
- * @typedef {import('../../lib/smart/smart-component.types.js').OnContextUpdateArgs<CcPricingProduct>} OnContextUpdateArgs
+ * @import { CcPricingProduct } from './cc-pricing-product.js'
+ * @import { PricingProductStateLoaded } from './cc-pricing-product.types.js'
+ * @import { FormattedFeature, RawAddonProvider } from '../common.types.js'
+ * @import { ApiConfig } from '../../lib/send-to-api.types.js'
+ * @import { OnContextUpdateArgs } from '../../lib/smart/smart-component.types.js'
  */
 
 defineSmartComponent({
@@ -30,7 +27,7 @@ defineSmartComponent({
     currency: { type: String, optional: true },
   },
   /**
-   * @param {OnContextUpdateArgs} args
+   * @param {OnContextUpdateArgs<CcPricingProduct>} args
    */
   onContextUpdate({ context, updateComponent, signal }) {
     const { apiConfig, productId, zoneId = 'par', addonFeatures, currency = 'EUR' } = context;

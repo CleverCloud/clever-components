@@ -3,20 +3,16 @@ import { KvScanner } from './kv-scanner.js';
 import { Abortable, matchKvPattern } from './kv-utils.js';
 
 /**
- * @typedef {import('./cc-kv-explorer.js').CcKvExplorer} CcKvExplorer
- * @typedef {import('./cc-kv-explorer.types.js').CcKvExplorerState} CcKvExplorerState
- * @typedef {import('./cc-kv-explorer.types.js').CcKvExplorerStateLoaded} CcKvExplorerStateLoaded
- * @typedef {import('./cc-kv-explorer.types.js').CcKvKey} CcKvKey
- * @typedef {import('./cc-kv-explorer.types.js').CcKvKeyType} CcKvKeyType
- * @typedef {import('./cc-kv-explorer.types.js').CcKvKeyState} CcKvKeyState
- * @typedef {import('./kv-client.js').KvClient} KvClient
- * @typedef {import('../common.types.js').ObjectOrFunction<CcKvExplorerState>} CcKvExplorerStateUpdater
+ * @import { CcKvExplorer } from './cc-kv-explorer.js'
+ * @import { CcKvExplorerState, CcKvExplorerStateLoaded, CcKvKey, CcKvKeyType, CcKvKeyState } from './cc-kv-explorer.types.js'
+ * @import { KvClient } from './kv-client.js'
+ * @import { ObjectOrFunction } from '../common.types.js'
  */
 
 export class KvKeysCtrl {
   /**
    * @param {CcKvExplorer} component
-   * @param {(stateUpdater: CcKvExplorerStateUpdater) => void} updateState
+   * @param {(stateUpdater: ObjectOrFunction<CcKvExplorerState>) => void} updateState
    * @param {KvClient} kvClient
    */
   constructor(component, updateState, kvClient) {

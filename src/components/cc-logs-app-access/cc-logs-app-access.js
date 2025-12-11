@@ -64,21 +64,16 @@ const CUSTOM_METADATA_RENDERERS = {
 };
 
 /**
- * @typedef {import('./cc-logs-app-access.types.js').LogsAppAccessState} LogsAppAccessState
- * @typedef {import('../cc-logs/cc-logs.types.js').Log} Log
- * @typedef {import('../cc-logs/cc-logs.types.js').MetadataIntent} MetadataIntent
- * @typedef {import('../cc-logs/cc-logs.types.js').MetadataRenderer} MetadataRenderer
- * @typedef {import('../cc-logs-control/cc-logs-control.js').CcLogsControl} CcLogsControl
- * @typedef {import('../cc-logs-control/cc-logs-control.types.js').LogsOptions} LogsOptions
- * @typedef {import('../cc-logs-control/cc-logs-control.types.js').LogsMetadataDisplay} LogsMetadataDisplay
- * @typedef {import('../cc-logs-date-range-selector/cc-logs-date-range-selector.types.js').LogsDateRangeSelection} LogsDateRangeSelection
- * @typedef {import('../cc-logs-date-range-selector/cc-logs-date-range-selector.events.js').CcLogsDateRangeSelectionChangeEvent} CcLogsDateRangeSelectionChangeEvent
- * @typedef {import('../cc-logs-instances/cc-logs-instances.types.js').LogsInstancesState} LogsInstancesState
- * @typedef {import('../cc-logs-message-filter/cc-logs-message-filter.types.js').LogsMessageFilterValue} LogsMessageFilterValue
- * @typedef {import('../cc-logs-message-filter/cc-logs-message-filter.events.js').CcLogsMessageFilterChangeEvent} CcLogsMessageFilterChangeEvent
- * @typedef {import('lit/directives/ref.js').Ref<CcLogsControl>} CcLogsControlRef
- * @typedef {import('lit').PropertyValues<CcLogsAppAccess>} PropertyValues
- * @typedef {import('lit').TemplateResult<1>} TemplateResult
+ * @import { LogsAppAccessState } from './cc-logs-app-access.types.js'
+ * @import { Log, MetadataIntent, MetadataRenderer } from '../cc-logs/cc-logs.types.js'
+ * @import { CcLogsControl } from '../cc-logs-control/cc-logs-control.js'
+ * @import { LogsOptions } from '../cc-logs-control/cc-logs-control.types.js'
+ * @import { LogsDateRangeSelection } from '../cc-logs-date-range-selector/cc-logs-date-range-selector.types.js'
+ * @import { CcLogsDateRangeSelectionChangeEvent } from '../cc-logs-date-range-selector/cc-logs-date-range-selector.events.js'
+ * @import { LogsMessageFilterValue } from '../cc-logs-message-filter/cc-logs-message-filter.types.js'
+ * @import { CcLogsMessageFilterChangeEvent } from '../cc-logs-message-filter/cc-logs-message-filter.events.js'
+ * @import { TemplateResult } from 'lit'
+ * @import { Ref } from 'lit/directives/ref.js'
  */
 
 /**
@@ -131,7 +126,7 @@ export class CcLogsAppAccess extends LitElement {
       streamState: { type: 'idle' },
     };
 
-    /** @type {CcLogsControlRef} */
+    /** @type {Ref<CcLogsControl>} */
     this._logsRef = createRef();
 
     /** @type {LogsMessageFilterValue} */

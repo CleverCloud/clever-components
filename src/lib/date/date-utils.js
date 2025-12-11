@@ -1,8 +1,7 @@
 import { clampNumber } from '../utils.js';
 
 /**
- * @typedef {import('./date.types.js').Timezone} Timezone
- * @typedef {import('./date.types.js').DateField} DateField
+ * @import { Timezone, DateField } from './date.types.js'
  * @typedef {(date: Date, offset: number) => Date} DateShiftFunction
  */
 

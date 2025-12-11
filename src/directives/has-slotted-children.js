@@ -3,9 +3,8 @@ import { AsyncDirective, directive, PartType } from 'lit/async-directive.js';
 import { EventHandler } from '../lib/events.js';
 
 /**
- * @typedef {import('lit/directive.js').Part} Part
- * @typedef {import('lit/directive.js').PartInfo} PartInfo
- * @typedef {import('../lib/events.types.js').EventWithTarget<HTMLSlotElement>} SlotEventWithTarget
+ * @import { Part, PartInfo } from 'lit/directive.js'
+ * @import { EventWithTarget } from '../lib/events.types.js'
  */
 
 /**
@@ -48,7 +47,7 @@ class HasSlottedChildrenDirective extends AsyncDirective {
       this.eventHandler = new EventHandler(
         this.element,
         'slotchange',
-        /** @param {SlotEventWithTarget} e */
+        /** @param {EventWithTarget<HTMLSlotElement>} e */
         (e) => {
           const container = e.currentTarget;
           const changedSlot = e.target;

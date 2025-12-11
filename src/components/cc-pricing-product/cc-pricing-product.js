@@ -36,11 +36,8 @@ const CURRENCY_EUR = 'EUR';
 const DEFAULT_TEMPORALITY_LIST = [{ type: '30-days', digits: 2 }];
 
 /**
- * @typedef {import('../common.types.js').ActionType} ActionType
- * @typedef {import('./cc-pricing-product.types.js').PricingProductState} PricingProductState
- * @typedef {import('../common.types.js').Temporality} Temporality
- * @typedef {import('../common.types.js').Plan} Plan
- * @typedef {import('../common.types.js').FormattedFeature} FormattedFeature
+ * @import { ActionType, Temporality, Plan, FormattedFeature } from '../common.types.js'
+ * @import { PricingProductState } from './cc-pricing-product.types.js'
  */
 
 /**

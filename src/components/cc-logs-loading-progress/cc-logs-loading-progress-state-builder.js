@@ -1,10 +1,12 @@
+// FIXME: We're using `@typedef` instead of `@import` here due to a false positive from TS
+// See: https://github.com/microsoft/TypeScript/issues/60908/
 /**
- * @typedef {import('./cc-logs-loading-progress.types.js').LogsLoadingProgressState} LogsLoadingProgressState
- * @typedef {import('../../lib/logs/logs-stream.types.js').LogsStreamState} LogsProgressState
+ * @typedef {import('../../lib/logs/logs-stream.types.js').LogsStreamState} LogsStreamState
+ * @typedef {import('../cc-logs-loading-progress/cc-logs-loading-progress.types.js').LogsLoadingProgressState } LogsLoadingProgressState
  */
 
 /**
- * @param {LogsProgressState} progressState
+ * @param {LogsStreamState} progressState
  * @return {LogsLoadingProgressState|null}
  */
 export function buildLogsLoadingProgressState(progressState) {

@@ -17,8 +17,7 @@ import {
 } from './cc-logs-loading-progress.events.js';
 
 /**
- * @typedef {import('./cc-logs-loading-progress.types.js').LogsLoadingProgressState} LogsLoadingProgressState
- * @typedef {import('lit').TemplateResult<1>} TemplateResult
+ * @import { LogsLoadingProgressState } from './cc-logs-loading-progress.types.js'
  */
 
 /**

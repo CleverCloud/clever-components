@@ -1,7 +1,7 @@
 import { css, html, LitElement } from 'lit';
 
 /**
- * @typedef {import('lit').PropertyValues<CcStretch>} CcStretchPropertyValues
+ * @import { PropertyValues } from 'lit'
  */
 
 /**
@@ -60,7 +60,7 @@ export class CcStretch extends LitElement {
     elementToMakeVisible?.classList.add('cc-stretch--visible');
   }
 
-  /** @param {CcStretchPropertyValues} changedProperties */
+  /** @param {PropertyValues<CcStretch>} changedProperties */
   updated(changedProperties) {
     if (changedProperties.has('visibleElementId')) {
       this._makeElementVisible();

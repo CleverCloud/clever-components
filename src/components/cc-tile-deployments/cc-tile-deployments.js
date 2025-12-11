@@ -14,8 +14,7 @@ const SKELETON_DEPLOYS = [
 ];
 
 /**
- * @typedef {import('./cc-tile-deployments.types.js').TileDeploymentsState} TileDeploymentsState
- * @typedef {import('./cc-tile-deployments.types.js').DeploymentTileInfo} DeploymentTileInfo
+ * @import { TileDeploymentsState, DeploymentTileInfo } from './cc-tile-deployments.types.js'
  */
 
 /**

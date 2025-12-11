@@ -5,8 +5,7 @@ import '../cc-loader/cc-loader.js';
 import '../cc-notice/cc-notice.js';
 
 /**
- * @typedef {import('./cc-env-var-linked-services.types.js').EnvVarLinkedServicesState} EnvVarLinkedServicesState
- * @typedef {import('./cc-env-var-linked-services.types.js').EnvVarLinkedServicesType} EnvVarLinkedServicesType
+ * @import { EnvVarLinkedServicesState, EnvVarLinkedServicesType } from './cc-env-var-linked-services.types.js'
  */
 
 /**

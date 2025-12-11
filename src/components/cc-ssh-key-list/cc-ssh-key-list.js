@@ -56,17 +56,11 @@ class SshPublicKeyValidator {
 }
 
 /**
- * @typedef {import('./cc-ssh-key-list.types.js').SshKeyListState} SshKeyListState
- * @typedef {import('./cc-ssh-key-list.types.js').SshKeyState} SshKeyState
- * @typedef {import('./cc-ssh-key-list.types.js').GithubSshKeyState} GithubSshKeyState
- * @typedef {import('./cc-ssh-key-list.types.js').CreateSshKeyFormState} CreateSshKeyFormState
- * @typedef {import('./cc-ssh-key-list.types.js').NewKey} NewKey
- * @typedef {import('./cc-ssh-key-list.types.js').SshKey} SshKey
- * @typedef {import('../cc-input-text/cc-input-text.js').CcInputText} CcInputText
- * @typedef {import('lit').TemplateResult<1>} TemplateResult
- * @typedef {import('lit/directives/ref.js').Ref<HTMLFormElement>} HTMLFormElementRef
- * @typedef {import('../../lib/form/form.types.js').FormDataMap} FormDataMap
- * @typedef {import('../../lib/form/validation.types.js').Validity} Validity
+ * @import { SshKeyListState, SshKeyState, GithubSshKeyState, CreateSshKeyFormState } from './cc-ssh-key-list.types.js'
+ * @import { FormDataMap } from '../../lib/form/form.types.js'
+ * @import { Validity } from '../../lib/form/validation.types.js'
+ * @import { TemplateResult } from 'lit'
+ * @import { Ref } from 'lit/directives/ref.js'
  */
 
 /**
@@ -97,7 +91,7 @@ export class CcSshKeyList extends LitElement {
     /** @type {SshKeyListState} personal and GitHub lists of registered SSH keys. */
     this.keyListState = { type: 'loading' };
 
-    /** @type {HTMLFormElementRef} */
+    /** @type {Ref<HTMLFormElement>} */
     this._createFormRef = createRef();
 
     new LostFocusController(this, '.key--personal', ({ suggestedElement }) => {

@@ -9,11 +9,7 @@ const KIBANA_LOGO_URL = getAssetUrl('/logos/elasticsearch-kibana.svg');
 const APM_LOGO_URL = getAssetUrl('/logos/elasticsearch-apm.svg');
 
 /**
- * @typedef {import('../common.types.js').AddonOption} AddonOption
- * @typedef {import('../common.types.js').AddonOptionWithMetadata} AddonOptionWithMetadata
- * @typedef {import('../common.types.js').FlavorWithMonthlyCost} FlavorWithMonthlyCost
- * @typedef {import('../common.types.js').ElasticAddonOption<Flavor | FlavorWithMonthlyCost>} ElasticAddonOption
- * @typedef {import('../common.types.js').Flavor} Flavor
+ * @import { AddonOption, AddonOptionWithMetadata, FlavorWithMonthlyCost, Flavor, ElasticAddonOption } from '../common.types.js'
  */
 
 /**
@@ -38,7 +34,7 @@ export class CcAddonElasticsearchOptions extends LitElement {
   /**
    * Returns the metadata for an Elasticsearch option (APM or Kibana) including title, warning message, details, and logo URL
    *
-   * @param {ElasticAddonOption['name']} elasticOptionName
+   * @param {ElasticAddonOption<Flavor | FlavorWithMonthlyCost>['name']} elasticOptionName
    * @returns {{ title: string, warning: string, details: Node, logo: string }}
    */
   _getElasticsearchOptionData(elasticOptionName) {
@@ -61,7 +57,7 @@ export class CcAddonElasticsearchOptions extends LitElement {
   }
 
   /**
-   * @param {ElasticAddonOption} addonOption
+   * @param {ElasticAddonOption<Flavor | FlavorWithMonthlyCost>} addonOption
    * @returns {AddonOptionWithMetadata}
    */
   _getElasticAddonOption(addonOption) {

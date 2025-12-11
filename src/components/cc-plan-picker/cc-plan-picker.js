@@ -7,13 +7,10 @@ import '../cc-picker/cc-picker.js';
 import { CcSelectEvent } from '../common.events.js';
 
 /**
- * @typedef {import('lit').PropertyValues<CcPlanPicker>} CcPlanPickerPropertyValues
- * @typedef {import('../../lib/events.types.js').GenericEventWithTarget<InputEvent, HTMLInputElement>} HTMLInputElementEvent
- * @typedef {import('../../lib/i18n/i18n.types.js').Translated} Translated
- * @typedef {import('./cc-plan-picker.types.js').PlanItem} PlanItem
- * @typedef {import('./cc-plan-picker.types.js').PlanBadge} PlanBadge
- * @typedef {import('./cc-plan-picker.types.js').PlanDetails} PlanDetails
- * @typedef {import('lit').TemplateResult<1>} TemplateResult
+ * @import { Translated } from '../../lib/i18n/i18n.types.js'
+ * @import { PlanItem, PlanBadge, PlanDetails } from './cc-plan-picker.types.js'
+ * @import { TemplateResult, PropertyValues } from 'lit'
+ * @import { GenericEventWithTarget } from '../../lib/events.types.js'
  */
 
 /**
@@ -97,7 +94,7 @@ export class CcPlanPicker extends CcFormControlElement {
   }
 
   /**
-   * @param {HTMLInputElementEvent} e
+   * @param {GenericEventWithTarget<InputEvent, HTMLInputElement>} e
    * @private
    */
   _onChangePlan(e) {
@@ -119,7 +116,7 @@ export class CcPlanPicker extends CcFormControlElement {
   }
 
   /**
-   * @param {HTMLInputElementEvent} e
+   * @param {GenericEventWithTarget<InputEvent, HTMLInputElement>} e
    * @private
    */
   _onChangeRelatedPlan(e) {
@@ -132,7 +129,7 @@ export class CcPlanPicker extends CcFormControlElement {
   }
 
   /**
-   * @param {CcPlanPickerPropertyValues} changedProperties
+   * @param {PropertyValues<CcPlanPicker>} changedProperties
    */
   willUpdate(changedProperties) {
     if (changedProperties.has('plans') && changedProperties.has('value')) {

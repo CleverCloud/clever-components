@@ -5,23 +5,17 @@ import { KvKeyEditorStringCtrl } from './kv-key-editor-string-ctrl.js';
 import { Abortable } from './kv-utils.js';
 
 /**
- * @typedef {import('./cc-kv-explorer.js').CcKvExplorer} CcKvExplorer
- * @typedef {import('./cc-kv-explorer.types.js').CcKvExplorerState} CcKvExplorerState
- * @typedef {import('./cc-kv-explorer.types.js').CcKvExplorerStateLoaded} CcKvExplorerStateLoaded
- * @typedef {import('./cc-kv-explorer.types.js').CcKvExplorerDetailState} CcKvExplorerDetailState
- * @typedef {import('./cc-kv-explorer.types.js').CcKvExplorerDetailStateAdd} CcKvExplorerDetailStateAdd
- * @typedef {import('./cc-kv-explorer.types.js').CcKvKey} CcKvKey
- * @typedef {import('./cc-kv-explorer.types.js').CcKvKeyType} CcKvKeyType
- * @typedef {import('./cc-kv-explorer.types.js').CcKvKeyValue} CcKvKeyValue
- * @typedef {import('./kv-key-editor-ctrl.js').KvKeyEditorCtrl<?>} KvKeyEditorCtrl
- * @typedef {import('./kv-client.js').KvClient} KvClient
- * @typedef {import('../common.types.js').ObjectOrFunction<CcKvExplorerDetailState>} CcKvExplorerDetailStateUpdater
+ * @import { CcKvExplorer } from './cc-kv-explorer.js'
+ * @import { CcKvExplorerDetailState, CcKvExplorerDetailStateAdd, CcKvKey, CcKvKeyType, CcKvKeyValue } from './cc-kv-explorer.types.js'
+ * @import { KvClient } from './kv-client.js'
+ * @import { KvKeyEditorCtrl } from './kv-key-editor-ctrl.js'
+ * @import { ObjectOrFunction } from '../common.types.js'
  */
 
 export class KvDetailsCtrl {
   /**
    * @param {CcKvExplorer} component
-   * @param {(stateUpdater: CcKvExplorerDetailStateUpdater) => void} updateDetailState
+   * @param {(stateUpdater: ObjectOrFunction<CcKvExplorerDetailState>) => void} updateDetailState
    * @param {KvClient} kvClient
    */
   constructor(component, updateDetailState, kvClient) {
@@ -30,7 +24,7 @@ export class KvDetailsCtrl {
     this._kvClient = kvClient;
     this._abortable = new Abortable();
 
-    /** @type {KvKeyEditorCtrl} */
+    /** @type {KvKeyEditorCtrl<?>} */
     this._currentEditorCtrl = null;
   }
 
@@ -39,7 +33,7 @@ export class KvDetailsCtrl {
   }
 
   /**
-   * @returns {KvKeyEditorCtrl}
+   * @returns {KvKeyEditorCtrl<?>}
    */
   get editorCtrl() {
     // @ts-ignore
@@ -108,7 +102,7 @@ export class KvDetailsCtrl {
   /**
    * @param {string} keyName
    * @param {CcKvKeyType} type
-   * @return {KvKeyEditorCtrl}
+   * @return {KvKeyEditorCtrl<?>}
    */
   _createKeyEditorCtrl(keyName, type) {
     switch (type) {

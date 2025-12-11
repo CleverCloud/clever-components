@@ -8,11 +8,10 @@ import '../cc-smart-container/cc-smart-container.js';
 import './cc-pricing-header.js';
 
 /**
- * @typedef {import('./cc-pricing-header.js').CcPricingHeader} CcPricingHeader
- * @typedef {import('./cc-pricing-header.types.js').PricingHeaderStateLoaded} PricingHeaderStateLoaded
- * @typedef {import('../common.types.js').Zone} Zone
- * @typedef {import('../../lib/send-to-api.types.js').ApiConfig} ApiConfig
- * @typedef {import('../../lib/smart/smart-component.types.js').OnContextUpdateArgs<CcPricingHeader>} OnContextUpdateArgs
+ * @import { CcPricingHeader } from './cc-pricing-header.js'
+ * @import { Zone } from '../common.types.js'
+ * @import { ApiConfig } from '../../lib/send-to-api.types.js'
+ * @import { OnContextUpdateArgs } from '../../lib/smart/smart-component.types.js'
  */
 
 defineSmartComponent({
@@ -22,7 +21,7 @@ defineSmartComponent({
     zoneId: { type: String, optional: true },
   },
   /**
-   * @param {OnContextUpdateArgs} args
+   * @param {OnContextUpdateArgs<CcPricingHeader>} args
    */
   onContextUpdate({ container, component, context, onEvent, updateComponent, signal }) {
     const { apiConfig, zoneId = 'par' } = context;

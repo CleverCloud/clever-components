@@ -1,11 +1,8 @@
 import { CcEvent } from '../../lib/events.js';
 
 /**
- * @typedef {import('../cc-pricing-estimation/cc-pricing-estimation.types.js').CountablePlanWithQuantity} CountablePlanWithQuantity
- * @typedef {import('../cc-pricing-estimation/cc-pricing-estimation.types.js').RuntimePlanWithQuantity} RuntimePlanWithQuantity
- * @typedef {import('../common.types.js').ConsumptionPlan} ConsumptionPlan
- * @typedef {import('../common.types.js').Plan} Plan
- * @typedef {import('../common.types.js').Temporality} Temporality
+ * @import { CountablePlanWithQuantity, RuntimePlanWithQuantity } from '../cc-pricing-estimation/cc-pricing-estimation.types.js'
+ * @import { ConsumptionPlan, Plan, Temporality } from '../common.types.js'
  */
 
 /**

@@ -22,12 +22,9 @@ import '../cc-notice/cc-notice.js';
 import { CcTokenRevokeEvent, CcTokensRevokeAllEvent } from '../common.events.js';
 
 /**
- * @typedef {import('./cc-token-session-list.types.js').SessionTokenState} SessionTokenState
- * @typedef {import('./cc-token-session-list.types.js').TokenSessionListState} TokenSessionListState
- * @typedef {import('./cc-token-session-list.types.js').SessionToken} SessionToken
- * @typedef {import('lit').TemplateResult<1>} TemplateResult
- * @typedef {import('lit').PropertyValues<CcTokenSessionList>} CcSessionTokensPropertyValues
- * @typedef {import('lit/directives/ref.js').Ref<HTMLLIElement>} RefHTMLLIElement
+ * @import { SessionTokenState, TokenSessionListState, SessionToken } from './cc-token-session-list.types.js'
+ * @import { TemplateResult } from 'lit'
+ * @import { Ref } from 'lit/directives/ref.js'
  */
 
 /**
@@ -50,7 +47,7 @@ export class CcTokenSessionList extends LitElement {
     /** @type {TokenSessionListState} The current state of the component */
     this.state = { type: 'loading' };
 
-    /** @type {RefHTMLLIElement} */
+    /** @type {Ref<HTMLLIElement>} */
     this._currentSessionCardRef = createRef();
 
     new ResizeController(this, {
