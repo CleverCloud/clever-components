@@ -26,7 +26,6 @@ import { RangeSelectorDraggingController } from './range-selector-dragging-contr
  * @typedef {import('lit').PropertyValues<CcRangeSelector>} CcRangeSelectorPropertyValues
  * @typedef {import('lit/directives/class-map.js').ClassInfo} ClassInfo
  * @typedef {import('lit/directives/ref.js').Ref<HTMLElement>} HTMLElementRef
- * @typedef {import('lit/directives/ref.js').Ref<HTMLFieldSetElement>} HTMLFieldSetElementRef
  */
 
 /**
@@ -127,7 +126,7 @@ export class CcRangeSelector extends CcFormControlElement {
     /** @type {HTMLElementRef} */
     this._errorRef = createRef();
 
-    /** @type {HTMLFieldSetElementRef} */
+    /** @type {HTMLElementRef} */
     this._selectorRef = createRef();
 
     /** @type {RangeSelectorDraggingController} */
@@ -643,19 +642,20 @@ export class CcRangeSelector extends CcFormControlElement {
     const isModeRange = this._isModeRange();
 
     return html`
-      <fieldset
+      <div
         class="fieldset ${classMap({ 'is-error': hasErrorMessage })}"
         @input=${this._onControlInput}
         @mouseup=${this._onFieldsetMouseUp}
         ${ref(this._selectorRef)}
         role="${isModeRange ? 'group' : 'radiogroup'}"
+        aria-labelledby="legend-${this.name}"
         tabindex="-1"
       >
         <div class="fieldset-content">
-          <legend class="legend">
+          <div class="legend" id="legend-${this.name}">
             <span class="legend-text">${this.label}</span>
             ${this.required ? html` <span class="required">${i18n('cc-range-selector.required')}</span> ` : ''}
-          </legend>
+          </div>
 
           <div class="options" part="options">
             ${this.options.map((option, index) =>
@@ -682,7 +682,7 @@ export class CcRangeSelector extends CcFormControlElement {
             ? html`<p class="error-container" id="error-id" ${ref(this._errorRef)}>${this.errorMessage}</p>`
             : ''}
         </div>
-      </fieldset>
+      </div>
     `;
   }
 
@@ -810,25 +810,25 @@ export class CcRangeSelector extends CcFormControlElement {
         /* endregion */
 
         /* region fieldset */
-        fieldset {
+        .fieldset {
           border: none;
           display: inline-block;
           margin: 0;
           padding: 0;
         }
 
-        fieldset,
+        .fieldset,
         .fieldset-content {
           width: var(--cc-range-selector-options-width, fit-content);
         }
 
-        fieldset:focus-visible {
+        .fieldset:focus-visible {
           border-radius: var(--cc-border-radius-default, 0.25em);
           outline: var(--cc-focus-outline);
           outline-offset: 0.5em;
         }
 
-        fieldset.is-error:focus-visible {
+        .fieldset.is-error:focus-visible {
           outline: var(--cc-focus-outline-error);
         }
 
