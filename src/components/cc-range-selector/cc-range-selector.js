@@ -422,6 +422,18 @@ export class CcRangeSelector extends CcFormControlElement {
   }
 
   /**
+   * Handles mouse up event on the fieldset to finalize range selection when drag ends on non-option elements.
+   * This catches cases where the user releases the mouse over arrows or gaps between options,
+   * ensuring the selection is applied regardless of where the mouseup occurs within the component.
+   * @private
+   */
+  _onFieldsetMouseUp() {
+    if (this._dragCtrl.isDragging() && this._dragCtrl.getSize() > 0) {
+      this._applyRangeSelection();
+    }
+  }
+
+  /**
    * Handles click on the custom option button.
    * Prevents multiple activations, clears current selection, and dispatches a custom selection event.
    * @param {MouseEvent} e
@@ -620,6 +632,7 @@ export class CcRangeSelector extends CcFormControlElement {
       <fieldset
         class="fieldset ${classMap({ 'is-error': hasErrorMessage })}"
         @input=${this._onControlInput}
+        @mouseup=${this._onFieldsetMouseUp}
         ${ref(this._selectorRef)}
         role="${isModeRange ? 'group' : 'radiogroup'}"
         tabindex="-1"
