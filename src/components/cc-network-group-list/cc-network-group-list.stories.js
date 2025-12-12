@@ -1,4 +1,5 @@
 import { makeStory } from '../../stories/lib/make-story.js';
+import './cc-network-group-list.js';
 
 export default {
   tags: ['autodocs'],
@@ -9,6 +10,7 @@ export default {
 /**
  * @import { CcNetworkGroupList } from './cc-network-group-list.js'
  * @import { NetworkGroup } from './cc-network-group-list.types.js'
+ * @import { Option } from '../cc-select/cc-select.types.js'
  */
 
 const conf = {
@@ -16,7 +18,7 @@ const conf = {
 };
 
 /** @type {NetworkGroup[]} */
-const baseNetworkGroupList = [
+const baseLinkedNetworkGroupList = [
   {
     id: 'ng_XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX',
     name: 'Alpha Network Group',
@@ -43,7 +45,7 @@ const baseNetworkGroupList = [
         type: 'CleverPeer',
       },
     ],
-    dashboardUrl: 'https://example.com',
+    dashboardUrl: '#',
   },
   {
     id: 'ng_XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX',
@@ -64,7 +66,7 @@ const baseNetworkGroupList = [
         type: 'CleverPeer',
       },
     ],
-    dashboardUrl: 'https://example.com',
+    dashboardUrl: '#',
   },
   {
     id: 'ng_XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX',
@@ -78,7 +80,59 @@ const baseNetworkGroupList = [
         type: 'CleverPeer',
       },
     ],
-    dashboardUrl: 'https://example.com',
+    dashboardUrl: '#',
+  },
+];
+
+/** @type {Option[]} */
+const baseNetworkGroupList = [
+  {
+    label: 'ng_XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX',
+    value: 'Delta Network Group',
+  },
+  {
+    label: 'Alpha Network Group',
+    value: 'ng_XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX',
+  },
+  {
+    label: 'Beta Network Group',
+    value: 'ng_XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX',
+  },
+  {
+    label: 'Gamma Network Group',
+    value: 'ng_XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX',
+  },
+  {
+    label: 'Epsilon Network Group',
+    value: 'ng_XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX',
+  },
+  {
+    label: 'Zeta Network Group',
+    value: 'ng_XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX',
+  },
+  {
+    label: 'Eta Network Group',
+    value: 'ng_XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX',
+  },
+  {
+    label: 'Theta Network Group',
+    value: 'ng_XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX',
+  },
+  {
+    label: 'Iota Network Group',
+    value: 'ng_XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX',
+  },
+  {
+    label: 'Kappa Network Group',
+    value: 'ng_XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX',
+  },
+  {
+    label: 'Lambda Network Group',
+    value: 'ng_XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX',
+  },
+  {
+    label: 'Mu Network Group',
+    value: 'ng_XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX',
   },
 ];
 
@@ -86,9 +140,29 @@ export const defaultStory = makeStory(conf, {
   /** @type {Partial<CcNetworkGroupList>[]} */
   items: [
     {
-      state: {
+      linkFormState: {
+        type: 'idle',
+        selectOptions: baseNetworkGroupList,
+      },
+      listState: {
         type: 'loaded',
-        networkGroupList: baseNetworkGroupList,
+        linkedNetworkGroupList: baseLinkedNetworkGroupList,
+      },
+    },
+  ],
+});
+
+export const dataLoadedWithEmpty = makeStory(conf, {
+  /** @type {Partial<CcNetworkGroupList>[]} */
+  items: [
+    {
+      linkFormState: {
+        type: 'idle',
+        selectOptions: baseNetworkGroupList,
+      },
+      listState: {
+        type: 'loaded',
+        linkedNetworkGroupList: [],
       },
     },
   ],
@@ -96,10 +170,20 @@ export const defaultStory = makeStory(conf, {
 
 export const loading = makeStory(conf, {
   /** @type {Partial<CcNetworkGroupList>[]} */
-  items: [{ state: { type: 'loading' } }],
+  items: [
+    {
+      linkFormState: { type: 'loading' },
+      listState: { type: 'loading' },
+    },
+  ],
 });
 
 export const error = makeStory(conf, {
   /** @type {Partial<CcNetworkGroupList>[]} */
-  items: [{ state: { type: 'error' } }],
+  items: [
+    {
+      linkFormState: { type: 'error' },
+      listState: { type: 'error' },
+    },
+  ],
 });
