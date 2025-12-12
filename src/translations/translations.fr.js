@@ -1255,6 +1255,14 @@ export const translations = {
   'cc-network-group-linked-resources.unlink.dialog.heading': `Confirmer la dissociation`,
   'cc-network-group-linked-resources.unlink.dialog.unlink-btn': `Confirmer et dissocier`,
   //#endregion
+  //#region cc-network-group-list
+  'cc-network-group-list.error': `Une erreur est survenue pendant le chargement des Network Groups.`,
+  'cc-network-group-list.link.button': `Lier au Network Group`,
+  'cc-network-group-list.link.description': `Cet écran répertorie tous les Network Groups auxquels cette ressource est attachée. Chaque Network Group définit un réseau privé sécurisé dans lequel la ressource peut communiquer directement avec d'autres ressources (applications, modules complémentaires ou services externes) qui en font partie. Vous trouverez ici une visibilité complète des groupes existants, avec les pairs associés, pour comprendre et gérer les connexions réseau de ressource. Vous pouvez également lier votre ressource à un nouveau Network Group.`,
+  'cc-network-group-list.link.documentation': `Network Groups - Documentation`,
+  'cc-network-group-list.link.heading': `Lier la ressource à un Network Group`,
+  'cc-network-group-list.list.heading': `Network Groups liés`,
+  //#endregion
   //#region cc-notice
   'cc-notice.close': `Fermer cette notice`,
   'cc-notice.icon-alt.danger': `Erreur`,
