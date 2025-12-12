@@ -137,3 +137,15 @@ export class CcPasswordResetEvent extends CcEvent {
     super(CcPasswordResetEvent.TYPE);
   }
 }
+
+/**
+ * Dispatched when focus is lost.
+ * @extends {CcEvent}
+ */
+export class CcFocusLostEvent extends CcEvent {
+  static TYPE = 'cc-focus-lost';
+
+  constructor() {
+    super(CcFocusLostEvent.TYPE);
+  }
+}

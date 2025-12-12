@@ -16,6 +16,15 @@ import { CcAddonOptionFormSubmitEvent } from '../components/cc-addon-option-form
 import { CcAddonOptionChangeEvent } from '../components/cc-addon-option/cc-addon-option.events.js';
 import { CcBreadcrumbClickEvent } from '../components/cc-breadcrumbs/cc-breadcrumbs.events.js';
 import {
+  CcCellarBucketCreateEvent,
+  CcCellarBucketDeleteEvent,
+  CcCellarBucketFilterEvent,
+  CcCellarBucketHideEvent,
+  CcCellarBucketShowEvent,
+  CcCellarBucketSortEvent,
+} from '../components/cc-cellar-explorer/cc-cellar-explorer.events.js';
+import { CcDialogCloseEvent, CcDialogFocusRestorationFail } from '../components/cc-dialog/cc-dialog.events.js';
+import {
   CcDomainAddEvent,
   CcDomainDeleteEvent,
   CcDomainMarkAsPrimaryEvent,
@@ -145,6 +154,7 @@ import {
 import {
   CcClickEvent,
   CcCloseEvent,
+  CcFocusLostEvent,
   CcPasswordResetEvent,
   CcRequestSubmitEvent,
   CcToggleEvent,
@@ -182,9 +192,17 @@ declare global {
     'cc-application-start': CcApplicationStartEvent;
     'cc-application-stop': CcApplicationStopEvent;
     'cc-breadcrumb-click': CcBreadcrumbClickEvent;
+    'cc-cellar-bucket-create': CcCellarBucketCreateEvent;
+    'cc-cellar-bucket-delete': CcCellarBucketDeleteEvent;
+    'cc-cellar-bucket-filter': CcCellarBucketFilterEvent;
+    'cc-cellar-bucket-hide': CcCellarBucketHideEvent;
+    'cc-cellar-bucket-show': CcCellarBucketShowEvent;
+    'cc-cellar-bucket-sort': CcCellarBucketSortEvent;
     'cc-click': CcClickEvent;
     'cc-close': CcCloseEvent;
     'cc-deployment-cancel': CcDeploymentCancelEvent;
+    'cc-dialog-close': CcDialogCloseEvent;
+    'cc-dialog-focus-restoration-fail': CcDialogFocusRestorationFail;
     'cc-domain-add': CcDomainAddEvent;
     'cc-domain-delete': CcDomainDeleteEvent;
     'cc-domain-mark-as-primary': CcDomainMarkAsPrimaryEvent;
@@ -202,6 +220,7 @@ declare global {
     'cc-env-vars-was-updated': CcEnvVarsWasUpdatedEvent;
     'cc-error-message-change': CcErrorMessageChangeEvent;
     'cc-feature-setting-change': CcFeatureSettingChangeEvent;
+    'cc-focus-lost': CcFocusLostEvent;
     'cc-form-invalid': CcFormInvalidEvent;
     'cc-form-valid': CcFormValidEvent;
     'cc-grafana-reset': CcGrafanaResetEvent;

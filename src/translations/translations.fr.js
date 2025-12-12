@@ -50,9 +50,10 @@ const formatDistanceToNow = prepareFormatDistanceToNow(
 );
 
 const formatNumberUnit = prepareNumberUnitFormatter(lang);
-const formatBytes = prepareNumberBytesFormatter(lang, 'o', '\u202f');
 const BYTES_SI_SEPARATOR = '\u202f';
-const formatBytesSi = prepareNumberUnitFormatter(lang, 'o', BYTES_SI_SEPARATOR);
+const BYTES_SYMBOL = 'o';
+const formatBytes = prepareNumberBytesFormatter(lang, BYTES_SYMBOL, BYTES_SI_SEPARATOR);
+const formatBytesSi = prepareNumberUnitFormatter(lang, BYTES_SYMBOL, BYTES_SI_SEPARATOR);
 
 /**
  * @param {number} value
@@ -438,6 +439,75 @@ export const translations = {
   //#endregion
   //#region cc-button
   'cc-button.cancel': `Cliquez pour annuler`,
+  //#endregion
+  //#region cc-cellar-explorer
+  'cc-cellar-explorer.bucket.create.bucket-name.help.case': `Les noms de bucket ne doivent pas contenir de caractères majuscules ou de tirets bas.`,
+  'cc-cellar-explorer.bucket.create.bucket-name.help.ip': `Les noms de bucket ne peuvent pas être formatés comme une adresse IP.`,
+  'cc-cellar-explorer.bucket.create.bucket-name.help.labels': `Les noms de bucket doivent être une série d'une ou plusieurs étiquettes. Les étiquettes adjacentes sont séparées par un point (.). Les noms de bucket peuvent contenir des lettres minuscules, des chiffres et des tirets. Chaque étiquette doit commencer et se terminer par une lettre minuscule ou un chiffre.`,
+  'cc-cellar-explorer.bucket.create.bucket-name.help.size': `Les noms de bucket doivent contenir entre 3 et 63 caractères.`,
+  'cc-cellar-explorer.bucket.create.bucket-name.help.start': `Les noms de bucket doivent commencer par une lettre minuscule ou un chiffre.`,
+  'cc-cellar-explorer.bucket.create.bucket-name.label': `Nom du bucket`,
+  'cc-cellar-explorer.bucket.create.cancel': `Annuler`,
+  'cc-cellar-explorer.bucket.create.error.bucket-already-exists': `Le bucket existe déjà`,
+  'cc-cellar-explorer.bucket.create.error.bucket-name-invalid': `Le nom de bucket est invalide`,
+  'cc-cellar-explorer.bucket.create.error.too-many-buckets': `Vous avez atteint le nombre maximum de buckets. Vous ne pouvez pas en créer de nouveau.`,
+  'cc-cellar-explorer.bucket.create.submit': `Créer le bucket`,
+  'cc-cellar-explorer.bucket.create.title': `Créer un bucket`,
+  'cc-cellar-explorer.bucket.details.actions.delete.button': `Supprimer le bucket`,
+  'cc-cellar-explorer.bucket.details.actions.delete.must-be-empty': `Le bucket doit être vide pour être supprimé`,
+  'cc-cellar-explorer.bucket.details.actions.title': `Actions`,
+  'cc-cellar-explorer.bucket.details.heading': `Détails du bucket`,
+  'cc-cellar-explorer.bucket.details.overview.created-at': `Date de création`,
+  'cc-cellar-explorer.bucket.details.overview.date': /** @param {{date: string}} _ */ ({ date }) => formatDate(date),
+  'cc-cellar-explorer.bucket.details.overview.objects-count': `Nombre d'objets`,
+  'cc-cellar-explorer.bucket.details.overview.size': `Taille`,
+  'cc-cellar-explorer.bucket.details.overview.size-in-bytes': /** @param {{size: number}} _ */ ({ size }) => {
+    const formatted = formatBytes(size);
+    const exact = `${formatNumber(lang, size)}${BYTES_SI_SEPARATOR}${BYTES_SYMBOL}`;
+    return formatted === exact
+      ? formatted
+      : `${formatted} (${formatNumber(lang, size)}${BYTES_SI_SEPARATOR}octet${size <= 1 ? '' : 's'})`;
+  },
+  'cc-cellar-explorer.bucket.details.overview.title': `Aperçu du bucket`,
+  'cc-cellar-explorer.bucket.details.overview.updated-at': `Dernière modification`,
+  'cc-cellar-explorer.bucket.details.overview.versioning': `Versionnage`,
+  'cc-cellar-explorer.bucket.details.overview.versioning.disabled': `Désactivé`,
+  'cc-cellar-explorer.bucket.details.overview.versioning.enabled': `Activé`,
+  'cc-cellar-explorer.bucket.details.overview.versioning.suspended': `Suspendu`,
+  'cc-cellar-explorer.bucket.empty.no-filtered-items': `Aucun bucket ne correspond au filtre`,
+  'cc-cellar-explorer.bucket.empty.no-items': `Vous n'avez aucun bucket`,
+  'cc-cellar-explorer.bucket.error': `Une erreur est survenue pendant le chargement de la liste des buckets`,
+  'cc-cellar-explorer.bucket.heading.create.button': `Créer un bucket`,
+  'cc-cellar-explorer.bucket.heading.filter.button': `Filtrer`,
+  'cc-cellar-explorer.bucket.heading.filter.label': `Filtre`,
+  'cc-cellar-explorer.bucket.heading.title': `Liste des buckets`,
+  'cc-cellar-explorer.bucket.list.a11y-name': `Liste des buckets`,
+  'cc-cellar-explorer.bucket.list.column.last-update': `Dernière modification`,
+  'cc-cellar-explorer.bucket.list.column.name': `Nom du bucket`,
+  'cc-cellar-explorer.bucket.list.column.objects': `Objets`,
+  'cc-cellar-explorer.bucket.list.column.size': `Taille`,
+  'cc-cellar-explorer.bucket.list.show-details.a11y-name': /** @param {{bucketName: string}} _ */ ({ bucketName }) =>
+    `Afficher les détails du bucket ${bucketName}`,
+  'cc-cellar-explorer.count': /** @param {{count: number}} _ */ ({ count }) => formatNumber(lang, count),
+  'cc-cellar-explorer.date': /** @param {{date: string}} _ */ ({ date }) => formatDateOnly(date),
+  'cc-cellar-explorer.error': `Une erreur est survenue pendant le chargement`,
+  'cc-cellar-explorer.error.bucket-creation-failed': /** @param {{bucketName: string}} _ */ ({ bucketName }) =>
+    `La création du bucket ${bucketName} a échoué`,
+  'cc-cellar-explorer.error.bucket-deletion-failed': /** @param {{bucketName: string}} _ */ ({ bucketName }) =>
+    `La suppression du bucket ${bucketName} a échoué`,
+  'cc-cellar-explorer.error.bucket-fetch-failed': /** @param {{bucketName: string}} _ */ ({ bucketName }) =>
+    `Impossible de récupérer le bucket ${bucketName}`,
+  'cc-cellar-explorer.error.bucket-not-empty': /** @param {{bucketName: string}} _ */ ({ bucketName }) =>
+    `Le bucket ${bucketName} ne peut pas être supprimé car il n'est pas vide`,
+  'cc-cellar-explorer.error.bucket-not-found': /** @param {{bucketName: string}} _ */ ({ bucketName }) =>
+    `Le bucket ${bucketName} n'existe pas`,
+  'cc-cellar-explorer.size': /** @param {{size: number}} _ */ ({ size }) => formatBytes(size),
+  'cc-cellar-explorer.success.bucket-already-deleted': /** @param {{bucketName: string}} _ */ ({ bucketName }) =>
+    `Le bucket ${bucketName} était déjà supprimé`,
+  'cc-cellar-explorer.success.bucket-created': /** @param {{bucketName: string}} _ */ ({ bucketName }) =>
+    `Le bucket ${bucketName} a été créé avec succès`,
+  'cc-cellar-explorer.success.bucket-deleted': /** @param {{bucketName: string}} _ */ ({ bucketName }) =>
+    `Le bucket ${bucketName} a été supprimé avec succès`,
   //#endregion
   //#region cc-clipboard
   'cc-clipboard.copied': `Le texte a été copié`,
