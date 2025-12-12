@@ -22,3 +22,7 @@ export const emptyText = makeStory(conf, {
 export const shortText = makeStory(conf, {
   items: [{ value: 'Foo' }],
 });
+
+export const skeleton = makeStory(conf, {
+  items: [{ value: 'Text to copy', skeleton: true }],
+});
