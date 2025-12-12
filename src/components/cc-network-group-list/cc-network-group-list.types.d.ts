@@ -1,3 +1,5 @@
+import { NetworkGroupPeer } from '../cc-network-group-linked-resources/cc-network-group-linked-resources.types.js';
+
 export type NetworkGroupListState =
   | NetworkGroupListStateLoaded
   | NetworkGroupListStateLoading
@@ -19,6 +21,6 @@ export interface NetworkGroupListStateError {
 export interface NetworkGroup {
   id: string;
   name: string;
-  description?: string;
-  memberList: NetworkGroupMember[];
+  peerList: NetworkGroupPeer[];
+  dashboardUrl: string;
 }
