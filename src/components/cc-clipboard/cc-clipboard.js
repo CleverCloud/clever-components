@@ -1,8 +1,11 @@
 import { css, html, LitElement } from 'lit';
+import { classMap } from 'lit/directives/class-map.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { iconRemixFileCopyLine as iconCopy, iconRemixCheckLine as iconSuccess } from '../../assets/cc-remix.icons.js';
 import { copyToClipboard } from '../../lib/clipboard.js';
 import { isStringEmpty } from '../../lib/utils.js';
 import { accessibilityStyles } from '../../styles/accessibility.js';
+import { skeletonStyles } from '../../styles/skeleton.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-icon/cc-icon.js';
 
@@ -21,6 +24,7 @@ import '../cc-icon/cc-icon.js';
 export class CcClipboard extends LitElement {
   static get properties() {
     return {
+      skeleton: { type: Boolean },
       value: { type: String },
       _copied: { type: Boolean, state: true },
     };
@@ -29,6 +33,9 @@ export class CcClipboard extends LitElement {
   constructor() {
     super();
 
+    /** @type {boolean} Enables skeleton screen UI pattern (loading hint). */
+    this.skeleton = false;
+
     /** @type {string|null} The text value to copy to clipboard. */
     this.value = null;
 
@@ -36,7 +43,17 @@ export class CcClipboard extends LitElement {
     this._copied = false;
   }
 
+  /**
+   * @param {FocusOptions} [options]
+   */
+  focus(options) {
+    this.shadowRoot.querySelector('button').focus(options);
+  }
+
   async _copyToClipboard() {
+    if (this.skeleton) {
+      return;
+    }
     await copyToClipboard(this.value);
     this._copied = true;
     setTimeout(() => {
@@ -45,9 +62,14 @@ export class CcClipboard extends LitElement {
   }
 
   render() {
+    const tabIndex = this.skeleton ? -1 : null;
+
     return html`
       <button
         type="button"
+        tabindex=${ifDefined(tabIndex)}
+        class=${classMap({ skeleton: this.skeleton })}
+        aria-disabled=${this.skeleton}
         @click=${this._copyToClipboard}
         title=" ${!isStringEmpty(this.value)
           ? i18n('cc-clipboard.copy', { text: this.value })
@@ -66,6 +88,7 @@ export class CcClipboard extends LitElement {
 
   static get styles() {
     return [
+      skeletonStyles,
       accessibilityStyles,
       // language=CSS
       css`
@@ -91,13 +114,19 @@ export class CcClipboard extends LitElement {
           outline-offset: var(--cc-focus-outline-offset, 2px);
         }
 
-        button:hover {
+        button:not(.skeleton):hover {
           background-color: var(--cc-color-bg-neutral-hovered);
         }
 
         .copy-icon {
           box-sizing: border-box;
           padding: 15%;
+        }
+
+        .skeleton {
+          background-color: #bbb;
+          border-color: #777;
+          color: transparent;
         }
       `,
     ];

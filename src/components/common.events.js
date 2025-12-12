@@ -16,6 +16,18 @@ export class CcToggleEvent extends CcEvent {
 }
 
 /**
+ * Dispatched when an element is closed.
+ * @extends {CcEvent}
+ */
+export class CcCloseEvent extends CcEvent {
+  static TYPE = 'cc-close';
+
+  constructor() {
+    super(CcCloseEvent.TYPE);
+  }
+}
+
+/**
  * Dispatched when a single selection changes.
  * @extends {CcEvent<T>}
  * @template {string} T
@@ -123,5 +135,17 @@ export class CcPasswordResetEvent extends CcEvent {
 
   constructor() {
     super(CcPasswordResetEvent.TYPE);
+  }
+}
+
+/**
+ * Dispatched when focus is lost.
+ * @extends {CcEvent}
+ */
+export class CcFocusLostEvent extends CcEvent {
+  static TYPE = 'cc-focus-lost';
+
+  constructor() {
+    super(CcFocusLostEvent.TYPE);
   }
 }

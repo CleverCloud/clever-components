@@ -14,6 +14,16 @@ import { CcAddonRebuildEvent, CcAddonRestartEvent } from '../components/cc-addon
 import { CcAddonVersionChangeEvent } from '../components/cc-addon-info/cc-addon-info.events.js';
 import { CcAddonOptionFormSubmitEvent } from '../components/cc-addon-option-form/cc-addon-option-form.events.js';
 import { CcAddonOptionChangeEvent } from '../components/cc-addon-option/cc-addon-option.events.js';
+import { CcBreadcrumbClickEvent } from '../components/cc-breadcrumbs/cc-breadcrumbs.events.js';
+import {
+  CcCellarBucketCreateEvent,
+  CcCellarBucketDeleteEvent,
+  CcCellarBucketFilterEvent,
+  CcCellarBucketHideEvent,
+  CcCellarBucketShowEvent,
+  CcCellarBucketSortEvent,
+} from '../components/cc-cellar-explorer/cc-cellar-explorer.events.js';
+import { CcDialogCloseEvent, CcDialogFocusRestorationFail } from '../components/cc-dialog/cc-dialog.events.js';
 import {
   CcDomainAddEvent,
   CcDomainDeleteEvent,
@@ -39,6 +49,7 @@ import {
 } from '../components/cc-env-var-input/cc-env-var-input.events.js';
 import { CcFeatureSettingChangeEvent } from '../components/cc-feature-list/cc-feature-list.events.js';
 import { CcGrafanaResetEvent, CcGrafanaToggleEvent } from '../components/cc-grafana-info/cc-grafana-info.events.js';
+import { CcGridSortEvent } from '../components/cc-grid/cc-grid.events.js';
 import {
   CcApplicationRestartEvent,
   CcApplicationStartEvent,
@@ -142,6 +153,8 @@ import {
 } from '../components/cc-token-api-update-form/cc-token-api-update-form.events.js';
 import {
   CcClickEvent,
+  CcCloseEvent,
+  CcFocusLostEvent,
   CcPasswordResetEvent,
   CcRequestSubmitEvent,
   CcToggleEvent,
@@ -178,8 +191,18 @@ declare global {
     'cc-application-restart': CcApplicationRestartEvent;
     'cc-application-start': CcApplicationStartEvent;
     'cc-application-stop': CcApplicationStopEvent;
+    'cc-breadcrumb-click': CcBreadcrumbClickEvent;
+    'cc-cellar-bucket-create': CcCellarBucketCreateEvent;
+    'cc-cellar-bucket-delete': CcCellarBucketDeleteEvent;
+    'cc-cellar-bucket-filter': CcCellarBucketFilterEvent;
+    'cc-cellar-bucket-hide': CcCellarBucketHideEvent;
+    'cc-cellar-bucket-show': CcCellarBucketShowEvent;
+    'cc-cellar-bucket-sort': CcCellarBucketSortEvent;
     'cc-click': CcClickEvent;
+    'cc-close': CcCloseEvent;
     'cc-deployment-cancel': CcDeploymentCancelEvent;
+    'cc-dialog-close': CcDialogCloseEvent;
+    'cc-dialog-focus-restoration-fail': CcDialogFocusRestorationFail;
     'cc-domain-add': CcDomainAddEvent;
     'cc-domain-delete': CcDomainDeleteEvent;
     'cc-domain-mark-as-primary': CcDomainMarkAsPrimaryEvent;
@@ -197,10 +220,12 @@ declare global {
     'cc-env-vars-was-updated': CcEnvVarsWasUpdatedEvent;
     'cc-error-message-change': CcErrorMessageChangeEvent;
     'cc-feature-setting-change': CcFeatureSettingChangeEvent;
+    'cc-focus-lost': CcFocusLostEvent;
     'cc-form-invalid': CcFormInvalidEvent;
     'cc-form-valid': CcFormValidEvent;
     'cc-grafana-reset': CcGrafanaResetEvent;
     'cc-grafana-toggle': CcGrafanaToggleEvent;
+    'cc-grid-sort': CcGridSortEvent;
     'cc-input': CcInputEvent;
     'cc-kv-command-execute': CcKvCommandExecuteEvent;
     'cc-kv-hash-element-add': CcKvHashElementAddEvent;

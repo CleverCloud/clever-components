@@ -50,6 +50,7 @@ export class CcInputText extends CcFormControlElement {
   static get properties() {
     return {
       ...super.properties,
+      autofocus: { type: Boolean },
       clipboard: { type: Boolean, reflect: true },
       disabled: { type: Boolean, reflect: true },
       hiddenLabel: { type: Boolean, attribute: 'hidden-label' },
@@ -74,6 +75,9 @@ export class CcInputText extends CcFormControlElement {
 
   constructor() {
     super();
+
+    /** @type {boolean} */
+    this.autofocus = false;
 
     /** @type {boolean} Adds a copy-to-clipboard button (when not disabled and not skeleton). */
     this.clipboard = false;
@@ -350,6 +354,7 @@ export class CcInputText extends CcFormControlElement {
                   rows=${rows}
                   ?disabled=${this.disabled || this.skeleton}
                   ?readonly=${this.readonly}
+                  ?autofocus=${this.autofocus}
                   .value=${value}
                   placeholder=${this.placeholder}
                   spellcheck="false"
@@ -378,6 +383,7 @@ export class CcInputText extends CcFormControlElement {
                   class="input ${classMap({ error: hasErrorMessage })}"
                   ?disabled=${this.disabled || this.skeleton}
                   ?readonly=${this.readonly}
+                  ?autofocus=${this.autofocus}
                   .value=${value}
                   placeholder=${this.placeholder}
                   spellcheck="false"
