@@ -36,6 +36,13 @@ export class CcClipboard extends LitElement {
     this._copied = false;
   }
 
+  /**
+   * @param {FocusOptions} [options]
+   */
+  focus(options) {
+    this.shadowRoot.querySelector('button').focus(options);
+  }
+
   async _copyToClipboard() {
     await copyToClipboard(this.value);
     this._copied = true;
