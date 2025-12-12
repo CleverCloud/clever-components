@@ -1243,11 +1243,15 @@ export const translations = {
   'cc-network-group-linked-resources.unlink.dialog.unlink-btn': `Confirm and unlink`,
   //#endregion
   //#region cc-network-group-list
-  'cc-network-group-list.error': `Something went wrong while loading Network Groups.`,
-  'cc-network-group-list.link.button': `Link to the Network Group`,
-  'cc-network-group-list.link.description': `This screen lists all the Network Groups to which this resource (and its instances) is linked to. Each Network Group defines a secure private network in which the resource can communicate directly with other resources (applications, add-ons, or external services) that are part of it. Here you will find complete visibility of existing groups, with associated peers, to understand and manage your resource's network connections. You can also link your resource to a new Network Group.`,
-  'cc-network-group-list.link.documentation': `Network Groups - Documentation`,
-  'cc-network-group-list.link.heading': `Link the resource to a Network Group`,
+  'cc-network-group-list.form.button': `Link to the Network Group`,
+  'cc-network-group-list.form.description': `This screen lists all the Network Groups to which this resource (and its instances) is linked to. Each Network Group defines a secure private network in which the resource can communicate directly with other resources (applications, add-ons, or external services) that are part of it. Here you will find complete visibility of existing groups, with associated peers, to understand and manage your resource's network connections. You can also link your resource to a new Network Group.`,
+  'cc-network-group-list.form.documentation': `Network Groups - Documentation`,
+  'cc-network-group-list.form.error': `Something went wrong while loading the form.`,
+  'cc-network-group-list.form.heading': `Link the resource to a Network Group`,
+  'cc-network-group-list.form.select-label': `Choose a Network Group to link`,
+  'cc-network-group-list.list.dashboard-link': `Go to Network Group`,
+  'cc-network-group-list.list.empty': `You don’t have any Network Groups linked to your resource`,
+  'cc-network-group-list.list.error': `Something went wrong while loading the list of linked Network Groups.`,
   'cc-network-group-list.list.heading': `Linked Network Groups`,
   //#endregion
   //#region cc-notice

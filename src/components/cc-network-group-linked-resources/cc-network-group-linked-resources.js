@@ -3,11 +3,7 @@ import { createRef, ref } from 'lit/directives/ref.js';
 import { repeat } from 'lit/directives/repeat.js';
 import {
   iconRemixArrowUpSLine as iconArrowUp,
-  iconRemixHashtag as iconId,
   iconRemixInformationFill as iconInfo,
-  iconRemixInstallLine as iconIp,
-  iconRemixKey_2Fill as iconKey,
-  iconRemixRadioButtonLine as iconPeerType,
 } from '../../assets/cc-remix.icons.js';
 import { LostFocusController } from '../../controllers/lost-focus-controller.js';
 import { getDevHubUrl } from '../../lib/dev-hub-url.js';
@@ -24,13 +20,13 @@ import '../cc-expand/cc-expand.js';
 import '../cc-img/cc-img.js';
 import '../cc-link/cc-link.js';
 import '../cc-loader/cc-loader.js';
+import '../cc-network-group-peer-card/cc-network-group-peer-card.js';
 import '../cc-notice/cc-notice.js';
 import { CcNetworkGroupMemberUnlinkEvent } from './cc-network-group-linked-resources.events.js';
 
 /**
  * @typedef {import('./cc-network-group-linked-resources.types.js').NetworkGroupLinkedResourcesState} NetworkGroupLinkedResourcesState
  * @typedef {import('./cc-network-group-linked-resources.types.js').NetworkGroupMember} NetworkGroupMember
- * @typedef {import('./cc-network-group-linked-resources.types.js').NetworkGroupPeer} NetworkGroupPeer
  * @typedef {import('../cc-button/cc-button.js').CcButton} CcButton
  * @typedef {import('lit').PropertyValues<CcNetworkGroupLinkedResources>} CcNetworkGroupLinkedResourcesPropertyValues
  * @typedef {import('lit/directives/ref.js').Ref<HTMLDialogElement>} HTMLDialogElementRef
@@ -248,7 +244,11 @@ export class CcNetworkGroupLinkedResources extends LitElement {
               ${member.domainName}
               <cc-clipboard value="${member.domainName}"></cc-clipboard>
             </div>
-            <div class="peer-list">${member.peerList.map((peer) => this._renderPeer(peer))}</div>
+            <div class="peer-list">
+              ${member.peerList.map(
+                (peer) => html`<cc-network-group-peer-card .peer="${peer}"></cc-network-group-peer-card>`,
+              )}
+            </div>
             <cc-button
               class="member-card--with-peers__details__unlink-btn"
               danger
@@ -270,56 +270,6 @@ export class CcNetworkGroupLinkedResources extends LitElement {
     `;
   }
 
-  /** @param {NetworkGroupPeer} peer */
-  _renderPeer(peer) {
-    return html`
-      <div class="peer-card">
-        <span class="peer-card__label">${peer.label}</span>
-        <dl class="metadata-list">
-          <div class="metadata-item metadata-item--id">
-            <dt>
-              <cc-icon
-                .icon="${iconId}"
-                a11y-name="${i18n('cc-network-group-linked-resources.peer.metadata.id')}"
-              ></cc-icon>
-            </dt>
-            <dd><span>${peer.id}</span></dd>
-          </div>
-          <div class="metadata-item metadata-item--key">
-            <dt>
-              <cc-icon
-                .icon="${iconKey}"
-                a11y-name="${i18n('cc-network-group-linked-resources.peer.metadata.key')}"
-              ></cc-icon>
-            </dt>
-            <dd><span>${peer.publicKey}</span></dd>
-          </div>
-          <div class="metadata-item metadata-item--ip">
-            <dt>
-              <cc-icon
-                .icon="${iconIp}"
-                a11y-name="${i18n('cc-network-group-linked-resources.peer.metadata.ip')}"
-              ></cc-icon>
-            </dt>
-            <dd><span>${peer.ip}</span></dd>
-          </div>
-          <div class="metadata-item metadata-item--peer-type">
-            <dt>
-              <cc-icon
-                .icon="${iconPeerType}"
-                a11y-name="${i18n('cc-network-group-linked-resources.peer.metadata.peer-type')}"
-              ></cc-icon>
-            </dt>
-            <dd>
-              <!-- TODO: i18n -->
-              <span>${peer.type}</span>
-            </dd>
-          </div>
-        </dl>
-      </div>
-    `;
-  }
-
   /**
    * @param {string} memberIdToUnlink
    * @param {boolean} isUnlinking
@@ -329,13 +279,13 @@ export class CcNetworkGroupLinkedResources extends LitElement {
       <cc-dialog
         ?open="${memberIdToUnlink != null}"
         heading="${i18n('cc-network-group-linked-resources.unlink.dialog.heading')}"
-        @cc-dialog-close="${this._onDialogClose}"
+        @cc-close="${this._onDialogClose}"
       >
         <p>${i18n('cc-network-group-linked-resources.unlink.dialog.desc')}</p>
         <cc-dialog-confirm-actions
           submit-label="${i18n('cc-network-group-linked-resources.unlink.dialog.unlink-btn')}"
           submit-intent="danger"
-          @cc-dialog-confirm="${() => this._onUnlinkMember(memberIdToUnlink)}"
+          @cc-confirm="${() => this._onUnlinkMember(memberIdToUnlink)}"
           ?waiting="${isUnlinking}"
         >
         </cc-dialog-confirm-actions>
@@ -351,14 +301,6 @@ export class CcNetworkGroupLinkedResources extends LitElement {
           display: block;
 
           --member-card-padding: 1em;
-        }
-
-        dl,
-        dd,
-        dt {
-          font-weight: normal;
-          margin: 0;
-          padding: 0;
         }
 
         .intro {
@@ -521,37 +463,6 @@ export class CcNetworkGroupLinkedResources extends LitElement {
           display: grid;
           gap: 0.5em;
           margin-block: 1em;
-        }
-
-        .peer-card {
-          background-color: var(--cc-color-bg-neutral);
-          border: solid 1px var(--cc-color-border-neutral-weak);
-          border-radius: var(--cc-border-radius-default);
-          display: grid;
-          gap: 1em;
-          padding: 1em;
-        }
-
-        .peer-card__label {
-          font-weight: bold;
-        }
-
-        .metadata-list {
-          display: flex;
-          flex-wrap: wrap;
-          gap: 1em;
-        }
-
-        @container member-card (max-width: 35em) {
-          .metadata-list {
-            flex-direction: column;
-          }
-        }
-
-        .metadata-item {
-          display: flex;
-          gap: 0.5em;
-          word-break: break-all;
         }
 
         cc-dialog p {
