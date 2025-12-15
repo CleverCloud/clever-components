@@ -135,7 +135,8 @@ export class CcEnvVarEditorJson extends LitElement {
     if (changedProperties.has('state')) {
       this._skeleton = this.state.type === 'loading';
       const vars = this.state.type === 'loading' ? SKELETON_VARIABLES : this.state.variables;
-      const filteredVariables = vars.filter(({ isDeleted }) => !isDeleted);
+      // Filter deleted variables and only keep name/value (strip internal state properties like isNew, isEdited, isDeleted)
+      const filteredVariables = vars.filter(({ isDeleted }) => !isDeleted).map(({ name, value }) => ({ name, value }));
       this._variablesAsJson = toJson(filteredVariables);
       this._setErrors([]);
     }
