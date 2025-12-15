@@ -5,6 +5,30 @@ title: 'Changelog'
 
 # Changelog
 
+## [22.6.0](https://github.com/CleverCloud/clever-components/compare/22.5.0...22.6.0) (2025-12-15)
+
+
+### 🚀 Features
+
+* **cc-addon-credentials-beta.smart-elastic:** init ([19ff8c7](https://github.com/CleverCloud/clever-components/commit/19ff8c7e425b29277854db086951f2c00c081cb1))
+* **cc-addon-credentials-beta.smart-materia-kv:** init ([4cde367](https://github.com/CleverCloud/clever-components/commit/4cde367b5165292609cdf0e9f06656d58f346a78))
+* **cc-addon-credentials-beta.smart-pulsar:** init ([3793377](https://github.com/CleverCloud/clever-components/commit/37933775952bc5aeff0359bd70e9445d493e0801))
+* **cc-addon-header.smart-config-provider:** init ([d8e41af](https://github.com/CleverCloud/clever-components/commit/d8e41af87109aee16dd053dee4482f68ca85ab7a))
+* **cc-addon-header.smart-elastic:** init ([4693c03](https://github.com/CleverCloud/clever-components/commit/4693c032a9653430436aa662ff49e454637d84c4))
+* **cc-addon-header.smart-jenkins:** init ([3ee770b](https://github.com/CleverCloud/clever-components/commit/3ee770b9b1a0a8a5905a72423d23e45585094ba4))
+* **cc-addon-header.smart-materia-kv:** init ([4666381](https://github.com/CleverCloud/clever-components/commit/4666381dccb370aa7b5581949562f025cc36d933))
+* **cc-addon-header.smart-pulsar:** init ([42f8c8b](https://github.com/CleverCloud/clever-components/commit/42f8c8bcccf10773cb9e37fa61d01fe05603f34c))
+* **cc-addon-info.smart-config-provider:** init ([eaf3b5d](https://github.com/CleverCloud/clever-components/commit/eaf3b5d5b9373bb02c694849299389e4ff5ba705))
+* **cc-addon-info.smart-elastic:** init ([2891897](https://github.com/CleverCloud/clever-components/commit/28918971f6b77fc3d72fbea2dcd6921c7e7e0bc7))
+* **cc-addon-info.smart-jenkins:** init ([efa7177](https://github.com/CleverCloud/clever-components/commit/efa71774a32852ae4200eb26000abc8eba5187f4))
+* **cc-addon-info.smart-materia-kv:** init ([eb34bf1](https://github.com/CleverCloud/clever-components/commit/eb34bf1df9dcaa255483d74f2299090d7bf1443c))
+* **cc-addon-info.smart-pulsar:** init ([a5690d9](https://github.com/CleverCloud/clever-components/commit/a5690d989e217b54ceb1d86dcbdfb27a28f9ce43))
+
+
+### 🐛 Bug Fixes
+
+* **cc-addon-header.smart-*:** use `ownerId` for the zone endpoint ([f3e1491](https://github.com/CleverCloud/clever-components/commit/f3e149159a5169e642f2eac254fe250f90de2f6a)), closes [#1607](https://github.com/CleverCloud/clever-components/issues/1607)
+
 ## [22.5.0](https://github.com/CleverCloud/clever-components/compare/22.4.1...22.5.0) (2025-11-27)
 
 
