@@ -1,13 +1,11 @@
+import { getAddon as getAddonProvider } from '@clevercloud/client/esm/api/v2/providers.js';
+import { ONE_SECOND } from '@clevercloud/client/esm/with-cache.js';
 import { fakeString } from '../../lib/fake-strings.js';
+import { sendToApi } from '../../lib/send-to-api.js';
 import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
 import '../cc-smart-container/cc-smart-container.js';
 import { CcAddonHeaderClient } from './cc-addon-header.client.js';
 import './cc-addon-header.js';
-// @ts-expect-error FIXME: remove when clever-client exports types
-import { getAddon as getAddonProvider } from '@clevercloud/client/esm/api/v2/providers.js';
-// @ts-expect-error FIXME: remove when clever-client exports types
-import { ONE_SECOND } from '@clevercloud/client/esm/with-cache.js';
-import { sendToApi } from '../../lib/send-to-api.js';
 
 const PROVIDER_ID = 'jenkins';
 

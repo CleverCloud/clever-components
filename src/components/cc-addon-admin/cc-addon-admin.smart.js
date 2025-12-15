@@ -1,6 +1,10 @@
-//prettier-ignore
-// @ts-expect-error FIXME: remove when clever-client exports types
-import { remove as deleteAddon,get as getAddon,getAllTags,replaceAddonTags,update as updateAddon } from '@clevercloud/client/esm/api/v2/addon.js';
+import {
+  remove as deleteAddon,
+  get as getAddon,
+  getAllTags,
+  replaceAddonTags,
+  update as updateAddon,
+} from '@clevercloud/client/esm/api/v2/addon.js';
 import { i18n } from '../../lib/i18n/i18n.js';
 import { notifyError, notifySuccess } from '../../lib/notifications.js';
 import { sendToApi } from '../../lib/send-to-api.js';

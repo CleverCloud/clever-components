@@ -1,13 +1,10 @@
+import { get as getAddon } from '@clevercloud/client/esm/api/v2/addon.js';
+import { getBackups } from '@clevercloud/client/esm/api/v2/backups.js';
+import { getAddon as getAddonFromProvider } from '@clevercloud/client/esm/api/v4/addon-providers.js';
 import { sendToApi } from '../../lib/send-to-api.js';
 import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
 import '../cc-smart-container/cc-smart-container.js';
 import './cc-addon-backups.js';
-// @ts-expect-error FIXME: remove when clever-client exports types
-import { get as getAddon } from '@clevercloud/client/esm/api/v2/addon.js';
-// @ts-expect-error FIXME: remove when clever-client exports types
-import { getBackups } from '@clevercloud/client/esm/api/v2/backups.js';
-// @ts-expect-error FIXME: remove when clever-client exports types
-import { getAddon as getAddonFromProvider } from '@clevercloud/client/esm/api/v4/addon-providers.js';
 
 /**
  * @import { Addon } from '../common.types.js'

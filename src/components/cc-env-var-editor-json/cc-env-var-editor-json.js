@@ -1,4 +1,3 @@
-// @ts-expect-error FIXME: remove when the clever-client exports types
 import { ERROR_TYPES, parseRawJson, toJson } from '@clevercloud/client/esm/utils/env-vars.js';
 import { LitElement, css, html } from 'lit';
 import { i18n } from '../../translations/translation.js';

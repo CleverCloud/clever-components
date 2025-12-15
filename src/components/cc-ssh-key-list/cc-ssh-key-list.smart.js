@@ -1,11 +1,10 @@
-// @ts-expect-error FIXME: remove when clever-client exports types
 import { getKeys } from '@clevercloud/client/esm/api/v2/github.js';
-// @ts-expect-error FIXME: remove when clever-client exports types
 import { get as getUser } from '@clevercloud/client/esm/api/v2/organisation.js';
-// prettier-ignore
-// @ts-expect-error FIXME: remove when clever-client exports types
-import { todo_addSshKey as addSshKey,todo_getSshKeys as getSshKeys,todo_removeSshKey as removeSshKey } from '@clevercloud/client/esm/api/v2/user.js';
-// @ts-expect-error FIXME: remove when clever-client exports types
+import {
+  todo_addSshKey as addSshKey,
+  todo_getSshKeys as getSshKeys,
+  todo_removeSshKey as removeSshKey,
+} from '@clevercloud/client/esm/api/v2/user.js';
 import { ONE_DAY } from '@clevercloud/client/esm/with-cache.js';
 import { notifyError, notifySuccess } from '../../lib/notifications.js';
 import { sendToApi } from '../../lib/send-to-api.js';

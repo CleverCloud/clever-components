@@ -1,4 +1,3 @@
-// @ts-expect-error FIXME: remove when clever-client exports types
 import { HttpError } from '@clevercloud/client/esm/streams/clever-cloud-sse.js';
 import { Buffer } from '../buffer.js';
 import { LogsProgress } from './logs-progress.js';

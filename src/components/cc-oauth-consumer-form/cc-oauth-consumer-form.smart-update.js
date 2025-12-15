@@ -1,4 +1,3 @@
-// @ts-expect-error FIXME: remove when clever-client exports types
 import { get as getOauthConsumer, remove, update } from '@clevercloud/client/esm/api/v2/oauth-consumer.js';
 import { camelCase, snakeCase } from '../../lib/change-case.js';
 import { notifyError, notifySuccess } from '../../lib/notifications.js';

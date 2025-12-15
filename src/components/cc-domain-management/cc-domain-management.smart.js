@@ -1,16 +1,20 @@
-// prettier-ignore
-// @ts-expect-error FIXME: remove when clever-client exports types
-import { addDomain,getAllDomains,getFavouriteDomain as getPrimaryDomain,markFavouriteDomain as markPrimaryDomain,removeDomain,unmarkFavouriteDomain as unmarkPrimaryDomain,} from '@clevercloud/client/esm/api/v2/application.js';
+import {
+  addDomain,
+  getAllDomains,
+  getFavouriteDomain as getPrimaryDomain,
+  markFavouriteDomain as markPrimaryDomain,
+  removeDomain,
+  unmarkFavouriteDomain as unmarkPrimaryDomain,
+} from '@clevercloud/client/esm/api/v2/application.js';
+import { getDefaultLoadBalancersDnsInfo } from '@clevercloud/client/esm/api/v4/load-balancers.js';
 import { getHostWithWildcard, isTestDomain, parseDomain } from '../../lib/domain.js';
 import { notify, notifyError, notifySuccess } from '../../lib/notifications.js';
 import { sendToApi } from '../../lib/send-to-api.js';
 import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-smart-container/cc-smart-container.js';
-import { CcDomainManagement } from './cc-domain-management.js';
-// @ts-expect-error FIXME: remove when clever-client exports types
-import { getDefaultLoadBalancersDnsInfo } from '@clevercloud/client/esm/api/v4/load-balancers.js';
 import { CcDomainPrimaryChangeEvent } from './cc-domain-management.events.js';
+import { CcDomainManagement } from './cc-domain-management.js';
 
 /**
  * @import { DomainManagementListStateLoaded, DomainStateIdle, DomainState, DomainInfo } from './cc-domain-management.types.js'

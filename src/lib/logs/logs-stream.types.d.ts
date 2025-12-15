@@ -1,4 +1,3 @@
-// @ts-expect-error FIXME: remove when clever-client exports types
 import CleverCloudSse from '@clevercloud/client/esm/streams/clever-cloud-sse.js';
 
 export interface AbstractLog {

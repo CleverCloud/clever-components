@@ -1,6 +1,9 @@
-// prettier-ignore
-// @ts-ignore
-import { createGrafanaOrganisation,deleteGrafanaOrganisation,getGrafanaOrganisation,resetGrafanaOrganisation,} from '@clevercloud/client/esm/api/v4/saas.js';
+import {
+  createGrafanaOrganisation,
+  deleteGrafanaOrganisation,
+  getGrafanaOrganisation,
+  resetGrafanaOrganisation,
+} from '@clevercloud/client/esm/api/v4/saas.js';
 import { notifyError, notifySuccess } from '../../lib/notifications.js';
 import { sendToApi } from '../../lib/send-to-api.js';
 import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
