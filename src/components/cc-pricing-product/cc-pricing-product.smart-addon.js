@@ -1,6 +1,4 @@
-// @ts-expect-error FIXME: remove when clever-client exports types
 import { getAllAddonProviders } from '@clevercloud/client/esm/api/v2/product.js';
-// @ts-expect-error FIXME: remove when clever-client exports types
 import { ONE_DAY } from '@clevercloud/client/esm/with-cache.js';
 import { fetchPriceSystem } from '../../lib/api-helpers.js';
 import { formatAddonProduct } from '../../lib/product.js';
@@ -81,6 +79,7 @@ function fetchAddonProduct({ apiConfig, productId, zoneId, addonFeatures, curren
  * @throws {Error} Throws an error if the addon provider is not found.
  */
 function fetchAddonProvider({ apiConfig, signal, productId }) {
+  // @ts-expect-error FIXME: `ownerId` is marked as required in the types but it's a public endpoint that doesn't need it
   return getAllAddonProviders()
     .then(sendToApi({ apiConfig, cacheDelay: ONE_DAY, signal }))
     .then(

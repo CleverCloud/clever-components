@@ -1,4 +1,3 @@
-// @ts-expect-error FIXME: remove when clever-client exports types
 import { validateName } from '@clevercloud/client/esm/utils/env-vars.js';
 import { css, html, LitElement } from 'lit';
 import { i18n } from '../../translations/translation.js';

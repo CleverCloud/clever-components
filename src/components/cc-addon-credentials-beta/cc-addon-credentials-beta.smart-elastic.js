@@ -1,6 +1,4 @@
-// @ts-expect-error FIXME: remove when clever-client exports types
 import { getAddon as getAddonProvider } from '@clevercloud/client/esm/api/v2/providers.js';
-// @ts-expect-error FIXME: remove when clever-client exports types
 import { ONE_SECOND } from '@clevercloud/client/esm/with-cache.js';
 import { getDocUrl } from '../../lib/dev-hub-url.js';
 import { sendToApi } from '../../lib/send-to-api.js';

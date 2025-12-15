@@ -1,10 +1,6 @@
-// @ts-expect-error FIXME: remove when clever-client exports types
 import { getStatusCodesFromWarp10 } from '@clevercloud/client/esm/access-logs.js';
-// @ts-expect-error FIXME: remove when clever-client exports types
 import { getWarp10AccessLogsToken } from '@clevercloud/client/esm/api/v2/warp-10.js';
-// @ts-expect-error FIXME: remove when clever-client exports types
 import { THIRTY_SECONDS } from '@clevercloud/client/esm/request.fetch-with-timeout.js';
-// @ts-expect-error FIXME: remove when clever-client exports types
 import { ONE_DAY } from '@clevercloud/client/esm/with-cache.js';
 import { sendToApi, sendToWarp } from '../../lib/send-to-api.js';
 import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';

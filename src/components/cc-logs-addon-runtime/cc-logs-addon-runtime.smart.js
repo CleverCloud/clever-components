@@ -1,4 +1,3 @@
-// @ts-expect-error FIXME: remove when clever-client exports types
 import { ResourceLogStream } from '@clevercloud/client/esm/streams/resource-logs.js';
 import { LogsStream } from '../../lib/logs/logs-stream.js';
 import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
@@ -118,7 +117,9 @@ class SmartController extends LogsStream {
       tokens: this._apiConfig,
       ownerId: this._ownerId,
       addonId: this._addonId,
+      // @ts-expect-error: FIXME: client types seem to expect Date but dateRange has string
       since: dateRange.since,
+      // @ts-expect-error: FIXME: client types seem to expect Date but dateRange has string
       until: dateRange.until,
       retryConfiguration: { enabled: true, maxRetryCount },
       throttleElements,

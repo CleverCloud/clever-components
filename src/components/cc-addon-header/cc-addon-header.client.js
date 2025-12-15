@@ -1,10 +1,7 @@
-// @ts-expect-error FIXME: remove when clever-client exports types
 import { get as getAddon } from '@clevercloud/client/esm/api/v2/addon.js';
-// @ts-expect-error FIXME: remove when clever-client exports types
 import { getZone } from '@clevercloud/client/esm/api/v4/product.js';
-import { sendToApi } from '../../lib/send-to-api.js';
-// @ts-expect-error FIXME: remove when clever-client exports types
 import { ONE_SECOND } from '@clevercloud/client/esm/with-cache.js';
+import { sendToApi } from '../../lib/send-to-api.js';
 
 /**
  * @import { RawAddon } from './cc-addon-header.types.js'
@@ -53,7 +50,7 @@ export class CcAddonHeaderClient {
    * @return {Promise<ZoneStateLoaded>}
    */
   getZone(zoneName) {
-    return getZone({ zoneName }).then(
+    return getZone({ zoneName, ownerId: this._ownerId }).then(
       sendToApi({ apiConfig: this._apiConfig, signal: this._signal, cacheDelay: ONE_SECOND }),
     );
   }

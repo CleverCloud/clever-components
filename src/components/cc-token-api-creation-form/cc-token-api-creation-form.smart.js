@@ -1,4 +1,3 @@
-// @ts-expect-error FIXME: remove when clever-client exports types
 import { get as getSelf } from '@clevercloud/client/esm/api/v2/organisation.js';
 import { notifyError } from '../../lib/notifications.js';
 import { sendToApi } from '../../lib/send-to-api.js';

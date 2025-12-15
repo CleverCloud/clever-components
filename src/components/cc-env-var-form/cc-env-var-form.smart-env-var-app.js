@@ -1,7 +1,9 @@
-//prettier-ignore
-// @ts-expect-error FIXME: remove when clever-client exports types
-import { getAllDeployments,getAllEnvVars,redeploy,updateAllEnvVars } from '@clevercloud/client/esm/api/v2/application.js';
-// @ts-expect-error FIXME: remove when clever-client exports types
+import {
+  getAllDeployments,
+  getAllEnvVars,
+  redeploy,
+  updateAllEnvVars,
+} from '@clevercloud/client/esm/api/v2/application.js';
 import { toNameValueObject } from '@clevercloud/client/esm/utils/env-vars.js';
 import { notifyError, notifySuccess } from '../../lib/notifications.js';
 import { sendToApi } from '../../lib/send-to-api.js';
@@ -144,7 +146,7 @@ class Api {
     );
   }
 
-  /** @param {Array<EnvVar>} newVarsObject */
+  /** @param {Record<string, string>} newVarsObject */
   updateVariables(newVarsObject) {
     return updateAllEnvVars({ id: this._ownerId, appId: this._appId }, newVarsObject).then(
       sendToApi({ apiConfig: this._apiConfig }),
@@ -152,6 +154,7 @@ class Api {
   }
 
   async hasDeployments() {
+    // @ts-expect-error FIXME: should be fixed in @clevercloud/client, limit is optional
     const deployments = await getAllDeployments({ id: this._ownerId, appId: this._appId }).then(
       sendToApi({ apiConfig: this._apiConfig }),
     );
@@ -159,6 +162,7 @@ class Api {
   }
 
   redeployApp() {
+    // @ts-expect-error FIXME: should be fixed in @clevercloud/client, useCache is optional
     return redeploy({ id: this._ownerId, appId: this._appId }).then(sendToApi({ apiConfig: this._apiConfig }));
   }
 }

@@ -1,7 +1,9 @@
-// prettier-ignore
-// @ts-expect-error FIXME: remove when clever-client exports types
-import { addMember,getAllMembers,removeMemeber as removeMember,updateMember,} from '@clevercloud/client/esm/api/v2/organisation.js';
-// @ts-expect-error FIXME: remove when clever-client exports types
+import {
+  addMember,
+  getAllMembers,
+  removeMemeber as removeMember,
+  updateMember,
+} from '@clevercloud/client/esm/api/v2/organisation.js';
 import { getId } from '@clevercloud/client/esm/api/v2/user.js';
 import { notifyError, notifySuccess } from '../../lib/notifications.js';
 import { sendToApi } from '../../lib/send-to-api.js';
@@ -348,6 +350,7 @@ function getMemberList({ apiConfig, ownerId, signal }) {
  * @return {Promise<void>}
  */
 function postNewMember({ apiConfig, ownerId, email, role }) {
+  // @ts-expect-error FIXME: invitationKey is required by types, need to check why and if it's a mistake from the client
   return addMember({ id: ownerId }, { email, role, job: null }).then(sendToApi({ apiConfig }));
 }
 

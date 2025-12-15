@@ -1,6 +1,4 @@
-// @ts-expect-error FIXME: remove when clever-client exports types
 import { getAllExposedEnvVars, updateAllExposedEnvVars } from '@clevercloud/client/esm/api/v2/application.js';
-// @ts-expect-error FIXME: remove when clever-client exports types
 import { toNameValueObject } from '@clevercloud/client/esm/utils/env-vars.js';
 import { fetchApp } from '../../lib/api-helpers.js';
 import { notifyError, notifySuccess } from '../../lib/notifications.js';

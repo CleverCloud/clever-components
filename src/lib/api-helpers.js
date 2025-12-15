@@ -1,12 +1,7 @@
-// @ts-expect-error FIXME: remove when clever-client exports types
 import { get as getApp } from '@clevercloud/client/esm/api/v2/application.js';
-// @ts-expect-error FIXME: remove when clever-client exports types
 import { getAllInvoices, getInvoice, getPriceSystem } from '@clevercloud/client/esm/api/v4/billing.js';
-// @ts-expect-error FIXME: remove when clever-client exports types
 import { addOauthHeader } from '@clevercloud/client/esm/oauth.js';
-// @ts-expect-error FIXME: remove when clever-client exports types
 import { prefixUrl } from '@clevercloud/client/esm/prefix-url.js';
-// @ts-expect-error FIXME: remove when clever-client exports types
 import { ONE_DAY } from '@clevercloud/client/esm/with-cache.js';
 import { sendToApi } from './send-to-api.js';
 import { asyncMap } from './utils.js';
@@ -107,13 +102,11 @@ function getDownloadUrl(apiConfig, ownerId, invoiceNumber) {
   return getInvoice({ id: ownerId, invoiceNumber, type: '.pdf' })
     .then(prefixUrl(apiConfig.API_HOST))
     .then(addOauthHeader(apiConfig))
-    .then(
-      /** @param {{url: string, headers: {authorization: string}}} requestParams */ (requestParams) => {
-        const url = new URL(requestParams.url);
-        url.searchParams.set('authorization', btoa(requestParams.headers.authorization));
-        return url.toString();
-      },
-    );
+    .then((requestParams) => {
+      const url = new URL(requestParams.url);
+      url.searchParams.set('authorization', btoa(requestParams.headers.authorization));
+      return url.toString();
+    });
 }
 
 /**

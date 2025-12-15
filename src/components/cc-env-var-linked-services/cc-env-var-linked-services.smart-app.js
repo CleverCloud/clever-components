@@ -1,4 +1,3 @@
-// @ts-expect-error FIXME: remove when clever-client exports types
 import { get, getAllEnvVarsForDependencies } from '@clevercloud/client/esm/api/v2/application.js';
 import { sendToApi } from '../../lib/send-to-api.js';
 import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';

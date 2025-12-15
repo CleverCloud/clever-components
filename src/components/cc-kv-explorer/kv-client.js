@@ -1,8 +1,5 @@
-// @ts-expect-error FIXME: remove when clever-client exports types
 import { prefixUrl } from '@clevercloud/client/esm/prefix-url.js';
-// @ts-expect-error FIXME: remove when clever-client exports types
 import { request } from '@clevercloud/client/esm/request.fetch.js';
-// @ts-expect-error FIXME: remove when clever-client exports types
 import { withOptions } from '@clevercloud/client/esm/with-options.js';
 
 /**

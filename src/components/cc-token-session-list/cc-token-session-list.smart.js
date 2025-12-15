@@ -1,6 +1,7 @@
-// prettier-ignore
-// @ts-expect-error FIXME: remove when clever-client exports types
-import { todo_listSelfTokens as getAllTokens,todo_revokeSelfToken as revokeToken } from '@clevercloud/client/esm/api/v2/user.js';
+import {
+  todo_listSelfTokens as getAllTokens,
+  todo_revokeSelfToken as revokeToken,
+} from '@clevercloud/client/esm/api/v2/user.js';
 import { notifyError, notifySuccess } from '../../lib/notifications.js';
 import { sendToApi } from '../../lib/send-to-api.js';
 import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';

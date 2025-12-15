@@ -1,11 +1,9 @@
-import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
-// @ts-expect-error FIXME: remove when clever-client exports types
 import { getAddon as getAddonProvider } from '@clevercloud/client/esm/api/v2/providers.js';
-// @ts-expect-error FIXME: remove when clever-client exports types
 import { ONE_SECOND } from '@clevercloud/client/esm/with-cache.js';
 import { getDocUrl } from '../../lib/dev-hub-url.js';
 import { formatAddonFeatures } from '../../lib/product.js';
 import { sendToApi } from '../../lib/send-to-api.js';
+import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-smart-container/cc-smart-container.js';
 import { CcAddonInfoClient } from './cc-addon-info.client.js';

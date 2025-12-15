@@ -1,6 +1,4 @@
-// @ts-expect-error FIXME: remove when clever-client exports types
 import { request } from '@clevercloud/client/esm/request.fetch.js';
-// @ts-expect-error FIXME: remove when clever-client exports types
 import { withCache } from '@clevercloud/client/esm/with-cache.js';
 import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
 import { parseRssFeed } from '../../lib/xml-parser.js';
