@@ -1,12 +1,10 @@
-// @ts-expect-error FIXME: remove when clever-client exports types
 import { getDeployment as getDeploymentV2 } from '@clevercloud/client/esm/api/v2/application.js';
-// @ts-expect-error FIXME: remove when clever-client exports types
-import { ApplicationLogStream } from '@clevercloud/client/esm/streams/application-logs.js';
-// @ts-expect-error FIXME: remove when clever-client exports types
 import { getApplicationDeployment as getDeploymentV4 } from '@clevercloud/client/esm/api/v4/deployment.js';
-// prettier-ignore
-// @ts-expect-error FIXME: remove when clever-client exports types
-import { getAllApplicationInstances as getApplicationInstancesV4,getInstance as getInstanceV4 } from '@clevercloud/client/esm/api/v4/instance.js';
+import {
+  getAllApplicationInstances as getApplicationInstancesV4,
+  getInstance as getInstanceV4,
+} from '@clevercloud/client/esm/api/v4/instance.js';
+import { ApplicationLogStream } from '@clevercloud/client/esm/streams/application-logs.js';
 import { isLive, lastXDays } from '../../lib/date/date-range-utils.js';
 import { LogsStream } from '../../lib/logs/logs-stream.js';
 import { sendToApi } from '../../lib/send-to-api.js';
@@ -140,7 +138,9 @@ class SmartController extends LogsStream {
       tokens: this._apiConfig,
       ownerId: this._ownerId,
       appId: this._appId,
+      // @ts-expect-error: FIXME: client types seem to expect Date but dateRange has string
       since: optimizedRange.since,
+      // @ts-expect-error: FIXME: client types seem to expect Date but dateRange has string
       until: optimizedRange.until,
       instanceId: this._selection,
       retryConfiguration: { enabled: true, maxRetryCount },
@@ -892,6 +892,7 @@ class Api {
    * @returns {Promise<any>}
    */
   fetchDeployment(deploymentId) {
+    // @ts-expect-error FIXME: client types seem to expect Date but dateRange has string
     return getDeploymentV4({ ...this._applicationRef, deploymentId }).then(sendToApi({ apiConfig: this._apiConfig }));
   }
 
@@ -909,6 +910,7 @@ class Api {
    * @returns {Promise<Array<any>>}
    */
   fetchInstances(since, until) {
+    // @ts-expect-error FIXME: client types seem to expect a string but number is fine too since it's gonna be injected as queryParam, should be fixed in client types
     return getApplicationInstancesV4({ ...this._applicationRef, limit: 100, since, until }).then(
       sendToApi({ apiConfig: this._apiConfig }),
     );
@@ -919,6 +921,7 @@ class Api {
    * @returns {Promise<Array<any>>}
    */
   fetchInstancesByDeployment(deploymentId) {
+    // @ts-expect-error FIXME: client types seem to expect a string but number is fine too since it's gonna be injected as queryParam, should be fixed in client types
     return getApplicationInstancesV4({ ...this._applicationRef, limit: 100, deploymentId }).then(
       sendToApi({ apiConfig: this._apiConfig }),
     );

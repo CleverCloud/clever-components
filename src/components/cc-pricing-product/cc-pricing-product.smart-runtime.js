@@ -1,6 +1,4 @@
-// @ts-expect-error FIXME: remove when clever-client exports types
 import { getAvailableInstances } from '@clevercloud/client/esm/api/v2/product.js';
-// @ts-expect-error FIXME: remove when clever-client exports types
 import { ONE_DAY } from '@clevercloud/client/esm/with-cache.js';
 import { fetchPriceSystem } from '../../lib/api-helpers.js';
 import { formatRuntimeProduct, getRunnerProduct } from '../../lib/product.js';
@@ -79,6 +77,7 @@ function fetchRuntimeProduct({ apiConfig, productId, zoneId, currency, signal })
  * @throws {Error} Throws an error if the product is not found and is not a runner.
  */
 function fetchRuntime({ apiConfig, productId, signal }) {
+  // @ts-expect-error FIXME: `for` is marked as required in the types but it's a public endpoint that doesn't need it + return type don't match
   return getAvailableInstances()
     .then(sendToApi({ apiConfig, cacheDelay: ONE_DAY, signal }))
     .then(

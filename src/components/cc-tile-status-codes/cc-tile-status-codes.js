@@ -132,7 +132,7 @@ export class CcTileStatusCodes extends LitElement {
               // Filter legend items so we can only keep 1xx, 2xx... instead of all status codes
               filter: (current, all) => {
                 const label = current.text;
-                // @ts-expect-error FIXME: remove this when we upgrade chartjs (see https://github.com/CleverCloud/clever-components/issues/1056)
+                // @ts-expect-error FIXME: either ChartJs type is wrong or we are missing something
                 const previousLabel = all.labels[current.index - 1];
                 return label !== previousLabel;
               },

@@ -1,11 +1,9 @@
+import { getOrganisationApplicationMetrics } from '@clevercloud/client/esm/api/v4/resources.js';
+import { getGrafanaOrganisation } from '@clevercloud/client/esm/api/v4/saas.js';
 import { sendToApi } from '../../lib/send-to-api.js';
 import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
 import '../cc-smart-container/cc-smart-container.js';
 import './cc-tile-metrics.js';
-// @ts-expect-error FIXME: remove when clever-client exports types
-import { getGrafanaOrganisation } from '@clevercloud/client/esm/api/v4/saas.js';
-// @ts-expect-error FIXME: remove when clever-client exports types
-import { getOrganisationApplicationMetrics } from '@clevercloud/client/esm/api/v4/resources.js';
 
 /**
  * @import { CcTileMetrics } from './cc-tile-metrics.js'
@@ -78,6 +76,7 @@ function fetchMetrics({ apiConfig, ownerId, appId, signal }) {
     resourceId: appId,
     interval: 'P1D',
     span: 'PT1H',
+    // @ts-expect-error FIXME: the client expects a string, which makes sense since it's using this as a query param. We should fix this but we need to check how the string is supposed to be formatted (separator, etc.)
     only: ['cpu', 'mem'],
   })
     .then(sendToApi({ apiConfig, signal }))

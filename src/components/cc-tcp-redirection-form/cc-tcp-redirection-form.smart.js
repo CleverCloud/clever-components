@@ -1,6 +1,4 @@
-// @ts-expect-error FIXME: remove when clever-client exports types
 import { addTcpRedir, getTcpRedirs, removeTcpRedir } from '@clevercloud/client/esm/api/v2/application.js';
-// @ts-expect-error FIXME: remove when clever-client exports types
 import { getNamespaces } from '@clevercloud/client/esm/api/v2/organisation.js';
 import { notifyError, notifySuccess } from '../../lib/notifications.js';
 import { sendToApi } from '../../lib/send-to-api.js';
@@ -147,7 +145,7 @@ async function fetchTcpRedirectionsAndNamespaces({ apiConfig, signal, ownerId, a
  * @returns {Promise<{ port: number }>}
  */
 async function createTcpRedirection({ apiConfig, ownerId, appId, namespace }) {
-  return addTcpRedir({ id: ownerId, appId, payment: 'accepted' }, { namespace }).then(sendToApi({ apiConfig }));
+  return addTcpRedir({ id: ownerId, appId }, { namespace }).then(sendToApi({ apiConfig }));
 }
 
 /**
@@ -155,10 +153,12 @@ async function createTcpRedirection({ apiConfig, ownerId, appId, namespace }) {
  * @param {ApiConfig} settings.apiConfig
  * @param {string} settings.ownerId
  * @param {string} settings.appId
- * @param {Number|null} settings.sourcePort
+ * @param {number|null} settings.sourcePort
  * @param {string} settings.namespace
  * @returns {Promise<void>}
  */
 async function deleteTcpRedirection({ apiConfig, ownerId, appId, sourcePort, namespace }) {
-  return removeTcpRedir({ id: ownerId, appId, sourcePort, namespace }).then(sendToApi({ apiConfig }));
+  return removeTcpRedir({ id: ownerId, appId, sourcePort: sourcePort?.toString(), namespace }).then(
+    sendToApi({ apiConfig }),
+  );
 }

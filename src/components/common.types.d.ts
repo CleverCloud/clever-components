@@ -243,9 +243,9 @@ export interface EnvVarParseError {
 }
 
 export interface EnvVarRawError {
-  type: string;
-  name: string;
-  pos: {
+  type: number;
+  name?: string;
+  pos?: {
     line: number;
     column: number;
   };
