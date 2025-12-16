@@ -339,8 +339,8 @@ export class CcAddonInfo extends LitElement {
       <cc-dialog
         heading="${i18n('cc-addon-info.version.dialog.heading')}"
         open
-        @cc-dialog-close="${this._onVersionDialogClose}"
-        @cc-dialog-focus-restoration-fail="${() => this._versionTextRef.value?.focus()}"
+        @cc-close="${this._onVersionDialogClose}"
+        @cc-focus-restoration-fail="${() => this._versionTextRef.value?.focus()}"
       >
         <div class="dialog-desc">${i18n('cc-addon-info.version.dialog.desc', { url: changelogLink })}</div>
         <form ${formSubmit(this._onUpdateVersionRequested.bind(this))} ${ref(this._versionFormRef)}>
@@ -367,7 +367,7 @@ export class CcAddonInfo extends LitElement {
           <cc-dialog-confirm-actions
             submit-label="${i18n('cc-addon-info.version.dialog.btn.submit')}"
             ?waiting="${isRequestingUpdate}"
-            @cc-dialog-confirm="${() => this._versionFormRef.value.requestSubmit()}"
+            @cc-confirm="${() => this._versionFormRef.value.requestSubmit()}"
           ></cc-dialog-confirm-actions>
         </form>
       </cc-dialog>

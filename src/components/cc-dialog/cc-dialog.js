@@ -10,7 +10,7 @@ import { i18n } from '../../translations/translation.js';
 import '../cc-button/cc-button.js';
 import '../cc-icon/cc-icon.js';
 import '../cc-input-text/cc-input-text.js';
-import { CcDialogCloseEvent, CcDialogFocusRestorationFail } from './cc-dialog.events.js';
+import { CcCloseEvent, CcFocusRestorationFail, CcOpenEvent } from '../common.events.js';
 
 /**
  * @import { IconModel } from '../common.types.js';
@@ -94,12 +94,13 @@ export class CcDialog extends LitElement {
     if (isClosing) {
       this._dialogRef.value?.close();
       this._tryToFocusOpenerElement();
-      this.dispatchEvent(new CcDialogCloseEvent());
+      this.dispatchEvent(new CcCloseEvent());
     }
 
     if (isOpening) {
       this._openerElement = findActiveElement();
       this._dialogRef.value?.showModal();
+      this.dispatchEvent(new CcOpenEvent());
     }
   }
 
@@ -124,7 +125,7 @@ export class CcDialog extends LitElement {
     if (this._openerElement instanceof HTMLElement && this._openerElement.isConnected) {
       this._openerElement.focus();
     } else {
-      this.dispatchEvent(new CcDialogFocusRestorationFail(this._openerElement));
+      this.dispatchEvent(new CcFocusRestorationFail(this._openerElement));
     }
   }
 
@@ -145,7 +146,7 @@ export class CcDialog extends LitElement {
         part="dialog"
         ${ref(this._dialogRef)}
         @cancel="${this._onDialogClose}"
-        @cc-dialog-close-request="${this._onDialogClose}"
+        @cc-close-request="${this._onDialogClose}"
       >
         ${!this.hiddenCloseButton
           ? html`
@@ -205,13 +206,13 @@ export class CcDialog extends LitElement {
         }
 
         ::backdrop {
-          background: rgb(30 30 30 / 55%);
+          background: var(--cc-color-bg-backdrop, rgb(30 30 30 / 55%));
         }
 
         @supports (backdrop-filter: blur(5px)) {
           ::backdrop {
-            backdrop-filter: blur(5px);
-            background: rgb(30 30 30 / 35%);
+            backdrop-filter: var(--cc-blur-default, blur(5px));
+            background: var(--cc-color-bg-backdrop, rgb(30 30 30 / 55%));
           }
         }
 

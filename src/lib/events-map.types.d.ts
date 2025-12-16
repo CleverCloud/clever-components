@@ -14,12 +14,6 @@ import { CcAddonRebuildEvent, CcAddonRestartEvent } from '../components/cc-addon
 import { CcAddonVersionChangeEvent } from '../components/cc-addon-info/cc-addon-info.events.js';
 import { CcAddonOptionFormSubmitEvent } from '../components/cc-addon-option-form/cc-addon-option-form.events.js';
 import { CcAddonOptionChangeEvent } from '../components/cc-addon-option/cc-addon-option.events.js';
-import { CcDialogConfirmEvent } from '../components/cc-dialog-confirm-actions/cc-dialog-confirm-actions.events.js';
-import {
-  CcDialogCloseEvent,
-  CcDialogCloseRequestEvent,
-  CcDialogFocusRestorationFail,
-} from '../components/cc-dialog/cc-dialog.events.js';
 import {
   CcDomainAddEvent,
   CcDomainDeleteEvent,
@@ -148,6 +142,11 @@ import {
 } from '../components/cc-token-api-update-form/cc-token-api-update-form.events.js';
 import {
   CcClickEvent,
+  CcCloseEvent,
+  CcCloseRequest,
+  CcConfirmEvent,
+  CcFocusRestorationFail,
+  CcOpenEvent,
   CcPasswordResetEvent,
   CcRequestSubmitEvent,
   CcToggleEvent,
@@ -185,11 +184,10 @@ declare global {
     'cc-application-start': CcApplicationStartEvent;
     'cc-application-stop': CcApplicationStopEvent;
     'cc-click': CcClickEvent;
+    'cc-close': CcCloseEvent;
+    'cc-close-request': CcCloseRequest;
+    'cc-confirm': CcConfirmEvent;
     'cc-deployment-cancel': CcDeploymentCancelEvent;
-    'cc-dialog-close': CcDialogCloseEvent;
-    'cc-dialog-close-request': CcDialogCloseRequestEvent;
-    'cc-dialog-confirm': CcDialogConfirmEvent;
-    'cc-dialog-focus-restoration-fail': CcDialogFocusRestorationFail;
     'cc-domain-add': CcDomainAddEvent;
     'cc-domain-delete': CcDomainDeleteEvent;
     'cc-domain-mark-as-primary': CcDomainMarkAsPrimaryEvent;
@@ -207,6 +205,7 @@ declare global {
     'cc-env-vars-was-updated': CcEnvVarsWasUpdatedEvent;
     'cc-error-message-change': CcErrorMessageChangeEvent;
     'cc-feature-setting-change': CcFeatureSettingChangeEvent;
+    'cc-focus-restoration-fail': CcFocusRestorationFail;
     'cc-form-invalid': CcFormInvalidEvent;
     'cc-form-valid': CcFormValidEvent;
     'cc-grafana-reset': CcGrafanaResetEvent;
@@ -261,6 +260,7 @@ declare global {
     'cc-oauth-consumer-was-created': CcOauthConsumerWasCreatedEvent;
     'cc-oauth-consumer-was-deleted': CcOauthConsumerWasDeletedEvent;
     'cc-oauth-consumer-was-updated': CcOauthConsumerWasUpdatedEvent;
+    'cc-open': CcOpenEvent;
     'cc-orga-member-delete': CcOrgaMemberDeleteEvent;
     'cc-orga-member-edit-toggle': CcOrgaMemberEditToggleEvent;
     'cc-orga-member-invite': CcOrgaMemberInviteEvent;

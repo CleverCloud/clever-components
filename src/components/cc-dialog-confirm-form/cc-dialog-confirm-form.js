@@ -4,10 +4,10 @@ import { EventHandler } from '../../lib/events.js';
 import { formSubmit } from '../../lib/form/form-submit-directive.js';
 import { Validation } from '../../lib/form/validation.js';
 import { i18n } from '../../translations/translation.js';
-import { CcDialogConfirmEvent } from '../cc-dialog-confirm-actions/cc-dialog-confirm-actions.events.js';
 import '../cc-dialog-confirm-actions/cc-dialog-confirm-actions.js';
 import { CcDialog } from '../cc-dialog/cc-dialog.js';
 import '../cc-input-text/cc-input-text.js';
+import { CcCloseEvent, CcConfirmEvent } from '../common.events.js';
 
 /**
  * @import { Validator } from '../../lib/form/validation.js';
@@ -93,8 +93,10 @@ export class CcDialogConfirmForm extends LitElement {
     /** @type {Ref<HTMLFormElement>} */
     this._formRef = createRef();
 
+    /** @type {EventHandler<Event>} */
     this._dialogCloseHandler = null;
 
+    /** @type {CcDialog} */
     this._parentCcDialog = null;
   }
 
@@ -103,10 +105,12 @@ export class CcDialogConfirmForm extends LitElement {
     if (this._parentCcDialog instanceof CcDialog) {
       this._dialogCloseHandler = new EventHandler(
         this._parentCcDialog,
-        'cc-dialog-close',
+        CcCloseEvent.TYPE,
         this._onParentDialogClose.bind(this),
       );
       this._dialogCloseHandler.connect();
+    } else {
+      console.warn('cc-dialog-confirm-form must be used inside a cc-dialog to function properly');
     }
     super.connectedCallback();
   }
@@ -117,7 +121,7 @@ export class CcDialogConfirmForm extends LitElement {
   }
 
   _onConfirm() {
-    this.dispatchEvent(new CcDialogConfirmEvent());
+    this.dispatchEvent(new CcConfirmEvent());
   }
 
   /** @param {Event} event */
@@ -129,7 +133,7 @@ export class CcDialogConfirmForm extends LitElement {
     }
   }
 
-  /** @param {CcDialogConfirmEvent} e */
+  /** @param {CcConfirmEvent} e */
   _onRequestSubmit(e) {
     e.stopPropagation();
     this._formRef.value?.requestSubmit();
@@ -159,7 +163,7 @@ export class CcDialogConfirmForm extends LitElement {
             .submitLabel="${this.submitLabel}"
             .submitIntent="${this.submitIntent}"
             ?waiting="${this.waiting}"
-            @cc-dialog-confirm="${this._onRequestSubmit}"
+            @cc-confirm="${this._onRequestSubmit}"
           ></cc-dialog-confirm-actions>
         </div>
       </form>

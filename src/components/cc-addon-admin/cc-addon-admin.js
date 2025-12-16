@@ -249,9 +249,9 @@ export class CcAddonAdmin extends LitElement {
       <cc-dialog
         ?open=${isOpen}
         slot="content-body"
-        @cc-dialog-close=${this._onDialogClose}
+        @cc-close=${this._onDialogClose}
         heading="${i18n('cc-addon-admin.delete.dialog.heading')}"
-        @cc-dialog-confirm=${this._onDeleteSubmit}
+        @cc-confirm=${this._onDeleteSubmit}
       >
         <p>${i18n('cc-addon-admin.delete.dialog.desc')}</p>
         <cc-dialog-confirm-form

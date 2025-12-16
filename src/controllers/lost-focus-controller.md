@@ -20,7 +20,7 @@ The controller tracks focus loss in two ways:
 2. **Dialog focus restoration failure**: When a `cc-dialog` component closes and fails to restore focus to the element that opened it. This happens when:
    - An element is deleted while a dialog is open (e.g., a delete confirmation dialog)
    - The dialog tries to restore focus to the opening element (the delete button), but it no longer exists in the DOM
-   - The dialog dispatches a `cc-dialog-focus-restoration-fail` event containing the element it tried (and failed) to restore focus to
+   - The dialog dispatches a `cc-focus-restoration-fail` event containing the element it tried (and failed) to restore focus to
    - The controller listens for this event and checks if the failed element is part of a removed element matching the query selector
    - Even though the deleted element didn't have focus at the time of removal (the dialog did), this still represents a focus loss situation that needs to be handled
 
@@ -168,5 +168,5 @@ In this scenario:
 - The focus is now inside the dialog
 - When the user confirms, the item (including the delete button that opened the dialog) is removed from the DOM
 - The `cc-dialog` tries to restore focus to the delete button but fails because it no longer exists
-- The dialog dispatches a `cc-dialog-focus-restoration-fail` event
+- The dialog dispatches a `cc-focus-restoration-fail` event
 - The LostFocusController detects this event and handles the focus loss by focusing the suggested element

@@ -5,7 +5,7 @@ import { html } from 'lit';
 import { addTranslations, setLanguage } from '../../lib/i18n/i18n.js';
 import { findActiveElement } from '../../lib/shadow-dom-utils.js';
 import { lang, translations } from '../../translations/translations.en.js';
-import { CcDialogCloseEvent, CcDialogFocusRestorationFail } from './cc-dialog.events.js';
+import { CcCloseEvent, CcFocusRestorationFail } from '../common.events.js';
 import './cc-dialog.js';
 
 addTranslations(lang, translations);
@@ -72,7 +72,7 @@ describe('cc-dialog component', () => {
         </div>
       `);
       const dialog = container.querySelector('cc-dialog');
-      const closeSpy = createEventSpy(dialog, CcDialogCloseEvent.TYPE);
+      const closeSpy = createEventSpy(dialog, CcCloseEvent.TYPE);
 
       expect(dialog.open).to.equal(true);
 
@@ -83,7 +83,7 @@ describe('cc-dialog component', () => {
       expect(closeSpy.called).to.equal(true);
     });
 
-    it('should dispatch CcDialogCloseEvent when dialog closes', async () => {
+    it('should dispatch CcCloseEvent when dialog closes', async () => {
       const container = await fixture(html`
         <div>
           <cc-dialog heading="Test Dialog" open>
@@ -92,16 +92,16 @@ describe('cc-dialog component', () => {
         </div>
       `);
       const dialog = container.querySelector('cc-dialog');
-      const closeSpy = createEventSpy(dialog, CcDialogCloseEvent.TYPE);
+      const closeSpy = createEventSpy(dialog, CcCloseEvent.TYPE);
 
       dialog.hide();
       await elementUpdated(dialog);
 
-      // Verify CcDialogCloseEvent was dispatched exactly once
+      // Verify CcCloseEvent was dispatched exactly once
       expect(closeSpy.callCount).to.equal(1);
       // Verify event type
       const event = closeSpy.lastCall.args[0];
-      expect(event).to.be.instanceOf(CcDialogCloseEvent);
+      expect(event).to.be.instanceOf(CcCloseEvent);
     });
 
     it('should close dialog when close button is clicked', async () => {
@@ -113,7 +113,7 @@ describe('cc-dialog component', () => {
         </div>
       `);
       const dialog = container.querySelector('cc-dialog');
-      const closeSpy = createEventSpy(dialog, CcDialogCloseEvent.TYPE);
+      const closeSpy = createEventSpy(dialog, CcCloseEvent.TYPE);
 
       await elementUpdated(dialog);
 
@@ -124,7 +124,7 @@ describe('cc-dialog component', () => {
 
       // Verify dialog closes
       expect(dialog.open).to.equal(false);
-      // Verify CcDialogCloseEvent is dispatched
+      // Verify CcCloseEvent is dispatched
       expect(closeSpy.called).to.equal(true);
     });
 
@@ -137,7 +137,7 @@ describe('cc-dialog component', () => {
         </div>
       `);
       const dialog = container.querySelector('cc-dialog');
-      const closeSpy = createEventSpy(dialog, CcDialogCloseEvent.TYPE);
+      const closeSpy = createEventSpy(dialog, CcCloseEvent.TYPE);
 
       // Press Escape key
       await sendKeys({ press: 'Escape' });
@@ -146,7 +146,7 @@ describe('cc-dialog component', () => {
 
       // Verify dialog closes
       expect(dialog.open).to.equal(false);
-      // Verify CcDialogCloseEvent is dispatched
+      // Verify CcCloseEvent is dispatched
       expect(closeSpy.called).to.equal(true);
     });
 
@@ -159,14 +159,14 @@ describe('cc-dialog component', () => {
         </div>
       `);
       const dialog = container.querySelector('cc-dialog');
-      const closeSpy = createEventSpy(dialog, CcDialogCloseEvent.TYPE);
+      const closeSpy = createEventSpy(dialog, CcCloseEvent.TYPE);
 
       dialog.open = false;
       await elementUpdated(dialog);
 
       // Verify dialog closes
       expect(dialog.open).to.equal(false);
-      // Verify CcDialogCloseEvent is dispatched
+      // Verify CcCloseEvent is dispatched
       expect(closeSpy.called).to.equal(true);
     });
   });
@@ -249,7 +249,7 @@ describe('cc-dialog component', () => {
       expect(activeElement).to.equal(nativeButton);
     });
 
-    it('should not trigger CcDialogFocusRestorationFail event if opener is still connected', async () => {
+    it('should not trigger CcFocusRestorationFail event if opener is still connected', async () => {
       const container = await fixture(html`
         <div>
           <button id="opener" @click="${() => container.querySelector('cc-dialog').show()}">Open Dialog</button>
@@ -260,7 +260,7 @@ describe('cc-dialog component', () => {
       `);
       const opener = container.querySelector('#opener');
       const dialog = container.querySelector('cc-dialog');
-      const failSpy = createEventSpy(dialog, CcDialogFocusRestorationFail.TYPE);
+      const failSpy = createEventSpy(dialog, CcFocusRestorationFail.TYPE);
 
       opener.focus();
       opener.click();
@@ -286,7 +286,7 @@ describe('cc-dialog component', () => {
       `);
       const opener = container.querySelector('#opener');
       const dialog = container.querySelector('cc-dialog');
-      const failSpy = createEventSpy(dialog, CcDialogFocusRestorationFail.TYPE);
+      const failSpy = createEventSpy(dialog, CcFocusRestorationFail.TYPE);
 
       opener.focus();
       opener.click();
@@ -314,7 +314,7 @@ describe('cc-dialog component', () => {
       `);
       const opener = container.querySelector('#opener');
       const dialog = container.querySelector('cc-dialog');
-      const failSpy = createEventSpy(dialog, CcDialogFocusRestorationFail.TYPE);
+      const failSpy = createEventSpy(dialog, CcFocusRestorationFail.TYPE);
 
       opener.focus();
       opener.click();
@@ -330,7 +330,7 @@ describe('cc-dialog component', () => {
       // Verify focus restoration fail event was dispatched with correct detail
       expect(failSpy.called).to.equal(true);
       const event = failSpy.lastCall.args[0];
-      expect(event).to.be.instanceOf(CcDialogFocusRestorationFail);
+      expect(event).to.be.instanceOf(CcFocusRestorationFail);
       expect(event.detail).to.equal(opener);
     });
   });
@@ -374,7 +374,7 @@ describe('cc-dialog component', () => {
       const opener = container.querySelector('#opener');
       const otherButton = container.querySelector('#other');
       const dialog = container.querySelector('cc-dialog');
-      const failSpy = createEventSpy(dialog, CcDialogFocusRestorationFail.TYPE);
+      const failSpy = createEventSpy(dialog, CcFocusRestorationFail.TYPE);
 
       opener.focus();
       opener.click();

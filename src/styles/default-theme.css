@@ -185,6 +185,10 @@
   For instance: submit buttons */
   --cc-color-bg-success: var(--color-green-100);
 
+  /* Usage: backdrop overlay or dialog background.
+  For instance: modal backdrop. */
+  --cc-color-bg-backdrop: rgb(30 30 30 / 55%);
+
   /* Usage: element with a success background hovered.
   For instance: closed button in notice. */
   --cc-color-bg-success-hovered: var(--color-green-20);
@@ -330,5 +334,9 @@
 
   /* space between a label and its control when inline */
   --cc-form-label-gap-inline: 0.75em;
+  /*endregion*/
+
+  /*region blur*/
+  --cc-blur-default: blur(5px);
   /*endregion*/
 }

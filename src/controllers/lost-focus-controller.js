@@ -1,4 +1,4 @@
-import { CcDialogFocusRestorationFail } from '../components/cc-dialog/cc-dialog.events.js';
+import { CcFocusRestorationFail } from '../components/common.events.js';
 import { EventHandler } from '../lib/events.js';
 import { findActiveElement, isParentOf } from '../lib/shadow-dom-utils.js';
 
@@ -29,7 +29,7 @@ import { findActiveElement, isParentOf } from '../lib/shadow-dom-utils.js';
  * You provide a callback that will be fired when one of these elements is removed from the DOM.
  * The callback is fired in two situations:
  * 1. When the deleted element had focus (or one of its children had focus) at the time of removal
- * 2. When a cc-dialog fails to restore focus to an element that was removed (via cc-dialog-focus-restoration-fail event)
+ * 2. When a cc-dialog fails to restore focus to an element that was removed (via cc-focus-restoration-fail event)
  *
  * The callback will suggest a new element to focus. It suggests the nearest element matching the same query selector.
  *
@@ -57,8 +57,8 @@ export class LostFocusController {
   hostConnected() {
     this.eventHandler = new EventHandler(
       this.host,
-      CcDialogFocusRestorationFail.TYPE,
-      /** @param {CcDialogFocusRestorationFail} event */
+      CcFocusRestorationFail.TYPE,
+      /** @param {CcFocusRestorationFail} event */
       async ({ detail: elementThatFailedToFocus }) => {
         await this.additionalWaiter?.();
         // compare elements to the previous one and check if some elements have been removed

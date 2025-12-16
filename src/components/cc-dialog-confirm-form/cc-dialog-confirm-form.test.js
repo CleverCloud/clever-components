@@ -5,8 +5,8 @@ import { html } from 'lit';
 import { addTranslations, setLanguage } from '../../lib/i18n/i18n.js';
 import { findActiveElement } from '../../lib/shadow-dom-utils.js';
 import { lang, translations } from '../../translations/translations.en.js';
-import { CcDialogConfirmEvent } from '../cc-dialog-confirm-actions/cc-dialog-confirm-actions.events.js';
 import '../cc-dialog/cc-dialog.js';
+import { CcConfirmEvent } from '../common.events.js';
 import './cc-dialog-confirm-form.js';
 
 addTranslations(lang, translations);
@@ -137,7 +137,7 @@ describe('cc-dialog-confirm-form', () => {
     `);
     const confirmEventSpy = createEventSpy(
       ccDialogElement.querySelector('cc-dialog-confirm-form'),
-      CcDialogConfirmEvent.TYPE,
+      CcConfirmEvent.TYPE,
     );
     const ccInputText = await getCcInputText(ccDialogElement);
     ccInputText.value = 'wong-text';
@@ -162,7 +162,7 @@ describe('cc-dialog-confirm-form', () => {
     `);
     const confirmEventSpy = createEventSpy(
       ccDialogElement.querySelector('cc-dialog-confirm-form'),
-      CcDialogConfirmEvent.TYPE,
+      CcConfirmEvent.TYPE,
     );
     const ccInputText = await getCcInputText(ccDialogElement);
     ccInputText.value = 'delete-me';

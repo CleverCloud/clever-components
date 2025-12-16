@@ -378,7 +378,7 @@ export class CcAddonBackups extends LitElement {
   _renderRestoreOverlay(providerId, passwordForCommand) {
     return html`
       <!-- The restore and delete overlays are quite similar but's it's easier to read with a big if and some copy/paste than 8 ifs -->
-      <cc-dialog slot="content" open @cc-dialog-close=${this._onCloseOverlay}>
+      <cc-dialog slot="content" open @cc-close=${this._onCloseOverlay}>
         <div slot="heading">${i18n('cc-addon-backups.restore', this._selectedBackup)}</div>
 
         ${this._displaySectionWithService(providerId)
@@ -426,7 +426,7 @@ export class CcAddonBackups extends LitElement {
    */
   _renderDeleteOverlay(providerId, passwordForCommand) {
     return html`
-      <cc-dialog slot="content" open @cc-dialog-close=${this._onCloseOverlay}>
+      <cc-dialog slot="content" open @cc-close=${this._onCloseOverlay}>
         <div slot="heading">${i18n('cc-addon-backups.delete', this._selectedBackup)}</div>
         ${this._displaySectionWithService(providerId)
           ? html`

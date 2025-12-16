@@ -30,13 +30,13 @@ export const defaultStory = makeStory(conf, {
     render(
       html`
         ${createTestingUI(container)}
-        <cc-dialog open heading="Confirmation" @cc-dialog-close="${onClose}">
+        <cc-dialog open heading="Confirmation" @cc-close="${onClose}">
           <p style="margin: 0">This is a simple confirmation dialog.</p>
           <cc-dialog-confirm-form
             submit-label="Confirm"
             confirm-input-label="Type the name to confirm"
             confirm-text-to-input="my-app"
-            @cc-dialog-confirm="${onConfirm}"
+            @cc-confirm="${onConfirm}"
           ></cc-dialog-confirm-form>
         </cc-dialog>
       `,
@@ -53,14 +53,14 @@ export const submitIntentWithDanger = makeStory(conf, {
     render(
       html`
         ${createTestingUI(container)}
-        <cc-dialog open heading="Delete Application" @cc-dialog-close="${onClose}">
+        <cc-dialog open heading="Delete Application" @cc-close="${onClose}">
           <p style="margin: 0">Type the application name to confirm deletion.</p>
           <cc-dialog-confirm-form
             submit-label="Delete"
             submit-intent="danger"
             confirm-input-label="Type the name to confirm"
             confirm-text-to-input="my-app"
-            @cc-dialog-confirm="${onConfirm}"
+            @cc-confirm="${onConfirm}"
           >
           </cc-dialog-confirm-form>
         </cc-dialog>
@@ -78,7 +78,7 @@ export const autofocusInput = makeStory(conf, {
     render(
       html`
         ${createTestingUI(container)}
-        <cc-dialog heading="Delete Application" @cc-dialog-close="${onClose}">
+        <cc-dialog heading="Delete Application" @cc-close="${onClose}">
           <p style="margin: 0">The input field is automatically focused when the dialog opens.</p>
           <cc-notice intent="warning" heading="Important considerations" style="margin-bottom: 1.5em">
             <p slot="message">
@@ -95,7 +95,7 @@ export const autofocusInput = makeStory(conf, {
             confirm-input-label="Type the name to confirm"
             confirm-text-to-input="my-app"
             autofocus-input
-            @cc-dialog-confirm="${onConfirm}"
+            @cc-confirm="${onConfirm}"
           >
           </cc-dialog-confirm-form>
         </cc-dialog>
@@ -119,14 +119,14 @@ export const longConfirmTextToInput = makeStory(conf, {
     render(
       html`
         ${createTestingUI(container)}
-        <cc-dialog open heading="Delete Application Permanently" @cc-dialog-close="${onClose}">
+        <cc-dialog open heading="Delete Application Permanently" @cc-close="${onClose}">
           <p style="margin: 0">This demonstrates a confirmation with a very long text that must be typed.</p>
           <cc-dialog-confirm-form
             submit-label="Delete permanently"
             submit-intent="danger"
             confirm-input-label="Type the full name to confirm deletion"
             confirm-text-to-input="my-very-long-application-name-that-is-difficult-to-type"
-            @cc-dialog-confirm="${onConfirm}"
+            @cc-confirm="${onConfirm}"
           >
           </cc-dialog-confirm-form>
         </cc-dialog>
@@ -144,7 +144,7 @@ export const waiting = makeStory(conf, {
     render(
       html`
         ${createTestingUI(container)}
-        <cc-dialog open heading="Waiting State with Input" @cc-dialog-close="${onClose}">
+        <cc-dialog open heading="Waiting State with Input" @cc-close="${onClose}">
           <p style="margin: 0">This shows the waiting state with a confirmation input field.</p>
           <cc-dialog-confirm-form
             submit-label="Delete"
@@ -152,7 +152,7 @@ export const waiting = makeStory(conf, {
             confirm-input-label="Type the name to confirm"
             confirm-text-to-input="my-app"
             waiting
-            @cc-dialog-confirm="${onConfirm}"
+            @cc-confirm="${onConfirm}"
           >
           </cc-dialog-confirm-form>
         </cc-dialog>
@@ -170,14 +170,14 @@ export const errorWithEmpty = makeStory(conf, {
     render(
       html`
         ${createTestingUI(container)}
-        <cc-dialog open heading="Waiting State with Input" @cc-dialog-close="${onClose}">
+        <cc-dialog open heading="Waiting State with Input" @cc-close="${onClose}">
           <p style="margin: 0">This shows the waiting state with a confirmation input field.</p>
           <cc-dialog-confirm-form
             submit-label="Delete"
             submit-intent="danger"
             confirm-input-label="Type the name to confirm"
             confirm-text-to-input="my-app"
-            @cc-dialog-confirm="${onConfirm}"
+            @cc-confirm="${onConfirm}"
           >
           </cc-dialog-confirm-form>
         </cc-dialog>
@@ -202,14 +202,14 @@ export const errorWithWrongInput = makeStory(conf, {
     render(
       html`
         ${createTestingUI(container)}
-        <cc-dialog open heading="Waiting State with Input" @cc-dialog-close="${onClose}">
+        <cc-dialog open heading="Waiting State with Input" @cc-close="${onClose}">
           <p style="margin: 0">This shows the waiting state with a confirmation input field.</p>
           <cc-dialog-confirm-form
             submit-label="Delete"
             submit-intent="danger"
             confirm-input-label="Type the name to confirm"
             confirm-text-to-input="my-app"
-            @cc-dialog-confirm="${onConfirm}"
+            @cc-confirm="${onConfirm}"
           >
           </cc-dialog-confirm-form>
         </cc-dialog>
@@ -237,7 +237,7 @@ export const errorWithWrongInputAndCustomErrorMessage = makeStory(conf, {
     render(
       html`
         ${createTestingUI(container)}
-        <cc-dialog open heading="Waiting State with Input" @cc-dialog-close="${onClose}">
+        <cc-dialog open heading="Waiting State with Input" @cc-close="${onClose}">
           <p style="margin: 0">This shows the waiting state with a confirmation input field.</p>
           <cc-dialog-confirm-form
             submit-label="Delete"
@@ -245,7 +245,7 @@ export const errorWithWrongInputAndCustomErrorMessage = makeStory(conf, {
             confirm-input-label="Type the name to confirm"
             confirm-text-to-input="my-app"
             confirm-error-message="Invalid value. Enter the name of your app 'my-app' as value"
-            @cc-dialog-confirm="${onConfirm}"
+            @cc-confirm="${onConfirm}"
           >
           </cc-dialog-confirm-form>
         </cc-dialog>

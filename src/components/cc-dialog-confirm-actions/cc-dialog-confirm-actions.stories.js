@@ -22,10 +22,9 @@ export const defaultStory = makeStory(conf, {
     render(
       html`
         ${createTestingUI(container)}
-        <cc-dialog open heading="Simple confirmation" @cc-dialog-close="${onClose}">
+        <cc-dialog open heading="Simple confirmation" @cc-close="${onClose}">
           <p style="margin: 0">This is a simple confirmation dialog.</p>
-          <cc-dialog-confirm-actions submit-label="Confirm" @cc-dialog-confirm="${onConfirm}">
-          </cc-dialog-confirm-actions>
+          <cc-dialog-confirm-actions submit-label="Confirm" @cc-confirm="${onConfirm}"></cc-dialog-confirm-actions>
         </cc-dialog>
       `,
       container,
@@ -41,9 +40,9 @@ export const submitIntentWithDanger = makeStory(conf, {
     render(
       html`
         ${createTestingUI(container)}
-        <cc-dialog open heading="Delete Confirmation" @cc-dialog-close="${onClose}">
+        <cc-dialog open heading="Delete Confirmation" @cc-close="${onClose}">
           <p style="margin: 0">This action cannot be undone.</p>
-          <cc-dialog-confirm-actions submit-label="Delete" submit-intent="danger" @cc-dialog-confirm="${onConfirm}">
+          <cc-dialog-confirm-actions submit-label="Delete" submit-intent="danger" @cc-confirm="${onConfirm}">
           </cc-dialog-confirm-actions>
         </cc-dialog>
       `,
@@ -60,9 +59,9 @@ export const cancelLabel = makeStory(conf, {
     render(
       html`
         ${createTestingUI(container)}
-        <cc-dialog open heading="Unsaved modifications" @cc-dialog-close="${onClose}">
+        <cc-dialog open heading="Unsaved modifications" @cc-close="${onClose}">
           <p style="margin: 0">You have unsaved modifications.</p>
-          <cc-dialog-confirm-actions submit-label="Save" cancel-label="Discard" @cc-dialog-confirm="${onConfirm}">
+          <cc-dialog-confirm-actions submit-label="Save" cancel-label="Discard" @cc-confirm="${onConfirm}">
           </cc-dialog-confirm-actions>
         </cc-dialog>
       `,
@@ -79,14 +78,9 @@ export const waiting = makeStory(conf, {
     render(
       html`
         ${createTestingUI(container)}
-        <cc-dialog open heading="Delete Confirmation" @cc-dialog-close="${onClose}">
+        <cc-dialog open heading="Delete Confirmation" @cc-close="${onClose}">
           <p style="margin: 0">This action cannot be undone.</p>
-          <cc-dialog-confirm-actions
-            submit-label="Delete"
-            submit-intent="danger"
-            waiting
-            @cc-dialog-confirm="${onConfirm}"
-          >
+          <cc-dialog-confirm-actions submit-label="Delete" submit-intent="danger" waiting @cc-confirm="${onConfirm}">
           </cc-dialog-confirm-actions>
         </cc-dialog>
       `,

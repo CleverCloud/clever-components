@@ -704,7 +704,7 @@ export class CcDomainManagement extends LitElement {
       <cc-dialog
         ?open="${domainToDelete != null}"
         heading="${i18n('cc-domain-management.delete-dialog.heading')}"
-        @cc-dialog-close="${this._onDeleteDialogClose}"
+        @cc-close="${this._onDeleteDialogClose}"
       >
         ${domainToDelete != null
           ? html`
@@ -718,7 +718,7 @@ export class CcDomainManagement extends LitElement {
                 )}"
                 confirm-input-label="${i18n('cc-domain-management.delete-dialog.input-label')}"
                 ?waiting="${domainToDelete.type === 'deleting'}"
-                @cc-dialog-confirm="${() => this._onDeleteConfirm(domainToDelete)}"
+                @cc-confirm="${() => this._onDeleteConfirm(domainToDelete)}"
               >
               </cc-dialog-confirm-form>
             `

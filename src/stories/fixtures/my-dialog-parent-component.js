@@ -46,17 +46,17 @@ export class MyDialogParentComponent extends LitElement {
       <!-- Pattern 1: Declarative (controlled via open attribute) -->
       <div class="pattern-section">
         <h3>Pattern 1: Declarative (Controlled)</h3>
-        <p>The <code>open</code> attribute is bound to component state. Listen to <code>cc-dialog-close</code> to sync state.</p>
+        <p>The <code>open</code> attribute is bound to component state. Listen to <code>cc-close</code> to sync state.</p>
         <cc-button @cc-click="${this._openDeclarativeDialog}" primary>
           Open Declarative Dialog
         </cc-button>
         <cc-dialog
           ?open="${this.declarativeDialogOpen}"
           heading="Declarative Dialog"
-          @cc-dialog-close="${this._closeDeclarativeDialog}"
+          @cc-close="${this._closeDeclarativeDialog}"
         >
           <p>This dialog's <code>open</code> attribute is controlled by parent component state.</p>
-          <p>When closed (via Escape, backdrop click, or close button), the <code>cc-dialog-close</code> event updates the state.</p>
+          <p>When closed (via Escape, backdrop click, or close button), the <code>cc-close</code> event updates the state.</p>
         </cc-dialog>
       </div>
 
@@ -88,7 +88,7 @@ export class MyDialogParentComponent extends LitElement {
               <cc-dialog
                 open
                 heading="Conditional Dialog"
-                @cc-dialog-close="${this._closeConditionalDialog}"
+                @cc-close="${this._closeConditionalDialog}"
               >
                 <p>This dialog is conditionally rendered in the template.</p>
                 <p>When closed, it's completely removed from the DOM.</p>

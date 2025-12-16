@@ -2,8 +2,7 @@ import { LitElement, css, html } from 'lit';
 import { isStringEmpty } from '../../lib/utils.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-button/cc-button.js';
-import { CcDialogCloseRequestEvent } from '../cc-dialog/cc-dialog.events.js';
-import { CcDialogConfirmEvent } from './cc-dialog-confirm-actions.events.js';
+import { CcCloseRequest, CcConfirmEvent } from '../common.events.js';
 
 /**
  * A reusable action buttons component for `<cc-dialog>` with Cancel and Confirm/Submit buttons.
@@ -43,11 +42,11 @@ export class CcDialogConfirmActions extends LitElement {
   }
 
   _onCancel() {
-    this.dispatchEvent(new CcDialogCloseRequestEvent());
+    this.dispatchEvent(new CcCloseRequest());
   }
 
   _onConfirm() {
-    this.dispatchEvent(new CcDialogConfirmEvent());
+    this.dispatchEvent(new CcConfirmEvent());
   }
 
   render() {
