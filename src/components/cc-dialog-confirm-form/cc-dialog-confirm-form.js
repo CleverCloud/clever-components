@@ -46,7 +46,8 @@ export class CcDialogConfirmForm extends LitElement {
   constructor() {
     super();
 
-    /** @type {boolean} Automatically focuses the input when the dialog is opened.
+    /** @type {boolean}
+     * Automatically focuses the input when the dialog is opened.
      * Note:
      * - Only use this if there is no important content before the text input that users should read first.
      * - This component must be present in the DOM before opening the dialog. If you're creating the dialog

@@ -26,7 +26,7 @@ import { CcCloseEvent, CcFocusRestorationFail, CcOpenEvent } from '../common.eve
  *
  * @cssdisplay contents
  *
- * @slot Default Dialog content
+ * @slot default Dialog content
  * @slot heading - Heading content
  *
  * @csspart dialog - Styles the dialog element, can be used to modify it's positioning, size, layout.
@@ -55,7 +55,8 @@ export class CcDialog extends LitElement {
     /** @type {'any'|'closerequest'|'none'} Indicates which action closes the dialog (see https://developer.mozilla.org/en-US/docs/Web/API/HTMLDialogElement/closedBy for more information) */
     this.closedBy = 'any';
 
-    /** @type {string|null} Heading text displayed at the top of the dialog.
+    /** @type {string|null}
+     * Heading text displayed at the top of the dialog.
      * You must always set this property with a relevant value since it's used to identify the dialog for accessibility.
      * Use the `hiddenHeading` prop to hide it visually if needed.
      * If you need more complex heading content, use the `heading` slot instead.
@@ -71,7 +72,8 @@ export class CcDialog extends LitElement {
     /** @type {IconModel|null} Sets the icon before the heading using a `<cc-icon>`. Icon is hidden if nullish. */
     this.headingIcon = null;
 
-    /** @type {string|null} Sets the a11y name for the icon displayed next to the heading.
+    /** @type {string|null}
+     * Sets the a11y name for the icon displayed next to the heading.
      * Only use this prop if your icon provides information that is not already given in its surrounding text.
      */
     this.headingIconA11yName = null;
