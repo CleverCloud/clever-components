@@ -227,6 +227,8 @@ export class CcDialog extends LitElement {
         }
 
         .dialog-close {
+          --close-btn-size: 2em;
+
           align-items: center;
           background: none;
           border: none;
@@ -234,12 +236,14 @@ export class CcDialog extends LitElement {
           color: var(--cc-color-text-weak);
           cursor: pointer;
           display: flex;
-          height: 2em;
+          height: var(--close-btn-size);
           justify-content: center;
-          position: absolute;
-          right: calc(var(--cc-dialog-padding) / 2.5);
-          top: calc(var(--cc-dialog-padding) / 2.5);
-          width: 2em;
+          left: 100%;
+          margin-top: calc(var(--close-btn-size) * -1);
+          position: sticky;
+          top: 0;
+          transform: translate(2.75em, -2.75em);
+          width: var(--close-btn-size);
         }
 
         .dialog-heading-wrapper cc-icon,
