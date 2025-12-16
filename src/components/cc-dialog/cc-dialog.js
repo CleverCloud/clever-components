@@ -162,7 +162,7 @@ export class CcDialog extends LitElement {
           ? html`
               <button class="dialog-close" @click="${this._onDialogClose}">
                 <span class="visually-hidden">${i18n('cc-dialog.close')}</span>
-                <cc-icon .icon="${iconClose}"></cc-icon>
+                <cc-icon .icon="${iconClose}" size="lg"></cc-icon>
               </button>
             `
           : ''}
@@ -240,8 +240,6 @@ export class CcDialog extends LitElement {
           right: calc(var(--cc-dialog-padding) / 2.5);
           top: calc(var(--cc-dialog-padding) / 2.5);
           width: 2em;
-
-          --cc-icon-size: 1.5em;
         }
 
         .dialog-heading-wrapper cc-icon,
