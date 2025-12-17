@@ -1,6 +1,6 @@
 import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
-import { iconRemixHistoryLine as iconBackup, iconRemixCloseLine as iconClose } from '../../assets/cc-remix.icons.js';
+import { iconRemixHistoryLine as iconBackup } from '../../assets/cc-remix.icons.js';
 import { fakeString } from '../../lib/fake-strings.js';
 import { cliCommandsStyles } from '../../styles/cli-commands.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
@@ -10,6 +10,7 @@ import '../cc-block-section/cc-block-section.js';
 import '../cc-block/cc-block.js';
 import '../cc-button/cc-button.js';
 import '../cc-code/cc-code.js';
+import '../cc-dialog/cc-dialog.js';
 import '../cc-icon/cc-icon.js';
 import '../cc-input-text/cc-input-text.js';
 import '../cc-link/cc-link.js';
@@ -297,7 +298,7 @@ export class CcAddonBackups extends LitElement {
       <div slot="content">
         <span class="skeleton"> ${fakeString(150)} </span>
       </div>
-      ${this._renderBackups(state, false)}
+      ${this._renderBackups(state)}
     `;
   }
 
@@ -308,13 +309,12 @@ export class CcAddonBackups extends LitElement {
    */
   _renderLoaded(state) {
     const hasData = state.backups.length > 0;
-    const isBlurred = this._overlayType === 'restore' || this._overlayType === 'delete';
 
     return html`
-      <div slot="content" class=${classMap({ blurred: isBlurred })}>${this._getDescription(state.providerId)}</div>
+      <div slot="content">${this._getDescription(state.providerId)}</div>
 
       ${!hasData ? html` <div slot="content" class="empty-msg">${i18n('cc-addon-backups.empty')}</div> ` : ''}
-      ${hasData ? this._renderBackups(state, isBlurred) : ''}
+      ${hasData ? this._renderBackups(state) : ''}
       ${this._overlayType === 'restore' ? this._renderRestoreOverlay(state.providerId, state.passwordForCommand) : ''}
       ${this._overlayType === 'delete' ? this._renderDeleteOverlay(state.providerId, state.passwordForCommand) : ''}
     `;
@@ -322,16 +322,15 @@ export class CcAddonBackups extends LitElement {
 
   /**
    * @param {AddonBackupsStateLoaded | AddonBackupsStateLoading} state
-   * @param {boolean} isBlurred
    * @private
    */
-  _renderBackups(state, isBlurred) {
+  _renderBackups(state) {
     const skeleton = state.type === 'loading';
     const areBtnsDisabled = state.type === 'loading' || this._overlayType != null;
 
     const data = state.type === 'loaded' ? state : SKELETON_BACKUPS;
     return html`
-      <div slot="content" class="backup-list ${classMap({ blurred: isBlurred })}">
+      <div slot="content" class="backup-list">
         ${data.backups.map(
           (backup) => html`
             <div class="backup">
@@ -379,41 +378,43 @@ export class CcAddonBackups extends LitElement {
   _renderRestoreOverlay(providerId, passwordForCommand) {
     return html`
       <!-- The restore and delete overlays are quite similar but's it's easier to read with a big if and some copy/paste than 8 ifs -->
-      <cc-block slot="content" class="overlay">
-        <div slot="header-title">${i18n('cc-addon-backups.restore', this._selectedBackup)}</div>
-        <div slot="header-right">
-          <cc-button
-            class="overlay-close-btn"
-            .icon=${iconClose}
-            hide-text
-            outlined
-            primary
-            @cc-click=${this._onCloseOverlay}
-            >${i18n('cc-addon-backups.close-btn')}</cc-button
-          >
-        </div>
+      <cc-dialog slot="content" open @cc-close=${this._onCloseOverlay}>
+        <div slot="heading">${i18n('cc-addon-backups.restore', this._selectedBackup)}</div>
 
         ${this._displaySectionWithService(providerId)
           ? html`
-              <cc-block-section slot="content-body">
+              <cc-block-section>
                 <div slot="title">${this._getRestoreWithServiceTitle(providerId)}</div>
                 <div>${this._getRestoreWithServiceDescription(providerId, this._selectedBackup.url)}</div>
               </cc-block-section>
             `
           : ''}
 
-        <cc-block-section slot="content-body">
+        <cc-block-section>
           <div slot="title">${i18n('cc-addon-backups.restore.manual.title')}</div>
           <div>${this._getManualRestoreDescription(providerId)}</div>
           ${this._selectedBackup.restoreCommand != null
             ? html`
-                <cc-input-text readonly clipboard value="${this._selectedBackup.restoreCommand}"></cc-input-text>
+                <cc-input-text
+                  label="${i18n('cc-addon-backups.restore-command-label')}"
+                  hidden-label
+                  readonly
+                  clipboard
+                  value="${this._selectedBackup.restoreCommand}"
+                ></cc-input-text>
                 <div>${i18n('cc-addon-backups.command-password')}</div>
-                <cc-input-text readonly clipboard secret value=${passwordForCommand}></cc-input-text>
+                <cc-input-text
+                  label="${i18n('cc-addon-backups.restore-command-password-label')}"
+                  hidden-label
+                  readonly
+                  clipboard
+                  secret
+                  value=${passwordForCommand}
+                ></cc-input-text>
               `
             : ''}
         </cc-block-section>
-      </cc-block>
+      </cc-dialog>
     `;
   }
 
@@ -425,23 +426,11 @@ export class CcAddonBackups extends LitElement {
    */
   _renderDeleteOverlay(providerId, passwordForCommand) {
     return html`
-      <cc-block slot="content" class="overlay">
-        <div slot="header-title">${i18n('cc-addon-backups.delete', this._selectedBackup)}</div>
-        <div slot="header-right">
-          <cc-button
-            class="overlay-close-btn"
-            .icon=${iconClose}
-            hide-text
-            outlined
-            primary
-            @cc-click=${this._onCloseOverlay}
-            >${i18n('cc-addon-backups.close-btn')}</cc-button
-          >
-        </div>
-
+      <cc-dialog slot="content" open @cc-close=${this._onCloseOverlay}>
+        <div slot="heading">${i18n('cc-addon-backups.delete', this._selectedBackup)}</div>
         ${this._displaySectionWithService(providerId)
           ? html`
-              <cc-block-section slot="content-body">
+              <cc-block-section>
                 <div slot="title">${i18n('cc-addon-backups.delete.with-service.title.es-addon')}</div>
                 <div>
                   ${i18n('cc-addon-backups.delete.with-service.description.es-addon', {
@@ -452,14 +441,27 @@ export class CcAddonBackups extends LitElement {
             `
           : ''}
 
-        <cc-block-section slot="content-body">
+        <cc-block-section>
           <div slot="title">${i18n('cc-addon-backups.delete.manual.title')}</div>
           <div>${this._getManualDeleteDescription(providerId)}</div>
-          <cc-input-text readonly clipboard value="${this._selectedBackup.deleteCommand}"></cc-input-text>
+          <cc-input-text
+            label="${i18n('cc-addon-backups.delete-command-label')}"
+            hidden-label
+            readonly
+            clipboard
+            value="${this._selectedBackup.deleteCommand}"
+          ></cc-input-text>
           <div>${i18n('cc-addon-backups.command-password')}</div>
-          <cc-input-text readonly clipboard secret value=${passwordForCommand}></cc-input-text>
+          <cc-input-text
+            label="${i18n('cc-addon-backups.delete-command-password-label')}"
+            hidden-label
+            readonly
+            clipboard
+            secret
+            value=${passwordForCommand}
+          ></cc-input-text>
         </cc-block-section>
-      </cc-block>
+      </cc-dialog>
     `;
   }
 
@@ -472,6 +474,8 @@ export class CcAddonBackups extends LitElement {
         :host {
           display: block;
           line-height: 1.5;
+
+          --cc-dialog-width: 60em;
         }
 
         .backup-list {
@@ -513,28 +517,6 @@ export class CcAddonBackups extends LitElement {
 
         .skeleton {
           background-color: #bbb;
-        }
-
-        .overlay {
-          box-shadow: 0 0 1em rgb(0 0 0 / 40%);
-          left: 50%;
-          max-height: 80vh;
-          max-width: 50em;
-          overflow: auto;
-          padding-inline: 0;
-          position: fixed;
-          transform: translateX(-50%);
-          width: 90%;
-          /* temporary fix until we rely on the dialog element and the top layer */
-          z-index: 9999;
-        }
-
-        .overlay-close-btn {
-          --cc-icon-size: 1.4em;
-        }
-
-        .blurred {
-          filter: blur(5px);
         }
 
         cc-button[link] {

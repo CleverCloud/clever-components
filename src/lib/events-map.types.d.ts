@@ -142,6 +142,11 @@ import {
 } from '../components/cc-token-api-update-form/cc-token-api-update-form.events.js';
 import {
   CcClickEvent,
+  CcCloseEvent,
+  CcCloseRequest,
+  CcConfirmEvent,
+  CcFocusRestorationFail,
+  CcOpenEvent,
   CcPasswordResetEvent,
   CcRequestSubmitEvent,
   CcToggleEvent,
@@ -179,6 +184,9 @@ declare global {
     'cc-application-start': CcApplicationStartEvent;
     'cc-application-stop': CcApplicationStopEvent;
     'cc-click': CcClickEvent;
+    'cc-close': CcCloseEvent;
+    'cc-close-request': CcCloseRequest;
+    'cc-confirm': CcConfirmEvent;
     'cc-deployment-cancel': CcDeploymentCancelEvent;
     'cc-domain-add': CcDomainAddEvent;
     'cc-domain-delete': CcDomainDeleteEvent;
@@ -197,6 +205,7 @@ declare global {
     'cc-env-vars-was-updated': CcEnvVarsWasUpdatedEvent;
     'cc-error-message-change': CcErrorMessageChangeEvent;
     'cc-feature-setting-change': CcFeatureSettingChangeEvent;
+    'cc-focus-restoration-fail': CcFocusRestorationFail;
     'cc-form-invalid': CcFormInvalidEvent;
     'cc-form-valid': CcFormValidEvent;
     'cc-grafana-reset': CcGrafanaResetEvent;
@@ -251,6 +260,7 @@ declare global {
     'cc-oauth-consumer-was-created': CcOauthConsumerWasCreatedEvent;
     'cc-oauth-consumer-was-deleted': CcOauthConsumerWasDeletedEvent;
     'cc-oauth-consumer-was-updated': CcOauthConsumerWasUpdatedEvent;
+    'cc-open': CcOpenEvent;
     'cc-orga-member-delete': CcOrgaMemberDeleteEvent;
     'cc-orga-member-edit-toggle': CcOrgaMemberEditToggleEvent;
     'cc-orga-member-invite': CcOrgaMemberInviteEvent;

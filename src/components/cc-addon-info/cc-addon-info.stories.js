@@ -29,6 +29,7 @@ export default {
 /**
  * @import { CcAddonInfo } from './cc-addon-info.js'
  * @import { AddonInfoStateLoaded, AddonInfoStateLoading, AddonInfoStateError } from './cc-addon-info.types.js'
+ * @import { CcButton } from '../cc-button/cc-button.js'
  */
 
 const conf = {
@@ -104,6 +105,13 @@ export const waitingWithRequestingUpdate = makeStory(conf, {
         <p slot="billing"><strong>This add-on is free but its dependencies, mentioned above, are billed based on their consumptions,</strong> just like other applications and add-ons.</p>`,
     },
   ],
+  /** @param {CcAddonInfo} component */
+  onUpdateComplete(component) {
+    /** @type {CcButton} */
+    const openerCcButton = component.shadowRoot.querySelector('cc-button[primary][outlined]');
+    openerCcButton.waiting = false;
+    openerCcButton.shadowRoot.querySelector('button').click();
+  },
 });
 
 export const matomo = makeStory(conf, {
@@ -486,7 +494,7 @@ export const kubernetes = makeStory(conf, {
   ],
 });
 
-export const updateAvailable = makeStory(conf, {
+export const updateAvailableWithOpenVersionDialog = makeStory(conf, {
   items: [
     {
       /** @type {AddonInfoStateLoaded} */
@@ -530,4 +538,9 @@ export const updateAvailable = makeStory(conf, {
         <p slot="billing"><strong>This add-on is free but its dependencies, mentioned above, are billed based on their consumptions,</strong> just like other applications and add-ons.</p>`,
     },
   ],
+  /** @param {CcAddonInfo} component */
+  onUpdateComplete(component) {
+    const openerCcButton = component.shadowRoot.querySelector('cc-button[primary][outlined]');
+    openerCcButton.shadowRoot.querySelector('button').click();
+  },
 });
