@@ -11,6 +11,7 @@ export default {
 /**
  * @import { DomainStateDeleting, DomainStateMarkingPrimary, DomainManagementDnsInfoStateLoaded, DomainManagementDnsInfoStateLoading, DomainManagementDnsInfoStateError, DomainManagementListStateLoaded, DomainManagementListStateLoading, DomainManagementListStateError, DomainManagementFormStateIdle, DomainManagementFormStateAdding } from './cc-domain-management.types.js'
  * @import { CcDomainManagement } from './cc-domain-management.js'
+ * @import { CcInputText } from '../cc-input-text/cc-input-text.js'
  */
 
 const conf = {
@@ -77,6 +78,53 @@ export const dataLoadedWithLongDomains = makeStory(conf, {
   ],
 });
 
+export const dataLoadedWithDeleteDialogOpen = makeStory(conf, {
+  items: [
+    {
+      applicationId: 'app_3f9b1c8e-2d7a-4c4f-91a6-8bde78f4a21b',
+      /** @type {DomainManagementListStateLoaded} */
+      domainListState: {
+        type: 'loaded',
+        domains: baseDomains,
+      },
+      /** @type {DomainManagementDnsInfoStateLoaded} */
+      dnsInfoState: baseDnsInfo,
+    },
+  ],
+  /** @type {(component: CcDomainManagement & { domainListState: DomainManagementListStateLoaded }) => void} */
+  onUpdateComplete: (component) => {
+    component.shadowRoot.querySelectorAll('.delete-domain')[3].shadowRoot.querySelector('button').click();
+  },
+});
+
+export const dataLoadedWithHttpOnlyDialogOpen = makeStory(conf, {
+  items: [
+    {
+      applicationId: 'app_3f9b1c8e-2d7a-4c4f-91a6-8bde78f4a21b',
+      domainFormState: {
+        type: 'idle',
+        hostname: {
+          value: httpOnlyDomain.hostname,
+        },
+        pathPrefix: {
+          value: httpOnlyDomain.pathPrefix,
+        },
+      },
+      /** @type {DomainManagementListStateLoaded} */
+      domainListState: {
+        type: 'loaded',
+        domains: baseDomains,
+      },
+      /** @type {DomainManagementDnsInfoStateLoaded} */
+      dnsInfoState: baseDnsInfo,
+    },
+  ],
+  /** @type {(component: CcDomainManagement & { domainListState: DomainManagementListStateLoaded }) => void} */
+  onUpdateComplete: (component) => {
+    component.shadowRoot.querySelector('form cc-button[type="submit"]').shadowRoot.querySelector('button').click();
+  },
+});
+
 export const empty = makeStory(conf, {
   items: [
     {
@@ -129,6 +177,39 @@ export const waitingWithAdding = makeStory(conf, {
   ],
 });
 
+export const waitingWithAddingHttpOnlyDomain = makeStory(conf, {
+  items: [
+    {
+      applicationId: 'app_3f9b1c8e-2d7a-4c4f-91a6-8bde78f4a21b',
+      /** @type {DomainManagementFormStateIdle} */
+      domainFormState: {
+        type: 'idle',
+        hostname: {
+          value: httpOnlyDomain.hostname,
+        },
+        pathPrefix: {
+          value: httpOnlyDomain.pathPrefix,
+        },
+      },
+      /** @type {DomainManagementListStateLoaded} */
+      domainListState: {
+        type: 'loaded',
+        domains: baseDomains,
+      },
+      /** @type {DomainManagementDnsInfoStateLoaded} */
+      dnsInfoState: baseDnsInfo,
+    },
+  ],
+  /** @type {(component: CcDomainManagement & { domainFormState: DomainManagementFormStateAdding }) => void} */
+  onUpdateComplete: (component) => {
+    component.shadowRoot.querySelector('form cc-button[type="submit"]').shadowRoot.querySelector('button').click();
+    component.domainFormState = {
+      ...component.domainFormState,
+      type: 'adding',
+    };
+  },
+});
+
 export const waitingWithDeleting = makeStory(conf, {
   items: [
     {
@@ -136,22 +217,40 @@ export const waitingWithDeleting = makeStory(conf, {
       /** @type {DomainManagementListStateLoaded} */
       domainListState: {
         type: 'loaded',
-        domains: baseDomains.map((domain, index) => {
-          if (index === 4) {
-            /** @type {DomainStateDeleting} */
-            const domainStateDeleting = {
-              ...domain,
-              type: 'deleting',
-            };
-            return domainStateDeleting;
-          }
-          return domain;
-        }),
+        domains: baseDomains,
       },
       /** @type {DomainManagementDnsInfoStateLoaded} */
       dnsInfoState: baseDnsInfo,
     },
   ],
+  /** @type {(component: CcDomainManagement & { domainListState: DomainManagementListStateLoaded }) => void} */
+  onUpdateComplete: (component) => {
+    component.shadowRoot.querySelectorAll('.delete-domain')[3].shadowRoot.querySelector('button').click();
+    component.domainListState = {
+      ...component.domainListState,
+      domains: component.domainListState.domains.map((domain, index) => {
+        // index doesn't match DOM order because of the primary domain being first + sorting
+        // second domain in baseDomains has index 1 and is the 4th in the list shown
+        // This is brittle but sufficient for story purposes
+        if (index === 1) {
+          /** @type {DomainStateDeleting} */
+          const domainStateDeleting = {
+            ...domain,
+            type: 'deleting',
+          };
+          return domainStateDeleting;
+        }
+        return domain;
+      }),
+    };
+    component.updateComplete.then(() => {
+      const ccDialogConfirm = component.shadowRoot.querySelector('cc-dialog-confirm-form');
+      /** @type {CcInputText} */
+      const confirmInput = ccDialogConfirm.shadowRoot.querySelector('cc-input-text');
+      confirmInput.value =
+        component.domainListState.domains[3].hostname + component.domainListState.domains[3].pathPrefix;
+    });
+  },
 });
 
 export const waitingWithMarkingAsPrimary = makeStory(conf, {
