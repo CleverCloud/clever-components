@@ -79,6 +79,57 @@ export function sortBy(propertyName, desc = false) {
 }
 
 /**
+ * Creates a comparator function for sorting objects by multiple properties.
+ *
+ * This function allows you to sort an array of objects by one or more properties,
+ * with the ability to specify ascending or descending order for each property.
+ * Properties are evaluated in order, and the first non-equal comparison determines
+ * the sort order. Numeric properties are compared numerically, while other types
+ * are converted to strings and compared using locale-aware string comparison.
+ *
+ * @template T
+ * @param {Array<[keyof T, 'asc' | 'desc']>} properties - An array of tuples where each tuple contains:
+ *   - The property name to sort by (must be a key of T that has a string or number value)
+ *   - The sort direction: 'asc' for ascending, 'desc' for descending
+ * @returns {(a: T, b: T) => number} A comparator function that can be passed to `Array.prototype.sort()`
+ *
+ * @example
+ * const users = [
+ *   { name: 'Alice', age: 30, score: 85 },
+ *   { name: 'Bob', age: 25, score: 90 },
+ *   { name: 'Charlie', age: 25, score: 85 }
+ * ];
+ *
+ * // Sort by age ascending, then by score descending
+ * users.sort(sortByProps([['age', 'asc'], ['score', 'desc']]));
+ * // Result: Bob (25, 90), Charlie (25, 85), Alice (30, 85)
+ *
+ * @type {import('./utils.types.js').sortByProps}
+ */
+export function sortByProps(properties) {
+  return (a, b) => {
+    for (const [propertyName, direction] of properties) {
+      const propA = a[propertyName];
+      const propB = b[propertyName];
+
+      let comparison = 0;
+
+      if (typeof propA === 'number' && typeof propB === 'number') {
+        comparison = propA - propB;
+      } else {
+        comparison = String(propA).localeCompare(String(propB));
+      }
+
+      if (comparison !== 0) {
+        return direction === 'desc' ? -comparison : comparison;
+      }
+    }
+
+    return 0;
+  };
+}
+
+/**
  * @param {Array<T>} array
  * @param {(value: T) => V} keyProvider
  * @return {Object<V, Array<T>>}

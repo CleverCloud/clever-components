@@ -15,6 +15,15 @@ import { CcAddonVersionChangeEvent } from '../components/cc-addon-info/cc-addon-
 import { CcAddonOptionFormSubmitEvent } from '../components/cc-addon-option-form/cc-addon-option-form.events.js';
 import { CcAddonOptionChangeEvent } from '../components/cc-addon-option/cc-addon-option.events.js';
 import {
+  CcCellarBucketCreatedEvent,
+  CcCellarBucketCreateEvent,
+  CcCellarBucketDeleteEvent,
+  CcCellarBucketFilterEvent,
+  CcCellarBucketHideEvent,
+  CcCellarBucketShowEvent,
+  CcCellarBucketSortEvent,
+} from '../components/cc-cellar-bucket-list/cc-cellar-bucket-list.events.js';
+import {
   CcDomainAddEvent,
   CcDomainDeleteEvent,
   CcDomainMarkAsPrimaryEvent,
@@ -188,6 +197,13 @@ declare global {
     'cc-application-restart': CcApplicationRestartEvent;
     'cc-application-start': CcApplicationStartEvent;
     'cc-application-stop': CcApplicationStopEvent;
+    'cc-cellar-bucket-create': CcCellarBucketCreateEvent;
+    'cc-cellar-bucket-created': CcCellarBucketCreatedEvent;
+    'cc-cellar-bucket-delete': CcCellarBucketDeleteEvent;
+    'cc-cellar-bucket-filter': CcCellarBucketFilterEvent;
+    'cc-cellar-bucket-hide': CcCellarBucketHideEvent;
+    'cc-cellar-bucket-show': CcCellarBucketShowEvent;
+    'cc-cellar-bucket-sort': CcCellarBucketSortEvent;
     'cc-click': CcClickEvent;
     'cc-close': CcCloseEvent;
     'cc-close-request': CcCloseRequestEvent;
