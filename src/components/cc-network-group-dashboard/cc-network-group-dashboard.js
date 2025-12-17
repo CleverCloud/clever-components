@@ -1,5 +1,6 @@
 import { css, html, LitElement } from 'lit';
 import { getAssetUrl } from '../../lib/assets-url.js';
+import { getDocUrl } from '../../lib/dev-hub-url.js';
 import { fakeString } from '../../lib/fake-strings.js';
 import { i18n } from '../../lib/i18n/i18n.js';
 import '../cc-addon-header/cc-addon-header.js';
@@ -11,9 +12,12 @@ import { CcNetworkGroupDeleteEvent } from './cc-network-group-dashboard.events.j
 
 /**
  * @import { NetworkGroupDashboardState } from './cc-network-group-dashboard.types.js'
+ * @import { AddonInfoState } from '../cc-addon-info/cc-addon-info.types.js';
+ * @import { CcAddonHeaderState } from '../cc-addon-header/cc-addon-header.types.js';
  * @import { PropertyValues } from 'lit'
  */
 
+/** @type {CcAddonHeaderState & { type: 'loading' }} */
 const SKELETON_HEADER_STATE = {
   type: 'loading',
   name: fakeString(10),
@@ -23,6 +27,7 @@ const SKELETON_HEADER_STATE = {
   providerLogoUrl: getAssetUrl('logos/clever-cloud.svg'),
 };
 
+/** @type {AddonInfoState & { type: 'loading' }} */
 const SKELETON_INFO_STATE = {
   type: 'loading',
   creationDate: '2025-08-06 15:03:00',
@@ -31,6 +36,7 @@ const SKELETON_INFO_STATE = {
   lastIp: fakeString(6),
   numberOfMembers: 0,
   numberOfPeers: 0,
+  docUrlLink: getDocUrl('/cli/network-groups'),
 };
 
 /**
@@ -88,10 +94,11 @@ export class CcNetworkGroupDashboard extends LitElement {
       `;
     }
 
+    /** @type {CcAddonHeaderState} */
     const headerState =
       this.state.type === 'loaded' || this.state.type === 'deleting'
         ? {
-            type: this.state.type,
+            type: 'loaded',
             name: this.state.name,
             id: this.state.id,
             providerId: 'network-group',
@@ -99,10 +106,11 @@ export class CcNetworkGroupDashboard extends LitElement {
           }
         : SKELETON_HEADER_STATE;
 
+    /** @type {AddonInfoState} */
     const infoState =
       this.state.type === 'loaded' || this.state.type === 'deleting'
         ? {
-            type: this.state.type,
+            type: 'loaded',
             creationDate: this.state.creationDate,
             description: this.state.description,
             subnet: this.state.subnet,
@@ -112,10 +120,14 @@ export class CcNetworkGroupDashboard extends LitElement {
             tags: this.state.tags,
           }
         : SKELETON_INFO_STATE;
+    const docLink = {
+      text: i18n('cc-network-group-dashboard.doc-link.text'),
+      href: getDocUrl('/cli/network-groups'),
+    };
 
     return html`
       <cc-addon-header .state="${headerState}"></cc-addon-header>
-      <cc-addon-info .state="${infoState}"></cc-addon-info>
+      <cc-addon-info .state="${infoState}" .docLink="${docLink}"></cc-addon-info>
       <cc-block>
         <div class="danger-zone__heading" slot="header-title">
           ${i18n('cc-network-group-dashboard.danger-zone.heading')}

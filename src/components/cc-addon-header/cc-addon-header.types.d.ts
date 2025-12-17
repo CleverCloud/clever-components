@@ -38,7 +38,7 @@ interface OpenLink {
 
 export type DeploymentStatus = 'deploying' | 'active' | 'failed' | 'deleted';
 
-export interface CcAddonHeaderStateLoading extends OptionalProperties {
+export interface CcAddonHeaderStateLoading extends BaseProperties, OptionalProperties {
   type: 'loading';
 }
 

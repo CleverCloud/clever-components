@@ -1241,6 +1241,7 @@ export const translations = {
   'cc-network-group-dashboard.danger-zone.heading': `Danger Zone`,
   'cc-network-group-dashboard.delete.error': `Something went wrong while deleting the network group.`,
   'cc-network-group-dashboard.delete.success': `The network group has been deleted successfully.`,
+  'cc-network-group-dashboard.doc-link.text': `Network Groups - Documentation`,
   //#endregion
   //#region cc-network-group-linked-resources
   'cc-network-group-linked-resources.cli...': ``,

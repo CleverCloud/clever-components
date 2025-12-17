@@ -1253,6 +1253,7 @@ export const translations = {
   'cc-network-group-dashboard.danger-zone.heading': `Zone de danger`,
   'cc-network-group-dashboard.delete.error': `Une erreur est survenue lors de la suppression du Network Group.`,
   'cc-network-group-dashboard.delete.success': `Le Network Group a été supprimé avec succès.`,
+  'cc-network-group-dashboard.doc-link.text': `Network Groups - Documentation`,
   //#endregion
   //#region cc-network-group-linked-resources
   'cc-network-group-linked-resources.cli...': ``,

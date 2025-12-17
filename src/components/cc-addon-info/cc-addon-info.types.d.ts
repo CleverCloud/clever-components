@@ -29,7 +29,6 @@ export interface AddonInfoStateBaseProperties {
   openGrafanaLink?: string;
   openScalabilityLink?: string;
   linkedServices?: Array<LinkedService>;
-  docUrlLink?: string;
 }
 
 export type AddonVersionState =
