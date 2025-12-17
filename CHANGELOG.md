@@ -5,6 +5,26 @@ title: 'Changelog'
 
 # Changelog
 
+## [22.7.0](https://github.com/CleverCloud/clever-components/compare/22.6.0...22.7.0) (2025-12-17)
+
+
+### 🚀 Features
+
+* **cc-addon-admin:** rely on dialog components ([b89b3c1](https://github.com/CleverCloud/clever-components/commit/b89b3c1e50f0135cccf0541ec59eb419faf60ddf)), closes [#1577](https://github.com/CleverCloud/clever-components/issues/1577)
+* **cc-addon-backups:** rely on dialog components ([2129637](https://github.com/CleverCloud/clever-components/commit/21296372d2f6b11de14ea78b32ab3a2721e46326)), closes [#1577](https://github.com/CleverCloud/clever-components/issues/1577)
+* **cc-button:** support `autofocus` ([6afaaae](https://github.com/CleverCloud/clever-components/commit/6afaaae7380e702da4d4415339b788445bac976e))
+* **cc-dialog-confirm-actions:** init component ([7e31038](https://github.com/CleverCloud/clever-components/commit/7e3103808874f8b4ae21c39b3affd294ee31a1ed)), closes [#1577](https://github.com/CleverCloud/clever-components/issues/1577)
+* **cc-dialog-confirm-form:** init component ([acf9179](https://github.com/CleverCloud/clever-components/commit/acf9179916bbe013208e69f43dd9090aa285fa4d)), closes [#1577](https://github.com/CleverCloud/clever-components/issues/1577)
+* **cc-input-date:** support `autofocus` ([4b9d07b](https://github.com/CleverCloud/clever-components/commit/4b9d07b33c08b5fd88b344fa26d88af18eeedbfe))
+* **cc-input-number:** support `autofocus` ([df50b20](https://github.com/CleverCloud/clever-components/commit/df50b2076280193d68ddcec15447933c76dc2c08))
+* **cc-input-text:** support `autofocus` ([df3dbb3](https://github.com/CleverCloud/clever-components/commit/df3dbb3c5eaaef97aaa5b360e57fc4f9461ffce8))
+* **cc-picker:** support `autofocus` ([f840209](https://github.com/CleverCloud/clever-components/commit/f840209f4c58042a33c9f69cbbe4b14c10bf2339))
+* **cc-select:** support `autofocus` ([c9cfeba](https://github.com/CleverCloud/clever-components/commit/c9cfeba295a0e8629c75e8d9b435d1ba7dc45d3c))
+* **cc-toggle:** support `autofocus` ([fd16997](https://github.com/CleverCloud/clever-components/commit/fd16997d6d77ebb9bb19ab4e5f9ecd39a2161572))
+* **dialog:** add `&lt;cc-dialog&gt;` modal component ([fe35ed0](https://github.com/CleverCloud/clever-components/commit/fe35ed0d75c9a0158b352e1d7c0ab50eae2a67d8)), closes [#1577](https://github.com/CleverCloud/clever-components/issues/1577)
+* **domain-management:** add domain deletion confirmation dialog ([738966a](https://github.com/CleverCloud/clever-components/commit/738966a2237ddfaf2bca21396c1c68c6d6225df9)), closes [#1577](https://github.com/CleverCloud/clever-components/issues/1577)
+* **lost-focus-controller:** handle dialog focus restoration failure ([a62dd5d](https://github.com/CleverCloud/clever-components/commit/a62dd5d99ac314a20c22b7f457ee0ca06511f742))
+
 ## [22.6.0](https://github.com/CleverCloud/clever-components/compare/22.5.0...22.6.0) (2025-12-15)
 
 
