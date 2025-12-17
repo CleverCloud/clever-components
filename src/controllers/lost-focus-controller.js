@@ -1,4 +1,4 @@
-import { CcFocusRestorationFail } from '../components/common.events.js';
+import { CcFocusRestorationFailEvent } from '../components/common.events.js';
 import { EventHandler } from '../lib/events.js';
 import { findActiveElement, isParentOf } from '../lib/shadow-dom-utils.js';
 
@@ -57,8 +57,8 @@ export class LostFocusController {
   hostConnected() {
     this.eventHandler = new EventHandler(
       this.host,
-      CcFocusRestorationFail.TYPE,
-      /** @param {CcFocusRestorationFail} event */
+      CcFocusRestorationFailEvent.TYPE,
+      /** @param {CcFocusRestorationFailEvent} event */
       async ({ detail: elementThatFailedToFocus }) => {
         await this.additionalWaiter?.();
         // compare elements to the previous one and check if some elements have been removed

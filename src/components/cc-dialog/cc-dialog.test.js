@@ -5,7 +5,7 @@ import { html } from 'lit';
 import { addTranslations, setLanguage } from '../../lib/i18n/i18n.js';
 import { findActiveElement } from '../../lib/shadow-dom-utils.js';
 import { lang, translations } from '../../translations/translations.en.js';
-import { CcCloseEvent, CcFocusRestorationFail } from '../common.events.js';
+import { CcCloseEvent, CcFocusRestorationFailEvent } from '../common.events.js';
 import './cc-dialog.js';
 
 addTranslations(lang, translations);
@@ -260,7 +260,7 @@ describe('cc-dialog component', () => {
       `);
       const opener = container.querySelector('#opener');
       const dialog = container.querySelector('cc-dialog');
-      const failSpy = createEventSpy(dialog, CcFocusRestorationFail.TYPE);
+      const failSpy = createEventSpy(dialog, CcFocusRestorationFailEvent.TYPE);
 
       opener.focus();
       opener.click();
@@ -286,7 +286,7 @@ describe('cc-dialog component', () => {
       `);
       const opener = container.querySelector('#opener');
       const dialog = container.querySelector('cc-dialog');
-      const failSpy = createEventSpy(dialog, CcFocusRestorationFail.TYPE);
+      const failSpy = createEventSpy(dialog, CcFocusRestorationFailEvent.TYPE);
 
       opener.focus();
       opener.click();
@@ -314,7 +314,7 @@ describe('cc-dialog component', () => {
       `);
       const opener = container.querySelector('#opener');
       const dialog = container.querySelector('cc-dialog');
-      const failSpy = createEventSpy(dialog, CcFocusRestorationFail.TYPE);
+      const failSpy = createEventSpy(dialog, CcFocusRestorationFailEvent.TYPE);
 
       opener.focus();
       opener.click();
@@ -330,7 +330,7 @@ describe('cc-dialog component', () => {
       // Verify focus restoration fail event was dispatched with correct detail
       expect(failSpy.called).to.equal(true);
       const event = failSpy.lastCall.args[0];
-      expect(event).to.be.instanceOf(CcFocusRestorationFail);
+      expect(event).to.be.instanceOf(CcFocusRestorationFailEvent);
       expect(event.detail).to.equal(opener);
     });
   });
@@ -374,7 +374,7 @@ describe('cc-dialog component', () => {
       const opener = container.querySelector('#opener');
       const otherButton = container.querySelector('#other');
       const dialog = container.querySelector('cc-dialog');
-      const failSpy = createEventSpy(dialog, CcFocusRestorationFail.TYPE);
+      const failSpy = createEventSpy(dialog, CcFocusRestorationFailEvent.TYPE);
 
       opener.focus();
       opener.click();

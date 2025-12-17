@@ -19,11 +19,11 @@ export class CcCloseEvent extends CcEvent {
  *
  * @extends {CcEvent}
  */
-export class CcCloseRequest extends CcEvent {
+export class CcCloseRequestEvent extends CcEvent {
   static TYPE = 'cc-close-request';
 
   constructor() {
-    super(CcCloseRequest.TYPE);
+    super(CcCloseRequestEvent.TYPE);
   }
 }
 
@@ -58,12 +58,12 @@ export class CcOpenEvent extends CcEvent {
  *
  * @extends {CcEvent<Element>}
  */
-export class CcFocusRestorationFail extends CcEvent {
+export class CcFocusRestorationFailEvent extends CcEvent {
   static TYPE = 'cc-focus-restoration-fail';
 
   /** @param {Element} element - the element that it tried to restore focus on */
   constructor(element) {
-    super(CcFocusRestorationFail.TYPE, element);
+    super(CcFocusRestorationFailEvent.TYPE, element);
   }
 }
 

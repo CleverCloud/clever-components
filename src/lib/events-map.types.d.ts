@@ -143,9 +143,9 @@ import {
 import {
   CcClickEvent,
   CcCloseEvent,
-  CcCloseRequest,
+  CcCloseRequestEvent,
   CcConfirmEvent,
-  CcFocusRestorationFail,
+  CcFocusRestorationFailEvent,
   CcOpenEvent,
   CcPasswordResetEvent,
   CcRequestSubmitEvent,
@@ -185,7 +185,7 @@ declare global {
     'cc-application-stop': CcApplicationStopEvent;
     'cc-click': CcClickEvent;
     'cc-close': CcCloseEvent;
-    'cc-close-request': CcCloseRequest;
+    'cc-close-request': CcCloseRequestEvent;
     'cc-confirm': CcConfirmEvent;
     'cc-deployment-cancel': CcDeploymentCancelEvent;
     'cc-domain-add': CcDomainAddEvent;
@@ -205,7 +205,7 @@ declare global {
     'cc-env-vars-was-updated': CcEnvVarsWasUpdatedEvent;
     'cc-error-message-change': CcErrorMessageChangeEvent;
     'cc-feature-setting-change': CcFeatureSettingChangeEvent;
-    'cc-focus-restoration-fail': CcFocusRestorationFail;
+    'cc-focus-restoration-fail': CcFocusRestorationFailEvent;
     'cc-form-invalid': CcFormInvalidEvent;
     'cc-form-valid': CcFormValidEvent;
     'cc-grafana-reset': CcGrafanaResetEvent;
