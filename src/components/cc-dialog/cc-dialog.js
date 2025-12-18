@@ -10,7 +10,7 @@ import { i18n } from '../../translations/translation.js';
 import '../cc-button/cc-button.js';
 import '../cc-icon/cc-icon.js';
 import '../cc-input-text/cc-input-text.js';
-import { CcCloseEvent, CcFocusRestorationFail, CcOpenEvent } from '../common.events.js';
+import { CcCloseEvent, CcFocusRestorationFailEvent, CcOpenEvent } from '../common.events.js';
 
 /**
  * @import { IconModel } from '../common.types.js';
@@ -137,7 +137,7 @@ export class CcDialog extends LitElement {
     if (this._openerElement instanceof HTMLElement && this._openerElement.isConnected) {
       this._openerElement.focus();
     } else {
-      this.dispatchEvent(new CcFocusRestorationFail(this._openerElement));
+      this.dispatchEvent(new CcFocusRestorationFailEvent(this._openerElement));
     }
   }
 

@@ -3,7 +3,7 @@ import { defineCE, fixture, nextFrame } from '@open-wc/testing';
 import * as hanbi from 'hanbi';
 import { LitElement, html } from 'lit';
 import { repeat } from 'lit/directives/repeat.js';
-import { CcFocusRestorationFail } from '../../src/components/common.events.js';
+import { CcFocusRestorationFailEvent } from '../../src/components/common.events.js';
 import { LostFocusController } from '../../src/controllers/lost-focus-controller.js';
 
 describe('lost-focus-controller', () => {
@@ -230,7 +230,7 @@ describe('lost-focus-controller', () => {
           }
 
           dispatchFocusRestorationFail(element) {
-            this.dispatchEvent(new CcFocusRestorationFail(element));
+            this.dispatchEvent(new CcFocusRestorationFailEvent(element));
           }
 
           render() {
