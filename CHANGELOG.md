@@ -5,6 +5,13 @@ title: 'Changelog'
 
 # Changelog
 
+## [22.8.0](https://github.com/CleverCloud/clever-components/compare/22.7.0...22.8.0) (2025-12-19)
+
+
+### 🚀 Features
+
+* **cc-domain-management:** add dialog for HTTP only domain creation ([12ff6ed](https://github.com/CleverCloud/clever-components/commit/12ff6ed0efe8779a8ff23496e6a4a0a64cbf812d))
+
 ## [22.7.0](https://github.com/CleverCloud/clever-components/compare/22.6.0...22.7.0) (2025-12-17)
 
 
