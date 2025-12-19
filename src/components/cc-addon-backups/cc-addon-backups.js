@@ -31,9 +31,7 @@ const SKELETON_BACKUPS = {
 
 /**
  * @import { Backup, OverlayType, AddonBackupsState, AddonBackupsStateLoaded, AddonBackupsStateLoading, ProviderId } from './cc-addon-backups.types.js'
- * @import { CcButton } from '../cc-button/cc-button.js'
  * @import { TemplateResult } from 'lit'
- * @import { EventWithTarget } from '../../lib/events.types.js'
  */
 
 /**
@@ -65,9 +63,6 @@ export class CcAddonBackups extends LitElement {
     this.state = {
       type: 'loading',
     };
-
-    /** @type {CcButton|null} */
-    this._overlayTriggeringButton = null;
 
     /** @type {OverlayType|null} */
     this._overlayType = null;
@@ -227,10 +222,6 @@ export class CcAddonBackups extends LitElement {
   _onCloseOverlay() {
     this._overlayType = null;
     this._selectedBackup = null;
-    this.updateComplete.then(() => {
-      this._overlayTriggeringButton.focus();
-      this._overlayTriggeringButton = null;
-    });
   }
 
   /**
@@ -239,17 +230,9 @@ export class CcAddonBackups extends LitElement {
    * @private
    */
   _onOpenOverlay(type, backup) {
-    /** @param {EventWithTarget<CcButton>} e */
-    return (e) => {
+    return () => {
       this._overlayType = type;
       this._selectedBackup = backup;
-      // Remember the target so we can focus back on it after the overlay is closed
-      this._overlayTriggeringButton = e.target;
-      this.updateComplete.then(() => {
-        /** @type {CcButton} */
-        const closeButton = this.shadowRoot.querySelector('.overlay cc-button');
-        closeButton.focus();
-      });
     };
   }
 
@@ -326,7 +309,6 @@ export class CcAddonBackups extends LitElement {
    */
   _renderBackups(state) {
     const skeleton = state.type === 'loading';
-    const areBtnsDisabled = state.type === 'loading' || this._overlayType != null;
 
     const data = state.type === 'loaded' ? state : SKELETON_BACKUPS;
     return html`
@@ -341,22 +323,12 @@ export class CcAddonBackups extends LitElement {
                 <cc-link href="${this._overlayType == null ? backup.url : null}" ?skeleton="${skeleton}"
                   >${this._getBackupLink(data.providerId)}</cc-link
                 >
-                <cc-button
-                  link
-                  ?disabled=${areBtnsDisabled}
-                  ?skeleton=${skeleton}
-                  @cc-click=${this._onOpenOverlay('restore', backup)}
-                >
+                <cc-button link ?skeleton=${skeleton} @cc-click=${this._onOpenOverlay('restore', backup)}>
                   ${i18n('cc-addon-backups.restore.btn')}
                 </cc-button>
                 ${backup.deleteCommand != null
                   ? html`
-                      <cc-button
-                        link
-                        ?disabled=${areBtnsDisabled}
-                        ?skeleton=${skeleton}
-                        @cc-click=${this._onOpenOverlay('delete', backup)}
-                      >
+                      <cc-button link ?skeleton=${skeleton} @cc-click=${this._onOpenOverlay('delete', backup)}>
                         ${i18n('cc-addon-backups.delete.btn')}
                       </cc-button>
                     `
