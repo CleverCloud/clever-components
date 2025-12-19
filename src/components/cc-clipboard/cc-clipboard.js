@@ -30,6 +30,8 @@ export class CcClipboard extends LitElement {
     };
   }
 
+  static shadowRootOptions = { ...LitElement.shadowRootOptions, delegatesFocus: true };
+
   constructor() {
     super();
 
