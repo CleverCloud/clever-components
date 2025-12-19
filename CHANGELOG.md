@@ -5,6 +5,13 @@ title: 'Changelog'
 
 # Changelog
 
+## [22.8.1](https://github.com/CleverCloud/clever-components/compare/22.8.0...22.8.1) (2025-12-19)
+
+
+### 🐛 Bug Fixes
+
+* **cc-addon-backups:** prevent console error on dialog close ([972a9d6](https://github.com/CleverCloud/clever-components/commit/972a9d6f4762d9e945356327d3c4179d6e8003d1))
+
 ## [22.8.0](https://github.com/CleverCloud/clever-components/compare/22.7.0...22.8.0) (2025-12-19)
 
 
