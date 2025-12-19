@@ -507,6 +507,19 @@ export const translations = {
   //#region cc-cellar-explorer
   'cc-cellar-explorer.error': `Une erreur est survenue pendant le chargement`,
   //#endregion
+  //#region cc-cellar-object-list
+  'cc-cellar-object-list.date': /** @param {{date: string}} _ */ ({ date }) => formatDateOnly(date),
+  'cc-cellar-object-list.empty.no-items': `Il n'y a aucun objet`,
+  'cc-cellar-object-list.error': `Une erreur est survenue pendant le chargement de la liste des objets`,
+  'cc-cellar-object-list.grid.a11y-name': `Liste des objets`,
+  'cc-cellar-object-list.grid.column.last-update': `Dernière modification`,
+  'cc-cellar-object-list.grid.column.name': `Nom`,
+  'cc-cellar-object-list.grid.column.size': `Taille`,
+  'cc-cellar-object-list.heading.filter.button': `Filtrer`,
+  'cc-cellar-object-list.heading.filter.label': `Filtre`,
+  'cc-cellar-object-list.heading.title': `Liste des objets`,
+  'cc-cellar-object-list.size': /** @param {{size: number}} _ */ ({ size }) => formatBytes(size),
+  //#endregion
   //#region cc-clipboard
   'cc-clipboard.copied': `Le texte a été copié`,
   'cc-clipboard.copy': /** @param {{text: string}} _ */ ({ text }) =>

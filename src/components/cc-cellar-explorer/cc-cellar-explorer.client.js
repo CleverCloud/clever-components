@@ -71,7 +71,7 @@ export class CellarExplorerClient {
    */
   listObjects(bucketName, path, options = {}) {
     const prefix = pathToString(path) + (options.filter ?? '');
-    return this.#send(`/cellar/object/_list`, { bucketName, prefix, cursor: options.cursor }, true);
+    return this.#send(`/cellar/object/_list`, { bucketName, prefix, cursor: options.cursor, count: 50 }, true);
   }
 
   /**

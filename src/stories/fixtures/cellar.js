@@ -2,6 +2,7 @@ import { random } from '../../lib/utils.js';
 
 /**
  * @import { CellarBucketState, CellarBucketDetailsState } from '../../components/cc-cellar-bucket-list/cc-cellar-bucket-list.types.js'
+ * @import { CellarObjectState } from '../../components/cc-cellar-object-list/cc-cellar-object-list.types.js'
  * @import { CellarBucket } from '../../components/cc-cellar-explorer/cc-cellar-explorer.client.types.js'
  */
 
@@ -72,4 +73,28 @@ export function buckets(count) {
   }
 
   return count.map(toBucket);
+}
+
+/**
+ * @param {number|Array<string>} count
+ * @returns {Array<CellarObjectState>}
+ */
+export function objects(count) {
+  /**
+   * @param {string} name
+   * @returns {CellarObjectState}
+   */
+  const toObject = (name) => ({
+    type: 'file',
+    state: 'idle',
+    name,
+    fullName: name,
+    updatedAt: new Date().toISOString(),
+    contentLength: random(150_000, 2_000_000),
+  });
+  if (typeof count === 'number') {
+    return [...Array(count)].map((_, i) => toObject(`object-${i + 1}`));
+  }
+
+  return count.map(toObject);
 }

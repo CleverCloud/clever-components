@@ -14,6 +14,7 @@ import { accessibilityStyles } from '../../styles/accessibility.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-badge/cc-badge.js';
 import '../cc-button/cc-button.js';
+import { CcCellarNavigateToBucketEvent } from '../cc-cellar-object-list/cc-cellar-object-list.events.js';
 import '../cc-clipboard/cc-clipboard.js';
 import '../cc-dialog-confirm-actions/cc-dialog-confirm-actions.js';
 import '../cc-dialog/cc-dialog.js';
@@ -99,6 +100,13 @@ export class CcCellarBucketList extends LitElement {
         this._gridRef?.value.scrollToIndex(index);
       }
     });
+  }
+
+  /**
+   * @param {string} bucketName
+   */
+  _onBucketClick(bucketName) {
+    this.dispatchEvent(new CcCellarNavigateToBucketEvent(bucketName));
   }
 
   /**
@@ -281,10 +289,11 @@ export class CcCellarBucketList extends LitElement {
       {
         header: i18n('cc-cellar-bucket-list.grid.column.name'),
         cellAt: (bucketState) => ({
-          type: 'text',
+          type: 'link',
           value: bucketState.name,
           icon: iconBucket,
           enableCopyToClipboard: true,
+          onClick: () => this._onBucketClick(bucketState.name),
         }),
         width: 'minmax(max-content, 1fr)',
         sort: getSort('name'),

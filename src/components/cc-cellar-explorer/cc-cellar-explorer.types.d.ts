@@ -1,4 +1,5 @@
 import { CellarBucketListState } from '../cc-cellar-bucket-list/cc-cellar-bucket-list.types.js';
+import { CellarObjectListState } from '../cc-cellar-object-list/cc-cellar-object-list.types.js';
 
 export type CellarExplorerState = CellarExplorerStateLoading | CellarExplorerStateError | CellarExplorerStateLoaded;
 
@@ -24,4 +25,5 @@ export interface CellarExplorerLevelBuckets {
 
 export interface CellarExplorerLevelObjects {
   type: 'objects';
+  state: CellarObjectListState;
 }

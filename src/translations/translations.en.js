@@ -496,6 +496,19 @@ export const translations = {
   //#region cc-cellar-explorer
   'cc-cellar-explorer.error': `Error while loading component`,
   //#endregion
+  //#region cc-cellar-object-list
+  'cc-cellar-object-list.date': /** @param {{date: string}} _ */ ({ date }) => formatDateOnly(date),
+  'cc-cellar-object-list.empty.no-items': `There are no objects`,
+  'cc-cellar-object-list.error': `Something went wrong while loading the list of objects`,
+  'cc-cellar-object-list.grid.a11y-name': `List of objects`,
+  'cc-cellar-object-list.grid.column.last-update': `Last update`,
+  'cc-cellar-object-list.grid.column.name': `Name`,
+  'cc-cellar-object-list.grid.column.size': `Size`,
+  'cc-cellar-object-list.heading.filter.button': `Filter`,
+  'cc-cellar-object-list.heading.filter.label': `Filter`,
+  'cc-cellar-object-list.heading.title': `List of objects`,
+  'cc-cellar-object-list.size': /** @param {{size: number}} _ */ ({ size }) => formatBytes(size),
+  //#endregion
   //#region cc-clipboard
   'cc-clipboard.copied': `The text has been copied`,
   'cc-clipboard.copy': /** @param {{text: string}} _ */ ({ text }) =>
