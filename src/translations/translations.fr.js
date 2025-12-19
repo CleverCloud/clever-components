@@ -470,6 +470,13 @@ export const translations = {
   'cc-domain-management.certif.custom': () =>
     sanitize`Vous pouvez fournir votre propre certificat grâce au <cc-link href="https://api.clever-cloud.com/v2/certificates/new">gestionnaire de certificats Clever Cloud</cc-link>.`,
   'cc-domain-management.certif.heading': `Sécurisez votre application`,
+  'cc-domain-management.create-dialog.confirm-button': `Ajouter le domaine`,
+  'cc-domain-management.create-dialog.desc': /** @param {{ domainWithPathPrefix: string }} _ */ ({
+    domainWithPathPrefix,
+  }) => sanitize`Le nom de domaine <code>${domainWithPathPrefix}</code> sera disponible en HTTP uniquement.`,
+  'cc-domain-management.create-dialog.heading': `Sous-domaine disponible en HTTP uniquement`,
+  'cc-domain-management.create-dialog.warning': () =>
+    sanitize`Seuls les domaines directs de <code>cleverapps.io</code> bénéficient d'un certificat SSL, pas ceux de type <code>xx.yy.cleverapps.io</code>.`,
   'cc-domain-management.delete-dialog.confirm-button': `Supprimer`,
   'cc-domain-management.delete-dialog.desc': `Supprimer ce nom de domain rendra immédiatement votre application inaccessible depuis ce dernier.`,
   'cc-domain-management.delete-dialog.heading': `Supprimer le nom de domaine`,

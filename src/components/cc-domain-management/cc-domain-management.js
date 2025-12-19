@@ -47,7 +47,7 @@ const TLS_CERTIFICATES_DOCUMENTATION = getDocUrl('/administrate/ssl');
 const DNS_DOCUMENTATION = getDocUrl('/administrate/domain-names');
 
 /**
- * @import { DomainManagementDnsInfoState, DomainManagementListState, DomainManagementFormState, DomainManagementFormStateIdle, FormattedDomainInfo, DomainInfo, FormError, DomainState } from './cc-domain-management.types.js'
+ * @import { DomainManagementDnsInfoState, DomainManagementListState, DomainManagementFormState, DomainManagementFormStateIdle, FormattedDomainInfo, DomainInfo, FormError, DomainState, NewDomain } from './cc-domain-management.types.js'
  * @import { CcInputText } from '../cc-input-text/cc-input-text.js'
  * @import { TemplateResult, PropertyValues } from 'lit'
  * @import { Ref } from 'lit/directives/ref.js'
@@ -65,7 +65,9 @@ export class CcDomainManagement extends LitElement {
       dnsInfoState: { type: Object, attribute: 'dns-info-state' },
       domainFormState: { type: Object, attribute: 'domain-form-state' },
       domainListState: { type: Object, attribute: 'domain-list-state' },
+      _domainToAdd: { type: Object, state: true },
       _idOfDomainToDelete: { type: String, state: true },
+      _shouldShowHttpOnlyDialog: { type: Boolean, state: true },
       _sortedDomains: { type: Array, state: true },
     };
   }
@@ -105,6 +107,12 @@ export class CcDomainManagement extends LitElement {
 
     /** @type {string|null} Used to display the deletion dialog when set with a value other than null. */
     this._idOfDomainToDelete = null;
+
+    /** @type {NewDomain|null} Used to store the domain to add. */
+    this._domainToAdd = null;
+
+    /** @type {boolean} Used to display the HTTP Only confirmation dialog when set to `true` */
+    this._shouldShowHttpOnlyDialog = false;
 
     /** @type {Ref<HTMLParagraphElement>} */
     this._emptyMessageRef = createRef();
@@ -203,8 +211,31 @@ export class CcDomainManagement extends LitElement {
     }
   }
 
+  /** @param {NewDomain} domainToAdd */
+  _onCreateConfirm(domainToAdd) {
+    this.dispatchEvent(new CcDomainAddEvent(domainToAdd));
+  }
+
+  /** @param {FormattedDomainInfo} formattedDomainInfo */
+  _onMarkPrimary(formattedDomainInfo) {
+    /** @type {DomainInfo} */
+    const domainInfo = {
+      id: formattedDomainInfo.id,
+      hostname: formattedDomainInfo.hostname,
+      pathPrefix: formattedDomainInfo.pathPrefix,
+      isWildcard: formattedDomainInfo.isWildcard,
+      isPrimary: formattedDomainInfo.isPrimary,
+    };
+    return () => this.dispatchEvent(new CcDomainMarkAsPrimaryEvent(domainInfo));
+  }
+
+  /** @param {string} domainId */
+  _onDeleteRequest(domainId) {
+    return () => (this._idOfDomainToDelete = domainId);
+  }
+
   /** @param {SubmitEvent} e */
-  _onDomainSubmit(e) {
+  _onCreateRequest(e) {
     e.preventDefault();
 
     if (this.domainFormState.type !== 'idle') {
@@ -238,26 +269,17 @@ export class CcDomainManagement extends LitElement {
 
     // we do this to strip off unwanted parts like query parameters for instance
     const { hostname, pathname, isWildcard } = parseDomain(hostnameValue + pathPrefixValue);
-
-    this.dispatchEvent(new CcDomainAddEvent({ hostname, pathPrefix: pathname, isWildcard }));
-  }
-
-  /** @param {FormattedDomainInfo} formattedDomainInfo */
-  _onMarkPrimary(formattedDomainInfo) {
-    /** @type {DomainInfo} */
-    const domainInfo = {
-      id: formattedDomainInfo.id,
-      hostname: formattedDomainInfo.hostname,
-      pathPrefix: formattedDomainInfo.pathPrefix,
-      isWildcard: formattedDomainInfo.isWildcard,
-      isPrimary: formattedDomainInfo.isPrimary,
+    this._domainToAdd = {
+      hostname,
+      pathPrefix: pathname === '/' ? '' : pathname,
+      isWildcard,
     };
-    return () => this.dispatchEvent(new CcDomainMarkAsPrimaryEvent(domainInfo));
-  }
 
-  /** @param {string} domainId */
-  _onDeleteRequest(domainId) {
-    return () => (this._idOfDomainToDelete = domainId);
+    if (isTestDomainWithSubdomain(hostname)) {
+      this._shouldShowHttpOnlyDialog = true;
+    } else {
+      this._onCreateConfirm(this._domainToAdd);
+    }
   }
 
   /** @param {CcInputEvent} event */
@@ -290,6 +312,32 @@ export class CcDomainManagement extends LitElement {
     };
   }
 
+  _onCreateDialogClose() {
+    this._shouldShowHttpOnlyDialog = false;
+    this._domainToAdd = null;
+  }
+
+  _onDeleteDialogClose() {
+    this._idOfDomainToDelete = null;
+  }
+
+  /** @param {DomainState} domainToDelete */
+  _onDeleteConfirm(domainToDelete) {
+    if (this.domainListState.type !== 'loaded' || domainToDelete == null) {
+      return;
+    }
+
+    const domainInfo = {
+      id: domainToDelete.id,
+      hostname: domainToDelete.hostname,
+      pathPrefix: domainToDelete.pathPrefix,
+      isWildcard: domainToDelete.isWildcard,
+      isPrimary: domainToDelete.isPrimary,
+    };
+
+    this.dispatchEvent(new CcDomainDeleteEvent(domainInfo));
+  }
+
   /** @param {PropertyValues<CcDomainManagement>} changedProperties */
   willUpdate(changedProperties) {
     if (
@@ -314,6 +362,14 @@ export class CcDomainManagement extends LitElement {
 
         return formattedDomain;
       });
+    }
+
+    const wasAddingDomain =
+      changedProperties.has('domainFormState') && changedProperties.get('domainFormState')?.type === 'adding';
+    const isNotAddingDomain = this.domainFormState.type !== 'adding';
+    if (wasAddingDomain && isNotAddingDomain) {
+      this._domainToAdd = null;
+      this._shouldShowHttpOnlyDialog = false;
     }
   }
 
@@ -452,7 +508,7 @@ export class CcDomainManagement extends LitElement {
     const isAdding = type === 'adding';
 
     return html`
-      <form novalidate @submit=${this._onDomainSubmit}>
+      <form novalidate @submit=${this._onCreateRequest}>
         <div class="fieldgroup">
           <cc-input-text
             class="fieldgroup__domain"
@@ -479,6 +535,7 @@ export class CcDomainManagement extends LitElement {
         </div>
         <cc-button primary ?waiting="${isAdding}" type="submit">${i18n('cc-domain-management.form.submit')}</cc-button>
       </form>
+      ${this._shouldShowHttpOnlyDialog ? this._renderHttpOnlyDialog(this._domainToAdd, isAdding) : ''}
     `;
   }
 
@@ -677,27 +734,6 @@ export class CcDomainManagement extends LitElement {
     `;
   }
 
-  _onDeleteDialogClose() {
-    this._idOfDomainToDelete = null;
-  }
-
-  /** @param {DomainState} domainToDelete */
-  _onDeleteConfirm(domainToDelete) {
-    if (this.domainListState.type !== 'loaded' || domainToDelete == null) {
-      return;
-    }
-
-    const domainInfo = {
-      id: domainToDelete.id,
-      hostname: domainToDelete.hostname,
-      pathPrefix: domainToDelete.pathPrefix,
-      isWildcard: domainToDelete.isWildcard,
-      isPrimary: domainToDelete.isPrimary,
-    };
-
-    this.dispatchEvent(new CcDomainDeleteEvent(domainInfo));
-  }
-
   /** @param {DomainState|null} domainToDelete */
   _renderDeleteDomainDialog(domainToDelete) {
     return html`
@@ -721,6 +757,41 @@ export class CcDomainManagement extends LitElement {
                 @cc-confirm="${() => this._onDeleteConfirm(domainToDelete)}"
               >
               </cc-dialog-confirm-form>
+            `
+          : ''}
+      </cc-dialog>
+    `;
+  }
+
+  /**
+   * @param {NewDomain} domainToAdd
+   * @param {boolean} isAdding
+   */
+  _renderHttpOnlyDialog(domainToAdd, isAdding) {
+    return html`
+      <cc-dialog
+        open
+        heading="${i18n('cc-domain-management.create-dialog.heading')}"
+        @cc-close="${this._onCreateDialogClose}"
+      >
+        ${domainToAdd != null
+          ? html`
+              <cc-notice intent="warning">
+                <p slot="message">${i18n('cc-domain-management.create-dialog.warning')}</p>
+              </cc-notice>
+              <p>
+                ${i18n('cc-domain-management.create-dialog.desc', {
+                  domainWithPathPrefix: domainToAdd.hostname + domainToAdd.pathPrefix,
+                })}
+              </p>
+
+              <cc-dialog-confirm-actions
+                submit-label="${i18n('cc-domain-management.create-dialog.confirm-button')}"
+                submit-intent="primary"
+                ?waiting="${isAdding}"
+                @cc-confirm="${() => this._onCreateConfirm(domainToAdd)}"
+              >
+              </cc-dialog-confirm-actions>
             `
           : ''}
       </cc-dialog>
@@ -943,6 +1014,18 @@ export class CcDomainManagement extends LitElement {
         .dns-info cc-notice[intent='info'] {
           margin-bottom: 1em;
           margin-top: 1.5em;
+        }
+
+        /** #endregion */
+
+        /** #region dialogs */
+
+        cc-dialog cc-notice {
+          margin-bottom: 0.5em;
+        }
+
+        cc-dialog p {
+          margin: 0;
         }
 
         /** #endregion */
