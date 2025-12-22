@@ -5,6 +5,13 @@ title: 'Changelog'
 
 # Changelog
 
+## [22.8.2](https://github.com/CleverCloud/clever-components/compare/22.8.1...22.8.2) (2025-12-22)
+
+
+### 🐛 Bug Fixes
+
+* **cc-addon-backups:** fix english translations ([1efb2bd](https://github.com/CleverCloud/clever-components/commit/1efb2bdb34b7911b56dcab58406699a5fb512472))
+
 ## [22.8.1](https://github.com/CleverCloud/clever-components/compare/22.8.0...22.8.1) (2025-12-19)
 
 
