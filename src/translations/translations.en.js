@@ -99,12 +99,12 @@ export const translations = {
   'cc-addon-admin.update-tags.success': `The tags of your add-on have been updated successfully.`,
   //#endregion
   //#region cc-addon-backups
-  'cc-addon-backups.cli.content.download-backup-command': `List available database backups:`,
+  'cc-addon-backups.cli.content.download-backup-command': `Download a database backup:`,
   'cc-addon-backups.cli.content.instruction': getCliInstructions,
   'cc-addon-backups.cli.content.intro': `
       You can manage backups directly from your terminal using the commands below.
     `,
-  'cc-addon-backups.cli.content.list-backups-command': `Download a database backup:`,
+  'cc-addon-backups.cli.content.list-backups-command': `List available database backups:`,
   'cc-addon-backups.command-password': `This command will ask for your password, here it is:`,
   'cc-addon-backups.delete': /** @param {{createdAt: string|number}} _ */ ({ createdAt }) =>
     sanitize`Delete the backup from <strong title="${formatDate(createdAt)}">${formatDatetime(createdAt)}</strong>`,
