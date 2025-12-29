@@ -49,16 +49,21 @@ defineSmartComponent({
           name: orga.name,
           selected: orga.id === selectedOrg.id,
         })),
-        resources: selectedOrg != null ? [
-          ...selectedOrg.applications.map((app) => ({
-            path: `/organisations/${selectedOrg.id}/applications/${app.id}`,
-            name: app.name,
-          })),
-          ...selectedOrg.addons.map((addon) => ({
-            path: `/organisations/${selectedOrg.id}/addons/${addon.id}`,
-            name: addon.name,
-          })),
-        ] : [],
+        resources:
+          selectedOrg != null
+            ? [
+                ...selectedOrg.applications.map((app) => ({
+                  path: `/organisations/${selectedOrg.id}/applications/${app.id}`,
+                  name: app.name,
+                  id: app.id,
+                })),
+                ...selectedOrg.addons.map((addon) => ({
+                  path: `/organisations/${selectedOrg.id}/addons/${addon.id}`,
+                  name: addon.name,
+                  id: addon.id,
+                })),
+              ]
+            : [],
         settings: [
           { path: '/support', name: 'Support', icon: iconSupport },
           { path: '/platform-status', name: 'Platform Status', icon: iconPlatformStatus },

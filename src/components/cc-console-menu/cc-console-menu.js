@@ -1,7 +1,7 @@
 import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
-import { i18n } from '../../translations/translation.js';
 import { accessibilityStyles } from '../../styles/accessibility.js';
+import { i18n } from '../../translations/translation.js';
 import '../cc-icon/cc-icon.js';
 import '../cc-img/cc-img.js';
 
@@ -67,10 +67,7 @@ export class CcConsoleMenu extends LitElement {
 
   _renderLink(link) {
     return html`
-      <a
-        class="link ${classMap({ 'link--selected': link.selected === true })}"
-        href="${link.path}"
-      >
+      <a class="link ${classMap({ 'link--selected': link.selected === true })}" href="${link.path}">
         ${link.icon != null ? html`<cc-icon .icon="${link.icon}"></cc-icon>` : ''}
         <span>${link.name}</span>
       </a>
@@ -84,8 +81,11 @@ export class CcConsoleMenu extends LitElement {
       css`
         :host {
           background-color: #151b2e;
+          box-sizing: border-box;
           color: #fff;
-          display: block;
+          display: flex;
+          flex-direction: column;
+          height: 100%;
           padding: 0.5em;
         }
 
@@ -109,31 +109,37 @@ export class CcConsoleMenu extends LitElement {
           width: 100%;
         }
 
+        .resources {
+          flex: 1 1 auto;
+          min-height: 0;
+          overflow-y: auto;
+        }
+
         .link {
           align-items: center;
+          border-radius: var(--cc-border-radius-default, 0.25em);
           color: inherit;
           display: flex;
           gap: 0.5em;
           margin-top: 0.5em;
-          text-decoration: none;
           padding: 0.5em;
-          border-radius: var(--cc-border-radius-default, 0.25em);
+          text-decoration: none;
           transition: background-color 0.2s ease;
         }
 
         .link:hover {
-          background-color: rgba(255, 255, 255, 0.1);
+          background-color: rgb(255 255 255 / 10%);
         }
 
         .link--selected {
-          background-color: var(--cc-color-bg-primary-weak, rgba(53, 105, 170, 0.3));
+          background-color: #456080;
           border-left: 3px solid var(--cc-color-border-primary, #3569aa);
           padding-left: calc(0.5em - 3px);
         }
 
-        .link--selected:hover {
-          background-color: var(--cc-color-bg-primary-weaker, rgba(53, 105, 170, 0.4));
-        }
+        /* .link--selected:hover {
+          background-color: ;
+        } */
 
         .empty {
           color: var(--cc-color-text-weak);
