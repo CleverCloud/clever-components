@@ -434,6 +434,9 @@ export const translations = {
   //#region cc-console-menu
   'cc-console-menu.resources.empty': `No products in this organisation`,
   //#endregion
+  //#region cc-console-headbar
+  'cc-console-headbar.tabs.label': () => `Product navigation`,
+  //#endregion
   //#region cc-datetime-relative
   'cc-datetime-relative.distance': /** @param {{date: string|number}} _ */ ({ date }) => formatDistanceToNow(date),
   'cc-datetime-relative.title': /** @param {{date: string|number}} _ */ ({ date }) => formatDate(date),
