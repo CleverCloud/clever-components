@@ -442,6 +442,9 @@ export const translations = {
     `Copier dans le presse-papier - ${text.substring(0, 5).trim()}${text.length >= 5 ? '…' : ''}`,
   'cc-clipboard.copy.empty': `Copier dans le presse-papier`,
   //#endregion
+  //#region cc-console-menu
+  'cc-console-menu.resources.empty': `Aucun produit dans cette organisation`,
+  //#endregion
   //#region cc-datetime-relative
   'cc-datetime-relative.distance': /** @param {{date: string|number}} _ */ ({ date }) => formatDistanceToNow(date),
   'cc-datetime-relative.title': /** @param {{date: string|number}} _ */ ({ date }) => formatDate(date),

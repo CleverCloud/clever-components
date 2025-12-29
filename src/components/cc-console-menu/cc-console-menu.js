@@ -1,21 +1,16 @@
 import { css, html, LitElement } from 'lit';
+import { classMap } from 'lit/directives/class-map.js';
+import { i18n } from '../../translations/translation.js';
 import { accessibilityStyles } from '../../styles/accessibility.js';
-import '../cc-block-section/cc-block-section.js';
-import '../cc-block/cc-block.js';
-import '../cc-dialog-confirm-form/cc-dialog-confirm-form.js';
-import '../cc-dialog/cc-dialog.js';
-import '../cc-input-text/cc-input-text.js';
-import '../cc-loader/cc-loader.js';
-import '../cc-notice/cc-notice.js';
+import '../cc-icon/cc-icon.js';
+import '../cc-img/cc-img.js';
 
 /**
- * @import { AddonAdminState, AddonAdminStateLoaded, AddonAdminStateLoading, AddonAdminStateSaving } from './cc-console-menu.types.js'
- * @import { CcTagsChangeEvent } from '../cc-input-text/cc-input-text.events.js'
  * @import { TemplateResult, PropertyValues } from 'lit'
  */
 
 /**
- * A component displaying the admin interface of an add-on to edit its name or delete the add-on.
+ * A component displaying the console navigation menu.
  *
  * @cssdisplay block
  */
@@ -47,6 +42,8 @@ export class CcConsoleMenu extends LitElement {
   }
 
   render() {
+    const isEmpty = this.resources != null && this.resources.length === 0;
+
     return html`
       <div class="header">
         <a href="/" class="home-link">
@@ -59,7 +56,10 @@ export class CcConsoleMenu extends LitElement {
       <div class="divider"></div>
       <div class="create">my create</div>
       <div class="divider"></div>
-      <div class="resources">${this.resources?.map((link) => this._renderLink(link))}</div>
+      <div class="resources">
+        ${this.resources?.map((link) => this._renderLink(link))}
+        ${isEmpty ? html`<div class="empty">${i18n('cc-console-menu.resources.empty')}</div>` : ''}
+      </div>
       <div class="divider"></div>
       <div class="settings">${this.settings?.map((link) => this._renderLink(link))}</div>
     `;
@@ -67,8 +67,11 @@ export class CcConsoleMenu extends LitElement {
 
   _renderLink(link) {
     return html`
-      <a class="link" href="${link.path}">
-        ${link.icon != null ? html` <cc-icon .icon="${link.icon}"></cc-icon> ` : ''}
+      <a
+        class="link ${classMap({ 'link--selected': link.selected === true })}"
+        href="${link.path}"
+      >
+        ${link.icon != null ? html`<cc-icon .icon="${link.icon}"></cc-icon>` : ''}
         <span>${link.name}</span>
       </a>
     `;
@@ -111,9 +114,32 @@ export class CcConsoleMenu extends LitElement {
           color: inherit;
           display: flex;
           gap: 0.5em;
-          /* TODO: this is temporary */
           margin-top: 0.5em;
           text-decoration: none;
+          padding: 0.5em;
+          border-radius: var(--cc-border-radius-default, 0.25em);
+          transition: background-color 0.2s ease;
+        }
+
+        .link:hover {
+          background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .link--selected {
+          background-color: var(--cc-color-bg-primary-weak, rgba(53, 105, 170, 0.3));
+          border-left: 3px solid var(--cc-color-border-primary, #3569aa);
+          padding-left: calc(0.5em - 3px);
+        }
+
+        .link--selected:hover {
+          background-color: var(--cc-color-bg-primary-weaker, rgba(53, 105, 170, 0.4));
+        }
+
+        .empty {
+          color: var(--cc-color-text-weak);
+          font-style: italic;
+          padding: 1em;
+          text-align: center;
         }
       `,
     ];

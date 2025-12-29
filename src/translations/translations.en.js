@@ -431,6 +431,9 @@ export const translations = {
     `Copy to clipboard - ${text.substring(0, 5).trim()}${text.length >= 5 ? '…' : ''}`,
   'cc-clipboard.copy.empty': `Copy to clipboard`,
   //#endregion
+  //#region cc-console-menu
+  'cc-console-menu.resources.empty': `No products in this organisation`,
+  //#endregion
   //#region cc-datetime-relative
   'cc-datetime-relative.distance': /** @param {{date: string|number}} _ */ ({ date }) => formatDistanceToNow(date),
   'cc-datetime-relative.title': /** @param {{date: string|number}} _ */ ({ date }) => formatDate(date),

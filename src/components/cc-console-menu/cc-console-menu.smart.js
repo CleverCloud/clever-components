@@ -23,31 +23,42 @@ defineSmartComponent({
   params: {
     apiConfig: { type: Object },
     ownerId: { type: String },
+    orgId: { type: String, optional: true },
   },
   /**
    * @param {OnContextUpdateArgs<CcAddonAdmin>} args
    */
   onContextUpdate({ component, context, onEvent, updateComponent, signal }) {
-    const { apiConfig, ownerId } = context;
+    const { apiConfig, ownerId, orgId } = context;
     const api = new Api({ apiConfig, signal });
 
-    console.log(ownerId);
-
-    const foo = ownerId;
-
     api.fetchSummary().then((summary) => {
+      // Default to first org, or find matching org if orgId provided
+      let selectedOrg = summary[0];
+
+      if (orgId != null) {
+        const foundOrg = summary.find((orga) => orga.id === orgId);
+        if (foundOrg != null) {
+          selectedOrg = foundOrg;
+        }
+      }
+
       const data = {
-        orgas: [...summary.map((orga) => ({ path: `/organisations/${orga.id}`, name: `${orga.name}` }))],
-        resources: [
-          ...summary[1].applications.map((app) => ({
-            path: `/organisations/${summary[0].id}/applications/${app.id}`,
-            name: `${app.name}`,
+        orgas: summary.map((orga) => ({
+          path: `/organisations/${orga.id}`,
+          name: orga.name,
+          selected: orga.id === selectedOrg.id,
+        })),
+        resources: selectedOrg != null ? [
+          ...selectedOrg.applications.map((app) => ({
+            path: `/organisations/${selectedOrg.id}/applications/${app.id}`,
+            name: app.name,
           })),
-          ...summary[1].addons.map((addon) => ({
-            path: `/organisations/${summary[0].id}/addons/${addon.id}`,
-            name: `${addon.name}`,
+          ...selectedOrg.addons.map((addon) => ({
+            path: `/organisations/${selectedOrg.id}/addons/${addon.id}`,
+            name: addon.name,
           })),
-        ],
+        ] : [],
         settings: [
           { path: '/support', name: 'Support', icon: iconSupport },
           { path: '/platform-status', name: 'Platform Status', icon: iconPlatformStatus },
@@ -57,7 +68,6 @@ defineSmartComponent({
         ],
       };
 
-      console.log('hello');
       component.logoUrl = cleverSvg;
       component.name = 'Console - Clever Cloud';
       component.resources = data.resources;
@@ -83,7 +93,6 @@ class Api {
     return getSummary()
       .then(sendToApi({ apiConfig: this._apiConfig, signal: this._signal }))
       .then((summary) => {
-        console.log('done');
         return summary.organisations;
       });
   }
