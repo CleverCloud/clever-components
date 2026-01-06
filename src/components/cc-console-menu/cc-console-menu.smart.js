@@ -67,14 +67,14 @@ defineSmartComponent({
         settings: [
           { path: '/support', name: 'Support', icon: iconSupport },
           { path: '/platform-status', name: 'Platform Status', icon: iconPlatformStatus },
-          { path: '/profile', name: 'Profile', icon: iconProfile },
+          { path: '/users/me/information', name: 'Profile', icon: iconProfile },
           { path: '/documentation', name: 'Documentation', icon: iconDoc },
           { path: '/logout', name: 'Logout', icon: iconLogout },
         ],
       };
 
-      component.logoUrl = cleverSvg;
-      component.name = 'Console - Clever Cloud';
+      // component.logoUrl = cleverSvg;
+      // component.name = 'Console - Clever Cloud';
       component.resources = data.resources;
       component.orgas = data.orgas;
       component.settings = data.settings;
