@@ -204,16 +204,16 @@ export class CcDialog extends LitElement {
           border-radius: var(--cc-border-radius-default, 0.25em);
           box-shadow: 2px 4px 8px 0 rgb(0 0 0 / 12%);
           box-sizing: border-box;
-          padding: var(--cc-dialog-padding);
+          padding: var(--cc-dialog-padding, var(--default-dialog-padding));
           width: min(var(--cc-dialog-width, 38em), 80%);
 
-          --cc-dialog-padding: var(--cc-dialog-padding-xl);
+          --default-dialog-padding: var(--cc-dialog-padding-xl);
         }
 
         /* stylelint-disable-next-line media-feature-range-notation */
         @media screen and (max-width: 25em) {
           dialog {
-            --cc-dialog-padding: var(--cc-dialog-padding-sm);
+            --default-dialog-padding: var(--cc-dialog-padding-sm);
           }
         }
 
