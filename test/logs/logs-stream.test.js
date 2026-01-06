@@ -8,12 +8,15 @@ import { sleep } from '../../src/lib/utils.js';
  * @typedef {import('./logs-stream.types.js').AbstractLog} AbstractLog
  */
 
+const LIMIT = 100;
+const BUFFER_TIMEOUT = 10;
+
 class FakeLogsStream extends LogsStream {
   /**
    * @param {number} [waitingTimeout]
    */
   constructor(waitingTimeout) {
-    super(100, { waitingTimeout: { live: waitingTimeout, cold: waitingTimeout } });
+    super(LIMIT, { waitingTimeout: { live: waitingTimeout, cold: waitingTimeout }, bufferTimeout: BUFFER_TIMEOUT });
     this._spies = {
       createStream: hanbi.spy(),
       updateStreamState: hanbi.spy(),
@@ -150,9 +153,9 @@ describe('logs-stream', () => {
     it('should not flush logs even if some logs remains in the buffer', async () => {
       const logsStream = new FakeLogsStream();
       logsStream.openLogsStream({ since: new Date().toISOString() });
-      await fakeLogsReceived(logsStream); // this one is flushed immediatellogsStreamy
+      await fakeLogsReceived(logsStream); // this one is flushed immediately
       logsStream.resetSpies();
-      await fakeLogsReceived(logsStream); // this one goes in the buffelogsStreamr
+      await fakeLogsReceived(logsStream); // this one goes in the buffer
 
       logsStream.stop();
       expect(logsStream.spies.appendLogs.callCount).to.eql(0);
@@ -160,6 +163,10 @@ describe('logs-stream', () => {
   });
 
   describe('on log received', () => {
+    async function waitForFlush() {
+      await sleep(BUFFER_TIMEOUT);
+    }
+
     it('should convert the received log', async () => {
       const logsStream = new FakeLogsStream();
       logsStream.openLogsStream({ since: new Date().toISOString() });
@@ -191,16 +198,16 @@ describe('logs-stream', () => {
       expect(logsStream.spies.appendLogs.callCount).to.eql(0);
     });
 
-    it('should flush the logs when buffer is full', async () => {
+    it('should flush the logs when buffer flushes', async () => {
       const logsStream = new FakeLogsStream();
       logsStream.openLogsStream({ since: new Date().toISOString() });
       await fakeLogsReceived(logsStream);
       logsStream.resetSpies();
 
-      await fakeLogsReceived(logsStream, 9); // should not flush buffer
+      await fakeLogsReceived(logsStream); // should not flush buffer
       expect(logsStream.spies.appendLogs.callCount).to.eql(0);
 
-      await fakeLogsReceived(logsStream); // should flush buffer
+      await waitForFlush(); // should flush buffer
       expect(logsStream.spies.appendLogs.callCount).to.eql(1);
     });
 
@@ -218,15 +225,15 @@ describe('logs-stream', () => {
       });
       logsStream.resetSpies();
 
-      await fakeLogsReceived(logsStream, 9); // should not update state
+      await fakeLogsReceived(logsStream); // should not update state
       expect(logsStream.spies.updateStreamState.callCount).to.eql(0);
       logsStream.resetSpies();
 
-      await fakeLogsReceived(logsStream); // should update state
+      await sleep(10); // should update state
       expect(logsStream.spies.updateStreamState.callCount).to.eql(1);
       expect(logsStream.spies.updateStreamState.firstCall.args[0]).to.eql({
         type: 'running',
-        progress: { value: 11 },
+        progress: { value: 2 },
         overflowing: false,
       });
     });
@@ -234,11 +241,12 @@ describe('logs-stream', () => {
     describe('when overflow watermark is reached', () => {
       async function reachWatermark(logsStream) {
         logsStream.openLogsStream({ since: new Date().toISOString() });
-        await fakeLogsReceived(logsStream);
-        await fakeLogsReceived(logsStream, 89);
+        await fakeLogsReceived(logsStream); // first is flushed immediately
+        await fakeLogsReceived(logsStream, LIMIT - 1);
         logsStream.resetSpies();
 
         await fakeLogsReceived(logsStream);
+        await waitForFlush();
       }
 
       it('should set paused state', async () => {
@@ -250,7 +258,7 @@ describe('logs-stream', () => {
         expect(logsStream.spies.updateStreamState.firstCall.args[0]).to.eql({
           type: 'paused',
           reason: 'overflow',
-          progress: { value: 91 },
+          progress: { value: LIMIT + 1 },
         });
       });
 
@@ -273,7 +281,7 @@ describe('logs-stream', () => {
           expect(logsStream.spies.updateStreamState.callCount).to.eql(1);
           expect(logsStream.spies.updateStreamState.firstCall.args[0]).to.eql({
             type: 'running',
-            progress: { value: 91 },
+            progress: { value: LIMIT + 1 },
             overflowing: true,
           });
         });
