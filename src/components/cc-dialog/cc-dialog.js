@@ -230,6 +230,7 @@ export class CcDialog extends LitElement {
 
         .dialog-close {
           --close-btn-size: 2em;
+          --close-btn-offset: calc(var(--cc-dialog-padding, var(--default-dialog-padding)) / 1.5);
 
           align-items: center;
           background: none;
@@ -244,7 +245,7 @@ export class CcDialog extends LitElement {
           margin-top: calc(var(--close-btn-size) * -1);
           position: sticky;
           top: 0;
-          transform: translate(2.75em, -2.75em);
+          transform: translate(var(--close-btn-offset), calc(var(--close-btn-offset) * -1));
           width: var(--close-btn-size);
         }
 
