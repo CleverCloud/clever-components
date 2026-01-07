@@ -57,11 +57,11 @@ export class CcAddonInfoClient {
 
   /**
    * @param {Object} parameters
-   * @param {string} parameters.appId
+   * @param {string} parameters.resourceId
    * @param {AbortSignal} parameters.signal
    * @returns {Promise<string>}
    */
-  _getGrafanaAppLink({ appId, signal }) {
+  _getGrafanaAppLink({ resourceId, signal }) {
     return getGrafanaOrganisation({ id: this._ownerId })
       .then(sendToApi({ apiConfig: this._apiConfig, signal }))
       .then(
@@ -69,7 +69,7 @@ export class CcAddonInfoClient {
         (grafanaOrg) => {
           const grafanaLink = new URL('/d/runtime/application-runtime', this._grafanaLink.base);
           grafanaLink.searchParams.set('orgId', grafanaOrg.id);
-          grafanaLink.searchParams.set('var-SELECT_APP', appId);
+          grafanaLink.searchParams.set('var-SELECT_APP', resourceId);
           return grafanaLink.toString();
         },
       )
@@ -109,7 +109,7 @@ export class CcAddonInfoClient {
     ]);
     const grafanaAppLink =
       this._grafanaLink != null
-        ? await this._getGrafanaAppLink({ appId: operator.resources.entrypoint, signal: this._signal })
+        ? await this._getGrafanaAppLink({ resourceId: rawAddon.realId, signal: this._signal })
         : null;
 
     return { addonInfo: rawAddon, operator, operatorVersionInfo, grafanaAppLink };

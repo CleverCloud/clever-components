@@ -196,7 +196,7 @@ class Api extends CcAddonInfoClient {
     const isKibanaEnabled = addonProvider.services.some((service) => service.name === 'kibana' && service.enabled);
     const grafanaAppLink =
       this._grafanaLink != null
-        ? await this._getGrafanaAppLink({ appId: addonProvider.app_id, signal: this._signal })
+        ? await this._getGrafanaAppLink({ resourceId: addonProvider.app_id, signal: this._signal })
         : null;
 
     return { rawAddon, addonProvider, grafanaAppLink, isKibanaEnabled };
