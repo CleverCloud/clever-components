@@ -1,11 +1,12 @@
-import { css, html } from 'lit';
+import { css, html, render } from 'lit';
+import { isTemplateResult } from 'lit/directive-helpers.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { createRef, ref } from 'lit/directives/ref.js';
 import { iconRemixArrowRightDoubleFill as iconArrow } from '../../assets/cc-remix.icons.js';
 import { EventHandler } from '../../lib/events.js';
 import { CcFormControlElement } from '../../lib/form/cc-form-control-element.abstract.js';
 import { RequiredValidator } from '../../lib/form/validation.js';
-import { trimArray } from '../../lib/utils.js';
+import { findLastIndex, trimArray } from '../../lib/utils.js';
 import { accessibilityStyles } from '../../styles/accessibility.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-icon/cc-icon.js';
@@ -51,6 +52,12 @@ import { RangeSelectorDraggingController } from './range-selector-dragging-contr
  * **Single-Click Limitation:**
  * In range mode, clicking a single option without dragging will not create a selection.
  * This is intentional to distinguish between single clicks and drag operations.
+ *
+ * **Default Value Always Required In Range Mode:**
+ * In range mode, hidden `<input type="range">` elements provide keyboard navigation.
+ * These native inputs require a valid value within their min-max bounds.
+ * When no initial selection exists (start/end = -1), default indices ensure
+ * the range inputs are valid and accessible for keyboard interaction.
  *
  * @cssdisplay inline-block
  *
@@ -124,6 +131,12 @@ export class CcRangeSelector extends CcFormControlElement {
     this.selection = null;
 
     /** @type {HTMLElementRef} */
+    this._inputRangeStartRef = createRef();
+
+    /** @type {HTMLElementRef} */
+    this._inputRangeEndRef = createRef();
+
+    /** @type {HTMLElementRef} */
     this._errorRef = createRef();
 
     /** @type {HTMLElementRef} */
@@ -154,6 +167,9 @@ export class CcRangeSelector extends CcFormControlElement {
     this._onCcButtonClickHandler = new EventHandler(window, 'cc-click', onOutsideClick);
 
     this._isCustomOptionActive = false;
+
+    /** @type {{ start: number, end: number }} */
+    this._lastKnowSelection = null;
   }
 
   connectedCallback() {
@@ -330,7 +346,8 @@ export class CcRangeSelector extends CcFormControlElement {
   /**
    * Handles selection via input events (primarily for keyboard interaction).
    * For single mode: directly updates value on each input.
-   * For range mode: uses a two-step process requiring two inputs to create a range.
+   * For range mode: computes next valid range boundaries when user adjusts start/end via keyboard,
+   * handling disabled options and boundary crossings. Only applies if adjustment succeeds.
    * @param {HTMLInputElementEvent} e
    * @private
    */
@@ -339,29 +356,28 @@ export class CcRangeSelector extends CcFormControlElement {
       return;
     }
 
+    this._isCustomOptionActive = false;
+
     const value = e.target.value;
     if (this._isModeSingle()) {
       // Single mode: immediate selection on input
       this.value = value;
       this.dispatchEvent(new CcSelectEvent(this.value));
-      this._isCustomOptionActive = false;
     } else {
-      // Range mode: keyboard interaction requires two inputs to define a range
-      const index = this.options.findIndex((option) => option.value === value);
+      let currentIndexes = this._getSelectionIndexes();
 
-      if (!this._dragCtrl.isDragging()) {
-        // First input: start drag at this index (drag start)
-        this._dragCtrl.setPreviousSelection(this.selection);
-        this._dragCtrl.start(index);
-      } else {
-        // Second input: update end index and apply selection (drag end)
-        this._dragCtrl.update(index);
+      // Guard against invalid selection state (use case: when leaving custom mode)
+      if (currentIndexes.start === -1 || currentIndexes.end === -1) {
+        currentIndexes = this._lastKnowSelection != null ? { ...this._lastKnowSelection } : { start: null, end: null };
+      }
 
-        // Only apply if range spans multiple options
-        if (this._dragCtrl.getSize() > 0) {
-          this._applyRangeSelection();
-          this._isCustomOptionActive = false;
-        }
+      const nextRange = this._computeNextRange({
+        input: e.target.id === 'start-input' ? 'start' : 'end',
+        currentIndexes,
+        nextIndex: parseInt(value),
+      });
+      if (nextRange.adjusted) {
+        this._applyRangeSelection(nextRange);
       }
     }
   }
@@ -464,6 +480,7 @@ export class CcRangeSelector extends CcFormControlElement {
     }
 
     this._isCustomOptionActive = true;
+    this._lastKnowSelection = this._getSelectionIndexes();
 
     const detail = this._isModeSingle() ? this.value : [...this._getValuesArray()];
     this.dispatchEvent(new CcRangeSelectorSelectCustom(detail));
@@ -485,11 +502,12 @@ export class CcRangeSelector extends CcFormControlElement {
 
   /**
    * Calculates selected values from current drag range and dispatches range select event
+   * @param {{ start?: number, end?: number }} range
    * @private
    */
-  _applyRangeSelection() {
-    const rangesIndex = this._dragCtrl.getRanges();
-    const selectedOptions = this.options.slice(rangesIndex.start, rangesIndex.end + 1);
+  _applyRangeSelection(range = null) {
+    const { start = 0, end = 1 } = range ?? this._dragCtrl.getRanges();
+    const selectedOptions = this.options.slice(start, end + 1);
 
     // Filter out disabled options to find actual boundaries
     const enabledOptions = selectedOptions.filter((option) => !option.disabled);
@@ -510,6 +528,85 @@ export class CcRangeSelector extends CcFormControlElement {
     }
 
     this._dragCtrl.stop();
+  }
+
+  /**
+   * Calculates the next valid range selection boundaries when user adjusts a boundary via keyboard input.
+   * Handles disabled options by finding the next eligible option in the direction of adjustment.
+   * Automatically recalculates the opposite boundary if the adjusted boundary would cross it,
+   * ensuring the selection always maintains start < end constraint.
+   *
+   * @param {object} params
+   * @param {'start'|'end'} params.input - Which boundary is being adjusted
+   * @param {{ start: number, end: number }} params.currentIndexes - Current selection boundaries
+   * @param {number} params.nextIndex - New index value from range input
+   * @returns {{ start: number, end: number, adjusted: boolean }} - New range with adjustment success flag
+   */
+  _computeNextRange({ input, currentIndexes, nextIndex }) {
+    const { start, end } = currentIndexes;
+    const isStart = input === 'start';
+    const currentBoundaryIndex = isStart ? start : end;
+    const adjustmentDirection = nextIndex - currentBoundaryIndex > 0 ? 1 : -1;
+
+    let newStart, newEnd;
+    if (isStart) {
+      newStart = this._getNextEligibleOptionIndex(currentBoundaryIndex, adjustmentDirection);
+      if (newStart != null && newStart >= end) {
+        // Start crossed end - push end past the new start position
+        newEnd = this._getNextEligibleOptionIndex(newStart, adjustmentDirection);
+      } else if (newStart != null) {
+        // newStart is valid and < end, keep end unchanged
+        newEnd = end;
+      } else {
+        // No valid start found - return current range
+        return { start, end, adjusted: false };
+      }
+    } else {
+      newEnd = this._getNextEligibleOptionIndex(currentBoundaryIndex, adjustmentDirection);
+      if (newEnd != null && newEnd <= start) {
+        // End crossed start - push start past the new end position
+        newStart = this._getNextEligibleOptionIndex(newEnd, adjustmentDirection);
+      } else if (newEnd != null) {
+        // newEnd is valid and > start, keep start unchanged
+        newStart = start;
+      } else {
+        // No valid end found - return current range
+        return { start, end, adjusted: false };
+      }
+    }
+
+    // Return adjusted range if both boundaries valid
+    if (newStart != null && newEnd != null) {
+      return { start: newStart, end: newEnd, adjusted: true };
+    }
+
+    // Fallback to current range if adjustment failed
+    return { start, end, adjusted: false };
+  }
+
+  /**
+   * Finds the next non-disabled option in a given direction from a starting index.
+   * Skips all consecutive disabled options by iterating in the specified direction.
+   * Returns the index of the first enabled option found, or null if no valid option exists
+   * in that direction (i.e., reached boundary or all remaining options are disabled).
+   * @param {number} index - Starting index
+   * @param {number} direction - Expects +1 and -1 values
+   * @returns {number|null}
+   */
+  _getNextEligibleOptionIndex(index, direction) {
+    let nextOption;
+    let nextIndex = index;
+    do {
+      nextIndex += direction;
+      // Check bounds before accessing array
+      if (nextIndex < 0 || nextIndex >= this.options.length) {
+        return null;
+      }
+      nextOption = this.options[nextIndex];
+    } while (nextOption != null && nextOption.disabled);
+
+    // Loop exits when: nextOption === null (boundary) OR !nextOption.disabled (found enabled)
+    return nextOption != null ? nextIndex : null;
   }
 
   /**
@@ -557,6 +654,41 @@ export class CcRangeSelector extends CcFormControlElement {
       return selectedOptions.map((option) => option.value);
     }
     return selectedOptions.filter((option) => !option.disabled).map((option) => option.value);
+  }
+
+  /**
+   * Gets human-readable text for an option value (for screen readers).
+   * Extracts text content from option body (handles string, Node, and TemplateResult).
+   * @param {string} value - Option value to look up
+   * @returns {string} Text content of option body, or value if not found
+   * @private
+   */
+  _getOptionText(value) {
+    const option = this.options?.find((opt) => opt.value === value);
+    if (!option) {
+      return value;
+    }
+
+    const body = option.body;
+
+    // If body is string, return directly
+    if (typeof body === 'string') {
+      return body;
+    }
+
+    // If body is Node, extract textContent
+    if (body instanceof Node) {
+      return body.textContent || value;
+    }
+
+    // If body is TemplateResult, render to temp container and extract text
+    if (isTemplateResult(body)) {
+      const container = document.createElement('div');
+      render(body, container);
+      return container.textContent?.trim() || value;
+    }
+
+    return value;
   }
 
   /**
@@ -620,6 +752,8 @@ export class CcRangeSelector extends CcFormControlElement {
     const shouldHighlightArrow = !this._dragCtrl.isDragging() && !isLast && isSelected;
 
     return {
+      'is-first': isFirst,
+      'is-last': isLast,
       'is-selected': isSelected,
       'is-error': isError,
       'range-continues-right': rangeHasRightContinuation,
@@ -630,16 +764,64 @@ export class CcRangeSelector extends CcFormControlElement {
     };
   }
 
+  /**
+   * Renders hidden range inputs for keyboard navigation in range mode.
+   * @param {object} params
+   * @param {number} params.firstEnabledIndex
+   * @param {number} params.lastEnabledIndex
+   * @param {number} params.inputRangeStartIndex
+   * @param {number} params.inputRangeEndIndex
+   * @returns {import('lit').TemplateResult}
+   * @private
+   */
+  _renderRangeInputs({ firstEnabledIndex, lastEnabledIndex, inputRangeStartIndex, inputRangeEndIndex }) {
+    return html`
+      <label for="start-input" class="visually-hidden">${i18n('cc-range-selector.label.start')}</label>
+      <input
+        class="visually-hidden"
+        id="start-input"
+        type="range"
+        min="${firstEnabledIndex}"
+        max="${lastEnabledIndex - 1}"
+        .value="${inputRangeStartIndex}"
+        ?disabled=${this.disabled || this.readonly}
+        aria-valuetext="${this._getOptionText(this.selection?.startValue)}"
+        aria-describedby="help-id error-id"
+        ${ref(this._inputRangeStartRef)}
+      />
+
+      <label for="end-input" class="visually-hidden">${i18n('cc-range-selector.label.end')}</label>
+      <input
+        class="visually-hidden"
+        id="end-input"
+        type="range"
+        min="${firstEnabledIndex + 1}"
+        max="${lastEnabledIndex}"
+        .value="${inputRangeEndIndex}"
+        ?disabled=${this.disabled || this.readonly}
+        aria-valuetext="${this._getOptionText(this.selection?.endValue)}"
+        aria-describedby="help-id error-id"
+        ${ref(this._inputRangeEndRef)}
+      />
+    `;
+  }
+
   render() {
     if (this.options?.length === 0) {
       return '';
     }
 
     const hasErrorMessage = this.errorMessage != null && this.errorMessage !== '';
-    const { first, last } = this._getSelectionIndexes();
+    const { start, end } = !this._isCustomOptionActive ? this._getSelectionIndexes() : this._lastKnowSelection;
+
+    const inputRangeStartIndex = start >= 0 ? start : 0;
+    const inputRangeEndIndex = end >= 0 ? end : inputRangeStartIndex + 1;
 
     const isModeSingle = this._isModeSingle();
     const isModeRange = this._isModeRange();
+
+    const firstEnabledIndex = this.options.findIndex((option) => !option.disabled);
+    const lastEnabledIndex = findLastIndex(this.options, (option) => !option.disabled);
 
     return html`
       <div
@@ -656,6 +838,15 @@ export class CcRangeSelector extends CcFormControlElement {
             <span class="legend-text">${this.label}</span>
             ${this.required ? html` <span class="required">${i18n('cc-range-selector.required')}</span> ` : ''}
           </div>
+
+          ${isModeRange
+            ? this._renderRangeInputs({
+                firstEnabledIndex,
+                lastEnabledIndex,
+                inputRangeStartIndex,
+                inputRangeEndIndex,
+              })
+            : ''}
 
           <div class="options" part="options">
             ${this.options.map((option, index) =>
@@ -731,16 +922,20 @@ export class CcRangeSelector extends CcFormControlElement {
 
     return html`
       <div class="option-wrapper ${classMap(classes)} ">
-        <input
-          class="hidden-input visually-hidden"
-          type="${isModeSingle ? 'radio' : 'checkbox'}"
-          id="${id}"
-          name="${this.name}"
-          .value=${value}
-          .checked=${isSelected}
-          ?disabled=${isDisabled || (this.readonly && !isSelected)}
-          aria-describedby="help-id error-id"
-        />
+        ${isModeSingle
+          ? html`
+              <input
+                class="hidden-input visually-hidden"
+                type="radio"
+                id="${id}"
+                name="${this.name}"
+                .value=${value}
+                .checked=${isSelected}
+                ?disabled=${isDisabled || (this.readonly && !isSelected)}
+                aria-describedby="help-id error-id"
+              />
+            `
+          : ''}
         <label class="option-label" for="${id}">
           <cc-range-selector-option
             ?disabled=${isDisabled}
@@ -757,7 +952,12 @@ export class CcRangeSelector extends CcFormControlElement {
             <span>${body}</span>
           </cc-range-selector-option>
         </label>
-        <div class="arrow-wrapper ${classMap({ 'arrow-visible': isModeRange && !isLastOption, 'arrow-trailing': isLastOption && !this.showCustom })}">
+        <div
+          class="arrow-wrapper ${classMap({
+            'arrow-visible': isModeRange && !isLastOption,
+            'arrow-trailing': isLastOption && !this.showCustom,
+          })}"
+        >
           <cc-icon class="arrow-icon" .icon=${iconArrow}></cc-icon>
         </div>
       </div>
@@ -912,6 +1112,16 @@ export class CcRangeSelector extends CcFormControlElement {
 
         .arrow-wrapper.arrow-trailing {
           display: var(--cc-range-selector-trailing-arrow-display, none);
+        }
+
+        #start-input:focus-visible ~ .options .is-first cc-range-selector-option {
+          outline: var(--cc-focus-outline, #3569aa solid 2px);
+          outline-offset: var(--cc-focus-outline-offset, 2px);
+        }
+
+        #end-input:focus-visible ~ .options .is-last cc-range-selector-option {
+          outline: var(--cc-focus-outline, #3569aa solid 2px);
+          outline-offset: var(--cc-focus-outline-offset, 2px);
         }
 
         .hidden-input:focus-visible + label cc-range-selector-option {
