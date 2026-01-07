@@ -14,6 +14,7 @@ const PROVIDER_ID = 'jenkins';
 /**
  * @import { CcAddonInfo } from './cc-addon-info.js'
  * @import { AddonInfoStateLoading, JenkinsProviderInfo, RawAddon } from './cc-addon-info.types.js'
+ * @import { FormattedFeature } from '../common.types.js'
  * @import { ApiConfig } from '../../lib/send-to-api.types.js'
  * @import { OnContextUpdateArgs } from '../../lib/smart/smart-component.types.js'
  */
@@ -44,8 +45,12 @@ defineSmartComponent({
         latest: '0.0.0',
       },
       creationDate: '2025-08-06 15:03:00',
-      plan: 'XS',
-      features: [
+      specifications: [
+        {
+          code: 'plan',
+          type: 'string',
+          value: 'XS',
+        },
         {
           code: 'cpu',
           type: 'number',
@@ -61,12 +66,8 @@ defineSmartComponent({
           type: 'bytes',
           value: 40,
         },
-        {
-          code: 'encryption-at-rest',
-          type: 'boolean',
-          value: 'false',
-        },
       ],
+      encryption: true,
     };
 
     updateComponent('state', { type: 'loading', ...LOADING_STATE });
@@ -78,16 +79,19 @@ defineSmartComponent({
     api
       .getJenkinsAddonInfo()
       .then(({ rawAddon, addonProvider }) => {
+        const plan = rawAddon.plan.name;
         const features = formatAddonFeatures(rawAddon.plan.features, ['cpu', 'memory', 'disk-size']);
-
+        /** @type {Array<FormattedFeature>} */
+        const specifications = [
+          /** @type {FormattedFeature} */
+          ({
+            code: 'plan',
+            type: 'string',
+            value: plan,
+          }),
+          ...features,
+        ];
         const encryptionFeature = addonProvider.features.find((f) => f.name === 'encryption');
-        if (encryptionFeature) {
-          features.push({
-            code: 'encryption-at-rest',
-            type: 'boolean',
-            value: 'encryptionFeature.enabled',
-          });
-        }
 
         updateComponent('state', {
           type: 'loaded',
@@ -97,8 +101,8 @@ defineSmartComponent({
             latest: addonProvider.version,
           },
           creationDate: rawAddon.creationDate,
-          plan: rawAddon.plan.name,
-          features,
+          specifications,
+          encryption: encryptionFeature.enabled,
         });
       })
       .catch((error) => {

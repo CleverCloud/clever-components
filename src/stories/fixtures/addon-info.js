@@ -137,8 +137,12 @@ export const jenkinsInfo = {
     stateType: 'up-to-date',
     latest: '2.516.2',
   },
-  plan: 'XXS',
-  features: [
+  specifications: [
+    {
+      code: 'plan',
+      type: 'string',
+      value: 'XXS',
+    },
     {
       code: 'cpu',
       type: 'number',
@@ -154,12 +158,8 @@ export const jenkinsInfo = {
       type: 'bytes',
       value: '42949672960',
     },
-    {
-      code: 'encryption-at-rest',
-      type: 'boolean',
-      value: 'true',
-    },
   ],
+  encryption: true,
   creationDate: '2025-06-15T10:30:00Z',
   docUrlLink: getDocUrl('addons/jenkins'),
 }
@@ -171,8 +171,12 @@ export const elasticInfo = {
     stateType: 'up-to-date',
     latest: '9.1.2',
   },
-  plan: 'M',
-  features: [
+  specifications: [
+    {
+      code: 'plan',
+      type: 'string',
+      value: 'M',
+    },
     {
       code: 'cpu',
       type: 'number',
@@ -188,12 +192,8 @@ export const elasticInfo = {
       type: 'bytes',
       value: '128849018880',
     },
-    {
-      code: 'encryption-at-rest',
-      type: 'boolean',
-      value: 'true',
-    },
   ],
+  encryption: true,
   creationDate: '2025-06-15T10:30:00Z',
   openGrafanaLink: 'https://grafana.example.com',
   openScalabilityLink: 'https://scalability.example.com',
@@ -227,7 +227,6 @@ export const pulsarInfo = {
 
 /** @type {AddonInfoStateBaseProperties} */
 export const mailpaceInfo = {
-  plan: 'XS',
   creationDate: '2025-06-15T10:30:00Z',
   docUrlLink: getDocUrl('addons/mailpace'),
 }
@@ -239,8 +238,12 @@ export const mysqlInfo = {
     stateType: 'up-to-date',
     latest: '8.0.44',
   },
-  plan: 'XXS_SML',
-  features: [
+  specifications: [
+    {
+      code: 'plan',
+      type: 'string',
+      value: 'XXS_SML',
+    },
     {
       code: 'cpu',
       type: 'number',
@@ -273,8 +276,12 @@ export const postgresqlInfo = {
     stateType: 'up-to-date',
     latest: '17.6',
   },
-  plan: 'XXS_SML',
-  features: [
+  specifications: [
+    {
+      code: 'plan',
+      type: 'string',
+      value: 'XXS_SML',
+    },
     {
       code: 'cpu',
       type: 'number',
@@ -295,12 +302,8 @@ export const postgresqlInfo = {
       type: 'bytes',
       value: '1073741824',
     },
-    {
-      code: 'encryption-at-rest',
-      type: 'boolean',
-      value: 'true',
-    },
   ],
+  encryption: true,
   creationDate: '2025-06-15T10:30:00Z',
   role: 'Primary',
   docUrlLink: getDocUrl('addons/postgresql'),
@@ -313,8 +316,12 @@ export const redisInfo = {
     stateType: 'up-to-date',
     latest: '8.2.1',
   },
-  plan: 'S',
-  features: [
+  specifications: [
+    {
+      code: 'plan',
+      type: 'string',
+      value: 'S',
+    },
     {
       code: 'cpu',
       type: 'number',
@@ -335,12 +342,8 @@ export const redisInfo = {
       type: 'number',
       value: '1',
     },
-    {
-      code: 'encryption-at-rest',
-      type: 'boolean',
-      value: 'true',
-    },
   ],
+  encryption: true,
   creationDate: '2025-06-15T10:30:00Z',
   docUrlLink: getDocUrl('addons/redis'),
 }
@@ -352,8 +355,12 @@ export const mongodbInfo = {
     stateType: 'up-to-date',
     latest: '8.0',
   },
-  plan: 'S',
-  features: [
+  specifications: [
+    {
+      code: 'plan',
+      type: 'string',
+      value: 'S',
+    },
     {
       code: 'cpu',
       type: 'number',
@@ -369,20 +376,20 @@ export const mongodbInfo = {
       type: 'bytes',
       value: '16106127360',
     },
-    {
-      code: 'encryption-at-rest',
-      type: 'boolean',
-      value: 'true',
-    },
   ],
+  encryption: true,
   creationDate: '2025-06-15T10:30:00Z',
   docUrlLink: getDocUrl('addons/mongodb'),
 }
 
 /** @type {AddonInfoStateBaseProperties} */
 export const azimuttInfo = {
-  plan: 'BASIC',
-  features: [
+  specifications: [
+    {
+      code: 'plan',
+      type: 'string',
+      value: 'BASIC',
+    },
     {
       code: 'users',
       type: 'number',

@@ -23,22 +23,23 @@ import { CcAddonVersionChangeEvent } from './cc-addon-info.events.js';
 
 /** @type {Record<FormattedFeature['code'], () => string>} */
 const FEATURES_I18N = {
-  'connection-limit': () => i18n('cc-addon-info.feature.connection-limit'),
-  cpu: () => i18n('cc-addon-info.feature.cpu'),
-  databases: () => i18n('cc-addon-info.feature.databases'),
-  dedicated: () => i18n('cc-addon-info.feature.dedicated'),
-  'disk-size': () => i18n('cc-addon-info.feature.disk-size'),
-  gpu: () => i18n('cc-addon-info.feature.gpu'),
-  'has-logs': () => i18n('cc-addon-info.feature.has-logs'),
-  'has-metrics': () => i18n('cc-addon-info.feature.has-metrics'),
-  'is-migratable': () => i18n('cc-addon-info.feature.is-migratable'),
-  'max-db-size': () => i18n('cc-addon-info.feature.max-db-size'),
-  memory: () => i18n('cc-addon-info.feature.memory'),
-  version: () => i18n('cc-addon-info.feature.version'),
-  'encryption-at-rest': () => i18n('cc-addon-info.feature.encryption-at-rest'),
-  users: () => i18n('cc-addon-info.feature.users'),
-  'data-exploration': () => i18n('cc-addon-info.feature.data-exploration'),
-  'db-analysis': () => i18n('cc-addon-info.feature.db-analysis'),
+  plan: () => i18n('cc-addon-info.specification.plan'),
+  'connection-limit': () => i18n('cc-addon-info.specification.connection-limit'),
+  cpu: () => i18n('cc-addon-info.specification.cpu'),
+  databases: () => i18n('cc-addon-info.specification.databases'),
+  dedicated: () => i18n('cc-addon-info.specification.dedicated'),
+  'disk-size': () => i18n('cc-addon-info.specification.disk-size'),
+  'encryption-at-rest': () => i18n('cc-addon-info.encryption.heading'),
+  gpu: () => i18n('cc-addon-info.specification.gpu'),
+  'has-logs': () => i18n('cc-addon-info.specification.has-logs'),
+  'has-metrics': () => i18n('cc-addon-info.specification.has-metrics'),
+  'is-migratable': () => i18n('cc-addon-info.specification.is-migratable'),
+  'max-db-size': () => i18n('cc-addon-info.specification.max-db-size'),
+  memory: () => i18n('cc-addon-info.specification.memory'),
+  version: () => i18n('cc-addon-info.specification.version'),
+  users: () => i18n('cc-addon-info.specification.users'),
+  'data-exploration': () => i18n('cc-addon-info.specification.data-exploration'),
+  'db-analysis': () => i18n('cc-addon-info.specification.db-analysis'),
 };
 
 const GRAFANA_LOGO_URL = getAssetUrl('/logos/grafana.svg');
@@ -223,13 +224,25 @@ export class CcAddonInfo extends LitElement {
                 </div>
               `
             : ''}
-          ${this.state.features != null && this.state.features.length > 0
+          ${this.state.specifications != null && this.state.specifications.length > 0
             ? html`
                 <div class="section">
-                  <strong class="heading">${i18n('cc-addon-info.feature.heading')}</strong>
+                  <strong class="heading">${i18n('cc-addon-info.specification.heading')}</strong>
                   <dl class="value features__content">
-                    ${this.state.features.map((feature) => this._renderFeature(feature, skeleton))}
+                    ${this.state.specifications.map((feature) => this._renderSpecification(feature, skeleton))}
                   </dl>
+                </div>
+              `
+            : ''}
+          ${this.state.encryption != null
+            ? html`
+                <div class="section">
+                  <strong class="heading">${i18n('cc-addon-info.encryption.heading')}</strong>
+                  <div class="value">
+                    <p class="${classMap({ skeleton })}">
+                      ${i18n('cc-addon-info.type.boolean', { boolean: this.state.encryption })}
+                    </p>
+                  </div>
                 </div>
               `
             : ''}
@@ -378,7 +391,7 @@ export class CcAddonInfo extends LitElement {
    * @param {FormattedFeature} param
    * @param {boolean} skeleton
    **/
-  _renderFeature({ code, type, value }, skeleton) {
+  _renderSpecification({ code, type, value }, skeleton) {
     return html`
       <div class="features__content__item">
         <dt class="features__content__item__label ${classMap({ skeleton })}">${FEATURES_I18N[code]()}</dt>

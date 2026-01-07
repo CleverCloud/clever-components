@@ -41,6 +41,7 @@ function getServiceData(serviceName, addonProvider, appOverviewUrlPattern) {
 /**
  * @import { CcAddonInfo } from './cc-addon-info.js'
  * @import { AddonInfoStateLoading, ElasticAddonInfo, LinkedService, RawAddon } from './cc-addon-info.types.js'
+ * @import { FormattedFeature } from '../common.types.js'
  * @import { ApiConfig } from '../../lib/send-to-api.types.js'
  * @import { OnContextUpdateArgs } from '../../lib/smart/smart-component.types.js'
  */
@@ -74,8 +75,12 @@ defineSmartComponent({
         latest: '0.0.0',
       },
       creationDate: '2025-08-06 15:03:00',
-      plan: 'XS',
-      features: [
+      specifications: [
+        {
+          code: 'plan',
+          type: 'string',
+          value: 'XS',
+        },
         {
           code: 'cpu',
           type: 'number',
@@ -97,6 +102,7 @@ defineSmartComponent({
           value: 'false',
         },
       ],
+      encryption: true,
       openGrafanaLink: grafanaLink != null ? 'https://example.com' : null,
       openScalabilityLink: '/placeholder',
       linkedServices: [
@@ -124,18 +130,22 @@ defineSmartComponent({
     api
       .getElasticAddonInfo()
       .then(({ rawAddon, addonProvider, grafanaAppLink, isKibanaEnabled }) => {
-        // Get standard features from plan
+        const plan = rawAddon.plan.name;
+        // Get standard features from rawAddon
         const features = formatAddonFeatures(rawAddon.plan.features, ['cpu', 'memory', 'disk-size']);
-
+        // Combine data (plan and features) in a `specifications` array
+        /** @type {Array<FormattedFeature>} */
+        const specifications = [
+          /** @type {FormattedFeature} */
+          ({
+            code: 'plan',
+            type: 'string',
+            value: plan,
+          }),
+          ...features,
+        ];
         // Add encryption feature from addonProvider
         const encryptionFeature = addonProvider.features.find((f) => f.name === 'encryption');
-        if (encryptionFeature) {
-          features.push({
-            code: 'encryption-at-rest',
-            type: 'boolean',
-            value: encryptionFeature.enabled ? 'true' : 'false',
-          });
-        }
 
         updateComponent('state', {
           type: 'loaded',
@@ -145,8 +155,8 @@ defineSmartComponent({
             latest: addonProvider.version,
           },
           creationDate: rawAddon.creationDate,
-          plan: rawAddon.plan.name,
-          features,
+          specifications,
+          encryption: encryptionFeature.enabled,
           openGrafanaLink: grafanaAppLink,
           openScalabilityLink: isKibanaEnabled
             ? scalabilityUrlPattern.replace(':id', addonProvider.kibana_application)
