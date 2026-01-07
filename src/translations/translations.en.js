@@ -730,7 +730,7 @@ export const translations = {
   'cc-feature-list.error': `Something went wrong while loading available experimental features`,
   'cc-feature-list.feedback-link': `Share feedback`,
   'cc-feature-list.no-data': `No experimental features are available at this time`,
-  'cc-feature-list.notice': `Remember to reload your page after making changes in order to apply them`,
+  'cc-feature-list.notice': `Changes to experimental features require a page reload to take effect`,
   'cc-feature-list.status.alpha': `Alpha`,
   'cc-feature-list.status.beta': `Beta`,
   'cc-feature-list.status.preview': `Preview`,
