@@ -5,6 +5,13 @@ title: 'Changelog'
 
 # Changelog
 
+## [22.8.3](https://github.com/CleverCloud/clever-components/compare/22.8.2...22.8.3) (2026-01-07)
+
+
+### 🐛 Bug Fixes
+
+* **cc-addon-credentials-content:** update French `token` translation ([b66e567](https://github.com/CleverCloud/clever-components/commit/b66e5675adcccd48fdded4b59f142e75c58f8808))
+
 ## [22.8.2](https://github.com/CleverCloud/clever-components/compare/22.8.1...22.8.2) (2025-12-22)
 
 
