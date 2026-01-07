@@ -75,6 +75,8 @@ export class CcButton extends LitElement {
     return true;
   }
 
+  static shadowRootOptions = { ...LitElement.shadowRootOptions, delegatesFocus: true };
+
   constructor() {
     super();
 
@@ -140,10 +142,6 @@ export class CcButton extends LitElement {
 
     /** @type {ElementInternals} */
     this._internals = this.attachInternals();
-  }
-
-  focus() {
-    this.shadowRoot.querySelector('button').focus();
   }
 
   _cancelClick() {
