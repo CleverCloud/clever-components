@@ -226,12 +226,6 @@ export const pulsarInfo = {
 }
 
 /** @type {AddonInfoStateBaseProperties} */
-export const configInfo = {
-  creationDate: '2025-06-15T10:30:00Z',
-  docUrlLink: getDocUrl('addons/config-provider'),
-}
-
-/** @type {AddonInfoStateBaseProperties} */
 export const mailpaceInfo = {
   plan: 'XS',
   creationDate: '2025-06-15T10:30:00Z',

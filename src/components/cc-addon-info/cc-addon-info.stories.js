@@ -1,7 +1,6 @@
 import { getDocUrl } from '../../lib/dev-hub-url.js';
 import {
   azimuttInfo,
-  configInfo,
   elasticInfo,
   jenkinsInfo,
   keycloakInfo,
@@ -312,26 +311,6 @@ export const pulsar = makeStory(conf, {
       innerHTML: `
         <p slot="billing">The beta status means that the service is still being improved, but it is fully integrated into our billing system.</p>
 `,
-    },
-  ],
-});
-
-export const config = makeStory(conf, {
-  /** @type {Partial<CcAddonInfo>[]} */
-  items: [
-    {
-      /** @type {AddonInfoStateLoaded} */
-      state: {
-        type: 'loaded',
-        ...configInfo,
-      },
-    },
-    {
-      /** @type {AddonInfoStateLoading} */
-      state: {
-        type: 'loading',
-        ...configInfo,
-      },
     },
   ],
 });
