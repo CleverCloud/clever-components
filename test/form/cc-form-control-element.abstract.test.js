@@ -1,7 +1,7 @@
-import { defineCE, elementUpdated, expect } from '@open-wc/testing';
-import * as hanbi from 'hanbi';
 import { html } from 'lit';
 import { createRef, ref } from 'lit/directives/ref.js';
+import { describe, expect, it, vi } from 'vitest';
+import { defineCE, elementUpdated } from '../helpers/element-helper.js';
 import { CcFormControlElement } from '../../src/lib/form/cc-form-control-element.abstract.js';
 import { ValidValidator, Validation, createValidator } from '../../src/lib/form/validation.js';
 import { isStringEmpty } from '../../src/lib/utils.js';
@@ -126,7 +126,7 @@ describe('InputElement', () => {
       const validation = input.element.validate();
       input.element.reportInlineValidity();
 
-      expect(validation).to.eql(Validation.VALID);
+      expect(validation).toEqual(Validation.VALID);
     });
 
     it('should set valid validity if value is valid', async () => {
@@ -136,7 +136,7 @@ describe('InputElement', () => {
       formControl.element.validate();
       formControl.element.reportInlineValidity();
 
-      expect(formControl.element.validity.valid).to.eql(true);
+      expect(formControl.element.validity.valid).toBe(true);
     });
 
     it('should return invalid if value is not valid', async () => {
@@ -146,7 +146,7 @@ describe('InputElement', () => {
       const validation = formControl.element.validate();
       formControl.element.reportInlineValidity();
 
-      expect(validation).to.eql(Validation.invalid('invalid'));
+      expect(validation).toEqual(Validation.invalid('invalid'));
     });
 
     it('should set invalid validity if value is invalid', async () => {
@@ -156,7 +156,7 @@ describe('InputElement', () => {
       formControl.element.validate();
       formControl.element.reportInlineValidity();
 
-      expect(formControl.element.validity.valid).to.eql(false);
+      expect(formControl.element.validity.valid).toBe(false);
     });
 
     it('should set the right validation message if value is invalid (error code)', async () => {
@@ -166,7 +166,7 @@ describe('InputElement', () => {
       formControl.element.validate();
       formControl.element.reportInlineValidity();
 
-      expect(formControl.element.validationMessage).to.eql('invalid');
+      expect(formControl.element.validationMessage).toBe('invalid');
     });
 
     it('should set the right validation message if value is invalid (translated message)', async () => {
@@ -180,7 +180,7 @@ describe('InputElement', () => {
       formControl.element.validate();
       formControl.element.reportInlineValidity();
 
-      expect(formControl.element.validationMessage).to.eql('Translated message');
+      expect(formControl.element.validationMessage).toBe('Translated message');
     });
 
     it('should set the right validation message if value is invalid (translated message with function)', async () => {
@@ -194,7 +194,7 @@ describe('InputElement', () => {
       formControl.element.validate();
       formControl.element.reportInlineValidity();
 
-      expect(formControl.element.validationMessage).to.eql('Translated message');
+      expect(formControl.element.validationMessage).toBe('Translated message');
     });
 
     it('should set the right validation message if value is invalid (translated message with Node)', async () => {
@@ -209,36 +209,36 @@ describe('InputElement', () => {
       formControl.element.validate();
       formControl.element.reportInlineValidity();
 
-      expect(formControl.element.validationMessage).to.eql('This is a translated message');
+      expect(formControl.element.validationMessage).toBe('This is a translated message');
     });
 
     it('should call validator with value as first argument', async () => {
-      const spy = hanbi.spy();
+      const spy = vi.fn();
 
       const formControl = await getFormControlElement({
         validator: {
           validate: (value, formData) => {
-            spy.handler(value, formData);
+            spy(value, formData);
             return Validation.VALID;
           },
         },
       });
-      spy.reset();
+      spy.mockClear();
 
       await formControl.setValue('current value');
 
-      expect(spy.callCount).to.eql(1);
-      expect(spy.firstCall.args[0]).to.eql('current value');
-      expect(spy.firstCall.args[1]).to.eql({});
+      expect(spy.mock.calls.length).toBe(1);
+      expect(spy.mock.calls[0][0]).toBe('current value');
+      expect(spy.mock.calls[0][1]).toEqual({});
     });
 
     it('should call validator with form data as second argument', async () => {
-      const spy = hanbi.spy();
+      const spy = vi.fn();
 
       const customElement = getCustomElement({
         validator: {
           validate: (value, formData) => {
-            spy.handler(value, formData);
+            spy(value, formData);
             return Validation.VALID;
           },
         },
@@ -249,14 +249,14 @@ describe('InputElement', () => {
       const element = await getElement(
         `<form><${customElement} name="input"></${customElement}><input name="another-input" value="another input value"></form>`,
       );
-      spy.reset();
+      spy.mockClear();
 
       element.querySelector(customElement).value = 'current value';
       await elementUpdated(element);
 
-      expect(spy.callCount).to.eql(1);
-      expect(spy.firstCall.args[0]).to.eql('current value');
-      expect(spy.firstCall.args[1]).to.eql({
+      expect(spy.mock.calls.length).toBe(1);
+      expect(spy.mock.calls[0][0]).toBe('current value');
+      expect(spy.mock.calls[0][1]).toEqual({
         input: 'current value',
         'another-input': 'another input value',
       });
@@ -268,7 +268,7 @@ describe('InputElement', () => {
 
       formControl.element.validate();
 
-      expect(formControl.element.errorMessage).to.eql(null);
+      expect(formControl.element.errorMessage).toBe(null);
     });
 
     it('should not change the errorMessage property if report is not requested', async () => {
@@ -280,7 +280,7 @@ describe('InputElement', () => {
       await formControl.setValue('invalid-again');
       formControl.element.validate();
 
-      expect(formControl.element.errorMessage).to.eql('invalid');
+      expect(formControl.element.errorMessage).toBe('invalid');
     });
 
     it('should not clear the errorMessage property if report is not requested', async () => {
@@ -292,7 +292,7 @@ describe('InputElement', () => {
       await formControl.setValue('valid');
       formControl.element.validate();
 
-      expect(formControl.element.errorMessage).to.eql('invalid');
+      expect(formControl.element.errorMessage).toBe('invalid');
     });
 
     it('should set the errorMessage property if report is requested', async () => {
@@ -302,7 +302,7 @@ describe('InputElement', () => {
       formControl.element.validate();
       formControl.element.reportInlineValidity();
 
-      expect(formControl.element.errorMessage).to.eql('invalid');
+      expect(formControl.element.errorMessage).toBe('invalid');
     });
 
     it('should change the errorMessage property if report is requested', async () => {
@@ -315,7 +315,7 @@ describe('InputElement', () => {
       formControl.element.validate();
       formControl.element.reportInlineValidity();
 
-      expect(formControl.element.errorMessage).to.eql('invalid-again');
+      expect(formControl.element.errorMessage).toBe('invalid-again');
     });
 
     it('should clear the errorMessage if report is requested', async () => {
@@ -329,7 +329,7 @@ describe('InputElement', () => {
       formControl.element.validate();
       formControl.element.reportInlineValidity();
 
-      expect(formControl.element.errorMessage).to.eql(null);
+      expect(formControl.element.errorMessage).toBe(null);
     });
 
     it('should set the right errorMessage property if value is invalid (error code)', async () => {
@@ -339,7 +339,7 @@ describe('InputElement', () => {
       formControl.element.validate();
       formControl.element.reportInlineValidity();
 
-      expect(formControl.element.errorMessage).to.eql('invalid');
+      expect(formControl.element.errorMessage).toBe('invalid');
     });
 
     it('should set the right errorMessage property if value is invalid (translated message)', async () => {
@@ -353,7 +353,7 @@ describe('InputElement', () => {
       formControl.element.validate();
       formControl.element.reportInlineValidity();
 
-      expect(formControl.element.errorMessage).to.eql('Translated message');
+      expect(formControl.element.errorMessage).toBe('Translated message');
     });
 
     it('should set the right errorMessage property if value is invalid (translated message with function)', async () => {
@@ -367,7 +367,7 @@ describe('InputElement', () => {
       formControl.element.validate();
       formControl.element.reportInlineValidity();
 
-      expect(formControl.element.errorMessage).to.eql('Translated message');
+      expect(formControl.element.errorMessage).toBe('Translated message');
     });
 
     it('should set the right errorMessage property if value is invalid (translated message with Node)', async () => {
@@ -382,7 +382,7 @@ describe('InputElement', () => {
       formControl.element.validate();
       formControl.element.reportInlineValidity();
 
-      expect(formControl.element.errorMessage).to.eql(errorMessage);
+      expect(formControl.element.errorMessage).toBe(errorMessage);
     });
   });
 
@@ -398,7 +398,7 @@ describe('InputElement', () => {
     formControl.element.validate();
     formControl.element.reportInlineValidity();
 
-    expect(formControl.element.errorMessage).to.eql('not-valid');
+    expect(formControl.element.errorMessage).toEqual('not-valid');
   });
 
   it('should fallback to code when error message map returns null', async () => {
@@ -415,15 +415,15 @@ describe('InputElement', () => {
     formControl.element.validate();
     formControl.element.reportInlineValidity();
 
-    expect(formControl.element.errorMessage).to.eql('not-valid');
+    expect(formControl.element.errorMessage).toEqual('not-valid');
   });
 
   it('should call the _getFormControlData method to get form data', async () => {
-    const spy = hanbi.spy();
+    const spy = vi.fn();
 
     const customElement = getCustomElement({
       formControlData: () => {
-        spy.handler();
+        spy();
         return 'expected value';
       },
     });
@@ -431,7 +431,7 @@ describe('InputElement', () => {
     /** @type {HTMLFormElement} */
     await getElement(`<form><${customElement} name="input"></${customElement}></form>`);
 
-    expect(spy.callCount).to.eql(1);
+    expect(spy.mock.calls.length).toEqual(1);
   });
 
   it('should provide the form data that is returned by the _getFormControlData', async () => {
@@ -442,7 +442,7 @@ describe('InputElement', () => {
     /** @type {HTMLFormElement} */
     const element = await getElement(`<form><${customElement} name="input"></${customElement}></form>`);
 
-    expect(new FormData(element).get('input')).to.eql('expected value');
+    expect(new FormData(element).get('input')).toEqual('expected value');
   });
 
   it('by default, should provide the value as form control data', async () => {
@@ -454,7 +454,7 @@ describe('InputElement', () => {
     element.querySelector(customElement).value = 'current value';
     await elementUpdated(element);
 
-    expect(new FormData(element).get('input')).to.eql('current value');
+    expect(new FormData(element).get('input')).toEqual('current value');
   });
 
   it('should have invalid validity when setting errorMessage property', async () => {
@@ -464,7 +464,7 @@ describe('InputElement', () => {
     formControl.element.errorMessage = 'another error message';
     await elementUpdated(formControl.element);
 
-    expect(formControl.element.validity.valid).to.eql(false);
+    expect(formControl.element.validity.valid).toEqual(false);
   });
 
   it('should have valid validity when resetting errorMessage property', async () => {
@@ -476,7 +476,7 @@ describe('InputElement', () => {
     formControl.element.errorMessage = '';
     await elementUpdated(formControl.element);
 
-    expect(formControl.element.validity.valid).to.eql(true);
+    expect(formControl.element.validity.valid).toEqual(true);
   });
 
   it('should have validationMessage when setting errorMessage property (with string)', async () => {
@@ -486,7 +486,7 @@ describe('InputElement', () => {
     formControl.element.errorMessage = 'another error message';
     await elementUpdated(formControl.element);
 
-    expect(formControl.element.validationMessage).to.eql('another error message');
+    expect(formControl.element.validationMessage).toEqual('another error message');
   });
 
   it('should have validationMessage when setting errorMessage property (with Node)', async () => {
@@ -496,22 +496,22 @@ describe('InputElement', () => {
     formControl.element.errorMessage = await getElement('<div>another<br><b>error</> <i>message</i>');
     await elementUpdated(formControl.element);
 
-    expect(formControl.element.validationMessage).to.eql('another error message');
+    expect(formControl.element.validationMessage).toEqual('another error message');
   });
 
   it('should call validate method when value changes', async () => {
     const formControl = await getFormControlElement();
 
-    const validateStub = hanbi.stubMethod(formControl.element, 'validate');
+    const validateStub = vi.spyOn(formControl.element, 'validate');
     await formControl.setValue('valid');
 
-    expect(validateStub.callCount).to.eql(1);
+    expect(validateStub.mock.calls.length).toEqual(1);
   });
 
   it('should call validate method when customValidator changes', async () => {
     const formControl = await getFormControlElement();
 
-    const validateStub = hanbi.stubMethod(formControl.element, 'validate');
+    const validateStub = vi.spyOn(formControl.element, 'validate');
     formControl.element.customValidator = {
       validate(_value, _formData) {
         return Validation.VALID;
@@ -519,47 +519,47 @@ describe('InputElement', () => {
     };
     await elementUpdated(formControl.element);
 
-    expect(validateStub.callCount).to.eql(1);
+    expect(validateStub.mock.calls.length).toEqual(1);
   });
 
   it('should call validate method when customErrorMessages changes', async () => {
     const formControl = await getFormControlElement();
 
-    const validateStub = hanbi.stubMethod(formControl.element, 'validate');
+    const validateStub = vi.spyOn(formControl.element, 'validate');
     formControl.element.customErrorMessages = {};
     await elementUpdated(formControl.element);
 
-    expect(validateStub.callCount).to.eql(1);
+    expect(validateStub.mock.calls.length).toEqual(1);
   });
 
   it('should call validate method when errorMessage property changes to something empty', async () => {
     const formControl = await getFormControlElement();
 
-    const validateStub = hanbi.stubMethod(formControl.element, 'validate');
+    const validateStub = vi.spyOn(formControl.element, 'validate');
     formControl.element.errorMessage = '';
     await elementUpdated(formControl.element);
 
-    expect(validateStub.called).to.eql(true);
+    expect(validateStub).toHaveBeenCalled();
   });
 
   it('should not call validate method when errorMessage property changes to something not empty', async () => {
     const formControl = await getFormControlElement();
 
-    const validateStub = hanbi.stubMethod(formControl.element, 'validate');
+    const validateStub = vi.spyOn(formControl.element, 'validate');
     formControl.element.errorMessage = 'an error message';
     await elementUpdated(formControl.element);
 
-    expect(validateStub.called).to.eql(false);
+    expect(validateStub).not.toHaveBeenCalled();
   });
 
   it('should use customValidator and built-in validator', async () => {
     const customValidator = new ValidValidator();
-    const customValidatorSpy = hanbi.stubMethod(customValidator, 'validate');
-    customValidatorSpy.passThrough();
+    const customValidatorSpy = vi.spyOn(customValidator, 'validate');
+    customValidatorSpy;
 
     const builtInValidator = new ValidValidator();
-    const builtInValidatorSpy = hanbi.stubMethod(builtInValidator, 'validate');
-    builtInValidatorSpy.passThrough();
+    const builtInValidatorSpy = vi.spyOn(builtInValidator, 'validate');
+    builtInValidatorSpy;
 
     const formControl = await getFormControlElement({
       validator: builtInValidator,
@@ -568,20 +568,20 @@ describe('InputElement', () => {
     formControl.element.customValidator = customValidator;
     await elementUpdated(formControl.element);
 
-    expect(builtInValidatorSpy.called).to.eql(true);
-    expect(customValidatorSpy.called).to.eql(true);
+    expect(builtInValidatorSpy).toHaveBeenCalled();
+    expect(customValidatorSpy).toHaveBeenCalled();
   });
 
   it('should use built-in validator before customValidator', async () => {
     const customValidator = new ValidValidator();
-    const customValidatorSpy = hanbi.stubMethod(customValidator, 'validate');
-    customValidatorSpy.passThrough();
+    const customValidatorSpy = vi.spyOn(customValidator, 'validate');
+    customValidatorSpy;
 
     const builtInValidator = {
       validate: () => Validation.invalid('invalid'),
     };
-    const builtInValidatorSpy = hanbi.stubMethod(builtInValidator, 'validate');
-    builtInValidatorSpy.passThrough();
+    const builtInValidatorSpy = vi.spyOn(builtInValidator, 'validate');
+    builtInValidatorSpy;
 
     const formControl = await getFormControlElement({
       validator: builtInValidator,
@@ -590,8 +590,8 @@ describe('InputElement', () => {
     formControl.element.customValidator = customValidator;
     await elementUpdated(formControl.element);
 
-    expect(builtInValidatorSpy.called).to.eql(true);
-    expect(customValidatorSpy.called).to.eql(false);
+    expect(builtInValidatorSpy).toHaveBeenCalled();
+    expect(customValidatorSpy).not.toHaveBeenCalled();
   });
 
   it('should reset value using the resetValue property when resetting <form>', async () => {
@@ -608,7 +608,7 @@ describe('InputElement', () => {
     formElement.reset();
     await elementUpdated(formElement);
 
-    expect(formControlElement.value).to.eql('reset value');
+    expect(formControlElement.value).toEqual('reset value');
   });
 
   it('should have the right form element', async () => {
@@ -620,6 +620,6 @@ describe('InputElement', () => {
     );
     const formControlElement = formElement.querySelector(customElement);
 
-    expect(formControlElement.form).to.eql(formElement);
+    expect(formControlElement.form).toEqual(formElement);
   });
 });

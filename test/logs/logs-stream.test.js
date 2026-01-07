@@ -1,9 +1,7 @@
 import CleverCloudSse from '@clevercloud/client/esm/streams/clever-cloud-sse.js';
-import { expect } from '@open-wc/testing';
-import * as hanbi from 'hanbi';
+import { describe, expect, it, vi } from 'vitest';
 import { LogsStream } from '../../src/lib/logs/logs-stream.js';
 import { sleep } from '../../src/lib/utils.js';
-
 /**
  * @typedef {import('./logs-stream.types.js').AbstractLog} AbstractLog
  */
@@ -15,17 +13,17 @@ class FakeLogsStream extends LogsStream {
   constructor(waitingTimeout) {
     super(100, { waitingTimeout: { live: waitingTimeout, cold: waitingTimeout } });
     this._spies = {
-      createStream: hanbi.spy(),
-      updateStreamState: hanbi.spy(),
-      convertLog: hanbi.spy(),
-      appendLogs: hanbi.spy(),
+      createStream: vi.fn(),
+      updateStreamState: vi.fn(),
+      convertLog: vi.fn(),
+      appendLogs: vi.fn(),
     };
     this._fakeSse = new FakeSse();
   }
 
   resetSpies() {
     [...Object.values(this.spies), ...Object.values(this.sseSpies)].forEach((spy) => {
-      spy.reset();
+      spy.mockClear();
     });
   }
 
@@ -42,24 +40,24 @@ class FakeLogsStream extends LogsStream {
   }
 
   _createStream(_dateRange, _maxRetryCount, _throttleElements, _throttlePerInMilliseconds) {
-    this._spies.createStream.handler(_dateRange, _maxRetryCount, _throttleElements, _throttlePerInMilliseconds);
+    this._spies.createStream(_dateRange, _maxRetryCount, _throttleElements, _throttlePerInMilliseconds);
 
     return this._fakeSse;
   }
 
   async _convertLog(rawLog) {
-    this._spies.convertLog.handler(rawLog);
+    this._spies.convertLog(rawLog);
     return rawLog;
   }
 
   _updateStreamState(streamState) {
     super._updateStreamState(streamState);
-    this._spies.updateStreamState.handler(streamState);
+    this._spies.updateStreamState(streamState);
   }
 
   _appendLogs(logs) {
     super._appendLogs(logs);
-    this._spies.appendLogs.handler(logs);
+    this._spies.appendLogs(logs);
   }
 }
 
@@ -67,11 +65,11 @@ class FakeSse extends CleverCloudSse {
   constructor() {
     super();
     this._spies = {
-      start: hanbi.spy(),
-      pause: hanbi.spy(),
-      resume: hanbi.spy(),
-      close: hanbi.spy(),
-      end: hanbi.spy(),
+      start: vi.fn(),
+      pause: vi.fn(),
+      resume: vi.fn(),
+      close: vi.fn(),
+      end: vi.fn(),
     };
     this._fakeApi = {
       log: (log) => {
@@ -93,7 +91,7 @@ class FakeSse extends CleverCloudSse {
   }
 
   async start() {
-    this._spies.start.handler();
+    this._spies.start();
     this.emit('open', {});
     return new Promise((resolve) => {
       this._endResolver = () => {
@@ -103,15 +101,15 @@ class FakeSse extends CleverCloudSse {
   }
 
   pause() {
-    this._spies.pause.handler();
+    this._spies.pause();
   }
 
   resume() {
-    this._spies.resume.handler();
+    this._spies.resume();
   }
 
   close(reason = { type: 'UNKNOW' }) {
-    this._spies.close.handler(reason);
+    this._spies.close(reason);
   }
 
   onLog(fn) {
@@ -128,8 +126,8 @@ describe('logs-stream', () => {
       const logsStream = new FakeLogsStream();
 
       logsStream.stop();
-      expect(logsStream.spies.updateStreamState.callCount).to.eql(1);
-      expect(logsStream.spies.updateStreamState.firstCall.args[0]).to.eql({ type: 'idle' });
+      expect(logsStream.spies.updateStreamState.mock.calls.length).toBe(1);
+      expect(logsStream.spies.updateStreamState.mock.calls[0][0]).toEqual({ type: 'idle' });
     });
 
     it('should close the Sse', () => {
@@ -137,14 +135,14 @@ describe('logs-stream', () => {
       logsStream.openLogsStream({ since: new Date().toISOString() });
 
       logsStream.stop();
-      expect(logsStream.sseSpies.close.callCount).to.eql(1);
+      expect(logsStream.sseSpies.close.mock.calls.length).toBe(1);
     });
 
     it('should not close the Sse if it was not started', () => {
       const logsStream = new FakeLogsStream();
 
       logsStream.stop();
-      expect(logsStream.sseSpies.close.callCount).to.eql(0);
+      expect(logsStream.sseSpies.close.mock.calls.length).toBe(0);
     });
 
     it('should not flush logs even if some logs remains in the buffer', async () => {
@@ -155,7 +153,7 @@ describe('logs-stream', () => {
       await fakeLogsReceived(logsStream); // this one goes in the buffelogsStreamr
 
       logsStream.stop();
-      expect(logsStream.spies.appendLogs.callCount).to.eql(0);
+      expect(logsStream.spies.appendLogs.mock.calls.length).toBe(0);
     });
   });
 
@@ -166,8 +164,8 @@ describe('logs-stream', () => {
 
       const [log] = await fakeLogsReceived(logsStream);
 
-      expect(logsStream.spies.convertLog.callCount).to.eql(1);
-      expect(logsStream.spies.convertLog.getCall(0).args[0]).to.eql(log);
+      expect(logsStream.spies.convertLog.mock.calls.length).toBe(1);
+      expect(logsStream.spies.convertLog.mock.calls[0][0]).toEqual(log);
     });
 
     it('should flush the first log received immediately', async () => {
@@ -176,8 +174,8 @@ describe('logs-stream', () => {
 
       const [log] = await fakeLogsReceived(logsStream);
 
-      expect(logsStream.spies.appendLogs.callCount).to.eql(1);
-      expect(logsStream.spies.appendLogs.getCall(0).args[0]).to.eql([log]);
+      expect(logsStream.spies.appendLogs.mock.calls.length).toBe(1);
+      expect(logsStream.spies.appendLogs.mock.calls[0][0]).toEqual([log]);
     });
 
     it('should not flush the second log received immediately', async () => {
@@ -188,7 +186,7 @@ describe('logs-stream', () => {
 
       await fakeLogsReceived(logsStream);
 
-      expect(logsStream.spies.appendLogs.callCount).to.eql(0);
+      expect(logsStream.spies.appendLogs.mock.calls.length).toBe(0);
     });
 
     it('should flush the logs when buffer is full', async () => {
@@ -198,10 +196,10 @@ describe('logs-stream', () => {
       logsStream.resetSpies();
 
       await fakeLogsReceived(logsStream, 9); // should not flush buffer
-      expect(logsStream.spies.appendLogs.callCount).to.eql(0);
+      expect(logsStream.spies.appendLogs.mock.calls.length).toBe(0);
 
       await fakeLogsReceived(logsStream); // should flush buffer
-      expect(logsStream.spies.appendLogs.callCount).to.eql(1);
+      expect(logsStream.spies.appendLogs.mock.calls.length).toBe(1);
     });
 
     it('should set the running state at the right moment', async () => {
@@ -210,8 +208,8 @@ describe('logs-stream', () => {
       logsStream.resetSpies();
 
       await fakeLogsReceived(logsStream); // should update state
-      expect(logsStream.spies.updateStreamState.callCount).to.eql(1);
-      expect(logsStream.spies.updateStreamState.firstCall.args[0]).to.eql({
+      expect(logsStream.spies.updateStreamState.mock.calls.length).toBe(1);
+      expect(logsStream.spies.updateStreamState.mock.calls[0][0]).toEqual({
         type: 'running',
         progress: { value: 1 },
         overflowing: false,
@@ -219,12 +217,12 @@ describe('logs-stream', () => {
       logsStream.resetSpies();
 
       await fakeLogsReceived(logsStream, 9); // should not update state
-      expect(logsStream.spies.updateStreamState.callCount).to.eql(0);
+      expect(logsStream.spies.updateStreamState.mock.calls.length).toBe(0);
       logsStream.resetSpies();
 
       await fakeLogsReceived(logsStream); // should update state
-      expect(logsStream.spies.updateStreamState.callCount).to.eql(1);
-      expect(logsStream.spies.updateStreamState.firstCall.args[0]).to.eql({
+      expect(logsStream.spies.updateStreamState.mock.calls.length).toBe(1);
+      expect(logsStream.spies.updateStreamState.mock.calls[0][0]).toEqual({
         type: 'running',
         progress: { value: 11 },
         overflowing: false,
@@ -246,8 +244,8 @@ describe('logs-stream', () => {
 
         await reachWatermark(logsStream);
 
-        expect(logsStream.spies.updateStreamState.callCount).to.eql(1);
-        expect(logsStream.spies.updateStreamState.firstCall.args[0]).to.eql({
+        expect(logsStream.spies.updateStreamState.mock.calls.length).toBe(1);
+        expect(logsStream.spies.updateStreamState.mock.calls[0][0]).toEqual({
           type: 'paused',
           reason: 'overflow',
           progress: { value: 91 },
@@ -259,7 +257,7 @@ describe('logs-stream', () => {
 
         await reachWatermark(logsStream);
 
-        expect(logsStream.sseSpies.pause.callCount).to.eql(1);
+        expect(logsStream.sseSpies.pause.mock.calls.length).toBe(1);
       });
 
       describe('acceptOverflow()', () => {
@@ -270,8 +268,8 @@ describe('logs-stream', () => {
 
           logsStream.acceptOverflow();
 
-          expect(logsStream.spies.updateStreamState.callCount).to.eql(1);
-          expect(logsStream.spies.updateStreamState.firstCall.args[0]).to.eql({
+          expect(logsStream.spies.updateStreamState.mock.calls.length).toBe(1);
+          expect(logsStream.spies.updateStreamState.mock.calls[0][0]).toEqual({
             type: 'running',
             progress: { value: 91 },
             overflowing: true,
@@ -285,7 +283,7 @@ describe('logs-stream', () => {
 
           logsStream.acceptOverflow();
 
-          expect(logsStream.sseSpies.resume.callCount).to.eql(1);
+          expect(logsStream.sseSpies.resume.mock.calls.length).toBe(1);
         });
       });
 
@@ -297,7 +295,7 @@ describe('logs-stream', () => {
 
           logsStream.discardOverflow();
 
-          expect(logsStream.sseSpies.close.callCount).to.eql(1);
+          expect(logsStream.sseSpies.close.mock.calls.length).toBe(1);
         });
       });
     });
@@ -312,8 +310,8 @@ describe('logs-stream', () => {
 
       await logsStream.sseFakeApi.end();
 
-      expect(logsStream.spies.updateStreamState.callCount).to.eql(1);
-      expect(logsStream.spies.updateStreamState.firstCall.args[0]).to.eql({
+      expect(logsStream.spies.updateStreamState.mock.calls.length).toBe(1);
+      expect(logsStream.spies.updateStreamState.mock.calls[0][0]).toEqual({
         type: 'completed',
         progress: { value: 1, percent: 100 },
         overflowing: false,
@@ -328,8 +326,8 @@ describe('logs-stream', () => {
 
       await logsStream.sseFakeApi.end();
 
-      expect(logsStream.spies.updateStreamState.callCount).to.eql(1);
-      expect(logsStream.spies.updateStreamState.firstCall.args[0]).to.eql({
+      expect(logsStream.spies.updateStreamState.mock.calls.length).toBe(1);
+      expect(logsStream.spies.updateStreamState.mock.calls[0][0]).toEqual({
         type: 'completed',
         progress: { value: 1, percent: 100 },
         overflowing: false,
@@ -346,8 +344,8 @@ describe('logs-stream', () => {
 
       logsStream.pause();
 
-      expect(logsStream.spies.updateStreamState.callCount).to.eql(1);
-      expect(logsStream.spies.updateStreamState.firstCall.args[0]).to.eql({
+      expect(logsStream.spies.updateStreamState.mock.calls.length).toBe(1);
+      expect(logsStream.spies.updateStreamState.mock.calls[0][0]).toEqual({
         type: 'paused',
         reason: 'user',
         progress: { value: 1 },
@@ -363,7 +361,7 @@ describe('logs-stream', () => {
 
       logsStream.pause();
 
-      expect(logsStream.sseSpies.pause.callCount).to.eql(1);
+      expect(logsStream.sseSpies.pause.mock.calls.length).toBe(1);
     });
 
     it('should do nothing if already paused', async () => {
@@ -375,7 +373,7 @@ describe('logs-stream', () => {
 
       logsStream.pause();
 
-      expect(logsStream.sseSpies.pause.callCount).to.eql(0);
+      expect(logsStream.sseSpies.pause.mock.calls.length).toBe(0);
     });
 
     it('should do nothing if not started paused', async () => {
@@ -384,7 +382,7 @@ describe('logs-stream', () => {
 
       logsStream.pause();
 
-      expect(logsStream.sseSpies.pause.callCount).to.eql(0);
+      expect(logsStream.sseSpies.pause.mock.calls.length).toBe(0);
     });
   });
 
@@ -398,8 +396,8 @@ describe('logs-stream', () => {
 
       logsStream.resume();
 
-      expect(logsStream.spies.updateStreamState.callCount).to.eql(1);
-      expect(logsStream.spies.updateStreamState.firstCall.args[0]).to.eql({
+      expect(logsStream.spies.updateStreamState.mock.calls.length).toBe(1);
+      expect(logsStream.spies.updateStreamState.mock.calls[0][0]).toEqual({
         type: 'running',
         progress: { value: 1 },
         overflowing: false,
@@ -415,7 +413,7 @@ describe('logs-stream', () => {
 
       logsStream.resume();
 
-      expect(logsStream.sseSpies.resume.callCount).to.eql(1);
+      expect(logsStream.sseSpies.resume.mock.calls.length).toBe(1);
     });
 
     it('should do nothing if not paused', async () => {
@@ -426,7 +424,7 @@ describe('logs-stream', () => {
 
       logsStream.resume();
 
-      expect(logsStream.sseSpies.resume.callCount).to.eql(0);
+      expect(logsStream.sseSpies.resume.mock.calls.length).toBe(0);
     });
   });
 
@@ -438,8 +436,8 @@ describe('logs-stream', () => {
 
       await sleep(55);
 
-      await expect(logsStream.spies.updateStreamState.callCount).to.eql(1);
-      expect(logsStream.spies.updateStreamState.firstCall.args[0]).to.eql({
+      await expect(logsStream.spies.updateStreamState.mock.calls.length).toBe(1);
+      expect(logsStream.spies.updateStreamState.mock.calls[0][0]).toEqual({
         type: 'waitingForFirstLog',
       });
     });
@@ -452,7 +450,7 @@ describe('logs-stream', () => {
 
       await sleep(55);
 
-      await expect(logsStream.spies.updateStreamState.callCount).to.eql(0);
+      await expect(logsStream.spies.updateStreamState.mock.calls.length).toBe(0);
     });
   });
 });

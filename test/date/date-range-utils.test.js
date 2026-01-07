@@ -1,4 +1,4 @@
-import { expect } from '@open-wc/testing';
+import { describe, expect, it } from 'vitest';
 import {
   getRangeToNow,
   isLive,
@@ -13,7 +13,7 @@ describe('date-range', () => {
   describe('getRangeToNow', () => {
     it('should generate the right range', () => {
       withMockedNow('2024-10-17T16:00:00.000Z', () => {
-        expect(getRangeToNow(1000)).to.deep.equal({
+        expect(getRangeToNow(1000)).toEqual({
           since: '2024-10-17T15:59:59.000Z',
           until: '2024-10-17T16:00:00.000Z',
         });
@@ -23,18 +23,18 @@ describe('date-range', () => {
 
   describe('isLive', () => {
     it('should be true when until is null', () => {
-      expect(isLive({ since: '2024-10-17T16:19:00.000Z' })).to.equal(true);
+      expect(isLive({ since: '2024-10-17T16:19:00.000Z' })).toBe(true);
     });
 
     it('should be false when until is not null', () => {
-      expect(isLive({ since: '2024-10-17T16:00:00.000Z', until: '2024-10-17T17:00:00.000Z' })).to.equal(false);
+      expect(isLive({ since: '2024-10-17T16:00:00.000Z', until: '2024-10-17T17:00:00.000Z' })).toBe(false);
     });
   });
 
   describe('today', () => {
     it('should generate the right range', () => {
       withMockedNow('2024-10-17T16:00:00.000Z', () => {
-        expect(today()).to.deep.equal({
+        expect(today()).toEqual({
           since: '2024-10-17T00:00:00.000Z',
           until: '2024-10-17T16:00:00.000Z',
         });
@@ -45,7 +45,7 @@ describe('date-range', () => {
   describe('yesterday', () => {
     it('should generate the right range', () => {
       withMockedNow('2024-10-17T16:00:00.000Z', () => {
-        expect(yesterday()).to.deep.equal({
+        expect(yesterday()).toEqual({
           since: '2024-10-16T00:00:00.000Z',
           until: '2024-10-16T23:59:59.999Z',
         });
@@ -56,7 +56,7 @@ describe('date-range', () => {
   describe('lastXDays', () => {
     it('should generate the right range', () => {
       withMockedNow('2024-10-17T16:00:00.000Z', () => {
-        expect(lastXDays(4)).to.deep.equal({
+        expect(lastXDays(4)).toEqual({
           since: '2024-10-13T00:00:00.000Z',
           until: '2024-10-17T16:00:00.000Z',
         });
@@ -65,7 +65,7 @@ describe('date-range', () => {
 
     it('should generate the right range when number of days is 0', () => {
       withMockedNow('2024-10-17T16:00:00.000Z', () => {
-        expect(lastXDays(0)).to.deep.equal({
+        expect(lastXDays(0)).toEqual({
           since: '2024-10-17T00:00:00.000Z',
           until: '2024-10-17T16:00:00.000Z',
         });
@@ -83,7 +83,7 @@ describe('date-range', () => {
           },
           'right',
         ),
-      ).to.deep.equal({
+      ).toEqual({
         since: '2024-10-17T16:00:00.000Z',
         until: '2024-10-17T17:00:00.000Z',
       });
@@ -98,7 +98,7 @@ describe('date-range', () => {
           },
           'left',
         ),
-      ).to.deep.equal({
+      ).toEqual({
         since: '2024-10-17T14:00:00.000Z',
         until: '2024-10-17T15:00:00.000Z',
       });
@@ -112,7 +112,7 @@ describe('date-range', () => {
           },
           'left',
         ),
-      ).to.throw(Error);
+      ).toThrow(Error);
     });
   });
 });

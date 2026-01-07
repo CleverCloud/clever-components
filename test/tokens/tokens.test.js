@@ -1,4 +1,4 @@
-import { expect } from '@bundled-es-modules/chai';
+import { describe, expect, it } from 'vitest';
 import { isExpirationClose } from '../../src/lib/tokens.js';
 
 describe('isExpirationClose function', () => {
@@ -11,14 +11,14 @@ describe('isExpirationClose function', () => {
       const creationDate = new Date(now.getTime() - 6 * oneDay);
       const expirationDate = new Date(now.getTime() + oneDay);
 
-      expect(isExpirationClose({ creationDate, expirationDate })).to.be.true;
+      expect(isExpirationClose({ creationDate, expirationDate })).toBe(true);
     });
 
     it('should return false for short-term tokens outside threshold (7 days token, 3 days left)', () => {
       const creationDate = new Date(now.getTime() - 4 * oneDay);
       const expirationDate = new Date(now.getTime() + 3 * oneDay);
 
-      expect(isExpirationClose({ creationDate, expirationDate })).to.be.false;
+      expect(isExpirationClose({ creationDate, expirationDate })).toBe(false);
     });
 
     // Test for default threshold: maxApplicableTokenLifetimeInDays: 30, warningThresholdInDays: 7
@@ -26,14 +26,14 @@ describe('isExpirationClose function', () => {
       const creationDate = new Date(now.getTime() - 25 * oneDay);
       const expirationDate = new Date(now.getTime() + 5 * oneDay);
 
-      expect(isExpirationClose({ creationDate, expirationDate })).to.be.true;
+      expect(isExpirationClose({ creationDate, expirationDate })).toBe(true);
     });
 
     it('should return false for medium-term tokens outside threshold (30 days token, 10 days left)', () => {
       const creationDate = new Date(now.getTime() - 20 * oneDay);
       const expirationDate = new Date(now.getTime() + 10 * oneDay);
 
-      expect(isExpirationClose({ creationDate, expirationDate })).to.be.false;
+      expect(isExpirationClose({ creationDate, expirationDate })).toBe(false);
     });
 
     // Test for default threshold: maxApplicableTokenLifetimeInDays: 90, warningThresholdInDays: 20
@@ -41,14 +41,14 @@ describe('isExpirationClose function', () => {
       const creationDate = new Date(now.getTime() - 70 * oneDay);
       const expirationDate = new Date(now.getTime() + 15 * oneDay);
 
-      expect(isExpirationClose({ creationDate, expirationDate })).to.be.true;
+      expect(isExpirationClose({ creationDate, expirationDate })).toBe(true);
     });
 
     it('should return false for long-term tokens outside threshold (85 days token, 25 days left)', () => {
       const creationDate = new Date(now.getTime() - 60 * oneDay);
       const expirationDate = new Date(now.getTime() + 25 * oneDay);
 
-      expect(isExpirationClose({ creationDate, expirationDate })).to.be.false;
+      expect(isExpirationClose({ creationDate, expirationDate })).toBe(false);
     });
 
     // Test for tokens just under one year
@@ -56,7 +56,7 @@ describe('isExpirationClose function', () => {
       const creationDate = new Date(now.getTime() - 325 * oneDay);
       const expirationDate = new Date(now.getTime() + 25 * oneDay);
 
-      expect(isExpirationClose({ creationDate, expirationDate })).to.be.true;
+      expect(isExpirationClose({ creationDate, expirationDate })).toBe(true);
     });
 
     // Test for tokens over one year
@@ -64,14 +64,14 @@ describe('isExpirationClose function', () => {
       const creationDate = new Date(now.getTime() - 365 * oneDay);
       const expirationDate = new Date(now.getTime() + 27 * oneDay);
 
-      expect(isExpirationClose({ creationDate, expirationDate })).to.be.true;
+      expect(isExpirationClose({ creationDate, expirationDate })).toBe(true);
     });
 
     it('should return false for tokens over one year outside threshold (400 days token, 31 days left)', () => {
       const creationDate = new Date(now.getTime() - 355 * oneDay);
       const expirationDate = new Date(now.getTime() + 31 * oneDay);
 
-      expect(isExpirationClose({ creationDate, expirationDate })).to.be.false;
+      expect(isExpirationClose({ creationDate, expirationDate })).toBe(false);
     });
   });
 
@@ -89,42 +89,42 @@ describe('isExpirationClose function', () => {
       const creationDate = new Date(now.getTime() - 5 * oneDay);
       const expirationDate = new Date(now.getTime() + 2 * oneDay);
 
-      expect(isExpirationClose({ creationDate, expirationDate }, customThresholds)).to.be.true;
+      expect(isExpirationClose({ creationDate, expirationDate }, customThresholds)).toBe(true);
     });
 
     it('should return false for short-term tokens outside custom threshold (7 days token, 4 days left)', () => {
       const creationDate = new Date(now.getTime() - 3 * oneDay);
       const expirationDate = new Date(now.getTime() + 4 * oneDay);
 
-      expect(isExpirationClose({ creationDate, expirationDate }, customThresholds)).to.be.false;
+      expect(isExpirationClose({ creationDate, expirationDate }, customThresholds)).toBe(false);
     });
 
     it('should return true for medium-term tokens within custom threshold (30 days token, 7 days left)', () => {
       const creationDate = new Date(now.getTime() - 23 * oneDay);
       const expirationDate = new Date(now.getTime() + 7 * oneDay);
 
-      expect(isExpirationClose({ creationDate, expirationDate }, customThresholds)).to.be.true;
+      expect(isExpirationClose({ creationDate, expirationDate }, customThresholds)).toBe(true);
     });
 
     it('should return false for medium-term tokens outside custom threshold (30 days token, 9 days left)', () => {
       const creationDate = new Date(now.getTime() - 21 * oneDay);
       const expirationDate = new Date(now.getTime() + 9 * oneDay);
 
-      expect(isExpirationClose({ creationDate, expirationDate }, customThresholds)).to.be.false;
+      expect(isExpirationClose({ creationDate, expirationDate }, customThresholds)).toBe(false);
     });
 
     it('should return true for long-term tokens within custom threshold (85 days token, 20 days left)', () => {
       const creationDate = new Date(now.getTime() - 65 * oneDay);
       const expirationDate = new Date(now.getTime() + 20 * oneDay);
 
-      expect(isExpirationClose({ creationDate, expirationDate }, customThresholds)).to.be.true;
+      expect(isExpirationClose({ creationDate, expirationDate }, customThresholds)).toBe(true);
     });
 
     it('should return false for long-term tokens outside custom threshold (85 days token, 30 days left)', () => {
       const creationDate = new Date(now.getTime() - 55 * oneDay);
       const expirationDate = new Date(now.getTime() + 30 * oneDay);
 
-      expect(isExpirationClose({ creationDate, expirationDate }, customThresholds)).to.be.false;
+      expect(isExpirationClose({ creationDate, expirationDate }, customThresholds)).toBe(false);
     });
 
     // Test token with duration just under 1 year
@@ -132,7 +132,7 @@ describe('isExpirationClose function', () => {
       const creationDate = new Date(now.getTime() - 325 * oneDay);
       const expirationDate = new Date(now.getTime() + 35 * oneDay);
 
-      expect(isExpirationClose({ creationDate, expirationDate }, customThresholds)).to.be.true;
+      expect(isExpirationClose({ creationDate, expirationDate }, customThresholds)).toBe(true);
     });
 
     // Test token with duration over 1 year
@@ -140,14 +140,14 @@ describe('isExpirationClose function', () => {
       const creationDate = new Date(now.getTime() - 365 * oneDay);
       const expirationDate = new Date(now.getTime() + 35 * oneDay);
 
-      expect(isExpirationClose({ creationDate, expirationDate }, customThresholds)).to.be.true;
+      expect(isExpirationClose({ creationDate, expirationDate }, customThresholds)).toBe(true);
     });
 
     it('should return false for tokens over one year outside threshold (400 days token, 45 days left)', () => {
       const creationDate = new Date(now.getTime() - 355 * oneDay);
       const expirationDate = new Date(now.getTime() + 45 * oneDay);
 
-      expect(isExpirationClose({ creationDate, expirationDate }, customThresholds)).to.be.false;
+      expect(isExpirationClose({ creationDate, expirationDate }, customThresholds)).toBe(false);
     });
   });
 });

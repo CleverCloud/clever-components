@@ -1,14 +1,17 @@
-import { elementUpdated, expect, fixture } from '@open-wc/testing';
 import { html } from 'lit';
+import { styleMap } from 'lit/directives/style-map.js';
+import { describe, expect, it } from 'vitest';
+import { commands } from 'vitest/browser';
 import defaultPalette from '../../src/lib/ansi/palettes/default.js';
 import everblushPalette from '../../src/lib/ansi/palettes/everblush.js';
 import hyoobPalette from '../../src/lib/ansi/palettes/hyoob.js';
 import nightOwlPalette from '../../src/lib/ansi/palettes/night-owl.js';
 import oneLightPalette from '../../src/lib/ansi/palettes/one-light.js';
 import tokyoNightLightPalette from '../../src/lib/ansi/palettes/tokyo-night-light.js';
+import { elementUpdated, fixture } from '../helpers/element-helper.js';
 
-const getElement = (paletteStyle, fgStyle) => {
-  return html`<span style="${paletteStyle};color: var(--cc-color-ansi-${fgStyle});">Test contrast</span>`;
+const getElement = (palette, fgStyle) => {
+  return html`<span style="${styleMap({ ...palette, color: fgStyle })}">Test contrast</span>`;
 };
 
 const darkPalettes = {
@@ -42,7 +45,9 @@ testsSuite.forEach((t) => {
       it(`with "${fgStyle}" foreground`, async () => {
         const element = await fixture(getElement(t.palette, fgStyle));
         await elementUpdated(element);
-        await expect(element).to.be.accessible();
+        const results = await commands.runAccessibilityCheck();
+        console.log(results.violations);
+        expect(results.violations).toHaveLength(0);
       });
     });
   });

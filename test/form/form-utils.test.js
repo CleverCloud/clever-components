@@ -1,4 +1,4 @@
-import { expect } from '@open-wc/testing';
+import { describe, it, expect, beforeAll } from 'vitest';
 import '../../src/components/cc-input-date/cc-input-date.js';
 import '../../src/components/cc-input-number/cc-input-number.js';
 import '../../src/components/cc-input-text/cc-input-text.js';
@@ -14,7 +14,7 @@ import { addTranslations, setLanguage } from '../../src/lib/i18n/i18n.js';
 import { translations } from '../../src/translations/translations.en.js';
 import { getElement } from '../helpers/element-helper.js';
 
-before(() => {
+beforeAll(() => {
   addTranslations('en', translations);
   setLanguage('en');
 });
@@ -25,7 +25,7 @@ describe('getFormDataMap', () => {
 
     const formData = getFormDataMap(element);
 
-    expect(formData).to.eql({});
+    expect(formData).toEqual({});
   });
 
   it('should have the data of all native inputs', async () => {
@@ -47,7 +47,7 @@ describe('getFormDataMap', () => {
 
     const formData = getFormDataMap(element);
 
-    expect(formData).to.eql({
+    expect(formData).toEqual({
       text: 'text value',
       checkbox: 'checkbox value',
       number: '42',
@@ -67,7 +67,7 @@ describe('getFormDataMap', () => {
 
     const formData = getFormDataMap(element);
 
-    expect(formData).to.eql({
+    expect(formData).toEqual({
       text: 'text value',
       number: '42',
       date: '2024-03-22T14:56:00Z',
@@ -91,7 +91,7 @@ describe('getFormDataMap', () => {
 
     const formData = getFormDataMap(element);
 
-    expect(formData).to.eql({
+    expect(formData).toEqual({
       checkbox: ['checkbox-1', 'checkbox-3'],
       text: ['text-1', 'text-2', 'text-3'],
     });
@@ -106,7 +106,7 @@ describe('isCcFormControlElement', () => {
 
         const isCcInput = isCcFormControlElement(element);
 
-        expect(isCcInput).to.eql(true);
+        expect(isCcInput).toEqual(true);
       });
     });
   });
@@ -117,7 +117,7 @@ describe('isCcFormControlElement', () => {
 
         const isCcInput = isCcFormControlElement(element);
 
-        expect(isCcInput).to.eql(false);
+        expect(isCcInput).toEqual(false);
       });
     });
   });
@@ -131,7 +131,7 @@ describe('isNativeInputElement', () => {
 
         const isNativeInput = isFormControlElementLike(element);
 
-        expect(isNativeInput).to.eql(true);
+        expect(isNativeInput).toEqual(true);
       });
     });
   });
@@ -142,7 +142,7 @@ describe('isNativeInputElement', () => {
 
         const isNativeInput = isFormControlElementLike(element);
 
-        expect(isNativeInput).to.eql(false);
+        expect(isNativeInput).toEqual(false);
       });
     });
     ['button', 'reset', 'submit'].forEach((type) => {
@@ -151,7 +151,7 @@ describe('isNativeInputElement', () => {
 
         const isNativeInput = isFormControlElementLike(element);
 
-        expect(isNativeInput).to.eql(false);
+        expect(isNativeInput).toEqual(false);
       });
     });
   });
@@ -163,7 +163,7 @@ describe('convertErrorMessageToString', () => {
 
     const result = convertErrorMessageToString(errorMessage);
 
-    expect(result).to.eql('');
+    expect(result).toEqual('');
   });
 
   it('should convert undefined to empty string', () => {
@@ -171,7 +171,7 @@ describe('convertErrorMessageToString', () => {
 
     const result = convertErrorMessageToString(errorMessage);
 
-    expect(result).to.eql('');
+    expect(result).toEqual('');
   });
 
   it('should convert string to same string', () => {
@@ -179,7 +179,7 @@ describe('convertErrorMessageToString', () => {
 
     const result = convertErrorMessageToString(errorMessage);
 
-    expect(result).to.eql('error message');
+    expect(result).toEqual('error message');
   });
 
   it('should convert Node to string', async () => {
@@ -187,7 +187,7 @@ describe('convertErrorMessageToString', () => {
 
     const result = convertErrorMessageToString(errorMessage);
 
-    expect(result).to.eql('This is an error message');
+    expect(result).toEqual('This is an error message');
   });
 });
 
@@ -198,8 +198,8 @@ describe('focusFirstFormControlWithError', () => {
 
     await focusFirstFormControlWithError(element);
 
-    expect(document.activeElement).not.to.equal(null);
-    expect(document.activeElement).to.equal(invalidInput);
+    expect(document.activeElement).not.toBe(null);
+    expect(document.activeElement).toBe(invalidInput);
   });
 
   it('should focus second form control', async () => {
@@ -210,7 +210,7 @@ describe('focusFirstFormControlWithError', () => {
 
     await focusFirstFormControlWithError(element);
 
-    expect(document.activeElement).not.to.equal(null);
-    expect(document.activeElement).to.equal(invalidInput);
+    expect(document.activeElement).not.toBe(null);
+    expect(document.activeElement).toBe(invalidInput);
   });
 });

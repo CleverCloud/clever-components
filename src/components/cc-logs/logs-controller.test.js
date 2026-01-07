@@ -1,5 +1,5 @@
-import { expect } from '@bundled-es-modules/chai';
 import * as hanbi from 'hanbi';
+import { beforeEach, describe, expect, it } from 'vitest';
 import { LogsController } from './logs-controller.js';
 
 /**
@@ -60,36 +60,36 @@ describe('', () => {
 
   function assertListByIndex(fullList, indexes) {
     const expectedList = fullList.filter((_, i) => indexes.includes(i));
-    return expect(logsCtrl.getList()).to.deep.equal(expectedList);
+    return expect(logsCtrl.getList()).toEqual(expectedList);
   }
 
   function assertSelection(expectedSelection) {
-    expect(logsCtrl.selectionLength, 'selection length').to.equal(expectedSelection.length);
-    expect(logsCtrl.isSelectionEmpty(), 'selection is empty').to.equal(expectedSelection.length === 0);
+    expect(logsCtrl.selectionLength).toBe(expectedSelection.length);
+    expect(logsCtrl.isSelectionEmpty()).toBe(expectedSelection.length === 0);
     expectedSelection.forEach((selection) => {
-      expect(logsCtrl.isSelected(selection), `${selection} is selected`).to.equal(true);
+      expect(logsCtrl.isSelected(selection)).toBe(true);
     });
 
-    expect(logsCtrl.getSelectedLogs()).to.deep.equal(expectedSelection.map((i) => logsCtrl.getList()[i]));
+    expect(logsCtrl.getSelectedLogs()).toEqual(expectedSelection.map((i) => logsCtrl.getList()[i]));
   }
 
   it('should be empty at startup', () => {
-    expect(logsCtrl.getList()).to.deep.equal([]);
-    expect(logsCtrl.listLength).to.equal(0);
+    expect(logsCtrl.getList()).toEqual([]);
+    expect(logsCtrl.listLength).toBe(0);
   });
 
   describe('appendLogs() method', () => {
     it('should append logs to the list', () => {
       const logs = appendLogs(4);
 
-      expect(logsCtrl.getList()).to.deep.equal(logs);
-      expect(logsCtrl.listLength).to.equal(4);
+      expect(logsCtrl.getList()).toEqual(logs);
+      expect(logsCtrl.listLength).toBe(4);
     });
 
     it('should update host when appending some logs', () => {
       appendLogs(4);
 
-      expect(spies.requestUpdate.callCount).to.equal(1);
+      expect(spies.requestUpdate.callCount).toBe(1);
     });
 
     it('should drop focused log if it was removed because of the limit', () => {
@@ -100,8 +100,8 @@ describe('', () => {
 
       logsCtrl.append(generateLogs(5, 10));
 
-      expect(spies.focusedLogChange.callCount).to.equal(1);
-      expect(spies.focusedLogChange.lastCall.args).to.deep.equal([null]);
+      expect(spies.focusedLogChange.callCount).toBe(1);
+      expect(spies.focusedLogChange.lastCall.args).toEqual([null]);
     });
 
     it('should keep focused log and updated its index when limit does not put it out of the list', () => {
@@ -112,8 +112,8 @@ describe('', () => {
 
       logsCtrl.append(generateLogs(5, 10));
 
-      expect(spies.focusedLogChange.callCount).to.equal(1);
-      expect(spies.focusedLogChange.lastCall.args).to.deep.equal([3]);
+      expect(spies.focusedLogChange.callCount).toBe(1);
+      expect(spies.focusedLogChange.lastCall.args).toEqual([3]);
     });
 
     it('should drop focused log if it was removed because of a new filter', () => {
@@ -130,8 +130,8 @@ describe('', () => {
         metadata: [{ metadata: 'even', value: 'yes' }],
       };
 
-      expect(spies.focusedLogChange.callCount).to.equal(1);
-      expect(spies.focusedLogChange.lastCall.args).to.deep.equal([null]);
+      expect(spies.focusedLogChange.callCount).toBe(1);
+      expect(spies.focusedLogChange.lastCall.args).toEqual([null]);
     });
   });
 
@@ -141,8 +141,8 @@ describe('', () => {
 
       logsCtrl.clear();
 
-      expect(logsCtrl.getList()).to.deep.equal([]);
-      expect(logsCtrl.listLength).to.equal(0);
+      expect(logsCtrl.getList()).toEqual([]);
+      expect(logsCtrl.listLength).toBe(0);
     });
 
     it('should request host update', () => {
@@ -151,7 +151,7 @@ describe('', () => {
 
       logsCtrl.clear();
 
-      expect(spies.requestUpdate.callCount).to.equal(1);
+      expect(spies.requestUpdate.callCount).toBe(1);
     });
 
     it('should drop focused log', () => {
@@ -161,8 +161,8 @@ describe('', () => {
 
       logsCtrl.clear();
 
-      expect(spies.focusedLogChange.callCount).to.equal(1);
-      expect(spies.focusedLogChange.lastCall.args).to.deep.equal([null]);
+      expect(spies.focusedLogChange.callCount).toBe(1);
+      expect(spies.focusedLogChange.lastCall.args).toEqual([null]);
     });
   });
 
@@ -172,8 +172,8 @@ describe('', () => {
 
       logsCtrl.limit = 6;
 
-      expect(logsCtrl.getList()).to.deep.equal(logs.slice(4));
-      expect(logsCtrl.listLength).to.equal(6);
+      expect(logsCtrl.getList()).toEqual(logs.slice(4));
+      expect(logsCtrl.listLength).toBe(6);
     });
 
     it('should request host update when applying limit', () => {
@@ -182,7 +182,7 @@ describe('', () => {
 
       logsCtrl.limit = 6;
 
-      expect(spies.requestUpdate.callCount).to.equal(1);
+      expect(spies.requestUpdate.callCount).toBe(1);
     });
 
     it('should be applied when appending logs', () => {
@@ -191,8 +191,8 @@ describe('', () => {
 
       const logsTwo = appendLogs(4);
 
-      expect(logsCtrl.getList()).to.deep.equal([...logsOne.slice(2), ...logsTwo]);
-      expect(logsCtrl.listLength).to.equal(6);
+      expect(logsCtrl.getList()).toEqual([...logsOne.slice(2), ...logsTwo]);
+      expect(logsCtrl.listLength).toBe(6);
     });
   });
 
@@ -217,7 +217,7 @@ describe('', () => {
         metadata: [{ metadata: 'A', value: 'a' }],
       };
 
-      expect(spies.requestUpdate.callCount).to.equal(1);
+      expect(spies.requestUpdate.callCount).toBe(1);
     });
 
     it('should be applied when appending new logs', () => {
@@ -238,7 +238,7 @@ describe('', () => {
 
       appendLogsWithMetadata();
 
-      expect(spies.requestUpdate.callCount).to.equal(1);
+      expect(spies.requestUpdate.callCount).toBe(1);
     });
 
     it('should be dropped when setting null filter', () => {
@@ -249,7 +249,7 @@ describe('', () => {
 
       logsCtrl.filter = null;
 
-      expect(logsCtrl.getList()).to.deep.equal(logs);
+      expect(logsCtrl.getList()).toEqual(logs);
     });
 
     it('should use OR boolean operator when filtering on same metadata', () => {
@@ -510,7 +510,7 @@ describe('', () => {
 
         logsCtrl.select(2);
 
-        expect(spies.requestUpdate.callCount).to.equal(1);
+        expect(spies.requestUpdate.callCount).toBe(1);
       });
     });
 
@@ -750,7 +750,7 @@ describe('', () => {
 
       logsCtrl.clearSelection();
 
-      expect(spies.requestUpdate.callCount).to.equal(1);
+      expect(spies.requestUpdate.callCount).toBe(1);
     });
   });
 
@@ -762,8 +762,8 @@ describe('', () => {
     it('should notify host when first focusing log', () => {
       logsCtrl.focus(2);
 
-      expect(spies.focusedLogChange.callCount).to.equal(1);
-      expect(spies.focusedLogChange.lastCall.args).to.deep.equal([2]);
+      expect(spies.focusedLogChange.callCount).toBe(1);
+      expect(spies.focusedLogChange.lastCall.args).toEqual([2]);
     });
 
     it('should not notify host when focusing an already focused log', () => {
@@ -772,7 +772,7 @@ describe('', () => {
 
       logsCtrl.focus(2);
 
-      expect(spies.focusedLogChange.callCount).to.equal(0);
+      expect(spies.focusedLogChange.callCount).toBe(0);
     });
 
     it('should notify host when focusing another log', () => {
@@ -781,8 +781,8 @@ describe('', () => {
 
       logsCtrl.focus(4);
 
-      expect(spies.focusedLogChange.callCount).to.equal(1);
-      expect(spies.focusedLogChange.lastCall.args).to.deep.equal([4]);
+      expect(spies.focusedLogChange.callCount).toBe(1);
+      expect(spies.focusedLogChange.lastCall.args).toEqual([4]);
     });
   });
 
@@ -794,7 +794,7 @@ describe('', () => {
     it('should not notify host when no log was focused', () => {
       logsCtrl.clearFocus();
 
-      expect(spies.focusedLogChange.callCount).to.equal(0);
+      expect(spies.focusedLogChange.callCount).toBe(0);
     });
 
     it('should notify host when a log was focused', () => {
@@ -803,7 +803,7 @@ describe('', () => {
 
       logsCtrl.clearFocus();
 
-      expect(spies.focusedLogChange.callCount).to.equal(1);
+      expect(spies.focusedLogChange.callCount).toBe(1);
     });
 
     describe('when notifyHost is false', () => {
@@ -813,7 +813,7 @@ describe('', () => {
 
         logsCtrl.clearFocus(false);
 
-        expect(spies.focusedLogChange.callCount).to.equal(0);
+        expect(spies.focusedLogChange.callCount).toBe(0);
       });
     });
   });
@@ -830,8 +830,8 @@ describe('', () => {
 
       logsCtrl.moveFocus('up');
 
-      expect(spies.focusedLogChange.callCount).to.equal(1);
-      expect(spies.focusedLogChange.lastCall.args).to.deep.equal([1]);
+      expect(spies.focusedLogChange.callCount).toBe(1);
+      expect(spies.focusedLogChange.lastCall.args).toEqual([1]);
     });
 
     it('should focus on next log when current focused log is not last', () => {
@@ -840,8 +840,8 @@ describe('', () => {
 
       logsCtrl.moveFocus('down');
 
-      expect(spies.focusedLogChange.callCount).to.equal(1);
-      expect(spies.focusedLogChange.lastCall.args).to.deep.equal([3]);
+      expect(spies.focusedLogChange.callCount).toBe(1);
+      expect(spies.focusedLogChange.lastCall.args).toEqual([3]);
     });
 
     it('should not move focused log when current focused log is first and direction is up', () => {
@@ -850,7 +850,7 @@ describe('', () => {
 
       logsCtrl.moveFocus('up');
 
-      expect(spies.focusedLogChange.callCount).to.equal(0);
+      expect(spies.focusedLogChange.callCount).toBe(0);
     });
 
     it('should not move focused log when current focused log is last and direction is down', () => {
@@ -859,33 +859,33 @@ describe('', () => {
 
       logsCtrl.moveFocus('down');
 
-      expect(spies.focusedLogChange.callCount).to.equal(0);
+      expect(spies.focusedLogChange.callCount).toBe(0);
     });
 
     it('should move focus to first log when current focused log is null and direction is down', () => {
       logsCtrl.moveFocus('down', { first: 4, last: 6 });
 
-      expect(spies.focusedLogChange.callCount).to.equal(1);
-      expect(spies.focusedLogChange.lastCall.args).to.deep.equal([4]);
+      expect(spies.focusedLogChange.callCount).toBe(1);
+      expect(spies.focusedLogChange.lastCall.args).toEqual([4]);
     });
 
     it('should move focus to last log when current focused log is null and direction is up', () => {
       logsCtrl.moveFocus('up', { first: 4, last: 6 });
 
-      expect(spies.focusedLogChange.callCount).to.equal(1);
-      expect(spies.focusedLogChange.lastCall.args).to.deep.equal([6]);
+      expect(spies.focusedLogChange.callCount).toBe(1);
+      expect(spies.focusedLogChange.lastCall.args).toEqual([6]);
     });
 
     it('should not move focus when current focused log is null and direction is down and given range is null', () => {
       logsCtrl.moveFocus('down');
 
-      expect(spies.focusedLogChange.callCount).to.equal(0);
+      expect(spies.focusedLogChange.callCount).toBe(0);
     });
 
     it('should not move focus when current focused log is null and direction is up and given range is null', () => {
       logsCtrl.moveFocus('up');
 
-      expect(spies.focusedLogChange.callCount).to.equal(0);
+      expect(spies.focusedLogChange.callCount).toBe(0);
     });
   });
 });

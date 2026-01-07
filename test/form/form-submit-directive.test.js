@@ -1,6 +1,6 @@
-import { defineCE, elementUpdated, expect } from '@open-wc/testing';
-import * as hanbi from 'hanbi';
 import { LitElement, html } from 'lit';
+import { beforeAll, describe, expect, it, vi } from 'vitest';
+import { defineCE, elementUpdated } from '../helpers/element-helper.js';
 import '../../src/components/cc-button/cc-button.js';
 import '../../src/components/cc-input-date/cc-input-date.js';
 import '../../src/components/cc-input-number/cc-input-number.js';
@@ -12,26 +12,26 @@ import { translations } from '../../src/translations/translations.en.js';
 import { getElement } from '../helpers/element-helper.js';
 
 async function spyElement(formContent) {
-  const validCallbackSpy = hanbi.spy();
-  const invalidCallbackSpy = hanbi.spy();
+  const validCallbackSpy = vi.fn();
+  const invalidCallbackSpy = vi.fn();
 
   const form = defineCE(
     class extends LitElement {
       render() {
-        return html`<form ${formSubmit(validCallbackSpy.handler, invalidCallbackSpy.handler)}>${formContent}</form>`;
+        return html`<form ${formSubmit(validCallbackSpy, invalidCallbackSpy)}>${formContent}</form>`;
       }
     },
   );
 
   const element = await getElement(`<${form}></${form}>`);
 
-  const validEventSpy = hanbi.spy();
-  const invalidEventSpy = hanbi.spy();
+  const validEventSpy = vi.fn();
+  const invalidEventSpy = vi.fn();
   element.addEventListener('cc-form-valid', (e) => {
-    validEventSpy.handler(e.detail);
+    validEventSpy(e.detail);
   });
   element.addEventListener('cc-form-invalid', (e) => {
-    invalidEventSpy.handler(e.detail);
+    invalidEventSpy(e.detail);
   });
 
   return {
@@ -57,7 +57,7 @@ async function spyElement(formContent) {
   };
 }
 
-before(() => {
+beforeAll(() => {
   addTranslations('en', translations);
   setLanguage('en');
 });
@@ -114,12 +114,12 @@ describe('FormSubmitDirective', () => {
         },
       ];
 
-      expect(spy.callbacks.valid.callCount).to.equal(0);
-      expect(spy.callbacks.invalid.callCount).to.equal(1);
-      expect(spy.callbacks.invalid.getCall(0).args[0]).to.eql(expectedValidity);
-      expect(spy.events.valid.callCount).to.equal(0);
-      expect(spy.events.invalid.callCount).to.equal(1);
-      expect(spy.events.invalid.getCall(0).args[0]).to.eql(expectedValidity);
+      expect(spy.callbacks.valid.mock.calls.length).toBe(0);
+      expect(spy.callbacks.invalid.mock.calls.length).toBe(1);
+      expect(spy.callbacks.invalid.mock.calls[0][0]).toEqual(expectedValidity);
+      expect(spy.events.valid.mock.calls.length).toBe(0);
+      expect(spy.events.invalid.mock.calls.length).toBe(1);
+      expect(spy.events.invalid.mock.calls[0][0]).toEqual(expectedValidity);
     });
 
     it('should focus invalid input (first)', async () => {
@@ -129,8 +129,8 @@ describe('FormSubmitDirective', () => {
 
       await spy.submit();
 
-      expect(spy.activeElement).not.to.equal(null);
-      expect(spy.activeElement).to.equal(spy.formElement.querySelector('input[name=input1]'));
+      expect(spy.activeElement).not.toBe(null);
+      expect(spy.activeElement).toBe(spy.formElement.querySelector('input[name=input1]'));
     });
 
     it('should focus invalid input (middle)', async () => {
@@ -140,8 +140,8 @@ describe('FormSubmitDirective', () => {
 
       await spy.submit();
 
-      expect(spy.activeElement).not.to.equal(null);
-      expect(spy.activeElement).to.equal(spy.formElement.querySelector('input[name=input3]'));
+      expect(spy.activeElement).not.toBe(null);
+      expect(spy.activeElement).toBe(spy.formElement.querySelector('input[name=input3]'));
     });
 
     it('should focus invalid input (last)', async () => {
@@ -151,8 +151,8 @@ describe('FormSubmitDirective', () => {
 
       await spy.submit();
 
-      expect(spy.activeElement).not.to.equal(null);
-      expect(spy.activeElement).to.equal(spy.formElement.querySelector('input[name=input5]'));
+      expect(spy.activeElement).not.toBe(null);
+      expect(spy.activeElement).toBe(spy.formElement.querySelector('input[name=input5]'));
     });
 
     it('should call onValid callback and fire cc-form-valid event when form is valid', async () => {
@@ -171,12 +171,12 @@ describe('FormSubmitDirective', () => {
         input4: 'value for input4',
         input5: 'value for input5',
       };
-      expect(spy.callbacks.invalid.callCount).to.equal(0);
-      expect(spy.callbacks.valid.callCount).to.equal(1);
-      expect(spy.callbacks.valid.getCall(0).args[0]).to.eql(expectedFormData);
-      expect(spy.events.invalid.callCount).to.equal(0);
-      expect(spy.events.valid.callCount).to.equal(1);
-      expect(spy.events.valid.getCall(0).args[0]).to.eql(expectedFormData);
+      expect(spy.callbacks.invalid.mock.calls.length).toBe(0);
+      expect(spy.callbacks.valid.mock.calls.length).toBe(1);
+      expect(spy.callbacks.valid.mock.calls[0][0]).toEqual(expectedFormData);
+      expect(spy.events.invalid.mock.calls.length).toBe(0);
+      expect(spy.events.valid.mock.calls.length).toBe(1);
+      expect(spy.events.valid.mock.calls[0][0]).toEqual(expectedFormData);
     });
   });
   describe('with cc form controls', () => {
@@ -230,12 +230,12 @@ describe('FormSubmitDirective', () => {
           },
         },
       ];
-      expect(spy.callbacks.valid.callCount).to.equal(0);
-      expect(spy.callbacks.invalid.callCount).to.equal(1);
-      expect(spy.callbacks.invalid.getCall(0).args[0]).to.eql(expectedValidity);
-      expect(spy.events.valid.callCount).to.equal(0);
-      expect(spy.events.invalid.callCount).to.equal(1);
-      expect(spy.events.invalid.getCall(0).args[0]).to.eql(expectedValidity);
+      expect(spy.callbacks.valid.mock.calls.length).toBe(0);
+      expect(spy.callbacks.invalid.mock.calls.length).toBe(1);
+      expect(spy.callbacks.invalid.mock.calls[0][0]).toEqual(expectedValidity);
+      expect(spy.events.valid.mock.calls.length).toBe(0);
+      expect(spy.events.invalid.mock.calls.length).toBe(1);
+      expect(spy.events.invalid.mock.calls[0][0]).toEqual(expectedValidity);
     });
 
     it('should focus invalid input (first)', async () => {
@@ -246,8 +246,8 @@ describe('FormSubmitDirective', () => {
 
       await spy.submit();
 
-      expect(spy.activeElement).not.to.equal(null);
-      expect(spy.activeElement).to.equal(spy.formElement.querySelector('[name=input-text]'));
+      expect(spy.activeElement).not.toBe(null);
+      expect(spy.activeElement).toBe(spy.formElement.querySelector('[name=input-text]'));
     });
 
     it('should focus invalid input (middle)', async () => {
@@ -258,8 +258,8 @@ describe('FormSubmitDirective', () => {
 
       await spy.submit();
 
-      expect(spy.activeElement).not.to.equal(null);
-      expect(spy.activeElement).to.equal(spy.formElement.querySelector('[name=input-number]'));
+      expect(spy.activeElement).not.toBe(null);
+      expect(spy.activeElement).toBe(spy.formElement.querySelector('[name=input-number]'));
     });
 
     it('should focus invalid input (last)', async () => {
@@ -270,8 +270,8 @@ describe('FormSubmitDirective', () => {
 
       await spy.submit();
 
-      expect(spy.activeElement).not.to.equal(null);
-      expect(spy.activeElement).to.equal(spy.formElement.querySelector('[name=input-select]'));
+      expect(spy.activeElement).not.toBe(null);
+      expect(spy.activeElement).toBe(spy.formElement.querySelector('[name=input-select]'));
     });
 
     it('should call onValid callback and fire form:valid event when form is valid', async () => {
@@ -289,12 +289,12 @@ describe('FormSubmitDirective', () => {
         'input-date': '2024-03-22T15:20:00.000Z',
         'input-select': 'option1',
       };
-      expect(spy.callbacks.invalid.callCount).to.equal(0);
-      expect(spy.callbacks.valid.callCount).to.equal(1);
-      expect(spy.callbacks.valid.getCall(0).args[0]).to.eql(expectedFormData);
-      expect(spy.events.invalid.callCount).to.equal(0);
-      expect(spy.events.valid.callCount).to.equal(1);
-      expect(spy.events.valid.getCall(0).args[0]).to.eql(expectedFormData);
+      expect(spy.callbacks.invalid.mock.calls.length).toBe(0);
+      expect(spy.callbacks.valid.mock.calls.length).toBe(1);
+      expect(spy.callbacks.valid.mock.calls[0][0]).toEqual(expectedFormData);
+      expect(spy.events.invalid.mock.calls.length).toBe(0);
+      expect(spy.events.valid.mock.calls.length).toBe(1);
+      expect(spy.events.valid.mock.calls[0][0]).toEqual(expectedFormData);
     });
   });
 });

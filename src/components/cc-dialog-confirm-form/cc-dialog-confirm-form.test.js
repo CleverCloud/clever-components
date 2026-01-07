@@ -1,7 +1,7 @@
-import { expect } from '@open-wc/testing';
 import { elementUpdated, fixture } from '@open-wc/testing-helpers';
 import * as hanbi from 'hanbi';
 import { html } from 'lit';
+import { describe, expect, it } from 'vitest';
 import { addTranslations, setLanguage } from '../../lib/i18n/i18n.js';
 import { findActiveElement } from '../../lib/shadow-dom-utils.js';
 import { lang, translations } from '../../translations/translations.en.js';
@@ -61,7 +61,7 @@ describe('cc-dialog-confirm-form', () => {
     cancelButton.click();
     await elementUpdated(ccDialogElement);
 
-    expect(ccDialogElement.open).to.be.false;
+    expect(ccDialogElement.open).toBe(false);
   });
 
   it('resets the form when cancel is clicked', async () => {
@@ -83,7 +83,7 @@ describe('cc-dialog-confirm-form', () => {
     cancelButton.click();
     await elementUpdated(ccDialogElement);
 
-    expect(ccInputText.value).to.equal('');
+    expect(ccInputText.value).toBe('');
   });
 
   it('shows form error when submitting empty required fields', async () => {
@@ -101,7 +101,7 @@ describe('cc-dialog-confirm-form', () => {
     await elementUpdated(ccDialogElement);
 
     const ccInputText = await getCcInputText(ccDialogElement);
-    expect(ccInputText.errorMessage).to.be.equal('You must enter a value');
+    expect(ccInputText.errorMessage).toBe('You must enter a value');
   });
 
   it("shows form error when submitting input that doesn't match confirm-text-to-input", async () => {
@@ -122,7 +122,7 @@ describe('cc-dialog-confirm-form', () => {
     submitButton.click();
     await elementUpdated(ccDialogElement);
 
-    expect(ccInputText.errorMessage).to.be.equal('Invalid value. Enter "delete-me" as value');
+    expect(ccInputText.errorMessage).toBe('Invalid value. Enter "delete-me" as value');
   });
 
   it('does not emit confirm event when form contains errors', async () => {
@@ -147,7 +147,7 @@ describe('cc-dialog-confirm-form', () => {
     submitButton.click();
     await elementUpdated(ccDialogElement);
 
-    expect(confirmEventSpy.callCount).to.equal(0);
+    expect(confirmEventSpy.callCount).toBe(0);
   });
 
   it('emits confirm event when form is successfully submitted', async () => {
@@ -172,7 +172,7 @@ describe('cc-dialog-confirm-form', () => {
     submitButton.click();
     await elementUpdated(ccDialogElement);
 
-    expect(confirmEventSpy.callCount).to.equal(1);
+    expect(confirmEventSpy.callCount).toBe(1);
   });
 
   it('resets the form when the resetForm() method is called', async () => {
@@ -193,7 +193,7 @@ describe('cc-dialog-confirm-form', () => {
     const confirmationForm = ccDialogElement.querySelector('cc-dialog-confirm-form');
     confirmationForm.resetForm();
     await elementUpdated(ccDialogElement);
-    expect(ccInputText.value).to.equal('');
+    expect(ccInputText.value).toBe('');
   });
 
   it('autofocuses the input when autofocusInput is true', async () => {
@@ -218,7 +218,7 @@ describe('cc-dialog-confirm-form', () => {
     const ccInputText = await getCcInputText(ccDialogElement);
     const nativeTextInput = ccInputText.shadowRoot.querySelector('input');
 
-    expect(activeElement).to.equal(nativeTextInput);
+    expect(activeElement).toBe(nativeTextInput);
   });
 
   it('resets the form when dialog closes', async () => {
@@ -240,7 +240,7 @@ describe('cc-dialog-confirm-form', () => {
     ccDialogElement.open = false;
     await elementUpdated(ccDialogElement);
 
-    expect(ccInputText.value).to.equal('');
+    expect(ccInputText.value).toBe('');
   });
 
   it('does not reset when a different cc-dialog on the page closes', async () => {
@@ -269,13 +269,13 @@ describe('cc-dialog-confirm-form', () => {
     secondDialog.open = false;
     await elementUpdated(testTemplate);
 
-    expect(ccInputText.value).to.equal('some text');
+    expect(ccInputText.value).toBe('some text');
 
     // Close first dialog - should reset the form
     firstDialog.open = false;
     await elementUpdated(testTemplate);
 
-    expect(ccInputText.value).to.equal('');
+    expect(ccInputText.value).toBe('');
   });
 
   it('handles should reset on close when form is wrapped in a div', async () => {
@@ -299,6 +299,6 @@ describe('cc-dialog-confirm-form', () => {
     ccDialogElement.open = false;
     await elementUpdated(ccDialogElement);
 
-    expect(ccInputText.value).to.equal('');
+    expect(ccInputText.value).toBe('');
   });
 });

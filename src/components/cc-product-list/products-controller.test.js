@@ -3,8 +3,8 @@
  * @import { Stub } from 'hanbi'
  */
 
-import { expect } from '@bundled-es-modules/chai';
 import * as hanbi from 'hanbi';
+import { beforeEach, describe, expect, it } from 'vitest';
 import { ProductsController } from './products-controller.js';
 
 /**
@@ -52,7 +52,7 @@ describe('ProductsController()', function () {
 
       productsCtrl.textFilter = 'aaa';
 
-      expect(requestUpdateSpy.callCount).to.equal(1);
+      expect(requestUpdateSpy.callCount).toBe(1);
     });
 
     it('should return all products matching with name', function () {
@@ -85,7 +85,7 @@ describe('ProductsController()', function () {
 
       productsCtrl.textFilter = 'two';
 
-      expect(productsCtrl.getFilteredProductsByCategories()).to.deep.equal([
+      expect(productsCtrl.getFilteredProductsByCategories()).toEqual([
         {
           categoryName: 'aaa',
           products: [generateProduct({ name: 'aaa two' })],
@@ -113,7 +113,7 @@ describe('ProductsController()', function () {
 
       productsCtrl.textFilter = 'AwEsOmE';
 
-      expect(productsCtrl.getFilteredProductsByCategories()).to.deep.equal([
+      expect(productsCtrl.getFilteredProductsByCategories()).toEqual([
         {
           categoryName: 'aaa',
           products: [
@@ -139,7 +139,7 @@ describe('ProductsController()', function () {
 
       productsCtrl.textFilter = 'one three';
 
-      expect(productsCtrl.getFilteredProductsByCategories()).to.deep.equal([
+      expect(productsCtrl.getFilteredProductsByCategories()).toEqual([
         {
           categoryName: 'aaa',
           products: [generateProduct({ name: 'one' }), generateProduct({ name: 'three' })],
@@ -161,7 +161,7 @@ describe('ProductsController()', function () {
 
       productsCtrl.textFilter = '   ';
 
-      expect(productsCtrl.getFilteredProductsByCategories()).to.deep.equal([
+      expect(productsCtrl.getFilteredProductsByCategories()).toEqual([
         {
           categoryName: 'aaa',
           products: [
@@ -187,7 +187,7 @@ describe('ProductsController()', function () {
 
       productsCtrl.textFilter = ' one  three ';
 
-      expect(productsCtrl.getFilteredProductsByCategories()).to.deep.equal([
+      expect(productsCtrl.getFilteredProductsByCategories()).toEqual([
         {
           categoryName: 'aaa',
           products: [generateProduct({ name: 'one' }), generateProduct({ name: 'three' })],
@@ -225,7 +225,7 @@ describe('ProductsController()', function () {
 
       productsCtrl.textFilter = 'two';
 
-      expect(productsCtrl.getFilteredProductsByCategories()).to.deep.equal([
+      expect(productsCtrl.getFilteredProductsByCategories()).toEqual([
         {
           categoryName: 'aaa',
           products: [generateProduct({ name: 'aaa', description: 'two' })],
@@ -267,7 +267,7 @@ describe('ProductsController()', function () {
 
       productsCtrl.textFilter = 'two three';
 
-      expect(productsCtrl.getFilteredProductsByCategories()).to.deep.equal([
+      expect(productsCtrl.getFilteredProductsByCategories()).toEqual([
         {
           categoryName: 'aaa',
           products: [

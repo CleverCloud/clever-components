@@ -1,5 +1,6 @@
-import { defineCE, elementUpdated, expect } from '@open-wc/testing';
+import { defineCE, elementUpdated } from '@open-wc/testing';
 import { LitElement, html } from 'lit';
+import { describe, expect, it } from 'vitest';
 import { getElement } from '../../test/helpers/element-helper.js';
 import { hasSlottedChildren } from './has-slotted-children.js';
 
@@ -19,7 +20,7 @@ describe('hasSlottedChildrenDirective', () => {
 
     const element = await getElement(`<${slot}><div slot="slotName">toto</div></${slot}>`);
 
-    expect(element.hasIsSlottedAttribute('slotName')).equal(true);
+    expect(element.hasIsSlottedAttribute('slotName')).toBe(true);
   });
 
   it('Should not set the attribute when slot is not used', async () => {
@@ -38,7 +39,7 @@ describe('hasSlottedChildrenDirective', () => {
 
     const element = await getElement(`<${slot}><div>toto</div></${slot}>`);
 
-    expect(element.hasIsSlottedAttribute('slotName')).equal(false);
+    expect(element.hasIsSlottedAttribute('slotName')).toBe(false);
   });
 
   it('Should set the right attribute when stack slot is used', async () => {
@@ -59,8 +60,8 @@ describe('hasSlottedChildrenDirective', () => {
 
     const element = await getElement(`<${slot}><div slot="innerSlotName">toto</div></${slot}>`);
 
-    expect(element.hasIsSlottedAttribute('slotName')).equal(false);
-    expect(element.hasIsSlottedAttribute('innerSlotName')).equal(true);
+    expect(element.hasIsSlottedAttribute('slotName')).toBe(false);
+    expect(element.hasIsSlottedAttribute('innerSlotName')).toBe(true);
   });
 
   it('Should set the default attribute when default slot is used', async () => {
@@ -81,7 +82,7 @@ describe('hasSlottedChildrenDirective', () => {
 
     const element = await getElement(`<${slot}><div>toto</div></${slot}>`);
 
-    expect(element.hasDefaultIsSlottedAttribute()).equal(true);
+    expect(element.hasDefaultIsSlottedAttribute()).toBe(true);
   });
 
   it('Should remove the attribute when slot is not used anymore', async () => {
@@ -100,11 +101,11 @@ describe('hasSlottedChildrenDirective', () => {
 
     const element = await getElement(`<${slot}><div slot="slotName">toto</div></${slot}>`);
 
-    expect(element.hasIsSlottedAttribute('slotName')).equal(true);
+    expect(element.hasIsSlottedAttribute('slotName')).toBe(true);
 
     element.innerHTML = 'toto';
     await elementUpdated(element);
 
-    expect(element.hasIsSlottedAttribute('slotName')).equal(false);
+    expect(element.hasIsSlottedAttribute('slotName')).toBe(false);
   });
 });

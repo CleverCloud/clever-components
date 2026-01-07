@@ -1,8 +1,9 @@
 import { isResizeObserverLoopErrorMessage } from '@lit-labs/virtualizer/support/resize-observer-errors.js';
-import { elementUpdated, expect, fixture } from '@open-wc/testing';
-import { setViewport } from '@web/test-runner-commands';
+import { expect } from 'vitest';
+import { page } from 'vitest/browser';
 import { addTranslations } from '../../src/lib/i18n/i18n.js';
 import * as en from '../../src/translations/translations.en.js';
+import { elementUpdated, fixture } from './element-helper.js';
 import { getStories, setupIgnoreIrrelevantErrors, storyConf, viewports } from './story-testing-utils.js';
 
 /**
@@ -20,6 +21,14 @@ setupIgnoreIrrelevantErrors(before, after, (message) => {
     )
   );
 });
+
+/**
+ * Sets the viewport size using Playwright's page API
+ * @param {{width: number, height: number}} viewport
+ */
+async function setViewport(viewport) {
+  await page.viewport(viewport.width, viewport.height);
+}
 
 /** @param {RawStoriesModule} storiesModule */
 export async function runA11yTests(storiesModule) {
@@ -39,7 +48,7 @@ export async function runA11yTests(storiesModule) {
 
                 await elementUpdated(element);
 
-                await expect(element).to.be.accessible({
+                await expect(element).toBeAccessible({
                   ignoredRules: storyFunction.parameters.tests.accessibility.ignoredRules,
                 });
               });
@@ -52,7 +61,7 @@ export async function runA11yTests(storiesModule) {
 
                 await elementUpdated(element);
 
-                await expect(element).to.be.accessible({
+                await expect(element).toBeAccessible({
                   ignoredRules: storyFunction.parameters.tests.accessibility.ignoredRules,
                 });
               });

@@ -1,4 +1,4 @@
-import { expect } from '@bundled-es-modules/chai';
+import { describe, expect, it } from 'vitest';
 import { camelCase, camelCaseToSpacedCapitalized, kebabCase, pascalCase, snakeCase } from '../src/lib/change-case.js';
 
 const TEST_PASCAL_CASES = [
@@ -62,7 +62,7 @@ const TESTS_SPACED_CAPITALIZED_CASES = [
 describe('pascalCase', () => {
   for (const [input, output] of TEST_PASCAL_CASES) {
     it(`${input} => ${output}`, () => {
-      expect(pascalCase(input)).to.equal(output);
+      expect(pascalCase(input)).toBe(output);
     });
   }
 });
@@ -70,7 +70,7 @@ describe('pascalCase', () => {
 describe('camelCase', () => {
   for (const [input, output] of TEST_CAMEL_CASES) {
     it(`${input} => ${output}`, () => {
-      expect(camelCase(input)).to.equal(output);
+      expect(camelCase(input)).toBe(output);
     });
   }
 });
@@ -78,7 +78,7 @@ describe('camelCase', () => {
 describe('snakeCase', () => {
   for (const [input, output] of TEST_SNAKE_CASES) {
     it(`${input} => ${output}`, () => {
-      expect(snakeCase(input)).to.equal(output);
+      expect(snakeCase(input)).toBe(output);
     });
   }
 });
@@ -86,7 +86,7 @@ describe('snakeCase', () => {
 describe('kebabCase', () => {
   for (const [input, output] of TEST_KEBAB_CASES) {
     it(`${input} => ${output}`, () => {
-      expect(kebabCase(input)).to.equal(output);
+      expect(kebabCase(input)).toBe(output);
     });
   }
 });
@@ -94,7 +94,7 @@ describe('kebabCase', () => {
 describe('camelCaseToSpacedCapitalized', () => {
   for (const [input, output] of TESTS_SPACED_CAPITALIZED_CASES) {
     it(`${input} => ${output}`, () => {
-      expect(camelCaseToSpacedCapitalized(input)).to.equal(output);
+      expect(camelCaseToSpacedCapitalized(input)).toBe(output);
     });
   }
 });

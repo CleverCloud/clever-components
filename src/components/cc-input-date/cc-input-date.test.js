@@ -1,6 +1,7 @@
-import { elementUpdated, expect, fixture } from '@open-wc/testing';
+import { elementUpdated, fixture } from '@open-wc/testing';
 import { sendKeys } from '@web/test-runner-commands';
 import { html } from 'lit';
+import { beforeAll, describe, expect, it } from 'vitest';
 import { getElement, moveInputCaretToPosition, replaceText, typeText } from '../../../test/helpers/element-helper.js';
 import { addTranslations, setLanguage } from '../../lib/i18n/i18n.js';
 import { translations } from '../../translations/translations.en.js';
@@ -10,7 +11,7 @@ function getInternalInput(element) {
   return element.shadowRoot.querySelector('#input');
 }
 
-before(() => {
+beforeAll(() => {
   addTranslations('en', translations);
   setLanguage('en');
 });
@@ -19,71 +20,71 @@ describe('Component cc-input-date', () => {
   describe('valueAsDate method', () => {
     it('should return null when initial value is null', async () => {
       const element = await getElement(`<cc-input-date></cc-input-date>`);
-      expect(element.valueAsDate).to.eql(null);
+      expect(element.valueAsDate).toBe(null);
     });
 
     it('should return null when initial value is empty', async () => {
       const element = await getElement(`<cc-input-date value=""></cc-input-date>`);
-      expect(element.valueAsDate).to.eql(null);
+      expect(element.valueAsDate).toBe(null);
     });
 
     it('should return null when initial value is an invalid string', async () => {
       const element = await getElement(`<cc-input-date value="invalid date"></cc-input-date>`);
-      expect(element.valueAsDate).to.eql(null);
+      expect(element.valueAsDate).toBe(null);
     });
 
     it('should return null when initial value is an invalid date', async () => {
       const invalidDate = new Date('invalid date');
       const element = await getElement(html`<cc-input-date .value=${invalidDate}></cc-input-date>`);
-      expect(element.valueAsDate).to.eql(null);
+      expect(element.valueAsDate).toBe(null);
     });
 
     it('should return null after user types a invalid value', async () => {
       const element = await getElement(`<cc-input-date></cc-input-date>`);
       await typeText(element, 'invalid value');
-      expect(element.valueAsDate).to.eql(null);
+      expect(element.valueAsDate).toBe(null);
     });
 
     it('should return the right date after user types a valid value with ISO format', async () => {
       const element = await getElement(`<cc-input-date></cc-input-date>`);
       await typeText(element, '2023-07-31T20:11:12.259Z');
-      expect(element.valueAsDate?.toISOString()).to.eql('2023-07-31T20:11:12.259Z');
+      expect(element.valueAsDate?.toISOString()).toBe('2023-07-31T20:11:12.259Z');
     });
 
     it('should return the right date after user types a valid value with simple format', async () => {
       const element = await getElement(`<cc-input-date></cc-input-date>`);
       await typeText(element, '2023-07-31 20:11:12');
-      expect(element.valueAsDate?.toISOString()).to.eql('2023-07-31T20:11:12.000Z');
+      expect(element.valueAsDate?.toISOString()).toBe('2023-07-31T20:11:12.000Z');
     });
 
     it('should return null after user modifies the valid value to an invalid value', async () => {
       const element = await getElement(`<cc-input-date value="2023-07-31T20:11:12.259Z"></cc-input-date>`);
       await typeText(element, 'will-become-invalid-date');
-      expect(element.valueAsDate).to.eql(null);
+      expect(element.valueAsDate).toBe(null);
     });
 
     describe('with local timezone', () => {
       it('should return the right date after user types a valid value with ISO format', async () => {
         const element = await getElement(`<cc-input-date timezone="local"></cc-input-date>`);
         await typeText(element, '2023-07-31T20:11:12.259Z');
-        expect(element.valueAsDate?.toISOString()).to.eql('2023-07-31T20:11:12.259Z');
+        expect(element.valueAsDate?.toISOString()).toBe('2023-07-31T20:11:12.259Z');
       });
 
       it('should return the right date after user types a valid value with simple format', async () => {
         const element = await getElement(`<cc-input-date timezone="local"></cc-input-date>`);
         await typeText(element, '2023-07-31 20:11:12');
-        expect(element.valueAsDate?.toISOString()).to.eql('2023-07-31T18:11:12.000Z');
+        expect(element.valueAsDate?.toISOString()).toBe('2023-07-31T18:11:12.000Z');
       });
     });
   });
 
   describe('validate() method', () => {
     function assertValid(element) {
-      expect(element.validate()).to.eql({ valid: true });
+      expect(element.validate()).toEqual({ valid: true });
     }
 
     function assertInvalid(element, code) {
-      expect(element.validate()).to.eql({ valid: false, code });
+      expect(element.validate()).toEqual({ valid: false, code });
     }
 
     it('should be valid with default props', async () => {
@@ -226,7 +227,7 @@ describe('Component cc-input-date', () => {
       await elementUpdated(element);
 
       const input = getInternalInput(element);
-      expect(input).to.have.class('error');
+      expect(input.classList.contains('error')).toBe(true);
     });
 
     it('should be removed from internal input when error message is removed', async () => {
@@ -238,7 +239,7 @@ describe('Component cc-input-date', () => {
       await elementUpdated(element);
 
       const input = getInternalInput(element);
-      expect(input).to.not.have.class('error');
+      expect(input.classList.contains('error')).toBe(false);
     });
 
     it('should be not set on internal input when no error message defined', async () => {
@@ -246,42 +247,42 @@ describe('Component cc-input-date', () => {
       await elementUpdated(element);
 
       const input = getInternalInput(element);
-      expect(input).to.not.have.class('error');
+      expect(input.classList.contains('error')).toBe(false);
     });
   });
 
   describe('get value() method', () => {
     it('should return the invalid value when setting invalid value property', async () => {
       const element = await getElement('<cc-input-date value="invalid"></cc-input-date>');
-      expect(element.value).to.equal('invalid');
+      expect(element.value).toBe('invalid');
     });
 
     it('should return the invalid value when changing value property to an invalid value', async () => {
       const element = await getElement('<cc-input-date value="2023-07-31T19:11:12.259Z"></cc-input-date>');
       element.value = 'invalid value';
       await elementUpdated(element);
-      expect(element.value).to.equal('invalid value');
+      expect(element.value).toBe('invalid value');
     });
 
     it('should return the right value when setting value from simple format string', async () => {
       const element = await getElement('<cc-input-date value="2023-07-31 19:11:12"></cc-input-date>');
-      expect(element.value).to.equal('2023-07-31T19:11:12.000Z');
+      expect(element.value).toBe('2023-07-31T19:11:12.000Z');
     });
 
     it('should return the right value when setting value from simple format string and with local timezone', async () => {
       const element = await getElement('<cc-input-date value="2023-07-31 19:11:12" timezone="local"></cc-input-date>');
-      expect(element.value).to.equal('2023-07-31T17:11:12.000Z');
+      expect(element.value).toBe('2023-07-31T17:11:12.000Z');
     });
 
     it('should return the right value when setting value from iso string', async () => {
       const element = await getElement('<cc-input-date value="2023-07-31T19:11:12.259Z"></cc-input-date>');
-      expect(element.value).to.equal('2023-07-31T19:11:12.259Z');
+      expect(element.value).toBe('2023-07-31T19:11:12.259Z');
     });
 
     it('should return the right value when setting value from date', async () => {
       const date = new Date('2023-07-31T19:11:12.259Z');
       const element = await getElement(html`<cc-input-date .value=${date}></cc-input-date>`);
-      expect(element.value).to.equal('2023-07-31T19:11:12.259Z');
+      expect(element.value).toBe('2023-07-31T19:11:12.259Z');
     });
 
     it('should return the right value when modifying value with simple format string', async () => {
@@ -320,7 +321,7 @@ describe('Component cc-input-date', () => {
       it('should have the right value after init', async () => {
         const element = await getElement('<cc-input-date value="2023-07-31T19:11:12.259Z"></cc-input-date>');
         const input = getInternalInput(element);
-        expect(input.value).to.equal('2023-07-31 19:11:12');
+        expect(input.value).toBe('2023-07-31 19:11:12');
       });
 
       it('should have the right value after modifying value', async () => {
@@ -328,7 +329,7 @@ describe('Component cc-input-date', () => {
         element.value = '2023-07-31T20:11:12.259Z';
         await elementUpdated(element);
         const input = getInternalInput(element);
-        expect(input.value).to.equal('2023-07-31 20:11:12');
+        expect(input.value).toBe('2023-07-31 20:11:12');
       });
 
       it('should have the formatted value after user typed an ISO date', async () => {
@@ -336,7 +337,7 @@ describe('Component cc-input-date', () => {
         const input = getInternalInput(element);
 
         await typeText(element, '2023-07-31T20:11:12.259Z');
-        expect(input.value).to.equal('2023-07-31 20:11:12');
+        expect(input.value).toBe('2023-07-31 20:11:12');
       });
     });
 
@@ -346,7 +347,7 @@ describe('Component cc-input-date', () => {
           '<cc-input-date value="2023-07-31T19:11:12.259Z" timezone="local"></cc-input-date>',
         );
         const input = getInternalInput(element);
-        expect(input.value).to.equal('2023-07-31 21:11:12');
+        expect(input.value).toBe('2023-07-31 21:11:12');
       });
 
       it('should have the right value after modifying value', async () => {
@@ -356,7 +357,7 @@ describe('Component cc-input-date', () => {
         element.value = '2023-07-31T20:11:12.259Z';
         await elementUpdated(element);
         const input = getInternalInput(element);
-        expect(input.value).to.equal('2023-07-31 22:11:12');
+        expect(input.value).toBe('2023-07-31 22:11:12');
       });
 
       it('should have the formatted value after user typed an ISO date', async () => {
@@ -364,16 +365,16 @@ describe('Component cc-input-date', () => {
         const input = getInternalInput(element);
 
         await typeText(element, '2023-07-31T20:11:12.259Z');
-        expect(input.value).to.equal('2023-07-31 22:11:12');
+        expect(input.value).toBe('2023-07-31 22:11:12');
         await elementUpdated(element);
-        expect(input.value).to.equal('2023-07-31 22:11:12');
+        expect(input.value).toBe('2023-07-31 22:11:12');
       });
     });
 
     it('should have the invalid value when initializing with invalid value', async () => {
       const element = await getElement('<cc-input-date value="invalid value" timezone="local"></cc-input-date>');
       const input = getInternalInput(element);
-      expect(input.value).to.equal('invalid value');
+      expect(input.value).toBe('invalid value');
     });
 
     it('should have empty value after setting an invalid value', async () => {
@@ -383,7 +384,7 @@ describe('Component cc-input-date', () => {
       element.value = 'invalid value';
       await elementUpdated(element);
       const input = getInternalInput(element);
-      expect(input.value).to.equal('invalid value');
+      expect(input.value).toBe('invalid value');
     });
 
     it('should have the value that has been just typed by user', async () => {
@@ -391,14 +392,14 @@ describe('Component cc-input-date', () => {
       const input = getInternalInput(element);
 
       await typeText(element, 'invalid');
-      expect(input.value).to.equal('invalid');
+      expect(input.value).toBe('invalid');
       await elementUpdated(element);
-      expect(input.value).to.equal('invalid');
+      expect(input.value).toBe('invalid');
 
       await typeText(element, ' value');
-      expect(input.value).to.equal('invalid value');
+      expect(input.value).toBe('invalid value');
       await elementUpdated(element);
-      expect(input.value).to.equal('invalid value');
+      expect(input.value).toBe('invalid value');
     });
 
     it('should have the right value after changing the timezone from local to UTC', async () => {
@@ -409,7 +410,7 @@ describe('Component cc-input-date', () => {
       element.timezone = 'UTC';
       await elementUpdated(element);
       const input = getInternalInput(element);
-      expect(input.value).to.equal('2023-07-31 19:11:12');
+      expect(input.value).toBe('2023-07-31 19:11:12');
     });
 
     it('should have the right value after changing the timezone from UTC to local', async () => {
@@ -417,7 +418,7 @@ describe('Component cc-input-date', () => {
       element.timezone = 'local';
       await elementUpdated(element);
       const input = getInternalInput(element);
-      expect(input.value).to.equal('2023-07-31 21:11:12');
+      expect(input.value).toBe('2023-07-31 21:11:12');
     });
 
     it('should have the formatted value when setting the same value with iso string', async () => {
@@ -442,7 +443,7 @@ describe('Component cc-input-date', () => {
       // this triggers input event on internal input.
       await typeText(input, 'Z');
 
-      expect(input.value).to.equal('2023-07-31 19:11:12');
+      expect(input.value).toBe('2023-07-31 19:11:12');
     });
   });
 
@@ -452,7 +453,7 @@ describe('Component cc-input-date', () => {
       await moveInputCaretToPosition(element, position);
       await sendKeys({ press: key });
       await elementUpdated(element);
-      expect(element.value).to.equal(expectedDate);
+      expect(element.value).toBe(expectedDate);
     }
 
     describe('ArrowUp', () => {

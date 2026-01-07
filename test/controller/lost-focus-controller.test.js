@@ -1,8 +1,7 @@
-import { expect } from '@bundled-es-modules/chai';
-import { defineCE, fixture, nextFrame } from '@open-wc/testing';
-import * as hanbi from 'hanbi';
 import { LitElement, html } from 'lit';
 import { repeat } from 'lit/directives/repeat.js';
+import { describe, expect, it, vi } from 'vitest';
+import { defineCE, fixture, nextFrame } from '../helpers/element-helper.js';
 import { CcFocusRestorationFailEvent } from '../../src/components/common.events.js';
 import { LostFocusController } from '../../src/controllers/lost-focus-controller.js';
 
@@ -12,7 +11,7 @@ describe('lost-focus-controller', () => {
      * @return {Promise<{element: Element, spy: Stub}>}
      */
     const createElement = async () => {
-      const spy = hanbi.spy();
+      const spy = vi.fn();
 
       const ce = defineCE(
         class extends LitElement {
@@ -27,7 +26,7 @@ describe('lost-focus-controller', () => {
             this.items = ['1', '2', '3'];
 
             new LostFocusController(this, '.item', (event) => {
-              spy.handler(event);
+              spy(event);
             });
           }
 
@@ -83,7 +82,7 @@ describe('lost-focus-controller', () => {
 
       await nextFrame();
 
-      expect(spy.called).to.equal(true);
+      expect(spy.mock.calls.length > 0).toBe(true);
     });
 
     it('should notify focus lost when a child of item is focused', async () => {
@@ -94,7 +93,7 @@ describe('lost-focus-controller', () => {
 
       await nextFrame();
 
-      expect(spy.called).to.equal(true);
+      expect(spy.mock.calls.length > 0).toBe(true);
     });
 
     it('should not notify focus lost when an item is not focused', async () => {
@@ -105,7 +104,7 @@ describe('lost-focus-controller', () => {
 
       await nextFrame();
 
-      expect(spy.called).to.equal(false);
+      expect(spy.mock.calls.length > 0).toBe(false);
     });
 
     it('should not notify focus lost when no elements is not focused', async () => {
@@ -116,7 +115,7 @@ describe('lost-focus-controller', () => {
 
       await nextFrame();
 
-      expect(spy.called).to.equal(false);
+      expect(spy.mock.calls.length > 0).toBe(false);
     });
 
     it('should not notify focus lost when an item is not focused', async () => {
@@ -127,7 +126,7 @@ describe('lost-focus-controller', () => {
 
       await nextFrame();
 
-      expect(spy.called).to.equal(false);
+      expect(spy.mock.calls.length > 0).toBe(false);
     });
 
     it('should identify the deleted and focused item properly', async () => {
@@ -141,10 +140,10 @@ describe('lost-focus-controller', () => {
 
       await nextFrame();
 
-      const event = spy.lastCall.args[0];
-      expect(event.index).to.equal(1);
-      expect(event.removedElement).to.equal(expectedRemovedItem);
-      expect(event.focusedElement).to.equal(expectedFocusedItem);
+      const event = spy.mock.calls.at(-1)[0];
+      expect(event.index).toBe(1);
+      expect(event.removedElement).toBe(expectedRemovedItem);
+      expect(event.focusedElement).toBe(expectedFocusedItem);
     });
 
     it('should suggest the next item', async () => {
@@ -157,8 +156,8 @@ describe('lost-focus-controller', () => {
 
       await nextFrame();
 
-      const event = spy.lastCall.args[0];
-      expect(event.suggestedElement).to.equal(expectedSuggestedItem);
+      const event = spy.mock.calls.at(-1)[0];
+      expect(event.suggestedElement).toBe(expectedSuggestedItem);
     });
 
     it('should suggest the previous item when the removed element was the last one', async () => {
@@ -171,8 +170,8 @@ describe('lost-focus-controller', () => {
 
       await nextFrame();
 
-      const event = spy.lastCall.args[0];
-      expect(event.suggestedElement).to.equal(expectedSuggestedItem);
+      const event = spy.mock.calls.at(-1)[0];
+      expect(event.suggestedElement).toBe(expectedSuggestedItem);
     });
 
     it('should suggest nothing if there was no element left', async () => {
@@ -183,8 +182,8 @@ describe('lost-focus-controller', () => {
 
       await nextFrame();
 
-      const event = spy.lastCall.args[0];
-      expect(event.suggestedElement).to.equal(null);
+      const event = spy.mock.calls.at(-1)[0];
+      expect(event.suggestedElement).toBe(null);
     });
   });
 
@@ -193,7 +192,7 @@ describe('lost-focus-controller', () => {
      * @return {Promise<{element: Element, spy: Stub}>}
      */
     const createElement = async () => {
-      const spy = hanbi.spy();
+      const spy = vi.fn();
 
       const ce = defineCE(
         // eslint-disable-next-line wc/max-elements-per-file
@@ -209,7 +208,7 @@ describe('lost-focus-controller', () => {
             this.items = ['1', '2', '3'];
 
             new LostFocusController(this, '.item', (event) => {
-              spy.handler(event);
+              spy(event);
             });
           }
 
@@ -264,7 +263,7 @@ describe('lost-focus-controller', () => {
 
       await nextFrame();
 
-      expect(spy.called).to.equal(true);
+      expect(spy.mock.calls.length > 0).toBe(true);
     });
 
     it('should not notify when dialog fails to restore focus to an element that was not removed', async () => {
@@ -280,7 +279,7 @@ describe('lost-focus-controller', () => {
 
       await nextFrame();
 
-      expect(spy.called).to.equal(false);
+      expect(spy.mock.calls.length > 0).toBe(false);
     });
 
     it('should identify the removed item when dialog fails to restore focus to its child button', async () => {
@@ -297,9 +296,9 @@ describe('lost-focus-controller', () => {
 
       await nextFrame();
 
-      const event = spy.lastCall.args[0];
-      expect(event.removedElement).to.equal(expectedRemovedItem);
-      expect(event.index).to.equal(1);
+      const event = spy.mock.calls.at(-1)[0];
+      expect(event.removedElement).toBe(expectedRemovedItem);
+      expect(event.index).toBe(1);
     });
 
     it('should identify the removed item when dialog fails to restore focus to the item itself', async () => {
@@ -315,9 +314,9 @@ describe('lost-focus-controller', () => {
 
       await nextFrame();
 
-      const event = spy.lastCall.args[0];
-      expect(event.removedElement).to.equal(expectedRemovedItem);
-      expect(event.index).to.equal(1);
+      const event = spy.mock.calls.at(-1)[0];
+      expect(event.removedElement).toBe(expectedRemovedItem);
+      expect(event.index).toBe(1);
     });
 
     it('should suggest the next item after dialog-triggered deletion', async () => {
@@ -334,8 +333,8 @@ describe('lost-focus-controller', () => {
 
       await nextFrame();
 
-      const event = spy.lastCall.args[0];
-      expect(event.suggestedElement).to.equal(expectedSuggestedItem);
+      const event = spy.mock.calls.at(-1)[0];
+      expect(event.suggestedElement).toBe(expectedSuggestedItem);
     });
 
     it('should suggest the previous item when the removed element was the last one', async () => {
@@ -352,8 +351,8 @@ describe('lost-focus-controller', () => {
 
       await nextFrame();
 
-      const event = spy.lastCall.args[0];
-      expect(event.suggestedElement).to.equal(expectedSuggestedItem);
+      const event = spy.mock.calls.at(-1)[0];
+      expect(event.suggestedElement).toBe(expectedSuggestedItem);
     });
 
     it('should suggest nothing if there are no elements left after dialog-triggered deletion', async () => {
@@ -369,8 +368,8 @@ describe('lost-focus-controller', () => {
 
       await nextFrame();
 
-      const event = spy.lastCall.args[0];
-      expect(event.suggestedElement).to.equal(null);
+      const event = spy.mock.calls.at(-1)[0];
+      expect(event.suggestedElement).toBe(null);
     });
 
     it('should handle multiple items being removed before dialog focus restoration fails', async () => {
@@ -388,9 +387,9 @@ describe('lost-focus-controller', () => {
 
       await nextFrame();
 
-      const event = spy.lastCall.args[0];
+      const event = spy.mock.calls.at(-1)[0];
       // Should suggest item 3 since items 1 and 2 are gone
-      expect(event.suggestedElement).to.equal(element.getItemElement('3'));
+      expect(event.suggestedElement).toBe(element.getItemElement('3'));
     });
   });
 });

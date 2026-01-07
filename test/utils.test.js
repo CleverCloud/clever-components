@@ -1,88 +1,88 @@
-import { expect } from '@bundled-es-modules/chai';
+import { describe, expect, it } from 'vitest';
 import { clampNumber, groupBy, isStringBlank, isStringEmpty, randomString, range } from '../src/lib/utils.js';
 
 describe('range function', function () {
   it('should return array', function () {
-    expect(range(5, 10)).to.be.an.instanceof(Array);
+    expect(range(5, 10)).toBeInstanceOf(Array);
   });
   it('should return a single item array when start equals end', function () {
-    expect(range(10, 10)).to.eql([10]);
+    expect(range(10, 10)).toEqual([10]);
   });
   it('should return all items between start and end', function () {
-    expect(range(2, 10)).to.eql([2, 3, 4, 5, 6, 7, 8, 9, 10]);
+    expect(range(2, 10)).toEqual([2, 3, 4, 5, 6, 7, 8, 9, 10]);
   });
   it('should return all items when start is after end', function () {
-    expect(range(10, 2)).to.eql([2, 3, 4, 5, 6, 7, 8, 9, 10]);
+    expect(range(10, 2)).toEqual([2, 3, 4, 5, 6, 7, 8, 9, 10]);
   });
 });
 
 describe('clampNumber function', () => {
   it('should bind on lower bound', () => {
-    expect(clampNumber(10, 12, 15)).to.eql(12);
+    expect(clampNumber(10, 12, 15)).toBe(12);
   });
   it('should bind on upper bound', () => {
-    expect(clampNumber(18, 12, 15)).to.eql(15);
+    expect(clampNumber(18, 12, 15)).toBe(15);
   });
   it('should return number when inside bounds', () => {
-    expect(clampNumber(14, 12, 15)).to.eql(14);
+    expect(clampNumber(14, 12, 15)).toBe(14);
   });
   it('should work when lower bound is undefined', () => {
-    expect(clampNumber(14, undefined, 15)).to.eql(14);
-    expect(clampNumber(16, undefined, 15)).to.eql(15);
+    expect(clampNumber(14, undefined, 15)).toBe(14);
+    expect(clampNumber(16, undefined, 15)).toBe(15);
   });
   it('should work when upper bound is undefined', () => {
-    expect(clampNumber(14, 12, undefined)).to.eql(14);
-    expect(clampNumber(10, 12, undefined)).to.eql(12);
+    expect(clampNumber(14, 12, undefined)).toBe(14);
+    expect(clampNumber(10, 12, undefined)).toBe(12);
   });
   it('should return number when bounds is undefined', () => {
-    expect(clampNumber(14, undefined, undefined)).to.eql(14);
+    expect(clampNumber(14, undefined, undefined)).toBe(14);
   });
 });
 
 describe('randomString function', () => {
   it('should be empty if length is 0', () => {
-    expect(randomString(0)).to.equal('');
+    expect(randomString(0)).toBe('');
   });
 
   it('should have a size equal to the given length', () => {
-    expect(randomString(10).length).to.equal(10);
+    expect(randomString(10).length).toBe(10);
   });
 
   it('should use the given alphabet', () => {
-    expect(randomString(3, 'a')).to.equal('aaa');
+    expect(randomString(3, 'a')).toBe('aaa');
   });
 });
 
 describe('isStringEmpty', () => {
   it('should return true with null', () => {
-    expect(isStringEmpty(null)).to.eql(true);
+    expect(isStringEmpty(null)).toBe(true);
   });
   it('should return true with undefined', () => {
-    expect(isStringEmpty(undefined)).to.eql(true);
+    expect(isStringEmpty(undefined)).toBe(true);
   });
   it('should return true with empty string', () => {
-    expect(isStringEmpty('')).to.eql(true);
+    expect(isStringEmpty('')).toBe(true);
   });
   it('should return false with non empty string', () => {
-    expect(isStringEmpty('non-empty-string')).to.eql(false);
+    expect(isStringEmpty('non-empty-string')).toBe(false);
   });
 });
 
 describe('isStringBlank', () => {
   it('should return true with null', () => {
-    expect(isStringBlank(null)).to.eql(true);
+    expect(isStringBlank(null)).toBe(true);
   });
   it('should return true with undefined', () => {
-    expect(isStringBlank(undefined)).to.eql(true);
+    expect(isStringBlank(undefined)).toBe(true);
   });
   it('should return true with empty string', () => {
-    expect(isStringBlank('')).to.eql(true);
+    expect(isStringBlank('')).toBe(true);
   });
   it('should return true with blank string', () => {
-    expect(isStringBlank('   ')).to.eql(true);
+    expect(isStringBlank('   ')).toBe(true);
   });
   it('should return false with non empty string', () => {
-    expect(isStringBlank('non-blank-string')).to.eql(false);
+    expect(isStringBlank('non-blank-string')).toBe(false);
   });
 });
 
@@ -99,7 +99,7 @@ describe('groupBy function', () => {
       (o) => o.prop?.toUpperCase(),
     );
 
-    expect(grouped).to.eql({
+    expect(grouped).toEqual({
       GROUP1: [
         { prop: 'group1', value: '1' },
         { prop: 'group1', value: '4' },
@@ -115,7 +115,7 @@ describe('groupBy function', () => {
   it('should drop element for which property is not present', () => {
     const grouped = groupBy([{ prop: 'group1', value: '1' }, { value: '2' }], (o) => o.prop?.toUpperCase());
 
-    expect(grouped).to.eql({
+    expect(grouped).toEqual({
       GROUP1: [{ prop: 'group1', value: '1' }],
     });
   });
@@ -123,6 +123,6 @@ describe('groupBy function', () => {
   it('should return empty object when giving an empty array', () => {
     const grouped = groupBy([], (o) => o.prop?.toUpperCase());
 
-    expect(grouped).to.eql({});
+    expect(grouped).toEqual({});
   });
 });

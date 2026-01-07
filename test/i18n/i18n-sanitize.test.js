@@ -1,25 +1,25 @@
-import { expect } from '@bundled-es-modules/chai';
+import { describe, expect, it } from 'vitest';
 import { sanitize } from '../../src/lib/i18n/i18n-sanitize.js';
 
 function compareChildNodes(domFragment, referenceChildNodes) {
-  expect(domFragment.childNodes.length).to.equal(referenceChildNodes.length);
+  expect(domFragment.childNodes.length).toBe(referenceChildNodes.length);
 
   referenceChildNodes.forEach((referenceNode, i) => {
     const realNode = domFragment.childNodes[i];
 
     if (typeof referenceNode === 'string') {
       const text = referenceNode;
-      expect(realNode.nodeType).to.equal(document.TEXT_NODE);
-      expect(realNode.data).to.equal(text);
+      expect(realNode.nodeType).toBe(document.TEXT_NODE);
+      expect(realNode.data).toBe(text);
     } else {
       const [tag, children, referenceAttributes] = referenceNode;
-      expect(realNode.nodeType).to.equal(document.ELEMENT_NODE);
-      expect(realNode.tagName.toLowerCase()).to.equal(tag);
+      expect(realNode.nodeType).toBe(document.ELEMENT_NODE);
+      expect(realNode.tagName.toLowerCase()).toBe(tag);
 
       if (referenceAttributes != null) {
-        expect(realNode.attributes.length).to.equal(referenceAttributes.length);
+        expect(realNode.attributes.length).toBe(referenceAttributes.length);
         Array.from(referenceAttributes).forEach(([attrName, attrValue]) => {
-          expect(realNode.getAttribute(attrName)).to.equal(attrValue);
+          expect(realNode.getAttribute(attrName)).toBe(attrValue);
         });
       }
 
