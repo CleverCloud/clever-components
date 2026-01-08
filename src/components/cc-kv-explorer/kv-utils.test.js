@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { matchKvPattern } from './kv-utils.js';
 
-describe.only('matchKvPattern', () => {
+describe('matchKvPattern', () => {
   it('should match with *', () => {
     expect(matchKvPattern('a*c', 'ac')).toBe(true);
     expect(matchKvPattern('a*c', 'abc')).toBe(true);

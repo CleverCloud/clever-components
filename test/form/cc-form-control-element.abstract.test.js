@@ -1,11 +1,11 @@
 import { html } from 'lit';
+import { html as staticHtml, unsafeStatic } from 'lit/static-html.js';
 import { createRef, ref } from 'lit/directives/ref.js';
 import { describe, expect, it, vi } from 'vitest';
-import { defineCE, elementUpdated } from '../helpers/element-helper.js';
+import { defineCE, elementUpdated, fixture } from '../helpers/element-helper.js';
 import { CcFormControlElement } from '../../src/lib/form/cc-form-control-element.abstract.js';
 import { ValidValidator, Validation, createValidator } from '../../src/lib/form/validation.js';
 import { isStringEmpty } from '../../src/lib/utils.js';
-import { getElement } from '../helpers/element-helper.js';
 
 function getCustomElement(inputSettings = {}) {
   const defaultSettings = {
@@ -107,7 +107,8 @@ async function getFormControlElement(inputSettings = {}) {
   const customElement = getCustomElement(inputSettings);
 
   /** @type {CcFormControlElement} */
-  const element = await getElement(`<${customElement}></${customElement}>`);
+  const element = await fixture(staticHtml`<${unsafeStatic(customElement)}></${unsafeStatic(customElement)}>`);
+  await elementUpdated(element);
   return {
     element,
     async setValue(value) {
@@ -198,7 +199,10 @@ describe('InputElement', () => {
     });
 
     it('should set the right validation message if value is invalid (translated message with Node)', async () => {
-      const errorMessage = await getElement('<div>This is a<br>translated <b>message</b></div>');
+      // Create Node directly without using fixture() to avoid clearing the fixture container
+      const tempDiv = document.createElement('div');
+      tempDiv.innerHTML = '<div>This is a<br>translated <b>message</b></div>';
+      const errorMessage = tempDiv.firstElementChild;
       const formControl = await getFormControlElement({
         errorMessages: {
           invalid: () => errorMessage,
@@ -246,9 +250,10 @@ describe('InputElement', () => {
       });
 
       /** @type {HTMLFormElement} */
-      const element = await getElement(
-        `<form><${customElement} name="input"></${customElement}><input name="another-input" value="another input value"></form>`,
+      const element = await fixture(
+        staticHtml`<form><${unsafeStatic(customElement)} name="input"></${unsafeStatic(customElement)}><input name="another-input" value="another input value"></form>`,
       );
+      await elementUpdated(element);
       spy.mockClear();
 
       element.querySelector(customElement).value = 'current value';
@@ -371,7 +376,10 @@ describe('InputElement', () => {
     });
 
     it('should set the right errorMessage property if value is invalid (translated message with Node)', async () => {
-      const errorMessage = await getElement('<div>This is a<br>translated <b>message</b></div>');
+      // Create Node directly without using fixture() to avoid clearing the fixture container
+      const tempDiv = document.createElement('div');
+      tempDiv.innerHTML = '<div>This is a<br>translated <b>message</b></div>';
+      const errorMessage = tempDiv.firstElementChild;
       const formControl = await getFormControlElement({
         errorMessages: {
           invalid: () => errorMessage,
@@ -429,7 +437,7 @@ describe('InputElement', () => {
     });
 
     /** @type {HTMLFormElement} */
-    await getElement(`<form><${customElement} name="input"></${customElement}></form>`);
+    await fixture(staticHtml`<form><${unsafeStatic(customElement)} name="input"></${unsafeStatic(customElement)}></form>`);
 
     expect(spy.mock.calls.length).toEqual(1);
   });
@@ -440,7 +448,8 @@ describe('InputElement', () => {
     });
 
     /** @type {HTMLFormElement} */
-    const element = await getElement(`<form><${customElement} name="input"></${customElement}></form>`);
+    const element = await fixture(staticHtml`<form><${unsafeStatic(customElement)} name="input"></${unsafeStatic(customElement)}></form>`);
+    await elementUpdated(element);
 
     expect(new FormData(element).get('input')).toEqual('expected value');
   });
@@ -449,7 +458,8 @@ describe('InputElement', () => {
     const customElement = getCustomElement();
 
     /** @type {HTMLFormElement} */
-    const element = await getElement(`<form><${customElement} name="input"></${customElement}></form>`);
+    const element = await fixture(staticHtml`<form><${unsafeStatic(customElement)} name="input"></${unsafeStatic(customElement)}></form>`);
+    await elementUpdated(element);
 
     element.querySelector(customElement).value = 'current value';
     await elementUpdated(element);
@@ -493,7 +503,10 @@ describe('InputElement', () => {
     const formControl = await getFormControlElement();
     await formControl.setValue('valid');
 
-    formControl.element.errorMessage = await getElement('<div>another<br><b>error</> <i>message</i>');
+    // Create Node directly without using fixture() to avoid clearing the fixture container
+    const tempDiv = document.createElement('div');
+    tempDiv.innerHTML = '<div>another<br><b>error</b> <i>message</i></div>';
+    formControl.element.errorMessage = tempDiv.firstElementChild;
     await elementUpdated(formControl.element);
 
     expect(formControl.element.validationMessage).toEqual('another error message');
@@ -598,9 +611,10 @@ describe('InputElement', () => {
     const customElement = getCustomElement();
 
     /** @type {HTMLFormElement} */
-    const formElement = await getElement(
-      `<form><${customElement} name="input" value="current value"></${customElement}></form>`,
+    const formElement = await fixture(
+      staticHtml`<form><${unsafeStatic(customElement)} name="input" value="current value"></${unsafeStatic(customElement)}></form>`,
     );
+    await elementUpdated(formElement);
     const formControlElement = formElement.querySelector(customElement);
 
     formControlElement.resetValue = 'reset value';
@@ -615,9 +629,10 @@ describe('InputElement', () => {
     const customElement = getCustomElement();
 
     /** @type {HTMLFormElement} */
-    const formElement = await getElement(
-      `<form><${customElement} name="input" value="current value"></${customElement}></form>`,
+    const formElement = await fixture(
+      staticHtml`<form><${unsafeStatic(customElement)} name="input" value="current value"></${unsafeStatic(customElement)}></form>`,
     );
+    await elementUpdated(formElement);
     const formControlElement = formElement.querySelector(customElement);
 
     expect(formControlElement.form).toEqual(formElement);

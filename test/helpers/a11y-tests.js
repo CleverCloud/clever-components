@@ -1,10 +1,13 @@
 import { isResizeObserverLoopErrorMessage } from '@lit-labs/virtualizer/support/resize-observer-errors.js';
-import { expect } from 'vitest';
+import chai from 'chai';
+import { beforeAll, afterAll, describe, it } from 'vitest';
 import { page } from 'vitest/browser';
 import { addTranslations } from '../../src/lib/i18n/i18n.js';
 import * as en from '../../src/translations/translations.en.js';
 import { elementUpdated, fixture } from './element-helper.js';
 import { getStories, setupIgnoreIrrelevantErrors, storyConf, viewports } from './story-testing-utils.js';
+
+const { expect } = chai;
 
 /**
  * @typedef {import('./story-testing-utils.types.js').RawStoriesModule} RawStoriesModule
@@ -13,7 +16,7 @@ import { getStories, setupIgnoreIrrelevantErrors, storyConf, viewports } from '.
 // Register languages
 addTranslations(en.lang, en.translations);
 
-setupIgnoreIrrelevantErrors(before, after, (message) => {
+setupIgnoreIrrelevantErrors(beforeAll, afterAll, (message) => {
   return (
     isResizeObserverLoopErrorMessage(message) ||
     message.includes(
@@ -48,7 +51,7 @@ export async function runA11yTests(storiesModule) {
 
                 await elementUpdated(element);
 
-                await expect(element).toBeAccessible({
+                await expect(element).to.be.accessible({
                   ignoredRules: storyFunction.parameters.tests.accessibility.ignoredRules,
                 });
               });
@@ -61,7 +64,7 @@ export async function runA11yTests(storiesModule) {
 
                 await elementUpdated(element);
 
-                await expect(element).toBeAccessible({
+                await expect(element).to.be.accessible({
                   ignoredRules: storyFunction.parameters.tests.accessibility.ignoredRules,
                 });
               });

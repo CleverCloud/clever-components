@@ -92,10 +92,25 @@ export function defineCE(ElementClass) {
 }
 
 /**
- * @param {any} template
+ * Creates a fixture from either a Lit template or an HTML string.
+ * For string templates, uses innerHTML to parse the HTML.
+ * For Lit templates, uses the standard fixture function.
+ * @param {import('lit').TemplateResult | string} template
  * @return {Promise<Element>}
  */
 export async function getElement(template) {
+  if (typeof template === 'string') {
+    // Handle plain HTML strings
+    const parent = getFixtureContainer();
+    parent.innerHTML = '';
+    const container = document.createElement('div');
+    parent.appendChild(container);
+    container.innerHTML = template;
+    const element = container.firstElementChild;
+    await elementUpdated(element);
+    return element;
+  }
+  // Handle Lit templates
   const element = await fixture(template);
   await elementUpdated(element);
   return element;

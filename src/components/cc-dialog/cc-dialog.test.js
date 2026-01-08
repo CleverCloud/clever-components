@@ -1,11 +1,10 @@
-import { elementUpdated, fixture, nextFrame } from '@open-wc/testing';
-import { sendKeys } from '@web/test-runner-commands';
-import * as hanbi from 'hanbi';
 import { html } from 'lit';
-import { describe, expect, it } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { userEvent } from 'vitest/browser';
 import { addTranslations, setLanguage } from '../../lib/i18n/i18n.js';
 import { findActiveElement } from '../../lib/shadow-dom-utils.js';
 import { lang, translations } from '../../translations/translations.en.js';
+import { cleanupFixtures, elementUpdated, fixture, nextFrame } from '../../../test/helpers/element-helper.js';
 import { CcCloseEvent, CcFocusRestorationFailEvent } from '../common.events.js';
 import './cc-dialog.js';
 
@@ -17,16 +16,20 @@ function getCloseButton(element) {
   return element.shadowRoot.querySelector('.dialog-close');
 }
 
-// Helper: Spy on events
+// Helper: Create event spy using Vitest's vi.fn()
 function createEventSpy(element, eventType) {
-  const spy = hanbi.spy();
+  const spy = vi.fn();
   element.addEventListener(eventType, (event) => {
-    spy.handler(event);
+    spy(event);
   });
   return spy;
 }
 
 describe('cc-dialog component', () => {
+  afterEach(() => {
+    cleanupFixtures();
+  });
+
   describe('Opening dialog', () => {
     it('should open dialog when show() is called', async () => {
       const container = await fixture(html`
@@ -81,7 +84,7 @@ describe('cc-dialog component', () => {
       await elementUpdated(dialog);
 
       expect(dialog.open).toBe(false);
-      expect(closeSpy.called).toBe(true);
+      expect(closeSpy).toHaveBeenCalled();
     });
 
     it('should dispatch CcCloseEvent when dialog closes', async () => {
@@ -99,9 +102,9 @@ describe('cc-dialog component', () => {
       await elementUpdated(dialog);
 
       // Verify CcCloseEvent was dispatched exactly once
-      expect(closeSpy.callCount).toBe(1);
+      expect(closeSpy).toHaveBeenCalledTimes(1);
       // Verify event type
-      const event = closeSpy.lastCall.args[0];
+      const event = closeSpy.mock.calls[0][0];
       expect(event).toBeInstanceOf(CcCloseEvent);
     });
 
@@ -126,7 +129,7 @@ describe('cc-dialog component', () => {
       // Verify dialog closes
       expect(dialog.open).toBe(false);
       // Verify CcCloseEvent is dispatched
-      expect(closeSpy.called).toBe(true);
+      expect(closeSpy).toHaveBeenCalled();
     });
 
     it('should close dialog when Escape key is pressed', async () => {
@@ -141,14 +144,14 @@ describe('cc-dialog component', () => {
       const closeSpy = createEventSpy(dialog, CcCloseEvent.TYPE);
 
       // Press Escape key
-      await sendKeys({ press: 'Escape' });
+      await userEvent.keyboard('{Escape}');
       await elementUpdated(dialog);
       await nextFrame();
 
       // Verify dialog closes
       expect(dialog.open).toBe(false);
       // Verify CcCloseEvent is dispatched
-      expect(closeSpy.called).toBe(true);
+      expect(closeSpy).toHaveBeenCalled();
     });
 
     it('should close dialog when open is set to false', async () => {
@@ -168,7 +171,7 @@ describe('cc-dialog component', () => {
       // Verify dialog closes
       expect(dialog.open).toBe(false);
       // Verify CcCloseEvent is dispatched
-      expect(closeSpy.called).toBe(true);
+      expect(closeSpy).toHaveBeenCalled();
     });
   });
 
@@ -271,7 +274,7 @@ describe('cc-dialog component', () => {
       await elementUpdated(dialog);
 
       // Verify no focus restoration fail event was dispatched
-      expect(failSpy.called).toBe(false);
+      expect(failSpy).not.toHaveBeenCalled();
     });
   });
 
@@ -301,7 +304,7 @@ describe('cc-dialog component', () => {
       await elementUpdated(dialog);
 
       // Verify focus restoration fail event was dispatched
-      expect(failSpy.called).toBe(true);
+      expect(failSpy).toHaveBeenCalled();
     });
 
     it('should provide disconnected element in focus restoration fail event detail', async () => {
@@ -329,8 +332,8 @@ describe('cc-dialog component', () => {
       await elementUpdated(dialog);
 
       // Verify focus restoration fail event was dispatched with correct detail
-      expect(failSpy.called).toBe(true);
-      const event = failSpy.lastCall.args[0];
+      expect(failSpy).toHaveBeenCalled();
+      const event = failSpy.mock.calls[0][0];
       expect(event).toBeInstanceOf(CcFocusRestorationFailEvent);
       expect(event.detail).toBe(opener);
     });
@@ -397,7 +400,7 @@ describe('cc-dialog component', () => {
       // Focus should remain on other button (no restoration attempted)
       expect(findActiveElement()).toBe(otherButton);
       // No additional focus restoration fail event
-      expect(failSpy.called).toBe(false);
+      expect(failSpy).not.toHaveBeenCalled();
     });
   });
 });

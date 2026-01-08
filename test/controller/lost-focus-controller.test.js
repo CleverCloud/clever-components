@@ -1,7 +1,8 @@
 import { LitElement, html } from 'lit';
 import { repeat } from 'lit/directives/repeat.js';
+import { html as staticHtml, unsafeStatic } from 'lit/static-html.js';
 import { describe, expect, it, vi } from 'vitest';
-import { defineCE, fixture, nextFrame } from '../helpers/element-helper.js';
+import { defineCE, elementUpdated, fixture, nextFrame } from '../helpers/element-helper.js';
 import { CcFocusRestorationFailEvent } from '../../src/components/common.events.js';
 import { LostFocusController } from '../../src/controllers/lost-focus-controller.js';
 
@@ -69,7 +70,8 @@ describe('lost-focus-controller', () => {
         },
       );
 
-      const element = await fixture(`<${ce}></${ce}>`);
+      const element = await fixture(staticHtml`<${unsafeStatic(ce)}></${unsafeStatic(ce)}>`);
+      await elementUpdated(element);
 
       return { element, spy };
     };
@@ -246,7 +248,8 @@ describe('lost-focus-controller', () => {
         },
       );
 
-      const element = await fixture(`<${ce}></${ce}>`);
+      const element = await fixture(staticHtml`<${unsafeStatic(ce)}></${unsafeStatic(ce)}>`);
+      await elementUpdated(element);
 
       return { element, spy };
     };

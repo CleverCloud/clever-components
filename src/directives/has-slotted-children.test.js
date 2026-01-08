@@ -1,7 +1,6 @@
-import { defineCE, elementUpdated } from '@open-wc/testing';
 import { LitElement, html } from 'lit';
 import { describe, expect, it } from 'vitest';
-import { getElement } from '../../test/helpers/element-helper.js';
+import { defineCE, elementUpdated, getElement } from '../../test/helpers/element-helper.js';
 import { hasSlottedChildren } from './has-slotted-children.js';
 
 describe('hasSlottedChildrenDirective', () => {

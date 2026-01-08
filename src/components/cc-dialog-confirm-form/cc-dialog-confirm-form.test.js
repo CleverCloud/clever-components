@@ -1,7 +1,6 @@
-import { elementUpdated, fixture } from '@open-wc/testing-helpers';
-import * as hanbi from 'hanbi';
 import { html } from 'lit';
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
+import { elementUpdated, fixture } from '../../../test/helpers/element-helper.js';
 import { addTranslations, setLanguage } from '../../lib/i18n/i18n.js';
 import { findActiveElement } from '../../lib/shadow-dom-utils.js';
 import { lang, translations } from '../../translations/translations.en.js';
@@ -41,9 +40,9 @@ async function getCcInputText(ccDialogElement) {
 }
 
 function createEventSpy(element, eventType) {
-  const spy = hanbi.spy();
+  const spy = vi.fn();
   element.addEventListener(eventType, (event) => {
-    spy.handler(event);
+    spy(event);
   });
   return spy;
 }
@@ -147,7 +146,7 @@ describe('cc-dialog-confirm-form', () => {
     submitButton.click();
     await elementUpdated(ccDialogElement);
 
-    expect(confirmEventSpy.callCount).toBe(0);
+    expect(confirmEventSpy.mock.calls.length).toBe(0);
   });
 
   it('emits confirm event when form is successfully submitted', async () => {
@@ -172,7 +171,7 @@ describe('cc-dialog-confirm-form', () => {
     submitButton.click();
     await elementUpdated(ccDialogElement);
 
-    expect(confirmEventSpy.callCount).toBe(1);
+    expect(confirmEventSpy.mock.calls.length).toBe(1);
   });
 
   it('resets the form when the resetForm() method is called', async () => {

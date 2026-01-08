@@ -1,8 +1,14 @@
-import { elementUpdated, fixture } from '@open-wc/testing';
-import { sendKeys } from '@web/test-runner-commands';
 import { html } from 'lit';
 import { beforeAll, describe, expect, it } from 'vitest';
-import { getElement, moveInputCaretToPosition, replaceText, typeText } from '../../../test/helpers/element-helper.js';
+import { userEvent } from 'vitest/browser';
+import {
+  elementUpdated,
+  fixture,
+  getElement,
+  moveInputCaretToPosition,
+  replaceText,
+  typeText,
+} from '../../../test/helpers/element-helper.js';
 import { addTranslations, setLanguage } from '../../lib/i18n/i18n.js';
 import { translations } from '../../translations/translations.en.js';
 import './cc-input-date.js';
@@ -221,7 +227,7 @@ describe('Component cc-input-date', () => {
 
   describe('error class', () => {
     it('should be placed on internal input when errorMessage is set', async () => {
-      const element = await fixture('<cc-input-date value="2023-07-31T19:11:12.259Z"></cc-input-date>');
+      const element = await getElement('<cc-input-date value="2023-07-31T19:11:12.259Z"></cc-input-date>');
 
       element.errorMessage = 'Error';
       await elementUpdated(element);
@@ -231,7 +237,7 @@ describe('Component cc-input-date', () => {
     });
 
     it('should be removed from internal input when error message is removed', async () => {
-      const element = await fixture('<cc-input-date value="2023-07-31T19:11:12.259Z"></cc-input-date>');
+      const element = await getElement('<cc-input-date value="2023-07-31T19:11:12.259Z"></cc-input-date>');
       element.errorMessage = 'Error';
       await elementUpdated(element);
 
@@ -243,7 +249,7 @@ describe('Component cc-input-date', () => {
     });
 
     it('should be not set on internal input when no error message defined', async () => {
-      const element = await fixture('<cc-input-date value="2023-07-31T19:11:12.259Z"></cc-input-date>');
+      const element = await getElement('<cc-input-date value="2023-07-31T19:11:12.259Z"></cc-input-date>');
       await elementUpdated(element);
 
       const input = getInternalInput(element);
@@ -289,7 +295,7 @@ describe('Component cc-input-date', () => {
       const element = await getElement('<cc-input-date value="2023-07-31T19:11:12.259Z"></cc-input-date>');
       element.value = '2023-07-31 20:11:12';
       await elementUpdated(element);
-      expect(element.value).to.equal('2023-07-31T20:11:12.000Z');
+      expect(element.value).toBe('2023-07-31T20:11:12.000Z');
     });
 
     it('should return the right value when modifying value with simple format string and with local timezone', async () => {
@@ -298,21 +304,21 @@ describe('Component cc-input-date', () => {
       );
       element.value = '2023-07-31 20:11:12';
       await elementUpdated(element);
-      expect(element.value).to.equal('2023-07-31T18:11:12.000Z');
+      expect(element.value).toBe('2023-07-31T18:11:12.000Z');
     });
 
     it('should return the right value when modifying value with iso string', async () => {
       const element = await getElement('<cc-input-date value="2023-07-31T19:11:12.259Z"></cc-input-date>');
       element.value = '2023-07-31T20:11:12.259Z';
       await elementUpdated(element);
-      expect(element.value).to.equal('2023-07-31T20:11:12.259Z');
+      expect(element.value).toBe('2023-07-31T20:11:12.259Z');
     });
 
     it('should return the right value when setting value from date', async () => {
       const element = await getElement('<cc-input-date value="2023-07-31T19:11:12.259Z"></cc-input-date>');
       element.value = new Date('2023-07-31T20:11:12.259Z');
       await elementUpdated(element);
-      expect(element.value).to.equal('2023-07-31T20:11:12.259Z');
+      expect(element.value).toBe('2023-07-31T20:11:12.259Z');
     });
   });
 
@@ -451,7 +457,7 @@ describe('Component cc-input-date', () => {
     async function checkAfterShift(initialDate, position, key, expectedDate) {
       const element = await getElement(html` <cc-input-date .value="${initialDate}"></cc-input-date>`);
       await moveInputCaretToPosition(element, position);
-      await sendKeys({ press: key });
+      await userEvent.keyboard(`{${key}}`);
       await elementUpdated(element);
       expect(element.value).toBe(expectedDate);
     }

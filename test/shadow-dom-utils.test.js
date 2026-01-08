@@ -1,6 +1,7 @@
 import { LitElement, html } from 'lit';
+import { html as staticHtml, unsafeStatic } from 'lit/static-html.js';
 import { describe, expect, it } from 'vitest';
-import { defineCE, fixture } from './helpers/element-helper.js';
+import { defineCE, elementUpdated, fixture } from './helpers/element-helper.js';
 import { findActiveElement, isParentOf, querySelectorDeep } from '../src/lib/shadow-dom-utils.js';
 
 describe('shadow-dom-utils', () => {
@@ -18,7 +19,8 @@ describe('shadow-dom-utils', () => {
 
   describe('findActiveElement', () => {
     it('should return button inside custom element', async () => {
-      const element = await fixture(html`<${ce}></${ce}>`);
+      const element = await fixture(staticHtml`<${unsafeStatic(ce)}></${unsafeStatic(ce)}>`);
+      await elementUpdated(element);
 
       const elementInsideCustomElement = element.getButtonElement();
       elementInsideCustomElement.focus();
@@ -28,7 +30,10 @@ describe('shadow-dom-utils', () => {
     });
 
     it('should return button when deep inside custom element', async () => {
-      await fixture(html`<${ce}><${ce}><${ce} id="deepChild"></${ce}></${ce}></${ce}>`);
+      const element = await fixture(
+        staticHtml`<${unsafeStatic(ce)}><${unsafeStatic(ce)}><${unsafeStatic(ce)} id="deepChild"></${unsafeStatic(ce)}></${unsafeStatic(ce)}></${unsafeStatic(ce)}>`,
+      );
+      await elementUpdated(element);
       const elementInsideCustomElement = document.querySelector('#deepChild').getButtonElement();
       elementInsideCustomElement.focus();
       expect(findActiveElement()).toBe(elementInsideCustomElement);
@@ -69,17 +74,22 @@ describe('shadow-dom-utils', () => {
     });
 
     it('should return true when child is a custom element', async () => {
-      const element = await fixture(html`<div><${ce} id="child"></${ce}></div>`);
+      const element = await fixture(staticHtml`<div><${unsafeStatic(ce)} id="child"></${unsafeStatic(ce)}></div>`);
+      await elementUpdated(element);
       expect(isParentOf(element, document.querySelector('#child'))).toBe(true);
     });
 
     it('should return true when child is inside a custom element', async () => {
-      const element = await fixture(html`<${ce} id="child"></${ce}>`);
+      const element = await fixture(staticHtml`<${unsafeStatic(ce)} id="child"></${unsafeStatic(ce)}>`);
+      await elementUpdated(element);
       expect(isParentOf(element, document.querySelector('#child').getButtonElement())).toBe(true);
     });
 
     it('should return true when child is deep inside a custom element', async () => {
-      const element = await fixture(html`<${ce}><${ce}><${ce} id="child"></${ce}></${ce}></${ce}>`);
+      const element = await fixture(
+        staticHtml`<${unsafeStatic(ce)}><${unsafeStatic(ce)}><${unsafeStatic(ce)} id="child"></${unsafeStatic(ce)}></${unsafeStatic(ce)}></${unsafeStatic(ce)}>`,
+      );
+      await elementUpdated(element);
       expect(isParentOf(element, document.querySelector('#child').getButtonElement())).toBe(true);
     });
   });
@@ -103,17 +113,22 @@ describe('shadow-dom-utils', () => {
     });
 
     it('should find element inside a custom element shadow DOM', async () => {
-      const element = await fixture(html`<${ce}></${ce}>`);
+      const element = await fixture(staticHtml`<${unsafeStatic(ce)}></${unsafeStatic(ce)}>`);
+      await elementUpdated(element);
       expect(querySelectorDeep('button', element)).toBe(element.getButtonElement());
     });
 
     it('should find element deep inside nested custom elements', async () => {
-      const element = await fixture(html`<${ce}><${ce}><${ce} id="deepChild"></${ce}></${ce}></${ce}>`);
+      const element = await fixture(
+        staticHtml`<${unsafeStatic(ce)}><${unsafeStatic(ce)}><${unsafeStatic(ce)} id="deepChild"></${unsafeStatic(ce)}></${unsafeStatic(ce)}></${unsafeStatic(ce)}>`,
+      );
+      await elementUpdated(element);
       expect(querySelectorDeep('button', element)).toBe(element.getButtonElement());
     });
 
     it('should find slotted content', async () => {
-      const element = await fixture(html`<${ce}><span id="slotted"></span></${ce}>`);
+      const element = await fixture(staticHtml`<${unsafeStatic(ce)}><span id="slotted"></span></${unsafeStatic(ce)}>`);
+      await elementUpdated(element);
       expect(querySelectorDeep('#slotted', element)).toBe(element.querySelector('#slotted'));
     });
 

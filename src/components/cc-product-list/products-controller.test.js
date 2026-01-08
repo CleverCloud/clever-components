@@ -1,10 +1,9 @@
 /**
  * @import { Product } from './cc-product-list.types.js'
- * @import { Stub } from 'hanbi'
+ * @import { Mock } from 'vitest'
  */
 
-import * as hanbi from 'hanbi';
-import { beforeEach, describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { ProductsController } from './products-controller.js';
 
 /**
@@ -22,18 +21,18 @@ function generateProduct({ name = '', description = '', searchTerms = [] }) {
 }
 
 describe('ProductsController()', function () {
-  /** @type {Stub<() => void>} */
+  /** @type {Mock<() => void>} */
   let requestUpdateSpy;
 
   /** @type {ProductsController} */
   let productsCtrl;
 
   beforeEach(() => {
-    requestUpdateSpy = hanbi.spy();
+    requestUpdateSpy = vi.fn();
 
     // @ts-expect-error - TypeScript wants a CcProductList however it's not relevant here.
     productsCtrl = new ProductsController({
-      requestUpdate: requestUpdateSpy.handler,
+      requestUpdate: requestUpdateSpy,
     });
   });
 
@@ -52,7 +51,7 @@ describe('ProductsController()', function () {
 
       productsCtrl.textFilter = 'aaa';
 
-      expect(requestUpdateSpy.callCount).toBe(1);
+      expect(requestUpdateSpy.mock.calls.length).toBe(1);
     });
 
     it('should return all products matching with name', function () {
@@ -299,7 +298,7 @@ describe('ProductsController()', function () {
 
       productsCtrl.textFilter = 'aaa';
 
-      expect(productsCtrl.getFilteredProductsByCategories()).to.deep.equal([
+      expect(productsCtrl.getFilteredProductsByCategories()).toEqual([
         {
           categoryName: 'aaa',
           products: [
@@ -377,7 +376,7 @@ describe('ProductsController()', function () {
 
       productsCtrl.textFilter = 'two';
 
-      expect(productsCtrl.getFilteredProductsByCategories()).to.deep.equal([
+      expect(productsCtrl.getFilteredProductsByCategories()).toEqual([
         {
           categoryName: 'aaa',
           products: [
@@ -477,7 +476,7 @@ describe('ProductsController()', function () {
 
       productsCtrl.textFilter = 'two three';
 
-      expect(productsCtrl.getFilteredProductsByCategories()).to.deep.equal([
+      expect(productsCtrl.getFilteredProductsByCategories()).toEqual([
         {
           categoryName: 'aaa',
           products: [
@@ -592,7 +591,7 @@ describe('ProductsController()', function () {
 
       productsCtrl.textFilter = 'hidden';
 
-      expect(productsCtrl.getFilteredProductsByCategories()).to.deep.equal([
+      expect(productsCtrl.getFilteredProductsByCategories()).toEqual([
         {
           categoryName: 'aaa',
           products: [
@@ -638,7 +637,7 @@ describe('ProductsController()', function () {
 
       productsCtrl.textFilter = null;
 
-      expect(productsCtrl.getFilteredProductsByCategories()).to.deep.equal([
+      expect(productsCtrl.getFilteredProductsByCategories()).toEqual([
         {
           categoryName: 'aaa',
           products: [
@@ -680,7 +679,7 @@ describe('ProductsController()', function () {
 
       productsCtrl.textFilter = '';
 
-      expect(productsCtrl.getFilteredProductsByCategories()).to.deep.equal([
+      expect(productsCtrl.getFilteredProductsByCategories()).toEqual([
         {
           categoryName: 'aaa',
           products: [
@@ -716,7 +715,7 @@ describe('ProductsController()', function () {
 
       productsCtrl.toggleCategoryFilter('aaa');
 
-      expect(productsCtrl.getFilteredProductsByCategories()).to.deep.equal([
+      expect(productsCtrl.getFilteredProductsByCategories()).toEqual([
         {
           categoryName: 'aaa',
           products: [generateProduct({ name: 'aaa two' })],
@@ -738,7 +737,7 @@ describe('ProductsController()', function () {
 
       productsCtrl.toggleCategoryFilter('foobar');
 
-      expect(productsCtrl.getFilteredProductsByCategories()).to.deep.equal([
+      expect(productsCtrl.getFilteredProductsByCategories()).toEqual([
         {
           categoryName: 'aaa',
           products: [generateProduct({ name: 'aaa two' })],
@@ -764,7 +763,7 @@ describe('ProductsController()', function () {
 
       productsCtrl.toggleCategoryFilter('');
 
-      expect(productsCtrl.getFilteredProductsByCategories()).to.deep.equal([
+      expect(productsCtrl.getFilteredProductsByCategories()).toEqual([
         {
           categoryName: 'aaa',
           products: [generateProduct({ name: 'aaa two' })],
@@ -790,7 +789,7 @@ describe('ProductsController()', function () {
 
       productsCtrl.toggleCategoryFilter(null);
 
-      expect(productsCtrl.getFilteredProductsByCategories()).to.deep.equal([
+      expect(productsCtrl.getFilteredProductsByCategories()).toEqual([
         {
           categoryName: 'aaa',
           products: [generateProduct({ name: 'aaa two' })],
@@ -851,7 +850,7 @@ describe('ProductsController()', function () {
       productsCtrl.toggleCategoryFilter('aaa');
       productsCtrl.textFilter = 'two';
 
-      expect(productsCtrl.getFilteredProductsByCategories()).to.deep.equal([
+      expect(productsCtrl.getFilteredProductsByCategories()).toEqual([
         {
           categoryName: 'aaa',
           products: [
@@ -912,7 +911,7 @@ describe('ProductsController()', function () {
       productsCtrl.toggleCategoryFilter(null);
       productsCtrl.textFilter = 'two';
 
-      expect(productsCtrl.getFilteredProductsByCategories()).to.deep.equal([
+      expect(productsCtrl.getFilteredProductsByCategories()).toEqual([
         {
           categoryName: 'aaa',
           products: [
@@ -983,7 +982,7 @@ describe('ProductsController()', function () {
       productsCtrl.toggleCategoryFilter('aaa');
       productsCtrl.textFilter = '';
 
-      expect(productsCtrl.getFilteredProductsByCategories()).to.deep.equal([
+      expect(productsCtrl.getFilteredProductsByCategories()).toEqual([
         {
           categoryName: 'aaa',
           products: [
@@ -1054,7 +1053,7 @@ describe('ProductsController()', function () {
       productsCtrl.toggleCategoryFilter('aaa');
       productsCtrl.textFilter = 'not relevant search';
 
-      expect(productsCtrl.getFilteredProductsByCategories()).to.deep.equal([]);
+      expect(productsCtrl.getFilteredProductsByCategories()).toEqual([]);
     });
 
     it(`should return an a product list with the search if the category is not okay and the search is relevant`, function () {
@@ -1104,7 +1103,7 @@ describe('ProductsController()', function () {
       productsCtrl.toggleCategoryFilter('not relevant');
       productsCtrl.textFilter = 'two';
 
-      expect(productsCtrl.getFilteredProductsByCategories()).to.deep.equal([
+      expect(productsCtrl.getFilteredProductsByCategories()).toEqual([
         {
           categoryName: 'aaa',
           products: [
@@ -1175,7 +1174,7 @@ describe('ProductsController()', function () {
       productsCtrl.toggleCategoryFilter(null);
       productsCtrl.textFilter = '';
 
-      expect(productsCtrl.getFilteredProductsByCategories()).to.deep.equal([
+      expect(productsCtrl.getFilteredProductsByCategories()).toEqual([
         {
           categoryName: 'aaa',
           products: [
@@ -1264,11 +1263,11 @@ describe('ProductsController()', function () {
       ];
 
       productsCtrl.textFilter = 'unknown';
-      expect(productsCtrl.getFilteredProductsByCategories()).to.deep.equal([]);
+      expect(productsCtrl.getFilteredProductsByCategories()).toEqual([]);
       productsCtrl.toggleCategoryFilter('bbb');
-      expect(productsCtrl.getFilteredProductsByCategories()).to.deep.equal([]);
+      expect(productsCtrl.getFilteredProductsByCategories()).toEqual([]);
       productsCtrl.textFilter = 'two';
-      expect(productsCtrl.getFilteredProductsByCategories()).to.deep.equal([
+      expect(productsCtrl.getFilteredProductsByCategories()).toEqual([
         {
           categoryName: 'bbb',
           products: [
@@ -1327,7 +1326,7 @@ describe('ProductsController()', function () {
       ];
 
       productsCtrl.toggleCategoryFilter('aaa');
-      expect(productsCtrl.getFilteredProductsByCategories()).to.deep.equal([
+      expect(productsCtrl.getFilteredProductsByCategories()).toEqual([
         {
           categoryName: 'aaa',
           products: [
@@ -1350,7 +1349,7 @@ describe('ProductsController()', function () {
         },
       ]);
       productsCtrl.textFilter = 'two';
-      expect(productsCtrl.getFilteredProductsByCategories()).to.deep.equal([
+      expect(productsCtrl.getFilteredProductsByCategories()).toEqual([
         {
           categoryName: 'aaa',
           products: [
@@ -1364,7 +1363,7 @@ describe('ProductsController()', function () {
       ]);
 
       productsCtrl.textFilter = '';
-      expect(productsCtrl.getFilteredProductsByCategories()).to.deep.equal([
+      expect(productsCtrl.getFilteredProductsByCategories()).toEqual([
         {
           categoryName: 'aaa',
           products: [
@@ -1388,7 +1387,7 @@ describe('ProductsController()', function () {
       ]);
 
       productsCtrl.toggleCategoryFilter('all');
-      expect(productsCtrl.getFilteredProductsByCategories()).to.deep.equal([
+      expect(productsCtrl.getFilteredProductsByCategories()).toEqual([
         {
           categoryName: 'aaa',
           products: [
@@ -1432,7 +1431,7 @@ describe('ProductsController()', function () {
       ]);
 
       productsCtrl.textFilter = 'two';
-      expect(productsCtrl.getFilteredProductsByCategories()).to.deep.equal([
+      expect(productsCtrl.getFilteredProductsByCategories()).toEqual([
         {
           categoryName: 'aaa',
           products: [

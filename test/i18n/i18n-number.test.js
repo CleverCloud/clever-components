@@ -200,49 +200,49 @@ describe('prepareNumberBytesFormatter', () => {
       expect(formatBytes(1)).toBe('1\u202fo');
       expect(formatBytes(10)).toBe('10\u202fo');
       expect(formatBytes(100)).toBe('100\u202fo');
-      expect(formatBytes(1000)).toBe('1 000\u202fo');
-      expect(formatBytes(1023)).toBe('1 023\u202fo');
+      expect(formatBytes(1000)).toBe('1\u202f000\u202fo');
+      expect(formatBytes(1023)).toBe('1\u202f023\u202fo');
     });
 
     it('K values', () => {
       expect(formatBytes(1024 ** 1 * 1)).toBe('1\u202fKio');
       expect(formatBytes(1024 ** 1 * 10)).toBe('10\u202fKio');
       expect(formatBytes(1024 ** 1 * 100)).toBe('100\u202fKio');
-      expect(formatBytes(1024 ** 1 * 1000)).toBe('1 000\u202fKio');
-      expect(formatBytes(1024 ** 1 * 1023)).toBe('1 023\u202fKio');
+      expect(formatBytes(1024 ** 1 * 1000)).toBe('1\u202f000\u202fKio');
+      expect(formatBytes(1024 ** 1 * 1023)).toBe('1\u202f023\u202fKio');
     });
 
     it('M values', () => {
       expect(formatBytes(1024 ** 2 * 1)).toBe('1\u202fMio');
       expect(formatBytes(1024 ** 2 * 10)).toBe('10\u202fMio');
       expect(formatBytes(1024 ** 2 * 100)).toBe('100\u202fMio');
-      expect(formatBytes(1024 ** 2 * 1000)).toBe('1 000\u202fMio');
-      expect(formatBytes(1024 ** 2 * 1023)).toBe('1 023\u202fMio');
+      expect(formatBytes(1024 ** 2 * 1000)).toBe('1\u202f000\u202fMio');
+      expect(formatBytes(1024 ** 2 * 1023)).toBe('1\u202f023\u202fMio');
     });
 
     it('G values', () => {
       expect(formatBytes(1024 ** 3 * 1)).toBe('1\u202fGio');
       expect(formatBytes(1024 ** 3 * 10)).toBe('10\u202fGio');
       expect(formatBytes(1024 ** 3 * 100)).toBe('100\u202fGio');
-      expect(formatBytes(1024 ** 3 * 1000)).toBe('1 000\u202fGio');
-      expect(formatBytes(1024 ** 3 * 1023)).toBe('1 023\u202fGio');
+      expect(formatBytes(1024 ** 3 * 1000)).toBe('1\u202f000\u202fGio');
+      expect(formatBytes(1024 ** 3 * 1023)).toBe('1\u202f023\u202fGio');
     });
 
     it('T values', () => {
       expect(formatBytes(1024 ** 4 * 1)).toBe('1\u202fTio');
       expect(formatBytes(1024 ** 4 * 10)).toBe('10\u202fTio');
       expect(formatBytes(1024 ** 4 * 100)).toBe('100\u202fTio');
-      expect(formatBytes(1024 ** 4 * 1000)).toBe('1 000\u202fTio');
-      expect(formatBytes(1024 ** 4 * 1023)).toBe('1 023\u202fTio');
+      expect(formatBytes(1024 ** 4 * 1000)).toBe('1\u202f000\u202fTio');
+      expect(formatBytes(1024 ** 4 * 1023)).toBe('1\u202f023\u202fTio');
     });
 
     it('P values', () => {
       expect(formatBytes(1024 ** 5 * 1)).toBe('1\u202fPio');
       expect(formatBytes(1024 ** 5 * 10)).toBe('10\u202fPio');
       expect(formatBytes(1024 ** 5 * 100)).toBe('100\u202fPio');
-      expect(formatBytes(1024 ** 5 * 1000)).toBe('1 000\u202fPio');
-      expect(formatBytes(1024 ** 5 * 1023)).toBe('1 023\u202fPio');
-      expect(formatBytes(1024 ** 6 * 10000)).toBe('10 240 000\u202fPio');
+      expect(formatBytes(1024 ** 5 * 1000)).toBe('1\u202f000\u202fPio');
+      expect(formatBytes(1024 ** 5 * 1023)).toBe('1\u202f023\u202fPio');
+      expect(formatBytes(1024 ** 6 * 10000)).toBe('10\u202f240\u202f000\u202fPio');
     });
 
     it('1 decimal', () => {
@@ -250,14 +250,14 @@ describe('prepareNumberBytesFormatter', () => {
       expect(formatBytes(1, 1)).toBe('1\u202fo');
       expect(formatBytes(10, 1)).toBe('10\u202fo');
       expect(formatBytes(100, 1)).toBe('100\u202fo');
-      expect(formatBytes(1000, 1)).toBe('1 000\u202fo');
-      expect(formatBytes(1024 ** 2 - 1, 1)).toBe('1 023,9\u202fKio');
+      expect(formatBytes(1000, 1)).toBe('1\u202f000\u202fo');
+      expect(formatBytes(1024 ** 2 - 1, 1)).toBe('1\u202f023,9\u202fKio');
       expect(formatBytes(1024 ** 2 + 1, 1)).toBe('1,0\u202fMio');
-      expect(formatBytes(1024 ** 3 - 1, 1)).toBe('1 023,9\u202fMio');
+      expect(formatBytes(1024 ** 3 - 1, 1)).toBe('1\u202f023,9\u202fMio');
       expect(formatBytes(1024 ** 3 + 1, 1)).toBe('1,0\u202fGio');
-      expect(formatBytes(1024 ** 4 - 1, 1)).toBe('1 023,9\u202fGio');
+      expect(formatBytes(1024 ** 4 - 1, 1)).toBe('1\u202f023,9\u202fGio');
       expect(formatBytes(1024 ** 4 + 1, 1)).toBe('1,0\u202fTio');
-      expect(formatBytes(1024 ** 5 - 1, 1)).toBe('1 023,9\u202fTio');
+      expect(formatBytes(1024 ** 5 - 1, 1)).toBe('1\u202f023,9\u202fTio');
       expect(formatBytes(1024 ** 5 + 1, 1)).toBe('1,0\u202fPio');
     });
 
@@ -266,14 +266,14 @@ describe('prepareNumberBytesFormatter', () => {
       expect(formatBytes(1, 2)).toBe('1\u202fo');
       expect(formatBytes(10, 2)).toBe('10\u202fo');
       expect(formatBytes(100, 2)).toBe('100\u202fo');
-      expect(formatBytes(1000, 2)).toBe('1 000\u202fo');
-      expect(formatBytes(1024 ** 2 - 1, 2)).toBe('1 023,99\u202fKio');
+      expect(formatBytes(1000, 2)).toBe('1\u202f000\u202fo');
+      expect(formatBytes(1024 ** 2 - 1, 2)).toBe('1\u202f023,99\u202fKio');
       expect(formatBytes(1024 ** 2 + 1, 2)).toBe('1,00\u202fMio');
-      expect(formatBytes(1024 ** 3 - 1, 2)).toBe('1 023,99\u202fMio');
+      expect(formatBytes(1024 ** 3 - 1, 2)).toBe('1\u202f023,99\u202fMio');
       expect(formatBytes(1024 ** 3 + 1, 2)).toBe('1,00\u202fGio');
-      expect(formatBytes(1024 ** 4 - 1, 2)).toBe('1 023,99\u202fGio');
+      expect(formatBytes(1024 ** 4 - 1, 2)).toBe('1\u202f023,99\u202fGio');
       expect(formatBytes(1024 ** 4 + 1, 2)).toBe('1,00\u202fTio');
-      expect(formatBytes(1024 ** 5 - 1, 2)).toBe('1 023,99\u202fTio');
+      expect(formatBytes(1024 ** 5 - 1, 2)).toBe('1\u202f023,99\u202fTio');
       expect(formatBytes(1024 ** 5 + 1, 2)).toBe('1,00\u202fPio');
     });
   });

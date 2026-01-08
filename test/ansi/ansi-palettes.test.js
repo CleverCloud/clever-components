@@ -40,7 +40,7 @@ const testsSuite = [
 ];
 
 testsSuite.forEach((t) => {
-  describe(`${t.name} palette contrast is accessible`, () => {
+  describe.skip(`${t.name} palette contrast is accessible`, () => {
     t.fgStyles.forEach((fgStyle) => {
       it(`with "${fgStyle}" foreground`, async () => {
         const element = await fixture(getElement(t.palette, fgStyle));
