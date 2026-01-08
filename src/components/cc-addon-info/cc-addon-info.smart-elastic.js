@@ -200,7 +200,7 @@ class Api extends CcAddonInfoClient {
     const addonProvider = await this._getAddonProvider(rawAddon.provider.id);
     const grafanaAppLink =
       this._grafanaLink != null
-        ? await this._getGrafanaAppLink({ resourceId: addonProvider.app_id, signal: this._signal })
+        ? await this._getGrafanaAppLink({ resourceId: rawAddon.realId, signal: this._signal })
         : null;
 
     return { rawAddon, addonProvider, grafanaAppLink };
