@@ -11,7 +11,23 @@ import './cc-addon-credentials-beta.js';
 const LOADING_STATE = {
   type: 'loading',
   tabs: {
-    default: {
+    api: {
+      content: [
+        {
+          code: 'httpUrl',
+          value: 'fake-skeleton',
+        },
+        {
+          code: 'tenant-namespace',
+          value: 'fake-skeleton',
+        },
+        {
+          code: 'token',
+          value: 'fake-skeleton',
+        },
+      ],
+    },
+    cli: {
       content: [
         {
           code: 'url',
@@ -60,14 +76,25 @@ defineSmartComponent({
     updateComponent('state', LOADING_STATE);
 
     api
-      .getCredentials()
-      .then((credentials) => {
+      .getAllCredentials()
+      .then(({ api, cli }) => {
         updateComponent(
           'state',
           /** @param {AddonCredentialsBetaStateLoaded|AddonCredentialsBetaStateLoading} state */
           (state) => {
             state.type = 'loaded';
-            state.tabs.default.content = credentials;
+            const updatedTabs = {
+              api: {
+                ...state.tabs.api,
+                content: api,
+              },
+              cli: {
+                ...state.tabs.cli,
+                content: cli,
+              },
+            };
+
+            state.tabs = updatedTabs;
           },
         );
       })
@@ -112,9 +139,10 @@ class Api extends CcAddonCredentialsBetaClient {
   }
 
   /**
+   * @param {'api' | 'cli'} tabType
    * @return {Promise<AddonCredential[]>}
    */
-  async getCredentials() {
+  async getCredentials(tabType) {
     const rawAddon = await this._getAddon();
     const realId = rawAddon.realId;
     const addonProvider = /** @type {PulsarProviderInfo} */ (await this._getAddonProvider(realId));
@@ -127,20 +155,53 @@ class Api extends CcAddonCredentialsBetaClient {
     } else {
       throw new Error('Missing TLS port and default port');
     }
-    return [
-      {
-        code: 'url',
-        value: url,
-      },
-      {
-        code: 'tenant-namespace',
-        value: `${addonProvider.tenant}/${rawAddon.realId}`,
-      },
-      {
-        code: 'token',
-        value: addonProvider.token,
-      },
-    ];
+    switch (tabType) {
+      case 'api':
+        return [
+          {
+            code: 'httpUrl',
+            value: `https://${addonCluster.url}:${addonCluster.web_tls_port}`,
+          },
+          {
+            code: 'tenant-namespace',
+            value: `${addonProvider.tenant}/${rawAddon.realId}`,
+          },
+          {
+            code: 'token',
+            value: addonProvider.token,
+          },
+        ];
+      case 'cli':
+        return [
+          {
+            code: 'url',
+            value: url,
+          },
+          {
+            code: 'tenant-namespace',
+            value: `${addonProvider.tenant}/${rawAddon.realId}`,
+          },
+          {
+            code: 'token',
+            value: addonProvider.token,
+          },
+        ];
+    }
+  }
+
+  /**
+   * @return {Promise<{api: AddonCredential[], cli: AddonCredential[]}>}
+   */
+  async getAllCredentials() {
+    const [apiCredentials, cliCredentials] = await Promise.all([
+      this.getCredentials('api'),
+      this.getCredentials('cli'),
+    ]);
+
+    return {
+      api: apiCredentials,
+      cli: cliCredentials,
+    };
   }
 }
 // FIXME: remove and use the clever-client call from the new clever-client

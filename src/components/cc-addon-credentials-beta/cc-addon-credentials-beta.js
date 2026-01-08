@@ -68,6 +68,8 @@ export class CcAddonCredentialsBeta extends LitElement {
         return i18n('cc-addon-credentials-beta.choice.api');
       case 'apm':
         return i18n('cc-addon-credentials-beta.choice.apm');
+      case 'cli':
+        return i18n('cc-addon-credentials-beta.choice.cli');
       case 'default':
         return i18n('cc-addon-credentials-beta.choice.default');
       case 'direct':
