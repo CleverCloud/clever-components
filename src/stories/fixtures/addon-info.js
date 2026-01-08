@@ -196,7 +196,6 @@ export const elasticInfo = {
   encryption: true,
   creationDate: '2025-06-15T10:30:00Z',
   openGrafanaLink: 'https://grafana.example.com',
-  openScalabilityLink: 'https://scalability.example.com',
   linkedServices: [
     {
       type: 'app',
