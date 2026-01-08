@@ -18,11 +18,11 @@ const LOADING_STATE = {
           value: 'fake-skeleton',
         },
         {
-          code: 'token',
+          code: 'tenant-namespace',
           value: 'fake-skeleton',
         },
         {
-          code: 'tenant-namespace',
+          code: 'token',
           value: 'fake-skeleton',
         },
       ],
@@ -133,12 +133,12 @@ class Api extends CcAddonCredentialsBetaClient {
         value: url,
       },
       {
-        code: 'token',
-        value: addonProvider.token,
-      },
-      {
         code: 'tenant-namespace',
         value: `${addonProvider.tenant}/${rawAddon.realId}`,
+      },
+      {
+        code: 'token',
+        value: addonProvider.token,
       },
     ];
   }
