@@ -32,22 +32,6 @@ const LOADING_STATE = {
         href: getDocUrl('/addons/elastic'),
       },
     },
-    kibana: {
-      content: [
-        {
-          code: 'user',
-          value: 'fake-skeleton',
-        },
-        {
-          code: 'password',
-          value: 'fake-skeleton',
-        },
-      ],
-      docLink: {
-        text: i18n('cc-addon-credentials-beta.doc-link.elastic-kibana'),
-        href: getDocUrl('/addons/elastic/#kibana'),
-      },
-    },
     apm: {
       content: [
         {
@@ -64,8 +48,40 @@ const LOADING_STATE = {
         },
       ],
       docLink: {
+        text: i18n('cc-addon-credentials-beta.doc-link.elastic-kibana'),
+        href: getDocUrl('/addons/elastic/#kibana'),
+      },
+    },
+    kibana: {
+      content: [
+        {
+          code: 'user',
+          value: 'fake-skeleton',
+        },
+        {
+          code: 'password',
+          value: 'fake-skeleton',
+        },
+      ],
+      docLink: {
         text: i18n('cc-addon-credentials-beta.doc-link.elastic-apm'),
         href: getDocUrl('/addons/elastic/#elastic-apm'),
+      },
+    },
+    kibana: {
+      content: [
+        {
+          code: 'user',
+          value: 'fake-skeleton',
+        },
+        {
+          code: 'password',
+          value: 'fake-skeleton',
+        },
+      ],
+      docLink: {
+        text: i18n('cc-addon-credentials-beta.doc-link.elastic-kibana'),
+        href: getDocUrl('/addons/elastic/#kibana'),
       },
     },
   },
@@ -113,17 +129,17 @@ defineSmartComponent({
               },
             };
 
-            if (kibana != null) {
-              updatedTabs.kibana = {
-                ...state.tabs.kibana,
-                content: kibana,
-              };
-            }
-
             if (apm != null) {
               updatedTabs.apm = {
                 ...state.tabs.apm,
                 content: apm,
+              };
+            }
+
+            if (kibana != null) {
+              updatedTabs.kibana = {
+                ...state.tabs.kibana,
+                content: kibana,
               };
             }
 
@@ -162,7 +178,7 @@ class Api extends CcAddonCredentialsBetaClient {
   }
 
   /**
-   * @param {'elastic' | 'kibana' | 'apm'} tabType
+   * @param {'elastic' | 'apm' | 'kibana'} tabType
    * @return {Promise<AddonCredential[]>}
    */
   async getCredentials(tabType) {
@@ -183,17 +199,6 @@ class Api extends CcAddonCredentialsBetaClient {
             value: addonProvider.config.password,
           },
         ];
-      case 'kibana':
-        return [
-          {
-            code: 'user',
-            value: addonProvider.config.kibana_user,
-          },
-          {
-            code: 'password',
-            value: addonProvider.config.kibana_password,
-          },
-        ];
       case 'apm':
         return [
           {
@@ -207,6 +212,17 @@ class Api extends CcAddonCredentialsBetaClient {
           {
             code: 'token',
             value: addonProvider.config.apm_auth_token,
+          },
+        ];
+      case 'kibana':
+        return [
+          {
+            code: 'user',
+            value: addonProvider.config.kibana_user,
+          },
+          {
+            code: 'password',
+            value: addonProvider.config.kibana_password,
           },
         ];
     }

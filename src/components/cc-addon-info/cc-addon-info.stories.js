@@ -272,9 +272,6 @@ export const elastic = makeStory(conf, {
         type: 'loaded',
         ...elasticInfo,
       },
-      innerHTML: `
-        <p slot="linked-services"><em>This add-on is part of the Elastic Stack offering. You can find and access related services above.</em></p>
-`,
     },
     {
       /** @type {AddonInfoStateLoading} */
@@ -282,9 +279,6 @@ export const elastic = makeStory(conf, {
         type: 'loading',
         ...elasticInfo,
       },
-      innerHTML: `
-        <p slot="linked-services"><em>This add-on is part of the Elastic Stack offering. You can find and access related services above.</em></p>
-`,
     },
   ],
 });

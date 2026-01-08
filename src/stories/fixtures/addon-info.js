@@ -199,15 +199,15 @@ export const elasticInfo = {
   linkedServices: [
     {
       type: 'app',
-      name: 'Kibana',
-      logoUrl: getAssetUrl('/logos/elasticsearch-kibana.svg'),
-      link: 'https://example.com/app',
-    },
-    {
-      type: 'app',
       name: 'APM',
       logoUrl: getAssetUrl('/logos/elasticsearch-apm.svg'),
       link: 'https://example.com/addon',
+    },
+    {
+      type: 'app',
+      name: 'Kibana',
+      logoUrl: getAssetUrl('/logos/elasticsearch-kibana.svg'),
+      link: 'https://example.com/app',
     },
   ],
   docUrlLink: getDocUrl('addons/elastic'),
