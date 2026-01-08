@@ -19,19 +19,19 @@ const PROVIDER_ID = 'es-addon';
  */
 function getServiceData(serviceName, addonProvider, appOverviewUrlPattern) {
   switch (serviceName) {
-    case 'kibana':
-      return {
-        type: 'app',
-        name: 'Kibana',
-        logoUrl: 'https://assets.clever-cloud.com/logos/elasticsearch-kibana.svg',
-        link: appOverviewUrlPattern.replace(':id', addonProvider.kibana_application),
-      };
     case 'apm':
       return {
         type: 'app',
         name: 'APM',
         logoUrl: 'https://assets.clever-cloud.com/logos/elasticsearch-apm.svg',
         link: appOverviewUrlPattern.replace(':id', addonProvider.apm_application),
+      };
+    case 'kibana':
+      return {
+        type: 'app',
+        name: 'Kibana',
+        logoUrl: 'https://assets.clever-cloud.com/logos/elasticsearch-kibana.svg',
+        link: appOverviewUrlPattern.replace(':id', addonProvider.kibana_application),
       };
     default:
       return null;
@@ -106,13 +106,13 @@ defineSmartComponent({
       linkedServices: [
         {
           type: 'app',
-          name: 'Kibana',
+          name: 'APM',
           logoUrl: 'https://example.com',
           link: 'https://example.com',
         },
         {
           type: 'app',
-          name: 'APM',
+          name: 'Kibana',
           logoUrl: 'https://example.com',
           link: 'https://example.com',
         },
@@ -158,7 +158,8 @@ defineSmartComponent({
           openGrafanaLink: grafanaAppLink,
           linkedServices: addonProvider.services
             .filter((service) => service.enabled)
-            .map((service) => getServiceData(service.name, addonProvider, appOverviewUrlPattern)),
+            .map((service) => getServiceData(service.name, addonProvider, appOverviewUrlPattern))
+            .sort((a, b) => a.name.localeCompare(b.name)),
         });
       })
       .catch((error) => {
