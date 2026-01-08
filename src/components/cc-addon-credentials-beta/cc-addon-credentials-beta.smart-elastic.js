@@ -1,9 +1,7 @@
 import { getAddon as getAddonProvider } from '@clevercloud/client/esm/api/v2/providers.js';
 import { ONE_SECOND } from '@clevercloud/client/esm/with-cache.js';
-import { getDocUrl } from '../../lib/dev-hub-url.js';
 import { sendToApi } from '../../lib/send-to-api.js';
 import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
-import { i18n } from '../../translations/translation.js';
 import '../cc-smart-container/cc-smart-container.js';
 import { CcAddonCredentialsBetaClient } from './cc-addon-credentials-beta.client.js';
 import './cc-addon-credentials-beta.js';
@@ -27,10 +25,6 @@ const LOADING_STATE = {
           value: 'fake-skeleton',
         },
       ],
-      docLink: {
-        text: i18n('cc-addon-credentials-beta.doc-link.elastic'),
-        href: getDocUrl('/addons/elastic'),
-      },
     },
     apm: {
       content: [
@@ -47,10 +41,6 @@ const LOADING_STATE = {
           value: 'fake-skeleton',
         },
       ],
-      docLink: {
-        text: i18n('cc-addon-credentials-beta.doc-link.elastic-kibana'),
-        href: getDocUrl('/addons/elastic/#kibana'),
-      },
     },
     kibana: {
       content: [
@@ -63,26 +53,6 @@ const LOADING_STATE = {
           value: 'fake-skeleton',
         },
       ],
-      docLink: {
-        text: i18n('cc-addon-credentials-beta.doc-link.elastic-apm'),
-        href: getDocUrl('/addons/elastic/#elastic-apm'),
-      },
-    },
-    kibana: {
-      content: [
-        {
-          code: 'user',
-          value: 'fake-skeleton',
-        },
-        {
-          code: 'password',
-          value: 'fake-skeleton',
-        },
-      ],
-      docLink: {
-        text: i18n('cc-addon-credentials-beta.doc-link.elastic-kibana'),
-        href: getDocUrl('/addons/elastic/#kibana'),
-      },
     },
   },
 };
@@ -121,7 +91,7 @@ defineSmartComponent({
           (state) => {
             state.type = 'loaded';
             // Build tabs object with only enabled services
-            /** @type {Record<string, {content: AddonCredential[], docLink: {text: string, href: string}}>} */
+            /** @type {Record<string, {content: AddonCredential[]}>} */
             const updatedTabs = {
               elastic: {
                 ...state.tabs.elastic,
