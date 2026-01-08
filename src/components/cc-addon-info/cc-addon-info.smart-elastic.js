@@ -53,14 +53,13 @@ defineSmartComponent({
     ownerId: { type: String },
     addonId: { type: String },
     appOverviewUrlPattern: { type: String },
-    scalabilityUrlPattern: { type: String },
     grafanaLink: { type: Object, optional: true },
   },
   /**
    * @param {OnContextUpdateArgs<CcAddonInfo>} _
    */
   onContextUpdate({ context, updateComponent, signal }) {
-    const { apiConfig, ownerId, addonId, appOverviewUrlPattern, scalabilityUrlPattern, grafanaLink } = context;
+    const { apiConfig, ownerId, addonId, appOverviewUrlPattern, grafanaLink } = context;
 
     const api = new Api({ apiConfig, ownerId, addonId, grafanaLink, signal });
 
@@ -104,7 +103,6 @@ defineSmartComponent({
       ],
       encryption: true,
       openGrafanaLink: grafanaLink != null ? 'https://example.com' : null,
-      openScalabilityLink: '/placeholder',
       linkedServices: [
         {
           type: 'app',
@@ -129,7 +127,7 @@ defineSmartComponent({
 
     api
       .getElasticAddonInfo()
-      .then(({ rawAddon, addonProvider, grafanaAppLink, isKibanaEnabled }) => {
+      .then(({ rawAddon, addonProvider, grafanaAppLink }) => {
         const plan = rawAddon.plan.name;
         // Get standard features from rawAddon
         const features = formatAddonFeatures(rawAddon.plan.features, ['cpu', 'memory', 'disk-size']);
@@ -158,9 +156,6 @@ defineSmartComponent({
           specifications,
           encryption: encryptionFeature.enabled,
           openGrafanaLink: grafanaAppLink,
-          openScalabilityLink: isKibanaEnabled
-            ? scalabilityUrlPattern.replace(':id', addonProvider.kibana_application)
-            : null,
           linkedServices: addonProvider.services
             .filter((service) => service.enabled)
             .map((service) => getServiceData(service.name, addonProvider, appOverviewUrlPattern)),
