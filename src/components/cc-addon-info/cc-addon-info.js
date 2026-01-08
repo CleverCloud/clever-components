@@ -214,6 +214,14 @@ export class CcAddonInfo extends LitElement {
                 </div>
               `
             : ''}
+          <div class="section">
+            <strong class="heading">${i18n('cc-addon-info.creation-date.heading')}</strong>
+            <div class="value">
+              <p class="${classMap({ skeleton })}">
+                ${i18n('cc-addon-info.creation-date.human-friendly-date', { date: this.state.creationDate })}
+              </p>
+            </div>
+          </div>
           ${this.state.plan != null
             ? html`
                 <div class="section">
@@ -246,16 +254,6 @@ export class CcAddonInfo extends LitElement {
                 </div>
               `
             : ''}
-
-          <div class="section">
-            <strong class="heading">${i18n('cc-addon-info.creation-date.heading')}</strong>
-            <div class="value">
-              <p class="${classMap({ skeleton })}">
-                ${i18n('cc-addon-info.creation-date.human-friendly-date', { date: this.state.creationDate })}
-              </p>
-            </div>
-          </div>
-
           ${this.state.role != null
             ? html`
                 <div class="section">
