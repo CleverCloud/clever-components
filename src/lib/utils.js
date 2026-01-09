@@ -174,6 +174,29 @@ export function randomPick(array) {
 }
 
 /**
+ * Finds the index of the last element in an array that satisfies the provided testing function.
+ * Iterates backwards through the array for efficiency.
+ *
+ * @template T
+ * @param {Array<T>} array - The array to search
+ * @param {(value: T, index: number, array: Array<T>) => boolean} predicate - Function to test each element
+ * @returns {number} The index of the last matching element, or -1 if not found
+ */
+export function findLastIndex(array, predicate) {
+  if (array == null) {
+    return -1;
+  }
+
+  for (let i = array.length - 1; i >= 0; i--) {
+    if (predicate(array[i], i, array)) {
+      return i;
+    }
+  }
+
+  return -1;
+}
+
+/**
  * Generates a random string using the given alphabet.
  *
  * @param {number} [length] The size of the string to generated
@@ -264,4 +287,33 @@ export function isVisibleInContainer(element, container) {
     elementRect.bottom <= containerRect.bottom &&
     elementRect.right <= containerRect.right
   );
+}
+
+/**
+ * Trims elements from both the start and end of an array based on a condition function.
+ * Removes consecutive elements from the beginning and end that match the condition,
+ * while preserving all middle elements (including those that match the condition).
+ *
+ * @param {Array<any>} array - The array to trim
+ * @param {Function} condition - Function that returns true for elements to trim
+ * @returns {Array<any>} A new array with matching elements removed from both ends
+ */
+export function trimArray(array, condition) {
+  if (array == null) {
+    return [];
+  }
+
+  let start = 0;
+  let end = array.length - 1;
+
+  while (start <= end && condition(array[start])) {
+    start++;
+  }
+
+  // Find first non-matching from end
+  while (end >= start && condition(array[end])) {
+    end--;
+  }
+
+  return array.slice(start, end + 1);
 }
