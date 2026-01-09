@@ -110,6 +110,7 @@
       }
     </script>
   </head>
+
   <body>
     <cc-smart-container
       context='{ "apiConfig": {"API_HOST": "https://api.clever-cloud.com"},"addonFeatures":["cpu","memory","max-db-size","disk-size","connection-limit","version","databases","has-logs","has-metrics"] }'
@@ -147,6 +148,13 @@
             <div class="product">
               <cc-smart-container context='{ "productId": "cellar" }'>
                 <h2>Cellar</h2>
+                <cc-pricing-product-consumption></cc-pricing-product-consumption>
+              </cc-smart-container>
+            </div>
+
+            <div class="product">
+              <cc-smart-container context='{ "productId": "pulsar" }'>
+                <h2>Pulsar</h2>
                 <cc-pricing-product-consumption></cc-pricing-product-consumption>
               </cc-smart-container>
             </div>

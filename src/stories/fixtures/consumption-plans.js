@@ -5,7 +5,6 @@
 const THIRTY_DAYS_IN_HOURS = 24 * 30;
 const ONE_GIGABYTE = 1e9;
 
-
 /** @type {Omit<PricingProductConsumptionStateLoaded, 'type'>} */
 export const baseCellar = {
   name: 'Cellar',
@@ -80,46 +79,17 @@ export const basePulsar = {
   name: 'Pulsar',
   sections: [
     {
-      type: 'storage',
-      service: 'pulsar_storage_size',
-      intervals: [
-        {
-          minRange: 0,
-          maxRange: 256000000,
-          price: (0 * THIRTY_DAYS_IN_HOURS) / ONE_GIGABYTE,
-        },
-        {
-          minRange: 256000000,
-          maxRange: 50000000000,
-          price: (0.00027777777777777778 * THIRTY_DAYS_IN_HOURS) / ONE_GIGABYTE,
-        },
-        {
-          minRange: 50000000000,
-          maxRange: 250000000000,
-          price: (0.0002083333333333333 * THIRTY_DAYS_IN_HOURS) / ONE_GIGABYTE,
-        },
-        {
-          minRange: 250000000000,
-          maxRange: 1000000000000,
-          price: (0.0001666666666666666 * THIRTY_DAYS_IN_HOURS) / ONE_GIGABYTE,
-        },
-        {
-          minRange: 1000000000000,
-          price: (0.00013888888888888889 * THIRTY_DAYS_IN_HOURS) / ONE_GIGABYTE,
-        },
-      ],
-    },
-    {
       type: 'inbound-traffic',
-      service: 'pulsar_throughput_in',
+      service: 'pulsar.throughput.in',
+      progressive: true,
       intervals: [
         {
           minRange: 0,
-          maxRange: 500000000,
-          price: 0 / ONE_GIGABYTE,
+          maxRange: 512000000,
+          price: 0,
         },
         {
-          minRange: 500000000,
+          minRange: 512000000,
           maxRange: 100000000000,
           price: 0.8 / ONE_GIGABYTE,
         },
@@ -135,21 +105,23 @@ export const basePulsar = {
         },
         {
           minRange: 5000000000000,
+          maxRange: null,
           price: 0.3 / ONE_GIGABYTE,
         },
       ],
     },
     {
       type: 'outbound-traffic',
-      service: 'pulsar_throughput_out',
+      service: 'pulsar.throughput.out',
+      progressive: true,
       intervals: [
         {
           minRange: 0,
-          maxRange: 500000000,
-          price: 0 / ONE_GIGABYTE,
+          maxRange: 512000000,
+          price: 0,
         },
         {
-          minRange: 500000000,
+          minRange: 512000000,
           maxRange: 100000000000,
           price: 0.8 / ONE_GIGABYTE,
         },
@@ -165,7 +137,52 @@ export const basePulsar = {
         },
         {
           minRange: 5000000000000,
+          maxRange: null,
           price: 0.3 / ONE_GIGABYTE,
+        },
+      ],
+    },
+    {
+      type: 'hot-storage',
+      service: 'pulsar.storage.hot',
+      progressive: true,
+      intervals: [
+        {
+          minRange: 0,
+          maxRange: 256000000,
+          price: 0,
+        },
+        {
+          minRange: 256000000,
+          maxRange: 50000000000,
+          price: (0.00027777777 * THIRTY_DAYS_IN_HOURS) / ONE_GIGABYTE,
+        },
+        {
+          minRange: 50000000000,
+          maxRange: 250000000000,
+          price: (0.00020833333 * THIRTY_DAYS_IN_HOURS) / ONE_GIGABYTE,
+        },
+        {
+          minRange: 250000000000,
+          maxRange: 1000000000000,
+          price: (0.00016666666 * THIRTY_DAYS_IN_HOURS) / ONE_GIGABYTE,
+        },
+        {
+          minRange: 1000000000000,
+          maxRange: null,
+          price: (0.00013888888 * THIRTY_DAYS_IN_HOURS) / ONE_GIGABYTE,
+        },
+      ],
+    },
+    {
+      type: 'cold-storage',
+      service: 'pulsar.storage.cold',
+      progressive: true,
+      intervals: [
+        {
+          minRange: 0,
+          maxRange: null,
+          price: (0.00002083333 * THIRTY_DAYS_IN_HOURS) / ONE_GIGABYTE,
         },
       ],
     },

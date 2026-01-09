@@ -32,11 +32,9 @@ const FEATURES_TO_DISPLAY = [
 ];
 
 /**
- * @import { CcPricingPage } from '../components/cc-pricing-page/cc-pricing-page.js'
- * @import { CcPricingHeader } from '../components/cc-pricing-header/cc-pricing-header.js'
  * @import { Temporality, PriceSystem, FormattedFeature } from '../components/common.types.js'
  * @import { CcPricingEstimation } from '../components/cc-pricing-estimation/cc-pricing-estimation.js'
- * @import { PricingEstimationState, PricingEstimationStateLoaded } from '../components/cc-pricing-estimation/cc-pricing-estimation.types.js'
+ * @import { PricingEstimationState } from '../components/cc-pricing-estimation/cc-pricing-estimation.types.js'
  * @import { CcPricingCurrencyChangeEvent } from '../components/cc-pricing-page/cc-pricing-page.events.js'
  * @import { PricingProductState } from '../components/cc-pricing-product/cc-pricing-product.types.js'
  * @import { PricingProductConsumptionStateLoaded, PricingProductConsumptionState } from '../components/cc-pricing-product-consumption/cc-pricing-product-consumption.types.js'

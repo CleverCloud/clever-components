@@ -169,9 +169,10 @@ export interface PricingSection {
     | 'cellar.storage'
     | 'cellar.outbound'
     | 'fsbucket.storage'
-    | 'pulsar_storage_size'
-    | 'pulsar_throughput_in'
-    | 'pulsar_throughput_out'
+    | 'pulsar.storage.cold'
+    | 'pulsar.storage.hot'
+    | 'pulsar.throughput.in'
+    | 'pulsar.throughput.out'
     | 'heptapod.storage'
     | 'heptapod.private_active_users'
     | 'heptapod.public_active_users';
@@ -187,7 +188,14 @@ export interface PricingInterval {
   price: number; // "euros / byte / 30 days" or just "euros / byte" for timeless sections like traffic
 }
 
-type SectionType = 'inbound-traffic' | 'outbound-traffic' | 'storage' | 'private-users' | 'public-users';
+type SectionType =
+  | 'inbound-traffic'
+  | 'outbound-traffic'
+  | 'storage'
+  | 'hot-storage'
+  | 'cold-storage'
+  | 'private-users'
+  | 'public-users';
 
 type ActionType = 'add' | 'none';
 
@@ -359,8 +367,8 @@ export interface Instance {
 export interface PriceSystem {
   id?: string;
   owner_id?: string;
-  start_date: string;
-  end_date: string;
+  start_date?: string;
+  end_date?: string;
   zone_id: string;
   currency: string;
   runtime: Array<{
@@ -383,7 +391,7 @@ export interface PriceSystem {
       secability: string;
       interval: string;
     };
-    first_x_free: number;
+    first_x_free?: number;
     price_plans: Array<{
       plan_id: string;
       max_quantity: number;

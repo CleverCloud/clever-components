@@ -1547,7 +1547,11 @@ export const translations = {
   'cc-pricing-product-consumption.add': `Add`,
   'cc-pricing-product-consumption.bytes': /** @param {{bytes: number}} _ */ ({ bytes }) => formatBytesSi(bytes),
   'cc-pricing-product-consumption.bytes-unit': /** @param {{bytes: number}} _ */ ({ bytes }) => getUnit(bytes),
+  'cc-pricing-product-consumption.cold-storage.label': `storage`,
+  'cc-pricing-product-consumption.cold-storage.title': `Cold storage (HDD):`,
   'cc-pricing-product-consumption.error': `An error occurred while retrieving pricing details.`,
+  'cc-pricing-product-consumption.hot-storage.label': `storage`,
+  'cc-pricing-product-consumption.hot-storage.title': `Hot storage (SSD):`,
   'cc-pricing-product-consumption.inbound-traffic.label': `traffic in`,
   'cc-pricing-product-consumption.inbound-traffic.title': `Inbound traffic:`,
   'cc-pricing-product-consumption.number': /** @param {{number: number}} _ */ ({ number }) =>
