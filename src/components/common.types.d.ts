@@ -169,7 +169,8 @@ export interface PricingSection {
     | 'cellar.storage'
     | 'cellar.outbound'
     | 'fsbucket.storage'
-    | 'pulsar_storage_size'
+    | 'pulsar.storage.cold'
+    | 'pulsar.storage.hot'
     | 'pulsar_throughput_in'
     | 'pulsar_throughput_out'
     | 'heptapod.storage'
@@ -187,7 +188,14 @@ export interface PricingInterval {
   price: number; // "euros / byte / 30 days" or just "euros / byte" for timeless sections like traffic
 }
 
-type SectionType = 'inbound-traffic' | 'outbound-traffic' | 'storage' | 'private-users' | 'public-users';
+type SectionType =
+  | 'inbound-traffic'
+  | 'outbound-traffic'
+  | 'storage'
+  | 'hot-storage'
+  | 'cold-storage'
+  | 'private-users'
+  | 'public-users';
 
 type ActionType = 'add' | 'none';
 

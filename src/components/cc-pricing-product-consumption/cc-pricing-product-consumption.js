@@ -33,6 +33,8 @@ const THIRTY_DAYS_IN_HOURS = 24 * 30;
 
 const ICONS = {
   storage: iconDisk,
+  'cold-storage': iconDisk,
+  'hot-storage': iconDisk,
   'inbound-traffic': iconArrowsRight,
   'outbound-traffic': iconArrowsLeft,
   'private-users': iconUser,
