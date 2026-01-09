@@ -30,6 +30,15 @@ export default defineConfig({
       },
       {
         extends: true,
+        test: {
+          name: 'node',
+          include: ['test/node/**/*.test.js'],
+          browser: { enabled: false },
+          environment: 'node',
+        },
+      },
+      {
+        extends: true,
         plugins: [generateCem(), storyToA11yTestPlugin()],
         resolve: {
           alias: [
@@ -45,15 +54,6 @@ export default defineConfig({
           include: ['src/components/**/*.stories.js'],
           testTimeout: 30000,
           setupFiles: ['./test/vitest-a11y-setup.js'],
-        },
-      },
-      {
-        extends: true,
-        test: {
-          name: 'node',
-          include: ['test/node/**/*.test.js'],
-          browser: { enabled: false },
-          environment: 'node',
         },
       },
     ],
