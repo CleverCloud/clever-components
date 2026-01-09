@@ -292,9 +292,6 @@ export const pulsar = makeStory(conf, {
         type: 'loaded',
         ...pulsarInfo,
       },
-      innerHTML: `
-        <p slot="billing">The beta status means that the service is still being improved, but it is fully integrated into our billing system.</p>
-`,
     },
     {
       /** @type {AddonInfoStateLoading} */
@@ -302,9 +299,6 @@ export const pulsar = makeStory(conf, {
         type: 'loading',
         ...pulsarInfo,
       },
-      innerHTML: `
-        <p slot="billing">The beta status means that the service is still being improved, but it is fully integrated into our billing system.</p>
-`,
     },
   ],
 });
