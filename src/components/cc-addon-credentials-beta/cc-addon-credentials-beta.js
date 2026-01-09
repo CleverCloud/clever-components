@@ -1,6 +1,7 @@
 import { LitElement, css, html } from 'lit';
 import { iconRemixInformationFill as iconInfo } from '../../assets/cc-remix.icons.js';
 import { fakeString } from '../../lib/fake-strings.js';
+import { isStringEmpty } from '../../lib/utils.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-addon-credentials-content/cc-addon-credentials-content.js';
 import '../cc-block-details/cc-block-details.js';
@@ -136,9 +137,11 @@ export class CcAddonCredentialsBeta extends LitElement {
               ></cc-addon-credentials-content>
             `
           : ''}
-        <div slot="footer-right">
-          <cc-link .href="${activeTab.docLink.href}" .icon="${iconInfo}">${activeTab.docLink.text}</cc-link>
-        </div>
+        ${!isStringEmpty(activeTab.docLink?.href)
+          ? html` <div slot="footer-right">
+              <cc-link .href="${activeTab.docLink.href}" .icon="${iconInfo}">${activeTab.docLink.text}</cc-link>
+            </div>`
+          : ''}
       </cc-block>
     `;
   }
