@@ -5,7 +5,7 @@ import '../cc-icon/cc-icon.js';
 import './cc-range-selector.js';
 
 /**
- * @typedef {import('./cc-range-selector.js').CcRangeSelector} CcRangeSelector
+ * @import { CcRangeSelector } from './cc-range-selector.js'
  */
 
 const OPTIONS_DEFAULT = [
