@@ -67,6 +67,8 @@ export class CcAddonCredentialsBeta extends LitElement {
         return i18n('cc-addon-credentials-beta.choice.api');
       case 'apm':
         return i18n('cc-addon-credentials-beta.choice.apm');
+      case 'cli':
+        return i18n('cc-addon-credentials-beta.choice.cli');
       case 'default':
         return i18n('cc-addon-credentials-beta.choice.default');
       case 'direct':
@@ -136,9 +138,11 @@ export class CcAddonCredentialsBeta extends LitElement {
               ></cc-addon-credentials-content>
             `
           : ''}
-        <div slot="footer-right">
-          <cc-link .href="${activeTab.docLink.href}" .icon="${iconInfo}">${activeTab.docLink.text}</cc-link>
-        </div>
+        ${activeTab.docLink?.href
+          ? html` <div slot="footer-right">
+              <cc-link .href="${activeTab.docLink.href}" .icon="${iconInfo}">${activeTab.docLink.text}</cc-link>
+            </div>`
+          : ''}
       </cc-block>
     `;
   }

@@ -1,7 +1,6 @@
 import { getDocUrl } from '../../lib/dev-hub-url.js';
 import {
   azimuttInfo,
-  configInfo,
   elasticInfo,
   jenkinsInfo,
   keycloakInfo,
@@ -273,9 +272,6 @@ export const elastic = makeStory(conf, {
         type: 'loaded',
         ...elasticInfo,
       },
-      innerHTML: `
-        <p slot="linked-services"><em>This add-on is part of the Elastic Stack offering. You can find and access related services above.</em></p>
-`,
     },
     {
       /** @type {AddonInfoStateLoading} */
@@ -283,9 +279,6 @@ export const elastic = makeStory(conf, {
         type: 'loading',
         ...elasticInfo,
       },
-      innerHTML: `
-        <p slot="linked-services"><em>This add-on is part of the Elastic Stack offering. You can find and access related services above.</em></p>
-`,
     },
   ],
 });
@@ -299,38 +292,12 @@ export const pulsar = makeStory(conf, {
         type: 'loaded',
         ...pulsarInfo,
       },
-      innerHTML: `
-        <p slot="billing">The beta status means that the service is still being improved, but it is fully integrated into our billing system.</p>
-`,
     },
     {
       /** @type {AddonInfoStateLoading} */
       state: {
         type: 'loading',
         ...pulsarInfo,
-      },
-      innerHTML: `
-        <p slot="billing">The beta status means that the service is still being improved, but it is fully integrated into our billing system.</p>
-`,
-    },
-  ],
-});
-
-export const config = makeStory(conf, {
-  /** @type {Partial<CcAddonInfo>[]} */
-  items: [
-    {
-      /** @type {AddonInfoStateLoaded} */
-      state: {
-        type: 'loaded',
-        ...configInfo,
-      },
-    },
-    {
-      /** @type {AddonInfoStateLoading} */
-      state: {
-        type: 'loading',
-        ...configInfo,
       },
     },
   ],
