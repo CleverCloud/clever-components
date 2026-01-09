@@ -1,6 +1,6 @@
 /**
- * @typedef {import('./cc-range-selector.js').CcRangeSelector} CcRangeSelector
- * @typedef {import('./cc-range-selector.types.js').RangeSelectorSelection} RangeSelectorSelection
+ * @import { CcRangeSelector } from './cc-range-selector.js'
+ * @import { RangeSelectorSelection } from './cc-range-selector.types.js'
  */
 
 /**

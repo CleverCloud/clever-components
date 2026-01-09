@@ -16,17 +16,13 @@ import { CcRangeSelectEvent, CcRangeSelectorSelectCustom } from './cc-range-sele
 import { RangeSelectorDraggingController } from './range-selector-dragging-controller.js';
 
 /**
- * @typedef {import('./cc-range-selector.types.js').RangeSelectorMode} RangeSelectorMode
- * @typedef {import('./cc-range-selector.types.js').RangeSelectorOption} RangeSelectorOption
- * @typedef {import('./cc-range-selector.types.js').RangeSelectorSelection} RangeSelectorSelection
- * @typedef {import('./cc-range-selector.types.js').RenderOptionContext} RenderOptionContext
- * @typedef {import('../../lib/events.types.js').GenericEventWithTarget<InputEvent, HTMLInputElement>} HTMLInputElementEvent
- * @typedef {import('../../lib/form/validation.types.js').Validator} Validator
- * @typedef {import('../../lib/form/validation.types.js').ErrorMessageMap} ErrorMessageMap
- * @typedef {import('../../lib/form/form.types.js').FormControlData} FormControlData
- * @typedef {import('lit').PropertyValues<CcRangeSelector>} CcRangeSelectorPropertyValues
- * @typedef {import('lit/directives/class-map.js').ClassInfo} ClassInfo
- * @typedef {import('lit/directives/ref.js').Ref<HTMLElement>} HTMLElementRef
+ * @import { RangeSelectorMode, RangeSelectorOption, RangeSelectorSelection, RenderOptionContext } from './cc-range-selector.types.js'
+ * @import { GenericEventWithTarget } from '../../lib/events.types.js'
+ * @import { Validator, ErrorMessageMap } from '../../lib/form/validation.types.js'
+ * @import { FormControlData } from '../../lib/form/form.types.js'
+ * @import { PropertyValues } from 'lit'
+ * @import { ClassInfo } from 'lit/directives/class-map.js'
+ * @import { Ref } from 'lit/directives/ref.js'
  */
 
 /**
@@ -130,16 +126,16 @@ export class CcRangeSelector extends CcFormControlElement {
     /** @type {RangeSelectorSelection | null} The current boundaries of the selector for range mode - stores boundary values (start and end) of the selection. */
     this.selection = null;
 
-    /** @type {HTMLElementRef} */
+    /** @type {Ref<HTMLElement>} */
     this._inputRangeStartRef = createRef();
 
-    /** @type {HTMLElementRef} */
+    /** @type {Ref<HTMLElement>} */
     this._inputRangeEndRef = createRef();
 
-    /** @type {HTMLElementRef} */
+    /** @type {Ref<HTMLElement>} */
     this._errorRef = createRef();
 
-    /** @type {HTMLElementRef} */
+    /** @type {Ref<HTMLElement>} */
     this._selectorRef = createRef();
 
     /** @type {RangeSelectorDraggingController} */
@@ -187,7 +183,7 @@ export class CcRangeSelector extends CcFormControlElement {
   /**
    * Validates selection and trims disabled options from the start and end of the selected range.
    * This ensures that the selection doesn't visually include leading or trailing disabled options.
-   * @param {CcRangeSelectorPropertyValues} changedProperties
+   * @param {PropertyValues<CcRangeSelector>} changedProperties
    */
   willUpdate(changedProperties) {
     if (!changedProperties.has('selection') && !changedProperties.has('options')) {
@@ -348,7 +344,7 @@ export class CcRangeSelector extends CcFormControlElement {
    * For single mode: directly updates value on each input.
    * For range mode: computes next valid range boundaries when user adjusts start/end via keyboard,
    * handling disabled options and boundary crossings. Only applies if adjustment succeeds.
-   * @param {HTMLInputElementEvent} e
+   * @param {GenericEventWithTarget<InputEvent, HTMLInputElement>} e
    * @private
    */
   _onControlInput(e) {
