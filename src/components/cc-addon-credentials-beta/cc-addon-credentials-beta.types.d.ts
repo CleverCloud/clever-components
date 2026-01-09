@@ -23,7 +23,7 @@ export interface AddonCredentialsBetaStateError {
 type Tabs = {
   [key in TabName & string]?: {
     content: Array<AddonCredential>;
-    docLink: {
+    docLink?: {
       text: string;
       href: string;
     };
