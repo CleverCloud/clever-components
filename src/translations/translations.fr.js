@@ -738,7 +738,7 @@ export const translations = {
   'cc-feature-list.error': `Une erreur s'est produite lors du chargement des fonctionnalités expérimentales disponibles`,
   'cc-feature-list.feedback-link': `Donnez votre avis`,
   'cc-feature-list.no-data': `Aucune fonctionnalité expérimentale n'est disponible pour le moment`,
-  'cc-feature-list.notice': `Pensez à recharger votre page après avoir fait des modifications afin de les appliquer`,
+  'cc-feature-list.notice': `La modificiation de fonctionnalités expérimentales nécessite un rechargement de la page`,
   'cc-feature-list.status.alpha': `Alpha`,
   'cc-feature-list.status.beta': `Beta`,
   'cc-feature-list.status.preview': `Aperçu`,
