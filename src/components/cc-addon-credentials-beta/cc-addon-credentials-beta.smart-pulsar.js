@@ -1,8 +1,6 @@
 import { ONE_SECOND } from '@clevercloud/client/esm/with-cache.js';
-import { getDocUrl } from '../../lib/dev-hub-url.js';
 import { sendToApi } from '../../lib/send-to-api.js';
 import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
-import { i18n } from '../../translations/translation.js';
 import '../cc-smart-container/cc-smart-container.js';
 import { CcAddonCredentialsBetaClient } from './cc-addon-credentials-beta.client.js';
 import './cc-addon-credentials-beta.js';
@@ -42,10 +40,6 @@ const LOADING_STATE = {
           value: 'fake-skeleton',
         },
       ],
-      docLink: {
-        text: i18n('cc-addon-credentials-beta.doc-link.pulsar'),
-        href: getDocUrl('/addons/pulsar'),
-      },
     },
   },
 };

@@ -203,7 +203,6 @@ export const translations = {
   'cc-addon-credentials-beta.doc-link.keycloak': `Multi-instances sécurisé - Documentation`,
   'cc-addon-credentials-beta.doc-link.otoroshi-api': `Gérer Otoroshi via son API - Documentation`,
   'cc-addon-credentials-beta.doc-link.otoroshi-ng': `Otoroshi dans un Network Group - Documentation`,
-  'cc-addon-credentials-beta.doc-link.pulsar': `Pulsar - Documentation`,
   'cc-addon-credentials-beta.error': `Une erreur est survenue pendant le chargement des informations`,
   'cc-addon-credentials-beta.heading': `Accès`,
   'cc-addon-credentials-beta.ng-multi-instances.disabling.error': `Une erreur est survenue lors de la désactivation du multi-instances sécurisé`,
