@@ -455,6 +455,7 @@ export class CcRangeSelector extends CcFormControlElement {
   _onFieldsetMouseUp() {
     if (this._dragCtrl.isDragging() && this._dragCtrl.getSize() > 0) {
       this._applyRangeSelection();
+      this._isCustomOptionActive = false;
     }
   }
 
@@ -698,6 +699,10 @@ export class CcRangeSelector extends CcFormControlElement {
    * @private
    */
   _isOptionSelected(value) {
+    if (this._isCustomOptionActive) {
+      return false;
+    }
+
     if (this._isModeSingle()) {
       return this.value === value;
     } else if (!this._dragCtrl.isDragging()) {
@@ -895,7 +900,8 @@ export class CcRangeSelector extends CcFormControlElement {
     const isSelected = this._isOptionSelected(value);
 
     // Check if option is within a range selection but not at the boundaries (used for border-radius styling)
-    const withinSelection = indexes.start < indexes.current && indexes.current < indexes.end;
+    const withinSelection =
+      !this._isCustomOptionActive && indexes.start < indexes.current && indexes.current < indexes.end;
 
     // Check if the next option exists and is selected (used for arrow highlighting logic)
     const nextOptionSelected =
