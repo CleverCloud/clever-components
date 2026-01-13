@@ -23,14 +23,14 @@ export interface AddonCredentialsBetaStateError {
 type Tabs = {
   [key in TabName & string]?: {
     content: Array<AddonCredential>;
-    docLink: {
+    docLink?: {
       text: string;
       href: string;
     };
   };
 };
 
-export type TabName = 'default' | 'admin' | 'api' | 'direct' | 'elastic' | 'apm' | 'kibana';
+export type TabName = 'default' | 'admin' | 'api' | 'apm' | 'cli' | 'direct' | 'elastic' | 'kibana';
 
 // Copies from cc-header-addon-beta, will need to mutualize
 export interface RawAddon {

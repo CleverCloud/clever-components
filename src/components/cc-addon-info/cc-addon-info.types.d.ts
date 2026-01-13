@@ -17,7 +17,8 @@ export interface AddonInfoStateError {
 export interface AddonInfoStateBaseProperties {
   version?: AddonVersionState;
   plan?: string;
-  features?: Array<FormattedFeature>;
+  specifications?: Array<FormattedFeature>;
+  encryption?: boolean;
   creationDate: string | number;
   role?: string;
   openGrafanaLink?: string;

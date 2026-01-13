@@ -19,19 +19,19 @@ const PROVIDER_ID = 'es-addon';
  */
 function getServiceData(serviceName, addonProvider, appOverviewUrlPattern) {
   switch (serviceName) {
-    case 'kibana':
-      return {
-        type: 'app',
-        name: 'Kibana',
-        logoUrl: 'https://assets.clever-cloud.com/logos/elasticsearch-kibana.svg',
-        link: appOverviewUrlPattern.replace(':id', addonProvider.kibana_application),
-      };
     case 'apm':
       return {
         type: 'app',
         name: 'APM',
         logoUrl: 'https://assets.clever-cloud.com/logos/elasticsearch-apm.svg',
         link: appOverviewUrlPattern.replace(':id', addonProvider.apm_application),
+      };
+    case 'kibana':
+      return {
+        type: 'app',
+        name: 'Kibana',
+        logoUrl: 'https://assets.clever-cloud.com/logos/elasticsearch-kibana.svg',
+        link: appOverviewUrlPattern.replace(':id', addonProvider.kibana_application),
       };
     default:
       return null;
@@ -41,6 +41,7 @@ function getServiceData(serviceName, addonProvider, appOverviewUrlPattern) {
 /**
  * @import { CcAddonInfo } from './cc-addon-info.js'
  * @import { AddonInfoStateLoading, ElasticAddonInfo, LinkedService, RawAddon } from './cc-addon-info.types.js'
+ * @import { FormattedFeature } from '../common.types.js'
  * @import { ApiConfig } from '../../lib/send-to-api.types.js'
  * @import { OnContextUpdateArgs } from '../../lib/smart/smart-component.types.js'
  */
@@ -52,14 +53,13 @@ defineSmartComponent({
     ownerId: { type: String },
     addonId: { type: String },
     appOverviewUrlPattern: { type: String },
-    scalabilityUrlPattern: { type: String },
     grafanaLink: { type: Object, optional: true },
   },
   /**
    * @param {OnContextUpdateArgs<CcAddonInfo>} _
    */
   onContextUpdate({ context, updateComponent, signal }) {
-    const { apiConfig, ownerId, addonId, appOverviewUrlPattern, scalabilityUrlPattern, grafanaLink } = context;
+    const { apiConfig, ownerId, addonId, appOverviewUrlPattern, grafanaLink } = context;
 
     const api = new Api({ apiConfig, ownerId, addonId, grafanaLink, signal });
 
@@ -74,8 +74,12 @@ defineSmartComponent({
         latest: '0.0.0',
       },
       creationDate: '2025-08-06 15:03:00',
-      plan: 'XS',
-      features: [
+      specifications: [
+        {
+          code: 'plan',
+          type: 'string',
+          value: 'XS',
+        },
         {
           code: 'cpu',
           type: 'number',
@@ -97,18 +101,18 @@ defineSmartComponent({
           value: 'false',
         },
       ],
+      encryption: true,
       openGrafanaLink: grafanaLink != null ? 'https://example.com' : null,
-      openScalabilityLink: '/placeholder',
       linkedServices: [
         {
           type: 'app',
-          name: 'Kibana',
+          name: 'APM',
           logoUrl: 'https://example.com',
           link: 'https://example.com',
         },
         {
           type: 'app',
-          name: 'APM',
+          name: 'Kibana',
           logoUrl: 'https://example.com',
           link: 'https://example.com',
         },
@@ -123,19 +127,23 @@ defineSmartComponent({
 
     api
       .getElasticAddonInfo()
-      .then(({ rawAddon, addonProvider, grafanaAppLink, isKibanaEnabled }) => {
-        // Get standard features from plan
+      .then(({ rawAddon, addonProvider, grafanaAppLink }) => {
+        const plan = rawAddon.plan.name;
+        // Get standard features from rawAddon
         const features = formatAddonFeatures(rawAddon.plan.features, ['cpu', 'memory', 'disk-size']);
-
+        // Combine data (plan and features) in a `specifications` array
+        /** @type {Array<FormattedFeature>} */
+        const specifications = [
+          /** @type {FormattedFeature} */
+          ({
+            code: 'plan',
+            type: 'string',
+            value: plan,
+          }),
+          ...features,
+        ];
         // Add encryption feature from addonProvider
         const encryptionFeature = addonProvider.features.find((f) => f.name === 'encryption');
-        if (encryptionFeature) {
-          features.push({
-            code: 'encryption-at-rest',
-            type: 'boolean',
-            value: encryptionFeature.enabled ? 'true' : 'false',
-          });
-        }
 
         updateComponent('state', {
           type: 'loaded',
@@ -145,15 +153,13 @@ defineSmartComponent({
             latest: addonProvider.version,
           },
           creationDate: rawAddon.creationDate,
-          plan: rawAddon.plan.name,
-          features,
+          specifications,
+          encryption: encryptionFeature.enabled,
           openGrafanaLink: grafanaAppLink,
-          openScalabilityLink: isKibanaEnabled
-            ? scalabilityUrlPattern.replace(':id', addonProvider.kibana_application)
-            : null,
           linkedServices: addonProvider.services
             .filter((service) => service.enabled)
-            .map((service) => getServiceData(service.name, addonProvider, appOverviewUrlPattern)),
+            .map((service) => getServiceData(service.name, addonProvider, appOverviewUrlPattern))
+            .sort((a, b) => a.name.localeCompare(b.name)),
         });
       })
       .catch((error) => {
@@ -188,17 +194,16 @@ class Api extends CcAddonInfoClient {
   }
 
   /**
-   * @returns {Promise<{ rawAddon: RawAddon, addonProvider: ElasticAddonInfo, grafanaAppLink: string,isKibanaEnabled: boolean }>}
+   * @returns {Promise<{ rawAddon: RawAddon, addonProvider: ElasticAddonInfo, grafanaAppLink: string }>}
    */
   async getElasticAddonInfo() {
     const rawAddon = await this._getAddon();
     const addonProvider = await this._getAddonProvider(rawAddon.provider.id);
-    const isKibanaEnabled = addonProvider.services.some((service) => service.name === 'kibana' && service.enabled);
     const grafanaAppLink =
       this._grafanaLink != null
-        ? await this._getGrafanaAppLink({ appId: addonProvider.app_id, signal: this._signal })
+        ? await this._getGrafanaAppLink({ resourceId: rawAddon.realId, signal: this._signal })
         : null;
 
-    return { rawAddon, addonProvider, grafanaAppLink, isKibanaEnabled };
+    return { rawAddon, addonProvider, grafanaAppLink };
   }
 }

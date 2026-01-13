@@ -50,4 +50,5 @@ type AddonCredentialCode =
   | 'tenant-namespace'
   | 'initial-user'
   | 'open-api-url'
-  | 'url';
+  | 'url'
+  | 'httpUrl';
