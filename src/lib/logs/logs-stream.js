@@ -5,9 +5,9 @@ import { LogsProgress } from './logs-progress.js';
 const USER_STREAM_CLOSE_REASON = 'cc-logs-stream-closed-by-user';
 const COMPLETE_STREAM_CLOSE_REASON = 'cc-logs-stream-closed-by-completed';
 const DISCARD_OVERFLOW_CLOSE_REASON = 'cc-logs-stream-closed-after-discard-overflow';
-const BUFFER_TIMEOUT = 1000;
-const BUFFER_SIZE = 10;
+const BUFFER_TIMEOUT = 500;
 const LOGS_THROTTLE_ELEMENTS = 1000;
+const THROTTLE_PER_IN_MILLISECONDS = 10;
 const MAX_RETRY_COUNT = 10;
 const WAITING_TIMEOUT_LIVE = 2000;
 const WAITING_TIMEOUT_COLD = 8000;
@@ -26,8 +26,8 @@ const WAITING_TIMEOUT_COLD = 8000;
  * This class controls all the logic of connecting to a Clever Log SSE and maintaining the right state according to the stream state and logs loading progress.
  *
  * It contains two abstract methods that must be implemented:
- * * `createStream()` method is responsible to create the right Clever Log SSE client.
- * * `convertLog()` method is responsible to convert the raw log received from the API into the right log Object.
+ * * `createStream()` method is responsible for creating the right Clever Log SSE client.
+ * * `convertLog()` method is responsible for converting the raw log received from the API into the right log Object.
  *
  * The converted logs are stored in an in-memory buffer before being sent to the view.
  *
@@ -52,19 +52,19 @@ export class LogsStream {
    * @param {number} limit
    * @param {object} [config]
    * @param {{live?: number, cold?: number}} [config.waitingTimeout]
+   * @param {number} [config.bufferTimeout]
    */
-  constructor(limit, { waitingTimeout } = {}) {
+  constructor(limit, { waitingTimeout, bufferTimeout } = {}) {
     // The buffer receives logs so that we can append them by batch instead of one by one
     this.#logsBuffer = new Buffer(this._appendLogs.bind(this), {
-      timeout: BUFFER_TIMEOUT,
-      length: BUFFER_SIZE,
+      timeout: bufferTimeout ?? BUFFER_TIMEOUT,
     });
 
     // The current stream state
     this.#streamState = { type: 'idle' };
 
     // Progress controls the progression (it calculates the percentage of progress and the overflowing)
-    this.#progress = new LogsProgress(limit - BUFFER_SIZE);
+    this.#progress = new LogsProgress(limit);
 
     // This timer sets the state to `waitingForFirstLog` when no logs have been received since a certain amount of time.
     // It is started once the connection to the SSE is established
@@ -223,7 +223,12 @@ export class LogsStream {
    * @param {DateRange} dateRange
    */
   #start(dateRange) {
-    this.#logsStream = this._createStream(dateRange, MAX_RETRY_COUNT, LOGS_THROTTLE_ELEMENTS, BUFFER_SIZE)
+    this.#logsStream = this._createStream(
+      dateRange,
+      MAX_RETRY_COUNT,
+      LOGS_THROTTLE_ELEMENTS,
+      THROTTLE_PER_IN_MILLISECONDS,
+    )
       // stream is opened
       .on('open', () => this.#onStreamOpened(dateRange))
       // log received in stream
