@@ -5,6 +5,37 @@ title: 'Changelog'
 
 # Changelog
 
+## [23.0.0](https://github.com/CleverCloud/clever-components/compare/22.8.2...23.0.0) (2026-01-13)
+
+
+### ⚠ BREAKING CHANGES
+
+* **cc-addon-info.*:** rework features section
+* **cc-addon-info.smart-config-provider:** remove smart component for Config Provider
+
+### 🚀 Features
+
+* **addon-info.stories:** remove billing section from Pulsar info block ([d0196f5](https://github.com/CleverCloud/clever-components/commit/d0196f59dd29615aad21620f8a3c00e84737246c))
+* **cc-addon-*.smart-elastic:** display `APM` before `Kibana` ([b3c219d](https://github.com/CleverCloud/clever-components/commit/b3c219d3d21aef9c2f0ac8448fb9c5e90bab952d))
+* **cc-addon-credentials-beta.*:** remove the doc link in Materia access block ([1de6fd9](https://github.com/CleverCloud/clever-components/commit/1de6fd9508660a83ecebd9014532feb928f923bd))
+* **cc-addon-credentials-beta.smart-elastic:** remove doc link ([2265d72](https://github.com/CleverCloud/clever-components/commit/2265d7279f19d2489457908b94d7ef33512669b8))
+* **cc-addon-credentials-beta.smart-pulsar:** move `tenant/namespace` before `token` ([d5f3fc8](https://github.com/CleverCloud/clever-components/commit/d5f3fc8da4169dcf174511fb1d44537ea455adaf))
+* **cc-addon-credentials-beta.smart-pulsar:** remove doc link ([9375320](https://github.com/CleverCloud/clever-components/commit/9375320a702adb5e9275cb875b094516b0139117))
+* **cc-addon-credentials-beta*:** add `api` and `cli` tabs in Pulsar credentials block ([d5afdcb](https://github.com/CleverCloud/clever-components/commit/d5afdcbe23da81197f97cb60e650dccf074f8949))
+* **cc-addon-info.*:** rework features section ([86c5225](https://github.com/CleverCloud/clever-components/commit/86c522536cc9194c91f384528c22372a0fda62ef))
+* **cc-addon-info.smart-config-provider:** remove smart component for Config Provider ([d1c6830](https://github.com/CleverCloud/clever-components/commit/d1c683098b8a9a609a9eb5fae626a7337010dbc6))
+* **cc-addon-info.smart-elastic:** remove `scalability` ([5a49115](https://github.com/CleverCloud/clever-components/commit/5a49115b308d4b30193767f0660da937675355c7))
+* **cc-addon-info:** move `Creation date` up ([c14d6fa](https://github.com/CleverCloud/clever-components/commit/c14d6fa7584a84bac0c1115224e35a91bed99a45))
+
+
+### 🐛 Bug Fixes
+
+* **cc-addon-credentials-content:** update French `token` translation ([b66e567](https://github.com/CleverCloud/clever-components/commit/b66e5675adcccd48fdded4b59f142e75c58f8808))
+* **cc-addon-info.smart-elastic:** use `realId` in Granafa link to redirect to the proper dashboard ([c0351c2](https://github.com/CleverCloud/clever-components/commit/c0351c235d660f888d1e5701b4f0886f803ad3b5))
+* **cc-dialog:** make --cc-dialog-padding actually work ([85d5ae6](https://github.com/CleverCloud/clever-components/commit/85d5ae6997c634de681b68ae43d439ad9fa25442))
+* **cc-dialog:** make close button position responsive on narrow screens ([eed38b7](https://github.com/CleverCloud/clever-components/commit/eed38b7e07263896fe391609fc0e40672ce66fb3))
+* **logs:** refactor buffering to use time-based throttling only ([448b784](https://github.com/CleverCloud/clever-components/commit/448b784cec25ed5a594083727c0af82a0e9dd77d)), closes [#1627](https://github.com/CleverCloud/clever-components/issues/1627)
+
 ## [22.8.2](https://github.com/CleverCloud/clever-components/compare/22.8.1...22.8.2) (2025-12-22)
 
 
