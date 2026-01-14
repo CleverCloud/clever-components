@@ -79,6 +79,28 @@ export const baseFsBucket = {
 export const basePulsar = {
   name: 'Pulsar',
   sections: [
+    // TODO reprendre ici
+ {
+		service: "pulsar.storage.cold",
+		data_quantity_for_price: {
+			secability: "secable",
+			quantity: 1000000000
+		},
+		time_interval_for_price: {
+			secability: "secable",
+			interval: "PT1H"
+		},
+		price_plans: [
+			{
+				plan_id: "ea729802-3682-4e97-99eb-98b7e17894d5",
+				max_quantity: null,
+				price: {
+					source: "0.00002083333000000000",
+					parsedValue: 0.00002083333
+				}
+			}
+		]
+	},
     {
       type: 'storage',
       service: 'pulsar_storage_size',

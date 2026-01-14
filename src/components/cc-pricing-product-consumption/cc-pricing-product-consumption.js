@@ -119,12 +119,16 @@ export class CcPricingProductConsumption extends LitElement {
    * Returns the translated label depending on the section type
    *
    * @param {SectionType} type - the type of the pricing section
-   * @return {string} the translated label corresponding to the given section type
+   * @return {string|Node} the translated label corresponding to the given section type
    */
   _getLabel(type) {
     switch (type) {
       case 'storage':
         return i18n('cc-pricing-product-consumption.storage.label');
+      case 'cold-storage':
+        return i18n('cc-pricing-product-consumption.cold-storage.label');
+      case 'hot-storage':
+        return i18n('cc-pricing-product-consumption.hot-storage.label');
       case 'inbound-traffic':
         return i18n('cc-pricing-product-consumption.inbound-traffic.label');
       case 'outbound-traffic':
