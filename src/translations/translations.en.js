@@ -662,7 +662,7 @@ export const translations = {
     `,
   'cc-env-var-form.cli.content.list-var-command': `List environment variables:`,
   'cc-env-var-form.description.config-provider': /** @param {{addonName: string}} _ */ ({ addonName }) =>
-    sanitize`These variables will be injected as environment variables in applications that have the add-on <strong>${addonName}</strong> in their service dependencies.<br>Every time you update your changes, all the dependent applications will be automatically restarted.`,
+    sanitize`These values will be injected as environment variables in applications that have the add-on <strong>${addonName}</strong> in their service dependencies.<br>Every time you update your changes, all the dependent applications will be automatically restarted.`,
   'cc-env-var-form.description.env-var': /** @param {{appName: string}} _ */ ({ appName }) =>
     sanitize`These variables will be injected as environment variables in the application <strong>${appName}</strong>.`,
   'cc-env-var-form.description.exposed-config': /** @param {{appName: string}} _ */ ({ appName }) =>
