@@ -12,19 +12,23 @@ export class CellarExplorerClient {
   /**
    * @param {ApiConfig} url
    * @param {CellarEndpoint} cellarEndpoint
-   * @param {AbortSignal} signal
    */
-  constructor(url, cellarEndpoint, signal) {
+  constructor(url, cellarEndpoint) {
     this._url = url;
     this._cellarEndpoint = cellarEndpoint;
-    this._signal = signal;
+    this._abortController = new AbortController();
+  }
+
+  close() {
+    this._abortController.abort();
   }
 
   /**
+   * @param {AbortSignal} [signal]
    * @returns {Promise<CellarBucketsListResponse>}
    */
-  listBuckets() {
-    return this.#send(`/cellar/bucket/_list`, { count: 1000 }, true);
+  listBuckets(signal) {
+    return this.#send(`/cellar/bucket/_list`, { count: 1000 }, signal ?? this._abortController.signal);
   }
 
   /**
@@ -34,15 +38,16 @@ export class CellarExplorerClient {
    * @returns {Promise<CellarBucket>}
    */
   createBucket(payload) {
-    return this.#send(`/cellar/bucket/_create`, payload, false);
+    return this.#send(`/cellar/bucket/_create`, payload);
   }
 
   /**
    * @param {string} bucketName
+   * @param {AbortSignal} [signal]
    * @returns {Promise<CellarBucketDetails>}
    */
-  getBucket(bucketName) {
-    return this.#send(`/cellar/bucket/_get`, { name: bucketName }, true);
+  getBucket(bucketName, signal) {
+    return this.#send(`/cellar/bucket/_get`, { name: bucketName }, signal ?? this._abortController.signal);
   }
 
   /**
@@ -50,17 +55,17 @@ export class CellarExplorerClient {
    * @returns {Promise<void>}
    */
   deleteBucket(bucketName) {
-    return this.#send(`/cellar/bucket/_delete`, { name: bucketName }, false);
+    return this.#send(`/cellar/bucket/_delete`, { name: bucketName });
   }
 
   /**
    * @param {string} path
    * @param {object} body
-   * @param {boolean} withSignal
+   * @param {AbortSignal} [signal]
    * @returns {Promise<T>}
    * @template T
    */
-  #send(path, body, withSignal) {
+  #send(path, body, signal) {
     return /** @type {Promise<T>} */ (
       Promise.resolve({
         method: 'post',
@@ -73,7 +78,7 @@ export class CellarExplorerClient {
       })
         // @ts-expect-error FIXME: will become irrelevant when we switch to the new client
         .then(prefixUrl(this._url))
-        .then(withOptions({ signal: withSignal ? this._signal : undefined }))
+        .then(withOptions({ signal }))
         .then(request)
         .catch((error) => {
           window.dispatchEvent(new CcApiErrorEvent(error));
