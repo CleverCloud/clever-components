@@ -39,7 +39,7 @@ defineSmartComponent({
       .then((cellarEndpoint) => {
         updateComponent('state', { type: 'loaded', level: { type: 'buckets', state: { type: 'loading' } } });
 
-        const cellarClient = new CellarExplorerClient(cellarProxyUrl, cellarEndpoint, signal);
+        const cellarClient = new CellarExplorerClient(cellarProxyUrl, cellarEndpoint);
 
         /** @type {() => CcCellarBucketList} */
         const getComponent = () => component.shadowRoot.querySelector('cc-cellar-bucket-list-beta');
@@ -68,6 +68,11 @@ defineSmartComponent({
         onEvent('cc-cellar-bucket-created', (bucketName) => {
           component.scrollToBucket(bucketName);
         });
+
+        signal.onabort = () => {
+          cellarClient.close();
+          bucketsListController.abort();
+        };
       })
       .catch((error) => {
         console.log(error);
