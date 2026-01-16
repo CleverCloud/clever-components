@@ -1620,6 +1620,13 @@ export const translations = {
   'cc-product-list.search-empty': `Aucun produit ne correspond à vos critères de recherche.`,
   'cc-product-list.search-label': `Chercher un produit`,
   //#endregion
+  //#region cc-range-selector
+  'cc-range-selector.custom': `Personnaliser`,
+  'cc-range-selector.error.empty': `Sélectionnez une valeur`,
+  'cc-range-selector.label.end': `Sélectionnez une valeur de fin`,
+  'cc-range-selector.label.start': `Sélectionnez une valeur de début`,
+  'cc-range-selector.required': `obligatoire`,
+  //#endregion
   //#region cc-select
   'cc-select.error.empty': `Sélectionnez une valeur`,
   'cc-select.required': `obligatoire`,
