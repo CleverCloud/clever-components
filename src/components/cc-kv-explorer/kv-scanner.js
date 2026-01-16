@@ -1,5 +1,5 @@
 /**
- * @import { Abortable } from './kv-utils.js'
+ * @import { Abortable } from '../../lib/abortable.js';
  */
 
 /**

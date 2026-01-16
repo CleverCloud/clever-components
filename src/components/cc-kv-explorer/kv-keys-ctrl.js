@@ -1,6 +1,7 @@
+import { Abortable } from '../../lib/abortable.js';
 import { isStringEmpty } from '../../lib/utils.js';
 import { KvScanner } from './kv-scanner.js';
-import { Abortable, matchKvPattern } from './kv-utils.js';
+import { matchKvPattern } from './kv-utils.js';
 
 /**
  * @import { CcKvExplorer } from './cc-kv-explorer.js'

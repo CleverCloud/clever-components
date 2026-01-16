@@ -4,8 +4,8 @@ import { KvKeyEditorCtrl } from './kv-key-editor-ctrl.js';
  * @import { CcKvExplorer } from './cc-kv-explorer.js'
  * @import { CcKvExplorerDetailState, CcKvExplorerDetailStateEditString, CcKvKeyValueString } from './cc-kv-explorer.types.js'
  * @import { KvClient } from './kv-client.js'
- * @import { Abortable } from './kv-utils.js'
  * @import { ObjectOrFunction } from '../common.types.js'
+ * @import { Abortable } from '../../lib/abortable.js'
  */
 
 /**
