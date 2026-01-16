@@ -36,7 +36,7 @@ const conf = {
  * @returns {CcGridCell}
  */
 const simpleCellAt = (_, row, col) => {
-  if (col === 1) {
+  if (col === 0) {
     return {
       type: 'link',
       value: `item ${row + 1} col ${col + 1}`,
@@ -44,11 +44,19 @@ const simpleCellAt = (_, row, col) => {
       onClick: () => {},
     };
   }
+  if (col === 1) {
+    return {
+      type: 'link',
+      value: `item ${row + 1} col ${col + 1}`,
+      onClick: () => {},
+      enableCopyToClipboard: true,
+    };
+  }
   return {
     type: 'text',
     value: `item ${row + 1} col ${col + 1}`,
     icon: col === 0 ? iconHeart : null,
-    enableCopyToClipboard: col === 0,
+    enableCopyToClipboard: col === 3,
   };
 };
 
@@ -68,6 +76,7 @@ export const defaultStory = makeStory(conf, {
         { header: 'Column1', cellAt: simpleCellAt, width: 'minmax(max-content, 1fr)' },
         { header: 'Column2', cellAt: simpleCellAt, width: 'max-content' },
         { header: 'Column3', cellAt: simpleCellAt, width: 'max-content' },
+        { header: 'Column4', cellAt: simpleCellAt, width: 'max-content' },
         { header: '', cellAt: buttonCellAt },
       ],
       items: items(),
@@ -84,6 +93,7 @@ export const withSmallNumberOfItems = makeStory(conf, {
         { header: 'Column1', cellAt: simpleCellAt, width: 'minmax(max-content, 1fr)' },
         { header: 'Column2', cellAt: simpleCellAt, width: 'max-content' },
         { header: 'Column3', cellAt: simpleCellAt, width: 'max-content' },
+        { header: 'Column4', cellAt: simpleCellAt, width: 'max-content' },
         { header: '', cellAt: buttonCellAt },
       ],
       items: items(5),
@@ -100,6 +110,7 @@ export const withFullySkeleton = makeStory(conf, {
         { header: 'Column1', cellAt: simpleCellAt, width: 'minmax(max-content, 1fr)' },
         { header: 'Column2', cellAt: simpleCellAt, width: 'max-content' },
         { header: 'Column3', cellAt: simpleCellAt, width: 'max-content' },
+        { header: 'Column4', cellAt: simpleCellAt, width: 'max-content' },
         { header: '', cellAt: buttonCellAt },
       ],
       items: items(),
@@ -129,6 +140,11 @@ export const withPartiallySkeleton = makeStory(conf, {
           cellAt: (o, row, col) => ({ ...simpleCellAt(o, row, col), skeleton: row > 2 }),
           width: 'max-content',
         },
+        {
+          header: 'Column4',
+          cellAt: (o, row, col) => ({ ...simpleCellAt(o, row, col), skeleton: row > 2 }),
+          width: 'max-content',
+        },
         { header: '', cellAt: (_, row) => ({ ...buttonCellAt(), skeleton: row > 2 }) },
       ],
       items: items(5),
@@ -145,6 +161,7 @@ export const withSortableColumns = makeStory(conf, {
         { header: 'Column1', cellAt: simpleCellAt, width: 'minmax(max-content, 1fr)', sort: 'none' },
         { header: 'Column2', cellAt: simpleCellAt, width: 'max-content', sort: 'none' },
         { header: 'Column3', cellAt: simpleCellAt, width: 'max-content' },
+        { header: 'Column4', cellAt: simpleCellAt, width: 'max-content' },
         { header: '', cellAt: buttonCellAt },
       ],
       items: items(),
@@ -161,6 +178,7 @@ export const withSortedColumns = makeStory(conf, {
         { header: 'Column1', cellAt: simpleCellAt, width: 'minmax(max-content, 1fr)', sort: 'asc' },
         { header: 'Column2', cellAt: simpleCellAt, width: 'max-content', sort: 'desc' },
         { header: 'Column3', cellAt: simpleCellAt, width: 'max-content', sort: 'none' },
+        { header: 'Column4', cellAt: simpleCellAt, width: 'max-content', sort: 'none' },
         { header: '', cellAt: buttonCellAt },
       ],
       items: items(),
@@ -177,6 +195,7 @@ export const withDisabled = makeStory(conf, {
         { header: 'Column1', cellAt: simpleCellAt, width: 'minmax(max-content, 1fr)', sort: 'asc' },
         { header: 'Column2', cellAt: simpleCellAt, width: 'max-content', sort: 'desc' },
         { header: 'Column3', cellAt: simpleCellAt, width: 'max-content', sort: 'none' },
+        { header: 'Column4', cellAt: simpleCellAt, width: 'max-content', sort: 'none' },
         { header: '', cellAt: buttonCellAt },
       ],
       items: items(),
