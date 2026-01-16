@@ -27,6 +27,7 @@ interface CcGridCellLink {
   icon?: IconModel;
   onClick: () => void;
   skeleton?: boolean;
+  enableCopyToClipboard?: boolean;
 }
 
 interface CcGridCellButton {

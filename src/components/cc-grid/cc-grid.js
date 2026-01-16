@@ -558,16 +558,26 @@ export class CcGrid extends LitElement {
     if (cell.type === 'link') {
       return {
         focusable: !skeleton,
-        template: html`<cc-button
-          tabindex=${hasFocus ? '0' : '-1'}
-          data-focusable=${skeleton ? 'false' : 'true'}
-          link
-          .icon=${cell.icon}
-          ?skeleton=${skeleton}
-          ?disabled=${this.disabled}
-          @cc-click=${() => this._onCellClick(rowIndex, columnIndex, cell.onClick)}
-          >${cell.value}</cc-button
-        >`,
+        template: html`<div class="icon-label">
+          ${cell.icon != null ? html`<cc-icon .icon=${cell.icon} ?skeleton=${skeleton}></cc-icon>` : ''}
+          <cc-button
+            tabindex=${hasFocus ? '0' : '-1'}
+            data-focusable=${skeleton ? 'false' : 'true'}
+            link
+            ?skeleton=${skeleton}
+            ?disabled=${this.disabled}
+            @cc-click=${() => this._onCellClick(rowIndex, columnIndex, cell.onClick)}
+            >${cell.value}</cc-button
+          >
+          ${cell.enableCopyToClipboard
+            ? html`<cc-clipboard
+                tabindex=${hasFocus ? '0' : '-1'}
+                data-focusable=${skeleton ? 'false' : 'true'}
+                ?skeleton=${skeleton}
+                value=${cell.value}
+              ></cc-clipboard>`
+            : ''}
+        </div>`,
       };
     }
 
