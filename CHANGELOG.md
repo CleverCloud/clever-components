@@ -5,6 +5,16 @@ title: 'Changelog'
 
 # Changelog
 
+## [23.0.1](https://github.com/CleverCloud/clever-components/compare/23.0.0...23.0.1) (2026-01-16)
+
+
+### 🐛 Bug Fixes
+
+* **cc-addon-credentials-beta.smart-pulsar:** use `url` credential code ([67a3e88](https://github.com/CleverCloud/clever-components/commit/67a3e88f40b0b71b375438181c8feb1d929c7321))
+* **cc-addon-info.smart-elastic:** use `_getGrafanaClusterLink` to redirect to the proper dashboard ([f3210a7](https://github.com/CleverCloud/clever-components/commit/f3210a7c92733800b3e4bb1fe4fa0fd6c9ebb951))
+* fix date formatting by handling inconsistent timezone output format ([9edee97](https://github.com/CleverCloud/clever-components/commit/9edee97cd00b7a4f42afadaca5eaddf30050b447))
+* **translation:** rework `cc-env-var-form.description.config-provider` translations ([78ec8b2](https://github.com/CleverCloud/clever-components/commit/78ec8b243531020a36cb37485bd9c2c818ca9129))
+
 ## [23.0.0](https://github.com/CleverCloud/clever-components/compare/22.8.2...23.0.0) (2026-01-13)
 
 
