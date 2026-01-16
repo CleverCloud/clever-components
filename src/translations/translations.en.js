@@ -492,6 +492,62 @@ export const translations = {
   //#region cc-cellar-explorer
   'cc-cellar-explorer.error': `Error while loading component`,
   //#endregion
+  //#region cc-cellar-object-list
+  'cc-cellar-object-list.back-to-bucket-list': `Go back to list of buckets`,
+  'cc-cellar-object-list.date': /** @param {{date: string}} _ */ ({ date }) => formatDateOnly(date),
+  'cc-cellar-object-list.details.actions.delete.button': `Delete object`,
+  'cc-cellar-object-list.details.actions.download.button': `Download object`,
+  'cc-cellar-object-list.details.actions.title': `Actions`,
+  'cc-cellar-object-list.details.heading': `Object details`,
+  'cc-cellar-object-list.details.overview.content-type': `Content type`,
+  'cc-cellar-object-list.details.overview.date': /** @param {{date: string}} _ */ ({ date }) => formatDate(date),
+  'cc-cellar-object-list.details.overview.location': `Location`,
+  'cc-cellar-object-list.details.overview.size': `Size`,
+  'cc-cellar-object-list.details.overview.size-in-bytes': /** @param {{size: number}} _ */ ({ size }) => {
+    const formatted = formatBytes(size);
+    const exact = `${formatNumber(lang, size)}${BYTES_SI_SEPARATOR}${BYTES_SYMBOL}`;
+    return formatted === exact
+      ? formatted
+      : `${formatted} (${formatNumber(lang, size)}${BYTES_SI_SEPARATOR}byte${size <= 1 ? '' : 's'})`;
+  },
+  'cc-cellar-object-list.details.overview.title': `Object overview`,
+  'cc-cellar-object-list.details.overview.updated-at': `Last update`,
+  'cc-cellar-object-list.empty.no-filtered-items': `No objects matching the filter were found`,
+  'cc-cellar-object-list.empty.no-items': `There are no objects`,
+  'cc-cellar-object-list.error': `Something went wrong while loading the list of objects`,
+  'cc-cellar-object-list.error.bucket-not-found': /** @param {{bucketName: string}} _ */ ({ bucketName }) =>
+    `Bucket ${bucketName} does not exist`,
+  'cc-cellar-object-list.error.object-deletion-failed': /** @param {{objectKey: string}} _ */ ({ objectKey }) =>
+    `Failed to delete object ${objectKey}`,
+  'cc-cellar-object-list.error.object-fetch-failed': /** @param {{objectKey: string}} _ */ ({ objectKey }) =>
+    `Failed to get object ${objectKey}`,
+  'cc-cellar-object-list.error.object-not-found': /** @param {{objectKey: string}} _ */ ({ objectKey }) =>
+    `Object ${objectKey} does not exist`,
+  'cc-cellar-object-list.grid.a11y-name': `List of objects`,
+  'cc-cellar-object-list.grid.column.last-update': `Last update`,
+  'cc-cellar-object-list.grid.column.name': `Name`,
+  'cc-cellar-object-list.grid.column.size': `Size`,
+  'cc-cellar-object-list.grid.show-details.a11y-name': /** @param {{objectName: string}} _ */ ({ objectName }) =>
+    `Show details for object ${objectName}`,
+  'cc-cellar-object-list.heading.filter.button': `Filter`,
+  'cc-cellar-object-list.heading.filter.label': `Filter`,
+  'cc-cellar-object-list.heading.title': `List of objects`,
+  'cc-cellar-object-list.icon.icon-file': `File`,
+  'cc-cellar-object-list.icon.icon-file-archive': `Archive`,
+  'cc-cellar-object-list.icon.icon-file-audio': `Audio file`,
+  'cc-cellar-object-list.icon.icon-file-image': `Image file`,
+  'cc-cellar-object-list.icon.icon-file-pdf': `PDF file`,
+  'cc-cellar-object-list.icon.icon-file-text': `Text file`,
+  'cc-cellar-object-list.icon.icon-file-video': `Video file`,
+  'cc-cellar-object-list.nav-label': `Breadcrumb: Object list`,
+  'cc-cellar-object-list.page.next': `Next page`,
+  'cc-cellar-object-list.page.previous': `Previous page`,
+  'cc-cellar-object-list.size': /** @param {{size: number}} _ */ ({ size }) => formatBytes(size),
+  'cc-cellar-object-list.success.object-already-deleted': /** @param {{objectKey: string}} _ */ ({ objectKey }) =>
+    `Object ${objectKey} was already deleted`,
+  'cc-cellar-object-list.success.object-deleted': /** @param {{objectKey: string}} _ */ ({ objectKey }) =>
+    `Object ${objectKey} deleted successfully`,
+  //#endregion
   //#region cc-clipboard
   'cc-clipboard.copied': `The text has been copied`,
   'cc-clipboard.copy': /** @param {{text: string}} _ */ ({ text }) =>

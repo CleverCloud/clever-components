@@ -25,6 +25,17 @@ import {
   CcCellarBucketSortEvent,
 } from '../components/cc-cellar-bucket-list/cc-cellar-bucket-list.events.js';
 import {
+  CcCellarNavigateToBucketEvent,
+  CcCellarNavigateToHomeEvent,
+  CcCellarNavigateToNextPageEvent,
+  CcCellarNavigateToPathEvent,
+  CcCellarNavigateToPreviousPageEvent,
+  CcCellarObjectDeleteEvent,
+  CcCellarObjectFilterEvent,
+  CcCellarObjectHideEvent,
+  CcCellarObjectShowEvent,
+} from '../components/cc-cellar-object-list/cc-cellar-object-list.events.js';
+import {
   CcDomainAddEvent,
   CcDomainDeleteEvent,
   CcDomainMarkAsPrimaryEvent,
@@ -206,6 +217,15 @@ declare global {
     'cc-cellar-bucket-hide': CcCellarBucketHideEvent;
     'cc-cellar-bucket-show': CcCellarBucketShowEvent;
     'cc-cellar-bucket-sort': CcCellarBucketSortEvent;
+    'cc-cellar-navigate-to-bucket': CcCellarNavigateToBucketEvent;
+    'cc-cellar-navigate-to-home': CcCellarNavigateToHomeEvent;
+    'cc-cellar-navigate-to-next-page': CcCellarNavigateToNextPageEvent;
+    'cc-cellar-navigate-to-path': CcCellarNavigateToPathEvent;
+    'cc-cellar-navigate-to-previous-page': CcCellarNavigateToPreviousPageEvent;
+    'cc-cellar-object-delete': CcCellarObjectDeleteEvent;
+    'cc-cellar-object-filter': CcCellarObjectFilterEvent;
+    'cc-cellar-object-hide': CcCellarObjectHideEvent;
+    'cc-cellar-object-show': CcCellarObjectShowEvent;
     'cc-click': CcClickEvent;
     'cc-close': CcCloseEvent;
     'cc-close-request': CcCloseRequestEvent;
