@@ -4,6 +4,8 @@ export type ValueOrArray<T> = T | Array<ValueOrArray<T>>;
 
 export type ObjectOrFunction<T, R = void> = T | ((obj: T) => R);
 
+export type UpdateCallback<T> = <V extends T, R extends T>(property: V | ((obj: V) => R | void)) => void;
+
 export interface App {
   name: string; // Name of the application
   commit?: string; // Head commit on remote repo if app is not brand new (full SHA-1)
