@@ -215,7 +215,6 @@ export const translations = {
   'cc-addon-credentials-content.code.direct-port': `Direct port`,
   'cc-addon-credentials-content.code.direct-uri': `Direct URI`,
   'cc-addon-credentials-content.code.host': `Host`,
-  'cc-addon-credentials-content.code.http-url': `URL:port`,
   'cc-addon-credentials-content.code.initial-password': `Initial password`,
   'cc-addon-credentials-content.code.initial-user': `Initial User`,
   'cc-addon-credentials-content.code.network-group-multi-instances': `Secured multi-instances`,

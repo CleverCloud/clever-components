@@ -25,7 +25,6 @@ const credentialsToDisplayAsString = new Set([
   'initial-user',
   'open-api-url',
   'url',
-  'httpUrl',
 ]);
 /** @type {Set<AddonCredential['code']>} */
 const credentialsToDisplayAsInput = new Set([
@@ -132,8 +131,6 @@ export class CcAddonCredentialsContent extends LitElement {
         return i18n('cc-addon-credentials-content.code.open-api-url');
       case 'url':
         return i18n('cc-addon-credentials-content.code.url');
-      case 'httpUrl':
-        return i18n('cc-addon-credentials-content.code.http-url');
       default:
         return code;
     }
