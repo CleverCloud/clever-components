@@ -2,12 +2,14 @@ import { css, html, LitElement } from 'lit';
 import { createRef, ref } from 'lit/directives/ref.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-cellar-bucket-list/cc-cellar-bucket-list.js';
+import '../cc-cellar-object-list/cc-cellar-object-list.js';
 import '../cc-loader/cc-loader.js';
 import '../cc-notice/cc-notice.js';
 
 /**
  * @import { CellarExplorerState } from './cc-cellar-explorer.types.js'
  * @import { CcCellarBucketList } from '../cc-cellar-bucket-list/cc-cellar-bucket-list.js'
+ * @import { CcCellarObjectList } from '../cc-cellar-object-list/cc-cellar-object-list.js'
  * @import { Ref } from 'lit/directives/ref.js'
  */
 
@@ -31,6 +33,8 @@ export class CcCellarExplorer extends LitElement {
 
     /** @type {Ref<CcCellarBucketList>} */
     this._bucketListRef = createRef();
+    /** @type {Ref<CcCellarObjectList>} */
+    this._objectListRef = createRef();
   }
 
   /**
@@ -39,6 +43,13 @@ export class CcCellarExplorer extends LitElement {
   scrollToBucket(bucketName) {
     this.updateComplete.then(() => {
       this._bucketListRef.value?.scrollToBucket(bucketName);
+    });
+  }
+
+  focusFirstCell() {
+    this.updateComplete.then(() => {
+      this._bucketListRef.value?.focusFirstCell();
+      this._objectListRef.value?.focusFirstCell();
     });
   }
 
@@ -58,7 +69,11 @@ export class CcCellarExplorer extends LitElement {
       ></cc-cellar-bucket-list-beta>`;
     }
 
-    return html``;
+    return html`<cc-cellar-object-list-beta
+      ${ref(this._objectListRef)}
+      class="main"
+      .state=${this.state.level.state}
+    ></cc-cellar-object-list-beta>`;
   }
 
   static get styles() {
