@@ -168,7 +168,10 @@ export class DateFormatter {
     }
 
     if (this._isZoneOffsetIncluded) {
-      result.timezone = dateParts.timeZoneName === 'GMT' ? 'Z' : dateParts.timeZoneName.slice(3);
+      result.timezone =
+        dateParts.timeZoneName === 'GMT' || dateParts.timeZoneName === 'GMT+00:00'
+          ? 'Z'
+          : dateParts.timeZoneName.slice(3);
     }
 
     return result;
