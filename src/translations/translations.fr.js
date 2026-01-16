@@ -226,7 +226,6 @@ export const translations = {
   'cc-addon-credentials-content.code.direct-port': `Port direct`,
   'cc-addon-credentials-content.code.direct-uri': `URI directe`,
   'cc-addon-credentials-content.code.host': `Hôte`,
-  'cc-addon-credentials-content.code.http-url': `URL:port`,
   'cc-addon-credentials-content.code.initial-password': `Mot de passe initial`,
   'cc-addon-credentials-content.code.initial-user': `Utilisateur initial`,
   'cc-addon-credentials-content.code.network-group-multi-instances': `Multi-instances sécurisé`,
@@ -670,7 +669,7 @@ export const translations = {
     `,
   'cc-env-var-form.cli.content.list-var-command': `Lister les variables d'environnement\u00A0:`,
   'cc-env-var-form.description.config-provider': /** @param {{addonName: string}} _ */ ({ addonName }) =>
-    sanitize`Ces seront injectées en tant que variables d'environnement dans les applications qui ont l'add-on <strong>${addonName}</strong> dans leurs services liés.<br>À chaque fois que vous mettez à jour les changements, toutes les applications dépendantes seront redémarrées automatiquement.`,
+    sanitize`Ces valeurs seront injectées en tant que variables d'environnement dans les applications qui ont l'add-on <strong>${addonName}</strong> dans leurs services liés.<br>À chaque fois que vous mettez à jour les changements, toutes les applications dépendantes seront redémarrées automatiquement.`,
   'cc-env-var-form.description.env-var': /** @param {{appName: string}} _ */ ({ appName }) =>
     sanitize`Ces variables seront injectées en tant que variables d'environnement dans l'application <strong>${appName}</strong>.`,
   'cc-env-var-form.description.exposed-config': /** @param {{appName: string}} _ */ ({ appName }) =>

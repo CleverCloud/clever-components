@@ -1,4 +1,5 @@
 import { getAddon as getAddonProvider } from '@clevercloud/client/esm/api/v2/providers.js';
+import { getGrafanaOrganisation } from '@clevercloud/client/esm/api/v4/saas.js';
 import { ONE_SECOND } from '@clevercloud/client/esm/with-cache.js';
 import { getDocUrl } from '../../lib/dev-hub-url.js';
 import { formatAddonFeatures } from '../../lib/product.js';
@@ -194,6 +195,32 @@ class Api extends CcAddonInfoClient {
   }
 
   /**
+   * @param {Object} parameters
+   * @param {string} parameters.realId
+   * @param {AbortSignal} parameters.signal
+   * @returns {Promise<string>}
+   */
+  _getGrafanaClusterLink({ realId, signal }) {
+    return getGrafanaOrganisation({ id: this._ownerId })
+      .then(sendToApi({ apiConfig: this._apiConfig, signal }))
+      .then((grafanaOrg) => {
+        const grafanaClusterLink = new URL('/d/elasticsearch/elasticsearch-cluster', this._grafanaLink.base);
+        grafanaClusterLink.searchParams.set('orgId', grafanaOrg.id);
+        grafanaClusterLink.searchParams.set('var-SELECT_APP', realId);
+        return grafanaClusterLink.toString();
+      })
+      .catch(
+        /** @param {Error & { response?: { status?: number }}} error */
+        (error) => {
+          if (error.response?.status === 404) {
+            return this._grafanaLink.console;
+          }
+          throw error;
+        },
+      );
+  }
+
+  /**
    * @returns {Promise<{ rawAddon: RawAddon, addonProvider: ElasticAddonInfo, grafanaAppLink: string }>}
    */
   async getElasticAddonInfo() {
@@ -201,7 +228,7 @@ class Api extends CcAddonInfoClient {
     const addonProvider = await this._getAddonProvider(rawAddon.provider.id);
     const grafanaAppLink =
       this._grafanaLink != null
-        ? await this._getGrafanaAppLink({ resourceId: rawAddon.realId, signal: this._signal })
+        ? await this._getGrafanaClusterLink({ realId: rawAddon.realId, signal: this._signal })
         : null;
 
     return { rawAddon, addonProvider, grafanaAppLink };

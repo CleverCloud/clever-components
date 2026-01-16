@@ -12,7 +12,7 @@ const LOADING_STATE = {
     api: {
       content: [
         {
-          code: 'httpUrl',
+          code: 'url',
           value: 'fake-skeleton',
         },
         {
@@ -153,7 +153,7 @@ class Api extends CcAddonCredentialsBetaClient {
       case 'api':
         return [
           {
-            code: 'httpUrl',
+            code: 'url',
             value: `https://${addonCluster.url}:${addonCluster.web_tls_port}`,
           },
           {
