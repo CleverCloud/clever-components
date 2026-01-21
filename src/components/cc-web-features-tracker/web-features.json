@@ -64,6 +64,13 @@
       "canBeUsedWithPolyfill": false
     },
     {
+      "featureId": "navigation",
+      "category": "JS",
+      "comment": "Provides an interface for managing and interacting with the browser's navigation history.",
+      "isProgressiveEnhancement": false,
+      "canBeUsedWithPolyfill": false
+    },
+    {
       "featureId": "overflow-clip-margin",
       "category": "CSS",
       "comment": "Sets how far overflow content may appear outside the bounds of an element. Useful when focus outline is hidden by overflow: hidden.",
@@ -82,6 +89,13 @@
       "category": "CSS",
       "comment": "For aligning nested grid items with the parent grid.",
       "isProgressiveEnhancement": true,
+      "canBeUsedWithPolyfill": false
+    },
+    {
+      "featureId": "temporal",
+      "category": "JS",
+      "comment": "A new date/time API for JavaScript that provides a modern alternative to the existing Date object.",
+      "isProgressiveEnhancement": false,
       "canBeUsedWithPolyfill": false
     },
     {
