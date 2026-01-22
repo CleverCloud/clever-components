@@ -33,5 +33,6 @@ export interface NetworkGroupMember {
   };
   domainName: string;
   kind: 'APPLICATION' | 'EXTERNAL' | 'ADDON';
-  peerList: NetworkGroupPeer[]; // could be an empty array
+  peerList: NetworkGroupPeer[];
+  dashboardUrl?: string;
 }

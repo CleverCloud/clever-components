@@ -7,6 +7,7 @@ import {
 } from '../../assets/cc-remix.icons.js';
 import { LostFocusController } from '../../controllers/lost-focus-controller.js';
 import { getDevHubUrl } from '../../lib/dev-hub-url.js';
+import { isStringEmpty } from '../../lib/utils.js';
 import { accessibilityStyles } from '../../styles/accessibility.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-block-details/cc-block-details.js';
@@ -190,13 +191,19 @@ export class CcNetworkGroupLinkedResources extends LitElement {
             </span>
           </div>
 
-          <div class="member-card--without-peers__footer">
-            <div class="member-card--without-peers__footer__domain">
-              <!-- FIXME: link is not really relevant since it can only accessed by member peers -->
-              ${member.domainName}
-              <cc-clipboard value="${member.domainName}"></cc-clipboard>
-            </div>
+          <div class="member-card--without-peers__domain">
+            ${member.domainName}
+            <cc-clipboard value="${member.domainName}"></cc-clipboard>
+          </div>
 
+          <div class="member-card--without-peers__footer">
+            ${!isStringEmpty(member.dashboardUrl)
+              ? html`
+                  <div class="member-card--without-peers__dashboard-link">
+                    <cc-link href="${member.dashboardUrl}"></cc-link>
+                  </div>
+                `
+              : ''}
             <cc-button
               class="member-card--without-peers__footer__unlink-btn"
               danger
@@ -249,6 +256,14 @@ export class CcNetworkGroupLinkedResources extends LitElement {
                 (peer) => html`<cc-network-group-peer-card .peer="${peer}"></cc-network-group-peer-card>`,
               )}
             </div>
+      <div class="member-card--with-peers__details__footer">
+            ${!isStringEmpty(member.dashboardUrl)
+              ? html`
+                  <div class="member-card--without-peers__dashboard-link">
+                    <cc-link href="${member.dashboardUrl}"></cc-link>
+                  </div>
+                `
+              : ''}
             <cc-button
               class="member-card--with-peers__details__unlink-btn"
               danger
@@ -259,9 +274,9 @@ export class CcNetworkGroupLinkedResources extends LitElement {
             >
               ${i18n('cc-network-group-linked-resources.member.unlink')}
             </cc-button>
+        </div>
           </details>
           <div class="member-card--with-peers__domain">
-            <!-- FIXME: link is not really relevant since it can only accessed by member peers -->
             ${member.domainName}
             <cc-clipboard value="${member.domainName}"></cc-clipboard>
           </div>

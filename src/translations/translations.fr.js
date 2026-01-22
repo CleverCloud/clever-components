@@ -312,13 +312,8 @@ export const translations = {
   'cc-addon-info.creation-date.heading': `Date de création`,
   'cc-addon-info.creation-date.human-friendly-date': /** @param {{ date: string | number }} _ */ ({ date }) =>
     formatDatetime(date),
-<<<<<<< HEAD
-||||||| parent of 2033ec41 (feat: dashboard)
-  'cc-addon-info.doc-link.config-provider': `Configuration Provider - Documentation`,
-=======
   'cc-addon-info.description.heading': `Description`,
   'cc-addon-info.doc-link.config-provider': `Configuration Provider - Documentation`,
->>>>>>> 2033ec41 (feat: dashboard)
   'cc-addon-info.doc-link.elastic': `Elastic Stack - Documentation`,
   'cc-addon-info.doc-link.jenkins': `Jenkins - Documentation`,
   'cc-addon-info.doc-link.keycloak': `Keycloak - Documentation`,
@@ -333,8 +328,8 @@ export const translations = {
   'cc-addon-info.grafana.link': `Ouvrir Grafana`,
   'cc-addon-info.heading': `Informations`,
   'cc-addon-info.last-ip.heading': `Dernière IP`,
-  'cc-addon-info.nb-of-members.heading': `Nombre de membres`,
-  'cc-addon-info.nb-of-peers.heading': `Nombre de pairs`,
+  'cc-addon-info.number-of-members.heading': `Nombre de membres`,
+  'cc-addon-info.number-of-peers.heading': `Nombre de pairs`,
   'cc-addon-info.plan.heading': `Plan`,
   'cc-addon-info.resources.heading': `Ressources`,
   'cc-addon-info.role.heading': `Rôle`,
@@ -342,7 +337,6 @@ export const translations = {
   'cc-addon-info.scalability.link': `Configurer la scalabilité`,
   'cc-addon-info.service.name.addon': /** @param {{name: string}} _ */ ({ name }) => `Add-on ${name}`,
   'cc-addon-info.service.name.app': /** @param {{name: string}} _ */ ({ name }) => `Application ${name}`,
-<<<<<<< HEAD
   'cc-addon-info.specification.connection-limit': `Limite de connexions`,
   'cc-addon-info.specification.cpu': `vCPUs`,
   'cc-addon-info.specification.data-exploration': `Exploration des données`,
@@ -360,11 +354,7 @@ export const translations = {
   'cc-addon-info.specification.plan': `Plan`,
   'cc-addon-info.specification.users': `Utilisateurs`,
   'cc-addon-info.specification.version': `Version`,
-||||||| parent of 2033ec41 (feat: dashboard)
-=======
   'cc-addon-info.subnet.heading': `Sous-réseau`,
-  'cc-addon-info.tags.heading': `Tags`,
->>>>>>> 2033ec41 (feat: dashboard)
   'cc-addon-info.type.boolean': /** @param {{boolean: boolean}} _ */ ({ boolean }) => `${boolean ? 'Oui' : 'Non'}`,
   'cc-addon-info.type.boolean-shared': /** @param {{shared: boolean}} _ */ ({ shared }) =>
     `${shared ? 'Partagé' : 'Dédié'}`,
@@ -1333,6 +1323,7 @@ export const translations = {
   'cc-network-group-dashboard.danger-zone.heading': `Zone de danger`,
   'cc-network-group-dashboard.delete.error': `Une erreur est survenue lors de la suppression du Network Group.`,
   'cc-network-group-dashboard.delete.success': `Le Network Group a été supprimé avec succès.`,
+  'cc-network-group-dashboard.doc-link.text': `Network Groups - Documentation`,
   //#endregion
   //#region cc-network-group-linked-resources
   'cc-network-group-linked-resources.cli...': ``,

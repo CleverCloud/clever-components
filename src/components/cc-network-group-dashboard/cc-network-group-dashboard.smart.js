@@ -8,7 +8,7 @@ import '../cc-smart-container/cc-smart-container.js';
 import './cc-network-group-dashboard.js';
 
 /**
- * @import { OnContextUpdateArgs, SmartContext } from '../../lib/smart/smart-component.types.js'
+ * @import { OnContextUpdateArgs } from '../../lib/smart/smart-component.types.js'
  * @import { CcNetworkGroupDashboard } from './cc-network-group-dashboard.js'
  * @import { ApiConfig } from '../../lib/send-to-api.types.js'
  */
@@ -48,14 +48,11 @@ defineSmartComponent({
           type: 'loaded',
           name: ng.label,
           id: ng.id,
-          // FIXME: ng has no creation date in API
-          creationDate: '2025-08-06 15:03:00',
           description: ng.description,
           subnet: ng.networkIp,
           lastIp: ng.lastAllocatedIp,
           numberOfMembers: ng.members.length,
           numberOfPeers: ng.peers.length,
-          tags: ng.tags,
         });
       })
       .catch((error) => {
@@ -84,21 +81,3 @@ defineSmartComponent({
     });
   },
 });
-
-class Api {
-  /**
-   * @param {Object} params
-   * @param {Object} params.apiConfig
-   * @param {string} params.ownerId
-   * @param {string} params.networkGroupId
-   * @param {AbortSignal} params.signal
-   */
-  constructor({ apiConfig, ownerId, networkGroupId, signal }) {
-    this.apiConfig = apiConfig;
-    this.ownerId = ownerId;
-    this.networkGroupId = networkGroupId;
-    this.signal = signal;
-  }
-
-  getNgInfo() {}
-}

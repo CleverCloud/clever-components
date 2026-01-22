@@ -315,8 +315,8 @@ export const translations = {
   'cc-addon-info.grafana.link': `Open Grafana`,
   'cc-addon-info.heading': `Information`,
   'cc-addon-info.last-ip.heading': `Last IP`,
-  'cc-addon-info.nb-of-members.heading': `Number of members`,
-  'cc-addon-info.nb-of-peers.heading': `Number of peers`,
+  'cc-addon-info.number-of-members.heading': `Number of members`,
+  'cc-addon-info.number-of-peers.heading': `Number of peers`,
   'cc-addon-info.plan.heading': `Plan`,
   'cc-addon-info.resources.heading': `Resources`,
   'cc-addon-info.role.heading': `Role`,
@@ -341,6 +341,7 @@ export const translations = {
   'cc-addon-info.specification.plan': `Plan`,
   'cc-addon-info.specification.users': `Users`,
   'cc-addon-info.specification.version': `Version`,
+  'cc-addon-info.subnet.heading': `Subnet`,
   'cc-addon-info.type.boolean': /** @param {{boolean: boolean}} _ */ ({ boolean }) => `${boolean ? 'Yes' : 'No'}`,
   'cc-addon-info.type.boolean-shared': /** @param {{shared: boolean}} _ */ ({ shared }) =>
     `${shared ? 'Shared' : 'Dedicated'}`,
@@ -1308,6 +1309,7 @@ export const translations = {
   'cc-network-group-dashboard.danger-zone.heading': `Danger Zone`,
   'cc-network-group-dashboard.delete.error': `Something went wrong while deleting the network group.`,
   'cc-network-group-dashboard.delete.success': `The network group has been deleted successfully.`,
+  'cc-network-group-dashboard.doc-link.text': `Network Groups - Documentation`,
   //#endregion
   //#region cc-network-group-linked-resources
   'cc-network-group-linked-resources.cli...': ``,

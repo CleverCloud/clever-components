@@ -1,10 +1,13 @@
 import { css, html, LitElement } from 'lit';
 import { getAssetUrl } from '../../lib/assets-url.js';
+import { getDocUrl } from '../../lib/dev-hub-url.js';
 import { fakeString } from '../../lib/fake-strings.js';
 import { i18n } from '../../lib/i18n/i18n.js';
 import '../cc-addon-header/cc-addon-header.js';
 import '../cc-addon-info/cc-addon-info.js';
+import '../cc-block-details/cc-block-details.js';
 import '../cc-button/cc-button.js';
+import '../cc-code/cc-code.js';
 import '../cc-dialog-confirm-form/cc-dialog-confirm-form.js';
 import '../cc-dialog/cc-dialog.js';
 import { CcNetworkGroupDeleteEvent } from './cc-network-group-dashboard.events.js';
@@ -19,8 +22,7 @@ const SKELETON_HEADER_STATE = {
   name: fakeString(10),
   id: fakeString(10),
   providerId: 'network-group',
-  // FIXME: upload NG logo and use real logo URL
-  providerLogoUrl: getAssetUrl('logos/clever-cloud.svg'),
+  providerLogoUrl: getAssetUrl('logos/network-group.svg'),
 };
 
 const SKELETON_INFO_STATE = {
@@ -71,6 +73,43 @@ export class CcNetworkGroupDashboard extends LitElement {
     this.dispatchEvent(new CcNetworkGroupDeleteEvent(this.state.id));
   }
 
+  /**
+   * Returns the header state object for <cc-addon-header>.
+   * @param {NetworkGroupDashboardState} state
+   * @private
+   */
+  _getHeaderState(state) {
+    if (state.type === 'loaded' || state.type === 'deleting') {
+      return {
+        type: state.type,
+        name: state.name,
+        id: state.id,
+        providerId: 'network-group',
+        providerLogoUrl: getAssetUrl('logos/network-group.svg'),
+      };
+    }
+    return SKELETON_HEADER_STATE;
+  }
+
+  /**
+   * Returns the info state object for <cc-addon-info>.
+   * @param {NetworkGroupDashboardState} state
+   * @private
+   */
+  _getInfoState(state) {
+    if (state.type === 'loaded' || state.type === 'deleting') {
+      return {
+        type: state.type,
+        description: state.description,
+        subnet: state.subnet,
+        lastIp: state.lastIp,
+        numberOfMembers: state.numberOfMembers,
+        numberOfPeers: state.numberOfPeers,
+      };
+    }
+    return SKELETON_INFO_STATE;
+  }
+
   /** @param {PropertyValues<CcNetworkGroupDashboard>} changedProperties */
   willUpdate(changedProperties) {
     const wasDeleting = changedProperties.get('state')?.type === 'deleting';
@@ -88,34 +127,16 @@ export class CcNetworkGroupDashboard extends LitElement {
       `;
     }
 
-    const headerState =
-      this.state.type === 'loaded' || this.state.type === 'deleting'
-        ? {
-            type: this.state.type,
-            name: this.state.name,
-            id: this.state.id,
-            providerId: 'network-group',
-            providerLogoUrl: getAssetUrl('logos/node.svg'),
-          }
-        : SKELETON_HEADER_STATE;
-
-    const infoState =
-      this.state.type === 'loaded' || this.state.type === 'deleting'
-        ? {
-            type: this.state.type,
-            creationDate: this.state.creationDate,
-            description: this.state.description,
-            subnet: this.state.subnet,
-            lastIp: this.state.lastIp,
-            numberOfMembers: this.state.numberOfMembers,
-            numberOfPeers: this.state.numberOfPeers,
-            tags: this.state.tags,
-          }
-        : SKELETON_INFO_STATE;
+    const headerState = this._getHeaderState(this.state);
+    const infoState = this._getInfoState(this.state);
+    const docLink = {
+      href: getDocUrl('/administrate/network-groups'),
+      text: i18n('cc-network-group-dashboard.doc-link.text'),
+    };
 
     return html`
       <cc-addon-header .state="${headerState}"></cc-addon-header>
-      <cc-addon-info .state="${infoState}"></cc-addon-info>
+      <cc-addon-info .state="${infoState}" .docLink="${docLink}"></cc-addon-info>
       <cc-block>
         <div class="danger-zone__heading" slot="header-title">
           ${i18n('cc-network-group-dashboard.danger-zone.heading')}

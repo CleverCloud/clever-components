@@ -77,7 +77,7 @@ export class CcAddonInfo extends LitElement {
     this.docLink = null;
 
     /** @type {AddonInfoState} Sets the state of the component*/
-    this.state = { type: 'loading', creationDate: '2025-08-04 15:03:02' };
+    this.state = { type: 'loading' };
 
     /** @type {boolean} */
     this._isVersionDialogOpen = false;
@@ -215,14 +215,18 @@ export class CcAddonInfo extends LitElement {
                 </div>
               `
             : ''}
-          <div class="section">
-            <strong class="heading">${i18n('cc-addon-info.creation-date.heading')}</strong>
-            <div class="value">
-              <p class="${classMap({ skeleton })}">
-                ${i18n('cc-addon-info.creation-date.human-friendly-date', { date: this.state.creationDate })}
-              </p>
-            </div>
-          </div>
+          ${this.state.creationDate != null
+            ? html`
+                <div class="section">
+                  <strong class="heading">${i18n('cc-addon-info.creation-date.heading')}</strong>
+                  <div class="value">
+                    <p class="${classMap({ skeleton })}">
+                      ${i18n('cc-addon-info.creation-date.human-friendly-date', { date: this.state.creationDate })}
+                    </p>
+                  </div>
+                </div>
+              `
+            : ''}
           ${this.state.plan != null
             ? html`
                 <div class="section">
@@ -323,6 +327,44 @@ export class CcAddonInfo extends LitElement {
                     </ul>
                     <slot name="linked-services"></slot>
                   </div>
+                </div>
+              `
+            : ''}
+          ${this.state.subnet != null
+            ? html`
+                <div class="section">
+                  <strong class="heading">${i18n('cc-addon-info.subnet.heading')}</strong>
+                  <div class="value ">
+                    <span class="${classMap({ skeleton })}">${this.state.subnet}</span>
+                    ${!skeleton ? html`<cc-clipboard value="${this.state.subnet}"></cc-clipboard>` : ''}
+                  </div>
+                </div>
+              `
+            : ''}
+          ${this.state.lastIp != null
+            ? html`
+                <div class="section">
+                  <strong class="heading">${i18n('cc-addon-info.last-ip.heading')}</strong>
+                  <div class="value ">
+                    <span class="${classMap({ skeleton })}">${this.state.lastIp}</span>
+                    ${!skeleton ? html`<cc-clipboard value="${this.state.lastIp}"></cc-clipboard>` : ''}
+                  </div>
+                </div>
+              `
+            : ''}
+          ${this.state.numberOfMembers != null
+            ? html`
+                <div class="section">
+                  <strong class="heading">${i18n('cc-addon-info.number-of-members.heading')}</strong>
+                  <div class="value "><span class="${classMap({ skeleton })}">${this.state.numberOfMembers}</span></div>
+                </div>
+              `
+            : ''}
+          ${this.state.numberOfPeers != null
+            ? html`
+                <div class="section">
+                  <strong class="heading">${i18n('cc-addon-info.number-of-peers.heading')}</strong>
+                  <div class="value "><span class="${classMap({ skeleton })}">${this.state.numberOfPeers}</span></div>
                 </div>
               `
             : ''}
@@ -476,28 +518,6 @@ export class CcAddonInfo extends LitElement {
 
         .billing__container {
           display: none;
-        }
-
-        .tag-list {
-          display: flex;
-          flex-wrap: wrap;
-          gap: 1em;
-        }
-
-        .tag {
-          --color: var(--cc-color-bg-soft, #eee);
-
-          background-color: var(--color);
-          border-radius: 3px;
-          box-shadow: 0 0 0 2px var(--color);
-          font-family: var(--cc-font-family-monospace, monospace);
-          padding: 0.2em 0.5em;
-        }
-
-        .tag-list.skeleton .tag {
-          background-color: #bbb;
-          box-shadow: none;
-          color: transparent;
         }
 
         slot[name='linked-services'] {

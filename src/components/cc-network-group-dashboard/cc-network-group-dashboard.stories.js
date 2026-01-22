@@ -1,4 +1,3 @@
-import { getAssetUrl } from '../../lib/assets-url.js';
 import { makeStory } from '../../stories/lib/make-story.js';
 import './cc-network-group-dashboard.js';
 
@@ -20,15 +19,11 @@ const conf = {
 const baseItem = {
   id: 'ng_XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX',
   name: 'My Network Group',
-  providerId: 'network-group',
-  providerLogoUrl: getAssetUrl('icons/clever-cloud.svg'),
-  creationDate: '2025-08-06 15:03:00',
   description: 'This is my network group used for internal services communication.',
   subnet: '10.0.0.0/16',
   lastIp: '10.0.0.1/24',
   numberOfMembers: 4,
   numberOfPeers: 16,
-  tags: ['production', 'internal', 'critical'],
 };
 
 export const defaultStory = makeStory(conf, {
@@ -60,7 +55,7 @@ export const deleting = makeStory(conf, {
     const dialogConfrimForm = component.shadowRoot.querySelector('cc-dialog-confirm-form');
     /** @type {CcInputText} */
     const confirmInputText = dialogConfrimForm.shadowRoot.querySelector('cc-input-text');
-    confirmInputText.value = component.state.name;
+    confirmInputText.value = baseItem.name;
     deleteButton.click();
   },
 });

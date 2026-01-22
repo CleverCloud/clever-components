@@ -4,30 +4,22 @@ export type NetworkGroupDashboardState =
   | NetworkGroupDashboardStateDeleting
   | NetworkGroupDashboardStateError;
 
-export interface NetworkGroupDashboardStateLoaded {
-  type: 'loaded';
+interface NetworkGroupDashboardBaseProperties {
   id: string;
   name: string;
-  creationDate: string;
   description: string;
   subnet: string;
   lastIp: string;
   numberOfMembers: number;
   numberOfPeers: number;
-  tags: string[];
 }
 
-export interface NetworkGroupDashboardStateDeleting {
+export interface NetworkGroupDashboardStateLoaded extends NetworkGroupDashboardBaseProperties {
+  type: 'loaded';
+}
+
+export interface NetworkGroupDashboardStateDeleting extends NetworkGroupDashboardBaseProperties {
   type: 'deleting';
-  id: string;
-  name: string;
-  creationDate: string;
-  description: string;
-  subnet: string;
-  lastIp: string;
-  numberOfMembers: number;
-  numberOfPeers: number;
-  tags: string[];
 }
 
 export interface NetworkGroupDashboardStateLoading {

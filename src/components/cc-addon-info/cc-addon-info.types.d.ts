@@ -22,15 +22,13 @@ export interface AddonInfoStateBaseProperties {
   lastIp?: string;
   numberOfMembers?: number;
   numberOfPeers?: number;
-  tags?: string[];
   specifications?: Array<FormattedFeature>;
   encryption?: boolean;
-  creationDate: string | number;
+  creationDate?: string | number;
   role?: string;
   openGrafanaLink?: string;
   openScalabilityLink?: string;
   linkedServices?: Array<LinkedService>;
-  docUrlLink?: string;
 }
 
 export type AddonVersionState =
