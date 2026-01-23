@@ -10,12 +10,10 @@ import '../cc-smart-container/cc-smart-container.js';
 import './cc-network-group-linked-resources.js';
 
 /**
- * @typedef {import('../../lib/send-to-api.js').ApiConfig} ApiConfig
- * @typedef {import('./cc-network-group-linked-resources.types.js').NetworkGroupLinkedResourcesStateLoaded} NetworkGroupLinkedResourcesStateLoaded
- * @typedef {import('./cc-network-group-linked-resources.types.js').NetworkGroupLinkedResourcesStateUnlinking} NetworkGroupLinkedResourcesStateUnlinking
- * @typedef {import('./cc-network-group-linked-resources.js').CcNetworkGroupLinkedResources} CcNetworkGroupLinkedResources
- * @typedef {import('./cc-network-group-linked-resources.types.js').NetworkGroupMember} NetworkGroupMember
- * @typedef {import('../../lib/smart/smart-component.types.js').OnContextUpdateArgs<CcNetworkGroupLinkedResources>} OnContextUpdateArgs
+ * @import { ApiConfig } from '../../lib/send-to-api.types.js'
+ * @import { NetworkGroupLinkedResourcesStateLoaded, NetworkGroupLinkedResourcesStateUnlinking, NetworkGroupMember } from './cc-network-group-linked-resources.types.js'
+ * @import { CcNetworkGroupLinkedResources } from './cc-network-group-linked-resources.js'
+ * @import { OnContextUpdateArgs } from '../../lib/smart/smart-component.types.js'
  */
 
 defineSmartComponent({
@@ -26,7 +24,7 @@ defineSmartComponent({
     ownerId: { type: String },
   },
   /**
-   * @param {OnContextUpdateArgs} args
+   * @param {OnContextUpdateArgs<CcNetworkGroupLinkedResources>} args
    */
   onContextUpdate({ context, updateComponent, onEvent, signal }) {
     const { apiConfig, networkGroupId, ownerId } = context;

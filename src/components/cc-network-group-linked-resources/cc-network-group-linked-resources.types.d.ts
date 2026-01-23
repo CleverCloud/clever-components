@@ -1,4 +1,7 @@
-import { NetworkGroupPeer } from '../cc-network-group-peer-card/cc-network-group-peer-card.types.js';
+import { NetworkGroupMember } from '../cc-network-group-member-card/cc-network-group-member-card.types.js';
+
+// Re-export NetworkGroupMember for backward compatibility
+export { NetworkGroupMember } from '../cc-network-group-member-card/cc-network-group-member-card.types.js';
 
 export type NetworkGroupLinkedResourcesState =
   | NetworkGroupLinkedResourcesStateLoaded
@@ -22,17 +25,4 @@ export interface NetworkGroupLinkedResourcesStateLoading {
 
 export interface NetworkGroupLinkedResourcesStateError {
   type: 'error';
-}
-
-export interface NetworkGroupMember {
-  id: string;
-  label: string;
-  logo: {
-    url: string;
-    a11yName: string;
-  };
-  domainName: string;
-  kind: 'APPLICATION' | 'EXTERNAL' | 'ADDON';
-  peerList: NetworkGroupPeer[];
-  dashboardUrl?: string;
 }
