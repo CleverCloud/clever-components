@@ -15,10 +15,10 @@ import '../cc-link/cc-link.js';
 import '../cc-loader/cc-loader.js';
 import '../cc-network-group-member-card/cc-network-group-member-card.js';
 import '../cc-notice/cc-notice.js';
-import { CcNetworkGroupMemberUnlinkEvent } from './cc-network-group-linked-resources.events.js';
+import { CcNetworkGroupMemberUnlinkEvent } from './cc-network-group-member-list.events.js';
 
 /**
- * @import { NetworkGroupLinkedResourcesState } from './cc-network-group-linked-resources.types.js'
+ * @import { NetworkGroupMemberListState } from './cc-network-group-member-list.types.js'
  * @import { CcNetworkGroupMemberUnlinkRequestEvent } from '../cc-network-group-member-card/cc-network-group-member-card.events.js'
  * @import { PropertyValues } from 'lit'
  * @import { Ref } from 'lit/directives/ref.js'
@@ -31,7 +31,7 @@ import { CcNetworkGroupMemberUnlinkEvent } from './cc-network-group-linked-resou
  *
  * @fires {CcNetworkGroupMemberUnlinkEvent} cc-network-group-member-unlink - Fired when a member unlink is confirmed.
  */
-export class CcNetworkGroupLinkedResources extends LitElement {
+export class CcNetworkGroupMemberList extends LitElement {
   static get properties() {
     return {
       state: { type: Object },
@@ -42,7 +42,7 @@ export class CcNetworkGroupLinkedResources extends LitElement {
   constructor() {
     super();
 
-    /** @type {NetworkGroupLinkedResourcesState} Sets the state of the component */
+    /** @type {NetworkGroupMemberListState} Sets the state of the component */
     this.state = { type: 'loading' };
 
     /** @type {Ref<HTMLDivElement>} Ref to the empty text container */
@@ -79,7 +79,7 @@ export class CcNetworkGroupLinkedResources extends LitElement {
     this._memberIdToUnlink = null;
   }
 
-  /** @param {PropertyValues<CcNetworkGroupLinkedResources>} changedProperties */
+  /** @param {PropertyValues<CcNetworkGroupMemberList>} changedProperties */
   willUpdate(changedProperties) {
     // when the member has been unlinked (or if it failed), we need to close the dialog
     const wasUnlinking = changedProperties.get('state')?.type === 'unlinking';
@@ -91,23 +91,21 @@ export class CcNetworkGroupLinkedResources extends LitElement {
 
   render() {
     if (this.state.type === 'error') {
-      return html`
-        <cc-notice intent="warning" message="${i18n('cc-network-group-linked-resources.error')}"></cc-notice>
-      `;
+      return html` <cc-notice intent="warning" message="${i18n('cc-network-group-member-list.error')}"></cc-notice> `;
     }
 
     const isUnlinking = this.state.type === 'unlinking';
 
     return html`
       <cc-block>
-        <div slot="header-title">${i18n('cc-network-group-linked-resources.heading')}</div>
+        <div slot="header-title">${i18n('cc-network-group-member-list.heading')}</div>
         <div slot="content">
-          <p class="intro">${i18n('cc-network-group-linked-resources.intro')}</p>
+          <p class="intro">${i18n('cc-network-group-member-list.intro')}</p>
           ${this.state.type === 'loading' ? html`<cc-loader></cc-loader>` : ''}
           ${this.state.type === 'loaded' && this.state.memberList.length === 0
             ? html`
                 <div class="empty" ${ref(this._emptyTextRef)} tabindex="-1">
-                  <p>${i18n('cc-network-group-linked-resources.member-list.empty')}</p>
+                  <p>${i18n('cc-network-group-member-list.member-list.empty')}</p>
                 </div>
               `
             : ''}
@@ -137,15 +135,15 @@ export class CcNetworkGroupLinkedResources extends LitElement {
           <div slot="button-text">${i18n('cc-block-details.cli.text')}</div>
           <div slot="link">
             <cc-link href="${getDevHubUrl('/cli/network-groups')}" .icon="${iconInfo}">
-              ${i18n('cc-network-group-linked-resources.documentation.text')}
+              ${i18n('cc-network-group-member-list.documentation.text')}
             </cc-link>
           </div>
           <!-- TODO: contenttttt -->
           <div slot="content">
-            <div class="cli-heading">${i18n('cc-network-group-linked-resources.cli.heading')}</div>
-            <p>${i18n('cc-network-group-linked-resources.cli.content.instruction')}</p>
+            <div class="cli-heading">${i18n('cc-network-group-member-list.cli.heading')}</div>
+            <p>${i18n('cc-network-group-member-list.cli.content.instruction')}</p>
             <dl>
-              <dt>${i18n('cc-network-group-linked-resources.cli...')}</dt>
+              <dt>${i18n('cc-network-group-member-list.cli...')}</dt>
               <dd>
                 <cc-code>clever domain --app</cc-code>
               </dd>
@@ -165,12 +163,12 @@ export class CcNetworkGroupLinkedResources extends LitElement {
     return html`
       <cc-dialog
         ?open="${memberIdToUnlink != null}"
-        heading="${i18n('cc-network-group-linked-resources.unlink.dialog.heading')}"
+        heading="${i18n('cc-network-group-member-list.unlink.dialog.heading')}"
         @cc-close="${this._onDialogClose}"
       >
-        <p>${i18n('cc-network-group-linked-resources.unlink.dialog.desc')}</p>
+        <p>${i18n('cc-network-group-member-list.unlink.dialog.desc')}</p>
         <cc-dialog-confirm-actions
-          submit-label="${i18n('cc-network-group-linked-resources.unlink.dialog.unlink-btn')}"
+          submit-label="${i18n('cc-network-group-member-list.unlink.dialog.unlink-btn')}"
           submit-intent="danger"
           @cc-confirm="${() => this._onUnlinkMember(memberIdToUnlink)}"
           ?waiting="${isUnlinking}"
@@ -219,4 +217,4 @@ export class CcNetworkGroupLinkedResources extends LitElement {
   }
 }
 
-customElements.define('cc-network-group-linked-resources', CcNetworkGroupLinkedResources);
+customElements.define('cc-network-group-member-list', CcNetworkGroupMemberList);

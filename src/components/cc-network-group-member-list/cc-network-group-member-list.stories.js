@@ -1,20 +1,20 @@
 import { getAssetUrl } from '../../lib/assets-url.js';
 import { makeStory } from '../../stories/lib/make-story.js';
-import './cc-network-group-linked-resources.js';
+import './cc-network-group-member-list.js';
 
 export default {
   tags: ['autodocs'],
-  title: '🛠 NetworkGroups/<cc-network-group-linked-resources>',
-  component: 'cc-network-group-linked-resources',
+  title: '🛠 NetworkGroups/<cc-network-group-member-list>',
+  component: 'cc-network-group-member-list',
 };
 
 /**
- * @typedef {import('./cc-network-group-linked-resources.js').CcNetworkGroupLinkedResources} CcNetworkGroupLinkedResources
- * @typedef {import('./cc-network-group-linked-resources.types.js').NetworkGroupMember} NetworkGroupMember
+ * @typedef {import('./cc-network-group-member-list.js').CcNetworkGroupMemberList} CcNetworkGroupMemberList
+ * @typedef {import('./cc-network-group-member-list.types.js').NetworkGroupMember} NetworkGroupMember
  */
 
 const conf = {
-  component: 'cc-network-group-linked-resources',
+  component: 'cc-network-group-member-list',
 };
 
 /** @type {NetworkGroupMember[]} */
@@ -85,7 +85,7 @@ const networkGroupMembers = [
 ];
 
 export const defaultStory = makeStory(conf, {
-  /** @type {Partial<CcNetworkGroupLinkedResources>[]} */
+  /** @type {Partial<CcNetworkGroupMemberList>[]} */
   items: [
     {
       state: {
@@ -105,7 +105,7 @@ export const error = makeStory(conf, {
 });
 
 export const dataLoadedWithNoMembers = makeStory(conf, {
-  /** @type {Partial<CcNetworkGroupLinkedResources>[]} */
+  /** @type {Partial<CcNetworkGroupMemberList>[]} */
   items: [
     {
       state: {

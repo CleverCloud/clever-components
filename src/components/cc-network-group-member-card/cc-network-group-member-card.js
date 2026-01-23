@@ -88,7 +88,7 @@ export class CcNetworkGroupMemberCard extends LitElement {
     const nbOfPeers = this.state.member.peerList.length;
 
     return html`
-      <span class="peers-count"> ${i18n('cc-network-group-linked-resources.member.nb-of-peers', { nbOfPeers })} </span>
+      <span class="peers-count"> ${i18n('cc-network-group-member-list.member.nb-of-peers', { nbOfPeers })} </span>
     `;
   }
 
@@ -132,7 +132,7 @@ export class CcNetworkGroupMemberCard extends LitElement {
         ?waiting="${isUnlinking}"
         @cc-click="${this._onUnlinkRequest}"
       >
-        ${i18n('cc-network-group-linked-resources.member.unlink')}
+        ${i18n('cc-network-group-member-list.member.unlink')}
       </cc-button>
     `;
   }

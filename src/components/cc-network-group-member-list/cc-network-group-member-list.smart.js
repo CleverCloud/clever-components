@@ -7,24 +7,24 @@ import { getAssetUrl } from '../../lib/assets-url.js';
 import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-smart-container/cc-smart-container.js';
-import './cc-network-group-linked-resources.js';
+import './cc-network-group-member-list.js';
 
 /**
  * @import { ApiConfig } from '../../lib/send-to-api.types.js'
- * @import { NetworkGroupLinkedResourcesStateLoaded, NetworkGroupLinkedResourcesStateUnlinking, NetworkGroupMember } from './cc-network-group-linked-resources.types.js'
- * @import { CcNetworkGroupLinkedResources } from './cc-network-group-linked-resources.js'
+ * @import { NetworkGroupMemberListStateLoaded, NetworkGroupMemberListStateUnlinking, NetworkGroupMember } from './cc-network-group-member-list.types.js'
+ * @import { CcNetworkGroupMemberList } from './cc-network-group-member-list.js'
  * @import { OnContextUpdateArgs } from '../../lib/smart/smart-component.types.js'
  */
 
 defineSmartComponent({
-  selector: 'cc-network-group-linked-resources',
+  selector: 'cc-network-group-member-list',
   params: {
     apiConfig: { type: Object },
     networkGroupId: { type: String },
     ownerId: { type: String },
   },
   /**
-   * @param {OnContextUpdateArgs<CcNetworkGroupLinkedResources>} args
+   * @param {OnContextUpdateArgs<CcNetworkGroupMemberList>} args
    */
   onContextUpdate({ context, updateComponent, onEvent, signal }) {
     const { apiConfig, networkGroupId, ownerId } = context;
@@ -52,7 +52,7 @@ defineSmartComponent({
       setTimeout(() => {
         updateComponent(
           'state',
-          /** @param {NetworkGroupLinkedResourcesStateLoaded|NetworkGroupLinkedResourcesStateUnlinking} state */
+          /** @param {NetworkGroupMemberListStateLoaded|NetworkGroupMemberListStateUnlinking} state */
           (state) => {
             state.type = 'loaded';
             state.memberList = state.memberList.filter((member) => member.id !== memberId);
@@ -69,20 +69,20 @@ defineSmartComponent({
       //   .then(() => {
       //     updateComponent(
       //       'state',
-      //       /** @param {NetworkGroupLinkedResourcesStateLoaded|NetworkGroupLinkedResourcesStateUnlinking} state */
+      //       /** @param {NetworkGroupMemberListStateLoaded|NetworkGroupMemberListStateUnlinking} state */
       //       (state) => {
       //         state.type = 'loaded';
       //         state.memberList = state.memberList.filter((member) => member.id !== memberId);
       //       },
       //     );
-      //     notifySuccess(i18n('cc-network-group-linked-resources.member.unlink.success'));
+      //     notifySuccess(i18n('cc-network-group-member-list.member.unlink.success'));
       //   })
       //   .catch((error) => {
       //     console.error(error.message);
       //     updateComponent('state', (state) => {
       //       state.type = 'loaded';
       //     });
-      //     notifyError(i18n('cc-network-group-linked-resources.member.unlink.error'));
+      //     notifyError(i18n('cc-network-group-member-list.member.unlink.error'));
       //   });
     });
   },
@@ -177,7 +177,7 @@ class Api {
       case 'EXTERNAL':
         return {
           url: getAssetUrl('/logos/external-resource.svg'),
-          a11yName: i18n('cc-network-group-linked-resources.member.logo.a11y-name.external'),
+          a11yName: i18n('cc-network-group-member-list.member.logo.a11y-name.external'),
         };
     }
   }

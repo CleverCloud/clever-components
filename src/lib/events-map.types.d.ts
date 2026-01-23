@@ -108,8 +108,8 @@ import {
   CcMapMarkerLeaveEvent,
 } from '../components/cc-map/cc-map.events.js';
 import { CcNetworkGroupDeleteEvent } from '../components/cc-network-group-dashboard/cc-network-group-dashboard.events.js';
-import { CcNetworkGroupMemberUnlinkEvent } from '../components/cc-network-group-linked-resources/cc-network-group-linked-resources.events.js';
 import { CcNetworkGroupLinkEvent } from '../components/cc-network-group-list/cc-network-group-list.events.js';
+import { CcNetworkGroupMemberUnlinkEvent } from '../components/cc-network-group-member-list/cc-network-group-member-list.events.js';
 import { CcNoticeDismissEvent } from '../components/cc-notice/cc-notice.events.js';
 import {
   CcOauthConsumerChangeEvent,

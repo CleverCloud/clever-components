@@ -33,10 +33,7 @@ export class CcNetworkGroupPeerCard extends LitElement {
         <dl class="metadata-list">
           <div class="metadata-item metadata-item--id">
             <dt>
-              <cc-icon
-                .icon="${iconId}"
-                a11y-name="${i18n('cc-network-group-linked-resources.peer.metadata.id')}"
-              ></cc-icon>
+              <cc-icon .icon="${iconId}" a11y-name="${i18n('cc-network-group-member-list.peer.metadata.id')}"></cc-icon>
             </dt>
             <dd><span>${this.peer.id}</span></dd>
           </div>
@@ -44,17 +41,14 @@ export class CcNetworkGroupPeerCard extends LitElement {
             <dt>
               <cc-icon
                 .icon="${iconKey}"
-                a11y-name="${i18n('cc-network-group-linked-resources.peer.metadata.key')}"
+                a11y-name="${i18n('cc-network-group-member-list.peer.metadata.key')}"
               ></cc-icon>
             </dt>
             <dd><span>${this.peer.publicKey}</span></dd>
           </div>
           <div class="metadata-item metadata-item--ip">
             <dt>
-              <cc-icon
-                .icon="${iconIp}"
-                a11y-name="${i18n('cc-network-group-linked-resources.peer.metadata.ip')}"
-              ></cc-icon>
+              <cc-icon .icon="${iconIp}" a11y-name="${i18n('cc-network-group-member-list.peer.metadata.ip')}"></cc-icon>
             </dt>
             <dd><span>${this.peer.ip}</span></dd>
           </div>
@@ -62,7 +56,7 @@ export class CcNetworkGroupPeerCard extends LitElement {
             <dt>
               <cc-icon
                 .icon="${iconPeerType}"
-                a11y-name="${i18n('cc-network-group-linked-resources.peer.metadata.peer-type')}"
+                a11y-name="${i18n('cc-network-group-member-list.peer.metadata.peer-type')}"
               ></cc-icon>
             </dt>
             <dd>
