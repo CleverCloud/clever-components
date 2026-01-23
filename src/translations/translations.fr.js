@@ -1569,7 +1569,11 @@ export const translations = {
   'cc-pricing-product-consumption.add': `Ajouter`,
   'cc-pricing-product-consumption.bytes': /** @param {{bytes: number}} _ */ ({ bytes }) => formatBytesSi(bytes),
   'cc-pricing-product-consumption.bytes-unit': /** @param {{bytes: number}} _ */ ({ bytes }) => getUnit(bytes),
+  'cc-pricing-product-consumption.cold-storage.label': `stockage`,
+  'cc-pricing-product-consumption.cold-storage.title': `Stockage à froid (HDD)\u00A0:`,
   'cc-pricing-product-consumption.error': `Une erreur est survenue pendant le chargement des prix.`,
+  'cc-pricing-product-consumption.hot-storage.label': `stockage`,
+  'cc-pricing-product-consumption.hot-storage.title': `Stockage à chaud (SSD)\u00A0:`,
   'cc-pricing-product-consumption.inbound-traffic.label': `trafic entrant`,
   'cc-pricing-product-consumption.inbound-traffic.title': `Trafic entrant\u00A0:`,
   'cc-pricing-product-consumption.number': /** @param {{number: number}} _ */ ({ number }) =>

@@ -90,19 +90,28 @@ export function formatAddonPulsar(priceSystem) {
   return {
     sections: [
       {
-        type: 'storage',
-        ...formatProductConsumptionIntervals(priceSystem, 'pulsar_storage_size'),
-        service: 'pulsar_storage_size',
-      },
-      {
         type: 'inbound-traffic',
-        ...formatProductConsumptionIntervals(priceSystem, 'pulsar_throughput_in'),
-        service: 'pulsar_throughput_in',
+        ...formatProductConsumptionIntervals(priceSystem, 'pulsar.throughput.in'),
+        progressive: true,
+        service: 'pulsar.throughput.in',
       },
       {
         type: 'outbound-traffic',
-        ...formatProductConsumptionIntervals(priceSystem, 'pulsar_throughput_out'),
-        service: 'pulsar_throughput_out',
+        ...formatProductConsumptionIntervals(priceSystem, 'pulsar.throughput.out'),
+        progressive: true,
+        service: 'pulsar.throughput.out',
+      },
+      {
+        type: 'hot-storage',
+        ...formatProductConsumptionIntervals(priceSystem, 'pulsar.storage.hot'),
+        progressive: true,
+        service: 'pulsar.storage.hot',
+      },
+      {
+        type: 'cold-storage',
+        ...formatProductConsumptionIntervals(priceSystem, 'pulsar.storage.cold'),
+        progressive: true,
+        service: 'pulsar.storage.cold',
       },
     ],
   };

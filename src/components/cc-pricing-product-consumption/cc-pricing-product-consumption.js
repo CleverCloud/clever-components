@@ -33,6 +33,8 @@ const THIRTY_DAYS_IN_HOURS = 24 * 30;
 
 const ICONS = {
   storage: iconDisk,
+  'cold-storage': iconDisk,
+  'hot-storage': iconDisk,
   'inbound-traffic': iconArrowsRight,
   'outbound-traffic': iconArrowsLeft,
   'private-users': iconUser,
@@ -100,6 +102,10 @@ export class CcPricingProductConsumption extends LitElement {
     switch (type) {
       case 'storage':
         return i18n('cc-pricing-product-consumption.storage.title');
+      case 'cold-storage':
+        return i18n('cc-pricing-product-consumption.cold-storage.title');
+      case 'hot-storage':
+        return i18n('cc-pricing-product-consumption.hot-storage.title');
       case 'inbound-traffic':
         return i18n('cc-pricing-product-consumption.inbound-traffic.title');
       case 'outbound-traffic':
@@ -117,12 +123,16 @@ export class CcPricingProductConsumption extends LitElement {
    * Returns the translated label depending on the section type
    *
    * @param {SectionType} type - the type of the pricing section
-   * @return {string} the translated label corresponding to the given section type
+   * @return {string|Node} the translated label corresponding to the given section type
    */
   _getLabel(type) {
     switch (type) {
       case 'storage':
         return i18n('cc-pricing-product-consumption.storage.label');
+      case 'cold-storage':
+        return i18n('cc-pricing-product-consumption.cold-storage.label');
+      case 'hot-storage':
+        return i18n('cc-pricing-product-consumption.hot-storage.label');
       case 'inbound-traffic':
         return i18n('cc-pricing-product-consumption.inbound-traffic.label');
       case 'outbound-traffic':
@@ -236,7 +246,7 @@ export class CcPricingProductConsumption extends LitElement {
    * @return {boolean} true if values from this section are expressed in bytes, false otherwise
    */
   _isTypeBytes(type) {
-    return ['storage', 'inbound-traffic', 'outbound-traffic'].includes(type);
+    return ['storage', 'hot-storage', 'cold-storage', 'inbound-traffic', 'outbound-traffic'].includes(type);
   }
 
   /**
@@ -493,8 +503,8 @@ export class CcPricingProductConsumption extends LitElement {
   _renderIntervalList({ type, progressive, intervals, maxInterval }) {
     return intervals.map((interval, intervalIndex) => {
       const maxIntervalIndex = intervals.indexOf(maxInterval);
-      const foo = progressive && intervalIndex <= maxIntervalIndex;
-      const highlighted = interval === maxInterval || foo;
+      const isInProgressiveRange = progressive && intervalIndex <= maxIntervalIndex;
+      const highlighted = interval === maxInterval || isInProgressiveRange;
 
       const minRange = this._getMinRange(type, interval.minRange);
       const maxRange = this._getMaxRange(type, interval.maxRange);
