@@ -5,6 +5,15 @@ title: 'Changelog'
 
 # Changelog
 
+## [23.1.0](https://github.com/CleverCloud/clever-components/compare/23.0.1...23.1.0) (2026-01-26)
+
+
+### 🚀 Features
+
+* **cc-range-selector-option:** init component ([ef87b87](https://github.com/CleverCloud/clever-components/commit/ef87b8700889f537b4eed72c1704296236c04176))
+* **cc-range-selector:** init component ([0dd4450](https://github.com/CleverCloud/clever-components/commit/0dd4450cdffe48b42ee61c2266a58bb008d99cf9))
+* **pricing:** update Pulsar plan intervals and pricing logic ([ca01933](https://github.com/CleverCloud/clever-components/commit/ca0193396b610aa15bdba7e10aa94620e6ac3e5f))
+
 ## [23.0.1](https://github.com/CleverCloud/clever-components/compare/23.0.0...23.0.1) (2026-01-16)
 
 
