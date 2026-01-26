@@ -1601,6 +1601,18 @@ export const translations = {
   'cc-product-list.search-empty': `No products matching your search criteria were found.`,
   'cc-product-list.search-label': `Search for a product`,
   //#endregion
+  //#region cc-range-selector
+  'cc-range-selector.custom': `Customize`,
+  'cc-range-selector.error.empty': `You must select a value`,
+  'cc-range-selector.label.end': `Select an end value`,
+  'cc-range-selector.label.single': `Select a value`,
+  'cc-range-selector.label.start': `Select a start value`,
+  'cc-range-selector.required': `required`,
+  'cc-range-selector.summary.disabled': `disabled`,
+  'cc-range-selector.summary.introduction': /** @param {string} legend */ (legend) => `Summary for "${legend}":`,
+  'cc-range-selector.summary.selected': `selected`,
+  'cc-range-selector.summary.unselected': `unselected`,
+  //#endregion
   //#region cc-select
   'cc-select.error.empty': `You must select a value`,
   'cc-select.required': `required`,
