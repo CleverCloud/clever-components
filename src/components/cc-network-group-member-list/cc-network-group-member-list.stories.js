@@ -11,6 +11,7 @@ export default {
 /**
  * @typedef {import('./cc-network-group-member-list.js').CcNetworkGroupMemberList} CcNetworkGroupMemberList
  * @typedef {import('./cc-network-group-member-list.types.js').NetworkGroupMember} NetworkGroupMember
+ * @typedef {import('../cc-select/cc-select.types.js').Option} Option
  */
 
 const conf = {
@@ -84,33 +85,109 @@ const networkGroupMembers = [
   },
 ];
 
+/** @type {Option[]} */
+const sampleSelectOptions = [
+  { label: 'My Node App (Application)', value: 'app_123' },
+  { label: 'My PHP App (Application)', value: 'app_456' },
+  { label: 'PostgreSQL Database (Add-on)', value: 'addon_789' },
+  { label: 'Redis Cache (Add-on)', value: 'addon_abc' },
+];
+
 export const defaultStory = makeStory(conf, {
   /** @type {Partial<CcNetworkGroupMemberList>[]} */
   items: [
     {
-      state: {
+      memberListState: {
         type: 'loaded',
         memberList: networkGroupMembers,
+      },
+      linkFormState: {
+        type: 'idle',
+        selectOptions: sampleSelectOptions,
       },
     },
   ],
 });
 
 export const loading = makeStory(conf, {
-  items: [{ state: { type: 'loading' } }],
+  /** @type {Partial<CcNetworkGroupMemberList>[]} */
+  items: [
+    {
+      memberListState: { type: 'loading' },
+      linkFormState: { type: 'loading' },
+    },
+  ],
 });
 
 export const error = makeStory(conf, {
-  items: [{ state: { type: 'error' } }],
+  /** @type {Partial<CcNetworkGroupMemberList>[]} */
+  items: [
+    {
+      memberListState: { type: 'error' },
+      linkFormState: {
+        type: 'idle',
+        selectOptions: sampleSelectOptions,
+      },
+    },
+  ],
 });
 
 export const dataLoadedWithNoMembers = makeStory(conf, {
   /** @type {Partial<CcNetworkGroupMemberList>[]} */
   items: [
     {
-      state: {
+      memberListState: {
         type: 'loaded',
         memberList: [],
+      },
+      linkFormState: {
+        type: 'idle',
+        selectOptions: sampleSelectOptions,
+      },
+    },
+  ],
+});
+
+export const linkFormLoading = makeStory(conf, {
+  /** @type {Partial<CcNetworkGroupMemberList>[]} */
+  items: [
+    {
+      memberListState: {
+        type: 'loaded',
+        memberList: networkGroupMembers,
+      },
+      linkFormState: { type: 'loading' },
+    },
+  ],
+});
+
+export const linkFormLinking = makeStory(conf, {
+  /** @type {Partial<CcNetworkGroupMemberList>[]} */
+  items: [
+    {
+      memberListState: {
+        type: 'loaded',
+        memberList: networkGroupMembers,
+      },
+      linkFormState: {
+        type: 'linking',
+        selectOptions: sampleSelectOptions,
+      },
+    },
+  ],
+});
+
+export const linkFormEmpty = makeStory(conf, {
+  /** @type {Partial<CcNetworkGroupMemberList>[]} */
+  items: [
+    {
+      memberListState: {
+        type: 'loaded',
+        memberList: networkGroupMembers,
+      },
+      linkFormState: {
+        type: 'idle',
+        selectOptions: [],
       },
     },
   ],

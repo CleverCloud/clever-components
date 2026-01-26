@@ -1,4 +1,5 @@
 import { NetworkGroupMember } from '../cc-network-group-member-card/cc-network-group-member-card.types.js';
+import { Option } from '../cc-select/cc-select.types.js';
 
 // Re-export NetworkGroupMember for backward compatibility
 export { NetworkGroupMember } from '../cc-network-group-member-card/cc-network-group-member-card.types.js';
@@ -25,4 +26,23 @@ export interface NetworkGroupMemberListStateLoading {
 
 export interface NetworkGroupMemberListStateError {
   type: 'error';
+}
+
+export type NetworkGroupMemberLinkFormState =
+  | NetworkGroupMemberLinkFormStateLoading
+  | NetworkGroupMemberLinkFormStateIdle
+  | NetworkGroupMemberLinkFormStateLinking;
+
+export interface NetworkGroupMemberLinkFormStateLoading {
+  type: 'loading';
+}
+
+export interface NetworkGroupMemberLinkFormStateIdle {
+  type: 'idle';
+  selectOptions: Option[];
+}
+
+export interface NetworkGroupMemberLinkFormStateLinking {
+  type: 'linking';
+  selectOptions: Option[];
 }

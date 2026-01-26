@@ -1,13 +1,15 @@
-import { css, html, LitElement } from 'lit';
+import { css, html, LitElement, nothing } from 'lit';
 import { createRef, ref } from 'lit/directives/ref.js';
 import { repeat } from 'lit/directives/repeat.js';
 import { iconRemixInformationFill as iconInfo } from '../../assets/cc-remix.icons.js';
 import { LostFocusController } from '../../controllers/lost-focus-controller.js';
 import { getDevHubUrl } from '../../lib/dev-hub-url.js';
+import { formSubmit } from '../../lib/form/form-submit-directive.js';
 import { accessibilityStyles } from '../../styles/accessibility.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-block-details/cc-block-details.js';
 import '../cc-block/cc-block.js';
+import '../cc-button/cc-button.js';
 import '../cc-code/cc-code.js';
 import '../cc-dialog-confirm-actions/cc-dialog-confirm-actions.js';
 import '../cc-dialog/cc-dialog.js';
@@ -15,11 +17,16 @@ import '../cc-link/cc-link.js';
 import '../cc-loader/cc-loader.js';
 import '../cc-network-group-member-card/cc-network-group-member-card.js';
 import '../cc-notice/cc-notice.js';
-import { CcNetworkGroupMemberUnlinkEvent } from './cc-network-group-member-list.events.js';
+import '../cc-select/cc-select.js';
+import {
+  CcNetworkGroupMemberLinkEvent,
+  CcNetworkGroupMemberUnlinkEvent,
+} from './cc-network-group-member-list.events.js';
 
 /**
- * @import { NetworkGroupMemberListState } from './cc-network-group-member-list.types.js'
+ * @import { NetworkGroupMemberListState, NetworkGroupMemberLinkFormState } from './cc-network-group-member-list.types.js'
  * @import { CcNetworkGroupMemberUnlinkRequestEvent } from '../cc-network-group-member-card/cc-network-group-member-card.events.js'
+ * @import { Option } from '../cc-select/cc-select.types.js'
  * @import { PropertyValues } from 'lit'
  * @import { Ref } from 'lit/directives/ref.js'
  */
@@ -29,12 +36,14 @@ import { CcNetworkGroupMemberUnlinkEvent } from './cc-network-group-member-list.
  *
  * @cssdisplay block
  *
+ * @fires {CcNetworkGroupMemberLinkEvent} cc-network-group-member-link - Fired when a member link is requested.
  * @fires {CcNetworkGroupMemberUnlinkEvent} cc-network-group-member-unlink - Fired when a member unlink is confirmed.
  */
 export class CcNetworkGroupMemberList extends LitElement {
   static get properties() {
     return {
-      state: { type: Object },
+      linkFormState: { type: Object, attribute: 'link-form-state' },
+      memberListState: { type: Object, attribute: 'member-list-state' },
       _memberIdToUnlink: { type: String, state: true },
     };
   }
@@ -42,8 +51,11 @@ export class CcNetworkGroupMemberList extends LitElement {
   constructor() {
     super();
 
-    /** @type {NetworkGroupMemberListState} Sets the state of the component */
-    this.state = { type: 'loading' };
+    /** @type {NetworkGroupMemberLinkFormState} Sets the state of the link form */
+    this.linkFormState = { type: 'loading' };
+
+    /** @type {NetworkGroupMemberListState} Sets the state of the member list */
+    this.memberListState = { type: 'loading' };
 
     /** @type {Ref<HTMLDivElement>} Ref to the empty text container */
     this._emptyTextRef = createRef();
@@ -68,6 +80,11 @@ export class CcNetworkGroupMemberList extends LitElement {
     this.dispatchEvent(new CcNetworkGroupMemberUnlinkEvent(memberIdToUnlink));
   }
 
+  /** @param {{ member: string }} formData */
+  _onLinkMember(formData) {
+    this.dispatchEvent(new CcNetworkGroupMemberLinkEvent(formData['member']));
+  }
+
   /**
    * @param {CcNetworkGroupMemberUnlinkRequestEvent} e
    */
@@ -82,38 +99,42 @@ export class CcNetworkGroupMemberList extends LitElement {
   /** @param {PropertyValues<CcNetworkGroupMemberList>} changedProperties */
   willUpdate(changedProperties) {
     // when the member has been unlinked (or if it failed), we need to close the dialog
-    const wasUnlinking = changedProperties.get('state')?.type === 'unlinking';
-    const isNotUnlinking = this.state.type !== 'unlinking';
+    const wasUnlinking = changedProperties.get('memberListState')?.type === 'unlinking';
+    const isNotUnlinking = this.memberListState.type !== 'unlinking';
     if (wasUnlinking && isNotUnlinking) {
       this._memberIdToUnlink = null;
     }
   }
 
   render() {
-    if (this.state.type === 'error') {
-      return html` <cc-notice intent="warning" message="${i18n('cc-network-group-member-list.error')}"></cc-notice> `;
+    if (this.memberListState.type === 'error') {
+      return html`
+        <cc-notice intent="warning" message="${i18n('cc-network-group-member-list.error')}"></cc-notice>
+        ${this._renderLinkMemberBlock()}
+      `;
     }
 
-    const isUnlinking = this.state.type === 'unlinking';
+    const isUnlinking = this.memberListState.type === 'unlinking';
 
     return html`
       <cc-block>
         <div slot="header-title">${i18n('cc-network-group-member-list.heading')}</div>
         <div slot="content">
           <p class="intro">${i18n('cc-network-group-member-list.intro')}</p>
-          ${this.state.type === 'loading' ? html`<cc-loader></cc-loader>` : ''}
-          ${this.state.type === 'loaded' && this.state.memberList.length === 0
+          ${this.memberListState.type === 'loading' ? html`<cc-loader></cc-loader>` : ''}
+          ${this.memberListState.type === 'loaded' && this.memberListState.memberList.length === 0
             ? html`
                 <div class="empty" ${ref(this._emptyTextRef)} tabindex="-1">
                   <p>${i18n('cc-network-group-member-list.member-list.empty')}</p>
                 </div>
               `
             : ''}
-          ${(this.state.type === 'loaded' || this.state.type === 'unlinking') && this.state.memberList.length > 0
+          ${(this.memberListState.type === 'loaded' || this.memberListState.type === 'unlinking') &&
+          this.memberListState.memberList.length > 0
             ? html`
                 <div class="member-list">
                   ${repeat(
-                    this.state.memberList,
+                    this.memberListState.memberList,
                     (member) => member.id,
                     (member, index) => html`
                       <cc-network-group-member-card
@@ -151,7 +172,8 @@ export class CcNetworkGroupMemberList extends LitElement {
           </div>
         </cc-block-details>
       </cc-block>
-      ${this._renderUnlinkDialog(this._memberIdToUnlink, isUnlinking)}
+
+      ${this._renderLinkMemberBlock()} ${this._renderUnlinkDialog(this._memberIdToUnlink, isUnlinking)}
     `;
   }
 
@@ -178,19 +200,77 @@ export class CcNetworkGroupMemberList extends LitElement {
     `;
   }
 
+  /**
+   * Renders the link member form block.
+   * @returns {import('lit').TemplateResult}
+   */
+  _renderLinkMemberBlock() {
+    /** @type {Array<Option>} */
+    const selectOptions =
+      this.linkFormState.type === 'idle' || this.linkFormState.type === 'linking'
+        ? this.linkFormState.selectOptions
+        : [];
+
+    const isLoading = this.linkFormState.type === 'loading';
+    const isLinking = this.linkFormState.type === 'linking';
+    const hasOptions = selectOptions.length > 0;
+    const sortedSelectOptions = [...selectOptions].sort((optionA, optionB) =>
+      optionA.label.localeCompare(optionB.label),
+    );
+    const defaultValue = sortedSelectOptions[0]?.value ?? nothing;
+
+    return html`
+      <cc-block>
+        <div slot="header-title">${i18n('cc-network-group-member-list.link-form.heading')}</div>
+        <div slot="content">
+          ${!isLoading && !hasOptions
+            ? html`
+                <div class="empty-form">
+                  <p>${i18n('cc-network-group-member-list.link-form.empty')}</p>
+                </div>
+              `
+            : html`
+                <form class="link-form" ${formSubmit(this._onLinkMember.bind(this))}>
+                  <cc-select
+                    label="${i18n('cc-network-group-member-list.link-form.select-label')}"
+                    class="link-form__select"
+                    ?disabled="${isLoading || isLinking}"
+                    .options="${sortedSelectOptions}"
+                    name="member"
+                    .value="${defaultValue}"
+                  ></cc-select>
+                  <cc-button
+                    class="link-form__submit"
+                    outlined
+                    primary
+                    type="submit"
+                    ?skeleton="${isLoading}"
+                    ?waiting="${isLinking}"
+                  >
+                    ${i18n('cc-network-group-member-list.link-form.button')}
+                  </cc-button>
+                </form>
+              `}
+        </div>
+      </cc-block>
+    `;
+  }
+
   static get styles() {
     return [
       accessibilityStyles,
       css`
         :host {
-          display: block;
+          display: grid;
+          gap: 1em;
         }
 
         .intro {
           margin: 0 0 1em;
         }
 
-        .empty {
+        .empty,
+        .empty-form {
           border: 1px solid var(--cc-color-border-neutral-weak);
           display: grid;
           font-weight: bold;
@@ -207,6 +287,21 @@ export class CcNetworkGroupMemberList extends LitElement {
         .member-list {
           display: grid;
           gap: 0.5em;
+        }
+
+        .link-form {
+          align-items: end;
+          display: flex;
+          flex-wrap: wrap;
+          gap: 1em;
+        }
+
+        .link-form__select {
+          flex: 100 1 20em;
+        }
+
+        .link-form__submit {
+          flex: 1 1 auto;
         }
 
         cc-dialog p {
