@@ -4,7 +4,7 @@ import './cc-network-group-member-card.js';
 
 export default {
   tags: ['autodocs'],
-  title: '🛠 NetworkGroups/<cc-network-group-member-card>',
+  title: '🛠 Network Group/<cc-network-group-member-card>',
   component: 'cc-network-group-member-card',
 };
 

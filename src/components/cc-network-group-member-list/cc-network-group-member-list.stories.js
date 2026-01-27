@@ -4,7 +4,7 @@ import './cc-network-group-member-list.js';
 
 export default {
   tags: ['autodocs'],
-  title: '🛠 NetworkGroups/<cc-network-group-member-list>',
+  title: '🛠 Network Group/<cc-network-group-member-list>',
   component: 'cc-network-group-member-list',
 };
 

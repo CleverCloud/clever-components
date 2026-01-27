@@ -1326,6 +1326,7 @@ export const translations = {
   'cc-network-group-dashboard.doc-link.text': `Network Groups - Documentation`,
   //#endregion
   //#region cc-network-group-list
+  'cc-network-group-list.create': `Créer votre premier Network Group`,
   'cc-network-group-list.form.button': `Lier au Network Group`,
   'cc-network-group-list.form.description': `Cet écran répertorie tous les Network Groups auxquels cette ressource est attachée. Chaque Network Group définit un réseau privé sécurisé dans lequel la ressource peut communiquer directement avec d'autres ressources (applications, modules complémentaires ou services externes) qui en font partie. Vous trouverez ici une visibilité complète des groupes existants, avec les pairs associés, pour comprendre et gérer les connexions réseau de ressource. Vous pouvez également lier votre ressource à un nouveau Network Group.`,
   'cc-network-group-list.form.documentation': `Network Groups - Documentation`,
@@ -1359,13 +1360,17 @@ export const translations = {
   'cc-network-group-member-list.member.unlink': `Dissocier le membre`,
   'cc-network-group-member-list.member.unlink.error': `Une erreur est survenue pendant la dissociation du membre du Network Group`,
   'cc-network-group-member-list.member.unlink.success': `Le membre a bien été dissocié du Network Group`,
-  'cc-network-group-member-list.peer.metadata.id': `Identifiant`,
-  'cc-network-group-member-list.peer.metadata.ip': `Adresse IP`,
-  'cc-network-group-member-list.peer.metadata.key': `Clé publique`,
-  'cc-network-group-member-list.peer.metadata.peer-type': `Type de pair`,
   'cc-network-group-member-list.unlink.dialog.desc': `La dissociation d'un membre de votre Network Group dissocie également tous ses pairs. Souhaitez-vous continuer\u00A0?`,
   'cc-network-group-member-list.unlink.dialog.heading': `Confirmer la dissociation`,
   'cc-network-group-member-list.unlink.dialog.unlink-btn': `Confirmer et dissocier`,
+  //#endregion
+  //#region cc-network-group-peer-card
+  'cc-network-group-peer-card.metadata.id': `Identifiant`,
+  'cc-network-group-peer-card.metadata.ip': `Adresse IP`,
+  'cc-network-group-peer-card.metadata.key': `Clé publique`,
+  'cc-network-group-peer-card.metadata.peer-type': `Type de pair`,
+  'cc-network-group-peer-card.metadata.peer-type.clever-peer': `Pair Clever`,
+  'cc-network-group-peer-card.metadata.peer-type.external-peer': `Pair externe`,
   //#endregion
   //#region cc-notice
   'cc-notice.close': `Fermer cette notice`,

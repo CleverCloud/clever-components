@@ -26,6 +26,18 @@ export class CcNetworkGroupPeerCard extends LitElement {
     this.peer = null;
   }
 
+  /** @param {string} type */
+  _getPeerType(type) {
+    switch (type) {
+      case 'CleverPeer':
+        return i18n('cc-network-group-peer-card.metadata.peer-type.clever-peer');
+      case 'ExternalPeer':
+        return i18n('cc-network-group-peer-card.metadata.peer-type.external-peer');
+      default:
+        return type;
+    }
+  }
+
   render() {
     return html`
       <div class="peer-card">
@@ -33,7 +45,7 @@ export class CcNetworkGroupPeerCard extends LitElement {
         <dl class="metadata-list">
           <div class="metadata-item metadata-item--id">
             <dt>
-              <cc-icon .icon="${iconId}" a11y-name="${i18n('cc-network-group-member-list.peer.metadata.id')}"></cc-icon>
+              <cc-icon .icon="${iconId}" a11y-name="${i18n('cc-network-group-peer-card.metadata.id')}"></cc-icon>
             </dt>
             <dd><span>${this.peer.id}</span></dd>
           </div>
@@ -41,14 +53,14 @@ export class CcNetworkGroupPeerCard extends LitElement {
             <dt>
               <cc-icon
                 .icon="${iconKey}"
-                a11y-name="${i18n('cc-network-group-member-list.peer.metadata.key')}"
+                a11y-name="${i18n('cc-network-group-peer-card.metadata.key')}"
               ></cc-icon>
             </dt>
             <dd><span>${this.peer.publicKey}</span></dd>
           </div>
           <div class="metadata-item metadata-item--ip">
             <dt>
-              <cc-icon .icon="${iconIp}" a11y-name="${i18n('cc-network-group-member-list.peer.metadata.ip')}"></cc-icon>
+              <cc-icon .icon="${iconIp}" a11y-name="${i18n('cc-network-group-peer-card.metadata.ip')}"></cc-icon>
             </dt>
             <dd><span>${this.peer.ip}</span></dd>
           </div>
@@ -56,12 +68,11 @@ export class CcNetworkGroupPeerCard extends LitElement {
             <dt>
               <cc-icon
                 .icon="${iconPeerType}"
-                a11y-name="${i18n('cc-network-group-member-list.peer.metadata.peer-type')}"
+                a11y-name="${i18n('cc-network-group-peer-card.metadata.peer-type')}"
               ></cc-icon>
             </dt>
             <dd>
-              <!-- TODO: i18n -->
-              <span>${this.peer.type}</span>
+              <span>${this._getPeerType(this.peer.type)}</span>
             </dd>
           </div>
         </dl>

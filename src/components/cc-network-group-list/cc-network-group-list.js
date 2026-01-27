@@ -99,6 +99,10 @@ export class CcNetworkGroupList extends LitElement {
     const sortedSelectOptions = selectOptions.sort((optionA, optionB) => optionA.label.localeCompare(optionB.label));
     const defaultValue = selectOptions[0]?.value ?? nothing;
 
+    if (!isLoading && !isLinking && selectOptions.length === 0) {
+      return html`<cc-link mode="button">${i18n('cc-network-group-list.create')}</cc-link>`;
+    }
+
     return html`
       <form class="link-form" ${formSubmit(this._onLink.bind(this))}>
         <cc-select

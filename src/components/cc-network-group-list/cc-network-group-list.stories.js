@@ -3,7 +3,7 @@ import './cc-network-group-list.js';
 
 export default {
   tags: ['autodocs'],
-  title: '🛠 NetworkGroups/<cc-network-group-list>',
+  title: '🛠 Network Group/<cc-network-group-list>',
   component: 'cc-network-group-list',
 };
 
@@ -159,6 +159,22 @@ export const dataLoadedWithEmpty = makeStory(conf, {
       linkFormState: {
         type: 'idle',
         selectOptions: baseNetworkGroupList,
+      },
+      listState: {
+        type: 'loaded',
+        linkedNetworkGroupList: [],
+      },
+    },
+  ],
+});
+
+export const dataLoadedWithNoNetworkGroupToLink = makeStory(conf, {
+  /** @type {Partial<CcNetworkGroupList>[]} */
+  items: [
+    {
+      linkFormState: {
+        type: 'idle',
+        selectOptions: [],
       },
       listState: {
         type: 'loaded',

@@ -1312,6 +1312,7 @@ export const translations = {
   'cc-network-group-dashboard.doc-link.text': `Network Groups - Documentation`,
   //#endregion
   //#region cc-network-group-list
+  'cc-network-group-list.create': `Create your first Network Group`,
   'cc-network-group-list.form.button': `Link to the Network Group`,
   'cc-network-group-list.form.description': `This screen lists all the Network Groups to which this resource (and its instances) is linked to. Each Network Group defines a secure private network in which the resource can communicate directly with other resources (applications, add-ons, or external services) that are part of it. Here you will find complete visibility of existing groups, with associated peers, to understand and manage your resource's network connections. You can also link your resource to a new Network Group.`,
   'cc-network-group-list.form.documentation': `Network Groups - Documentation`,
@@ -1346,13 +1347,17 @@ export const translations = {
   'cc-network-group-member-list.member.unlink': `Unlink member`,
   'cc-network-group-member-list.member.unlink.error': `Something went wrong while unlinking the Network Group member`,
   'cc-network-group-member-list.member.unlink.success': `The Network Group member has been unlinked successfully`,
-  'cc-network-group-member-list.peer.metadata.id': `Identifier`,
-  'cc-network-group-member-list.peer.metadata.ip': `Ip address`,
-  'cc-network-group-member-list.peer.metadata.key': `Public key`,
-  'cc-network-group-member-list.peer.metadata.peer-type': `Peer type`,
   'cc-network-group-member-list.unlink.dialog.desc': `Unlinking a member from your Network Group also unlinks all its peers. Are you sure you want to continue?`,
   'cc-network-group-member-list.unlink.dialog.heading': `Confirm unlink`,
   'cc-network-group-member-list.unlink.dialog.unlink-btn': `Confirm and unlink`,
+  //#endregion
+  //#region cc-network-group-peer-card
+  'cc-network-group-peer-card.metadata.id': `Identifier`,
+  'cc-network-group-peer-card.metadata.ip': `Ip address`,
+  'cc-network-group-peer-card.metadata.key': `Public key`,
+  'cc-network-group-peer-card.metadata.peer-type': `Peer type`,
+  'cc-network-group-peer-card.metadata.peer-type.clever-peer': `Clever Peer`,
+  'cc-network-group-peer-card.metadata.peer-type.external-peer': `External Peer`,
   //#endregion
   //#region cc-notice
   'cc-notice.close': `Close this notice`,
