@@ -5,6 +5,18 @@ title: 'Changelog'
 
 # Changelog
 
+## [23.2.0](https://github.com/CleverCloud/clever-components/compare/23.1.0...23.2.0) (2026-01-27)
+
+
+### 🚀 Features
+
+* **cc-button:** enable focus delegation ([2c2565f](https://github.com/CleverCloud/clever-components/commit/2c2565fc653878f5720635dc4c759e77f693eaf5))
+* **cc-cellar-explorer:** init component ([cb06a97](https://github.com/CleverCloud/clever-components/commit/cb06a977281a94ea224f67a35b57b2b56e935567))
+* **cc-clipboard:** add `skeleton` state ([b7e5c74](https://github.com/CleverCloud/clever-components/commit/b7e5c7436cad9b2bccd9fe3c9a7315c4971fe8c5))
+* **cc-clipboard:** enable focus delegation ([ad98756](https://github.com/CleverCloud/clever-components/commit/ad987562eabab4ba68ff09685c256262d93d078d))
+* **cc-drawer:** init component ([b52a813](https://github.com/CleverCloud/clever-components/commit/b52a813ca2cb86547830c093ce1106cf19879bc0))
+* **cc-grid:** init component ([9ca06e0](https://github.com/CleverCloud/clever-components/commit/9ca06e008bee6d69522fd290cd7ae0fcbfe557b9))
+
 ## [23.1.0](https://github.com/CleverCloud/clever-components/compare/23.0.1...23.1.0) (2026-01-26)
 
 
