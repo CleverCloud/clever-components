@@ -39,9 +39,10 @@ const formatDistanceToNow = prepareFormatDistanceToNow(
 );
 
 const formatNumberUnit = prepareNumberUnitFormatter(lang);
-const formatBytes = prepareNumberBytesFormatter(lang, 'B', ' ');
 const BYTES_SI_SEPARATOR = ' ';
-const formatBytesSi = prepareNumberUnitFormatter(lang, 'B', BYTES_SI_SEPARATOR);
+const BYTES_SYMBOL = 'B';
+const formatBytes = prepareNumberBytesFormatter(lang, BYTES_SYMBOL, BYTES_SI_SEPARATOR);
+const formatBytesSi = prepareNumberUnitFormatter(lang, BYTES_SYMBOL, BYTES_SI_SEPARATOR);
 
 /**
  * @param {number} value
@@ -421,6 +422,76 @@ export const translations = {
   //#region cc-button
   'cc-button.cancel': `Click to cancel`,
   //#endregion
+  //#region cc-cellar-bucket-list
+  'cc-cellar-bucket-list.count': /** @param {{count: number}} _ */ ({ count }) => formatNumber(lang, count),
+  'cc-cellar-bucket-list.create.bucket-name.help.case': `Bucket names must not contain uppercase characters or underscores.`,
+  'cc-cellar-bucket-list.create.bucket-name.help.ip': `Bucket name cannot be formatted as IP address.`,
+  'cc-cellar-bucket-list.create.bucket-name.help.labels': `Bucket names must be a series of one or more labels. Adjacent labels are separated by a single period (.). Bucket names can contain lowercase letters, numbers, and hyphens. Each label must start and end with a lowercase letter or a number.`,
+  'cc-cellar-bucket-list.create.bucket-name.help.size': ` Bucket names must be between 3 and 63 characters long.`,
+  'cc-cellar-bucket-list.create.bucket-name.help.start': `Bucket names must start with a lowercase letter or number.`,
+  'cc-cellar-bucket-list.create.bucket-name.label': `Bucket Name`,
+  'cc-cellar-bucket-list.create.error.bucket-already-exists': `This bucket name is already taken`,
+  'cc-cellar-bucket-list.create.error.bucket-name-invalid': `The bucket name is invalid.`,
+  'cc-cellar-bucket-list.create.error.too-many-buckets': `You reached the maximum number of buckets. You can't create more.`,
+  'cc-cellar-bucket-list.create.submit': `Create bucket`,
+  'cc-cellar-bucket-list.create.title': `Create bucket`,
+  'cc-cellar-bucket-list.date': /** @param {{date: string}} _ */ ({ date }) => formatDateOnly(date),
+  'cc-cellar-bucket-list.details.actions.delete.button': `Delete the bucket`,
+  'cc-cellar-bucket-list.details.actions.delete.must-be-empty': `The bucket must be empty to delete it`,
+  'cc-cellar-bucket-list.details.actions.title': `Actions`,
+  'cc-cellar-bucket-list.details.heading': `Bucket details`,
+  'cc-cellar-bucket-list.details.overview.created-at': `Creation date`,
+  'cc-cellar-bucket-list.details.overview.date': /** @param {{date: string}} _ */ ({ date }) => formatDate(date),
+  'cc-cellar-bucket-list.details.overview.objects-count': `Number of objects`,
+  'cc-cellar-bucket-list.details.overview.size': `Size`,
+  'cc-cellar-bucket-list.details.overview.size-in-bytes': /** @param {{size: number}} _ */ ({ size }) => {
+    const formatted = formatBytes(size);
+    const exact = `${formatNumber(lang, size)}${BYTES_SI_SEPARATOR}${BYTES_SYMBOL}`;
+    return formatted === exact
+      ? formatted
+      : `${formatted} (${formatNumber(lang, size)}${BYTES_SI_SEPARATOR}byte${size <= 1 ? '' : 's'})`;
+  },
+  'cc-cellar-bucket-list.details.overview.title': `Bucket overview`,
+  'cc-cellar-bucket-list.details.overview.updated-at': `Last modify`,
+  'cc-cellar-bucket-list.details.overview.versioning': `Versioning`,
+  'cc-cellar-bucket-list.details.overview.versioning.disabled': `Disabled`,
+  'cc-cellar-bucket-list.details.overview.versioning.enabled': `Enabled`,
+  'cc-cellar-bucket-list.details.overview.versioning.suspended': `Suspended`,
+  'cc-cellar-bucket-list.empty.no-filtered-items': `No buckets matching the filter were found`,
+  'cc-cellar-bucket-list.empty.no-items': `You don't have any buckets yet`,
+  'cc-cellar-bucket-list.error': `Something went wrong while loading the list of buckets`,
+  'cc-cellar-bucket-list.error.bucket-creation-failed': /** @param {{bucketName: string}} _ */ ({ bucketName }) =>
+    `Bucket ${bucketName} creation failed`,
+  'cc-cellar-bucket-list.error.bucket-deletion-failed': /** @param {{bucketName: string}} _ */ ({ bucketName }) =>
+    `Failed to delete bucket ${bucketName}`,
+  'cc-cellar-bucket-list.error.bucket-fetch-failed': /** @param {{bucketName: string}} _ */ ({ bucketName }) =>
+    `Failed to get bucket ${bucketName}`,
+  'cc-cellar-bucket-list.error.bucket-not-empty': /** @param {{bucketName: string}} _ */ ({ bucketName }) =>
+    `Bucket ${bucketName} cannot be deleted because it is not empty`,
+  'cc-cellar-bucket-list.error.bucket-not-found': /** @param {{bucketName: string}} _ */ ({ bucketName }) =>
+    `Bucket ${bucketName} does not exist`,
+  'cc-cellar-bucket-list.grid.a11y-name': `List of buckets`,
+  'cc-cellar-bucket-list.grid.column.last-update': `Last update`,
+  'cc-cellar-bucket-list.grid.column.name': `Bucket name`,
+  'cc-cellar-bucket-list.grid.column.objects': `Objects`,
+  'cc-cellar-bucket-list.grid.column.size': `Size`,
+  'cc-cellar-bucket-list.grid.show-details.a11y-name': /** @param {{bucketName: string}} _ */ ({ bucketName }) =>
+    `Show details for bucket ${bucketName}`,
+  'cc-cellar-bucket-list.heading.create.button': `Create Bucket`,
+  'cc-cellar-bucket-list.heading.filter.button': `Filter`,
+  'cc-cellar-bucket-list.heading.filter.label': `Filter`,
+  'cc-cellar-bucket-list.heading.title': `List of buckets`,
+  'cc-cellar-bucket-list.size': /** @param {{size: number}} _ */ ({ size }) => formatBytes(size),
+  'cc-cellar-bucket-list.success.bucket-already-deleted': /** @param {{bucketName: string}} _ */ ({ bucketName }) =>
+    `Bucket ${bucketName} was already deleted`,
+  'cc-cellar-bucket-list.success.bucket-created': /** @param {{bucketName: string}} _ */ ({ bucketName }) =>
+    `Bucket ${bucketName} created successfully`,
+  'cc-cellar-bucket-list.success.bucket-deleted': /** @param {{bucketName: string}} _ */ ({ bucketName }) =>
+    `Bucket ${bucketName} deleted successfully`,
+  //#endregion
+  //#region cc-cellar-explorer
+  'cc-cellar-explorer.error': `Error while loading component`,
+  //#endregion
   //#region cc-clipboard
   'cc-clipboard.copied': `The text has been copied`,
   'cc-clipboard.copy': /** @param {{text: string}} _ */ ({ text }) =>
@@ -549,6 +620,9 @@ export const translations = {
   'cc-domain-management.names.documentation.text': `Domain names - Documentation`,
   'cc-domain-management.new-window': `New Window`,
   'cc-domain-management.tls.certificates.documentation.text': `TLS certificates - Documentation`,
+  //#endregion
+  //#region cc-drawer
+  'cc-drawer.close': `Close`,
   //#endregion
   //#region cc-elasticsearch-info
   'cc-elasticsearch-info.documentation.text': `Elasticsearch - Documentation`,

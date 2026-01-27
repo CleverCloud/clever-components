@@ -19,7 +19,7 @@ export class ResizeController {
    * @param {LitElement} host - the custom element to observe
    * @param {Object} [options]
    * @param {number[]} [options.widthBreakpoints] - the breakpoints used to add or remove the `w-gte-${breakpoint}` / `w-lt-${breakpoint}` attributes
-   * @param {(width: number) => {}} [options.callback] - a function to execute everytime a resize happens. The `width` of the host is passed as an argument of this callback.
+   * @param {(width: number) => void} [options.callback] - a function to execute everytime a resize happens. The `width` of the host is passed as an argument of this callback.
    */
   constructor(host, options) {
     if (!window.ResizeObserver) {

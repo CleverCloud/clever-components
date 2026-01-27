@@ -7,6 +7,7 @@ import {
   isStringEmpty,
   randomString,
   range,
+  sortByProps,
   trimArray,
 } from '../src/lib/utils.js';
 
@@ -313,5 +314,129 @@ describe('findLastIndex function', () => {
 
   it('should return last index when all elements match', () => {
     expect(findLastIndex([1, 2, 3, 4], (x) => x > 0)).to.equal(3);
+  });
+});
+
+describe('sortByProps function', () => {
+  it('should sort by single property ascending', () => {
+    const data = [{ age: 30 }, { age: 25 }, { age: 35 }];
+    const sorted = data.sort(sortByProps([['age', 'asc']]));
+    expect(sorted).to.eql([{ age: 25 }, { age: 30 }, { age: 35 }]);
+  });
+
+  it('should sort by single property descending', () => {
+    const data = [{ age: 30 }, { age: 25 }, { age: 35 }];
+    const sorted = data.sort(sortByProps([['age', 'desc']]));
+    expect(sorted).to.eql([{ age: 35 }, { age: 30 }, { age: 25 }]);
+  });
+
+  it('should sort by single string property ascending', () => {
+    const data = [{ name: 'Charlie' }, { name: 'Alice' }, { name: 'Bob' }];
+    const sorted = data.sort(sortByProps([['name', 'asc']]));
+    expect(sorted).to.eql([{ name: 'Alice' }, { name: 'Bob' }, { name: 'Charlie' }]);
+  });
+
+  it('should sort by single string property descending', () => {
+    const data = [{ name: 'Charlie' }, { name: 'Alice' }, { name: 'Bob' }];
+    const sorted = data.sort(sortByProps([['name', 'desc']]));
+    expect(sorted).to.eql([{ name: 'Charlie' }, { name: 'Bob' }, { name: 'Alice' }]);
+  });
+
+  it('should sort by multiple properties with same direction', () => {
+    const data = [
+      { age: 25, score: 90 },
+      { age: 30, score: 85 },
+      { age: 25, score: 85 },
+    ];
+    const sorted = data.sort(
+      sortByProps([
+        ['age', 'asc'],
+        ['score', 'asc'],
+      ]),
+    );
+    expect(sorted).to.eql([
+      { age: 25, score: 85 },
+      { age: 25, score: 90 },
+      { age: 30, score: 85 },
+    ]);
+  });
+
+  it('should sort by multiple properties with mixed directions', () => {
+    const data = [
+      { name: 'Alice', age: 30, score: 85 },
+      { name: 'Bob', age: 25, score: 90 },
+      { name: 'Charlie', age: 25, score: 85 },
+    ];
+    const sorted = data.sort(
+      sortByProps([
+        ['age', 'asc'],
+        ['score', 'desc'],
+      ]),
+    );
+    expect(sorted).to.eql([
+      { name: 'Bob', age: 25, score: 90 },
+      { name: 'Charlie', age: 25, score: 85 },
+      { name: 'Alice', age: 30, score: 85 },
+    ]);
+  });
+
+  it('should sort by three properties with different directions', () => {
+    const data = [
+      { dept: 'Sales', age: 25, score: 90 },
+      { dept: 'IT', age: 30, score: 85 },
+      { dept: 'Sales', age: 25, score: 85 },
+      { dept: 'IT', age: 25, score: 90 },
+    ];
+    const sorted = data.sort(
+      sortByProps([
+        ['dept', 'asc'],
+        ['age', 'desc'],
+        ['score', 'asc'],
+      ]),
+    );
+    expect(sorted).to.eql([
+      { dept: 'IT', age: 30, score: 85 },
+      { dept: 'IT', age: 25, score: 90 },
+      { dept: 'Sales', age: 25, score: 85 },
+      { dept: 'Sales', age: 25, score: 90 },
+    ]);
+  });
+
+  it('should convert mixed types to strings when one is not a number', () => {
+    const data = [{ value: 100 }, { value: '20' }, { value: 3 }];
+    const sorted = data.sort(sortByProps([['value', 'asc']]));
+    // All converted to strings: '100' < '20' < '3'
+    expect(sorted).to.eql([{ value: 100 }, { value: '20' }, { value: 3 }]);
+  });
+
+  it('should use secondary sort when primary values are equal', () => {
+    const data = [
+      { category: 'A', priority: 2 },
+      { category: 'A', priority: 1 },
+      { category: 'A', priority: 3 },
+    ];
+    const sorted = data.sort(
+      sortByProps([
+        ['category', 'asc'],
+        ['priority', 'asc'],
+      ]),
+    );
+    expect(sorted).to.eql([
+      { category: 'A', priority: 1 },
+      { category: 'A', priority: 2 },
+      { category: 'A', priority: 3 },
+    ]);
+  });
+
+  it('should handle empty array', () => {
+    const data = [];
+    const sorted = data.sort(sortByProps([['value', 'asc']]));
+    expect(sorted).to.eql([]);
+  });
+
+  it('should handle single element array', () => {
+    const data = [{ value: 42 }];
+    const sorted = data.sort(sortByProps([['value', 'asc']]));
+    expect(sorted).to.eql([{ value: 42 }]);
   });
 });

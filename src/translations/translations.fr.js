@@ -50,9 +50,10 @@ const formatDistanceToNow = prepareFormatDistanceToNow(
 );
 
 const formatNumberUnit = prepareNumberUnitFormatter(lang);
-const formatBytes = prepareNumberBytesFormatter(lang, 'o', '\u202f');
 const BYTES_SI_SEPARATOR = '\u202f';
-const formatBytesSi = prepareNumberUnitFormatter(lang, 'o', BYTES_SI_SEPARATOR);
+const BYTES_SYMBOL = 'o';
+const formatBytes = prepareNumberBytesFormatter(lang, BYTES_SYMBOL, BYTES_SI_SEPARATOR);
+const formatBytesSi = prepareNumberUnitFormatter(lang, BYTES_SYMBOL, BYTES_SI_SEPARATOR);
 
 /**
  * @param {number} value
@@ -432,6 +433,76 @@ export const translations = {
   //#region cc-button
   'cc-button.cancel': `Cliquez pour annuler`,
   //#endregion
+  //#region cc-cellar-bucket-list
+  'cc-cellar-bucket-list.count': /** @param {{count: number}} _ */ ({ count }) => formatNumber(lang, count),
+  'cc-cellar-bucket-list.create.bucket-name.help.case': `Les noms de bucket ne doivent pas contenir de caractères majuscules ou de tirets bas.`,
+  'cc-cellar-bucket-list.create.bucket-name.help.ip': `Les noms de bucket ne peuvent pas être formatés comme une adresse IP.`,
+  'cc-cellar-bucket-list.create.bucket-name.help.labels': `Les noms de bucket doivent être une série d'une ou plusieurs étiquettes. Les étiquettes adjacentes sont séparées par un point (.). Les noms de bucket peuvent contenir des lettres minuscules, des chiffres et des tirets. Chaque étiquette doit commencer et se terminer par une lettre minuscule ou un chiffre.`,
+  'cc-cellar-bucket-list.create.bucket-name.help.size': `Les noms de bucket doivent contenir entre 3 et 63 caractères.`,
+  'cc-cellar-bucket-list.create.bucket-name.help.start': `Les noms de bucket doivent commencer par une lettre minuscule ou un chiffre.`,
+  'cc-cellar-bucket-list.create.bucket-name.label': `Nom du bucket`,
+  'cc-cellar-bucket-list.create.error.bucket-already-exists': `Ce nom de bucket est déjà utilisé`,
+  'cc-cellar-bucket-list.create.error.bucket-name-invalid': `Le nom de bucket est invalide`,
+  'cc-cellar-bucket-list.create.error.too-many-buckets': `Vous avez atteint le nombre maximum de buckets. Vous ne pouvez pas en créer de nouveau.`,
+  'cc-cellar-bucket-list.create.submit': `Créer le bucket`,
+  'cc-cellar-bucket-list.create.title': `Créer un bucket`,
+  'cc-cellar-bucket-list.date': /** @param {{date: string}} _ */ ({ date }) => formatDateOnly(date),
+  'cc-cellar-bucket-list.details.actions.delete.button': `Supprimer le bucket`,
+  'cc-cellar-bucket-list.details.actions.delete.must-be-empty': `Le bucket doit être vide pour être supprimé`,
+  'cc-cellar-bucket-list.details.actions.title': `Actions`,
+  'cc-cellar-bucket-list.details.heading': `Détails du bucket`,
+  'cc-cellar-bucket-list.details.overview.created-at': `Date de création`,
+  'cc-cellar-bucket-list.details.overview.date': /** @param {{date: string}} _ */ ({ date }) => formatDate(date),
+  'cc-cellar-bucket-list.details.overview.objects-count': `Nombre d'objets`,
+  'cc-cellar-bucket-list.details.overview.size': `Taille`,
+  'cc-cellar-bucket-list.details.overview.size-in-bytes': /** @param {{size: number}} _ */ ({ size }) => {
+    const formatted = formatBytes(size);
+    const exact = `${formatNumber(lang, size)}${BYTES_SI_SEPARATOR}${BYTES_SYMBOL}`;
+    return formatted === exact
+      ? formatted
+      : `${formatted} (${formatNumber(lang, size)}${BYTES_SI_SEPARATOR}octet${size <= 1 ? '' : 's'})`;
+  },
+  'cc-cellar-bucket-list.details.overview.title': `Aperçu du bucket`,
+  'cc-cellar-bucket-list.details.overview.updated-at': `Dernière modification`,
+  'cc-cellar-bucket-list.details.overview.versioning': `Versionnage`,
+  'cc-cellar-bucket-list.details.overview.versioning.disabled': `Désactivé`,
+  'cc-cellar-bucket-list.details.overview.versioning.enabled': `Activé`,
+  'cc-cellar-bucket-list.details.overview.versioning.suspended': `Suspendu`,
+  'cc-cellar-bucket-list.empty.no-filtered-items': `Aucun bucket ne correspond au filtre`,
+  'cc-cellar-bucket-list.empty.no-items': `Vous n'avez aucun bucket`,
+  'cc-cellar-bucket-list.error': `Une erreur est survenue pendant le chargement de la liste des buckets`,
+  'cc-cellar-bucket-list.error.bucket-creation-failed': /** @param {{bucketName: string}} _ */ ({ bucketName }) =>
+    `La création du bucket ${bucketName} a échoué`,
+  'cc-cellar-bucket-list.error.bucket-deletion-failed': /** @param {{bucketName: string}} _ */ ({ bucketName }) =>
+    `La suppression du bucket ${bucketName} a échoué`,
+  'cc-cellar-bucket-list.error.bucket-fetch-failed': /** @param {{bucketName: string}} _ */ ({ bucketName }) =>
+    `Impossible de récupérer le bucket ${bucketName}`,
+  'cc-cellar-bucket-list.error.bucket-not-empty': /** @param {{bucketName: string}} _ */ ({ bucketName }) =>
+    `Le bucket ${bucketName} ne peut pas être supprimé car il n'est pas vide`,
+  'cc-cellar-bucket-list.error.bucket-not-found': /** @param {{bucketName: string}} _ */ ({ bucketName }) =>
+    `Le bucket ${bucketName} n'existe pas`,
+  'cc-cellar-bucket-list.grid.a11y-name': `Liste des buckets`,
+  'cc-cellar-bucket-list.grid.column.last-update': `Dernière modification`,
+  'cc-cellar-bucket-list.grid.column.name': `Nom du bucket`,
+  'cc-cellar-bucket-list.grid.column.objects': `Objets`,
+  'cc-cellar-bucket-list.grid.column.size': `Taille`,
+  'cc-cellar-bucket-list.grid.show-details.a11y-name': /** @param {{bucketName: string}} _ */ ({ bucketName }) =>
+    `Afficher les détails du bucket ${bucketName}`,
+  'cc-cellar-bucket-list.heading.create.button': `Créer un bucket`,
+  'cc-cellar-bucket-list.heading.filter.button': `Filtrer`,
+  'cc-cellar-bucket-list.heading.filter.label': `Filtre`,
+  'cc-cellar-bucket-list.heading.title': `Liste des buckets`,
+  'cc-cellar-bucket-list.size': /** @param {{size: number}} _ */ ({ size }) => formatBytes(size),
+  'cc-cellar-bucket-list.success.bucket-already-deleted': /** @param {{bucketName: string}} _ */ ({ bucketName }) =>
+    `Le bucket ${bucketName} était déjà supprimé`,
+  'cc-cellar-bucket-list.success.bucket-created': /** @param {{bucketName: string}} _ */ ({ bucketName }) =>
+    `Le bucket ${bucketName} a été créé avec succès`,
+  'cc-cellar-bucket-list.success.bucket-deleted': /** @param {{bucketName: string}} _ */ ({ bucketName }) =>
+    `Le bucket ${bucketName} a été supprimé avec succès`,
+  //#endregion
+  //#region cc-cellar-explorer
+  'cc-cellar-explorer.error': `Une erreur est survenue pendant le chargement`,
+  //#endregion
   //#region cc-clipboard
   'cc-clipboard.copied': `Le texte a été copié`,
   'cc-clipboard.copy': /** @param {{text: string}} _ */ ({ text }) =>
@@ -558,6 +629,9 @@ export const translations = {
   'cc-domain-management.names.documentation.text': `Noms de domaine - Documentation`,
   'cc-domain-management.new-window': `Nouvelle fenêtre`,
   'cc-domain-management.tls.certificates.documentation.text': `Certificats TLS - Documentation`,
+  //#endregion
+  //#region cc-drawer
+  'cc-drawer.close': `Fermer`,
   //#endregion
   //#region cc-elasticsearch-info
   'cc-elasticsearch-info.documentation.text': `Elasticsearch - Documentation`,
