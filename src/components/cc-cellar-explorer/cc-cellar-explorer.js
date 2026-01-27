@@ -2,6 +2,7 @@ import { css, html, LitElement } from 'lit';
 import { createRef, ref } from 'lit/directives/ref.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-cellar-bucket-list/cc-cellar-bucket-list.js';
+import '../cc-cellar-object-list/cc-cellar-object-list.js';
 import '../cc-loader/cc-loader.js';
 import '../cc-notice/cc-notice.js';
 
@@ -58,7 +59,10 @@ export class CcCellarExplorer extends LitElement {
       ></cc-cellar-bucket-list-beta>`;
     }
 
-    return html``;
+    return html`<cc-cellar-object-list-beta
+      class="main"
+      .state=${this.state.level.state}
+    ></cc-cellar-object-list-beta>`;
   }
 
   static get styles() {
