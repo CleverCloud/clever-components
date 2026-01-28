@@ -1320,9 +1320,15 @@ export const translations = {
   'cc-network-group-list.form.heading': `Link the resource to a Network Group`,
   'cc-network-group-list.form.select-label': `Choose a Network Group to link`,
   'cc-network-group-list.list.dashboard-link': `Go to Network Group`,
-  'cc-network-group-list.list.empty': `You don’t have any Network Groups linked to your resource`,
+  'cc-network-group-list.list.dashboard-link.addon': `Add-on overview`,
+  'cc-network-group-list.list.dashboard-link.application': `Application overview`,
+  'cc-network-group-list.list.empty': `You don't have any Network Groups linked to your resource`,
   'cc-network-group-list.list.error': `Something went wrong while loading the list of linked Network Groups.`,
   'cc-network-group-list.list.heading': `Linked Network Groups`,
+  //#endregion
+  //#region cc-network-group-member-card
+  'cc-network-group-member-card.link.dashboard-addon': `Add-on Overview`,
+  'cc-network-group-member-card.link.dashboard-application': `Application Overview`,
   //#endregion
   //#region cc-network-group-member-list
   'cc-network-group-member-list.cli...': ``,

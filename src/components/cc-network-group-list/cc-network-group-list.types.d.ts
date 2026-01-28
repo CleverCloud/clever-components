@@ -49,9 +49,19 @@ export interface NetworkGroupListStateLinking {
   linkedNetworkGroupList: NetworkGroup[];
 }
 
-export interface NetworkGroup {
+export type NetworkGroup = NetworkGroupResource | NetworkGroupExternal;
+
+export interface NetworkGroupResource {
   id: string;
   name: string;
   peerList: NetworkGroupPeer[];
+  kind: 'application' | 'addon';
   dashboardUrl: string;
+}
+
+export interface NetworkGroupExternal {
+  id: string;
+  name: string;
+  peerList: NetworkGroupPeer[];
+  kind: 'external';
 }

@@ -181,6 +181,7 @@ class Api {
       domainName: member.domainName,
       logo: await this.#getMemberLogo(member.id, member.kind),
       kind: member.kind,
+      dashboardUrl: this.#getMemberDashboardUrl(member.id, member.kind),
       peerList: networkGroupData.peers
         .filter((peer) => peer.parentMember === member.id)
         .map((peer) => ({
@@ -275,6 +276,26 @@ class Api {
           url: getAssetUrl('/logos/external-resource.svg'),
           a11yName: i18n('cc-network-group-member-list.member.logo.a11y-name.external'),
         };
+    }
+  }
+
+  /**
+   * @param {string} resourceId
+   * @param {NetworkGroupMember['kind']} kind
+   * @returns {string|undefined}
+   */
+  #getMemberDashboardUrl(resourceId, kind) {
+    const baseUrl = this.#ownerId.startsWith('orga_')
+      ? `/organisations/${this.#ownerId}`
+      : `/users/me`;
+
+    switch (kind) {
+      case 'APPLICATION':
+        return `${baseUrl}/applications/${resourceId}`;
+      case 'ADDON':
+        return `${baseUrl}/addons/${resourceId}`;
+      case 'EXTERNAL':
+        return undefined;
     }
   }
 }

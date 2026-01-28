@@ -1,5 +1,5 @@
 import { makeStory } from '../../stories/lib/make-story.js';
-import { memberWithPeers, memberWithoutPeers, memberWithoutDashboardUrl } from '../../stories/fixtures/network-groups.js';
+import { memberWithPeers, memberAddon, memberWithoutPeers, memberWithoutDashboardUrl } from '../../stories/fixtures/network-groups.js';
 import './cc-network-group-member-card.js';
 
 export default {
@@ -77,8 +77,19 @@ export const disabled = makeStory(conf, {
   ],
 });
 
+export const addon = makeStory(conf, {
+  docs: 'An add-on member with a dashboard link showing "Add-on Overview".',
+  /** @type {Partial<CcNetworkGroupMemberCard>[]} */
+  items: [
+    {
+      member: memberAddon,
+      open: true,
+    },
+  ],
+});
+
 export const multipleCards = makeStory(conf, {
-  docs: 'Multiple cards to show how they look in a list context.',
+  docs: 'Multiple cards to show how they look in a list context with different kinds (application, add-on, external).',
   /** @type {Partial<CcNetworkGroupMemberCard>[]} */
   items: [
     {
@@ -86,15 +97,11 @@ export const multipleCards = makeStory(conf, {
       open: true,
     },
     {
-      member: memberWithoutPeers,
+      member: memberAddon,
+      open: true,
     },
     {
-      member: {
-        ...memberWithPeers,
-        id: 'app_another',
-        label: 'Another application with peers',
-      },
-      open: false,
+      member: memberWithoutPeers,
     },
   ],
 });

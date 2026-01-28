@@ -1334,8 +1334,14 @@ export const translations = {
   'cc-network-group-list.form.heading': `Lier la ressource à un Network Group`,
   'cc-network-group-list.form.select-label': `Choisissez un Network Group à lier`,
   'cc-network-group-list.list.dashboard-link': `Accéder au Network Group`,
+  'cc-network-group-list.list.dashboard-link.addon': `Vue d'ensemble de l'add-on`,
+  'cc-network-group-list.list.dashboard-link.application': `Vue d'ensemble de l'application`,
   'cc-network-group-list.list.empty': `Vous n'avez aucun Network Group lié à votre ressource`,
   'cc-network-group-list.list.heading': `Network Groups liés`,
+  //#endregion
+  //#region cc-network-group-member-card
+  'cc-network-group-member-card.link.dashboard-addon': `Vue d'ensemble de l'add-on`,
+  'cc-network-group-member-card.link.dashboard-application': `Vue d'ensemble de l'application`,
   //#endregion
   //#region cc-network-group-member-list
   'cc-network-group-member-list.cli...': ``,

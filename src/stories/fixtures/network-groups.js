@@ -33,7 +33,27 @@ export const networkGroupMembers = [
         type: 'CleverPeer',
       },
     ],
-    dashboardUrl: 'https://example.com/',
+    dashboardUrl: '/organisations/orga_XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX/applications/app_6982c7ae-106e-449f-971e-1a8eb426bd67',
+  },
+  {
+    id: 'addon_12345678-1234-1234-1234-123456789abc',
+    label: 'PostgreSQL Production',
+    domainName: 'addon_12345678-1234-1234-1234-123456789abc.m.ng_b625776f-8d36-495e-9088-02c22ebebf87.cc-ng.cloud',
+    logo: {
+      url: getAssetUrl('/logos/postgresql.svg'),
+      a11yName: 'PostgreSQL',
+    },
+    kind: 'ADDON',
+    peerList: [
+      {
+        id: '366469bd-42ec-46fc-b1be-5f24084c1683',
+        label: 'Brave squirtle',
+        publicKey: 'bVosHhRttfhy+sTrwWvSUhuVCNMoVdDXp+g9amBrSFE=',
+        ip: '10.101.0.18',
+        type: 'CleverPeer',
+      },
+    ],
+    dashboardUrl: '/organisations/orga_XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX/addons/addon_12345678-1234-1234-1234-123456789abc',
   },
   {
     id: 'external_c8916d58-1881-4bc1-a7ca-fc8052629f2c',
@@ -78,7 +98,10 @@ export const networkGroupMembers = [
 export const memberWithPeers = networkGroupMembers[0];
 
 /** @type {NetworkGroupMember} */
-export const memberWithoutPeers = networkGroupMembers[1];
+export const memberAddon = networkGroupMembers[1];
+
+/** @type {NetworkGroupMember} */
+export const memberWithoutPeers = networkGroupMembers[2];
 
 /** @type {NetworkGroupMember} */
 export const memberWithoutDashboardUrl = {
@@ -106,6 +129,8 @@ export const linkedNetworkGroupList = [
   {
     id: 'ng_XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX',
     name: 'Alpha Network Group',
+    kind: 'application',
+    dashboardUrl: '#',
     peerList: [
       {
         id: 'a1b2c3d4-1111-2222-3333-444455556666',
@@ -129,11 +154,12 @@ export const linkedNetworkGroupList = [
         type: 'CleverPeer',
       },
     ],
-    dashboardUrl: '#',
   },
   {
-    id: 'ng_XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX',
+    id: 'ng_YYYYYYYY-YYYY-YYYY-YYYY-YYYYYYYYYYYY',
     name: 'Beta Mesh Group',
+    kind: 'addon',
+    dashboardUrl: '#',
     peerList: [
       {
         id: 'd4e5f6g7-4444-5555-6666-777788889999',
@@ -150,21 +176,20 @@ export const linkedNetworkGroupList = [
         type: 'CleverPeer',
       },
     ],
-    dashboardUrl: '#',
   },
   {
-    id: 'ng_XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX',
-    name: 'Gamma Peer Group',
+    id: 'ng_ZZZZZZZZ-ZZZZ-ZZZZ-ZZZZ-ZZZZZZZZZZZZ',
+    name: 'Gamma External Group',
+    kind: 'external',
     peerList: [
       {
         id: 'f6g7h8i9-6666-7777-8888-999900001111',
         label: 'Silent lynx',
         publicKey: '0987654321abcdefABCDEFghijklmnopqrstuvwx=',
         ip: '10.101.0.30',
-        type: 'CleverPeer',
+        type: 'ExternalPeer',
       },
     ],
-    dashboardUrl: '#',
   },
 ];
 

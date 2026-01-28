@@ -144,6 +144,17 @@ export class CcNetworkGroupList extends LitElement {
     `;
   }
 
+  /**
+   * @param {'application' | 'addon'} kind
+   * @returns {string}
+   */
+  _getDashboardLinkText(kind) {
+    if (kind === 'application') {
+      return i18n('cc-network-group-list.list.dashboard-link.application');
+    }
+    return i18n('cc-network-group-list.list.dashboard-link.addon');
+  }
+
   /** @param {NetworkGroup} networkGroup */
   _renderNetworkGroupCard(networkGroup) {
     return html`
@@ -153,12 +164,16 @@ export class CcNetworkGroupList extends LitElement {
             <cc-img class="network-group-card__header_heading__img" src="${getAssetUrl('/logos/nodejs.svg')}"></cc-img>
             <span>${networkGroup.name}</span>
           </div>
-          <div class="network-group-card__header__link">
-            <cc-link href="${networkGroup.dashboardUrl}">
-              <span>${i18n('cc-network-group-list.list.dashboard-link')}</span>
-            </cc-link>
-            <cc-icon .icon="${iconLink}"></cc-icon>
-          </div>
+          ${networkGroup.kind !== 'external'
+            ? html`
+                <div class="network-group-card__header__link">
+                  <cc-link href="${networkGroup.dashboardUrl}">
+                    <span>${this._getDashboardLinkText(networkGroup.kind)}</span>
+                  </cc-link>
+                  <cc-icon .icon="${iconLink}"></cc-icon>
+                </div>
+              `
+            : ''}
         </div>
         <div class="network-group-card__id">
           <span>${networkGroup.id}</span>

@@ -1,5 +1,8 @@
 import { css, html, LitElement } from 'lit';
-import { iconRemixArrowUpSLine as iconArrowUp } from '../../assets/cc-remix.icons.js';
+import {
+  iconRemixArrowRightLine as iconArrowRight,
+  iconRemixArrowUpSLine as iconArrowUp,
+} from '../../assets/cc-remix.icons.js';
 import { isStringEmpty } from '../../lib/utils.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-button/cc-button.js';
@@ -64,6 +67,23 @@ export class CcNetworkGroupMemberCard extends LitElement {
     this.dispatchEvent(new CcNetworkGroupMemberUnlinkRequestEvent(this.member.id));
   }
 
+  /**
+   * @param {NetworkGroupMember['kind']} kind
+   * @returns {string}
+   *
+   * Returns the appropriate dashboard link text based on the member kind
+   **/
+  _getDashboardLinkText(kind) {
+    switch (kind) {
+      case 'APPLICATION':
+        return i18n('cc-network-group-member-card.link.dashboard-application');
+      case 'ADDON':
+        return i18n('cc-network-group-member-card.link.dashboard-addon');
+      case 'EXTERNAL':
+        return '';
+    }
+  }
+
   render() {
     const hasPeers = this.member.peerList.length > 0;
 
@@ -98,7 +118,7 @@ export class CcNetworkGroupMemberCard extends LitElement {
           ${this._renderIdentity(member.logo, member.label)} ${this._renderPeersCount(member.peerList.length)}
         </div>
         ${this._renderDomain(member.domainName)}
-        ${this._renderFooter({ isUnlinking, isDisabled, dashboardUrl: member.dashboardUrl })}
+        ${this._renderFooter({ isUnlinking, isDisabled, dashboardUrl: member.dashboardUrl, kind: member.kind })}
       </div>
     `;
   }
@@ -127,7 +147,12 @@ export class CcNetworkGroupMemberCard extends LitElement {
             </summary>
             <div class="details-content">
               ${this._renderDomain(member.domainName)} ${this._renderPeerList(member.peerList)}
-              ${this._renderFooter({ isUnlinking, isDisabled, dashboardUrl: member.dashboardUrl ?? '' })}
+              ${this._renderFooter({
+                isUnlinking,
+                isDisabled,
+                dashboardUrl: member.dashboardUrl ?? '',
+                kind: member.kind,
+              })}
             </div>
           </details>
           <div class="domain-collapsed">${this._renderDomain(member.domainName)}</div>
@@ -193,16 +218,18 @@ export class CcNetworkGroupMemberCard extends LitElement {
    * @param {boolean} params.isUnlinking
    * @param {boolean} params.isDisabled
    * @param {string} [params.dashboardUrl]
+   * @param {NetworkGroupMember['kind']} params.kind
    *
    * Renders the footer section (dashboard link + unlink button)
    **/
-  _renderFooter({ isUnlinking, isDisabled, dashboardUrl }) {
+  _renderFooter({ isUnlinking, isDisabled, dashboardUrl, kind }) {
     return html`
       <div class="footer">
         ${!isStringEmpty(dashboardUrl)
           ? html`
               <div class="dashboard-link">
-                <cc-link href="${dashboardUrl}">${i18n('')}</cc-link>
+                <cc-link href="${dashboardUrl}">${this._getDashboardLinkText(kind)}</cc-link>
+                <cc-icon class="dashboard-link__icon" .icon="${iconArrowRight}"></cc-icon>
               </div>
             `
           : ''}
@@ -355,6 +382,16 @@ export class CcNetworkGroupMemberCard extends LitElement {
           gap: 1em;
           justify-content: space-between;
           margin-top: 1em;
+        }
+
+        .dashboard-link {
+          align-items: center;
+          display: flex;
+          gap: 0.5em;
+        }
+
+        .dashboard-link__icon {
+          --cc-icon-color: var(--cc-color-text-primary-highlight);
         }
 
         .unlink-btn {
