@@ -1,4 +1,5 @@
 import { makeStory } from '../../stories/lib/make-story.js';
+import { networkGroupDashboard } from '../../stories/fixtures/network-groups.js';
 import './cc-network-group-dashboard.js';
 
 export default {
@@ -16,23 +17,13 @@ const conf = {
  * @import { CcInputText } from '../cc-input-text/cc-input-text.js'
  */
 
-const baseItem = {
-  id: 'ng_XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX',
-  name: 'My Network Group',
-  description: 'This is my network group used for internal services communication.',
-  subnet: '10.0.0.0/16',
-  lastIp: '10.0.0.1/24',
-  numberOfMembers: 4,
-  numberOfPeers: 16,
-};
-
 export const defaultStory = makeStory(conf, {
   /** @type {Partial<CcNetworkGroupDashboard>[]} */
   items: [
     {
       state: {
         type: 'loaded',
-        ...baseItem,
+        ...networkGroupDashboard,
       },
     },
   ],
@@ -44,7 +35,7 @@ export const deleting = makeStory(conf, {
     {
       state: {
         type: 'deleting',
-        ...baseItem,
+        ...networkGroupDashboard,
       },
     },
   ],
@@ -55,7 +46,7 @@ export const deleting = makeStory(conf, {
     const dialogConfrimForm = component.shadowRoot.querySelector('cc-dialog-confirm-form');
     /** @type {CcInputText} */
     const confirmInputText = dialogConfrimForm.shadowRoot.querySelector('cc-input-text');
-    confirmInputText.value = baseItem.name;
+    confirmInputText.value = networkGroupDashboard.name;
     deleteButton.click();
   },
 });

@@ -12,7 +12,8 @@ import '../cc-network-group-peer-card/cc-network-group-peer-card.js';
 import { CcNetworkGroupMemberUnlinkRequestEvent } from './cc-network-group-member-card.events.js';
 
 /**
- * @import { NetworkGroupMemberCardState } from './cc-network-group-member-card.types.js'
+ * @import { NetworkGroupMember } from './cc-network-group-member-card.types.js'
+ * @import { NetworkGroupPeer } from '../cc-network-group-peer-card/cc-network-group-peer-card.types.js'
  */
 
 /**
@@ -29,9 +30,10 @@ import { CcNetworkGroupMemberUnlinkRequestEvent } from './cc-network-group-membe
 export class CcNetworkGroupMemberCard extends LitElement {
   static get properties() {
     return {
-      disabled: { type: Boolean },
+      isDisabled: { type: Boolean, attribute: 'is-disabled' },
+      isUnlinking: { type: Boolean, attribute: 'is-unlinking' },
+      member: { type: Object },
       open: { type: Boolean },
-      state: { type: Object },
     };
   }
 
@@ -39,42 +41,108 @@ export class CcNetworkGroupMemberCard extends LitElement {
     super();
 
     /** @type {boolean} Disables the unlink button (used when another member is being unlinked) */
-    this.disabled = false;
+    this.isDisabled = false;
+
+    /** @type {boolean} Whether the member is currently being unlinked */
+    this.isUnlinking = false;
+
+    /** @type {NetworkGroupMember} Sets the data of the member */
+    this.member = {
+      id: '',
+      label: '',
+      logo: { url: '', a11yName: '' },
+      domainName: '',
+      kind: 'APPLICATION',
+      peerList: [],
+    };
 
     /** @type {boolean} Whether the details are open by default (only applies when member has peers) */
     this.open = false;
-
-    /** @type {NetworkGroupMemberCardState} Sets the state and data of the member */
-    this.state = {
-      type: 'idle',
-      member: {
-        id: '',
-        label: '',
-        logo: { url: '', a11yName: '' },
-        domainName: '',
-        kind: 'APPLICATION',
-        peerList: [],
-      },
-    };
   }
 
   _onUnlinkRequest() {
-    this.dispatchEvent(new CcNetworkGroupMemberUnlinkRequestEvent(this.state.member.id));
+    this.dispatchEvent(new CcNetworkGroupMemberUnlinkRequestEvent(this.member.id));
   }
 
   render() {
-    const hasPeers = this.state.member.peerList.length > 0;
+    const hasPeers = this.member.peerList.length > 0;
 
     if (hasPeers) {
-      return this._renderWithPeers();
+      return this._renderWithPeers({
+        member: this.member,
+        isUnlinking: this.isUnlinking,
+        isDisabled: this.isDisabled,
+        isOpen: this.open,
+      });
     }
-    return this._renderWithoutPeers();
+
+    return this._renderWithoutPeers({
+      member: this.member,
+      isUnlinking: this.isUnlinking,
+      isDisabled: this.isDisabled,
+    });
   }
 
-  /** Renders the member identity section (logo + label) */
-  _renderIdentity() {
-    const { logo, label } = this.state.member;
+  /**
+   * @param {Object} params
+   * @param {NetworkGroupMember} params.member
+   * @param {boolean} params.isUnlinking
+   * @param {boolean} params.isDisabled
+   *
+   * Renders the card variant for members without peers (simple layout)
+   **/
+  _renderWithoutPeers({ member, isUnlinking, isDisabled }) {
+    return html`
+      <div class="member-card member-card--without-peers">
+        <div class="header">
+          ${this._renderIdentity(member.logo, member.label)} ${this._renderPeersCount(member.peerList.length)}
+        </div>
+        ${this._renderDomain(member.domainName)}
+        ${this._renderFooter({ isUnlinking, isDisabled, dashboardUrl: member.dashboardUrl })}
+      </div>
+    `;
+  }
 
+  /**
+   * @param {Object} params
+   * @param {NetworkGroupMember} params.member
+   * @param {boolean} params.isUnlinking
+   * @param {boolean} params.isDisabled
+   * @param {boolean} params.isOpen
+   *
+   * Renders the card variant for members with peers (collapsible layout)
+   **/
+  _renderWithPeers({ member, isUnlinking, isDisabled, isOpen }) {
+    return html`
+      <cc-expand>
+        <div class="member-card member-card--with-peers">
+          <details class="details" ?open="${isOpen}">
+            <!-- Note: tabindex="0" needed on summary for consistent focus behavior across browsers TODO: check why exactly because i cannot remember -->
+            <summary class="header header--clickable" tabindex="0">
+              ${this._renderIdentity(member.logo, member.label)}
+              <div class="peers-toggle">
+                ${this._renderPeersCount(member.peerList.length)}
+                <cc-icon class="arrow-icon" .icon="${iconArrowUp}"></cc-icon>
+              </div>
+            </summary>
+            <div class="details-content">
+              ${this._renderDomain(member.domainName)} ${this._renderPeerList(member.peerList)}
+              ${this._renderFooter({ isUnlinking, isDisabled, dashboardUrl: member.dashboardUrl ?? '' })}
+            </div>
+          </details>
+          <div class="domain-collapsed">${this._renderDomain(member.domainName)}</div>
+        </div>
+      </cc-expand>
+    `;
+  }
+
+  /**
+   * @param {{ url: string, a11yName: string }} logo
+   * @param {string} label
+   *
+   * Renders the member identity section (logo + label)
+   **/
+  _renderIdentity(logo, label) {
     return html`
       <div class="identity">
         <cc-img class="identity__logo" src="${logo.url}" a11y-name="${logo.a11yName}"></cc-img>
@@ -83,19 +151,23 @@ export class CcNetworkGroupMemberCard extends LitElement {
     `;
   }
 
-  /** Renders the peer count text */
-  _renderPeersCount() {
-    const nbOfPeers = this.state.member.peerList.length;
-
+  /**
+   * @param {number} nbOfPeers
+   *
+   * Renders the peer count text
+   **/
+  _renderPeersCount(nbOfPeers) {
     return html`
       <span class="peers-count"> ${i18n('cc-network-group-member-list.member.nb-of-peers', { nbOfPeers })} </span>
     `;
   }
 
-  /** Renders the domain name with clipboard button */
-  _renderDomain() {
-    const { domainName } = this.state.member;
-
+  /**
+   * @param {string} domainName
+   *
+   * Renders the domain name with clipboard button
+   **/
+  _renderDomain(domainName) {
     return html`
       <div class="domain">
         ${domainName}
@@ -104,84 +176,47 @@ export class CcNetworkGroupMemberCard extends LitElement {
     `;
   }
 
-  /** Renders the optional dashboard link */
-  _renderDashboardLink() {
-    const { dashboardUrl } = this.state.member;
-
-    if (isStringEmpty(dashboardUrl)) {
-      return '';
-    }
-
-    return html`
-      <div class="dashboard-link">
-        <cc-link href="${dashboardUrl}"></cc-link>
-      </div>
-    `;
-  }
-
-  /** Renders the unlink button with proper states */
-  _renderUnlinkButton() {
-    const isUnlinking = this.state.type === 'unlinking';
-
-    return html`
-      <cc-button
-        class="unlink-btn"
-        danger
-        outlined
-        ?disabled="${this.disabled}"
-        ?waiting="${isUnlinking}"
-        @cc-click="${this._onUnlinkRequest}"
-      >
-        ${i18n('cc-network-group-member-list.member.unlink')}
-      </cc-button>
-    `;
-  }
-
-  /** Renders the footer section (dashboard link + unlink button) */
-  _renderFooter() {
-    return html` <div class="footer">${this._renderDashboardLink()} ${this._renderUnlinkButton()}</div> `;
-  }
-
-  /** Renders the peer list */
-  _renderPeerList() {
+  /**
+   * @param {NetworkGroupPeer[]} peerList
+   * Renders the peer list
+   **/
+  _renderPeerList(peerList) {
     return html`
       <div class="peer-list">
-        ${this.state.member.peerList.map(
-          (peer) => html`<cc-network-group-peer-card .peer="${peer}"></cc-network-group-peer-card>`,
-        )}
+        ${peerList.map((peer) => html`<cc-network-group-peer-card .peer="${peer}"></cc-network-group-peer-card>`)}
       </div>
     `;
   }
 
-  /** Renders the card variant for members without peers (simple layout) */
-  _renderWithoutPeers() {
+  /**
+   * @param {Object} params
+   * @param {boolean} params.isUnlinking
+   * @param {boolean} params.isDisabled
+   * @param {string} [params.dashboardUrl]
+   *
+   * Renders the footer section (dashboard link + unlink button)
+   **/
+  _renderFooter({ isUnlinking, isDisabled, dashboardUrl }) {
     return html`
-      <div class="member-card member-card--without-peers">
-        <div class="header">${this._renderIdentity()} ${this._renderPeersCount()}</div>
-        ${this._renderDomain()} ${this._renderFooter()}
-      </div>
-    `;
-  }
-
-  /** Renders the card variant for members with peers (collapsible layout) */
-  _renderWithPeers() {
-    return html`
-      <cc-expand>
-        <div class="member-card member-card--with-peers">
-          <details class="details" ?open="${this.open}">
-            <!-- Note: tabindex="0" needed on summary for consistent focus behavior across browsers -->
-            <summary class="header header--clickable" tabindex="0">
-              ${this._renderIdentity()}
-              <div class="peers-toggle">
-                ${this._renderPeersCount()}
-                <cc-icon class="arrow-icon" .icon="${iconArrowUp}"></cc-icon>
+      <div class="footer">
+        ${!isStringEmpty(dashboardUrl)
+          ? html`
+              <div class="dashboard-link">
+                <cc-link href="${dashboardUrl}">${i18n('')}</cc-link>
               </div>
-            </summary>
-            <div class="details-content">${this._renderDomain()} ${this._renderPeerList()} ${this._renderFooter()}</div>
-          </details>
-          <div class="domain-collapsed">${this._renderDomain()}</div>
-        </div>
-      </cc-expand>
+            `
+          : ''}
+        <cc-button
+          class="unlink-btn"
+          danger
+          outlined
+          ?disabled="${isDisabled}"
+          ?waiting="${isUnlinking}"
+          @cc-click="${this._onUnlinkRequest}"
+        >
+          ${i18n('cc-network-group-member-list.member.unlink')}
+        </cc-button>
+      </div>
     `;
   }
 

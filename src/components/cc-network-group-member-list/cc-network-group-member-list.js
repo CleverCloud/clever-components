@@ -81,8 +81,8 @@ export class CcNetworkGroupMemberList extends LitElement {
   }
 
   /** @param {{ member: string }} formData */
-  _onLinkMember(formData) {
-    this.dispatchEvent(new CcNetworkGroupMemberLinkEvent(formData['member']));
+  _onLinkMember({ member }) {
+    this.dispatchEvent(new CcNetworkGroupMemberLinkEvent(member));
   }
 
   /**
@@ -107,43 +107,59 @@ export class CcNetworkGroupMemberList extends LitElement {
   }
 
   render() {
-    if (this.memberListState.type === 'error') {
-      return html`
-        <cc-notice intent="warning" message="${i18n('cc-network-group-member-list.error')}"></cc-notice>
-        ${this._renderLinkMemberBlock()}
-      `;
-    }
-
     const isUnlinking = this.memberListState.type === 'unlinking';
+
+    return html`
+      ${this._renderMemberList({
+        state: this.memberListState,
+        memberIdToUnlink: this._memberIdToUnlink,
+        emptyTextRef: this._emptyTextRef,
+      })}
+      ${this._renderLinkForm({ state: this.linkFormState })}
+      ${this._renderUnlinkDialog(this._memberIdToUnlink, isUnlinking)}
+    `;
+  }
+
+  /**
+   * Renders the member list block with all its states.
+   * @param {object} params
+   * @param {NetworkGroupMemberListState} params.state - The state of the member list
+   * @param {string|null} params.memberIdToUnlink - ID of the member being unlinked
+   * @param {Ref<HTMLDivElement>} params.emptyTextRef - Ref for the empty text element
+   * @returns {import('lit').TemplateResult}
+   */
+  _renderMemberList({ state, memberIdToUnlink, emptyTextRef }) {
+    const isUnlinking = state.type === 'unlinking';
+    const hasMembers = state.memberList.length > 0;
 
     return html`
       <cc-block>
         <div slot="header-title">${i18n('cc-network-group-member-list.heading')}</div>
         <div slot="content">
           <p class="intro">${i18n('cc-network-group-member-list.intro')}</p>
-          ${this.memberListState.type === 'loading' ? html`<cc-loader></cc-loader>` : ''}
-          ${this.memberListState.type === 'loaded' && this.memberListState.memberList.length === 0
+          ${state.type === 'loading' ? html`<cc-loader></cc-loader>` : ''}
+          ${state.type === 'error'
+            ? html` <cc-notice intent="warning" message="${i18n('cc-network-group-member-list.error')}"></cc-notice> `
+            : ''}
+          ${state.type === 'loaded' && !hasMembers
             ? html`
-                <div class="empty" ${ref(this._emptyTextRef)} tabindex="-1">
+                <div class="empty" ${ref(emptyTextRef)} tabindex="-1">
                   <p>${i18n('cc-network-group-member-list.member-list.empty')}</p>
                 </div>
               `
             : ''}
-          ${(this.memberListState.type === 'loaded' || this.memberListState.type === 'unlinking') &&
-          this.memberListState.memberList.length > 0
+          ${(state.type === 'loaded' || state.type === 'unlinking') && hasMembers
             ? html`
                 <div class="member-list">
                   ${repeat(
-                    this.memberListState.memberList,
+                    state.memberList,
                     (member) => member.id,
                     (member, index) => html`
                       <cc-network-group-member-card
-                        .state=${{
-                          type: isUnlinking && member.id === this._memberIdToUnlink ? 'unlinking' : 'idle',
-                          member,
-                        }}
+                        .member=${member}
                         ?open=${index === 0}
-                        ?disabled=${isUnlinking && member.id !== this._memberIdToUnlink}
+                        ?is-unlinking=${isUnlinking && member.id === memberIdToUnlink}
+                        ?is-disabled=${isUnlinking && member.id !== memberIdToUnlink}
                         @cc-network-group-member-unlink-request=${this._onUnlinkMemberRequest}
                       ></cc-network-group-member-card>
                     `,
@@ -172,8 +188,6 @@ export class CcNetworkGroupMemberList extends LitElement {
           </div>
         </cc-block-details>
       </cc-block>
-
-      ${this._renderLinkMemberBlock()} ${this._renderUnlinkDialog(this._memberIdToUnlink, isUnlinking)}
     `;
   }
 
@@ -201,18 +215,17 @@ export class CcNetworkGroupMemberList extends LitElement {
   }
 
   /**
-   * Renders the link member form block.
+   * Renders the link form block with all its states.
+   * @param {object} params
+   * @param {NetworkGroupMemberLinkFormState} params.state - The state of the link form
    * @returns {import('lit').TemplateResult}
    */
-  _renderLinkMemberBlock() {
+  _renderLinkForm({ state }) {
     /** @type {Array<Option>} */
-    const selectOptions =
-      this.linkFormState.type === 'idle' || this.linkFormState.type === 'linking'
-        ? this.linkFormState.selectOptions
-        : [];
+    const selectOptions = state.type === 'idle' || state.type === 'linking' ? state.selectOptions : [];
 
-    const isLoading = this.linkFormState.type === 'loading';
-    const isLinking = this.linkFormState.type === 'linking';
+    const isLoading = state.type === 'loading';
+    const isLinking = state.type === 'linking';
     const hasOptions = selectOptions.length > 0;
     const sortedSelectOptions = [...selectOptions].sort((optionA, optionB) =>
       optionA.label.localeCompare(optionB.label),

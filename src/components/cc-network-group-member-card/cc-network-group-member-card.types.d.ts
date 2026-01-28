@@ -12,8 +12,3 @@ export interface NetworkGroupMember {
   peerList: NetworkGroupPeer[];
   dashboardUrl?: string;
 }
-
-export interface NetworkGroupMemberCardState {
-  type: 'idle' | 'unlinking';
-  member: NetworkGroupMember;
-}
