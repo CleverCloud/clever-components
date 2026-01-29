@@ -17,6 +17,7 @@ import {
   redisInfo,
 } from '../../stories/fixtures/addon-info.js';
 import { makeStory } from '../../stories/lib/make-story.js';
+import { i18n } from '../../translations/translation.js';
 import './cc-addon-info.js';
 
 export default {
@@ -39,7 +40,27 @@ export const defaultStory = makeStory(conf, {
   /** @type {Partial<CcAddonInfo>[]} */
   items: [
     {
-      /** @type {AddonInfoStateLoaded} */ /** @type {AddonInfoStateLoaded} */
+      /** @type {AddonInfoStateLoaded} */
+      state: {
+        type: 'loaded',
+        ...matomoInfo,
+      },
+      docLink: {
+        text: i18n('cc-addon-info.doc-link.matomo'),
+        href: getDocUrl('/addons/matomo'),
+      },
+      innerHTML: `
+        <p slot="billing">Operator services and management fees are added to the price of these resources.<br><strong>During the discovery phase, these fees are offered free of charge</strong>.</p>
+`,
+    },
+  ],
+});
+
+export const dataLoadedWithNoDocLink = makeStory(conf, {
+  /** @type {Partial<CcAddonInfo>[]} */
+  items: [
+    {
+      /** @type {AddonInfoStateLoaded} */
       state: {
         type: 'loaded',
         ...matomoInfo,
@@ -102,6 +123,10 @@ export const waitingWithRequestingUpdate = makeStory(conf, {
       },
       innerHTML: `
         <p slot="billing"><strong>This add-on is free but its dependencies, mentioned above, are billed based on their consumptions,</strong> just like other applications and add-ons.</p>`,
+      docLink: {
+        text: i18n('cc-addon-info.doc-link.matomo'),
+        href: getDocUrl('/addons/matomo'),
+      },
     },
   ],
   /** @param {CcAddonInfo} component */
@@ -122,6 +147,10 @@ export const matomo = makeStory(conf, {
         type: 'loaded',
         ...matomoInfo,
       },
+      docLink: {
+        text: i18n('cc-addon-info.doc-link.matomo'),
+        href: getDocUrl('/addons/matomo'),
+      },
       innerHTML: `
         <p slot="billing">Operator services and management fees are added to the price of these resources.<br><strong>During the discovery phase, these fees are offered free of charge</strong>.</p>
        `,
@@ -131,6 +160,10 @@ export const matomo = makeStory(conf, {
       state: {
         type: 'loading',
         ...matomoInfo,
+      },
+      docLink: {
+        text: i18n('cc-addon-info.doc-link.matomo'),
+        href: getDocUrl('/addons/matomo'),
       },
       innerHTML: `
         <p slot="billing">Operator services and management fees are added to the price of these resources.<br><strong>During the discovery phase, these fees are offered free of charge</strong>.</p>
@@ -148,6 +181,10 @@ export const metabase = makeStory(conf, {
         type: 'loaded',
         ...metabaseInfo,
       },
+      docLink: {
+        text: i18n('cc-addon-info.doc-link.metabase'),
+        href: getDocUrl('/addons/metabase'),
+      },
       innerHTML: `
         <p slot="billing">Operator services and management fees are added to the price of these resources.<br><strong>During the discovery phase, these fees are offered free of charge</strong>.</p>
 `,
@@ -157,6 +194,10 @@ export const metabase = makeStory(conf, {
       state: {
         type: 'loading',
         ...metabaseInfo,
+      },
+      docLink: {
+        text: i18n('cc-addon-info.doc-link.metabase'),
+        href: getDocUrl('/addons/metabase'),
       },
       innerHTML: `
         <p slot="billing">Operator services and management fees are added to the price of these resources.<br><strong>During the discovery phase, these fees are offered free of charge</strong>.</p>
@@ -174,6 +215,10 @@ export const keycloak = makeStory(conf, {
         type: 'loaded',
         ...keycloakInfo,
       },
+      docLink: {
+        text: i18n('cc-addon-info.doc-link.keycloak'),
+        href: getDocUrl('/addons/keycloak'),
+      },
       innerHTML: `
         <p slot="billing">Keycloak, built with <cc-link href="https://please-open.it/">Please Open It</cc-link> and hosted on our services, is now generally available.<br>Operator services and management fees are added to the price of these resources.<br><strong>During the discovery phase, these fees are offered free of charge</strong>.</p>
 `,
@@ -183,6 +228,10 @@ export const keycloak = makeStory(conf, {
       state: {
         type: 'loading',
         ...keycloakInfo,
+      },
+      docLink: {
+        text: i18n('cc-addon-info.doc-link.keycloak'),
+        href: getDocUrl('/addons/keycloak'),
       },
       innerHTML: `
          <p slot="billing">Keycloak, built with <cc-link href="https://please-open.it/">Please Open It</cc-link> and hosted on our services, is now generally available.<br>Operator services and management fees are added to the price of these resources.<br><strong>During the discovery phase, these fees are offered free of charge</strong>.</p>
@@ -200,6 +249,10 @@ export const otoroshi = makeStory(conf, {
         type: 'loaded',
         ...otoroshiInfo,
       },
+      docLink: {
+        text: i18n('cc-addon-info.doc-link.otoroshi'),
+        href: getDocUrl('/addons/otoroshi'),
+      },
       innerHTML: `
         <p slot="billing">Operator services and management fees are added to the price of these resources.<br><strong>During the discovery phase, these fees are offered free of charge</strong>.</p>
 `,
@@ -209,6 +262,10 @@ export const otoroshi = makeStory(conf, {
       state: {
         type: 'loading',
         ...otoroshiInfo,
+      },
+      docLink: {
+        text: i18n('cc-addon-info.doc-link.otoroshi'),
+        href: getDocUrl('/addons/otoroshi'),
       },
       innerHTML: `
         <p slot="billing">Operator services and management fees are added to the price of these resources.<br><strong>During the discovery phase, these fees are offered free of charge</strong>.</p>
@@ -226,6 +283,10 @@ export const materia = makeStory(conf, {
         type: 'loaded',
         ...materiaInfo,
       },
+      docLink: {
+        text: i18n('cc-addon-info.doc-link.materia-kv'),
+        href: getDocUrl('/addons/materia-kv'),
+      },
       innerHTML: `
         <p slot="billing">Materia KV uses our next generation of serverless distributed database, synchronously-replicated. Free of charge during testing phases, it will be available on a pay-as-you-go flexible pricing. Develop with ease, it's compatible with third-party protocols, such as Redis: <a href="${getDocUrl('/addons/materia-kv')}">learn more.</a></p>
 `,
@@ -235,6 +296,10 @@ export const materia = makeStory(conf, {
       state: {
         type: 'loading',
         ...materiaInfo,
+      },
+      docLink: {
+        text: i18n('cc-addon-info.doc-link.materia-kv'),
+        href: getDocUrl('/addons/materia-kv'),
       },
       innerHTML: `
         <p slot="billing">Materia KV uses our next generation of serverless distributed database, synchronously-replicated. Free of charge during testing phases, it will be available on a pay-as-you-go flexible pricing. Develop with ease, it's compatible with third-party protocols, such as Redis: <a href="${getDocUrl('/addons/materia-kv')}">learn more.</a></p>
@@ -252,12 +317,20 @@ export const jenkins = makeStory(conf, {
         type: 'loaded',
         ...jenkinsInfo,
       },
+      docLink: {
+        text: i18n('cc-addon-info.doc-link.jenkins'),
+        href: getDocUrl('/addons/jenkins'),
+      },
     },
     {
       /** @type {AddonInfoStateLoading} */
       state: {
         type: 'loading',
         ...jenkinsInfo,
+      },
+      docLink: {
+        text: i18n('cc-addon-info.doc-link.jenkins'),
+        href: getDocUrl('/addons/jenkins'),
       },
     },
   ],
@@ -272,12 +345,20 @@ export const elastic = makeStory(conf, {
         type: 'loaded',
         ...elasticInfo,
       },
+      docLink: {
+        text: i18n('cc-addon-info.doc-link.elastic'),
+        href: getDocUrl('/addons/elastic'),
+      },
     },
     {
       /** @type {AddonInfoStateLoading} */
       state: {
         type: 'loading',
         ...elasticInfo,
+      },
+      docLink: {
+        text: i18n('cc-addon-info.doc-link.elastic'),
+        href: getDocUrl('/addons/elastic'),
       },
     },
   ],
@@ -292,12 +373,20 @@ export const pulsar = makeStory(conf, {
         type: 'loaded',
         ...pulsarInfo,
       },
+      docLink: {
+        text: i18n('cc-addon-info.doc-link.pulsar'),
+        href: getDocUrl('/addons/pulsar'),
+      },
     },
     {
       /** @type {AddonInfoStateLoading} */
       state: {
         type: 'loading',
         ...pulsarInfo,
+      },
+      docLink: {
+        text: i18n('cc-addon-info.doc-link.pulsar'),
+        href: getDocUrl('/addons/pulsar'),
       },
     },
   ],
@@ -444,6 +533,10 @@ export const kubernetes = makeStory(conf, {
         type: 'loaded',
         ...kubernetesInfo,
       },
+      docLink: {
+        text: i18n('cc-addon-info.doc-link.kubernetes'),
+        href: getDocUrl('/kubernetes'),
+      },
       innerHTML: `
         <p slot="billing">Kubernetes is in Alpha phase and is therefore free during these test phases. Billing will evolve in line with the functionalities made available.</p>
 `,
@@ -454,12 +547,17 @@ export const kubernetes = makeStory(conf, {
         type: 'loading',
         ...kubernetesInfo,
       },
+      docLink: {
+        text: i18n('cc-addon-info.doc-link.kubernetes'),
+        href: getDocUrl('/kubernetes'),
+      },
       innerHTML: `
         <p slot="billing">Kubernetes is in Alpha phase and is therefore free during these test phases. Billing will evolve in line with the functionalities made available.</p>
 `,
     },
   ],
 });
+
 
 export const updateAvailableWithOpenVersionDialog = makeStory(conf, {
   items: [
@@ -503,6 +601,10 @@ export const updateAvailableWithOpenVersionDialog = makeStory(conf, {
       },
       innerHTML: `
         <p slot="billing"><strong>This add-on is free but its dependencies, mentioned above, are billed based on their consumptions,</strong> just like other applications and add-ons.</p>`,
+      docLink: {
+        text: i18n('cc-addon-info.doc-link.matomo'),
+        href: getDocUrl('/addons/matomo'),
+      },
     },
   ],
   /** @param {CcAddonInfo} component */
