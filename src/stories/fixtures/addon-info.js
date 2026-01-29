@@ -408,3 +408,10 @@ export const kubernetesInfo = {
   creationDate: '2025-06-15T10:30:00Z',
 }
 
+/** @type {AddonInfoStateBaseProperties} */
+export const networkGroupInfo = {
+  subnet: '10.0.0.1/24',
+  lastIp: '10.0.0.1/22',
+  numberOfMembers: 4,
+  numberOfPeers: 16,
+}
