@@ -117,7 +117,7 @@ export class CcTokenApiList extends LitElement {
 
     const isEmpty = this.state.type === 'loaded' && this.state.apiTokens.length === 0;
 
-    const sortedTokens = this.state.type === 'loaded' ? [...this.state.apiTokens].sort(this._sortTokens) : [];
+    const sortedTokens = this.state.type === 'loaded' ? this.state.apiTokens.toSorted(this._sortTokens) : [];
     const isOneTokenRevoking = sortedTokens.some((token) => token.type === 'revoking');
 
     const isResettingPassword = this.state.type === 'resetting-password';

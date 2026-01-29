@@ -39,7 +39,7 @@ export default {
         });
 
         const translationKeys = Object.keys(keysToNode);
-        const sortedTranslationKeys = [...translationKeys].sort((a, b) => {
+        const sortedTranslationKeys = translationKeys.toSorted((a, b) => {
           const aPrefix = getPrefix(a);
           const bPrefix = getPrefix(b);
           // Make sure we sort by prefix before sorting by the rest of the key

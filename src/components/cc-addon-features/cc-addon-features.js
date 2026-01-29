@@ -102,13 +102,11 @@ export class CcAddonFeatures extends LitElement {
    * @private
    */
   _sortFeatures(features) {
-    const sortedArray = features.slice(0);
-    sortedArray.sort((a, b) => {
+    return features.toSorted((a, b) => {
       const aIndex = SORT_FEATURES.indexOf(a.name.toLowerCase()) + 1 || SORT_FEATURES.length + 1;
       const bIndex = SORT_FEATURES.indexOf(b.name.toLowerCase()) + 1 || SORT_FEATURES.length + 1;
       return String(aIndex).localeCompare(String(bIndex), undefined, { numeric: true });
     });
-    return sortedArray;
   }
 
   render() {

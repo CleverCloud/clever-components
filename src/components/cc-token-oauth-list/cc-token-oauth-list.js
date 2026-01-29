@@ -84,7 +84,7 @@ export class CcTokenOauthList extends LitElement {
       this.state.type === 'revoking-all' || (!isEmpty && this.state.type !== 'loading');
     const sortedOauthTokens =
       this.state.type === 'loaded' || this.state.type === 'revoking-all'
-        ? [...this.state.oauthTokens].sort(
+        ? this.state.oauthTokens.toSorted(
             (tokenA, tokenB) => tokenB.creationDate.getTime() - tokenA.creationDate.getTime(),
           )
         : [];

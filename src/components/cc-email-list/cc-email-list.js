@@ -245,7 +245,7 @@ export class CcEmailList extends LitElement {
    * @return {TemplateResult}
    */
   _renderSecondarySection(secondaryAddressStates) {
-    const addresses = [...secondaryAddressStates].sort(sortBy('address'));
+    const addresses = secondaryAddressStates.toSorted(sortBy('address'));
     const isOneRowMarkingPrimary = addresses.some((item) => item.type === 'marking-as-primary');
 
     return html`

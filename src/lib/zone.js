@@ -19,7 +19,7 @@ export function sortZones(rawZones) {
   if (rawZones == null) {
     return null;
   }
-  return [...rawZones].sort((a, b) => {
+  return rawZones.toSorted((a, b) => {
     if (a == null || b == null) {
       return 0;
     }

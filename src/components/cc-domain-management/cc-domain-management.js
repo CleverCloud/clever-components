@@ -349,8 +349,7 @@ export class CcDomainManagement extends LitElement {
     }
 
     if (changedProperties.has('domainListState') && this.domainListState.type === 'loaded') {
-      // Make sure we use a copy before using .sort() which modifies the array in place
-      this._sortedDomains = [...this.domainListState.domains].sort(sortDomains).map((domainState) => {
+      this._sortedDomains = this.domainListState.domains.toSorted(sortDomains).map((domainState) => {
         const { hostname } = domainState;
 
         /** @type {FormattedDomainInfo} */

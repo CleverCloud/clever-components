@@ -41,7 +41,7 @@ export function isExpirationClose({ creationDate, expirationDate }, thresholds =
 
   // Sort thresholds by maxApplicableTokenLifetimeInDays in ascending order to find the appropriate
   // threshold based on the token's total lifetime
-  const sortedThresholds = [...thresholds].sort(
+  const sortedThresholds = thresholds.toSorted(
     (a, b) => a.maxApplicableTokenLifetimeInDays - b.maxApplicableTokenLifetimeInDays,
   );
 

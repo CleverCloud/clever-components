@@ -261,11 +261,11 @@ export class CcSshKeyList extends LitElement {
 
   /**
    * @param {"personal"|"github"|"skeleton"} type
-   * @param {SshKeyState[]|GithubSshKeyState[]} keys
+   * @param {Array<SshKeyState|GithubSshKeyState>} keys
    * @return {TemplateResult}
    */
   _renderKeyList(type, keys) {
-    const sortedKeys = [...keys].sort(sortBy('name'));
+    const sortedKeys = keys.toSorted(sortBy('name'));
     const skeleton = type === 'skeleton';
     return html`
       <div class="key-list">
