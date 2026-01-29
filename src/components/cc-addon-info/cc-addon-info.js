@@ -76,7 +76,7 @@ export class CcAddonInfo extends LitElement {
     this.docLink = null;
 
     /** @type {AddonInfoState} Sets the state of the component*/
-    this.state = { type: 'loading', creationDate: '2025-08-04 15:03:02' };
+    this.state = { type: 'loading' };
 
     /** @type {boolean} */
     this._isVersionDialogOpen = false;
@@ -214,14 +214,18 @@ export class CcAddonInfo extends LitElement {
                 </div>
               `
             : ''}
-          <div class="section">
-            <strong class="heading">${i18n('cc-addon-info.creation-date.heading')}</strong>
-            <div class="value">
-              <p class="${classMap({ skeleton })}">
-                ${i18n('cc-addon-info.creation-date.human-friendly-date', { date: this.state.creationDate })}
-              </p>
-            </div>
-          </div>
+          ${this.state.creationDate != null
+            ? html`
+                <div class="section">
+                  <strong class="heading">${i18n('cc-addon-info.creation-date.heading')}</strong>
+                  <div class="value">
+                    <p class="${classMap({ skeleton })}">
+                      ${i18n('cc-addon-info.creation-date.human-friendly-date', { date: this.state.creationDate })}
+                    </p>
+                  </div>
+                </div>
+              `
+            : ''}
           ${this.state.plan != null
             ? html`
                 <div class="section">
