@@ -1,5 +1,4 @@
 import { getAssetUrl } from '../../lib/assets-url.js';
-import { getDevHubUrl, getDocUrl } from '../../lib/dev-hub-url.js';
 
 /**
  * @import { AddonInfoStateBaseProperties } from '../../components/cc-addon-info/cc-addon-info.types.js'
@@ -35,7 +34,6 @@ export const matomoInfo = {
       link: 'https://example.com/addon',
     },
   ],
-  docUrlLink: getDocUrl('addons/matomo'),
 }
 
 /** @type {AddonInfoStateBaseProperties} */
@@ -62,7 +60,6 @@ export const metabaseInfo = {
       link: 'https://example.com/addon',
     },
   ],
-  docUrlLink: getDocUrl('addons/metabase'),
 }
 
 /** @type {AddonInfoStateBaseProperties} */
@@ -94,7 +91,6 @@ export const keycloakInfo = {
       link: 'https://example.com/addon',
     },
   ],
-  docUrlLink: getDocUrl('addons/keycloak'),
 }
 
 /** @type {AddonInfoStateBaseProperties} */
@@ -121,13 +117,11 @@ export const otoroshiInfo = {
       link: 'https://example.com/addon',
     },
   ],
-  docUrlLink: getDocUrl('addons/otoroshi'),
 }
 
 /** @type {AddonInfoStateBaseProperties} */
 export const materiaInfo = {
   creationDate: '2025-06-15T10:30:00Z',
-  docUrlLink: getDocUrl('addons/materia-kv'),
 }
 
 /** @type {AddonInfoStateBaseProperties} */
@@ -161,7 +155,6 @@ export const jenkinsInfo = {
   ],
   encryption: true,
   creationDate: '2025-06-15T10:30:00Z',
-  docUrlLink: getDocUrl('addons/jenkins'),
 }
 
 /** @type {AddonInfoStateBaseProperties} */
@@ -210,7 +203,6 @@ export const elasticInfo = {
       link: 'https://example.com/app',
     },
   ],
-  docUrlLink: getDocUrl('addons/elastic'),
 }
 
 /** @type {AddonInfoStateBaseProperties} */
@@ -221,13 +213,15 @@ export const pulsarInfo = {
     latest: '4.0.6',
   },
   creationDate: '2025-06-15T10:30:00Z',
-  docUrlLink: getDocUrl('addons/pulsar'),
 }
 
 /** @type {AddonInfoStateBaseProperties} */
+export const configInfo = {
+  creationDate: '2025-06-15T10:30:00Z',
+}
+
 export const mailpaceInfo = {
   creationDate: '2025-06-15T10:30:00Z',
-  docUrlLink: getDocUrl('addons/mailpace'),
 }
 
 /** @type {AddonInfoStateBaseProperties} */
@@ -265,7 +259,6 @@ export const mysqlInfo = {
     },
   ],
   creationDate: '2025-06-15T10:30:00Z',
-  docUrlLink: getDocUrl('addons/mysql'),
 }
 
 /** @type {AddonInfoStateBaseProperties} */
@@ -305,7 +298,6 @@ export const postgresqlInfo = {
   encryption: true,
   creationDate: '2025-06-15T10:30:00Z',
   role: 'Primary',
-  docUrlLink: getDocUrl('addons/postgresql'),
 }
 
 /** @type {AddonInfoStateBaseProperties} */
@@ -344,7 +336,6 @@ export const redisInfo = {
   ],
   encryption: true,
   creationDate: '2025-06-15T10:30:00Z',
-  docUrlLink: getDocUrl('addons/redis'),
 }
 
 /** @type {AddonInfoStateBaseProperties} */
@@ -378,7 +369,6 @@ export const mongodbInfo = {
   ],
   encryption: true,
   creationDate: '2025-06-15T10:30:00Z',
-  docUrlLink: getDocUrl('addons/mongodb'),
 }
 
 /** @type {AddonInfoStateBaseProperties} */
@@ -416,5 +406,5 @@ export const kubernetesInfo = {
     latest: '1.33',
   },
   creationDate: '2025-06-15T10:30:00Z',
-  docUrlLink: getDevHubUrl('guides/kubernetes-operator'),
 }
+
