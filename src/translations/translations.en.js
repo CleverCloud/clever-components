@@ -314,6 +314,9 @@ export const translations = {
   'cc-addon-info.error': `Something went wrong while loading information`,
   'cc-addon-info.grafana.link': `Open Grafana`,
   'cc-addon-info.heading': `Information`,
+  'cc-addon-info.last-ip.heading': `Last IP`,
+  'cc-addon-info.number-of-members.heading': `Number of members`,
+  'cc-addon-info.number-of-peers.heading': `Number of peers`,
   'cc-addon-info.plan.heading': `Plan`,
   'cc-addon-info.resources.heading': `Resources`,
   'cc-addon-info.role.heading': `Role`,
@@ -338,6 +341,7 @@ export const translations = {
   'cc-addon-info.specification.plan': `Plan`,
   'cc-addon-info.specification.users': `Users`,
   'cc-addon-info.specification.version': `Version`,
+  'cc-addon-info.subnet.heading': `Subnet`,
   'cc-addon-info.type.boolean': /** @param {{boolean: boolean}} _ */ ({ boolean }) => `${boolean ? 'Yes' : 'No'}`,
   'cc-addon-info.type.boolean-shared': /** @param {{shared: boolean}} _ */ ({ shared }) =>
     `${shared ? 'Shared' : 'Dedicated'}`,
