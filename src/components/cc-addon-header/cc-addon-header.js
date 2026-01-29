@@ -106,11 +106,7 @@ export class CcAddonHeader extends LitElement {
       this.state.type === 'loaded' || this.state.type === 'restarting' || this.state.type === 'rebuilding'
         ? this.state
         : { ...SKELETON_ADDON_INFO, ...this.state };
-    const zoneState =
-      (this.state.type === 'loaded' || this.state.type === 'restarting' || this.state.type === 'rebuilding') &&
-      this.state.zone
-        ? { type: 'loaded', ...this.state.zone }
-        : { type: 'loading' };
+    const zoneState = this.state.zone ?? null;
     const isRestarting = this.state.type === 'restarting';
     const isRebuilding = this.state.type === 'rebuilding';
     const deploymentStatus = this.state.deploymentStatus;
@@ -199,31 +195,35 @@ export class CcAddonHeader extends LitElement {
           </div>
         </div>
 
-        <div slot="footer-left" class="footer messages">
-          ${!isStringEmpty(deploymentStatus)
-            ? html`
-                <cc-icon
-                  class="status-icon ${deploymentStatus}"
-                  size="lg"
-                  .icon=${STATUS_ICON[deploymentStatus]}
-                  ?skeleton=${skeleton}
-                ></cc-icon>
-                <span class=${classMap({ skeleton })}> ${this._getStatusMsg(deploymentStatus, providerId)} </span>
-              `
-            : ''}
-          ${!isStringEmpty(addonInfo.logsUrl)
-            ? html`
-                <cc-link
-                  href=${addonInfo.logsUrl}
-                  a11y-desc="${i18n('cc-addon-header.logs.link')}"
-                  ?skeleton=${skeleton}
-                >
-                  ${i18n('cc-addon-header.logs.link')}
-                </cc-link>
-              `
-            : ''}
-        </div>
-        <cc-zone slot="footer-right" .state=${zoneState} mode="small-infra"></cc-zone>
+        ${!isStringEmpty(deploymentStatus) || !isStringEmpty(addonInfo.logsUrl)
+          ? html`
+              <div slot="footer-left" class="footer messages">
+                ${!isStringEmpty(deploymentStatus)
+                  ? html`
+                      <cc-icon
+                        class="status-icon ${deploymentStatus}"
+                        size="lg"
+                        .icon=${STATUS_ICON[deploymentStatus]}
+                        ?skeleton=${skeleton}
+                      ></cc-icon>
+                      <span class=${classMap({ skeleton })}> ${this._getStatusMsg(deploymentStatus, providerId)} </span>
+                    `
+                  : ''}
+                ${!isStringEmpty(addonInfo.logsUrl)
+                  ? html`
+                      <cc-link
+                        href=${addonInfo.logsUrl}
+                        a11y-desc="${i18n('cc-addon-header.logs.link')}"
+                        ?skeleton=${skeleton}
+                      >
+                        ${i18n('cc-addon-header.logs.link')}
+                      </cc-link>
+                    `
+                  : ''}
+              </div>
+            `
+          : ''}
+        ${zoneState != null ? html`<cc-zone slot="footer-right" .state=${zoneState} mode="small-infra"></cc-zone>` : ''}
       </cc-block>
     `;
   }
