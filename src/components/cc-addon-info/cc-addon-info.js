@@ -14,6 +14,7 @@ import { accessibilityStyles } from '../../styles/accessibility.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-block/cc-block.js';
+import '../cc-clipboard/cc-clipboard.js';
 import '../cc-dialog-confirm-actions/cc-dialog-confirm-actions.js';
 import '../cc-dialog/cc-dialog.js';
 import '../cc-link/cc-link.js';
@@ -395,6 +396,44 @@ export class CcAddonInfo extends LitElement {
                     </ul>
                     <slot name="linked-services"></slot>
                   </div>
+                </div>
+              `
+            : ''}
+          ${this.state.subnet != null
+            ? html`
+                <div class="section">
+                  <strong class="heading">${i18n('cc-addon-info.subnet.heading')}</strong>
+                  <div class="value ">
+                    <span class="${classMap({ skeleton })}">${this.state.subnet}</span>
+                    ${!skeleton ? html`<cc-clipboard value="${this.state.subnet}"></cc-clipboard>` : ''}
+                  </div>
+                </div>
+              `
+            : ''}
+          ${this.state.lastIp != null
+            ? html`
+                <div class="section">
+                  <strong class="heading">${i18n('cc-addon-info.last-ip.heading')}</strong>
+                  <div class="value ">
+                    <span class="${classMap({ skeleton })}">${this.state.lastIp}</span>
+                    ${!skeleton ? html`<cc-clipboard value="${this.state.lastIp}"></cc-clipboard>` : ''}
+                  </div>
+                </div>
+              `
+            : ''}
+          ${this.state.numberOfMembers != null
+            ? html`
+                <div class="section">
+                  <strong class="heading">${i18n('cc-addon-info.number-of-members.heading')}</strong>
+                  <div class="value "><span class="${classMap({ skeleton })}">${this.state.numberOfMembers}</span></div>
+                </div>
+              `
+            : ''}
+          ${this.state.numberOfPeers != null
+            ? html`
+                <div class="section">
+                  <strong class="heading">${i18n('cc-addon-info.number-of-peers.heading')}</strong>
+                  <div class="value "><span class="${classMap({ skeleton })}">${this.state.numberOfPeers}</span></div>
                 </div>
               `
             : ''}
