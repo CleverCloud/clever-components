@@ -19,7 +19,7 @@ export interface AddonInfoStateBaseProperties {
   plan?: string;
   specifications?: Array<FormattedFeature>;
   encryption?: boolean;
-  creationDate: string | number;
+  creationDate?: string | number;
   role?: string;
   openGrafanaLink?: string;
   openScalabilityLink?: string;
