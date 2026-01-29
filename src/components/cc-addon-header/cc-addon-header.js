@@ -34,12 +34,12 @@ const SKELETON_ADDON_INFO = {
   providerLogoUrl: null,
   name: fakeString(15),
   id: fakeString(15),
-  zone: null,
 };
 
 /**
  * @import { CcAddonHeaderState, CcAddonHeaderStateLoaded, DeploymentStatus } from './cc-addon-header.types.js'
- * @import { IconModel } from '../common.types.js'
+ * @import { IconModel, Zone } from '../common.types.js'
+ * @import { ZoneState } from '../cc-zone/cc-zone.types.js'
  */
 
 /**
@@ -67,6 +67,23 @@ export class CcAddonHeader extends LitElement {
         rebuildAndRestart: false,
       },
     };
+  }
+
+  /**
+   * @param {boolean} skeleton
+   * @param {Zone | null | undefined} zone
+   * @returns {ZoneState | null}
+   */
+  _getZoneState(skeleton, zone) {
+    if (zone != null) {
+      return { type: 'loaded', ...zone };
+    }
+
+    if (skeleton) {
+      return { type: 'loading' };
+    }
+
+    return null;
   }
 
   /**
@@ -106,11 +123,7 @@ export class CcAddonHeader extends LitElement {
       this.state.type === 'loaded' || this.state.type === 'restarting' || this.state.type === 'rebuilding'
         ? this.state
         : { ...SKELETON_ADDON_INFO, ...this.state };
-    const zoneState =
-      (this.state.type === 'loaded' || this.state.type === 'restarting' || this.state.type === 'rebuilding') &&
-      this.state.zone
-        ? { type: 'loaded', ...this.state.zone }
-        : { type: 'loading' };
+    const zoneState = this._getZoneState(skeleton, addonInfo.zone);
     const isRestarting = this.state.type === 'restarting';
     const isRebuilding = this.state.type === 'rebuilding';
     const deploymentStatus = this.state.deploymentStatus;
@@ -199,31 +212,35 @@ export class CcAddonHeader extends LitElement {
           </div>
         </div>
 
-        <div slot="footer-left" class="footer messages">
-          ${!isStringEmpty(deploymentStatus)
-            ? html`
-                <cc-icon
-                  class="status-icon ${deploymentStatus}"
-                  size="lg"
-                  .icon=${STATUS_ICON[deploymentStatus]}
-                  ?skeleton=${skeleton}
-                ></cc-icon>
-                <span class=${classMap({ skeleton })}> ${this._getStatusMsg(deploymentStatus, providerId)} </span>
-              `
-            : ''}
-          ${!isStringEmpty(addonInfo.logsUrl)
-            ? html`
-                <cc-link
-                  href=${addonInfo.logsUrl}
-                  a11y-desc="${i18n('cc-addon-header.logs.link')}"
-                  ?skeleton=${skeleton}
-                >
-                  ${i18n('cc-addon-header.logs.link')}
-                </cc-link>
-              `
-            : ''}
-        </div>
-        <cc-zone slot="footer-right" .state=${zoneState} mode="small-infra"></cc-zone>
+        ${!isStringEmpty(deploymentStatus) || !isStringEmpty(addonInfo.logsUrl)
+          ? html`
+              <div slot="footer-left" class="footer messages">
+                ${!isStringEmpty(deploymentStatus)
+                  ? html`
+                      <cc-icon
+                        class="status-icon ${deploymentStatus}"
+                        size="lg"
+                        .icon=${STATUS_ICON[deploymentStatus]}
+                        ?skeleton=${skeleton}
+                      ></cc-icon>
+                      <span class=${classMap({ skeleton })}> ${this._getStatusMsg(deploymentStatus, providerId)} </span>
+                    `
+                  : ''}
+                ${!isStringEmpty(addonInfo.logsUrl)
+                  ? html`
+                      <cc-link
+                        href=${addonInfo.logsUrl}
+                        a11y-desc="${i18n('cc-addon-header.logs.link')}"
+                        ?skeleton=${skeleton}
+                      >
+                        ${i18n('cc-addon-header.logs.link')}
+                      </cc-link>
+                    `
+                  : ''}
+              </div>
+            `
+          : ''}
+        ${zoneState != null ? html`<cc-zone slot="footer-right" .state=${zoneState} mode="small-infra"></cc-zone>` : ''}
       </cc-block>
     `;
   }

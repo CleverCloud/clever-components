@@ -12,7 +12,7 @@ const PROVIDER_ID = 'cellar-addon';
  * @import { CcAddonHeader } from './cc-addon-header.js'
  * @import { CellarInfo } from './cc-addon-header.types.js'
  * @import { RawAddon } from './cc-addon-header.types.js'
- * @import { ZoneStateLoaded } from '../cc-zone/cc-zone.types.js'
+ * @import { Zone } from '../common.types.js';
  * @import { ApiConfig } from '../../lib/send-to-api.types.js'
  * @import { OnContextUpdateArgs } from '../../lib/smart/smart-component.types.js'
  */
@@ -94,7 +94,7 @@ class Api extends CcAddonHeaderClient {
   }
 
   /**
-   * @return {Promise<{ cellarInfo: CellarInfo, rawAddon: RawAddon, zone: ZoneStateLoaded }>}
+   * @return {Promise<{ cellarInfo: CellarInfo, rawAddon: RawAddon, zone: Zone }>}
    */
   async getCellarInfoWithZone() {
     const rawAddon = await this.getAddon();
