@@ -225,29 +225,6 @@ export function randomPick(array) {
 }
 
 /**
- * Finds the index of the last element in an array that satisfies the provided testing function.
- * Iterates backwards through the array for efficiency.
- *
- * @template T
- * @param {Array<T>} array - The array to search
- * @param {(value: T, index: number, array: Array<T>) => boolean} predicate - Function to test each element
- * @returns {number} The index of the last matching element, or -1 if not found
- */
-export function findLastIndex(array, predicate) {
-  if (array == null) {
-    return -1;
-  }
-
-  for (let i = array.length - 1; i >= 0; i--) {
-    if (predicate(array[i], i, array)) {
-      return i;
-    }
-  }
-
-  return -1;
-}
-
-/**
  * Generates a random string using the given alphabet.
  *
  * @param {number} [length] The size of the string to generated

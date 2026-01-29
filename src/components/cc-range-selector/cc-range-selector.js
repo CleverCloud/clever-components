@@ -6,7 +6,7 @@ import { iconRemixArrowRightDoubleFill as iconArrow } from '../../assets/cc-remi
 import { EventHandler } from '../../lib/events.js';
 import { CcFormControlElement } from '../../lib/form/cc-form-control-element.abstract.js';
 import { RequiredValidator } from '../../lib/form/validation.js';
-import { findLastIndex, isStringBlank, trimArray } from '../../lib/utils.js';
+import { isStringBlank, trimArray } from '../../lib/utils.js';
 import { accessibilityStyles } from '../../styles/accessibility.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-icon/cc-icon.js';
@@ -913,7 +913,7 @@ export class CcRangeSelector extends CcFormControlElement {
 
     const selectedIndex = this._getOptionIndexFromValue(this.value);
     const firstEnabledIndex = this.options.findIndex((option) => !option.disabled);
-    const lastEnabledIndex = findLastIndex(this.options, (option) => !option.disabled);
+    const lastEnabledIndex = this.options.findLastIndex((option) => !option.disabled);
 
     return html`
       <div
