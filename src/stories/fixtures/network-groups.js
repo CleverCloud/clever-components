@@ -30,13 +30,7 @@ export const linkedNetworkGroupList = [
     name: 'Alpha Network Group',
     dashboardUrl: '#',
     peerList: [
-      {
-        id: 'a1b2c3d4-1111-2222-3333-444455556666',
-        label: 'Swift fox',
-        publicKey: 'aBcDeFgHiJkLmNoPqRsTuVwXyZ0123456789abcd=',
-        ip: '10.101.0.10',
-        type: 'CleverPeer',
-      },
+      networkGroupCleverPeer,
       {
         id: 'b2c3d4e5-2222-3333-4444-555566667777',
         label: 'Brave otter',
@@ -78,13 +72,7 @@ export const linkedNetworkGroupList = [
     id: 'ng_ZZZZZZZZ-ZZZZ-ZZZZ-ZZZZ-ZZZZZZZZZZZZ',
     name: 'Gamma Group',
     peerList: [
-      {
-        id: 'f6g7h8i9-6666-7777-8888-999900001111',
-        label: 'Silent lynx',
-        publicKey: '0987654321abcdefABCDEFghijklmnopqrstuvwx=',
-        ip: '10.101.0.30',
-        type: 'ExternalPeer',
-      },
+      networkGroupExternalPeerWithConfigLink,
     ],
     dashboardUrl: '#',
   },
