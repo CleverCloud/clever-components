@@ -67,7 +67,7 @@ export class CcVisualTestsReportMenu extends LitElement {
    * @returns {VisualTestResult[]}
    */
   _sortTestResults(results) {
-    return [...results].sort((a, b) => {
+    return results.toSorted((a, b) => {
       const componentCompare = a.componentTagName.localeCompare(b.componentTagName);
       if (componentCompare !== 0) {
         return componentCompare;

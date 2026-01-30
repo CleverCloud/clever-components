@@ -170,7 +170,7 @@ class FeatureFormatter {
   getFormattedFeatures() {
     const formattedBaselineFeatures = this.#formatBaselineFeatures(this.#rawBaselineFeatures);
     const formattedBcdFeatures = this.#formatBcdFeatures(this.#rawBcdFeatures, this.#bcdBrowserInfos);
-    return [...formattedBaselineFeatures, ...formattedBcdFeatures].sort((a, b) =>
+    return [...formattedBaselineFeatures, ...formattedBcdFeatures].toSorted((a, b) =>
       a.featureName.localeCompare(b.featureName),
     );
   }

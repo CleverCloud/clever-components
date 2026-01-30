@@ -223,7 +223,7 @@ export class CcEnvVarForm extends LitElement {
       this._currentVariables = null;
       this._editorsState = { type: 'loaded', validationMode: this.state.validationMode, variables: [] };
     } else {
-      const sortedVariables = [...variables].sort((a, b) => a.name.localeCompare(b.name));
+      const sortedVariables = variables.toSorted((a, b) => a.name.localeCompare(b.name));
       this._currentVariables = sortedVariables;
       this._editorsState = { type: 'loaded', validationMode: this.state.validationMode, variables: sortedVariables };
     }

@@ -1,7 +1,6 @@
 import { expect } from '@bundled-es-modules/chai';
 import {
   clampNumber,
-  findLastIndex,
   groupBy,
   isStringBlank,
   isStringEmpty,
@@ -284,36 +283,6 @@ describe('trimArray function', () => {
         { id: 2, name: 'Item 2' },
       ]);
     });
-  });
-});
-
-describe('findLastIndex function', () => {
-  it('should return -1 when array is null', () => {
-    expect(findLastIndex(null, (x) => x > 0)).to.equal(-1);
-  });
-
-  it('should return -1 when array is undefined', () => {
-    expect(findLastIndex(undefined, (x) => x > 0)).to.equal(-1);
-  });
-
-  it('should return -1 when array is empty', () => {
-    expect(findLastIndex([], (x) => x > 0)).to.equal(-1);
-  });
-
-  it('should return -1 when no element matches', () => {
-    expect(findLastIndex([1, 2, 3], (x) => x > 10)).to.equal(-1);
-  });
-
-  it('should return index of last matching element', () => {
-    expect(findLastIndex([1, 2, 3, 4, 5], (x) => x > 2)).to.equal(4);
-  });
-
-  it('should return last index when multiple matches exist', () => {
-    expect(findLastIndex([1, 5, 2, 8, 3, 9], (x) => x > 4)).to.equal(5);
-  });
-
-  it('should return last index when all elements match', () => {
-    expect(findLastIndex([1, 2, 3, 4], (x) => x > 0)).to.equal(3);
   });
 });
 

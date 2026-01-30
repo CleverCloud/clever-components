@@ -783,7 +783,7 @@ class DeploymentsManager {
       return d2.creationDate.getTime() - d1.creationDate.getTime();
     };
 
-    const deployments = Array.from(this._deploymentsMap.values()).sort(sortFn);
+    const deployments = Array.from(this._deploymentsMap.values()).toSorted(sortFn);
     return deployments[0];
   }
 

@@ -249,7 +249,7 @@ export class CcPricingProduct extends LitElement {
    */
   _renderProductPlans(productName, productPlans, productFeatures) {
     // this component is not rerendering very often so we consider we can afford to sort plans and filter the features here.
-    const sortedPlans = [...productPlans].sort((a, b) => a.price - b.price);
+    const sortedPlans = productPlans.toSorted((a, b) => a.price - b.price);
     const filteredProductFeatures = productFeatures.filter(
       (feature) => AVAILABLE_FEATURES.includes(feature.code) || feature.name != null,
     );

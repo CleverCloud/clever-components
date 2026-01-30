@@ -70,7 +70,7 @@ function parse(text, options) {
  * @returns {Array<ObjectPropertiesType>}
  */
 function sortProperties(props) {
-  return [...props].sort((pA, pB) => {
+  return props.toSorted((pA, pB) => {
     // These conditions will always be checked on `...super.properties`, so there's no need to check value
     if (t.isSpreadElement(pA)) {
       return -1;
