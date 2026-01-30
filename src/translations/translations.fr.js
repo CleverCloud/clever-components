@@ -1402,6 +1402,16 @@ export const translations = {
   'cc-network-group-dashboard.delete.success': `Le Network Group a été supprimé avec succès`,
   'cc-network-group-dashboard.doc-link.text': `Network Groups - Documentation`,
   //#endregion
+  //#region cc-network-group-peer-card
+  'cc-network-group-peer-card.external-peer.config-link': /** @param {{ label: string }} _ */ ({ label }) =>
+    `Télécharger la configuration du pair ${label}`,
+  'cc-network-group-peer-card.metadata.id': `Identifiant`,
+  'cc-network-group-peer-card.metadata.ip': `Adresse IP`,
+  'cc-network-group-peer-card.metadata.key': `Clé publique`,
+  'cc-network-group-peer-card.metadata.peer-type': `Type de pair`,
+  'cc-network-group-peer-card.metadata.peer-type.clever-peer': `Pair Clever`,
+  'cc-network-group-peer-card.metadata.peer-type.external-peer': `Pair externe`,
+  //#endregion
   //#region cc-notice
   'cc-notice.close': `Fermer cette notice`,
   'cc-notice.icon-alt.danger': `Erreur`,
