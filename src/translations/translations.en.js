@@ -1393,17 +1393,14 @@ export const translations = {
   'cc-network-group-list.list.error': `Something went wrong while loading the list of linked Network Groups`,
   'cc-network-group-list.list.heading': `Linked Network Groups`,
   //#endregion
-  //#region cc-network-group-dashboard
-  'cc-network-group-dashboard.danger-zone.btn': `Delete Network Group`,
-  'cc-network-group-dashboard.danger-zone.desc': `Deleting this Network Group is a permanent action. All members associated with this group will be removed from the Network Group as well.`,
-  'cc-network-group-dashboard.danger-zone.dialog.confirm-input-label': `Enter the Network Group name`,
-  'cc-network-group-dashboard.danger-zone.dialog.desc': `Deleting this Network Group is a permanent action. All members associated with this group will be removed from the Network Group. All existing peers linked to this group will be disconnected. This action cannot be undone. Make sure you have migrated or reconfigured any dependencies before proceeding.`,
-  'cc-network-group-dashboard.danger-zone.dialog.heading': `Confirm deletion`,
-  'cc-network-group-dashboard.danger-zone.error': `Something went wrong while loading information about the Network Group`,
-  'cc-network-group-dashboard.danger-zone.heading': `Danger Zone`,
-  'cc-network-group-dashboard.delete.error': `Something went wrong while deleting the Network Group`,
-  'cc-network-group-dashboard.delete.success': `The Network Group has been deleted successfully`,
-  'cc-network-group-dashboard.doc-link.text': `Network Groups - Documentation`,
+  //#region cc-network-group-member-card
+  'cc-network-group-member-card.link.dashboard-addon': `Add-on overview`,
+  'cc-network-group-member-card.link.dashboard-application': `Application overview`,
+  'cc-network-group-member-card.nb-of-peers': /** @param {{ nbOfPeers: number}} _ */ ({ nbOfPeers }) =>
+    `${nbOfPeers} ${plural(nbOfPeers, 'peer')}`,
+  'cc-network-group-member-card.unlink': `Unlink member`,
+  'cc-network-group-member-card.unlink.a11y-name': /** @param {{ label: string }} _ */ ({ label }) =>
+    `Unlink member - ${label}`,
   //#endregion
   //#region cc-network-group-peer-card
   'cc-network-group-peer-card.external-peer.config-link': /** @param {{ label: string }} _ */ ({ label }) =>
