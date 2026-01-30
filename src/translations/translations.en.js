@@ -1390,6 +1390,16 @@ export const translations = {
   'cc-network-group-dashboard.delete.success': `The Network Group has been deleted successfully`,
   'cc-network-group-dashboard.doc-link.text': `Network Groups - Documentation`,
   //#endregion
+  //#region cc-network-group-peer-card
+  'cc-network-group-peer-card.external-peer.config-link': /** @param {{ label: string }} _ */ ({ label }) =>
+    `Download peer configuration for ${label}`,
+  'cc-network-group-peer-card.metadata.id': `Identifier`,
+  'cc-network-group-peer-card.metadata.ip': `Ip address`,
+  'cc-network-group-peer-card.metadata.key': `Public key`,
+  'cc-network-group-peer-card.metadata.peer-type': `Peer type`,
+  'cc-network-group-peer-card.metadata.peer-type.clever-peer': `Clever Peer`,
+  'cc-network-group-peer-card.metadata.peer-type.external-peer': `External Peer`,
+  //#endregion
   //#region cc-notice
   'cc-notice.close': `Close this notice`,
   'cc-notice.icon-alt.danger': `Error`,
