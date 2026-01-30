@@ -1378,6 +1378,21 @@ export const translations = {
   'cc-matomo-info.open-matomo.text': `You can access your Matomo using your Clever Cloud account. Organisation members can also access the Matomo service.`,
   'cc-matomo-info.open-matomo.title': `Access Matomo`,
   //#endregion
+  //#region cc-network-group-list
+  'cc-network-group-list.create': `Create your first Network Group`,
+  'cc-network-group-list.form.button': `Link to the Network Group`,
+  'cc-network-group-list.form.description': `This screen lists all the Network Groups to which this resource (and its instances) is linked to. Each Network Group defines a secure private network in which the resource can communicate directly with other resources (applications, add-ons, or external services) that are part of it. Here you will find complete visibility of existing groups, with associated peers, to understand and manage your resource's network connections. You can also link your resource to a new Network Group.`,
+  'cc-network-group-list.form.documentation': `Network Groups - Documentation`,
+  'cc-network-group-list.form.error': `Something went wrong while loading the form`,
+  'cc-network-group-list.form.heading': `Link the resource to a Network Group`,
+  'cc-network-group-list.form.select-label': `Choose a Network Group to link`,
+  'cc-network-group-list.link.error': `Something went wrong while linking the resource to the Network Group`,
+  'cc-network-group-list.link.success': `The resource has been linked to the Network Group successfully`,
+  'cc-network-group-list.list.dashboard-link': `Go to Network Group`,
+  'cc-network-group-list.list.empty': `You don't have any Network Groups linked to your resource`,
+  'cc-network-group-list.list.error': `Something went wrong while loading the list of linked Network Groups`,
+  'cc-network-group-list.list.heading': `Linked Network Groups`,
+  //#endregion
   //#region cc-network-group-dashboard
   'cc-network-group-dashboard.danger-zone.btn': `Delete Network Group`,
   'cc-network-group-dashboard.danger-zone.desc': `Deleting this Network Group is a permanent action. All members associated with this group will be removed from the Network Group as well.`,
