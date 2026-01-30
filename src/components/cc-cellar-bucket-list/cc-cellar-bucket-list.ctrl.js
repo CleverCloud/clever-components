@@ -1,3 +1,4 @@
+import { Abortable } from '../../lib/abortable.js';
 import { notifyError, notifySuccess } from '../../lib/notifications.js';
 import { isStringEmpty, sortByProps } from '../../lib/utils.js';
 import { i18n } from '../../translations/translation.js';
@@ -28,6 +29,8 @@ export class BucketsListController {
   #sort;
   /** @type {string} */
   #filter;
+  /** @type {Abortable} */
+  #abortable;
 
   /**
    * @param {CellarExplorerClient} cellarClient
@@ -41,6 +44,7 @@ export class BucketsListController {
     this.#buckets = [];
     this.#sort = { column: 'name', direction: 'asc' };
     this.#filter = '';
+    this.#abortable = new Abortable();
   }
 
   /**
@@ -74,10 +78,14 @@ export class BucketsListController {
     });
   }
 
+  abort() {
+    this.#abortable.abort();
+  }
+
   async initialFetch() {
     this.#updateState({ type: 'loading' });
     try {
-      const response = await this.#cellarClient.listBuckets();
+      const response = await this.#abortable.run(() => this.#cellarClient.listBuckets());
       this.#buckets = response.buckets.map((bucket) => ({ state: 'idle', ...bucket }));
       this.#updateState({
         type: 'loaded',
@@ -190,7 +198,7 @@ export class BucketsListController {
   async showBucketDetails(bucketName) {
     this.#updateBucketState(bucketName, { state: 'fetching' });
     try {
-      const bucketDetails = await this.#cellarClient.getBucket(bucketName);
+      const bucketDetails = await this.#abortable.run(() => this.#cellarClient.getBucket(bucketName));
       this.#updateState(
         /** @param {CellarBucketListStateLoaded} list */ (list) => {
           list.details = { state: 'idle', ...bucketDetails };

@@ -2,7 +2,8 @@ import { random } from '../../lib/utils.js';
 
 /**
  * @import { CellarBucketState, CellarBucketDetailsState } from '../../components/cc-cellar-bucket-list/cc-cellar-bucket-list.types.js'
- * @import { CellarBucket } from '../../components/cc-cellar-explorer/cc-cellar-explorer.client.types.js'
+ * @import { CellarObjectState, CellarFileState, CellarFileDetailsState } from '../../components/cc-cellar-object-list/cc-cellar-object-list.types.js'
+ * @import { CellarBucket, CellarFileDetails } from '../../components/cc-cellar-explorer/cc-cellar-explorer.client.types.js'
  */
 
 
@@ -72,4 +73,116 @@ export function buckets(count) {
   }
 
   return count.map(toBucket);
+}
+
+/**
+ * @type {Record<string, string>}
+ */
+const CONTENT_TYPES_BY_EXTENSION = {
+  'txt': 'text/plain',
+  'jpg': 'image/jpeg',
+  'zip': 'application/zip',
+  'pdf': 'application/pdf',
+  'mp3': 'audio/mpeg',
+  'mp4': 'video/mp4',
+}
+
+/**
+ * @param {string} extension
+ * @param {Array<string>} [path]
+ * @returns {CellarFileDetails}
+ **/
+export function fileDetails(extension, path) {
+  const name = `file-1.${extension}`;
+  return {
+    type: 'file',
+    name: name,
+    key: path == null || path.length === 0 ? name : path.join('/') + '/' + name,
+    updatedAt: new Date().toISOString(),
+    contentLength: random(150_000, 2_000_000),
+    contentType: CONTENT_TYPES_BY_EXTENSION[extension] ?? 'application/octet-stream',
+    tags: [{key: 'tag1', value: 'value1'}, {key: 'tag2', value: 'value2'}],
+    acl: [
+      { grantee: [{id: 'user', name: 'user', type: 'CanonicalUser'}], permission: 'FULL_CONTROL' },
+    ],
+    metadata: {metadata1: 'value1', metadata2: 'value2'},
+  }
+}
+
+/**
+ * @param {string} extension
+ * @param {Array<string>} [path]
+ * @returns {CellarFileState}
+ **/
+export function fileState(extension, path ) {
+  return {
+    state: 'idle',
+    ...fileDetails(extension, path),
+  }
+}
+
+/**
+ * @param {string} extension
+ * @param {Array<string>} [path]
+ * @returns {CellarFileDetailsState}
+ **/
+export function fileDetailsState(extension, path ) {
+  return {
+    state: 'idle',
+    ...fileDetails(extension, path),
+  }
+}
+
+/**
+ * @param {number|Array<string>} directories
+ * @param {number|Array<string>} files
+ * @returns {Array<CellarObjectState>}
+ */
+export function objects(directories, files) {
+  return [...generateDirectories(directories), ...generateFiles(files) ];
+}
+
+/**
+ * @param {number|Array<string>} count
+ * @returns {Array<CellarObjectState>}
+ */
+function generateFiles(count) {
+  /**
+   * @param {string} name
+   * @returns {CellarObjectState}
+   */
+  const toFile = (name) => ({
+    type: 'file',
+    state: 'idle',
+    name,
+    key: name,
+    updatedAt: new Date().toISOString(),
+    contentLength: random(150_000, 2_000_000),
+  });
+  if (typeof count === 'number') {
+    return [...Array(count)].map((_, i) => toFile(`file-${i + 1}.txt`));
+  }
+
+  return count.map(toFile);
+}
+
+/**
+ * @param {number|Array<string>} count
+ * @returns {Array<CellarObjectState>}
+ */
+function generateDirectories(count) {
+  /**
+   * @param {string} name
+   * @returns {CellarObjectState}
+   */
+  const toDir = (name) => ({
+    type: 'directory',
+    name,
+    key: name,
+  });
+  if (typeof count === 'number') {
+    return [...Array(count)].map((_, i) => toDir(`dir-${i + 1}`));
+  }
+
+  return count.map(toDir);
 }
