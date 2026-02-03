@@ -23,7 +23,7 @@ export interface Deployment {
   id: string;
   state: DeploymentState;
   creationDate: Date;
-  commitId: string;
+  commitId?: string;
   endDate?: Date;
 }
 

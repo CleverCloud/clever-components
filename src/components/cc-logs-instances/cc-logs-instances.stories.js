@@ -81,6 +81,21 @@ const ALL_INSTANCES = [
 /** @type {Array<Instance|GhostInstance>} */
 const ALL_INSTANCES_WITH_GHOSTS = [...ALL_INSTANCES, createGhostInstance(), createGhostInstance()];
 
+/**
+ * @param {Array<Instance|GhostInstance>} instances
+ * @returns {Array<Instance|GhostInstance>}
+ */
+function removeCommitId(instances) {
+  return instances.map((instance) => {
+    if (instance.ghost === true) {
+      return instance;
+    }
+    const deployment = { ...instance.deployment };
+    delete deployment.commitId;
+    return { ...instance, deployment };
+  });
+}
+
 export default {
   tags: ['autodocs'],
   title: '🚧 Beta/🛠 Logs/<cc-logs-instances-beta>',
@@ -165,6 +180,20 @@ export const cancelledDeployment = makeStory(conf, {
 export const withGhostInstances = makeStory(conf, {
   /** @type {Array<Partial<CcLogsInstances>>} */
   items: [{ state: { state: 'loaded', mode: 'live', selection: [], instances: ALL_INSTANCES_WITH_GHOSTS } }],
+});
+
+export const withoutCommitId = makeStory(conf, {
+  /** @type {Array<Partial<CcLogsInstances>>} */
+  items: [
+    {
+      state: {
+        state: 'loaded',
+        mode: 'live',
+        selection: [],
+        instances: removeCommitId(ALL_INSTANCES_WITH_GHOSTS),
+      },
+    },
+  ],
 });
 
 export const coldMode = makeStory(conf, {

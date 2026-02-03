@@ -336,7 +336,7 @@ export class CcLogsInstances extends LitElement {
       <legend class="section-header">
         ${icon != null ? html` <cc-icon class="section-header-icon" .icon=${icon}></cc-icon> ` : ''}
         <span class="section-header-title">${title}</span>
-        ${commit != null ? this._renderCommit(commit) : ''}
+        ${this._renderCommit(commit)}
       </legend>
     `;
   }
@@ -513,9 +513,12 @@ export class CcLogsInstances extends LitElement {
   }
 
   /**
-   * @param {string} commit
+   * @param {string|undefined} commit
    */
   _renderCommit(commit) {
+    if (commit == null) {
+      return '';
+    }
     return html` <span class="commit" title=${i18n('cc-logs-instances.commit.title', { commit })}>
       ${commit.substring(0, 7)}
     </span>`;
