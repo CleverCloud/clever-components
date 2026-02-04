@@ -126,6 +126,10 @@ import {
 } from '../components/cc-network-group-dashboard/cc-network-group-dashboard.events.js';
 import { CcNetworkGroupLinkEvent } from '../components/cc-network-group-list/cc-network-group-list.events.js';
 import { CcNetworkGroupMemberUnlinkRequestEvent } from '../components/cc-network-group-member-card/cc-network-group-member-card.events.js';
+import {
+  CcNetworkGroupMemberLinkEvent,
+  CcNetworkGroupMemberUnlinkEvent,
+} from '../components/cc-network-group-member-list/cc-network-group-member-list.events.js';
 import { CcNoticeDismissEvent } from '../components/cc-notice/cc-notice.events.js';
 import {
   CcOauthConsumerChangeEvent,
@@ -304,6 +308,8 @@ declare global {
     'cc-multi-select': CcMultiSelectEvent;
     'cc-network-group-delete': CcNetworkGroupDeleteEvent;
     'cc-network-group-link': CcNetworkGroupLinkEvent;
+    'cc-network-group-member-link': CcNetworkGroupMemberLinkEvent;
+    'cc-network-group-member-unlink': CcNetworkGroupMemberUnlinkEvent;
     'cc-network-group-member-unlink-request': CcNetworkGroupMemberUnlinkRequestEvent;
     'cc-network-group-was-deleted': CcNetworkGroupWasDeletedEvent;
     'cc-ng-disable': CcNgDisable;

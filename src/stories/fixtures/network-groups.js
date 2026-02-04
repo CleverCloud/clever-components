@@ -1,4 +1,7 @@
+import { getAssetUrl } from '../../lib/assets-url.js';
+
 /**
+ * @import { NetworkGroupMember } from '../../components/cc-network-group-member-list/cc-network-group-member-list.types.js'
  * @import { NetworkGroup } from '../../components/cc-network-group-list/cc-network-group-list.types.js'
  * @import { NetworkGroupPeerExternal, NetworkGroupPeerClever } from '../../components/cc-network-group-peer-card/cc-network-group-peer-card.types.js'
  * @import { Option } from '../../components/cc-select/cc-select.types.js'
@@ -155,6 +158,22 @@ export const memberExternalWithoutDashboardUrl = {
   },
   peerList: [],
 };
+
+/** @type {NetworkGroupMember[]} */
+export const networkGroupMembers = [
+  memberAppWithPeers,
+  memberAddonWithPeers,
+  memberExternalWithoutPeers,
+  memberExternalWithPeers,
+];
+
+/** @type {Option[]} */
+export const sampleSelectOptions = [
+  { label: 'My Node App (Application)', value: 'app_123' },
+  { label: 'My PHP App (Application)', value: 'app_456' },
+  { label: 'PostgreSQL Database (Add-on)', value: 'addon_789' },
+  { label: 'Redis Cache (Add-on)', value: 'addon_abc' },
+];
 
 /** @type {NetworkGroup[]} */
 export const linkedNetworkGroupList = [
