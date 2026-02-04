@@ -1402,6 +1402,30 @@ export const translations = {
   'cc-network-group-member-card.unlink.a11y-name': /** @param {{ label: string }} _ */ ({ label }) =>
     `Unlink member - ${label}`,
   //#endregion
+  //#region cc-network-group-member-list
+  'cc-network-group-member-list.cli': ``,
+  'cc-network-group-member-list.cli.content.instruction': getCliInstructions,
+  'cc-network-group-member-list.cli.heading': `Manage your Members and Peers from the CLI`,
+  'cc-network-group-member-list.documentation.text': `Network Groups - Documentation`,
+  'cc-network-group-member-list.error': `Something went wrong while loading the Network Group info`,
+  'cc-network-group-member-list.heading': `Members and Peers`,
+  'cc-network-group-member-list.intro': `A member is a resource connected to a Network Group: it can be an application, an add-on, or even an external service. Each member is identified and has a dedicated domain name within the private network. A peer is a concrete instance of this member. All peers in the same Network Group can communicate with each other via a secure tunnel on all ports, which allows for private and encrypted interconnection between resources.`,
+  'cc-network-group-member-list.link-form.button': `Link member`,
+  'cc-network-group-member-list.link-form.empty': `No resources available to link`,
+  'cc-network-group-member-list.link-form.heading': `Link a member`,
+  'cc-network-group-member-list.link-form.resource-type.addon': `Add-on`,
+  'cc-network-group-member-list.link-form.resource-type.application': `Application`,
+  'cc-network-group-member-list.link-form.select-label': `Resource to link`,
+  'cc-network-group-member-list.member-list.empty': `You don't have any member linked to your Network Group`,
+  'cc-network-group-member-list.member.link.error': `Something went wrong while linking the member to the Network Group`,
+  'cc-network-group-member-list.member.link.success': `The member has been linked to the Network Group successfully`,
+  'cc-network-group-member-list.member.logo.a11y-name.external': `External`,
+  'cc-network-group-member-list.member.unlink.error': `Something went wrong while unlinking the Network Group member`,
+  'cc-network-group-member-list.member.unlink.success': `The Network Group member has been unlinked successfully`,
+  'cc-network-group-member-list.unlink.dialog.desc': `Unlinking a member from your Network Group also unlinks all its peers. Are you sure you want to continue?`,
+  'cc-network-group-member-list.unlink.dialog.heading': `Confirm unlink`,
+  'cc-network-group-member-list.unlink.dialog.unlink-btn': `Confirm and unlink`,
+  //#endregion
   //#region cc-network-group-peer-card
   'cc-network-group-peer-card.external-peer.config-link': /** @param {{ label: string }} _ */ ({ label }) =>
     `Download peer configuration for ${label}`,
