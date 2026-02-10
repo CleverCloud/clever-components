@@ -59,6 +59,12 @@ export const button = makeStory(conf, {
       innerHTML: 'edit the informations',
     },
     {
+      mode: 'button',
+      href: 'https://example.com',
+      innerHTML: 'edit the informations',
+      icon: iconInfo,
+    },
+    {
       skeleton: true,
       mode: 'button',
       href: 'https://example.com',
@@ -73,6 +79,12 @@ export const buttonWithFullWidth = makeStory(conf, {
       mode: 'button',
       href: 'https://example.com',
       innerHTML: 'edit the informations',
+    },
+    {
+      mode: 'button',
+      href: 'https://example.com',
+      innerHTML: 'edit the informations',
+      icon: iconInfo,
     },
     {
       skeleton: true,

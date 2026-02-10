@@ -286,6 +286,7 @@ export class CcLink extends LitElement {
         }
 
         :host([mode='button']) {
+          color: var(--cc-color-text-inverted, #fff);
           display: inline-block;
         }
 
