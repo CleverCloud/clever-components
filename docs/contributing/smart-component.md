@@ -18,19 +18,29 @@ Before defining your smart component, import the necessary dependencies for conn
 import './cc-my-component.js';
 import '../cc-smart-container/cc-smart-container.js';
 import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
+import { getCcApiClientWithOAuth, getCcApiClientWithToken } from '../../lib/cc-api-client.js';
 import { sendToApi } from '../../lib/send-to-api.js';
 import { notify, notifyError, notifySuccess } from '../../lib/notifications.js';
 ```
 
-You'll also likely need to import specific API functions from the `@clevercloud/client` package:
+You'll also likely need to import API commands from the `@clevercloud/client` package.
+For the new client, use the command classes from `cc-api-commands/`:
 
 ```js
-import { someApiFunction } from '@clevercloud/client/esm/api/v2/some-resource.js';
+import { GetApplicationCommand } from '@clevercloud/client/cc-api-commands/application/get-application-command.js';
+```
+
+For the legacy client, use the API functions from `esm/api/`:
+
+```js
+import { getApplication } from '@clevercloud/client/esm/api/v2/application.js';
 ```
 
 Here's an explanation of the key imports and their purposes:
 - `defineSmartComponent`: Required to register and configure your smart component,
-- `sendToApi`: Handles API requests with proper error management,
+- `getCcApiClientWithOAuth`: Returns a shared, cached API client instance configured with OAuth v1 credentials from `apiConfig`. Can also be called with `null`/`undefined` for unauthenticated access,
+- `getCcApiClientWithToken`: Returns a shared, cached API client instance configured with an API token from `apiTokenConfig`,
+- `sendToApi`: Handles API requests with proper error management (legacy approach, see **API Clients: New vs Legacy**),
 - `notify`, `notifyError`, `notifySuccess`: Provides user feedback through toast notifications,
 - `./cc-my-component.js`: Your Lit component that handles the UI rendering and user interactions. This way, developers using your smart component only need to import the smart component file, not both the smart and UI components or the smart container.
 - `../cc-smart-container/cc-smart-container.js`: The container component that provides context and connects smart components to the application state.
@@ -45,6 +55,90 @@ It serves as a context provider that:
 All smart components must be wrapped in a `<cc-smart-container>` element when used in HTML, as shown in the usage examples.
 The container exposes the context to the components through the smart component system, enabling automatic data fetching and state management.
 For more information, please refer to the [Getting Started - Smart Component](🏡-getting-started-smart-components--docs).
+
+### API Clients: New vs Legacy
+
+There are two ways to make API calls in smart components.
+
+#### New Client: `getCcApiClientWithOAuth` (recommended for new code)
+
+Use `getCcApiClientWithOAuth` to obtain a shared `CcApiClient` instance authenticated with OAuth v1:
+
+```js
+// cc-my-component.smart.js
+import { GetApplicationCommand } from '@clevercloud/client/cc-api-commands/application/get-application-command.js';
+
+onContextUpdate({ context, signal }) {
+  const { apiConfig, ownerId, applicationId } = context;
+  const client = getCcApiClientWithOAuth(apiConfig);
+
+  client.send(new GetApplicationCommand({ ownerId, applicationId }), { signal })
+    .then((data) => {
+      // handle success
+    })
+    .catch((error) => {
+      // handle error
+    });
+}
+```
+
+Key characteristics:
+- Returns a `CcApiClient` instance configured with OAuth v1 credentials from `apiConfig`,
+- Can be called with `null` or `undefined` to obtain an unauthenticated client using the default API host,
+- Clients are cached based on config content (via serialized keys in a `Map`), so all components with the same config values will share the same client instance, even if they use different object references.
+
+#### New Client: `getCcApiClientWithToken`
+
+Use `getCcApiClientWithToken` to obtain a shared `CcApiClient` instance authenticated with an API token:
+
+```js
+// cc-my-component.smart.js
+import { GetApplicationCommand } from '@clevercloud/client/cc-api-commands/application/get-application-command.js';
+
+onContextUpdate({ context, signal }) {
+  const { apiTokenConfig, ownerId, applicationId } = context;
+  const client = getCcApiClientWithToken(apiTokenConfig);
+
+  client.send(new GetApplicationCommand({ ownerId, applicationId }), { signal })
+    .then((data) => {
+      // handle success
+    })
+    .catch((error) => {
+      // handle error
+    });
+}
+```
+
+The `apiTokenConfig` object has the following shape (`ApiTokenConfig`):
+- `API_TOKEN` (required): The API token string,
+- `API_HOST` (optional): The API host URL. Falls back to the default API host if omitted.
+
+Key characteristics:
+- Returns a `CcApiClient` instance configured with API token-based authentication,
+- Clients are cached based on config content, sharing the same `Map` cache as the OAuth client.
+
+#### Legacy Client: `sendToApi`
+
+The `sendToApi` function is the legacy approach still used in many existing smart components.
+It is a higher-order function: calling `sendToApi({ apiConfig, signal })` returns a function that is then passed to `.then()` on the promise returned by API client functions:
+
+```js
+// cc-my-component.smart.js
+onContextUpdate({ context, signal }) {
+  const { apiConfig, userId } = context;
+
+  getUserInfo({ userId })
+    .then(sendToApi({ apiConfig, signal }))
+    .then((data) => {
+      // handle success
+    })
+    .catch((error) => {
+      // handle error
+    });
+}
+```
+
+When working on existing smart components that already use `sendToApi`, there is no need to migrate them to the new client right away.
 
 ### 2. Selector and Context Parameters
 
