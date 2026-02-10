@@ -114,6 +114,25 @@ export class CcGrid extends LitElement {
   }
 
   /**
+   * @param {FocusOptions} [options]
+   */
+  focusFirstCell(options) {
+    if (this.columns.length === 0) {
+      return;
+    }
+    if (this.items.length === 0) {
+      if (this._getFirstRowIndex() === -1) {
+        this._cursor = { row: -1, col: 0 };
+      } else {
+        return;
+      }
+    } else {
+      this._cursor = { row: 0, col: 0 };
+    }
+    this.focus(options);
+  }
+
+  /**
    * @param {T} item
    */
   scrollToItem(item) {
