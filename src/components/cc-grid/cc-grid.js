@@ -560,7 +560,9 @@ export class CcGrid extends LitElement {
       return {
         focusable: cell.enableCopyToClipboard && !skeleton,
         template: html`<div class="icon-label">
-          ${cell.icon != null ? html`<cc-icon .icon=${cell.icon} ?skeleton=${skeleton}></cc-icon>` : ''}
+          ${cell.icon != null
+            ? html`<cc-icon .icon=${cell.icon} .a11yName=${cell.iconA11yName} ?skeleton=${skeleton}></cc-icon>`
+            : ''}
           <span class=${classMap({ skeleton })}>${cell.value}</span>
           ${cell.enableCopyToClipboard
             ? html`<cc-clipboard
@@ -578,7 +580,9 @@ export class CcGrid extends LitElement {
       return {
         focusable: !skeleton,
         template: html`<div class="icon-label">
-          ${cell.icon != null ? html`<cc-icon .icon=${cell.icon} ?skeleton=${skeleton}></cc-icon>` : ''}
+          ${cell.icon != null
+            ? html`<cc-icon .icon=${cell.icon} .a11yName=${cell.iconA11yName} ?skeleton=${skeleton}></cc-icon>`
+            : ''}
           <cc-button
             tabindex=${hasFocus ? '0' : '-1'}
             data-focusable=${skeleton ? 'false' : 'true'}
@@ -607,6 +611,7 @@ export class CcGrid extends LitElement {
           tabindex=${hasFocus ? '0' : '-1'}
           data-focusable=${skeleton ? 'false' : 'true'}
           .icon=${cell.icon}
+          .a11yName=${cell.iconA11yName}
           ?skeleton=${skeleton}
           ?waiting=${cell.waiting}
           ?disabled=${this.disabled && !cell.waiting}
