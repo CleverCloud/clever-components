@@ -45,6 +45,8 @@ export class CcLink extends LitElement {
     };
   }
 
+  static shadowRootOptions = { ...LitElement.shadowRootOptions, delegatesFocus: true };
+
   constructor() {
     super();
 
