@@ -74,6 +74,7 @@ export const button = makeStory(conf, {
 });
 
 export const buttonWithFullWidth = makeStory(conf, {
+  css: `cc-link { width: 280px; }`,
   items: [
     {
       mode: 'button',

@@ -144,12 +144,13 @@ export class CcLink extends LitElement {
     const target = isDifferentOrigin ? '_blank' : null;
     const rel = isDifferentOrigin ? 'noreferrer' : null;
     const disableExternalIcon = this.disableExternalLinkIcon || this.mode !== 'default';
+    const noIcon = this.image == null && this.icon == null;
 
     const title = this._getTitle(this.a11yDesc, isDifferentOrigin, this._title);
 
     // Make sure there are no spaces before the <a> and after the </a>
     return html`
-      <div class="cc-link ${classMap({ skeleton: this.skeleton })}">
+      <div class="cc-link ${classMap({ skeleton: this.skeleton, 'no-icon': noIcon })}">
         ${this.image != null && this.icon == null
           ? html` <cc-img src=${this.image} a11y-name="${this.imgA11yName}" part="img"></cc-img> `
           : ''}
@@ -291,17 +292,26 @@ export class CcLink extends LitElement {
         }
 
         :host([mode='button']) .cc-link {
+          align-items: center;
           background-color: var(--cc-color-bg-primary, #3569aaff);
           border: 1px solid var(--cc-color-bg-primary, #3569aaff);
           border-radius: var(--cc-button-border-radius, 0.15em);
           box-sizing: border-box;
           cursor: pointer;
-          display: flex;
+          display: grid;
           font-weight: var(--cc-button-font-weight, bold);
-          justify-content: center;
+          gap: 0.5em;
+          grid-template-columns: min-content 1fr;
+          height: 100%;
+          justify-items: center;
           min-height: 2em;
           padding: 0 0.5em;
           text-transform: var(--cc-button-text-transform, uppercase);
+          width: 100%;
+        }
+
+        :host([mode='button']) .cc-link.no-icon {
+          grid-template-columns: 1fr;
         }
 
         :host([mode='button']) .cc-link:hover {
