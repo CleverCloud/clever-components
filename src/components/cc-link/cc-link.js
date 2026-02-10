@@ -59,8 +59,8 @@ export class CcLink extends LitElement {
     /** @type {string|null} If set, enables `download` attribute value on the inner native `<a>` element. */
     this.download = null;
 
-    /** @type {string} The URL for the link. */
-    this.href = '';
+    /** @type {string|null|undefined} The URL for the link. */
+    this.href = null;
 
     /** @type {IconModel|null} If set, enables icon mode and displays the required icon in the <cc-icon> component. */
     this.icon = null;
