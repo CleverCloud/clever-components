@@ -292,6 +292,75 @@ export class CcAddonInfo extends LitElement {
                 </div>
               `
             : ''}
+          ${this.state.totalContent != null
+            ? html`
+                <div class="section">
+                  <strong class="heading">${i18n('cc-addon-info.total-content.heading')}</strong>
+                  <dl class="value features__content">
+                    <div class="features__content__item">
+                      <dt class="features__content__item__label ${classMap({ skeleton })}">
+                        ${i18n('cc-addon-info.total-content.buckets')}
+                      </dt>
+                      <dd class="features__content__item__value data-decoration ${classMap({ skeleton })}">
+                        ${this.state.totalContent.buckets}
+                      </dd>
+                    </div>
+                    <div class="features__content__item">
+                      <dt class="features__content__item__label ${classMap({ skeleton })}">
+                        ${i18n('cc-addon-info.total-content.objects')}
+                      </dt>
+                      <dd class="features__content__item__value data-decoration ${classMap({ skeleton })}">
+                        ${this.state.totalContent.objects}
+                      </dd>
+                    </div>
+                  </dl>
+                </div>
+              `
+            : ''}
+          ${this.state.traffic != null
+            ? html`
+                <div class="section">
+                  <strong class="heading">${i18n('cc-addon-info.traffic.heading')}</strong>
+                  <dl class="value features__content">
+                    <div class="features__content__item">
+                      <dt class="features__content__item__label ${classMap({ skeleton })}">
+                        ${i18n('cc-addon-info.traffic.inbound')}
+                      </dt>
+                      <dd class="features__content__item__value data-decoration ${classMap({ skeleton })}">
+                        ${i18n('cc-addon-info.traffic.inbound.inbound-in-bytes', { bytes: this.state.traffic.inbound })}
+                      </dd>
+                    </div>
+                    <div class="features__content__item">
+                      <dt class="features__content__item__label ${classMap({ skeleton })}">
+                        ${i18n('cc-addon-info.traffic.outbound')}
+                      </dt>
+                      <dd class="features__content__item__value data-decoration ${classMap({ skeleton })}">
+                        ${i18n('cc-addon-info.traffic.outbound.outbound-in-bytes', {
+                          bytes: this.state.traffic.outbound,
+                        })}
+                      </dd>
+                    </div>
+                  </dl>
+                </div>
+              `
+            : ''}
+          ${this.state.usedSpaces != null
+            ? html`
+                <div class="section">
+                  <strong class="heading">${i18n('cc-addon-info.used-spaces.heading')}</strong>
+                  <dl class="value features__content">
+                    <div class="features__content__item">
+                      <dt class="features__content__item__label ${classMap({ skeleton })}">
+                        ${i18n('cc-addon-info.used-spaces.size')}
+                      </dt>
+                      <dd class="features__content__item__value data-decoration ${classMap({ skeleton })}">
+                        ${i18n('cc-addon-info.used-spaces.size.size-in-bytes', { bytes: this.state.usedSpaces.size })}
+                      </dd>
+                    </div>
+                  </dl>
+                </div>
+              `
+            : ''}
 
           <div class="section section--billing" ${hasSlottedChildren()}>
             <strong class="heading">${i18n('cc-addon-info.billing.heading')}</strong>
