@@ -189,7 +189,10 @@ export const translations = {
   'cc-addon-credentials.field.port': `Port`,
   'cc-addon-credentials.field.url': `URL`,
   'cc-addon-credentials.field.user': `Utilisateur`,
-  'cc-addon-credentials.loading-error': `Une erreur est survenue pendant le chargement des informations de connexion.`,
+  'cc-addon-credentials.get-credentials.error': `Une erreur est survenue lors de la mise à jour des infos, veuillez raffraîchir la page`,
+  'cc-addon-credentials.loading-error': `Une erreur est survenue pendant le chargement des informations de connexion`,
+  'cc-addon-credentials.renew-secret.error': `Une erreur est survenue pendant le renouvellement du secret`,
+  'cc-addon-credentials.renew-secret.success': `Le secret a été renouvelé avec succès`,
   'cc-addon-credentials.title': /** @param {{name: string}} _ */ ({ name }) => `Identifiants ${name}`,
   //#endregion
   //#region cc-addon-credentials-beta
@@ -204,6 +207,7 @@ export const translations = {
   'cc-addon-credentials-beta.doc-link.keycloak': `Multi-instances sécurisé - Documentation`,
   'cc-addon-credentials-beta.doc-link.otoroshi-api': `Gérer Otoroshi via son API - Documentation`,
   'cc-addon-credentials-beta.doc-link.otoroshi-ng': `Otoroshi dans un Network Group - Documentation`,
+  'cc-addon-credentials-beta.download-s3cfg-file': `Télécharger le fichier s3cfg pré-rempli`,
   'cc-addon-credentials-beta.error': `Une erreur est survenue pendant le chargement des informations`,
   'cc-addon-credentials-beta.heading': `Accès`,
   'cc-addon-credentials-beta.ng-multi-instances.disabling.error': `Une erreur est survenue lors de la désactivation du multi-instances sécurisé`,
@@ -214,6 +218,7 @@ export const translations = {
   'cc-addon-credentials-beta.ng-standard.disabling.success': `Le Network Group a été désactivé avec succès`,
   'cc-addon-credentials-beta.ng-standard.enabling.error': `Une erreur est survenue lors de l'activation du Network Group`,
   'cc-addon-credentials-beta.ng-standard.enabling.success': `Le Network Group a été activé avec succès`,
+  'cc-addon-credentials-beta.renew-secret': `Renouveler le secret`,
   //#endregion
   //#region cc-addon-credentials-content
   'cc-addon-credentials-content.code.api-client-secret': `Secret du client API`,
@@ -226,9 +231,12 @@ export const translations = {
   'cc-addon-credentials-content.code.direct-host': `Hôte direct`,
   'cc-addon-credentials-content.code.direct-port': `Port direct`,
   'cc-addon-credentials-content.code.direct-uri': `URI directe`,
+  'cc-addon-credentials-content.code.download-file': `Télécharger le fichier`,
   'cc-addon-credentials-content.code.host': `Hôte`,
   'cc-addon-credentials-content.code.initial-password': `Mot de passe initial`,
   'cc-addon-credentials-content.code.initial-user': `Utilisateur initial`,
+  'cc-addon-credentials-content.code.key-id': `ID`,
+  'cc-addon-credentials-content.code.key-secret': `Secret`,
   'cc-addon-credentials-content.code.network-group-multi-instances': `Multi-instances sécurisé`,
   'cc-addon-credentials-content.code.network-group-standard': `Network Group`,
   'cc-addon-credentials-content.code.open-api-url': `URL OpenAPI`,
@@ -312,6 +320,7 @@ export const translations = {
   'cc-addon-info.creation-date.heading': `Date de création`,
   'cc-addon-info.creation-date.human-friendly-date': /** @param {{ date: string | number }} _ */ ({ date }) =>
     formatDatetime(date),
+  'cc-addon-info.doc-link.cellar': `Cellar - Documentation`,
   'cc-addon-info.doc-link.elastic': `Elastic Stack - Documentation`,
   'cc-addon-info.doc-link.jenkins': `Jenkins - Documentation`,
   'cc-addon-info.doc-link.keycloak': `Keycloak - Documentation`,
@@ -349,6 +358,16 @@ export const translations = {
   'cc-addon-info.specification.plan': `Plan`,
   'cc-addon-info.specification.users': `Utilisateurs`,
   'cc-addon-info.specification.version': `Version`,
+  'cc-addon-info.total-content.buckets': `Buckets`,
+  'cc-addon-info.total-content.heading': `Contenu total`,
+  'cc-addon-info.total-content.objects': `Objets`,
+  'cc-addon-info.traffic.heading': `Traffic`,
+  'cc-addon-info.traffic.inbound': `Entrant`,
+  'cc-addon-info.traffic.inbound.inbound-in-bytes': /** @param {{bytes: number}} _ */ ({ bytes }) =>
+    formatBytes(bytes, 1),
+  'cc-addon-info.traffic.outbound': `Sortant`,
+  'cc-addon-info.traffic.outbound.outbound-in-bytes': /** @param {{bytes: number}} _ */ ({ bytes }) =>
+    formatBytes(bytes, 1),
   'cc-addon-info.type.boolean': /** @param {{boolean: boolean}} _ */ ({ boolean }) => `${boolean ? 'Oui' : 'Non'}`,
   'cc-addon-info.type.boolean-shared': /** @param {{shared: boolean}} _ */ ({ shared }) =>
     `${shared ? 'Partagé' : 'Dédié'}`,
@@ -359,6 +378,10 @@ export const translations = {
       ? sanitize`<em title="Accès au vCPU moins prioritaire">${formatNumber(lang, cpu)}<code>*</code></em>`
       : formatNumber(lang, cpu);
   },
+  'cc-addon-info.used-spaces.heading': `Espaces utilisés`,
+  'cc-addon-info.used-spaces.size': `Taille`,
+  'cc-addon-info.used-spaces.size.size-in-bytes': /** @param {{bytes: number}} _ */ ({ bytes }) =>
+    formatBytes(bytes, 1),
   'cc-addon-info.version.btn': `Mise à jour disponible`,
   'cc-addon-info.version.dialog.btn.submit': `Mettre à jour et rebuild`,
   'cc-addon-info.version.dialog.desc': /** @param {{ url: string }} _ */ ({ url }) =>

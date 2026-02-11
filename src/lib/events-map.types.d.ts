@@ -7,6 +7,7 @@ import {
   CcAddonWasDeletedEvent,
 } from '../components/cc-addon-admin/cc-addon-admin.events.js';
 import {
+  CcAddonCredentialsRenewSecret,
   CcNgDisable,
   CcNgEnable,
 } from '../components/cc-addon-credentials-content/cc-addon-credentials-content.events.js';
@@ -195,6 +196,7 @@ declare global {
   class CcMultiSelectEvent<T extends string = string> extends CcEvent<Array<T>> {}
 
   interface GlobalEventHandlersEventMap {
+    'cc-addon-credentials-renew-secret': CcAddonCredentialsRenewSecret;
     'cc-addon-delete': CcAddonDeleteEvent;
     'cc-addon-name-change': CcAddonNameChangeEvent;
     'cc-addon-name-was-changed': CcAddonNameWasChangedEvent;

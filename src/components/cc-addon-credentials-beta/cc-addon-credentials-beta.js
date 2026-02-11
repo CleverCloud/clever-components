@@ -48,7 +48,7 @@ export class CcAddonCredentialsBeta extends LitElement {
       tabs: {
         default: {
           content: [],
-          docLink: { text: fakeString(10), href: null },
+          docLink: { text: fakeString(10), href: undefined },
         },
       },
     };
@@ -130,11 +130,12 @@ export class CcAddonCredentialsBeta extends LitElement {
               ></cc-toggle>
             `
           : ''}
-        ${this.state.type === 'loaded' || this.state.type === 'loading'
+        ${this.state.type === 'loaded' || this.state.type === 'loading' || this.state.type === 'waiting'
           ? html`
               <cc-addon-credentials-content
                 .credentials="${activeTab.content}"
                 .skeleton="${skeleton}"
+                ?disabled="${this.state.type === 'waiting'}"
                 slot="content"
               ></cc-addon-credentials-content>
             `
