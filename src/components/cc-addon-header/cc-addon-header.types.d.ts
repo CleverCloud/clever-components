@@ -168,3 +168,13 @@ export interface JenkinsProviderInfo {
     },
   ];
 }
+
+export interface CellarInfo {
+  id: string;
+  resourceId: string;
+  name: string;
+  ownerId: string;
+  plan: string;
+  status: string;
+  creationDate: string;
+}
