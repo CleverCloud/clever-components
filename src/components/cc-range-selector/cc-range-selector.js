@@ -89,7 +89,7 @@ export class CcRangeSelector extends CcFormControlElement {
     };
   }
 
-  static reactiveValidationProperties = ['required', 'options'];
+  static reactiveValidationProperties = ['required', 'options', 'mode'];
 
   constructor() {
     super();
