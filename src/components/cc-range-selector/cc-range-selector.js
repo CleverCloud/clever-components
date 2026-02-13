@@ -131,12 +131,6 @@ export class CcRangeSelector extends CcFormControlElement {
     this.selection = null;
 
     /** @type {Ref<HTMLElement>} */
-    this._inputRangeStartRef = createRef();
-
-    /** @type {Ref<HTMLElement>} */
-    this._inputRangeEndRef = createRef();
-
-    /** @type {Ref<HTMLElement>} */
     this._errorRef = createRef();
 
     /** @type {Ref<HTMLElement>} */
@@ -819,7 +813,6 @@ export class CcRangeSelector extends CcFormControlElement {
         ?disabled=${this.disabled || this.readonly || this._isCustomOptionActive}
         aria-valuetext="${this._optionsInnerText.at(inputRangeStartIndex)}"
         aria-describedby="help-id error-id"
-        ${ref(this._inputRangeStartRef)}
       />
 
       <label for="end-input" class="visually-hidden">${i18n('cc-range-selector.label.end')}</label>
@@ -833,7 +826,6 @@ export class CcRangeSelector extends CcFormControlElement {
         ?disabled=${this.disabled || this.readonly || this._isCustomOptionActive}
         aria-valuetext="${this._optionsInnerText.at(inputRangeEndIndex)}"
         aria-describedby="help-id error-id"
-        ${ref(this._inputRangeEndRef)}
       />
     `;
   }
