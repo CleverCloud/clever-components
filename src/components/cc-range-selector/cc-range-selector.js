@@ -502,8 +502,12 @@ export class CcRangeSelector extends CcFormControlElement {
     const detail = this._isModeSingle() ? this.value : [...this._getValuesArray()];
     this.dispatchEvent(new CcRangeSelectorSelectCustomEvent(detail));
 
-    this.value = null;
-    this.selection = null;
+    if (this._isModeSingle()) {
+      this.value = null;
+    }
+    if (this._isModeRange()) {
+      this.selection = null;
+    }
   }
 
   /**
