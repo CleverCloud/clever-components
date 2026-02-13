@@ -747,6 +747,17 @@ export class CcRangeSelector extends CcFormControlElement {
   }
 
   /**
+   * Syncs the form value when the mode changes, since the form data format differs between single (string) and range (FormData) modes.
+   * @param {PropertyValues<CcRangeSelector>} changedProperties
+   */
+  updated(changedProperties) {
+    super.updated(changedProperties);
+    if (changedProperties.has('mode')) {
+      this._internals.setFormValue(this._getFormControlData());
+    }
+  }
+
+  /**
    * Calculates CSS classes for an option wrapper
    * @param {object} params
    * @param {boolean} params.isSelected - Whether option is selected
