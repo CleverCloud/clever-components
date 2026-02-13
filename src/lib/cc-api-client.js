@@ -3,14 +3,22 @@ import { CcApiErrorEvent } from './send-to-api.events.js';
 
 /** @import { ApiConfig, ApiTokenConfig } from './send-to-api.types.js' */
 
-/** @type {WeakMap<ApiConfig | object, CcApiClient>} */
-const oauthClientCache = new WeakMap();
+/** @type {Map<string, CcApiClient>} */
+const clientCache = new Map();
 
-/** @type {WeakMap<ApiTokenConfig, CcApiClient>} */
-const tokenClientCache = new WeakMap();
-
-/** Stable key for caching the client when no apiConfig is provided. */
-const NO_OAUTH_CONFIG = {};
+/**
+ * Generate a deterministic string key from a config object.
+ * Returns an empty string for `null` or `undefined`.
+ *
+ * @param {object | null} [config]
+ * @returns {string}
+ */
+function configToKey(config) {
+  if (config == null) {
+    return '';
+  }
+  return JSON.stringify(config, Object.keys(config).sort());
+}
 
 /**
  * Build an OAuth v1 auth method from the given apiConfig.
@@ -43,8 +51,8 @@ function getOAuthMethod(apiConfig) {
 
 /**
  * Get or create a CcApiClient instance for the given apiConfig.
- * Clients are cached per apiConfig reference, so all components
- * sharing the same apiConfig will share the same client instance.
+ * Clients are cached based on config content, so all components
+ * with the same config values will share the same client instance.
  *
  * - When called with a full apiConfig (including OAuth tokens), returns an authenticated client.
  * - When called with only `API_HOST` (no OAuth tokens), returns an unauthenticated client for that host.
@@ -54,10 +62,10 @@ function getOAuthMethod(apiConfig) {
  * @returns {CcApiClient}
  */
 export function getCcApiClientWithOAuth(apiConfig) {
-  const cacheKey = apiConfig ?? NO_OAUTH_CONFIG;
+  const cacheKey = configToKey(apiConfig);
 
-  if (!oauthClientCache.has(cacheKey)) {
-    oauthClientCache.set(
+  if (!clientCache.has(cacheKey)) {
+    clientCache.set(
       cacheKey,
       createClient({
         authMethod: getOAuthMethod(apiConfig),
@@ -67,22 +75,22 @@ export function getCcApiClientWithOAuth(apiConfig) {
     );
   }
 
-  return oauthClientCache.get(cacheKey);
+  return clientCache.get(cacheKey);
 }
 
 /**
  * Get or create a CcApiClient instance for the given API token config.
- * Clients are cached per apiTokenConfig reference, so all components
- * sharing the same apiTokenConfig will share the same client instance.
+ * Clients are cached based on config content, so all components
+ * with the same config values will share the same client instance.
  *
  * @param {ApiTokenConfig} apiTokenConfig
  * @returns {CcApiClient}
  */
 export function getCcApiClientWithToken(apiTokenConfig) {
-  const cacheKey = apiTokenConfig;
+  const cacheKey = configToKey(apiTokenConfig);
 
-  if (!tokenClientCache.has(cacheKey)) {
-    tokenClientCache.set(
+  if (!clientCache.has(cacheKey)) {
+    clientCache.set(
       cacheKey,
       createClient({
         authMethod: {
@@ -95,7 +103,7 @@ export function getCcApiClientWithToken(apiTokenConfig) {
     );
   }
 
-  return tokenClientCache.get(cacheKey);
+  return clientCache.get(cacheKey);
 }
 
 /**

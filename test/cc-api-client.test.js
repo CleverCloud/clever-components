@@ -53,9 +53,9 @@ describe('getCcApiClientWithOAuth', function () {
       expect(client1 === client2).to.equal(true);
     });
 
-    it('should return different client instances when called with different apiConfig objects', function () {
+    it('should return different client instances when called with different apiConfig values', function () {
       const apiConfig1 = createMockApiConfig();
-      const apiConfig2 = createMockApiConfig();
+      const apiConfig2 = { ...createMockApiConfig(), API_HOST: 'https://api.other.com' };
 
       const client1 = getCcApiClientWithOAuth(apiConfig1);
       const client2 = getCcApiClientWithOAuth(apiConfig2);
@@ -63,7 +63,7 @@ describe('getCcApiClientWithOAuth', function () {
       expect(client1 === client2).to.equal(false);
     });
 
-    it('should cache based on object reference, not object content', function () {
+    it('should cache based on config content, not object reference', function () {
       const apiConfig1 = createMockApiConfig();
       // Create a second config with identical content but different reference
       const apiConfig2 = { ...apiConfig1 };
@@ -71,16 +71,16 @@ describe('getCcApiClientWithOAuth', function () {
       const client1 = getCcApiClientWithOAuth(apiConfig1);
       const client2 = getCcApiClientWithOAuth(apiConfig2);
 
-      // Even though the content is identical, different references should create different clients
-      expect(client1 === client2).to.equal(false);
+      // Same content should return the same cached client, even with different references
+      expect(client1 === client2).to.equal(true);
     });
   });
 
   describe('multiple apiConfig handling', function () {
-    it('should maintain separate cached clients for different apiConfig objects', function () {
-      const apiConfig1 = createMockApiConfig();
-      const apiConfig2 = createMockApiConfig();
-      const apiConfig3 = createMockApiConfig();
+    it('should maintain separate cached clients for different apiConfig values', function () {
+      const apiConfig1 = { ...createMockApiConfig(), API_HOST: 'https://api1.example.com' };
+      const apiConfig2 = { ...createMockApiConfig(), API_HOST: 'https://api2.example.com' };
+      const apiConfig3 = { ...createMockApiConfig(), API_HOST: 'https://api3.example.com' };
 
       const client1a = getCcApiClientWithOAuth(apiConfig1);
       const client2a = getCcApiClientWithOAuth(apiConfig2);
@@ -162,7 +162,7 @@ describe('getCcApiClientWithOAuth', function () {
       expect(url.origin).to.equal('https://custom.api.com');
     });
 
-    it('should cache based on object reference for host-only configs', function () {
+    it('should cache based on config content for host-only configs', function () {
       const config1 = { API_HOST: 'https://custom.api.com' };
       const config2 = { API_HOST: 'https://custom.api.com' };
 
@@ -171,7 +171,7 @@ describe('getCcApiClientWithOAuth', function () {
       const client3 = getCcApiClientWithOAuth(config2);
 
       expect(client1 === client2).to.equal(true);
-      expect(client1 === client3).to.equal(false);
+      expect(client1 === client3).to.equal(true);
     });
 
     it('should return a different instance than the null config client', function () {
@@ -224,9 +224,9 @@ describe('getCcApiClientWithToken', function () {
       expect(client1 === client2).to.equal(true);
     });
 
-    it('should return different client instances when called with different apiTokenConfig objects', function () {
+    it('should return different client instances when called with different apiTokenConfig values', function () {
       const apiTokenConfig1 = createMockApiTokenConfig();
-      const apiTokenConfig2 = createMockApiTokenConfig();
+      const apiTokenConfig2 = { ...createMockApiTokenConfig(), API_TOKEN: 'differentToken456' };
 
       const client1 = getCcApiClientWithToken(apiTokenConfig1);
       const client2 = getCcApiClientWithToken(apiTokenConfig2);
@@ -234,7 +234,7 @@ describe('getCcApiClientWithToken', function () {
       expect(client1 === client2).to.equal(false);
     });
 
-    it('should cache based on object reference, not object content', function () {
+    it('should cache based on config content, not object reference', function () {
       const apiTokenConfig1 = createMockApiTokenConfig();
       // Create a second config with identical content but different reference
       const apiTokenConfig2 = { ...apiTokenConfig1 };
@@ -242,16 +242,16 @@ describe('getCcApiClientWithToken', function () {
       const client1 = getCcApiClientWithToken(apiTokenConfig1);
       const client2 = getCcApiClientWithToken(apiTokenConfig2);
 
-      // Even though the content is identical, different references should create different clients
-      expect(client1 === client2).to.equal(false);
+      // Same content should return the same cached client, even with different references
+      expect(client1 === client2).to.equal(true);
     });
   });
 
   describe('multiple apiTokenConfig handling', function () {
-    it('should maintain separate cached clients for different apiTokenConfig objects', function () {
-      const apiTokenConfig1 = createMockApiTokenConfig();
-      const apiTokenConfig2 = createMockApiTokenConfig();
-      const apiTokenConfig3 = createMockApiTokenConfig();
+    it('should maintain separate cached clients for different apiTokenConfig values', function () {
+      const apiTokenConfig1 = { ...createMockApiTokenConfig(), API_TOKEN: 'token1' };
+      const apiTokenConfig2 = { ...createMockApiTokenConfig(), API_TOKEN: 'token2' };
+      const apiTokenConfig3 = { ...createMockApiTokenConfig(), API_TOKEN: 'token3' };
 
       const client1a = getCcApiClientWithToken(apiTokenConfig1);
       const client2a = getCcApiClientWithToken(apiTokenConfig2);
