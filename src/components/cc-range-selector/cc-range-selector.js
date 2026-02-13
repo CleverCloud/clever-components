@@ -12,7 +12,7 @@ import { i18n } from '../../translations/translation.js';
 import '../cc-icon/cc-icon.js';
 import '../cc-range-selector-option/cc-range-selector-option.js';
 import { CcSelectEvent } from '../common.events.js';
-import { CcRangeSelectEvent, CcRangeSelectorSelectCustom } from './cc-range-selector.events.js';
+import { CcRangeSelectEvent, CcRangeSelectorSelectCustomEvent } from './cc-range-selector.events.js';
 import { RangeSelectorDraggingController } from './range-selector-dragging-controller.js';
 
 /**
@@ -500,7 +500,7 @@ export class CcRangeSelector extends CcFormControlElement {
     this._isCustomOptionActive = true;
 
     const detail = this._isModeSingle() ? this.value : [...this._getValuesArray()];
-    this.dispatchEvent(new CcRangeSelectorSelectCustom(detail));
+    this.dispatchEvent(new CcRangeSelectorSelectCustomEvent(detail));
 
     this.value = null;
     this.selection = null;
