@@ -55,6 +55,16 @@ import {
   CcApplicationStopEvent,
   CcDeploymentCancelEvent,
 } from '../components/cc-header-app/cc-header-app.events.js';
+import {
+  CcHomepageOnboardingCliEvent,
+  CcHomepageOnboardingConfigPaymentEvent,
+  CcHomepageOnboardingNewOrganisationEvent,
+  CcHomepageOnboardingNewProjectEvent,
+  CcHomepageOnboardingNewResourceEvent,
+  CcHomepageOnboardingSecureEvent,
+  CcHomepageOnboardingSshKeysEvent,
+  CcHomepageOnboardingSupportEvent,
+} from '../components/cc-homepage-onboarding/cc-homepage-onboarding.events.js';
 import { CcTagsChangeEvent } from '../components/cc-input-text/cc-input-text.events.js';
 import {
   CcKvKeyAddEvent,
@@ -232,6 +242,14 @@ declare global {
     'cc-grafana-reset': CcGrafanaResetEvent;
     'cc-grafana-toggle': CcGrafanaToggleEvent;
     'cc-grid-sort': CcGridSortEvent;
+    'cc-homepage-onboarding-cli': CcHomepageOnboardingCliEvent;
+    'cc-homepage-onboarding-config-payment': CcHomepageOnboardingConfigPaymentEvent;
+    'cc-homepage-onboarding-new-organisation': CcHomepageOnboardingNewOrganisationEvent;
+    'cc-homepage-onboarding-new-project': CcHomepageOnboardingNewProjectEvent;
+    'cc-homepage-onboarding-new-resource': CcHomepageOnboardingNewResourceEvent;
+    'cc-homepage-onboarding-secure': CcHomepageOnboardingSecureEvent;
+    'cc-homepage-onboarding-ssh-keys': CcHomepageOnboardingSshKeysEvent;
+    'cc-homepage-onboarding-support': CcHomepageOnboardingSupportEvent;
     'cc-input': CcInputEvent;
     'cc-kv-command-execute': CcKvCommandExecuteEvent;
     'cc-kv-hash-element-add': CcKvHashElementAddEvent;
