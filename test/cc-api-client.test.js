@@ -50,7 +50,7 @@ describe('getCcApiClientWithOAuth', function () {
       const client1 = getCcApiClientWithOAuth(apiConfig);
       const client2 = getCcApiClientWithOAuth(apiConfig);
 
-      expect(client1 === client2).to.equal(true);
+      expect(client1).to.equal(client2);
     });
 
     it('should return different client instances when called with different apiConfig values', function () {
@@ -60,7 +60,7 @@ describe('getCcApiClientWithOAuth', function () {
       const client1 = getCcApiClientWithOAuth(apiConfig1);
       const client2 = getCcApiClientWithOAuth(apiConfig2);
 
-      expect(client1 === client2).to.equal(false);
+      expect(client1).to.not.equal(client2);
     });
 
     it('should cache based on config content, not object reference', function () {
@@ -72,7 +72,7 @@ describe('getCcApiClientWithOAuth', function () {
       const client2 = getCcApiClientWithOAuth(apiConfig2);
 
       // Same content should return the same cached client, even with different references
-      expect(client1 === client2).to.equal(true);
+      expect(client1).to.equal(client2);
     });
   });
 
@@ -92,14 +92,14 @@ describe('getCcApiClientWithOAuth', function () {
       const client3b = getCcApiClientWithOAuth(apiConfig3);
 
       // Each config should return the same client on subsequent calls
-      expect(client1a === client1b).to.equal(true);
-      expect(client2a === client2b).to.equal(true);
-      expect(client3a === client3b).to.equal(true);
+      expect(client1a).to.equal(client1b);
+      expect(client2a).to.equal(client2b);
+      expect(client3a).to.equal(client3b);
 
       // But different configs should have different clients
-      expect(client1a === client2a).to.equal(false);
-      expect(client2a === client3a).to.equal(false);
-      expect(client1a === client3a).to.equal(false);
+      expect(client1a).to.not.equal(client2a);
+      expect(client2a).to.not.equal(client3a);
+      expect(client1a).to.not.equal(client3a);
     });
   });
 
@@ -125,8 +125,8 @@ describe('getCcApiClientWithOAuth', function () {
       const client2 = getCcApiClientWithOAuth(null);
       const client3 = getCcApiClientWithOAuth(undefined);
 
-      expect(client1 === client2).to.equal(true);
-      expect(client1 === client3).to.equal(true);
+      expect(client1).to.equal(client2);
+      expect(client1).to.equal(client3);
     });
 
     it('should return a different instance than authenticated clients', function () {
@@ -135,7 +135,7 @@ describe('getCcApiClientWithOAuth', function () {
       const authenticatedClient = getCcApiClientWithOAuth(apiConfig);
       const unauthenticatedClient = getCcApiClientWithOAuth(null);
 
-      expect(authenticatedClient === unauthenticatedClient).to.equal(false);
+      expect(authenticatedClient).to.not.equal(unauthenticatedClient);
     });
 
     it('should use the default API host as baseUrl', function () {
@@ -170,22 +170,22 @@ describe('getCcApiClientWithOAuth', function () {
       const client2 = getCcApiClientWithOAuth(config1);
       const client3 = getCcApiClientWithOAuth(config2);
 
-      expect(client1 === client2).to.equal(true);
-      expect(client1 === client3).to.equal(true);
+      expect(client1).to.equal(client2);
+      expect(client1).to.equal(client3);
     });
 
     it('should return a different instance than the null config client', function () {
       const hostOnlyClient = getCcApiClientWithOAuth({ API_HOST: 'https://custom.api.com' });
       const nullClient = getCcApiClientWithOAuth(null);
 
-      expect(hostOnlyClient === nullClient).to.equal(false);
+      expect(hostOnlyClient).to.not.equal(nullClient);
     });
 
     it('should return a different instance than an authenticated client', function () {
       const hostOnlyClient = getCcApiClientWithOAuth({ API_HOST: 'https://api.example.com' });
       const authenticatedClient = getCcApiClientWithOAuth(createMockApiConfig());
 
-      expect(hostOnlyClient === authenticatedClient).to.equal(false);
+      expect(hostOnlyClient).to.not.equal(authenticatedClient);
     });
   });
 });
@@ -221,7 +221,7 @@ describe('getCcApiClientWithToken', function () {
       const client1 = getCcApiClientWithToken(apiTokenConfig);
       const client2 = getCcApiClientWithToken(apiTokenConfig);
 
-      expect(client1 === client2).to.equal(true);
+      expect(client1).to.equal(client2);
     });
 
     it('should return different client instances when called with different apiTokenConfig values', function () {
@@ -231,7 +231,7 @@ describe('getCcApiClientWithToken', function () {
       const client1 = getCcApiClientWithToken(apiTokenConfig1);
       const client2 = getCcApiClientWithToken(apiTokenConfig2);
 
-      expect(client1 === client2).to.equal(false);
+      expect(client1).to.not.equal(client2);
     });
 
     it('should cache based on config content, not object reference', function () {
@@ -243,7 +243,7 @@ describe('getCcApiClientWithToken', function () {
       const client2 = getCcApiClientWithToken(apiTokenConfig2);
 
       // Same content should return the same cached client, even with different references
-      expect(client1 === client2).to.equal(true);
+      expect(client1).to.equal(client2);
     });
   });
 
@@ -263,14 +263,14 @@ describe('getCcApiClientWithToken', function () {
       const client3b = getCcApiClientWithToken(apiTokenConfig3);
 
       // Each config should return the same client on subsequent calls
-      expect(client1a === client1b).to.equal(true);
-      expect(client2a === client2b).to.equal(true);
-      expect(client3a === client3b).to.equal(true);
+      expect(client1a).to.equal(client1b);
+      expect(client2a).to.equal(client2b);
+      expect(client3a).to.equal(client3b);
 
       // But different configs should have different clients
-      expect(client1a === client2a).to.equal(false);
-      expect(client2a === client3a).to.equal(false);
-      expect(client1a === client3a).to.equal(false);
+      expect(client1a).to.not.equal(client2a);
+      expect(client2a).to.not.equal(client3a);
+      expect(client1a).to.not.equal(client3a);
     });
   });
 
@@ -300,7 +300,7 @@ describe('getCcApiClientWithToken', function () {
       const tokenClient = getCcApiClientWithToken(apiTokenConfig);
       const oauthClient = getCcApiClientWithOAuth(apiConfig);
 
-      expect(tokenClient === oauthClient).to.equal(false);
+      expect(tokenClient).to.not.equal(oauthClient);
     });
 
     it('should return a different instance than an unauthenticated OAuth client', function () {
@@ -309,7 +309,7 @@ describe('getCcApiClientWithToken', function () {
       const tokenClient = getCcApiClientWithToken(apiTokenConfig);
       const unauthenticatedClient = getCcApiClientWithOAuth(null);
 
-      expect(tokenClient === unauthenticatedClient).to.equal(false);
+      expect(tokenClient).to.not.equal(unauthenticatedClient);
     });
   });
 });
