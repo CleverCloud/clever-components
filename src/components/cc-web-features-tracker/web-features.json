@@ -36,6 +36,13 @@
       "canBeUsedWithPolyfill": true
     },
     {
+      "featureId": "getorinsert",
+      "category": "JS",
+      "comment": "Returns the value for a key if present in the Map, otherwise inserts and returns a default value. Simplifies handling defaults, grouping, and counters.",
+      "isProgressiveEnhancement": false,
+      "canBeUsedWithPolyfill": false
+    },
+    {
       "featureId": "has",
       "category": "CSS",
       "comment": "Matches any element that can be selected by one of the selectors in that list.",
