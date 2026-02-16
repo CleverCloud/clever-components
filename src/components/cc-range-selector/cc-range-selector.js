@@ -1187,7 +1187,7 @@ export class CcRangeSelector extends CcFormControlElement {
           align-items: center;
           color: var(--cc-color-text-weak, #404040);
           display: inline-flex;
-          padding-inline: 0.25em;
+          padding-inline: 0.125em;
           visibility: hidden;
         }
 
