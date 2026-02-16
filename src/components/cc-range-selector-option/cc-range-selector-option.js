@@ -76,8 +76,6 @@ export class CcRangeSelectorOption extends LitElement {
       css`
         /* region global */
         :host {
-          --cc-icon-size: 1.25em;
-
           border-radius: var(--cc-border-radius-default, 0.25em);
           display: inline-flex;
           overflow: hidden;
