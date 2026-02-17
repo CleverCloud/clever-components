@@ -10,7 +10,7 @@ const LOGS_THROTTLE_ELEMENTS = 1000;
 const THROTTLE_PER_IN_MILLISECONDS = 10;
 const MAX_RETRY_COUNT = 10;
 const WAITING_TIMEOUT_LIVE = 2000;
-const WAITING_TIMEOUT_COLD = 8000;
+const WAITING_TIMEOUT_COLD = 16000;
 
 // FIXME: We're using `@typedef` instead of `@import` here due to a false positive from TS
 // See: https://github.com/microsoft/TypeScript/issues/60908/
