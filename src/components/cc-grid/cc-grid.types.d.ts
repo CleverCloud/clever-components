@@ -17,6 +17,7 @@ interface CcGridCellText {
   type: 'text';
   value: string;
   icon?: IconModel;
+  iconA11yName?: string;
   skeleton?: boolean;
   enableCopyToClipboard?: boolean;
 }
@@ -25,14 +26,17 @@ interface CcGridCellLink {
   type: 'link';
   value: string;
   icon?: IconModel;
+  iconA11yName?: string;
   onClick: () => void;
   skeleton?: boolean;
+  enableCopyToClipboard?: boolean;
 }
 
 interface CcGridCellButton {
   type: 'button';
   value: string;
   icon?: IconModel;
+  iconA11yName?: string;
   waiting?: boolean;
   onClick: () => void;
   skeleton?: boolean;

@@ -503,6 +503,62 @@ export const translations = {
   //#region cc-cellar-explorer
   'cc-cellar-explorer.error': `Une erreur est survenue pendant le chargement`,
   //#endregion
+  //#region cc-cellar-object-list
+  'cc-cellar-object-list.back-to-bucket-list': `Retour à la liste des buckets`,
+  'cc-cellar-object-list.date': /** @param {{date: string}} _ */ ({ date }) => formatDateOnly(date),
+  'cc-cellar-object-list.details.actions.delete.button': `Supprimer l'objet`,
+  'cc-cellar-object-list.details.actions.download.button': `Télécharger l'objet`,
+  'cc-cellar-object-list.details.actions.title': `Actions`,
+  'cc-cellar-object-list.details.heading': `Détails de l'objet`,
+  'cc-cellar-object-list.details.overview.content-type': `Content-Type`,
+  'cc-cellar-object-list.details.overview.date': /** @param {{date: string}} _ */ ({ date }) => formatDate(date),
+  'cc-cellar-object-list.details.overview.location': `Emplacement`,
+  'cc-cellar-object-list.details.overview.size': `Taille`,
+  'cc-cellar-object-list.details.overview.size-in-bytes': /** @param {{size: number}} _ */ ({ size }) => {
+    const formatted = formatBytes(size);
+    const exact = `${formatNumber(lang, size)}${BYTES_SI_SEPARATOR}${BYTES_SYMBOL}`;
+    return formatted === exact
+      ? formatted
+      : `${formatted} (${formatNumber(lang, size)}${BYTES_SI_SEPARATOR}octet${size <= 1 ? '' : 's'})`;
+  },
+  'cc-cellar-object-list.details.overview.title': `Aperçu de l'objet`,
+  'cc-cellar-object-list.details.overview.updated-at': `Dernière modification`,
+  'cc-cellar-object-list.empty.no-filtered-items': `Aucun objet ne correspond au filtre`,
+  'cc-cellar-object-list.empty.no-items': `Il n'y a aucun objet`,
+  'cc-cellar-object-list.error': `Une erreur est survenue pendant le chargement de la liste des objets`,
+  'cc-cellar-object-list.error.bucket-not-found': /** @param {{bucketName: string}} _ */ ({ bucketName }) =>
+    `Le bucket ${bucketName} n'existe pas`,
+  'cc-cellar-object-list.error.object-deletion-failed': /** @param {{objectKey: string}} _ */ ({ objectKey }) =>
+    `La suppression de l'objet ${objectKey} a échoué`,
+  'cc-cellar-object-list.error.object-fetch-failed': /** @param {{objectKey: string}} _ */ ({ objectKey }) =>
+    `Impossible de récupérer l'objet ${objectKey}`,
+  'cc-cellar-object-list.error.object-not-found': /** @param {{objectKey: string}} _ */ ({ objectKey }) =>
+    `L'objet ${objectKey} n'existe pas`,
+  'cc-cellar-object-list.grid.a11y-name': `Liste des objets`,
+  'cc-cellar-object-list.grid.column.last-update': `Dernière modification`,
+  'cc-cellar-object-list.grid.column.name': `Nom`,
+  'cc-cellar-object-list.grid.column.size': `Taille`,
+  'cc-cellar-object-list.grid.show-details.a11y-name': /** @param {{objectName: string}} _ */ ({ objectName }) =>
+    `Afficher les détails de l'objet ${objectName}`,
+  'cc-cellar-object-list.heading.filter.button': `Filtrer`,
+  'cc-cellar-object-list.heading.filter.label': `Filtre`,
+  'cc-cellar-object-list.heading.title': `Liste des objets`,
+  'cc-cellar-object-list.icon.icon-file': `Fichier`,
+  'cc-cellar-object-list.icon.icon-file-archive': `Archive`,
+  'cc-cellar-object-list.icon.icon-file-audio': `Fichier audio`,
+  'cc-cellar-object-list.icon.icon-file-image': `Fichier image`,
+  'cc-cellar-object-list.icon.icon-file-pdf': `Fichier PDF`,
+  'cc-cellar-object-list.icon.icon-file-text': `Fichier texte`,
+  'cc-cellar-object-list.icon.icon-file-video': `Fichier vidéo`,
+  'cc-cellar-object-list.nav-label': `File d'Ariane: Liste des objets`,
+  'cc-cellar-object-list.page.next': `Page suivante`,
+  'cc-cellar-object-list.page.previous': `Page précédente`,
+  'cc-cellar-object-list.size': /** @param {{size: number}} _ */ ({ size }) => formatBytes(size),
+  'cc-cellar-object-list.success.object-already-deleted': /** @param {{objectKey: string}} _ */ ({ objectKey }) =>
+    `L'objet ${objectKey} était déjà supprimé`,
+  'cc-cellar-object-list.success.object-deleted': /** @param {{objectKey: string}} _ */ ({ objectKey }) =>
+    `L'objet ${objectKey} a été supprimé avec succès`,
+  //#endregion
   //#region cc-clipboard
   'cc-clipboard.copied': `Le texte a été copié`,
   'cc-clipboard.copy': /** @param {{text: string}} _ */ ({ text }) =>

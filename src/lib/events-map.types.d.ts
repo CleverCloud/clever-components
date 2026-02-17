@@ -14,6 +14,7 @@ import { CcAddonRebuildEvent, CcAddonRestartEvent } from '../components/cc-addon
 import { CcAddonVersionChangeEvent } from '../components/cc-addon-info/cc-addon-info.events.js';
 import { CcAddonOptionFormSubmitEvent } from '../components/cc-addon-option-form/cc-addon-option-form.events.js';
 import { CcAddonOptionChangeEvent } from '../components/cc-addon-option/cc-addon-option.events.js';
+import { CcBreadcrumbClickEvent } from '../components/cc-breadcrumbs/cc-breadcrumbs.events.js';
 import {
   CcCellarBucketCreatedEvent,
   CcCellarBucketCreateEvent,
@@ -23,6 +24,17 @@ import {
   CcCellarBucketShowEvent,
   CcCellarBucketSortEvent,
 } from '../components/cc-cellar-bucket-list/cc-cellar-bucket-list.events.js';
+import {
+  CcCellarNavigateToBucketEvent,
+  CcCellarNavigateToHomeEvent,
+  CcCellarNavigateToNextPageEvent,
+  CcCellarNavigateToPathEvent,
+  CcCellarNavigateToPreviousPageEvent,
+  CcCellarObjectDeleteEvent,
+  CcCellarObjectFilterEvent,
+  CcCellarObjectHideEvent,
+  CcCellarObjectShowEvent,
+} from '../components/cc-cellar-object-list/cc-cellar-object-list.events.js';
 import {
   CcDomainAddEvent,
   CcDomainDeleteEvent,
@@ -197,6 +209,7 @@ declare global {
     'cc-application-restart': CcApplicationRestartEvent;
     'cc-application-start': CcApplicationStartEvent;
     'cc-application-stop': CcApplicationStopEvent;
+    'cc-breadcrumb-click': CcBreadcrumbClickEvent;
     'cc-cellar-bucket-create': CcCellarBucketCreateEvent;
     'cc-cellar-bucket-created': CcCellarBucketCreatedEvent;
     'cc-cellar-bucket-delete': CcCellarBucketDeleteEvent;
@@ -204,6 +217,15 @@ declare global {
     'cc-cellar-bucket-hide': CcCellarBucketHideEvent;
     'cc-cellar-bucket-show': CcCellarBucketShowEvent;
     'cc-cellar-bucket-sort': CcCellarBucketSortEvent;
+    'cc-cellar-navigate-to-bucket': CcCellarNavigateToBucketEvent;
+    'cc-cellar-navigate-to-home': CcCellarNavigateToHomeEvent;
+    'cc-cellar-navigate-to-next-page': CcCellarNavigateToNextPageEvent;
+    'cc-cellar-navigate-to-path': CcCellarNavigateToPathEvent;
+    'cc-cellar-navigate-to-previous-page': CcCellarNavigateToPreviousPageEvent;
+    'cc-cellar-object-delete': CcCellarObjectDeleteEvent;
+    'cc-cellar-object-filter': CcCellarObjectFilterEvent;
+    'cc-cellar-object-hide': CcCellarObjectHideEvent;
+    'cc-cellar-object-show': CcCellarObjectShowEvent;
     'cc-click': CcClickEvent;
     'cc-close': CcCloseEvent;
     'cc-close-request': CcCloseRequestEvent;

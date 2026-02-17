@@ -8,8 +8,8 @@ import { matchKvPattern } from './kv-utils.js';
  * @import { CcKvExplorerDetailState, CcKvExplorerDetailStateEditSet, CcKvKeyValueSet } from './cc-kv-explorer.types.js'
  * @import { KvClient } from './kv-client.js'
  * @import { CcKvSetElementState, CcKvSetExplorerState, CcKvSetExplorerStateLoading, CcKvSetExplorerAddFormState } from '../cc-kv-set-explorer/cc-kv-set-explorer.types.js'
- * @import { Abortable } from './kv-utils.js'
  * @import { ObjectOrFunction } from '../common.types.js'
+ * @import { Abortable } from '../../lib/abortable.js'
  */
 
 /**

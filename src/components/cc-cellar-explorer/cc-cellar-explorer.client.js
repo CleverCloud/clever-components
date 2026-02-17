@@ -4,7 +4,7 @@ import { withOptions } from '@clevercloud/client/esm/with-options.js';
 import { CcApiErrorEvent } from '../../lib/send-to-api.events.js';
 
 /**
- * @import { CellarEndpoint, CellarBucket, CellarBucketDetails, CellarBucketsListResponse } from './cc-cellar-explorer.client.types.js'
+ * @import { CellarEndpoint, CellarBucket, CellarBucketDetails, CellarBucketsListResponse, CellarObjectsListResponse, CellarFileDetails } from './cc-cellar-explorer.client.types.js'
  * @import { ApiConfig } from '../../lib/send-to-api.js'
  */
 
@@ -12,19 +12,23 @@ export class CellarExplorerClient {
   /**
    * @param {ApiConfig} url
    * @param {CellarEndpoint} cellarEndpoint
-   * @param {AbortSignal} signal
    */
-  constructor(url, cellarEndpoint, signal) {
+  constructor(url, cellarEndpoint) {
     this._url = url;
     this._cellarEndpoint = cellarEndpoint;
-    this._signal = signal;
+    this._abortController = new AbortController();
+  }
+
+  close() {
+    this._abortController.abort();
   }
 
   /**
+   * @param {AbortSignal} [signal]
    * @returns {Promise<CellarBucketsListResponse>}
    */
-  listBuckets() {
-    return this.#send(`/cellar/bucket/_list`, { count: 1000 }, true);
+  listBuckets(signal) {
+    return this.#send(`/cellar/bucket/_list`, { count: 1000 }, signal ?? this._abortController.signal);
   }
 
   /**
@@ -34,15 +38,16 @@ export class CellarExplorerClient {
    * @returns {Promise<CellarBucket>}
    */
   createBucket(payload) {
-    return this.#send(`/cellar/bucket/_create`, payload, false);
+    return this.#send(`/cellar/bucket/_create`, payload);
   }
 
   /**
    * @param {string} bucketName
+   * @param {AbortSignal} [signal]
    * @returns {Promise<CellarBucketDetails>}
    */
-  getBucket(bucketName) {
-    return this.#send(`/cellar/bucket/_get`, { name: bucketName }, true);
+  getBucket(bucketName, signal) {
+    return this.#send(`/cellar/bucket/_get`, { name: bucketName }, signal ?? this._abortController.signal);
   }
 
   /**
@@ -50,17 +55,67 @@ export class CellarExplorerClient {
    * @returns {Promise<void>}
    */
   deleteBucket(bucketName) {
-    return this.#send(`/cellar/bucket/_delete`, { name: bucketName }, false);
+    return this.#send(`/cellar/bucket/_delete`, { name: bucketName });
+  }
+
+  /**
+   * @param {string} bucketName
+   * @param {Array<string>} path
+   * @param {{cursor: string, filter: string}} options
+   * @param {AbortSignal} [signal]
+   * @returns {Promise<CellarObjectsListResponse>}
+   */
+  listObjects(bucketName, path, options, signal) {
+    const prefix = pathToString(path) + (options.filter ?? '');
+    return this.#send(
+      `/cellar/object/_list`,
+      { bucketName, prefix, cursor: options.cursor, count: 50 },
+      signal ?? this._abortController.signal,
+    );
+  }
+
+  /**
+   * @param {string} bucketName
+   * @param {string} objectKey
+   * @param {AbortSignal} [signal]
+   * @returns {Promise<CellarFileDetails>}
+   */
+  getObject(bucketName, objectKey, signal) {
+    return this.#send(`/cellar/object/_get`, { bucketName, objectKey }, signal ?? this._abortController.signal);
+  }
+
+  /**
+   * @param {string} bucketName
+   * @param {string} objectKey
+   * @param {number} [expiresIn]
+   * @param {AbortSignal} [signal]
+   * @returns {Promise<{url: string}>}
+   */
+  getObjectSignedUrl(bucketName, objectKey, expiresIn, signal) {
+    return this.#send(
+      `/cellar/object/_signed-url`,
+      { bucketName, objectKey, expiresIn },
+      signal ?? this._abortController.signal,
+    );
+  }
+
+  /**
+   * @param {string} bucketName
+   * @param {string} objectKey
+   * @returns {Promise<void>}
+   */
+  deleteObject(bucketName, objectKey) {
+    return this.#send(`/cellar/object/_delete`, { bucketName, objectKey });
   }
 
   /**
    * @param {string} path
    * @param {object} body
-   * @param {boolean} withSignal
+   * @param {AbortSignal} [signal]
    * @returns {Promise<T>}
    * @template T
    */
-  #send(path, body, withSignal) {
+  #send(path, body, signal) {
     return /** @type {Promise<T>} */ (
       Promise.resolve({
         method: 'post',
@@ -73,7 +128,7 @@ export class CellarExplorerClient {
       })
         // @ts-expect-error FIXME: will become irrelevant when we switch to the new client
         .then(prefixUrl(this._url))
-        .then(withOptions({ signal: withSignal ? this._signal : undefined }))
+        .then(withOptions({ signal }))
         .then(request)
         .catch((error) => {
           window.dispatchEvent(new CcApiErrorEvent(error));

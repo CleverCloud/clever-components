@@ -6,8 +6,8 @@ import { KvScanner } from './kv-scanner.js';
  * @import { CcKvExplorerDetailState, CcKvExplorerDetailStateEditList, CcKvKeyValueList } from './cc-kv-explorer.types.js'
  * @import { KvClient } from './kv-client.js'
  * @import { CcKvListElementState, CcKvListExplorerState, CcKvListExplorerStateLoading, CcKvListExplorerAddFormState } from '../cc-kv-list-explorer/cc-kv-list-explorer.types.js'
- * @import { Abortable } from './kv-utils.js'
  * @import { ObjectOrFunction } from '../common.types.js'
+ * @import { Abortable } from '../../lib/abortable.js'
  */
 
 /**

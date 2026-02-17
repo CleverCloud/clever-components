@@ -1,8 +1,8 @@
+import { Abortable } from '../../lib/abortable.js';
 import { KvKeyEditorHashCtrl } from './kv-key-editor-hash-ctrl.js';
 import { KvKeyEditorListCtrl } from './kv-key-editor-list-ctrl.js';
 import { KvKeyEditorSetCtrl } from './kv-key-editor-set-ctrl.js';
 import { KvKeyEditorStringCtrl } from './kv-key-editor-string-ctrl.js';
-import { Abortable } from './kv-utils.js';
 
 /**
  * @import { CcKvExplorer } from './cc-kv-explorer.js'
