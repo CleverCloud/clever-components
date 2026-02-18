@@ -1,4 +1,3 @@
-import { CcEvent } from '../../lib/events.js';
 import { IconModel } from '../common.types.js';
 
 export type HomepageOnboardingState =
@@ -37,6 +36,6 @@ export interface HomepageOnboardingCard {
   icon: IconModel;
   iconColor: 'purple' | 'blue' | 'white' | 'dark-purple' | 'orange' | 'dark-orange';
   buttonText: string;
+  href: string;
   select?: { title: string; placeholder: string };
-  event?: (...args: any[]) => CcEvent<any>;
 }

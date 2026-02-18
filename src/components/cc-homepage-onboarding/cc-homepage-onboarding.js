@@ -9,23 +9,16 @@ import {
   iconRemixLockLine,
   iconRemixTerminalLine,
 } from '../../assets/cc-remix.icons.js';
+import { fakeString } from '../../lib/fake-strings.js';
+import { formSubmit } from '../../lib/form/form-submit-directive.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-button/cc-button.js';
 import '../cc-icon/cc-icon.js';
+import '../cc-link/cc-link.js';
 import '../cc-notice/cc-notice.js';
 import '../cc-select/cc-select.js';
-import {
-  CcHomepageOnboardingCliEvent,
-  CcHomepageOnboardingConfigPaymentEvent,
-  CcHomepageOnboardingNewOrganisationEvent,
-  CcHomepageOnboardingNewProjectEvent,
-  CcHomepageOnboardingNewResourceEvent,
-  CcHomepageOnboardingSecureEvent,
-  CcHomepageOnboardingSshKeysEvent,
-  CcHomepageOnboardingSupportEvent,
-} from './cc-homepage-onboarding.events.js';
-import { fakeString } from '../../lib/fake-strings.js';
+import { CcHomepageOnboardingNewResourceEvent } from './cc-homepage-onboarding.events.js';
 
 /**
  * @returns {Record<string,HomepageOnboardingCard>}
@@ -38,11 +31,11 @@ function getCards() {
       icon: iconRemixAddCircleLine,
       iconColor: 'white',
       buttonText: i18n('cc-homepage-onboarding.card.new-resource.button'),
+      href: '',
       select: {
         title: i18n('cc-homepage-onboarding.card.new-resource.select.title'),
         placeholder: i18n('cc-homepage-onboarding.card.new-resource.select.placeholder'),
       },
-      event: (/** @type {string} */ orgId) => new CcHomepageOnboardingNewResourceEvent(orgId),
     },
     newProject: {
       title: i18n('cc-homepage-onboarding.card.new-project.title'),
@@ -50,7 +43,7 @@ function getCards() {
       icon: iconRemixAddCircleLine,
       iconColor: 'white',
       buttonText: i18n('cc-homepage-onboarding.card.new-project.button'),
-      event: () => new CcHomepageOnboardingNewProjectEvent(),
+      href: '',
     },
     secure: {
       title: i18n('cc-homepage-onboarding.card.secure.title'),
@@ -58,7 +51,7 @@ function getCards() {
       icon: iconRemixLockLine,
       iconColor: 'purple',
       buttonText: i18n('cc-homepage-onboarding.card.secure.button'),
-      event: () => new CcHomepageOnboardingSecureEvent(),
+      href: '',
     },
     sshKeys: {
       title: i18n('cc-homepage-onboarding.card.ssh-keys.title'),
@@ -66,7 +59,7 @@ function getCards() {
       icon: iconRemixKey,
       iconColor: 'purple',
       buttonText: i18n('cc-homepage-onboarding.card.ssh-keys.button'),
-      event: () => new CcHomepageOnboardingSshKeysEvent(),
+      href: '',
     },
     cli: {
       title: i18n('cc-homepage-onboarding.card.cli.title'),
@@ -74,7 +67,7 @@ function getCards() {
       icon: iconRemixTerminalLine,
       iconColor: 'blue',
       buttonText: i18n('cc-homepage-onboarding.card.cli.button'),
-      event: () => new CcHomepageOnboardingCliEvent(),
+      href: '',
     },
     newOrganisation: {
       title: i18n('cc-homepage-onboarding.card.new-organisation.title'),
@@ -82,7 +75,7 @@ function getCards() {
       icon: iconRemixBuildingLine,
       iconColor: 'dark-purple',
       buttonText: i18n('cc-homepage-onboarding.card.new-organisation.button'),
-      event: () => new CcHomepageOnboardingNewOrganisationEvent(),
+      href: '',
     },
     configPayment: {
       title: i18n('cc-homepage-onboarding.card.config-payment.title'),
@@ -90,7 +83,7 @@ function getCards() {
       icon: iconRemixBankCard,
       iconColor: 'orange',
       buttonText: i18n('cc-homepage-onboarding.card.config-payment.button'),
-      event: () => new CcHomepageOnboardingConfigPaymentEvent(),
+      href: '',
     },
     support: {
       title: i18n('cc-homepage-onboarding.card.support.title'),
@@ -98,13 +91,14 @@ function getCards() {
       icon: iconRemixChat,
       iconColor: 'dark-orange',
       buttonText: i18n('cc-homepage-onboarding.card.support.button'),
-      event: () => new CcHomepageOnboardingSupportEvent(),
+      href: '',
     },
   };
 }
 
 const SKELETON_TITLE = fakeString(20);
 const SKELETON_DESCRIPTION = fakeString(100);
+
 /** @type {HomepageOnboardingCard[]} */
 const SKELETON_CARDS = [
   {
@@ -113,6 +107,7 @@ const SKELETON_CARDS = [
     icon: iconRemixAddCircleLine,
     iconColor: 'white',
     buttonText: fakeString(10),
+    href: '',
   },
   {
     title: fakeString(15),
@@ -120,6 +115,7 @@ const SKELETON_CARDS = [
     icon: iconRemixLockLine,
     iconColor: 'purple',
     buttonText: fakeString(10),
+    href: '',
   },
   {
     title: fakeString(15),
@@ -127,6 +123,7 @@ const SKELETON_CARDS = [
     icon: iconRemixTerminalLine,
     iconColor: 'blue',
     buttonText: fakeString(10),
+    href: '',
   },
   {
     title: fakeString(15),
@@ -134,12 +131,14 @@ const SKELETON_CARDS = [
     icon: iconRemixBuildingLine,
     iconColor: 'orange',
     buttonText: fakeString(10),
+    href: '',
   },
 ];
 
 /**
  * @import { IconModel } from '../common.types.js'
  * @import { HomepageOnboardingState, HomepageOnboardingCard } from './cc-homepage-onboarding.types.js'
+ * @import { FormDataMap } from '../../lib/form/form.types.js'
  */
 
 /**
@@ -160,31 +159,34 @@ export class CcHomepageOnboarding extends LitElement {
 
     /** @type {HomepageOnboardingState} Set the state of the component. */
     this.state = { type: 'loading' };
-
-    /** @type {string} */
-    this._selectedOrganisation = '';
   }
 
-  /**
-   * @param {CustomEvent<string>} e
-   * @private
-   */
-  _onOrganisationSelect(e) {
-    this._selectedOrganisation = e.detail;
-  }
-
-  /**
-   * @param {HomepageOnboardingCard} card
-   * @private
-   */
-  _onCardButtonClick(card) {
-    if (card.event != null) {
-      if (card.select != null) {
-        this.dispatchEvent(card.event(this._selectedOrganisation));
-      } else {
-        this.dispatchEvent(card.event());
-      }
+  /** @private */
+  _getTitle() {
+    if (this.state.type === 'loaded') {
+      return this.state.userType === 'new-user'
+        ? i18n('cc-homepage-onboarding.title.new-user')
+        : i18n('cc-homepage-onboarding.title.already-user');
     }
+    return SKELETON_TITLE;
+  }
+
+  /** @private */
+  _getDescription() {
+    if (this.state.type === 'loaded') {
+      return this.state.userType === 'new-user'
+        ? i18n('cc-homepage-onboarding.description.new-user')
+        : i18n('cc-homepage-onboarding.description.already-user');
+    }
+    return SKELETON_DESCRIPTION;
+  }
+
+  /**
+   * @param {FormDataMap} formData
+   */
+  _onCardFormSubmit(formData) {
+    const orgId = /** @type {string} */ (formData.organisation);
+    this.dispatchEvent(new CcHomepageOnboardingNewResourceEvent(orgId));
   }
 
   render() {
@@ -194,24 +196,14 @@ export class CcHomepageOnboarding extends LitElement {
 
     const skeleton = this.state.type === 'loading';
     const cards = this.state.type === 'loaded' ? this.state.cardIds.map((id) => getCards()[id]) : SKELETON_CARDS;
-    const title =
-      this.state.type === 'loaded'
-        ? this.state.userType === 'new-user'
-          ? i18n('cc-homepage-onboarding.title.new-user')
-          : i18n('cc-homepage-onboarding.title.already-user')
-        : SKELETON_TITLE;
-    const description =
-      this.state.type === 'loaded'
-        ? this.state.userType === 'new-user'
-          ? i18n('cc-homepage-onboarding.description.new-user')
-          : i18n('cc-homepage-onboarding.description.already-user')
-        : SKELETON_DESCRIPTION;
+    const title = this._getTitle();
+    const description = this._getDescription();
 
     return html`
       <div class="container">
         <div class="header">
-          <h2 class=${classMap({ title: true, skeleton })}>${title}</h2>
-          <p class=${classMap({ description: true, skeleton })}>${description}</p>
+          <h2 class="title ${classMap({ skeleton })}">${title}</h2>
+          <p class="description ${classMap({ skeleton })}">${description}</p>
         </div>
         <div class="cards">${cards.map((card) => this._renderCard(card, skeleton))}</div>
       </div>
@@ -224,25 +216,45 @@ export class CcHomepageOnboarding extends LitElement {
    * @private
    */
   _renderCard(card, skeleton) {
+    if (!skeleton && card.select != null) {
+      return this._renderCardWithForm(card);
+    }
+
     return html`
-      <div class=${classMap({ card: true, 'blue-card': card.iconColor === 'white', skeleton })}>
+      <div class="card ${classMap({ 'blue-card': card.iconColor === 'white', skeleton })}">
         ${this._renderIcon(card.icon, card.iconColor, skeleton)}
-        <h3 class=${classMap({ 'card-title': true, skeleton })}>${card.title}</h3>
-        <p class=${classMap({ 'card-description': true, skeleton })}>${card.description}</p>
-        ${!skeleton && card.select
-          ? html`<cc-select
-              .label=${card.select.title}
-              .placeholder=${card.select.placeholder}
-              required
-              value=""
-              .options=${this.state.type === 'loaded' ? this.state.organisationOptions : []}
-              @cc-select=${this._onOrganisationSelect}
-            ></cc-select>`
-          : ''}
-        <cc-button class="card-button" ?skeleton=${skeleton} @cc-click=${() => this._onCardButtonClick(card)}
-          >${card.buttonText}</cc-button
-        >
+        <h3 class="card-title ${classMap({ skeleton })}">${card.title}</h3>
+        <p class="card-description ${classMap({ skeleton })}">${card.description}</p>
+        <cc-link class="card-button" mode="button" href=${card.href} ?skeleton=${skeleton}>${card.buttonText}</cc-link>
       </div>
+    `;
+  }
+
+  /**
+   * @param {HomepageOnboardingCard} card
+   * @private
+   */
+  _renderCardWithForm(card) {
+    const options = this.state.type === 'loaded' ? this.state.organisationOptions : [];
+
+    return html`
+      <form
+        class="card ${classMap({ 'blue-card': card.iconColor === 'white' })}"
+        ${formSubmit((/** @type {FormDataMap} */ formData) => this._onCardFormSubmit(formData))}
+      >
+        ${this._renderIcon(card.icon, card.iconColor, false)}
+        <h3 class="card-title">${card.title}</h3>
+        <p class="card-description">${card.description}</p>
+        <cc-select
+          name="organisation"
+          .label=${card.select.title}
+          .placeholder=${card.select.placeholder}
+          required
+          value=""
+          .options=${options}
+        ></cc-select>
+        <cc-button type="submit" class="card-button">${card.buttonText}</cc-button>
+      </form>
     `;
   }
 
@@ -255,7 +267,7 @@ export class CcHomepageOnboarding extends LitElement {
   _renderIcon(icon, color, skeleton) {
     const colorClass = `color-${color}`;
     return html`
-      <div class=${classMap({ icon: true, [colorClass]: true, skeleton })}>
+      <div class="icon ${classMap({ [colorClass]: true, skeleton })}">
         ${!skeleton && icon != null ? html`<cc-icon .icon=${icon}></cc-icon>` : ''}
       </div>
     `;
@@ -268,7 +280,6 @@ export class CcHomepageOnboarding extends LitElement {
       css`
         :host {
           display: block;
-          width: 100%;
         }
 
         .container {
@@ -320,7 +331,7 @@ export class CcHomepageOnboarding extends LitElement {
 
         .blue-card {
           background: linear-gradient(135deg, #3d5fb4 0%, #6d1cf0 100%);
-          color: var(--color-white, #ffffff);
+          color: var(--color-white, #fff);
         }
 
         .blue-card cc-select {
