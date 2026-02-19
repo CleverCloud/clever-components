@@ -5,6 +5,33 @@ title: 'Changelog'
 
 # Changelog
 
+## [23.3.0](https://github.com/CleverCloud/clever-components/compare/23.2.0...23.3.0) (2026-02-19)
+
+
+### 🚀 Features
+
+* **cc-addon-credentials-beta.smart-cellar:** init ([d33a013](https://github.com/CleverCloud/clever-components/commit/d33a0136cd3d4edb8a54a3778a0b5b77c1c3498d))
+* **cc-addon-header.smart-cellar:** init ([098adf7](https://github.com/CleverCloud/clever-components/commit/098adf7a335058088d4de0f603989e5d374fbbfc))
+* **cc-addon-info.smart-cellar:** init ([830bd09](https://github.com/CleverCloud/clever-components/commit/830bd09d18ff9a229ecf26e8226c65022be9e221))
+* **cc-breadcrumbs:** init component ([3833eae](https://github.com/CleverCloud/clever-components/commit/3833eaee0b230fcea958f5984ec490f4845c8aa3))
+* **cc-cellar-explorer:** add `abortable` mechanism for smart request cancellation ([b2d2aec](https://github.com/CleverCloud/clever-components/commit/b2d2aec3a694d16e7c5a8fd7201f90949fa541f4))
+* **cc-cellar-explorer:** integrate `cc-cellar-object-list` ([9651936](https://github.com/CleverCloud/clever-components/commit/9651936f47986fba5bd247b3af82c901ce6eb8bc))
+* **cc-cellar-object-list:** init component ([3ecc11b](https://github.com/CleverCloud/clever-components/commit/3ecc11b465c75acbc9f93a3b4bc21aaf19ff8bf1))
+* **cc-grid:** add `enableCopyToClipboard` to `link` grid cell ([c56d3ff](https://github.com/CleverCloud/clever-components/commit/c56d3ffe5b09442726f94c510e31998fe268f56d))
+* **cc-grid:** add `focusFirstCell` method ([ba8c43e](https://github.com/CleverCloud/clever-components/commit/ba8c43ee20d78d2e66e371bacf49c2932b3551c2))
+* **cc-grid:** add the ability to set an `iconA11yName` property to cells ([4d66a89](https://github.com/CleverCloud/clever-components/commit/4d66a898c3d42c94852cf4b97d899f4e5dcaf82c))
+* **cc-link:** enable focus delegation ([cf32b0c](https://github.com/CleverCloud/clever-components/commit/cf32b0c9821589b1cb9edc60de24185f7e0ca2f8))
+* **logs:** augment first log waiting timeout in cold mode ([fa9905a](https://github.com/CleverCloud/clever-components/commit/fa9905afe9e13b896c624f4abaf8019be3cb6429))
+
+
+### 🐛 Bug Fixes
+
+* **cc-addon-info.client:** use app's `entrypoint` instead of operator's `realId` ([5fe44c9](https://github.com/CleverCloud/clever-components/commit/5fe44c9d57a93889bd6283fab669a10d3edab03f))
+* **cc-link:** align `button` mode layout with `cc-button` ([b5dabbc](https://github.com/CleverCloud/clever-components/commit/b5dabbcd148b8b0fd835255e00b52e71473a7836))
+* **cc-link:** default href should be `null` ([0735d83](https://github.com/CleverCloud/clever-components/commit/0735d837915e42024d456a550a25cc2ef16e0bc0))
+* **cc-link:** fix icon color in `button` mode ([d13a1a3](https://github.com/CleverCloud/clever-components/commit/d13a1a3074446accd60d224daffac7c491e93a1d))
+* **cc-logs-instances:** support null commitId ([b7d19bd](https://github.com/CleverCloud/clever-components/commit/b7d19bd43a8beda67b93c6d310853006847465ac))
+
 ## [23.2.0](https://github.com/CleverCloud/clever-components/compare/23.1.0...23.2.0) (2026-01-27)
 
 
