@@ -4,7 +4,8 @@ import { AddonPlan, AddonProvider } from '../common.types.js';
 export type AddonCredentialsBetaState =
   | AddonCredentialsBetaStateLoading
   | AddonCredentialsBetaStateError
-  | AddonCredentialsBetaStateLoaded;
+  | AddonCredentialsBetaStateLoaded
+  | AddonCredentialsBetaStateWaiting;
 
 export interface AddonCredentialsBetaStateLoading {
   type: 'loading';
@@ -18,6 +19,11 @@ export interface AddonCredentialsBetaStateLoaded {
 
 export interface AddonCredentialsBetaStateError {
   type: 'error';
+}
+
+export interface AddonCredentialsBetaStateWaiting {
+  type: 'waiting';
+  tabs: Tabs;
 }
 
 type Tabs = {
@@ -123,4 +129,10 @@ export interface PulsarClusterInfo {
   zone: string;
   support_cold_storage: true;
   supported_plans: Array<string>;
+}
+
+export interface CellarCredentials {
+  host: string;
+  keyId: string;
+  keySecret: string;
 }

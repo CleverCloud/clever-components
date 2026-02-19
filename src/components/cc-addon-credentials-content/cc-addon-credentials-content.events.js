@@ -23,3 +23,15 @@ export class CcNgDisable extends CcEvent {
     super(CcNgDisable.TYPE);
   }
 }
+
+/**
+ * Dispatched when a secret renewal is requested.
+ * @extends {CcEvent<string>}
+ */
+export class CcAddonCredentialsRenewSecret extends CcEvent {
+  static TYPE = 'cc-addon-credentials-renew-secret';
+
+  constructor() {
+    super(CcAddonCredentialsRenewSecret.TYPE);
+  }
+}

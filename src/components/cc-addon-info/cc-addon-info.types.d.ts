@@ -25,6 +25,17 @@ export interface AddonInfoStateBaseProperties {
   openScalabilityLink?: string;
   linkedServices?: Array<LinkedService>;
   docUrlLink?: string;
+  totalContent?: {
+    buckets: number;
+    objects: number;
+  };
+  traffic?: {
+    inbound: number;
+    outbound: number;
+  };
+  usedSpaces?: {
+    size: number;
+  };
 }
 
 export type AddonVersionState =
@@ -157,4 +168,23 @@ export interface JenkinsProviderInfo {
       enabled: boolean;
     },
   ];
+}
+
+export interface CellarInfo {
+  id: string;
+  addonId: string;
+  name: string;
+  ownerId: string;
+  plan: string;
+  status: string;
+  creationDate: string;
+  traffic: {
+    inbound: number;
+    outbound: number;
+  };
+  buckets: {
+    count: number;
+    size: number;
+    objects: number;
+  };
 }

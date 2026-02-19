@@ -36,6 +36,16 @@ export const skeleton = makeStory(conf, {
   ],
 });
 
+export const disabled = makeStory(conf, {
+  /** @type {Partial<CcAddonCredentialsItems>[]} */
+  items: [
+    {
+      credentials: BASE_ADDON_ACCESS_ITEMS,
+      disabled: true,
+    },
+  ],
+});
+
 export const dataLoadedWithNetworkGroupEnabled = makeStory(conf, {
   /** @type {Partial<CcAddonCredentialsItems>[]} */
   items: [
