@@ -109,7 +109,7 @@ export class CcAddonInfoClient {
     ]);
     const grafanaAppLink =
       this._grafanaLink != null
-        ? await this._getGrafanaAppLink({ resourceId: rawAddon.realId, signal: this._signal })
+        ? await this._getGrafanaAppLink({ resourceId: operator.resources.entrypoint, signal: this._signal })
         : null;
 
     return { addonInfo: rawAddon, operator, operatorVersionInfo, grafanaAppLink };
