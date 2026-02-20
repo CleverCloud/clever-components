@@ -136,11 +136,11 @@ export class CcCellarBucketList extends LitElement {
    */
   _getVersioningLabel(versioning) {
     switch (versioning) {
-      case 'disabled':
+      case 'DISABLED':
         return i18n('cc-cellar-bucket-list.details.overview.versioning.disabled');
-      case 'enabled':
+      case 'ENABLED':
         return i18n('cc-cellar-bucket-list.details.overview.versioning.enabled');
-      case 'suspended':
+      case 'SUSPENDED':
         return i18n('cc-cellar-bucket-list.details.overview.versioning.suspended');
     }
   }

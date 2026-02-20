@@ -220,7 +220,7 @@ export class ObjectListController {
           filter: this.#filter,
         }),
       );
-      this.#objects = response.content.map((object) => ({ state: 'idle', ...object }));
+      this.#objects = [...response.directories, ...response.content].map((object) => ({ state: 'idle', ...object }));
       this.#nextCursor = response.cursor;
       this.#updateState({
         type: 'loaded',
@@ -288,10 +288,10 @@ export class ObjectListController {
    * @param {boolean} [params.deleteMode]
    */
   #handleErrorOnObject({ error, objectKey, orElse, deleteMode = false }) {
-    if (isCellarExplorerErrorWithCode(error, 'clever.file-explorer-proxy.cellar.bucket-not-found')) {
+    if (isCellarExplorerErrorWithCode(error, 'clever.cellar.bucket-not-found')) {
       notifyError(i18n('cc-cellar-object-list.error.bucket-not-found', { bucketName: this.#bucketName }));
       this.#getComponent().dispatchEvent(new CcCellarNavigateToHomeEvent());
-    } else if (isCellarExplorerErrorWithCode(error, 'clever.file-explorer-proxy.cellar.object-not-found')) {
+    } else if (isCellarExplorerErrorWithCode(error, 'clever.cellar.object-not-found')) {
       if (deleteMode) {
         notifySuccess(i18n('cc-cellar-object-list.success.object-already-deleted', { objectKey }));
       } else {
