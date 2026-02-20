@@ -55,7 +55,10 @@ import {
   CcApplicationStopEvent,
   CcDeploymentCancelEvent,
 } from '../components/cc-header-app/cc-header-app.events.js';
-import { CcHomepageOnboardingNewResourceEvent } from '../components/cc-homepage-onboarding/cc-homepage-onboarding.events.js';
+import {
+  CcHomepageOnboardingDismissEvent,
+  CcHomepageOnboardingNewResourceEvent,
+} from '../components/cc-homepage-onboarding/cc-homepage-onboarding.events.js';
 import { CcTagsChangeEvent } from '../components/cc-input-text/cc-input-text.events.js';
 import {
   CcKvKeyAddEvent,
@@ -233,6 +236,7 @@ declare global {
     'cc-grafana-reset': CcGrafanaResetEvent;
     'cc-grafana-toggle': CcGrafanaToggleEvent;
     'cc-grid-sort': CcGridSortEvent;
+    'cc-homepage-onboarding-dismiss': CcHomepageOnboardingDismissEvent;
     'cc-homepage-onboarding-new-resource': CcHomepageOnboardingNewResourceEvent;
     'cc-input': CcInputEvent;
     'cc-kv-command-execute': CcKvCommandExecuteEvent;

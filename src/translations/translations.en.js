@@ -925,6 +925,7 @@ export const translations = {
   'cc-homepage-onboarding.card.support.button': `Contact support`,
   'cc-homepage-onboarding.card.support.description': `Get personalized assistance from our dedicated support team whenever you need it.`,
   'cc-homepage-onboarding.card.support.title': `Contact expert`,
+  'cc-homepage-onboarding.close': `Close this onboarding block`,
   'cc-homepage-onboarding.description.already-user': `Choose your next action and keep building amazing things`,
   'cc-homepage-onboarding.description.new-user': `Get started by creating your first organization and project. Join Clever Cloud's ecosystem and experience seamless deployment. New to the platform? Try our pre-built projects or reach out for personalized assistance.`,
   'cc-homepage-onboarding.error': `Something went wrong while loading the onboarding data.`,

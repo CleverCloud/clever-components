@@ -1,6 +1,7 @@
 import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import {
+  iconRemixCloseLine as iconClose,
   iconRemixAddCircleLine,
   iconRemixBankCard_2Line as iconRemixBankCard,
   iconRemixBuildingLine,
@@ -18,7 +19,10 @@ import '../cc-icon/cc-icon.js';
 import '../cc-link/cc-link.js';
 import '../cc-notice/cc-notice.js';
 import '../cc-select/cc-select.js';
-import { CcHomepageOnboardingNewResourceEvent } from './cc-homepage-onboarding.events.js';
+import {
+  CcHomepageOnboardingDismissEvent,
+  CcHomepageOnboardingNewResourceEvent,
+} from './cc-homepage-onboarding.events.js';
 
 /**
  * @returns {Record<string,HomepageOnboardingCard>}
@@ -181,6 +185,11 @@ export class CcHomepageOnboarding extends LitElement {
     return SKELETON_DESCRIPTION;
   }
 
+  /** @private */
+  _onDismiss() {
+    this.dispatchEvent(new CcHomepageOnboardingDismissEvent());
+  }
+
   /**
    * @param {FormDataMap} formData
    */
@@ -201,6 +210,9 @@ export class CcHomepageOnboarding extends LitElement {
 
     return html`
       <div class="container">
+        <button class="close-button" @click=${this._onDismiss} title=${i18n('cc-homepage-onboarding.close')}>
+          <cc-icon .icon="${iconClose}" size="xl" a11y-name="${i18n('cc-homepage-onboarding.close')}"></cc-icon>
+        </button>
         <div class="header">
           <h2 class="title ${classMap({ skeleton })}">${title}</h2>
           <p class="description ${classMap({ skeleton })}">${description}</p>
@@ -279,6 +291,7 @@ export class CcHomepageOnboarding extends LitElement {
       // language=CSS
       css`
         :host {
+          container-type: inline-size;
           display: block;
         }
 
@@ -290,7 +303,31 @@ export class CcHomepageOnboarding extends LitElement {
           flex-direction: column;
           gap: 2em;
           padding: 3em;
+          position: relative;
           text-align: center;
+        }
+
+        .close-button {
+          align-items: center;
+          background: transparent;
+          border: none;
+          border-radius: var(--cc-border-radius-default, 0.25em);
+          cursor: pointer;
+          display: flex;
+          justify-content: center;
+          padding: 0.35em;
+          position: absolute;
+          right: 0.5em;
+          top: 0.5em;
+        }
+
+        .close-button:hover {
+          background-color: var(--cc-color-bg-neutral-hovered, #e7e7e7);
+        }
+
+        .close-button:focus-visible {
+          outline: var(--cc-focus-outline, #000 solid 2px);
+          outline-offset: var(--cc-focus-outline-offset, 2px);
         }
 
         .title {
@@ -310,8 +347,20 @@ export class CcHomepageOnboarding extends LitElement {
         .cards {
           display: grid;
           gap: 1.3em;
-          grid-template-columns: repeat(auto-fit, minmax(max(18em, calc((100% - 3 * 1.3em) / 4)), 1fr));
+          grid-template-columns: repeat(4, 1fr);
           width: 100%;
+        }
+
+        @container (max-width: 75em) {
+          .cards {
+            grid-template-columns: repeat(2, 1fr);
+          }
+        }
+
+        @container (max-width: 40em) {
+          .cards {
+            grid-template-columns: 1fr;
+          }
         }
 
         .card {
@@ -327,11 +376,20 @@ export class CcHomepageOnboarding extends LitElement {
           min-height: 24em;
           padding: 2em;
           text-align: left;
+          transition: box-shadow 0.2s ease-in-out;
+        }
+
+        .card:hover {
+          box-shadow:
+            0 8px 12px -4px #0000002a,
+            0 20px 25px -5px #0000002a;
         }
 
         .blue-card {
           background: linear-gradient(135deg, #3d5fb4 0%, #6d1cf0 100%);
           color: var(--color-white, #fff);
+
+          --cc-focus-outline: var(--color-blue-30) solid 2px;
         }
 
         .blue-card cc-select {

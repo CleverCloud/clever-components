@@ -937,6 +937,7 @@ export const translations = {
   'cc-homepage-onboarding.card.support.button': `Contacter le support`,
   'cc-homepage-onboarding.card.support.description': `Obtenez une assistance personnalisée de notre équipe de support dédiée chaque fois que vous en avez besoin.`,
   'cc-homepage-onboarding.card.support.title': `Contactez un expert`,
+  'cc-homepage-onboarding.close': `Fermer ce bloc d'accueil`,
   'cc-homepage-onboarding.description.already-user': `Choisissez votre prochaine action et continuez à construire des choses incroyables`,
   'cc-homepage-onboarding.description.new-user': `Commencez par créer votre première organisation et projet. Rejoignez l'écosystème de Clever Cloud et découvrez un déploiement sans faille. Nouveau sur la plateforme ? Essayez nos projets préconçus ou contactez-nous pour une assistance personnalisée.`,
   'cc-homepage-onboarding.error': `Une erreur est survenue lors du chargement des données d'accueil.`,
