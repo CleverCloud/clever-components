@@ -150,7 +150,7 @@ import {
 } from '../components/cc-pricing-page/cc-pricing-page.events.js';
 import {
   CcRangeSelectEvent,
-  CcRangeSelectorSelectCustom,
+  CcRangeSelectorSelectCustomEvent,
 } from '../components/cc-range-selector/cc-range-selector.events.js';
 import {
   CcSshKeyCreateEvent,
@@ -322,7 +322,7 @@ declare global {
     'cc-pricing-zone-change': CcPricingZoneChangeEvent;
     'cc-product-create': CcProductCreateEvent;
     'cc-range-select': CcRangeSelectEvent;
-    'cc-range-selector-select-custom': CcRangeSelectorSelectCustom;
+    'cc-range-selector-select-custom': CcRangeSelectorSelectCustomEvent;
     'cc-request-submit': CcRequestSubmitEvent;
     'cc-select': CcSelectEvent;
     'cc-ssh-key-create': CcSshKeyCreateEvent;

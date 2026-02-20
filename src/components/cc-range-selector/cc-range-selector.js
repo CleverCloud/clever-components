@@ -12,7 +12,7 @@ import { i18n } from '../../translations/translation.js';
 import '../cc-icon/cc-icon.js';
 import '../cc-range-selector-option/cc-range-selector-option.js';
 import { CcSelectEvent } from '../common.events.js';
-import { CcRangeSelectEvent, CcRangeSelectorSelectCustom } from './cc-range-selector.events.js';
+import { CcRangeSelectEvent, CcRangeSelectorSelectCustomEvent } from './cc-range-selector.events.js';
 import { RangeSelectorDraggingController } from './range-selector-dragging-controller.js';
 
 /**
@@ -77,6 +77,7 @@ export class CcRangeSelector extends CcFormControlElement {
       customA11yDesc: { type: String, attribute: 'custom-a11y-desc' },
       disabled: { type: Boolean, reflect: true },
       inline: { type: Boolean, reflect: true },
+      isCustomActive: { type: Boolean, attribute: 'is-custom-active' },
       label: { type: String },
       mode: { type: String, reflect: true },
       options: { type: Array },
@@ -85,11 +86,10 @@ export class CcRangeSelector extends CcFormControlElement {
       selection: { type: Object },
       showCustom: { type: Boolean, attribute: 'show-custom' },
       value: { type: String },
-      _isCustomOptionActive: { type: Boolean, state: true },
     };
   }
 
-  static reactiveValidationProperties = ['required', 'options'];
+  static reactiveValidationProperties = ['required', 'options', 'mode'];
 
   constructor() {
     super();
@@ -131,12 +131,6 @@ export class CcRangeSelector extends CcFormControlElement {
     this.selection = null;
 
     /** @type {Ref<HTMLElement>} */
-    this._inputRangeStartRef = createRef();
-
-    /** @type {Ref<HTMLElement>} */
-    this._inputRangeEndRef = createRef();
-
-    /** @type {Ref<HTMLElement>} */
     this._errorRef = createRef();
 
     /** @type {Ref<HTMLElement>} */
@@ -166,7 +160,7 @@ export class CcRangeSelector extends CcFormControlElement {
     this._onOutsideClickHandler = new EventHandler(window, 'click', onOutsideClick);
     this._onCcButtonClickHandler = new EventHandler(window, 'cc-click', onOutsideClick);
 
-    this._isCustomOptionActive = false;
+    this.isCustomActive = false;
 
     /** @type {string[]} */
     this._optionsInnerText = null;
@@ -360,7 +354,7 @@ export class CcRangeSelector extends CcFormControlElement {
       return;
     }
 
-    this._isCustomOptionActive = false;
+    this.isCustomActive = false;
 
     const value = e.target.value;
     if (this._isModeSingle()) {
@@ -469,7 +463,7 @@ export class CcRangeSelector extends CcFormControlElement {
     // This means clicking a single option without dragging will not trigger selection
     if (this._dragCtrl.getSize() > 0) {
       this._applyRangeSelection();
-      this._isCustomOptionActive = false;
+      this.isCustomActive = false;
     }
   }
 
@@ -482,7 +476,7 @@ export class CcRangeSelector extends CcFormControlElement {
   _onFieldsetMouseUp() {
     if (this._dragCtrl.isDragging() && this._dragCtrl.getSize() > 0) {
       this._applyRangeSelection();
-      this._isCustomOptionActive = false;
+      this.isCustomActive = false;
     }
   }
 
@@ -493,7 +487,7 @@ export class CcRangeSelector extends CcFormControlElement {
    * @private
    */
   _onCustomOptionClick(e) {
-    if (this._isCustomOptionActive) {
+    if (this.isCustomActive) {
       return;
     }
 
@@ -503,13 +497,17 @@ export class CcRangeSelector extends CcFormControlElement {
       this._dragCtrl.stop();
     }
 
-    this._isCustomOptionActive = true;
+    this.isCustomActive = true;
 
     const detail = this._isModeSingle() ? this.value : [...this._getValuesArray()];
-    this.dispatchEvent(new CcRangeSelectorSelectCustom(detail));
+    this.dispatchEvent(new CcRangeSelectorSelectCustomEvent(detail));
 
-    this.value = null;
-    this.selection = null;
+    if (this._isModeSingle()) {
+      this.value = null;
+    }
+    if (this._isModeRange()) {
+      this.selection = null;
+    }
   }
 
   /**
@@ -525,7 +523,7 @@ export class CcRangeSelector extends CcFormControlElement {
       e.preventDefault();
     } else if (!this.disabled && !this.readonly && !option.disabled) {
       this.value = option.value;
-      this._isCustomOptionActive = false;
+      this.isCustomActive = false;
       this.dispatchEvent(new CcSelectEvent(this.value));
     }
   }
@@ -727,7 +725,7 @@ export class CcRangeSelector extends CcFormControlElement {
    * @private
    */
   _isOptionSelected(value) {
-    if (this._isCustomOptionActive) {
+    if (this.isCustomActive) {
       return false;
     }
 
@@ -746,6 +744,17 @@ export class CcRangeSelector extends CcFormControlElement {
       return start <= current && current <= end;
     }
     return false;
+  }
+
+  /**
+   * Syncs the form value when the mode changes, since the form data format differs between single (string) and range (FormData) modes.
+   * @param {PropertyValues<CcRangeSelector>} changedProperties
+   */
+  updated(changedProperties) {
+    super.updated(changedProperties);
+    if (changedProperties.has('mode')) {
+      this._internals.setFormValue(this._getFormControlData());
+    }
   }
 
   /**
@@ -816,10 +825,9 @@ export class CcRangeSelector extends CcFormControlElement {
         min="${firstEnabledIndex}"
         max="${lastEnabledIndex - 1}"
         .value="${inputRangeStartIndex}"
-        ?disabled=${this.disabled || this.readonly || this._isCustomOptionActive}
+        ?disabled=${this.disabled || this.readonly || this.isCustomActive}
         aria-valuetext="${this._optionsInnerText.at(inputRangeStartIndex)}"
         aria-describedby="help-id error-id"
-        ${ref(this._inputRangeStartRef)}
       />
 
       <label for="end-input" class="visually-hidden">${i18n('cc-range-selector.label.end')}</label>
@@ -830,10 +838,9 @@ export class CcRangeSelector extends CcFormControlElement {
         min="${firstEnabledIndex + 1}"
         max="${lastEnabledIndex}"
         .value="${inputRangeEndIndex}"
-        ?disabled=${this.disabled || this.readonly || this._isCustomOptionActive}
+        ?disabled=${this.disabled || this.readonly || this.isCustomActive}
         aria-valuetext="${this._optionsInnerText.at(inputRangeEndIndex)}"
         aria-describedby="help-id error-id"
-        ${ref(this._inputRangeEndRef)}
       />
     `;
   }
@@ -859,7 +866,7 @@ export class CcRangeSelector extends CcFormControlElement {
         min="${firstEnabledIndex}"
         max="${lastEnabledIndex}"
         .value="${inputValue}"
-        ?disabled=${this.disabled || this.readonly || this._isCustomOptionActive}
+        ?disabled=${this.disabled || this.readonly || this.isCustomActive}
         aria-valuetext="${this._optionsInnerText.at(inputValue)}"
         aria-describedby="help-id error-id"
       />
@@ -889,9 +896,7 @@ export class CcRangeSelector extends CcFormControlElement {
             ? html`<li>
                 ${i18n('cc-range-selector.custom')}
                 (${i18n(
-                  this._isCustomOptionActive
-                    ? 'cc-range-selector.summary.selected'
-                    : 'cc-range-selector.summary.unselected',
+                  this.isCustomActive ? 'cc-range-selector.summary.selected' : 'cc-range-selector.summary.unselected',
                 )})
               </li>`
             : ''}
@@ -995,8 +1000,7 @@ export class CcRangeSelector extends CcFormControlElement {
     const isSelected = this._isOptionSelected(value);
 
     // Check if option is within a range selection but not at the boundaries (used for border-radius styling)
-    const withinSelection =
-      !this._isCustomOptionActive && indexes.start < indexes.current && indexes.current < indexes.end;
+    const withinSelection = !this.isCustomActive && indexes.start < indexes.current && indexes.current < indexes.end;
 
     // Check if the next option exists and is selected (used for arrow highlighting logic)
     const nextOptionSelected =
@@ -1054,9 +1058,9 @@ export class CcRangeSelector extends CcFormControlElement {
    */
   _renderCustomOption(isError) {
     const isDisabled = this.disabled;
-    const isSelected = this._isCustomOptionActive;
+    const isSelected = this.isCustomActive;
     const inRangeWhileDragging = false;
-    const hasPointer = !isDisabled && !this.readonly && !this._isCustomOptionActive;
+    const hasPointer = !isDisabled && !this.readonly && !this.isCustomActive;
 
     const a11yDesc = this.customA11yDesc?.trim() ?? '';
     const title = i18n('cc-range-selector.custom') + (!isStringBlank(a11yDesc) ? ` - ${a11yDesc}` : '');
@@ -1183,7 +1187,7 @@ export class CcRangeSelector extends CcFormControlElement {
           align-items: center;
           color: var(--cc-color-text-weak, #404040);
           display: inline-flex;
-          padding-inline: 0.25em;
+          padding-inline: 0.125em;
           visibility: hidden;
         }
 

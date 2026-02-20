@@ -20,13 +20,13 @@ export class CcRangeSelectEvent extends CcEvent {
  * The detail contains the current selection value (string for single mode, string array for range mode).
  * @extends {CcEvent<string|string[]>}
  */
-export class CcRangeSelectorSelectCustom extends CcEvent {
+export class CcRangeSelectorSelectCustomEvent extends CcEvent {
   static TYPE = 'cc-range-selector-select-custom';
 
   /**
    * @param {string|string[]} detail
    */
   constructor(detail) {
-    super(CcRangeSelectorSelectCustom.TYPE, detail);
+    super(CcRangeSelectorSelectCustomEvent.TYPE, detail);
   }
 }
