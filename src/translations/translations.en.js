@@ -977,6 +977,13 @@ export const translations = {
   'cc-heptapod-info.storage-bytes': /** @param {{storage: number}} _ */ ({ storage }) => formatBytes(storage, 1),
   'cc-heptapod-info.storage-description': `Storage size`,
   //#endregion
+  //#region cc-homepage-video
+  'cc-homepage-video.iframe-title': `YouTube video`,
+  'cc-homepage-video.link': `See our Youtube channel`,
+  'cc-homepage-video.play': `Play video`,
+  'cc-homepage-video.thumbnail-alt': `YouTube video thumbnail`,
+  'cc-homepage-video.title': `See our videos`,
+  //#endregion
   //#region cc-input-date
   'cc-input-date.error.bad-input': /** @param {{ date: string }} _ */ ({ date }) =>
     sanitize`You must enter a date. <br> For instance: ${date}.`,
