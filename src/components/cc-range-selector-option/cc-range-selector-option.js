@@ -10,6 +10,8 @@ import { classMap } from 'lit/directives/class-map.js';
  *
  * @cssdisplay inline-flex
  *
+ * @cssprop {Padding} --cc-range-selector-option-padding - The padding for the option content (defaults: `0.25em 0.5em`).
+ *
  * @slot - Content displayed as the main part of the tile. This slot should contain the option's label or visual content and should not be empty.
  */
 export class CcRangeSelectorOption extends LitElement {
@@ -76,8 +78,6 @@ export class CcRangeSelectorOption extends LitElement {
       css`
         /* region global */
         :host {
-          --cc-icon-size: 1.25em;
-
           border-radius: var(--cc-border-radius-default, 0.25em);
           display: inline-flex;
           overflow: hidden;
@@ -99,7 +99,7 @@ export class CcRangeSelectorOption extends LitElement {
           color: var(--cc-color-text-default, #262626);
           display: inline-block;
           flex: 1 1 auto;
-          padding: 0.25em 0.5em;
+          padding: var(--cc-range-selector-option-padding, 0.25em 0.5em);
         }
         /* endregion */
 
