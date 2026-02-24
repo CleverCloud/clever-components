@@ -21,3 +21,8 @@ export interface AuthBridgeConfig {
   OAUTH_CONSUMER_KEY: string;
   OAUTH_CONSUMER_SECRET: string;
 }
+
+export interface ApiTokenConfig {
+  API_TOKEN: string;
+  API_HOST?: string;
+}
