@@ -989,6 +989,12 @@ export const translations = {
   'cc-heptapod-info.storage-bytes': /** @param {{storage: number}} _ */ ({ storage }) => formatBytes(storage, 1),
   'cc-heptapod-info.storage-description': `Stockage utilisé`,
   //#endregion
+  //#region cc-homepage-video
+  'cc-homepage-video.iframe-title': `Vidéo YouTube`,
+  'cc-homepage-video.link': `Voir notre chaîne YouTube`,
+  'cc-homepage-video.play': `Miniature de la vidéo YouTube Lancer la vidéo`,
+  'cc-homepage-video.title': `Voir nos vidéos`,
+  //#endregion
   //#region cc-input-date
   'cc-input-date.error.bad-input': /** @param {{ date: string }} _ */ ({ date }) =>
     sanitize`Saisissez une date. <br> Par exemple\u00A0: ${date}.`,
