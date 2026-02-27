@@ -1378,6 +1378,18 @@ export const translations = {
   'cc-matomo-info.open-matomo.text': `You can access your Matomo using your Clever Cloud account. Organisation members can also access the Matomo service.`,
   'cc-matomo-info.open-matomo.title': `Access Matomo`,
   //#endregion
+  //#region cc-network-group-dashboard
+  'cc-network-group-dashboard.danger-zone.btn': `Delete Network Group`,
+  'cc-network-group-dashboard.danger-zone.desc': `Deleting this Network Group is a permanent action. All members associated with this group will be removed from the Network Group as well.`,
+  'cc-network-group-dashboard.danger-zone.dialog.confirm-input-label': `Enter the Network Group name`,
+  'cc-network-group-dashboard.danger-zone.dialog.desc': `Deleting this Network Group is a permanent action. All members associated with this group will be removed from the Network Group. All existing peers linked to this group will be disconnected. This action cannot be undone. Make sure you have migrated or reconfigured any dependencies before proceeding.`,
+  'cc-network-group-dashboard.danger-zone.dialog.heading': `Confirm deletion`,
+  'cc-network-group-dashboard.danger-zone.error': `Something went wrong while loading information about the Network Group`,
+  'cc-network-group-dashboard.danger-zone.heading': `Danger Zone`,
+  'cc-network-group-dashboard.delete.error': `Something went wrong while deleting the Network Group`,
+  'cc-network-group-dashboard.delete.success': `The Network Group has been deleted successfully`,
+  'cc-network-group-dashboard.doc-link.text': `Network Groups - Documentation`,
+  //#endregion
   //#region cc-network-group-list
   'cc-network-group-list.create': `Create your first Network Group`,
   'cc-network-group-list.form.button': `Link to the Network Group`,
