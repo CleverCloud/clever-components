@@ -334,6 +334,9 @@ export const translations = {
   'cc-addon-info.error': `Une erreur est survenue pendant le chargement des informations`,
   'cc-addon-info.grafana.link': `Ouvrir Grafana`,
   'cc-addon-info.heading': `Informations`,
+  'cc-addon-info.last-ip.heading': `Dernière IP`,
+  'cc-addon-info.number-of-members.heading': `Nombre de membres`,
+  'cc-addon-info.number-of-peers.heading': `Nombre de pairs`,
   'cc-addon-info.plan.heading': `Plan`,
   'cc-addon-info.resources.heading': `Ressources`,
   'cc-addon-info.role.heading': `Rôle`,
@@ -358,6 +361,7 @@ export const translations = {
   'cc-addon-info.specification.plan': `Plan`,
   'cc-addon-info.specification.users': `Utilisateurs`,
   'cc-addon-info.specification.version': `Version`,
+  'cc-addon-info.subnet.heading': `Sous-réseau`,
   'cc-addon-info.total-content.buckets': `Buckets`,
   'cc-addon-info.total-content.heading': `Contenu total`,
   'cc-addon-info.total-content.objects': `Objets`,
@@ -1385,6 +1389,18 @@ export const translations = {
   'cc-matomo-info.open-matomo.link': `Accéder à Matomo`,
   'cc-matomo-info.open-matomo.text': `Vous pouvez accéder à votre Matomo en utilisant votre compte Clever Cloud. Tous les membres de l'organisation peuvent également accéder au service grâce à leur propre compte.`,
   'cc-matomo-info.open-matomo.title': `Accéder à Matomo`,
+  //#endregion
+  //#region cc-network-group-dashboard
+  'cc-network-group-dashboard.danger-zone.btn': `Supprimer le Network Group`,
+  'cc-network-group-dashboard.danger-zone.desc': `La suppression de ce Network Group est une action permanente. Tous les membres seront dissociés.`,
+  'cc-network-group-dashboard.danger-zone.dialog.confirm-input-label': `Saissez le nom du Network Group`,
+  'cc-network-group-dashboard.danger-zone.dialog.desc': `La suppression de ce Network group est une action permanente. Tous les membres et pairs associés seront dissociés. Cette action ne peut pas être annulée. Assurez-vous d'avoir migré ou reconfiguré toutes les dépendances avant de continuer.`,
+  'cc-network-group-dashboard.danger-zone.dialog.heading': `Confirmer la suppression`,
+  'cc-network-group-dashboard.danger-zone.error': `Une erreur est survenue pendant le chargement des informations du Network Group`,
+  'cc-network-group-dashboard.danger-zone.heading': `Zone de danger`,
+  'cc-network-group-dashboard.delete.error': `Une erreur est survenue lors de la suppression du Network Group`,
+  'cc-network-group-dashboard.delete.success': `Le Network Group a été supprimé avec succès`,
+  'cc-network-group-dashboard.doc-link.text': `Network Groups - Documentation`,
   //#endregion
   //#region cc-notice
   'cc-notice.close': `Fermer cette notice`,

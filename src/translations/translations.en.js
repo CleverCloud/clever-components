@@ -323,6 +323,9 @@ export const translations = {
   'cc-addon-info.error': `Something went wrong while loading information`,
   'cc-addon-info.grafana.link': `Open Grafana`,
   'cc-addon-info.heading': `Information`,
+  'cc-addon-info.last-ip.heading': `Last IP`,
+  'cc-addon-info.number-of-members.heading': `Number of members`,
+  'cc-addon-info.number-of-peers.heading': `Number of peers`,
   'cc-addon-info.plan.heading': `Plan`,
   'cc-addon-info.resources.heading': `Resources`,
   'cc-addon-info.role.heading': `Role`,
@@ -347,6 +350,7 @@ export const translations = {
   'cc-addon-info.specification.plan': `Plan`,
   'cc-addon-info.specification.users': `Users`,
   'cc-addon-info.specification.version': `Version`,
+  'cc-addon-info.subnet.heading': `Subnet`,
   'cc-addon-info.total-content.buckets': `Buckets`,
   'cc-addon-info.total-content.heading': `Total Content`,
   'cc-addon-info.total-content.objects': `Objects`,
@@ -1373,6 +1377,18 @@ export const translations = {
   'cc-matomo-info.open-matomo.link': `Access Matomo`,
   'cc-matomo-info.open-matomo.text': `You can access your Matomo using your Clever Cloud account. Organisation members can also access the Matomo service.`,
   'cc-matomo-info.open-matomo.title': `Access Matomo`,
+  //#endregion
+  //#region cc-network-group-dashboard
+  'cc-network-group-dashboard.danger-zone.btn': `Delete Network Group`,
+  'cc-network-group-dashboard.danger-zone.desc': `Deleting this Network Group is a permanent action. All members associated with this group will be removed from the Network Group as well.`,
+  'cc-network-group-dashboard.danger-zone.dialog.confirm-input-label': `Enter the Network Group name`,
+  'cc-network-group-dashboard.danger-zone.dialog.desc': `Deleting this Network Group is a permanent action. All members associated with this group will be removed from the Network Group. All existing peers linked to this group will be disconnected. This action cannot be undone. Make sure you have migrated or reconfigured any dependencies before proceeding.`,
+  'cc-network-group-dashboard.danger-zone.dialog.heading': `Confirm deletion`,
+  'cc-network-group-dashboard.danger-zone.error': `Something went wrong while loading information about the Network Group`,
+  'cc-network-group-dashboard.danger-zone.heading': `Danger Zone`,
+  'cc-network-group-dashboard.delete.error': `Something went wrong while deleting the Network Group`,
+  'cc-network-group-dashboard.delete.success': `The Network Group has been deleted successfully`,
+  'cc-network-group-dashboard.doc-link.text': `Network Groups - Documentation`,
   //#endregion
   //#region cc-notice
   'cc-notice.close': `Close this notice`,

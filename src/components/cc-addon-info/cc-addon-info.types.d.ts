@@ -17,14 +17,17 @@ export interface AddonInfoStateError {
 export interface AddonInfoStateBaseProperties {
   version?: AddonVersionState;
   plan?: string;
+  subnet?: string;
+  lastIp?: string;
+  numberOfMembers?: number;
+  numberOfPeers?: number;
   specifications?: Array<FormattedFeature>;
   encryption?: boolean;
-  creationDate: string | number;
+  creationDate?: string | number;
   role?: string;
   openGrafanaLink?: string;
   openScalabilityLink?: string;
   linkedServices?: Array<LinkedService>;
-  docUrlLink?: string;
   totalContent?: {
     buckets: number;
     objects: number;

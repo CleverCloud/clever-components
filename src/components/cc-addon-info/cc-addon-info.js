@@ -14,6 +14,7 @@ import { accessibilityStyles } from '../../styles/accessibility.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-block/cc-block.js';
+import '../cc-clipboard/cc-clipboard.js';
 import '../cc-dialog-confirm-actions/cc-dialog-confirm-actions.js';
 import '../cc-dialog/cc-dialog.js';
 import '../cc-link/cc-link.js';
@@ -76,7 +77,7 @@ export class CcAddonInfo extends LitElement {
     this.docLink = null;
 
     /** @type {AddonInfoState} Sets the state of the component*/
-    this.state = { type: 'loading', creationDate: '2025-08-04 15:03:02' };
+    this.state = { type: 'loading' };
 
     /** @type {boolean} */
     this._isVersionDialogOpen = false;
@@ -214,14 +215,18 @@ export class CcAddonInfo extends LitElement {
                 </div>
               `
             : ''}
-          <div class="section">
-            <strong class="heading">${i18n('cc-addon-info.creation-date.heading')}</strong>
-            <div class="value">
-              <p class="${classMap({ skeleton })}">
-                ${i18n('cc-addon-info.creation-date.human-friendly-date', { date: this.state.creationDate })}
-              </p>
-            </div>
-          </div>
+          ${this.state.creationDate != null
+            ? html`
+                <div class="section">
+                  <strong class="heading">${i18n('cc-addon-info.creation-date.heading')}</strong>
+                  <div class="value">
+                    <p class="${classMap({ skeleton })}">
+                      ${i18n('cc-addon-info.creation-date.human-friendly-date', { date: this.state.creationDate })}
+                    </p>
+                  </div>
+                </div>
+              `
+            : ''}
           ${this.state.plan != null
             ? html`
                 <div class="section">
@@ -391,6 +396,44 @@ export class CcAddonInfo extends LitElement {
                     </ul>
                     <slot name="linked-services"></slot>
                   </div>
+                </div>
+              `
+            : ''}
+          ${this.state.subnet != null
+            ? html`
+                <div class="section">
+                  <strong class="heading">${i18n('cc-addon-info.subnet.heading')}</strong>
+                  <div class="value ">
+                    <span class="${classMap({ skeleton })}">${this.state.subnet}</span>
+                    ${!skeleton ? html`<cc-clipboard value="${this.state.subnet}"></cc-clipboard>` : ''}
+                  </div>
+                </div>
+              `
+            : ''}
+          ${this.state.lastIp != null
+            ? html`
+                <div class="section">
+                  <strong class="heading">${i18n('cc-addon-info.last-ip.heading')}</strong>
+                  <div class="value ">
+                    <span class="${classMap({ skeleton })}">${this.state.lastIp}</span>
+                    ${!skeleton ? html`<cc-clipboard value="${this.state.lastIp}"></cc-clipboard>` : ''}
+                  </div>
+                </div>
+              `
+            : ''}
+          ${this.state.numberOfMembers != null
+            ? html`
+                <div class="section">
+                  <strong class="heading">${i18n('cc-addon-info.number-of-members.heading')}</strong>
+                  <div class="value "><span class="${classMap({ skeleton })}">${this.state.numberOfMembers}</span></div>
+                </div>
+              `
+            : ''}
+          ${this.state.numberOfPeers != null
+            ? html`
+                <div class="section">
+                  <strong class="heading">${i18n('cc-addon-info.number-of-peers.heading')}</strong>
+                  <div class="value "><span class="${classMap({ skeleton })}">${this.state.numberOfPeers}</span></div>
                 </div>
               `
             : ''}
