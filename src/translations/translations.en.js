@@ -348,7 +348,7 @@ export const translations = {
   'cc-addon-info.specification.users': `Users`,
   'cc-addon-info.specification.version': `Version`,
   'cc-addon-info.total-content.buckets': `Buckets`,
-  'cc-addon-info.total-content.heading': `Total Content`,
+  'cc-addon-info.total-content.heading': `Content`,
   'cc-addon-info.total-content.objects': `Objects`,
   'cc-addon-info.traffic.heading': `Traffic`,
   'cc-addon-info.traffic.inbound': `Inbound`,
@@ -367,7 +367,7 @@ export const translations = {
       ? sanitize`<em title="Lower priority access to vCPU">${formatNumber(lang, cpu)}<code>*</code></em>`
       : formatNumber(lang, cpu);
   },
-  'cc-addon-info.used-spaces.heading': `Used spaces`,
+  'cc-addon-info.used-spaces.heading': `Used storage`,
   'cc-addon-info.used-spaces.size': `Size`,
   'cc-addon-info.used-spaces.size.size-in-bytes': /** @param {{bytes: number}} _ */ ({ bytes }) =>
     formatBytes(bytes, 1),
