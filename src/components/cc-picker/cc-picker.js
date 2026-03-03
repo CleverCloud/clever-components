@@ -192,26 +192,31 @@ export class CcPicker extends CcFormControlElement {
     const hasErrorMessage = this.errorMessage != null && this.errorMessage !== '';
 
     return html`
-      <fieldset class="fieldset" @input=${this._onTileSelect} ${ref(this._pickerRef)} tabindex="-1">
-        <div class="fieldset-content">
-          <legend class="legend">
-            <span class="legend-text">${this.label}</span>
-            ${this.required ? html` <span class="required">${i18n('cc-picker.required')}</span> ` : ''}
-          </legend>
+      <div
+        class="fieldset"
+        @input=${this._onTileSelect}
+        ${ref(this._pickerRef)}
+        role="group"
+        aria-labelledby="legend"
+        tabindex="-1"
+      >
+        <p class="legend" id="legend">
+          <span class="legend-text">${this.label}</span>
+          ${this.required ? html` <span class="required">${i18n('cc-picker.required')}</span> ` : ''}
+        </p>
 
-          <div class="tiles" part="tiles">
-            ${this.options.map((option, index) => this._renderOption(option, hasErrorMessage, index))}
-          </div>
-
-          <div class="help-container" id="help-id">
-            <slot name="help"></slot>
-          </div>
-
-          ${hasErrorMessage
-            ? html`<p class="error-container" id="error-id" ${ref(this._errorRef)}>${this.errorMessage}</p>`
-            : ''}
+        <div class="tiles" part="tiles">
+          ${this.options.map((option, index) => this._renderOption(option, hasErrorMessage, index))}
         </div>
-      </fieldset>
+
+        <div class="help-container" id="help-id">
+          <slot name="help"></slot>
+        </div>
+
+        ${hasErrorMessage
+          ? html`<p class="error-container" id="error-id" ${ref(this._errorRef)}>${this.errorMessage}</p>`
+          : ''}
+      </div>
     `;
   }
 
@@ -268,22 +273,15 @@ export class CcPicker extends CcFormControlElement {
         /* endregion */
 
         /* region fieldset */
-        fieldset {
-          border: none;
+        .fieldset {
           display: inline-block;
-          margin: 0;
-          padding: 0;
+          width: var(--cc-picker-tiles-width, fit-content);
         }
 
-        fieldset:focus-visible {
+        .fieldset:focus-visible {
           border-radius: var(--cc-border-radius-default, 0.25em);
           outline: var(--cc-focus-outline-error);
           outline-offset: 0.5em;
-        }
-
-        fieldset,
-        .fieldset-content {
-          width: var(--cc-picker-tiles-width, fit-content);
         }
         /* endregion */
 
@@ -294,6 +292,7 @@ export class CcPicker extends CcFormControlElement {
           display: flex;
           gap: 2em;
           justify-content: space-between;
+          margin: 0;
           padding-block-end: var(--cc-form-label-gap, 0.35em);
           width: 100%;
         }
@@ -337,7 +336,7 @@ export class CcPicker extends CcFormControlElement {
         /* endregion */
 
         /* region inline layout */
-        :host([inline]) .fieldset-content {
+        :host([inline]) .fieldset {
           align-items: baseline;
           display: grid;
           gap: 0 var(--cc-form-label-gap-inline, 0.75em);
