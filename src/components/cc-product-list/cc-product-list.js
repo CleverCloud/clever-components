@@ -16,6 +16,8 @@ import { ProductsController } from './products-controller.js';
  * A component that displays a list of products in sections and allows to search and filter through it.
  *
  * @cssdisplay block
+ *
+ * @cssprop {Color} --cc-product-list-category-title-color - The color of the category title (defaults: `inherit`)
  */
 export class CcProductList extends LitElement {
   static get properties() {
@@ -163,8 +165,9 @@ export class CcProductList extends LitElement {
         }
 
         .category-name {
-          font-size: 1.75em;
+          font-size: 1.5em;
           font-weight: bold;
+          line-height: 1;
         }
 
         .category-products {
@@ -175,9 +178,10 @@ export class CcProductList extends LitElement {
 
         .category-title {
           align-items: center;
+          color: var(--cc-product-list-category-title-color);
+          column-gap: 0.25em;
           display: flex;
-          gap: 0.5em;
-          margin: 2.5em 0 1.5em;
+          margin-block-end: 0.5em;
         }
 
         .category-filter {
@@ -200,19 +204,25 @@ export class CcProductList extends LitElement {
         }
 
         .category-icon {
-          height: 1.75em;
-          width: 1.75em;
+          --cc-icon-size: 1.75em;
         }
 
         .search-empty {
           font-style: italic;
-          margin: 1.5em 0 0;
         }
 
         .search-form {
           display: flex;
           flex-direction: column;
           gap: 0.5em;
+        }
+
+        .search-form + .products {
+          margin-block-start: 1.5em;
+        }
+
+        .category + .category {
+          margin-block-start: 1.5em;
         }
       `,
     ];

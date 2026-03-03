@@ -82,12 +82,13 @@ export class CcProductCard extends LitElement {
         /* region wrapper */
 
         .wrapper {
+          align-items: center;
           background-color: var(--cc-color-bg-default, #fff);
           border: 2px solid var(--cc-color-border-neutral, #aaa);
           border-radius: var(--cc-border-radius-default, 0.25em);
           box-sizing: border-box;
           display: grid;
-          gap: 0.75em;
+          gap: 0.25em 0.5em;
           grid-template-areas:
             'icon name status'
             'description description description';
