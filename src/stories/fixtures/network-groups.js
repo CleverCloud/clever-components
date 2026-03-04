@@ -269,3 +269,22 @@ export const memberWithoutDashboardUrl = {
   peerList: memberExternalWithPeers.peerList,
 };
 
+/** @type {NetworkGroupMember[]} */
+export const networkGroupMemberList = [
+  memberWithPeers,
+  memberAddon,
+  memberExternalWithoutPeers,
+  memberExternalWithPeers,
+  memberAppWithoutPeers,
+  memberAddonWithoutPeers,
+  memberWithoutDashboardUrl,
+];
+
+/** @type {Option[]} */
+export const sampleSelectOptions = [
+  { label: 'My Node App (Application)', value: 'app_123' },
+  { label: 'My PHP App (Application)', value: 'app_456' },
+  { label: 'PostgreSQL Database (Add-on)', value: 'addon_789' },
+  { label: 'Redis Cache (Add-on)', value: 'addon_abc' },
+];
+
