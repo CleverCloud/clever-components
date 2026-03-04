@@ -1469,6 +1469,15 @@ export const translations = {
   'cc-network-group-list.list.heading': `Network Groups liés`,
   'cc-network-group-list.refresh.error': `Le membre a bien été lié au Network Group mais une erreur est survenue pendant le rafraîchissement de la liste`,
   //#endregion
+  //#region cc-network-group-member-card
+  'cc-network-group-member-card.link.dashboard-addon': `Vue d'ensemble de l'add-on`,
+  'cc-network-group-member-card.link.dashboard-application': `Vue d'ensemble de l'application`,
+  'cc-network-group-member-card.nb-of-peers': /** @param {{ nbOfPeers: number}} _ */ ({ nbOfPeers }) =>
+    `${nbOfPeers} ${plural(nbOfPeers, 'pair')}`,
+  'cc-network-group-member-card.unlink': `Dissocier le membre`,
+  'cc-network-group-member-card.unlink.a11y-name': /** @param {{ label: string }} _ */ ({ label }) =>
+    `Dissocier le membre - ${label}`,
+  //#endregion
   //#region cc-network-group-peer-card
   'cc-network-group-peer-card.external-peer.config-link': /** @param {{ label: string }} _ */ ({ label }) =>
     `Télécharger la configuration du pair ${label}`,

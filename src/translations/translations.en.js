@@ -1457,6 +1457,15 @@ export const translations = {
   'cc-network-group-list.list.heading': `Linked Network Groups`,
   'cc-network-group-list.refresh.error': `The Network Group member was linked successfully but something went wrong while refreshing the list`,
   //#endregion
+  //#region cc-network-group-member-card
+  'cc-network-group-member-card.link.dashboard-addon': `Add-on overview`,
+  'cc-network-group-member-card.link.dashboard-application': `Application overview`,
+  'cc-network-group-member-card.nb-of-peers': /** @param {{ nbOfPeers: number}} _ */ ({ nbOfPeers }) =>
+    `${nbOfPeers} ${plural(nbOfPeers, 'peer')}`,
+  'cc-network-group-member-card.unlink': `Unlink member`,
+  'cc-network-group-member-card.unlink.a11y-name': /** @param {{ label: string }} _ */ ({ label }) =>
+    `Unlink member - ${label}`,
+  //#endregion
   //#region cc-network-group-peer-card
   'cc-network-group-peer-card.external-peer.config-link': /** @param {{ label: string }} _ */ ({ label }) =>
     `Download peer configuration for ${label}`,
