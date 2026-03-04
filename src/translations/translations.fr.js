@@ -1478,6 +1478,31 @@ export const translations = {
   'cc-network-group-member-card.unlink.a11y-name': /** @param {{ label: string }} _ */ ({ label }) =>
     `Dissocier le membre - ${label}`,
   //#endregion
+  //#region cc-network-group-member-list
+  'cc-network-group-member-list.cli.content.get-ng-command': `Afficher un Network Group\u00A0:`,
+  'cc-network-group-member-list.cli.content.instruction': getCliInstructions,
+  'cc-network-group-member-list.cli.content.intro': `Vous pouvez gérer les membres de votre Network Group directement depuis votre terminal avec les commandes ci-dessous.`,
+  'cc-network-group-member-list.cli.content.link-member-command': `Associer un membre à un Network Group\u00A0:`,
+  'cc-network-group-member-list.cli.content.unlink-member-command': `Dissocier un membre d'un Network Group\u00A0:`,
+  'cc-network-group-member-list.documentation.text': `Network Groups - Documentation`,
+  'cc-network-group-member-list.error': `Une erreur est survenue pendant le chargement des informations du Network Group`,
+  'cc-network-group-member-list.heading': `Membres et Pairs`,
+  'cc-network-group-member-list.intro': `Un membre est une ressource connectée à un Network Group : cela peut être une application, un module complémentaire ou même un service externe. Chaque membre est identifié et possède un nom de domaine dédié au sein du réseau privé. Un pair est une instance concrète de ce membre. Tous les pairs du même groupe de réseau peuvent communiquer entre eux via un tunnel sécurisé sur tous les ports, ce qui permet une interconnexion privée et cryptée entre les ressources.`,
+  'cc-network-group-member-list.link-form.button': `Associer le membre`,
+  'cc-network-group-member-list.link-form.empty': `Aucune ressource disponible à associer`,
+  'cc-network-group-member-list.link-form.heading': `Associer un membre`,
+  'cc-network-group-member-list.link-form.select-label': `Ressource à associer`,
+  'cc-network-group-member-list.member-list.empty': `Aucun membre n'est associé à ce Network Group`,
+  'cc-network-group-member-list.member.link.error': `Une erreur est survenue pendant l'association du membre au Network Group`,
+  'cc-network-group-member-list.member.link.success': `Le membre a bien été associé au Network Group`,
+  'cc-network-group-member-list.member.logo.a11y-name.external': `Externe`,
+  'cc-network-group-member-list.member.unlink.error': `Une erreur est survenue pendant la dissociation du membre du Network Group`,
+  'cc-network-group-member-list.member.unlink.success': `Le membre a bien été dissocié du Network Group`,
+  'cc-network-group-member-list.refresh.error': `L'opération a réussi mais la liste n'a pas pu être rafraîchie. Veuillez rafraîchir la page.`,
+  'cc-network-group-member-list.unlink.dialog.desc': `La dissociation d'un membre de votre Network Group dissocie également tous ses pairs. Souhaitez-vous continuer\u00A0?`,
+  'cc-network-group-member-list.unlink.dialog.heading': `Confirmer la dissociation`,
+  'cc-network-group-member-list.unlink.dialog.unlink-btn': `Confirmer et dissocier`,
+  //#endregion
   //#region cc-network-group-peer-card
   'cc-network-group-peer-card.external-peer.config-link': /** @param {{ label: string }} _ */ ({ label }) =>
     `Télécharger la configuration du pair ${label}`,
