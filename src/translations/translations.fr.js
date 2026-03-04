@@ -1426,6 +1426,16 @@ export const translations = {
   'cc-matomo-info.open-matomo.text': `Vous pouvez accéder à votre Matomo en utilisant votre compte Clever Cloud. Tous les membres de l'organisation peuvent également accéder au service grâce à leur propre compte.`,
   'cc-matomo-info.open-matomo.title': `Accéder à Matomo`,
   //#endregion
+  //#region cc-network-group-peer-card
+  'cc-network-group-peer-card.external-peer.config-link': /** @param {{ label: string }} _ */ ({ label }) =>
+    `Télécharger la configuration du pair ${label}`,
+  'cc-network-group-peer-card.metadata.id': `Identifiant`,
+  'cc-network-group-peer-card.metadata.ip': `Adresse IP`,
+  'cc-network-group-peer-card.metadata.key': `Clé publique`,
+  'cc-network-group-peer-card.metadata.peer-type': `Type de pair`,
+  'cc-network-group-peer-card.metadata.peer-type.clever-peer': `Pair Clever`,
+  'cc-network-group-peer-card.metadata.peer-type.external-peer': `Pair externe`,
+  //#endregion
   //#region cc-notice
   'cc-notice.close': `Fermer cette notice`,
   'cc-notice.icon-alt.danger': `Erreur`,
