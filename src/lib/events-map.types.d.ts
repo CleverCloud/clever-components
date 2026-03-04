@@ -128,6 +128,7 @@ import {
   CcNetworkGroupDeleteEvent,
   CcNetworkGroupWasDeletedEvent,
 } from '../components/cc-network-group-dashboard/cc-network-group-dashboard.events.js';
+import { CcNetworkGroupMemberUnlinkRequestEvent } from '../components/cc-network-group-member-card/cc-network-group-member-card.events.js';
 import { CcNoticeDismissEvent } from '../components/cc-notice/cc-notice.events.js';
 import {
   CcOauthConsumerChangeEvent,
@@ -307,6 +308,7 @@ declare global {
     'cc-map-marker-leave': CcMapMarkerLeaveEvent;
     'cc-multi-select': CcMultiSelectEvent;
     'cc-network-group-delete': CcNetworkGroupDeleteEvent;
+    'cc-network-group-member-unlink-request': CcNetworkGroupMemberUnlinkRequestEvent;
     'cc-network-group-was-deleted': CcNetworkGroupWasDeletedEvent;
     'cc-ng-disable': CcNgDisable;
     'cc-ng-enable': CcNgEnable;

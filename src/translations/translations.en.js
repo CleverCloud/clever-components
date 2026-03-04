@@ -1434,6 +1434,15 @@ export const translations = {
   'cc-network-group-dashboard.delete.success': `The Network Group has been deleted successfully`,
   'cc-network-group-dashboard.doc-link.text': `Network Groups - Documentation`,
   //#endregion
+  //#region cc-network-group-member-card
+  'cc-network-group-member-card.link.dashboard-addon': `Add-on overview`,
+  'cc-network-group-member-card.link.dashboard-application': `Application overview`,
+  'cc-network-group-member-card.nb-of-peers': /** @param {{ nbOfPeers: number}} _ */ ({ nbOfPeers }) =>
+    `${nbOfPeers} ${plural(nbOfPeers, 'peer')}`,
+  'cc-network-group-member-card.unlink': `Unlink member`,
+  'cc-network-group-member-card.unlink.a11y-name': /** @param {{ label: string }} _ */ ({ label }) =>
+    `Unlink member - ${label}`,
+  //#endregion
   //#region cc-network-group-peer-card
   'cc-network-group-peer-card.external-peer.config-link': /** @param {{ label: string }} _ */ ({ label }) =>
     `Download peer configuration for ${label}`,
