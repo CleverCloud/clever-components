@@ -3,6 +3,7 @@ import { getAssetUrl } from '../../lib/assets-url.js';
 /**
  * @import { NetworkGroupMember } from '../../components/cc-network-group-member-card/cc-network-group-member-card.types.js'
  * @import { NetworkGroupPeerExternal, NetworkGroupPeerClever } from '../../components/cc-network-group-peer-card/cc-network-group-peer-card.types.js'
+ * @import { Option } from '../../components/cc-select/cc-select.types.js'
  */
 
 /** @type {NetworkGroupPeerExternal} */
@@ -164,4 +165,64 @@ export const memberWithoutDashboardUrl = {
   },
   peerList: memberExternalWithPeers.peerList,
 };
+
+/** @type {Option[]} */
+export const sampleSelectOptions = [
+  { label: 'My Node App (Application)', value: 'app_123' },
+  { label: 'My PHP App (Application)', value: 'app_456' },
+  { label: 'PostgreSQL Database (Add-on)', value: 'addon_789' },
+  { label: 'Redis Cache (Add-on)', value: 'addon_abc' },
+];
+
+/** @type {Option[]} */
+export const networkGroupSelectOptions = [
+  {
+    label: 'Delta Network Group',
+    value: 'ng_00000001-0000-0000-0000-000000000001',
+  },
+  {
+    label: 'Alpha Network Group',
+    value: 'ng_00000002-0000-0000-0000-000000000002',
+  },
+  {
+    label: 'Beta Network Group',
+    value: 'ng_00000003-0000-0000-0000-000000000003',
+  },
+  {
+    label: 'Gamma Network Group',
+    value: 'ng_00000004-0000-0000-0000-000000000004',
+  },
+  {
+    label: 'Epsilon Network Group',
+    value: 'ng_00000005-0000-0000-0000-000000000005',
+  },
+  {
+    label: 'Zeta Network Group',
+    value: 'ng_00000006-0000-0000-0000-000000000006',
+  },
+  {
+    label: 'Eta Network Group',
+    value: 'ng_00000007-0000-0000-0000-000000000007',
+  },
+  {
+    label: 'Theta Network Group',
+    value: 'ng_00000008-0000-0000-0000-000000000008',
+  },
+  {
+    label: 'Iota Network Group',
+    value: 'ng_00000009-0000-0000-0000-000000000009',
+  },
+  {
+    label: 'Kappa Network Group',
+    value: 'ng_00000010-0000-0000-0000-000000000010',
+  },
+  {
+    label: 'Lambda Network Group',
+    value: 'ng_00000011-0000-0000-0000-000000000011',
+  },
+  {
+    label: 'Mu Network Group',
+    value: 'ng_00000012-0000-0000-0000-000000000012',
+  },
+];
 
