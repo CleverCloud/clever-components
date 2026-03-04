@@ -359,9 +359,9 @@ export const translations = {
   'cc-addon-info.specification.users': `Utilisateurs`,
   'cc-addon-info.specification.version': `Version`,
   'cc-addon-info.total-content.buckets': `Buckets`,
-  'cc-addon-info.total-content.heading': `Contenu total`,
+  'cc-addon-info.total-content.heading': `Contenu`,
   'cc-addon-info.total-content.objects': `Objets`,
-  'cc-addon-info.traffic.heading': `Traffic`,
+  'cc-addon-info.traffic.heading': `Trafic`,
   'cc-addon-info.traffic.inbound': `Entrant`,
   'cc-addon-info.traffic.inbound.inbound-in-bytes': /** @param {{bytes: number}} _ */ ({ bytes }) =>
     formatBytes(bytes, 1),
@@ -378,7 +378,7 @@ export const translations = {
       ? sanitize`<em title="Accès au vCPU moins prioritaire">${formatNumber(lang, cpu)}<code>*</code></em>`
       : formatNumber(lang, cpu);
   },
-  'cc-addon-info.used-spaces.heading': `Espaces utilisés`,
+  'cc-addon-info.used-spaces.heading': `Stockage utilisé`,
   'cc-addon-info.used-spaces.size': `Taille`,
   'cc-addon-info.used-spaces.size.size-in-bytes': /** @param {{bytes: number}} _ */ ({ bytes }) =>
     formatBytes(bytes, 1),
