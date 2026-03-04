@@ -97,7 +97,8 @@
           "copy",
           "paste",
           "transitionend",
-          "cancel"
+          "cancel",
+          "toggle"
         ],
         "globalAttributes": ["closedby", "autofocus"]
       }
