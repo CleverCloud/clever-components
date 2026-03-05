@@ -5,6 +5,37 @@ title: 'Changelog'
 
 # Changelog
 
+## [24.0.0](https://github.com/CleverCloud/clever-components/compare/23.3.0...24.0.0) (2026-03-05)
+
+
+### ⚠ BREAKING CHANGES
+
+* **cc-range-selector:** renamed export CcRangeSelectorSelectCustom to CcRangeSelectorSelectCustomEvent
+
+### 🚀 Features
+
+* **cc-homepage-onboarding:** init component ([4e119c3](https://github.com/CleverCloud/clever-components/commit/4e119c3e08a0be9643dec12e0aec2f79aef15c58))
+* **cc-homepage-video:** init component ([2c1ae53](https://github.com/CleverCloud/clever-components/commit/2c1ae53c896230a0084d371ffc1608fd5d37f81c))
+
+
+### 🐛 Bug Fixes
+
+* **cc-addon-info:** update translations ([f478d53](https://github.com/CleverCloud/clever-components/commit/f478d53d1c7d4d7920084037ed00682bd3d153a6))
+* **cc-domain-management:** change `clever diag` to `clever domain diag` ([3f60b76](https://github.com/CleverCloud/clever-components/commit/3f60b76a21ef70bf1420325c8961350f7cebccec))
+* **cc-picker:** replace `fieldset` with `ARIA` equivalent ([3324c3e](https://github.com/CleverCloud/clever-components/commit/3324c3e0fad58b882f813b6316ecba0a405b3ed4)), closes [#1679](https://github.com/CleverCloud/clever-components/issues/1679)
+* **cc-range-selector-option:** make padding customizable ([8f6d89d](https://github.com/CleverCloud/clever-components/commit/8f6d89de13e4d549a8bc073737eed2d00c1d1fe9))
+* **cc-range-selector-option:** remove unnecessary CSS custom property ([2a69d56](https://github.com/CleverCloud/clever-components/commit/2a69d56b51838f8a754c22c8446269487b1f3602))
+* **cc-range-selector:** ensure validation re-runs when mode changes ([329ab8a](https://github.com/CleverCloud/clever-components/commit/329ab8ada6aa9536660d758a60b691016932cac8))
+* **cc-range-selector:** only clear relevant property on custom select ([b7840d1](https://github.com/CleverCloud/clever-components/commit/b7840d13fe3505e3bc77b31a4c75f9dd46970650))
+* **cc-range-selector:** reduce padding for better density ([1149c1d](https://github.com/CleverCloud/clever-components/commit/1149c1dbefca2c57cd59ce7689452b4a3b68ab36))
+* **cc-range-selector:** sync form value on mode change ([d9b41e4](https://github.com/CleverCloud/clever-components/commit/d9b41e40060492450f5d9a10e40631056f6dd6ea))
+* **i18n:** invert cc-input-number range-overflow/underflow FR translations ([93c2060](https://github.com/CleverCloud/clever-components/commit/93c2060f51b35d288f28ebbfd5c666bbb5d9802d))
+
+
+### 🛠 Code Refactoring
+
+* **cc-range-selector:** rename custom select event to follow convention ([c69b5a3](https://github.com/CleverCloud/clever-components/commit/c69b5a35f46add6784fdc82907e95f35984dc0d0))
+
 ## [23.3.0](https://github.com/CleverCloud/clever-components/compare/23.2.0...23.3.0) (2026-02-19)
 
 
