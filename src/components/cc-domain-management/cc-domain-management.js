@@ -489,7 +489,7 @@ export class CcDomainManagement extends LitElement {
               <dl>
                 <dt>${i18n('cc-domain-management.dns.cli.content.diag-conf-command')}</dt>
                 <dd>
-                  <cc-code>clever diag --app ${this.applicationId}</cc-code>
+                  <cc-code>clever domain diag --app ${this.applicationId}</cc-code>
                 </dd>
               </dl>
             </div>
