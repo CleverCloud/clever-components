@@ -1023,6 +1023,10 @@ export const translations = {
   'cc-homepage-onboarding.title.already-user': `Continuez à créer`,
   'cc-homepage-onboarding.title.new-user': `Prêt à commencer et à déployer ?`,
   //#endregion
+  //#region cc-homepage-template-project
+  'cc-homepage-template-project.error': `Une erreur est survenue pendant le chargement des templates de projets.`,
+  'cc-homepage-template-project.title': `Projets pré-construits`,
+  //#endregion
   //#region cc-homepage-video
   'cc-homepage-video.iframe-title': `Vidéo YouTube`,
   'cc-homepage-video.link': `Voir notre chaîne YouTube`,
