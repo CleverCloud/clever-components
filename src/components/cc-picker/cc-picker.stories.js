@@ -61,6 +61,15 @@ export const helpMessage = makeStory(conf, {
   ],
 });
 
+export const descriptionMessage = makeStory(conf, {
+  items: [
+    {
+      ...DEFAULT_ITEM,
+      innerHTML: '<p slot="description">Pick your favorite musician</p>',
+    },
+  ],
+});
+
 export const errorMessage = makeStory(conf, {
   items: [
     {
