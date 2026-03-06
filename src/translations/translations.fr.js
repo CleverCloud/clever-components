@@ -1446,6 +1446,29 @@ export const translations = {
   'cc-network-group-dashboard.delete.success': `Le Network Group a été supprimé avec succès`,
   'cc-network-group-dashboard.doc-link.text': `Network Groups - Documentation`,
   //#endregion
+  //#region cc-network-group-list
+  'cc-network-group-list.cli.content.create-command': `Créer un Network Group\u00A0:`,
+  'cc-network-group-list.cli.content.delete-command': `Supprimer un Network Group\u00A0:`,
+  'cc-network-group-list.cli.content.instruction': getCliInstructions,
+  'cc-network-group-list.cli.content.intro': `Vous pouvez gérer les Network Groups directement depuis votre terminal grâce aux commandes ci-dessous.`,
+  'cc-network-group-list.cli.content.link-command': `Lier un Network Group à une ressource\u00A0:`,
+  'cc-network-group-list.cli.content.list-command': `Lister les Network Groups\u00A0:`,
+  'cc-network-group-list.cli.content.unlink-command': `Délier un Network Group d'une ressource\u00A0:`,
+  'cc-network-group-list.create': `Créer un Network Group`,
+  'cc-network-group-list.form.button': `Lier au Network Group`,
+  'cc-network-group-list.form.description': `Cet écran répertorie tous les Network Groups auxquels cette ressource est attachée. Chaque Network Group définit un réseau privé sécurisé dans lequel la ressource peut communiquer directement avec d'autres ressources (applications, modules complémentaires ou services externes) qui en font partie. Vous trouverez ici une visibilité complète des groupes existants, avec les pairs associés, pour comprendre et gérer les connexions réseau entre ces ressources. Vous pouvez également lier votre ressource à un nouveau Network Group.`,
+  'cc-network-group-list.form.documentation': `Network Groups - Documentation`,
+  'cc-network-group-list.form.error': `Une erreur est survenue pendant le chargement du formulaire`,
+  'cc-network-group-list.form.heading': `Lier la ressource à un Network Group`,
+  'cc-network-group-list.form.select-label': `Choisissez un Network Group à lier`,
+  'cc-network-group-list.link.error': `Une erreur est survenue pendant la liaison au Network Group`,
+  'cc-network-group-list.link.success': `La liaison au Network Group a bien été effectuée`,
+  'cc-network-group-list.list.dashboard-link': `Accéder au Network Group`,
+  'cc-network-group-list.list.empty': `Vous n'avez aucun Network Group lié à votre ressource`,
+  'cc-network-group-list.list.error': `Une erreur est survenue pendant le chargement de la liste des Network Groups liés`,
+  'cc-network-group-list.list.heading': `Network Groups liés`,
+  'cc-network-group-list.refresh.error': `Le membre a bien été lié au Network Group mais une erreur est survenue pendant le rafraîchissement de la liste`,
+  //#endregion
   //#region cc-network-group-peer-card
   'cc-network-group-peer-card.external-peer.config-link': /** @param {{ label: string }} _ */ ({ label }) =>
     `Télécharger la configuration du pair ${label}`,
