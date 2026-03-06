@@ -1414,6 +1414,32 @@ export const translations = {
   'cc-matomo-info.open-matomo.text': `You can access your Matomo using your Clever Cloud account. Organisation members can also access the Matomo service.`,
   'cc-matomo-info.open-matomo.title': `Access Matomo`,
   //#endregion
+  //#region cc-network-group-list
+  'cc-network-group-list.create': `Create your first Network Group`,
+  'cc-network-group-list.form.button': `Link to the Network Group`,
+  'cc-network-group-list.form.description': `This screen lists all the Network Groups to which this resource (and its instances) is linked to. Each Network Group defines a secure private network in which the resource can communicate directly with other resources (applications, add-ons, or external services) that are part of it. Here you will find complete visibility of existing groups, with associated peers, to understand and manage your resource's network connections. You can also link your resource to a new Network Group.`,
+  'cc-network-group-list.form.documentation': `Network Groups - Documentation`,
+  'cc-network-group-list.form.error': `Something went wrong while loading the form`,
+  'cc-network-group-list.form.heading': `Link the resource to a Network Group`,
+  'cc-network-group-list.form.select-label': `Choose a Network Group to link`,
+  'cc-network-group-list.link.error': `Something went wrong while linking the Network Group`,
+  'cc-network-group-list.link.success': `The Network Group has been linked successfully`,
+  'cc-network-group-list.list.dashboard-link': `Go to Network Group`,
+  'cc-network-group-list.list.empty': `You don't have any Network Groups linked to your resource`,
+  'cc-network-group-list.list.error': `Something went wrong while loading the list of linked Network Groups`,
+  'cc-network-group-list.list.heading': `Linked Network Groups`,
+  'cc-network-group-list.refresh.error': `The Network Group member was linked successfully but something went wrong while refreshing the list`,
+  //#endregion
+  //#region cc-network-group-peer-card
+  'cc-network-group-peer-card.external-peer.config-link': /** @param {{ label: string }} _ */ ({ label }) =>
+    `Download peer configuration for ${label}`,
+  'cc-network-group-peer-card.metadata.id': `Identifier`,
+  'cc-network-group-peer-card.metadata.ip': `Ip address`,
+  'cc-network-group-peer-card.metadata.key': `Public key`,
+  'cc-network-group-peer-card.metadata.peer-type': `Peer type`,
+  'cc-network-group-peer-card.metadata.peer-type.clever-peer': `Clever Peer`,
+  'cc-network-group-peer-card.metadata.peer-type.external-peer': `External Peer`,
+  //#endregion
   //#region cc-notice
   'cc-notice.close': `Close this notice`,
   'cc-notice.icon-alt.danger': `Error`,
