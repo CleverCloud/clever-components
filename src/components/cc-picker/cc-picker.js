@@ -41,6 +41,7 @@ const DEFAULT_ERROR_MESSAGES = {
  * @cssprop {Width} --cc-picker-tiles-width - Sets the width of the form control content (defaults: `fit-content`).
  * @cssprop {Size} --cc-picker-tiles-indent - horizontal space between the start of the line and the tiles (defaults: `0.25em`).
  *
+ * @slot description - The description to be displayed between the legend and the picker options.
  * @slot help - The help message to be displayed right below the tiles. Please use a `<p>` tag.
  */
 export class CcPicker extends CcFormControlElement {
@@ -205,6 +206,10 @@ export class CcPicker extends CcFormControlElement {
           ${this.required ? html` <span class="required">${i18n('cc-picker.required')}</span> ` : ''}
         </p>
 
+        <div class="description-container">
+          <slot name="description"></slot>
+        </div>
+
         <div class="tiles" part="tiles">
           ${this.options.map((option, index) => this._renderOption(option, hasErrorMessage, index))}
         </div>
@@ -342,6 +347,7 @@ export class CcPicker extends CcFormControlElement {
           gap: 0 var(--cc-form-label-gap-inline, 0.75em);
           grid-auto-rows: min-content;
           grid-template-areas:
+            'label description'
             'label input'
             'label help'
             'label error';
@@ -355,6 +361,12 @@ export class CcPicker extends CcFormControlElement {
           line-height: normal;
           padding: 0;
           width: auto;
+        }
+        /* endregion */
+
+        /* region description */
+        .description-container {
+          grid-area: description;
         }
         /* endregion */
 
