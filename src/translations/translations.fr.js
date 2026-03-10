@@ -1027,6 +1027,10 @@ export const translations = {
   'cc-homepage-onboarding.title.already-user': `Continuez à créer`,
   'cc-homepage-onboarding.title.new-user': `Prêt à commencer et à déployer ?`,
   //#endregion
+  //#region cc-homepage-template-project
+  'cc-homepage-template-project.error': `Une erreur est survenue pendant le chargement des templates de projets`,
+  'cc-homepage-template-project.title': `Projets prêts à déployer`,
+  //#endregion
   //#region cc-homepage-video
   'cc-homepage-video.iframe-title': `Vidéo YouTube`,
   'cc-homepage-video.link': `Voir notre chaîne YouTube`,
@@ -1441,6 +1445,75 @@ export const translations = {
   'cc-network-group-dashboard.delete.error': `Une erreur est survenue lors de la suppression du Network Group`,
   'cc-network-group-dashboard.delete.success': `Le Network Group a été supprimé avec succès`,
   'cc-network-group-dashboard.doc-link.text': `Network Groups - Documentation`,
+  //#endregion
+  //#region cc-network-group-list
+  'cc-network-group-list.cli.content.create-command': `Créer un Network Group\u00A0:`,
+  'cc-network-group-list.cli.content.delete-command': `Supprimer un Network Group\u00A0:`,
+  'cc-network-group-list.cli.content.instruction': getCliInstructions,
+  'cc-network-group-list.cli.content.intro': `Vous pouvez gérer les Network Groups directement depuis votre terminal grâce aux commandes ci-dessous.`,
+  'cc-network-group-list.cli.content.link-command': `Lier un Network Group à une ressource\u00A0:`,
+  'cc-network-group-list.cli.content.list-command': `Lister les Network Groups\u00A0:`,
+  'cc-network-group-list.cli.content.unlink-command': `Délier un Network Group d'une ressource\u00A0:`,
+  'cc-network-group-list.create': `Créer un Network Group`,
+  'cc-network-group-list.form.button': `Lier au Network Group`,
+  'cc-network-group-list.form.description': `Cet écran répertorie tous les Network Groups auxquels cette ressource est attachée. Chaque Network Group définit un réseau privé sécurisé dans lequel la ressource peut communiquer directement avec d'autres ressources (applications, modules complémentaires ou services externes) qui en font partie. Vous trouverez ici une visibilité complète des groupes existants, avec les pairs associés, pour comprendre et gérer les connexions réseau de ressource. Vous pouvez également lier votre ressource à un nouveau Network Group.`,
+  'cc-network-group-list.form.documentation': `Network Groups - Documentation`,
+  'cc-network-group-list.form.error': `Une erreur est survenue pendant le chargement du formulaire`,
+  'cc-network-group-list.form.heading': `Lier la ressource à un Network Group`,
+  'cc-network-group-list.form.select-label': `Choisissez un Network Group à lier`,
+  'cc-network-group-list.link.error': `Une erreur est survenue pendant la liaison au Network Group`,
+  'cc-network-group-list.link.success': `La liaison au Network Group a bien été effectuée`,
+  'cc-network-group-list.list.dashboard-link': `Accéder au Network Group`,
+  'cc-network-group-list.list.empty': `Vous n'avez aucun Network Group lié à votre ressource`,
+  'cc-network-group-list.list.error': `Une erreur est survenue pendant le chargement de la liste des Network Groups liés`,
+  'cc-network-group-list.list.heading': `Network Groups liés`,
+  'cc-network-group-list.refresh.error': `Le membre a bien été lié au Network Group mais une erreur est survenue pendant le rafraîchissement de la liste`,
+  //#endregion
+  //#region cc-network-group-member-card
+  'cc-network-group-member-card.link.dashboard-addon': `Vue d'ensemble de l'add-on`,
+  'cc-network-group-member-card.link.dashboard-application': `Vue d'ensemble de l'application`,
+  'cc-network-group-member-card.nb-of-peers': /** @param {{ nbOfPeers: number}} _ */ ({ nbOfPeers }) =>
+     `${nbOfPeers} ${plural(nbOfPeers, 'pair')}`,
+  'cc-network-group-member-card.unlink': `Dissocier le membre`,
+  'cc-network-group-member-card.unlink.a11y-name': /** @param {{ label: string }} _ */ ({ label }) =>
+     `Dissocier le membre - ${label}`,
+  //#endregion
+  //#region cc-network-group-member-list
+  'cc-network-group-member-list.cli.content.get-ng-command': `Afficher un Network Group\u00A0:`,
+  'cc-network-group-member-list.cli.content.instruction': getCliInstructions,
+  'cc-network-group-member-list.cli.content.intro': `
+       Vous pouvez gérer les membres de votre Network Group directement depuis votre terminal avec les commandes ci-dessous.
+     `,
+  'cc-network-group-member-list.cli.content.link-member-command': `Associer un membre à un Network Group\u00A0:`,
+  'cc-network-group-member-list.cli.content.unlink-member-command': `Dissocier un membre d'un Network Group\u00A0:`,
+  'cc-network-group-member-list.documentation.text': `Network Groups - Documentation`,
+  'cc-network-group-member-list.error': `Une erreur est survenue pendant le chargement des informations du Network Group`,
+  'cc-network-group-member-list.heading': `Membres et Pairs`,
+  'cc-network-group-member-list.intro': `Un membre est une ressource connectée à un network group : cela peut être une application, un module complémentaire ou même un service externe. Chaque membre est identifié et possède un nom de domaine dédié au sein du réseau privé. Un pair est une instance concrète de ce membre. Tous les pairs du même groupe de réseau peuvent communiquer entre eux via un tunnel sécurisé sur tous les ports, ce qui permet une interconnexion privée et cryptée entre les ressources.`,
+  'cc-network-group-member-list.link-form.button': `Associer le membre`,
+  'cc-network-group-member-list.link-form.empty': `Aucune ressource disponible à associer`,
+  'cc-network-group-member-list.link-form.heading': `Associer un membre`,
+  'cc-network-group-member-list.link-form.select-label': `Ressource à associer`,
+  'cc-network-group-member-list.member-list.empty': `Aucun membre n'est associé à ce Network Group`,
+  'cc-network-group-member-list.member.link.error': `Une erreur est survenue pendant l'association du membre au Network Group`,
+  'cc-network-group-member-list.member.link.success': `Le membre a bien été associé au Network Group`,
+  'cc-network-group-member-list.member.logo.a11y-name.external': `Externe`,
+  'cc-network-group-member-list.member.unlink.error': `Une erreur est survenue pendant la dissociation du membre du Network Group`,
+  'cc-network-group-member-list.member.unlink.success': `Le membre a bien été dissocié du Network Group`,
+  'cc-network-group-member-list.refresh.error': `L'opération a réussi mais la liste n'a pas pu être rafraîchie. Veuillez rafraîchir la page.`,
+  'cc-network-group-member-list.unlink.dialog.desc': `La dissociation d'un membre de votre Network Group dissocie également tous ses pairs. Souhaitez-vous continuer\u00A0?`,
+  'cc-network-group-member-list.unlink.dialog.heading': `Confirmer la dissociation`,
+  'cc-network-group-member-list.unlink.dialog.unlink-btn': `Confirmer et dissocier`,
+  //#endregion
+  //#region cc-network-group-peer-card
+  'cc-network-group-peer-card.external-peer.config-link': /** @param {{ label: string }} _ */ ({ label }) =>
+     `Télécharger la configuration du pair ${label}`,
+  'cc-network-group-peer-card.metadata.id': `Identifiant`,
+  'cc-network-group-peer-card.metadata.ip': `Adresse IP`,
+  'cc-network-group-peer-card.metadata.key': `Clé publique`,
+  'cc-network-group-peer-card.metadata.peer-type': `Type de pair`,
+  'cc-network-group-peer-card.metadata.peer-type.clever-peer': `Pair Clever`,
+  'cc-network-group-peer-card.metadata.peer-type.external-peer': `Pair externe`,
   //#endregion
   //#region cc-notice
   'cc-notice.close': `Fermer cette notice`,

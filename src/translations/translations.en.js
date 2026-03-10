@@ -1015,6 +1015,10 @@ export const translations = {
   'cc-homepage-onboarding.title.already-user': `Continue to create`,
   'cc-homepage-onboarding.title.new-user': `Ready to start and deploy?`,
   //#endregion
+  //#region cc-homepage-template-project
+  'cc-homepage-template-project.error': `An error occurred while loading template projects`,
+  'cc-homepage-template-project.title': `Pre-built projects`,
+  //#endregion
   //#region cc-homepage-video
   'cc-homepage-video.iframe-title': `YouTube video`,
   'cc-homepage-video.link': `See our YouTube channel`,
@@ -1429,6 +1433,73 @@ export const translations = {
   'cc-network-group-dashboard.delete.error': `Something went wrong while deleting the Network Group`,
   'cc-network-group-dashboard.delete.success': `The Network Group has been deleted successfully`,
   'cc-network-group-dashboard.doc-link.text': `Network Groups - Documentation`,
+  //#endregion
+  //#region cc-network-group-list
+  'cc-network-group-list.cli.content.create-command': `Create a Network Group:`,
+  'cc-network-group-list.cli.content.delete-command': `Delete a Network Group:`,
+  'cc-network-group-list.cli.content.instruction': getCliInstructions,
+  'cc-network-group-list.cli.content.intro': `You can manage Network Groups directly from your terminal using the commands below.`,
+  'cc-network-group-list.cli.content.link-command': `Link a Network Group to your resource:`,
+  'cc-network-group-list.cli.content.list-command': `List Network Groups:`,
+  'cc-network-group-list.cli.content.unlink-command': `Unlink a Network Group from your resource:`,
+  'cc-network-group-list.create': `Create a Network Group`,
+  'cc-network-group-list.form.button': `Link to the Network Group`,
+  'cc-network-group-list.form.description': `This screen lists all the Network Groups to which this resource (and its instances) is linked to. Each Network Group defines a secure private network in which the resource can communicate directly with other resources (applications, add-ons, or external services) that are part of it. Here you will find complete visibility of existing groups, with associated peers, to understand and manage your resource's network connections. You can also link your resource to a new Network Group.`,
+  'cc-network-group-list.form.documentation': `Network Groups - Documentation`,
+  'cc-network-group-list.form.error': `Something went wrong while loading the form`,
+  'cc-network-group-list.form.heading': `Link the resource to a Network Group`,
+  'cc-network-group-list.form.select-label': `Choose a Network Group to link`,
+  'cc-network-group-list.link.error': `Something went wrong while linking the Network Group`,
+  'cc-network-group-list.link.success': `The Network Group has been linked successfully`,
+  'cc-network-group-list.list.dashboard-link': `Go to Network Group`,
+  'cc-network-group-list.list.empty': `You don't have any Network Groups linked to your resource`,
+  'cc-network-group-list.list.error': `Something went wrong while loading the list of linked Network Groups`,
+  'cc-network-group-list.list.heading': `Linked Network Groups`,
+  'cc-network-group-list.refresh.error': `The Network Group member was linked successfully but something went wrong while refreshing the list`,
+  //#endregion
+  //#region cc-network-group-member-card
+  'cc-network-group-member-card.link.dashboard-addon': `Add-on overview`,
+  'cc-network-group-member-card.link.dashboard-application': `Application overview`,
+  'cc-network-group-member-card.nb-of-peers': /** @param {{ nbOfPeers: number}} _ */ ({ nbOfPeers }) =>
+     `${nbOfPeers} ${plural(nbOfPeers, 'peer')}`,
+  'cc-network-group-member-card.unlink': `Unlink member`,
+  'cc-network-group-member-card.unlink.a11y-name': /** @param {{ label: string }} _ */ ({ label }) =>
+     `Unlink member - ${label}`,
+  //#endregion
+  //#region cc-network-group-member-list
+  'cc-network-group-member-list.cli.content.get-ng-command': `Get Network Group info:`,
+  'cc-network-group-member-list.cli.content.instruction': getCliInstructions,
+  'cc-network-group-member-list.cli.content.intro': `You can manage your Network Group members directly from your terminal using the commands below.`,
+  'cc-network-group-member-list.cli.content.link-member-command': `Link a member to a Network Group:`,
+  'cc-network-group-member-list.cli.content.unlink-member-command': `Unlink a member from a Network Group:`,
+  'cc-network-group-member-list.documentation.text': `Network Groups - Documentation`,
+  'cc-network-group-member-list.error': `Something went wrong while loading the Network Group info`,
+  'cc-network-group-member-list.heading': `Members and Peers`,
+  'cc-network-group-member-list.intro': `A member is a resource connected to a Network Group: it can be an application, an add-on, or even an external service. Each member is identified and has a dedicated domain name within the private network. A peer is a concrete instance of this member. All peers in the same Network Group can communicate with each other via a secure tunnel on all ports, which allows for private and encrypted interconnection between resources.`,
+  'cc-network-group-member-list.link-form.button': `Link member`,
+  'cc-network-group-member-list.link-form.empty': `No resources available to link`,
+  'cc-network-group-member-list.link-form.heading': `Link a member`,
+  'cc-network-group-member-list.link-form.select-label': `Resource to link`,
+  'cc-network-group-member-list.member-list.empty': `You don't have any member linked to your Network Group`,
+  'cc-network-group-member-list.member.link.error': `Something went wrong while linking the member to the Network Group`,
+  'cc-network-group-member-list.member.link.success': `The member has been linked to the Network Group successfully`,
+  'cc-network-group-member-list.member.logo.a11y-name.external': `External`,
+  'cc-network-group-member-list.member.unlink.error': `Something went wrong while unlinking the Network Group member`,
+  'cc-network-group-member-list.member.unlink.success': `The Network Group member has been unlinked successfully`,
+  'cc-network-group-member-list.refresh.error': `The operation succeeded but the list could not be refreshed. Refresh the page.`,
+  'cc-network-group-member-list.unlink.dialog.desc': `Unlinking a member from your Network Group also unlinks all its peers. Are you sure you want to continue?`,
+  'cc-network-group-member-list.unlink.dialog.heading': `Confirm unlink`,
+  'cc-network-group-member-list.unlink.dialog.unlink-btn': `Confirm and unlink`,
+  //#endregion
+  //#region cc-network-group-peer-card
+  'cc-network-group-peer-card.external-peer.config-link': /** @param {{ label: string }} _ */ ({ label }) =>
+     `Download peer configuration for ${label}`,
+  'cc-network-group-peer-card.metadata.id': `Identifier`,
+  'cc-network-group-peer-card.metadata.ip': `Ip address`,
+  'cc-network-group-peer-card.metadata.key': `Public key`,
+  'cc-network-group-peer-card.metadata.peer-type': `Peer type`,
+  'cc-network-group-peer-card.metadata.peer-type.clever-peer': `Clever Peer`,
+  'cc-network-group-peer-card.metadata.peer-type.external-peer': `External Peer`,
   //#endregion
   //#region cc-notice
   'cc-notice.close': `Close this notice`,
