@@ -25,6 +25,8 @@ import { i18n } from '../../translations/translation.js';
 import '../cc-breadcrumbs/cc-breadcrumbs.js';
 import '../cc-button/cc-button.js';
 import '../cc-clipboard/cc-clipboard.js';
+import '../cc-dialog-confirm-form/cc-dialog-confirm-form.js';
+import '../cc-dialog/cc-dialog.js';
 import '../cc-drawer/cc-drawer.js';
 import '../cc-grid/cc-grid.js';
 import '../cc-icon/cc-icon.js';
@@ -36,6 +38,7 @@ import {
   CcCellarNavigateToNextPageEvent,
   CcCellarNavigateToPathEvent,
   CcCellarNavigateToPreviousPageEvent,
+  CcCellarObjectCreateDirectoryEvent,
   CcCellarObjectDeleteEvent,
   CcCellarObjectFilterEvent,
   CcCellarObjectHideEvent,
@@ -43,7 +46,7 @@ import {
 } from './cc-cellar-object-list.events.js';
 
 /**
- * @import { CellarObjectListState, CellarObjectListStateLoading, CellarObjectListStateLoaded, CellarObjectListStateFiltering, CellarObjectState, CellarFileDetailsState } from './cc-cellar-object-list.types.js'
+ * @import { CellarObjectListState, CellarObjectListStateLoading, CellarObjectListStateLoaded, CellarObjectListStateFiltering, CellarObjectState, CellarFileDetailsState, CellarDirectoryCreateFormState } from './cc-cellar-object-list.types.js'
  * @import { CcBreadcrumbClickEvent } from '../cc-breadcrumbs/cc-breadcrumbs.events.js'
  * @import { CcGrid } from '../cc-grid/cc-grid.js'
  * @import { CcGridColumnDefinition } from '../cc-grid/cc-grid.types.js'
@@ -110,6 +113,12 @@ export class CcCellarObjectList extends LitElement {
 
     /** @type {Ref<CcGrid>} */
     this._gridRef = createRef();
+
+    /** @type {Ref<HTMLFormElement>} */
+    this._createDirectoryFormRef = createRef();
+
+    /** @type {Ref<HTMLElement>} */
+    this._createDirectoryButtonRef = createRef();
   }
 
   focusFirstCell() {
@@ -194,6 +203,46 @@ export class CcCellarObjectList extends LitElement {
     this.dispatchEvent(new CcCellarObjectDeleteEvent(objectKey));
   }
 
+  /**
+   * @param {string} objectKey
+   */
+  _onDownloadObject(objectKey) {
+    this.dispatchEvent(new CcCellarObjectDownloadEvent(objectKey));
+  }
+
+  _onCreateDirectoryButtonClick() {
+    if (this.state.type === 'loaded') {
+      this.state = {
+        ...this.state,
+        createForm: {
+          type: 'idle',
+          directoryName: '',
+        },
+      };
+    }
+  }
+
+  _onCancelDirectoryCreation() {
+    if (this.state.type === 'loaded') {
+      this.state = {
+        ...this.state,
+        createForm: null,
+      };
+      this._createDirectoryFormRef.value.reset();
+    }
+  }
+
+  _onConfirmDirectoryCreation() {
+    this._createDirectoryFormRef.value.requestSubmit();
+  }
+
+  /**
+   * @param {{directoryName: string}} formData
+   */
+  _onCreateDirectoryFormSubmit({ directoryName: directoryName }) {
+    this.dispatchEvent(new CcCellarObjectCreateDirectoryEvent(directoryName));
+  }
+
   render() {
     if (this.state.type === 'error') {
       return html`<cc-notice intent="warning" message=${i18n('cc-cellar-object-list.error')}></cc-notice>`;
@@ -202,6 +251,7 @@ export class CcCellarObjectList extends LitElement {
     return html`<div class="wrapper">
       ${this._renderHeading(this.state)} ${this._renderPath(this.state)} ${this._renderList(this.state)}
       ${this._renderPagination(this.state)} ${this.state.type === 'loaded' ? this._renderFileDetails(this.state) : ''}
+      ${this.state.type === 'loaded' ? this._renderDirectoryCreationForm(this.state.createForm) : ''}
     </div>`;
   }
 
@@ -211,6 +261,7 @@ export class CcCellarObjectList extends LitElement {
    */
   _renderHeading(state) {
     const filter = state.type === 'loaded' || state.type === 'filtering' ? state.filter : '';
+    const isSkeleton = state.type === 'loading';
 
     return html`
       <div class="list-heading">
@@ -238,6 +289,18 @@ export class CcCellarObjectList extends LitElement {
               ${i18n('cc-cellar-object-list.heading.filter.button')}
             </cc-button>
           </form>
+          <cc-button
+            ${ref(this._createDirectoryButtonRef)}
+            class="add-new-directory"
+            outlined
+            primary
+            type="button"
+            .icon=${iconDirectory}
+            ?skeleton=${isSkeleton}
+            ?disabled=${this.state.type === 'filtering'}
+            @cc-click=${this._onCreateDirectoryButtonClick}
+            >${i18n('cc-cellar-object-list.heading.add.directory')}</cc-button
+          >
         </div>
       </div>
     `;
@@ -467,6 +530,44 @@ export class CcCellarObjectList extends LitElement {
   _renderIconDetails(object) {
     const fileIcon = this._getFileIcon(object.contentType);
     return html`<cc-icon .icon=${fileIcon.icon} .a11yName=${fileIcon.a11yName}></cc-icon>`;
+  }
+
+  /**
+   * @param {CellarDirectoryCreateFormState} state
+   * @returns {TemplateResult}
+   */
+  _renderDirectoryCreationForm(state) {
+    const errorMessage =
+      state?.error === 'directory-already-exists'
+        ? i18n('cc-cellar-object-list.error.directory-already-exists', { directoryName: state.directoryName })
+        : state?.error === 'directory-name-invalid'
+          ? i18n('cc-cellar-object-list.error.directory-name-invalid')
+          : null;
+
+    return html`<cc-dialog
+      class="create-directory-dialog"
+      heading=${i18n('cc-cellar-object-list.add-directory.dialog.heading')}
+      ?open=${state != null}
+      @cc-close=${this._onCancelDirectoryCreation}
+    >
+      <form ${formSubmit(this._onCreateDirectoryFormSubmit.bind(this))} ${ref(this._createDirectoryFormRef)}>
+        <cc-input-text
+          ?autofocus=${true}
+          label=${i18n('cc-cellar-object-list.add-directory.dialog.label')}
+          name="directoryName"
+          required
+          ?readonly=${state?.type === 'creating'}
+          .value=${state?.directoryName ?? ''}
+          .errorMessage=${errorMessage}
+        >
+        </cc-input-text>
+        <cc-dialog-confirm-actions
+          submit-label=${i18n('cc-cellar-object-list.add-directory.dialog.submit')}
+          ?waiting=${state?.type === 'creating'}
+          @cc-confirm=${this._onConfirmDirectoryCreation}
+        ></cc-dialog-confirm-actions>
+      </form>
+    </cc-dialog>`;
   }
 
   static get styles() {

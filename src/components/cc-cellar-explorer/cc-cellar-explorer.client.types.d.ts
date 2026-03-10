@@ -34,6 +34,8 @@ export interface CellarDirectory {
   type: 'directory';
   key: string;
   name: string;
+  updatedAt?: string;
+  contentLength?: number;
 }
 
 export interface CellarFileDetails extends CellarFile {

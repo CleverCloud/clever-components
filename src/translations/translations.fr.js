@@ -531,7 +531,10 @@ export const translations = {
   'cc-cellar-explorer.error': `Une erreur est survenue pendant le chargement`,
   //#endregion
   //#region cc-cellar-object-list
-  'cc-cellar-object-list.back-to-bucket-list': `Retour à la liste des buckets`,
+  'cc-cellar-object-list.add-directory.dialog.heading': `Ajouter un nouveau dossier`,
+  'cc-cellar-object-list.add-directory.dialog.label': `Nom du dossier`,
+  'cc-cellar-object-list.add-directory.dialog.submit': `Ajouter un nouveau dossier`,
+  'cc-cellar-object-list.back-to-bucket-list': `Retour à la list des buckets`,
   'cc-cellar-object-list.date': /** @param {{date: string}} _ */ ({ date }) => formatDateOnly(date),
   'cc-cellar-object-list.details.actions.delete.button': `Supprimer l'objet`,
   'cc-cellar-object-list.details.actions.download.button': `Télécharger l'objet`,
@@ -550,11 +553,20 @@ export const translations = {
   },
   'cc-cellar-object-list.details.overview.title': `Aperçu de l'objet`,
   'cc-cellar-object-list.details.overview.updated-at': `Dernière modification`,
+  'cc-cellar-object-list.directory-items': /** @param {{count: number}} _ */ ({ count }) =>
+    `${count} élément${count > 1 ? 's' : ''}`,
   'cc-cellar-object-list.empty.no-filtered-items': `Aucun objet ne correspond au filtre`,
   'cc-cellar-object-list.empty.no-items': `Il n'y a aucun objet`,
   'cc-cellar-object-list.error': `Une erreur est survenue pendant le chargement de la liste des objets`,
   'cc-cellar-object-list.error.bucket-not-found': /** @param {{bucketName: string}} _ */ ({ bucketName }) =>
     `Le bucket ${bucketName} n'existe pas`,
+  'cc-cellar-object-list.error.directory-already-exists': /** @param {{directoryName: string}} _ */ ({
+    directoryName,
+  }) => `Le dossier ${directoryName} existe déjà`,
+  'cc-cellar-object-list.error.directory-creation-failed': /** @param {{directoryName: string}} _ */ ({
+    directoryName,
+  }) => `La création du dossier "${directoryName} a échoué`,
+  'cc-cellar-object-list.error.directory-name-invalid': `Le nom du dossier ne peut pas contenir les caractères suivants : / \\ { } ^ % \` [ ] " < > ~ # |, ni des caractères non imprimables`,
   'cc-cellar-object-list.error.object-deletion-failed': /** @param {{objectKey: string}} _ */ ({ objectKey }) =>
     `La suppression de l'objet ${objectKey} a échoué`,
   'cc-cellar-object-list.error.object-fetch-failed': /** @param {{objectKey: string}} _ */ ({ objectKey }) =>
@@ -567,6 +579,7 @@ export const translations = {
   'cc-cellar-object-list.grid.column.size': `Taille`,
   'cc-cellar-object-list.grid.show-details.a11y-name': /** @param {{objectName: string}} _ */ ({ objectName }) =>
     `Afficher les détails de l'objet ${objectName}`,
+  'cc-cellar-object-list.heading.add.directory': `Nouveau dossier`,
   'cc-cellar-object-list.heading.filter.button': `Filtrer`,
   'cc-cellar-object-list.heading.filter.label': `Filtre`,
   'cc-cellar-object-list.heading.title': `Liste des objets`,
@@ -581,6 +594,8 @@ export const translations = {
   'cc-cellar-object-list.page.next': `Page suivante`,
   'cc-cellar-object-list.page.previous': `Page précédente`,
   'cc-cellar-object-list.size': /** @param {{size: number}} _ */ ({ size }) => formatBytes(size),
+  'cc-cellar-object-list.success.directory-created': /** @param {{directoryName: string}} _ */ ({ directoryName }) =>
+    `Le dossier "${directoryName}" a été créé avec succès`,
   'cc-cellar-object-list.success.object-already-deleted': /** @param {{objectKey: string}} _ */ ({ objectKey }) =>
     `L'objet ${objectKey} était déjà supprimé`,
   'cc-cellar-object-list.success.object-deleted': /** @param {{objectKey: string}} _ */ ({ objectKey }) =>

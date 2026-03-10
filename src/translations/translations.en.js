@@ -520,6 +520,9 @@ export const translations = {
   'cc-cellar-explorer.error': `Error while loading component`,
   //#endregion
   //#region cc-cellar-object-list
+  'cc-cellar-object-list.add-directory.dialog.heading': `Add a new directory`,
+  'cc-cellar-object-list.add-directory.dialog.label': `Directory name`,
+  'cc-cellar-object-list.add-directory.dialog.submit': `Add a new directory`,
   'cc-cellar-object-list.back-to-bucket-list': `Go back to list of buckets`,
   'cc-cellar-object-list.date': /** @param {{date: string}} _ */ ({ date }) => formatDateOnly(date),
   'cc-cellar-object-list.details.actions.delete.button': `Delete object`,
@@ -539,11 +542,20 @@ export const translations = {
   },
   'cc-cellar-object-list.details.overview.title': `Object overview`,
   'cc-cellar-object-list.details.overview.updated-at': `Last update`,
+  'cc-cellar-object-list.directory-items': /** @param {{count: number}} _ */ ({ count }) =>
+    `${count} item${count > 1 ? 's' : ''}`,
   'cc-cellar-object-list.empty.no-filtered-items': `No objects matching the filter were found`,
   'cc-cellar-object-list.empty.no-items': `There are no objects`,
   'cc-cellar-object-list.error': `Something went wrong while loading the list of objects`,
   'cc-cellar-object-list.error.bucket-not-found': /** @param {{bucketName: string}} _ */ ({ bucketName }) =>
     `Bucket ${bucketName} does not exist`,
+  'cc-cellar-object-list.error.directory-already-exists': /** @param {{directoryName: string}} _ */ ({
+    directoryName,
+  }) => `Directory ${directoryName} already exists`,
+  'cc-cellar-object-list.error.directory-creation-failed': /** @param {{directoryName: string}} _ */ ({
+    directoryName,
+  }) => `Directory ${directoryName} creation failed`,
+  'cc-cellar-object-list.error.directory-name-invalid': `Directory name cannot contain the following characters: / \\ { } ^ % \` [ ] " < > ~ # |, or non-printable characters`,
   'cc-cellar-object-list.error.object-deletion-failed': /** @param {{objectKey: string}} _ */ ({ objectKey }) =>
     `Failed to delete object ${objectKey}`,
   'cc-cellar-object-list.error.object-fetch-failed': /** @param {{objectKey: string}} _ */ ({ objectKey }) =>
@@ -556,6 +568,7 @@ export const translations = {
   'cc-cellar-object-list.grid.column.size': `Size`,
   'cc-cellar-object-list.grid.show-details.a11y-name': /** @param {{objectName: string}} _ */ ({ objectName }) =>
     `Show details for object ${objectName}`,
+  'cc-cellar-object-list.heading.add.directory': `New directory`,
   'cc-cellar-object-list.heading.filter.button': `Filter`,
   'cc-cellar-object-list.heading.filter.label': `Filter`,
   'cc-cellar-object-list.heading.title': `List of objects`,
@@ -570,6 +583,8 @@ export const translations = {
   'cc-cellar-object-list.page.next': `Next page`,
   'cc-cellar-object-list.page.previous': `Previous page`,
   'cc-cellar-object-list.size': /** @param {{size: number}} _ */ ({ size }) => formatBytes(size),
+  'cc-cellar-object-list.success.directory-created': /** @param {{directoryName: string}} _ */ ({ directoryName }) =>
+    `Directory "${directoryName}" was successfully created`,
   'cc-cellar-object-list.success.object-already-deleted': /** @param {{objectKey: string}} _ */ ({ objectKey }) =>
     `Object ${objectKey} was already deleted`,
   'cc-cellar-object-list.success.object-deleted': /** @param {{objectKey: string}} _ */ ({ objectKey }) =>

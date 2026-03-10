@@ -31,7 +31,10 @@ import {
   CcCellarNavigateToNextPageEvent,
   CcCellarNavigateToPathEvent,
   CcCellarNavigateToPreviousPageEvent,
+  CcCellarObjectCreateDirectoryEvent,
   CcCellarObjectDeleteEvent,
+  CcCellarObjectDirectoryNameInputEvent,
+  CcCellarObjectDownloadEvent,
   CcCellarObjectFilterEvent,
   CcCellarObjectHideEvent,
   CcCellarObjectShowEvent,
@@ -232,7 +235,10 @@ declare global {
     'cc-cellar-navigate-to-next-page': CcCellarNavigateToNextPageEvent;
     'cc-cellar-navigate-to-path': CcCellarNavigateToPathEvent;
     'cc-cellar-navigate-to-previous-page': CcCellarNavigateToPreviousPageEvent;
+    'cc-cellar-object-create-directory': CcCellarObjectCreateDirectoryEvent;
     'cc-cellar-object-delete': CcCellarObjectDeleteEvent;
+    'cc-cellar-object-directory-name-input': CcCellarObjectDirectoryNameInputEvent;
+    'cc-cellar-object-download': CcCellarObjectDownloadEvent;
     'cc-cellar-object-filter': CcCellarObjectFilterEvent;
     'cc-cellar-object-hide': CcCellarObjectHideEvent;
     'cc-cellar-object-show': CcCellarObjectShowEvent;
