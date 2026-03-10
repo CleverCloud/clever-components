@@ -74,7 +74,7 @@ export const waitingWithRequestingUpdate = makeStory(conf, {
           changelogLink: 'https://example.com/changelog',
         },
         plan: 'DEV',
-        features: [
+        specifications: [
           {
             code: 'cpu',
             type: 'number',
@@ -475,7 +475,7 @@ export const updateAvailableWithOpenVersionDialog = makeStory(conf, {
           changelogLink: 'https://example.com/changelog',
         },
         plan: 'DEV',
-        features: [
+        specifications: [
           {
             code: 'cpu',
             type: 'number',
