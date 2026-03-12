@@ -1015,6 +1015,10 @@ export const translations = {
   'cc-homepage-onboarding.title.already-user': `Continue to create`,
   'cc-homepage-onboarding.title.new-user': `Ready to start and deploy?`,
   //#endregion
+  //#region cc-homepage-template-project
+  'cc-homepage-template-project.error': `An error occurred while loading template projects`,
+  'cc-homepage-template-project.title': `Pre-built projects`,
+  //#endregion
   //#region cc-homepage-video
   'cc-homepage-video.iframe-title': `YouTube video`,
   'cc-homepage-video.link': `See our YouTube channel`,
