@@ -11,10 +11,7 @@ export const configProviderData = {
   providerLogoUrl: getAssetUrl('/logos/configprovider.svg'),
   name: 'my-config',
   id: 'config_59xml9zd-f1rg-2jj2-z733-p564812374122',
-  zone: {
-    type: 'loaded',
-    ...ZONE,
-  },
+  zone: ZONE,
 };
 
 /** @type {Addon} */
@@ -23,10 +20,7 @@ export const pulsarData = {
   providerLogoUrl: getAssetUrl('/logos/pulsar.svg'),
   name: 'my-pulsar',
   id: 'pulsar_695g1427-sn3t-0200-36mw-h56983vb3653',
-  zone: {
-    type: 'loaded',
-    ...ZONE,
-  },
+  zone: ZONE,
   logsUrl: 'https://example.com/logs',
 };
 
@@ -36,10 +30,7 @@ export const jenkinsData = {
   providerLogoUrl: getAssetUrl('/logos/jenkins.svg'),
   name: 'my-jenkins',
   id: 'jenkins_fgh7evv9-q21m-9129-mm3b-04f77lo56w36',
-  zone: {
-    type: 'loaded',
-    ...ZONE,
-  },
+  zone: ZONE,
   logsUrl: 'https://example.com/logs',
   openLinks: [
     {
@@ -55,10 +46,7 @@ export const elasticData = {
   providerLogoUrl: getAssetUrl('/logos/elastic.svg'),
   name: 'my-elastic',
   id: 'elasticsearch_23694507-44yt-023u-ib5o-6vc7d0mp99a2',
-  zone: {
-    type: 'loaded',
-    ...ZONE,
-  },
+  zone: ZONE,
   logsUrl: 'https://example.com/logs',
   openLinks: [
     {
@@ -78,10 +66,7 @@ export const matomoData = {
   providerLogoUrl: getAssetUrl('/logos/matomo.svg'),
   name: 'my-matomo',
   id: 'matomo_0985go7t-2kda-6dv2-x978-h63r45o11q6p',
-  zone: {
-    type: 'loaded',
-    ...ZONE,
-  },
+  zone: ZONE,
   logsUrl: 'https://example.com/logs',
   openLinks: [
     {
@@ -101,10 +86,7 @@ export const keycloakData = {
   providerLogoUrl: 'https://cc-keycloak.cellar-c2.services.clever-cloud.com/keycloak_logo.svg',
   name: 'my-keycloak',
   id: 'keycloak_511f6k82-9r44-6w90-86s3-az6m5kvyy478',
-  zone: {
-    type: 'loaded',
-    ...ZONE,
-  },
+  zone: ZONE,
   logsUrl: 'https://example.com/logs',
   openLinks: [
     {
@@ -125,10 +107,7 @@ export const materiaData = {
   providerLogoUrl: getAssetUrl('/logos/materia-db-kv.png'),
   name: 'my-materia',
   id: 'kv_54PE021ROIUTYZ8GH4DFGMB33Z',
-  zone: {
-    type: 'loaded',
-    ...ZONE,
-  },
+  zone: ZONE,
   logsUrl: 'https://example.com/logs',
   openLinks: [
     {
@@ -149,10 +128,7 @@ export const redisData = {
   providerLogoUrl: getAssetUrl('/logos/redis.svg'),
   name: 'my-redis',
   id: 'redis_236590c14-5119-4aca-9888-3b16523486b',
-  zone: {
-    type: 'loaded',
-    ...ZONE,
-  },
+  zone: ZONE,
   logsUrl: 'https://example.com/logs',
   openLinks: [
     {
@@ -174,11 +150,8 @@ export const kubernetesData = {
   providerLogoUrl: 'https://img.icons8.com/?size=100&id=cvzmaEA4kC0o&format=png&color=000000',
   name: 'my-kubernetes',
   id: 'kubernetes_807d9f82-242b-4cd9-ac9f-96c73c1d074f',
-  zone: {
-    type: 'loaded',
-    ...ZONE,
-  },
-  configLink: 'https://example.com/kubeconfig.json',
+  zone: ZONE,
+  configLink: { href: 'https://example.com/kubeconfig.json', fileName: 'kubeconfig.yaml' },
   actions: {
     restart: true,
     rebuildAndRestart: true,

@@ -9,7 +9,7 @@ const PROVIDER_ID = 'addon-pulsar';
 /**
  * @import { CcAddonHeader } from './cc-addon-header.js'
  * @import { RawAddon } from './cc-addon-header.types.js'
- * @import { ZoneStateLoaded } from '../cc-zone/cc-zone.types.js'
+ * @import { Zone } from '../common.types.js';
  * @import { ApiConfig } from '../../lib/send-to-api.types.js'
  * @import { OnContextUpdateArgs } from '../../lib/smart/smart-component.types.js'
  */
@@ -67,9 +67,7 @@ class Api extends CcAddonHeaderClient {
     super({ apiConfig, ownerId, addonId, providerId: PROVIDER_ID, signal });
   }
 
-  /**
-   * @return {Promise<{rawAddon: RawAddon, zone: ZoneStateLoaded}>}
-   */
+  /** @return {Promise<{rawAddon: RawAddon, zone: Zone }>} */
   async getProviderWithZone() {
     const rawAddon = await this.getAddon();
     const zone = await this.getZone(rawAddon.region);

@@ -12,7 +12,7 @@ const PROVIDER_ID = 'es-addon';
 /**
  * @import { CcAddonHeader } from './cc-addon-header.js'
  * @import { ElasticProviderInfo, RawAddon } from './cc-addon-header.types.js'
- * @import { ZoneStateLoaded } from '../cc-zone/cc-zone.types.js'
+ * @import { Zone } from '../common.types.js';
  * @import { ApiConfig } from '../../lib/send-to-api.types.js'
  * @import { OnContextUpdateArgs } from '../../lib/smart/smart-component.types.js'
  */
@@ -110,7 +110,7 @@ class Api extends CcAddonHeaderClient {
   }
 
   /**
-   * @return {Promise<{rawAddon: RawAddon, rawProvider: ElasticProviderInfo, zone: ZoneStateLoaded}>}
+   * @return {Promise<{rawAddon: RawAddon, rawProvider: ElasticProviderInfo, zone: Zone}>}
    */
   async getProviderWithZone() {
     const rawAddon = await this.getAddon();

@@ -12,7 +12,7 @@ const PROVIDER_ID = 'jenkins';
 /**
  * @import { CcAddonHeader } from './cc-addon-header.js'
  * @import { JenkinsProviderInfo, RawAddon } from './cc-addon-header.types.js'
- * @import { ZoneStateLoaded } from '../cc-zone/cc-zone.types.js'
+ * @import { Zone } from '../common.types.js';
  * @import { ApiConfig } from '../../lib/send-to-api.types.js'
  * @import { OnContextUpdateArgs } from '../../lib/smart/smart-component.types.js'
  */
@@ -94,7 +94,7 @@ class Api extends CcAddonHeaderClient {
   }
 
   /**
-   * @return {Promise<{rawAddon: RawAddon, rawProvider: JenkinsProviderInfo, zone: ZoneStateLoaded}>}
+   * @return {Promise<{rawAddon: RawAddon, rawProvider: JenkinsProviderInfo, zone: Zone}>}
    */
   async getProviderWithZone() {
     const rawAddon = await this.getAddon();

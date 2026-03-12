@@ -14,7 +14,7 @@ const FIFTY_MINUTES = 50 * 60 * 1000;
 /**
  * @import { CcAddonHeader } from './cc-addon-header.js'
  * @import { DeploymentStatus, CcAddonHeaderStateLoaded, CcAddonHeaderStateLoading, KubeInfo } from './cc-addon-header.types.js'
- * @import { ZoneStateLoaded } from '../cc-zone/cc-zone.types.js'
+ * @import { Zone } from '../common.types.js'
  * @import { ApiConfig } from '../../lib/send-to-api.types.js'
  * @import { OnContextUpdateArgs } from '../../lib/smart/smart-component.types.js'
  */
@@ -145,9 +145,8 @@ class Api {
   async getKubeInfoWithKubeConfig() {
     const kubeInfo = await this._getKubeInfo();
     const kubeConfigUrl = await this.getKubeConfig();
-    /** @type ZoneStateLoaded */
+    /** @type {Zone} */
     const zone = {
-      type: 'loaded',
       name: 'par',
       country: 'France',
       countryCode: 'FR',

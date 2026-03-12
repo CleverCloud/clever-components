@@ -1,5 +1,4 @@
-import { ZoneStateLoaded } from '../cc-zone/cc-zone.types.js';
-import { AddonPlan, AddonProvider } from '../common.types.js';
+import { AddonPlan, AddonProvider, Zone } from '../common.types.js';
 
 export type CcAddonHeaderState =
   | CcAddonHeaderStateLoading
@@ -8,12 +7,11 @@ export type CcAddonHeaderState =
   | CcAddonHeaderStateRestarting
   | CcAddonHeaderStateRebuilding;
 
-interface BaseProperties {
+export interface AddonHeaderBaseProperties {
   providerId: string;
   providerLogoUrl: string;
   name: string;
   id: string;
-  zone: ZoneStateLoaded;
 }
 
 interface OptionalProperties {
@@ -29,6 +27,7 @@ interface OptionalProperties {
     href: string;
     fileName: string;
   };
+  zone?: Zone;
 }
 
 interface OpenLink {
@@ -42,7 +41,7 @@ export interface CcAddonHeaderStateLoading extends OptionalProperties {
   type: 'loading';
 }
 
-export interface CcAddonHeaderStateLoaded extends BaseProperties, OptionalProperties {
+export interface CcAddonHeaderStateLoaded extends AddonHeaderBaseProperties, OptionalProperties {
   type: 'loaded';
 }
 
@@ -50,11 +49,11 @@ export interface CcAddonHeaderStateError {
   type: 'error';
 }
 
-export interface CcAddonHeaderStateRestarting extends BaseProperties, OptionalProperties {
+export interface CcAddonHeaderStateRestarting extends AddonHeaderBaseProperties, OptionalProperties {
   type: 'restarting';
 }
 
-export interface CcAddonHeaderStateRebuilding extends BaseProperties, OptionalProperties {
+export interface CcAddonHeaderStateRebuilding extends AddonHeaderBaseProperties, OptionalProperties {
   type: 'rebuilding';
 }
 
@@ -70,7 +69,7 @@ export interface RawAddon {
   configKeys: string[];
 }
 
-export type Addon = BaseProperties & OptionalProperties;
+export type Addon = AddonHeaderBaseProperties & OptionalProperties;
 
 export interface KubeInfo {
   id: string;

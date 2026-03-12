@@ -5,7 +5,7 @@ import { sendToApi } from '../../lib/send-to-api.js';
 
 /**
  * @import { RawAddon } from './cc-addon-header.types.js'
- * @import { ZoneStateLoaded } from '../cc-zone/cc-zone.types.js'
+ * @import { Zone } from '../common.types.js'
  * @import { RawOperator } from '../../operators.types.js'
  * @import { ApiConfig } from '../../lib/send-to-api.types.js'
  */
@@ -47,7 +47,7 @@ export class CcAddonHeaderClient {
 
   /**
    * @param {string} zoneName
-   * @return {Promise<ZoneStateLoaded>}
+   * @return {Promise<Zone>}
    */
   getZone(zoneName) {
     return getZone({ zoneName, ownerId: this._ownerId }).then(
@@ -55,7 +55,7 @@ export class CcAddonHeaderClient {
     );
   }
 
-  /** @returns {Promise<{ rawAddon: RawAddon, operator: RawOperator, zone: ZoneStateLoaded }>} */
+  /** @returns {Promise<{ rawAddon: RawAddon, operator: RawOperator, zone: Zone }>} */
   async getAddonWithOperatorAndZone() {
     const rawAddon = await this.getAddon();
     this._realId = rawAddon.realId;
@@ -64,7 +64,7 @@ export class CcAddonHeaderClient {
     return { rawAddon, operator, zone };
   }
 
-  /** @returns {Promise<{ rawAddon: RawAddon, zone: ZoneStateLoaded }>} */
+  /** @returns {Promise<{ rawAddon: RawAddon, zone: Zone }>} */
   async getAddonWithZone() {
     const rawAddon = await this.getAddon();
     const zone = await this.getZone(rawAddon.region);
