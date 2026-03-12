@@ -535,6 +535,7 @@ export const translations = {
   'cc-cellar-object-list.add-directory.dialog.label': `Nom du dossier`,
   'cc-cellar-object-list.add-directory.dialog.submit': `Ajouter un nouveau dossier`,
   'cc-cellar-object-list.back-to-bucket-list': `Retour à la list des buckets`,
+  'cc-cellar-object-list.button.upload': `Téléverser un objet`,
   'cc-cellar-object-list.date': /** @param {{date: string}} _ */ ({ date }) => formatDateOnly(date),
   'cc-cellar-object-list.details.actions.delete.button': `Supprimer l'objet`,
   'cc-cellar-object-list.details.actions.download.button': `Télécharger l'objet`,
@@ -573,6 +574,8 @@ export const translations = {
     `Impossible de récupérer l'objet ${objectKey}`,
   'cc-cellar-object-list.error.object-not-found': /** @param {{objectKey: string}} _ */ ({ objectKey }) =>
     `L'objet ${objectKey} n'existe pas`,
+  'cc-cellar-object-list.error.object-too-large': `Fichier trop volumineux`,
+  'cc-cellar-object-list.error.object-upload-failed': `Le téléversement a échoué`,
   'cc-cellar-object-list.grid.a11y-name': `Liste des objets`,
   'cc-cellar-object-list.grid.column.last-update': `Dernière modification`,
   'cc-cellar-object-list.grid.column.name': `Nom`,
@@ -600,6 +603,8 @@ export const translations = {
     `L'objet ${objectKey} était déjà supprimé`,
   'cc-cellar-object-list.success.object-deleted': /** @param {{objectKey: string}} _ */ ({ objectKey }) =>
     `L'objet ${objectKey} a été supprimé avec succès`,
+  'cc-cellar-object-list.success.object-uploaded': /** @param {{objectKey: string}} _ */ ({ objectKey }) =>
+    `Le fichier ${objectKey} a été téléversé avec succès`,
   //#endregion
   //#region cc-clipboard
   'cc-clipboard.copied': `Le texte a été copié`,

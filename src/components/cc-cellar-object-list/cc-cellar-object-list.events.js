@@ -152,3 +152,18 @@ export class CcCellarObjectCreateDirectoryEvent extends CcEvent {
     super(CcCellarObjectCreateDirectoryEvent.TYPE, details);
   }
 }
+
+/**
+ * Dispatched when a file upload is requested.
+ * @extends {CcEvent<File>}
+ */
+export class CcCellarObjectUploadEvent extends CcEvent {
+  static TYPE = 'cc-cellar-object-upload';
+
+  /**
+   * @param {File} file
+   */
+  constructor(file) {
+    super(CcCellarObjectUploadEvent.TYPE, file);
+  }
+}

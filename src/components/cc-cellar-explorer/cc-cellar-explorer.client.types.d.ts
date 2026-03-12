@@ -36,6 +36,7 @@ export interface CellarDirectory {
   name: string;
   updatedAt?: string;
   contentLength?: number;
+  volatile?: boolean;
 }
 
 export interface CellarFileDetails extends CellarFile {

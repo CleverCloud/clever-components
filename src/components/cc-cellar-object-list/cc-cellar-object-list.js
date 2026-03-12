@@ -17,6 +17,7 @@ import {
   iconRemixMoreFill as iconMore,
   iconRemixArrowRightSFill as iconNext,
   iconRemixArrowLeftSFill as iconPrevious,
+  iconRemixFileUploadLine as iconUpload,
 } from '../../assets/cc-remix.icons.js';
 import { formSubmit } from '../../lib/form/form-submit-directive.js';
 import { random, randomString } from '../../lib/utils.js';
@@ -40,9 +41,11 @@ import {
   CcCellarNavigateToPreviousPageEvent,
   CcCellarObjectCreateDirectoryEvent,
   CcCellarObjectDeleteEvent,
+  CcCellarObjectDownloadEvent,
   CcCellarObjectFilterEvent,
   CcCellarObjectHideEvent,
   CcCellarObjectShowEvent,
+  CcCellarObjectUploadEvent,
 } from './cc-cellar-object-list.events.js';
 
 /**
@@ -243,6 +246,18 @@ export class CcCellarObjectList extends LitElement {
     this.dispatchEvent(new CcCellarObjectCreateDirectoryEvent(directoryName));
   }
 
+  _onUploadButtonClick() {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.addEventListener('change', (event) => {
+      const file = /** @type {HTMLInputElement} */ (event.target).files?.[0];
+      if (file != null) {
+        this.dispatchEvent(new CcCellarObjectUploadEvent(file));
+      }
+    });
+    input.click();
+  }
+
   render() {
     if (this.state.type === 'error') {
       return html`<cc-notice intent="warning" message=${i18n('cc-cellar-object-list.error')}></cc-notice>`;
@@ -289,6 +304,16 @@ export class CcCellarObjectList extends LitElement {
               ${i18n('cc-cellar-object-list.heading.filter.button')}
             </cc-button>
           </form>
+          <cc-button
+            primary
+            type="button"
+            .icon=${iconUpload}
+            ?skeleton=${isSkeleton}
+            ?disabled=${this.state.type === 'filtering'}
+            ?waiting=${this.state.type === 'loaded' && this.state.uploadState?.type === 'uploading'}
+            @cc-click=${this._onUploadButtonClick}
+            >${i18n('cc-cellar-object-list.button.upload')}</cc-button
+          >
           <cc-button
             ${ref(this._createDirectoryButtonRef)}
             class="add-new-directory"

@@ -1,7 +1,7 @@
 import { Abortable } from '../../lib/abortable.js';
 import { i18n } from '../../lib/i18n/i18n.js';
 import { notifyError, notifySuccess } from '../../lib/notifications.js';
-import { isCellarExplorerErrorWithCode } from '../cc-cellar-explorer/cc-cellar-explorer.client.js';
+import { isCellarExplorerErrorWithCode, pathToString } from '../cc-cellar-explorer/cc-cellar-explorer.client.js';
 import '../cc-smart-container/cc-smart-container.js';
 import { CcCellarNavigateToHomeEvent } from './cc-cellar-object-list.events.js';
 import './cc-cellar-object-list.js';
@@ -39,8 +39,8 @@ export class ObjectListController {
   /** @type {Array<string>} */
   #previousPages = [];
   // Map = dictionnaire clé -> valeur
-  /** @type {Map<string, Set<string>>} */
-  #fictitiousDirectories = new Map();
+  /*   /!** @type {Map<string, Set<string>>} *!/
+  #fictitiousDirectories = new Map(); */
   /** @type {Abortable} */
   #abortable;
   /** @type {NodeJS.Timeout} */
@@ -100,6 +100,10 @@ export class ObjectListController {
     onEvent('cc-cellar-object-create-directory', (directoryName) => {
       this.createDirectory(directoryName);
     });
+
+    onEvent('cc-cellar-object-upload', (file) => {
+      this.uploadObject(file);
+    });
   }
 
   abort() {
@@ -117,7 +121,7 @@ export class ObjectListController {
     this.#nextCursor = null;
     this.#currentCursor = null;
     this.#previousPages = [];
-    this.#fictitiousDirectories = new Map();
+    // this.#fictitiousDirectories = new Map();
 
     this.#updateState({ type: 'loading', bucketName: this.#bucketName, path: this.#path });
     await this.#fetchObjects();
@@ -243,9 +247,11 @@ export class ObjectListController {
       element.click();
       document.body.removeChild(element);
     } catch (error) {
-      this.#handleErrorOnObject(error, objectKey, () =>
-        notifyError(i18n('cc-cellar-object-list.error.object-download-failed', { objectKey })),
-      );
+      this.#handleErrorOnObject({
+        error,
+        objectKey,
+        orElse: () => notifyError(i18n('cc-cellar-object-list.error.object-download-failed', { objectKey })),
+      });
     } finally {
       this.#updateDetails({ state: 'idle' });
     }
@@ -259,8 +265,9 @@ export class ObjectListController {
           filter: this.#filter,
         }),
       );
-      const realObjects = [...response.directories, ...response.content].map((object) => ({ state: 'idle', ...object }));
-      this.#objects = this.#mergeWithFictitiousDirectories(realObjects);
+      this.#objects = [...response.directories, ...response.content].map((object) =>
+        object.type === 'file' ? /** @type {CellarFileState} */ ({ ...object, state: 'idle' }) : object,
+      );
       this.#nextCursor = response.cursor;
       this.#updateState({
         type: 'loaded',
@@ -276,42 +283,6 @@ export class ObjectListController {
       console.log(error);
       this.#updateState({ type: 'error', bucketName: this.#bucketName, path: this.#path });
     }
-  }
-
-  /**
-   * Merges fictitious (RAM-only) directories with real S3 objects for the current path.
-   * Fictitious directories already present in the S3 listing are excluded to avoid duplicates.
-   *
-   * @param {Array<CellarObjectState>} realObjects
-   * @returns {Array<CellarObjectState>}
-   */
-  #mergeWithFictitiousDirectories(realObjects) {
-    const pathKey = this.#path.join('/');
-
-    // Récupération des dossiers fictifs mémorisés pour le chemin courant
-    const fictitiousDirNames = this.#fictitiousDirectories.get(pathKey) ?? new Set();
-
-    // Filtre des dossiers qui existent déjà côté serveur (pour éviter les doublons)
-    /** @type {Array<CellarDirectory>} */
-    const fictitiousObjects = [...fictitiousDirNames]
-      .filter((name) => !realObjects.some((obj) => obj.type === 'directory' && obj.name === name))
-      .map((name) => ({
-        type: 'directory',
-        key: [...this.#path, name].join('/'),
-        name,
-      }));
-
-    // Fusion des dossiers fictifs restants avec les vrais objets S3
-    return [...fictitiousObjects, ...realObjects].sort((a, b) => {
-      // Tri et mise à jour de l'affichage
-      if (a.type === 'directory' && b.type === 'file') {
-        return -1;
-      }
-      if (a.type === 'file' && b.type === 'directory') {
-        return 1;
-      }
-      return a.name.localeCompare(b.name);
-    });
   }
 
   /**
@@ -394,39 +365,26 @@ export class ObjectListController {
     this.#updateCreateForm({ type: 'creating', directoryName, error: null });
     await this.#getComponent().updateComplete;
 
-    // Validation du nom
     if (INVALID_CHARS.test(directoryName)) {
       this.#updateCreateForm({ type: 'idle', directoryName, error: 'directory-name-invalid' });
       return;
     }
 
-    // Vérification des doublons
-    // dans #objects : les vrais dossiers qui viennent du serveur S3
-    // dans #fictitiousDirectories : les dossiers déjà créés localement mais pas encore envoyés au serveur
-    const pathKey = this.#path.join('/');
-    const alreadyExists =
-      this.#objects.some((obj) => obj.type === 'directory' && obj.name === directoryName) ||
-      (this.#fictitiousDirectories.get(pathKey)?.has(directoryName) ?? false);
+    const alreadyExists = this.#objects.some((obj) => obj.type === 'directory' && obj.name === directoryName);
 
     if (alreadyExists) {
       this.#updateCreateForm({ type: 'idle', directoryName, error: 'directory-already-exists' });
       return;
     }
 
-    // Ajout en mémoire
-    // Set = collection
-    const dirs = this.#fictitiousDirectories.get(pathKey) ?? new Set();
-    dirs.add(directoryName);
-    this.#fictitiousDirectories.set(pathKey, dirs);
-
     /** @type {CellarDirectory} */
     const newDir = {
       type: 'directory',
       key: [...this.#path, directoryName].join('/'),
       name: directoryName,
+      volatile: true,
     };
 
-    // Mise à jour de l'affichage (dossiers en premier, fichiers ensuite + tri alphabétique)
     this.#objects = [...this.#objects, newDir].sort((a, b) => {
       if (a.type === 'directory' && b.type === 'file') {
         return -1;
@@ -441,6 +399,40 @@ export class ObjectListController {
       /** @param {CellarObjectListStateLoaded} state */ (state) => {
         state.objects = this.#objects;
         state.createForm = null;
+      },
+    );
+  }
+
+  /**
+   * @param {File} file
+   * @returns {Promise<void>}
+   */
+  async uploadObject(file) {
+    const objectKey = pathToString(this.#path) + file.name;
+    this.#updateUploadState({ type: 'uploading' });
+
+    try {
+      await this.#cellarClient.uploadObject(this.#bucketName, objectKey, file);
+      notifySuccess(i18n('cc-cellar-object-list.success.object-uploaded', { objectKey }));
+      this.#updateUploadState({ type: 'idle' });
+      await this.#fetchObjects();
+    } catch (error) {
+      if (isCellarExplorerErrorWithCode(error, 'clever.file-explorer-proxy.cellar.object-too-large')) {
+        notifyError(i18n('cc-cellar-object-list.error.object-too-large'));
+      } else {
+        notifyError(i18n('cc-cellar-object-list.error.object-upload-failed'));
+      }
+      this.#updateUploadState({ type: 'idle' });
+    }
+  }
+
+  /**
+   * @param {import('./cc-cellar-object-list.types.js').CellarObjectUploadState} newState
+   */
+  #updateUploadState(newState) {
+    this.#updateState(
+      /** @param {CellarObjectListStateLoaded} state */ (state) => {
+        state.uploadState = newState;
       },
     );
   }

@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//home/heleneamouzou/dev/file-explorer-proxy/**)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

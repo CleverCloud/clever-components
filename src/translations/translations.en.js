@@ -524,6 +524,7 @@ export const translations = {
   'cc-cellar-object-list.add-directory.dialog.label': `Directory name`,
   'cc-cellar-object-list.add-directory.dialog.submit': `Add a new directory`,
   'cc-cellar-object-list.back-to-bucket-list': `Go back to list of buckets`,
+  'cc-cellar-object-list.button.upload': `Upload object`,
   'cc-cellar-object-list.date': /** @param {{date: string}} _ */ ({ date }) => formatDateOnly(date),
   'cc-cellar-object-list.details.actions.delete.button': `Delete object`,
   'cc-cellar-object-list.details.actions.download.button': `Download object`,
@@ -562,6 +563,8 @@ export const translations = {
     `Failed to get object ${objectKey}`,
   'cc-cellar-object-list.error.object-not-found': /** @param {{objectKey: string}} _ */ ({ objectKey }) =>
     `Object ${objectKey} does not exist`,
+  'cc-cellar-object-list.error.object-too-large': `File too large`,
+  'cc-cellar-object-list.error.object-upload-failed': `Upload failed`,
   'cc-cellar-object-list.grid.a11y-name': `List of objects`,
   'cc-cellar-object-list.grid.column.last-update': `Last update`,
   'cc-cellar-object-list.grid.column.name': `Name`,
@@ -589,6 +592,8 @@ export const translations = {
     `Object ${objectKey} was already deleted`,
   'cc-cellar-object-list.success.object-deleted': /** @param {{objectKey: string}} _ */ ({ objectKey }) =>
     `Object ${objectKey} deleted successfully`,
+  'cc-cellar-object-list.success.object-uploaded': /** @param {{objectKey: string}} _ */ ({ objectKey }) =>
+    `File ${objectKey} uploaded successfully`,
   //#endregion
   //#region cc-clipboard
   'cc-clipboard.copied': `The text has been copied`,

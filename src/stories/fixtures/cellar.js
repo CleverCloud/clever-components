@@ -14,7 +14,7 @@ export const bucket1 = {
   updatedAt: new Date().toISOString(),
   sizeInBytes: random(150_000, 2_000_000),
   objectsCount: random(1_000, 1_000_000),
-  versioning: 'enabled',
+  versioning: 'ENABLED',
 };
 
 /** @type {CellarBucketState} */
