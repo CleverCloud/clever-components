@@ -1380,24 +1380,6 @@ export const translations = {
   'cc-map.error.icon-a11y-name': `Warning`,
   'cc-map.no-points': `No data to display on the map right now.`,
   //#endregion
-  //#region cc-matomo-info
-  'cc-matomo-info.about.text': () => sanitize`
-    <p>The Matomo add-on is a meta add-on. It provides you with a <strong>PHP</strong> application, a <strong>MySQL</strong> add-on and a <strong>Redis</strong> add-on.</p>
-    <p>They appear in your organisation just like your other applications and add-ons. You can still configure them as you like. For example, you may want to change the PHP application's domain or migrate the MySQL add-on to a bigger plan.</p>
-    <p>This add-on is free but its dependencies are billed based on their consumptions, just like other applications and add-ons.</p>
-  `,
-  'cc-matomo-info.about.title': `About`,
-  'cc-matomo-info.documentation.text': `Matomo - Documentation`,
-  'cc-matomo-info.error': `An error occurred while fetching the information about this add-on.`,
-  'cc-matomo-info.heading': `This Matomo add-on provides all required dependencies to get started.`,
-  'cc-matomo-info.info': `Info`,
-  'cc-matomo-info.link.mysql': `Access the MySQL add-on`,
-  'cc-matomo-info.link.php': `Access the PHP application`,
-  'cc-matomo-info.link.redis': `Access the Redis add-on`,
-  'cc-matomo-info.open-matomo.link': `Access Matomo`,
-  'cc-matomo-info.open-matomo.text': `You can access your Matomo using your Clever Cloud account. Organisation members can also access the Matomo service.`,
-  'cc-matomo-info.open-matomo.title': `Access Matomo`,
-  //#endregion
   //#region cc-network-group-dashboard
   'cc-network-group-dashboard.danger-zone.btn': `Delete Network Group`,
   'cc-network-group-dashboard.danger-zone.desc': `Deleting this Network Group is a permanent action. All members associated with this group will be removed from the Network Group as well.`,
