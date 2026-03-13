@@ -1457,11 +1457,45 @@ export const translations = {
   'cc-network-group-list.list.heading': `Linked Network Groups`,
   'cc-network-group-list.refresh.error': `The Network Group member was linked successfully but something went wrong while refreshing the list`,
   //#endregion
+  //#region cc-network-group-member-card
+  'cc-network-group-member-card.link.dashboard-addon': `Add-on overview`,
+  'cc-network-group-member-card.link.dashboard-application': `Application overview`,
+  'cc-network-group-member-card.nb-of-peers': /** @param {{ nbOfPeers: number}} _ */ ({ nbOfPeers }) =>
+    `${nbOfPeers} ${plural(nbOfPeers, 'peer')}`,
+  'cc-network-group-member-card.unlink': `Unlink member`,
+  'cc-network-group-member-card.unlink.a11y-name': /** @param {{ label: string }} _ */ ({ label }) =>
+    `Unlink member - ${label}`,
+  //#endregion
+  //#region cc-network-group-member-list
+  'cc-network-group-member-list.cli.content.get-ng-command': `Get Network Group info:`,
+  'cc-network-group-member-list.cli.content.instruction': getCliInstructions,
+  'cc-network-group-member-list.cli.content.intro': `You can manage your Network Group members directly from your terminal using the commands below.`,
+  'cc-network-group-member-list.cli.content.link-member-command': `Link a member to a Network Group:`,
+  'cc-network-group-member-list.cli.content.unlink-member-command': `Unlink a member from a Network Group:`,
+  'cc-network-group-member-list.documentation.text': `Network Groups - Documentation`,
+  'cc-network-group-member-list.error': `Something went wrong while loading the Network Group info`,
+  'cc-network-group-member-list.heading': `Members and Peers`,
+  'cc-network-group-member-list.intro': `A member is a resource connected to a Network Group: it can be an application, an add-on, or even an external service. Each member is identified and has a dedicated domain name within the private network. A peer is a concrete instance of this member. All peers in the same Network Group can communicate with each other via a secure tunnel on all ports, which allows for private and encrypted interconnection between resources.`,
+  'cc-network-group-member-list.link-form.button': `Link member`,
+  'cc-network-group-member-list.link-form.empty': `No resources available to link`,
+  'cc-network-group-member-list.link-form.heading': `Link a member`,
+  'cc-network-group-member-list.link-form.select-label': `Resource to link`,
+  'cc-network-group-member-list.member-list.empty': `You don't have any member linked to your Network Group`,
+  'cc-network-group-member-list.member.link.error': `Something went wrong while linking the member to the Network Group`,
+  'cc-network-group-member-list.member.link.success': `The member has been linked to the Network Group successfully`,
+  'cc-network-group-member-list.member.logo.a11y-name.external': `External`,
+  'cc-network-group-member-list.member.unlink.error': `Something went wrong while unlinking the Network Group member`,
+  'cc-network-group-member-list.member.unlink.success': `The Network Group member has been unlinked successfully`,
+  'cc-network-group-member-list.refresh.error': `The operation succeeded but the list could not be refreshed. Refresh the page.`,
+  'cc-network-group-member-list.unlink.dialog.desc': `Unlinking a member from your Network Group also unlinks all its peers. Are you sure you want to continue?`,
+  'cc-network-group-member-list.unlink.dialog.heading': `Confirm unlink`,
+  'cc-network-group-member-list.unlink.dialog.unlink-btn': `Confirm and unlink`,
+  //#endregion
   //#region cc-network-group-peer-card
   'cc-network-group-peer-card.external-peer.config-link': /** @param {{ label: string }} _ */ ({ label }) =>
     `Download peer configuration for ${label}`,
   'cc-network-group-peer-card.metadata.id': `Identifier`,
-  'cc-network-group-peer-card.metadata.ip': `Ip address`,
+  'cc-network-group-peer-card.metadata.ip': `IP address`,
   'cc-network-group-peer-card.metadata.key': `Public key`,
   'cc-network-group-peer-card.metadata.peer-type': `Peer type`,
   'cc-network-group-peer-card.metadata.peer-type.clever-peer': `Clever Peer`,
