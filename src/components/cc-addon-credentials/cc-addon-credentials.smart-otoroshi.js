@@ -4,10 +4,10 @@ import { notifyError, notifySuccess } from '../../lib/notifications.js';
 import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-smart-container/cc-smart-container.js';
-import { CcAddonCredentialsBetaClient } from './cc-addon-credentials-beta.client.js';
-import './cc-addon-credentials-beta.js';
+import { CcAddonCredentialsClient } from './cc-addon-credentials.client.js';
+import './cc-addon-credentials.js';
 
-/** @type {AddonCredentialsBetaStateLoading} */
+/** @type {AddonCredentialsStateLoading} */
 const LOADING_STATE = {
   type: 'loading',
   tabs: {
@@ -28,7 +28,7 @@ const LOADING_STATE = {
         },
       ],
       docLink: {
-        text: i18n('cc-addon-credentials-beta.doc-link.otoroshi-ng'),
+        text: i18n('cc-addon-credentials.doc-link.otoroshi-ng'),
         href: getDocUrl('/addons/otoroshi/#use-otoroshi-in-a-network-group'),
       },
     },
@@ -57,7 +57,7 @@ const LOADING_STATE = {
         },
       ],
       docLink: {
-        text: i18n('cc-addon-credentials-beta.doc-link.otoroshi-api'),
+        text: i18n('cc-addon-credentials.doc-link.otoroshi-api'),
         href: getDocUrl('/addons/otoroshi/#manage-otoroshi-from-its-api'),
       },
     },
@@ -66,8 +66,8 @@ const LOADING_STATE = {
 const PROVIDER_ID = 'otoroshi';
 
 /**
- * @import { CcAddonCredentialsBeta } from './cc-addon-credentials-beta.js'
- * @import { AddonCredentialsBetaStateLoaded, AddonCredentialsBetaStateLoading } from './cc-addon-credentials-beta.types.js'
+ * @import { CcAddonCredentials } from './cc-addon-credentials.js'
+ * @import { AddonCredentialsStateLoaded, AddonCredentialsStateLoading } from './cc-addon-credentials.types.js'
  * @import { OtoroshiOperatorInfo } from '../../operators.types.js'
  * @import { AddonCredential, AddonCredentialNg, AddonCredentialNgEnabled, AddonCredentialNgDisabled } from '../cc-addon-credentials-content/cc-addon-credentials-content.types.js'
  * @import { ApiConfig } from '../../lib/send-to-api.types.js'
@@ -75,14 +75,14 @@ const PROVIDER_ID = 'otoroshi';
  */
 
 defineSmartComponent({
-  selector: 'cc-addon-credentials-beta[smart-mode="otoroshi"]',
+  selector: 'cc-addon-credentials[smart-mode="otoroshi"]',
   params: {
     apiConfig: { type: Object },
     addonId: { type: String },
     ownerId: { type: String },
   },
   /**
-   * @param {OnContextUpdateArgs<CcAddonCredentialsBeta>} args
+   * @param {OnContextUpdateArgs<CcAddonCredentials>} args
    */
   onContextUpdate({ context, onEvent, updateComponent, signal }) {
     const { apiConfig, addonId, ownerId } = context;
@@ -92,7 +92,7 @@ defineSmartComponent({
     function updateNg(newNgInfoOrCallback) {
       updateComponent(
         'state',
-        /** @param {AddonCredentialsBetaStateLoaded} state */
+        /** @param {AddonCredentialsStateLoaded} state */
         (state) => {
           state.tabs = Object.fromEntries(
             Object.entries(state.tabs).map(([tabName, tabValue]) => [
@@ -123,7 +123,7 @@ defineSmartComponent({
       .then((tabs) => {
         updateComponent(
           'state',
-          /** @param {AddonCredentialsBetaStateLoaded|AddonCredentialsBetaStateLoading} state */
+          /** @param {AddonCredentialsStateLoaded|AddonCredentialsStateLoading} state */
           (state) => {
             state.type = 'loaded';
             state.tabs = Object.fromEntries(
@@ -164,7 +164,7 @@ defineSmartComponent({
             },
           });
 
-          notifySuccess(i18n('cc-addon-credentials-beta.ng-standard.enabling.success'));
+          notifySuccess(i18n('cc-addon-credentials.ng-standard.enabling.success'));
         })
         .catch((error) => {
           console.error(error);
@@ -175,7 +175,7 @@ defineSmartComponent({
               status: 'disabled',
             },
           });
-          notifyError(i18n('cc-addon-credentials-beta.ng-standard.enabling.error'));
+          notifyError(i18n('cc-addon-credentials.ng-standard.enabling.error'));
         });
     });
 
@@ -199,7 +199,7 @@ defineSmartComponent({
               status: 'disabled',
             },
           });
-          notifySuccess(i18n('cc-addon-credentials-beta.ng-standard.disabling.success'));
+          notifySuccess(i18n('cc-addon-credentials.ng-standard.disabling.success'));
         })
         .catch((error) => {
           console.error(error);
@@ -211,7 +211,7 @@ defineSmartComponent({
               status: 'enabled',
             },
           }));
-          notifyError(i18n('cc-addon-credentials-beta.ng-standard.disabling.error'));
+          notifyError(i18n('cc-addon-credentials.ng-standard.disabling.error'));
         });
     });
   },
@@ -233,7 +233,7 @@ function formatNgData(data) {
   };
 }
 
-class Api extends CcAddonCredentialsBetaClient {
+class Api extends CcAddonCredentialsClient {
   /**
    * @param {object} params
    * @param {ApiConfig} params.apiConfig

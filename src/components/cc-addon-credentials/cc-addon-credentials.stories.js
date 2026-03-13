@@ -1,14 +1,6 @@
-import { getAssetUrl } from '../../lib/assets-url.js';
+import { BASE_ADDON_ACCESS_ITEMS } from '../../stories/fixtures/addon-access-data.js';
 import { makeStory, storyWait } from '../../stories/lib/make-story.js';
 import './cc-addon-credentials.js';
-
-const credentials = [
-  { type: 'host', value: 'my-host.services.clever-cloud.com', secret: false },
-  { type: 'user', value: 'my-super-user', secret: false },
-  { type: 'password', value: 'my-super-password', secret: true },
-];
-
-const credentialsSkeleton = credentials.map((p) => ({ ...p, value: null }));
 
 export default {
   tags: ['autodocs'],
@@ -20,24 +12,221 @@ const conf = {
   component: 'cc-addon-credentials',
 };
 
+/**
+ * @import { CcAddonCredentials } from './cc-addon-credentials.js'
+ * @import { AddonCredentialCode, AddonCredentialNg } from '../cc-addon-credentials-content/cc-addon-credentials-content.types.js'
+ */
+
+/**
+ * Helper to filter items from the base fixture based on their codes.
+ * @param {Array<AddonCredentialCode|Pick<AddonCredentialNg, 'code' | 'kind'>>} codesOrCredentials
+ * @returns {import('../cc-addon-credentials-content/cc-addon-credentials-content.types.js').AddonCredential[]}
+ */
+const getFilteredAddonCredentials = (codesOrCredentials) => {
+  return BASE_ADDON_ACCESS_ITEMS.filter((credential) => {
+    if (credential.code === 'ng') {
+      return codesOrCredentials.some(
+        (codeOrCredential) =>
+          typeof codeOrCredential !== 'string' &&
+          codeOrCredential.code === 'ng' &&
+          codeOrCredential.kind === credential.kind,
+      );
+    }
+    return codesOrCredentials.includes(credential.code);
+  });
+};
+
 export const defaultStory = makeStory(conf, {
+  /** @type {Partial<CcAddonCredentials>[]} */
   items: [
     {
-      type: 'elasticsearch',
-      name: 'Elasticsearch',
-      image: getAssetUrl('/logos/elastic.svg'),
-      credentials,
+      state: {
+        type: 'loaded',
+        tabs: {
+          default: {
+            content: getFilteredAddonCredentials([
+              'user',
+              'password',
+              'token',
+              { code: 'ng', kind: 'standard' },
+              { code: 'ng', kind: 'multi-instances' },
+            ]),
+            docLink: { text: 'Fake Add-on documentation', href: '#' },
+          },
+        },
+      },
     },
   ],
 });
 
-export const skeleton = makeStory(conf, {
+export const dataLoadedWithTabs = makeStory(conf, {
+  /** @type {Partial<CcAddonCredentials>[]} */
   items: [
     {
-      type: 'elasticsearch',
-      name: 'Elasticsearch',
-      image: getAssetUrl('/logos/elastic.svg'),
-      credentials: credentialsSkeleton,
+      state: {
+        type: 'loaded',
+        tabs: {
+          default: {
+            content: getFilteredAddonCredentials([
+              'user',
+              'password',
+              'token',
+              { code: 'ng', kind: 'standard' },
+              { code: 'ng', kind: 'multi-instances' },
+            ]),
+            docLink: { text: 'Fake Add-on documentation', href: '#' },
+          },
+          direct: {
+            content: getFilteredAddonCredentials(['direct-host', 'direct-port', 'direct-uri']),
+            docLink: { text: 'Fake Add-on documentation', href: '#' },
+          },
+          api: {
+            content: getFilteredAddonCredentials([
+              'api-client-user',
+              'api-client-secret',
+              'api-url',
+              'api-key',
+              'api-password',
+              'open-api-url',
+            ]),
+            docLink: { text: 'Fake Add-on documentation', href: '#' },
+          },
+          elastic: {
+            content: getFilteredAddonCredentials(['host', 'user', 'password']),
+            docLink: { text: 'Fake Add-on documentation', href: '#' },
+          },
+          kibana: {
+            content: getFilteredAddonCredentials(['user', 'password']),
+            docLink: { text: 'Fake Add-on documentation', href: '#' },
+          },
+          apm: {
+            content: getFilteredAddonCredentials(['user', 'password', 'token']),
+            docLink: { text: 'Fake Add-on documentation', href: '#' },
+          },
+        },
+      },
+    },
+  ],
+});
+
+export const dataLoadedWithDifferentDocLinksPerTab = makeStory(conf, {
+  /** @type {Partial<CcAddonCredentials>[]} */
+  items: [
+    {
+      state: {
+        type: 'loaded',
+        tabs: {
+          default: {
+            content: getFilteredAddonCredentials([
+              'user',
+              'password',
+              'token',
+              { code: 'ng', kind: 'standard' },
+              { code: 'ng', kind: 'multi-instances' },
+            ]),
+            docLink: { text: 'Fake Doc Link for default tab', href: '#' },
+          },
+          direct: {
+            content: getFilteredAddonCredentials(['direct-host', 'direct-port', 'direct-uri']),
+            docLink: { text: 'Fake Doc Link for direct tab', href: '#' },
+          },
+          api: {
+            content: getFilteredAddonCredentials([
+              'api-client-user',
+              'api-client-secret',
+              'api-url',
+              'api-key',
+              'api-password',
+              'open-api-url',
+            ]),
+            docLink: { text: 'Fake Doc Link for api tab', href: '#' },
+          },
+          elastic: {
+            content: getFilteredAddonCredentials(['host', 'user', 'password']),
+            docLink: { text: 'Fake Doc Link for elastic tab', href: '#' },
+          },
+          kibana: {
+            content: getFilteredAddonCredentials(['user', 'password']),
+            docLink: { text: 'Fake Doc Link for kibana tab', href: '#' },
+          },
+          apm: {
+            content: getFilteredAddonCredentials(['user', 'password', 'token']),
+            docLink: { text: 'Fake Doc Link for apm tab', href: '#' },
+          },
+        },
+      },
+    },
+  ],
+});
+
+export const loading = makeStory(conf, {
+  /** @type {Partial<CcAddonCredentials>[]} */
+  items: [
+    {
+      state: {
+        type: 'loading',
+        tabs: {
+          default: {
+            content: getFilteredAddonCredentials([
+              'user',
+              'password',
+              'token',
+              { code: 'ng', kind: 'standard' },
+              { code: 'ng', kind: 'multi-instances' },
+            ]),
+            docLink: { text: 'Fake Add-on documentation', href: '#' },
+          },
+        },
+      },
+    },
+  ],
+});
+
+export const loadingWithTabs = makeStory(conf, {
+  /** @type {Partial<CcAddonCredentials>[]} */
+  items: [
+    {
+      state: {
+        type: 'loading',
+        tabs: {
+          default: {
+            content: getFilteredAddonCredentials([
+              'user',
+              'password',
+              'token',
+              { code: 'ng', kind: 'standard' },
+              { code: 'ng', kind: 'multi-instances' },
+            ]),
+            docLink: { text: 'Fake Add-on documentation', href: '#' },
+          },
+          direct: {
+            content: getFilteredAddonCredentials(['direct-host', 'direct-port', 'direct-uri']),
+            docLink: { text: 'Fake Add-on documentation', href: '#' },
+          },
+          api: {
+            content: getFilteredAddonCredentials([
+              'api-client-user',
+              'api-client-secret',
+              'api-url',
+              'api-key',
+              'api-password',
+            ]),
+            docLink: { text: 'Fake Add-on documentation', href: '#' },
+          },
+          elastic: {
+            content: getFilteredAddonCredentials(['host', 'user', 'password']),
+            docLink: { text: 'Fake Add-on documentation', href: '#' },
+          },
+          kibana: {
+            content: getFilteredAddonCredentials(['user', 'password']),
+            docLink: { text: 'Fake Add-on documentation', href: '#' },
+          },
+          apm: {
+            content: getFilteredAddonCredentials(['user', 'password', 'token']),
+            docLink: { text: 'Fake Add-on documentation', href: '#' },
+          },
+        },
+      },
     },
   ],
 });
@@ -45,105 +234,237 @@ export const skeleton = makeStory(conf, {
 export const error = makeStory(conf, {
   items: [
     {
-      type: 'elasticsearch',
-      name: 'Elasticsearch',
-      image: getAssetUrl('/logos/elastic.svg'),
-      error: true,
+      state: { type: 'error' },
+      docLink: { text: 'Fake Add-on documentation', href: '#' },
     },
   ],
 });
 
-export const dataLoadedWithKibana = makeStory(conf, {
+export const simulationWithLoadingSuccess = makeStory(conf, {
+  /** @type {Partial<CcAddonCredentials>[]} */
   items: [
     {
-      type: 'kibana',
-      name: 'Kibana',
-      image: getAssetUrl('/logos/elasticsearch-kibana.svg'),
-      toggle: 'close',
-      credentials: [
-        { type: 'host', value: 'my-host.services.clever-cloud.com', secret: false },
-        { type: 'user', value: 'my-super-user', secret: false },
-        { type: 'password', value: 'my-super-password', secret: true },
-      ],
-    },
-  ],
-});
-
-export const dataLoadedWithApm = makeStory(conf, {
-  items: [
-    {
-      type: 'apm',
-      name: 'APM',
-      toggle: 'close',
-      image: getAssetUrl('/logos/elasticsearch-apm.svg'),
-      credentials: [
-        { type: 'user', value: 'my-super-user', secret: false },
-        { type: 'password', value: 'my-super-password', secret: true },
-        { type: 'auth-token', value: 'my-awesome-token', secret: true },
-      ],
-    },
-  ],
-});
-
-export const dataLoadedWithPulsar = makeStory(conf, {
-  items: [
-    {
-      type: 'pulsar',
-      name: 'Pulsar',
-      toggle: 'open',
-      image: getAssetUrl('/logos/pulsar.svg'),
-      credentials: [
-        { type: 'url', value: 'pulsar+ssl://url:port', secret: false },
-        { type: 'auth-token', value: 'my-awesome-token', secret: true },
-      ],
-    },
-  ],
-});
-
-export const dataLoadedWithMateriaKv = makeStory(conf, {
-  items: [
-    {
-      type: 'materia-kv',
-      name: 'Materia KV',
-      toggle: 'off',
-      image: getAssetUrl('/logos/materia-db-kv.png'),
-      credentials: [
-        { type: 'host', value: 'example.com', secret: false },
-        { type: 'port', value: '6379', secret: false },
-        {
-          type: 'auth-token',
-          value:
-            'fake-SbKm9sHFaP2uCuQSLZbsQXhwelHxahs4tLV9IOwCc1RBBAtLNF1aM444DJxCtySpEst5zFlaIMbNM3s3koEYTT9PVkGHSwvb36wbSf9QRq8owFMnyx0mEseU1cHkMpzfo2KIFrjfx8laTYYNXh3ji8T8BI5v5dHHbOwpF0tegIYOXpwY8vc0EYTL43jq7DhRPWTyipW4me8W0dfaOjXf6ODLOFK8',
-          secret: true,
+      state: {
+        type: 'loading',
+        tabs: {
+          default: {
+            content: getFilteredAddonCredentials([
+              'user',
+              'password',
+              'token',
+              { code: 'ng', kind: 'standard' },
+              { code: 'ng', kind: 'multi-instances' },
+            ]),
+            docLink: { text: 'Fake Add-on documentation', href: '#' },
+          },
         },
-      ],
-    },
-  ],
-});
-
-export const simulations = makeStory(conf, {
-  items: [
-    {
-      type: 'elasticsearch',
-      name: 'Elasticsearch',
-      image: getAssetUrl('/logos/elastic.svg'),
-      credentials: credentialsSkeleton,
-    },
-    {
-      type: 'apm',
-      name: 'APM',
-      image: getAssetUrl('/logos/elasticsearch-apm.svg'),
-      credentials: [
-        { type: 'user', secret: false },
-        { type: 'password', secret: true },
-        { type: 'auth-token', secret: true },
-      ],
+      },
     },
   ],
   simulations: [
-    storyWait(2000, ([component, componentError]) => {
-      component.credentials = credentials;
-      componentError.error = true;
-    }),
+    storyWait(
+      2000,
+      /** @param {CcAddonCredentials[]} components */
+      ([component]) => {
+        component.state = {
+          type: 'loaded',
+          tabs: {
+            default: {
+              content: getFilteredAddonCredentials([
+                'user',
+                'password',
+                'token',
+                { code: 'ng', kind: 'standard' },
+                { code: 'ng', kind: 'multi-instances' },
+              ]),
+              docLink: { text: 'Fake Add-on documentation', href: '#' },
+            },
+          },
+        };
+      },
+    ),
+  ],
+});
+
+export const simulationsWithTabsAndLoadingSuccess = makeStory(conf, {
+  /** @type {Partial<CcAddonCredentials>[]} */
+  items: [
+    {
+      state: {
+        type: 'loading',
+        tabs: {
+          elastic: {
+            content: getFilteredAddonCredentials(['host', 'user', 'password']),
+            docLink: { text: 'Fake Add-on documentation', href: '#' },
+          },
+          kibana: {
+            content: getFilteredAddonCredentials(['user', 'password']),
+            docLink: { text: 'Fake Add-on documentation', href: '#' },
+          },
+          apm: {
+            content: getFilteredAddonCredentials(['user', 'password', 'token']),
+            docLink: { text: 'Fake Add-on documentation', href: '#' },
+          },
+        },
+      },
+    },
+  ],
+  simulations: [
+    storyWait(
+      2000,
+      /** @param {CcAddonCredentials[]} components */
+      ([component]) => {
+        component.state = {
+          type: 'loaded',
+          tabs: {
+            elastic: {
+              content: getFilteredAddonCredentials(['host', 'user', 'password']),
+              docLink: { text: 'Fake Add-on documentation', href: '#' },
+            },
+            kibana: {
+              content: getFilteredAddonCredentials(['user', 'password']),
+              docLink: { text: 'Fake Add-on documentation', href: '#' },
+            },
+            apm: {
+              content: getFilteredAddonCredentials(['user', 'password', 'token']),
+              docLink: { text: 'Fake Add-on documentation', href: '#' },
+            },
+          },
+        };
+      },
+    ),
+  ],
+});
+
+export const simulationsWithLoadingError = makeStory(conf, {
+  /** @type {Partial<CcAddonCredentials>[]} */
+  items: [
+    {
+      state: {
+        type: 'loading',
+        tabs: {
+          default: {
+            content: getFilteredAddonCredentials([
+              'user',
+              'password',
+              'token',
+              { code: 'ng', kind: 'standard' },
+              { code: 'ng', kind: 'multi-instances' },
+            ]),
+            docLink: { text: 'Fake Add-on documentation', href: '#' },
+          },
+        },
+      },
+    },
+  ],
+  simulations: [
+    storyWait(
+      2000,
+      /** @param {CcAddonCredentials[]} components */
+      ([component]) => {
+        component.state = {
+          type: 'error',
+        };
+      },
+    ),
+  ],
+});
+
+export const simulationsWithNetworkGroupStatus = makeStory(conf, {
+  /** @type {Partial<CcAddonCredentials>[]} */
+  items: [
+    {
+      state: {
+        type: 'loaded',
+        tabs: {
+          default: {
+            content: getFilteredAddonCredentials([
+              'user',
+              { code: 'ng', kind: 'standard' },
+              { code: 'ng', kind: 'multi-instances' },
+            ]),
+            docLink: { text: 'Fake Add-on documentation', href: '#' },
+          },
+        },
+      },
+    },
+  ],
+  simulations: [
+    storyWait(
+      2000,
+      /** @param {CcAddonCredentials[]} components */
+      ([component]) => {
+        component.state = {
+          type: 'loaded',
+          tabs: {
+            default: {
+              content: [
+                { code: 'user', value: 'toto' },
+                { code: 'ng', kind: 'standard', value: { status: 'enabling' } },
+                { code: 'ng', kind: 'multi-instances', value: { status: 'enabling' } },
+              ],
+              docLink: { text: 'Fake Add-on documentation', href: '#' },
+            },
+          },
+        };
+      },
+    ),
+    storyWait(
+      2000,
+      /** @param {CcAddonCredentials[]} components */
+      ([component]) => {
+        component.state = {
+          type: 'loaded',
+          tabs: {
+            default: {
+              content: [
+                { code: 'user', value: 'toto' },
+                { code: 'ng', kind: 'standard', value: { status: 'enabled', id: 'fake-ng-id-12345' } },
+                { code: 'ng', kind: 'multi-instances', value: { status: 'enabled', id: 'fake-ng-id-12346' } },
+              ],
+              docLink: { text: 'Fake Add-on documentation', href: '#' },
+            },
+          },
+        };
+      },
+    ),
+    storyWait(
+      2000,
+      /** @param {CcAddonCredentials[]} components */
+      ([component]) => {
+        component.state = {
+          type: 'loaded',
+          tabs: {
+            default: {
+              content: [
+                { code: 'user', value: 'toto' },
+                { code: 'ng', kind: 'standard', value: { status: 'disabling', id: 'fake-ng-id-12345' } },
+                { code: 'ng', kind: 'multi-instances', value: { status: 'disabling', id: 'fake-ng-id-12346' } },
+              ],
+              docLink: { text: 'Fake Add-on documentation', href: '#' },
+            },
+          },
+        };
+      },
+    ),
+    storyWait(
+      2000,
+      /** @param {CcAddonCredentials[]} components */
+      ([component]) => {
+        component.state = {
+          type: 'loaded',
+          tabs: {
+            default: {
+              content: [
+                { code: 'user', value: 'toto' },
+                { code: 'ng', kind: 'standard', value: { status: 'disabled' } },
+                { code: 'ng', kind: 'multi-instances', value: { status: 'disabled' } },
+              ],
+              docLink: { text: 'Fake Add-on documentation', href: '#' },
+            },
+          },
+        };
+      },
+    ),
   ],
 });

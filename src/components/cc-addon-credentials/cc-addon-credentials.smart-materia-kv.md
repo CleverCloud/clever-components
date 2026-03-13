@@ -1,14 +1,14 @@
 ---
-kind: '🛠 Addon/<cc-addon-credentials-beta>'
-title: '💡 Smart (Keycloak)'
+kind: '🛠 Addon/<cc-addon-credentials>'
+title: '💡 Smart (Materia KV)'
 ---
-# 💡 Smart `<cc-addon-credentials-beta smart-mode="keycloak">`
+# 💡 Smart `<cc-addon-credentials smart-mode="materia-kv">`
 
 ## ℹ️ Details
 
 <table>
-<tr><td><strong>Component    </strong> <td><a href="🛠-addon-credentials-beta-cc-addon-credentials-beta--default-story"><code>&lt;cc-addon-credentials-beta&gt;</code></a>
-<tr><td><strong>Selector     </strong> <td><code>cc-addon-credentials-beta[smart-mode="keycloak"]</code>
+<tr><td><strong>Component    </strong> <td><a href="🛠-addon-credentials-cc-addon-credentials--default-story"><code>&lt;cc-addon-credentials&gt;</code></a>
+<tr><td><strong>Selector     </strong> <td><code>cc-addon-credentials[smart-mode="materia-kv"]</code>
 <tr><td><strong>Requires auth</strong> <td>Yes
 </table>
 
@@ -32,12 +32,10 @@ interface ApiConfig {
 
 ## 🌐 API endpoints
 
-| Method   | URL                                                              | Cache?  |
-|----------|------------------------------------------------------------------|---------|
-| `GET`    | `/v2/addon`                                                      | Default |
-| `GET`    | `/v4/addon-providers/keycloak/addons/{realId}`                   | Default |
-| `POST`   | `/v4/addon-providers/keycloak/addons/{realId}/networkgroup`      | Default |
-| `DELETE` | `/v4/addon-providers/keycloak/addons/{realId}/networkgroup`      | Default |
+| Method   | URL                                                                         | Cache?   |
+|----------|-----------------------------------------------------------------------------|----------|
+| `GET`    | `/v2/organisations/{ownerId}/addons/{addonId}`                              | 1 second |
+| `GET`    | `/v4/materia/organisations/{ownerId}/materia/databases/{realId}`            | Default  |
 
 ## ⬇️️ Examples
 
@@ -53,6 +51,6 @@ interface ApiConfig {
     "addonId": "addon_xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
     "ownerId": "orga_xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
 }'>
-  <cc-addon-credentials-beta smart-mode="keycloak"></cc-addon-credentials-beta>
+  <cc-addon-credentials smart-mode="materia-kv"></cc-addon-credentials>
 </cc-smart-container>
 ```

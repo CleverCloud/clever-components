@@ -1,136 +1,149 @@
-import { css, html, LitElement } from 'lit';
-import { ifDefined } from 'lit/directives/if-defined.js';
-import { skeletonStyles } from '../../styles/skeleton.js';
+import { LitElement, css, html } from 'lit';
+import { iconRemixInformationFill as iconInfo } from '../../assets/cc-remix.icons.js';
+import { fakeString } from '../../lib/fake-strings.js';
+import { isStringEmpty } from '../../lib/utils.js';
 import { i18n } from '../../translations/translation.js';
+import '../cc-addon-credentials-content/cc-addon-credentials-content.js';
+import '../cc-block-details/cc-block-details.js';
 import '../cc-block/cc-block.js';
+import '../cc-code/cc-code.js';
 import '../cc-input-text/cc-input-text.js';
+import '../cc-link/cc-link.js';
+import '../cc-loader/cc-loader.js';
 import '../cc-notice/cc-notice.js';
+import '../cc-toggle/cc-toggle.js';
 
 /**
- * @import { Credential, AddonType } from './cc-addon-credentials.types.js'
- * @import { BlockToggleState } from '../cc-block/cc-block.types.js'
- * @import { CcToggleEvent } from '../common.events.js'
+ * @import { AddonCredentialsState, TabName } from './cc-addon-credentials.types.js'
+ * @import { Choice } from '../cc-toggle/cc-toggle.types.js'
  */
 
 /**
- * A component to display an add-on credentials.
+ * A component to display credentials for an add-on.
  *
  * ## Details
  *
- * * When the `value` of a credential is nullish, a skeleton UI pattern is displayed (loading hint).
+ * This component displays various credentials for an add-on, such as username, password, direct access information, or other relevant connection details.
+ * It supports different views through tabs, allowing users to switch between various access methods or categories.
+ *
+ * The content displayed within each tab is managed by the `cc-addon-credentials-content` component. It also provides a link to the official documentation for more information.
  *
  * @cssdisplay block
  */
+
 export class CcAddonCredentials extends LitElement {
   static get properties() {
     return {
-      credentials: { type: Array },
-      error: { type: Boolean },
-      image: { type: String },
-      name: { type: String },
-      toggle: { type: String },
-      type: { type: String },
+      state: { type: Object },
+      _selectedTabName: { type: String, state: true },
     };
   }
 
   constructor() {
     super();
 
-    /** @type {Credential[]|null} Sets the list of add-on credentials. */
-    this.credentials = null;
+    /** @type {AddonCredentialsState} */
+    this.state = {
+      type: 'loading',
+      tabs: {
+        default: {
+          content: [],
+          docLink: { text: fakeString(10), href: undefined },
+        },
+      },
+    };
 
-    /** @type {boolean} Displays an error message. */
-    this.error = false;
-
-    /** @type {string|null} Sets the URL of the image to use. An icon image is expected. */
-    this.image = null;
-
-    /** @type {string|null} Sets the display name of the add-on. */
-    this.name = null;
-
-    /** @type {BlockToggleState} Sets the toggle state of the inner block. */
-    this.toggle = 'off';
-
-    /** @type {AddonType}  Sets the type of the add-on. */
-    this.type = null;
+    /** @type {TabName} */
+    this._selectedTabName = 'default';
   }
 
-  /** @param {AddonType} addonType */
-  _getDescription(addonType) {
-    switch (addonType) {
+  /**
+   * @param {TabName} toggleChoiceValue
+   */
+  _getToggleChoiceLabel(toggleChoiceValue) {
+    switch (toggleChoiceValue) {
+      case 'admin':
+        return i18n('cc-addon-credentials.choice.admin');
+      case 'api':
+        return i18n('cc-addon-credentials.choice.api');
       case 'apm':
-        return i18n('cc-addon-credentials.description.apm');
-      case 'elasticsearch':
-        return i18n('cc-addon-credentials.description.elasticsearch');
+        return i18n('cc-addon-credentials.choice.apm');
+      case 'cli':
+        return i18n('cc-addon-credentials.choice.cli');
+      case 'default':
+        return i18n('cc-addon-credentials.choice.default');
+      case 'direct':
+        return i18n('cc-addon-credentials.choice.direct');
+      case 'elastic':
+        return i18n('cc-addon-credentials.choice.elastic');
       case 'kibana':
-        return i18n('cc-addon-credentials.description.kibana');
-      case 'pulsar':
-        return i18n('cc-addon-credentials.description.pulsar');
-      case 'materia-kv':
-        return i18n('cc-addon-credentials.description.materia-kv');
+        return i18n('cc-addon-credentials.choice.kibana');
+      default:
+        return '';
     }
   }
 
-  /** @param {Credential['type']} fieldType */
-  _getFieldName(fieldType) {
-    switch (fieldType) {
-      case 'auth-token':
-        return i18n('cc-addon-credentials.field.auth-token');
-      case 'host':
-        return i18n('cc-addon-credentials.field.host');
-      case 'password':
-        return i18n('cc-addon-credentials.field.password');
-      case 'url':
-        return i18n('cc-addon-credentials.field.url');
-      case 'user':
-        return i18n('cc-addon-credentials.field.user');
-      case 'port':
-        return i18n('cc-addon-credentials.field.port');
-    }
+  /**
+   *
+   * @param {Array<TabName>} tabNames
+   * @returns {Array<Choice>|null}
+   */
+  _getToggleChoices(tabNames) {
+    return tabNames.map((tabName) => ({
+      label: this._getToggleChoiceLabel(tabName),
+      value: tabName,
+    }));
   }
 
-  /** @param {CcToggleEvent} event */
-  _onToggleChange({ detail: isOpen }) {
-    this.toggle = isOpen ? 'open' : 'close';
+  /** @param {CcSelectEvent<TabName>} _ */
+  _onTabSelect({ detail: tabName }) {
+    this._selectedTabName = tabName;
+  }
+
+  willUpdate() {
+    if (this.state.type === 'loading') {
+      this._selectedTabName = /** @type {TabName} */ (Object.keys(this.state.tabs)[0]);
+    }
   }
 
   render() {
+    if (this.state.type === 'error') {
+      return html`<cc-notice message="${i18n('cc-addon-credentials.error')}" intent="warning"></cc-notice>`;
+    }
+
+    const skeleton = this.state.type === 'loading';
+    const tabNames = /** @type {TabName[]} */ (Object.keys(this.state.tabs));
+    const toggleChoices = this._getToggleChoices(tabNames);
+    const activeTab = this.state.tabs[this._selectedTabName] ?? Object.values(this.state.tabs)[0];
+
     return html`
-      <cc-block image=${ifDefined(this.image ?? undefined)} toggle=${this.toggle} @cc-toggle=${this._onToggleChange}>
-        <div slot="header-title">${i18n('cc-addon-credentials.title', { name: this.name })}</div>
-
-        ${!this.error
+      <cc-block>
+        <div slot="header-title">${i18n('cc-addon-credentials.heading')}</div>
+        ${tabNames.length > 1
           ? html`
-              <div slot="content">${this._getDescription(this.type)}</div>
-
-              ${this.credentials != null
-                ? html`
-                    <div slot="content" class="credential-list">
-                      ${this.credentials.map(
-                        ({ type, secret, value }) => html`
-                          <cc-input-text
-                            readonly
-                            clipboard
-                            ?secret=${secret}
-                            ?skeleton=${value == null}
-                            value=${ifDefined(value)}
-                            label=${this._getFieldName(type)}
-                          ></cc-input-text>
-                        `,
-                      )}
-                    </div>
-                  `
-                : ''}
+              <cc-toggle
+                .choices="${toggleChoices}"
+                .value="${this._selectedTabName}"
+                @cc-select="${this._onTabSelect}"
+                slot="header-right"
+                ?disabled="${skeleton}"
+              ></cc-toggle>
             `
           : ''}
-        ${this.error
+        ${this.state.type === 'loaded' || this.state.type === 'loading' || this.state.type === 'waiting'
           ? html`
-              <cc-notice
+              <cc-addon-credentials-content
+                .credentials="${activeTab.content}"
+                .skeleton="${skeleton}"
+                ?disabled="${this.state.type === 'waiting'}"
                 slot="content"
-                intent="warning"
-                message="${i18n('cc-addon-credentials.loading-error')}"
-              ></cc-notice>
+              ></cc-addon-credentials-content>
             `
+          : ''}
+        ${!isStringEmpty(activeTab.docLink?.href)
+          ? html` <div slot="footer-right">
+              <cc-link .href="${activeTab.docLink.href}" .icon="${iconInfo}">${activeTab.docLink.text}</cc-link>
+            </div>`
           : ''}
       </cc-block>
     `;
@@ -138,33 +151,18 @@ export class CcAddonCredentials extends LitElement {
 
   static get styles() {
     return [
-      skeletonStyles,
-      // language=CSS
       css`
         :host {
           display: block;
         }
 
-        .credential-list {
+        cc-toggle {
           display: flex;
           flex-wrap: wrap;
-          gap: 1em;
-        }
-
-        cc-input-text {
-          --cc-input-font-family: var(--cc-ff-monospace, monospace);
-
-          flex: 1 1 18em;
-        }
-
-        /* SKELETON */
-
-        .skeleton {
-          background-color: #bbb;
         }
       `,
     ];
   }
 }
 
-window.customElements.define('cc-addon-credentials', CcAddonCredentials);
+customElements.define('cc-addon-credentials', CcAddonCredentials);

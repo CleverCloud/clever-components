@@ -2,10 +2,10 @@ import { ONE_SECOND } from '@clevercloud/client/esm/with-cache.js';
 import { sendToApi } from '../../lib/send-to-api.js';
 import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
 import '../cc-smart-container/cc-smart-container.js';
-import { CcAddonCredentialsBetaClient } from './cc-addon-credentials-beta.client.js';
-import './cc-addon-credentials-beta.js';
+import { CcAddonCredentialsClient } from './cc-addon-credentials.client.js';
+import './cc-addon-credentials.js';
 
-/** @type {AddonCredentialsBetaStateLoading} */
+/** @type {AddonCredentialsStateLoading} */
 const LOADING_STATE = {
   type: 'loading',
   tabs: {
@@ -46,22 +46,22 @@ const LOADING_STATE = {
 const PROVIDER_ID = 'addon-pulsar';
 
 /**
- * @import { CcAddonCredentialsBeta } from './cc-addon-credentials-beta.js'
- * @import { AddonCredentialsBetaStateLoaded, AddonCredentialsBetaStateLoading, PulsarProviderInfo, PulsarClusterInfo } from './cc-addon-credentials-beta.types.js'
+ * @import { CcAddonCredentials } from './cc-addon-credentials.js'
+ * @import { AddonCredentialsStateLoaded, AddonCredentialsStateLoading, PulsarProviderInfo, PulsarClusterInfo } from './cc-addon-credentials.types.js'
  * @import { AddonCredential } from '../cc-addon-credentials-content/cc-addon-credentials-content.types.js'
  * @import { ApiConfig } from '../../lib/send-to-api.types.js'
  * @import { OnContextUpdateArgs } from '../../lib/smart/smart-component.types.js'
  */
 
 defineSmartComponent({
-  selector: 'cc-addon-credentials-beta[smart-mode="pulsar"]',
+  selector: 'cc-addon-credentials[smart-mode="pulsar"]',
   params: {
     apiConfig: { type: Object },
     addonId: { type: String },
     ownerId: { type: String },
   },
   /**
-   * @param {OnContextUpdateArgs<CcAddonCredentialsBeta>} args
+   * @param {OnContextUpdateArgs<CcAddonCredentials>} args
    */
   onContextUpdate({ context, updateComponent, signal }) {
     const { apiConfig, addonId, ownerId } = context;
@@ -74,7 +74,7 @@ defineSmartComponent({
       .then(({ api, cli }) => {
         updateComponent(
           'state',
-          /** @param {AddonCredentialsBetaStateLoaded|AddonCredentialsBetaStateLoading} state */
+          /** @param {AddonCredentialsStateLoaded|AddonCredentialsStateLoading} state */
           (state) => {
             state.type = 'loaded';
             const updatedTabs = {
@@ -99,7 +99,7 @@ defineSmartComponent({
   },
 });
 
-class Api extends CcAddonCredentialsBetaClient {
+class Api extends CcAddonCredentialsClient {
   /**
    * @param {object} params
    * @param {ApiConfig} params.apiConfig
