@@ -1,21 +1,21 @@
-import { prefixUrl } from '@clevercloud/client/esm/prefix-url.js';
-import { request } from '@clevercloud/client/esm/request.fetch.js';
-import { withOptions } from '@clevercloud/client/esm/with-options.js';
-import { CcApiErrorEvent } from '../../lib/send-to-api.events.js';
+import { sendToApi } from '../../lib/send-to-api.js';
 
 /**
- * @import { CellarEndpoint, CellarBucket, CellarBucketDetails, CellarBucketsListResponse, CellarObjectsListResponse, CellarFileDetails } from './cc-cellar-explorer.client.types.js'
+ * @import { CellarBucket, CellarBucketDetails, CellarBucketsListResponse, CellarObjectsListResponse, CellarFileDetails } from './cc-cellar-explorer.client.types.js'
  * @import { ApiConfig } from '../../lib/send-to-api.js'
  */
 
 export class CellarExplorerClient {
   /**
-   * @param {ApiConfig} url
-   * @param {CellarEndpoint} cellarEndpoint
+   * @param {object} _
+   * @param {ApiConfig} _.apiConfig
+   * @param {string} _.ownerId
+   * @param {string} _.addonId
    */
-  constructor(url, cellarEndpoint) {
-    this._url = url;
-    this._cellarEndpoint = cellarEndpoint;
+  constructor({ apiConfig, ownerId, addonId }) {
+    this._apiConfig = apiConfig;
+    this._ownerId = ownerId;
+    this._addonId = addonId;
     this._abortController = new AbortController();
   }
 
@@ -28,7 +28,28 @@ export class CellarExplorerClient {
    * @returns {Promise<CellarBucketsListResponse>}
    */
   listBuckets(signal) {
-    return this.#send(`/cellar/bucket/_list`, { count: 1000 }, signal ?? this._abortController.signal);
+    return Promise.resolve({
+      method: 'get',
+      url: `/v4/cellar/organisations/${this._ownerId}/cellar/${this._addonId}/buckets`,
+      headers: { Accept: 'application/json' },
+    })
+      .then(sendToApi({ apiConfig: this._apiConfig, signal: signal ?? this._abortController.signal }))
+      .catch(catchError);
+  }
+
+  /**
+   * @param {string} bucketName
+   * @param {AbortSignal} [signal]
+   * @returns {Promise<CellarBucketDetails>}
+   */
+  getBucket(bucketName, signal) {
+    return Promise.resolve({
+      method: 'get',
+      url: `/v4/cellar/organisations/${this._ownerId}/cellar/${this._addonId}/buckets/${encodeURIComponent(bucketName)}`,
+      headers: { Accept: 'application/json' },
+    })
+      .then(sendToApi({ apiConfig: this._apiConfig, signal: signal ?? this._abortController.signal }))
+      .catch(catchError);
   }
 
   /**
@@ -38,16 +59,17 @@ export class CellarExplorerClient {
    * @returns {Promise<CellarBucket>}
    */
   createBucket(payload) {
-    return this.#send(`/cellar/bucket/_create`, payload);
-  }
-
-  /**
-   * @param {string} bucketName
-   * @param {AbortSignal} [signal]
-   * @returns {Promise<CellarBucketDetails>}
-   */
-  getBucket(bucketName, signal) {
-    return this.#send(`/cellar/bucket/_get`, { name: bucketName }, signal ?? this._abortController.signal);
+    return Promise.resolve({
+      method: 'post',
+      url: `/v4/cellar/organisations/${this._ownerId}/cellar/${this._addonId}/buckets`,
+      headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
+      body: {
+        name: payload.name,
+        versioning: payload.versioningEnabled,
+      },
+    })
+      .then(sendToApi({ apiConfig: this._apiConfig }))
+      .catch(catchError);
   }
 
   /**
@@ -55,7 +77,13 @@ export class CellarExplorerClient {
    * @returns {Promise<void>}
    */
   deleteBucket(bucketName) {
-    return this.#send(`/cellar/bucket/_delete`, { name: bucketName });
+    return Promise.resolve({
+      method: 'delete',
+      url: `/v4/cellar/organisations/${this._ownerId}/cellar/${this._addonId}/buckets/${encodeURIComponent(bucketName)}`,
+      headers: { Accept: 'application/json' },
+    })
+      .then(sendToApi({ apiConfig: this._apiConfig }))
+      .catch(catchError);
   }
 
   /**
@@ -67,11 +95,15 @@ export class CellarExplorerClient {
    */
   listObjects(bucketName, path, options, signal) {
     const prefix = pathToString(path) + (options.filter ?? '');
-    return this.#send(
-      `/cellar/object/_list`,
-      { bucketName, prefix, cursor: options.cursor, count: 50 },
-      signal ?? this._abortController.signal,
-    );
+
+    return Promise.resolve({
+      method: 'get',
+      url: `/v4/cellar/organisations/${this._ownerId}/cellar/${this._addonId}/buckets/${encodeURIComponent(bucketName)}/objects`,
+      queryParams: { prefix, cursor: options.cursor, count: 50 },
+      headers: { Accept: 'application/json' },
+    })
+      .then(sendToApi({ apiConfig: this._apiConfig, signal: signal ?? this._abortController.signal }))
+      .catch(catchError);
   }
 
   /**
@@ -80,8 +112,14 @@ export class CellarExplorerClient {
    * @param {AbortSignal} [signal]
    * @returns {Promise<CellarFileDetails>}
    */
-  getObject(bucketName, objectKey, signal) {
-    return this.#send(`/cellar/object/_get`, { bucketName, objectKey }, signal ?? this._abortController.signal);
+  async getObject(bucketName, objectKey, signal) {
+    return await Promise.resolve({
+      method: 'get',
+      url: `/v4/cellar/organisations/${this._ownerId}/cellar/${this._addonId}/buckets/${encodeURIComponent(bucketName)}/objects/${encodeURIComponent(objectKey)}`,
+      headers: { Accept: 'application/json' },
+    })
+      .then(sendToApi({ apiConfig: this._apiConfig, signal: signal ?? this._abortController.signal }))
+      .catch(catchError);
   }
 
   /**
@@ -92,11 +130,14 @@ export class CellarExplorerClient {
    * @returns {Promise<{url: string}>}
    */
   getObjectSignedUrl(bucketName, objectKey, expiresIn, signal) {
-    return this.#send(
-      `/cellar/object/_signed-url`,
-      { bucketName, objectKey, expiresIn },
-      signal ?? this._abortController.signal,
-    );
+    return Promise.resolve({
+      method: 'post',
+      url: `/v4/cellar/organisations/${this._ownerId}/cellar/${this._addonId}/buckets/${encodeURIComponent(bucketName)}/objects/download-url`,
+      headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
+      body: { objectKey, expiresIn },
+    })
+      .then(sendToApi({ apiConfig: this._apiConfig, signal: signal ?? this._abortController.signal }))
+      .catch(catchError);
   }
 
   /**
@@ -105,44 +146,24 @@ export class CellarExplorerClient {
    * @returns {Promise<void>}
    */
   deleteObject(bucketName, objectKey) {
-    return this.#send(`/cellar/object/_delete`, { bucketName, objectKey });
+    return Promise.resolve({
+      method: 'delete',
+      url: `/v4/cellar/organisations/${this._ownerId}/cellar/${this._addonId}/buckets/${encodeURIComponent(bucketName)}/objects/${encodeURIComponent(objectKey)}`,
+      headers: { Accept: 'application/json' },
+    })
+      .then(sendToApi({ apiConfig: this._apiConfig }))
+      .catch(catchError);
   }
+}
 
-  /**
-   * @param {string} path
-   * @param {object} body
-   * @param {AbortSignal} [signal]
-   * @returns {Promise<T>}
-   * @template T
-   */
-  #send(path, body, signal) {
-    return /** @type {Promise<T>} */ (
-      Promise.resolve({
-        method: 'post',
-        url: path,
-        headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
-        body: {
-          ...body,
-          endpoint: this._cellarEndpoint,
-        },
-      })
-        // @ts-expect-error FIXME: will become irrelevant when we switch to the new client
-        .then(prefixUrl(this._url))
-        .then(withOptions({ signal }))
-        .then(request)
-        .catch((error) => {
-          window.dispatchEvent(new CcApiErrorEvent(error));
-          if (error.responseBody != null) {
-            throw new CellarExplorerError(
-              error.responseBody.code,
-              error.responseBody.message,
-              error.responseBody.context,
-            );
-          }
-          throw error;
-        })
-    );
+/**
+ * @param {any} error
+ */
+function catchError(error) {
+  if (error.responseBody != null) {
+    throw new CellarExplorerError(error.responseBody.code, error.responseBody.error, error.responseBody.context);
   }
+  throw error;
 }
 
 export class CellarExplorerError extends Error {

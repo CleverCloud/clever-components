@@ -1,11 +1,4 @@
-export interface CellarEndpoint {
-  host: string;
-  accessKeyId: string;
-  secretAccessKey: string;
-}
-
 export interface CellarBucketsListResponse {
-  cursor?: string;
   buckets: Array<CellarBucket>;
   total: number;
 }
@@ -21,11 +14,12 @@ export interface CellarBucket {
 
 export interface CellarBucketDetails extends CellarBucket {}
 
-export type CellarBucketVersioning = 'disabled' | 'enabled' | 'suspended';
+export type CellarBucketVersioning = 'DISABLED' | 'ENABLED' | 'SUSPENDED';
 
 export interface CellarObjectsListResponse {
   cursor?: string;
-  content: Array<CellarFile | CellarDirectory>;
+  content: Array<CellarFile>;
+  directories: Array<CellarDirectory>;
 }
 
 export interface CellarFile {
