@@ -1,14 +1,14 @@
 ---
-kind: '🛠 Addon/<cc-addon-credentials-beta>'
+kind: '🛠 Addon/<cc-addon-credentials>'
 title: '💡 Smart (Cellar)'
 ---
-# 💡 Smart `<cc-addon-credentials-beta smart-mode="cellar">`
+# 💡 Smart `<cc-addon-credentials smart-mode="cellar">`
 
 ## ℹ️ Details
 
 <table>
-<tr><td><strong>Component    </strong> <td><a href="🛠-addon-credentials-beta-cc-addon-credentials-beta--default-story"><code>&lt;cc-addon-credentials-beta&gt;</code></a>
-<tr><td><strong>Selector     </strong> <td><code>cc-addon-credentials-beta[smart-mode="cellar"]</code>
+<tr><td><strong>Component    </strong> <td><a href="🛠-addon-credentials-cc-addon-credentials--default-story"><code>&lt;cc-addon-credentials&gt;</code></a>
+<tr><td><strong>Selector     </strong> <td><code>cc-addon-credentials[smart-mode="cellar"]</code>
 <tr><td><strong>Requires auth</strong> <td>Yes
 </table>
 
@@ -53,6 +53,6 @@ interface ApiConfig {
     "addonId": "addon_xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
     "ownerId": "orga_xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
 }'>
-  <cc-addon-credentials-beta smart-mode="cellar"></cc-addon-credentials-beta>
+  <cc-addon-credentials smart-mode="cellar"></cc-addon-credentials>
 </cc-smart-container>
 ```
