@@ -926,16 +926,6 @@ export const translations = {
     sanitize`This dashboard features an <strong>overview panel</strong> to get quick information about an application, as well as several panels about its system metrics. <br> It provides several graphs summarizing the state of <strong>CPU, memory, disks and network</strong>. <br> For each of these metric types, you will retrieve usage graphs, gauges, as well as the result of a simple linear prediction done on the elapsed Grafana time interval. This linear prediction yields the expected duration for the metric to reach 90%.`,
   'cc-grafana-info.screenshot.runtime.title': `Application runtime dashboard preview`,
   //#endregion
-  //#region cc-header-addon
-  'cc-header-addon.creation-date': `Creation date`,
-  'cc-header-addon.creation-date.full': /** @param {{date: string|number}} _ */ ({ date }) => formatDate(date),
-  'cc-header-addon.creation-date.short': /** @param {{date: string|number}} _ */ ({ date }) => formatDateOnly(date),
-  'cc-header-addon.error': `Something went wrong while loading add-on info.`,
-  'cc-header-addon.id-label': `Add-on identifier`,
-  'cc-header-addon.id-label-alternative': `Alternative add-on identifier (real id)`,
-  'cc-header-addon.plan': `Plan`,
-  'cc-header-addon.version': `Version`,
-  //#endregion
   //#region cc-header-app
   'cc-header-app.action.cancel-deployment': `Cancel deployment`,
   'cc-header-app.action.restart': `Restart`,

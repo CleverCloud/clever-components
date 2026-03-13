@@ -934,17 +934,6 @@ export const translations = {
     sanitize`Ce tableau de bord comprend un <strong>panneau de présentation</strong> pour obtenir des informations rapides sur une application, ainsi que plusieurs panneaux présentant leurs métriques système. <br> Il fournit un graphique reprenant l'état <strong>du processeur, de la mémoire, des disques et du réseau</strong>. <br> Pour chaque groupe de métriques, le panneau contient des graphes d'utilisation, des jauges ou encore un indicateur de remplissage (basé sur le résultat d'une prédiction linéaire effectuée sur les données de l'intervalle de temps fixé dans Grafana). Cet indicateur donne la durée attendue avant que les métriques ne dépassent 90%.`,
   'cc-grafana-info.screenshot.runtime.title': `Aperçu du tableau de bord d'application (runtime)`,
   //#endregion
-  //#region cc-header-addon
-  'cc-header-addon.creation-date': `Date de création`,
-  'cc-header-addon.creation-date.full': /** @param {{date: string|number}} _ */ ({ date }) => formatDate(date),
-  'cc-header-addon.creation-date.short': /** @param {{date: string|number}} _ */ ({ date }) => formatDateOnly(date),
-  'cc-header-addon.error': `Une erreur est survenue pendant le chargement des informations de l'add-on.`,
-  'cc-header-addon.id-label': `Identifiant de l'add-on`,
-  'cc-header-addon.id-label-alternative': () =>
-    sanitize`Identifiant alternatif de l'add-on (<span lang="en">real id</span>)`,
-  'cc-header-addon.plan': `Plan`,
-  'cc-header-addon.version': `Version`,
-  //#endregion
   //#region cc-header-app
   'cc-header-app.action.cancel-deployment': `Annuler le déploiement`,
   'cc-header-app.action.restart': `Redémarrer`,
