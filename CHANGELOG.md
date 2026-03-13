@@ -5,6 +5,28 @@ title: 'Changelog'
 
 # Changelog
 
+## [24.1.0](https://github.com/CleverCloud/clever-components/compare/24.0.0...24.1.0) (2026-03-13)
+
+
+### 🚀 Features
+
+* **cc-addon-header:** make `state.zone` optional ([10741ae](https://github.com/CleverCloud/clever-components/commit/10741ae238ba15328ddd90ed3fa44f951e31f53e))
+* **cc-addon-info:** make `state.creationDate` optional ([e6af76f](https://github.com/CleverCloud/clever-components/commit/e6af76f8f84bc4608918c6779d3d334913f7ea24))
+* **cc-addon-info:** support `Network Group` data ([712aec5](https://github.com/CleverCloud/clever-components/commit/712aec5cf47f468cf55ba12512797c330c7b4f79))
+* **cc-homepage-template-project:** init component ([0aa4d29](https://github.com/CleverCloud/clever-components/commit/0aa4d29bf5a3cf221960982c6687dbebfc2c99df))
+* **cc-network-group-dashboard:** init ([eac2335](https://github.com/CleverCloud/clever-components/commit/eac23357979677fd4ee4048dc7f764d7731039ec))
+* **cc-network-group-list:** init ([2422aeb](https://github.com/CleverCloud/clever-components/commit/2422aeb8e01a9c55ec9f3b5ea2354ea10a9321cb))
+* **cc-network-group-member-card:** init ([9bdd3e6](https://github.com/CleverCloud/clever-components/commit/9bdd3e6b0d8b32425ebf00daa234e50d202897ad))
+* **cc-network-group-member-list:** init ([1872271](https://github.com/CleverCloud/clever-components/commit/18722715d52432fcb105c167a36862f3a028a025))
+* **cc-network-group-peer-card:** init ([97cc22c](https://github.com/CleverCloud/clever-components/commit/97cc22c1d1555eb7800276852b81b12ffa047559))
+* **cc-picker:** add description slot between legend and tiles ([a4fd0b4](https://github.com/CleverCloud/clever-components/commit/a4fd0b43f9064c4dc4bb3863553cdc9fe63f5219))
+
+
+### 🐛 Bug Fixes
+
+* **cc-addon-info:** remove obsolete `state.docLink` ([64f5f2a](https://github.com/CleverCloud/clever-components/commit/64f5f2ae411ba7c717cddbe4212905de97b5d99f))
+* fixup cc-network-grou-member-card ([9bdd3e6](https://github.com/CleverCloud/clever-components/commit/9bdd3e6b0d8b32425ebf00daa234e50d202897ad))
+
 ## [24.0.0](https://github.com/CleverCloud/clever-components/compare/23.3.0...24.0.0) (2026-03-05)
 
 
