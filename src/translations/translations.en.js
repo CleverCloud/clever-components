@@ -1461,7 +1461,7 @@ export const translations = {
   'cc-network-group-peer-card.external-peer.config-link': /** @param {{ label: string }} _ */ ({ label }) =>
     `Download peer configuration for ${label}`,
   'cc-network-group-peer-card.metadata.id': `Identifier`,
-  'cc-network-group-peer-card.metadata.ip': `Ip address`,
+  'cc-network-group-peer-card.metadata.ip': `IP address`,
   'cc-network-group-peer-card.metadata.key': `Public key`,
   'cc-network-group-peer-card.metadata.peer-type': `Peer type`,
   'cc-network-group-peer-card.metadata.peer-type.clever-peer': `Clever Peer`,

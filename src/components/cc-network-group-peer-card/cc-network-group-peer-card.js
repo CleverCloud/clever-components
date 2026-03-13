@@ -57,7 +57,7 @@ export class CcNetworkGroupPeerCard extends LitElement {
                   class="config-download-link"
                   href="${this.peer.configLink}"
                   target="_blank"
-                  rel="noopener"
+                  rel="noreferrer"
                   title="${i18n('cc-network-group-peer-card.external-peer.config-link', { label: this.peer.label })}"
                 >
                   <cc-icon .icon="${iconDownload}"></cc-icon>
