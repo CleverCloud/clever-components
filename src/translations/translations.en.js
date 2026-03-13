@@ -1087,20 +1087,6 @@ export const translations = {
   'cc-invoice-table.total.value': /** @param {{amount: number, currency: string}} _ */ ({ amount, currency }) =>
     `${formatCurrency(lang, amount, { currency })}`,
   //#endregion
-  //#region cc-jenkins-info
-  'cc-jenkins-info.documentation.text': `Jenkins - Documentation`,
-  'cc-jenkins-info.error': `An error occurred while fetching the information about this add-on.`,
-  'cc-jenkins-info.info': `Info`,
-  'cc-jenkins-info.open-jenkins.link': `Access Jenkins`,
-  'cc-jenkins-info.open-jenkins.text': `Access Jenkins using the Clever Cloud SSO (Single Sign-On). Organisation members can also access the Jenkins service.`,
-  'cc-jenkins-info.open-jenkins.title': `Access Jenkins`,
-  'cc-jenkins-info.text': `This add-on is part of the Jenkins offer. You can find the documentation and various information below.`,
-  'cc-jenkins-info.update.new-version': /** @param {{version: string}} _ */ ({ version }) =>
-    `Jenkins version ${version} is available!`,
-  'cc-jenkins-info.update.text': `Jenkins and its plugins often get updates. You can automatically update Jenkins and its plugins using its dedicated WEB interface.`,
-  'cc-jenkins-info.update.title': `Updates`,
-  'cc-jenkins-info.update.up-to-date': `Your Jenkins version is up-to-date`,
-  //#endregion
   //#region cc-kv-explorer
   'cc-kv-explorer.details.empty': `Select a key in the list to get its content`,
   'cc-kv-explorer.details.unsupported': `The selected key type is not supported`,
