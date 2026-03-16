@@ -1021,9 +1021,9 @@ export const translations = {
   //#endregion
   //#region cc-homepage-video
   'cc-homepage-video.iframe-title': `YouTube video`,
-  'cc-homepage-video.link': `See our YouTube channel`,
+  'cc-homepage-video.link': `Access our YouTube channel`,
   'cc-homepage-video.play': `YouTube video thumbnail Play video`,
-  'cc-homepage-video.title': `See our videos`,
+  'cc-homepage-video.title': `Watch our videos`,
   //#endregion
   //#region cc-input-date
   'cc-input-date.error.bad-input': /** @param {{ date: string }} _ */ ({ date }) =>
