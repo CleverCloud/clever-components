@@ -75,7 +75,7 @@ export class CcBlockDetails extends LitElement {
               'button'
               'content'
               'links';
-            grid-template-columns: 1fr;
+            grid-template-columns: 100%;
           }
         }
 
