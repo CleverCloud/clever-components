@@ -1026,7 +1026,7 @@ export const translations = {
   //#endregion
   //#region cc-homepage-template-project
   'cc-homepage-template-project.error': `Une erreur est survenue pendant le chargement des templates de projets`,
-  'cc-homepage-template-project.title': `Projets prêts à déployer`,
+  'cc-homepage-template-project.title': `Projets prêts à l'emploi`,
   //#endregion
   //#region cc-homepage-video
   'cc-homepage-video.iframe-title': `Vidéo YouTube`,
