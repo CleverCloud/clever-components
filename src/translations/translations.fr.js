@@ -261,17 +261,6 @@ export const translations = {
     sanitize`Le chiffrement au repos chiffre l'intégralité du disque de données afin de ne pas y stocker d'informations en clair. Grâce à cette sécurité, l'accès physique au disque empêchera toute lecture des données stockées. Plus d'information dans notre <cc-link href="${getDocUrl('/administrate/encryption-at-rest')}">documentation</cc-link>.`,
   'cc-addon-encryption-at-rest-option.title': `Chiffrement au repos`,
   //#endregion
-  //#region cc-addon-features
-  'cc-addon-features.details': `Ci-dessous, les spécifications de votre add-on. Elles peuvent évoluer et une migration de l'add-on peut être nécessaire pour en bénéficier.`,
-  'cc-addon-features.feature-name.disk': `Disque`,
-  'cc-addon-features.feature-name.memory': `Mémoire`,
-  'cc-addon-features.feature-name.nodes': `Nœuds`,
-  'cc-addon-features.feature-value.dedicated': `Dédié`,
-  'cc-addon-features.feature-value.no': `Non`,
-  'cc-addon-features.feature-value.yes': `Oui`,
-  'cc-addon-features.loading-error': `Une erreur est survenue pendant le chargement des spécifications de l'add-on`,
-  'cc-addon-features.title': `Spécifications`,
-  //#endregion
   //#region cc-addon-header
   'cc-addon-header.action.get-config': `Obtenir le Kubeconfig`,
   'cc-addon-header.action.open-addon': /** @param {{ linkName: string }} _ */ ({ linkName }) => `Ouvrir ${linkName}`,

@@ -250,17 +250,6 @@ export const translations = {
     sanitize`Encryption at rest encrypts the entire data disk of your add-on. It prevents reading the stored data in case of a physical access to the hard drive. More information in our <cc-link href="${getDocUrl('/administrate/encryption-at-rest')}">documentation</cc-link>.`,
   'cc-addon-encryption-at-rest-option.title': `Encryption at rest`,
   //#endregion
-  //#region cc-addon-features
-  'cc-addon-features.details': `Here's the list of all the features of your add-on. Features may evolve and your add-on would need a migration to match them all.`,
-  'cc-addon-features.feature-name.disk': `Disk`,
-  'cc-addon-features.feature-name.memory': `Memory`,
-  'cc-addon-features.feature-name.nodes': `Nodes`,
-  'cc-addon-features.feature-value.dedicated': `Dedicated`,
-  'cc-addon-features.feature-value.no': `No`,
-  'cc-addon-features.feature-value.yes': `Yes`,
-  'cc-addon-features.loading-error': `Something went wrong while loading add-on features.`,
-  'cc-addon-features.title': `Features`,
-  //#endregion
   //#region cc-addon-header
   'cc-addon-header.action.get-config': `Get Kubeconfig`,
   'cc-addon-header.action.open-addon': /** @param {{ linkName: string }} _ */ ({ linkName }) => `Open ${linkName}`,
