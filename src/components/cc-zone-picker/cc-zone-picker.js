@@ -99,7 +99,7 @@ export class CcZonePicker extends CcFormControlElement {
       ${hasZoneSectionHeaderTitle
         ? html` <div class="zone-section-title" id="${ifDefined(zoneSectionHeaderId)}">${zoneSection.title}</div> `
         : ''}
-      <div class="form-controls">
+      <div class="form-controls" part="tiles">
         ${zoneSection.zones.map((zone) => this._renderZoneCard(zone, zone.code === this.value, zoneSectionHeaderId))}
       </div>
     `;

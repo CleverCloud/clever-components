@@ -198,6 +198,7 @@ export class CcPlanPicker extends CcFormControlElement {
       .options=${options}
       ?readonly=${this.readonly}
       value=${value}
+      exportparts="tiles"
     ></cc-picker>`;
   }
 
