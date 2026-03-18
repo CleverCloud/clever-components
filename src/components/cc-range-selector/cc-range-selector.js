@@ -1164,7 +1164,6 @@ export class CcRangeSelector extends CcFormControlElement {
           display: flex;
           flex-wrap: wrap;
           grid-area: input;
-          padding-inline-start: var(--cc-range-selector-options-indent, 0.25em);
           row-gap: 1em;
         }
         /* endregion */
@@ -1308,6 +1307,14 @@ export class CcRangeSelector extends CcFormControlElement {
           color: var(--cc-color-text-danger, #be242d);
           grid-area: error;
           margin: 0.5em 0 0;
+        }
+        /* endregion */
+
+        /* region indent */
+        .options,
+        .help-container,
+        .error-container {
+          padding-inline-start: var(--cc-range-selector-options-indent, 0.25em);
         }
         /* endregion */
       `,
