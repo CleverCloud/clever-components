@@ -12,8 +12,8 @@ import "../../components/cc-dialog/cc-dialog.js";
 export class MyListWithDialog extends LitElement {
   static get properties() {
     return {
-      _itemToDelete: { type: String, state: true },
       items: { type: Array },
+      _itemToDelete: { type: String, state: true },
     };
   }
 

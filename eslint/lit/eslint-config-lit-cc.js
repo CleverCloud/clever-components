@@ -1,13 +1,16 @@
 import litPlugin from 'eslint-plugin-lit';
+import litCleverCloudPlugin from './eslint-plugin-lit-cc.js';
 
 export default {
   name: 'lit-cc',
   files: ['**/*.js'],
   plugins: {
     lit: litPlugin,
+    'lit-cc': litCleverCloudPlugin,
   },
   rules: {
     ...litPlugin.configs['flat/recommended'].rules,
+    'lit-cc/sort-get-properties': 'error',
     'lit/attribute-names': 'error',
     'lit/lifecycle-super': 'error',
     'lit/ban-attributes': ['error', 'checked'],
