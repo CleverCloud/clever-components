@@ -1014,7 +1014,7 @@ export const translations = {
   //#endregion
   //#region cc-homepage-template-project
   'cc-homepage-template-project.error': `An error occurred while loading template projects`,
-  'cc-homepage-template-project.title': `Pre-built projects`,
+  'cc-homepage-template-project.title': `Ready-to-deploy projects`,
   //#endregion
   //#region cc-homepage-video
   'cc-homepage-video.iframe-title': `YouTube video`,
