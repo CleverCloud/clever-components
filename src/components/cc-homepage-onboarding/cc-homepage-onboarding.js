@@ -36,18 +36,18 @@ function getCards() {
       iconColor: 'white',
       buttonText: i18n('cc-homepage-onboarding.card.new-resource.button'),
       href: '',
+    },
+    newResourceWithSelect: {
+      title: i18n('cc-homepage-onboarding.card.new-resource.title'),
+      description: i18n('cc-homepage-onboarding.card.new-resource.description'),
+      icon: iconRemixAddCircleLine,
+      iconColor: 'white',
+      buttonText: i18n('cc-homepage-onboarding.card.new-resource.button'),
+      href: '',
       select: {
         title: i18n('cc-homepage-onboarding.card.new-resource.select.title'),
         placeholder: i18n('cc-homepage-onboarding.card.new-resource.select.placeholder'),
       },
-    },
-    newProject: {
-      title: i18n('cc-homepage-onboarding.card.new-project.title'),
-      description: i18n('cc-homepage-onboarding.card.new-project.description'),
-      icon: iconRemixAddCircleLine,
-      iconColor: 'white',
-      buttonText: i18n('cc-homepage-onboarding.card.new-project.button'),
-      href: '',
     },
     secure: {
       title: i18n('cc-homepage-onboarding.card.secure.title'),

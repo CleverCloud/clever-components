@@ -7,7 +7,7 @@ export type HomepageOnboardingState =
 
 export type HomepageOnboardingCardId =
   | 'newResource'
-  | 'newProject'
+  | 'newResourceWithSelect'
   | 'secure'
   | 'sshKeys'
   | 'cli'
