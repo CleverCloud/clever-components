@@ -5,6 +5,35 @@ title: 'Changelog'
 
 # Changelog
 
+## [24.1.0](https://github.com/CleverCloud/clever-components/compare/24.0.0...24.1.0) (2026-03-20)
+
+
+### 🚀 Features
+
+* **cc-addon-header:** make `state.zone` optional ([10741ae](https://github.com/CleverCloud/clever-components/commit/10741ae238ba15328ddd90ed3fa44f951e31f53e))
+* **cc-addon-info:** make `state.creationDate` optional ([e6af76f](https://github.com/CleverCloud/clever-components/commit/e6af76f8f84bc4608918c6779d3d334913f7ea24))
+* **cc-addon-info:** support `Network Group` data ([712aec5](https://github.com/CleverCloud/clever-components/commit/712aec5cf47f468cf55ba12512797c330c7b4f79))
+* **cc-homepage-template-project:** init component ([0aa4d29](https://github.com/CleverCloud/clever-components/commit/0aa4d29bf5a3cf221960982c6687dbebfc2c99df))
+* **cc-network-group-dashboard:** init ([eac2335](https://github.com/CleverCloud/clever-components/commit/eac23357979677fd4ee4048dc7f764d7731039ec))
+* **cc-network-group-list:** init ([2422aeb](https://github.com/CleverCloud/clever-components/commit/2422aeb8e01a9c55ec9f3b5ea2354ea10a9321cb))
+* **cc-network-group-member-card:** init ([641a5c5](https://github.com/CleverCloud/clever-components/commit/641a5c574676dc11dc156599195505a21d77c90e))
+* **cc-network-group-member-list:** init ([cf16086](https://github.com/CleverCloud/clever-components/commit/cf16086ac398e630111f82da5511e58ca478f706))
+* **cc-network-group-peer-card:** init ([97cc22c](https://github.com/CleverCloud/clever-components/commit/97cc22c1d1555eb7800276852b81b12ffa047559))
+* **cc-picker:** add description slot between legend and tiles ([a4fd0b4](https://github.com/CleverCloud/clever-components/commit/a4fd0b43f9064c4dc4bb3863553cdc9fe63f5219))
+* **cc-product-list:** refine layout and expose category title color ([681056b](https://github.com/CleverCloud/clever-components/commit/681056b2cf64e782d9ccc9d708eed4664bf652bf))
+* **pickers:** consolidate indent styles ([1fdcd0d](https://github.com/CleverCloud/clever-components/commit/1fdcd0de3d9f9e665b7fb39c779a538097da6eec))
+* **pickers:** expose tiles part ([a97eb3a](https://github.com/CleverCloud/clever-components/commit/a97eb3aeb625db4f3e9feb02509928295a2807f6))
+
+
+### 🐛 Bug Fixes
+
+* **cc-addon-info:** remove obsolete `state.docLink` ([64f5f2a](https://github.com/CleverCloud/clever-components/commit/64f5f2ae411ba7c717cddbe4212905de97b5d99f))
+* **cc-block-details:** prevent overflow when space is reduced ([ce679b5](https://github.com/CleverCloud/clever-components/commit/ce679b57e8120e937d435f311b590c483447bf85)), closes [#1693](https://github.com/CleverCloud/clever-components/issues/1693)
+* **cc-homepage-onboarding:** update card list ([ae715d6](https://github.com/CleverCloud/clever-components/commit/ae715d69899fef906b100bd681d517ae94900482))
+* **cc-homepage-onboarding:** update text ([8adf815](https://github.com/CleverCloud/clever-components/commit/8adf81514be4125da131ee8a3dfd794eccc2da70))
+* **cc-homepage-template-project:** update text ([51ba3e1](https://github.com/CleverCloud/clever-components/commit/51ba3e10ee3b42f65ba821d293baf9de7950fd46))
+* **cc-homepage-video:** update text ([aff7535](https://github.com/CleverCloud/clever-components/commit/aff75352f5e9914f8390d99c9b9478e382b0c9d1))
+
 ## [24.0.0](https://github.com/CleverCloud/clever-components/compare/23.3.0...24.0.0) (2026-03-05)
 
 
