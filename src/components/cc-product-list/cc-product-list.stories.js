@@ -1,4 +1,3 @@
-import { getAssetUrl } from '../../lib/assets-url.js';
 import { makeStory } from '../../stories/lib/make-story.js';
 import './cc-product-list.js';
 
@@ -17,161 +16,194 @@ const PRODUCTS = [
     categoryName: 'Applications',
     products: [
       {
-        name: 'JavaScript',
+        name: 'Node.js & Bun',
         description:
-          'Deploy your JavaScript/TypeScript and Meteor applications on Node.js with automatic dependency management (via npm ou yarn).',
-        searchTerms: ['Node.js'],
-        iconUrl: 'https://cdn.clever-cloud.com/uploads/2023/08/nodejs.svg',
+          'Deploy your JavaScript/TypeScript applications on Node.js or Bun with your favorite package manager',
+        searchTerms: ['Bun', 'Deno', 'npm', 'pnpm', 'TypeScript', 'yarn'],
+        iconUrl: 'https://assets.clever-cloud.com/logos/nodejs.svg',
         url: '',
         apiId: 'node',
       },
       {
-        name: 'PHP',
+        name: 'PHP with Apache',
         description:
-          'Deploy your PHP applications and static sites on Apache2 + PHP-FPM with automatic dependency management (via composer).',
-        searchTerms: ['Web', 'Symfony'],
-        iconUrl: 'https://cdn.clever-cloud.com/uploads/2023/03/php-4.svg',
+          'Deploy your applications on Apache2 + PHP-FPM with automatic dependency management (via Composer)',
+        searchTerms: ['FrankenPHP', 'Laravel', 'PHAR', 'Symfony'],
+        iconUrl: 'https://assets.clever-cloud.com/logos/php.svg',
         url: '',
         apiId: 'php',
       },
       {
         name: 'Python',
         description:
-          'Deploy your Python and Django applications on Nginx + WSGI with automatic dependency management (via pip) and Celery tasks support.',
-        searchTerms: ['Flask', 'Django'],
-        iconUrl: 'https://cdn.clever-cloud.com/uploads/2023/08/python.svg',
+          'Deploy your Python and Django applications with automatic dependency management (via pip or uv) and Celery tasks support',
+        searchTerms: ['🐍', 'Flask', 'Django', 'FastAPI', 'Pyramid', 'Streamlit', 'uv'],
+        iconUrl: 'https://assets.clever-cloud.com/logos/python.svg',
         url: '',
         apiId: 'python',
       },
       {
-        name: 'Ruby',
+        name: 'Static',
         description:
-          'Deploy your Ruby applications on Nginx + Puma with automatic dependency management (via Rake, gem...) and Sidekiq tasks support.',
-        searchTerms: ['On Rails'],
-        iconUrl: 'https://cdn.clever-cloud.com/uploads/2023/08/ruby-2.svg',
+          'Deploy your static website with automatic build for Astro, Docusaurus, Hugo, mdBook, MkDocs, Nuxt.js, Storybook, Vitepress, Zola',
+        searchTerms: [],
+        iconUrl: 'https://assets.clever-cloud.com/logos/static.svg',
         url: '',
-        apiId: 'ruby',
+        apiId: 'static',
+      },
+      {
+        name: 'Linux',
+        description: 'Deploy any kind of applications, with automatic dependency management (via Mise)',
+        searchTerms: [],
+        iconUrl: 'https://assets.clever-cloud.com/logos/linux.svg',
+        url: '',
+        apiId: 'linux',
+      },
+      {
+        name: 'FrankenPHP',
+        description: 'Deploy your PHP applications on FrankenPHP with automatic dependency management (via Composer)',
+        searchTerms: [],
+        iconUrl: 'https://assets.clever-cloud.com/logos/frankenphp.svg',
+        url: '',
+        apiId: 'frankenphp',
       },
       {
         name: 'Go',
-        description: 'Deploy your Go applications with automatic dependency management (via go mod, go build...).',
+        description:
+          'Deploy your Go applications with automatic dependency management (via go install, Makefile, etc.)',
         searchTerms: ['Google'],
-        iconUrl: 'https://cdn.clever-cloud.com/uploads/2023/08/go-2.svg',
+        iconUrl: 'https://assets.clever-cloud.com/logos/go.svg',
         url: '',
         apiId: 'go',
       },
       {
-        name: 'Static',
-        description:
-          'Deploy your PHP applications and static sites on Apache2 + PHP-FPM with automatic dependency management (via composer).',
-        searchTerms: ['Apache'],
-        iconUrl: 'https://cdn.clever-cloud.com/uploads/2023/08/static-apache-3-1.svg',
+        name: 'V (Vlang)',
+        description: 'Deploy your V applications with automatic build and dependency management',
+        searchTerms: [],
+        iconUrl: 'https://assets.clever-cloud.com/logos/v.svg',
         url: '',
-        apiId: 'static-apache',
+        apiId: 'v',
+      },
+      {
+        name: '.NET core',
+        description: 'Deploy your .NET core applications with automatic dependency management',
+        searchTerms: ['dotnet', 'Microsoft'],
+        iconUrl: 'https://assets.clever-cloud.com/logos/dotnet.svg',
+        url: '',
+        apiId: 'dotnet',
+      },
+      {
+        name: 'Ruby',
+        description:
+          'Deploy your applications on Nginx + Puma with automatic dependency management (via Rake, gem...) and Sidekiq',
+        searchTerms: ['💎', 'On Rails'],
+        iconUrl: 'https://assets.clever-cloud.com/logos/ruby.svg',
+        url: '',
+        apiId: 'ruby',
       },
       {
         name: 'Rust',
-        description: 'Deploy your Rust applications with automatic dependency management (via Cargo).',
-        searchTerms: ['Low level', 'crab', '🦀', 'Ferris'],
-        iconUrl: 'https://cdn.clever-cloud.com/uploads/2023/08/rust-2.svg',
+        description: 'Deploy your applications with automatic dependency management (via Cargo)',
+        searchTerms: ['🦀', 'Ferris'],
+        iconUrl: 'https://assets.clever-cloud.com/logos/rust.svg',
         url: '',
         apiId: 'rust',
       },
       {
         name: 'Scala + SBT',
         description:
-          'Deploy your JVM based applications (Java, Scala, GraalVM...) with automatic build and dependency management (Maven, Gradle, SBT, Ant...).',
-        searchTerms: ['JVM'],
-        iconUrl: getAssetUrl('/logos/scala.svg'),
+          'Deploy your JVM based applications (Java, Scala, GraalVM...) with automatic build and dependency management (Maven, Gradle, SBT, Ant, etc.)',
+        searchTerms: [],
+        iconUrl: 'https://assets.clever-cloud.com/logos/scala.svg',
         url: '',
         apiId: 'sbt',
       },
       {
-        name: 'Java Jar',
+        name: 'Java JAR',
         description:
-          'Deploy and run any Java ARchive file with automatic build. Some configuration files or environment variable are needed to specify the the JAR path.',
-        searchTerms: ['☕', 'JVM'],
-        iconUrl: getAssetUrl('/logos/java-jar.svg'),
+          'Deploy your JVM based applications (Java, Scala, GraalVM...) with automatic build and dependency management (Maven, Gradle, SBT, Ant...)',
+        searchTerms: ['☕'],
+        iconUrl: 'https://assets.clever-cloud.com/logos/java-jar.svg',
         url: '',
         apiId: 'jar',
       },
       {
-        name: 'Java maven',
+        name: 'Java Maven',
         description:
-          'Deploy your yur Java Maven projects with automatic build and dependency management. Some configuration files or environment variable are needed.',
-        searchTerms: ['Java', '☕', 'JVM'],
-        iconUrl: getAssetUrl('/logos/maven.svg'),
+          'Deploy your JVM based applications (Java, Scala, GraalVM...) with automatic build and dependency management (Maven, Gradle, SBT, Ant...)',
+        searchTerms: ['☕'],
+        iconUrl: 'https://assets.clever-cloud.com/logos/maven.svg',
         url: '',
         apiId: 'maven',
       },
       {
-        name: 'Java War',
+        name: 'Java/Groovy + Gradle',
         description:
-          'Deploy and run your JEE applications packaged as WAR or EAR with the container you want (Tomcat, Jetty, Glassfish, JBoss, Paraya…).',
-        searchTerms: ['☕', 'JVM'],
-        iconUrl: getAssetUrl('/logos/java-war.svg'),
-        url: '',
-        apiId: 'war',
-      },
-      {
-        name: 'Play Framework 1',
-        description:
-          'Deploy your Java application with Play framework in version 1. Play framework’s goal is to ease development while sticking with Java.',
-        searchTerms: ['Java', '☕', 'JVM'],
-        iconUrl: getAssetUrl('/logos/play1.svg'),
-        url: '',
-        apiId: 'play1',
-      },
-      {
-        name: 'Play Framework 2',
-        description:
-          'Deploy your based applications with Play 2.0, a Java and Scala framework that integrates the components and APIs you need for modern development.',
-        searchTerms: ['Java', 'Scala', '☕', 'JVM'],
-        iconUrl: getAssetUrl('/logos/play2.svg'),
-        url: '',
-        apiId: 'play2',
-      },
-      {
-        name: 'Groovy + Gradle',
-        description:
-          'Deploy your JVM based applications with Gradle, a project automation tool that builds upon the concepts of Apache Ant and Apache Maven.',
-        searchTerms: ['Java', '☕', 'JVM'],
-        iconUrl: getAssetUrl('/logos/gradle.svg'),
+          'Deploy your JVM based applications (Java, Scala, GraalVM...) with automatic build and dependency management (Maven, Gradle, SBT, Ant, etc.)',
+        searchTerms: ['☕'],
+        iconUrl: 'https://assets.clever-cloud.com/logos/gradle.svg',
         url: '',
         apiId: 'gradle',
       },
       {
-        name: '.NET core',
-        description: 'Deploy your .NET core applications with automatic dependency management.',
-        searchTerms: ['Microsoft', 'Web', 'Microservices'],
-        iconUrl: 'https://cdn.clever-cloud.com/uploads/2023/06/dotnet-color.svg',
+        name: 'Java War',
+        description:
+          'Deploy your JVM based applications (Java, Scala, GraalVM...) with automatic build and dependency management (Maven, Gradle, SBT, Ant...)',
+        searchTerms: ['☕'],
+        iconUrl: 'https://assets.clever-cloud.com/logos/java-war.svg',
         url: '',
-        apiId: 'dotnet',
+        apiId: 'war',
       },
       {
-        name: 'Elixir',
-        description: 'Deploy your Elixir/Phoenix applications with automatic dependency management (via Mix).',
-        searchTerms: ['Functional', 'Erlang'],
-        iconUrl: 'https://cdn.clever-cloud.com/uploads/2023/08/elixir.svg',
+        name: 'Java Play 1',
+        description:
+          'Deploy your JVM based applications (Java, Scala, GraalVM...) with automatic build and dependency management (Maven, Gradle, SBT, Ant, etc.)',
+        searchTerms: ['☕'],
+        iconUrl: 'https://assets.clever-cloud.com/logos/play1.svg',
+        url: '',
+        apiId: 'play1',
+      },
+      {
+        name: 'Java/Scala + Play! 2',
+        description:
+          'Deploy your JVM based applications (Java, Scala, GraalVM...) with automatic build and dependency management (Maven, Gradle, SBT, Ant...)',
+        searchTerms: ['☕'],
+        iconUrl: 'https://assets.clever-cloud.com/logos/play2.svg',
+        url: '',
+        apiId: 'play2',
+      },
+      {
+        name: 'Meteor',
+        description: 'Deploy your applications on Node.js using the Meteor framework',
+        searchTerms: [],
+        iconUrl: 'https://assets.clever-cloud.com/logos/meteor.svg',
+        url: '',
+        apiId: 'meteor',
+      },
+      {
+        name: 'Erlang - Elixir',
+        description:
+          'Deploy your Erlang applications with Elixir/Phoenix and automatic dependency management (via Mix)',
+        searchTerms: ['BEAM', 'Functional'],
+        iconUrl: 'https://assets.clever-cloud.com/logos/elixir.svg',
         url: '',
         apiId: 'elixir',
       },
       {
         name: 'Haskell',
-        description: 'Deploy your Haskell applications with automatic dependency management (via Stack).',
-        searchTerms: ['Functional'],
-        iconUrl: 'https://cdn.clever-cloud.com/uploads/2023/06/haskell.svg',
+        description: 'Deploy your applications with automatic dependency management (via Stack)',
+        searchTerms: ['Functional', 'GHC'],
+        iconUrl: 'https://assets.clever-cloud.com/logos/haskell.svg',
         url: '',
         apiId: 'haskell',
       },
       {
-        name: 'Meteor',
-        description:
-          'Deploy your JavaScript/TypeScript and Meteor applications on Node.js with automatic dependency management (via npm ou yarn).',
+        name: 'Static with Apache',
+        description: 'Build and deploy websites with the static generator of your choice on Apache2',
         searchTerms: [],
-        iconUrl: 'https://cdn.clever-cloud.com/uploads/2023/08/static-apache-3-1.svg',
+        iconUrl: 'https://assets.clever-cloud.com/logos/apache.svg',
         url: '',
-        apiId: 'meteor',
+        apiId: 'static-apache',
       },
     ],
     icon: {
@@ -180,14 +212,13 @@ const PRODUCTS = [
     },
   },
   {
-    categoryName: 'Container',
+    categoryName: 'Containers',
     products: [
       {
         name: 'Docker',
-        description:
-          'Deploy your applications in Docker: an easy and lightweight environment. Docker applications are run inside a virtual machine for higher security.',
-        searchTerms: [],
-        iconUrl: 'https://cdn.clever-cloud.com/uploads/2023/08/dockerblancbleu.svg',
+        description: 'Deploy applications from Dockerfile and take advantage of the Docker ecosystem',
+        searchTerms: ['containers'],
+        iconUrl: 'https://assets.clever-cloud.com/logos/docker.svg',
         url: '',
         apiId: 'docker',
       },
@@ -201,49 +232,55 @@ const PRODUCTS = [
     categoryName: 'Databases',
     products: [
       {
-        name: 'MongoDB',
-        description:
-          'Start a MongoDB database: a NoSQL document-oriented database, flexible, BSON format, supports horizontal scaling, ideal for modern applications.',
-        searchTerms: ['Document', 'Distributed'],
-        iconUrl: 'https://cdn.clever-cloud.com/uploads/2023/08/mongodb-3.svg',
+        name: 'Materia KV',
+        description: 'Serverless & highly distributed key-value database, compatible with Redis protocol',
+        searchTerms: [],
+        iconUrl: 'https://assets.clever-cloud.com/logos/materia-db-kv.png',
         url: '',
-        apiId: 'mongodb-addon',
-      },
-      {
-        name: 'MySQL',
-        description:
-          'Deploy a MySQL database, the open-source relational database. It supports SQL , ACID transactions, and integrates with various programming languages.',
-        searchTerms: ['SQL'],
-        iconUrl: 'https://cdn.clever-cloud.com/uploads/2023/03/mysql-5.svg',
-        url: '',
-        apiId: 'mysql-addon',
+        apiId: 'kv',
+        productStatus: 'Beta',
       },
       {
         name: 'PostgreSQL',
         description:
-          'Deploy a PostgreSQL database. It supports features such as SQL, ACID transactions, views, triggers, and stored procedures.',
-        searchTerms: ['SQL', '🐘'],
-        iconUrl: 'https://cdn.clever-cloud.com/uploads/2023/08/pgsql.svg',
+          'Object-relational database management system (ORDBMS), known for its robustness, scalability, and SQL standards compliance',
+        searchTerms: ['🐘'],
+        iconUrl: 'https://assets.clever-cloud.com/logos/pgsql.svg',
         url: '',
         apiId: 'postgresql-addon',
       },
       {
-        name: 'Redis',
+        name: 'MySQL',
         description:
-          'Deploy a Redis database : in-memory, key-value database, fast and efficient, used for caching and real-time data management, offers advanced data structures.',
-        searchTerms: ['key-value'],
-        iconUrl: 'https://cdn.clever-cloud.com/uploads/2023/08/redis-clever-cloud-pricing.svg',
+          'Relational database management system (RDBMS), known for its robustness, scalability, and SQL standards compliance',
+        searchTerms: [],
+        iconUrl: 'https://assets.clever-cloud.com/logos/mysql.svg',
+        url: '',
+        apiId: 'mysql-addon',
+      },
+      {
+        name: 'Redis',
+        description: 'In-memory, key-value database, used for caching and real-time data management',
+        searchTerms: [],
+        iconUrl: 'https://assets.clever-cloud.com/logos/redis.svg',
         url: '',
         apiId: 'redis-addon',
       },
       {
-        name: 'Elastic Stack',
-        description:
-          'Start an Elasticsearch, a distributed, real-time search engine with flexible indexing, RESTful API, powerful aggregation and multilingual support.',
-        searchTerms: ['Full Text', 'APM'],
-        iconUrl: 'https://cdn.clever-cloud.com/uploads/2023/08/elastic.svg',
+        name: 'Elastic Stack Platinum',
+        description: 'Search engine, log management, and data visualization with Kibana and APM server as options',
+        searchTerms: [],
+        iconUrl: 'https://assets.clever-cloud.com/logos/elastic.svg',
         url: '',
         apiId: 'es-addon',
+      },
+      {
+        name: 'MongoDB',
+        description: 'NoSQL document-oriented database, flexible, using BSON format',
+        searchTerms: [],
+        iconUrl: 'https://assets.clever-cloud.com/logos/mongodb.svg',
+        url: '',
+        apiId: 'mongodb-addon',
       },
     ],
     icon: {
@@ -255,22 +292,29 @@ const PRODUCTS = [
     categoryName: 'Storage & Messaging',
     products: [
       {
-        name: 'Cellar Object storage',
+        name: 'Cellar S3 storage',
         description:
-          'Create one or several Cellar buckets, a distributed object storage service, compatible with the AWS S3 protocol (signature V4) to store and persist files.',
-        searchTerms: ['S3', 'Distributed'],
-        iconUrl: getAssetUrl('/logos/cellar.svg'),
+          'Distributed object storage service, replicated over 3 datacenters, compatible with the S3 protocol',
+        searchTerms: [],
+        iconUrl: 'https://assets.clever-cloud.com/logos/cellar.svg',
         url: '',
         apiId: 'cellar-addon',
       },
       {
         name: 'FS Buckets',
-        description:
-          'Mount a FS Bucket to persist files within an application folder. It is compatible with SFTP and comes with a GUI for manipulating files.',
-        searchTerms: ['FTP'],
-        iconUrl: getAssetUrl('/logos/fsbucket.svg'),
+        description: 'Persistent file system for your application',
+        searchTerms: ['Folder', 'Mount'],
+        iconUrl: 'https://assets.clever-cloud.com/logos/fsbucket.svg',
         url: '',
         apiId: 'fs-bucket',
+      },
+      {
+        name: 'Pulsar',
+        description: 'Distributed, advanced, and high-performance messaging and event streaming system',
+        searchTerms: ['Apache'],
+        iconUrl: 'https://assets.clever-cloud.com/logos/pulsar.svg',
+        url: '',
+        apiId: 'addon-pulsar',
       },
     ],
     icon: {
@@ -282,31 +326,46 @@ const PRODUCTS = [
     categoryName: 'Services',
     products: [
       {
-        name: 'Jenkins',
+        name: 'Keycloak',
         description:
-          'Start a Jenkins server, automating software build, test, and deployment. Flexible integration with various tools through plugins',
-        searchTerms: ['CI/CD', 'Runners'],
-        iconUrl: getAssetUrl('/logos/jenkins.svg'),
+          'Identity and access management solution, providing single sign-on, user federation and high-availability, by Please Open It',
+        searchTerms: ['Network groups', 'Tech Preview'],
+        iconUrl: 'https://assets.clever-cloud.com/logos/keycloak.svg',
         url: '',
-        apiId: 'jenkins',
+        apiId: 'keycloak',
+      },
+      {
+        name: 'Metabase',
+        description: 'An easy business intelligence tool to query and visualize data',
+        searchTerms: [],
+        iconUrl: 'https://assets.clever-cloud.com/logos/metabase.svg',
+        url: '',
+        apiId: 'metabase',
       },
       {
         name: 'Matomo Analytics',
-        description:
-          'Start the components for a pre-built Matomo: the open-source web analytics platform providing tracking and reporting features on website visitors.',
-        searchTerms: ['Statistics', 'Reporting'],
-        iconUrl: getAssetUrl('/logos/matomo.svg'),
+        description: 'Web analytics platform that gives you insights on your visitors, GDPR ready',
+        searchTerms: [],
+        iconUrl: 'https://assets.clever-cloud.com/logos/matomo.svg',
         url: '',
         apiId: 'addon-matomo',
       },
       {
-        name: 'Heptapod',
-        description:
-          'Access to Heptapod Cloud, a SaaS DevOps platform. This software forge is a fork of GitLab Community Edition, with support for Git and Mercurial.',
-        searchTerms: ['CI/CD', 'Runners'],
-        iconUrl: 'https://cdn.clever-cloud.com/uploads/2023/09/heptapodblanc-1-1.svg',
+        name: 'Otoroshi with LLM',
+        description: 'Simple API management based on a modern reverse proxy',
+        searchTerms: [],
+        iconUrl: 'https://maif.github.io/otoroshi/manual/imgs/bw-otoroshi-logo.png',
         url: '',
-        apiId: 'heptapod',
+        apiId: 'otoroshi',
+      },
+      {
+        name: 'Jenkins',
+        description:
+          'Automation server, for all sorts of tasks related to building, testing, and delivering or deploying software',
+        searchTerms: ['CI/CD'],
+        iconUrl: 'https://assets.clever-cloud.com/logos/jenkins.svg',
+        url: '',
+        apiId: 'jenkins',
       },
     ],
     icon: {
@@ -315,31 +374,20 @@ const PRODUCTS = [
     },
   },
   {
-    categoryName: 'Messaging',
+    categoryName: 'Third-party products',
     products: [
       {
-        name: 'Pulsar',
-        description:
-          'Create a Pulsar topic, an open-source, distributed messaging and streaming platform, built on the publish-subscribe pattern.',
-        searchTerms: ['Distributed', 'Messaging', 'Streaming', 'pub/sub', 'topic'],
-        iconUrl: getAssetUrl('/logos/pulsar.svg'),
-        url: '',
-        apiId: 'addon-pulsar',
-      },
-    ],
-    icon: {
-      content:
-        '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M6.45455 19L2 22.5V4C2 3.44772 2.44772 3 3 3H21C21.5523 3 22 3.44772 22 4V18C22 18.5523 21.5523 19 21 19H6.45455ZM5.76282 17H20V5H4V18.3851L5.76282 17ZM11 10H13V12H11V10ZM7 10H9V12H7V10ZM15 10H17V12H15V10Z"></path></svg>',
-    },
-  },
-  {
-    categoryName: 'Third Party',
-    products: [
-      {
-        name: 'MailPace',
-        description:
-          'Create a MailPace account to sent e-mails via HTTPS API, SMTP and several libraries, removing the need for any email setup or active email management.',
+        name: 'Azimutt',
+        description: 'Database explorer: understand and document it seamlessly',
         searchTerms: [],
+        iconUrl: 'https://avatars.githubusercontent.com/u/89384563?s=400&u=5cca437e789595db969182bed62e50ff88b1a700',
+        url: '',
+        apiId: 'azimutt',
+      },
+      {
+        name: 'Mailpace',
+        description: 'Send transactional emails from your applications in an easy way',
+        searchTerms: ['SMTP'],
         iconUrl: 'https://docs.mailpace.com/img/logo.png',
         url: '',
         apiId: 'mailpace',
@@ -348,6 +396,23 @@ const PRODUCTS = [
     icon: {
       content:
         '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" version="1.1" style="shape-rendering:geometricPrecision;text-rendering:geometricPrecision;image-rendering:optimizeQuality;" viewBox="0 0 706.1 834.475" x="0px" y="0px" fill-rule="evenodd" clip-rule="evenodd"><defs><style type="text/css">.fil0 {fill:black;fill-rule:nonzero}</style></defs><g><path class="fil0" d="M353.05 0c69.01,0 124.97,55.95 124.97,124.97 0,60.82 -43.88,112.89 -103.68,123.15l0 89.24 138.47 100.6c19.64,-12.85 43.11,-20.32 68.32,-20.32 69.01,0 124.97,55.96 124.97,124.97 0,69.01 -55.96,124.97 -124.97,124.97 -69.01,0 -124.97,-55.96 -124.97,-124.97 0,-28.16 9.32,-54.15 25.04,-75.05l-128.15 -93.11 -128.15 93.11c15.72,20.9 25.04,46.89 25.04,75.05 0,69.01 -55.96,124.97 -124.97,124.97 -69.01,0 -124.97,-55.96 -124.97,-124.97 0,-69.01 55.96,-124.97 124.97,-124.97 25.21,0 48.69,7.47 68.32,20.32l138.46 -100.6 0 -89.24c-59.79,-10.26 -103.67,-62.33 -103.67,-123.15 0,-69.02 55.96,-124.97 124.97,-124.97zm0.37 208.13c34.59,0 82.01,-31.94 82.01,-83.16 0,-45.5 -36.88,-82.38 -82.38,-82.38 -45.5,0 -82.38,36.88 -82.38,82.38 0,51.89 42.51,83.16 82.75,83.16zm-228.45 252.1c-45.5,0 -82.38,36.88 -82.38,82.38 0,45.5 36.88,82.38 82.38,82.38 45.5,0 82.38,-36.88 82.38,-82.38 0,-45.5 -36.88,-82.38 -82.38,-82.38zm456.16 0c-45.5,0 -82.38,36.88 -82.38,82.38 0,45.5 36.88,82.38 82.38,82.38 45.5,0 82.38,-36.88 82.38,-82.38 0,-45.5 -36.88,-82.38 -82.38,-82.38z"/></g></svg>',
+    },
+  },
+  {
+    categoryName: 'Tools',
+    products: [
+      {
+        name: 'Configuration Provider',
+        description: 'Share environment variables between your applications',
+        searchTerms: [],
+        iconUrl: 'https://assets.clever-cloud.com/logos/configprovider.svg',
+        url: '',
+        apiId: 'config-provider',
+      },
+    ],
+    icon: {
+      content:
+        '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="0 0 32 32" fill="currentColor"><path d="M29.532 25.76l-5.655-5.655 0.754-0.754-0.754-0.754-2.261 2.261-3.771-3.77 4.53-4.532c0.603 0.215 1.234 0.324 1.882 0.324 1.493 0 2.897-0.582 3.954-1.637 1.63-1.631 2.092-4.054 1.178-6.174l-0.311-0.722-2.43 2.43-1.956 0.027 0.026-1.866 2.477-2.477-0.72-0.312c-0.706-0.306-1.457-0.461-2.229-0.461-1.494 0-2.897 0.582-3.952 1.637-1.546 1.545-2.043 3.802-1.311 5.84l-4.529 4.529-6.409-6.408 0.754-0.754-4.145-4.146-2.264 2.261 4.147 4.147 0.753-0.754 6.409 6.408-4.529 4.529c-0.605-0.217-1.239-0.326-1.888-0.326-1.493 0-2.897 0.582-3.953 1.637-1.633 1.632-2.095 4.059-1.176 6.181l0.312 0.72 2.477-2.477 1.865-0.025-0.027 1.956-2.43 2.43 0.722 0.311c0.704 0.303 1.452 0.458 2.221 0.458 1.494 0 2.897-0.581 3.952-1.636 1.544-1.544 2.041-3.799 1.314-5.833l4.532-4.532 3.771 3.769-2.263 2.263 0.754 0.754 0.754-0.754 5.654 5.654c0.503 0.504 1.174 0.781 1.885 0.781s1.381-0.277 1.885-0.781c1.039-1.039 1.039-2.73-0-3.769zM3.899 4.648l0.754-0.753 2.638 2.638-0.754 0.754-2.639-2.639zM11.448 22.456c0.739 1.716 0.364 3.679-0.955 4.999-0.854 0.854-1.989 1.324-3.198 1.324-0.347 0-0.689-0.039-1.021-0.116l1.569-1.569 0.047-3.485-3.394 0.046-1.619 1.619c-0.356-1.51 0.081-3.103 1.208-4.229 0.854-0.854 1.99-1.325 3.199-1.325 0.626 0 1.233 0.125 1.806 0.373l0.333 0.144 10.819-10.819-0.144-0.333c-0.744-1.719-0.37-3.682 0.952-5.004 0.854-0.854 1.99-1.325 3.198-1.325 0.35 0 0.695 0.040 1.030 0.117l-1.618 1.618-0.047 3.394 3.485-0.047 1.57-1.57c0.352 1.507-0.086 3.097-1.209 4.221-0.855 0.854-1.991 1.325-3.2 1.325-0.624 0-1.23-0.125-1.801-0.371l-0.332-0.143-10.821 10.823 0.143 0.332zM28.779 28.775c-0.302 0.302-0.704 0.469-1.131 0.469s-0.829-0.167-1.131-0.469l-5.654-5.654 2.262-2.262 5.655 5.655c0.624 0.624 0.624 1.638 0.001 2.261z"></path></svg>',
     },
   },
 ];

@@ -36,6 +36,11 @@ const availableLanguages = [
   { value: 'missing', title: '🤬 Missing' },
 ];
 
+const availableViewModes = [
+  { value: 'default', title: 'Default' },
+  { value: 'console', title: 'Console' },
+];
+
 /** @type {Preview} */
 const preview = {
   parameters: {
@@ -94,6 +99,7 @@ const preview = {
   },
   initialGlobals: {
     locale: 'en',
+    viewMode: 'default',
   },
   globalTypes: {
     locale: {
@@ -104,7 +110,21 @@ const preview = {
         items: availableLanguages,
       },
     },
+    viewMode: {
+      name: 'View Mode',
+      description: 'Preview context',
+      toolbar: {
+        icon: 'browser',
+        items: availableViewModes,
+      },
+    },
   },
+  decorators: [
+    (storyFn, context) => {
+      document.body.classList.toggle('console-mode', context.globals.viewMode === 'console');
+      return storyFn();
+    },
+  ],
 };
 
 export default preview;

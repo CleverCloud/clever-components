@@ -321,7 +321,6 @@ export class CcPicker extends CcFormControlElement {
           flex-wrap: wrap;
           gap: 1em;
           grid-area: input;
-          padding-inline-start: var(--cc-picker-tiles-indent, 0.25em);
         }
         /* endregion */
 
@@ -388,6 +387,14 @@ export class CcPicker extends CcFormControlElement {
           color: var(--cc-color-text-danger, #be242d);
           grid-area: error;
           margin: 0.5em 0 0;
+        }
+        /* endregion */
+
+        /* region indent */
+        .tiles,
+        .help-container,
+        .error-container {
+          padding-inline-start: var(--cc-picker-tiles-indent, 0.25em);
         }
         /* endregion */
       `,
