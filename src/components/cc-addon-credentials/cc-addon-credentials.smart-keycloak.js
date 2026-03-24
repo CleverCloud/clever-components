@@ -1,9 +1,12 @@
+import { CreateKeycloakNetworkGroupCommand } from '@clevercloud/client/cc-api-commands/keycloak/create-keycloak-network-group-command.js';
+import { DeleteKeycloakNetworkGroupCommand } from '@clevercloud/client/cc-api-commands/keycloak/delete-keycloak-network-group-command.js';
+import { GetKeycloakInfoCommand } from '@clevercloud/client/cc-api-commands/keycloak/get-keycloak-info-command.js';
+import { getCcApiClientWithOAuth } from '../../lib/cc-api-client.js';
 import { getDocUrl } from '../../lib/dev-hub-url.js';
 import { notifyError, notifySuccess } from '../../lib/notifications.js';
 import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-smart-container/cc-smart-container.js';
-import { CcAddonCredentialsClient } from './cc-addon-credentials.client.js';
 import './cc-addon-credentials.js';
 
 /** @type {AddonCredentialsStateLoading} */
@@ -35,14 +38,11 @@ const LOADING_STATE = {
     },
   },
 };
-const PROVIDER_ID = 'keycloak';
 
 /**
  * @import { CcAddonCredentials } from './cc-addon-credentials.js'
  * @import { AddonCredentialsStateLoaded, AddonCredentialsStateLoading } from './cc-addon-credentials.types.js'
  * @import { AddonCredential, AddonCredentialNg, AddonCredentialNgEnabled, AddonCredentialNgDisabled } from '../cc-addon-credentials-content/cc-addon-credentials-content.types.js'
- * @import { KeycloakOperatorInfo } from '../../operators.types.js'
- * @import { ApiConfig } from '../../lib/send-to-api.types.js'
  * @import { OnContextUpdateArgs } from '../../lib/smart/smart-component.types.js'
  */
 
@@ -57,8 +57,8 @@ defineSmartComponent({
    * @param {OnContextUpdateArgs<CcAddonCredentials>} args
    */
   onContextUpdate({ context, onEvent, updateComponent, signal }) {
-    const { apiConfig, addonId, ownerId } = context;
-    const api = new Api({ apiConfig, ownerId, addonId, signal });
+    const { apiConfig, addonId } = context;
+    const ccApiClient = getCcApiClientWithOAuth(apiConfig);
 
     /** @param {AddonCredentialNg|((param: AddonCredentialNg) => AddonCredential)} newNgInfoOrCallback */
     function updateNg(newNgInfoOrCallback) {
@@ -82,9 +82,31 @@ defineSmartComponent({
 
     updateComponent('state', LOADING_STATE);
 
-    api
-      .getCredentials()
-      .then((credentials) => {
+    ccApiClient
+      .send(new GetKeycloakInfoCommand({ addonId }), { signal })
+      .then((operator) => {
+        if (operator == null) {
+          updateComponent('state', { type: 'error' });
+          return;
+        }
+
+        /** @type {AddonCredential[]} */
+        const credentials = [
+          {
+            code: 'initial-user',
+            value: operator.initialCredentials.user,
+          },
+          {
+            code: 'initial-password',
+            value: operator.initialCredentials.password,
+          },
+          {
+            code: 'ng',
+            kind: 'multi-instances',
+            value: formatNgData(operator.features.networkGroup),
+          },
+        ];
+
         updateComponent(
           'state',
           /** @param {AddonCredentialsStateLoaded|AddonCredentialsStateLoading} state */
@@ -108,8 +130,8 @@ defineSmartComponent({
         },
       });
 
-      api
-        .createNg()
+      ccApiClient
+        .send(new CreateKeycloakNetworkGroupCommand({ addonId }))
         .then((updatedOperator) => {
           updateNg({
             code: 'ng',
@@ -145,8 +167,8 @@ defineSmartComponent({
         },
       }));
 
-      api
-        .deleteNg()
+      ccApiClient
+        .send(new DeleteKeycloakNetworkGroupCommand({ addonId }))
         .then(() => {
           updateNg({
             code: 'ng',
@@ -176,7 +198,7 @@ defineSmartComponent({
 
 /**
  *
- * @param {{ id: string } | null} data
+ * @param {{ id: string } | null | undefined} data
  * @returns {AddonCredentialNgEnabled | AddonCredentialNgDisabled}
  */
 function formatNgData(data) {
@@ -188,39 +210,4 @@ function formatNgData(data) {
     status: 'enabled',
     id: data.id,
   };
-}
-
-class Api extends CcAddonCredentialsClient {
-  /**
-   * @param {object} params
-   * @param {ApiConfig} params.apiConfig
-   * @param {string} params.ownerId
-   * @param {string} params.addonId
-   * @param {AbortSignal} params.signal
-   */
-  constructor({ apiConfig, ownerId, addonId, signal }) {
-    super({ apiConfig, ownerId, addonId, providerId: PROVIDER_ID, signal });
-  }
-
-  /**
-   * @return {Promise<AddonCredential[]>}
-   */
-  async getCredentials() {
-    const operator = /** @type {KeycloakOperatorInfo} */ (await this.getAddonWithOperator());
-    return [
-      {
-        code: 'initial-user',
-        value: operator.initialCredentials.user,
-      },
-      {
-        code: 'initial-password',
-        value: operator.initialCredentials.password,
-      },
-      {
-        code: 'ng',
-        kind: 'multi-instances',
-        value: formatNgData(operator.features.networkGroup),
-      },
-    ];
-  }
 }

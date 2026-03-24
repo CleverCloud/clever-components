@@ -1,8 +1,7 @@
-import { ONE_SECOND } from '@clevercloud/client/esm/with-cache.js';
-import { sendToApi } from '../../lib/send-to-api.js';
+import { GetPulsarInfoCommand } from '@clevercloud/client/cc-api-commands/pulsar/get-pulsar-info-command.js';
+import { getCcApiClientWithOAuth } from '../../lib/cc-api-client.js';
 import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
 import '../cc-smart-container/cc-smart-container.js';
-import { CcAddonCredentialsClient } from './cc-addon-credentials.client.js';
 import './cc-addon-credentials.js';
 
 /** @type {AddonCredentialsStateLoading} */
@@ -43,13 +42,11 @@ const LOADING_STATE = {
     },
   },
 };
-const PROVIDER_ID = 'addon-pulsar';
 
 /**
  * @import { CcAddonCredentials } from './cc-addon-credentials.js'
- * @import { AddonCredentialsStateLoaded, AddonCredentialsStateLoading, PulsarProviderInfo, PulsarClusterInfo } from './cc-addon-credentials.types.js'
+ * @import { AddonCredentialsStateLoaded, AddonCredentialsStateLoading } from './cc-addon-credentials.types.js'
  * @import { AddonCredential } from '../cc-addon-credentials-content/cc-addon-credentials-content.types.js'
- * @import { ApiConfig } from '../../lib/send-to-api.types.js'
  * @import { OnContextUpdateArgs } from '../../lib/smart/smart-component.types.js'
  */
 
@@ -58,37 +55,77 @@ defineSmartComponent({
   params: {
     apiConfig: { type: Object },
     addonId: { type: String },
-    ownerId: { type: String },
   },
   /**
    * @param {OnContextUpdateArgs<CcAddonCredentials>} args
    */
   onContextUpdate({ context, updateComponent, signal }) {
-    const { apiConfig, addonId, ownerId } = context;
-    const api = new Api({ apiConfig, ownerId, addonId, signal });
+    const { apiConfig, addonId } = context;
+    const ccApiClient = getCcApiClientWithOAuth(apiConfig);
 
     updateComponent('state', LOADING_STATE);
 
-    api
-      .getAllCredentials()
-      .then(({ api, cli }) => {
+    ccApiClient
+      .send(new GetPulsarInfoCommand({ addonId }), { signal })
+      .then((pulsarInfo) => {
+        let cliUrl;
+        if (pulsarInfo.cluster.pulsarTlsPort != null) {
+          cliUrl = `pulsar+ssl://${pulsarInfo.cluster.url}:${pulsarInfo.cluster.pulsarTlsPort}`;
+        } else if (pulsarInfo.cluster.pulsarPort != null) {
+          cliUrl = `pulsar+ssl://${pulsarInfo.cluster.url}:${pulsarInfo.cluster.pulsarPort}`;
+        } else {
+          throw new Error('Missing TLS port and default port');
+        }
+
+        const tenantNamespace = `${pulsarInfo.tenant}/${pulsarInfo.namespace}`;
+
+        /** @type {AddonCredential[]} */
+        const apiCredentials = [
+          {
+            code: 'url',
+            value: `https://${pulsarInfo.cluster.url}:${pulsarInfo.cluster.webTlsPort}`,
+          },
+          {
+            code: 'tenant-namespace',
+            value: tenantNamespace,
+          },
+          {
+            code: 'token',
+            value: pulsarInfo.token,
+          },
+        ];
+
+        /** @type {AddonCredential[]} */
+        const cliCredentials = [
+          {
+            code: 'url',
+            value: cliUrl,
+          },
+          {
+            code: 'tenant-namespace',
+            value: tenantNamespace,
+          },
+          {
+            code: 'token',
+            value: pulsarInfo.token,
+          },
+        ];
+
         updateComponent(
           'state',
           /** @param {AddonCredentialsStateLoaded|AddonCredentialsStateLoading} state */
           (state) => {
             state.type = 'loaded';
-            const updatedTabs = {
+            state.tabs = {
               api: {
                 ...state.tabs.api,
-                content: api,
+                content: apiCredentials,
               },
               cli: {
                 ...state.tabs.cli,
-                content: cli,
+                content: cliCredentials,
               },
             };
-
-            state.tabs = updatedTabs;
           },
         );
       })
@@ -98,136 +135,3 @@ defineSmartComponent({
       });
   },
 });
-
-class Api extends CcAddonCredentialsClient {
-  /**
-   * @param {object} params
-   * @param {ApiConfig} params.apiConfig
-   * @param {string} params.ownerId
-   * @param {string} params.addonId
-   * @param {AbortSignal} params.signal
-   */
-  constructor({ apiConfig, ownerId, addonId, signal }) {
-    super({ apiConfig, ownerId, addonId, providerId: PROVIDER_ID, signal });
-  }
-
-  /**
-   *
-   * @param {string} realId
-   * @returns {Promise<PulsarProviderInfo>}
-   */
-  _getAddonProvider(realId) {
-    return getAddonProvider({ providerId: this._providerId, addonId: realId }).then(
-      sendToApi({ apiConfig: this._apiConfig, signal: this._signal, cacheDelay: ONE_SECOND }),
-    );
-  }
-
-  /**
-   * @param {string} clusterId
-   * @return {Promise<PulsarClusterInfo>}
-   */
-  _getCluster(clusterId) {
-    return getCluster({ providerId: PROVIDER_ID, clusterId }).then(
-      sendToApi({ apiConfig: this._apiConfig, signal: this._signal, cacheDelay: ONE_SECOND }),
-    );
-  }
-
-  /**
-   * @param {'api' | 'cli'} tabType
-   * @return {Promise<AddonCredential[]>}
-   */
-  async getCredentials(tabType) {
-    const rawAddon = await this._getAddon();
-    const realId = rawAddon.realId;
-    const addonProvider = /** @type {PulsarProviderInfo} */ (await this._getAddonProvider(realId));
-    const addonCluster = await this._getCluster(addonProvider.cluster_id);
-    let url;
-    if (addonCluster.pulsar_tls_port != null) {
-      url = `pulsar+ssl://${addonCluster.url}:${addonCluster.pulsar_tls_port}`;
-    } else if (addonCluster.pulsar_port != null) {
-      url = `pulsar+ssl://${addonCluster.url}:${addonCluster.pulsar_port}`;
-    } else {
-      throw new Error('Missing TLS port and default port');
-    }
-    switch (tabType) {
-      case 'api':
-        return [
-          {
-            code: 'url',
-            value: `https://${addonCluster.url}:${addonCluster.web_tls_port}`,
-          },
-          {
-            code: 'tenant-namespace',
-            value: `${addonProvider.tenant}/${rawAddon.realId}`,
-          },
-          {
-            code: 'token',
-            value: addonProvider.token,
-          },
-        ];
-      case 'cli':
-        return [
-          {
-            code: 'url',
-            value: url,
-          },
-          {
-            code: 'tenant-namespace',
-            value: `${addonProvider.tenant}/${rawAddon.realId}`,
-          },
-          {
-            code: 'token',
-            value: addonProvider.token,
-          },
-        ];
-    }
-  }
-
-  /**
-   * @return {Promise<{api: AddonCredential[], cli: AddonCredential[]}>}
-   */
-  async getAllCredentials() {
-    const [apiCredentials, cliCredentials] = await Promise.all([
-      this.getCredentials('api'),
-      this.getCredentials('cli'),
-    ]);
-
-    return {
-      api: apiCredentials,
-      cli: cliCredentials,
-    };
-  }
-}
-// FIXME: remove and use the clever-client call from the new clever-client
-/**
- * @param {Object} params
- * @param {String} params.providerId
- * @param {String} params.addonId
- */
-export function getAddonProvider(params) {
-  // no multipath for /self or /organisations/{id}
-  return Promise.resolve({
-    method: 'get',
-    url: `/v4/addon-providers/${params.providerId}/addons/${params.addonId}`,
-    headers: { Accept: 'application/json' },
-    // no query params
-    // no body
-  });
-}
-
-// FIXME: remove and use the clever-client call from the new clever-client
-/**
- * @param {Object} params
- * @param {String} params.providerId
- * @param {String} params.clusterId
- */
-export function getCluster(params) {
-  // no multipath for /self or /organisations/{id}
-  return Promise.resolve({
-    method: 'get',
-    url: `/v4/addon-providers/${params.providerId}/clusters/${params.clusterId}`,
-    headers: { Accept: 'application/json' },
-    // no query params
-    // no body
-  });
-}
