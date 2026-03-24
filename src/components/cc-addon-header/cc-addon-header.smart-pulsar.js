@@ -1,16 +1,13 @@
+import { GetAddonCommand } from '@clevercloud/client/cc-api-commands/addon/get-addon-command.js';
+import { GetZoneCommand } from '@clevercloud/client/cc-api-commands/zone/get-zone-command.js';
+import { getCcApiClientWithOAuth } from '../../lib/cc-api-client.js';
 import { fakeString } from '../../lib/fake-strings.js';
 import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
 import '../cc-smart-container/cc-smart-container.js';
-import { CcAddonHeaderClient } from './cc-addon-header.client.js';
 import './cc-addon-header.js';
-
-const PROVIDER_ID = 'addon-pulsar';
 
 /**
  * @import { CcAddonHeader } from './cc-addon-header.js'
- * @import { RawAddon } from './cc-addon-header.types.js'
- * @import { Zone } from '../common.types.js';
- * @import { ApiConfig } from '../../lib/send-to-api.types.js'
  * @import { OnContextUpdateArgs } from '../../lib/smart/smart-component.types.js'
  */
 
@@ -26,22 +23,28 @@ defineSmartComponent({
   /** @param {OnContextUpdateArgs<CcAddonHeader>} args */
   onContextUpdate({ context, updateComponent, signal }) {
     const { apiConfig, ownerId, addonId, productStatus } = context;
-    const api = new Api({ apiConfig, ownerId, addonId, signal });
+    const ccApiClient = getCcApiClientWithOAuth(apiConfig);
 
     updateComponent('state', {
       type: 'loading',
       productStatus: fakeString(4),
     });
 
-    api
-      .getProviderWithZone()
-      .then(({ rawAddon, zone }) => {
+    ccApiClient
+      .send(new GetAddonCommand({ ownerId, addonId }), { signal })
+      .then((addon) => {
+        return Promise.all([
+          addon,
+          ccApiClient.send(new GetZoneCommand({ zoneName: addon.zone, ownerId }), { signal }),
+        ]);
+      })
+      .then(([addon, zone]) => {
         updateComponent('state', {
           type: 'loaded',
-          providerId: rawAddon.provider.name,
-          providerLogoUrl: rawAddon.provider.logoUrl,
-          name: rawAddon.name,
-          id: rawAddon.realId,
+          providerId: addon.provider.name,
+          providerLogoUrl: addon.provider.logoUrl,
+          name: addon.name,
+          id: addon.realId,
           zone,
           productStatus,
         });
@@ -54,23 +57,3 @@ defineSmartComponent({
       });
   },
 });
-
-class Api extends CcAddonHeaderClient {
-  /**
-   * @param {object} params
-   * @param {ApiConfig} params.apiConfig
-   * @param {string} params.ownerId
-   * @param {string} params.addonId
-   * @param {AbortSignal} params.signal
-   */
-  constructor({ apiConfig, ownerId, addonId, signal }) {
-    super({ apiConfig, ownerId, addonId, providerId: PROVIDER_ID, signal });
-  }
-
-  /** @return {Promise<{rawAddon: RawAddon, zone: Zone }>} */
-  async getProviderWithZone() {
-    const rawAddon = await this.getAddon();
-    const zone = await this.getZone(rawAddon.region);
-    return { rawAddon, zone };
-  }
-}

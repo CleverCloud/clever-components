@@ -1,14 +1,18 @@
+import { GetAddonCommand } from '@clevercloud/client/cc-api-commands/addon/get-addon-command.js';
+import { GetOtoroshiInfoCommand } from '@clevercloud/client/cc-api-commands/otoroshi/get-otoroshi-info-command.js';
+import { RebootOtoroshiCommand } from '@clevercloud/client/cc-api-commands/otoroshi/reboot-otoroshi-command.js';
+import { RebuildOtoroshiCommand } from '@clevercloud/client/cc-api-commands/otoroshi/rebuild-otoroshi-command.js';
+import { GetZoneCommand } from '@clevercloud/client/cc-api-commands/zone/get-zone-command.js';
+import { getCcApiClientWithOAuth } from '../../lib/cc-api-client.js';
 import { getDocUrl } from '../../lib/dev-hub-url.js';
 import { fakeString } from '../../lib/fake-strings.js';
 import { notify, notifyError } from '../../lib/notifications.js';
 import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-smart-container/cc-smart-container.js';
-import { CcAddonHeaderClient } from './cc-addon-header.client.js';
 import './cc-addon-header.js';
 
 const DOCS_URL = getDocUrl(`/addons/otoroshi`);
-const PROVIDER_ID = 'otoroshi';
 
 /**
  * @import { CcAddonHeader } from './cc-addon-header.js'
@@ -28,7 +32,7 @@ defineSmartComponent({
   /** @param {OnContextUpdateArgs<CcAddonHeader>} args */
   onContextUpdate({ context, updateComponent, onEvent, signal }) {
     const { apiConfig, ownerId, addonId, productStatus } = context;
-    const api = new CcAddonHeaderClient({ apiConfig, ownerId, addonId, providerId: PROVIDER_ID, signal });
+    const ccApiClient = getCcApiClientWithOAuth(apiConfig);
     let logsUrl = '';
 
     updateComponent('state', {
@@ -47,18 +51,25 @@ defineSmartComponent({
       productStatus: fakeString(4),
     });
 
-    api
-      .getAddonWithOperatorAndZone()
-      .then(({ rawAddon, operator, zone }) => {
+    ccApiClient
+      .send(new GetAddonCommand({ ownerId, addonId }), { signal })
+      .then((addon) => {
+        return Promise.all([
+          addon,
+          ccApiClient.send(new GetOtoroshiInfoCommand({ addonId }), { signal }),
+          ccApiClient.send(new GetZoneCommand({ zoneName: addon.zone, ownerId }), { signal }),
+        ]);
+      })
+      .then(([addon, operator, zone]) => {
         const javaAppId = operator.resources.entrypoint;
         logsUrl = context.logsUrlPattern.replace(':id', javaAppId);
 
         updateComponent('state', {
           type: 'loaded',
-          providerId: rawAddon.provider.name,
-          providerLogoUrl: rawAddon.provider.logoUrl,
-          name: rawAddon.name,
-          id: rawAddon.realId,
+          providerId: addon.provider.name,
+          providerLogoUrl: addon.provider.logoUrl,
+          name: addon.name,
+          id: addon.realId,
           zone,
           logsUrl,
           openLinks: [
@@ -86,8 +97,8 @@ defineSmartComponent({
         state.type = 'restarting';
       });
 
-      api
-        .restartAddon()
+      ccApiClient
+        .send(new RebootOtoroshiCommand({ addonId }))
         .then(() => {
           notify({
             intent: 'success',
@@ -115,8 +126,8 @@ defineSmartComponent({
         state.type = 'rebuilding';
       });
 
-      api
-        .rebuildAndRestartAddon()
+      ccApiClient
+        .send(new RebuildOtoroshiCommand({ addonId }))
         .then(() => {
           notify({
             intent: 'success',
