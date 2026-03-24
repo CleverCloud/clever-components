@@ -219,7 +219,7 @@ export class CcAddonCredentialsContent extends LitElement {
                   download="${credential.value}"
                   ?skeleton="${skeleton}"
                   disable-external-link-icon
-                  >${i18n('cc-addon-credentials.download-s3cfg-file')}</cc-link
+                  >${i18n('cc-addon-credentials-content.download-s3cfg-file')}</cc-link
                 >
               `
             : ''}
