@@ -35,6 +35,7 @@ defineSmartComponent({
       .then((ng) => {
         if (ng == null) {
           updateComponent('state', { type: 'error' });
+          return;
         }
 
         updateComponent('state', {
