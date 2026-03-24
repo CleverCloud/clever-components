@@ -1,7 +1,7 @@
-import { sendToApi } from '../../lib/send-to-api.js';
+import { GetMateriaInfoCommand } from '@clevercloud/client/cc-api-commands/materia/get-materia-info-command.js';
+import { getCcApiClientWithOAuth } from '../../lib/cc-api-client.js';
 import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
 import '../cc-smart-container/cc-smart-container.js';
-import { CcAddonCredentialsClient } from './cc-addon-credentials.client.js';
 import './cc-addon-credentials.js';
 
 /** @type {AddonCredentialsStateLoading} */
@@ -26,13 +26,10 @@ const LOADING_STATE = {
     },
   },
 };
-const PROVIDER_ID = 'kv';
 
 /**
  * @import { CcAddonCredentials } from './cc-addon-credentials.js'
- * @import { AddonCredentialsStateLoaded, MateriaKvInfo, AddonCredentialsStateLoading } from './cc-addon-credentials.types.js'
- * @import { AddonCredential } from '../cc-addon-credentials-content/cc-addon-credentials-content.types.js'
- * @import { ApiConfig } from '../../lib/send-to-api.types.js'
+ * @import { AddonCredentialsStateLoaded, AddonCredentialsStateLoading } from './cc-addon-credentials.types.js'
  * @import { OnContextUpdateArgs } from '../../lib/smart/smart-component.types.js'
  */
 
@@ -48,19 +45,32 @@ defineSmartComponent({
    */
   onContextUpdate({ context, updateComponent, signal }) {
     const { apiConfig, addonId, ownerId } = context;
-    const api = new Api({ apiConfig, ownerId, addonId, signal });
+    const ccApiClient = getCcApiClientWithOAuth(apiConfig);
 
     updateComponent('state', LOADING_STATE);
 
-    api
-      .getCredentials()
-      .then((credentials) => {
+    ccApiClient
+      .send(new GetMateriaInfoCommand({ ownerId, addonId }), { signal })
+      .then((materiaInfo) => {
         updateComponent(
           'state',
           /** @param {AddonCredentialsStateLoaded|AddonCredentialsStateLoading} state */
           (state) => {
             state.type = 'loaded';
-            state.tabs.default.content = credentials;
+            state.tabs.default.content = [
+              {
+                code: 'host',
+                value: materiaInfo.host,
+              },
+              {
+                code: 'port',
+                value: String(materiaInfo.port),
+              },
+              {
+                code: 'token',
+                value: materiaInfo.token,
+              },
+            ];
           },
         );
       })
@@ -70,59 +80,3 @@ defineSmartComponent({
       });
   },
 });
-
-class Api extends CcAddonCredentialsClient {
-  /**
-   * @param {object} params
-   * @param {ApiConfig} params.apiConfig
-   * @param {string} params.ownerId
-   * @param {string} params.addonId
-   * @param {AbortSignal} params.signal
-   */
-  constructor({ apiConfig, ownerId, addonId, signal }) {
-    super({ apiConfig, ownerId, addonId, providerId: PROVIDER_ID, signal });
-  }
-
-  /**
-   * @return {Promise<MateriaKvInfo>}
-   */
-  async getMateriaKvInfo() {
-    const rawAddon = await this._getAddon();
-    return getMateriaKvInfo({ ownerId: this._ownerId, materiaKvId: rawAddon.realId }).then(
-      sendToApi({ apiConfig: this._apiConfig, signal: this._signal }),
-    );
-  }
-
-  /**
-   * @return {Promise<AddonCredential[]>}
-   */
-  async getCredentials() {
-    const materiaKvInfo = await this.getMateriaKvInfo();
-    return [
-      {
-        code: 'host',
-        value: materiaKvInfo.host,
-      },
-      {
-        code: 'port',
-        value: String(materiaKvInfo.port),
-      },
-      {
-        code: 'token',
-        value: materiaKvInfo.token,
-      },
-    ];
-  }
-}
-
-// FIXME: remove and use the clever-client call from the new clever-client
-/** @param {{ ownerId: string, materiaKvId: string }} params */
-function getMateriaKvInfo(params) {
-  // no multipath for /self or /organisations/{id}
-  return Promise.resolve({
-    method: 'get',
-    url: `/v4/materia/organisations/${params.ownerId}/materia/databases/${params.materiaKvId}`,
-    // no queryParams
-    // no body
-  });
-}
