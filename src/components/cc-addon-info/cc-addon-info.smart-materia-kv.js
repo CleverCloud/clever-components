@@ -1,11 +1,10 @@
+import { GetAddonCommand } from '@clevercloud/client/cc-api-commands/addon/get-addon-command.js';
+import { getCcApiClientWithOAuth } from '../../lib/cc-api-client.js';
 import { getDocUrl } from '../../lib/dev-hub-url.js';
 import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-smart-container/cc-smart-container.js';
-import { CcAddonInfoClient } from './cc-addon-info.client.js';
 import './cc-addon-info.js';
-
-const PROVIDER_ID = 'kv';
 
 /**
  * @import { CcAddonInfo } from './cc-addon-info.js'
@@ -26,7 +25,7 @@ defineSmartComponent({
   onContextUpdate({ context, updateComponent, signal }) {
     const { apiConfig, ownerId, addonId } = context;
 
-    const api = new CcAddonInfoClient({ apiConfig, ownerId, addonId, providerId: PROVIDER_ID, signal });
+    const ccApiClient = getCcApiClientWithOAuth(apiConfig);
 
     /**
      * @type {AddonInfoStateLoading}
@@ -42,12 +41,12 @@ defineSmartComponent({
       href: getDocUrl('/addons/materia-kv'),
     });
 
-    api
-      ._getAddon()
-      .then((rawAddon) => {
+    ccApiClient
+      .send(new GetAddonCommand({ ownerId, addonId }), { signal })
+      .then((addon) => {
         updateComponent('state', {
           type: 'loaded',
-          creationDate: rawAddon.creationDate,
+          creationDate: addon.creationDate,
         });
       })
       .catch((error) => {

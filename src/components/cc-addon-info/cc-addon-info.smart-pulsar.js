@@ -1,19 +1,15 @@
-import { ONE_SECOND } from '@clevercloud/client/esm/with-cache.js';
+import { GetAddonCommand } from '@clevercloud/client/cc-api-commands/addon/get-addon-command.js';
+import { GetPulsarInfoCommand } from '@clevercloud/client/cc-api-commands/pulsar/get-pulsar-info-command.js';
+import { getCcApiClientWithOAuth } from '../../lib/cc-api-client.js';
 import { getDocUrl } from '../../lib/dev-hub-url.js';
-import { sendToApi } from '../../lib/send-to-api.js';
 import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-smart-container/cc-smart-container.js';
-import { CcAddonInfoClient } from './cc-addon-info.client.js';
 import './cc-addon-info.js';
-
-const PROVIDER_ID = 'addon-pulsar';
 
 /**
  * @import { CcAddonInfo } from './cc-addon-info.js'
- * @import { AddonInfoStateLoading, RawAddon } from './cc-addon-info.types.js'
- * @import { PulsarProviderInfo } from './cc-addon-info.types.d.ts'
- * @import { ApiConfig } from '../../lib/send-to-api.types.js'
+ * @import { AddonInfoStateLoading } from './cc-addon-info.types.js'
  * @import { OnContextUpdateArgs } from '../../lib/smart/smart-component.types.js'
  */
 
@@ -30,7 +26,7 @@ defineSmartComponent({
   onContextUpdate({ context, updateComponent, signal }) {
     const { apiConfig, ownerId, addonId } = context;
 
-    const api = new Api({ apiConfig, ownerId, addonId, signal });
+    const ccApiClient = getCcApiClientWithOAuth(apiConfig);
 
     /**
      * @type {AddonInfoStateLoading}
@@ -51,17 +47,19 @@ defineSmartComponent({
       href: getDocUrl('/addons/pulsar'),
     });
 
-    api
-      .getPulsarAddonInfo()
-      .then(({ rawAddon, clusterVersion }) => {
+    Promise.all([
+      ccApiClient.send(new GetAddonCommand({ ownerId, addonId }), { signal }),
+      ccApiClient.send(new GetPulsarInfoCommand({ addonId }), { signal }),
+    ])
+      .then(([addon, pulsarInfo]) => {
         updateComponent('state', {
           type: 'loaded',
           version: {
             stateType: 'up-to-date',
-            installed: clusterVersion,
-            latest: clusterVersion,
+            installed: pulsarInfo.cluster.version,
+            latest: pulsarInfo.cluster.version,
           },
-          creationDate: rawAddon.creationDate,
+          creationDate: addon.creationDate,
         });
       })
       .catch((error) => {
@@ -70,82 +68,3 @@ defineSmartComponent({
       });
   },
 });
-
-class Api extends CcAddonInfoClient {
-  /**
-   * @param {Object} config - Configuration object
-   * @param {ApiConfig} config.apiConfig - API configuration
-   * @param {string} config.ownerId - Owner identifier
-   * @param {string} config.addonId - Addon identifier
-   * @param {AbortSignal} config.signal - Signal to abort calls
-   */
-  constructor({ apiConfig, ownerId, addonId, signal }) {
-    super({ apiConfig, ownerId, addonId, providerId: PROVIDER_ID, signal });
-  }
-
-  /**
-   * @param {string} realId
-   * @return {Promise<PulsarProviderInfo>}
-   */
-  _getAddonProvider(realId) {
-    return getAddonProvider({ providerId: PROVIDER_ID, addonId: realId }).then(
-      sendToApi({ apiConfig: this._apiConfig, signal: this._signal, cacheDelay: ONE_SECOND }),
-    );
-  }
-
-  /**
-   * @param {string} clusterId
-   * @return {Promise<{ version: string }>}
-   */
-  _getCluster(clusterId) {
-    return getCluster({ providerId: PROVIDER_ID, clusterId }).then(
-      sendToApi({ apiConfig: this._apiConfig, signal: this._signal, cacheDelay: ONE_SECOND }),
-    );
-  }
-
-  /**
-   * @returns {Promise<{ rawAddon: RawAddon, clusterVersion: string }>}
-   */
-  async getPulsarAddonInfo() {
-    const rawAddon = await this._getAddon();
-    const realId = rawAddon.realId;
-    const addonProvider = await this._getAddonProvider(realId);
-    const cluster = await this._getCluster(addonProvider.cluster_id);
-    const clusterVersion = cluster.version;
-    return { rawAddon, clusterVersion };
-  }
-}
-
-// FIXME: remove and use the clever-client call from the new clever-client
-/**
- * @param {Object} params
- * @param {String} params.providerId
- * @param {String} params.addonId
- */
-export function getAddonProvider(params) {
-  // no multipath for /self or /organisations/{id}
-  return Promise.resolve({
-    method: 'get',
-    url: `/v4/addon-providers/${params.providerId}/addons/${params.addonId}`,
-    headers: { Accept: 'application/json' },
-    // no query params
-    // no body
-  });
-}
-
-// FIXME: remove and use the clever-client call from the new clever-client
-/**
- * @param {Object} params
- * @param {String} params.providerId
- * @param {String} params.clusterId
- */
-export function getCluster(params) {
-  // no multipath for /self or /organisations/{id}
-  return Promise.resolve({
-    method: 'get',
-    url: `/v4/addon-providers/${params.providerId}/clusters/${params.clusterId}`,
-    headers: { Accept: 'application/json' },
-    // no query params
-    // no body
-  });
-}

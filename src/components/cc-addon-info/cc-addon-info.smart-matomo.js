@@ -1,19 +1,17 @@
+import { GetAddonCommand } from '@clevercloud/client/cc-api-commands/addon/get-addon-command.js';
+import { GetMatomoInfoCommand } from '@clevercloud/client/cc-api-commands/matomo/get-matomo-info-command.js';
 import { getAssetUrl } from '../../lib/assets-url.js';
+import { getCcApiClientWithOAuth } from '../../lib/cc-api-client.js';
 import { getDocUrl } from '../../lib/dev-hub-url.js';
-import { sendToApi } from '../../lib/send-to-api.js';
 import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-smart-container/cc-smart-container.js';
-import { CcAddonInfoClient } from './cc-addon-info.client.js';
+import { getGrafanaAppLink } from './cc-addon-info.client.js';
 import './cc-addon-info.js';
-
-const PROVIDER_ID = 'matomo';
 
 /**
  * @import { CcAddonInfo } from './cc-addon-info.js'
- * @import { AddonInfoStateLoading, RawAddon } from './cc-addon-info.types.js'
- * @import { MatomoOperatorInfo, OperatorVersionInfo } from '../../operators.types.js'
- * @import { ApiConfig } from '../../lib/send-to-api.types.js'
+ * @import { AddonInfoStateLoading } from './cc-addon-info.types.js'
  * @import { OnContextUpdateArgs } from '../../lib/smart/smart-component.types.js'
  */
 
@@ -41,7 +39,7 @@ defineSmartComponent({
       grafanaLink,
     } = context;
 
-    const api = new Api({ apiConfig, ownerId, addonId, grafanaLink, signal });
+    const ccApiClient = getCcApiClientWithOAuth(apiConfig);
 
     /** @type {AddonInfoStateLoading} */
     const LOADING_STATE = {
@@ -83,15 +81,26 @@ defineSmartComponent({
       href: getDocUrl('/addons/matomo'),
     });
 
-    api
-      .getMatomoAddonInfo()
-      .then(({ addonInfo, grafanaAppLink, operator, operatorVersion }) => {
+    Promise.all([
+      ccApiClient.send(new GetAddonCommand({ ownerId, addonId }), { signal }),
+      ccApiClient.send(new GetMatomoInfoCommand({ addonId }), { signal }),
+    ])
+      .then(async ([addon, operator]) => {
         const phpAppId = operator.resources.entrypoint;
+
+        const grafanaAppLink = await getGrafanaAppLink({
+          grafanaLink,
+          ownerId,
+          dashboardPath: '/d/runtime/application-runtime',
+          appId: phpAppId,
+          ccApiClient,
+          signal,
+        });
 
         updateComponent('state', {
           type: 'loaded',
-          version: { stateType: 'up-to-date', installed: operatorVersion, latest: operatorVersion },
-          creationDate: addonInfo.creationDate,
+          version: { stateType: 'up-to-date', installed: operator.version, latest: operator.version },
+          creationDate: addon.creationDate,
           openGrafanaLink: grafanaAppLink,
           openScalabilityLink: scalabilityUrlPattern.replace(':id', phpAppId),
           linkedServices: [
@@ -122,81 +131,3 @@ defineSmartComponent({
       });
   },
 });
-
-class Api extends CcAddonInfoClient {
-  /**
-   * @param {Object} config - Configuration object
-   * @param {ApiConfig} config.apiConfig - API configuration
-   * @param {string} config.ownerId - Owner identifier
-   * @param {string} config.addonId - Addon identifier
-   * @param {{ base: string, console: string }} [config.grafanaLink] - Base url to build a grafana link to the app
-   * @param {AbortSignal} config.signal - Signal to abort calls
-   */
-  constructor({ apiConfig, ownerId, addonId, grafanaLink, signal }) {
-    super({ apiConfig, ownerId, addonId, providerId: PROVIDER_ID, grafanaLink, signal });
-  }
-
-  /**
-   * @param {string} providerId
-   * @param {string} realId
-   * @returns {Promise<MatomoOperatorInfo>}
-   */
-  _getMatomoOperator(providerId, realId) {
-    return getOperator({ providerId, realId }).then(sendToApi({ apiConfig: this._apiConfig, signal: this._signal }));
-  }
-
-  /** @returns {Promise<OperatorVersionInfo>} */
-  getOperatorVersionInfo() {
-    return checkOperatorVersion({ providerId: this._providerId, realId: this._realId }).then(
-      sendToApi({ apiConfig: this._apiConfig, signal: this._signal }),
-    );
-  }
-
-  /**
-   * @return {Promise<{addonInfo: RawAddon, operator: MatomoOperatorInfo, operatorVersion: string, grafanaAppLink: string}>}
-   */
-  async getMatomoAddonInfo() {
-    // Fetch addon to get realId,
-    const rawAddon = await this._getAddon();
-    this._realId = rawAddon.realId;
-    this._providerId = rawAddon.provider.id;
-    // Fetch operator with realId,
-    const operator = await this._getMatomoOperator(this._providerId, this._realId);
-    const operatorVersion = operator.version;
-
-    const grafanaAppLink =
-      this._grafanaLink != null
-        ? await this._getGrafanaAppLink({ resourceId: operator.resources.entrypoint, signal: this._signal })
-        : null;
-
-    return { addonInfo: rawAddon, operator, operatorVersion, grafanaAppLink };
-  }
-}
-
-/**
- * @param {{ providerId: string, realId: string }} params
- */
-function getOperator(params) {
-  // no multipath for /self or /organisations/{id}
-  return Promise.resolve({
-    method: 'get',
-    url: `/v4/addon-providers/${params.providerId}/addons/${params.realId}`,
-    headers: { Accept: 'application/json' },
-    // no queryParams
-    // no body
-  });
-}
-
-/**
- * @param {{ providerId: string, realId: string }} params
- */
-function checkOperatorVersion(params) {
-  // no multipath for /self or /organisations/{id}
-  return Promise.resolve({
-    method: 'get',
-    url: `/v4/addon-providers/${params.providerId}/addons/${params.realId}/version/check`,
-    headers: { Accept: 'application/json' },
-    // no queryParams
-    // no body
-  });
-}
