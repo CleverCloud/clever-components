@@ -1,10 +1,11 @@
+import { GetAddonCommand } from '@clevercloud/client/cc-api-commands/addon/get-addon-command.js';
+import { GetZoneCommand } from '@clevercloud/client/cc-api-commands/zone/get-zone-command.js';
+import { ONE_SECOND } from '@clevercloud/client/esm/with-cache.js';
+import { getCcApiClientWithOAuth } from '../../lib/cc-api-client.js';
 import { fakeString } from '../../lib/fake-strings.js';
 import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
 import '../cc-smart-container/cc-smart-container.js';
-import { CcAddonHeaderClient } from './cc-addon-header.client.js';
 import './cc-addon-header.js';
-
-const PROVIDER_ID = 'kv';
 
 /**
  * @import { CcAddonHeader } from './cc-addon-header.js'
@@ -24,8 +25,7 @@ defineSmartComponent({
   /** @param {OnContextUpdateArgs<CcAddonHeader>} args */
   onContextUpdate({ context, updateComponent, signal }) {
     const { apiConfig, ownerId, addonId, productStatus } = context;
-    const api = new CcAddonHeaderClient({ apiConfig, ownerId, addonId, providerId: PROVIDER_ID, signal });
-    let explorerUrl = '';
+    const ccApiClient = getCcApiClientWithOAuth(apiConfig);
 
     updateComponent('state', {
       type: 'loading',
@@ -38,17 +38,23 @@ defineSmartComponent({
       productStatus: fakeString(4),
     });
 
-    api
-      .getAddonWithZone()
-      .then(({ rawAddon, zone }) => {
-        explorerUrl = context.explorerUrlPattern.replace(':id', addonId);
+    ccApiClient
+      .send(new GetAddonCommand({ ownerId, addonId }), { signal, dedupe: true, cache: { ttl: ONE_SECOND } })
+      .then((addon) => {
+        return Promise.all([
+          addon,
+          ccApiClient.send(new GetZoneCommand({ zoneName: addon.zone, ownerId }), { signal }),
+        ]);
+      })
+      .then(([addon, zone]) => {
+        const explorerUrl = context.explorerUrlPattern.replace(':id', addonId);
 
         updateComponent('state', {
           type: 'loaded',
-          providerId: rawAddon.provider.name,
-          providerLogoUrl: rawAddon.provider.logoUrl,
-          name: rawAddon.name,
-          id: rawAddon.realId,
+          providerId: addon.provider.name,
+          providerLogoUrl: addon.provider.logoUrl,
+          name: addon.name,
+          id: addon.realId,
           zone,
           openLinks: [
             {

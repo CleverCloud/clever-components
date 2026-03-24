@@ -1,9 +1,10 @@
+import { GetAddonCommand } from '@clevercloud/client/cc-api-commands/addon/get-addon-command.js';
+import { GetZoneCommand } from '@clevercloud/client/cc-api-commands/zone/get-zone-command.js';
+import { ONE_SECOND } from '@clevercloud/client/esm/with-cache.js';
+import { getCcApiClientWithOAuth } from '../../lib/cc-api-client.js';
 import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
 import '../cc-smart-container/cc-smart-container.js';
-import { CcAddonHeaderClient } from './cc-addon-header.client.js';
 import './cc-addon-header.js';
-
-const PROVIDER_ID = 'config-provider';
 
 /**
  * @import { CcAddonHeader } from './cc-addon-header.js'
@@ -21,21 +22,27 @@ defineSmartComponent({
   /** @param {OnContextUpdateArgs<CcAddonHeader>} args */
   onContextUpdate({ context, updateComponent, signal }) {
     const { apiConfig, ownerId, addonId } = context;
-    const api = new CcAddonHeaderClient({ apiConfig, ownerId, addonId, providerId: PROVIDER_ID, signal });
+    const ccApiClient = getCcApiClientWithOAuth(apiConfig);
 
     updateComponent('state', {
       type: 'loading',
     });
 
-    api
-      .getAddonWithZone()
-      .then(({ rawAddon, zone }) => {
+    ccApiClient
+      .send(new GetAddonCommand({ ownerId, addonId }), { signal, dedupe: true, cache: { ttl: ONE_SECOND } })
+      .then((addon) => {
+        return Promise.all([
+          addon,
+          ccApiClient.send(new GetZoneCommand({ zoneName: addon.zone, ownerId }), { signal }),
+        ]);
+      })
+      .then(([addon, zone]) => {
         updateComponent('state', {
           type: 'loaded',
-          providerId: rawAddon.provider.name,
-          providerLogoUrl: rawAddon.provider.logoUrl,
-          name: rawAddon.name,
-          id: rawAddon.realId,
+          providerId: addon.provider.name,
+          providerLogoUrl: addon.provider.logoUrl,
+          name: addon.name,
+          id: addon.realId,
           zone,
         });
       })
