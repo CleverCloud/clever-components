@@ -1,12 +1,15 @@
+import { GetGrafanaCommand } from '@clevercloud/client/cc-api-commands/grafana/get-grafana-command.js';
 import { get as getAddon } from '@clevercloud/client/esm/api/v2/addon.js';
-import { getGrafanaOrganisation } from '@clevercloud/client/esm/api/v4/saas.js';
 import { ONE_SECOND } from '@clevercloud/client/esm/with-cache.js';
 import { getDevHubUrl } from '../../lib/dev-hub-url.js';
 import { sendToApi } from '../../lib/send-to-api.js';
 
 /**
+ * @import { CcApiClient } from '@clevercloud/client/cc-api-client.js'
  * @import { AddonInfoStateLoaded, RawAddon } from './cc-addon-info.types.js'
- * @import { OperatorVersionInfo, RawOperator } from '../../operators.types.js'
+ * @import { CheckKeycloakVersionCommandOutput } from '@clevercloud/client/cc-api-commands/keycloak/check-keycloak-version-command.types.js'
+ * @import { CheckOtoroshiVersionCommandOutput } from '@clevercloud/client/cc-api-commands/otoroshi/check-otoroshi-version-command.types.js'
+ * @import { CheckMetabaseVersionCommandOutput } from '@clevercloud/client/cc-api-commands/metabase/check-metabase-version-command.types.js'
  * @import { ApiConfig } from '../../lib/send-to-api.types.js'
  */
 
@@ -16,17 +19,12 @@ export class CcAddonInfoClient {
    * @param {ApiConfig} config.apiConfig - API configuration
    * @param {string} config.ownerId - Owner identifier
    * @param {string} config.addonId - Addon identifier
-   * @param {string} config.providerId
-   * @param {{ base: string, console: string }} [config.grafanaLink] - Base url to build a grafana link to the app
    * @param {AbortSignal} config.signal - Signal to abort calls
    */
-  constructor({ apiConfig, ownerId, addonId, providerId, grafanaLink, signal }) {
+  constructor({ apiConfig, ownerId, addonId, signal }) {
     this._apiConfig = apiConfig;
     this._ownerId = ownerId;
     this._addonId = addonId;
-    this.providerId = providerId;
-    this._grafanaLink = grafanaLink;
-    this._realId = null;
     this._signal = signal;
   }
 
@@ -36,133 +34,10 @@ export class CcAddonInfoClient {
       sendToApi({ apiConfig: this._apiConfig, signal: this._signal, cacheDelay: ONE_SECOND }),
     );
   }
-
-  /**
-   * @param {string} providerId
-   * @param {string} realId
-   * @returns {Promise<RawOperator>}
-   */
-  _getOperator(providerId, realId) {
-    return getOperator({ providerId, realId }).then(
-      sendToApi({ apiConfig: this._apiConfig, signal: this._signal, cacheDelay: ONE_SECOND }),
-    );
-  }
-
-  /** @returns {Promise<OperatorVersionInfo>} */
-  getOperatorVersionInfo() {
-    return checkOperatorVersion({ providerId: this.providerId, realId: this._realId }).then(
-      sendToApi({ apiConfig: this._apiConfig, signal: this._signal }),
-    );
-  }
-
-  /**
-   * @param {Object} parameters
-   * @param {string} parameters.resourceId
-   * @param {AbortSignal} parameters.signal
-   * @returns {Promise<string>}
-   */
-  _getGrafanaAppLink({ resourceId, signal }) {
-    return getGrafanaOrganisation({ id: this._ownerId })
-      .then(sendToApi({ apiConfig: this._apiConfig, signal }))
-      .then(
-        /** @param {{id: string}} grafanaOrg*/
-        (grafanaOrg) => {
-          const grafanaLink = new URL('/d/runtime/application-runtime', this._grafanaLink.base);
-          grafanaLink.searchParams.set('orgId', grafanaOrg.id);
-          grafanaLink.searchParams.set('var-SELECT_APP', resourceId);
-          return grafanaLink.toString();
-        },
-      )
-      .catch(
-        /** @param {Error & { response?: { status?: number }}} error */
-        (error) => {
-          if (error.response?.status === 404) {
-            return this._grafanaLink.console;
-          }
-          throw error;
-        },
-      );
-  }
-
-  /**
-   * @param {string} targetVersion
-   * @returns {Promise<RawOperator>}
-   **/
-  updateOperatorVersion(targetVersion) {
-    return updateOperatorVersion({ providerId: this.providerId, realId: this._realId }, { targetVersion }).then(
-      sendToApi({ apiConfig: this._apiConfig }),
-    );
-  }
-
-  /**
-   * @return {Promise<{addonInfo: RawAddon, operator: RawOperator, operatorVersionInfo: OperatorVersionInfo, grafanaAppLink: string}>}
-   */
-  async getAddonInfo() {
-    // Fetch addon to get realId,
-    const rawAddon = await this._getAddon();
-    this._realId = rawAddon.realId;
-    this.providerId = /** @type {import('../common.types.js').RawAddonProvider} */ rawAddon.provider.id;
-    // Fetch operator with realId,
-    const [operator, operatorVersionInfo] = await Promise.all([
-      this._getOperator(this.providerId, this._realId),
-      this.getOperatorVersionInfo(),
-    ]);
-    const grafanaAppLink =
-      this._grafanaLink != null
-        ? await this._getGrafanaAppLink({ resourceId: operator.resources.entrypoint, signal: this._signal })
-        : null;
-
-    return { addonInfo: rawAddon, operator, operatorVersionInfo, grafanaAppLink };
-  }
 }
 
 /**
- * @param {{ providerId: string, realId: string }} params
- */
-function getOperator(params) {
-  // no multipath for /self or /organisations/{id}
-  return Promise.resolve({
-    method: 'get',
-    url: `/v4/addon-providers/addon-${params.providerId}/addons/${params.realId}`,
-    headers: { Accept: 'application/json' },
-    // no queryParams
-    // no body
-  });
-}
-
-/**
- * @param {{ providerId: string, realId: string }} params
- */
-function checkOperatorVersion(params) {
-  // no multipath for /self or /organisations/{id}
-  return Promise.resolve({
-    method: 'get',
-    url: `/v4/addon-providers/addon-${params.providerId}/addons/${params.realId}/version/check`,
-    headers: { Accept: 'application/json' },
-    // no queryParams
-    // no body
-  });
-}
-
-/**
- * @param {object} params
- * @param {string} params.providerId
- * @param {string} params.realId
- * @param {object} body
- */
-export function updateOperatorVersion(params, body) {
-  // no multipath for /self or /organisations/{id}
-  return Promise.resolve({
-    method: 'post',
-    url: `/v4/addon-providers/addon-${params.providerId}/addons/${params.realId}/version/update`,
-    headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
-    // no queryParams
-    body,
-  });
-}
-
-/**
- * @param {OperatorVersionInfo} operatorVersionInfo
+ * @param {CheckKeycloakVersionCommandOutput | CheckOtoroshiVersionCommandOutput | CheckMetabaseVersionCommandOutput} operatorVersionInfo
  * @returns {AddonInfoStateLoaded['version']}
  **/
 export function formatVersionState(operatorVersionInfo) {
@@ -181,4 +56,37 @@ export function formatVersionState(operatorVersionInfo) {
     installed: operatorVersionInfo.installed,
     latest: operatorVersionInfo.latest,
   };
+}
+
+/**
+ * Resolves the Grafana app link for an addon.
+ *
+ * - If `grafanaLink` is `null` (Grafana disabled in the console), returns `null`.
+ * - If the Grafana org exists, builds a dashboard URL with the given `dashboardPath` and `appId`.
+ * - If the Grafana org does not exist, falls back to `grafanaLink.console`.
+ *
+ * @param {object} params
+ * @param {{ base: string, console: string } | null} params.grafanaLink
+ * @param {string} params.ownerId
+ * @param {string} params.dashboardPath - Grafana dashboard path (e.g. '/d/runtime/application-runtime')
+ * @param {string} params.appId - Value for the `var-SELECT_APP` query parameter
+ * @param {CcApiClient} params.ccApiClient
+ * @param {AbortSignal} params.signal
+ * @returns {Promise<string | null>}
+ */
+export async function getGrafanaAppLink({ grafanaLink, ownerId, dashboardPath, appId, ccApiClient, signal }) {
+  if (grafanaLink == null) {
+    return null;
+  }
+
+  const grafanaOrg = await ccApiClient.send(new GetGrafanaCommand({ ownerId }), { signal });
+
+  if (grafanaOrg != null) {
+    const url = new URL(dashboardPath, grafanaLink.base);
+    url.searchParams.set('orgId', String(grafanaOrg.id));
+    url.searchParams.set('var-SELECT_APP', appId);
+    return url.toString();
+  }
+
+  return grafanaLink.console;
 }
