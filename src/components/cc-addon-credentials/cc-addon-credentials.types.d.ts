@@ -38,7 +38,7 @@ type Tabs = {
 
 export type TabName = 'default' | 'admin' | 'api' | 'apm' | 'cli' | 'direct' | 'elastic' | 'kibana';
 
-// Copies from cc-header-addon, will need to mutualize
+// Copies from cc-addon-header, will need to mutualize
 export interface RawAddon {
   id: string;
   name: string;
