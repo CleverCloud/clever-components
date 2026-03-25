@@ -207,7 +207,7 @@ export class CcPicker extends CcFormControlElement {
         </p>
 
         <div class="description-container">
-          <slot name="description"></slot>
+          <slot name="description" id="description-id"></slot>
         </div>
 
         <div class="tiles" part="tiles">
@@ -248,7 +248,7 @@ export class CcPicker extends CcFormControlElement {
         .value=${value}
         .checked=${isChecked}
         ?disabled=${isDisabled || (isReadonly && !isChecked)}
-        aria-describedby="help-id error-id"
+        aria-describedby="help-id error-id description-id"
         ?autofocus=${isAutofocus}
       />
       <label for="${id}">
