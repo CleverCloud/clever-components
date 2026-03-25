@@ -84,14 +84,17 @@ export class CcHomepageTemplateProject extends LitElement {
         .wrapper {
           border: solid 1px var(--cc-color-border-neutral-weak, #e7e7e7);
           border-radius: var(--cc-border-radius-default, 0.25em);
+          box-sizing: border-box;
           display: flex;
           flex-direction: column;
           gap: 1.25em;
+          height: 100%;
           padding: 2em 1.25em;
         }
 
         .title {
           color: var(--cc-color-text-primary-strongest, #000);
+          flex: 0 0 auto;
           font-size: 1.2em;
           font-weight: bold;
           margin: 0 0.75em;
@@ -99,10 +102,12 @@ export class CcHomepageTemplateProject extends LitElement {
 
         .project-list {
           display: flex;
+          flex: 1 1 auto;
           flex-direction: column;
           gap: 0.3em;
           list-style: none;
           margin: 0;
+          overflow-y: auto;
           padding: 0;
         }
 

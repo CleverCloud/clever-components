@@ -1,3 +1,4 @@
+import { html, render } from 'lit';
 import { makeStory } from '../../stories/lib/make-story.js';
 import './cc-homepage-template-project.js';
 
@@ -70,6 +71,72 @@ export const error = makeStory(conf, {
     {
       /** @type {HomepageTemplateProjectStateError} */
       state: { type: 'error' },
+    },
+  ],
+});
+
+export const withScrollStory = makeStory(conf, {
+  css: `
+    .container {
+      height: 18em;
+    }
+
+    cc-homepage-template-project {
+      height: 100%;
+    }
+  `,
+  dom: (container) => {
+    render(
+      html`
+        <div class="container">
+          <cc-homepage-template-project
+            .state=${{ type: 'loaded', projects: PROJECTS_ITEMS }}
+          ></cc-homepage-template-project>
+        </div>
+      `,
+      container,
+    );
+  },
+  items: [
+    {
+      /** @type {HomepageTemplateProjectStateLoaded} */
+      state: {
+        type: 'loaded',
+        projects: PROJECTS_ITEMS,
+      },
+    },
+  ],
+});
+
+export const extendedContainerStory = makeStory(conf, {
+  css: `
+    .container {
+      height: 36em;
+    }
+
+    cc-homepage-template-project {
+      height: 100%;
+    }
+  `,
+  dom: (container) => {
+    render(
+      html`
+        <div class="container">
+          <cc-homepage-template-project
+            .state=${{ type: 'loaded', projects: PROJECTS_ITEMS }}
+          ></cc-homepage-template-project>
+        </div>
+      `,
+      container,
+    );
+  },
+  items: [
+    {
+      /** @type {HomepageTemplateProjectStateLoaded} */
+      state: {
+        type: 'loaded',
+        projects: PROJECTS_ITEMS,
+      },
     },
   ],
 });
