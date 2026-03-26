@@ -35,10 +35,8 @@ const EXTENSION = '.png';
  */
 export function getScreenshotPath({ browser, componentWithStoryName, screenshotType }) {
   const filename = `${componentWithStoryName}-${screenshotType}`;
-  const fullPath = `${BRANCH_NAME}/${browser}/${filename}`;
-  const kebabCasePath = kebabCase(fullPath);
-
-  return kebabCasePath + EXTENSION;
+  const relativePath = `${browser}/${filename}`;
+  return `${BRANCH_NAME}/${kebabCase(relativePath)}${EXTENSION}`;
 }
 
 /**
