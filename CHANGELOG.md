@@ -5,6 +5,32 @@ title: 'Changelog'
 
 # Changelog
 
+## [25.0.0](https://github.com/CleverCloud/clever-components/compare/24.1.0...25.0.0) (2026-03-26)
+
+
+### ⚠ BREAKING CHANGES
+
+* **cc-addon-features:** delete component
+* **cc-addon-credentials:** - adapt code
+* **cc-matomo-info:** this component is no longer used has it has been replaced by `cc-addon-info` with `cc-addon-info.smart-matomo`
+* **cc-jenkins-info:** this component is no longer used has it has been replaced by `cc-addon-info` with `cc-addon-info.smart-jenkins`
+* **cc-header-addon:** this component is no longer used has it has been replaced by `cc-addon-header`
+
+### 🚀 Features
+
+* **cc-addon-*:** adapt old `cc-header-addon` mentions ([2a168cc](https://github.com/CleverCloud/clever-components/commit/2a168ccdf2760ea2891a2566cbffdcafa6fad843))
+* **cc-addon-credentials:** replace old `cc-addon-credentials` with new one ([a3ae3ea](https://github.com/CleverCloud/clever-components/commit/a3ae3ead43f66ee84647dade6588a59be0462ea2))
+* **cc-addon-features:** delete component ([7ce9eb6](https://github.com/CleverCloud/clever-components/commit/7ce9eb6eb1d66ba0b2c2c536bfead063be70cd8c))
+* **cc-header-addon:** delete component ([e8b6f26](https://github.com/CleverCloud/clever-components/commit/e8b6f261c8991c498b790225ace1634a26e3daf1))
+* **cc-jenkins-info:** delete component ([a747d39](https://github.com/CleverCloud/clever-components/commit/a747d39c37e23b3ea43151a6f74a84b9971855da))
+* **cc-matomo-info:** delete component ([be3ffd8](https://github.com/CleverCloud/clever-components/commit/be3ffd89a068cd460fc37d87beb44580883e2100))
+
+
+### 🐛 Bug Fixes
+
+* **cc-addon-credentials-content:** fix translation label ([4802013](https://github.com/CleverCloud/clever-components/commit/4802013c0703643e9b9c9e84972470b0a16c302f))
+* **cc-picker:** link description to options for a11y ([6b9ee1f](https://github.com/CleverCloud/clever-components/commit/6b9ee1f9709d2dfb28c3c752e429b1ae2d66e2a3))
+
 ## [24.1.0](https://github.com/CleverCloud/clever-components/compare/24.0.0...24.1.0) (2026-03-20)
 
 
