@@ -56,7 +56,7 @@ export class CcHomepageVideo extends LitElement {
       if (parsed.hostname === 'youtu.be') {
         return parsed.pathname.slice(1);
       }
-      if (parsed.hostname.includes('youtube.com')) {
+      if (parsed.hostname.includes('youtube.com') || parsed.hostname.includes('youtube-nocookie.com')) {
         if (parsed.pathname.startsWith('/embed/')) {
           return parsed.pathname.split('/')[2];
         }
