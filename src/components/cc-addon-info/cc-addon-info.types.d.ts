@@ -15,6 +15,7 @@ export interface AddonInfoStateError {
 }
 
 export interface AddonInfoStateBaseProperties {
+  description?: string;
   version?: AddonVersionState;
   plan?: string;
   subnet?: string;

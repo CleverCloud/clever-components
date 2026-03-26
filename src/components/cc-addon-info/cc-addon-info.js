@@ -10,6 +10,7 @@ import { hasSlottedChildren } from '../../directives/has-slotted-children.js';
 import { getAssetUrl } from '../../lib/assets-url.js';
 import { fakeString } from '../../lib/fake-strings.js';
 import { formSubmit } from '../../lib/form/form-submit-directive.js';
+import { isStringEmpty } from '../../lib/utils.js';
 import { accessibilityStyles } from '../../styles/accessibility.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
 import { i18n } from '../../translations/translation.js';
@@ -191,6 +192,16 @@ export class CcAddonInfo extends LitElement {
       <cc-block>
         <div slot="header-title">${i18n('cc-addon-info.heading')}</div>
         <div slot="content" class="main">
+          ${!isStringEmpty(this.state.description)
+            ? html`
+                <div class="section">
+                  <strong class="heading">${i18n('cc-addon-info.description.heading')}</strong>
+                  <div class="value">
+                    <p class="${classMap({ skeleton })}">${this.state.description}</p>
+                  </div>
+                </div>
+              `
+            : ''}
           ${this.state.version != null
             ? html`
                 <div class="section" tabindex="-1" ${ref(this._versionTextRef)}>

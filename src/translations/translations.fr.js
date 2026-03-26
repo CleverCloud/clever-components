@@ -294,6 +294,7 @@ export const translations = {
   'cc-addon-info.creation-date.heading': `Date de création`,
   'cc-addon-info.creation-date.human-friendly-date': /** @param {{ date: string | number }} _ */ ({ date }) =>
     formatDatetime(date),
+  'cc-addon-info.description.heading': `Description`,
   'cc-addon-info.doc-link.cellar': `Cellar - Documentation`,
   'cc-addon-info.doc-link.elastic': `Elastic Stack - Documentation`,
   'cc-addon-info.doc-link.jenkins': `Jenkins - Documentation`,
