@@ -18,7 +18,7 @@ export type HomepageOnboardingCardId =
 export interface HomepageOnboardingStateLoaded {
   type: 'loaded';
   userType: 'new-user' | 'already-user';
-  cardIds: Array<HomepageOnboardingCardId>;
+  cards: Array<{ id: HomepageOnboardingCardId; href: string }>;
   organisationOptions: { label: string; value: string }[];
 }
 

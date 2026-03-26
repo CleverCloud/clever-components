@@ -25,7 +25,7 @@ import {
 } from './cc-homepage-onboarding.events.js';
 
 /**
- * @returns {Record<string,HomepageOnboardingCard>}
+ * @returns {Record<string,Omit<HomepageOnboardingCard, 'href'>>}
  */
 function getCards() {
   return {
@@ -35,7 +35,6 @@ function getCards() {
       icon: iconRemixAddCircleLine,
       iconColor: 'white',
       buttonText: i18n('cc-homepage-onboarding.card.first-resource.button'),
-      href: '',
     },
     newResourceWithSelect: {
       title: i18n('cc-homepage-onboarding.card.new-resource.title'),
@@ -43,7 +42,6 @@ function getCards() {
       icon: iconRemixAddCircleLine,
       iconColor: 'white',
       buttonText: i18n('cc-homepage-onboarding.card.new-resource.button'),
-      href: '',
       select: {
         title: i18n('cc-homepage-onboarding.card.new-resource.select.title'),
         placeholder: i18n('cc-homepage-onboarding.card.new-resource.select.placeholder'),
@@ -55,7 +53,6 @@ function getCards() {
       icon: iconRemixLockLine,
       iconColor: 'purple',
       buttonText: i18n('cc-homepage-onboarding.card.secure.button'),
-      href: '',
     },
     sshKeys: {
       title: i18n('cc-homepage-onboarding.card.ssh-keys.title'),
@@ -63,7 +60,6 @@ function getCards() {
       icon: iconRemixKey,
       iconColor: 'purple',
       buttonText: i18n('cc-homepage-onboarding.card.ssh-keys.button'),
-      href: '',
     },
     cli: {
       title: i18n('cc-homepage-onboarding.card.cli.title'),
@@ -71,7 +67,6 @@ function getCards() {
       icon: iconRemixTerminalLine,
       iconColor: 'blue',
       buttonText: i18n('cc-homepage-onboarding.card.cli.button'),
-      href: '',
     },
     newOrganisation: {
       title: i18n('cc-homepage-onboarding.card.new-organisation.title'),
@@ -79,7 +74,6 @@ function getCards() {
       icon: iconRemixBuildingLine,
       iconColor: 'dark-purple',
       buttonText: i18n('cc-homepage-onboarding.card.new-organisation.button'),
-      href: '',
     },
     configPayment: {
       title: i18n('cc-homepage-onboarding.card.config-payment.title'),
@@ -87,7 +81,6 @@ function getCards() {
       icon: iconRemixBankCard,
       iconColor: 'orange',
       buttonText: i18n('cc-homepage-onboarding.card.config-payment.button'),
-      href: '',
     },
     support: {
       title: i18n('cc-homepage-onboarding.card.support.title'),
@@ -95,7 +88,6 @@ function getCards() {
       icon: iconRemixChat,
       iconColor: 'dark-orange',
       buttonText: i18n('cc-homepage-onboarding.card.support.button'),
-      href: '',
     },
   };
 }
@@ -204,7 +196,10 @@ export class CcHomepageOnboarding extends LitElement {
     }
 
     const skeleton = this.state.type === 'loading';
-    const cards = this.state.type === 'loaded' ? this.state.cardIds.map((id) => getCards()[id]) : SKELETON_CARDS;
+    const cards =
+      this.state.type === 'loaded'
+        ? this.state.cards.map(({ id, href }) => ({ ...getCards()[id], href }))
+        : SKELETON_CARDS;
     const title = this._getTitle();
     const description = this._getDescription();
 
