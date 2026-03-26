@@ -22,12 +22,16 @@ const SKELETON_PROJECTS = new Array(5).fill({ name: fakeString(10), description:
 export class CcHomepageTemplateProject extends LitElement {
   static get properties() {
     return {
+      adaptHeight: { type: Boolean, attribute: 'adapt-height', reflect: true },
       state: { type: Object },
     };
   }
 
   constructor() {
     super();
+
+    /** @type {boolean} Enables adaptive height mode: rows adjust their spacing to fill available height */
+    this.adaptHeight = false;
 
     /** @type {HomepageTemplateProjectState} Sets the state of the component */
     this.state = { type: 'loading' };
@@ -84,9 +88,11 @@ export class CcHomepageTemplateProject extends LitElement {
         .wrapper {
           border: solid 1px var(--cc-color-border-neutral-weak, #e7e7e7);
           border-radius: var(--cc-border-radius-default, 0.25em);
+          box-sizing: border-box;
           display: flex;
           flex-direction: column;
           gap: 1.25em;
+          height: 100%;
           padding: 2em 1.25em;
         }
 
@@ -99,10 +105,13 @@ export class CcHomepageTemplateProject extends LitElement {
 
         .project-list {
           display: flex;
+          flex: 1;
           flex-direction: column;
           gap: 0.3em;
           list-style: none;
           margin: 0;
+          min-height: 0;
+          overflow: auto;
           padding: 0;
         }
 
@@ -113,6 +122,26 @@ export class CcHomepageTemplateProject extends LitElement {
           gap: 1em;
           padding: 0.6em 0.8em;
           text-decoration: none;
+        }
+
+        /* Adaptive height mode */
+
+        :host([adapt-height]) .wrapper {
+          container-type: size;
+        }
+
+        :host([adapt-height]) .project-list {
+          gap: 0;
+        }
+
+        :host([adapt-height]) .project-list li {
+          display: flex;
+          flex: 1;
+        }
+
+        :host([adapt-height]) .project-row {
+          flex: 1;
+          padding-block: clamp(0.2em, 2cqh, 0.6em);
         }
 
         .project-row:hover {

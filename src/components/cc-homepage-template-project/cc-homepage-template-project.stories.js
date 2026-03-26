@@ -73,3 +73,18 @@ export const error = makeStory(conf, {
     },
   ],
 });
+
+export const fixedHeight = makeStory(conf, {
+  docs: 'With `adapt-height`, the component adapts rows spacing to fill the available height.',
+  css: `cc-homepage-template-project { height: 30em; }`,
+  items: [
+    {
+      adaptHeight: true,
+      /** @type {HomepageTemplateProjectStateLoaded} */
+      state: {
+        type: 'loaded',
+        projects: PROJECTS_ITEMS,
+      },
+    },
+  ],
+});
