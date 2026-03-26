@@ -1357,7 +1357,8 @@ export const translations = {
   //#endregion
   //#region cc-network-group-dashboard
   'cc-network-group-dashboard.danger-zone.btn': `Delete Network Group`,
-  'cc-network-group-dashboard.danger-zone.desc': `Deleting this Network Group is a permanent action. All members associated with this group will be removed from the Network Group as well.`,
+  'cc-network-group-dashboard.danger-zone.desc': () =>
+    sanitize`Deleting this Network Group is a permanent action.<br>All members will be unlinked and removed.`,
   'cc-network-group-dashboard.danger-zone.dialog.confirm-input-label': `Enter the Network Group name`,
   'cc-network-group-dashboard.danger-zone.dialog.desc': `Deleting this Network Group is a permanent action. All members associated with this group will be removed from the Network Group. All existing peers linked to this group will be disconnected. This action cannot be undone. Make sure you have migrated or reconfigured any dependencies before proceeding.`,
   'cc-network-group-dashboard.danger-zone.dialog.heading': `Confirm deletion`,
