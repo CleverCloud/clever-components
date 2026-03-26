@@ -87,7 +87,7 @@ interface AddonPlan {
 
 export type AddonProvider = Pick<RawAddonProvider, 'id' | 'name' | 'logoUrl'>;
 
-// Copies from cc-header-addon-beta, will need to mutualize
+// Copies from cc-addon-header, will need to mutualize
 export interface RawAddon {
   id: string;
   name: string;

@@ -178,47 +178,31 @@ export const translations = {
   'cc-addon-backups.title': `Sauvegardes`,
   //#endregion
   //#region cc-addon-credentials
-  'cc-addon-credentials.description.apm': `Utilisez ces identifiants pour connecter une instance d'APM Server à votre cluster Elasticsearch.`,
-  'cc-addon-credentials.description.elasticsearch': `Utilisez ces identifiants pour vous connecter à votre cluster Elasticsearch.`,
-  'cc-addon-credentials.description.kibana': `Utilisez ces identifiants pour connecter une instance de Kibana à votre cluster Elasticsearch.`,
-  'cc-addon-credentials.description.materia-kv': `Utilisez ces informations pour vous connecter à votre add-on Materia KV.`,
-  'cc-addon-credentials.description.pulsar': `Utilisez ces informations pour vous connecter à votre add-on Pulsar.`,
-  'cc-addon-credentials.field.auth-token': `Token`,
-  'cc-addon-credentials.field.host': `Hôte`,
-  'cc-addon-credentials.field.password': `Mot de passe`,
-  'cc-addon-credentials.field.port': `Port`,
-  'cc-addon-credentials.field.url': `URL`,
-  'cc-addon-credentials.field.user': `Utilisateur`,
+  'cc-addon-credentials.choice.admin': `Admin`,
+  'cc-addon-credentials.choice.api': `API`,
+  'cc-addon-credentials.choice.apm': `APM`,
+  'cc-addon-credentials.choice.cli': `CLI`,
+  'cc-addon-credentials.choice.default': `Par défaut`,
+  'cc-addon-credentials.choice.direct': `Direct`,
+  'cc-addon-credentials.choice.elastic': `Elastic`,
+  'cc-addon-credentials.choice.kibana': `Kibana`,
+  'cc-addon-credentials.doc-link.keycloak': `Multi-instances sécurisé - Documentation`,
+  'cc-addon-credentials.doc-link.otoroshi-api': `Gérer Otoroshi via son API - Documentation`,
+  'cc-addon-credentials.doc-link.otoroshi-ng': `Otoroshi dans un Network Group - Documentation`,
+  'cc-addon-credentials.error': `Une erreur est survenue pendant le chargement des informations`,
   'cc-addon-credentials.get-credentials.error': `Une erreur est survenue lors de la mise à jour des infos, veuillez raffraîchir la page`,
-  'cc-addon-credentials.loading-error': `Une erreur est survenue pendant le chargement des informations de connexion`,
+  'cc-addon-credentials.heading': `Accès`,
+  'cc-addon-credentials.ng-multi-instances.disabling.error': `Une erreur est survenue lors de la désactivation du multi-instances sécurisé`,
+  'cc-addon-credentials.ng-multi-instances.disabling.success': `Le multi-instances sécurisé a été désactivé avec succès`,
+  'cc-addon-credentials.ng-multi-instances.enabling.error': `Une erreur est survenue lors de l'activation du multi-instances sécurisé`,
+  'cc-addon-credentials.ng-multi-instances.enabling.success': `Le multi-instances sécurisé a été activé avec succès`,
+  'cc-addon-credentials.ng-standard.disabling.error': `Une erreur est survenue lors de la désactivation du Network Group`,
+  'cc-addon-credentials.ng-standard.disabling.success': `Le Network Group a été désactivé avec succès`,
+  'cc-addon-credentials.ng-standard.enabling.error': `Une erreur est survenue lors de l'activation du Network Group`,
+  'cc-addon-credentials.ng-standard.enabling.success': `Le Network Group a été activé avec succès`,
+  'cc-addon-credentials.renew-secret': `Renouveler le secret`,
   'cc-addon-credentials.renew-secret.error': `Une erreur est survenue pendant le renouvellement du secret`,
   'cc-addon-credentials.renew-secret.success': `Le secret a été renouvelé avec succès`,
-  'cc-addon-credentials.title': /** @param {{name: string}} _ */ ({ name }) => `Identifiants ${name}`,
-  //#endregion
-  //#region cc-addon-credentials-beta
-  'cc-addon-credentials-beta.choice.admin': `Admin`,
-  'cc-addon-credentials-beta.choice.api': `API`,
-  'cc-addon-credentials-beta.choice.apm': `APM`,
-  'cc-addon-credentials-beta.choice.cli': `CLI`,
-  'cc-addon-credentials-beta.choice.default': `Par défaut`,
-  'cc-addon-credentials-beta.choice.direct': `Direct`,
-  'cc-addon-credentials-beta.choice.elastic': `Elastic`,
-  'cc-addon-credentials-beta.choice.kibana': `Kibana`,
-  'cc-addon-credentials-beta.doc-link.keycloak': `Multi-instances sécurisé - Documentation`,
-  'cc-addon-credentials-beta.doc-link.otoroshi-api': `Gérer Otoroshi via son API - Documentation`,
-  'cc-addon-credentials-beta.doc-link.otoroshi-ng': `Otoroshi dans un Network Group - Documentation`,
-  'cc-addon-credentials-beta.download-s3cfg-file': `Télécharger le fichier s3cfg pré-rempli`,
-  'cc-addon-credentials-beta.error': `Une erreur est survenue pendant le chargement des informations`,
-  'cc-addon-credentials-beta.heading': `Accès`,
-  'cc-addon-credentials-beta.ng-multi-instances.disabling.error': `Une erreur est survenue lors de la désactivation du multi-instances sécurisé`,
-  'cc-addon-credentials-beta.ng-multi-instances.disabling.success': `Le multi-instances sécurisé a été désactivé avec succès`,
-  'cc-addon-credentials-beta.ng-multi-instances.enabling.error': `Une erreur est survenue lors de l'activation du multi-instances sécurisé`,
-  'cc-addon-credentials-beta.ng-multi-instances.enabling.success': `Le multi-instances sécurisé a été activé avec succès`,
-  'cc-addon-credentials-beta.ng-standard.disabling.error': `Une erreur est survenue lors de la désactivation du Network Group`,
-  'cc-addon-credentials-beta.ng-standard.disabling.success': `Le Network Group a été désactivé avec succès`,
-  'cc-addon-credentials-beta.ng-standard.enabling.error': `Une erreur est survenue lors de l'activation du Network Group`,
-  'cc-addon-credentials-beta.ng-standard.enabling.success': `Le Network Group a été activé avec succès`,
-  'cc-addon-credentials-beta.renew-secret': `Renouveler le secret`,
   //#endregion
   //#region cc-addon-credentials-content
   'cc-addon-credentials-content.code.api-client-secret': `Secret du client API`,
@@ -247,6 +231,7 @@ export const translations = {
   'cc-addon-credentials-content.code.uri': `URI`,
   'cc-addon-credentials-content.code.url': `URL`,
   'cc-addon-credentials-content.code.user': `Utilisateur`,
+  'cc-addon-credentials-content.download-s3cfg-file': `Télécharger le fichier s3cfg pré-rempli`,
   'cc-addon-credentials-content.ng.disable': `Désactiver`,
   'cc-addon-credentials-content.ng.enable-multi-instances': `Activer le multi-instances sécurisé`,
   'cc-addon-credentials-content.ng.enable-standard': `Activer le Network Group`,
@@ -275,17 +260,6 @@ export const translations = {
   'cc-addon-encryption-at-rest-option.description': () =>
     sanitize`Le chiffrement au repos chiffre l'intégralité du disque de données afin de ne pas y stocker d'informations en clair. Grâce à cette sécurité, l'accès physique au disque empêchera toute lecture des données stockées. Plus d'information dans notre <cc-link href="${getDocUrl('/administrate/encryption-at-rest')}">documentation</cc-link>.`,
   'cc-addon-encryption-at-rest-option.title': `Chiffrement au repos`,
-  //#endregion
-  //#region cc-addon-features
-  'cc-addon-features.details': `Ci-dessous, les spécifications de votre add-on. Elles peuvent évoluer et une migration de l'add-on peut être nécessaire pour en bénéficier.`,
-  'cc-addon-features.feature-name.disk': `Disque`,
-  'cc-addon-features.feature-name.memory': `Mémoire`,
-  'cc-addon-features.feature-name.nodes': `Nœuds`,
-  'cc-addon-features.feature-value.dedicated': `Dédié`,
-  'cc-addon-features.feature-value.no': `Non`,
-  'cc-addon-features.feature-value.yes': `Oui`,
-  'cc-addon-features.loading-error': `Une erreur est survenue pendant le chargement des spécifications de l'add-on`,
-  'cc-addon-features.title': `Spécifications`,
   //#endregion
   //#region cc-addon-header
   'cc-addon-header.action.get-config': `Obtenir le Kubeconfig`,
@@ -934,17 +908,6 @@ export const translations = {
     sanitize`Ce tableau de bord comprend un <strong>panneau de présentation</strong> pour obtenir des informations rapides sur une application, ainsi que plusieurs panneaux présentant leurs métriques système. <br> Il fournit un graphique reprenant l'état <strong>du processeur, de la mémoire, des disques et du réseau</strong>. <br> Pour chaque groupe de métriques, le panneau contient des graphes d'utilisation, des jauges ou encore un indicateur de remplissage (basé sur le résultat d'une prédiction linéaire effectuée sur les données de l'intervalle de temps fixé dans Grafana). Cet indicateur donne la durée attendue avant que les métriques ne dépassent 90%.`,
   'cc-grafana-info.screenshot.runtime.title': `Aperçu du tableau de bord d'application (runtime)`,
   //#endregion
-  //#region cc-header-addon
-  'cc-header-addon.creation-date': `Date de création`,
-  'cc-header-addon.creation-date.full': /** @param {{date: string|number}} _ */ ({ date }) => formatDate(date),
-  'cc-header-addon.creation-date.short': /** @param {{date: string|number}} _ */ ({ date }) => formatDateOnly(date),
-  'cc-header-addon.error': `Une erreur est survenue pendant le chargement des informations de l'add-on.`,
-  'cc-header-addon.id-label': `Identifiant de l'add-on`,
-  'cc-header-addon.id-label-alternative': () =>
-    sanitize`Identifiant alternatif de l'add-on (<span lang="en">real id</span>)`,
-  'cc-header-addon.plan': `Plan`,
-  'cc-header-addon.version': `Version`,
-  //#endregion
   //#region cc-header-app
   'cc-header-app.action.cancel-deployment': `Annuler le déploiement`,
   'cc-header-app.action.restart': `Redémarrer`,
@@ -1104,20 +1067,6 @@ export const translations = {
   'cc-invoice-table.total.label': `Total`,
   'cc-invoice-table.total.value': /** @param {{amount: number, currency: string}} _ */ ({ amount, currency }) =>
     `${formatCurrency(lang, amount, { currency })}`,
-  //#endregion
-  //#region cc-jenkins-info
-  'cc-jenkins-info.documentation.text': `Jenkins - Documentation`,
-  'cc-jenkins-info.error': `Une erreur est survenue pendant le chargement des informations liées à cet add-on.`,
-  'cc-jenkins-info.info': `Info`,
-  'cc-jenkins-info.open-jenkins.link': `Accéder à Jenkins`,
-  'cc-jenkins-info.open-jenkins.text': `Accédez à Jenkins de manière authentifiée via le SSO (Single Sign-On) Clever Cloud. Les différents membres de l'organisation peuvent accéder au service Jenkins.`,
-  'cc-jenkins-info.open-jenkins.title': `Accéder à Jenkins`,
-  'cc-jenkins-info.text': `Cet add-on fait partie de l'offre Jenkins. Vous pouvez retrouver la documentation ainsi que différentes informations ci-dessous.`,
-  'cc-jenkins-info.update.new-version': /** @param {{version: string}} _ */ ({ version }) =>
-    `La version ${version} de Jenkins est disponible\u202f!`,
-  'cc-jenkins-info.update.text': `Jenkins et ses plugins reçoivent régulièrement des mises à jour. Vous pouvez mettre à jour automatiquement votre instance ainsi que ses plugins à travers l'interface Jenkins.`,
-  'cc-jenkins-info.update.title': `Mises à jour`,
-  'cc-jenkins-info.update.up-to-date': `Votre version de Jenkins est à jour`,
   //#endregion
   //#region cc-kv-explorer
   'cc-kv-explorer.details.empty': `Sélectionnez une clé pour en récupérer le contenu`,
@@ -1412,24 +1361,6 @@ export const translations = {
   'cc-map.error': `Une erreur est survenue pendant le chargement des données de la carte.`,
   'cc-map.error.icon-a11y-name': `Avertissement`,
   'cc-map.no-points': `Pas de données à afficher sur la carte en ce moment.`,
-  //#endregion
-  //#region cc-matomo-info
-  'cc-matomo-info.about.text': () => sanitize`
-    <p>L'add-on Matomo inclut des dépendances indispensables à son bon fonctionnement. Il est accompagné d'une application <strong>PHP</strong>, d'un add-on <strong>MySQL</strong> et d'un add-on <strong>Redis</strong>.</p>
-    <p>Ces dépendances sont affichées dans votre organisation comme n'importe quelle autre application ou add-on. Vous pouvez les configurer comme bon vous semble. Vous pouvez modifier le domaine de l'application PHP ou encore migrer le MySQL vers un plus gros plan.</p>
-    <p>Cet add-on est gratuit, mais ses dépendances sont facturées en fonction de leur consommation.</p>
-  `,
-  'cc-matomo-info.about.title': `À propos`,
-  'cc-matomo-info.documentation.text': `Matomo - Documentation`,
-  'cc-matomo-info.error': `Une erreur est survenue pendant le chargement des informations de l'add-on.`,
-  'cc-matomo-info.heading': `Cet add-on Matomo inclut toutes les dépendances nécessaires à son bon fonctionnement.`,
-  'cc-matomo-info.info': `Info`,
-  'cc-matomo-info.link.mysql': `Accéder à l'add-on MySQL`,
-  'cc-matomo-info.link.php': `Accéder à l'application PHP`,
-  'cc-matomo-info.link.redis': `Accéder à l'add-on Redis`,
-  'cc-matomo-info.open-matomo.link': `Accéder à Matomo`,
-  'cc-matomo-info.open-matomo.text': `Vous pouvez accéder à votre Matomo en utilisant votre compte Clever Cloud. Tous les membres de l'organisation peuvent également accéder au service grâce à leur propre compte.`,
-  'cc-matomo-info.open-matomo.title': `Accéder à Matomo`,
   //#endregion
   //#region cc-network-group-dashboard
   'cc-network-group-dashboard.danger-zone.btn': `Supprimer le Network Group`,

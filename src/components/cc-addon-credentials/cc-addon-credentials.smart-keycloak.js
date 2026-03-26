@@ -3,10 +3,10 @@ import { notifyError, notifySuccess } from '../../lib/notifications.js';
 import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-smart-container/cc-smart-container.js';
-import { CcAddonCredentialsBetaClient } from './cc-addon-credentials-beta.client.js';
-import './cc-addon-credentials-beta.js';
+import { CcAddonCredentialsClient } from './cc-addon-credentials.client.js';
+import './cc-addon-credentials.js';
 
-/** @type {AddonCredentialsBetaStateLoading} */
+/** @type {AddonCredentialsStateLoading} */
 const LOADING_STATE = {
   type: 'loading',
   tabs: {
@@ -29,7 +29,7 @@ const LOADING_STATE = {
         },
       ],
       docLink: {
-        text: i18n('cc-addon-credentials-beta.doc-link.keycloak'),
+        text: i18n('cc-addon-credentials.doc-link.keycloak'),
         href: getDocUrl('/addons/keycloak/#secured-multi-instances'),
       },
     },
@@ -38,8 +38,8 @@ const LOADING_STATE = {
 const PROVIDER_ID = 'keycloak';
 
 /**
- * @import { CcAddonCredentialsBeta } from './cc-addon-credentials-beta.js'
- * @import { AddonCredentialsBetaStateLoaded, AddonCredentialsBetaStateLoading } from './cc-addon-credentials-beta.types.js'
+ * @import { CcAddonCredentials } from './cc-addon-credentials.js'
+ * @import { AddonCredentialsStateLoaded, AddonCredentialsStateLoading } from './cc-addon-credentials.types.js'
  * @import { AddonCredential, AddonCredentialNg, AddonCredentialNgEnabled, AddonCredentialNgDisabled } from '../cc-addon-credentials-content/cc-addon-credentials-content.types.js'
  * @import { KeycloakOperatorInfo } from '../../operators.types.js'
  * @import { ApiConfig } from '../../lib/send-to-api.types.js'
@@ -47,14 +47,14 @@ const PROVIDER_ID = 'keycloak';
  */
 
 defineSmartComponent({
-  selector: 'cc-addon-credentials-beta[smart-mode="keycloak"]',
+  selector: 'cc-addon-credentials[smart-mode="keycloak"]',
   params: {
     apiConfig: { type: Object },
     addonId: { type: String },
     ownerId: { type: String },
   },
   /**
-   * @param {OnContextUpdateArgs<CcAddonCredentialsBeta>} args
+   * @param {OnContextUpdateArgs<CcAddonCredentials>} args
    */
   onContextUpdate({ context, onEvent, updateComponent, signal }) {
     const { apiConfig, addonId, ownerId } = context;
@@ -64,7 +64,7 @@ defineSmartComponent({
     function updateNg(newNgInfoOrCallback) {
       updateComponent(
         'state',
-        /** @param {AddonCredentialsBetaStateLoaded} state */
+        /** @param {AddonCredentialsStateLoaded} state */
         (state) => {
           state.tabs.default.content = [...state.tabs.default.content].map((addonInfo) => {
             if (addonInfo.code === 'ng') {
@@ -87,7 +87,7 @@ defineSmartComponent({
       .then((credentials) => {
         updateComponent(
           'state',
-          /** @param {AddonCredentialsBetaStateLoaded|AddonCredentialsBetaStateLoading} state */
+          /** @param {AddonCredentialsStateLoaded|AddonCredentialsStateLoading} state */
           (state) => {
             state.type = 'loaded';
             state.tabs.default.content = credentials;
@@ -120,7 +120,7 @@ defineSmartComponent({
             },
           });
 
-          notifySuccess(i18n('cc-addon-credentials-beta.ng-multi-instances.enabling.success'));
+          notifySuccess(i18n('cc-addon-credentials.ng-multi-instances.enabling.success'));
         })
         .catch((error) => {
           console.error(error);
@@ -131,7 +131,7 @@ defineSmartComponent({
               status: 'disabled',
             },
           });
-          notifyError(i18n('cc-addon-credentials-beta.ng-multi-instances.enabling.error'));
+          notifyError(i18n('cc-addon-credentials.ng-multi-instances.enabling.error'));
         });
     });
 
@@ -155,7 +155,7 @@ defineSmartComponent({
               status: 'disabled',
             },
           });
-          notifySuccess(i18n('cc-addon-credentials-beta.ng-multi-instances.disabling.success'));
+          notifySuccess(i18n('cc-addon-credentials.ng-multi-instances.disabling.success'));
         })
         .catch((error) => {
           console.error(error);
@@ -168,7 +168,7 @@ defineSmartComponent({
               status: 'enabled',
             },
           }));
-          notifyError(i18n('cc-addon-credentials-beta.ng-multi-instances.disabling.error'));
+          notifyError(i18n('cc-addon-credentials.ng-multi-instances.disabling.error'));
         });
     });
   },
@@ -190,7 +190,7 @@ function formatNgData(data) {
   };
 }
 
-class Api extends CcAddonCredentialsBetaClient {
+class Api extends CcAddonCredentialsClient {
   /**
    * @param {object} params
    * @param {ApiConfig} params.apiConfig

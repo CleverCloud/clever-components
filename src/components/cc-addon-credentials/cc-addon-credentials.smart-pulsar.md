@@ -1,14 +1,14 @@
 ---
-kind: '🛠 Addon/<cc-addon-credentials-beta>'
+kind: '🛠 Addon/<cc-addon-credentials>'
 title: '💡 Smart (Pulsar)'
 ---
-# 💡 Smart `<cc-addon-credentials-beta smart-mode="pulsar">`
+# 💡 Smart `<cc-addon-credentials smart-mode="pulsar">`
 
 ## ℹ️ Details
 
 <table>
-<tr><td><strong>Component    </strong> <td><a href="🛠-addon-credentials-beta-cc-addon-credentials-beta--default-story"><code>&lt;cc-addon-credentials-beta&gt;</code></a>
-<tr><td><strong>Selector     </strong> <td><code>cc-addon-credentials-beta[smart-mode="pulsar"]</code>
+<tr><td><strong>Component    </strong> <td><a href="🛠-addon-credentials-cc-addon-credentials--default-story"><code>&lt;cc-addon-credentials&gt;</code></a>
+<tr><td><strong>Selector     </strong> <td><code>cc-addon-credentials[smart-mode="pulsar"]</code>
 <tr><td><strong>Requires auth</strong> <td>Yes
 </table>
 
@@ -52,6 +52,6 @@ interface ApiConfig {
     "addonId": "addon_XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX",
     "ownerId": "orga_XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX"
 }'>
-  <cc-addon-credentials-beta smart-mode="pulsar"></cc-addon-credentials-beta>
+  <cc-addon-credentials smart-mode="pulsar"></cc-addon-credentials>
 </cc-smart-container>
 ```

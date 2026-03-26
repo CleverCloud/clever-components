@@ -207,7 +207,7 @@ export class CcAddonCredentialsContent extends LitElement {
                       ?skeleton="${skeleton}"
                       ?waiting="${disabled}"
                       @cc-click=${this._onRenewSecret}
-                      >${i18n('cc-addon-credentials-beta.renew-secret')}</cc-button
+                      >${i18n('cc-addon-credentials.renew-secret')}</cc-button
                     >`
                   : ''}
               `
@@ -219,7 +219,7 @@ export class CcAddonCredentialsContent extends LitElement {
                   download="${credential.value}"
                   ?skeleton="${skeleton}"
                   disable-external-link-icon
-                  >${i18n('cc-addon-credentials-beta.download-s3cfg-file')}</cc-link
+                  >${i18n('cc-addon-credentials-content.download-s3cfg-file')}</cc-link
                 >
               `
             : ''}

@@ -3,12 +3,12 @@ import { ONE_SECOND } from '@clevercloud/client/esm/with-cache.js';
 import { sendToApi } from '../../lib/send-to-api.js';
 
 /**
- * @import { RawAddon } from './cc-addon-credentials-beta.types.js'
+ * @import { RawAddon } from './cc-addon-credentials.types.js'
  * @import { RawAddonProvider } from '../common.types.js'
  * @import { ApiConfig } from '../../lib/send-to-api.types.js'
  */
 
-export class CcAddonCredentialsBetaClient {
+export class CcAddonCredentialsClient {
   /**
    * @param {object} params
    * @param {ApiConfig} params.apiConfig
