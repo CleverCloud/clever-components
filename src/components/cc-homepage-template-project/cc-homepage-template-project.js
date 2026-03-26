@@ -43,7 +43,7 @@ export class CcHomepageTemplateProject extends LitElement {
         ${this.state.type === 'error'
           ? html` <cc-notice intent="warning" message="${i18n('cc-homepage-template-project.error')}"></cc-notice> `
           : ''}
-        ${this.state.type === 'loaded'
+        ${this.state.type !== 'error'
           ? html`
               <ul class="project-list ${classMap({ skeleton })}">
                 ${projects.map((project) => this._renderProjectRow(project))}
