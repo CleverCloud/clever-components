@@ -39,6 +39,7 @@ defineSmartComponent({
 
         updateComponent('state', {
           type: 'loaded',
+          description: ng.description,
           name: ng.label,
           id: ng.id,
           subnet: ng.networkIp,

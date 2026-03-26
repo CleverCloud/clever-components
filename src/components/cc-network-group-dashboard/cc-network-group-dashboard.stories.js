@@ -19,6 +19,7 @@ const conf = {
 const networkGroupDashboard = {
   id: 'ng_XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX',
   name: 'My Network Group',
+  description: 'Internal network for staging environment - connects API services, databases, and caching layer.',
   subnet: '10.0.0.0/16',
   lastIp: '10.0.0.1/24',
   numberOfMembers: 4,
@@ -32,6 +33,23 @@ export const defaultStory = makeStory(conf, {
       state: {
         type: 'loaded',
         ...networkGroupDashboard,
+      },
+    },
+  ],
+});
+
+export const dataLoadedWithNoDescription = makeStory(conf, {
+  /** @type {Partial<CcNetworkGroupDashboard>[]} */
+  items: [
+    {
+      state: {
+        type: 'loaded',
+        id: networkGroupDashboard.id,
+        name: networkGroupDashboard.name,
+        subnet: networkGroupDashboard.subnet,
+        lastIp: networkGroupDashboard.lastIp,
+        numberOfMembers: networkGroupDashboard.numberOfMembers,
+        numberOfPeers: networkGroupDashboard.numberOfPeers,
       },
     },
   ],
