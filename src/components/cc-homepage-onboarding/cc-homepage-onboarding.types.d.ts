@@ -6,7 +6,7 @@ export type HomepageOnboardingState =
   | HomepageOnboardingStateError;
 
 export type HomepageOnboardingCardId =
-  | 'newResource'
+  | 'firstResource'
   | 'newResourceWithSelect'
   | 'secure'
   | 'sshKeys'

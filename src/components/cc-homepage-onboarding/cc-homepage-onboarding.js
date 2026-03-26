@@ -29,12 +29,12 @@ import {
  */
 function getCards() {
   return {
-    newResource: {
-      title: i18n('cc-homepage-onboarding.card.new-resource.title'),
-      description: i18n('cc-homepage-onboarding.card.new-resource.description'),
+    firstResource: {
+      title: i18n('cc-homepage-onboarding.card.first-resource.title'),
+      description: i18n('cc-homepage-onboarding.card.first-resource.description'),
       icon: iconRemixAddCircleLine,
       iconColor: 'white',
-      buttonText: i18n('cc-homepage-onboarding.card.new-resource.button'),
+      buttonText: i18n('cc-homepage-onboarding.card.first-resource.button'),
       href: '',
     },
     newResourceWithSelect: {

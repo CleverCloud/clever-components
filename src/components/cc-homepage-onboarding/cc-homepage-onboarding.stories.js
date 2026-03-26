@@ -27,7 +27,7 @@ export const defaultStory = makeStory(conf, {
       state: {
         type: 'loaded',
         userType: 'already-user',
-        cardIds: ['newResource', 'sshKeys', 'cli', 'support'],
+        cardIds: ['firstResource', 'sshKeys', 'cli', 'support'],
         organisationOptions: [],
       },
     },
