@@ -27,7 +27,12 @@ export const defaultStory = makeStory(conf, {
       state: {
         type: 'loaded',
         userType: 'already-user',
-        cardIds: ['newResource', 'sshKeys', 'cli', 'support'],
+        cards: [
+          { id: 'firstResource', href: '' },
+          { id: 'sshKeys', href: '' },
+          { id: 'cli', href: '' },
+          { id: 'support', href: '' },
+        ],
         organisationOptions: [],
       },
     },
@@ -41,7 +46,12 @@ export const newUserStory = makeStory(conf, {
       state: {
         type: 'loaded',
         userType: 'new-user',
-        cardIds: ['newResourceWithSelect', 'secure', 'configPayment', 'support'],
+        cards: [
+          { id: 'newResourceWithSelect', href: '' },
+          { id: 'secure', href: '' },
+          { id: 'configPayment', href: '' },
+          { id: 'support', href: '' },
+        ],
         organisationOptions: [
           { label: 'Orga1', value: 'orga1' },
           { label: 'Orga2', value: 'orga2' },
@@ -59,7 +69,11 @@ export const threeCardsStory = makeStory(conf, {
       state: {
         type: 'loaded',
         userType: 'new-user',
-        cardIds: ['newResourceWithSelect', 'configPayment', 'support'],
+        cards: [
+          { id: 'newResourceWithSelect', href: '' },
+          { id: 'configPayment', href: '' },
+          { id: 'support', href: '' },
+        ],
         organisationOptions: [
           { label: 'Orga1', value: 'orga1' },
           { label: 'Orga2', value: 'orga2' },
