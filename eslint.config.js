@@ -6,7 +6,7 @@ import globals from 'globals';
 import path from 'node:path';
 import i18nPlugin from './eslint/i18n/eslint-plugin-i18n.js';
 import litA11yCleverCloud from './eslint/lit-a11y/eslint-config-lit-a11y-clever-cloud.js';
-import litCleverCloud from './eslint/lit/eslint-config-lit-clever-cloud.js';
+import litCleverCloud from './eslint/lit/eslint-config-lit-cc.js';
 import wcCleverCloud from './eslint/wc/eslint-config-wc-clever-cloud.js';
 
 import { cleverCloud } from '@clevercloud/eslint-config';
@@ -88,7 +88,6 @@ export default [
       'eslint.config.js',
       'eslint/**/*.*js',
       'prettier.config.js',
-      'prettier-rules/**/*.js',
       'tasks/**/*.js',
       'rollup/**/*.js',
       'cem/**/*.js',
