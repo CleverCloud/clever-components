@@ -32,6 +32,8 @@ const DEFAULT_ERROR_MESSAGES = {
  * @cssdisplay inline-block
  *
  * @csspart tiles - Styles the tiles container, mainly to modify their layout.
+ * @csspart option--input-radio - Styles the hidden radio input of each option.
+ * @csspart option--label - Styles the label wrapping each option.
  *
  * @cssprop {Size} --cc-form-label-gap - The space between the label and the control (defaults: `0.35em`).
  * @cssprop {Size} --cc-form-label-gap-inline - The space between the label and the control when layout is inline (defaults: `0.75em`).
@@ -242,6 +244,7 @@ export class CcPicker extends CcFormControlElement {
     return html`
       <input
         class="visually-hidden"
+        part="option--input-radio"
         type="radio"
         id="${id}"
         name="${this.name}"
@@ -251,7 +254,7 @@ export class CcPicker extends CcFormControlElement {
         aria-describedby="help-id error-id description-id"
         ?autofocus=${isAutofocus}
       />
-      <label for="${id}">
+      <label for="${id}" part="option--label">
         <cc-picker-option
           ?selected=${isChecked}
           ?disabled=${isDisabled}
