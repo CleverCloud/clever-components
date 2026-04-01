@@ -84,6 +84,10 @@ export class CcNetworkGroupMemberList extends LitElement {
     });
   }
 
+  resetLinkForm() {
+    this._linkFormRef.value?.reset();
+  }
+
   /** @param {string} memberIdToUnlink */
   _onUnlinkMember(memberIdToUnlink) {
     this.dispatchEvent(new CcNetworkGroupMemberUnlinkEvent(memberIdToUnlink));
@@ -109,10 +113,6 @@ export class CcNetworkGroupMemberList extends LitElement {
   _onDialogClose() {
     this._memberIdToUnlink = null;
     this._showUnlinkDialog = false;
-  }
-
-  resetLinkForm() {
-    this._linkFormRef.value?.reset();
   }
 
   /** @param {PropertyValues<CcNetworkGroupMemberList>} changedProperties */

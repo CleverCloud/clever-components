@@ -70,11 +70,6 @@ export class CcTileRequests extends LitElement {
   }
 
   /** @private */
-  _onToggleDocs() {
-    this._docs = !this._docs;
-  }
-
-  /** @private */
   async _refreshChart() {
     const skeleton = this.state.type === 'loading';
 
@@ -139,6 +134,11 @@ export class CcTileRequests extends LitElement {
 
     this._chart.update();
     this._chart.resize();
+  }
+
+  /** @private */
+  _onToggleDocs() {
+    this._docs = !this._docs;
   }
 
   firstUpdated() {

@@ -40,6 +40,17 @@ export class FormsSandbox extends LitElement {
   }
 
   /**
+   * @param {string} demo
+   */
+  _loadDemo(demo) {
+    import(`./form-demo-${demo}.js`).then(() => {
+      this._demo = demo;
+      localStorage.setItem('cc-sandbox-form-demo', demo);
+      this._event = null;
+    });
+  }
+
+  /**
    * @param {CcSelectEvent} e
    */
   _onDemoChange({ detail }) {
@@ -68,17 +79,6 @@ export class FormsSandbox extends LitElement {
       json: JSON.stringify(e.detail, null, 2),
     };
     console.log(`${this._event.type}: ${this._event.json}`);
-  }
-
-  /**
-   * @param {string} demo
-   */
-  _loadDemo(demo) {
-    import(`./form-demo-${demo}.js`).then(() => {
-      this._demo = demo;
-      localStorage.setItem('cc-sandbox-form-demo', demo);
-      this._event = null;
-    });
   }
 
   /**

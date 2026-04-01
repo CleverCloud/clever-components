@@ -37,18 +37,6 @@ export class CcFeatureList extends LitElement {
   }
 
   /**
-   * @param {Feature} feature
-   * @param {string} newValue
-   */
-  _onToggleChange(feature, newValue) {
-    if (this.state.type === 'loading') {
-      return;
-    }
-
-    this.dispatchEvent(new CcFeatureSettingChangeEvent({ featureId: feature.id, newValue }));
-  }
-
-  /**
    * @param {FeatureStatus} status
    * @return {{text: string, intent: string}}
    * @private
@@ -64,6 +52,44 @@ export class CcFeatureList extends LitElement {
       default:
         return null;
     }
+  }
+
+  /**
+   * @param {Feature} feature
+   * @param {string} newValue
+   */
+  _onToggleChange(feature, newValue) {
+    if (this.state.type === 'loading') {
+      return;
+    }
+
+    this.dispatchEvent(new CcFeatureSettingChangeEvent({ featureId: feature.id, newValue }));
+  }
+
+  render() {
+    const isFeatureListEmpty = this.state.type === 'loaded' && this.state.featureList.length === 0;
+    return html`
+      <cc-block>
+        <div slot="header-title">${i18n('cc-feature-list.title')}</div>
+        <div slot="content">
+          ${this.state.type === 'loaded' && !isFeatureListEmpty
+            ? html`<cc-notice message=${i18n('cc-feature-list.notice')}></cc-notice>`
+            : ''}
+          <div class="feature-list">
+            ${this.state.type === 'loading' ? html` <cc-loader></cc-loader>` : ''}
+            ${this.state.type === 'error'
+              ? html` <cc-notice intent="warning" message=${i18n('cc-feature-list.error')}></cc-notice> `
+              : ''}
+            ${this.state.type === 'loaded' && isFeatureListEmpty
+              ? html` <cc-notice intent="info" message=${i18n('cc-feature-list.no-data')}></cc-notice> `
+              : ''}
+            ${this.state.type === 'loaded' && !isFeatureListEmpty
+              ? this.state.featureList.map((feature) => this._renderFeature(feature))
+              : ''}
+          </div>
+        </div>
+      </cc-block>
+    `;
   }
 
   /**
@@ -120,32 +146,6 @@ export class CcFeatureList extends LitElement {
             `
           : ''}
       </div>
-    `;
-  }
-
-  render() {
-    const isFeatureListEmpty = this.state.type === 'loaded' && this.state.featureList.length === 0;
-    return html`
-      <cc-block>
-        <div slot="header-title">${i18n('cc-feature-list.title')}</div>
-        <div slot="content">
-          ${this.state.type === 'loaded' && !isFeatureListEmpty
-            ? html`<cc-notice message=${i18n('cc-feature-list.notice')}></cc-notice>`
-            : ''}
-          <div class="feature-list">
-            ${this.state.type === 'loading' ? html` <cc-loader></cc-loader>` : ''}
-            ${this.state.type === 'error'
-              ? html` <cc-notice intent="warning" message=${i18n('cc-feature-list.error')}></cc-notice> `
-              : ''}
-            ${this.state.type === 'loaded' && isFeatureListEmpty
-              ? html` <cc-notice intent="info" message=${i18n('cc-feature-list.no-data')}></cc-notice> `
-              : ''}
-            ${this.state.type === 'loaded' && !isFeatureListEmpty
-              ? this.state.featureList.map((feature) => this._renderFeature(feature))
-              : ''}
-          </div>
-        </div>
-      </cc-block>
     `;
   }
 

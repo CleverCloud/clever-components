@@ -152,6 +152,36 @@ export class CcInputText extends CcFormControlElement {
     };
   }
 
+  /* endregion */
+
+  // In general, we try to use LitElement's update() lifecycle callback but in this situation,
+  // overriding get/set makes more sense
+  get tags() {
+    return this._tagsEnabled ? this.value.split(TAG_SEPARATOR).filter((tag) => tag !== '') : null;
+  }
+
+  set tags(newVal) {
+    this._tagsEnabled = newVal != null;
+    if (this._tagsEnabled) {
+      const oldVal = this.tags;
+      // The cc-input-text:tags event fires with a filtered list of tags.
+      // This means if you type "hello " with a trailing space, the event would be fired with ['hello'].
+      // Then if a parent component sets input.tags = ['hello'], the space would be removed.
+      // This if only sets the value if the new tags are different
+      if (!arrayEquals(oldVal, newVal)) {
+        this.value = newVal.join(TAG_SEPARATOR);
+        this.requestUpdate('tags', oldVal);
+      }
+    }
+  }
+
+  /**
+   * Triggers focus on the inner `<input>/<textarea>` element.
+   */
+  focus() {
+    this._inputRef.value?.focus();
+  }
+
   /* region CcFormControlElement implementation */
 
   /**
@@ -211,36 +241,6 @@ export class CcInputText extends CcFormControlElement {
    */
   _getReactiveValidationProperties() {
     return CcInputText.reactiveValidationProperties;
-  }
-
-  /* endregion */
-
-  // In general, we try to use LitElement's update() lifecycle callback but in this situation,
-  // overriding get/set makes more sense
-  get tags() {
-    return this._tagsEnabled ? this.value.split(TAG_SEPARATOR).filter((tag) => tag !== '') : null;
-  }
-
-  set tags(newVal) {
-    this._tagsEnabled = newVal != null;
-    if (this._tagsEnabled) {
-      const oldVal = this.tags;
-      // The cc-input-text:tags event fires with a filtered list of tags.
-      // This means if you type "hello " with a trailing space, the event would be fired with ['hello'].
-      // Then if a parent component sets input.tags = ['hello'], the space would be removed.
-      // This if only sets the value if the new tags are different
-      if (!arrayEquals(oldVal, newVal)) {
-        this.value = newVal.join(TAG_SEPARATOR);
-        this.requestUpdate('tags', oldVal);
-      }
-    }
-  }
-
-  /**
-   * Triggers focus on the inner `<input>/<textarea>` element.
-   */
-  focus() {
-    this._inputRef.value?.focus();
   }
 
   /**

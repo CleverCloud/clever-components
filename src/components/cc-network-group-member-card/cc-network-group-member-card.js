@@ -70,8 +70,11 @@ export class CcNetworkGroupMemberCard extends LitElement {
     this._unlinkButtonRef = createRef();
   }
 
-  _onUnlinkRequest() {
-    this.dispatchEvent(new CcNetworkGroupMemberUnlinkRequestEvent({ id: this.member.id, kind: this.member.kind }));
+  focus() {
+    this.isOpen = true;
+    this.updateComplete.then(() => {
+      this._unlinkButtonRef.value?.focus();
+    });
   }
 
   /**
@@ -103,16 +106,13 @@ export class CcNetworkGroupMemberCard extends LitElement {
     return null;
   }
 
+  _onUnlinkRequest() {
+    this.dispatchEvent(new CcNetworkGroupMemberUnlinkRequestEvent({ id: this.member.id, kind: this.member.kind }));
+  }
+
   /** @param {ToggleEvent} e */
   _onDetailsToggle(e) {
     this.isOpen = /** @type {HTMLDetailsElement} */ (e.target).open;
-  }
-
-  focus() {
-    this.isOpen = true;
-    this.updateComplete.then(() => {
-      this._unlinkButtonRef.value?.focus();
-    });
   }
 
   render() {

@@ -38,12 +38,6 @@ export class CcHomepageVideo extends LitElement {
     this._iframeRef = createRef();
   }
 
-  async _onPlay() {
-    this._playing = true;
-    await this.updateComplete;
-    this._iframeRef.value.focus();
-  }
-
   /**
    * Extracts the video ID from a YouTube URL.
    * Supports youtu.be/ID, youtube.com/watch?v=ID, and youtube.com/embed/ID formats.
@@ -66,6 +60,12 @@ export class CcHomepageVideo extends LitElement {
       // not a valid URL
     }
     return 'xxxxxxxxxxx';
+  }
+
+  async _onPlay() {
+    this._playing = true;
+    await this.updateComplete;
+    this._iframeRef.value.focus();
   }
 
   render() {

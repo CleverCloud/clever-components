@@ -138,6 +138,16 @@ export class CcVisualTestsReportMenu extends LitElement {
     this._activeMenuEntry = { ...this._activeMenuEntry, story: isAlreadyActive ? null : kebabCasedStoryName };
   }
 
+  _setPreviousAndNextTestResultIds() {
+    const activeTestResultIndex = this._testsResultsIds.indexOf(this.activeTestResultId);
+    const nbOfTestResults = this._testsResultsIds.length;
+    const previousTestResultIndex = (activeTestResultIndex - 1 + nbOfTestResults) % nbOfTestResults;
+    const nextTestResultIndex = (activeTestResultIndex + 1) % nbOfTestResults;
+
+    this._previousTestResultId = this._testsResultsIds[previousTestResultIndex];
+    this._nextTestResultId = this._testsResultsIds[nextTestResultIndex];
+  }
+
   /** @param {PropertyValues<CcVisualTestsReportMenu>} changedProperties */
   willUpdate(changedProperties) {
     if (changedProperties.has('testsResults') && this.testsResults.length > 0) {
@@ -174,16 +184,6 @@ export class CcVisualTestsReportMenu extends LitElement {
         activeLinkElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
       }
     }
-  }
-
-  _setPreviousAndNextTestResultIds() {
-    const activeTestResultIndex = this._testsResultsIds.indexOf(this.activeTestResultId);
-    const nbOfTestResults = this._testsResultsIds.length;
-    const previousTestResultIndex = (activeTestResultIndex - 1 + nbOfTestResults) % nbOfTestResults;
-    const nextTestResultIndex = (activeTestResultIndex + 1) % nbOfTestResults;
-
-    this._previousTestResultId = this._testsResultsIds[previousTestResultIndex];
-    this._nextTestResultId = this._testsResultsIds[nextTestResultIndex];
   }
 
   render() {

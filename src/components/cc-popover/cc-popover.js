@@ -182,6 +182,18 @@ export class CcPopover extends LitElement {
     this._buttonRef.value?.focus();
   }
 
+  connectedCallback() {
+    super.connectedCallback();
+    this._onCcPopoverOpenHandler.connect();
+  }
+
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    this._onOutsideClickHandler.disconnect();
+    this._onEscapeKeyHandler.disconnect();
+    this._onCcPopoverOpenHandler.disconnect();
+  }
+
   // endregion
 
   // region Lit lifecycle
@@ -197,18 +209,6 @@ export class CcPopover extends LitElement {
         this._onEscapeKeyHandler.disconnect();
       }
     }
-  }
-
-  connectedCallback() {
-    super.connectedCallback();
-    this._onCcPopoverOpenHandler.connect();
-  }
-
-  disconnectedCallback() {
-    super.disconnectedCallback();
-    this._onOutsideClickHandler.disconnect();
-    this._onEscapeKeyHandler.disconnect();
-    this._onCcPopoverOpenHandler.disconnect();
   }
 
   // endregion

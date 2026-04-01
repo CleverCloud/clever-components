@@ -19,14 +19,6 @@ import { combineValidators } from './validation.js';
  */
 // eslint-disable-next-line wc/define-tag-after-class-definition, wc/file-name-matches-element
 export class CcFormControlElement extends LitElement {
-  /**
-   * @return {boolean}
-   * @protected
-   */
-  static get formAssociated() {
-    return true;
-  }
-
   static get properties() {
     return {
       customErrorMessages: { type: Object, attribute: false },
@@ -34,6 +26,14 @@ export class CcFormControlElement extends LitElement {
       errorMessage: { type: Object, attribute: 'error-message' },
       name: { type: String, reflect: true },
     };
+  }
+
+  /**
+   * @return {boolean}
+   * @protected
+   */
+  static get formAssociated() {
+    return true;
   }
 
   constructor() {
@@ -58,98 +58,6 @@ export class CcFormControlElement extends LitElement {
     };
 
     this._internals = this.attachInternals();
-  }
-
-  /* region protected methods */
-
-  /**
-   * Returns the name of the property that holds the form control value.
-   *
-   * @return {string}
-   * @protected
-   */
-  _getValuePropertyName() {
-    return 'value';
-  }
-
-  /**
-   * Returns the name of the property that holds the form control reset value.
-   *
-   * @return {string}
-   * @protected
-   */
-  _getResetPropertyName() {
-    return 'resetValue';
-  }
-
-  /**
-   * Returns the inner `HTMLElement` that should get the focus and on which the native tooltip should be attached to when the native error reporting is used.
-   * It will be used as the anchor when calling {@link ElementInternals#setValidity}.
-   *
-   * @return {HTMLElement}
-   * @protected
-   */
-  _getFormControlElement() {
-    throw new Error('You must implement _getFormControlElement() abstract method');
-  }
-
-  /**
-   * Returns the inner `HTMLElement` that contains the error message.
-   * This is needed when we need to convert a `Node` errorMessage into a string.
-   *
-   * @return {HTMLElement}
-   * @protected
-   */
-  _getErrorElement() {
-    throw new Error('You must implement _getErrorElement() abstract method');
-  }
-
-  /**
-   * Returns the error messages mapping that will be used when resolving the right error message according to the error code returned by the validation process.
-   *
-   * @return {ErrorMessageMap}
-   * @protected
-   */
-  _getErrorMessages() {
-    return null;
-  }
-
-  /**
-   * Returns the validator to use when trying to validate the form control.
-   *
-   * @return {Validator}
-   * @protected
-   */
-  _getValidator() {
-    return null;
-  }
-
-  /**
-   * Returns the data that should be set on the `<form>` element (using {@link ElementInternals#setFormValue}).
-   *
-   * @return {FormControlData}
-   * @protected
-   */
-  _getFormControlData() {
-    const value = this.$getValue();
-
-    if (value == null || typeof value === 'string' || value instanceof File || value instanceof FormData) {
-      return value;
-    }
-
-    console.warn("The value to set to form data should be of type `null|File|string|FormData`. You've got ", value);
-
-    return value.toString();
-  }
-
-  /**
-   * Returns the property names that may trigger a new validation process.
-   *
-   * @return {Array<string>}
-   * @protected
-   */
-  _getReactiveValidationProperties() {
-    return [];
   }
 
   /* endregion */
@@ -307,6 +215,140 @@ export class CcFormControlElement extends LitElement {
     }
   }
 
+  /* region private methods */
+
+  /**
+   * @return {any}
+   * @private
+   */
+  $getValue() {
+    // @ts-ignore
+    return this[this._getValuePropertyName()];
+  }
+
+  $resetValue() {
+    // @ts-ignore
+    const resetValue = this[this._getResetPropertyName()];
+    if (resetValue != null) {
+      // @ts-ignore
+      this[this._getValuePropertyName()] = resetValue;
+    }
+  }
+
+  /**
+   * @param {string} code
+   * @param {ErrorMessageMap} errorMessages
+   * @return {ErrorMessage}
+   */
+  $resolveErrorMessage(code, errorMessages) {
+    const errorMessage = errorMessages?.[code];
+    const resolvedMessage = typeof errorMessage === 'function' ? errorMessage() : errorMessage;
+    return resolvedMessage ?? code;
+  }
+
+  $setValidValidity() {
+    this._internals.setValidity({});
+  }
+
+  /**
+   * @param {string} message
+   */
+  $setInvalidValidity(message) {
+    this._internals.setValidity({ customError: true }, message, this._getFormControlElement());
+  }
+
+  /* region protected methods */
+
+  /**
+   * Returns the name of the property that holds the form control value.
+   *
+   * @return {string}
+   * @protected
+   */
+  _getValuePropertyName() {
+    return 'value';
+  }
+
+  /**
+   * Returns the name of the property that holds the form control reset value.
+   *
+   * @return {string}
+   * @protected
+   */
+  _getResetPropertyName() {
+    return 'resetValue';
+  }
+
+  /**
+   * Returns the inner `HTMLElement` that should get the focus and on which the native tooltip should be attached to when the native error reporting is used.
+   * It will be used as the anchor when calling {@link ElementInternals#setValidity}.
+   *
+   * @return {HTMLElement}
+   * @protected
+   */
+  _getFormControlElement() {
+    throw new Error('You must implement _getFormControlElement() abstract method');
+  }
+
+  /**
+   * Returns the inner `HTMLElement` that contains the error message.
+   * This is needed when we need to convert a `Node` errorMessage into a string.
+   *
+   * @return {HTMLElement}
+   * @protected
+   */
+  _getErrorElement() {
+    throw new Error('You must implement _getErrorElement() abstract method');
+  }
+
+  /**
+   * Returns the error messages mapping that will be used when resolving the right error message according to the error code returned by the validation process.
+   *
+   * @return {ErrorMessageMap}
+   * @protected
+   */
+  _getErrorMessages() {
+    return null;
+  }
+
+  /**
+   * Returns the validator to use when trying to validate the form control.
+   *
+   * @return {Validator}
+   * @protected
+   */
+  _getValidator() {
+    return null;
+  }
+
+  /**
+   * Returns the data that should be set on the `<form>` element (using {@link ElementInternals#setFormValue}).
+   *
+   * @return {FormControlData}
+   * @protected
+   */
+  _getFormControlData() {
+    const value = this.$getValue();
+
+    if (value == null || typeof value === 'string' || value instanceof File || value instanceof FormData) {
+      return value;
+    }
+
+    console.warn("The value to set to form data should be of type `null|File|string|FormData`. You've got ", value);
+
+    return value.toString();
+  }
+
+  /**
+   * Returns the property names that may trigger a new validation process.
+   *
+   * @return {Array<string>}
+   * @protected
+   */
+  _getReactiveValidationProperties() {
+    return [];
+  }
+
   /* endregion */
 
   /**
@@ -362,48 +404,6 @@ export class CcFormControlElement extends LitElement {
     if (shouldValidate) {
       this.validate();
     }
-  }
-
-  /* region private methods */
-
-  /**
-   * @return {any}
-   * @private
-   */
-  $getValue() {
-    // @ts-ignore
-    return this[this._getValuePropertyName()];
-  }
-
-  $resetValue() {
-    // @ts-ignore
-    const resetValue = this[this._getResetPropertyName()];
-    if (resetValue != null) {
-      // @ts-ignore
-      this[this._getValuePropertyName()] = resetValue;
-    }
-  }
-
-  /**
-   * @param {string} code
-   * @param {ErrorMessageMap} errorMessages
-   * @return {ErrorMessage}
-   */
-  $resolveErrorMessage(code, errorMessages) {
-    const errorMessage = errorMessages?.[code];
-    const resolvedMessage = typeof errorMessage === 'function' ? errorMessage() : errorMessage;
-    return resolvedMessage ?? code;
-  }
-
-  $setValidValidity() {
-    this._internals.setValidity({});
-  }
-
-  /**
-   * @param {string} message
-   */
-  $setInvalidValidity(message) {
-    this._internals.setValidity({ customError: true }, message, this._getFormControlElement());
   }
 
   /* endregion */

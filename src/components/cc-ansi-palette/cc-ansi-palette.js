@@ -41,40 +41,6 @@ export class CcAnsiPalette extends LitElement {
     this._analysis = null;
   }
 
-  /** @param {PropertyValues<CcAnsiPalette>} changedProperties */
-  willUpdate(changedProperties) {
-    if (changedProperties.has('palette')) {
-      this._style = ansiPaletteStyle(this.palette).replaceAll(';', ';\n').slice(0, -1);
-      this._analysis = analyzePalette(this.palette);
-    }
-  }
-
-  render() {
-    if (this.palette == null) {
-      return '';
-    }
-
-    return html`
-      <div class="main" style="${this._style}">
-        <div class="top">
-          <div class="title">${this.name}</div>
-          <div class="title--right">
-            ${i18n('cc-ansi-palette.fg-bg', {
-              foreground: this.palette.foreground,
-              background: this.palette.background,
-            })}
-          </div>
-        </div>
-        <div class="hover">${i18n('cc-ansi-palette.hover', { color: this.palette['background-hover'] })}</div>
-        <div class="selected">${i18n('cc-ansi-palette.selected', { color: this.palette['background-selected'] })}</div>
-
-        <div class="colors-grid">${COLORS.map((colorName) => this.renderColorGridLine(colorName))}</div>
-      </div>
-
-      <cc-input-text readonly multi clipboard .value=${this._style}></cc-input-text>
-    `;
-  }
-
   /** @param {typeof COLORS[number]} colorName */
   renderColorGridLine(colorName) {
     /** @type {ColorName} */
@@ -108,6 +74,40 @@ export class CcAnsiPalette extends LitElement {
         <cc-icon .icon=${icon} size="lg" a11y-name="${accessibleName}"></cc-icon>
         ${i18n('cc-ansi-palette.ratio', { ratio: analysis.ratio })}
       </div>
+    `;
+  }
+
+  /** @param {PropertyValues<CcAnsiPalette>} changedProperties */
+  willUpdate(changedProperties) {
+    if (changedProperties.has('palette')) {
+      this._style = ansiPaletteStyle(this.palette).replaceAll(';', ';\n').slice(0, -1);
+      this._analysis = analyzePalette(this.palette);
+    }
+  }
+
+  render() {
+    if (this.palette == null) {
+      return '';
+    }
+
+    return html`
+      <div class="main" style="${this._style}">
+        <div class="top">
+          <div class="title">${this.name}</div>
+          <div class="title--right">
+            ${i18n('cc-ansi-palette.fg-bg', {
+              foreground: this.palette.foreground,
+              background: this.palette.background,
+            })}
+          </div>
+        </div>
+        <div class="hover">${i18n('cc-ansi-palette.hover', { color: this.palette['background-hover'] })}</div>
+        <div class="selected">${i18n('cc-ansi-palette.selected', { color: this.palette['background-selected'] })}</div>
+
+        <div class="colors-grid">${COLORS.map((colorName) => this.renderColorGridLine(colorName))}</div>
+      </div>
+
+      <cc-input-text readonly multi clipboard .value=${this._style}></cc-input-text>
     `;
   }
 

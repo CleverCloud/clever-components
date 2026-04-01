@@ -134,6 +134,21 @@ export class CcKvHashExplorer extends LitElement {
   }
 
   /**
+   * @return {Array<{state: CcKvHashElementState, skeleton: boolean}>}
+   */
+  _getElements() {
+    switch (this.state.type) {
+      case 'loading':
+      case 'filtering':
+        return SKELETON_ELEMENTS;
+      case 'loaded':
+        return this.state.elements.map((state) => ({ state, skeleton: false }));
+      case 'loading-more':
+        return [...this.state.elements.map((state) => ({ state, skeleton: false })), ...SKELETON_ELEMENTS];
+    }
+  }
+
+  /**
    * @param {VisibilityChangedEvent} e
    */
   _onVisibilityChanged(e) {
@@ -472,21 +487,6 @@ export class CcKvHashExplorer extends LitElement {
         >
       </form>
     `;
-  }
-
-  /**
-   * @return {Array<{state: CcKvHashElementState, skeleton: boolean}>}
-   */
-  _getElements() {
-    switch (this.state.type) {
-      case 'loading':
-      case 'filtering':
-        return SKELETON_ELEMENTS;
-      case 'loaded':
-        return this.state.elements.map((state) => ({ state, skeleton: false }));
-      case 'loading-more':
-        return [...this.state.elements.map((state) => ({ state, skeleton: false })), ...SKELETON_ELEMENTS];
-    }
   }
 
   static get styles() {

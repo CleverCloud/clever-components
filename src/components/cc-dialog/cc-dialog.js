@@ -90,25 +90,6 @@ export class CcDialog extends LitElement {
     this._openerElement = null;
   }
 
-  /** @param {PropertyValues<CcDialog>} changedProperties */
-  updated(changedProperties) {
-    const isClosing = changedProperties.get('open') === true && !this.open;
-    const isOpening = changedProperties.has('open') && this.open;
-
-    if (isClosing) {
-      this._dialogRef.value?.close();
-      this._tryToFocusOpenerElement();
-      this.dispatchEvent(new CcCloseEvent());
-    }
-
-    if (isOpening) {
-      this._openerElement = findActiveElement();
-      this._dialogRef.value?.showModal();
-      this._autofocusOnOpen();
-      this.dispatchEvent(new CcOpenEvent());
-    }
-  }
-
   /** Opens the dialog by setting the `open` property to true. */
   show() {
     this.open = true;
@@ -116,13 +97,6 @@ export class CcDialog extends LitElement {
 
   /** Closes the dialog by setting the `open` property to false. */
   hide() {
-    this.open = false;
-  }
-
-  /** @param {Event} e */
-  _onDialogClose(e) {
-    // Prevent the native dialog close (`cancel` event) to manage it through the `open` property
-    e?.preventDefault();
     this.open = false;
   }
 
@@ -141,12 +115,38 @@ export class CcDialog extends LitElement {
     }
   }
 
+  /** @param {Event} e */
+  _onDialogClose(e) {
+    // Prevent the native dialog close (`cancel` event) to manage it through the `open` property
+    e?.preventDefault();
+    this.open = false;
+  }
+
   disconnectedCallback() {
     super.disconnectedCallback();
     // Restore focus to the element that opened the dialog in case the dialog is removed while open
     // This can happen when the dialog is inside a conditional template in which case the native dialog does not support focus restoration
     if (this.open) {
       this._tryToFocusOpenerElement();
+    }
+  }
+
+  /** @param {PropertyValues<CcDialog>} changedProperties */
+  updated(changedProperties) {
+    const isClosing = changedProperties.get('open') === true && !this.open;
+    const isOpening = changedProperties.has('open') && this.open;
+
+    if (isClosing) {
+      this._dialogRef.value?.close();
+      this._tryToFocusOpenerElement();
+      this.dispatchEvent(new CcCloseEvent());
+    }
+
+    if (isOpening) {
+      this._openerElement = findActiveElement();
+      this._dialogRef.value?.showModal();
+      this._autofocusOnOpen();
+      this.dispatchEvent(new CcOpenEvent());
     }
   }
 

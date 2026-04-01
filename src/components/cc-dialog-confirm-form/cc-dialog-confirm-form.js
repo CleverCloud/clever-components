@@ -102,24 +102,8 @@ export class CcDialogConfirmForm extends LitElement {
     this._parentCcDialog = null;
   }
 
-  connectedCallback() {
-    this._parentCcDialog = this.closest('cc-dialog');
-    if (this._parentCcDialog instanceof CcDialog) {
-      this._dialogCloseHandler = new EventHandler(
-        this._parentCcDialog,
-        CcCloseEvent.TYPE,
-        this._onParentDialogClose.bind(this),
-      );
-      this._dialogCloseHandler.connect();
-    } else {
-      console.warn('cc-dialog-confirm-form must be used inside a cc-dialog to function properly');
-    }
-    super.connectedCallback();
-  }
-
-  disconnectedCallback() {
-    super.disconnectedCallback();
-    this._dialogCloseHandler?.disconnect();
+  resetForm() {
+    this._formRef.value?.reset();
   }
 
   _onConfirm() {
@@ -141,8 +125,24 @@ export class CcDialogConfirmForm extends LitElement {
     this._formRef.value?.requestSubmit();
   }
 
-  resetForm() {
-    this._formRef.value?.reset();
+  connectedCallback() {
+    this._parentCcDialog = this.closest('cc-dialog');
+    if (this._parentCcDialog instanceof CcDialog) {
+      this._dialogCloseHandler = new EventHandler(
+        this._parentCcDialog,
+        CcCloseEvent.TYPE,
+        this._onParentDialogClose.bind(this),
+      );
+      this._dialogCloseHandler.connect();
+    } else {
+      console.warn('cc-dialog-confirm-form must be used inside a cc-dialog to function properly');
+    }
+    super.connectedCallback();
+  }
+
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    this._dialogCloseHandler?.disconnect();
   }
 
   render() {

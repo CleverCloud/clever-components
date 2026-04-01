@@ -83,20 +83,6 @@ export class CcTokenApiList extends LitElement {
   }
 
   /**
-   * Handles the revocation of a specific token
-   *
-   * @param {string} tokenId - The ID of the token to be revoked
-   * @private
-   */
-  _onRevokeToken(tokenId) {
-    this.dispatchEvent(new CcTokenRevokeEvent(tokenId));
-  }
-
-  _onRequestPassword() {
-    this.dispatchEvent(new CcPasswordResetEvent());
-  }
-
-  /**
    * Sorts API tokens for display.
    * Non-expired tokens are shown first, then expired tokens.
    * Within each group, tokens are sorted by creationDate descending.
@@ -112,6 +98,20 @@ export class CcTokenApiList extends LitElement {
       return -1;
     }
     return tokenB.creationDate.getTime() - tokenA.creationDate.getTime();
+  }
+
+  /**
+   * Handles the revocation of a specific token
+   *
+   * @param {string} tokenId - The ID of the token to be revoked
+   * @private
+   */
+  _onRevokeToken(tokenId) {
+    this.dispatchEvent(new CcTokenRevokeEvent(tokenId));
+  }
+
+  _onRequestPassword() {
+    this.dispatchEvent(new CcPasswordResetEvent());
   }
 
   render() {

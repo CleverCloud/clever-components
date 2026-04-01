@@ -56,6 +56,12 @@ class CcLogsAppRuntimeSandbox extends LitElement {
     };
   }
 
+  firstUpdated() {
+    this.updateComplete.then(() => {
+      this._formRef.value.requestSubmit();
+    });
+  }
+
   render() {
     return html`
       <form class="ctrl-top" style="align-items: normal" ${ref(this._formRef)} ${formSubmit(this._onFormSubmit)}>
@@ -77,12 +83,6 @@ class CcLogsAppRuntimeSandbox extends LitElement {
         </cc-smart-container>
       </div>
     `;
-  }
-
-  firstUpdated() {
-    this.updateComplete.then(() => {
-      this._formRef.value.requestSubmit();
-    });
   }
 
   static get styles() {

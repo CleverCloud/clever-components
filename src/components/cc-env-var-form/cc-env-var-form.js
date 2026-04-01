@@ -147,6 +147,26 @@ export class CcEnvVarForm extends LitElement {
     }
   }
 
+  /**
+   * @param {Array<EnvVar>} variables
+   */
+  _resetForm(variables) {
+    if (this.state.type === 'loading' || this.state.type === 'error') {
+      return;
+    }
+
+    this._initVariables = variables;
+    this._isPristine = true;
+    if (variables == null) {
+      this._currentVariables = null;
+      this._editorsState = { type: 'loaded', validationMode: this.state.validationMode, variables: [] };
+    } else {
+      const sortedVariables = variables.toSorted((a, b) => a.name.localeCompare(b.name));
+      this._currentVariables = sortedVariables;
+      this._editorsState = { type: 'loaded', validationMode: this.state.validationMode, variables: sortedVariables };
+    }
+  }
+
   /** @param {CcEnvChangeEvent} event */
   _onChange({ detail: changedVariables }) {
     if (this.state.type === 'loading' || this.state.type === 'error') {
@@ -207,26 +227,6 @@ export class CcEnvVarForm extends LitElement {
       validationMode: this.state.validationMode,
       variables: this._currentVariables,
     };
-  }
-
-  /**
-   * @param {Array<EnvVar>} variables
-   */
-  _resetForm(variables) {
-    if (this.state.type === 'loading' || this.state.type === 'error') {
-      return;
-    }
-
-    this._initVariables = variables;
-    this._isPristine = true;
-    if (variables == null) {
-      this._currentVariables = null;
-      this._editorsState = { type: 'loaded', validationMode: this.state.validationMode, variables: [] };
-    } else {
-      const sortedVariables = variables.toSorted((a, b) => a.name.localeCompare(b.name));
-      this._currentVariables = sortedVariables;
-      this._editorsState = { type: 'loaded', validationMode: this.state.validationMode, variables: sortedVariables };
-    }
   }
 
   _onUpdateForm() {

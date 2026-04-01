@@ -318,6 +318,91 @@ export class CcGrid extends LitElement {
     }
   }
 
+  /**
+   * @param {CcGridColumnDefinition<T>} column
+   * @param {T} item
+   * @param {number} rowIndex
+   * @param {number} columnIndex
+   * @param {boolean} hasFocus
+   * @returns {{focusable: boolean, template: TemplateResult}}
+   */
+  _prepareCellRender(column, item, rowIndex, columnIndex, hasFocus) {
+    const cell = column.cellAt(item, rowIndex, columnIndex);
+    if (cell == null) {
+      return { focusable: false, template: html`` };
+    }
+
+    const skeleton = this.skeleton || cell.skeleton === true;
+
+    if (cell.type === 'text') {
+      return {
+        focusable: cell.enableCopyToClipboard && !skeleton,
+        template: html`<div class="icon-label">
+          ${cell.icon != null
+            ? html`<cc-icon .icon=${cell.icon} .a11yName=${cell.iconA11yName} ?skeleton=${skeleton}></cc-icon>`
+            : ''}
+          <span class=${classMap({ skeleton })}>${cell.value}</span>
+          ${cell.enableCopyToClipboard
+            ? html`<cc-clipboard
+                tabindex=${hasFocus ? '0' : '-1'}
+                data-focusable=${skeleton ? 'false' : 'true'}
+                ?skeleton=${skeleton}
+                value=${cell.value}
+              ></cc-clipboard>`
+            : ''}
+        </div>`,
+      };
+    }
+
+    if (cell.type === 'link') {
+      return {
+        focusable: !skeleton,
+        template: html`<div class="icon-label">
+          ${cell.icon != null
+            ? html`<cc-icon .icon=${cell.icon} .a11yName=${cell.iconA11yName} ?skeleton=${skeleton}></cc-icon>`
+            : ''}
+          <cc-button
+            tabindex=${hasFocus ? '0' : '-1'}
+            data-focusable=${skeleton ? 'false' : 'true'}
+            link
+            ?skeleton=${skeleton}
+            ?disabled=${this.disabled}
+            @cc-click=${() => this._onCellClick(rowIndex, columnIndex, cell.onClick)}
+            >${cell.value}</cc-button
+          >
+          ${cell.enableCopyToClipboard
+            ? html`<cc-clipboard
+                tabindex=${hasFocus ? '0' : '-1'}
+                data-focusable=${skeleton ? 'false' : 'true'}
+                ?skeleton=${skeleton}
+                value=${cell.value}
+              ></cc-clipboard>`
+            : ''}
+        </div>`,
+      };
+    }
+
+    if (cell.type === 'button') {
+      return {
+        focusable: !skeleton,
+        template: html`<cc-button
+          tabindex=${hasFocus ? '0' : '-1'}
+          data-focusable=${skeleton ? 'false' : 'true'}
+          .icon=${cell.icon}
+          .a11yName=${cell.iconA11yName}
+          ?skeleton=${skeleton}
+          ?waiting=${cell.waiting}
+          ?disabled=${this.disabled && !cell.waiting}
+          hide-text
+          @cc-click=${() => this._onCellClick(rowIndex, columnIndex, cell.onClick)}
+          >${cell.value}</cc-button
+        >`,
+      };
+    }
+
+    return { focusable: false, template: html`` };
+  }
+
   //#endregion
 
   //#region Event handlers
@@ -538,91 +623,6 @@ export class CcGrid extends LitElement {
         `;
       })}
     </tr>`;
-  }
-
-  /**
-   * @param {CcGridColumnDefinition<T>} column
-   * @param {T} item
-   * @param {number} rowIndex
-   * @param {number} columnIndex
-   * @param {boolean} hasFocus
-   * @returns {{focusable: boolean, template: TemplateResult}}
-   */
-  _prepareCellRender(column, item, rowIndex, columnIndex, hasFocus) {
-    const cell = column.cellAt(item, rowIndex, columnIndex);
-    if (cell == null) {
-      return { focusable: false, template: html`` };
-    }
-
-    const skeleton = this.skeleton || cell.skeleton === true;
-
-    if (cell.type === 'text') {
-      return {
-        focusable: cell.enableCopyToClipboard && !skeleton,
-        template: html`<div class="icon-label">
-          ${cell.icon != null
-            ? html`<cc-icon .icon=${cell.icon} .a11yName=${cell.iconA11yName} ?skeleton=${skeleton}></cc-icon>`
-            : ''}
-          <span class=${classMap({ skeleton })}>${cell.value}</span>
-          ${cell.enableCopyToClipboard
-            ? html`<cc-clipboard
-                tabindex=${hasFocus ? '0' : '-1'}
-                data-focusable=${skeleton ? 'false' : 'true'}
-                ?skeleton=${skeleton}
-                value=${cell.value}
-              ></cc-clipboard>`
-            : ''}
-        </div>`,
-      };
-    }
-
-    if (cell.type === 'link') {
-      return {
-        focusable: !skeleton,
-        template: html`<div class="icon-label">
-          ${cell.icon != null
-            ? html`<cc-icon .icon=${cell.icon} .a11yName=${cell.iconA11yName} ?skeleton=${skeleton}></cc-icon>`
-            : ''}
-          <cc-button
-            tabindex=${hasFocus ? '0' : '-1'}
-            data-focusable=${skeleton ? 'false' : 'true'}
-            link
-            ?skeleton=${skeleton}
-            ?disabled=${this.disabled}
-            @cc-click=${() => this._onCellClick(rowIndex, columnIndex, cell.onClick)}
-            >${cell.value}</cc-button
-          >
-          ${cell.enableCopyToClipboard
-            ? html`<cc-clipboard
-                tabindex=${hasFocus ? '0' : '-1'}
-                data-focusable=${skeleton ? 'false' : 'true'}
-                ?skeleton=${skeleton}
-                value=${cell.value}
-              ></cc-clipboard>`
-            : ''}
-        </div>`,
-      };
-    }
-
-    if (cell.type === 'button') {
-      return {
-        focusable: !skeleton,
-        template: html`<cc-button
-          tabindex=${hasFocus ? '0' : '-1'}
-          data-focusable=${skeleton ? 'false' : 'true'}
-          .icon=${cell.icon}
-          .a11yName=${cell.iconA11yName}
-          ?skeleton=${skeleton}
-          ?waiting=${cell.waiting}
-          ?disabled=${this.disabled && !cell.waiting}
-          hide-text
-          @cc-click=${() => this._onCellClick(rowIndex, columnIndex, cell.onClick)}
-          >${cell.value}</cc-button
-        >`,
-      };
-    }
-
-    return { focusable: false, template: html`` };
   }
 
   //#endregion

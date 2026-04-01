@@ -329,6 +329,36 @@ export class CcPricingEstimation extends LitElement {
     return this._selectedPlansWithPrices?.map((plan) => this._getTotalPlanPrice(plan)).reduce((a, b) => a + b, 0);
   }
 
+  _computeUnitPrices() {
+    if (this.state.type === 'loading') {
+      this._selectedPlansWithPrices = this.selectedPlans.map((selectedPlan) => ({
+        ...selectedPlan,
+        price: 0,
+      }));
+      return;
+    }
+
+    this._selectedPlansWithPrices = this.selectedPlans.map((selectedPlan) => {
+      if ('sections' in selectedPlan) {
+        const sectionsWithUpdatedPrices = selectedPlan.sections.map((section) => ({
+          ...section,
+          ...this._countablePriceMap.get(section.service),
+        }));
+        const simulator = new PricingConsumptionSimulator(sectionsWithUpdatedPrices);
+
+        return {
+          ...selectedPlan,
+          price: simulator.getTotalPrice() / THIRTY_DAYS_IN_HOURS,
+        };
+      }
+
+      return {
+        ...selectedPlan,
+        price: this._runtimePriceMap.get(selectedPlan.priceId) ?? selectedPlan.price,
+      };
+    });
+  }
+
   /**
    * Dispatches a `cc-pricing-currency-change` event with the currency as payload.
    *
@@ -388,36 +418,6 @@ export class CcPricingEstimation extends LitElement {
    */
   _onToggle() {
     this._isCollapsed = !this._isCollapsed;
-  }
-
-  _computeUnitPrices() {
-    if (this.state.type === 'loading') {
-      this._selectedPlansWithPrices = this.selectedPlans.map((selectedPlan) => ({
-        ...selectedPlan,
-        price: 0,
-      }));
-      return;
-    }
-
-    this._selectedPlansWithPrices = this.selectedPlans.map((selectedPlan) => {
-      if ('sections' in selectedPlan) {
-        const sectionsWithUpdatedPrices = selectedPlan.sections.map((section) => ({
-          ...section,
-          ...this._countablePriceMap.get(section.service),
-        }));
-        const simulator = new PricingConsumptionSimulator(sectionsWithUpdatedPrices);
-
-        return {
-          ...selectedPlan,
-          price: simulator.getTotalPrice() / THIRTY_DAYS_IN_HOURS,
-        };
-      }
-
-      return {
-        ...selectedPlan,
-        price: this._runtimePriceMap.get(selectedPlan.priceId) ?? selectedPlan.price,
-      };
-    });
   }
 
   /** @param {PropertyValues<CcPricingEstimation>} changedProperties */

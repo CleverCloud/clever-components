@@ -100,6 +100,15 @@ export class CcSelect extends CcFormControlElement {
     this._selectRef = createRef();
   }
 
+  /* endregion */
+
+  /**
+   * Triggers focus on the inner `<select>` element.
+   */
+  focus() {
+    this._selectRef.value?.focus();
+  }
+
   /* region CcFormControlElement implementation */
 
   /**
@@ -140,15 +149,6 @@ export class CcSelect extends CcFormControlElement {
    */
   _getReactiveValidationProperties() {
     return CcSelect.reactiveValidationProperties;
-  }
-
-  /* endregion */
-
-  /**
-   * Triggers focus on the inner `<select>` element.
-   */
-  focus() {
-    this._selectRef.value?.focus();
   }
 
   /**

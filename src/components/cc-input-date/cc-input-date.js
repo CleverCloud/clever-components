@@ -221,6 +221,25 @@ export class CcInputDate extends CcFormControlElement {
     };
   }
 
+  /* endregion */
+
+  /* region Public methods */
+
+  /**
+   * Triggers focus on the inner `<input>` element.
+   * @param {FocusOptions} [options]
+   */
+  focus(options) {
+    this._inputRef.value.focus(options);
+  }
+
+  /**
+   * @return {Date|null} The current value as Date or null if the value is not a valid date.
+   */
+  get valueAsDate() {
+    return this._valueState.type === 'valid' ? (this._valueState.date ?? null) : null;
+  }
+
   /* region CcFormControlElement implementation */
 
   /**
@@ -295,25 +314,6 @@ export class CcInputDate extends CcFormControlElement {
    */
   _getReactiveValidationProperties() {
     return CcInputDate.reactiveValidationProperties;
-  }
-
-  /* endregion */
-
-  /* region Public methods */
-
-  /**
-   * Triggers focus on the inner `<input>` element.
-   * @param {FocusOptions} [options]
-   */
-  focus(options) {
-    this._inputRef.value.focus(options);
-  }
-
-  /**
-   * @return {Date|null} The current value as Date or null if the value is not a valid date.
-   */
-  get valueAsDate() {
-    return this._valueState.type === 'valid' ? (this._valueState.date ?? null) : null;
   }
 
   /* endregion */

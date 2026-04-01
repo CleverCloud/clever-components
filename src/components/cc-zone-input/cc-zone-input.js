@@ -104,52 +104,6 @@ export class CcZoneInput extends LitElement {
     return 0;
   }
 
-  /**
-   * @param {string} [name]
-   * @private
-   */
-  _onListHover(name) {
-    this._hovered = name;
-    this._updatePoints();
-    this._panMap();
-  }
-
-  /**
-   * @param {CcMapMarkerEnterEvent} event
-   * @private
-   */
-  _onMarkerEnter(event) {
-    this._hovered = event.detail.name;
-    this._updatePoints();
-    this._scrollChildIntoParent(this._hovered || this.selected);
-  }
-
-  /**
-   * @private
-   */
-  _onMarkerLeave() {
-    this._hovered = null;
-    this._updatePoints();
-    this._scrollChildIntoParent(this._hovered || this.selected);
-  }
-
-  /**
-   * @param {CcMapMarkerClickEvent} event
-   * @private
-   */
-  _onMarkerClick(event) {
-    this._onSelect(event.detail.name);
-  }
-
-  /**
-   * @param {string} name
-   * @private
-   */
-  _onSelect(name) {
-    this.selected = name;
-    this.dispatchEvent(new CcSelectEvent(this.selected));
-  }
-
   /** @private */
   _panMap() {
     clearTimeout(this._panMapTimeout);
@@ -201,6 +155,52 @@ export class CcZoneInput extends LitElement {
     this._legend = this._sortedZones.some((zone) => zone.tags.includes(PRIVATE_ZONE))
       ? i18n('cc-zone-input.private-map-warning')
       : '';
+  }
+
+  /**
+   * @param {string} [name]
+   * @private
+   */
+  _onListHover(name) {
+    this._hovered = name;
+    this._updatePoints();
+    this._panMap();
+  }
+
+  /**
+   * @param {CcMapMarkerEnterEvent} event
+   * @private
+   */
+  _onMarkerEnter(event) {
+    this._hovered = event.detail.name;
+    this._updatePoints();
+    this._scrollChildIntoParent(this._hovered || this.selected);
+  }
+
+  /**
+   * @private
+   */
+  _onMarkerLeave() {
+    this._hovered = null;
+    this._updatePoints();
+    this._scrollChildIntoParent(this._hovered || this.selected);
+  }
+
+  /**
+   * @param {CcMapMarkerClickEvent} event
+   * @private
+   */
+  _onMarkerClick(event) {
+    this._onSelect(event.detail.name);
+  }
+
+  /**
+   * @param {string} name
+   * @private
+   */
+  _onSelect(name) {
+    this.selected = name;
+    this.dispatchEvent(new CcSelectEvent(this.selected));
   }
 
   /**

@@ -343,6 +343,80 @@ export class CcLogs extends LitElement {
     return new DateDisplayer(this.dateDisplay, this.timezone);
   }
 
+  /**
+   * Calculates the new drag index according to the given direction and given offset.
+   *
+   * @param {'up'|'down'} direction The drag direction.
+   * @param {number} offset The amount of log to drag.
+   * @return {number}
+   */
+  _getNewDraggedLogIndex(direction, offset) {
+    if (direction === 'up') {
+      return Math.max(0, this._draggedLogIndex - offset);
+    }
+    if (direction === 'down') {
+      return Math.min(this._draggedLogIndex + offset, this._logsCtrl.listLength - 1);
+    }
+    throw new Error(`Illegal argument. direction ${direction} is not valid`);
+  }
+
+  /**
+   * Synchronizes the `follow` property according to the actual scroll position.
+   *
+   * If the scroll position shows the last line of log, the follow is activated.
+   * Otherwise, the follow is deactivated.
+   * An event is dispatched when the follow state changes.
+   */
+  _synchronizeFollow() {
+    this._setFollow(this._visibleRange.last === Math.max(0, this._logsCtrl.listLength - 1));
+  }
+
+  /**
+   * @param {boolean} follow
+   */
+  _setFollow(follow) {
+    const oldFollow = this.follow;
+    this.follow = follow;
+    if (oldFollow !== this.follow) {
+      this.dispatchEvent(new CcLogsFollowChangeEvent(this.follow));
+    }
+  }
+
+  // endregion
+
+  // region Metadata logic
+
+  /**
+   * @param {Metadata} metadata
+   * @return {MetadataRendering}
+   */
+  _getMetadataRendering(metadata) {
+    const renderer = this.metadataRenderers?.[metadata.name];
+
+    if (renderer == null) {
+      return DEFAULT_METADATA_RENDERING;
+    }
+
+    const metadataRendering = typeof renderer === 'function' ? renderer(metadata) : renderer;
+
+    /** @type {MetadataRendering} */
+    return {
+      ...DEFAULT_METADATA_RENDERING,
+      ...metadataRendering,
+    };
+  }
+
+  /**
+   * @param {Metadata} metadata
+   * @param {MetadataRendering} metadataRendering
+   * @return {string}
+   */
+  _getMetadataText(metadata, metadataRendering) {
+    return metadataRendering.text != null
+      ? metadataRendering.text
+      : `${metadataRendering.showName ? `${metadata.name}: ` : ''}${metadata.value}`;
+  }
+
   // region Focus logic
 
   /**
@@ -530,23 +604,6 @@ export class CcLogs extends LitElement {
     this._draggedLogIndex = newIndex;
   }
 
-  /**
-   * Calculates the new drag index according to the given direction and given offset.
-   *
-   * @param {'up'|'down'} direction The drag direction.
-   * @param {number} offset The amount of log to drag.
-   * @return {number}
-   */
-  _getNewDraggedLogIndex(direction, offset) {
-    if (direction === 'up') {
-      return Math.max(0, this._draggedLogIndex - offset);
-    }
-    if (direction === 'down') {
-      return Math.min(this._draggedLogIndex + offset, this._logsCtrl.listLength - 1);
-    }
-    throw new Error(`Illegal argument. direction ${direction} is not valid`);
-  }
-
   // endregion
 
   // region Select logic
@@ -722,63 +779,6 @@ export class CcLogs extends LitElement {
   _onVisibilityChanged(e) {
     this._visibleRange = { first: e.first, last: e.last };
     this._followSynchronizer.call();
-  }
-
-  /**
-   * Synchronizes the `follow` property according to the actual scroll position.
-   *
-   * If the scroll position shows the last line of log, the follow is activated.
-   * Otherwise, the follow is deactivated.
-   * An event is dispatched when the follow state changes.
-   */
-  _synchronizeFollow() {
-    this._setFollow(this._visibleRange.last === Math.max(0, this._logsCtrl.listLength - 1));
-  }
-
-  /**
-   * @param {boolean} follow
-   */
-  _setFollow(follow) {
-    const oldFollow = this.follow;
-    this.follow = follow;
-    if (oldFollow !== this.follow) {
-      this.dispatchEvent(new CcLogsFollowChangeEvent(this.follow));
-    }
-  }
-
-  // endregion
-
-  // region Metadata logic
-
-  /**
-   * @param {Metadata} metadata
-   * @return {MetadataRendering}
-   */
-  _getMetadataRendering(metadata) {
-    const renderer = this.metadataRenderers?.[metadata.name];
-
-    if (renderer == null) {
-      return DEFAULT_METADATA_RENDERING;
-    }
-
-    const metadataRendering = typeof renderer === 'function' ? renderer(metadata) : renderer;
-
-    /** @type {MetadataRendering} */
-    return {
-      ...DEFAULT_METADATA_RENDERING,
-      ...metadataRendering,
-    };
-  }
-
-  /**
-   * @param {Metadata} metadata
-   * @param {MetadataRendering} metadataRendering
-   * @return {string}
-   */
-  _getMetadataText(metadata, metadataRendering) {
-    return metadataRendering.text != null
-      ? metadataRendering.text
-      : `${metadataRendering.showName ? `${metadata.name}: ` : ''}${metadata.value}`;
   }
 
   // endregion

@@ -28,6 +28,11 @@ export class MyList extends LitElement {
     });
   }
 
+  focus() {
+    const ccButtonElement = /** @type {CcButton} */ (this.shadowRoot.querySelector('cc-button'));
+    ccButtonElement.focus();
+  }
+
   /** @param {CcClickEvent} event */
   _onRemove(event) {
     const ccButtonElement = /** @type {CcButton} */ (event.currentTarget);
@@ -36,11 +41,6 @@ export class MyList extends LitElement {
     setTimeout(() => {
       this.items = this.items.filter((e) => e !== item);
     }, 2000);
-  }
-
-  focus() {
-    const ccButtonElement = /** @type {CcButton} */ (this.shadowRoot.querySelector('cc-button'));
-    ccButtonElement.focus();
   }
 
   render() {

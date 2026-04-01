@@ -44,6 +44,17 @@ export class FormDemoWithSmartComponent extends LitElement {
   }
 
   /**
+   * @param {'email-used'} code
+   * @return {string}
+   */
+  _getErrorMessage(code) {
+    if (code === 'email-used') {
+      return 'Email already used';
+    }
+    return null;
+  }
+
+  /**
    * @param {{name: string, email: string}} formData
    */
   _onValidSubmit(formData) {
@@ -56,17 +67,6 @@ export class FormDemoWithSmartComponent extends LitElement {
     };
 
     this.dispatchEvent(new CcEvent('submit-form', formData));
-  }
-
-  /**
-   * @param {'email-used'} code
-   * @return {string}
-   */
-  _getErrorMessage(code) {
-    if (code === 'email-used') {
-      return 'Email already used';
-    }
-    return null;
   }
 
   connectedCallback() {
