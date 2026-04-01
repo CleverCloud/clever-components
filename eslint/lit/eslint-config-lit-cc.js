@@ -10,6 +10,7 @@ export default {
   },
   rules: {
     ...litPlugin.configs['flat/recommended'].rules,
+    'lit-cc/sort-element-members': 'error',
     'lit-cc/sort-get-properties': 'error',
     'lit/attribute-names': 'error',
     'lit/lifecycle-super': 'error',
