@@ -122,3 +122,18 @@ export class CcCellarObjectDeleteEvent extends CcEvent {
     super(CcCellarObjectDeleteEvent.TYPE, details);
   }
 }
+
+/**
+ * Dispatched when a new directory is created.
+ * @extends {CcEvent<string>}
+ */
+export class CcCellarObjectCreateDirectoryEvent extends CcEvent {
+  static TYPE = 'cc-cellar-object-create-directory';
+
+  /**
+   * @param {string} details
+   */
+  constructor(details) {
+    super(CcCellarObjectCreateDirectoryEvent.TYPE, details);
+  }
+}

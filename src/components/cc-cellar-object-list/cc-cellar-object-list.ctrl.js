@@ -8,11 +8,14 @@ import './cc-cellar-object-list.js';
 
 /**
  * @import { CcCellarObjectList } from './cc-cellar-object-list.js'
- * @import { CellarObjectListState, CellarObjectListStateLoaded, CellarObjectState, CellarFileState, CellarFileDetailsState } from './cc-cellar-object-list.types.js'
+ * @import { CellarObjectListState, CellarObjectListStateLoaded, CellarObjectState, CellarFileState, CellarFileDetailsState, CellarDirectoryCreateFormState } from './cc-cellar-object-list.types.js'
  * @import { CellarExplorerClient } from '../cc-cellar-explorer/cc-cellar-explorer.client.js'
+ * @import { CellarDirectory } from '../cc-cellar-explorer/cc-cellar-explorer.client.types.js'
  * @import { UpdateCallback } from '../common.types.js'
  * @import { OnEventCallback } from '../../lib/smart/smart-component.types.js'
  */
+
+const INVALID_CHARS = /[/\\{}^%`\]">[~<#|\u0080-\u00FF]/;
 
 export class ObjectListController {
   /** @type {CellarExplorerClient} */
@@ -85,6 +88,10 @@ export class ObjectListController {
 
     onEvent('cc-cellar-object-delete', (objectKey) => {
       this.deleteObject(objectKey);
+    });
+
+    onEvent('cc-cellar-object-create-directory', (directoryName) => {
+      this.createDirectory(directoryName);
     });
   }
 
@@ -309,5 +316,72 @@ export class ObjectListController {
       clearInterval(this.#signedUrlInterval);
       this.#signedUrlInterval = null;
     }
+  }
+
+  /**
+   * @param {string} directoryName
+   */
+  async createDirectory(directoryName) {
+    this.#updateCreateForm({ type: 'creating', directoryName, error: null });
+    await this.#getComponent().updateComplete;
+
+    if (INVALID_CHARS.test(directoryName)) {
+      this.#updateCreateForm({ type: 'idle', directoryName, error: 'directory-name-invalid' });
+      return;
+    }
+
+    const alreadyExists = this.#objects.some((obj) => obj.type === 'directory' && obj.name === directoryName);
+
+    if (alreadyExists) {
+      this.#updateCreateForm({ type: 'idle', directoryName, error: 'directory-already-exists' });
+      return;
+    }
+
+    /** @type {CellarDirectory} */
+    const newDir = {
+      type: 'directory',
+      key: [...this.#path, directoryName].join('/'),
+      name: directoryName,
+      volatile: true,
+    };
+
+    this.#objects = [...this.#objects, newDir].sort((a, b) => {
+      if (a.volatile && !b.volatile) {
+        return -1;
+      }
+      if (!a.volatile && b.volatile) {
+        return 1;
+      }
+      if (a.type === 'directory' && b.type === 'file') {
+        return -1;
+      }
+      if (a.type === 'file' && b.type === 'directory') {
+        return 1;
+      }
+      return a.name.localeCompare(b.name);
+    });
+
+    this.#updateState(
+      /** @param {CellarObjectListStateLoaded} state */ (state) => {
+        state.objects = this.#objects;
+        state.createForm = null;
+      },
+    );
+    notifySuccess(i18n('cc-cellar-object-list.success.directory-created', { directoryName }));
+  }
+
+  /**
+   * @param {Partial<CellarDirectoryCreateFormState>|null} newState
+   */
+  #updateCreateForm(newState) {
+    this.#updateState(
+      /** @param {CellarObjectListStateLoaded} state */ (state) => {
+        if (newState == null) {
+          state.createForm = null;
+        } else {
+          state.createForm = { ...state.createForm, ...newState };
+        }
+      },
+    );
   }
 }
