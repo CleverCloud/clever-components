@@ -25,7 +25,7 @@ class CcCellarExplorerSandbox extends LitElement {
   constructor() {
     super();
 
-    this._addonId = 'addon_ad9e692d-3d28-47b9-82db-76840db955a7';
+    this._addonId = 'addon_9262abfc-3394-479e-8f15-491c97b906d3';
 
     /** @type {Ref<CcInputText>} */
     this._addonIdInputRef = createRef();
