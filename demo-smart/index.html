@@ -5,38 +5,312 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Demo smart</title>
     <link rel="stylesheet" href="/src/styles/default-theme.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;500;600&family=Source+Sans+3:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
     <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+
       body {
-        font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;
-        margin: 1em auto;
-        max-width: 70em;
-        width: 100%;
-      }
-
-      .definition-list {
-        padding: 0;
-        margin: 1em 0;
-        list-style: none;
-        display: flex;
-        flex-wrap: wrap;
-        gap: 0.5em;
-      }
-
-      li {
-        padding: 0;
+        font-family: 'Source Sans 3', system-ui, sans-serif;
+        font-size: 17px;
         margin: 0;
+        overflow: hidden;
+        background: #f4f6f9;
+        color: #2c2c2c;
+      }
+
+      /* ── Layout ── */
+
+      .layout {
+        display: flex;
+        height: 100vh;
+      }
+
+      .sidebar {
+        width: 300px;
+        min-width: 300px;
+        display: flex;
+        flex-direction: column;
+        background: #fff;
+        border-right: 1px solid #dce1e8;
+        box-shadow: 1px 0 8px rgba(0, 0, 0, 0.03);
+      }
+
+      .sidebar-header {
+        padding: 0.75em 1.1em;
+        border-bottom: 1px solid #dce1e8;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: #fff;
+      }
+
+      .sidebar-title {
+        font-family: 'Source Sans 3', system-ui, sans-serif;
+        font-size: 0.9em;
+        font-weight: 700;
+        letter-spacing: 0.02em;
+        color: #1a1a1a;
+      }
+
+      .lang-switcher {
+        font-family: 'Source Code Pro', monospace;
+        font-size: 0.78em;
+        padding: 0.25em 0.5em;
+        border: 1px solid #cdd4de;
+        border-radius: 6px;
+        background: #f4f6f9;
+        color: #555;
+        cursor: pointer;
+        outline: none;
+        transition: border-color 0.15s;
+      }
+
+      .lang-switcher:hover {
+        border-color: #7e8a9a;
+      }
+
+      .lang-switcher:focus-visible {
+        border-color: #4a7cc5;
+        box-shadow: 0 0 0 2px rgba(74, 124, 197, 0.2);
+      }
+
+      .sidebar-scroll {
+        flex: 1;
+        overflow-y: auto;
+        padding: 0.5em 0;
+      }
+
+      .content-area {
+        flex: 1;
+        display: flex;
+        flex-direction: row;
+        min-width: 0;
+        overflow: hidden;
+      }
+
+      .main-area {
+        flex: 1;
+        overflow: auto;
+        padding: 1.5em 2.5em;
+        background: #f4f6f9;
+        min-width: 0;
+      }
+
+      .main-area cc-smart-container {
+        display: block;
+        max-width: 75em;
+        margin: 0 auto;
+      }
+
+      .main-area-empty {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+        color: #a3adb8;
+        font-family: 'Source Sans 3', system-ui, sans-serif;
+        font-size: 1.15em;
+        gap: 0.6em;
+        text-align: center;
+        line-height: 1.5;
+      }
+
+      .main-area-empty .step-number {
+        font-family: 'Source Code Pro', monospace;
+        font-weight: 600;
+        color: #7e8a9a;
+      }
+
+      /* ── Section headers ── */
+
+      .sidebar-section-title {
+        font-family: 'Source Sans 3', system-ui, sans-serif;
+        font-size: 0.7em;
+        font-weight: 600;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: #7e8a9a;
+        padding: 0.9em 1.3em 0.35em;
+        margin: 0;
+      }
+
+      /* ── Context panel (right side, secondary) ── */
+
+      .context-panel {
+        width: 290px;
+        min-width: 290px;
+        display: none;
+        flex-direction: column;
+        background: #f4f6f9;
+        border-left: 1px dashed #cdd4de;
+      }
+
+      .context-panel.visible {
+        display: flex;
+      }
+
+      .context-panel-header {
+        padding: 0.5em 0.9em;
+        border-bottom: 1px dashed #cdd4de;
+        background: #f4f6f9;
+      }
+
+      .context-panel-title {
+        font-family: 'Source Code Pro', monospace;
+        font-size: 0.7em;
+        font-weight: 500;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: #7e8a9a;
+      }
+
+      .context-panel-scroll {
+        flex: 1;
+        overflow-y: auto;
+        padding: 0.3em 0;
+      }
+
+      .ctx-group-title {
+        font-family: 'Source Sans 3', system-ui, sans-serif;
+        font-size: 0.8em;
+        font-weight: 600;
+        color: #7e8a9a;
+        padding: 0.4em 0.8em 0.15em 1em;
+        margin: 0;
+      }
+
+      /* ── Responsive: context panel below component ── */
+
+      @media (max-width: 1400px) {
+        .content-area {
+          flex-direction: column;
+        }
+
+        .context-panel {
+          width: 100%;
+          min-width: 0;
+          max-height: 35vh;
+          border-left: none;
+          border-top: 1px dashed #cdd4de;
+        }
+      }
+
+      /* ── Groups ── */
+
+      .group {
+        margin: 0;
+        padding-bottom: 0.2em;
+      }
+
+      .group-title {
+        font-family: 'Source Sans 3', system-ui, sans-serif;
+        font-size: 0.76em;
+        font-weight: 600;
+        color: #546178;
+        padding: 0.45em 1em 0.2em 1.2em;
+        margin: 0;
+      }
+
+      /* ── Component links ── */
+
+      .def-list {
+        list-style: none;
+        padding: 0 0 0.2em 0;
+        margin: 0;
+      }
+
+      .def-list li {
+        margin: 0;
+        padding: 0;
       }
 
       .definition-link {
         display: block;
-        background-color: #eee;
-        padding: 0.25em 0.5em;
-        border-radius: var(--cc-border-radius-default, 0.25em);
+        font-family: 'Source Sans 3', system-ui, sans-serif;
+        font-size: 0.78em;
+        color: #546178;
+        text-decoration: none;
+        padding: 0.3em 1em 0.3em 2.2em;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        border-left: 3px solid transparent;
+        border-radius: 0 4px 4px 0;
+        margin-right: 0.5em;
+        transition:
+          background 0.12s,
+          color 0.12s,
+          border-color 0.12s;
       }
 
-      .context-buttons {
-        margin: 1em 0;
+      .definition-link:hover {
+        background: #eaeff5;
+        color: #2c2c2c;
       }
+
+      .definition-link.active {
+        background: #eaf1fa;
+        border-left-color: #4a7cc5;
+        color: #1e4a8a;
+        font-weight: 500;
+      }
+
+      /* ── Context buttons ── */
+
+      .ctx-group {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.25em;
+        padding: 0.15em 0.6em 0.4em 1em;
+      }
+
+      .ctx-btn {
+        display: inline-flex;
+        align-items: center;
+        padding: 0.25em 0.45em;
+        border: 1px solid #dce1e8;
+        border-radius: 4px;
+        background: #fff;
+        cursor: pointer;
+        font-family: 'Source Sans 3', system-ui, sans-serif;
+        font-size: 0.78em;
+        color: #546178;
+        text-align: left;
+        line-height: 1.3;
+        transition:
+          background 0.1s,
+          border-color 0.1s;
+      }
+
+      .ctx-btn:hover {
+        background: #eaeff5;
+        border-color: #4a7cc5;
+        color: #2c2c2c;
+      }
+
+      .ctx-btn:active {
+        background: #e0e5ed;
+      }
+
+      .ctx-label {
+        font-weight: 500;
+      }
+
+      .ctx-subtitle {
+        display: none;
+      }
+
+      /* ── Toaster ── */
 
       cc-toaster {
         position: fixed;
@@ -44,510 +318,698 @@
         right: 1em;
       }
 
+      /* ── Component-specific overrides ── */
+
       cc-tile-metrics {
         width: 20em;
+      }
+
+      .visually-hidden {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
       }
     </style>
     <script src="index.js" type="module"></script>
   </head>
   <body>
-    <ul class="definition-list">
-      <li>
-        <a class="definition-link" href="?definition=cc-addon-admin.smart">cc-addon-admin.smart</a>
-      </li>
-      <li>
-        <a class="definition-link" href="?definition=cc-addon-backups.smart">cc-addon-backups.smart</a>
-      </li>
-      <li>
-        <a class="definition-link" href="?definition=cc-addon-linked-apps.smart">cc-addon-linked-apps.smart</a>
-      </li>
-      <li>
-        <a class="definition-link" href="?definition=cc-article-list.smart">cc-article-list.smart</a>
-      </li>
-      <li>
-        <a class="definition-link" href="?definition=cc-env-var-form.smart-config-provider&context=config-provider"
-          >cc-env-var-form.smart-config-provider</a
-        >
-      </li>
-      <li>
-        <a class="definition-link" href="?definition=cc-env-var-form.smart-env-var-app&context=env-var-app"
-          >cc-env-var-form.smart-env-var-app</a
-        >
-      </li>
-      <li>
-        <a class="definition-link" href="?definition=cc-env-var-form.smart-env-var-addon&context=env-var-addon"
-          >cc-env-var-form.smart-env-var-addon</a
-        >
-      </li>
-      <li>
-        <a class="definition-link" href="?definition=cc-env-var-form.smart-exposed-config&context=exposed-config"
-          >cc-env-var-form.smart-exposed-config</a
-        >
-      </li>
-      <li>
-        <a class="definition-link" href="?definition=cc-env-var-linked-services.smart-addon&type=addon"
-          >cc-env-var-linked-services.smart-addon</a
-        >
-      </li>
-      <li>
-        <a class="definition-link" href="?definition=cc-env-var-linked-services.smart-app&type=app"
-          >cc-env-var-linked-services.smart-app</a
-        >
-      </li>
-      <li>
-        <a class="definition-link" href="?definition=cc-grafana-info.smart">cc-grafana-info.smart</a>
-      </li>
-      <li>
-        <a class="definition-link" href="?definition=cc-invoice-list.smart">cc-invoice-list.smart</a>
-      </li>
-      <li>
-        <a class="definition-link" href="?definition=cc-invoice.smart">cc-invoice.smart</a>
-      </li>
-      <li>
-        <a class="definition-link" href="?definition=cc-domain-management.smart">cc-domain-management.smart</a>
-      </li>
-      <li>
-        <a class="definition-link" href="?definition=cc-token-api-list.smart">cc-token-api-list.smart</a>
-      </li>
-      <li>
-        <a class="definition-link" href="?definition=cc-token-api-creation-form.smart">
-          cc-token-api-creation-form.smart
-        </a>
-      </li>
-      <!--  <li>-->
-      <!--    <a class="definition-link" href="?definition=cc-pricing-page.smart">cc-pricing-page.smart</a>-->
-      <!--  </li>-->
-      <!--  <li>-->
-      <!--    <a class="definition-link" href="?definition=cc-pricing-product-consumption.smart">cc-pricing-product-consumption.smart</a>-->
-      <!--  </li>-->
-      <!--  <li>-->
-      <!--    <a class="definition-link" href="?definition=cc-pricing-product.smart-addon">cc-pricing-product.smart-addon</a>-->
-      <!--  </li>-->
-      <!--  <li>-->
-      <!--    <a class="definition-link" href="?definition=cc-pricing-product.smart-runtime">cc-pricing-product.smart-runtime</a>-->
-      <!--  </li>-->
-      <li>
-        <a class="definition-link" href="?definition=cc-tcp-redirection-form.smart">cc-tcp-redirection-form.smart</a>
-      </li>
-      <li>
-        <a class="definition-link" href="?definition=cc-email-list.smart">cc-email-list.smart</a>
-      </li>
-      <li>
-        <a class="definition-link" href="?definition=cc-tile-status-codes.smart">cc-tile-status-codes.smart</a>
-      </li>
-      <li>
-        <a class="definition-link" href="?definition=cc-orga-member-list.smart">cc-orga-member-list.smart</a>
-      </li>
-      <li>
-        <a class="definition-link" href="?definition=cc-ssh-key-list.smart">cc-ssh-key-list.smart</a>
-      </li>
-      <li>
-        <a class="definition-link" href="?definition=cc-tile-metrics.smart">cc-tile-metrics.smart</a>
-      </li>
-      <li>
-        <a class="definition-link" href="/demo-smart/cc-pricing-page/">cc-pricing-page</a>
-      </li>
-      <li>
-        <a class="definition-link" href="?definition=cc-oauth-consumer-info.smart">cc-oauth-consumer-info.smart</a>
-      </li>
-      <li>
-        <a class="definition-link" href="?definition=cc-oauth-consumer-form.smart-create&smart-mode=create"
-          >cc-oauth-consumer-form.smart-create</a
-        >
-      </li>
-      <li>
-        <a class="definition-link" href="?definition=cc-oauth-consumer-form.smart-update&smart-mode=update"
-          >cc-oauth-consumer-form.smart-update</a
-        >
-      </li>
-      <li>
-        <a class="definition-link" href="?definition=cc-addon-header.smart-keycloak&smart-mode=keycloak"
-          >cc-addon-header.smart-keycloak</a
-        >
-      </li>
-      <li>
-        <a class="definition-link" href="?definition=cc-addon-info.smart-keycloak&smart-mode=keycloak"
-          >cc-addon-info.smart-keycloak</a
-        >
-      </li>
-      <li>
-        <a class="definition-link" href="?definition=cc-addon-credentials.smart-keycloak&smart-mode=keycloak">
-          cc-addon-credentials.smart-keycloak
-        </a>
-      </li>
-      <li>
-        <a class="definition-link" href="?definition=cc-addon-header.smart-matomo&smart-mode=matomo"
-          >cc-addon-header.smart-matomo</a
-        >
-      </li>
-      <li>
-        <a class="definition-link" href="?definition=cc-addon-info.smart-matomo&smart-mode=matomo"
-          >cc-addon-info.smart-matomo</a
-        >
-      </li>
-      <li>
-        <a class="definition-link" href="?definition=cc-addon-header.smart-otoroshi&smart-mode=otoroshi"
-          >cc-addon-header.smart-otoroshi</a
-        >
-      </li>
-      <li>
-        <a class="definition-link" href="?definition=cc-addon-credentials.smart-otoroshi&smart-mode=otoroshi">
-          cc-addon-credentials.smart-otoroshi
-        </a>
-      </li>
-      <li>
-        <a class="definition-link" href="?definition=cc-addon-info.smart-otoroshi&smart-mode=otoroshi"
-          >cc-addon-info.smart-otoroshi</a
-        >
-      </li>
-      <li>
-        <a class="definition-link" href="?definition=cc-addon-header.smart-metabase&smart-mode=metabase"
-          >cc-addon-header.smart-metabase</a
-        >
-      </li>
-      <li>
-        <a class="definition-link" href="?definition=cc-addon-info.smart-metabase&smart-mode=metabase"
-          >cc-addon-info.smart-metabase</a
-        >
-      </li>
-      <li>
-        <a class="definition-link" href="?definition=cc-addon-header.smart-kubernetes&smart-mode=kubernetes">
-          cc-addon-header.smart-kubernetes
-        </a>
-      </li>
-      <li>
-        <a class="definition-link" href="?definition=cc-addon-info.smart-kubernetes&smart-mode=kubernetes">
-          cc-addon-info.smart-kubernetes
-        </a>
-      </li>
-      <li>
-        <a class="definition-link" href="?definition=cc-addon-header.smart-pulsar&smart-mode=pulsar"
-          >cc-addon-header.smart-pulsar</a
-        >
-      </li>
-      <li>
-        <a class="definition-link" href="?definition=cc-addon-info.smart-pulsar&smart-mode=pulsar"
-          >cc-addon-info.smart-pulsar</a
-        >
-      </li>
-      <li>
-        <a class="definition-link" href="?definition=cc-addon-credentials.smart-pulsar&smart-mode=pulsar">
-          cc-addon-credentials.smart-pulsar
-        </a>
-      </li>
-      <li>
-        <a class="definition-link" href="?definition=cc-addon-header.smart-elastic&smart-mode=elastic"
-          >cc-addon-header.smart-elastic</a
-        >
-      </li>
-      <li>
-        <a class="definition-link" href="?definition=cc-addon-info.smart-elastic&smart-mode=elastic"
-          >cc-addon-info.smart-elastic</a
-        >
-      </li>
-      <li>
-        <a class="definition-link" href="?definition=cc-addon-credentials.smart-elastic&smart-mode=elastic"
-          >cc-addon-credentials.smart-elastic</a
-        >
-      </li>
-      <li>
-        <a class="definition-link" href="?definition=cc-addon-header.smart-materia-kv&smart-mode=materia-kv"
-          >cc-addon-header.smart-materia-kv</a
-        >
-      </li>
-      <li>
-        <a class="definition-link" href="?definition=cc-addon-info.smart-materia-kv&smart-mode=materia-kv"
-          >cc-addon-info.smart-materia-kv</a
-        >
-      </li>
-      <li>
-        <a class="definition-link" href="?definition=cc-addon-credentials.smart-materia-kv&smart-mode=materia-kv"
-          >cc-addon-credentials.smart-materia-kv</a
-        >
-      </li>
-      <li>
-        <a class="definition-link" href="?definition=cc-addon-header.smart-jenkins&smart-mode=jenkins"
-          >cc-addon-header.smart-jenkins</a
-        >
-      </li>
-      <li>
-        <a class="definition-link" href="?definition=cc-addon-info.smart-jenkins&smart-mode=jenkins"
-          >cc-addon-info.smart-jenkins</a
-        >
-      </li>
-      <li>
-        <a class="definition-link" href="?definition=cc-addon-header.smart-config-provider&smart-mode=config-provider"
-          >cc-addon-header.smart-config-provider</a
-        >
-      </li>
-      <li>
-        <a class="definition-link" href="?definition=cc-addon-header.smart-cellar&smart-mode=cellar"
-          >cc-addon-header.smart-cellar</a
-        >
-      </li>
-      <li>
-        <a class="definition-link" href="?definition=cc-addon-info.smart-cellar&smart-mode=cellar"
-          >cc-addon-info.smart-cellar</a
-        >
-      </li>
-      <li>
-        <a class="definition-link" href="?definition=cc-addon-credentials.smart-cellar&smart-mode=cellar"
-          >cc-addon-credentials.smart-cellar</a
-        >
-      </li>
-      <li>
-        <a class="definition-link" href="?definition=cc-network-group-dashboard.smart"
-          >cc-network-group-dashboard.smart</a
-        >
-      </li>
-      <li>
-        <a class="definition-link" href="?definition=cc-network-group-list.smart">cc-network-group-list</a>
-      </li>
-      <li>
-        <a class="definition-link" href="?definition=cc-network-group-member-list.smart"
-          >cc-network-group-member-list.smart</a
-        >
-      </li>
-    </ul>
+    <div class="layout">
+      <aside class="sidebar" aria-label="Components">
+        <div class="sidebar-header">
+          <span class="sidebar-title">Demo Smart</span>
+          <label for="lang-switcher" class="visually-hidden">Language</label>
+          <select id="lang-switcher" class="lang-switcher">
+            <option value="en">EN</option>
+            <option value="fr">FR</option>
+          </select>
+        </div>
+        <nav class="sidebar-scroll" aria-label="Components">
+          <!-- ═══════════════════════════════ -->
+          <!-- COMPONENTS                      -->
+          <!-- ═══════════════════════════════ -->
 
-    <div class="context-buttons">
-      <button data-context="{}">null</button>
-      <button data-context='{"apiConfig":{}}'>bad API config</button>
-      <button data-context='{"lang":"en", "limit": 5}'>article-list</button>
-      <button
-        data-context='{"ownerId":"orga_3547a882-d464-4c34-8168-add4b3e0c135","grafanaBaseLink":"https://example.com"}'
-      >
-        grafana-info
-      </button>
-      <button
-        data-context='{"ownerId":"orga_3547a882-d464-4c34-8168-add4b3e0c135","appId":"app_7c6f466c-3314-4753-9e06-f87912f6b856","consoleGrafanaLink":"https://console.clever-cloud.com","grafanaBaseLink":"https://grafana.services.clever-cloud.com/","type":"addon","logsUrlPattern":"/organisations/orga_3547a882-d464-4c34-8168-add4b3e0c135/applications/:id/logs"}'
-      >
-        app-node
-      </button>
-      <button
-        data-context='{"ownerId":"orga_3547a882-d464-4c34-8168-add4b3e0c135","appId":"app_e048c5ba-dc84-4f01-a750-d053706805fd","consoleGrafanaLink":"https://console.clever-cloud.com","grafanaBaseLink":"https://grafana.services.clever-cloud.com/","type":"app","logsUrlPattern":"/organisations/orga_3547a882-d464-4c34-8168-add4b3e0c135/applications/:id/logs"}'
-      >
-        app-play
-      </button>
-      <button
-        data-context='{"ownerId":"orga_3547a882-d464-4c34-8168-add4b3e0c135","currentUserId":"user_d3d02829-8847-40ea-ab76-ada4e2f026c0"}'
-      >
-        ACME BAR
-      </button>
-      <button
-        data-context='{"ownerId":"orga_540caeb6-521c-4a19-a955-efe6da35d142","currentUserId":"user_d3d02829-8847-40ea-ab76-ada4e2f026c0"}'
-      >
-        ACME FOO
-      </button>
-      <button
-        data-context='{
-        "ownerId":"orga_3547a882-d464-4c34-8168-add4b3e0c135",
-        "addonId":"addon_e41d1602-9ec0-43ce-811a-1f47efc2c962",
-        "logsUrlPattern":"/organisations/orga_3547a882-d464-4c34-8168-add4b3e0c135/addons/:id/logs",
-        "grafanaLink": {
-            "base": "https://grafana.services.clever-cloud.com",
-            "console": "https://console.clever-cloud.com"
-          },
-          "appOverviewUrlPattern": "/organisations/orga_3547a882-d464-4c34-8168-add4b3e0c135/applications/:id"
-          }'
-      >
-        addon-elastic
-      </button>
-      <button
-        data-context='{
-        "ownerId":"orga_3547a882-d464-4c34-8168-add4b3e0c135",
-        "addonId":"addon_1efdc7b6-234b-4517-9402-3413a2968229",
-        "logsUrlPattern":"/organisations/orga_3547a882-d464-4c34-8168-add4b3e0c135/addons/:id/logs",
-        "grafanaLink": {
-            "base": "https://grafana.services.clever-cloud.com",
-            "console": "https://console.clever-cloud.com"
-          },
-          "appOverviewUrlPattern": "/organisations/orga_3547a882-d464-4c34-8168-add4b3e0c135/applications/:id"
-          }'
-      >
-        addon-elastic-kibana
-      </button>
-      <button
-        data-context='{
-        "ownerId":"orga_3547a882-d464-4c34-8168-add4b3e0c135",
-        "addonId":"addon_ce389853-4632-4508-aaa1-cd6ae287046c",
-        "logsUrlPattern":"/organisations/orga_3547a882-d464-4c34-8168-add4b3e0c135/addons/:id/logs",
-        "grafanaLink": {
-            "base": "https://grafana.services.clever-cloud.com",
-            "console": "https://console.clever-cloud.com"
-          },
-          "appOverviewUrlPattern": "/organisations/orga_3547a882-d464-4c34-8168-add4b3e0c135/applications/:id"
-          }'
-      >
-        addon-elastic-alone
-      </button>
-      <button
-        data-context='{"ownerId":"orga_3547a882-d464-4c34-8168-add4b3e0c135","addonId":"addon_1eef66a7-6840-4050-a484-2f7dc14dfded"}'
-      >
-        addon-config
-      </button>
-      <button
-        data-context='{"ownerId":"orga_3547a882-d464-4c34-8168-add4b3e0c135","addonId":"addon_795d2901-f7be-4c5e-8401-73f180a6d5d2"}'
-      >
-        addon-pg
-      </button>
-      <button
-        data-context='{"ownerId":"orga_3547a882-d464-4c34-8168-add4b3e0c135","addonId":"addon_1eef66a7-6840-4050-a484-2f7dc14dfded"}'
-      >
-        test-addon-config
-      </button>
-      <button
-        data-context='{
-        "ownerId":"orga_3547a882-d464-4c34-8168-add4b3e0c135",
-        "addonId":"addon_7bfe6a42-4cb8-488e-96db-77c8da4627d2",
-        "logsUrlPattern":"/organisations/orga_3547a882-d464-4c34-8168-add4b3e0c135/addons/:id/logs"
-        }'
-      >
-        addon-jenkins
-      </button>
-      <button
-        data-context='{"ownerId":"orga_540caeb6-521c-4a19-a955-efe6da35d142","appId":"app_f2f99229-4aba-42ef-bcb1-d69e8a443cd1", "consoleGrafanaLink":"https://console.clever-cloud.com", "grafanaBaseLink":"https://grafana.services.clever-cloud.com/"}'
-      >
-        cpu-load-bench
-      </button>
-      <button
-        data-context='{"ownerId":"orga_3547a882-d464-4c34-8168-add4b3e0c135", "invoiceNumber":"F20231201-039307"}'
-      >
-        invoice
-      </button>
-      <button
-        data-context='{"ownerId":"orga_540caeb6-521c-4a19-a955-efe6da35d142", "key":"KpryQ9X1Snjrxa5ej2AOETa1dd0Auu"}'
-      >
-        oAuth Consumer
-      </button>
-      <button
-        data-context='{
-          "ownerId":"orga_3547a882-d464-4c34-8168-add4b3e0c135",
-          "addonId":"addon_b0156348-3825-4026-895a-bcaacafc4746",
-          "logsUrlPattern":"/organisations/orga_3547a882-d464-4c34-8168-add4b3e0c135/applications/:id/logs",
-          "grafanaLink": {
-            "base": "https://grafana.services.clever-cloud.com",
-            "console": "https://console.clever-cloud.com"
-          },
-          "appOverviewUrlPattern": "/organisations/orga_3547a882-d464-4c34-8168-add4b3e0c135/applications/:id",
-          "addonDashboardUrlPattern": "/organisations/orga_3547a882-d464-4c34-8168-add4b3e0c135/addons/:id"
-        }'
-      >
-        addon-keycloak
-      </button>
-      <button
-        data-context='{
-          "ownerId":"orga_3547a882-d464-4c34-8168-add4b3e0c135",
-          "addonId":"addon_e396509c-e59f-44b3-93e5-5d00f04eb5dc",
-          "logsUrlPattern":"/organisations/orga_3547a882-d464-4c34-8168-add4b3e0c135/applications/:id/logs",
-          "grafanaLink": {
-            "base": "https://grafana.services.clever-cloud.com",
-            "console": "https://console.clever-cloud.com"
-          },
-          "appOverviewUrlPattern": "/organisations/orga_3547a882-d464-4c34-8168-add4b3e0c135/applications/:id",
-          "addonDashboardUrlPattern": "/organisations/orga_3547a882-d464-4c34-8168-add4b3e0c135/addons/:id",
-          "scalabilityUrlPattern": "/organisations/orga_3547a882-d464-4c34-8168-add4b3e0c135/applications/:id/settings"
-        }'
-      >
-        addon-metabase
-      </button>
-      <button
-        data-context='{
-        "ownerId":"orga_3547a882-d464-4c34-8168-add4b3e0c135",
-        "addonId":"addon_bca9234a-7515-4b17-8055-820c6cd8bf86",
-        "logsUrlPattern":"/organisations/orga_3547a882-d464-4c34-8168-add4b3e0c135/applications/:id/logs",
-        "grafanaLink": {
-            "base": "https://grafana.services.clever-cloud.com",
-            "console": "https://console.clever-cloud.com"
-          },
-          "appOverviewUrlPattern": "/organisations/orga_3547a882-d464-4c34-8168-add4b3e0c135/applications/:id",
-          "addonDashboardUrlPattern": "/organisations/orga_3547a882-d464-4c34-8168-add4b3e0c135/addons/:id",
-          "scalabilityUrlPattern": "/organisations/orga_3547a882-d464-4c34-8168-add4b3e0c135/applications/:id/settings"
-        }'
-      >
-        addon-matomo
-      </button>
-      <button
-        data-context='{
-        "ownerId":"orga_3547a882-d464-4c34-8168-add4b3e0c135",
-        "addonId":"addon_38b1f5a2-0b24-4c98-b378-88e4f864cd62",
-        "logsUrlPattern":"/organisations/orga_3547a882-d464-4c34-8168-add4b3e0c135/applications/:id/logs",
-        "grafanaLink": {
-            "base": "https:grafana.services.clever-cloud.com",
-            "console": "https:console.clever-cloud.com"
-          },
-          "appOverviewUrlPattern": "/organisations/orga_3547a882-d464-4c34-8168-add4b3e0c135/applications/:id",
-          "addonDashboardUrlPattern": "/organisations/orga_3547a882-d464-4c34-8168-addons/:id",
-          "scalabilityUrlPattern": "/organisations/orga_3547a882-d464-4c34-8168-add4b3e0c135/applications/:id/settings"}'
-      >
-        addon-otoroshi
-      </button>
-      <button
-        data-context='{
-        "ownerId":"orga_3547a882-d464-4c34-8168-add4b3e0c135",
-        "kubernetesId":"kubernetes_01K85MNF5GTQNR7RWZ3G6RGRZA",
-        "logsUrlPattern":"/organisations/orga_3547a882-d464-4c34-8168-add4b3e0c135/applications/:id/logs",
-        "grafanaLink": {
-            "base": "https://grafana.services.clever-cloud.com",
-            "console": "https://console.clever-cloud.com"
-          },
-          "appOverviewUrlPattern": "/organisations/orga_3547a882-d464-4c34-8168-add4b3e0c135/applications/:id",
-          "addonDashboardUrlPattern": "/organisations/orga_3547a882-d464-4c34-8168-addons/:id"
-        }'
-      >
-        addon-kubernetes
-      </button>
-      <button
-        data-context='{
-        "ownerId":"orga_3547a882-d464-4c34-8168-add4b3e0c135",
-        "addonId":"addon_39eaf2e0-8784-49a9-bf6a-e1e7ee111573",
-        "explorerUrlPattern":"/organisations/orga_3547a882-d464-4c34-8168-add4b3e0c135/addons/:id/materia-explorer"
-        }'
-      >
-        addon-materia
-      </button>
-      <button
-        data-context='{
-        "ownerId":"orga_3547a882-d464-4c34-8168-add4b3e0c135",
-        "addonId":"addon_3289ebbf-362b-4df9-8e9b-facbfa7d9ca3"
-        }'
-      >
-        addon-pulsar
-      </button>
-      <button
-        data-context='{
-        "ownerId":"orga_3547a882-d464-4c34-8168-add4b3e0c135",
-        "addonId":"addon_1eef66a7-6840-4050-a484-2f7dc14dfded"
-        }'
-      >
-        addon-config-provider
-      </button>
-      <button
-        data-context='{
-        "ownerId":"orga_3547a882-d464-4c34-8168-add4b3e0c135",
-        "addonId":"addon_7d9b43cb-d4f8-47a9-a6ec-6148ce95b05b",
-        "cellarId": "cellar_43f25412-185a-4ee3-a377-7e8e20b90def",
-        "explorerUrlPattern":"/organisations/orga_3547a882-d464-4c34-8168-add4b3e0c135/addons/:id/cellar-explorer"
-        }'
-      >
-        addon-cellar
-      </button>
-      <button
-        data-context='{
-        "ownerId":"orga_3547a882-d464-4c34-8168-add4b3e0c135",
-        "networkGroupId": "ng_b8711640-f593-437f-bae1-5b5e52d0fcc1",
-        "resourceId": "app_7c6f466c-3314-4753-9e06-f87912f6b856",
-        "networkGroupDashboardUrlPattern": "/organisations/orga_3547a882-d464-4c34-8168-add4b3e0c135/network-groups/:id",
-        "appOverviewUrlPattern": "/organisations/orga_3547a882-d464-4c34-8168-add4b3e0c135/applications/:id",
-        "addonDashboardUrlPattern": "/organisations/orga_3547a882-d464-4c34-8168-add4b3e0c135/addons/:id",
-        "networkGroupCreationUrl": "/network-groups/new"
-        }'
-      >
-        Network Group
-      </button>
+          <p class="sidebar-section-title">Components</p>
+
+          <!-- Addon (Generic) -->
+          <div class="group">
+            <h2 class="group-title">Add-on (Generic)</h2>
+            <ul class="def-list">
+              <li><a class="definition-link" href="?definition=cc-addon-admin.smart">cc-addon-admin</a></li>
+              <li><a class="definition-link" href="?definition=cc-addon-backups.smart">cc-addon-backups</a></li>
+              <li><a class="definition-link" href="?definition=cc-addon-linked-apps.smart">cc-addon-linked-apps</a></li>
+            </ul>
+          </div>
+
+          <!-- Addon - Cellar -->
+          <div class="group">
+            <h2 class="group-title">Add-on - Cellar</h2>
+            <ul class="def-list">
+              <li>
+                <a class="definition-link" href="?definition=cc-addon-header.smart-cellar&smart-mode=cellar"
+                  >cc-addon-header</a
+                >
+              </li>
+              <li>
+                <a class="definition-link" href="?definition=cc-addon-info.smart-cellar&smart-mode=cellar"
+                  >cc-addon-info</a
+                >
+              </li>
+              <li>
+                <a class="definition-link" href="?definition=cc-addon-credentials.smart-cellar&smart-mode=cellar"
+                  >cc-addon-credentials</a
+                >
+              </li>
+            </ul>
+          </div>
+
+          <!-- Addon - Config Provider -->
+          <div class="group">
+            <h2 class="group-title">Add-on - Config Provider</h2>
+            <ul class="def-list">
+              <li>
+                <a
+                  class="definition-link"
+                  href="?definition=cc-addon-header.smart-config-provider&smart-mode=config-provider"
+                  >cc-addon-header</a
+                >
+              </li>
+            </ul>
+          </div>
+
+          <!-- Addon - Elastic -->
+          <div class="group">
+            <h2 class="group-title">Add-on - Elastic</h2>
+            <ul class="def-list">
+              <li>
+                <a class="definition-link" href="?definition=cc-addon-header.smart-elastic&smart-mode=elastic"
+                  >cc-addon-header</a
+                >
+              </li>
+              <li>
+                <a class="definition-link" href="?definition=cc-addon-info.smart-elastic&smart-mode=elastic"
+                  >cc-addon-info</a
+                >
+              </li>
+              <li>
+                <a class="definition-link" href="?definition=cc-addon-credentials.smart-elastic&smart-mode=elastic"
+                  >cc-addon-credentials</a
+                >
+              </li>
+            </ul>
+          </div>
+
+          <!-- Addon - Jenkins -->
+          <div class="group">
+            <h2 class="group-title">Add-on - Jenkins</h2>
+            <ul class="def-list">
+              <li>
+                <a class="definition-link" href="?definition=cc-addon-header.smart-jenkins&smart-mode=jenkins"
+                  >cc-addon-header</a
+                >
+              </li>
+              <li>
+                <a class="definition-link" href="?definition=cc-addon-info.smart-jenkins&smart-mode=jenkins"
+                  >cc-addon-info</a
+                >
+              </li>
+            </ul>
+          </div>
+
+          <!-- Addon - Keycloak -->
+          <div class="group">
+            <h2 class="group-title">Add-on - Keycloak</h2>
+            <ul class="def-list">
+              <li>
+                <a class="definition-link" href="?definition=cc-addon-header.smart-keycloak&smart-mode=keycloak"
+                  >cc-addon-header</a
+                >
+              </li>
+              <li>
+                <a class="definition-link" href="?definition=cc-addon-info.smart-keycloak&smart-mode=keycloak"
+                  >cc-addon-info</a
+                >
+              </li>
+              <li>
+                <a class="definition-link" href="?definition=cc-addon-credentials.smart-keycloak&smart-mode=keycloak"
+                  >cc-addon-credentials</a
+                >
+              </li>
+            </ul>
+          </div>
+
+          <!-- Addon - Kubernetes -->
+          <div class="group">
+            <h2 class="group-title">Add-on - Kubernetes</h2>
+            <ul class="def-list">
+              <li>
+                <a class="definition-link" href="?definition=cc-addon-header.smart-kubernetes&smart-mode=kubernetes"
+                  >cc-addon-header</a
+                >
+              </li>
+              <li>
+                <a class="definition-link" href="?definition=cc-addon-info.smart-kubernetes&smart-mode=kubernetes"
+                  >cc-addon-info</a
+                >
+              </li>
+            </ul>
+          </div>
+
+          <!-- Addon - Materia KV -->
+          <div class="group">
+            <h2 class="group-title">Add-on - Materia KV</h2>
+            <ul class="def-list">
+              <li>
+                <a class="definition-link" href="?definition=cc-addon-header.smart-materia-kv&smart-mode=materia-kv"
+                  >cc-addon-header</a
+                >
+              </li>
+              <li>
+                <a class="definition-link" href="?definition=cc-addon-info.smart-materia-kv&smart-mode=materia-kv"
+                  >cc-addon-info</a
+                >
+              </li>
+              <li>
+                <a
+                  class="definition-link"
+                  href="?definition=cc-addon-credentials.smart-materia-kv&smart-mode=materia-kv"
+                  >cc-addon-credentials</a
+                >
+              </li>
+            </ul>
+          </div>
+
+          <!-- Addon - Matomo -->
+          <div class="group">
+            <h2 class="group-title">Add-on - Matomo</h2>
+            <ul class="def-list">
+              <li>
+                <a class="definition-link" href="?definition=cc-addon-header.smart-matomo&smart-mode=matomo"
+                  >cc-addon-header</a
+                >
+              </li>
+              <li>
+                <a class="definition-link" href="?definition=cc-addon-info.smart-matomo&smart-mode=matomo"
+                  >cc-addon-info</a
+                >
+              </li>
+            </ul>
+          </div>
+
+          <!-- Addon - Metabase -->
+          <div class="group">
+            <h2 class="group-title">Add-on - Metabase</h2>
+            <ul class="def-list">
+              <li>
+                <a class="definition-link" href="?definition=cc-addon-header.smart-metabase&smart-mode=metabase"
+                  >cc-addon-header</a
+                >
+              </li>
+              <li>
+                <a class="definition-link" href="?definition=cc-addon-info.smart-metabase&smart-mode=metabase"
+                  >cc-addon-info</a
+                >
+              </li>
+            </ul>
+          </div>
+
+          <!-- Addon - Otoroshi -->
+          <div class="group">
+            <h2 class="group-title">Add-on - Otoroshi</h2>
+            <ul class="def-list">
+              <li>
+                <a class="definition-link" href="?definition=cc-addon-header.smart-otoroshi&smart-mode=otoroshi"
+                  >cc-addon-header</a
+                >
+              </li>
+              <li>
+                <a class="definition-link" href="?definition=cc-addon-info.smart-otoroshi&smart-mode=otoroshi"
+                  >cc-addon-info</a
+                >
+              </li>
+              <li>
+                <a class="definition-link" href="?definition=cc-addon-credentials.smart-otoroshi&smart-mode=otoroshi"
+                  >cc-addon-credentials</a
+                >
+              </li>
+            </ul>
+          </div>
+
+          <!-- Addon - Pulsar -->
+          <div class="group">
+            <h2 class="group-title">Add-on - Pulsar</h2>
+            <ul class="def-list">
+              <li>
+                <a class="definition-link" href="?definition=cc-addon-header.smart-pulsar&smart-mode=pulsar"
+                  >cc-addon-header</a
+                >
+              </li>
+              <li>
+                <a class="definition-link" href="?definition=cc-addon-info.smart-pulsar&smart-mode=pulsar"
+                  >cc-addon-info</a
+                >
+              </li>
+              <li>
+                <a class="definition-link" href="?definition=cc-addon-credentials.smart-pulsar&smart-mode=pulsar"
+                  >cc-addon-credentials</a
+                >
+              </li>
+            </ul>
+          </div>
+
+          <!-- API Tokens -->
+          <div class="group">
+            <h2 class="group-title">API Tokens</h2>
+            <ul class="def-list">
+              <li><a class="definition-link" href="?definition=cc-token-api-list.smart">cc-token-api-list</a></li>
+              <li>
+                <a class="definition-link" href="?definition=cc-token-api-creation-form.smart"
+                  >cc-token-api-creation-form</a
+                >
+              </li>
+            </ul>
+          </div>
+
+          <!-- Billing -->
+          <div class="group">
+            <h2 class="group-title">Billing</h2>
+            <ul class="def-list">
+              <li><a class="definition-link" href="?definition=cc-invoice-list.smart">cc-invoice-list</a></li>
+              <li><a class="definition-link" href="?definition=cc-invoice.smart">cc-invoice</a></li>
+            </ul>
+          </div>
+
+          <!-- Content -->
+          <div class="group">
+            <h2 class="group-title">Content</h2>
+            <ul class="def-list">
+              <li><a class="definition-link" href="?definition=cc-article-list.smart">cc-article-list</a></li>
+            </ul>
+          </div>
+
+          <!-- Env Var -->
+          <div class="group">
+            <h2 class="group-title">Env Var</h2>
+            <ul class="def-list">
+              <li>
+                <a
+                  class="definition-link"
+                  href="?definition=cc-env-var-form.smart-config-provider&context=config-provider"
+                  >cc-env-var-form (config-provider smart)</a
+                >
+              </li>
+              <li>
+                <a class="definition-link" href="?definition=cc-env-var-form.smart-env-var-app&context=env-var-app"
+                  >cc-env-var-form (env-var-app smart)</a
+                >
+              </li>
+              <li>
+                <a class="definition-link" href="?definition=cc-env-var-form.smart-env-var-addon&context=env-var-addon"
+                  >cc-env-var-form (env-var-addon smart)</a
+                >
+              </li>
+              <li>
+                <a
+                  class="definition-link"
+                  href="?definition=cc-env-var-form.smart-exposed-config&context=exposed-config"
+                  >cc-env-var-form (exposed-config smart)</a
+                >
+              </li>
+              <li>
+                <a class="definition-link" href="?definition=cc-env-var-linked-services.smart-addon&type=addon"
+                  >cc-env-var-linked-services (addon smart)</a
+                >
+              </li>
+              <li>
+                <a class="definition-link" href="?definition=cc-env-var-linked-services.smart-app&type=app"
+                  >cc-env-var-linked-services (app smart)</a
+                >
+              </li>
+            </ul>
+          </div>
+
+          <!-- Monitoring -->
+          <div class="group">
+            <h2 class="group-title">Monitoring</h2>
+            <ul class="def-list">
+              <li><a class="definition-link" href="?definition=cc-grafana-info.smart">cc-grafana-info</a></li>
+              <li><a class="definition-link" href="?definition=cc-tile-status-codes.smart">cc-tile-status-codes</a></li>
+              <li><a class="definition-link" href="?definition=cc-tile-metrics.smart">cc-tile-metrics</a></li>
+            </ul>
+          </div>
+
+          <!-- Network -->
+          <div class="group">
+            <h2 class="group-title">Network</h2>
+            <ul class="def-list">
+              <li>
+                <a class="definition-link" href="?definition=cc-tcp-redirection-form.smart">cc-tcp-redirection-form</a>
+              </li>
+              <li><a class="definition-link" href="?definition=cc-domain-management.smart">cc-domain-management</a></li>
+              <li>
+                <a class="definition-link" href="?definition=cc-network-group-dashboard.smart"
+                  >cc-network-group-dashboard</a
+                >
+              </li>
+              <li>
+                <a class="definition-link" href="?definition=cc-network-group-list.smart">cc-network-group-list</a>
+              </li>
+              <li>
+                <a class="definition-link" href="?definition=cc-network-group-member-list.smart"
+                  >cc-network-group-member-list</a
+                >
+              </li>
+            </ul>
+          </div>
+
+          <!-- OAuth -->
+          <div class="group">
+            <h2 class="group-title">OAuth</h2>
+            <ul class="def-list">
+              <li>
+                <a class="definition-link" href="?definition=cc-oauth-consumer-info.smart">cc-oauth-consumer-info</a>
+              </li>
+              <li>
+                <a class="definition-link" href="?definition=cc-oauth-consumer-form.smart-create&smart-mode=create"
+                  >cc-oauth-consumer-form (create smart)</a
+                >
+              </li>
+              <li>
+                <a class="definition-link" href="?definition=cc-oauth-consumer-form.smart-update&smart-mode=update"
+                  >cc-oauth-consumer-form (update smart)</a
+                >
+              </li>
+            </ul>
+          </div>
+
+          <!-- Pricing -->
+          <div class="group">
+            <h2 class="group-title">Pricing</h2>
+            <ul class="def-list">
+              <li><a class="definition-link" href="/demo-smart/cc-pricing-page/">cc-pricing-page</a></li>
+              <!--  <li><a class="definition-link" href="?definition=cc-pricing-page.smart">cc-pricing-page</a></li> -->
+              <!--  <li><a class="definition-link" href="?definition=cc-pricing-product-consumption.smart">cc-pricing-product-consumption</a></li> -->
+              <!--  <li><a class="definition-link" href="?definition=cc-pricing-product.smart-addon">cc-pricing-product (addon smart)</a></li> -->
+              <!--  <li><a class="definition-link" href="?definition=cc-pricing-product.smart-runtime">cc-pricing-product (runtime smart)</a></li> -->
+            </ul>
+          </div>
+
+          <!-- User & Org -->
+          <div class="group">
+            <h2 class="group-title">User &amp; Org</h2>
+            <ul class="def-list">
+              <li><a class="definition-link" href="?definition=cc-orga-member-list.smart">cc-orga-member-list</a></li>
+              <li><a class="definition-link" href="?definition=cc-ssh-key-list.smart">cc-ssh-key-list</a></li>
+              <li><a class="definition-link" href="?definition=cc-email-list.smart">cc-email-list</a></li>
+            </ul>
+          </div>
+        </nav>
+      </aside>
+
+      <div class="content-area">
+        <main class="main-area" aria-label="Component preview">
+          <div class="main-area-empty" id="empty-message">
+            <div><span class="step-number">1.</span> Pick a component from the left menu</div>
+            <div><span class="step-number">2.</span> Apply a context to feed it live data</div>
+          </div>
+          <cc-smart-container></cc-smart-container>
+        </main>
+
+        <!-- ═══════════════════════════════ -->
+        <!-- CONTEXT PANEL                   -->
+        <!-- ═══════════════════════════════ -->
+
+        <aside class="context-panel" id="context-sidebar" aria-label="Contexts">
+          <div class="context-panel-header">
+            <span class="context-panel-title">Contexts</span>
+          </div>
+          <div class="context-panel-scroll">
+            <!-- Addon -->
+            <div class="group">
+              <h2 class="ctx-group-title">Add-on</h2>
+              <div class="ctx-group">
+                <button
+                  class="ctx-btn"
+                  title="ownerId, addonId, cellarId"
+                  data-context='{"ownerId":"orga_3547a882-d464-4c34-8168-add4b3e0c135","addonId":"addon_7d9b43cb-d4f8-47a9-a6ec-6148ce95b05b","cellarId":"cellar_43f25412-185a-4ee3-a377-7e8e20b90def","explorerUrlPattern":"/organisations/orga_3547a882-d464-4c34-8168-add4b3e0c135/addons/:id/cellar-explorer"}'
+                >
+                  <span class="ctx-label">Cellar</span>
+                  <span class="ctx-subtitle">ownerId, addonId, cellarId</span>
+                </button>
+                <button
+                  class="ctx-btn"
+                  title="ownerId, addonId"
+                  data-context='{"ownerId":"orga_3547a882-d464-4c34-8168-add4b3e0c135","addonId":"addon_1eef66a7-6840-4050-a484-2f7dc14dfded"}'
+                >
+                  <span class="ctx-label">Config Provider</span>
+                  <span class="ctx-subtitle">ownerId, addonId</span>
+                </button>
+                <button
+                  class="ctx-btn"
+                  title="ownerId, addonId"
+                  data-context='{"ownerId":"orga_3547a882-d464-4c34-8168-add4b3e0c135","addonId":"addon_ce389853-4632-4508-aaa1-cd6ae287046c","logsUrlPattern":"/organisations/orga_3547a882-d464-4c34-8168-add4b3e0c135/addons/:id/logs","grafanaLink":{"base":"https://grafana.services.clever-cloud.com","console":"https://console.clever-cloud.com"},"appOverviewUrlPattern":"/organisations/orga_3547a882-d464-4c34-8168-add4b3e0c135/applications/:id"}'
+                >
+                  <span class="ctx-label">Elastic</span>
+                  <span class="ctx-subtitle">ownerId, addonId</span>
+                </button>
+                <button
+                  class="ctx-btn"
+                  title="ownerId, addonId"
+                  data-context='{"ownerId":"orga_3547a882-d464-4c34-8168-add4b3e0c135","addonId":"addon_1efdc7b6-234b-4517-9402-3413a2968229","logsUrlPattern":"/organisations/orga_3547a882-d464-4c34-8168-add4b3e0c135/addons/:id/logs","grafanaLink":{"base":"https://grafana.services.clever-cloud.com","console":"https://console.clever-cloud.com"},"appOverviewUrlPattern":"/organisations/orga_3547a882-d464-4c34-8168-add4b3e0c135/applications/:id"}'
+                >
+                  <span class="ctx-label">Elastic + Kibana</span>
+                  <span class="ctx-subtitle">ownerId, addonId</span>
+                </button>
+                <button
+                  class="ctx-btn"
+                  title="ownerId, addonId"
+                  data-context='{"ownerId":"orga_3547a882-d464-4c34-8168-add4b3e0c135","addonId":"addon_e41d1602-9ec0-43ce-811a-1f47efc2c962","logsUrlPattern":"/organisations/orga_3547a882-d464-4c34-8168-add4b3e0c135/addons/:id/logs","grafanaLink":{"base":"https://grafana.services.clever-cloud.com","console":"https://console.clever-cloud.com"},"appOverviewUrlPattern":"/organisations/orga_3547a882-d464-4c34-8168-add4b3e0c135/applications/:id"}'
+                >
+                  <span class="ctx-label">Elastic + Kibana + APM</span>
+                  <span class="ctx-subtitle">ownerId, addonId</span>
+                </button>
+                <button
+                  class="ctx-btn"
+                  title="ownerId, addonId"
+                  data-context='{"ownerId":"orga_3547a882-d464-4c34-8168-add4b3e0c135","addonId":"addon_7bfe6a42-4cb8-488e-96db-77c8da4627d2","logsUrlPattern":"/organisations/orga_3547a882-d464-4c34-8168-add4b3e0c135/addons/:id/logs"}'
+                >
+                  <span class="ctx-label">Jenkins</span>
+                  <span class="ctx-subtitle">ownerId, addonId</span>
+                </button>
+                <button
+                  class="ctx-btn"
+                  title="ownerId, addonId"
+                  data-context='{"ownerId":"orga_3547a882-d464-4c34-8168-add4b3e0c135","addonId":"addon_b0156348-3825-4026-895a-bcaacafc4746","logsUrlPattern":"/organisations/orga_3547a882-d464-4c34-8168-add4b3e0c135/applications/:id/logs","grafanaLink":{"base":"https://grafana.services.clever-cloud.com","console":"https://console.clever-cloud.com"},"appOverviewUrlPattern":"/organisations/orga_3547a882-d464-4c34-8168-add4b3e0c135/applications/:id","addonDashboardUrlPattern":"/organisations/orga_3547a882-d464-4c34-8168-add4b3e0c135/addons/:id"}'
+                >
+                  <span class="ctx-label">Keycloak</span>
+                  <span class="ctx-subtitle">ownerId, addonId</span>
+                </button>
+                <button
+                  class="ctx-btn"
+                  title="ownerId, kubernetesId"
+                  data-context='{"ownerId":"orga_3547a882-d464-4c34-8168-add4b3e0c135","kubernetesId":"kubernetes_01K85MNF5GTQNR7RWZ3G6RGRZA","logsUrlPattern":"/organisations/orga_3547a882-d464-4c34-8168-add4b3e0c135/applications/:id/logs","grafanaLink":{"base":"https://grafana.services.clever-cloud.com","console":"https://console.clever-cloud.com"},"appOverviewUrlPattern":"/organisations/orga_3547a882-d464-4c34-8168-add4b3e0c135/applications/:id","addonDashboardUrlPattern":"/organisations/orga_3547a882-d464-4c34-8168-addons/:id"}'
+                >
+                  <span class="ctx-label">Kubernetes</span>
+                  <span class="ctx-subtitle">ownerId, kubernetesId</span>
+                </button>
+                <button
+                  class="ctx-btn"
+                  title="ownerId, addonId"
+                  data-context='{"ownerId":"orga_3547a882-d464-4c34-8168-add4b3e0c135","addonId":"addon_39eaf2e0-8784-49a9-bf6a-e1e7ee111573","explorerUrlPattern":"/organisations/orga_3547a882-d464-4c34-8168-add4b3e0c135/addons/:id/materia-explorer"}'
+                >
+                  <span class="ctx-label">Materia KV</span>
+                  <span class="ctx-subtitle">ownerId, addonId</span>
+                </button>
+                <button
+                  class="ctx-btn"
+                  title="ownerId, addonId"
+                  data-context='{"ownerId":"orga_3547a882-d464-4c34-8168-add4b3e0c135","addonId":"addon_bca9234a-7515-4b17-8055-820c6cd8bf86","logsUrlPattern":"/organisations/orga_3547a882-d464-4c34-8168-add4b3e0c135/applications/:id/logs","grafanaLink":{"base":"https://grafana.services.clever-cloud.com","console":"https://console.clever-cloud.com"},"appOverviewUrlPattern":"/organisations/orga_3547a882-d464-4c34-8168-add4b3e0c135/applications/:id","addonDashboardUrlPattern":"/organisations/orga_3547a882-d464-4c34-8168-add4b3e0c135/addons/:id","scalabilityUrlPattern":"/organisations/orga_3547a882-d464-4c34-8168-add4b3e0c135/applications/:id/settings"}'
+                >
+                  <span class="ctx-label">Matomo</span>
+                  <span class="ctx-subtitle">ownerId, addonId</span>
+                </button>
+                <button
+                  class="ctx-btn"
+                  title="ownerId, addonId"
+                  data-context='{"ownerId":"orga_3547a882-d464-4c34-8168-add4b3e0c135","addonId":"addon_e396509c-e59f-44b3-93e5-5d00f04eb5dc","logsUrlPattern":"/organisations/orga_3547a882-d464-4c34-8168-add4b3e0c135/applications/:id/logs","grafanaLink":{"base":"https://grafana.services.clever-cloud.com","console":"https://console.clever-cloud.com"},"appOverviewUrlPattern":"/organisations/orga_3547a882-d464-4c34-8168-add4b3e0c135/applications/:id","addonDashboardUrlPattern":"/organisations/orga_3547a882-d464-4c34-8168-add4b3e0c135/addons/:id","scalabilityUrlPattern":"/organisations/orga_3547a882-d464-4c34-8168-add4b3e0c135/applications/:id/settings"}'
+                >
+                  <span class="ctx-label">Metabase</span>
+                  <span class="ctx-subtitle">ownerId, addonId</span>
+                </button>
+                <button
+                  class="ctx-btn"
+                  title="ownerId, addonId"
+                  data-context='{"ownerId":"orga_3547a882-d464-4c34-8168-add4b3e0c135","addonId":"addon_38b1f5a2-0b24-4c98-b378-88e4f864cd62","logsUrlPattern":"/organisations/orga_3547a882-d464-4c34-8168-add4b3e0c135/applications/:id/logs","grafanaLink":{"base":"https:grafana.services.clever-cloud.com","console":"https:console.clever-cloud.com"},"appOverviewUrlPattern":"/organisations/orga_3547a882-d464-4c34-8168-add4b3e0c135/applications/:id","addonDashboardUrlPattern":"/organisations/orga_3547a882-d464-4c34-8168-addons/:id","scalabilityUrlPattern":"/organisations/orga_3547a882-d464-4c34-8168-add4b3e0c135/applications/:id/settings"}'
+                >
+                  <span class="ctx-label">Otoroshi</span>
+                  <span class="ctx-subtitle">ownerId, addonId</span>
+                </button>
+                <button
+                  class="ctx-btn"
+                  title="ownerId, addonId"
+                  data-context='{"ownerId":"orga_3547a882-d464-4c34-8168-add4b3e0c135","addonId":"addon_795d2901-f7be-4c5e-8401-73f180a6d5d2"}'
+                >
+                  <span class="ctx-label">PostgreSQL</span>
+                  <span class="ctx-subtitle">ownerId, addonId</span>
+                </button>
+                <button
+                  class="ctx-btn"
+                  title="ownerId, addonId"
+                  data-context='{"ownerId":"orga_3547a882-d464-4c34-8168-add4b3e0c135","addonId":"addon_3289ebbf-362b-4df9-8e9b-facbfa7d9ca3"}'
+                >
+                  <span class="ctx-label">Pulsar</span>
+                  <span class="ctx-subtitle">ownerId, addonId</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- App -->
+            <div class="group">
+              <h2 class="ctx-group-title">App</h2>
+              <div class="ctx-group">
+                <button
+                  class="ctx-btn"
+                  title="ownerId, appId"
+                  data-context='{"ownerId":"orga_3547a882-d464-4c34-8168-add4b3e0c135","appId":"app_7c6f466c-3314-4753-9e06-f87912f6b856","consoleGrafanaLink":"https://console.clever-cloud.com","grafanaBaseLink":"https://grafana.services.clever-cloud.com/","type":"addon","logsUrlPattern":"/organisations/orga_3547a882-d464-4c34-8168-add4b3e0c135/applications/:id/logs"}'
+                >
+                  <span class="ctx-label">App Node</span>
+                  <span class="ctx-subtitle">ownerId, appId</span>
+                </button>
+                <button
+                  class="ctx-btn"
+                  title="ownerId, appId"
+                  data-context='{"ownerId":"orga_3547a882-d464-4c34-8168-add4b3e0c135","appId":"app_e048c5ba-dc84-4f01-a750-d053706805fd","consoleGrafanaLink":"https://console.clever-cloud.com","grafanaBaseLink":"https://grafana.services.clever-cloud.com/","type":"app","logsUrlPattern":"/organisations/orga_3547a882-d464-4c34-8168-add4b3e0c135/applications/:id/logs"}'
+                >
+                  <span class="ctx-label">App Play</span>
+                  <span class="ctx-subtitle">ownerId, appId</span>
+                </button>
+                <button
+                  class="ctx-btn"
+                  title="ownerId, appId"
+                  data-context='{"ownerId":"orga_540caeb6-521c-4a19-a955-efe6da35d142","appId":"app_f2f99229-4aba-42ef-bcb1-d69e8a443cd1","consoleGrafanaLink":"https://console.clever-cloud.com","grafanaBaseLink":"https://grafana.services.clever-cloud.com/"}'
+                >
+                  <span class="ctx-label">CPU Load Bench</span>
+                  <span class="ctx-subtitle">ownerId, appId</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Article -->
+            <div class="group">
+              <h2 class="ctx-group-title">Article</h2>
+              <div class="ctx-group">
+                <button class="ctx-btn" title="lang, limit" data-context='{"lang":"en", "limit": 5}'>
+                  <span class="ctx-label">Article List</span>
+                  <span class="ctx-subtitle">lang, limit</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Billing -->
+            <div class="group">
+              <h2 class="ctx-group-title">Billing</h2>
+              <div class="ctx-group">
+                <button
+                  class="ctx-btn"
+                  title="ownerId, invoiceNumber"
+                  data-context='{"ownerId":"orga_3547a882-d464-4c34-8168-add4b3e0c135","invoiceNumber":"F20231201-039307"}'
+                >
+                  <span class="ctx-label">Invoice</span>
+                  <span class="ctx-subtitle">ownerId, invoiceNumber</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- General -->
+            <div class="group">
+              <h2 class="ctx-group-title">General</h2>
+              <div class="ctx-group">
+                <button class="ctx-btn" title="apiConfig: {}" data-context='{"apiConfig":{}}'>
+                  <span class="ctx-label">Bad API config</span>
+                  <span class="ctx-subtitle">apiConfig: {}</span>
+                </button>
+                <button class="ctx-btn" data-context="{}">
+                  <span class="ctx-label">Empty context</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Monitoring -->
+            <div class="group">
+              <h2 class="ctx-group-title">Monitoring</h2>
+              <div class="ctx-group">
+                <button
+                  class="ctx-btn"
+                  title="ownerId, grafanaBaseLink"
+                  data-context='{"ownerId":"orga_3547a882-d464-4c34-8168-add4b3e0c135","grafanaBaseLink":"https://example.com"}'
+                >
+                  <span class="ctx-label">Grafana Info</span>
+                  <span class="ctx-subtitle">ownerId, grafanaBaseLink</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Network -->
+            <div class="group">
+              <h2 class="ctx-group-title">Network</h2>
+              <div class="ctx-group">
+                <button
+                  class="ctx-btn"
+                  title="ownerId, networkGroupId"
+                  data-context='{"ownerId":"orga_3547a882-d464-4c34-8168-add4b3e0c135","networkGroupId":"ng_b8711640-f593-437f-bae1-5b5e52d0fcc1","resourceId":"app_7c6f466c-3314-4753-9e06-f87912f6b856","networkGroupDashboardUrlPattern":"/organisations/orga_3547a882-d464-4c34-8168-add4b3e0c135/network-groups/:id","appOverviewUrlPattern":"/organisations/orga_3547a882-d464-4c34-8168-add4b3e0c135/applications/:id","addonDashboardUrlPattern":"/organisations/orga_3547a882-d464-4c34-8168-add4b3e0c135/addons/:id","networkGroupCreationUrl":"/network-groups/new"}'
+                >
+                  <span class="ctx-label">Network Group</span>
+                  <span class="ctx-subtitle">ownerId, networkGroupId</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- OAuth -->
+            <div class="group">
+              <h2 class="ctx-group-title">OAuth</h2>
+              <div class="ctx-group">
+                <button
+                  class="ctx-btn"
+                  title="ownerId, key"
+                  data-context='{"ownerId":"orga_540caeb6-521c-4a19-a955-efe6da35d142","key":"KpryQ9X1Snjrxa5ej2AOETa1dd0Auu"}'
+                >
+                  <span class="ctx-label">OAuth Consumer</span>
+                  <span class="ctx-subtitle">ownerId, key</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Org -->
+            <div class="group">
+              <h2 class="ctx-group-title">Org</h2>
+              <div class="ctx-group">
+                <button
+                  class="ctx-btn"
+                  title="ownerId, currentUserId"
+                  data-context='{"ownerId":"orga_3547a882-d464-4c34-8168-add4b3e0c135","currentUserId":"user_d3d02829-8847-40ea-ab76-ada4e2f026c0"}'
+                >
+                  <span class="ctx-label">ACME BAR</span>
+                  <span class="ctx-subtitle">ownerId, currentUserId</span>
+                </button>
+                <button
+                  class="ctx-btn"
+                  title="ownerId, currentUserId"
+                  data-context='{"ownerId":"orga_540caeb6-521c-4a19-a955-efe6da35d142","currentUserId":"user_d3d02829-8847-40ea-ab76-ada4e2f026c0"}'
+                >
+                  <span class="ctx-label">ACME FOO</span>
+                  <span class="ctx-subtitle">ownerId, currentUserId</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </aside>
+      </div>
     </div>
-
-    <cc-smart-container> </cc-smart-container>
 
     <cc-toaster
       animation="fade-and-slide"
