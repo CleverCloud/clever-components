@@ -14,7 +14,7 @@ export const bucket1 = {
   updatedAt: new Date().toISOString(),
   sizeInBytes: random(150_000, 2_000_000),
   objectsCount: random(1_000, 1_000_000),
-  versioning: 'enabled',
+  versioning: 'ENABLED',
 };
 
 /** @type {CellarBucketState} */
@@ -36,7 +36,7 @@ export const bucketEmpty = {
   updatedAt: new Date().toISOString(),
   sizeInBytes: 0,
   objectsCount: 0,
-  versioning: 'enabled',
+  versioning: 'ENABLED',
 };
 
 /** @type {CellarBucketState} */
@@ -129,6 +129,7 @@ export function fileState(extension, path ) {
 export function fileDetailsState(extension, path ) {
   return {
     state: 'idle',
+    signedUrl:'https://cellar-c2.services.clever-cloud.com/bucket-name/file-1.extension?X-Amz-Signature=fake',
     ...fileDetails(extension, path),
   }
 }
