@@ -154,6 +154,28 @@ export class CellarExplorerClient {
       .then(sendToApi({ apiConfig: this._apiConfig }))
       .catch(catchError);
   }
+
+  /**
+   * @param {string} bucketName
+   * @param {string} objectName
+   * @param {File} file
+   */
+  async uploadObject(bucketName, objectName, file) {
+    const result = await Promise.resolve({
+      method: 'post',
+      url: `/v4/cellar/organisations/${this._ownerId}/cellar/${this._addonId}/buckets/${encodeURIComponent(bucketName)}/objects/${encodeURIComponent(objectName)}/presigned-url`,
+    })
+      .then(sendToApi({ apiConfig: this._apiConfig }))
+      .catch(catchError);
+
+    const presignedUrl = result.url;
+
+    await fetch(presignedUrl, {
+      method: 'post',
+      headers: { 'Content-Type': file.type || 'application/octet-stream' },
+      body: file,
+    });
+  }
 }
 
 /**

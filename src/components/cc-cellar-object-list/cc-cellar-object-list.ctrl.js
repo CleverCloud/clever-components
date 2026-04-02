@@ -1,7 +1,7 @@
 import { Abortable } from '../../lib/abortable.js';
 import { i18n } from '../../lib/i18n/i18n.js';
 import { notifyError, notifySuccess } from '../../lib/notifications.js';
-import { isCellarExplorerErrorWithCode } from '../cc-cellar-explorer/cc-cellar-explorer.client.js';
+import { isCellarExplorerErrorWithCode, pathToString } from '../cc-cellar-explorer/cc-cellar-explorer.client.js';
 import '../cc-smart-container/cc-smart-container.js';
 import { CcCellarNavigateToHomeEvent } from './cc-cellar-object-list.events.js';
 import './cc-cellar-object-list.js';
@@ -92,6 +92,14 @@ export class ObjectListController {
 
     onEvent('cc-cellar-object-create-directory', (directoryName) => {
       this.createDirectory(directoryName);
+    });
+
+    onEvent('cc-cellar-object-download', (objectKey) => {
+      this.download(objectKey);
+    });
+
+    onEvent('cc-cellar-object-upload', (file) => {
+      this.uploadObject(file);
     });
   }
 
@@ -219,6 +227,32 @@ export class ObjectListController {
     }
   }
 
+  /**
+   * @param {string} objectKey
+   * @returns {Promise<void>}
+   */
+  async download(objectKey) {
+    this.#updateDetails({ state: 'downloading' });
+    try {
+      const signedUrl = await this.#cellarClient.getObjectSignedUrl(this.#bucketName, objectKey);
+
+      const element = document.createElement('a');
+      element.setAttribute('href', signedUrl.url);
+      element.setAttribute('target', '_blank');
+      document.body.appendChild(element);
+      element.click();
+      document.body.removeChild(element);
+    } catch (error) {
+      this.#handleErrorOnObject({
+        error,
+        objectKey,
+        orElse: () => notifyError(i18n('cc-cellar-object-list.error.object-download-failed', { objectKey })),
+      });
+    } finally {
+      this.#updateDetails({ state: 'idle' });
+    }
+  }
+
   async #fetchObjects() {
     try {
       const response = await this.#abortable.run(() =>
@@ -227,7 +261,9 @@ export class ObjectListController {
           filter: this.#filter,
         }),
       );
-      this.#objects = [...response.directories, ...response.content].map((object) => ({ state: 'idle', ...object }));
+      this.#objects = [...response.directories, ...response.content].map((object) =>
+        object.type === 'file' ? /** @type {CellarFileState} */ ({ ...object, state: 'idle' }) : object,
+      );
       this.#nextCursor = response.cursor;
       this.#updateState({
         type: 'loaded',
@@ -368,6 +404,56 @@ export class ObjectListController {
       },
     );
     notifySuccess(i18n('cc-cellar-object-list.success.directory-created', { directoryName }));
+  }
+
+  /**
+   * @param {File} file
+   * @returns {Promise<void>}
+   */
+  async uploadObject(file) {
+    const objectKey = pathToString(this.#path) + file.name;
+    this.#updateUploadState({ type: 'uploading' });
+
+    try {
+      await this.#cellarClient.uploadObject(this.#bucketName, objectKey, file);
+      notifySuccess(i18n('cc-cellar-object-list.success.object-uploaded', { objectKey }));
+
+      /** @type {CellarFileState} */
+      const newFile = {
+        type: 'file',
+        key: objectKey,
+        name: file.name,
+        updatedAt: new Date().toISOString(),
+        contentLength: file.size,
+        volatile: true,
+        state: 'idle',
+      };
+      this.#objects = [newFile, ...this.#objects.filter((obj) => obj.key !== objectKey)];
+      this.#updateState(
+        /** @param {CellarObjectListStateLoaded} state */ (state) => {
+          state.objects = this.#objects;
+          state.uploadState = { type: 'idle' };
+        },
+      );
+    } catch (error) {
+      if (isCellarExplorerErrorWithCode(error, 'clever.file-explorer-proxy.cellar.object-too-large')) {
+        notifyError(i18n('cc-cellar-object-list.error.object-too-large'));
+      } else {
+        notifyError(i18n('cc-cellar-object-list.error.object-upload-failed'));
+      }
+      this.#updateUploadState({ type: 'idle' });
+    }
+  }
+
+  /**
+   * @param {import('./cc-cellar-object-list.types.js').CellarObjectUploadState} newState
+   */
+  #updateUploadState(newState) {
+    this.#updateState(
+      /** @param {CellarObjectListStateLoaded} state */ (state) => {
+        state.uploadState = newState;
+      },
+    );
   }
 
   /**

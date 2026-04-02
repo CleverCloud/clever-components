@@ -124,6 +124,21 @@ export class CcCellarObjectDeleteEvent extends CcEvent {
 }
 
 /**
+ * Dispatched when a Cellar object download is requested.
+ * @extends {CcEvent<string>}
+ */
+export class CcCellarObjectDownloadEvent extends CcEvent {
+  static TYPE = 'cc-cellar-object-download';
+
+  /**
+   * @param {string} details
+   */
+  constructor(details) {
+    super(CcCellarObjectDownloadEvent.TYPE, details);
+  }
+}
+
+/**
  * Dispatched when a new directory is created.
  * @extends {CcEvent<string>}
  */
@@ -135,5 +150,20 @@ export class CcCellarObjectCreateDirectoryEvent extends CcEvent {
    */
   constructor(details) {
     super(CcCellarObjectCreateDirectoryEvent.TYPE, details);
+  }
+}
+
+/**
+ * Dispatched when a file upload is requested.
+ * @extends {CcEvent<File>}
+ */
+export class CcCellarObjectUploadEvent extends CcEvent {
+  static TYPE = 'cc-cellar-object-upload';
+
+  /**
+   * @param {File} file
+   */
+  constructor(file) {
+    super(CcCellarObjectUploadEvent.TYPE, file);
   }
 }

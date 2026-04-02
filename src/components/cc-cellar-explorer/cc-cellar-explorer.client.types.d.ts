@@ -28,6 +28,7 @@ export interface CellarFile {
   name: string;
   updatedAt: string;
   contentLength: number;
+  volatile?: boolean;
 }
 
 export interface CellarDirectory {
