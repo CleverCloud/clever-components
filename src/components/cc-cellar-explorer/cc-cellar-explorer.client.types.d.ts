@@ -34,6 +34,7 @@ export interface CellarDirectory {
   type: 'directory';
   key: string;
   name: string;
+  volatile?: boolean;
 }
 
 export interface CellarFileDetails extends CellarFile {

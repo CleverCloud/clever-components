@@ -507,7 +507,14 @@ export const translations = {
   'cc-cellar-explorer.error': `Une erreur est survenue pendant le chargement`,
   //#endregion
   //#region cc-cellar-object-list
+  'cc-cellar-object-list.add-directory.dialog.heading': `Ajouter un nouveau dossier`,
+  'cc-cellar-object-list.add-directory.dialog.label': `Nom du dossier`,
+  'cc-cellar-object-list.add-directory.dialog.notice': `Uploadez un objet après avoir créé un dossier, sinon celui-ci ne sera pas conservé dans votre bucket.`,
+  'cc-cellar-object-list.add-directory.dialog.submit': `Créer le dossier`,
   'cc-cellar-object-list.back-to-bucket-list': `Retour à la liste des buckets`,
+  'cc-cellar-object-list.badge.new': `Nouveau`,
+  'cc-cellar-object-list.button.upload': `Téléverser un objet`,
+  'cc-cellar-object-list.create.directory-name.help': `Le nom du dossier ne peut pas contenir de caractères ASCII non imprimables (128–255 caractères décimaux) ni les caractères suivants : / \\ { } ^ % \` [ ] " < > ~ # |`,
   'cc-cellar-object-list.date': /** @param {{date: string}} _ */ ({ date }) => formatDateOnly(date),
   'cc-cellar-object-list.details.actions.delete.button': `Supprimer l'objet`,
   'cc-cellar-object-list.details.actions.download.button': `Télécharger l'objet`,
@@ -531,18 +538,27 @@ export const translations = {
   'cc-cellar-object-list.error': `Une erreur est survenue pendant le chargement de la liste des objets`,
   'cc-cellar-object-list.error.bucket-not-found': /** @param {{bucketName: string}} _ */ ({ bucketName }) =>
     `Le bucket ${bucketName} n'existe pas`,
+  'cc-cellar-object-list.error.directory-already-exists': /** @param {{directoryName: string}} _ */ ({
+    directoryName,
+  }) => `Le dossier ${directoryName} existe déjà`,
+  'cc-cellar-object-list.error.directory-name-invalid': `Le nom du dossier contient un caractère invalide (voir le message d'aide ci-dessus)`,
   'cc-cellar-object-list.error.object-deletion-failed': /** @param {{objectKey: string}} _ */ ({ objectKey }) =>
     `La suppression de l'objet ${objectKey} a échoué`,
+  'cc-cellar-object-list.error.object-download-failed': /** @param {{objectKey: string}} _ */ ({ objectKey }) =>
+    `Le téléchargement de l'objet ${objectKey} a échoué`,
   'cc-cellar-object-list.error.object-fetch-failed': /** @param {{objectKey: string}} _ */ ({ objectKey }) =>
     `Impossible de récupérer l'objet ${objectKey}`,
   'cc-cellar-object-list.error.object-not-found': /** @param {{objectKey: string}} _ */ ({ objectKey }) =>
     `L'objet ${objectKey} n'existe pas`,
+  'cc-cellar-object-list.error.object-upload-failed': /** @param {{objectKey: string}} _ */ ({ objectKey }) =>
+    `Le téléversement de l'objet ${objectKey} a échoué`,
   'cc-cellar-object-list.grid.a11y-name': `Liste des objets`,
   'cc-cellar-object-list.grid.column.last-update': `Dernière modification`,
   'cc-cellar-object-list.grid.column.name': `Nom`,
   'cc-cellar-object-list.grid.column.size': `Taille`,
   'cc-cellar-object-list.grid.show-details.a11y-name': /** @param {{objectName: string}} _ */ ({ objectName }) =>
     `Afficher les détails de l'objet ${objectName}`,
+  'cc-cellar-object-list.heading.add.directory': `Nouveau dossier`,
   'cc-cellar-object-list.heading.filter.button': `Filtrer`,
   'cc-cellar-object-list.heading.filter.label': `Filtre`,
   'cc-cellar-object-list.heading.title': `Liste des objets`,
@@ -557,10 +573,14 @@ export const translations = {
   'cc-cellar-object-list.page.next': `Page suivante`,
   'cc-cellar-object-list.page.previous': `Page précédente`,
   'cc-cellar-object-list.size': /** @param {{size: number}} _ */ ({ size }) => formatBytes(size),
+  'cc-cellar-object-list.success.directory-created': /** @param {{directoryName: string}} _ */ ({ directoryName }) =>
+    `Le dossier "${directoryName}" a été créé avec succès`,
   'cc-cellar-object-list.success.object-already-deleted': /** @param {{objectKey: string}} _ */ ({ objectKey }) =>
     `L'objet ${objectKey} était déjà supprimé`,
   'cc-cellar-object-list.success.object-deleted': /** @param {{objectKey: string}} _ */ ({ objectKey }) =>
     `L'objet ${objectKey} a été supprimé avec succès`,
+  'cc-cellar-object-list.success.object-uploaded': /** @param {{objectKey: string}} _ */ ({ objectKey }) =>
+    `L'objet ${objectKey} a été téléversé avec succès`,
   //#endregion
   //#region cc-clipboard
   'cc-clipboard.copied': `Le texte a été copié`,
