@@ -350,6 +350,7 @@ export class CcGrid extends LitElement {
                 value=${cell.value}
               ></cc-clipboard>`
             : ''}
+          ${cell.badge != null ? html`<cc-badge intent="info">${cell.badge}</cc-badge>` : ''}
         </div>`,
       };
     }
@@ -378,6 +379,7 @@ export class CcGrid extends LitElement {
                 value=${cell.value}
               ></cc-clipboard>`
             : ''}
+          ${cell.badge != null ? html`<cc-badge intent="info">${cell.badge}</cc-badge>` : ''}
         </div>`,
       };
     }
