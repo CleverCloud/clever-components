@@ -108,6 +108,20 @@ export const dataLoaded = makeStory(conf, {
   ],
 });
 
+export const withCustomApiBridgeBaseUrl = makeStory(conf, {
+  /** @type {Partial<CcTokenApiList>[]} */
+  items: [
+    {
+      apiBridgeBaseUrl: 'https://custom-api-bridge.example.com',
+      apiTokenUpdateHref,
+      state: {
+        type: 'loaded',
+        apiTokens: baseTokens,
+      },
+    },
+  ],
+});
+
 export const dataLoadedWithNoPassword = makeStory(conf, {
   /** @type {Partial<CcTokenApiList>[]} */
   items: [

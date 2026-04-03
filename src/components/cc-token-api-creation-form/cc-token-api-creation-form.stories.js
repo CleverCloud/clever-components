@@ -81,6 +81,21 @@ export const dataLoadedWithValidationStep = makeStory(conf, {
   ],
 });
 
+export const withCustomApiBridgeBaseUrl = makeStory(conf, {
+  /** @type {Partial<CcTokenApiCreationForm>[]} */
+  items: [
+    {
+      apiBridgeBaseUrl: 'https://custom-api-bridge.example.com',
+      state: {
+        type: 'loaded',
+        activeStep: 'configuration',
+        isMfaEnabled: true,
+        values: CcTokenApiCreationForm.DEFAULT_FORM_VALUES,
+      },
+    },
+  ],
+});
+
 export const dataLoadedWithApiTokenCreated = makeStory(conf, {
   /** @type {Partial<CcTokenApiCreationForm>[]} */
   items: [

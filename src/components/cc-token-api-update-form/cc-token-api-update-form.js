@@ -34,6 +34,7 @@ const SKELETON_VALUES = { name: '', description: '' };
 export class CcTokenApiUpdateForm extends LitElement {
   static get properties() {
     return {
+      apiBridgeBaseUrl: { type: String, attribute: 'api-bridge-base-url' },
       apiTokenListHref: { type: String, attribute: 'api-token-list-href' },
       state: { type: Object },
     };
@@ -41,6 +42,9 @@ export class CcTokenApiUpdateForm extends LitElement {
 
   constructor() {
     super();
+
+    /** @type {string} Sets the base URL of the API bridge used in the curl example. */
+    this.apiBridgeBaseUrl = 'https://api-bridge.clever-cloud.com';
 
     /** @type {string|null} Sets the URL to navigate back to the API token list. */
     this.apiTokenListHref = null;
@@ -102,7 +106,7 @@ export class CcTokenApiUpdateForm extends LitElement {
               <dt>${i18n('cc-token-api-update-form.cli.content.use-token')}</dt>
               <dd>
                 <cc-code>
-                  curl -H "Authorization: Bearer &lt;TOKEN&gt;" https://api-bridge.clever-cloud.com/v2/self
+                  curl -H "Authorization: Bearer &lt;TOKEN&gt;" ${new URL('/v2/self', this.apiBridgeBaseUrl).href}
                 </cc-code>
               </dd>
             </dl>

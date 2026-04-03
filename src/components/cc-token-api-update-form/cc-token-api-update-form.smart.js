@@ -24,6 +24,7 @@ defineSmartComponent({
     const { apiConfig, apiTokenId } = context;
     const api = new Api(apiConfig, apiTokenId);
 
+    updateComponent('apiBridgeBaseUrl', apiConfig.AUTH_BRIDGE_HOST);
     updateComponent('state', { type: 'loading' });
 
     api
