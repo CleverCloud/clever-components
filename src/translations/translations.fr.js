@@ -1403,6 +1403,8 @@ export const translations = {
   'cc-network-group-list.refresh.error': `Le membre a bien été lié au Network Group mais une erreur est survenue pendant le rafraîchissement de la liste`,
   //#endregion
   //#region cc-network-group-member-card
+  'cc-network-group-member-card.deleted-member.badge': `Ressource supprimée`,
+  'cc-network-group-member-card.deleted-member.warning': `Cette ressource a été supprimée, elle n'a donc plus de pairs. Ce membre apparaît toujours dans ce Network Group même s'il n'est plus valide. Vous pouvez le dissocier maintenant pour nettoyer votre Network Group.`,
   'cc-network-group-member-card.link.dashboard-addon': `Vue d'ensemble de l'add-on`,
   'cc-network-group-member-card.link.dashboard-application': `Vue d'ensemble de l'application`,
   'cc-network-group-member-card.nb-of-peers': /** @param {{ nbOfPeers: number}} _ */ ({ nbOfPeers }) =>

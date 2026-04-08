@@ -269,6 +269,20 @@ export const memberWithoutDashboardUrl = {
   peerList: memberExternalWithPeers.peerList,
 };
 
+/** @type {NetworkGroupMember} */
+export const memberDeletedApp = {
+  kind: 'DELETED',
+  id: 'app_c3d4e5f6-3333-4444-5555-666677778888',
+  label: 'My Java App',
+};
+
+/** @type {NetworkGroupMember} */
+export const memberDeletedAddon = {
+  kind: 'DELETED',
+  id: 'addon_d4e5f6a7-4444-5555-6666-777788889999',
+  label: 'MongoDB Staging',
+};
+
 /** @type {NetworkGroupMember[]} */
 export const networkGroupMemberList = [
   memberWithPeers,

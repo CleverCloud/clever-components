@@ -2,6 +2,8 @@ import {
   memberAddon,
   memberAddonWithoutPeers,
   memberAppWithoutPeers,
+  memberDeletedAddon,
+  memberDeletedApp,
   memberExternalWithoutPeers,
   memberExternalWithPeers,
   memberWithoutDashboardUrl,
@@ -84,6 +86,18 @@ export const withoutDashboardUrl = makeStory(conf, {
   items: [
     {
       member: memberWithoutDashboardUrl,
+    },
+  ],
+});
+
+export const deleted = makeStory(conf, {
+  /** @type {Partial<CcNetworkGroupMemberCard>[]} */
+  items: [
+    {
+      member: memberDeletedApp,
+    },
+    {
+      member: memberDeletedAddon,
     },
   ],
 });

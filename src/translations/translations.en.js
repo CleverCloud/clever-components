@@ -1392,6 +1392,8 @@ export const translations = {
   'cc-network-group-list.refresh.error': `The Network Group member was linked successfully but something went wrong while refreshing the list`,
   //#endregion
   //#region cc-network-group-member-card
+  'cc-network-group-member-card.deleted-member.badge': `Resource deleted`,
+  'cc-network-group-member-card.deleted-member.warning': `This resource has been deleted, so it no longer has any associated peers. The member still appears in this Network Group even though it is no longer valid. You can unlink it now to clear your Network Group.`,
   'cc-network-group-member-card.link.dashboard-addon': `Add-on overview`,
   'cc-network-group-member-card.link.dashboard-application': `Application overview`,
   'cc-network-group-member-card.nb-of-peers': /** @param {{ nbOfPeers: number}} _ */ ({ nbOfPeers }) =>

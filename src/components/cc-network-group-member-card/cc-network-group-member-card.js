@@ -3,9 +3,11 @@ import { createRef, ref } from 'lit/directives/ref.js';
 import {
   iconRemixArrowRightLine as iconArrowRight,
   iconRemixArrowUpSLine as iconArrowUp,
+  iconRemixCloseFill as iconDelete,
 } from '../../assets/cc-remix.icons.js';
 import { isStringEmpty } from '../../lib/utils.js';
 import { i18n } from '../../translations/translation.js';
+import '../cc-badge/cc-badge.js';
 import '../cc-button/cc-button.js';
 import '../cc-clipboard/cc-clipboard.js';
 import '../cc-expand/cc-expand.js';
@@ -16,7 +18,7 @@ import '../cc-network-group-peer-card/cc-network-group-peer-card.js';
 import { CcNetworkGroupMemberUnlinkRequestEvent } from './cc-network-group-member-card.events.js';
 
 /**
- * @import { NetworkGroupMember } from './cc-network-group-member-card.types.js'
+ * @import { NetworkGroupMember, NetworkGroupMemberClever, NetworkGroupMemberDeleted, NetworkGroupMemberExternal, NetworkGroupMemberLogo } from './cc-network-group-member-card.types.js'
  * @import { NetworkGroupPeer } from '../cc-network-group-peer-card/cc-network-group-peer-card.types.js'
  * @import { CcButton } from '../cc-button/cc-button.js'
  * @import { Ref } from 'lit/directives/ref.js'
@@ -69,7 +71,7 @@ export class CcNetworkGroupMemberCard extends LitElement {
   }
 
   _onUnlinkRequest() {
-    this.dispatchEvent(new CcNetworkGroupMemberUnlinkRequestEvent(this.member.id));
+    this.dispatchEvent(new CcNetworkGroupMemberUnlinkRequestEvent({ id: this.member.id, kind: this.member.kind }));
   }
 
   /**
@@ -85,6 +87,7 @@ export class CcNetworkGroupMemberCard extends LitElement {
       case 'ADDON':
         return i18n('cc-network-group-member-card.link.dashboard-addon');
       case 'EXTERNAL':
+      case 'DELETED':
         return '';
     }
   }
@@ -94,7 +97,7 @@ export class CcNetworkGroupMemberCard extends LitElement {
    * @returns {string|null}
    */
   _getDashboardUrl(member) {
-    if (member.kind !== 'EXTERNAL') {
+    if (member.kind === 'APPLICATION' || member.kind === 'ADDON') {
       return member.dashboardUrl;
     }
     return null;
@@ -113,6 +116,14 @@ export class CcNetworkGroupMemberCard extends LitElement {
   }
 
   render() {
+    if (this.member.kind === 'DELETED') {
+      return this._renderMemberDeleted({
+        member: this.member,
+        isUnlinking: this.isUnlinking,
+        isDisabled: this.isDisabled,
+      });
+    }
+
     const hasPeers = this.member.peerList.length > 0;
 
     if (hasPeers) {
@@ -133,7 +144,7 @@ export class CcNetworkGroupMemberCard extends LitElement {
 
   /**
    * @param {Object} params
-   * @param {NetworkGroupMember} params.member
+   * @param {NetworkGroupMemberClever|NetworkGroupMemberExternal} params.member
    * @param {boolean} params.isUnlinking
    * @param {boolean} params.isDisabled
    *
@@ -158,7 +169,7 @@ export class CcNetworkGroupMemberCard extends LitElement {
 
   /**
    * @param {Object} params
-   * @param {NetworkGroupMember} params.member
+   * @param {NetworkGroupMemberClever | NetworkGroupMemberExternal} params.member
    * @param {boolean} params.isUnlinking
    * @param {boolean} params.isDisabled
    * @param {boolean} params.isOpen
@@ -194,7 +205,44 @@ export class CcNetworkGroupMemberCard extends LitElement {
   }
 
   /**
-   * @param {{ url: string, a11yName: string }} logo
+   * @param {Object} params
+   * @param {NetworkGroupMemberDeleted} params.member
+   * @param {boolean} params.isUnlinking
+   * @param {boolean} params.isDisabled
+   */
+  _renderMemberDeleted({ member, isUnlinking, isDisabled }) {
+    return html`
+      <div class="member-card">
+        <div class="header">
+          <span class="deleted-member-identity">
+            <span class="deleted-member-identity-label reduced-opacity">${member.label}</span>
+            <cc-badge>${i18n('cc-network-group-member-card.deleted-member.badge')}</cc-badge>
+          </span>
+          <span class="reduced-opacity">${this._renderPeersCount(0)}</span>
+        </div>
+        <div class="deleted-member-footer">
+          <span class="deleted-member-footer-warning reduced-opacity">
+            ${i18n('cc-network-group-member-card.deleted-member.warning')}
+          </span>
+          <cc-button
+            class="unlink-btn"
+            danger
+            .icon="${iconDelete}"
+            a11y-name="${i18n('cc-network-group-member-card.unlink.a11y-name', { label: member.label })}"
+            ?waiting="${isUnlinking}"
+            ?disabled="${isDisabled}"
+            @cc-click="${this._onUnlinkRequest}"
+            ${ref(this._unlinkButtonRef)}
+          >
+            ${i18n('cc-network-group-member-card.unlink')}
+          </cc-button>
+        </div>
+      </div>
+    `;
+  }
+
+  /**
+   * @param {NetworkGroupMemberLogo} logo
    * @param {string} label
    *
    * Renders the member identity section (logo + label)
@@ -298,6 +346,10 @@ export class CcNetworkGroupMemberCard extends LitElement {
           padding: var(--member-card-padding);
         }
 
+        .reduced-opacity {
+          opacity: var(--cc-opacity-when-disabled);
+        }
+
         /* region Header */
 
         .header {
@@ -349,6 +401,17 @@ export class CcNetworkGroupMemberCard extends LitElement {
         .identity-label {
           color: var(--cc-color-text-primary-strongest);
           flex: 1 1 10em;
+          font-weight: bold;
+        }
+
+        .deleted-member-identity {
+          align-items: center;
+          display: flex;
+          flex-wrap: wrap;
+          gap: 0.5em;
+        }
+
+        .deleted-member-identity-label {
           font-weight: bold;
         }
 
@@ -436,7 +499,26 @@ export class CcNetworkGroupMemberCard extends LitElement {
           margin-left: auto;
         }
 
+        .deleted-member-footer {
+          align-items: center;
+          display: flex;
+          flex-wrap: wrap;
+          gap: 1em;
+        }
+
+        .deleted-member-footer-warning {
+          flex: 1 1 25em;
+        }
+
         @container member-card (max-width: 25em) {
+          .deleted-member-footer {
+            flex-direction: column;
+          }
+
+          .deleted-member-footer-warning {
+            flex: 1 1 0;
+          }
+
           .unlink-btn {
             width: 100%;
           }
