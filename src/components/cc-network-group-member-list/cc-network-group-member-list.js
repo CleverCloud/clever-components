@@ -44,6 +44,7 @@ export class CcNetworkGroupMemberList extends LitElement {
       memberListState: { type: Object, attribute: 'member-list-state' },
       networkGroupId: { type: String, attribute: 'network-group-id' },
       _memberIdToUnlink: { type: String, state: true },
+      _showUnlinkDialog: { type: Boolean, state: true },
     };
   }
 
@@ -67,6 +68,9 @@ export class CcNetworkGroupMemberList extends LitElement {
 
     /** @type {string|null} Used to track the id of the member to unlink to dispatch the proper event payload */
     this._memberIdToUnlink = null;
+
+    /** @type {boolean} Used to track whether the unlink confirmation dialog should be shown */
+    this._showUnlinkDialog = false;
 
     new LostFocusController(this, 'cc-network-group-member-card', ({ suggestedElement }) => {
       if (suggestedElement == null) {
@@ -94,11 +98,17 @@ export class CcNetworkGroupMemberList extends LitElement {
    * @param {CcNetworkGroupMemberUnlinkRequestEvent} e
    */
   _onUnlinkMemberRequest(e) {
-    this._memberIdToUnlink = e.detail;
+    this._memberIdToUnlink = e.detail.id;
+    if (e.detail.kind === 'DELETED') {
+      this.dispatchEvent(new CcNetworkGroupMemberUnlinkEvent(e.detail.id));
+    } else {
+      this._showUnlinkDialog = true;
+    }
   }
 
   _onDialogClose() {
     this._memberIdToUnlink = null;
+    this._showUnlinkDialog = false;
   }
 
   resetLinkForm() {
@@ -112,6 +122,7 @@ export class CcNetworkGroupMemberList extends LitElement {
     const isNotUnlinking = this.memberListState.type !== 'unlinking';
     if (wasUnlinking && isNotUnlinking) {
       this._memberIdToUnlink = null;
+      this._showUnlinkDialog = false;
     }
   }
 
@@ -125,7 +136,11 @@ export class CcNetworkGroupMemberList extends LitElement {
         emptyTextRef: this._emptyTextRef,
       })}
       ${this._renderLinkForm({ state: this.linkFormState })}
-      ${this._renderUnlinkDialog(this._memberIdToUnlink, isUnlinking)}
+      ${this._renderUnlinkDialog({
+        showDialog: this._showUnlinkDialog,
+        memberIdToUnlink: this._memberIdToUnlink,
+        isUnlinking,
+      })}
     `;
   }
 
@@ -141,6 +156,20 @@ export class CcNetworkGroupMemberList extends LitElement {
   _renderMemberList({ state, memberIdToUnlink, emptyTextRef }) {
     const isUnlinking = state.type === 'unlinking';
     const hasMembers = state.type === 'loaded' || state.type === 'unlinking' ? state.memberList.length > 0 : false;
+    const sortedMemberList =
+      state.type === 'loaded' || state.type === 'unlinking'
+        ? state.memberList.toSorted((a, b) => {
+            // Put 'DELETED' kind last
+            if (a.kind === 'DELETED' && b.kind !== 'DELETED') {
+              return 1;
+            }
+            if (a.kind !== 'DELETED' && b.kind === 'DELETED') {
+              return -1;
+            }
+            // Otherwise, sort alphabetically by label
+            return a.label.localeCompare(b.label);
+          })
+        : [];
 
     return html`
       <cc-block>
@@ -162,7 +191,7 @@ export class CcNetworkGroupMemberList extends LitElement {
             ? html`
                 <div class="member-list">
                   ${repeat(
-                    state.memberList,
+                    sortedMemberList,
                     (member) => member.id,
                     (member, index) => html`
                       <cc-network-group-member-card
@@ -211,13 +240,12 @@ export class CcNetworkGroupMemberList extends LitElement {
   }
 
   /**
-   * @param {string} memberIdToUnlink
-   * @param {boolean} isUnlinking
+   * @param {{ showDialog: boolean, memberIdToUnlink: string|null, isUnlinking: boolean }} params
    **/
-  _renderUnlinkDialog(memberIdToUnlink, isUnlinking) {
+  _renderUnlinkDialog({ showDialog, memberIdToUnlink, isUnlinking }) {
     return html`
       <cc-dialog
-        ?open="${memberIdToUnlink != null}"
+        ?open="${showDialog}"
         heading="${i18n('cc-network-group-member-list.unlink.dialog.heading')}"
         @cc-close="${this._onDialogClose}"
       >

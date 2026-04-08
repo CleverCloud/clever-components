@@ -19,7 +19,7 @@ const FIFTY_MINUTES = 50 * 60 * 1000;
 /**
  * @import { ApiConfig } from '../../lib/send-to-api.types.js'
  * @import { NetworkGroupMemberLinkFormStateIdle, NetworkGroupMemberLinkFormStateLinking } from './cc-network-group-member-list.types.js'
- * @import { NetworkGroupMember } from '../cc-network-group-member-card/cc-network-group-member-card.types.js';
+ * @import { NetworkGroupMember, NetworkGroupMemberLogo } from '../cc-network-group-member-card/cc-network-group-member-card.types.js';
  * @import { CcNetworkGroupMemberList } from './cc-network-group-member-list.js'
  * @import { NetworkGroupPeer } from '../cc-network-group-peer-card/cc-network-group-peer-card.types.js';
  * @import { NetworkGroup } from '@clevercloud/client/cc-api-commands/network-group/network-group.types.js';
@@ -291,7 +291,7 @@ class Api {
 
   /**
    * @param {string} resourceId
-   * @param {NetworkGroupMember['kind']} kind
+   * @param {Exclude<NetworkGroupMember['kind'], 'DELETED'>} kind
    * @returns {string|null}
    */
   #getMemberDashboardUrl(resourceId, kind) {
@@ -307,16 +307,21 @@ class Api {
 
   /**
    * @param {string} resourceId
-   * @param {NetworkGroupMember['kind']} kind
-   * @returns {Promise<NetworkGroupMember['logo']>}
+   * @param {Exclude<NetworkGroupMember['kind'], 'DELETED'>} kind
+   * @returns {Promise<NetworkGroupMemberLogo>}
    */
   async #getMemberLogo(resourceId, kind) {
     switch (kind) {
       case 'APPLICATION': {
         const applicationData = await this.#ccApiClient.send(
           new GetApplicationCommand({ applicationId: resourceId, ownerId: this.#ownerId }),
-          { signal: this.#signal },
+          {
+            signal: this.#signal,
+          },
         );
+        if (applicationData == null) {
+          return null;
+        }
         return {
           url: applicationData.instance.variant.logo,
           a11yName: applicationData.instance.variant.name,
@@ -327,6 +332,9 @@ class Api {
           new GetAddonCommand({ addonId: resourceId, ownerId: this.#ownerId }),
           { signal: this.#signal },
         );
+        if (addonData == null) {
+          return null;
+        }
         return {
           url: addonData.provider.logoUrl,
           a11yName: addonData.provider.name,
@@ -346,12 +354,20 @@ class Api {
    * @returns {Promise<NetworkGroupMember>}
    * */
   async #getMemberWithInfo(member, rawPeerList) {
-    const logoPromise = this.#getMemberLogo(member.id, member.kind);
-    const peerListPromise = Promise.all(
-      rawPeerList.filter((peer) => peer.parentMember === member.id).map((peer) => this.#getPeerWithInfo(peer)),
-    );
+    const [logo, peerList] = await Promise.all([
+      this.#getMemberLogo(member.id, member.kind),
+      Promise.all(
+        rawPeerList.filter((peer) => peer.parentMember === member.id).map((peer) => this.#getPeerWithInfo(peer)),
+      ),
+    ]);
 
-    const [logo, peerList] = await Promise.all([logoPromise, peerListPromise]);
+    if (logo == null) {
+      return {
+        kind: 'DELETED',
+        id: member.id,
+        label: member.label,
+      };
+    }
 
     return {
       id: member.id,
