@@ -1385,7 +1385,7 @@ export const translations = {
   'cc-network-group-list.form.select-label': `Choose a Network Group to link`,
   'cc-network-group-list.link.error': `Something went wrong while linking the Network Group`,
   'cc-network-group-list.link.success': `The Network Group has been linked successfully`,
-  'cc-network-group-list.list.dashboard-link': `Go to Network Group`,
+  'cc-network-group-list.list.dashboard-link': `Go to the Network Group`,
   'cc-network-group-list.list.empty': `You don't have any Network Groups linked to your resource`,
   'cc-network-group-list.list.error': `Something went wrong while loading the list of linked Network Groups`,
   'cc-network-group-list.list.heading': `Linked Network Groups`,
