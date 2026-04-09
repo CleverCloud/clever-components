@@ -170,11 +170,19 @@ export class CellarExplorerClient {
 
     const presignedUrl = result.url;
 
-    await fetch(presignedUrl, {
+    const response = await fetch(presignedUrl, {
       method: 'post',
-      headers: { 'Content-Type': file.type || 'application/octet-stream' },
+      headers: { 'Content-Type': file.type ?? 'application/octet-stream' },
       body: file,
     });
+
+    if (!response.ok) {
+      const body = await response.json().catch(() => /** @type {null} */ (null));
+      if (body?.code != null) {
+        throw new CellarExplorerError(body.code, body.error, body.context);
+      }
+      throw new Error(`Upload failed with status ${response.status}`);
+    }
   }
 }
 

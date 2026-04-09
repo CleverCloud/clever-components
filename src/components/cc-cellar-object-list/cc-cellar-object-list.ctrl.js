@@ -15,7 +15,7 @@ import './cc-cellar-object-list.js';
  * @import { OnEventCallback } from '../../lib/smart/smart-component.types.js'
  */
 
-const INVALID_CHARS = /[/\\{}^%`\]">[~<#|\u0080-\u00FF]/;
+const DIRECTORY_INVALID_CHARS = /[/\\{}^%`\]">[~<#|\u0080-\u00FF]/;
 
 export class ObjectListController {
   /** @type {CellarExplorerClient} */
@@ -359,9 +359,8 @@ export class ObjectListController {
    */
   async createDirectory(directoryName) {
     this.#updateCreateForm({ type: 'creating', directoryName, error: null });
-    await this.#getComponent().updateComplete;
 
-    if (INVALID_CHARS.test(directoryName)) {
+    if (DIRECTORY_INVALID_CHARS.test(directoryName)) {
       this.#updateCreateForm({ type: 'idle', directoryName, error: 'directory-name-invalid' });
       return;
     }
@@ -400,7 +399,7 @@ export class ObjectListController {
     this.#updateState(
       /** @param {CellarObjectListStateLoaded} state */ (state) => {
         state.objects = this.#objects;
-        state.createForm = null;
+        state.createDirectoryForm = null;
       },
     );
     notifySuccess(i18n('cc-cellar-object-list.success.directory-created', { directoryName }));
@@ -436,11 +435,12 @@ export class ObjectListController {
         },
       );
     } catch (error) {
-      if (isCellarExplorerErrorWithCode(error, 'clever.file-explorer-proxy.cellar.object-too-large')) {
-        notifyError(i18n('cc-cellar-object-list.error.object-too-large'));
-      } else {
-        notifyError(i18n('cc-cellar-object-list.error.object-upload-failed'));
-      }
+      this.#handleErrorOnObject({
+        error,
+        objectKey,
+        orElse: () => notifyError(i18n('cc-cellar-object-list.error.object-upload-failed', { objectKey })),
+      });
+    } finally {
       this.#updateUploadState({ type: 'idle' });
     }
   }
@@ -463,9 +463,9 @@ export class ObjectListController {
     this.#updateState(
       /** @param {CellarObjectListStateLoaded} state */ (state) => {
         if (newState == null) {
-          state.createForm = null;
+          state.createDirectoryForm = null;
         } else {
-          state.createForm = { ...state.createForm, ...newState };
+          state.createDirectoryForm = { ...state.createDirectoryForm, ...newState };
         }
       },
     );

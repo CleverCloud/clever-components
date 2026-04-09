@@ -35,8 +35,6 @@ export interface CellarDirectory {
   type: 'directory';
   key: string;
   name: string;
-  updatedAt?: string;
-  contentLength?: number;
   volatile?: boolean;
 }
 

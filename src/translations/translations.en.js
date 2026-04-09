@@ -539,7 +539,6 @@ export const translations = {
     `Failed to get object ${objectKey}`,
   'cc-cellar-object-list.error.object-not-found': /** @param {{objectKey: string}} _ */ ({ objectKey }) =>
     `Object ${objectKey} does not exist`,
-  'cc-cellar-object-list.error.object-too-large': `File too large`,
   'cc-cellar-object-list.error.object-upload-failed': `Upload failed`,
   'cc-cellar-object-list.grid.a11y-name': `List of objects`,
   'cc-cellar-object-list.grid.column.last-update': `Last update`,

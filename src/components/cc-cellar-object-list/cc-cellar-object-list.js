@@ -118,9 +118,6 @@ export class CcCellarObjectList extends LitElement {
 
     /** @type {Ref<HTMLFormElement>} */
     this._createDirectoryFormRef = createRef();
-
-    /** @type {Ref<HTMLElement>} */
-    this._createDirectoryButtonRef = createRef();
   }
 
   focusFirstCell() {
@@ -209,7 +206,7 @@ export class CcCellarObjectList extends LitElement {
     if (this.state.type === 'loaded') {
       this.state = {
         ...this.state,
-        createForm: {
+        createDirectoryForm: {
           type: 'idle',
           directoryName: '',
         },
@@ -221,7 +218,7 @@ export class CcCellarObjectList extends LitElement {
     if (this.state.type === 'loaded') {
       this.state = {
         ...this.state,
-        createForm: null,
+        createDirectoryForm: null,
       };
       this._createDirectoryFormRef.value.reset();
     }
@@ -258,7 +255,7 @@ export class CcCellarObjectList extends LitElement {
     return html`<div class="wrapper">
       ${this._renderHeading(this.state)} ${this._renderPath(this.state)} ${this._renderList(this.state)}
       ${this._renderPagination(this.state)} ${this.state.type === 'loaded' ? this._renderFileDetails(this.state) : ''}
-      ${this.state.type === 'loaded' ? this._renderDirectoryCreationForm(this.state.createForm) : ''}
+      ${this.state.type === 'loaded' ? this._renderDirectoryCreationForm(this.state.createDirectoryForm) : ''}
     </div>`;
   }
 
@@ -307,7 +304,6 @@ export class CcCellarObjectList extends LitElement {
             >${i18n('cc-cellar-object-list.button.upload')}</cc-button
           >
           <cc-button
-            ${ref(this._createDirectoryButtonRef)}
             class="add-new-directory"
             outlined
             primary
