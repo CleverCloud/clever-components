@@ -33,11 +33,17 @@ export interface NetworkGroupLinkFormStateEmpty {
 
 export type NetworkGroupListState =
   | NetworkGroupListStateLoaded
+  | NetworkGroupListStateUnlinking
   | NetworkGroupListStateLoading
   | NetworkGroupListStateError;
 
 export interface NetworkGroupListStateLoaded {
   type: 'loaded';
+  linkedNetworkGroupList: NetworkGroup[];
+}
+
+export interface NetworkGroupListStateUnlinking {
+  type: 'unlinking';
   linkedNetworkGroupList: NetworkGroup[];
 }
 

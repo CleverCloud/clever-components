@@ -13,6 +13,8 @@ import '../cc-block/cc-block.js';
 import '../cc-button/cc-button.js';
 import '../cc-clipboard/cc-clipboard.js';
 import '../cc-code/cc-code.js';
+import '../cc-dialog-confirm-actions/cc-dialog-confirm-actions.js';
+import '../cc-dialog/cc-dialog.js';
 import '../cc-icon/cc-icon.js';
 import '../cc-img/cc-img.js';
 import '../cc-link/cc-link.js';
@@ -20,13 +22,14 @@ import '../cc-loader/cc-loader.js';
 import '../cc-network-group-peer-card/cc-network-group-peer-card.js';
 import '../cc-notice/cc-notice.js';
 import '../cc-select/cc-select.js';
-import { CcNetworkGroupLinkEvent } from './cc-network-group-list.events.js';
+import { CcNetworkGroupLinkEvent, CcNetworkGroupUnlinkEvent } from './cc-network-group-list.events.js';
 
 /**
  * @import { NetworkGroupListState, NetworkGroupLinkFormState, NetworkGroup } from './cc-network-group-list.types.js'
  * @import { Ref } from 'lit/directives/ref.js'
  * @import { Option } from '../cc-select/cc-select.types.js'
  * @import { CcLink } from '../cc-link/cc-link.js'
+ * @import { PropertyValues } from 'lit'
  */
 
 /**
@@ -47,6 +50,7 @@ export class CcNetworkGroupList extends LitElement {
       linkFormState: { type: Object, attribute: 'link-form-state' },
       listState: { type: Object, attribute: 'list-state' },
       resourceId: { type: String, attribute: 'resource-id' },
+      _networkGroupIdToUnlink: { type: String, state: true },
     };
   }
 
@@ -62,8 +66,25 @@ export class CcNetworkGroupList extends LitElement {
     /** @type {string} Sets the resource ID for CLI command documentation */
     this.resourceId = '<RESOURCE_ID>';
 
+    /** @type {string|null} */
+    this._networkGroupIdToUnlink = null;
+
     /** @type {Ref<CcLink>} */
     this._createNetworkGroupLinkRef = createRef();
+
+    /** @type {Ref<HTMLElement>} */
+    this._emptyListRef = createRef();
+
+    new LostFocusController(this, '.unlink-btn', ({ suggestedElement }) => {
+      if (suggestedElement == null) {
+        this._emptyListRef.value?.focus();
+        return;
+      }
+
+      if (suggestedElement instanceof HTMLElement) {
+        suggestedElement.focus();
+      }
+    });
 
     // When last Network Group available to link is linked, the form is replaced by a link to create a new Network Group. This controller allows to focus this link when it appears
     new LostFocusController(this, '.link-form__submit', () => {
@@ -76,7 +97,36 @@ export class CcNetworkGroupList extends LitElement {
     this.dispatchEvent(new CcNetworkGroupLinkEvent(formData['network-group']));
   }
 
+  /** @param {string} networkGroupId */
+  _onUnlinkRequest(networkGroupId) {
+    this._networkGroupIdToUnlink = networkGroupId;
+  }
+
+  _onDialogClose() {
+    this._networkGroupIdToUnlink = null;
+  }
+
+  _onDialogConfirm() {
+    if (this._networkGroupIdToUnlink != null) {
+      this.dispatchEvent(new CcNetworkGroupUnlinkEvent(this._networkGroupIdToUnlink));
+    }
+  }
+
+  /** @param {PropertyValues<CcNetworkGroupList>} changedProperties */
+  willUpdate(changedProperties) {
+    if (changedProperties.has('listState')) {
+      const previousListState = changedProperties.get('listState');
+      const wasUnlinking = previousListState?.type === 'unlinking';
+      const isNotUnlinking = this.listState.type !== 'unlinking';
+      if (wasUnlinking && isNotUnlinking) {
+        this._networkGroupIdToUnlink = null;
+      }
+    }
+  }
+
   render() {
+    const isUnlinking = this.listState.type === 'unlinking';
+
     const selectOptions =
       this.linkFormState.type === 'idle' || this.linkFormState.type === 'linking'
         ? this.linkFormState.selectOptions
@@ -107,6 +157,7 @@ export class CcNetworkGroupList extends LitElement {
                 selectOptions,
                 isLoading: this.linkFormState.type === 'loading',
                 isLinking: this.linkFormState.type === 'linking',
+                isDisabled: this.listState.type === 'unlinking',
               })
             : ''}
         </div>
@@ -155,7 +206,9 @@ export class CcNetworkGroupList extends LitElement {
             ? html`<cc-notice intent="warning" message="${i18n('cc-network-group-list.list.error')}"></cc-notice>`
             : ''}
           ${this.listState.type === 'loading' ? html`<cc-loader></cc-loader>` : ''}
-          ${this.listState.type === 'loaded' ? this._renderNetworkGroupList(this.listState.linkedNetworkGroupList) : ''}
+          ${this.listState.type === 'loaded' || this.listState.type === 'unlinking'
+            ? this._renderNetworkGroupList(this.listState.linkedNetworkGroupList, isUnlinking)
+            : ''}
         </div>
         <div slot="footer-right">
           <cc-link href="${getDocUrl('/develop/network-groups')}">
@@ -163,6 +216,8 @@ export class CcNetworkGroupList extends LitElement {
           </cc-link>
         </div>
       </cc-block>
+
+      ${this._renderUnlinkDialog(this._networkGroupIdToUnlink, isUnlinking)}
     `;
   }
 
@@ -171,8 +226,9 @@ export class CcNetworkGroupList extends LitElement {
    * @param {Array<Option>} _.selectOptions
    * @param {boolean} _.isLoading
    * @param {boolean} _.isLinking
+   * @param {boolean} _.isDisabled
    */
-  _renderNetworkGroupLinkForm({ selectOptions, isLoading, isLinking }) {
+  _renderNetworkGroupLinkForm({ selectOptions, isLoading, isLinking, isDisabled }) {
     const sortedSelectOptions = selectOptions.toSorted((optionA, optionB) =>
       optionA.label.localeCompare(optionB.label),
     );
@@ -183,7 +239,7 @@ export class CcNetworkGroupList extends LitElement {
         <cc-select
           label="${i18n('cc-network-group-list.form.select-label')}"
           class="link-form__select"
-          ?disabled="${isLoading || isLinking}"
+          ?disabled="${isLoading || isLinking || isDisabled}"
           .options="${sortedSelectOptions}"
           name="network-group"
           .value="${defaultValue}"
@@ -196,6 +252,7 @@ export class CcNetworkGroupList extends LitElement {
           type="submit"
           ?skeleton="${isLoading}"
           ?waiting="${isLinking}"
+          ?disabled="${isDisabled}"
         >
           ${i18n('cc-network-group-list.form.button')}
         </cc-button>
@@ -203,11 +260,14 @@ export class CcNetworkGroupList extends LitElement {
     `;
   }
 
-  /** @param {Array<NetworkGroup>} networkGroupList */
-  _renderNetworkGroupList(networkGroupList) {
+  /**
+   * @param {Array<NetworkGroup>} networkGroupList
+   * @param {boolean} isUnlinking
+   */
+  _renderNetworkGroupList(networkGroupList, isUnlinking) {
     if (networkGroupList.length === 0) {
       return html`
-        <div class="empty">
+        <div class="empty" tabindex="-1" ${ref(this._emptyListRef)}>
           <p>${i18n('cc-network-group-list.list.empty')}</p>
         </div>
       `;
@@ -230,12 +290,6 @@ export class CcNetworkGroupList extends LitElement {
                   ></cc-img>
                   <span>${networkGroup.name}</span>
                 </div>
-                <div class="network-group-card__header__link">
-                  <cc-link href="${networkGroup.dashboardUrl}">
-                    <span>${i18n('cc-network-group-list.list.dashboard-link')}</span>
-                  </cc-link>
-                  <cc-icon .icon="${iconLink}"></cc-icon>
-                </div>
               </div>
               <div class="network-group-card__id">
                 <span>${networkGroup.id}</span>
@@ -246,10 +300,51 @@ export class CcNetworkGroupList extends LitElement {
                   (peer) => html`<cc-network-group-peer-card .peer="${peer}"></cc-network-group-peer-card>`,
                 )}
               </div>
+              <div class="network-group-card__footer">
+                <div class="network-group-card__footer__link">
+                  <cc-link href="${networkGroup.dashboardUrl}">
+                    <span>${i18n('cc-network-group-list.list.dashboard-link')}</span>
+                  </cc-link>
+                  <cc-icon .icon="${iconLink}"></cc-icon>
+                </div>
+                <!-- Be careful, the button class is used by the LostFocusController to manage focus when the form disapears after linking the last network group available -->
+                <cc-button
+                  class="unlink-btn"
+                  danger
+                  outlined
+                  ?waiting="${isUnlinking}"
+                  a11y-name="${i18n('cc-network-group-list.list.unlink.a11y-name', { name: networkGroup.name })}"
+                  @cc-click="${() => this._onUnlinkRequest(networkGroup.id)}"
+                >
+                  ${i18n('cc-network-group-list.list.unlink')}
+                </cc-button>
+              </div>
             </div>
           `,
         )}
       </div>
+    `;
+  }
+
+  /**
+   * @param {string|null} networkGroupIdToUnlink
+   * @param {boolean} isUnlinking
+   */
+  _renderUnlinkDialog(networkGroupIdToUnlink, isUnlinking) {
+    return html`
+      <cc-dialog
+        ?open="${networkGroupIdToUnlink != null}"
+        heading="${i18n('cc-network-group-list.unlink.dialog.heading')}"
+        @cc-close="${this._onDialogClose}"
+      >
+        <p>${i18n('cc-network-group-list.unlink.dialog.desc')}</p>
+        <cc-dialog-confirm-actions
+          submit-intent="danger"
+          submit-label="${i18n('cc-network-group-list.unlink.dialog.unlink-btn')}"
+          ?waiting="${isUnlinking}"
+          @cc-confirm="${this._onDialogConfirm}"
+        ></cc-dialog-confirm-actions>
+      </cc-dialog>
     `;
   }
 
@@ -334,13 +429,6 @@ export class CcNetworkGroupList extends LitElement {
           width: 1.375em;
         }
 
-        .network-group-card__header__link {
-          align-items: center;
-          color: var(--cc-color-text-primary-highlight);
-          display: flex;
-          gap: 0.25em;
-        }
-
         .network-group-card__id {
           color: var(--cc-color-text-weak);
           font-style: italic;
@@ -355,6 +443,36 @@ export class CcNetworkGroupList extends LitElement {
         .peer-list {
           display: grid;
           gap: 0.5em;
+        }
+
+        .network-group-card__footer {
+          align-items: center;
+          display: flex;
+          justify-content: space-between;
+          margin-top: 1em;
+        }
+
+        .network-group-card__footer__link {
+          align-items: center;
+          color: var(--cc-color-text-primary-highlight);
+          display: flex;
+          gap: 0.25em;
+        }
+
+        cc-dialog p {
+          margin: 0;
+        }
+
+        @container host (max-width: 35em) {
+          .network-group-card__footer {
+            align-items: flex-start;
+            flex-direction: column;
+            gap: 1em;
+          }
+
+          .unlink-btn {
+            width: 100%;
+          }
         }
       `,
     ];

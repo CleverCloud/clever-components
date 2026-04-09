@@ -107,3 +107,20 @@ export const waitingWithLinking = makeStory(conf, {
     },
   ],
 });
+
+export const waitingWithUnlinking = makeStory(conf, {
+  /** @type {Partial<CcNetworkGroupList>[]} */
+  items: [
+    {
+      resourceId: RESOURCE_ID,
+      linkFormState: {
+        type: 'idle',
+        selectOptions: networkGroupSelectOptions,
+      },
+      listState: {
+        type: 'unlinking',
+        linkedNetworkGroupList,
+      },
+    },
+  ],
+});

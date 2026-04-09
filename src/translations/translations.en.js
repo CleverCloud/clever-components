@@ -1389,7 +1389,15 @@ export const translations = {
   'cc-network-group-list.list.empty': `You don't have any Network Groups linked to your resource`,
   'cc-network-group-list.list.error': `Something went wrong while loading the list of linked Network Groups`,
   'cc-network-group-list.list.heading': `Linked Network Groups`,
+  'cc-network-group-list.list.unlink': `Unlink Network Group`,
+  'cc-network-group-list.list.unlink.a11y-name': /** @param {{ name: string }} _ */ ({ name }) =>
+    `Unlink Network Group - ${name}`,
   'cc-network-group-list.refresh.error': `The Network Group member was linked successfully but something went wrong while refreshing the list`,
+  'cc-network-group-list.unlink.dialog.desc': `Unlinking this resource from the Network Group will disconnect it and all its instances from the group's private network. Are you sure you want to continue?`,
+  'cc-network-group-list.unlink.dialog.heading': `Confirm unlink`,
+  'cc-network-group-list.unlink.dialog.unlink-btn': `Confirm and unlink`,
+  'cc-network-group-list.unlink.error': `Something went wrong while unlinking the Network Group`,
+  'cc-network-group-list.unlink.success': `The Network Group has been unlinked successfully`,
   //#endregion
   //#region cc-network-group-member-card
   'cc-network-group-member-card.deleted-member.badge': `Resource deleted`,

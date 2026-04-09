@@ -35,10 +35,11 @@ interface ApiConfig {
 
 ## 🌐 API endpoints
 
-| Method | URL                                                                                | Cache?  |
-| ------ | ---------------------------------------------------------------------------------- | ------- |
-| `GET`  | `/v4/networkgroups/organisations/{ownerId}/networkgroups`                          | Default |
-| `POST` | `/v4/networkgroups/organisations/{ownerId}/networkgroups/{networkGroupId}/members` | N/A     |
+| Method   | URL                                                                                           | Cache?  |
+| -------- | --------------------------------------------------------------------------------------------- | ------- |
+| `GET`    | `/v4/networkgroups/organisations/{ownerId}/networkgroups`                                     | Default |
+| `POST`   | `/v4/networkgroups/organisations/{ownerId}/networkgroups/{networkGroupId}/members`            | N/A     |
+| `DELETE` | `/v4/networkgroups/organisations/{ownerId}/networkgroups/{networkGroupId}/members/{memberId}` | N/A     |
 
 ## ⬇️️ Examples
 
