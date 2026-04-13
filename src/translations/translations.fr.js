@@ -294,6 +294,7 @@ export const translations = {
   'cc-addon-info.creation-date.heading': `Date de création`,
   'cc-addon-info.creation-date.human-friendly-date': /** @param {{ date: string | number }} _ */ ({ date }) =>
     formatDatetime(date),
+  'cc-addon-info.description.heading': `Description`,
   'cc-addon-info.doc-link.cellar': `Cellar - Documentation`,
   'cc-addon-info.doc-link.elastic': `Elastic Stack - Documentation`,
   'cc-addon-info.doc-link.jenkins': `Jenkins - Documentation`,
@@ -1367,7 +1368,8 @@ export const translations = {
   //#endregion
   //#region cc-network-group-dashboard
   'cc-network-group-dashboard.danger-zone.btn': `Supprimer le Network Group`,
-  'cc-network-group-dashboard.danger-zone.desc': `La suppression de ce Network Group est une action permanente. Tous les membres seront dissociés.`,
+  'cc-network-group-dashboard.danger-zone.desc': () =>
+    sanitize`La suppression de ce Network Group est une action permanente.<br>Tous les membres seront dissociés et supprimés.`,
   'cc-network-group-dashboard.danger-zone.dialog.confirm-input-label': `Saisissez le nom du Network Group`,
   'cc-network-group-dashboard.danger-zone.dialog.desc': `La suppression de ce Network group est une action permanente. Tous les membres et pairs associés seront dissociés. Cette action ne peut pas être annulée. Assurez-vous d'avoir migré ou reconfiguré toutes les dépendances avant de continuer.`,
   'cc-network-group-dashboard.danger-zone.dialog.heading': `Confirmer la suppression`,

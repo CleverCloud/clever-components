@@ -29,6 +29,7 @@ const SKELETON_HEADER_STATE = {
 
 const SKELETON_INFO_STATE = {
   type: /** @type {const} */ ('loading'),
+  description: fakeString(32),
   subnet: fakeString(6),
   lastIp: fakeString(6),
   numberOfMembers: 0,
@@ -105,6 +106,7 @@ export class CcNetworkGroupDashboard extends LitElement {
     if (state.type === 'loaded' || state.type === 'deleting') {
       return {
         type: 'loaded',
+        description: state.description,
         subnet: state.subnet,
         lastIp: state.lastIp,
         numberOfMembers: state.numberOfMembers,

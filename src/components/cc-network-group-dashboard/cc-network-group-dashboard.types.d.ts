@@ -4,7 +4,10 @@ import { AddonInfoStateBaseProperties } from '../cc-addon-info/cc-addon-info.typ
 export interface NetworkGroupDashboardHeaderProperties extends Pick<AddonHeaderBaseProperties, 'id' | 'name'> {}
 
 export interface NetworkGroupDashboardInfoProperties
-  extends Pick<AddonInfoStateBaseProperties, 'subnet' | 'lastIp' | 'numberOfMembers' | 'numberOfPeers'> {}
+  extends Pick<
+    AddonInfoStateBaseProperties,
+    'description' | 'subnet' | 'lastIp' | 'numberOfMembers' | 'numberOfPeers'
+  > {}
 
 export type NetworkGroupDashboardState =
   | NetworkGroupDashboardStateLoaded

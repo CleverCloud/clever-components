@@ -410,6 +410,7 @@ export const kubernetesInfo = {
 
 /** @type {AddonInfoStateBaseProperties} */
 export const networkGroupInfo = {
+  description: 'Internal network for staging environment - connects API services, databases, and caching layer.',
   subnet: '10.0.0.1/24',
   lastIp: '10.0.0.1/22',
   numberOfMembers: 4,
