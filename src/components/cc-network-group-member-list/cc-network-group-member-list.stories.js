@@ -1,4 +1,9 @@
-import { networkGroupMemberList, sampleSelectOptions } from '../../stories/fixtures/network-groups.js';
+import {
+  memberDeletedAddon,
+  memberDeletedApp,
+  networkGroupMemberList,
+  sampleSelectOptions,
+} from '../../stories/fixtures/network-groups.js';
 import { makeStory } from '../../stories/lib/make-story.js';
 import './cc-network-group-member-list.js';
 
@@ -47,6 +52,20 @@ export const loading = makeStory(conf, {
   ],
 });
 
+export const loadingWithLinkForm = makeStory(conf, {
+  /** @type {Partial<CcNetworkGroupMemberList>[]} */
+  items: [
+    {
+      networkGroupId,
+      memberListState: {
+        type: 'loaded',
+        memberList: networkGroupMemberList,
+      },
+      linkFormState: { type: 'loading' },
+    },
+  ],
+});
+
 export const error = makeStory(conf, {
   /** @type {Partial<CcNetworkGroupMemberList>[]} */
   items: [
@@ -75,7 +94,7 @@ export const dataLoadedWithNoMembers = makeStory(conf, {
   ],
 });
 
-export const linkFormLoading = makeStory(conf, {
+export const dataLoadedWithLinkFormEmpty = makeStory(conf, {
   /** @type {Partial<CcNetworkGroupMemberList>[]} */
   items: [
     {
@@ -84,12 +103,32 @@ export const linkFormLoading = makeStory(conf, {
         type: 'loaded',
         memberList: networkGroupMemberList,
       },
-      linkFormState: { type: 'loading' },
+      linkFormState: {
+        type: 'idle',
+        selectOptions: [],
+      },
     },
   ],
 });
 
-export const linkFormLinking = makeStory(conf, {
+export const dataLoadedWithDeletedMembers = makeStory(conf, {
+  /** @type {Partial<CcNetworkGroupMemberList>[]} */
+  items: [
+    {
+      networkGroupId,
+      memberListState: {
+        type: 'loaded',
+        memberList: [...networkGroupMemberList, memberDeletedApp, memberDeletedAddon],
+      },
+      linkFormState: {
+        type: 'idle',
+        selectOptions: sampleSelectOptions,
+      },
+    },
+  ],
+});
+
+export const waitingWithLinkFormLinking = makeStory(conf, {
   /** @type {Partial<CcNetworkGroupMemberList>[]} */
   items: [
     {
@@ -106,7 +145,7 @@ export const linkFormLinking = makeStory(conf, {
   ],
 });
 
-export const memberListUnlinking = makeStory(conf, {
+export const waitingWithMemberListUnlinking = makeStory(conf, {
   docs: 'Shows the state when a member is being unlinked. The dialog is open with a waiting state, the targeted member shows a waiting state on its unlink button, while other members are disabled.',
   /** @type {Partial<CcNetworkGroupMemberList>[]} */
   items: [
@@ -137,21 +176,4 @@ export const memberListUnlinking = makeStory(conf, {
       };
     });
   },
-});
-
-export const linkFormEmpty = makeStory(conf, {
-  /** @type {Partial<CcNetworkGroupMemberList>[]} */
-  items: [
-    {
-      networkGroupId,
-      memberListState: {
-        type: 'loaded',
-        memberList: networkGroupMemberList,
-      },
-      linkFormState: {
-        type: 'idle',
-        selectOptions: [],
-      },
-    },
-  ],
 });
