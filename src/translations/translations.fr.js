@@ -1400,7 +1400,15 @@ export const translations = {
   'cc-network-group-list.list.empty': `Vous n'avez aucun Network Group lié à votre ressource`,
   'cc-network-group-list.list.error': `Une erreur est survenue pendant le chargement de la liste des Network Groups liés`,
   'cc-network-group-list.list.heading': `Network Groups liés`,
+  'cc-network-group-list.list.unlink': `Dissocier le Network Group`,
+  'cc-network-group-list.list.unlink.a11y-name': /** @param {{ name: string }} _ */ ({ name }) =>
+    `Dissocier le Network Group - ${name}`,
   'cc-network-group-list.refresh.error': `Le membre a bien été lié au Network Group mais une erreur est survenue pendant le rafraîchissement de la liste`,
+  'cc-network-group-list.unlink.dialog.desc': `La dissociation de cette ressource du Network Group la déconnectera, ainsi que toutes ses instances, du réseau privé du groupe. Souhaitez-vous continuer\u00A0?`,
+  'cc-network-group-list.unlink.dialog.heading': `Confirmer la dissociation`,
+  'cc-network-group-list.unlink.dialog.unlink-btn': `Confirmer et dissocier`,
+  'cc-network-group-list.unlink.error': `Une erreur est survenue pendant la dissociation du Network Group`,
+  'cc-network-group-list.unlink.success': `La dissociation du Network Group a bien été effectuée`,
   //#endregion
   //#region cc-network-group-member-card
   'cc-network-group-member-card.deleted-member.badge': `Ressource supprimée`,

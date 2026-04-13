@@ -13,3 +13,17 @@ export class CcNetworkGroupLinkEvent extends CcEvent {
     super(CcNetworkGroupLinkEvent.TYPE, detail);
   }
 }
+
+/**
+ * Dispatched when a network group is requested to be unlinked from a resource.
+ *
+ * @extends CcEvent<string>
+ */
+export class CcNetworkGroupUnlinkEvent extends CcEvent {
+  static TYPE = 'cc-network-group-unlink';
+
+  /** @param {string} detail */
+  constructor(detail) {
+    super(CcNetworkGroupUnlinkEvent.TYPE, detail);
+  }
+}

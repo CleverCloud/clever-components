@@ -1,4 +1,5 @@
 import { CreateNetworkGroupMemberCommand } from '@clevercloud/client/cc-api-commands/network-group/create-network-group-member-command.js';
+import { DeleteNetworkGroupMemberCommand } from '@clevercloud/client/cc-api-commands/network-group/delete-network-group-member-command.js';
 import { ListNetworkGroupCommand } from '@clevercloud/client/cc-api-commands/network-group/list-network-group-command.js';
 import { getCcApiClientWithOAuth } from '../../lib/cc-api-client.js';
 import { notify, notifyError, notifySuccess } from '../../lib/notifications.js';
@@ -107,6 +108,41 @@ defineSmartComponent({
         console.error(refreshError);
         updateComponent('linkFormState', (state) => {
           state.type = 'idle';
+        });
+        notify({
+          message: i18n('cc-network-group-list.refresh.error'),
+          intent: 'danger',
+          options: { timeout: 0 },
+        });
+      }
+    });
+
+    onEvent('cc-network-group-unlink', async (networkGroupId) => {
+      updateComponent('listState', (listState) => {
+        listState.type = 'unlinking';
+      });
+
+      try {
+        await ccApiClient.send(new DeleteNetworkGroupMemberCommand({ memberId: resourceId, networkGroupId, ownerId }), {
+          signal,
+        });
+      } catch (error) {
+        console.error(error);
+        updateComponent('listState', (state) => {
+          state.type = 'loaded';
+        });
+        notifyError(i18n('cc-network-group-list.unlink.error'));
+        return;
+      }
+
+      notifySuccess(i18n('cc-network-group-list.unlink.success'));
+
+      try {
+        await refreshFormAndList();
+      } catch (refreshError) {
+        console.error(refreshError);
+        updateComponent('listState', (state) => {
+          state.type = 'loaded';
         });
         notify({
           message: i18n('cc-network-group-list.refresh.error'),
