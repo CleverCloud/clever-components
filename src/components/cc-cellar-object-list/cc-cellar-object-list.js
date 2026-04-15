@@ -48,12 +48,13 @@ import {
 } from './cc-cellar-object-list.events.js';
 
 /**
- * @import { CellarObjectListState, CellarObjectListStateLoading, CellarObjectListStateLoaded, CellarObjectListStateFiltering, CellarObjectState, CellarFileDetailsState, CellarDirectoryCreateFormState } from './cc-cellar-object-list.types.js'
+ * @import { CellarObjectListState, CellarObjectListStateLoading, CellarObjectListStateLoaded, CellarObjectListStateFiltering, CellarObjectState, CellarFileDetailsState, CellarDirectoryCreateFormState, CreationFormError } from './cc-cellar-object-list.types.js'
  * @import { CcBreadcrumbClickEvent } from '../cc-breadcrumbs/cc-breadcrumbs.events.js'
  * @import { CcGrid } from '../cc-grid/cc-grid.js'
  * @import { CcGridColumnDefinition } from '../cc-grid/cc-grid.types.js'
  * @import { TemplateResult } from 'lit'
  * @import { Ref } from 'lit/directives/ref.js'
+ * @import { ErrorMessage } from '../../lib/form/validation.types.js'
  */
 
 /** @type {Array<Omit<CellarObjectState, 'key'>>} */
@@ -124,6 +125,20 @@ export class CcCellarObjectList extends LitElement {
     this.updateComplete.then(() => {
       this._gridRef.value?.focusFirstCell();
     });
+  }
+
+  /**
+   * @param {CreationFormError} errorCode
+   * @param {string} directoryName
+   * @return {ErrorMessage}
+   */
+  _getErrorMessage(errorCode, directoryName) {
+    switch (errorCode) {
+      case 'directory-already-exists':
+        return i18n('cc-cellar-object-list.error.directory-already-exists', { directoryName });
+      case 'directory-name-invalid':
+        return i18n('cc-cellar-object-list.error.directory-name-invalid');
+    }
   }
 
   /**
@@ -265,6 +280,7 @@ export class CcCellarObjectList extends LitElement {
    */
   _renderHeading(state) {
     const filter = state.type === 'loaded' || state.type === 'filtering' ? state.filter : '';
+    const isUploading = state.type === 'loaded' && state.uploadState?.type === 'uploading';
     const isSkeleton = state.type === 'loading';
 
     return html`
@@ -279,7 +295,7 @@ export class CcCellarObjectList extends LitElement {
               inline
               label=${i18n('cc-cellar-object-list.heading.filter.label')}
               ?readonly=${state.type === 'filtering'}
-              ?disabled=${state.type !== 'loaded' && state.type !== 'filtering'}
+              ?disabled=${(state.type !== 'loaded' && state.type !== 'filtering') || isUploading}
               .value=${filter}
             ></cc-input-text>
             <cc-button
@@ -288,7 +304,7 @@ export class CcCellarObjectList extends LitElement {
               hide-text
               outlined
               ?waiting=${state.type === 'filtering'}
-              ?disabled=${state.type !== 'loaded' && state.type !== 'filtering'}
+              ?disabled=${(state.type !== 'loaded' && state.type !== 'filtering') || isUploading}
             >
               ${i18n('cc-cellar-object-list.heading.filter.button')}
             </cc-button>
@@ -552,12 +568,7 @@ export class CcCellarObjectList extends LitElement {
    * @returns {TemplateResult}
    */
   _renderDirectoryCreationForm(state) {
-    const errorMessage =
-      state?.error === 'directory-already-exists'
-        ? i18n('cc-cellar-object-list.error.directory-already-exists', { directoryName: state.directoryName })
-        : state?.error === 'directory-name-invalid'
-          ? i18n('cc-cellar-object-list.error.directory-name-invalid')
-          : null;
+    const errorMessage = this._getErrorMessage(state?.error, state?.directoryName);
 
     return html`<cc-dialog
       class="create-directory-dialog"
@@ -568,7 +579,6 @@ export class CcCellarObjectList extends LitElement {
       <cc-notice intent="warning" message="${i18n('cc-cellar-object-list.add-directory.dialog.notice')}"></cc-notice>
       <form ${formSubmit(this._onCreateDirectoryFormSubmit.bind(this))} ${ref(this._createDirectoryFormRef)}>
         <cc-input-text
-          ?autofocus=${true}
           label=${i18n('cc-cellar-object-list.add-directory.dialog.label')}
           name="directoryName"
           required

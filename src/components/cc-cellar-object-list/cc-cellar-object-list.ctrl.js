@@ -410,6 +410,7 @@ export class ObjectListController {
    * @returns {Promise<void>}
    */
   async uploadObject(file) {
+    const pathAtUploadStart = this.#path;
     const objectKey = pathToString(this.#path) + file.name;
     this.#updateUploadState({ type: 'uploading' });
 
@@ -417,31 +418,39 @@ export class ObjectListController {
       await this.#cellarClient.uploadObject(this.#bucketName, objectKey, file);
       notifySuccess(i18n('cc-cellar-object-list.success.object-uploaded', { objectKey }));
 
-      /** @type {CellarFileState} */
-      const newFile = {
-        type: 'file',
-        key: objectKey,
-        name: file.name,
-        updatedAt: new Date().toISOString(),
-        contentLength: file.size,
-        volatile: true,
-        state: 'idle',
-      };
-      this.#objects = [newFile, ...this.#objects.filter((obj) => obj.key !== objectKey)];
-      this.#updateState(
-        /** @param {CellarObjectListStateLoaded} state */ (state) => {
-          state.objects = this.#objects;
-          state.uploadState = { type: 'idle' };
-        },
-      );
+      if (this.#path === pathAtUploadStart) {
+        /** @type {CellarFileState} */
+        const newFile = {
+          type: 'file',
+          key: objectKey,
+          name: file.name,
+          updatedAt: new Date().toISOString(),
+          contentLength: file.size,
+          volatile: true,
+          state: 'idle',
+        };
+        this.#objects = [newFile, ...this.#objects.filter((obj) => obj.key !== objectKey)];
+        this.#updateState(
+          /** @param {CellarObjectListStateLoaded} state */ (state) => {
+            state.objects = this.#objects;
+            state.uploadState = { type: 'idle' };
+          },
+        );
+      }
     } catch (error) {
-      this.#handleErrorOnObject({
-        error,
-        objectKey,
-        orElse: () => notifyError(i18n('cc-cellar-object-list.error.object-upload-failed', { objectKey })),
-      });
+      if (this.#path === pathAtUploadStart) {
+        this.#handleErrorOnObject({
+          error,
+          objectKey,
+          orElse: () => notifyError(i18n('cc-cellar-object-list.error.object-upload-failed', { objectKey })),
+        });
+      } else {
+        notifyError(i18n('cc-cellar-object-list.error.object-upload-failed', { objectKey }));
+      }
     } finally {
-      this.#updateUploadState({ type: 'idle' });
+      if (this.#path === pathAtUploadStart) {
+        this.#updateUploadState({ type: 'idle' });
+      }
     }
   }
 

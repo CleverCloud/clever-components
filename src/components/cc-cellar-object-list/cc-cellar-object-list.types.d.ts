@@ -61,3 +61,5 @@ export interface CellarDirectoryCreateFormState {
   directoryName: string;
   error?: 'directory-already-exists' | 'directory-name-invalid';
 }
+
+export type CreationFormError = 'directory-already-exists' | 'directory-name-invalid';
