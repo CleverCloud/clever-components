@@ -5,6 +5,29 @@ title: 'Changelog'
 
 # Changelog
 
+## [25.1.0](https://github.com/CleverCloud/clever-components/compare/25.0.0...25.1.0) (2026-04-16)
+
+
+### 🚀 Features
+
+* **cc-addon-info:** support description for Network Groups ([a8217fc](https://github.com/CleverCloud/clever-components/commit/a8217fcafe8b759639959a944e2a4725018f50b8))
+* **cc-homepage-template-project:** add support for a specified height ([640971d](https://github.com/CleverCloud/clever-components/commit/640971d78858d306ade1887733e1c596c7b6787b))
+* **cc-network-group-dashboard:** support description ([e1ff874](https://github.com/CleverCloud/clever-components/commit/e1ff874f4dc823cb1a1c4387440c13d86ad53180))
+* **cc-network-group-list:** support unlinking Network Groups ([91ccbbf](https://github.com/CleverCloud/clever-components/commit/91ccbbfc5f78db01bcbf54236ad99b10cc64fb9d))
+* **cc-network-group-member-card:** support `DELETED` resources ([10fa432](https://github.com/CleverCloud/clever-components/commit/10fa432e0b41dc3c8a33bb583988faf184040305))
+* **cc-network-group-member-list:** support `DELETED` resources ([b48f5ea](https://github.com/CleverCloud/clever-components/commit/b48f5ea825c0b31e3d0881aee8f5e6d09da05579))
+* **cc-picker:** add CSS parts for radio input and label styling ([b7c3801](https://github.com/CleverCloud/clever-components/commit/b7c380185dac8dbfe05f278c4ec8d20f54bbd02a))
+
+
+### 🐛 Bug Fixes
+
+* **cc-homepage-onboarding:** change newResource card to firstResource and update text ([c7190d1](https://github.com/CleverCloud/clever-components/commit/c7190d17453820b84e476bd349ed6158d86f6b0f))
+* **cc-homepage-onboarding:** pass the card links as parameters ([306c880](https://github.com/CleverCloud/clever-components/commit/306c880be935d22cecf1f379f8a12ab68a14327f))
+* **cc-homepage-template-project:** fix the loading issue ([ae6ce62](https://github.com/CleverCloud/clever-components/commit/ae6ce62496febcfcf35dd463d8894c208cdbdd34))
+* **cc-homepage-video:** add of URL management www.youtube-nocookie.com ([3836430](https://github.com/CleverCloud/clever-components/commit/3836430827bf26c837c90163ee8c251c3f0edb5a))
+* **cc-network-group-list:** improve Network Group link translation ([245c25b](https://github.com/CleverCloud/clever-components/commit/245c25b1efdbca067800c9d01f01dc786a473eb8))
+* **cc-token-api-*:** pass API bridge URL as a prop instead of hardcoding it ([7c1f0b1](https://github.com/CleverCloud/clever-components/commit/7c1f0b193035729dc76ccf453f3b10c066f09c67)), closes [#1714](https://github.com/CleverCloud/clever-components/issues/1714)
+
 ## [25.0.0](https://github.com/CleverCloud/clever-components/compare/24.1.0...25.0.0) (2026-03-26)
 
 
