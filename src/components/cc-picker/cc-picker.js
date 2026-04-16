@@ -108,6 +108,15 @@ export class CcPicker extends CcFormControlElement {
     this._pickerRef = createRef();
   }
 
+  /* endregion */
+
+  /**
+   * Triggers focus on the fieldset element.
+   */
+  focus() {
+    this._pickerRef.value?.focus();
+  }
+
   /* region CcFormControlElement implementation */
 
   /**
@@ -150,28 +159,6 @@ export class CcPicker extends CcFormControlElement {
     return CcPicker.reactiveValidationProperties;
   }
 
-  /* endregion */
-
-  /**
-   * Triggers focus on the fieldset element.
-   */
-  focus() {
-    this._pickerRef.value?.focus();
-  }
-
-  /**
-   * @param {GenericEventWithTarget<InputEvent, HTMLInputElement>} e
-   * @private
-   */
-  _onTileSelect(e) {
-    if (this.readonly) {
-      return;
-    }
-
-    this.value = e.target.value;
-    this.dispatchEvent(new CcSelectEvent(this.value));
-  }
-
   /**
    * @param {number} index
    * @param {string} value
@@ -185,6 +172,19 @@ export class CcPicker extends CcFormControlElement {
 
     const firstFocusableIndex = this.options.findIndex((option) => !option.disabled);
     return index === firstFocusableIndex;
+  }
+
+  /**
+   * @param {GenericEventWithTarget<InputEvent, HTMLInputElement>} e
+   * @private
+   */
+  _onTileSelect(e) {
+    if (this.readonly) {
+      return;
+    }
+
+    this.value = e.target.value;
+    this.dispatchEvent(new CcSelectEvent(this.value));
   }
 
   render() {

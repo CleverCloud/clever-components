@@ -115,10 +115,6 @@ export class CcToast extends LitElement {
     }
   }
 
-  _onCloseButtonClick() {
-    this._dismiss();
-  }
-
   _dismiss() {
     this.dispatchEvent(new CcToastDismissEvent());
   }
@@ -129,6 +125,10 @@ export class CcToast extends LitElement {
 
   _resume() {
     this._progressAnimateCtrl.isAnimating && this._progressAnimateCtrl.play();
+  }
+
+  _onCloseButtonClick() {
+    this._dismiss();
   }
   /* endregion*/
 

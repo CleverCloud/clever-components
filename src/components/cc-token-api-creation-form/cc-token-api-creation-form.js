@@ -176,24 +176,6 @@ export class CcTokenApiCreationForm extends LitElement {
     ];
   }
 
-  /** @param {Event} event */
-  _onConfigLinkClick(event) {
-    event.preventDefault();
-    // to make sure the console router doesn't pick this event as a navigation
-    event.stopPropagation();
-    this.state = /** @type {TokenApiCreationFormStateLoaded} */ ({
-      ...this.state,
-      activeStep: 'configuration',
-    });
-  }
-
-  _onConfigFormSubmit() {
-    this.state = {
-      ...this.state,
-      activeStep: 'validation',
-    };
-  }
-
   /**
    * @param {Expiration} expiration
    * @returns {ExpirationPreset['preset']|null}
@@ -212,6 +194,24 @@ export class CcTokenApiCreationForm extends LitElement {
     }
 
     return CcTokenApiCreationForm.computeExpirationDate(expiration.preset);
+  }
+
+  /** @param {Event} event */
+  _onConfigLinkClick(event) {
+    event.preventDefault();
+    // to make sure the console router doesn't pick this event as a navigation
+    event.stopPropagation();
+    this.state = /** @type {TokenApiCreationFormStateLoaded} */ ({
+      ...this.state,
+      activeStep: 'configuration',
+    });
+  }
+
+  _onConfigFormSubmit() {
+    this.state = {
+      ...this.state,
+      activeStep: 'validation',
+    };
   }
 
   _onValidationFormSubmit() {
@@ -235,38 +235,6 @@ export class CcTokenApiCreationForm extends LitElement {
     };
 
     this.dispatchEvent(new CcTokenCreateEvent(newToken));
-  }
-
-  /** @param {PropertyValues<CcTokenApiCreationForm>} changedProperties */
-  willUpdate(changedProperties) {
-    if (
-      changedProperties.has('state') &&
-      this.state.type === 'loaded' &&
-      this.state.values.expiration.type === 'preset'
-    ) {
-      // clear potential error messages that are no longer relevant since the input becomes readonly
-      this.updateComplete.then(() => {
-        this._expirationDateInputRef.value.reportInlineValidity();
-      });
-    }
-  }
-
-  /** @param {PropertyValues<CcTokenApiCreationForm>} changedProperties */
-  updated(changedProperties) {
-    if (changedProperties.has('state') && this.state.type === 'loaded') {
-      // Handle focus in case `prefers-reduced-motion: reduce` is active because `transitionend` event is not triggered
-      if (window.matchMedia('(prefers-reduced-motion: no-preference)').matches) {
-        return;
-      }
-
-      const activeElement = this.shadowRoot.activeElement;
-      const activeStepElement = this.shadowRoot.querySelector('.steps-content__step-item--active');
-      if (!activeStepElement.contains(activeElement)) {
-        /** @type {CcInputText} */
-        const firstActiveCcInputText = activeStepElement.querySelector('cc-input-text');
-        firstActiveCcInputText.focus();
-      }
-    }
   }
 
   /** @param {EventWithTarget<CcInputText | CcInputDate> & { detail: string }} event */
@@ -336,6 +304,38 @@ export class CcTokenApiCreationForm extends LitElement {
         '.steps-content__step-item--active cc-input-text',
       );
       firstActiveCcInputText.focus();
+    }
+  }
+
+  /** @param {PropertyValues<CcTokenApiCreationForm>} changedProperties */
+  willUpdate(changedProperties) {
+    if (
+      changedProperties.has('state') &&
+      this.state.type === 'loaded' &&
+      this.state.values.expiration.type === 'preset'
+    ) {
+      // clear potential error messages that are no longer relevant since the input becomes readonly
+      this.updateComplete.then(() => {
+        this._expirationDateInputRef.value.reportInlineValidity();
+      });
+    }
+  }
+
+  /** @param {PropertyValues<CcTokenApiCreationForm>} changedProperties */
+  updated(changedProperties) {
+    if (changedProperties.has('state') && this.state.type === 'loaded') {
+      // Handle focus in case `prefers-reduced-motion: reduce` is active because `transitionend` event is not triggered
+      if (window.matchMedia('(prefers-reduced-motion: no-preference)').matches) {
+        return;
+      }
+
+      const activeElement = this.shadowRoot.activeElement;
+      const activeStepElement = this.shadowRoot.querySelector('.steps-content__step-item--active');
+      if (!activeStepElement.contains(activeElement)) {
+        /** @type {CcInputText} */
+        const firstActiveCcInputText = activeStepElement.querySelector('cc-input-text');
+        firstActiveCcInputText.focus();
+      }
     }
   }
 

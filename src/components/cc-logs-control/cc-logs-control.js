@@ -159,70 +159,6 @@ export class CcLogsControl extends LitElement {
 
   /* endregion */
 
-  /* region Event handlers */
-
-  _onScrollToBottomButtonClick() {
-    this._logsRef.value?.scrollToBottom();
-  }
-
-  /**
-   * @param {CcSelectEvent<LogsControlPalette>} event
-   */
-  _onPaletteChange(event) {
-    this.palette = event.detail;
-    this.dispatchEvent(new CcLogsOptionsChangeEvent({ name: 'palette', options: this._getOptions() }));
-  }
-
-  /**
-   * @param {EventWithTarget<HTMLInputElement>} event
-   */
-  _onStripAnsiChange(event) {
-    this.stripAnsi = event.target.checked;
-    this.dispatchEvent(new CcLogsOptionsChangeEvent({ name: 'strip-ansi', options: this._getOptions() }));
-  }
-
-  /**
-   * @param {EventWithTarget<HTMLInputElement>} event
-   */
-  _onWrapLinesChange(event) {
-    this.wrapLines = event.target.checked;
-    this.dispatchEvent(new CcLogsOptionsChangeEvent({ name: 'wrap-lines', options: this._getOptions() }));
-  }
-
-  /**
-   * @param {CcSelectEvent<DateDisplay>} event
-   */
-  _onDateDisplayChange(event) {
-    this.dateDisplay = event.detail;
-    this.dispatchEvent(new CcLogsOptionsChangeEvent({ name: 'date-display', options: this._getOptions() }));
-  }
-
-  /**
-   * @param {CcSelectEvent<Timezone>} event
-   */
-  _onTimezoneChange(event) {
-    this.timezone = event.detail;
-    this.dispatchEvent(new CcLogsOptionsChangeEvent({ name: 'timezone', options: this._getOptions() }));
-  }
-
-  /**
-   * @param {EventWithTarget<HTMLInputElement>} event
-   */
-  _onMetadataChange(event) {
-    const name = event.target.dataset.name;
-    const isHidden = !event.target.checked;
-    this.metadataDisplay = {
-      ...this.metadataDisplay,
-      [name]: {
-        ...this.metadataDisplay[name],
-        hidden: isHidden,
-      },
-    };
-    this.dispatchEvent(new CcLogsOptionsChangeEvent({ name: 'metadata-display', options: this._getOptions() }));
-  }
-
-  /* endregion */
-
   /* region Private methods */
 
   /**
@@ -285,6 +221,87 @@ export class CcLogsControl extends LitElement {
       return i18n('cc-logs-control.palette.default');
     }
     return palette;
+  }
+
+  /**
+   * @return {LogsOptions}
+   */
+  _getOptions() {
+    const metadataDisplayOption = Object.fromEntries(
+      Object.entries(this.metadataDisplay).map(([k, v]) => [k, !v.hidden]),
+    );
+    return {
+      'date-display': this.dateDisplay,
+      'metadata-display': metadataDisplayOption,
+      palette: this.palette,
+      timezone: this.timezone,
+      'wrap-lines': this.wrapLines,
+      'strip-ansi': this.stripAnsi,
+    };
+  }
+
+  /* endregion */
+
+  /* region Event handlers */
+
+  _onScrollToBottomButtonClick() {
+    this._logsRef.value?.scrollToBottom();
+  }
+
+  /**
+   * @param {CcSelectEvent<LogsControlPalette>} event
+   */
+  _onPaletteChange(event) {
+    this.palette = event.detail;
+    this.dispatchEvent(new CcLogsOptionsChangeEvent({ name: 'palette', options: this._getOptions() }));
+  }
+
+  /**
+   * @param {EventWithTarget<HTMLInputElement>} event
+   */
+  _onStripAnsiChange(event) {
+    this.stripAnsi = event.target.checked;
+    this.dispatchEvent(new CcLogsOptionsChangeEvent({ name: 'strip-ansi', options: this._getOptions() }));
+  }
+
+  /**
+   * @param {EventWithTarget<HTMLInputElement>} event
+   */
+  _onWrapLinesChange(event) {
+    this.wrapLines = event.target.checked;
+    this.dispatchEvent(new CcLogsOptionsChangeEvent({ name: 'wrap-lines', options: this._getOptions() }));
+  }
+
+  /**
+   * @param {CcSelectEvent<DateDisplay>} event
+   */
+  _onDateDisplayChange(event) {
+    this.dateDisplay = event.detail;
+    this.dispatchEvent(new CcLogsOptionsChangeEvent({ name: 'date-display', options: this._getOptions() }));
+  }
+
+  /**
+   * @param {CcSelectEvent<Timezone>} event
+   */
+  _onTimezoneChange(event) {
+    this.timezone = event.detail;
+    this.dispatchEvent(new CcLogsOptionsChangeEvent({ name: 'timezone', options: this._getOptions() }));
+  }
+
+  /**
+   * @param {EventWithTarget<HTMLInputElement>} event
+   */
+  _onMetadataChange(event) {
+    const name = event.target.dataset.name;
+    const isHidden = !event.target.checked;
+    this.metadataDisplay = {
+      ...this.metadataDisplay,
+      [name]: {
+        ...this.metadataDisplay[name],
+        hidden: isHidden,
+      },
+    };
+    this.dispatchEvent(new CcLogsOptionsChangeEvent({ name: 'metadata-display', options: this._getOptions() }));
   }
 
   /* endregion */
@@ -428,23 +445,6 @@ export class CcLogsControl extends LitElement {
         })}
       </div>
     `;
-  }
-
-  /**
-   * @return {LogsOptions}
-   */
-  _getOptions() {
-    const metadataDisplayOption = Object.fromEntries(
-      Object.entries(this.metadataDisplay).map(([k, v]) => [k, !v.hidden]),
-    );
-    return {
-      'date-display': this.dateDisplay,
-      'metadata-display': metadataDisplayOption,
-      palette: this.palette,
-      timezone: this.timezone,
-      'wrap-lines': this.wrapLines,
-      'strip-ansi': this.stripAnsi,
-    };
   }
 
   static get styles() {

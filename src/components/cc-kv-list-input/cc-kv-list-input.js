@@ -33,6 +33,18 @@ export class CcKvListInput extends CcFormControlElement {
     };
   }
 
+  /**
+   * Helps to decode the form data into an Array of strings.
+   *
+   * @param {FormDataMap} formData - The form data to decode
+   * @param {string} fieldName - The name of control element where is stored the input data
+   * @return {Array<string>}
+   */
+  static decodeFormData(formData, fieldName) {
+    const data = formData[fieldName];
+    return /** @type {Array<string>} */ (Array.isArray(data) ? data : [data]);
+  }
+
   constructor() {
     super();
 
@@ -55,18 +67,6 @@ export class CcKvListInput extends CcFormControlElement {
     });
 
     this._renderItem = this._renderItem.bind(this);
-  }
-
-  /**
-   * Helps to decode the form data into an Array of strings.
-   *
-   * @param {FormDataMap} formData - The form data to decode
-   * @param {string} fieldName - The name of control element where is stored the input data
-   * @return {Array<string>}
-   */
-  static decodeFormData(formData, fieldName) {
-    const data = formData[fieldName];
-    return /** @type {Array<string>} */ (Array.isArray(data) ? data : [data]);
   }
 
   /**

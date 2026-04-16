@@ -80,6 +80,16 @@ export class CcMap extends LitElement {
     });
   }
 
+  /**
+   * Pan the map to a given point but only if it's necessary and with some small padding (50px).
+   *
+   * @param {number} lat - Sets the latitude of the point.
+   * @param {number} lon - Sets the longitude of the point.
+   */
+  panInside(lat, lon) {
+    this._map.panInside([lat, lon], { padding: [50, 50] });
+  }
+
   _resetCurrentLayer() {
     const [layerToAdd, layerToRemove] =
       this.mode === 'heatmap' ? [this._heatLayer, this._pointsLayer] : [this._pointsLayer, this._heatLayer];
@@ -228,16 +238,6 @@ export class CcMap extends LitElement {
     const { marker } = this._pointsCache[id];
     this._pointsLayer.removeLayer(marker);
     delete this._pointsCache[id];
-  }
-
-  /**
-   * Pan the map to a given point but only if it's necessary and with some small padding (50px).
-   *
-   * @param {number} lat - Sets the latitude of the point.
-   * @param {number} lon - Sets the longitude of the point.
-   */
-  panInside(lat, lon) {
-    this._map.panInside([lat, lon], { padding: [50, 50] });
   }
 
   // Draw the Leaflet map

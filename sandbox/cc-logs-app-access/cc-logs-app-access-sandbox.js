@@ -53,6 +53,15 @@ class CcLogsAppAccessSandbox extends LitElement {
     };
   }
 
+  /**
+   * @param {PropertyValues} _changedProperties
+   */
+  firstUpdated(_changedProperties) {
+    this.updateComplete.then(() => {
+      this._formRef.value.requestSubmit();
+    });
+  }
+
   render() {
     return html`
       <form class="ctrl-top" style="align-items: normal" ${ref(this._formRef)} ${formSubmit(this._onFormSubmit)}>
@@ -73,15 +82,6 @@ class CcLogsAppAccessSandbox extends LitElement {
         </cc-smart-container>
       </div>
     `;
-  }
-
-  /**
-   * @param {PropertyValues} _changedProperties
-   */
-  firstUpdated(_changedProperties) {
-    this.updateComplete.then(() => {
-      this._formRef.value.requestSubmit();
-    });
   }
 
   static get styles() {

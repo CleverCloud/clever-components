@@ -127,6 +127,22 @@ export class CcEmailList extends LitElement {
     return html`<span>${label}</span>`;
   }
 
+  /**
+   *
+   * @param {AddEmailError} errorCode
+   * @return {ErrorMessage}
+   */
+  _getErrorMessage(errorCode) {
+    switch (errorCode) {
+      case 'invalid':
+        return i18n('cc-input-text.error.bad-email');
+      case 'already-defined':
+        return i18n('cc-email-list.secondary.address-input.error.already-defined');
+      case 'used':
+        return i18n('cc-email-list.secondary.address-input.error.used');
+    }
+  }
+
   _onSendConfirmationEmail() {
     if (this.emailListState.type === 'loaded') {
       this.dispatchEvent(new CcEmailSendConfirmationEvent(this.emailListState.emailList.primaryAddress.address));
@@ -154,22 +170,6 @@ export class CcEmailList extends LitElement {
     this.addEmailFormState = { ...this.addEmailFormState, errors: null };
     const address = String(formData.address);
     this.dispatchEvent(new CcEmailAddEvent(address));
-  }
-
-  /**
-   *
-   * @param {AddEmailError} errorCode
-   * @return {ErrorMessage}
-   */
-  _getErrorMessage(errorCode) {
-    switch (errorCode) {
-      case 'invalid':
-        return i18n('cc-input-text.error.bad-email');
-      case 'already-defined':
-        return i18n('cc-email-list.secondary.address-input.error.already-defined');
-      case 'used':
-        return i18n('cc-email-list.secondary.address-input.error.used');
-    }
   }
 
   render() {

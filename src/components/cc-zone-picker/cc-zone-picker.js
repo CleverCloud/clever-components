@@ -50,15 +50,6 @@ export class CcZonePicker extends CcFormControlElement {
     this.zonesSections = [];
   }
 
-  /**
-   * @param {CcZonePickerPropertyValues} changedProperties
-   */
-  willUpdate(changedProperties) {
-    if (changedProperties.has('value') && this.value == null) {
-      this.value = this.zonesSections?.[0]?.zones?.[0]?.code;
-    }
-  }
-
   // @ts-expect-error: We override this setter as the component doesn't handle error for now.
   set errorMessage(_) {}
 
@@ -72,6 +63,15 @@ export class CcZonePicker extends CcFormControlElement {
 
     this.value = e.target.value;
     this.dispatchEvent(new CcSelectEvent(this.value));
+  }
+
+  /**
+   * @param {CcZonePickerPropertyValues} changedProperties
+   */
+  willUpdate(changedProperties) {
+    if (changedProperties.has('value') && this.value == null) {
+      this.value = this.zonesSections?.[0]?.zones?.[0]?.code;
+    }
   }
 
   render() {

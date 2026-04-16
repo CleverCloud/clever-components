@@ -38,6 +38,19 @@ export class CcKvHashInput extends CcFormControlElement {
     };
   }
 
+  /**
+   * Helps to decode the form data into an Array of hash entries.
+   *
+   * @param {FormDataMap} formData - The form data to decode
+   * @param {string} fieldName - The name of control element where is stored the input data
+   * @return {Array<{field: string, value: string}>}
+   */
+  static decodeFormData(formData, fieldName) {
+    const data = formData[fieldName];
+    const values = /** @type {Array<string>} */ (Array.isArray(data) ? data : [data]);
+    return values.map((entry) => JSON.parse(entry));
+  }
+
   constructor() {
     super();
 
@@ -60,19 +73,6 @@ export class CcKvHashInput extends CcFormControlElement {
     });
 
     this._renderElement = this._renderElement.bind(this);
-  }
-
-  /**
-   * Helps to decode the form data into an Array of hash entries.
-   *
-   * @param {FormDataMap} formData - The form data to decode
-   * @param {string} fieldName - The name of control element where is stored the input data
-   * @return {Array<{field: string, value: string}>}
-   */
-  static decodeFormData(formData, fieldName) {
-    const data = formData[fieldName];
-    const values = /** @type {Array<string>} */ (Array.isArray(data) ? data : [data]);
-    return values.map((entry) => JSON.parse(entry));
   }
 
   /**

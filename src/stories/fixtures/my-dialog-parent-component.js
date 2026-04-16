@@ -15,30 +15,35 @@ export class MyDialogParentComponent extends LitElement {
     };
   }
 
-  static get styles() {
-    return css`
-      .pattern-section {
-        border: 1px solid var(--cc-color-border-neutral, #ccc);
-        border-radius: 0.25em;
-        margin-bottom: 1.5em;
-        padding: 1em;
-      }
-
-      .pattern-section h3 {
-        margin-top: 0;
-      }
-
-      .pattern-section p {
-        margin: 0.5em 0;
-      }
-    `;
-  }
-
   constructor() {
     super();
     this.declarativeDialogOpen = false;
     this.showConditionalDialog = false;
     this.imperativeDialogRef = createRef();
+  }
+
+  _openDeclarativeDialog() {
+    this.declarativeDialogOpen = true;
+  }
+
+  _closeDeclarativeDialog() {
+    this.declarativeDialogOpen = false;
+  }
+
+  _openImperativeDialog() {
+    this.imperativeDialogRef.value?.show();
+  }
+
+  _closeImperativeDialog() {
+    this.imperativeDialogRef.value?.hide();
+  }
+
+  _openConditionalDialog() {
+    this.showConditionalDialog = true;
+  }
+
+  _closeConditionalDialog() {
+    this.showConditionalDialog = false;
   }
 
   render() {
@@ -100,28 +105,23 @@ export class MyDialogParentComponent extends LitElement {
     `;
   }
 
-  _openDeclarativeDialog() {
-    this.declarativeDialogOpen = true;
-  }
+  static get styles() {
+    return css`
+      .pattern-section {
+        border: 1px solid var(--cc-color-border-neutral, #ccc);
+        border-radius: 0.25em;
+        margin-bottom: 1.5em;
+        padding: 1em;
+      }
 
-  _closeDeclarativeDialog() {
-    this.declarativeDialogOpen = false;
-  }
+      .pattern-section h3 {
+        margin-top: 0;
+      }
 
-  _openImperativeDialog() {
-    this.imperativeDialogRef.value?.show();
-  }
-
-  _closeImperativeDialog() {
-    this.imperativeDialogRef.value?.hide();
-  }
-
-  _openConditionalDialog() {
-    this.showConditionalDialog = true;
-  }
-
-  _closeConditionalDialog() {
-    this.showConditionalDialog = false;
+      .pattern-section p {
+        margin: 0.5em 0;
+      }
+    `;
   }
 }
 

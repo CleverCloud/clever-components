@@ -30,6 +30,15 @@ export class CcCode extends LitElement {
     });
   }
 
+  _formatCode() {
+    const textContent = this.shadowRoot
+      .querySelector('slot')
+      .assignedNodes()
+      .map((node) => node.textContent)
+      .join('');
+    this._formattedCode = dedent(textContent);
+  }
+
   /**
    * @param {EventWithTarget<HTMLSlotElement>} e
    * @private
@@ -57,15 +66,6 @@ export class CcCode extends LitElement {
       <code tabindex="0">${this._formattedCode}</code>
       <cc-clipboard value="${this._formattedCode}"></cc-clipboard>
     `;
-  }
-
-  _formatCode() {
-    const textContent = this.shadowRoot
-      .querySelector('slot')
-      .assignedNodes()
-      .map((node) => node.textContent)
-      .join('');
-    this._formattedCode = dedent(textContent);
   }
 
   static get styles() {

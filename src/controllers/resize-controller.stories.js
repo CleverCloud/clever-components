@@ -43,26 +43,6 @@ class DemoResizeController extends LitElement {
     });
   }
 
-  render() {
-    const { width: componentWidth } = this._resizeObserver;
-
-    return html`
-      <div class="wrapper">
-        <p>I can track my own <code>width</code> and adapt my content to it:</p>
-        <p>My current width is <code>${componentWidth}</code>.</p>
-
-        ${componentWidth >= 458 ? this._fullWidthTable() : ''}
-        ${componentWidth < 458 && componentWidth >= 300 ? this._narrowTable() : ''}
-        ${componentWidth < 300 && componentWidth >= 200 ? this._list() : ''}
-        ${componentWidth < 200
-          ? html`<p>
-              I am way too small to display anything interesting, <strong>please don't leave me like this</strong>.
-            </p>`
-          : ''}
-      </div>
-    `;
-  }
-
   _fullWidthTable() {
     return html`
       <p>I am able to display a <strong>table with many columns</strong>.</p>
@@ -125,6 +105,26 @@ class DemoResizeController extends LitElement {
           `,
         )}
       </dl>
+    `;
+  }
+
+  render() {
+    const { width: componentWidth } = this._resizeObserver;
+
+    return html`
+      <div class="wrapper">
+        <p>I can track my own <code>width</code> and adapt my content to it:</p>
+        <p>My current width is <code>${componentWidth}</code>.</p>
+
+        ${componentWidth >= 458 ? this._fullWidthTable() : ''}
+        ${componentWidth < 458 && componentWidth >= 300 ? this._narrowTable() : ''}
+        ${componentWidth < 300 && componentWidth >= 200 ? this._list() : ''}
+        ${componentWidth < 200
+          ? html`<p>
+              I am way too small to display anything interesting, <strong>please don't leave me like this</strong>.
+            </p>`
+          : ''}
+      </div>
     `;
   }
 

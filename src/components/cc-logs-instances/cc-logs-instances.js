@@ -106,6 +106,82 @@ export class CcLogsInstances extends LitElement {
   }
 
   /**
+   *
+   * @param {DeploymentState} state
+   * @return {{icon: IconModel, a11yName: string, class: string}}
+   */
+  _getDeploymentStateIcon(state) {
+    if (DEPLOYMENT_WIP_STATES.includes(state)) {
+      return {
+        a11yName: i18n('cc-logs-instances.deployment.state.wip'),
+        icon: iconDeploymentWip,
+        class: 'deployment-state--wip',
+      };
+    }
+
+    if (state === 'SUCCEEDED') {
+      return {
+        a11yName: i18n('cc-logs-instances.deployment.state.succeeded'),
+        icon: iconDeploymentSucceeded,
+        class: 'deployment-state--succeeded',
+      };
+    }
+
+    if (state === 'FAILED') {
+      return {
+        a11yName: i18n('cc-logs-instances.deployment.state.failed'),
+        icon: iconDeploymentFailed,
+        class: 'deployment-state--failed',
+      };
+    }
+
+    if (state === 'CANCELLED') {
+      return {
+        a11yName: i18n('cc-logs-instances.deployment.state.cancelled'),
+        icon: iconDeploymentCancelled,
+        class: 'deployment-state--cancelled',
+      };
+    }
+
+    return null;
+  }
+
+  /**
+   * @param {Instance} instance
+   */
+  _getInstanceStateIcon(instance) {
+    if (INSTANCE_DEPLOYING_STATES.includes(instance.state)) {
+      return {
+        a11yName: i18n('cc-logs-instances.instance.state.deploying'),
+        icon: iconInstanceDeploying,
+        class: 'instance-state--deploying',
+      };
+    }
+    if (INSTANCE_RUNNING_STATES.includes(instance.state)) {
+      return {
+        a11yName: i18n('cc-logs-instances.instance.state.running'),
+        icon: iconInstanceRunning,
+        class: 'instance-state--running',
+      };
+    }
+    if (instance.state === 'STOPPING') {
+      return {
+        a11yName: i18n('cc-logs-instances.instance.state.stopping'),
+        icon: iconInstanceStopping,
+        class: 'instance-state--stopping',
+      };
+    }
+    if (instance.state === 'DELETED' && instance.deployment.state === 'WORK_IN_PROGRESS') {
+      return {
+        a11yName: i18n('cc-logs-instances.instance.state.deleted'),
+        icon: iconInstanceDeleted,
+        class: 'instance-state--deleted',
+      };
+    }
+    return null;
+  }
+
+  /**
    * @param {EventWithTarget<HTMLInputElement>} e
    */
   _onInstanceClick(e) {
@@ -413,47 +489,6 @@ export class CcLogsInstances extends LitElement {
   }
 
   /**
-   *
-   * @param {DeploymentState} state
-   * @return {{icon: IconModel, a11yName: string, class: string}}
-   */
-  _getDeploymentStateIcon(state) {
-    if (DEPLOYMENT_WIP_STATES.includes(state)) {
-      return {
-        a11yName: i18n('cc-logs-instances.deployment.state.wip'),
-        icon: iconDeploymentWip,
-        class: 'deployment-state--wip',
-      };
-    }
-
-    if (state === 'SUCCEEDED') {
-      return {
-        a11yName: i18n('cc-logs-instances.deployment.state.succeeded'),
-        icon: iconDeploymentSucceeded,
-        class: 'deployment-state--succeeded',
-      };
-    }
-
-    if (state === 'FAILED') {
-      return {
-        a11yName: i18n('cc-logs-instances.deployment.state.failed'),
-        icon: iconDeploymentFailed,
-        class: 'deployment-state--failed',
-      };
-    }
-
-    if (state === 'CANCELLED') {
-      return {
-        a11yName: i18n('cc-logs-instances.deployment.state.cancelled'),
-        icon: iconDeploymentCancelled,
-        class: 'deployment-state--cancelled',
-      };
-    }
-
-    return null;
-  }
-
-  /**
    * @param {DeploymentState} state
    */
   _renderDeploymentState(state) {
@@ -461,41 +496,6 @@ export class CcLogsInstances extends LitElement {
     return html`
       <cc-icon .icon=${icon.icon} a11y-name="${icon.a11yName}" class="deployment-state ${icon.class}"></cc-icon>
     `;
-  }
-
-  /**
-   * @param {Instance} instance
-   */
-  _getInstanceStateIcon(instance) {
-    if (INSTANCE_DEPLOYING_STATES.includes(instance.state)) {
-      return {
-        a11yName: i18n('cc-logs-instances.instance.state.deploying'),
-        icon: iconInstanceDeploying,
-        class: 'instance-state--deploying',
-      };
-    }
-    if (INSTANCE_RUNNING_STATES.includes(instance.state)) {
-      return {
-        a11yName: i18n('cc-logs-instances.instance.state.running'),
-        icon: iconInstanceRunning,
-        class: 'instance-state--running',
-      };
-    }
-    if (instance.state === 'STOPPING') {
-      return {
-        a11yName: i18n('cc-logs-instances.instance.state.stopping'),
-        icon: iconInstanceStopping,
-        class: 'instance-state--stopping',
-      };
-    }
-    if (instance.state === 'DELETED' && instance.deployment.state === 'WORK_IN_PROGRESS') {
-      return {
-        a11yName: i18n('cc-logs-instances.instance.state.deleted'),
-        icon: iconInstanceDeleted,
-        class: 'instance-state--deleted',
-      };
-    }
-    return null;
   }
 
   /**

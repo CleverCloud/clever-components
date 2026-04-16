@@ -99,23 +99,6 @@ export class CcToggle extends LitElement {
     this.value = null;
   }
 
-  /** @param {EventWithTarget<HTMLInputElement>} e */
-  _onChange(e) {
-    if (this.multipleValues == null) {
-      this.value = e.target.value;
-      this.dispatchEvent(new CcSelectEvent(this.value));
-    } else {
-      // Same order as the choices
-      const multipleValues = this.choices
-        .filter(({ value }) => {
-          return value === e.target.value ? e.target.checked : this.multipleValues.includes(value);
-        })
-        .map(({ value }) => value);
-      this.multipleValues = multipleValues;
-      this.dispatchEvent(new CcMultiSelectEvent(multipleValues));
-    }
-  }
-
   /**
    * @param {string} value
    * @param {number} index
@@ -132,6 +115,23 @@ export class CcToggle extends LitElement {
     } else {
       // if multiple mode, focus the first checkbox
       return index === 0;
+    }
+  }
+
+  /** @param {EventWithTarget<HTMLInputElement>} e */
+  _onChange(e) {
+    if (this.multipleValues == null) {
+      this.value = e.target.value;
+      this.dispatchEvent(new CcSelectEvent(this.value));
+    } else {
+      // Same order as the choices
+      const multipleValues = this.choices
+        .filter(({ value }) => {
+          return value === e.target.value ? e.target.checked : this.multipleValues.includes(value);
+        })
+        .map(({ value }) => value);
+      this.multipleValues = multipleValues;
+      this.dispatchEvent(new CcMultiSelectEvent(multipleValues));
     }
   }
 

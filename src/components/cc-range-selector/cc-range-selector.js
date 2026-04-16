@@ -166,77 +166,13 @@ export class CcRangeSelector extends CcFormControlElement {
     this._optionsInnerText = null;
   }
 
-  connectedCallback() {
-    super.connectedCallback();
-    this._onOutsideClickHandler.connect();
-    this._onCcButtonClickHandler.connect();
-  }
-
-  disconnectedCallback() {
-    super.disconnectedCallback();
-    this._onOutsideClickHandler.disconnect();
-    this._onCcButtonClickHandler.disconnect();
-  }
+  /* endregion */
 
   /**
-   * Validates selection and trims disabled options from the start and end of the selected range.
-   * This ensures that the selection doesn't visually include leading or trailing disabled options.
-   * @param {PropertyValues<CcRangeSelector>} changedProperties
+   * Triggers focus on the fieldset element.
    */
-  willUpdate(changedProperties) {
-    if (changedProperties.has('options')) {
-      this._optionsInnerText = this.options.map(this._getOptionText);
-    }
-
-    if (!changedProperties.has('selection') && !changedProperties.has('options')) {
-      return;
-    }
-
-    if (this.disabled || this.selection == null) {
-      return;
-    }
-
-    // Validate selection in range mode - this can only happen if set programmatically with invalid values
-    if (this._isModeRange()) {
-      const indexes = this._getSelectionIndexes();
-
-      if (indexes.start === -1) {
-        throw new Error(
-          `Invalid selection: startValue "${this.selection.startValue}" not found in options. Available values: ${this.options?.map((o) => o.value).join(', ')}`,
-        );
-      }
-      if (indexes.end === -1) {
-        throw new Error(
-          `Invalid selection: endValue "${this.selection.endValue}" not found in options. Available values: ${this.options?.map((o) => o.value).join(', ')}`,
-        );
-      }
-      if (indexes.start > indexes.end) {
-        throw new Error(
-          `Invalid selection: startValue "${this.selection.startValue}" comes after endValue "${this.selection.endValue}" in options array`,
-        );
-      }
-      if (indexes.start === indexes.end) {
-        throw new Error(
-          `Invalid selection: startValue and endValue are the same ("${this.selection.startValue}"). Use mode="single" with value="${this.selection.startValue}" for single selection`,
-        );
-      }
-    }
-
-    const valuesArray = this._getValuesArray(/* includeDisabled */ true);
-    const trimmedArray = trimArray(valuesArray, (/** @type {string} */ value) => {
-      return this.options?.find((option) => option.value === value)?.disabled;
-    });
-
-    // Only trim if not already clean (prevent loops)
-    if (trimmedArray.length !== valuesArray.length) {
-      this.selection =
-        trimmedArray.length === 0
-          ? null
-          : {
-              startValue: trimmedArray.at(0),
-              endValue: trimmedArray.at(-1),
-            };
-    }
+  focus() {
+    this._selectorRef.value?.focus();
   }
 
   /* region CcFormControlElement implementation */
@@ -314,15 +250,6 @@ export class CcRangeSelector extends CcFormControlElement {
     return CcRangeSelector.reactiveValidationProperties;
   }
 
-  /* endregion */
-
-  /**
-   * Triggers focus on the fieldset element.
-   */
-  focus() {
-    this._selectorRef.value?.focus();
-  }
-
   /**
    * Checks if the selector is in single selection mode
    * @return {boolean}
@@ -339,193 +266,6 @@ export class CcRangeSelector extends CcFormControlElement {
    */
   _isModeRange() {
     return this.mode === 'range';
-  }
-
-  /**
-   * Handles selection via input events (primarily for keyboard interaction).
-   * For single mode: converts index to option value, skipping disabled options.
-   * For range mode: computes next valid range boundaries when user adjusts start/end via keyboard,
-   * handling disabled options and boundary crossings. Only applies if adjustment succeeds.
-   * @param {GenericEventWithTarget<InputEvent, HTMLInputElement>} e
-   * @private
-   */
-  _onControlInput(e) {
-    if (this.readonly) {
-      return;
-    }
-
-    this.isCustomActive = false;
-
-    const value = e.target.value;
-    if (this._isModeSingle()) {
-      // Single mode: convert index to option value, skipping disabled options
-      const currentIndex = this._getOptionIndexFromValue(this.value);
-      const nextIndex = parseInt(value);
-
-      // Handle first interaction when no value selected
-      if (currentIndex === -1) {
-        const option = this.options[nextIndex];
-        if (option && !option.disabled) {
-          this.value = option.value;
-          this.dispatchEvent(new CcSelectEvent(this.value));
-        }
-        return;
-      }
-
-      const direction = nextIndex > currentIndex ? 1 : -1;
-
-      // Find next eligible (non-disabled) option
-      const eligibleIndex = this._getNextEligibleOptionIndex(currentIndex, direction);
-      if (eligibleIndex != null) {
-        this.value = this.options[eligibleIndex].value;
-        this.dispatchEvent(new CcSelectEvent(this.value));
-      }
-    } else {
-      let currentIndexes = this._getSelectionIndexes();
-
-      // Guard against invalid selection state (use case: when leaving custom mode)
-      if (currentIndexes.start === -1 || currentIndexes.end === -1) {
-        currentIndexes = { start: null, end: null };
-      }
-
-      const nextRange = this._computeNextRange({
-        input: e.target.id === 'start-input' ? 'start' : 'end',
-        currentIndexes,
-        nextIndex: parseInt(value),
-      });
-      if (nextRange.adjusted) {
-        this._applyRangeSelection(nextRange);
-      }
-    }
-  }
-
-  /**
-   * Initiates drag selection when mouse is pressed on an option in range mode.
-   * This is the first step in the mouse drag interaction flow:
-   * 1. MouseDown: Start drag at this index
-   * 2. MouseEnter: Update end index as mouse moves
-   * 3. MouseUp: Finalize selection
-   * @param {number} index
-   * @param {RangeSelectorOption} option
-   * @private
-   */
-  _onOptionMouseDown(index, option) {
-    // Only handle in range mode, when not already dragging, and when enabled
-    if (this._isModeSingle() || this.disabled || option.disabled || this.readonly || this._dragCtrl.isDragging()) {
-      return;
-    }
-    // Store current values for potential rollback (e.g., clicking outside)
-    this._dragCtrl.setPreviousSelection(this.selection);
-
-    // Clear current selection to provide immediate visual feedback that a new selection is starting.
-    // UX rationale: Setting values to null immediately removes the "selected" visual state,
-    // allowing the "dragging" state to be the only visible indicator during the drag operation.
-    // This prevents visual confusion between the previous selection and the new drag preview.
-    // If the user cancels (clicks outside), the previous values are restored from dragCtrl.
-    this.selection = null;
-
-    // Start drag at the clicked index
-    this._dragCtrl.start(index);
-  }
-
-  /**
-   * Updates drag selection as mouse moves over options during an active drag.
-   * Continuously updates the end index to expand/contract the selection range.
-   * @param {number} index
-   * @param {RangeSelectorOption} option
-   * @private
-   */
-  _onOptionMouseEnter(index, option) {
-    // Only update if in range mode, drag is active, and option is not disabled
-    if (this._isModeSingle() || option.disabled || !this._dragCtrl.isDragging()) {
-      return;
-    }
-    // Update the end index of the drag range
-    this._dragCtrl.update(index);
-  }
-
-  /**
-   * Handles mouse up event to finalize range selection via drag.
-   * @param {number} index
-   * @param {RangeSelectorOption} option
-   * @private
-   */
-  _onOptionMouseUp(index, option) {
-    if (this._isModeSingle() || !this._dragCtrl.isDragging() || this.readonly) {
-      return;
-    }
-
-    if (!option.disabled) {
-      this._dragCtrl.update(index);
-    }
-
-    // Only apply selection if range spans multiple options (getSize() > 0)
-    // This means clicking a single option without dragging will not trigger selection
-    if (this._dragCtrl.getSize() > 0) {
-      this._applyRangeSelection();
-      this.isCustomActive = false;
-    }
-  }
-
-  /**
-   * Handles mouse up event on the fieldset to finalize range selection when drag ends on non-option elements.
-   * This catches cases where the user releases the mouse over arrows or gaps between options,
-   * ensuring the selection is applied regardless of where the mouseup occurs within the component.
-   * @private
-   */
-  _onFieldsetMouseUp() {
-    if (this._dragCtrl.isDragging() && this._dragCtrl.getSize() > 0) {
-      this._applyRangeSelection();
-      this.isCustomActive = false;
-    }
-  }
-
-  /**
-   * Handles click on the custom option button.
-   * Prevents multiple activations, clears current selection, and dispatches a custom selection event.
-   * @param {MouseEvent} e
-   * @private
-   */
-  _onCustomOptionClick(e) {
-    if (this.isCustomActive) {
-      return;
-    }
-
-    e.preventDefault();
-
-    if (this._dragCtrl.isDragging()) {
-      this._dragCtrl.stop();
-    }
-
-    this.isCustomActive = true;
-
-    const detail = this._isModeSingle() ? this.value : [...this._getValuesArray()];
-    this.dispatchEvent(new CcRangeSelectorSelectCustomEvent(detail));
-
-    if (this._isModeSingle()) {
-      this.value = null;
-    }
-    if (this._isModeRange()) {
-      this.selection = null;
-    }
-  }
-
-  /**
-   * Handles click on an option.
-   * In range mode: prevents default to avoid input event collision.
-   * In single mode: updates selection and dispatches event.
-   * @param {MouseEvent} e
-   * @param {RangeSelectorOption} option
-   * @private
-   */
-  _onOptionClick(e, option) {
-    if (this._isModeRange()) {
-      e.preventDefault();
-    } else if (!this.disabled && !this.readonly && !option.disabled) {
-      this.value = option.value;
-      this.isCustomActive = false;
-      this.dispatchEvent(new CcSelectEvent(this.value));
-    }
   }
 
   /**
@@ -747,17 +487,6 @@ export class CcRangeSelector extends CcFormControlElement {
   }
 
   /**
-   * Syncs the form value when the mode changes, since the form data format differs between single (string) and range (FormData) modes.
-   * @param {PropertyValues<CcRangeSelector>} changedProperties
-   */
-  updated(changedProperties) {
-    super.updated(changedProperties);
-    if (changedProperties.has('mode')) {
-      this._internals.setFormValue(this._getFormControlData());
-    }
-  }
-
-  /**
    * Calculates CSS classes for an option wrapper
    * @param {object} params
    * @param {boolean} params.isSelected - Whether option is selected
@@ -800,6 +529,351 @@ export class CcRangeSelector extends CcFormControlElement {
       'arrow-highlighted': shouldHighlightArrow,
       'arrow-highlighted--disabled': isDisabled && !nextOptionSelected,
     };
+  }
+
+  /**
+   * Handles selection via input events (primarily for keyboard interaction).
+   * For single mode: converts index to option value, skipping disabled options.
+   * For range mode: computes next valid range boundaries when user adjusts start/end via keyboard,
+   * handling disabled options and boundary crossings. Only applies if adjustment succeeds.
+   * @param {GenericEventWithTarget<InputEvent, HTMLInputElement>} e
+   * @private
+   */
+  _onControlInput(e) {
+    if (this.readonly) {
+      return;
+    }
+
+    this.isCustomActive = false;
+
+    const value = e.target.value;
+    if (this._isModeSingle()) {
+      // Single mode: convert index to option value, skipping disabled options
+      const currentIndex = this._getOptionIndexFromValue(this.value);
+      const nextIndex = parseInt(value);
+
+      // Handle first interaction when no value selected
+      if (currentIndex === -1) {
+        const option = this.options[nextIndex];
+        if (option && !option.disabled) {
+          this.value = option.value;
+          this.dispatchEvent(new CcSelectEvent(this.value));
+        }
+        return;
+      }
+
+      const direction = nextIndex > currentIndex ? 1 : -1;
+
+      // Find next eligible (non-disabled) option
+      const eligibleIndex = this._getNextEligibleOptionIndex(currentIndex, direction);
+      if (eligibleIndex != null) {
+        this.value = this.options[eligibleIndex].value;
+        this.dispatchEvent(new CcSelectEvent(this.value));
+      }
+    } else {
+      let currentIndexes = this._getSelectionIndexes();
+
+      // Guard against invalid selection state (use case: when leaving custom mode)
+      if (currentIndexes.start === -1 || currentIndexes.end === -1) {
+        currentIndexes = { start: null, end: null };
+      }
+
+      const nextRange = this._computeNextRange({
+        input: e.target.id === 'start-input' ? 'start' : 'end',
+        currentIndexes,
+        nextIndex: parseInt(value),
+      });
+      if (nextRange.adjusted) {
+        this._applyRangeSelection(nextRange);
+      }
+    }
+  }
+
+  /**
+   * Initiates drag selection when mouse is pressed on an option in range mode.
+   * This is the first step in the mouse drag interaction flow:
+   * 1. MouseDown: Start drag at this index
+   * 2. MouseEnter: Update end index as mouse moves
+   * 3. MouseUp: Finalize selection
+   * @param {number} index
+   * @param {RangeSelectorOption} option
+   * @private
+   */
+  _onOptionMouseDown(index, option) {
+    // Only handle in range mode, when not already dragging, and when enabled
+    if (this._isModeSingle() || this.disabled || option.disabled || this.readonly || this._dragCtrl.isDragging()) {
+      return;
+    }
+    // Store current values for potential rollback (e.g., clicking outside)
+    this._dragCtrl.setPreviousSelection(this.selection);
+
+    // Clear current selection to provide immediate visual feedback that a new selection is starting.
+    // UX rationale: Setting values to null immediately removes the "selected" visual state,
+    // allowing the "dragging" state to be the only visible indicator during the drag operation.
+    // This prevents visual confusion between the previous selection and the new drag preview.
+    // If the user cancels (clicks outside), the previous values are restored from dragCtrl.
+    this.selection = null;
+
+    // Start drag at the clicked index
+    this._dragCtrl.start(index);
+  }
+
+  /**
+   * Updates drag selection as mouse moves over options during an active drag.
+   * Continuously updates the end index to expand/contract the selection range.
+   * @param {number} index
+   * @param {RangeSelectorOption} option
+   * @private
+   */
+  _onOptionMouseEnter(index, option) {
+    // Only update if in range mode, drag is active, and option is not disabled
+    if (this._isModeSingle() || option.disabled || !this._dragCtrl.isDragging()) {
+      return;
+    }
+    // Update the end index of the drag range
+    this._dragCtrl.update(index);
+  }
+
+  /**
+   * Handles mouse up event to finalize range selection via drag.
+   * @param {number} index
+   * @param {RangeSelectorOption} option
+   * @private
+   */
+  _onOptionMouseUp(index, option) {
+    if (this._isModeSingle() || !this._dragCtrl.isDragging() || this.readonly) {
+      return;
+    }
+
+    if (!option.disabled) {
+      this._dragCtrl.update(index);
+    }
+
+    // Only apply selection if range spans multiple options (getSize() > 0)
+    // This means clicking a single option without dragging will not trigger selection
+    if (this._dragCtrl.getSize() > 0) {
+      this._applyRangeSelection();
+      this.isCustomActive = false;
+    }
+  }
+
+  /**
+   * Handles mouse up event on the fieldset to finalize range selection when drag ends on non-option elements.
+   * This catches cases where the user releases the mouse over arrows or gaps between options,
+   * ensuring the selection is applied regardless of where the mouseup occurs within the component.
+   * @private
+   */
+  _onFieldsetMouseUp() {
+    if (this._dragCtrl.isDragging() && this._dragCtrl.getSize() > 0) {
+      this._applyRangeSelection();
+      this.isCustomActive = false;
+    }
+  }
+
+  /**
+   * Handles click on the custom option button.
+   * Prevents multiple activations, clears current selection, and dispatches a custom selection event.
+   * @param {MouseEvent} e
+   * @private
+   */
+  _onCustomOptionClick(e) {
+    if (this.isCustomActive) {
+      return;
+    }
+
+    e.preventDefault();
+
+    if (this._dragCtrl.isDragging()) {
+      this._dragCtrl.stop();
+    }
+
+    this.isCustomActive = true;
+
+    const detail = this._isModeSingle() ? this.value : [...this._getValuesArray()];
+    this.dispatchEvent(new CcRangeSelectorSelectCustomEvent(detail));
+
+    if (this._isModeSingle()) {
+      this.value = null;
+    }
+    if (this._isModeRange()) {
+      this.selection = null;
+    }
+  }
+
+  /**
+   * Handles click on an option.
+   * In range mode: prevents default to avoid input event collision.
+   * In single mode: updates selection and dispatches event.
+   * @param {MouseEvent} e
+   * @param {RangeSelectorOption} option
+   * @private
+   */
+  _onOptionClick(e, option) {
+    if (this._isModeRange()) {
+      e.preventDefault();
+    } else if (!this.disabled && !this.readonly && !option.disabled) {
+      this.value = option.value;
+      this.isCustomActive = false;
+      this.dispatchEvent(new CcSelectEvent(this.value));
+    }
+  }
+
+  connectedCallback() {
+    super.connectedCallback();
+    this._onOutsideClickHandler.connect();
+    this._onCcButtonClickHandler.connect();
+  }
+
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    this._onOutsideClickHandler.disconnect();
+    this._onCcButtonClickHandler.disconnect();
+  }
+
+  /**
+   * Validates selection and trims disabled options from the start and end of the selected range.
+   * This ensures that the selection doesn't visually include leading or trailing disabled options.
+   * @param {PropertyValues<CcRangeSelector>} changedProperties
+   */
+  willUpdate(changedProperties) {
+    if (changedProperties.has('options')) {
+      this._optionsInnerText = this.options.map(this._getOptionText);
+    }
+
+    if (!changedProperties.has('selection') && !changedProperties.has('options')) {
+      return;
+    }
+
+    if (this.disabled || this.selection == null) {
+      return;
+    }
+
+    // Validate selection in range mode - this can only happen if set programmatically with invalid values
+    if (this._isModeRange()) {
+      const indexes = this._getSelectionIndexes();
+
+      if (indexes.start === -1) {
+        throw new Error(
+          `Invalid selection: startValue "${this.selection.startValue}" not found in options. Available values: ${this.options?.map((o) => o.value).join(', ')}`,
+        );
+      }
+      if (indexes.end === -1) {
+        throw new Error(
+          `Invalid selection: endValue "${this.selection.endValue}" not found in options. Available values: ${this.options?.map((o) => o.value).join(', ')}`,
+        );
+      }
+      if (indexes.start > indexes.end) {
+        throw new Error(
+          `Invalid selection: startValue "${this.selection.startValue}" comes after endValue "${this.selection.endValue}" in options array`,
+        );
+      }
+      if (indexes.start === indexes.end) {
+        throw new Error(
+          `Invalid selection: startValue and endValue are the same ("${this.selection.startValue}"). Use mode="single" with value="${this.selection.startValue}" for single selection`,
+        );
+      }
+    }
+
+    const valuesArray = this._getValuesArray(/* includeDisabled */ true);
+    const trimmedArray = trimArray(valuesArray, (/** @type {string} */ value) => {
+      return this.options?.find((option) => option.value === value)?.disabled;
+    });
+
+    // Only trim if not already clean (prevent loops)
+    if (trimmedArray.length !== valuesArray.length) {
+      this.selection =
+        trimmedArray.length === 0
+          ? null
+          : {
+              startValue: trimmedArray.at(0),
+              endValue: trimmedArray.at(-1),
+            };
+    }
+  }
+
+  /**
+   * Syncs the form value when the mode changes, since the form data format differs between single (string) and range (FormData) modes.
+   * @param {PropertyValues<CcRangeSelector>} changedProperties
+   */
+  updated(changedProperties) {
+    super.updated(changedProperties);
+    if (changedProperties.has('mode')) {
+      this._internals.setFormValue(this._getFormControlData());
+    }
+  }
+
+  render() {
+    if (this.options?.length === 0) {
+      return '';
+    }
+
+    const hasErrorMessage = this.errorMessage != null && this.errorMessage !== '';
+    const { start, end } = this._getSelectionIndexes();
+
+    const isModeSingle = this._isModeSingle();
+    const isModeRange = this._isModeRange();
+
+    const selectedIndex = this._getOptionIndexFromValue(this.value);
+    const firstEnabledIndex = this.options.findIndex((option) => !option.disabled);
+    const lastEnabledIndex = this.options.findLastIndex((option) => !option.disabled);
+
+    return html`
+      <div
+        class="fieldset ${classMap({ 'is-error': hasErrorMessage })}"
+        @input=${this._onControlInput}
+        @mouseup=${this._onFieldsetMouseUp}
+        ${ref(this._selectorRef)}
+        role="group"
+        aria-labelledby="legend-${this.name}"
+        tabindex="-1"
+      >
+        <div class="fieldset-content">
+          <div class="legend" id="legend-${this.name}">
+            <span class="legend-text">${this.label}</span>
+            ${this.required ? html` <span class="required">${i18n('cc-range-selector.required')}</span> ` : ''}
+          </div>
+
+          ${isModeRange
+            ? this._renderRangeInputs({
+                firstEnabledIndex,
+                lastEnabledIndex,
+                start,
+                end,
+              })
+            : this._renderSingleInput({
+                firstEnabledIndex,
+                lastEnabledIndex,
+                selectedIndex,
+              })}
+          ${this._renderVisuallyHiddenSummary()}
+
+          <div class="options" part="options">
+            ${this.options.map((option, index) =>
+              this._renderOption(option, hasErrorMessage, {
+                indexes: {
+                  start,
+                  current: index,
+                  end,
+                },
+                isModeSingle,
+                isModeRange,
+                isLastOption: index === this.options.length - 1,
+                nextOption: this.options.at(index + 1),
+              }),
+            )}
+            ${this.showCustom ? this._renderCustomOption(hasErrorMessage) : ''}
+          </div>
+
+          <div class="help-container" id="help-id">
+            <slot name="help"></slot>
+          </div>
+
+          ${hasErrorMessage
+            ? html`<p class="error-container" id="error-id" ${ref(this._errorRef)}>${this.errorMessage}</p>`
+            : ''}
+        </div>
+      </div>
+    `;
   }
 
   /**
@@ -901,80 +975,6 @@ export class CcRangeSelector extends CcFormControlElement {
               </li>`
             : ''}
         </ul>
-      </div>
-    `;
-  }
-
-  render() {
-    if (this.options?.length === 0) {
-      return '';
-    }
-
-    const hasErrorMessage = this.errorMessage != null && this.errorMessage !== '';
-    const { start, end } = this._getSelectionIndexes();
-
-    const isModeSingle = this._isModeSingle();
-    const isModeRange = this._isModeRange();
-
-    const selectedIndex = this._getOptionIndexFromValue(this.value);
-    const firstEnabledIndex = this.options.findIndex((option) => !option.disabled);
-    const lastEnabledIndex = this.options.findLastIndex((option) => !option.disabled);
-
-    return html`
-      <div
-        class="fieldset ${classMap({ 'is-error': hasErrorMessage })}"
-        @input=${this._onControlInput}
-        @mouseup=${this._onFieldsetMouseUp}
-        ${ref(this._selectorRef)}
-        role="group"
-        aria-labelledby="legend-${this.name}"
-        tabindex="-1"
-      >
-        <div class="fieldset-content">
-          <div class="legend" id="legend-${this.name}">
-            <span class="legend-text">${this.label}</span>
-            ${this.required ? html` <span class="required">${i18n('cc-range-selector.required')}</span> ` : ''}
-          </div>
-
-          ${isModeRange
-            ? this._renderRangeInputs({
-                firstEnabledIndex,
-                lastEnabledIndex,
-                start,
-                end,
-              })
-            : this._renderSingleInput({
-                firstEnabledIndex,
-                lastEnabledIndex,
-                selectedIndex,
-              })}
-          ${this._renderVisuallyHiddenSummary()}
-
-          <div class="options" part="options">
-            ${this.options.map((option, index) =>
-              this._renderOption(option, hasErrorMessage, {
-                indexes: {
-                  start,
-                  current: index,
-                  end,
-                },
-                isModeSingle,
-                isModeRange,
-                isLastOption: index === this.options.length - 1,
-                nextOption: this.options.at(index + 1),
-              }),
-            )}
-            ${this.showCustom ? this._renderCustomOption(hasErrorMessage) : ''}
-          </div>
-
-          <div class="help-container" id="help-id">
-            <slot name="help"></slot>
-          </div>
-
-          ${hasErrorMessage
-            ? html`<p class="error-container" id="error-id" ${ref(this._errorRef)}>${this.errorMessage}</p>`
-            : ''}
-        </div>
       </div>
     `;
   }

@@ -121,6 +121,10 @@ export class CcOauthConsumerForm extends LitElement {
     });
   }
 
+  resetOauthConsumerForm() {
+    this._formRef.value.reset();
+  }
+
   /**
    * @param {EventWithTarget<HTMLInputElement>} e
    * @param {string} sectionSelector
@@ -166,6 +170,56 @@ export class CcOauthConsumerForm extends LitElement {
 
   _updateSelectAllManageCheckbox() {
     this._updateSelectAllCheckbox('.manage-rights-section', 'select-all-manage');
+  }
+
+  // We only put the first checkbox of group validity on error
+  // because there is no need to put all the checkboxes validity on error,
+  // it would be redundant for screen reader
+  _validateCheckboxGroup() {
+    const data = getFormDataMap(this._formRef.value);
+    const hasCheckedBox = Object.keys(data).some((formControlName) => formControlName === 'rights');
+    const selection = /** @type {HTMLInputElement} */ (
+      this.shadowRoot.querySelector('#access-rights-container input[type="checkbox"][name]')
+    );
+
+    if (!hasCheckedBox) {
+      selection.setCustomValidity('error');
+    } else {
+      selection.setCustomValidity('');
+    }
+  }
+
+  /**
+   * @param {keyof OauthConsumerRights} name
+   * @returns {string|Node}
+   */
+  _getName(name) {
+    switch (name) {
+      case 'accessOrganisations':
+        return i18n('cc-oauth-consumer-form.rights.access-organisations');
+      case 'accessOrganisationsBills':
+        return i18n('cc-oauth-consumer-form.rights.access-organisations-bills');
+      case 'accessOrganisationsConsumptionStatistics':
+        return i18n('cc-oauth-consumer-form.rights.access-organisations-consumption-statistics');
+      case 'accessOrganisationsCreditCount':
+        return i18n('cc-oauth-consumer-form.rights.access-organisations-credit-count');
+      case 'accessPersonalInformation':
+        return i18n('cc-oauth-consumer-form.rights.access-personal-information');
+      case 'manageOrganisations':
+        return i18n('cc-oauth-consumer-form.rights.manage-organisations');
+      case 'manageOrganisationsApplications':
+        return i18n('cc-oauth-consumer-form.rights.manage-organisations-applications');
+      case 'manageOrganisationsMembers':
+        return i18n('cc-oauth-consumer-form.rights.manage-organisations-members');
+      case 'manageOrganisationsServices':
+        return i18n('cc-oauth-consumer-form.rights.manage-organisations-services');
+      case 'managePersonalInformation':
+        return i18n('cc-oauth-consumer-form.rights.manage-personal-information');
+      case 'manageSshKeys':
+        return i18n('cc-oauth-consumer-form.rights.manage-ssh-keys');
+      default:
+        return fakeString(70);
+    }
   }
 
   /** @param {OauthConsumerFormData} data */
@@ -218,23 +272,6 @@ export class CcOauthConsumerForm extends LitElement {
     this.dispatchEvent(new CcOauthConsumerDeleteEvent());
   }
 
-  // We only put the first checkbox of group validity on error
-  // because there is no need to put all the checkboxes validity on error,
-  // it would be redundant for screen reader
-  _validateCheckboxGroup() {
-    const data = getFormDataMap(this._formRef.value);
-    const hasCheckedBox = Object.keys(data).some((formControlName) => formControlName === 'rights');
-    const selection = /** @type {HTMLInputElement} */ (
-      this.shadowRoot.querySelector('#access-rights-container input[type="checkbox"][name]')
-    );
-
-    if (!hasCheckedBox) {
-      selection.setCustomValidity('error');
-    } else {
-      selection.setCustomValidity('');
-    }
-  }
-
   /**
    * @param {Array<{name: string, validity: {valid: boolean}}>} validationResult
    * @private
@@ -244,43 +281,6 @@ export class CcOauthConsumerForm extends LitElement {
       return name !== 'rights' || validity.valid;
     });
     this._shouldDisplayCheckboxGroupError = !isCheckboxGroupValid;
-  }
-
-  /**
-   * @param {keyof OauthConsumerRights} name
-   * @returns {string|Node}
-   */
-  _getName(name) {
-    switch (name) {
-      case 'accessOrganisations':
-        return i18n('cc-oauth-consumer-form.rights.access-organisations');
-      case 'accessOrganisationsBills':
-        return i18n('cc-oauth-consumer-form.rights.access-organisations-bills');
-      case 'accessOrganisationsConsumptionStatistics':
-        return i18n('cc-oauth-consumer-form.rights.access-organisations-consumption-statistics');
-      case 'accessOrganisationsCreditCount':
-        return i18n('cc-oauth-consumer-form.rights.access-organisations-credit-count');
-      case 'accessPersonalInformation':
-        return i18n('cc-oauth-consumer-form.rights.access-personal-information');
-      case 'manageOrganisations':
-        return i18n('cc-oauth-consumer-form.rights.manage-organisations');
-      case 'manageOrganisationsApplications':
-        return i18n('cc-oauth-consumer-form.rights.manage-organisations-applications');
-      case 'manageOrganisationsMembers':
-        return i18n('cc-oauth-consumer-form.rights.manage-organisations-members');
-      case 'manageOrganisationsServices':
-        return i18n('cc-oauth-consumer-form.rights.manage-organisations-services');
-      case 'managePersonalInformation':
-        return i18n('cc-oauth-consumer-form.rights.manage-personal-information');
-      case 'manageSshKeys':
-        return i18n('cc-oauth-consumer-form.rights.manage-ssh-keys');
-      default:
-        return fakeString(70);
-    }
-  }
-
-  resetOauthConsumerForm() {
-    this._formRef.value.reset();
   }
 
   /**

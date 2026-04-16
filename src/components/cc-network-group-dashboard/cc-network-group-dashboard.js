@@ -60,21 +60,6 @@ export class CcNetworkGroupDashboard extends LitElement {
     this._isDeleteConfirmPending = false;
   }
 
-  _onDeleteRequest() {
-    this._isDeleteConfirmPending = true;
-  }
-
-  _onDeleteConfirmClose() {
-    this._isDeleteConfirmPending = false;
-  }
-
-  _onDeleteConfirm() {
-    if (this.state.type !== 'loaded') {
-      return;
-    }
-    this.dispatchEvent(new CcNetworkGroupDeleteEvent(this.state.id));
-  }
-
   /**
    * Returns the header state object for <cc-addon-header>.
    *
@@ -114,6 +99,21 @@ export class CcNetworkGroupDashboard extends LitElement {
       };
     }
     return SKELETON_INFO_STATE;
+  }
+
+  _onDeleteRequest() {
+    this._isDeleteConfirmPending = true;
+  }
+
+  _onDeleteConfirmClose() {
+    this._isDeleteConfirmPending = false;
+  }
+
+  _onDeleteConfirm() {
+    if (this.state.type !== 'loaded') {
+      return;
+    }
+    this.dispatchEvent(new CcNetworkGroupDeleteEvent(this.state.id));
   }
 
   /** @param {PropertyValues<CcNetworkGroupDashboard>} changedProperties */

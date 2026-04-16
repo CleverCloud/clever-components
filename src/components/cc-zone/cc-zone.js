@@ -50,16 +50,6 @@ export class CcZone extends LitElement {
     };
   }
 
-  constructor() {
-    super();
-
-    /** @type {ZoneModeType} Sets the mode of the component. */
-    this.mode = 'default';
-
-    /** @type {ZoneState} Sets the state of the component. */
-    this.state = { type: 'loading' };
-  }
-
   // This is a bit irregular to do this but we need to reuse this text logic in a <select>.
   // Moving this to a separated module feels overkill right now.
   /**
@@ -94,6 +84,16 @@ export class CcZone extends LitElement {
       subtitle,
       infra: infraSlug,
     };
+  }
+
+  constructor() {
+    super();
+
+    /** @type {ZoneModeType} Sets the mode of the component. */
+    this.mode = 'default';
+
+    /** @type {ZoneState} Sets the state of the component. */
+    this.state = { type: 'loading' };
   }
 
   render() {
