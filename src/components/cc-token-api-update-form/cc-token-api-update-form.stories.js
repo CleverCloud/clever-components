@@ -79,6 +79,20 @@ export const errorWithEmptyName = makeStory(conf, {
   },
 });
 
+export const withCustomApiBridgeBaseUrl = makeStory(conf, {
+  /** @type {Partial<CcTokenApiUpdateForm>[]} */
+  items: [
+    {
+      apiBridgeBaseUrl: 'https://custom-api-bridge.example.com',
+      apiTokenListHref: CC_TOKEN_API_LIST_STORY_HREF,
+      state: {
+        type: 'loaded',
+        values: baseValues,
+      },
+    },
+  ],
+});
+
 export const updating = makeStory(conf, {
   /** @type {Partial<CcTokenApiUpdateForm>[]} */
   items: [

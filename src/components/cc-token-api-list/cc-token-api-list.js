@@ -44,6 +44,7 @@ import { CcPasswordResetEvent, CcTokenRevokeEvent } from '../common.events.js';
 export class CcTokenApiList extends LitElement {
   static get properties() {
     return {
+      apiBridgeBaseUrl: { type: String, attribute: 'api-bridge-base-url' },
       apiTokenCreationHref: { type: String, attribute: 'api-token-creation-href' },
       apiTokenUpdateHref: { type: String, attribute: 'api-token-update-href' },
       state: { type: Object },
@@ -52,6 +53,9 @@ export class CcTokenApiList extends LitElement {
 
   constructor() {
     super();
+
+    /** @type {string} Sets the base URL of the API bridge used in the curl example. */
+    this.apiBridgeBaseUrl = 'https://api-bridge.clever-cloud.com';
 
     /** @type {string|null} Sets the URL leading to the API token creation screen */
     this.apiTokenCreationHref = null;
@@ -207,7 +211,7 @@ export class CcTokenApiList extends LitElement {
               <dt>${i18n('cc-token-api-list.cli.content.use-token')}</dt>
               <dd>
                 <cc-code>
-                  curl -H "Authorization: Bearer &lt;TOKEN&gt;" https://api-bridge.clever-cloud.com/v2/self
+                  curl -H "Authorization: Bearer &lt;TOKEN&gt;" ${new URL('/v2/self', this.apiBridgeBaseUrl).href}
                 </cc-code>
               </dd>
             </dl>

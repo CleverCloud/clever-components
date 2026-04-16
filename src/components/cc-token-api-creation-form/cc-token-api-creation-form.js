@@ -62,6 +62,7 @@ const DURATION_TO_NB_OF_DAYS_MAP = new Map([
 export class CcTokenApiCreationForm extends LitElement {
   static get properties() {
     return {
+      apiBridgeBaseUrl: { type: String, attribute: 'api-bridge-base-url' },
       apiTokenListHref: { type: String, attribute: 'api-token-list-href' },
       state: { type: Object },
     };
@@ -91,6 +92,9 @@ export class CcTokenApiCreationForm extends LitElement {
 
   constructor() {
     super();
+
+    /** @type {string} Sets the base URL of the API bridge used in the curl example. */
+    this.apiBridgeBaseUrl = 'https://api-bridge.clever-cloud.com';
 
     /** @type {string} URL for the API token list screen */
     this.apiTokenListHref = '';
@@ -394,7 +398,7 @@ export class CcTokenApiCreationForm extends LitElement {
               <dt>${i18n('cc-token-api-creation-form.cli.content.use-token')}</dt>
               <dd>
                 <cc-code>
-                  curl -H "Authorization: Bearer &lt;TOKEN&gt;" https://api-bridge.clever-cloud.com/v2/self
+                  curl -H "Authorization: Bearer &lt;TOKEN&gt;" ${new URL('/v2/self', this.apiBridgeBaseUrl).href}
                 </cc-code>
               </dd>
             </dl>
