@@ -18,10 +18,12 @@ const html = `
     <head>
       <meta charset="UTF-8" />
       <title>PR ${visualTestsFinalReport.prNumber} - Visual tests Report</title>
-      <link rel="stylesheet" href="https://components.clever-cloud.com/styles.css" />
+      <!-- Pinning to a specific version to avoid dealing with breaking changes, if you update the report components, then you need to bump this version -->
+      <link rel="stylesheet" href="https://components.clever-cloud.com/styles.css?version=25.1.0" />
+      <!-- Pinning to a specific version to avoid dealing with breaking changes, if you update the report components, then you need to bump this version -->
       <script
         type="module"
-        src="https://preview-components.clever-cloud.com/load.js?version=tests-visual-changes&lang=en&components=cc-visual-tests-report"
+        src="https://components.clever-cloud.com/load.js?version=25.1.0&lang=en&components=cc-visual-tests-report"
       ></script>
       <style>
         html, body {
