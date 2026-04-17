@@ -73,9 +73,14 @@ export class CcVisualTestsReportMenu extends LitElement {
         return componentCompare;
       }
 
-      const storyCompare = a.storyName.localeCompare(b.storyName);
-      if (storyCompare !== 0) {
-        return storyCompare;
+      if (a.storyName !== b.storyName) {
+        if (a.storyName === 'defaultStory') {
+          return -1;
+        }
+        if (b.storyName === 'defaultStory') {
+          return 1;
+        }
+        return a.storyName.localeCompare(b.storyName);
       }
 
       if (a.viewportType !== b.viewportType) {
