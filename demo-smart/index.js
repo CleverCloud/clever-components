@@ -26,6 +26,13 @@ document.querySelectorAll('.definition-link').forEach((link) => {
   link.href = linkUrl.toString();
 });
 
+const definitionPattern = /^[a-z0-9-]+(?:\.[a-z0-9-]+)*$/;
+const allowedDefinitions = new Set(
+  Array.from(document.querySelectorAll('.definition-link'))
+    .map((link) => new URL(link.href).searchParams.get('definition'))
+    .filter((value) => value != null),
+);
+
 updateRootContext({});
 
 window.addEventListener('cc-notify', (event) => {
@@ -33,13 +40,16 @@ window.addEventListener('cc-notify', (event) => {
 });
 
 const { definition, lang: _lang, ...componentProperties } = Object.fromEntries(url.searchParams.entries());
+const safeDefinition = definitionPattern.test(definition ?? '') && allowedDefinitions.has(definition)
+  ? definition
+  : null;
 
-if (definition) {
+if (safeDefinition) {
   document.getElementById('empty-message').style.display = 'none';
 
-  const componentName = definition.split('.').shift();
+  const componentName = safeDefinition.split('.').shift();
 
-  import(`../src/components/${componentName}/${definition}.js`);
+  import(`../src/components/${componentName}/${safeDefinition}.js`);
 
   const $container = document.querySelector('cc-smart-container');
 
@@ -50,7 +60,7 @@ if (definition) {
   $container.appendChild($component);
 
   // Highlight active link in sidebar
-  const activeLink = document.querySelector(`.definition-link[href*="definition=${definition}"]`);
+  const activeLink = document.querySelector(`.definition-link[href*="definition=${safeDefinition}"]`);
   if (activeLink) {
     activeLink.classList.add('active');
     activeLink.scrollIntoView({ block: 'nearest' });
