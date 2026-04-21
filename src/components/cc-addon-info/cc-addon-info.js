@@ -561,6 +561,17 @@ export class CcAddonInfo extends LitElement {
           border-top: solid 1px var(--cc-color-border-neutral-weak);
         }
 
+        /*
+         * .section--billing is always in the DOM but hidden via display:none when nothing is slotted.
+         * When it happens to be the first child, :not(:first-child) on the next section still matches
+         * (because billing is structurally the first child, even if invisible), producing an unwanted
+         * top border on what is visually the first visible section.
+         * This rule cancels that border for billing's immediate sibling in that specific case.
+         */
+        .section--billing:not([billing-is-slotted]):first-child + .section {
+          border-top: none;
+        }
+
         .section.section--billing:not([billing-is-slotted]) {
           display: none;
         }
