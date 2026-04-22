@@ -1,51 +1,11 @@
 import { NetworkGroupPeer } from '../cc-network-group-peer-card/cc-network-group-peer-card.types.js';
 import { Option } from '../cc-select/cc-select.types.js';
 
-export type NetworkGroupLinkFormState =
-  | NetworkGroupLinkFormStateIdle
-  | NetworkGroupLinkFormStateLoading
-  | NetworkGroupLinkFormStateLinking
-  | NetworkGroupLinkFormStateEmpty
-  | NetworkGroupLinkFormStateError;
-
-export interface NetworkGroupLinkFormStateIdle {
-  type: 'idle';
-  selectOptions: Option[];
-}
-
-export interface NetworkGroupLinkFormStateLoading {
-  type: 'loading';
-}
-
-export interface NetworkGroupLinkFormStateLinking {
-  type: 'linking';
-  selectOptions: Option[];
-}
-
-export interface NetworkGroupLinkFormStateError {
-  type: 'error';
-}
-
-export interface NetworkGroupLinkFormStateEmpty {
-  type: 'empty';
-  networkGroupDashboardUrl: string;
-}
-
 export type NetworkGroupListState =
-  | NetworkGroupListStateLoaded
-  | NetworkGroupListStateUnlinking
   | NetworkGroupListStateLoading
-  | NetworkGroupListStateError;
-
-export interface NetworkGroupListStateLoaded {
-  type: 'loaded';
-  linkedNetworkGroupList: NetworkGroup[];
-}
-
-export interface NetworkGroupListStateUnlinking {
-  type: 'unlinking';
-  linkedNetworkGroupList: NetworkGroup[];
-}
+  | NetworkGroupListStateError
+  | NetworkGroupListStateUnsupported
+  | NetworkGroupListStateLoaded;
 
 export interface NetworkGroupListStateLoading {
   type: 'loading';
@@ -53,6 +13,49 @@ export interface NetworkGroupListStateLoading {
 
 export interface NetworkGroupListStateError {
   type: 'error';
+}
+
+export interface NetworkGroupListStateUnsupported {
+  type: 'unsupported';
+  addonMigrationScreenUrl: string;
+}
+
+export interface NetworkGroupListStateLoaded {
+  type: 'loaded';
+  linkFormState: NetworkGroupLinkFormState;
+  listState: NetworkGroupLinkedListState;
+}
+
+export type NetworkGroupLinkFormState =
+  | NetworkGroupLinkFormStateIdle
+  | NetworkGroupLinkFormStateLinking
+  | NetworkGroupLinkFormStateEmpty;
+
+export interface NetworkGroupLinkFormStateIdle {
+  type: 'idle';
+  selectOptions: Option[];
+}
+
+export interface NetworkGroupLinkFormStateLinking {
+  type: 'linking';
+  selectOptions: Option[];
+}
+
+export interface NetworkGroupLinkFormStateEmpty {
+  type: 'empty';
+  networkGroupDashboardUrl: string;
+}
+
+export type NetworkGroupLinkedListState = NetworkGroupLinkedListStateLoaded | NetworkGroupLinkedListStateUnlinking;
+
+export interface NetworkGroupLinkedListStateLoaded {
+  type: 'loaded';
+  linkedNetworkGroupList: NetworkGroup[];
+}
+
+export interface NetworkGroupLinkedListStateUnlinking {
+  type: 'unlinking';
+  linkedNetworkGroupList: NetworkGroup[];
 }
 
 export interface NetworkGroup {

@@ -10,6 +10,7 @@ export default {
 
 /**
  * @import { CcNetworkGroupList } from './cc-network-group-list.js'
+ * @import { NetworkGroupListStateLoaded } from './cc-network-group-list.types.js';
  */
 
 const RESOURCE_ID = 'app_XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX';
@@ -23,13 +24,16 @@ export const defaultStory = makeStory(conf, {
   items: [
     {
       resourceId: RESOURCE_ID,
-      linkFormState: {
-        type: 'idle',
-        selectOptions: networkGroupSelectOptions,
-      },
-      listState: {
+      state: {
         type: 'loaded',
-        linkedNetworkGroupList,
+        linkFormState: {
+          type: 'idle',
+          selectOptions: networkGroupSelectOptions,
+        },
+        listState: {
+          type: 'loaded',
+          linkedNetworkGroupList,
+        },
       },
     },
   ],
@@ -40,13 +44,16 @@ export const dataLoadedWithEmpty = makeStory(conf, {
   items: [
     {
       resourceId: RESOURCE_ID,
-      linkFormState: {
-        type: 'idle',
-        selectOptions: networkGroupSelectOptions,
-      },
-      listState: {
+      state: {
         type: 'loaded',
-        linkedNetworkGroupList: [],
+        linkFormState: {
+          type: 'idle',
+          selectOptions: networkGroupSelectOptions,
+        },
+        listState: {
+          type: 'loaded',
+          linkedNetworkGroupList: [],
+        },
       },
     },
   ],
@@ -57,13 +64,16 @@ export const dataLoadedWithNoNetworkGroupToLink = makeStory(conf, {
   items: [
     {
       resourceId: RESOURCE_ID,
-      linkFormState: {
-        type: 'empty',
-        networkGroupDashboardUrl: '/network-groups/new',
-      },
-      listState: {
+      state: {
         type: 'loaded',
-        linkedNetworkGroupList: [],
+        linkFormState: {
+          type: 'empty',
+          networkGroupDashboardUrl: '/network-groups/new',
+        },
+        listState: {
+          type: 'loaded',
+          linkedNetworkGroupList: [],
+        },
       },
     },
   ],
@@ -74,8 +84,7 @@ export const loading = makeStory(conf, {
   items: [
     {
       resourceId: RESOURCE_ID,
-      linkFormState: { type: 'loading' },
-      listState: { type: 'loading' },
+      state: { type: 'loading' },
     },
   ],
 });
@@ -85,8 +94,20 @@ export const error = makeStory(conf, {
   items: [
     {
       resourceId: RESOURCE_ID,
-      linkFormState: { type: 'error' },
-      listState: { type: 'error' },
+      state: { type: 'error' },
+    },
+  ],
+});
+
+export const unsupported = makeStory(conf, {
+  /** @type {Partial<CcNetworkGroupList>[]} */
+  items: [
+    {
+      resourceId: RESOURCE_ID,
+      state: {
+        type: 'unsupported',
+        addonMigrationScreenUrl: '/addons/migrate',
+      },
     },
   ],
 });
@@ -96,13 +117,16 @@ export const waitingWithLinking = makeStory(conf, {
   items: [
     {
       resourceId: RESOURCE_ID,
-      linkFormState: {
-        type: 'linking',
-        selectOptions: networkGroupSelectOptions,
-      },
-      listState: {
+      state: {
         type: 'loaded',
-        linkedNetworkGroupList,
+        linkFormState: {
+          type: 'linking',
+          selectOptions: networkGroupSelectOptions,
+        },
+        listState: {
+          type: 'loaded',
+          linkedNetworkGroupList,
+        },
       },
     },
   ],
@@ -113,14 +137,29 @@ export const waitingWithUnlinking = makeStory(conf, {
   items: [
     {
       resourceId: RESOURCE_ID,
-      linkFormState: {
-        type: 'idle',
-        selectOptions: networkGroupSelectOptions,
-      },
-      listState: {
-        type: 'unlinking',
-        linkedNetworkGroupList,
+      state: {
+        type: 'loaded',
+        linkFormState: {
+          type: 'idle',
+          selectOptions: networkGroupSelectOptions,
+        },
+        listState: {
+          type: 'loaded',
+          linkedNetworkGroupList,
+        },
       },
     },
   ],
+  /** @param {CcNetworkGroupList & { state: NetworkGroupListStateLoaded }} component */
+  onUpdateComplete(component) {
+    const ccButton = component.shadowRoot.querySelector('cc-button.unlink-btn');
+    ccButton.shadowRoot.querySelector('button').click();
+    component.state = /** @type {NetworkGroupListStateLoaded} */ {
+      ...component.state,
+      listState: {
+        ...component.state.listState,
+        type: 'unlinking',
+      },
+    };
+  },
 });

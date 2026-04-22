@@ -1410,6 +1410,11 @@ export const translations = {
   'cc-network-group-list.unlink.dialog.unlink-btn': `Confirmer et dissocier`,
   'cc-network-group-list.unlink.error': `Une erreur est survenue pendant la dissociation du Network Group`,
   'cc-network-group-list.unlink.success': `La dissociation du Network Group a bien été effectuée`,
+  'cc-network-group-list.unsupported-notice.heading': `Migrez vers un plan payant`,
+  'cc-network-group-list.unsupported-notice.message': /** @param {{addonMigrationScreenUrl: string}} _ */ ({
+    addonMigrationScreenUrl,
+  }) =>
+    sanitize`Les Network Groups ne sont pas disponibles pour les add-ons avec un plan dev. <cc-link href="${addonMigrationScreenUrl}">Migrez vers un plan payant</cc-link> pour profiter de cette fonctionnalité.`,
   //#endregion
   //#region cc-network-group-member-card
   'cc-network-group-member-card.deleted-member.badge': `Ressource supprimée`,
