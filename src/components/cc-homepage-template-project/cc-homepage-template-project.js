@@ -65,7 +65,7 @@ export class CcHomepageTemplateProject extends LitElement {
   _renderProjectRow(project) {
     return html`
       <li>
-        <a href="${project.href}" class="project-row">
+        <a href="${project.href}" target="_blank" rel="noopener noreferrer" class="project-row">
           <div class="project-info">
             <span class="project-name">${project.name}</span>
             <span class="project-description">${project.description}</span>
