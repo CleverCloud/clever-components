@@ -47,7 +47,7 @@ const LOADING_STATE = {
           value: fakeString(10),
         },
         {
-          code: 'open-api-url',
+          code: 'swagger-url',
           value: fakeString(10),
         },
         {
@@ -266,8 +266,8 @@ class Api extends CcAddonCredentialsClient {
           value: operator.api.url,
         },
         {
-          code: 'open-api-url',
-          value: operator.api.openapi,
+          code: 'swagger-url',
+          value: operator.api.swaggerUrl,
         },
         {
           code: 'ng',

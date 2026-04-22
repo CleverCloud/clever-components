@@ -79,6 +79,7 @@ export interface OtoroshiOperatorInfo {
     user: string;
     secret: string;
     openapi: string;
+    swaggerUrl: string;
   };
   availableVersions: string[];
   resources: {
