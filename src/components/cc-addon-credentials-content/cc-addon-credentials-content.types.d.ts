@@ -50,6 +50,7 @@ type AddonCredentialCode =
   | 'tenant-namespace'
   | 'initial-user'
   | 'open-api-url'
+  | 'swagger-url'
   | 'url'
   | 'key-id'
   | 'key-secret'

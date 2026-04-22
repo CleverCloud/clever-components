@@ -77,6 +77,10 @@ export const BASE_ADDON_ACCESS_ITEMS = [
     value: 'https://open-api-url.example.com/',
   },
   {
+    code: 'swagger-url',
+    value: 'https://swagger-url.example.com/',
+  },
+  {
     code: 'ng',
     kind: 'standard',
     value: {

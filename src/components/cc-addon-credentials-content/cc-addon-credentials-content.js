@@ -25,6 +25,7 @@ const credentialsToDisplayAsString = new Set([
   'api-client-user',
   'initial-user',
   'open-api-url',
+  'swagger-url',
   'url',
   'key-id',
 ]);
@@ -136,6 +137,8 @@ export class CcAddonCredentialsContent extends LitElement {
         return i18n('cc-addon-credentials-content.code.initial-user');
       case 'open-api-url':
         return i18n('cc-addon-credentials-content.code.open-api-url');
+      case 'swagger-url':
+        return i18n('cc-addon-credentials-content.code.swagger-url');
       case 'url':
         return i18n('cc-addon-credentials-content.code.url');
       case 'key-id':

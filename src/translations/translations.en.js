@@ -215,6 +215,7 @@ export const translations = {
   'cc-addon-credentials-content.code.open-api-url': `OpenAPI URL`,
   'cc-addon-credentials-content.code.password': `Password`,
   'cc-addon-credentials-content.code.port': `Port`,
+  'cc-addon-credentials-content.code.swagger-url': `Swagger UI`,
   'cc-addon-credentials-content.code.tenant-namespace': `Tenant/Namespace`,
   'cc-addon-credentials-content.code.token': `Token`,
   'cc-addon-credentials-content.code.uri': `URI`,
