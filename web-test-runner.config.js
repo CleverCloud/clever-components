@@ -22,7 +22,7 @@ export default {
     return logMessage != null && !logsToExclude.includes(logMessage);
   },
   nodeResolve: {
-    exportConditions: ['production', 'default'],
+    exportConditions: ['production', 'default', 'browser'],
   },
   browsers: [
     chromeLauncher({

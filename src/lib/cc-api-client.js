@@ -1,5 +1,12 @@
 import { CcApiClient } from '@clevercloud/client/cc-api-client.js';
+// FIXME: the import-x/resovler plugin needs to be configured to use `browser` export condition
+// eslint-disable-next-line import-x/no-unresolved
+import { LocalStorageStore } from '@clevercloud/client/cc-api-local-storage-store.js';
 import { CcApiErrorEvent } from './send-to-api.events.js';
+
+/**
+ * @typedef {Omit<ConstructorParameters<typeof CcApiClient>[0], 'hooks'>} CcApiClientConfigWithoutHooks
+ */
 
 /** @import { ApiConfig, ApiTokenConfig } from './send-to-api.types.js' */
 
@@ -99,6 +106,7 @@ export function getCcApiClientWithToken(apiTokenConfig) {
         },
         baseUrl: apiTokenConfig.API_HOST,
         defaultRequestConfig: { cors: true },
+        resourceIdResolverStore: new LocalStorageStore(`cc-client-cache-${cacheKey}`),
       }),
     );
   }
@@ -109,7 +117,7 @@ export function getCcApiClientWithToken(apiTokenConfig) {
 /**
  * Create a CcApiClient with an onError hook that dispatches CcApiErrorEvent.
  *
- * @param {object} config - CcApiClient configuration
+ * @param {CcApiClientConfigWithoutHooks} config - CcApiClient configuration
  * @returns {CcApiClient}
  */
 function createClient(config) {
