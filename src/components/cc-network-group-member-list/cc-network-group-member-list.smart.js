@@ -6,6 +6,7 @@ import { CreateNetworkGroupMemberCommand } from '@clevercloud/client/cc-api-comm
 import { DeleteNetworkGroupMemberCommand } from '@clevercloud/client/cc-api-commands/network-group/delete-network-group-member-command.js';
 import { GetNetworkGroupCommand } from '@clevercloud/client/cc-api-commands/network-group/get-network-group-command.js';
 import { GetNetworkGroupWireguardConfigurationUrlCommand } from '@clevercloud/client/cc-api-commands/network-group/get-network-group-wireguard-configuration-url-command.js';
+import { isNetworkGroupAddonCandidate } from '@clevercloud/client/cc-api-commands/network-group/network-group-utils.js';
 import { getAssetUrl } from '../../lib/assets-url.js';
 import { getCcApiClientWithOAuth } from '../../lib/cc-api-client.js';
 import { notify, notifyError, notifySuccess } from '../../lib/notifications.js';
@@ -57,24 +58,18 @@ defineSmartComponent({
 
     /** Fetches network group, applications, and addons, then updates both states. */
     async function refreshData() {
-      const [memberList, applications, addons] = await Promise.all([
-        api.getNetworkGroupInfo(),
-        api.listApplications(),
-        api.listAddons(),
-      ]);
+      const [memberList, resources] = await Promise.all([api.getNetworkGroupInfo(), api.listResources()]);
 
       // Get IDs of members already in the network group
       const memberIds = new Set(memberList.map((member) => member.id));
 
-      // Build select options for apps and addons not already members
-      /** @param {Array<{ id: string, name: string, displayId: string }>} resources */
-      const toSelectOptions = (resources) =>
-        resources
-          .filter((resource) => !memberIds.has(resource.id))
-          .map((resource) => ({ label: `${resource.name} (${resource.displayId})`, value: resource.id }));
-
       /** @type {Array<Option>} */
-      const selectOptions = [...toSelectOptions(applications), ...toSelectOptions(addons)];
+      const selectOptions = resources
+        .filter((resource) => !memberIds.has(resource.id))
+        .map((resource) => ({
+          label: `${resource.name} (${resource.id})`,
+          value: resource.id,
+        }));
 
       updateComponent('memberListState', {
         type: 'loaded',
@@ -259,34 +254,27 @@ class Api {
   }
 
   /**
-   * Lists all addons for the owner.
-   * @returns {Promise<Array<{ id: string, name: string, displayId: string }>>}
+   * Lists all applications and addons for the owner that can be linked to a network group.
+   * @returns {Promise<Array<{ id: string, name: string }>>}
    */
-  async listAddons() {
-    const addons = await this.#ccApiClient.send(new ListAddonCommand({ ownerId: this.#ownerId }), {
-      signal: this.#signal,
-    });
-    return addons.map((addon) => ({
-      id: addon.id,
-      name: addon.name,
-      displayId: addon.realId,
-    }));
-  }
-
-  /**
-   * Lists all applications for the owner.
-   * @returns {Promise<Array<{ id: string, name: string, displayId: string }>>}
-   */
-  async listApplications() {
-    const applications = await this.#ccApiClient.send(
-      new ListApplicationCommand({ ownerId: this.#ownerId, withBranches: false }),
-      { signal: this.#signal },
-    );
-    return applications.map((app) => ({
-      id: app.id,
-      name: app.name,
-      displayId: app.id,
-    }));
+  async listResources() {
+    const [apps, addons] = await Promise.all([
+      this.#ccApiClient.send(new ListApplicationCommand({ ownerId: this.#ownerId, withBranches: false }), {
+        signal: this.#signal,
+      }),
+      this.#ccApiClient.send(new ListAddonCommand({ ownerId: this.#ownerId }), { signal: this.#signal }),
+    ]);
+    const supportedAddons = addons.filter((addon) => isNetworkGroupAddonCandidate(addon));
+    return [
+      ...apps.map((app) => ({
+        id: app.id,
+        name: app.name,
+      })),
+      ...supportedAddons.map((addon) => ({
+        id: addon.realId,
+        name: addon.name,
+      })),
+    ];
   }
 
   /**
