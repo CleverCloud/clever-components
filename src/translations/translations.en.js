@@ -1399,6 +1399,11 @@ export const translations = {
   'cc-network-group-list.unlink.dialog.unlink-btn': `Confirm and unlink`,
   'cc-network-group-list.unlink.error': `Something went wrong while unlinking the Network Group`,
   'cc-network-group-list.unlink.success': `The Network Group has been unlinked successfully`,
+  'cc-network-group-list.unsupported-notice.heading': `Migrate to paid plan`,
+  'cc-network-group-list.unsupported-notice.message': /** @param {{addonMigrationScreenUrl: string}} _ */ ({
+    addonMigrationScreenUrl,
+  }) =>
+    sanitize`Add-ons on a dev plan do not support Network Groups. <cc-link href="${addonMigrationScreenUrl}">Migrate to a paid plan</cc-link> to use this feature.`,
   //#endregion
   //#region cc-network-group-member-card
   'cc-network-group-member-card.deleted-member.badge': `Resource deleted`,

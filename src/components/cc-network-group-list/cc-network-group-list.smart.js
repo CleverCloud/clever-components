@@ -1,6 +1,8 @@
+import { GetAddonCommand } from '@clevercloud/client/cc-api-commands/addon/get-addon-command.js';
 import { CreateNetworkGroupMemberCommand } from '@clevercloud/client/cc-api-commands/network-group/create-network-group-member-command.js';
 import { DeleteNetworkGroupMemberCommand } from '@clevercloud/client/cc-api-commands/network-group/delete-network-group-member-command.js';
 import { ListNetworkGroupCommand } from '@clevercloud/client/cc-api-commands/network-group/list-network-group-command.js';
+import { ONE_DAY } from '@clevercloud/client/esm/with-cache.js';
 import { getCcApiClientWithOAuth } from '../../lib/cc-api-client.js';
 import { notify, notifyError, notifySuccess } from '../../lib/notifications.js';
 import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
@@ -9,9 +11,20 @@ import '../cc-smart-container/cc-smart-container.js';
 import './cc-network-group-list.js';
 
 /**
+ * @typedef Context
+ * @property {ApiConfig} apiConfig
+ * @property {string} resourceId
+ * @property {string} ownerId
+ * @property {string} networkGroupDashboardUrlPattern
+ * @property {string} networkGroupCreationUrl
+ * @property {string} [addonMigrationScreenUrl]
+ */
+
+/**
  * @import { OnContextUpdateArgs } from '../../lib/smart/smart-component.types.js';
  * @import { CcNetworkGroupList } from './cc-network-group-list.js';
  * @import { ApiConfig } from '../../lib/send-to-api.types.js';
+ * @import { NetworkGroupListStateLoaded } from './cc-network-group-list.types.js';
  */
 
 defineSmartComponent({
@@ -22,45 +35,66 @@ defineSmartComponent({
     ownerId: { type: String },
     networkGroupDashboardUrlPattern: { type: String },
     networkGroupCreationUrl: { type: String },
+    addonMigrationScreenUrl: { type: String, optional: true },
   },
   /** @param {OnContextUpdateArgs<CcNetworkGroupList>} _ */
-  onContextUpdate({ context, updateComponent, onEvent, signal }) {
-    const { apiConfig, resourceId, ownerId, networkGroupDashboardUrlPattern, networkGroupCreationUrl } =
-      /** @type {{ apiConfig: ApiConfig, resourceId: string, ownerId: string, networkGroupDashboardUrlPattern: string, networkGroupCreationUrl: string }} */ (
-        context
-      );
-    updateComponent('linkFormState', { type: 'loading' });
-    updateComponent('listState', { type: 'loading' });
+  async onContextUpdate({ context, updateComponent, onEvent, signal }) {
+    const {
+      apiConfig,
+      resourceId,
+      ownerId,
+      networkGroupDashboardUrlPattern,
+      networkGroupCreationUrl,
+      addonMigrationScreenUrl,
+    } = /** @type {Context} */ context;
+    updateComponent('state', { type: 'loading' });
     updateComponent('resourceId', resourceId);
 
     const ccApiClient = getCcApiClientWithOAuth(apiConfig);
+    let resolvedResourceId;
 
-    function refreshFormAndList() {
-      return ccApiClient.send(new ListNetworkGroupCommand({ ownerId }), { signal }).then((networkGroupList) => {
-        const unlinkedNetworkGroups = networkGroupList.filter(
-          (ng) => !ng.members.some((member) => member.id === resourceId),
-        );
+    async function resolveResource() {
+      if (!resourceId.startsWith('addon_')) {
+        return { resolvedResourceId: resourceId, isSupported: true };
+      }
+      const addon = await ccApiClient.send(new GetAddonCommand({ ownerId, addonId: resourceId }), {
+        signal,
+        cache: { ttl: ONE_DAY },
+      });
+      return {
+        resolvedResourceId: addon.realId,
+        isSupported: addon.plan.slug !== 'dev',
+      };
+    }
 
-        const linkedNetworkGroups = networkGroupList.filter((ng) =>
-          ng.members.some((member) => member.id === resourceId),
-        );
+    /** @param {string} resolvedResourceId */
+    async function refreshFormAndList(resolvedResourceId) {
+      const networkGroupList = await ccApiClient.send(new ListNetworkGroupCommand({ ownerId }), { signal });
 
-        if (unlinkedNetworkGroups.length === 0) {
-          updateComponent('linkFormState', {
-            type: 'empty',
-            networkGroupDashboardUrl: networkGroupCreationUrl,
-          });
-        } else {
-          updateComponent('linkFormState', {
-            type: 'idle',
-            selectOptions: unlinkedNetworkGroups.map((networkGroup) => ({
-              label: networkGroup.label,
-              value: networkGroup.id,
-            })),
-          });
-        }
+      const unlinkedNetworkGroups = networkGroupList.filter(
+        (ng) => !ng.members.some((member) => member.id === resolvedResourceId),
+      );
 
-        updateComponent('listState', {
+      const linkedNetworkGroups = networkGroupList.filter((ng) =>
+        ng.members.some((member) => member.id === resolvedResourceId),
+      );
+
+      updateComponent('state', {
+        type: 'loaded',
+        linkFormState:
+          unlinkedNetworkGroups.length === 0
+            ? {
+                type: 'empty',
+                networkGroupDashboardUrl: networkGroupCreationUrl,
+              }
+            : {
+                type: 'idle',
+                selectOptions: unlinkedNetworkGroups.map((networkGroup) => ({
+                  label: networkGroup.label,
+                  value: networkGroup.id,
+                })),
+              },
+        listState: {
           type: 'loaded',
           linkedNetworkGroupList: linkedNetworkGroups.map((networkGroup) => ({
             id: networkGroup.id,
@@ -74,27 +108,40 @@ defineSmartComponent({
               type: peer.type,
             })),
           })),
-        });
+        },
       });
     }
 
-    refreshFormAndList().catch((error) => {
+    try {
+      const resource = await resolveResource();
+      resolvedResourceId = resource.resolvedResourceId;
+      if (!resource.isSupported) {
+        updateComponent('state', {
+          type: 'unsupported',
+          addonMigrationScreenUrl,
+        });
+        return;
+      }
+      await refreshFormAndList(resolvedResourceId);
+    } catch (error) {
       console.error(error);
-      updateComponent('linkFormState', { type: 'error' });
-      updateComponent('listState', { type: 'error' });
-    });
+      updateComponent('state', { type: 'error' });
+      return;
+    }
 
     onEvent('cc-network-group-link', async (networkGroupId) => {
-      updateComponent('linkFormState', (linkFormState) => {
-        linkFormState.type = 'linking';
+      updateComponent('state', (state) => {
+        /** @type {NetworkGroupListStateLoaded} */ (state).linkFormState.type = 'linking';
       });
 
       try {
-        await ccApiClient.send(new CreateNetworkGroupMemberCommand({ ownerId, memberId: resourceId, networkGroupId }));
+        await ccApiClient.send(
+          new CreateNetworkGroupMemberCommand({ ownerId, memberId: resolvedResourceId, networkGroupId }),
+        );
       } catch (error) {
         console.error(error);
-        updateComponent('linkFormState', (state) => {
-          state.type = 'idle';
+        updateComponent('state', (state) => {
+          /** @type {NetworkGroupListStateLoaded} */ (state).linkFormState.type = 'idle';
         });
         notifyError(i18n('cc-network-group-list.link.error'));
         return;
@@ -103,11 +150,11 @@ defineSmartComponent({
       notifySuccess(i18n('cc-network-group-list.link.success'));
 
       try {
-        await refreshFormAndList();
+        await refreshFormAndList(resolvedResourceId);
       } catch (refreshError) {
         console.error(refreshError);
-        updateComponent('linkFormState', (state) => {
-          state.type = 'idle';
+        updateComponent('state', (state) => {
+          /** @type {NetworkGroupListStateLoaded} */ (state).linkFormState.type = 'idle';
         });
         notify({
           message: i18n('cc-network-group-list.refresh.error'),
@@ -118,18 +165,18 @@ defineSmartComponent({
     });
 
     onEvent('cc-network-group-unlink', async (networkGroupId) => {
-      updateComponent('listState', (listState) => {
-        listState.type = 'unlinking';
+      updateComponent('state', (state) => {
+        /** @type {NetworkGroupListStateLoaded} */ (state).listState.type = 'unlinking';
       });
 
       try {
-        await ccApiClient.send(new DeleteNetworkGroupMemberCommand({ memberId: resourceId, networkGroupId, ownerId }), {
-          signal,
-        });
+        await ccApiClient.send(
+          new DeleteNetworkGroupMemberCommand({ memberId: resolvedResourceId, networkGroupId, ownerId }),
+        );
       } catch (error) {
         console.error(error);
-        updateComponent('listState', (state) => {
-          state.type = 'loaded';
+        updateComponent('state', (state) => {
+          /** @type {NetworkGroupListStateLoaded} */ (state).listState.type = 'loaded';
         });
         notifyError(i18n('cc-network-group-list.unlink.error'));
         return;
@@ -138,11 +185,11 @@ defineSmartComponent({
       notifySuccess(i18n('cc-network-group-list.unlink.success'));
 
       try {
-        await refreshFormAndList();
+        await refreshFormAndList(resolvedResourceId);
       } catch (refreshError) {
         console.error(refreshError);
-        updateComponent('listState', (state) => {
-          state.type = 'loaded';
+        updateComponent('state', (state) => {
+          /** @type {NetworkGroupListStateLoaded} */ (state).listState.type = 'loaded';
         });
         notify({
           message: i18n('cc-network-group-list.refresh.error'),

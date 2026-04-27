@@ -15,13 +15,14 @@ title: '💡 Smart'
 
 ## ⚙️ Params
 
-| Name                              | Type        | Details                                                                                                              | Default |
-| --------------------------------- | ----------- | -------------------------------------------------------------------------------------------------------------------- | ------- |
-| `apiConfig`                       | `ApiConfig` | Object with API configuration (target host, tokens...)                                                               |         |
-| `ownerId`                         | `String`    | UUID prefixed with <code>user_</code> or <code>orga_</code>                                                          |         |
-| `resourceId`                      | `String`    | UUID of the resource (application or addon) to link/unlink from network groups                                       |         |
-| `networkGroupDashboardUrlPattern` | `String`    | URL pattern for network group dashboard links. Use <code>:id</code> as placeholder for the network group ID         |         |
-| `networkGroupCreationUrl`         | `String`    | URL to redirect users to when there are no network groups available to link (e.g. a page to create a new one)       |         |
+| Name                              | Type        | Required | Details                                                                                                                                                                                                     | Default |
+| --------------------------------- | ----------- | -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- |
+| `apiConfig`                       | `ApiConfig` | Yes      | Object with API configuration (target host, tokens...)                                                                                                                                                      |         |
+| `ownerId`                         | `String`    | Yes      | UUID prefixed with <code>user_</code> or <code>orga_</code>                                                                                                                                                 |         |
+| `resourceId`                      | `String`    | Yes      | UUID of the resource (application or addon) to link/unlink from network groups. If prefixed with <code>addon_</code>, the addon is resolved and checked for plan support (dev plan addons are unsupported). |         |
+| `networkGroupDashboardUrlPattern` | `String`    | Yes      | URL pattern for network group dashboard links. Use <code>:id</code> as placeholder for the network group ID                                                                                                 |         |
+| `networkGroupCreationUrl`         | `String`    | Yes      | URL to redirect users to when there are no network groups available to link (e.g. a page to create a new one)                                                                                               |         |
+| `addonMigrationScreenUrl`         | `String`    | No       | URL of the migration screen shown when the resource is an unsupported addon (dev plan)                                                                                                                      |         |
 
 ```typescript
 interface ApiConfig {
@@ -37,6 +38,7 @@ interface ApiConfig {
 
 | Method   | URL                                                                                           | Cache?  |
 | -------- | --------------------------------------------------------------------------------------------- | ------- |
+| `GET`    | `/v2/organisations/{ownerId}/addons/{addonId}`                                                | 1 day   |
 | `GET`    | `/v4/networkgroups/organisations/{ownerId}/networkgroups`                                     | Default |
 | `POST`   | `/v4/networkgroups/organisations/{ownerId}/networkgroups/{networkGroupId}/members`            | N/A     |
 | `DELETE` | `/v4/networkgroups/organisations/{ownerId}/networkgroups/{networkGroupId}/members/{memberId}` | N/A     |
@@ -55,7 +57,8 @@ interface ApiConfig {
   "ownerId": "",
   "resourceId": "",
   "networkGroupDashboardUrlPattern": "/organisations/:ownerId/network-groups/:id",
-  "networkGroupCreationUrl": "/network-groups/new"
+  "networkGroupCreationUrl": "/network-groups/new",
+  "addonMigrationScreenUrl": ""
 }'>
   <cc-network-group-list></cc-network-group-list>
 </cc-smart-container>

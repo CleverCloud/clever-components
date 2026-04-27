@@ -25,7 +25,7 @@ import '../cc-select/cc-select.js';
 import { CcNetworkGroupLinkEvent, CcNetworkGroupUnlinkEvent } from './cc-network-group-list.events.js';
 
 /**
- * @import { NetworkGroupListState, NetworkGroupLinkFormState, NetworkGroup } from './cc-network-group-list.types.js'
+ * @import { NetworkGroupListState, NetworkGroup } from './cc-network-group-list.types.js'
  * @import { Ref } from 'lit/directives/ref.js'
  * @import { Option } from '../cc-select/cc-select.types.js'
  * @import { CcLink } from '../cc-link/cc-link.js'
@@ -47,9 +47,9 @@ import { CcNetworkGroupLinkEvent, CcNetworkGroupUnlinkEvent } from './cc-network
 export class CcNetworkGroupList extends LitElement {
   static get properties() {
     return {
-      linkFormState: { type: Object, attribute: 'link-form-state' },
-      listState: { type: Object, attribute: 'list-state' },
       resourceId: { type: String, attribute: 'resource-id' },
+      state: { type: Object },
+      _isUnlinkDialogOpen: { type: Boolean, state: true },
       _networkGroupIdToUnlink: { type: String, state: true },
     };
   }
@@ -57,11 +57,8 @@ export class CcNetworkGroupList extends LitElement {
   constructor() {
     super();
 
-    /** @type {NetworkGroupLinkFormState} Sets the state of the form */
-    this.linkFormState = { type: 'loading' };
-
-    /** @type {NetworkGroupListState} Sets the state of the list */
-    this.listState = { type: 'loading' };
+    /** @type {NetworkGroupListState} Sets the state of the component */
+    this.state = { type: 'loading' };
 
     /** @type {string} Sets the resource ID for CLI command documentation */
     this.resourceId = '<RESOURCE_ID>';
@@ -74,6 +71,9 @@ export class CcNetworkGroupList extends LitElement {
 
     /** @type {Ref<HTMLElement>} */
     this._emptyListRef = createRef();
+
+    /** @type {boolean} */
+    this._isUnlinkDialogOpen = false;
 
     new LostFocusController(this, '.unlink-btn', ({ suggestedElement }) => {
       if (suggestedElement == null) {
@@ -92,6 +92,18 @@ export class CcNetworkGroupList extends LitElement {
     });
   }
 
+  /**
+   * @param {NetworkGroupListState} state
+   * @returns {Option[]}
+   **/
+  _getSelectOptions(state) {
+    if (state.type !== 'loaded' || state.linkFormState.type === 'empty') {
+      return [];
+    }
+
+    return state.linkFormState.selectOptions;
+  }
+
   /** @param {{ 'network-group': string }} formData */
   _onLink(formData) {
     this.dispatchEvent(new CcNetworkGroupLinkEvent(formData['network-group']));
@@ -99,11 +111,12 @@ export class CcNetworkGroupList extends LitElement {
 
   /** @param {string} networkGroupId */
   _onUnlinkRequest(networkGroupId) {
+    this._isUnlinkDialogOpen = true;
     this._networkGroupIdToUnlink = networkGroupId;
   }
 
   _onDialogClose() {
-    this._networkGroupIdToUnlink = null;
+    this._isUnlinkDialogOpen = false;
   }
 
   _onDialogConfirm() {
@@ -114,50 +127,62 @@ export class CcNetworkGroupList extends LitElement {
 
   /** @param {PropertyValues<CcNetworkGroupList>} changedProperties */
   willUpdate(changedProperties) {
-    if (changedProperties.has('listState')) {
-      const previousListState = changedProperties.get('listState');
-      const wasUnlinking = previousListState?.type === 'unlinking';
-      const isNotUnlinking = this.listState.type !== 'unlinking';
+    if (changedProperties.has('state')) {
+      const previousState = changedProperties.get('state');
+      const wasUnlinking = previousState?.type === 'loaded' && previousState?.listState?.type === 'unlinking';
+      const isNotUnlinking = this.state.type !== 'loaded' || this.state.listState.type !== 'unlinking';
       if (wasUnlinking && isNotUnlinking) {
+        this._isUnlinkDialogOpen = false;
         this._networkGroupIdToUnlink = null;
       }
     }
   }
 
   render() {
-    const isUnlinking = this.listState.type === 'unlinking';
+    if (this.state.type === 'unsupported') {
+      return html`
+        <cc-notice intent="info" heading="${i18n('cc-network-group-list.unsupported-notice.heading')}">
+          <div slot="message">
+            ${i18n('cc-network-group-list.unsupported-notice.message', {
+              addonMigrationScreenUrl: this.state.addonMigrationScreenUrl,
+            })}
+          </div>
+        </cc-notice>
+      `;
+    }
 
-    const selectOptions =
-      this.linkFormState.type === 'idle' || this.linkFormState.type === 'linking'
-        ? this.linkFormState.selectOptions
-        : [];
+    const isLoading = this.state.type === 'loading';
+    const isError = this.state.type === 'error';
+    const isLoaded = this.state.type === 'loaded';
+    const linkFormState = this.state.type === 'loaded' ? this.state.linkFormState : null;
+    const listState = this.state.type === 'loaded' ? this.state.listState : null;
+    const isUnlinking = isLoaded && listState.type === 'unlinking';
+    const selectOptions = this._getSelectOptions(this.state);
 
     return html`
       <cc-block>
         <div slot="header-title">${i18n('cc-network-group-list.form.heading')}</div>
         <div slot="content">
           <p class="intro">${i18n('cc-network-group-list.form.description')}</p>
-          ${this.linkFormState.type === 'error'
+          ${isError
             ? html`<cc-notice intent="warning" message="${i18n('cc-network-group-list.form.error')}"></cc-notice>`
             : ''}
-          ${this.linkFormState.type === 'empty'
+          ${isLoaded && linkFormState.type === 'empty'
             ? html`<cc-link
                 class="link-create-network-group"
                 mode="button"
-                href="${this.linkFormState.networkGroupDashboardUrl}"
+                href="${linkFormState.networkGroupDashboardUrl}"
                 ${ref(this._createNetworkGroupLinkRef)}
               >
                 ${i18n('cc-network-group-list.create')}
               </cc-link>`
             : ''}
-          ${this.linkFormState.type === 'idle' ||
-          this.linkFormState.type === 'loading' ||
-          this.linkFormState.type === 'linking'
+          ${isLoading || (isLoaded && (linkFormState.type === 'idle' || linkFormState.type === 'linking'))
             ? this._renderNetworkGroupLinkForm({
                 selectOptions,
-                isLoading: this.linkFormState.type === 'loading',
-                isLinking: this.linkFormState.type === 'linking',
-                isDisabled: this.listState.type === 'unlinking',
+                isLoading,
+                isLinking: isLoaded && linkFormState.type === 'linking',
+                isDisabled: isLoaded && listState.type === 'unlinking',
               })
             : ''}
         </div>
@@ -202,12 +227,12 @@ export class CcNetworkGroupList extends LitElement {
       <cc-block>
         <div slot="header-title">${i18n('cc-network-group-list.list.heading')}</div>
         <div slot="content">
-          ${this.listState.type === 'error'
+          ${isError
             ? html`<cc-notice intent="warning" message="${i18n('cc-network-group-list.list.error')}"></cc-notice>`
             : ''}
-          ${this.listState.type === 'loading' ? html`<cc-loader></cc-loader>` : ''}
-          ${this.listState.type === 'loaded' || this.listState.type === 'unlinking'
-            ? this._renderNetworkGroupList(this.listState.linkedNetworkGroupList, isUnlinking)
+          ${isLoading ? html`<cc-loader></cc-loader>` : ''}
+          ${isLoaded && (listState.type === 'loaded' || listState.type === 'unlinking')
+            ? this._renderNetworkGroupList(listState.linkedNetworkGroupList, isUnlinking)
             : ''}
         </div>
         <div slot="footer-right">
@@ -217,7 +242,7 @@ export class CcNetworkGroupList extends LitElement {
         </div>
       </cc-block>
 
-      ${this._renderUnlinkDialog(this._networkGroupIdToUnlink, isUnlinking)}
+      ${this._renderUnlinkDialog(this._isUnlinkDialogOpen, isUnlinking)}
     `;
   }
 
@@ -312,7 +337,8 @@ export class CcNetworkGroupList extends LitElement {
                   class="unlink-btn"
                   danger
                   outlined
-                  ?waiting="${isUnlinking}"
+                  ?disabled="${isUnlinking && this._networkGroupIdToUnlink !== networkGroup.id}"
+                  ?waiting="${isUnlinking && this._networkGroupIdToUnlink === networkGroup.id}"
                   a11y-name="${i18n('cc-network-group-list.list.unlink.a11y-name', { name: networkGroup.name })}"
                   @cc-click="${() => this._onUnlinkRequest(networkGroup.id)}"
                 >
@@ -327,13 +353,13 @@ export class CcNetworkGroupList extends LitElement {
   }
 
   /**
-   * @param {string|null} networkGroupIdToUnlink
+   * @param {boolean} isOpen
    * @param {boolean} isUnlinking
    */
-  _renderUnlinkDialog(networkGroupIdToUnlink, isUnlinking) {
+  _renderUnlinkDialog(isOpen, isUnlinking) {
     return html`
       <cc-dialog
-        ?open="${networkGroupIdToUnlink != null}"
+        ?open="${isOpen}"
         heading="${i18n('cc-network-group-list.unlink.dialog.heading')}"
         @cc-close="${this._onDialogClose}"
       >
