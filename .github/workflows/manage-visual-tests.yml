@@ -210,7 +210,7 @@ jobs:
           LAST_ACTUAL_UPDATE: ${{ needs.run-visual-tests.outputs.last-actual-update-utc }}
 
       - name: '[Run] Generate HTML report'
-        if: ${{ steps.merge-results-and-generate-report.outputs.nb-of-impacted-components }} > 0
+        if: steps.merge-results-and-generate-report.outputs.nb-of-impacted-components > 0
         run: node ./tasks/visual-tests/generate-visual-tests-html-report.js
 
       # Expected outputs:
