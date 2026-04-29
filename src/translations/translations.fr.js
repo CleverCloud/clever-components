@@ -509,12 +509,12 @@ export const translations = {
   //#region cc-cellar-object-list
   'cc-cellar-object-list.add-directory.dialog.heading': `Ajouter un nouveau dossier`,
   'cc-cellar-object-list.add-directory.dialog.label': `Nom du dossier`,
-  'cc-cellar-object-list.add-directory.dialog.notice': `Veuillez télécharger un objet après avoir créé un nouveau dossier, sinon celui-ci ne sera pas enregistré dans votre bucket.`,
-  'cc-cellar-object-list.add-directory.dialog.submit': `Ajouter un nouveau dossier`,
+  'cc-cellar-object-list.add-directory.dialog.notice': `Téléversez un objet après avoir créé un dossier, sinon celui-ci ne sera pas conservé dans votre bucket.`,
+  'cc-cellar-object-list.add-directory.dialog.submit': `Créer le dossier`,
   'cc-cellar-object-list.back-to-bucket-list': `Retour à la liste des buckets`,
   'cc-cellar-object-list.badge.new': `Nouveau`,
   'cc-cellar-object-list.button.upload': `Téléverser un objet`,
-  'cc-cellar-object-list.create.directory-name.help': `Le nom du dossier ne peut pas contenir des caractères ASCII non imprimables (128–255 caractères décimaux) ou les caractères suivants : / \\ { } ^ % \` [ ] " < > ~ # |`,
+  'cc-cellar-object-list.create.directory-name.help': `Le nom du dossier ne peut pas contenir de caractères ASCII non imprimables (128–255 caractères décimaux) ni les caractères suivants : / \\ { } ^ % \` [ ] " < > ~ # |`,
   'cc-cellar-object-list.date': /** @param {{date: string}} _ */ ({ date }) => formatDateOnly(date),
   'cc-cellar-object-list.details.actions.delete.button': `Supprimer l'objet`,
   'cc-cellar-object-list.details.actions.download.button': `Télécharger l'objet`,
@@ -545,12 +545,13 @@ export const translations = {
   'cc-cellar-object-list.error.object-deletion-failed': /** @param {{objectKey: string}} _ */ ({ objectKey }) =>
     `La suppression de l'objet ${objectKey} a échoué`,
   'cc-cellar-object-list.error.object-download-failed': /** @param {{objectKey: string}} _ */ ({ objectKey }) =>
-    `La téléchargement de l'objet ${objectKey} a échoué`,
+    `Le téléchargement de l'objet ${objectKey} a échoué`,
   'cc-cellar-object-list.error.object-fetch-failed': /** @param {{objectKey: string}} _ */ ({ objectKey }) =>
     `Impossible de récupérer l'objet ${objectKey}`,
   'cc-cellar-object-list.error.object-not-found': /** @param {{objectKey: string}} _ */ ({ objectKey }) =>
     `L'objet ${objectKey} n'existe pas`,
-  'cc-cellar-object-list.error.object-upload-failed': `Le téléversement a échoué`,
+  'cc-cellar-object-list.error.object-upload-failed': /** @param {{objectKey: string}} _ */ ({ objectKey }) =>
+    `Le téléversement de l'objet ${objectKey} a échoué`,
   'cc-cellar-object-list.grid.a11y-name': `Liste des objets`,
   'cc-cellar-object-list.grid.column.last-update': `Dernière modification`,
   'cc-cellar-object-list.grid.column.name': `Nom`,
@@ -579,7 +580,7 @@ export const translations = {
   'cc-cellar-object-list.success.object-deleted': /** @param {{objectKey: string}} _ */ ({ objectKey }) =>
     `L'objet ${objectKey} a été supprimé avec succès`,
   'cc-cellar-object-list.success.object-uploaded': /** @param {{objectKey: string}} _ */ ({ objectKey }) =>
-    `Le fichier ${objectKey} a été téléversé avec succès`,
+    `L'objet ${objectKey} a été téléversé avec succès`,
   //#endregion
   //#region cc-clipboard
   'cc-clipboard.copied': `Le texte a été copié`,

@@ -498,8 +498,8 @@ export const translations = {
   //#region cc-cellar-object-list
   'cc-cellar-object-list.add-directory.dialog.heading': `Add a new directory`,
   'cc-cellar-object-list.add-directory.dialog.label': `Directory name`,
-  'cc-cellar-object-list.add-directory.dialog.notice': `Please upload an object after creating a new directory, otherwise the directory will not be persisted in you bucket`,
-  'cc-cellar-object-list.add-directory.dialog.submit': `Add a new directory`,
+  'cc-cellar-object-list.add-directory.dialog.notice': `Upload an object after creating a directory, otherwise the directory will not be persisted in your bucket.`,
+  'cc-cellar-object-list.add-directory.dialog.submit': `Create directory`,
   'cc-cellar-object-list.back-to-bucket-list': `Go back to list of buckets`,
   'cc-cellar-object-list.badge.new': `New`,
   'cc-cellar-object-list.button.upload': `Upload object`,
@@ -539,7 +539,8 @@ export const translations = {
     `Failed to get object ${objectKey}`,
   'cc-cellar-object-list.error.object-not-found': /** @param {{objectKey: string}} _ */ ({ objectKey }) =>
     `Object ${objectKey} does not exist`,
-  'cc-cellar-object-list.error.object-upload-failed': `Upload failed`,
+  'cc-cellar-object-list.error.object-upload-failed': /** @param {{objectKey: string}} _ */ ({ objectKey }) =>
+    `Failed to upload object ${objectKey}`,
   'cc-cellar-object-list.grid.a11y-name': `List of objects`,
   'cc-cellar-object-list.grid.column.last-update': `Last update`,
   'cc-cellar-object-list.grid.column.name': `Name`,
@@ -562,13 +563,13 @@ export const translations = {
   'cc-cellar-object-list.page.previous': `Previous page`,
   'cc-cellar-object-list.size': /** @param {{size: number}} _ */ ({ size }) => formatBytes(size),
   'cc-cellar-object-list.success.directory-created': /** @param {{directoryName: string}} _ */ ({ directoryName }) =>
-    `Directory "${directoryName}" was successfully created`,
+    `Directory "${directoryName}" created successfully`,
   'cc-cellar-object-list.success.object-already-deleted': /** @param {{objectKey: string}} _ */ ({ objectKey }) =>
     `Object ${objectKey} was already deleted`,
   'cc-cellar-object-list.success.object-deleted': /** @param {{objectKey: string}} _ */ ({ objectKey }) =>
     `Object ${objectKey} deleted successfully`,
   'cc-cellar-object-list.success.object-uploaded': /** @param {{objectKey: string}} _ */ ({ objectKey }) =>
-    `File ${objectKey} uploaded successfully`,
+    `Object ${objectKey} uploaded successfully`,
   //#endregion
   //#region cc-clipboard
   'cc-clipboard.copied': `The text has been copied`,
