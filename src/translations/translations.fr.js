@@ -438,7 +438,7 @@ export const translations = {
   //#endregion
   //#region cc-cellar-bucket-list
   'cc-cellar-bucket-list.count': /** @param {{count: number}} _ */ ({ count }) => formatNumber(lang, count),
-  'cc-cellar-bucket-list.create.bucket-name.help.case': `Les noms de bucket ne doivent pas contenir de caractères majuscules ou de tirets bas.`,
+  'cc-cellar-bucket-list.create.bucket-name.help.case': `Les noms de bucket ne doivent contenir ni majuscules ni underscores (_).`,
   'cc-cellar-bucket-list.create.bucket-name.help.ip': `Les noms de bucket ne peuvent pas être formatés comme une adresse IP.`,
   'cc-cellar-bucket-list.create.bucket-name.help.labels': `Les noms de bucket doivent être une série d'une ou plusieurs étiquettes. Les étiquettes adjacentes sont séparées par un point (.). Les noms de bucket peuvent contenir des lettres minuscules, des chiffres et des tirets. Chaque étiquette doit commencer et se terminer par une lettre minuscule ou un chiffre.`,
   'cc-cellar-bucket-list.create.bucket-name.help.size': `Les noms de bucket doivent contenir entre 3 et 63 caractères.`,
@@ -451,7 +451,7 @@ export const translations = {
   'cc-cellar-bucket-list.create.title': `Créer un bucket`,
   'cc-cellar-bucket-list.date': /** @param {{date: string}} _ */ ({ date }) => formatDateOnly(date),
   'cc-cellar-bucket-list.details.actions.delete.button': `Supprimer le bucket`,
-  'cc-cellar-bucket-list.details.actions.delete.must-be-empty': `Le bucket doit être vide pour être supprimé`,
+  'cc-cellar-bucket-list.details.actions.delete.must-be-empty': `Videz ce bucket pour pouvoir le supprimer`,
   'cc-cellar-bucket-list.details.actions.title': `Actions`,
   'cc-cellar-bucket-list.details.heading': `Détails du bucket`,
   'cc-cellar-bucket-list.details.overview.created-at': `Date de création`,
@@ -472,7 +472,7 @@ export const translations = {
   'cc-cellar-bucket-list.details.overview.versioning.enabled': `Activé`,
   'cc-cellar-bucket-list.details.overview.versioning.suspended': `Suspendu`,
   'cc-cellar-bucket-list.empty.no-filtered-items': `Aucun bucket ne correspond au filtre`,
-  'cc-cellar-bucket-list.empty.no-items': `Vous n'avez aucun bucket`,
+  'cc-cellar-bucket-list.empty.no-items': `Aucun bucket`,
   'cc-cellar-bucket-list.error': `Une erreur est survenue pendant le chargement de la liste des buckets`,
   'cc-cellar-bucket-list.error.bucket-creation-failed': /** @param {{bucketName: string}} _ */ ({ bucketName }) =>
     `La création du bucket ${bucketName} a échoué`,
@@ -481,7 +481,7 @@ export const translations = {
   'cc-cellar-bucket-list.error.bucket-fetch-failed': /** @param {{bucketName: string}} _ */ ({ bucketName }) =>
     `Impossible de récupérer le bucket ${bucketName}`,
   'cc-cellar-bucket-list.error.bucket-not-empty': /** @param {{bucketName: string}} _ */ ({ bucketName }) =>
-    `Le bucket ${bucketName} ne peut pas être supprimé car il n'est pas vide`,
+    `Videz le bucket ${bucketName} avant de le supprimer`,
   'cc-cellar-bucket-list.error.bucket-not-found': /** @param {{bucketName: string}} _ */ ({ bucketName }) =>
     `Le bucket ${bucketName} n'existe pas`,
   'cc-cellar-bucket-list.grid.a11y-name': `Liste des buckets`,
@@ -497,14 +497,14 @@ export const translations = {
   'cc-cellar-bucket-list.heading.title': `Liste des buckets`,
   'cc-cellar-bucket-list.size': /** @param {{size: number}} _ */ ({ size }) => formatBytes(size),
   'cc-cellar-bucket-list.success.bucket-already-deleted': /** @param {{bucketName: string}} _ */ ({ bucketName }) =>
-    `Le bucket ${bucketName} était déjà supprimé`,
+    `Le bucket ${bucketName} avait déjà été supprimé`,
   'cc-cellar-bucket-list.success.bucket-created': /** @param {{bucketName: string}} _ */ ({ bucketName }) =>
     `Le bucket ${bucketName} a été créé avec succès`,
   'cc-cellar-bucket-list.success.bucket-deleted': /** @param {{bucketName: string}} _ */ ({ bucketName }) =>
     `Le bucket ${bucketName} a été supprimé avec succès`,
   //#endregion
   //#region cc-cellar-explorer
-  'cc-cellar-explorer.error': `Une erreur est survenue pendant le chargement`,
+  'cc-cellar-explorer.error': `Une erreur est survenue pendant le chargement de l'explorateur Cellar. Rechargez la page ou réessayez plus tard.`,
   //#endregion
   //#region cc-cellar-object-list
   'cc-cellar-object-list.add-directory.dialog.heading': `Ajouter un nouveau dossier`,
@@ -534,7 +534,7 @@ export const translations = {
   'cc-cellar-object-list.details.overview.title': `Aperçu de l'objet`,
   'cc-cellar-object-list.details.overview.updated-at': `Dernière modification`,
   'cc-cellar-object-list.empty.no-filtered-items': `Aucun objet ne correspond au filtre`,
-  'cc-cellar-object-list.empty.no-items': `Il n'y a aucun objet`,
+  'cc-cellar-object-list.empty.no-items': `Ce bucket est vide`,
   'cc-cellar-object-list.error': `Une erreur est survenue pendant le chargement de la liste des objets`,
   'cc-cellar-object-list.error.bucket-not-found': /** @param {{bucketName: string}} _ */ ({ bucketName }) =>
     `Le bucket ${bucketName} n'existe pas`,
@@ -569,14 +569,14 @@ export const translations = {
   'cc-cellar-object-list.icon.icon-file-pdf': `Fichier PDF`,
   'cc-cellar-object-list.icon.icon-file-text': `Fichier texte`,
   'cc-cellar-object-list.icon.icon-file-video': `Fichier vidéo`,
-  'cc-cellar-object-list.nav-label': `File d'Ariane: Liste des objets`,
+  'cc-cellar-object-list.nav-label': `Fil d'Ariane : liste des objets`,
   'cc-cellar-object-list.page.next': `Page suivante`,
   'cc-cellar-object-list.page.previous': `Page précédente`,
   'cc-cellar-object-list.size': /** @param {{size: number}} _ */ ({ size }) => formatBytes(size),
   'cc-cellar-object-list.success.directory-created': /** @param {{directoryName: string}} _ */ ({ directoryName }) =>
     `Le dossier "${directoryName}" a été créé avec succès`,
   'cc-cellar-object-list.success.object-already-deleted': /** @param {{objectKey: string}} _ */ ({ objectKey }) =>
-    `L'objet ${objectKey} était déjà supprimé`,
+    `L'objet ${objectKey} avait déjà été supprimé`,
   'cc-cellar-object-list.success.object-deleted': /** @param {{objectKey: string}} _ */ ({ objectKey }) =>
     `L'objet ${objectKey} a été supprimé avec succès`,
   'cc-cellar-object-list.success.object-uploaded': /** @param {{objectKey: string}} _ */ ({ objectKey }) =>

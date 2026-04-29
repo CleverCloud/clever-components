@@ -428,19 +428,19 @@ export const translations = {
   //#region cc-cellar-bucket-list
   'cc-cellar-bucket-list.count': /** @param {{count: number}} _ */ ({ count }) => formatNumber(lang, count),
   'cc-cellar-bucket-list.create.bucket-name.help.case': `Bucket names must not contain uppercase characters or underscores.`,
-  'cc-cellar-bucket-list.create.bucket-name.help.ip': `Bucket name cannot be formatted as IP address.`,
+  'cc-cellar-bucket-list.create.bucket-name.help.ip': `Bucket names cannot be formatted as an IP address.`,
   'cc-cellar-bucket-list.create.bucket-name.help.labels': `Bucket names must be a series of one or more labels. Adjacent labels are separated by a single period (.). Bucket names can contain lowercase letters, numbers, and hyphens. Each label must start and end with a lowercase letter or a number.`,
-  'cc-cellar-bucket-list.create.bucket-name.help.size': ` Bucket names must be between 3 and 63 characters long.`,
+  'cc-cellar-bucket-list.create.bucket-name.help.size': `Bucket names must be between 3 and 63 characters long.`,
   'cc-cellar-bucket-list.create.bucket-name.help.start': `Bucket names must start with a lowercase letter or number.`,
-  'cc-cellar-bucket-list.create.bucket-name.label': `Bucket Name`,
+  'cc-cellar-bucket-list.create.bucket-name.label': `Bucket name`,
   'cc-cellar-bucket-list.create.error.bucket-already-exists': `This bucket name is already taken`,
-  'cc-cellar-bucket-list.create.error.bucket-name-invalid': `The bucket name is invalid.`,
+  'cc-cellar-bucket-list.create.error.bucket-name-invalid': `The bucket name is invalid`,
   'cc-cellar-bucket-list.create.error.too-many-buckets': `You reached the maximum number of buckets. You can't create more.`,
   'cc-cellar-bucket-list.create.submit': `Create bucket`,
   'cc-cellar-bucket-list.create.title': `Create bucket`,
   'cc-cellar-bucket-list.date': /** @param {{date: string}} _ */ ({ date }) => formatDateOnly(date),
   'cc-cellar-bucket-list.details.actions.delete.button': `Delete the bucket`,
-  'cc-cellar-bucket-list.details.actions.delete.must-be-empty': `The bucket must be empty to delete it`,
+  'cc-cellar-bucket-list.details.actions.delete.must-be-empty': `Empty the bucket before deleting it`,
   'cc-cellar-bucket-list.details.actions.title': `Actions`,
   'cc-cellar-bucket-list.details.heading': `Bucket details`,
   'cc-cellar-bucket-list.details.overview.created-at': `Creation date`,
@@ -455,22 +455,22 @@ export const translations = {
       : `${formatted} (${formatNumber(lang, size)}${BYTES_SI_SEPARATOR}byte${size <= 1 ? '' : 's'})`;
   },
   'cc-cellar-bucket-list.details.overview.title': `Bucket overview`,
-  'cc-cellar-bucket-list.details.overview.updated-at': `Last modify`,
+  'cc-cellar-bucket-list.details.overview.updated-at': `Last update`,
   'cc-cellar-bucket-list.details.overview.versioning': `Versioning`,
   'cc-cellar-bucket-list.details.overview.versioning.disabled': `Disabled`,
   'cc-cellar-bucket-list.details.overview.versioning.enabled': `Enabled`,
   'cc-cellar-bucket-list.details.overview.versioning.suspended': `Suspended`,
   'cc-cellar-bucket-list.empty.no-filtered-items': `No buckets matching the filter were found`,
-  'cc-cellar-bucket-list.empty.no-items': `You don't have any buckets yet`,
+  'cc-cellar-bucket-list.empty.no-items': `You don't have any buckets`,
   'cc-cellar-bucket-list.error': `Something went wrong while loading the list of buckets`,
   'cc-cellar-bucket-list.error.bucket-creation-failed': /** @param {{bucketName: string}} _ */ ({ bucketName }) =>
-    `Bucket ${bucketName} creation failed`,
+    `Failed to create bucket ${bucketName}`,
   'cc-cellar-bucket-list.error.bucket-deletion-failed': /** @param {{bucketName: string}} _ */ ({ bucketName }) =>
     `Failed to delete bucket ${bucketName}`,
   'cc-cellar-bucket-list.error.bucket-fetch-failed': /** @param {{bucketName: string}} _ */ ({ bucketName }) =>
     `Failed to get bucket ${bucketName}`,
   'cc-cellar-bucket-list.error.bucket-not-empty': /** @param {{bucketName: string}} _ */ ({ bucketName }) =>
-    `Bucket ${bucketName} cannot be deleted because it is not empty`,
+    `Empty bucket ${bucketName} before deleting it`,
   'cc-cellar-bucket-list.error.bucket-not-found': /** @param {{bucketName: string}} _ */ ({ bucketName }) =>
     `Bucket ${bucketName} does not exist`,
   'cc-cellar-bucket-list.grid.a11y-name': `List of buckets`,
@@ -480,7 +480,7 @@ export const translations = {
   'cc-cellar-bucket-list.grid.column.size': `Size`,
   'cc-cellar-bucket-list.grid.show-details.a11y-name': /** @param {{bucketName: string}} _ */ ({ bucketName }) =>
     `Show details for bucket ${bucketName}`,
-  'cc-cellar-bucket-list.heading.create.button': `Create Bucket`,
+  'cc-cellar-bucket-list.heading.create.button': `Create bucket`,
   'cc-cellar-bucket-list.heading.filter.button': `Filter`,
   'cc-cellar-bucket-list.heading.filter.label': `Filter`,
   'cc-cellar-bucket-list.heading.title': `List of buckets`,
@@ -493,14 +493,14 @@ export const translations = {
     `Bucket ${bucketName} deleted successfully`,
   //#endregion
   //#region cc-cellar-explorer
-  'cc-cellar-explorer.error': `Error while loading component`,
+  'cc-cellar-explorer.error': `Something went wrong while loading the explorer. Refresh the page or try again later.`,
   //#endregion
   //#region cc-cellar-object-list
   'cc-cellar-object-list.add-directory.dialog.heading': `Add a new directory`,
   'cc-cellar-object-list.add-directory.dialog.label': `Directory name`,
   'cc-cellar-object-list.add-directory.dialog.notice': `Upload an object after creating a directory, otherwise the directory will not be persisted in your bucket.`,
   'cc-cellar-object-list.add-directory.dialog.submit': `Create directory`,
-  'cc-cellar-object-list.back-to-bucket-list': `Go back to list of buckets`,
+  'cc-cellar-object-list.back-to-bucket-list': `Back to bucket list`,
   'cc-cellar-object-list.badge.new': `New`,
   'cc-cellar-object-list.button.upload': `Upload object`,
   'cc-cellar-object-list.create.directory-name.help': `Directory name cannot contain non-printable characters (128–255 decimal characters) or the following characters: / \\ { } ^ % \` [ ] " < > ~ # |`,
@@ -523,7 +523,7 @@ export const translations = {
   'cc-cellar-object-list.details.overview.title': `Object overview`,
   'cc-cellar-object-list.details.overview.updated-at': `Last update`,
   'cc-cellar-object-list.empty.no-filtered-items': `No objects matching the filter were found`,
-  'cc-cellar-object-list.empty.no-items': `There are no objects`,
+  'cc-cellar-object-list.empty.no-items': `This bucket is empty`,
   'cc-cellar-object-list.error': `Something went wrong while loading the list of objects`,
   'cc-cellar-object-list.error.bucket-not-found': /** @param {{bucketName: string}} _ */ ({ bucketName }) =>
     `Bucket ${bucketName} does not exist`,
