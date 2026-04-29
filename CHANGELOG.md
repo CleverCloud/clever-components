@@ -5,6 +5,28 @@ title: 'Changelog'
 
 # Changelog
 
+## [25.2.0](https://github.com/CleverCloud/clever-components/compare/25.1.0...25.2.0) (2026-04-29)
+
+
+### 🚀 Features
+
+* **cc-addon-credentials:** add `swagger-ui` for Otoroshi ([c792e4a](https://github.com/CleverCloud/clever-components/commit/c792e4aa75c1405cb720083a5ff394a2eed62d31)), closes [#1730](https://github.com/CleverCloud/clever-components/issues/1730)
+* **cc-api-client:** enable `resourceIdResolverStore` (localStorage) ([2cff2b7](https://github.com/CleverCloud/clever-components/commit/2cff2b7865466bdbddd8933fbf61d8a5ba421cfb))
+* **cc-cellar-explorer:** add directory creation ([5e35a22](https://github.com/CleverCloud/clever-components/commit/5e35a2291cdaeaa3b0207e7c7fc967ce1bbd62da))
+* **cc-cellar-explorer:** add objects upload ([c99f755](https://github.com/CleverCloud/clever-components/commit/c99f755154a1cbdbed3d24aacc6964ed7d3712cf))
+* **cc-grid:** add `cc-badge` display on text and link cells ([0d55416](https://github.com/CleverCloud/clever-components/commit/0d5541667da3ec83e07d055bd998249ba411497c))
+* **cc-network-group-list:** show notice if add-on plan is dev ([8db21d8](https://github.com/CleverCloud/clever-components/commit/8db21d892f7cead5162accfcde90f66f46c78e57))
+* **cc-network-group-member-list:** only allow specific providers ([6147e4e](https://github.com/CleverCloud/clever-components/commit/6147e4eb71af050cbdc5c7336e9e27a842280a2c))
+
+
+### 🐛 Bug Fixes
+
+* **cc-addon-info:** remove border-top when first section is after billing slot ([cd8a496](https://github.com/CleverCloud/clever-components/commit/cd8a49688724e6f817d930c67df123b1fdc61e59))
+* **cc-cellar-*:** update translations ([4709888](https://github.com/CleverCloud/clever-components/commit/470988812de6199c3d621c843b03db4045025b89))
+* **cc-homepage-template-project:** open project links in a new tab ([bb2b717](https://github.com/CleverCloud/clever-components/commit/bb2b717220a23ba093ea1ad3f50c376d157d42fa))
+* **cc-network-group-*:** update translations ([e90900b](https://github.com/CleverCloud/clever-components/commit/e90900ba0f4951a59bf228dc75b9e17747e2848f))
+* **cc-visual-tests-report-menu:** move default stories first ([ce1f576](https://github.com/CleverCloud/clever-components/commit/ce1f576c14885d36ebdb205f1c3673d9eb830d24)), closes [#1555](https://github.com/CleverCloud/clever-components/issues/1555)
+
 ## [25.1.0](https://github.com/CleverCloud/clever-components/compare/25.0.0...25.1.0) (2026-04-16)
 
 
