@@ -1,6 +1,6 @@
 import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
-import { iconRemixArrowDownSLine as iconArrowDown } from '../../assets/cc-remix.icons.js';
+import { iconRemixArrowUpSLine as iconArrowUp } from '../../assets/cc-remix.icons.js';
 import { hasSlottedChildren } from '../../directives/has-slotted-children.js';
 import { isStringEmpty } from '../../lib/utils.js';
 import '../cc-button/cc-button.js';
@@ -93,7 +93,7 @@ export class CcBlock extends LitElement {
                 @click=${this._onClickToggle}
               >
                 ${this._renderHeader()}
-                <cc-icon class="toggle-icon" .icon=${iconArrowDown} size="xl"></cc-icon>
+                <cc-icon class="toggle-icon" .icon=${iconArrowUp} size="xl"></cc-icon>
               </button>
             `
           : this._renderHeader()}
@@ -280,7 +280,7 @@ export class CcBlock extends LitElement {
           transition: transform 0.3s ease-out;
         }
 
-        .toggle-button[aria-expanded='true'] .toggle-icon {
+        .toggle-button[aria-expanded='false'] .toggle-icon {
           transform: rotate(0.5turn);
         }
 

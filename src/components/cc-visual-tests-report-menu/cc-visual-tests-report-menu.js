@@ -2,9 +2,9 @@ import { LitElement, css, html } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { createRef, ref } from 'lit/directives/ref.js';
 import {
-  iconRemixArrowDownSLine as iconArrowDown,
   iconRemixArrowLeftSLine as iconArrowLeft,
   iconRemixArrowRightSLine as iconArrowRight,
+  iconRemixArrowUpSLine as iconArrowUp,
 } from '../../assets/cc-remix.icons.js';
 import { camelCaseToSpacedCapitalized, kebabCase } from '../../lib/change-case.js';
 import { isVisibleInContainer } from '../../lib/utils.js';
@@ -222,7 +222,7 @@ export class CcVisualTestsReportMenu extends LitElement {
                 aria-expanded="${isMenuItemOpen}"
                 aria-controls="stories-${componentTagName}"
               >
-                <cc-icon .icon="${iconArrowDown}"></cc-icon>
+                <cc-icon .icon="${iconArrowUp}"></cc-icon>
                 <span>${componentTagName}</span>
               </button>
               <ul id="stories-${componentTagName}" class="story-list" ?hidden="${!isMenuItemOpen}">
@@ -256,7 +256,7 @@ export class CcVisualTestsReportMenu extends LitElement {
           aria-expanded="${isMenuItemOpen}"
           aria-controls="${componentTagName}-${kebabCasedStoryName}"
         >
-          <cc-icon .icon="${iconArrowDown}"></cc-icon>
+          <cc-icon .icon="${iconArrowUp}"></cc-icon>
           <span>${storyNameToDisplay}</span>
         </button>
         <ul id="${componentTagName}-${kebabCasedStoryName}" class="viewport-browser-list" ?hidden="${!isMenuItemOpen}">
@@ -339,7 +339,7 @@ export class CcVisualTestsReportMenu extends LitElement {
           transition: transform 0.3s;
         }
 
-        .btn[aria-expanded='true'] cc-icon {
+        .btn[aria-expanded='false'] cc-icon {
           transform: rotate(180deg);
         }
 
