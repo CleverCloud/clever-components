@@ -31,10 +31,13 @@ import {
   CcCellarNavigateToNextPageEvent,
   CcCellarNavigateToPathEvent,
   CcCellarNavigateToPreviousPageEvent,
+  CcCellarObjectCreateDirectoryEvent,
   CcCellarObjectDeleteEvent,
+  CcCellarObjectDownloadEvent,
   CcCellarObjectFilterEvent,
   CcCellarObjectHideEvent,
   CcCellarObjectShowEvent,
+  CcCellarObjectUploadEvent,
 } from '../components/cc-cellar-object-list/cc-cellar-object-list.events.js';
 import {
   CcDomainAddEvent,
@@ -241,10 +244,13 @@ declare global {
     'cc-cellar-navigate-to-next-page': CcCellarNavigateToNextPageEvent;
     'cc-cellar-navigate-to-path': CcCellarNavigateToPathEvent;
     'cc-cellar-navigate-to-previous-page': CcCellarNavigateToPreviousPageEvent;
+    'cc-cellar-object-create-directory': CcCellarObjectCreateDirectoryEvent;
     'cc-cellar-object-delete': CcCellarObjectDeleteEvent;
+    'cc-cellar-object-download': CcCellarObjectDownloadEvent;
     'cc-cellar-object-filter': CcCellarObjectFilterEvent;
     'cc-cellar-object-hide': CcCellarObjectHideEvent;
     'cc-cellar-object-show': CcCellarObjectShowEvent;
+    'cc-cellar-object-upload': CcCellarObjectUploadEvent;
     'cc-click': CcClickEvent;
     'cc-close': CcCloseEvent;
     'cc-close-request': CcCloseRequestEvent;

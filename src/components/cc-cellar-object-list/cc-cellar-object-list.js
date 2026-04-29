@@ -17,6 +17,7 @@ import {
   iconRemixMoreFill as iconMore,
   iconRemixArrowRightSFill as iconNext,
   iconRemixArrowLeftSFill as iconPrevious,
+  iconRemixFileUploadLine as iconUpload,
 } from '../../assets/cc-remix.icons.js';
 import { formSubmit } from '../../lib/form/form-submit-directive.js';
 import { random, randomString } from '../../lib/utils.js';
@@ -25,6 +26,8 @@ import { i18n } from '../../translations/translation.js';
 import '../cc-breadcrumbs/cc-breadcrumbs.js';
 import '../cc-button/cc-button.js';
 import '../cc-clipboard/cc-clipboard.js';
+import '../cc-dialog-confirm-form/cc-dialog-confirm-form.js';
+import '../cc-dialog/cc-dialog.js';
 import '../cc-drawer/cc-drawer.js';
 import '../cc-grid/cc-grid.js';
 import '../cc-icon/cc-icon.js';
@@ -36,19 +39,22 @@ import {
   CcCellarNavigateToNextPageEvent,
   CcCellarNavigateToPathEvent,
   CcCellarNavigateToPreviousPageEvent,
+  CcCellarObjectCreateDirectoryEvent,
   CcCellarObjectDeleteEvent,
   CcCellarObjectFilterEvent,
   CcCellarObjectHideEvent,
   CcCellarObjectShowEvent,
+  CcCellarObjectUploadEvent,
 } from './cc-cellar-object-list.events.js';
 
 /**
- * @import { CellarObjectListState, CellarObjectListStateLoading, CellarObjectListStateLoaded, CellarObjectListStateFiltering, CellarObjectState, CellarFileDetailsState } from './cc-cellar-object-list.types.js'
+ * @import { CellarObjectListState, CellarObjectListStateLoading, CellarObjectListStateLoaded, CellarObjectListStateFiltering, CellarObjectState, CellarFileDetailsState, CellarDirectoryCreateFormState, CreationFormError } from './cc-cellar-object-list.types.js'
  * @import { CcBreadcrumbClickEvent } from '../cc-breadcrumbs/cc-breadcrumbs.events.js'
  * @import { CcGrid } from '../cc-grid/cc-grid.js'
  * @import { CcGridColumnDefinition } from '../cc-grid/cc-grid.types.js'
  * @import { TemplateResult } from 'lit'
  * @import { Ref } from 'lit/directives/ref.js'
+ * @import { ErrorMessage } from '../../lib/form/validation.types.js'
  */
 
 /** @type {Array<Omit<CellarObjectState, 'key'>>} */
@@ -110,12 +116,29 @@ export class CcCellarObjectList extends LitElement {
 
     /** @type {Ref<CcGrid>} */
     this._gridRef = createRef();
+
+    /** @type {Ref<HTMLFormElement>} */
+    this._createDirectoryFormRef = createRef();
   }
 
   focusFirstCell() {
     this.updateComplete.then(() => {
       this._gridRef.value?.focusFirstCell();
     });
+  }
+
+  /**
+   * @param {CreationFormError} errorCode
+   * @param {string} directoryName
+   * @return {ErrorMessage}
+   */
+  _getErrorMessage(errorCode, directoryName) {
+    switch (errorCode) {
+      case 'directory-already-exists':
+        return i18n('cc-cellar-object-list.error.directory-already-exists', { directoryName });
+      case 'directory-name-invalid':
+        return i18n('cc-cellar-object-list.error.directory-name-invalid');
+    }
   }
 
   /**
@@ -194,6 +217,51 @@ export class CcCellarObjectList extends LitElement {
     this.dispatchEvent(new CcCellarObjectDeleteEvent(objectKey));
   }
 
+  _onCreateDirectoryButtonClick() {
+    if (this.state.type === 'loaded') {
+      this.state = {
+        ...this.state,
+        createDirectoryForm: {
+          type: 'idle',
+          directoryName: '',
+        },
+      };
+    }
+  }
+
+  _onCancelDirectoryCreation() {
+    if (this.state.type === 'loaded') {
+      this.state = {
+        ...this.state,
+        createDirectoryForm: null,
+      };
+      this._createDirectoryFormRef.value.reset();
+    }
+  }
+
+  _onConfirmDirectoryCreation() {
+    this._createDirectoryFormRef.value.requestSubmit();
+  }
+
+  /**
+   * @param {{directoryName: string}} formData
+   */
+  _onCreateDirectoryFormSubmit({ directoryName: directoryName }) {
+    this.dispatchEvent(new CcCellarObjectCreateDirectoryEvent(directoryName));
+  }
+
+  _onUploadButtonClick() {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.addEventListener('change', (event) => {
+      const file = /** @type {HTMLInputElement} */ (event.target).files?.[0];
+      if (file != null) {
+        this.dispatchEvent(new CcCellarObjectUploadEvent(file));
+      }
+    });
+    input.click();
+  }
+
   render() {
     if (this.state.type === 'error') {
       return html`<cc-notice intent="warning" message=${i18n('cc-cellar-object-list.error')}></cc-notice>`;
@@ -202,6 +270,7 @@ export class CcCellarObjectList extends LitElement {
     return html`<div class="wrapper">
       ${this._renderHeading(this.state)} ${this._renderPath(this.state)} ${this._renderList(this.state)}
       ${this._renderPagination(this.state)} ${this.state.type === 'loaded' ? this._renderFileDetails(this.state) : ''}
+      ${this.state.type === 'loaded' ? this._renderDirectoryCreationForm(this.state.createDirectoryForm) : ''}
     </div>`;
   }
 
@@ -211,6 +280,8 @@ export class CcCellarObjectList extends LitElement {
    */
   _renderHeading(state) {
     const filter = state.type === 'loaded' || state.type === 'filtering' ? state.filter : '';
+    const isUploading = state.type === 'loaded' && state.uploadState?.type === 'uploading';
+    const isSkeleton = state.type === 'loading';
 
     return html`
       <div class="list-heading">
@@ -224,7 +295,7 @@ export class CcCellarObjectList extends LitElement {
               inline
               label=${i18n('cc-cellar-object-list.heading.filter.label')}
               ?readonly=${state.type === 'filtering'}
-              ?disabled=${state.type !== 'loaded' && state.type !== 'filtering'}
+              ?disabled=${(state.type !== 'loaded' && state.type !== 'filtering') || isUploading}
               .value=${filter}
             ></cc-input-text>
             <cc-button
@@ -233,11 +304,32 @@ export class CcCellarObjectList extends LitElement {
               hide-text
               outlined
               ?waiting=${state.type === 'filtering'}
-              ?disabled=${state.type !== 'loaded' && state.type !== 'filtering'}
+              ?disabled=${(state.type !== 'loaded' && state.type !== 'filtering') || isUploading}
             >
               ${i18n('cc-cellar-object-list.heading.filter.button')}
             </cc-button>
           </form>
+          <cc-button
+            primary
+            type="button"
+            .icon=${iconUpload}
+            ?skeleton=${isSkeleton}
+            ?disabled=${this.state.type === 'filtering'}
+            ?waiting=${this.state.type === 'loaded' && this.state.uploadState?.type === 'uploading'}
+            @cc-click=${this._onUploadButtonClick}
+            >${i18n('cc-cellar-object-list.button.upload')}</cc-button
+          >
+          <cc-button
+            class="add-new-directory"
+            outlined
+            primary
+            type="button"
+            .icon=${iconDirectory}
+            ?skeleton=${isSkeleton}
+            ?disabled=${this.state.type === 'filtering'}
+            @cc-click=${this._onCreateDirectoryButtonClick}
+            >${i18n('cc-cellar-object-list.heading.add.directory')}</cc-button
+          >
         </div>
       </div>
     `;
@@ -287,6 +379,7 @@ export class CcCellarObjectList extends LitElement {
               value: object.name,
               icon: iconDirectory,
               enableCopyToClipboard: true,
+              badge: object.volatile ? i18n('cc-cellar-object-list.badge.new') : null,
               onClick: () => {
                 this.dispatchEvent(new CcCellarNavigateToPathEvent([...state.path, object.name]));
               },
@@ -297,6 +390,7 @@ export class CcCellarObjectList extends LitElement {
             value: object.name,
             icon: iconFile,
             enableCopyToClipboard: true,
+            badge: object.volatile ? i18n('cc-cellar-object-list.badge.new') : null,
           };
         },
         width: 'minmax(max-content, 1fr)',
@@ -467,6 +561,42 @@ export class CcCellarObjectList extends LitElement {
   _renderIconDetails(object) {
     const fileIcon = this._getFileIcon(object.contentType);
     return html`<cc-icon .icon=${fileIcon.icon} .a11yName=${fileIcon.a11yName}></cc-icon>`;
+  }
+
+  /**
+   * @param {CellarDirectoryCreateFormState} state
+   * @returns {TemplateResult}
+   */
+  _renderDirectoryCreationForm(state) {
+    const errorMessage = this._getErrorMessage(state?.error, state?.directoryName);
+
+    return html`<cc-dialog
+      class="create-directory-dialog"
+      heading=${i18n('cc-cellar-object-list.add-directory.dialog.heading')}
+      ?open=${state != null}
+      @cc-close=${this._onCancelDirectoryCreation}
+    >
+      <cc-notice intent="warning" message="${i18n('cc-cellar-object-list.add-directory.dialog.notice')}"></cc-notice>
+      <form ${formSubmit(this._onCreateDirectoryFormSubmit.bind(this))} ${ref(this._createDirectoryFormRef)}>
+        <cc-input-text
+          label=${i18n('cc-cellar-object-list.add-directory.dialog.label')}
+          name="directoryName"
+          required
+          ?readonly=${state?.type === 'creating'}
+          .value=${state?.directoryName ?? ''}
+          .errorMessage=${errorMessage}
+        >
+          <div slot="help" class="bucket-name-help">
+            <p>${i18n('cc-cellar-object-list.create.directory-name.help')}</p>
+          </div>
+        </cc-input-text>
+        <cc-dialog-confirm-actions
+          submit-label=${i18n('cc-cellar-object-list.add-directory.dialog.submit')}
+          ?waiting=${state?.type === 'creating'}
+          @cc-confirm=${this._onConfirmDirectoryCreation}
+        ></cc-dialog-confirm-actions>
+      </form>
+    </cc-dialog>`;
   }
 
   static get styles() {

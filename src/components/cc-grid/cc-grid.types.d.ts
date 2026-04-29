@@ -20,6 +20,7 @@ interface CcGridCellText {
   iconA11yName?: string;
   skeleton?: boolean;
   enableCopyToClipboard?: boolean;
+  badge?: string;
 }
 
 interface CcGridCellLink {
@@ -30,6 +31,7 @@ interface CcGridCellLink {
   onClick: () => void;
   skeleton?: boolean;
   enableCopyToClipboard?: boolean;
+  badge?: string;
 }
 
 interface CcGridCellButton {

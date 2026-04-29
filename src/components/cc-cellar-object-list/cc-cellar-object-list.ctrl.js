@@ -1,18 +1,21 @@
 import { Abortable } from '../../lib/abortable.js';
 import { i18n } from '../../lib/i18n/i18n.js';
 import { notifyError, notifySuccess } from '../../lib/notifications.js';
-import { isCellarExplorerErrorWithCode } from '../cc-cellar-explorer/cc-cellar-explorer.client.js';
+import { isCellarExplorerErrorWithCode, pathToString } from '../cc-cellar-explorer/cc-cellar-explorer.client.js';
 import '../cc-smart-container/cc-smart-container.js';
 import { CcCellarNavigateToHomeEvent } from './cc-cellar-object-list.events.js';
 import './cc-cellar-object-list.js';
 
 /**
  * @import { CcCellarObjectList } from './cc-cellar-object-list.js'
- * @import { CellarObjectListState, CellarObjectListStateLoaded, CellarObjectState, CellarFileState, CellarFileDetailsState } from './cc-cellar-object-list.types.js'
+ * @import { CellarObjectListState, CellarObjectListStateLoaded, CellarObjectState, CellarFileState, CellarFileDetailsState, CellarDirectoryCreateFormState } from './cc-cellar-object-list.types.js'
  * @import { CellarExplorerClient } from '../cc-cellar-explorer/cc-cellar-explorer.client.js'
+ * @import { CellarDirectory } from '../cc-cellar-explorer/cc-cellar-explorer.client.types.js'
  * @import { UpdateCallback } from '../common.types.js'
  * @import { OnEventCallback } from '../../lib/smart/smart-component.types.js'
  */
+
+const DIRECTORY_INVALID_CHARS = /[/\\{}^%`\]">[~<#|\u0080-\u00FF]/;
 
 export class ObjectListController {
   /** @type {CellarExplorerClient} */
@@ -85,6 +88,18 @@ export class ObjectListController {
 
     onEvent('cc-cellar-object-delete', (objectKey) => {
       this.deleteObject(objectKey);
+    });
+
+    onEvent('cc-cellar-object-create-directory', (directoryName) => {
+      this.createDirectory(directoryName);
+    });
+
+    onEvent('cc-cellar-object-download', (objectKey) => {
+      this.download(objectKey);
+    });
+
+    onEvent('cc-cellar-object-upload', (file) => {
+      this.uploadObject(file);
     });
   }
 
@@ -212,6 +227,32 @@ export class ObjectListController {
     }
   }
 
+  /**
+   * @param {string} objectKey
+   * @returns {Promise<void>}
+   */
+  async download(objectKey) {
+    this.#updateDetails({ state: 'downloading' });
+    try {
+      const signedUrl = await this.#cellarClient.getObjectSignedUrl(this.#bucketName, objectKey);
+
+      const element = document.createElement('a');
+      element.setAttribute('href', signedUrl.url);
+      element.setAttribute('target', '_blank');
+      document.body.appendChild(element);
+      element.click();
+      document.body.removeChild(element);
+    } catch (error) {
+      this.#handleErrorOnObject({
+        error,
+        objectKey,
+        orElse: () => notifyError(i18n('cc-cellar-object-list.error.object-download-failed', { objectKey })),
+      });
+    } finally {
+      this.#updateDetails({ state: 'idle' });
+    }
+  }
+
   async #fetchObjects() {
     try {
       const response = await this.#abortable.run(() =>
@@ -220,7 +261,9 @@ export class ObjectListController {
           filter: this.#filter,
         }),
       );
-      this.#objects = [...response.directories, ...response.content].map((object) => ({ state: 'idle', ...object }));
+      this.#objects = [...response.directories, ...response.content].map((object) =>
+        object.type === 'file' ? /** @type {CellarFileState} */ ({ ...object, state: 'idle' }) : object,
+      );
       this.#nextCursor = response.cursor;
       this.#updateState({
         type: 'loaded',
@@ -309,5 +352,131 @@ export class ObjectListController {
       clearInterval(this.#signedUrlInterval);
       this.#signedUrlInterval = null;
     }
+  }
+
+  /**
+   * @param {string} directoryName
+   */
+  async createDirectory(directoryName) {
+    this.#updateCreateForm({ type: 'creating', directoryName, error: null });
+
+    if (DIRECTORY_INVALID_CHARS.test(directoryName)) {
+      this.#updateCreateForm({ type: 'idle', directoryName, error: 'directory-name-invalid' });
+      return;
+    }
+
+    const alreadyExists = this.#objects.some((obj) => obj.type === 'directory' && obj.name === directoryName);
+
+    if (alreadyExists) {
+      this.#updateCreateForm({ type: 'idle', directoryName, error: 'directory-already-exists' });
+      return;
+    }
+
+    /** @type {CellarDirectory} */
+    const newDir = {
+      type: 'directory',
+      key: [...this.#path, directoryName].join('/'),
+      name: directoryName,
+      volatile: true,
+    };
+
+    this.#objects = [...this.#objects, newDir].sort((a, b) => {
+      if (a.volatile && !b.volatile) {
+        return -1;
+      }
+      if (!a.volatile && b.volatile) {
+        return 1;
+      }
+      if (a.type === 'directory' && b.type === 'file') {
+        return -1;
+      }
+      if (a.type === 'file' && b.type === 'directory') {
+        return 1;
+      }
+      return a.name.localeCompare(b.name);
+    });
+
+    this.#updateState(
+      /** @param {CellarObjectListStateLoaded} state */ (state) => {
+        state.objects = this.#objects;
+        state.createDirectoryForm = null;
+      },
+    );
+    notifySuccess(i18n('cc-cellar-object-list.success.directory-created', { directoryName }));
+  }
+
+  /**
+   * @param {File} file
+   * @returns {Promise<void>}
+   */
+  async uploadObject(file) {
+    const pathAtUploadStart = this.#path;
+    const objectKey = pathToString(this.#path) + file.name;
+    this.#updateUploadState({ type: 'uploading' });
+
+    try {
+      await this.#cellarClient.uploadObject(this.#bucketName, objectKey, file);
+      notifySuccess(i18n('cc-cellar-object-list.success.object-uploaded', { objectKey }));
+
+      if (this.#path === pathAtUploadStart) {
+        /** @type {CellarFileState} */
+        const newFile = {
+          type: 'file',
+          key: objectKey,
+          name: file.name,
+          updatedAt: new Date().toISOString(),
+          contentLength: file.size,
+          volatile: true,
+          state: 'idle',
+        };
+        this.#objects = [newFile, ...this.#objects.filter((obj) => obj.key !== objectKey)];
+        this.#updateState(
+          /** @param {CellarObjectListStateLoaded} state */ (state) => {
+            state.objects = this.#objects;
+            state.uploadState = { type: 'idle' };
+          },
+        );
+      }
+    } catch (error) {
+      if (this.#path === pathAtUploadStart) {
+        this.#handleErrorOnObject({
+          error,
+          objectKey,
+          orElse: () => notifyError(i18n('cc-cellar-object-list.error.object-upload-failed', { objectKey })),
+        });
+      } else {
+        notifyError(i18n('cc-cellar-object-list.error.object-upload-failed', { objectKey }));
+      }
+    } finally {
+      if (this.#path === pathAtUploadStart) {
+        this.#updateUploadState({ type: 'idle' });
+      }
+    }
+  }
+
+  /**
+   * @param {import('./cc-cellar-object-list.types.js').CellarObjectUploadState} newState
+   */
+  #updateUploadState(newState) {
+    this.#updateState(
+      /** @param {CellarObjectListStateLoaded} state */ (state) => {
+        state.uploadState = newState;
+      },
+    );
+  }
+
+  /**
+   * @param {Partial<CellarDirectoryCreateFormState>|null} newState
+   */
+  #updateCreateForm(newState) {
+    this.#updateState(
+      /** @param {CellarObjectListStateLoaded} state */ (state) => {
+        if (newState == null) {
+          state.createDirectoryForm = null;
+        } else {
+          state.createDirectoryForm = { ...state.createDirectoryForm, ...newState };
+        }
+      },
+    );
   }
 }

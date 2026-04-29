@@ -496,7 +496,14 @@ export const translations = {
   'cc-cellar-explorer.error': `Error while loading component`,
   //#endregion
   //#region cc-cellar-object-list
+  'cc-cellar-object-list.add-directory.dialog.heading': `Add a new directory`,
+  'cc-cellar-object-list.add-directory.dialog.label': `Directory name`,
+  'cc-cellar-object-list.add-directory.dialog.notice': `Upload an object after creating a directory, otherwise the directory will not be persisted in your bucket.`,
+  'cc-cellar-object-list.add-directory.dialog.submit': `Create directory`,
   'cc-cellar-object-list.back-to-bucket-list': `Go back to list of buckets`,
+  'cc-cellar-object-list.badge.new': `New`,
+  'cc-cellar-object-list.button.upload': `Upload object`,
+  'cc-cellar-object-list.create.directory-name.help': `Directory name cannot contain non-printable characters (128–255 decimal characters) or the following characters: / \\ { } ^ % \` [ ] " < > ~ # |`,
   'cc-cellar-object-list.date': /** @param {{date: string}} _ */ ({ date }) => formatDateOnly(date),
   'cc-cellar-object-list.details.actions.delete.button': `Delete object`,
   'cc-cellar-object-list.details.actions.download.button': `Download object`,
@@ -520,18 +527,27 @@ export const translations = {
   'cc-cellar-object-list.error': `Something went wrong while loading the list of objects`,
   'cc-cellar-object-list.error.bucket-not-found': /** @param {{bucketName: string}} _ */ ({ bucketName }) =>
     `Bucket ${bucketName} does not exist`,
+  'cc-cellar-object-list.error.directory-already-exists': /** @param {{directoryName: string}} _ */ ({
+    directoryName,
+  }) => `Directory ${directoryName} already exists`,
+  'cc-cellar-object-list.error.directory-name-invalid': `The directory name contains an invalid character (see the help message above)`,
   'cc-cellar-object-list.error.object-deletion-failed': /** @param {{objectKey: string}} _ */ ({ objectKey }) =>
     `Failed to delete object ${objectKey}`,
+  'cc-cellar-object-list.error.object-download-failed': /** @param {{objectKey: string}} _ */ ({ objectKey }) =>
+    `Failed to download object ${objectKey}`,
   'cc-cellar-object-list.error.object-fetch-failed': /** @param {{objectKey: string}} _ */ ({ objectKey }) =>
     `Failed to get object ${objectKey}`,
   'cc-cellar-object-list.error.object-not-found': /** @param {{objectKey: string}} _ */ ({ objectKey }) =>
     `Object ${objectKey} does not exist`,
+  'cc-cellar-object-list.error.object-upload-failed': /** @param {{objectKey: string}} _ */ ({ objectKey }) =>
+    `Failed to upload object ${objectKey}`,
   'cc-cellar-object-list.grid.a11y-name': `List of objects`,
   'cc-cellar-object-list.grid.column.last-update': `Last update`,
   'cc-cellar-object-list.grid.column.name': `Name`,
   'cc-cellar-object-list.grid.column.size': `Size`,
   'cc-cellar-object-list.grid.show-details.a11y-name': /** @param {{objectName: string}} _ */ ({ objectName }) =>
     `Show details for object ${objectName}`,
+  'cc-cellar-object-list.heading.add.directory': `New directory`,
   'cc-cellar-object-list.heading.filter.button': `Filter`,
   'cc-cellar-object-list.heading.filter.label': `Filter`,
   'cc-cellar-object-list.heading.title': `List of objects`,
@@ -546,10 +562,14 @@ export const translations = {
   'cc-cellar-object-list.page.next': `Next page`,
   'cc-cellar-object-list.page.previous': `Previous page`,
   'cc-cellar-object-list.size': /** @param {{size: number}} _ */ ({ size }) => formatBytes(size),
+  'cc-cellar-object-list.success.directory-created': /** @param {{directoryName: string}} _ */ ({ directoryName }) =>
+    `Directory "${directoryName}" created successfully`,
   'cc-cellar-object-list.success.object-already-deleted': /** @param {{objectKey: string}} _ */ ({ objectKey }) =>
     `Object ${objectKey} was already deleted`,
   'cc-cellar-object-list.success.object-deleted': /** @param {{objectKey: string}} _ */ ({ objectKey }) =>
     `Object ${objectKey} deleted successfully`,
+  'cc-cellar-object-list.success.object-uploaded': /** @param {{objectKey: string}} _ */ ({ objectKey }) =>
+    `Object ${objectKey} uploaded successfully`,
   //#endregion
   //#region cc-clipboard
   'cc-clipboard.copied': `The text has been copied`,

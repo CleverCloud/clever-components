@@ -30,6 +30,12 @@ export interface CellarObjectListStateLoaded {
   details?: CellarFileDetailsState;
   hasPrevious: boolean;
   hasNext: boolean;
+  createDirectoryForm?: CellarDirectoryCreateFormState;
+  uploadState?: CellarObjectUploadState;
+}
+
+export interface CellarObjectUploadState {
+  type: 'idle' | 'uploading';
 }
 
 export interface CellarObjectListStateFiltering {
@@ -46,6 +52,14 @@ export interface CellarFileState extends CellarFile {
 }
 
 export interface CellarFileDetailsState extends CellarFileDetails {
-  state: 'idle' | 'deleting';
+  state: 'idle' | 'deleting' | 'downloading';
   signedUrl: string;
 }
+
+export interface CellarDirectoryCreateFormState {
+  type: 'idle' | 'creating';
+  directoryName: string;
+  error?: 'directory-already-exists' | 'directory-name-invalid';
+}
+
+export type CreationFormError = 'directory-already-exists' | 'directory-name-invalid';
