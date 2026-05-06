@@ -1,0 +1,391 @@
+import { css, html, LitElement, nothing } from 'lit';
+import { createRef, ref } from 'lit/directives/ref.js';
+import {
+  iconRemixArrowRightSLine as iconArrowRight,
+  iconRemixExternalLinkLine as iconExternalLink,
+  iconRemixSearchLine as iconSearch,
+} from '../../assets/cc-remix.icons.js';
+import { isExternalUrl } from '../../lib/utils.js';
+import { i18n } from '../../translations/translation.js';
+import '../cc-badge/cc-badge.js';
+import '../cc-dialog/cc-dialog.js';
+import '../cc-icon/cc-icon.js';
+import '../cc-input-text/cc-input-text.js';
+
+/**
+ * @import { SearchBarItem, SearchBarItemType, SearchBarSection } from './cc-search-bar.types.js'
+ * @import { BadgeIntent } from '../cc-badge/cc-badge.types.js'
+ * @import { CcInputText } from '../cc-input-text/cc-input-text.js'
+ * @import { CcInputEvent } from '../common.events.js'
+ * @import { Ref } from 'lit/directives/ref.js'
+ */
+
+const KEYWORD_TOKEN_REGEX = /^is:./;
+
+/**
+ * Filters sections based on a search query, using a token-based syntax.
+ *
+ * Tokens are split on whitespace and partitioned into:
+ * - keyword tokens (`is:<value>`): an item passes only if every keyword token
+ *   is present in its derived matchers (`is:<itemType>` and explicit `matchers`).
+ * - text tokens: an item passes only if every text token is `includes`'d in its
+ *   lowercased label or its lowercased id.
+ *
+ * @param {SearchBarSection[]} sections
+ * @param {string} value
+ * @returns {SearchBarSection[]}
+ */
+function filterSections(sections, value) {
+  const query = value.trim().toLowerCase();
+  if (query === '') {
+    return [];
+  }
+  const tokens = query.split(/\s+/);
+  const keywordTokens = tokens.filter((token) => KEYWORD_TOKEN_REGEX.test(token));
+  const textTokens = tokens.filter((token) => !KEYWORD_TOKEN_REGEX.test(token));
+
+  return sections
+    .map((section) => ({
+      ...section,
+      items: section.items.filter((item) => {
+        const itemMatchers = [...(item.itemType != null ? [`is:${item.itemType}`] : []), ...(item.matchers ?? [])];
+        const keywordsMatch = keywordTokens.every((keyword) => itemMatchers.includes(keyword));
+        if (!keywordsMatch) {
+          return false;
+        }
+        const label = item.label.toLowerCase();
+        const id = item.id?.toLowerCase() ?? '';
+        return textTokens.every((token) => label.includes(token) || id.includes(token));
+      }),
+    }))
+    .filter((section) => section.items.length > 0);
+}
+
+/** @type {Record<SearchBarItemType, { label: string, intent: BadgeIntent }>} */
+const ITEM_TYPE_BADGE = {
+  app: { label: 'APP', intent: 'success' },
+  addon: { label: 'ADDON', intent: 'warning' },
+  'network-group': { label: 'NG', intent: 'neutral' },
+  cke: { label: 'KUBE', intent: 'neutral' },
+};
+
+/**
+ * A search bar dialog that displays categorized results.
+ *
+ * ## Details
+ *
+ * The component wraps a search input and a list of sections inside a `cc-dialog`.
+ * Items can have optional badges and external link indicators.
+ *
+ * @cssdisplay contents
+ *
+ */
+export class CcSearchBar extends LitElement {
+  static get properties() {
+    return {
+      open: { type: Boolean, reflect: true },
+      sections: { type: Array },
+      value: { type: String },
+    };
+  }
+
+  constructor() {
+    super();
+
+    /** @type {boolean} Displays or hides the search bar dialog. */
+    this.open = false;
+
+    /** @type {SearchBarSection[]} The sections to display, each containing a label, icon, and items. */
+    this.sections = [];
+
+    /** @type {string} The current search input value. */
+    this.value = '';
+
+    /** @type {Ref<CcInputText>} */
+    this._inputRef = createRef();
+  }
+
+  /**
+   * Focuses the search input.
+   */
+  focus() {
+    this._inputRef.value?.focus();
+  }
+
+  /** Opens the search bar dialog by setting the `open` property to true. */
+  show() {
+    this.open = true;
+  }
+
+  /** Closes the search bar dialog by setting the `open` property to false. */
+  hide() {
+    this.open = false;
+  }
+
+  _onDialogClose() {
+    this.open = false;
+  }
+
+  /** @param {CcInputEvent} e */
+  _onInput(e) {
+    this.value = e.detail;
+  }
+
+  render() {
+    const filteredSections = filterSections(this.sections, this.value);
+    const hasItems = filteredSections.length > 0;
+    return html`
+      <cc-dialog ?open="${this.open}" @cc-close="${this._onDialogClose}">
+        <h1 slot="heading" class="heading">${i18n('cc-search-bar.heading')}</h1>
+        <div class="search-bar">
+          ${this._renderSearchInput()}
+          ${hasItems
+            ? html`<div class="sections">${filteredSections.map((section) => this._renderSection(section))}</div>`
+            : this._renderEmpty()}
+        </div>
+      </cc-dialog>
+    `;
+  }
+
+  _renderEmpty() {
+    const isInitial = this.value.trim() === '';
+    return html`
+      <div class="empty">
+        <cc-icon class="empty-icon" .icon="${iconSearch}" size="xl"></cc-icon>
+        <p class="empty-title">
+          ${isInitial ? i18n('cc-search-bar.initial.title') : i18n('cc-search-bar.no-result.title')}
+        </p>
+        <p class="empty-description">
+          ${isInitial ? i18n('cc-search-bar.initial.description') : i18n('cc-search-bar.no-result.description')}
+        </p>
+      </div>
+    `;
+  }
+
+  _renderSearchInput() {
+    return html`
+      <div class="input-wrapper">
+        <div class="input-field">
+          <cc-input-text
+            label="${i18n('cc-search-bar.label')}"
+            placeholder="${i18n('cc-search-bar.placeholder')}"
+            value="${this.value}"
+            @cc-input="${this._onInput}"
+            ${ref(this._inputRef)}
+          ></cc-input-text>
+          <cc-icon class="search-icon" .icon="${iconSearch}" size="sm"></cc-icon>
+        </div>
+      </div>
+    `;
+  }
+
+  /** @param {SearchBarSection} section */
+  _renderSection(section) {
+    return html`
+      <div class="section">
+        <h2 class="section-header">
+          <cc-icon .icon="${section.icon}" size="md"></cc-icon>
+          <span class="section-header-label">${section.label}</span>
+        </h2>
+        <ul class="section-items">
+          ${section.items.map((item) => this._renderItem(item))}
+        </ul>
+      </div>
+    `;
+  }
+
+  /** @param {SearchBarItem} item */
+  _renderItem(item) {
+    const isExternal = isExternalUrl(item.href);
+    const badge = item.itemType != null ? ITEM_TYPE_BADGE[item.itemType] : null;
+    const title = isExternal ? i18n('cc-search-bar.external-link.title', { linkText: item.label }) : nothing;
+    return html`
+      <li>
+        <a
+          class="item"
+          href="${item.href}"
+          target="${isExternal ? '_blank' : nothing}"
+          rel="${isExternal ? 'noreferrer' : nothing}"
+          title="${title}"
+        >
+          <span class="item-label">${item.label}</span>
+          ${badge != null ? html` <cc-badge intent="${badge.intent}" weight="dimmed">${badge.label}</cc-badge> ` : ''}
+          ${isExternal
+            ? html`
+                <cc-icon
+                  class="external-link-icon"
+                  .icon="${iconExternalLink}"
+                  size="md"
+                  a11y-name="${i18n('cc-search-bar.external-link.name')}"
+                ></cc-icon>
+              `
+            : html`<cc-icon class="hover-chevron" .icon="${iconArrowRight}" size="md"></cc-icon>`}
+        </a>
+      </li>
+    `;
+  }
+
+  static get styles() {
+    return [
+      // language=CSS
+      css`
+        .search-bar {
+          display: flex;
+          flex-direction: column;
+        }
+
+        .heading {
+          font-size: 1.125em;
+          margin: 0;
+        }
+
+        .input-wrapper {
+          display: flex;
+          flex-direction: column;
+          gap: 0.35em;
+          padding: 0.5em 0.5em 1em;
+        }
+
+        .input-field {
+          position: relative;
+        }
+
+        .input-field cc-input-text {
+          display: block;
+          font-size: 0.8em;
+          width: 100%;
+        }
+
+        .search-icon {
+          bottom: 0.8em;
+          color: var(--cc-color-text-default, #000);
+          pointer-events: none;
+          position: absolute;
+          right: 0.67em;
+          transform: translateY(50%);
+        }
+
+        .sections {
+          flex: 1;
+          overflow-y: auto;
+          padding: 0 0.5em;
+        }
+
+        .empty {
+          align-items: center;
+          color: var(--cc-color-text-default, #000);
+          display: flex;
+          flex-direction: column;
+          gap: 0.5em;
+          padding: 1.5em 1em;
+          text-align: center;
+        }
+
+        .empty-icon {
+          color: var(--cc-color-text-primary-strongest, #000);
+          margin-bottom: 0.25em;
+        }
+
+        .empty-title {
+          font-size: 0.78em;
+          font-weight: bold;
+          margin: 0;
+        }
+
+        .empty-description {
+          color: var(--cc-color-text-weak, #666);
+          font-size: 0.78em;
+          line-height: 1.5;
+          margin: 0;
+        }
+
+        .empty-description code {
+          background-color: var(--cc-color-bg-neutral, #f5f5f5);
+          border-radius: var(--cc-border-radius-default, 0.25em);
+          font-family: var(--cc-ff-monospace, monospace);
+          padding: 0.1em 0.3em;
+        }
+
+        .section:not(:last-child) {
+          border-bottom: solid 1px var(--cc-color-border-neutral-weak, #e7e7e7);
+          padding-bottom: 1em;
+        }
+
+        .section:not(:first-child) {
+          padding-top: 0.5em;
+        }
+
+        .section-header {
+          align-items: center;
+          color: var(--cc-color-text-weak, #666);
+          display: flex;
+          font-size: 1em;
+          font-weight: normal;
+          gap: 0.4em;
+          line-height: 1.3;
+          margin: 0;
+          padding: 1em 0;
+        }
+
+        .section-header-label {
+          font-size: 0.75em;
+        }
+
+        .section-items {
+          display: flex;
+          flex-direction: column;
+          gap: 0.5em;
+          list-style: none;
+          margin: 0;
+          padding: 0.33em 0;
+        }
+
+        .item {
+          align-items: center;
+          border-radius: 0.5em;
+          color: var(--cc-color-text-default, #000);
+          display: flex;
+          font-weight: normal;
+          gap: 0.5em;
+          letter-spacing: -0.15px;
+          padding: 0.5em;
+          text-decoration: none;
+        }
+
+        .item:hover {
+          background: var(--cc-color-bg-neutral, #f5f5f5);
+        }
+
+        .item:focus-visible {
+          border-radius: 0.625em;
+          outline: var(--cc-focus-outline);
+          outline-offset: var(--cc-focus-outline-offset, 2px);
+        }
+
+        .item-label {
+          flex: 1;
+          font-size: 0.875em;
+          min-width: 0;
+          overflow-wrap: anywhere;
+        }
+
+        .external-link-icon {
+          color: var(--cc-color-text-primary-strongest, #012a51);
+          flex-shrink: 0;
+        }
+
+        .hover-chevron {
+          color: var(--cc-color-text-primary, #1a51b3);
+          display: none;
+          flex-shrink: 0;
+        }
+
+        .item:hover .hover-chevron {
+          display: inline-block;
+        }
+      `,
+    ];
+  }
+}
+
+window.customElements.define('cc-search-bar', CcSearchBar);
