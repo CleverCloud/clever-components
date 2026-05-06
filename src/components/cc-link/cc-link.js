@@ -2,7 +2,7 @@ import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { iconRemixExternalLinkLine as externalLinkIcon, iconRemixDownloadLine } from '../../assets/cc-remix.icons.js';
-import { isStringEmpty } from '../../lib/utils.js';
+import { isExternalUrl, isStringEmpty } from '../../lib/utils.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-icon/cc-icon.js';
@@ -84,24 +84,6 @@ export class CcLink extends LitElement {
   }
 
   /**
-   * Checks if a given URL points to a different origin than the current page.
-   * If the URL is invalid, it is considered as a different origin for security.
-   *
-   * @param {string} rawUrl - The URL to check.
-   * @returns {boolean} True if the URL points to a different origin, false otherwise.
-   * @private
-   */
-  _isDifferentOrigin(rawUrl) {
-    try {
-      const url = new URL(rawUrl, location.href);
-      return url.origin !== location.origin;
-    } catch {
-      // Consider bad URLs as different origin
-      return true;
-    }
-  }
-
-  /**
    * Determines the appropriate title for the link
    *
    * @param {string|null} a11yDesc - The accessibility description
@@ -140,7 +122,7 @@ export class CcLink extends LitElement {
 
   render() {
     const href = this.href != null && !this.skeleton ? this.href : null;
-    const isDifferentOrigin = this._isDifferentOrigin(href);
+    const isDifferentOrigin = isExternalUrl(href);
     const target = isDifferentOrigin ? '_blank' : null;
     const rel = isDifferentOrigin ? 'noreferrer' : null;
     const disableExternalIcon = this.disableExternalLinkIcon || this.mode !== 'default';
