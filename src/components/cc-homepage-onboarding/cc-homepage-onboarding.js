@@ -14,6 +14,7 @@ import { fakeString } from '../../lib/fake-strings.js';
 import { formSubmit } from '../../lib/form/form-submit-directive.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
 import { i18n } from '../../translations/translation.js';
+import '../cc-block/cc-block.js';
 import '../cc-button/cc-button.js';
 import '../cc-icon/cc-icon.js';
 import '../cc-link/cc-link.js';
@@ -204,16 +205,23 @@ export class CcHomepageOnboarding extends LitElement {
     const description = this._getDescription();
 
     return html`
-      <div class="container">
-        <button class="close-button" @click=${this._onDismiss} title=${i18n('cc-homepage-onboarding.close')}>
+      <cc-block>
+        <button
+          slot="header-right"
+          class="close-button"
+          @click=${this._onDismiss}
+          title=${i18n('cc-homepage-onboarding.close')}
+        >
           <cc-icon .icon="${iconClose}" size="xl" a11y-name="${i18n('cc-homepage-onboarding.close')}"></cc-icon>
         </button>
-        <div class="header">
-          <h2 class="title ${classMap({ skeleton })}">${title}</h2>
-          <p class="description ${classMap({ skeleton })}">${description}</p>
+        <div slot="content" class="container">
+          <div class="header">
+            <h2 class="title ${classMap({ skeleton })}">${title}</h2>
+            <p class="description ${classMap({ skeleton })}">${description}</p>
+          </div>
+          <div class="cards cards--count-${cards.length}">${cards.map((card) => this._renderCard(card, skeleton))}</div>
         </div>
-        <div class="cards cards--count-${cards.length}">${cards.map((card) => this._renderCard(card, skeleton))}</div>
-      </div>
+      </cc-block>
     `;
   }
 
@@ -296,13 +304,10 @@ export class CcHomepageOnboarding extends LitElement {
 
         .container {
           align-items: center;
-          border: solid 1px var(--cc-color-border-neutral-weak, #e7e7e7);
-          border-radius: var(--cc-border-radius-default, 0.25em);
           display: flex;
           flex-direction: column;
           gap: 2em;
-          padding: 3em;
-          position: relative;
+          padding: 0 3em 1em;
           text-align: center;
         }
 
