@@ -1,5 +1,5 @@
 import { css, html, LitElement } from 'lit';
-import { iconRemixArrowDownSLine as iconArrowDown } from '../../assets/cc-remix.icons.js';
+import { iconRemixArrowUpSLine as iconArrowUp } from '../../assets/cc-remix.icons.js';
 import '../cc-icon/cc-icon.js';
 import { CcToggleEvent } from '../common.events.js';
 
@@ -39,7 +39,7 @@ export class CcBlockDetails extends LitElement {
         <div class="btn-wrapper">
           <button class="button" aria-expanded="${this.isOpen}" aria-controls="content" @click=${this._onClickToggle}>
             <slot name="button-text"></slot>
-            <cc-icon .icon="${iconArrowDown}"></cc-icon>
+            <cc-icon .icon="${iconArrowUp}"></cc-icon>
           </button>
         </div>
         <div id="content" class="content">
@@ -116,11 +116,11 @@ export class CcBlockDetails extends LitElement {
           transition: all 0.3s;
         }
 
-        :host([is-open]) .button cc-icon {
+        .button[aria-expanded='false'] cc-icon {
           transform: rotate(180deg);
         }
 
-        :host(:not([is-open])) .button:hover cc-icon {
+        .button:hover cc-icon {
           transform: rotate(90deg);
         }
 
