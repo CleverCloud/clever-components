@@ -17,7 +17,6 @@ title: '💡 Smart'
 | Name              | Type        | Details                                  | Default |
 |-------------------|-------------|------------------------------------------|---------|
 | `apiConfig`       | `ApiConfig` | Object with API configuration            |         |
-| `cellarProxyUrl`  | `String`    | URL of the Cellar proxy backend          |         |
 | `ownerId`         | `String`    | ID of the owner (organization or user)   |         |
 | `addonId`         | `String`    | ID of the Cellar addon                   |         |
 
@@ -34,20 +33,19 @@ interface ApiConfig {
 
 ## 🌐 API endpoints
 
-### Clever Cloud API
+| Method   | URL                                                                                                               | Cache?  |
+|----------|-------------------------------------------------------------------------------------------------------------------|---------|
+| `GET`    | `/v2/organisations/{ownerId}/addons/{addonId}`                                                                    | Default |
+| `GET`    | `/v4/cellar/organisations/{ownerId}/cellar/{realAddonId}/buckets`                                                 | Default |
+| `POST`   | `/v4/cellar/organisations/{ownerId}/cellar/{realAddonId}/buckets`                                                 | Default |
+| `GET`    | `/v4/cellar/organisations/{ownerId}/cellar/{realAddonId}/buckets/{bucketName}`                                    | Default |
+| `DELETE` | `/v4/cellar/organisations/{ownerId}/cellar/{realAddonId}/buckets/{bucketName}`                                    | Default |
+| `GET`    | `/v4/cellar/organisations/{ownerId}/cellar/{realAddonId}/buckets/{bucketName}/objects`                            | Default |
+| `GET`    | `/v4/cellar/organisations/{ownerId}/cellar/{realAddonId}/buckets/{bucketName}/objects/{objectKey}`                | Default |
+| `DELETE` | `/v4/cellar/organisations/{ownerId}/cellar/{realAddonId}/buckets/{bucketName}/objects/{objectKey}`                | Default |
+| `POST`   | `/v4/cellar/organisations/{ownerId}/cellar/{realAddonId}/buckets/{bucketName}/objects/download-url`               | Default |
+| `POST`   | `/v4/cellar/organisations/{ownerId}/cellar/{realAddonId}/buckets/{bucketName}/objects/{objectName}/presigned-url` | Default |
 
-| Method | URL                                                | Cache?  |
-|--------|----------------------------------------------------|---------|
-| `GET`  | `/v2/organisations/{ownerId}/addons/{addonId}/env` | Default |
-
-### Cellar Proxy API (via `cellarProxyUrl`)
-
-| Method | URL                      | Cache?  |
-|--------|--------------------------|---------|
-| `POST` | `/cellar/bucket/_list`   | Default |
-| `POST` | `/cellar/bucket/_create` | Default |
-| `POST` | `/cellar/bucket/_get`    | Default |
-| `POST` | `/cellar/bucket/_delete` | Default |
 
 ## ⬇️️ Examples
 
@@ -60,7 +58,6 @@ interface ApiConfig {
     "OAUTH_CONSUMER_KEY": "...",
     "OAUTH_CONSUMER_SECRET": "..."
   },
-  "cellarProxyUrl": "https://file-explorer-proxy.services.clever-cloud.com",
   "ownerId": "orga_...",
   "addonId": "addon_..."
 }'>

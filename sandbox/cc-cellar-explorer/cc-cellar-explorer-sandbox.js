@@ -37,7 +37,6 @@ class CcCellarExplorerSandbox extends LitElement {
 
   render() {
     const context = {
-      cellarProxyUrl: 'http://localhost:8082',
       ownerId: 'orga_540caeb6-521c-4a19-a955-efe6da35d142',
       addonId: this._addonId,
     };
