@@ -39,3 +39,14 @@ export const errorStory = makeStory(conf, {
     },
   ],
 });
+
+export const fixedHeight = makeStory(conf, {
+  docs: 'When given a definite height larger than the `min-height` floor, the component fills it and the video stays centered below the header.',
+  css: `cc-homepage-video { height: 45em; width: 50em; }`,
+  items: [
+    {
+      videoUrl: 'https://youtu.be/6d0M0wZoGok',
+      channelUrl: 'https://www.youtube.com/@Clevercloud-platform',
+    },
+  ],
+});
