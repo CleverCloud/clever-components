@@ -5,6 +5,13 @@ title: 'Changelog'
 
 # Changelog
 
+## [25.3.0](https://github.com/CleverCloud/clever-components/compare/25.2.0...25.3.0) (2026-05-12)
+
+
+### 🚀 Features
+
+* **cc-block, cc-block-details, cc-visual-tests-report-menu:** rotate toggle icon ([4e5cd1e](https://github.com/CleverCloud/clever-components/commit/4e5cd1ef612b6d7294b9fa5233a9c40e1fbff1ba))
+
 ## [25.2.0](https://github.com/CleverCloud/clever-components/compare/25.1.0...25.2.0) (2026-04-29)
 
 
