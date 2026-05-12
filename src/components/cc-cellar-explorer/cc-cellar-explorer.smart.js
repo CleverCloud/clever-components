@@ -23,7 +23,6 @@ defineSmartComponent({
   selector: 'cc-cellar-explorer-beta',
   params: {
     apiConfig: { type: Object },
-    cellarProxyUrl: { type: String },
     ownerId: { type: String },
     addonId: { type: String },
   },
