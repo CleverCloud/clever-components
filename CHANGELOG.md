@@ -5,6 +5,13 @@ title: 'Changelog'
 
 # Changelog
 
+## [25.3.2](https://github.com/CleverCloud/clever-components/compare/25.3.1...25.3.2) (2026-05-13)
+
+
+### 🐛 Bug Fixes
+
+* **cc-homepage-onboarding:** enclose the component in a cc-block ([45ad7a8](https://github.com/CleverCloud/clever-components/commit/45ad7a851aad7a37dbe9bcd331bd4fc7ea417415))
+
 ## [25.3.1](https://github.com/CleverCloud/clever-components/compare/25.3.0...25.3.1) (2026-05-13)
 
 
