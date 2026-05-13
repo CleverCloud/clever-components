@@ -5,6 +5,13 @@ title: 'Changelog'
 
 # Changelog
 
+## [25.3.1](https://github.com/CleverCloud/clever-components/compare/25.3.0...25.3.1) (2026-05-13)
+
+
+### 🐛 Bug Fixes
+
+* **network-group:** prevent load failure when users have `ftp` apps ([6408439](https://github.com/CleverCloud/clever-components/commit/6408439fdbde48e24cfa0eeb10ab9d0ebdb74b8f))
+
 ## [25.3.0](https://github.com/CleverCloud/clever-components/compare/25.2.0...25.3.0) (2026-05-12)
 
 
