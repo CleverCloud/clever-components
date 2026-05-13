@@ -1,0 +1,65 @@
+name: Browserslist Database Update
+
+on:
+  schedule:
+    - cron: '0 0 1 * *'
+
+  workflow_dispatch:
+
+concurrency:
+  group: browserslist-db-update
+  cancel-in-progress: false
+
+jobs:
+  update-browserslist:
+    runs-on: ubuntu-latest
+    steps:
+      - name: '[Prepare] Checkout'
+        uses: actions/checkout@v5
+        with:
+          token: ${{ secrets.CI_TOKEN }}
+      - name: '[Prepare] Setup Node.js'
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: 'package.json'
+          cache: 'npm'
+      - name: '[Prepare] Install dependencies'
+        run: npm ci
+
+      - name: '[Update] browserslist database'
+        run: npx update-browserslist-db@latest
+
+      - name: '[Check] Detect package-lock.json changes'
+        id: check
+        run: |
+          if git diff --quiet -- package-lock.json; then
+            echo "has_changes=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "has_changes=true" >> "$GITHUB_OUTPUT"
+          fi
+      - name: '[Check] No changes detected'
+        if: steps.check.outputs.has_changes == 'false'
+        run: echo "browserslist-db is already up to date"
+      - name: '[Check] Display detected changes'
+        if: steps.check.outputs.has_changes == 'true'
+        run: |
+          echo "Changes detected in package-lock.json:"
+          git diff --stat -- package-lock.json
+
+      - name: '[Check] Detect existing remote branch'
+        id: branch
+        if: steps.check.outputs.has_changes == 'true'
+        run: |
+          BRANCH_NAME=chore/update-browserslist-db-$(date -u +%Y-%m)
+          if git ls-remote --exit-code --heads origin "$BRANCH_NAME" >/dev/null 2>&1; then
+            echo "::notice::Remote branch $BRANCH_NAME already exists — skipping PR creation."
+            echo "exists=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "exists=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: 'Create Pull Request'
+        if: steps.check.outputs.has_changes == 'true' && steps.branch.outputs.exists == 'false'
+        uses: ./.github/actions/pr-creation
+        with:
+          ci-token: ${{ secrets.CI_TOKEN }}
