@@ -74,28 +74,34 @@ export class CcHomepageVideo extends LitElement {
     const embedUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
 
     return html`
-      <cc-block class="block">
+      <cc-block>
         <div slot="header-title" class="header">${i18n('cc-homepage-video.title')}</div>
         <cc-link slot="header-right" href=${this.channelUrl}>${i18n('cc-homepage-video.link')}</cc-link>
-        <div slot="content" class="video-container">
-          ${this._playing
-            ? html`
-                <iframe
-                  ${ref(this._iframeRef)}
-                  tabindex="-1"
-                  src=${embedUrl}
-                  title=${i18n('cc-homepage-video.iframe-title')}
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen"
-                ></iframe>
-              `
-            : html`
-                <button class="thumbnail" @click=${this._onPlay}>
-                  <img src=${thumbnailUrl} alt="" />
-                  <div class="play-button">
-                    <cc-icon .icon=${iconRemixPlayFill} size="xl" a11y-name=${i18n('cc-homepage-video.play')}></cc-icon>
-                  </div>
-                </button>
-              `}
+        <div slot="content" class="content-wrapper">
+          <div class="video-container">
+            ${this._playing
+              ? html`
+                  <iframe
+                    ${ref(this._iframeRef)}
+                    tabindex="-1"
+                    src=${embedUrl}
+                    title=${i18n('cc-homepage-video.iframe-title')}
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen"
+                  ></iframe>
+                `
+              : html`
+                  <button class="thumbnail" @click=${this._onPlay}>
+                    <img src=${thumbnailUrl} alt="" />
+                    <div class="play-button">
+                      <cc-icon
+                        .icon=${iconRemixPlayFill}
+                        size="xl"
+                        a11y-name=${i18n('cc-homepage-video.play')}
+                      ></cc-icon>
+                    </div>
+                  </button>
+                `}
+          </div>
         </div>
       </cc-block>
     `;
@@ -106,20 +112,35 @@ export class CcHomepageVideo extends LitElement {
       // language=CSS
       css`
         :host {
+          container-type: inline-size;
           display: block;
+          height: 100%;
         }
 
-        .block {
+        cc-block {
           border: solid 1px var(--cc-color-border-neutral-weak);
           border-radius: var(--cc-border-radius-default, 0.25em);
+          box-sizing: border-box;
           display: block;
+          height: 100%;
+          min-height: 31em;
           padding: 1em;
+        }
+
+        .content-wrapper {
+          align-items: center;
+          bottom: 1em;
+          display: flex;
+          justify-content: center;
+          left: 1em;
+          position: absolute;
+          right: 1em;
+          top: 5em;
         }
 
         .video-container {
           aspect-ratio: 16 / 9;
-          margin-top: -0.6em;
-          position: relative;
+          width: 100%;
         }
 
         .video-container iframe {
