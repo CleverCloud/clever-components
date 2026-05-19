@@ -256,6 +256,22 @@ export function clampNumber(number, min, max) {
 }
 
 /**
+ * Checks if the given URL points to a different origin than the current page.
+ * Invalid URLs are considered external for security.
+ *
+ * @param {string} rawUrl
+ * @return {boolean}
+ */
+export function isExternalUrl(rawUrl) {
+  try {
+    const url = new URL(rawUrl, location.href);
+    return url.origin !== location.origin;
+  } catch {
+    return true;
+  }
+}
+
+/**
  * @param {string} string
  * @return {boolean}
  */
