@@ -1,13 +1,17 @@
+import { GetAddonCommand } from '@clevercloud/client/cc-api-commands/addon/get-addon-command.js';
+import { CheckKeycloakVersionCommand } from '@clevercloud/client/cc-api-commands/keycloak/check-keycloak-version-command.js';
+import { GetKeycloakInfoCommand } from '@clevercloud/client/cc-api-commands/keycloak/get-keycloak-info-command.js';
+import { UpdateKeycloakVersionCommand } from '@clevercloud/client/cc-api-commands/keycloak/update-keycloak-version-command.js';
+import { ONE_SECOND } from '@clevercloud/client/esm/with-cache.js';
 import { getAssetUrl } from '../../lib/assets-url.js';
+import { getCcApiClientWithOAuth } from '../../lib/cc-api-client.js';
 import { getDocUrl } from '../../lib/dev-hub-url.js';
 import { notifyError, notifySuccess } from '../../lib/notifications.js';
 import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-smart-container/cc-smart-container.js';
-import { CcAddonInfoClient, formatVersionState } from './cc-addon-info.client.js';
+import { formatVersionState, getGrafanaAppLink } from './cc-addon-info.client.js';
 import './cc-addon-info.js';
-
-const PROVIDER_ID = 'keycloak';
 
 /**
  * @import { CcAddonInfo } from './cc-addon-info.js'
@@ -31,7 +35,7 @@ defineSmartComponent({
     const { apiConfig, ownerId, addonId, appOverviewUrlPattern, addonDashboardUrlPattern, grafanaLink } = context;
     let logsUrl = '';
 
-    const api = new CcAddonInfoClient({ apiConfig, ownerId, addonId, providerId: PROVIDER_ID, grafanaLink, signal });
+    const ccApiClient = getCcApiClientWithOAuth(apiConfig);
 
     /** @type {AddonInfoStateLoading} */
     const LOADING_STATE = {
@@ -72,16 +76,28 @@ defineSmartComponent({
       href: getDocUrl('/addons/keycloak'),
     });
 
-    api
-      .getAddonInfo()
-      .then(({ operatorVersionInfo, addonInfo, grafanaAppLink, operator }) => {
+    Promise.all([
+      ccApiClient.send(new GetAddonCommand({ ownerId, addonId }), { signal, dedupe: true, cache: { ttl: ONE_SECOND } }),
+      ccApiClient.send(new GetKeycloakInfoCommand({ addonId }), { signal, dedupe: true, cache: { ttl: ONE_SECOND } }),
+      ccApiClient.send(new CheckKeycloakVersionCommand({ addonId }), { signal }),
+    ])
+      .then(async ([addon, operator, versionInfo]) => {
         const javaAppId = operator.resources.entrypoint;
         logsUrl = context.logsUrlPattern.replace(':id', javaAppId);
 
+        const grafanaAppLink = await getGrafanaAppLink({
+          grafanaLink,
+          ownerId,
+          dashboardPath: '/d/runtime/application-runtime',
+          appId: javaAppId,
+          ccApiClient,
+          signal,
+        });
+
         updateComponent('state', {
           type: 'loaded',
-          version: formatVersionState(operatorVersionInfo),
-          creationDate: addonInfo.creationDate,
+          version: formatVersionState(versionInfo),
+          creationDate: addon.creationDate,
           openGrafanaLink: grafanaAppLink,
           linkedServices: [
             {
@@ -122,9 +138,10 @@ defineSmartComponent({
         },
       );
 
-      api
-        .updateOperatorVersion(targetVersion)
-        .then(({ availableVersions }) => {
+      ccApiClient
+        .send(new UpdateKeycloakVersionCommand({ addonId, targetVersion }))
+        .then(() => ccApiClient.send(new CheckKeycloakVersionCommand({ addonId })))
+        .then((versionInfo) => {
           notifySuccess(
             i18n('cc-addon-info.version.update.success.content', { logsUrl }),
             i18n('cc-addon-info.version.update.success.heading', { version: targetVersion }),
@@ -134,13 +151,7 @@ defineSmartComponent({
             'state',
             /** @param {AddonInfoStateLoaded} state */
             (state) => {
-              const needUpdate = targetVersion !== state.version.latest;
-              state.version = formatVersionState({
-                installed: targetVersion,
-                available: availableVersions,
-                latest: state.version.latest,
-                needUpdate,
-              });
+              state.version = formatVersionState(versionInfo);
             },
           );
         })

@@ -1,21 +1,17 @@
-import { getAddon as getAddonProvider } from '@clevercloud/client/esm/api/v2/providers.js';
+import { GetAddonCommand } from '@clevercloud/client/cc-api-commands/addon/get-addon-command.js';
+import { GetJenkinsInfoCommand } from '@clevercloud/client/cc-api-commands/jenkins/get-jenkins-info-command.js';
 import { ONE_SECOND } from '@clevercloud/client/esm/with-cache.js';
+import { getCcApiClientWithOAuth } from '../../lib/cc-api-client.js';
 import { getDocUrl } from '../../lib/dev-hub-url.js';
-import { formatAddonFeatures } from '../../lib/product.js';
-import { sendToApi } from '../../lib/send-to-api.js';
 import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-smart-container/cc-smart-container.js';
-import { CcAddonInfoClient } from './cc-addon-info.client.js';
 import './cc-addon-info.js';
-
-const PROVIDER_ID = 'jenkins';
 
 /**
  * @import { CcAddonInfo } from './cc-addon-info.js'
- * @import { AddonInfoStateLoading, JenkinsProviderInfo, RawAddon } from './cc-addon-info.types.js'
+ * @import { AddonInfoStateLoading } from './cc-addon-info.types.js'
  * @import { FormattedFeature } from '../common.types.js'
- * @import { ApiConfig } from '../../lib/send-to-api.types.js'
  * @import { OnContextUpdateArgs } from '../../lib/smart/smart-component.types.js'
  */
 
@@ -32,7 +28,7 @@ defineSmartComponent({
   onContextUpdate({ context, updateComponent, signal }) {
     const { apiConfig, ownerId, addonId } = context;
 
-    const api = new Api({ apiConfig, ownerId, addonId, signal });
+    const ccApiClient = getCcApiClientWithOAuth(apiConfig);
 
     /**
      * @type {AddonInfoStateLoading}
@@ -76,11 +72,25 @@ defineSmartComponent({
       href: getDocUrl('/addons/jenkins'),
     });
 
-    api
-      .getJenkinsAddonInfo()
-      .then(({ rawAddon, addonProvider }) => {
-        const plan = rawAddon.plan.name;
-        const features = formatAddonFeatures(rawAddon.plan.features, ['cpu', 'memory', 'disk-size']);
+    Promise.all([
+      ccApiClient.send(new GetAddonCommand({ ownerId, addonId }), { signal, dedupe: true, cache: { ttl: ONE_SECOND } }),
+      ccApiClient.send(new GetJenkinsInfoCommand({ addonId }), { signal, dedupe: true, cache: { ttl: ONE_SECOND } }),
+    ])
+      .then(([addon, jenkinsInfo]) => {
+        const plan = addon.plan.name;
+        const selectedFeatureCodes = ['cpu', 'memory', 'disk-size'];
+        const features = selectedFeatureCodes
+          .map((code) => addon.plan.features.find((f) => f.nameCode === code))
+          .filter((feature) => feature != null)
+          .map(
+            (feature) =>
+              /** @type {FormattedFeature} */ ({
+                code: feature.nameCode,
+                type: /** @type {FormattedFeature['type']} */ (feature.type.toLowerCase()),
+                value: feature.computableValue ?? '',
+                name: feature.name,
+              }),
+          );
         /** @type {Array<FormattedFeature>} */
         const specifications = [
           /** @type {FormattedFeature} */
@@ -91,16 +101,16 @@ defineSmartComponent({
           }),
           ...features,
         ];
-        const encryptionFeature = addonProvider.features.find((f) => f.name === 'encryption');
+        const encryptionFeature = jenkinsInfo.features.find((f) => f.name === 'encryption');
 
         updateComponent('state', {
           type: 'loaded',
           version: {
             stateType: 'up-to-date',
-            installed: addonProvider.version,
-            latest: addonProvider.version,
+            installed: jenkinsInfo.version,
+            latest: jenkinsInfo.version,
           },
-          creationDate: rawAddon.creationDate,
+          creationDate: addon.creationDate,
           specifications,
           encryption: encryptionFeature.enabled,
         });
@@ -111,37 +121,3 @@ defineSmartComponent({
       });
   },
 });
-
-class Api extends CcAddonInfoClient {
-  /**
-   * @param {Object} config - Configuration object
-   * @param {ApiConfig} config.apiConfig - API configuration
-   * @param {string} config.ownerId - Owner identifier
-   * @param {string} config.addonId - Addon identifier
-   * @param {AbortSignal} config.signal - Signal to abort calls
-   */
-  constructor({ apiConfig, ownerId, addonId, signal }) {
-    super({ apiConfig, ownerId, addonId, providerId: PROVIDER_ID, signal });
-  }
-
-  /**
-   *
-   * @param {string} providerId
-   * @returns {Promise<JenkinsProviderInfo>}
-   */
-  _getAddonProvider(providerId) {
-    return getAddonProvider({ providerId, addonId: this._addonId }).then(
-      sendToApi({ apiConfig: this._apiConfig, signal: this._signal, cacheDelay: ONE_SECOND }),
-    );
-  }
-
-  /**
-   * @returns {Promise<{ rawAddon: RawAddon, addonProvider: JenkinsProviderInfo }>}
-   */
-  async getJenkinsAddonInfo() {
-    const rawAddon = await this._getAddon();
-    const addonProvider = await this._getAddonProvider(rawAddon.provider.id);
-
-    return { rawAddon, addonProvider };
-  }
-}
