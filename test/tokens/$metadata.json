@@ -1,0 +1,9 @@
+{
+  "tokenSetOrder": [
+    "global",
+    "_Primitives/Raw",
+    "Alias Color theme/Light",
+    "Alias Color theme/Dark",
+    "Alias Size/Number"
+  ]
+}

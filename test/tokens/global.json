@@ -1,0 +1,20 @@
+{
+  "test token": {
+    "$type": "sizing",
+    "$value": "5",
+    "$description": "yrr"
+  },
+  "test math": {
+    "$type": "spacing",
+    "$value": "{Size +.6}*1.5"
+  },
+  "test colpo": {
+    "$type": "composition",
+    "$value": {
+      "text": "{Font Family.Inter}",
+      "fontSizes": "{Size +.16}",
+      "fontWeights": "500",
+      "lineHeights": "{Size -.-24}"
+    }
+  }
+}
