@@ -669,7 +669,9 @@ export class CcDomainManagement extends LitElement {
                   outlined
                   ?disabled=${isMarkingPrimaryDisabled && domainItemStateType !== 'marking-primary'}
                   ?waiting="${domainItemStateType === 'marking-primary'}"
-                  a11y-name="${i18n('cc-domain-management.list.btn.primary.a11y-name', { domain: hostWithWildcard })}"
+                  a11y-name="${i18n('cc-domain-management.list.btn.primary.a11y-name', {
+                    domain: hostWithWildcard + pathPrefix,
+                  })}"
                   .icon=${iconPrimary}
                   hide-text
                   circle
@@ -685,7 +687,9 @@ export class CcDomainManagement extends LitElement {
             outlined
             ?disabled="${domainItemStateType === 'marking-primary'}"
             ?waiting="${domainItemStateType === 'deleting'}"
-            a11y-name="${i18n('cc-domain-management.list.btn.delete.a11y-name', { domain: hostWithWildcard })}"
+            a11y-name="${i18n('cc-domain-management.list.btn.delete.a11y-name', {
+              domain: hostWithWildcard + pathPrefix,
+            })}"
             .icon=${iconDelete}
             hide-text
             circle
