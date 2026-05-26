@@ -156,6 +156,33 @@ export class LogsStream {
   }
 
   /**
+   * Clears the logs and resets progress without stopping the stream.
+   * When paused (by user or overflow), the stream stays paused after clearing.
+   * This method has no effect if the current state is not `running` or `paused`.
+   */
+  clearLogs() {
+    if (this.#streamState.type !== 'running' && this.#streamState.type !== 'paused') {
+      return;
+    }
+
+    const wasPaused = this.#streamState.type === 'paused';
+
+    this.#logsBuffer.clear();
+    this.#progress.resetProgress();
+
+    if (wasPaused) {
+      this._updateStreamState({
+        type: 'paused',
+        reason: 'user',
+        progress: this.#progress.getProgress(),
+        overflowing: this.#progress.isOverflowing(),
+      });
+    } else {
+      this._updateStreamState(this.#buildRunningState());
+    }
+  }
+
+  /**
    * Discard overflow by stopping the stream.
    * This method has no effect if the current state is not paused with the `overflow` reason.
    */

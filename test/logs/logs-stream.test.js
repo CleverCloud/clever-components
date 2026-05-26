@@ -438,6 +438,110 @@ describe('logs-stream', () => {
     });
   });
 
+  describe('clearLogs() method', () => {
+    it('should reset progress and stay running when running', async () => {
+      const logsStream = new FakeLogsStream();
+      logsStream.openLogsStream({ since: new Date().toISOString() });
+      await fakeLogsReceived(logsStream, 5);
+      await sleep(BUFFER_TIMEOUT);
+      logsStream.resetSpies();
+
+      logsStream.clearLogs();
+
+      expect(logsStream.spies.updateStreamState.callCount).to.eql(1);
+      expect(logsStream.spies.updateStreamState.firstCall.args[0]).to.eql({
+        type: 'running',
+        progress: { value: 0 },
+        overflowing: false,
+      });
+    });
+
+    it('should reset progress and stay paused when paused by user', async () => {
+      const logsStream = new FakeLogsStream();
+      logsStream.openLogsStream({ since: new Date().toISOString() });
+      await fakeLogsReceived(logsStream, 5);
+      await sleep(BUFFER_TIMEOUT);
+      logsStream.pause();
+      logsStream.resetSpies();
+
+      logsStream.clearLogs();
+
+      expect(logsStream.spies.updateStreamState.callCount).to.eql(1);
+      expect(logsStream.spies.updateStreamState.firstCall.args[0]).to.eql({
+        type: 'paused',
+        reason: 'user',
+        progress: { value: 0 },
+        overflowing: false,
+      });
+    });
+
+    it('should not resume SSE when paused by user', async () => {
+      const logsStream = new FakeLogsStream();
+      logsStream.openLogsStream({ since: new Date().toISOString() });
+      await fakeLogsReceived(logsStream, 5);
+      await sleep(BUFFER_TIMEOUT);
+      logsStream.pause();
+      logsStream.resetSpies();
+
+      logsStream.clearLogs();
+
+      expect(logsStream.sseSpies.resume.callCount).to.eql(0);
+    });
+
+    it('should reset progress and stay paused when paused by overflow', async () => {
+      const logsStream = new FakeLogsStream();
+      logsStream.openLogsStream({ since: new Date().toISOString() });
+      await fakeLogsReceived(logsStream);
+      await fakeLogsReceived(logsStream, LIMIT);
+      await sleep(BUFFER_TIMEOUT);
+      logsStream.resetSpies();
+
+      logsStream.clearLogs();
+
+      expect(logsStream.spies.updateStreamState.callCount).to.eql(1);
+      expect(logsStream.spies.updateStreamState.firstCall.args[0]).to.eql({
+        type: 'paused',
+        reason: 'user',
+        progress: { value: 0 },
+        overflowing: false,
+      });
+    });
+
+    it('should not resume SSE when paused by overflow', async () => {
+      const logsStream = new FakeLogsStream();
+      logsStream.openLogsStream({ since: new Date().toISOString() });
+      await fakeLogsReceived(logsStream);
+      await fakeLogsReceived(logsStream, LIMIT);
+      await sleep(BUFFER_TIMEOUT);
+      logsStream.resetSpies();
+
+      logsStream.clearLogs();
+
+      expect(logsStream.sseSpies.resume.callCount).to.eql(0);
+    });
+
+    it('should do nothing when idle', () => {
+      const logsStream = new FakeLogsStream();
+      logsStream.resetSpies();
+
+      logsStream.clearLogs();
+
+      expect(logsStream.spies.updateStreamState.callCount).to.eql(0);
+    });
+
+    it('should do nothing when completed', async () => {
+      const logsStream = new FakeLogsStream();
+      logsStream.openLogsStream({ since: new Date().toISOString(), until: new Date().toISOString() });
+      await fakeLogsReceived(logsStream);
+      await logsStream.sseFakeApi.end();
+      logsStream.resetSpies();
+
+      logsStream.clearLogs();
+
+      expect(logsStream.spies.updateStreamState.callCount).to.eql(0);
+    });
+  });
+
   describe('when no logs is received since a long time', () => {
     it('should set waiting state if no logs was received at all', async () => {
       const logsStream = new FakeLogsStream(50);
