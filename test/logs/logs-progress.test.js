@@ -179,6 +179,70 @@ describe('logs-progress', () => {
     });
   });
 
+  describe('resetProgress() method', () => {
+    it('should reset value to 0', () => {
+      const logsProgress = new LogsProgress(10);
+      logsProgress.start({ since: new Date().toISOString() });
+      logsProgress.progress(generateLogs(5));
+
+      logsProgress.resetProgress();
+
+      expect(logsProgress.getProgress().value).to.eq(0);
+    });
+
+    it('should reset lastLogDate to null', () => {
+      const logsProgress = new LogsProgress(10);
+      logsProgress.start({ since: new Date().toISOString() });
+      logsProgress.progress(generateLogs(5));
+
+      logsProgress.resetProgress();
+
+      expect(logsProgress.getLastLogDate()).to.eq(null);
+    });
+
+    it('should allow overflow watermark to trigger again', () => {
+      const logsProgress = new LogsProgress(10);
+      logsProgress.start({ since: new Date().toISOString() });
+      logsProgress.progress(generateLogs(10));
+
+      logsProgress.resetProgress();
+      const watermarkReached = logsProgress.progress(generateLogs(10));
+
+      expect(watermarkReached).to.eq(true);
+    });
+
+    it('should reset percent to 0 when not live', () => {
+      const now = new Date();
+      const logsProgress = new LogsProgress(10);
+      logsProgress.start({ since: now.toISOString(), until: date(now, 1000).toISOString() });
+      logsProgress.progress([{ date: date(now, 500) }]);
+
+      logsProgress.resetProgress();
+
+      expect(logsProgress.getProgress().percent).to.eq(0);
+    });
+
+    it('should not add percent when live', () => {
+      const logsProgress = new LogsProgress(10);
+      logsProgress.start({ since: new Date().toISOString() });
+      logsProgress.progress(generateLogs(5));
+
+      logsProgress.resetProgress();
+
+      expect(logsProgress.getProgress().percent).to.eq(undefined);
+    });
+
+    it('should mark progress as empty', () => {
+      const logsProgress = new LogsProgress(10);
+      logsProgress.start({ since: new Date().toISOString() });
+      logsProgress.progress(generateLogs(5));
+
+      logsProgress.resetProgress();
+
+      expect(logsProgress.isEmpty()).to.eq(true);
+    });
+  });
+
   describe('getProgress() method', () => {
     describe('with live range', () => {
       it('should have undefined percentage', () => {

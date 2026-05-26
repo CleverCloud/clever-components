@@ -26,6 +26,16 @@ export class LogsProgress {
     this._overflowWasNotified = false;
   }
 
+  resetProgress() {
+    this._value = 0;
+    this._lastLogDate = null;
+    this._overflowWasNotified = false;
+    // live mode has no percent (unbounded time range)
+    if (!this._isLive) {
+      this._percent = 0;
+    }
+  }
+
   /**
    * @param {DateRange} dateRange
    */
