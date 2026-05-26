@@ -2,6 +2,7 @@ import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import {
   iconRemixInformationFill as iconInfo,
+  iconRemixEraserLine,
   iconRemixPauseLine,
   iconRemixPlayLine,
   iconRemixAlertFill as iconWarning,
@@ -10,7 +11,9 @@ import { i18n } from '../../translations/translation.js';
 import '../cc-button/cc-button.js';
 import '../cc-icon/cc-icon.js';
 import {
+  CcLogsLoadingClearEvent,
   CcLogsLoadingOverflowAcceptEvent,
+  CcLogsLoadingOverflowClearAndContinueEvent,
   CcLogsLoadingOverflowDiscardEvent,
   CcLogsLoadingPauseEvent,
   CcLogsLoadingResumeEvent,
@@ -28,6 +31,7 @@ import {
 export class CcLogsLoadingProgress extends LitElement {
   static get properties() {
     return {
+      clearable: { type: Boolean },
       limit: { type: Number },
       state: { type: Object },
     };
@@ -35,6 +39,9 @@ export class CcLogsLoadingProgress extends LitElement {
 
   constructor() {
     super();
+
+    /** @type {boolean} Whether to display the clear button. */
+    this.clearable = false;
 
     /** @type {LogsLoadingProgressState} The state of the component */
     this.state = {
@@ -79,6 +86,14 @@ export class CcLogsLoadingProgress extends LitElement {
     this.dispatchEvent(new CcLogsLoadingOverflowAcceptEvent());
   }
 
+  _onClear() {
+    this.dispatchEvent(new CcLogsLoadingClearEvent());
+  }
+
+  _onClearAndContinue() {
+    this.dispatchEvent(new CcLogsLoadingOverflowClearAndContinueEvent());
+  }
+
   _onDiscardOverflow() {
     this.dispatchEvent(new CcLogsLoadingOverflowDiscardEvent());
   }
@@ -100,7 +115,7 @@ export class CcLogsLoadingProgress extends LitElement {
     return html`
       <div class="wrapper ${classMap({ warning: shouldAskForOverflowDecision })}">
         <div class="content inline">
-          ${this._renderPlayPauseButton()}
+          ${this._renderPlayPauseButton()}${this._renderClearButton()}
           ${
             shouldAskForOverflowDecision
               ? html`
@@ -111,6 +126,9 @@ export class CcLogsLoadingProgress extends LitElement {
                       <div class="overflow-buttons">
                         <cc-button link @cc-click=${this._onAcceptOverflow}>
                           ${i18n('cc-logs-loading-progress.overflow.accept')}
+                        </cc-button>
+                        <cc-button link @cc-click=${this._onClearAndContinue}>
+                          ${i18n('cc-logs-loading-progress.overflow.clear-and-continue')}
                         </cc-button>
                         <cc-button link @cc-click=${this._onDiscardOverflow}>
                           ${i18n('cc-logs-loading-progress.overflow.discard')}
@@ -152,6 +170,21 @@ export class CcLogsLoadingProgress extends LitElement {
         }
       </div>
     </div>`;
+  }
+
+  _renderClearButton() {
+    if (!this.clearable) {
+      return null;
+    }
+
+    return html`
+      <cc-button
+        .icon=${iconRemixEraserLine}
+        hide-text
+        a11y-name=${i18n('cc-logs-loading-progress.control.clear')}
+        @cc-click=${this._onClear}
+      ></cc-button>
+    `;
   }
 
   _renderPlayPauseButton() {

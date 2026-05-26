@@ -186,3 +186,74 @@ export const completedWithOverflowing = makeStory(conf, {
     },
   ],
 });
+
+export const withClearable = makeStory(conf, {
+  /** @type {Array<Partial<CcLogsLoadingProgress>>} */
+  items: [
+    {
+      clearable: true,
+      state: {
+        type: 'running',
+        value: 500,
+        percent: 5,
+        overflowing: false,
+      },
+      limit: 1000,
+    },
+    {
+      clearable: true,
+      state: {
+        type: 'running',
+        value: 500,
+        overflowing: false,
+      },
+      limit: 1000,
+    },
+    {
+      clearable: true,
+      state: {
+        type: 'paused',
+        value: 580,
+        percent: 5.8,
+        overflowing: false,
+      },
+      limit: 1000,
+    },
+    {
+      clearable: true,
+      state: {
+        type: 'paused',
+        value: 580,
+        overflowing: false,
+      },
+      limit: 1000,
+    },
+    {
+      clearable: true,
+      state: {
+        type: 'running',
+        value: 1500,
+        overflowing: true,
+      },
+      limit: 1000,
+    },
+    {
+      clearable: true,
+      state: {
+        type: 'overflowLimitReached',
+        value: 990,
+      },
+      limit: 1000,
+    },
+    {
+      clearable: true,
+      state: {
+        type: 'running',
+        value: 0,
+        percent: 0,
+        overflowing: false,
+      },
+      limit: 1000,
+    },
+  ],
+});

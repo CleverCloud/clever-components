@@ -1337,9 +1337,11 @@ export const translations = {
   'cc-logs-instances.stopping.header': `Stopping instances`,
   //#endregion
   //#region cc-logs-loading-progress
+  'cc-logs-loading-progress.control.clear': `Clear logs`,
   'cc-logs-loading-progress.control.pause': `Pause`,
   'cc-logs-loading-progress.control.resume': `Resume`,
   'cc-logs-loading-progress.overflow.accept': `Continue`,
+  'cc-logs-loading-progress.overflow.clear-and-continue': `Clear and continue`,
   'cc-logs-loading-progress.overflow.discard': `Stop`,
   'cc-logs-loading-progress.overflow.info': /** @param {{limit: number}} _ */ ({ limit }) =>
     `Only the last ${formatNumber(lang, limit)} logs are displayed`,

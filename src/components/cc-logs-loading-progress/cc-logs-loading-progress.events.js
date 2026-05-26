@@ -47,3 +47,27 @@ export class CcLogsLoadingOverflowDiscardEvent extends CcEvent {
     super(CcLogsLoadingOverflowDiscardEvent.TYPE);
   }
 }
+
+/**
+ * Dispatched when clearing of the logs is requested.
+ * @extends {CcEvent}
+ */
+export class CcLogsLoadingClearEvent extends CcEvent {
+  static TYPE = 'cc-logs-loading-clear';
+
+  constructor() {
+    super(CcLogsLoadingClearEvent.TYPE);
+  }
+}
+
+/**
+ * Dispatched when clearing of the logs and continuing the overflow is requested.
+ * @extends {CcEvent}
+ */
+export class CcLogsLoadingOverflowClearAndContinueEvent extends CcEvent {
+  static TYPE = 'cc-logs-loading-overflow-clear-and-continue';
+
+  constructor() {
+    super(CcLogsLoadingOverflowClearAndContinueEvent.TYPE);
+  }
+}

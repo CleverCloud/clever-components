@@ -114,7 +114,9 @@ import { CcLogsOptionsChangeEvent } from '../components/cc-logs-control/cc-logs-
 import { CcLogsDateRangeSelectionChangeEvent } from '../components/cc-logs-date-range-selector/cc-logs-date-range-selector.events.js';
 import { CcLogsInstancesSelectionChangeEvent } from '../components/cc-logs-instances/cc-logs-instances.events.js';
 import {
+  CcLogsLoadingClearEvent,
   CcLogsLoadingOverflowAcceptEvent,
+  CcLogsLoadingOverflowClearAndContinueEvent,
   CcLogsLoadingOverflowDiscardEvent,
   CcLogsLoadingPauseEvent,
   CcLogsLoadingResumeEvent,
@@ -310,7 +312,9 @@ declare global {
     'cc-logs-date-range-selection-change': CcLogsDateRangeSelectionChangeEvent;
     'cc-logs-follow-change': CcLogsFollowChangeEvent;
     'cc-logs-instances-selection-change': CcLogsInstancesSelectionChangeEvent;
+    'cc-logs-loading-clear': CcLogsLoadingClearEvent;
     'cc-logs-loading-overflow-accept': CcLogsLoadingOverflowAcceptEvent;
+    'cc-logs-loading-overflow-clear-and-continue': CcLogsLoadingOverflowClearAndContinueEvent;
     'cc-logs-loading-overflow-discard': CcLogsLoadingOverflowDiscardEvent;
     'cc-logs-loading-pause': CcLogsLoadingPauseEvent;
     'cc-logs-loading-resume': CcLogsLoadingResumeEvent;
