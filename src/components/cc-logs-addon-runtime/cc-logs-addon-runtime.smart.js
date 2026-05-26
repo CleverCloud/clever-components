@@ -55,8 +55,19 @@ defineSmartComponent({
       controller.resume();
     });
 
+    onEvent('cc-logs-loading-clear', () => {
+      controller.clearLogs();
+      component.clear();
+    });
+
     onEvent('cc-logs-loading-overflow-accept', () => {
       controller.acceptOverflow();
+    });
+
+    onEvent('cc-logs-loading-overflow-clear-and-continue', () => {
+      controller.clearLogs();
+      controller.resume();
+      component.clear();
     });
 
     onEvent('cc-logs-loading-overflow-discard', () => {
