@@ -76,6 +76,7 @@ export function minifyStylesheet(stylesheet) {
 export function getMainFiles() {
   const mainFilesPatterns = [
     `${SOURCE_DIR}/components/**/*.js`,
+    `${SOURCE_DIR}/lib/cc-api-client.js`,
     `${SOURCE_DIR}/lib/i18n/i18n.js`,
     `${SOURCE_DIR}/lib/smart/smart-manager.js`,
     `${SOURCE_DIR}/translations/*.js`,
