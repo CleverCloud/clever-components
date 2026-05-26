@@ -223,6 +223,7 @@ export class CcLogsAppAccess extends LitElement {
       class="progress"
       .state=${state}
       limit=${this.limit}
+      clearable
     ></cc-logs-loading-progress-beta>`;
   }
 
