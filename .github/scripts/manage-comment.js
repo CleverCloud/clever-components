@@ -1,5 +1,6 @@
 import { Octokit } from '@octokit/rest';
 import { readFile } from 'node:fs/promises';
+import { validateEnv } from './validate-env.js';
 
 /**
  * @typedef {import('@octokit/rest').RestEndpointMethodTypes} RestEndpointMethodTypes
@@ -218,10 +219,10 @@ Variable descriptions:
    * @type {Record<typeof ACTIONS[number], string[]>}
    */
   #actionConfig = {
-    create: ['GITHUB_TOKEN', 'GITHUB_REPOSITORY', 'PR_NUMBER', 'MESSAGE_OR_FILE'],
-    edit: ['GITHUB_TOKEN', 'GITHUB_REPOSITORY', 'PR_NUMBER', 'MARKER', 'MESSAGE_OR_FILE'],
+    create: ['GITHUB_TOKEN', 'GITHUB_REPOSITORY', 'PR_NUMBER'],
+    edit: ['GITHUB_TOKEN', 'GITHUB_REPOSITORY', 'PR_NUMBER', 'MARKER'],
     delete: ['GITHUB_TOKEN', 'GITHUB_REPOSITORY', 'PR_NUMBER', 'MARKER'],
-    'create-or-edit': ['GITHUB_TOKEN', 'GITHUB_REPOSITORY', 'PR_NUMBER', 'MARKER', 'MESSAGE_OR_FILE'],
+    'create-or-edit': ['GITHUB_TOKEN', 'GITHUB_REPOSITORY', 'PR_NUMBER', 'MARKER'],
   };
 
   /**
@@ -230,19 +231,11 @@ Variable descriptions:
    * @returns {string[]} Array of validation errors
    */
   #validateEnvironment(action) {
-    const errors = [];
     const requiredEnvVars = this.#actionConfig[action];
-
-    // Validate required environment variables
-    for (const envVar of requiredEnvVars) {
-      if (envVar === 'MESSAGE_OR_FILE') {
-        // Special case: either MESSAGE or MESSAGE_FILE_PATH is required
-        if (!process.env.MESSAGE && !process.env.MESSAGE_FILE_PATH) {
-          errors.push('MESSAGE or MESSAGE_FILE_PATH is required for this action');
-        }
-      } else if (!process.env[envVar]) {
-        errors.push(`${envVar} is required`);
-      }
+    const errors = validateEnv(requiredEnvVars);
+    // Special case: either MESSAGE or MESSAGE_FILE_PATH is required
+    if (action !== 'delete' && !process.env.MESSAGE && !process.env.MESSAGE_FILE_PATH) {
+      errors.push('MESSAGE or MESSAGE_FILE_PATH is required for this action');
     }
 
     return errors;

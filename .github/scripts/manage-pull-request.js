@@ -1,8 +1,9 @@
 import { Octokit } from '@octokit/rest';
 import { appendFile, readFile } from 'node:fs/promises';
+import { validateEnv } from './validate-env.js';
 
 /**
- * @typedef {import('@octokit/rest').RestEndpointMethodTypes} RestEndpointMethodTypes
+ * @import { RestEndpointMethodTypes } from '@octokit/rest'
  */
 
 const ACTIONS = /** @type {const} */ (['create', 'assign-reviewers']);
@@ -171,16 +172,8 @@ Variable descriptions:
    * @returns {string[]} Array of validation errors
    */
   #validateEnvironment(action) {
-    const errors = [];
     const requiredEnvVars = this.#actionConfig[action];
-
-    for (const envVar of requiredEnvVars) {
-      if (!process.env[envVar]) {
-        errors.push(`${envVar} is required`);
-      }
-    }
-
-    return errors;
+    return validateEnv(requiredEnvVars);
   }
 
   /**
