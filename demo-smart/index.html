@@ -324,6 +324,11 @@
         width: 20em;
       }
 
+      cc-logsmap {
+        width: 50em;
+        height: 30em;
+      }
+
       .visually-hidden {
         position: absolute;
         width: 1px;
@@ -661,6 +666,7 @@
               <li><a class="definition-link" href="?definition=cc-tile-status-codes.smart">cc-tile-status-codes</a></li>
               <li><a class="definition-link" href="?definition=cc-tile-requests.smart">cc-tile-requests</a></li>
               <li><a class="definition-link" href="?definition=cc-tile-metrics.smart">cc-tile-metrics</a></li>
+              <li><a class="definition-link" href="?definition=cc-logsmap.smart">cc-logsmap</a></li>
             </ul>
           </div>
 
@@ -895,6 +901,14 @@
                   data-context='{"ownerId":"orga_540caeb6-521c-4a19-a955-efe6da35d142","appId":"app_f2f99229-4aba-42ef-bcb1-d69e8a443cd1","consoleGrafanaLink":"https://console.clever-cloud.com","grafanaBaseLink":"https://grafana.services.clever-cloud.com/"}'
                 >
                   <span class="ctx-label">CPU Load Bench</span>
+                  <span class="ctx-subtitle">ownerId, appId</span>
+                </button>
+                <button
+                  class="ctx-btn"
+                  title="ownerId, appId"
+                  data-context='{"ownerId":"orga_540caeb6-521c-4a19-a955-efe6da35d142","appId":"app_46ec6a5c-1512-401f-ad40-1864ad5050f0","consoleGrafanaLink":"https://console.clever-cloud.com","grafanaBaseLink":"https://grafana.services.clever-cloud.com/","type":"app","logsUrlPattern":"/organisations/orga_540caeb6-521c-4a19-a955-efe6da35d142/applications/:id/logs"}'
+                >
+                  <span class="ctx-label">App Access logs</span>
                   <span class="ctx-subtitle">ownerId, appId</span>
                 </button>
               </div>
