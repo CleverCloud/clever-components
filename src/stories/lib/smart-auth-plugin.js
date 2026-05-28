@@ -17,20 +17,13 @@ export const injectAuthForSmartComponentsPlugin = {
     const isSandboxIndex = id.includes('/sandbox/index.js');
 
     if (isSmartStory || isDemoSmartIndex || isSandboxIndex) {
-      const {
-        WARP_10_HOST,
-        API_HOST,
-        API_OAUTH_TOKEN,
-        API_OAUTH_TOKEN_SECRET,
-        OAUTH_CONSUMER_KEY,
-        OAUTH_CONSUMER_SECRET,
-      } = process.env;
+      const { API_HOST, API_OAUTH_TOKEN, API_OAUTH_TOKEN_SECRET, OAUTH_CONSUMER_KEY, OAUTH_CONSUMER_SECRET } =
+        process.env;
 
       // language=JavaScript
       code += `
         updateRootContext({
           apiConfig: {
-            WARP_10_HOST: '${WARP_10_HOST}',
             API_HOST: '${API_HOST}',
             API_OAUTH_TOKEN: '${API_OAUTH_TOKEN}',
             API_OAUTH_TOKEN_SECRET: '${API_OAUTH_TOKEN_SECRET}',
