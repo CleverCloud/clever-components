@@ -43,6 +43,17 @@ describe('logs-progress', () => {
       expect(logsProgress.isOverflowing()).to.eq(false);
     });
 
+    it('should return false when progress lower than the overflowWatermark after reset visible', () => {
+      const logsProgress = new LogsProgress(10);
+      logsProgress.start({ since: new Date().toISOString() });
+      logsProgress.progress(generateLogs(15));
+      logsProgress.resetVisible();
+
+      logsProgress.progress(generateLogs(9));
+
+      expect(logsProgress.isOverflowing()).to.eq(false);
+    });
+
     it('should return true when progress equals the overflowWatermark', () => {
       const logsProgress = new LogsProgress(10);
       logsProgress.start({ since: new Date().toISOString() });
@@ -97,6 +108,17 @@ describe('logs-progress', () => {
     it('should return false when watermark not reached', () => {
       const logsProgress = new LogsProgress(10);
       logsProgress.start({ since: new Date().toISOString() });
+
+      const watermarkReached = logsProgress.progress(generateLogs(5));
+
+      expect(watermarkReached).to.eq(false);
+    });
+
+    it('should return false when watermark not reached after reset visible', () => {
+      const logsProgress = new LogsProgress(10);
+      logsProgress.start({ since: new Date().toISOString() });
+      logsProgress.progress(generateLogs(9));
+      logsProgress.resetVisible();
 
       const watermarkReached = logsProgress.progress(generateLogs(5));
 

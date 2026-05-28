@@ -20,10 +20,15 @@ export class LogsProgress {
 
   reset() {
     this._value = 0;
+    this._visibleValue = 0;
     this._percent = null;
     this._isLive = false;
     this._lastLogDate = null;
     this._overflowWasNotified = false;
+  }
+
+  resetVisible() {
+    this._visibleValue = 0;
   }
 
   /**
@@ -48,6 +53,7 @@ export class LogsProgress {
     }
 
     this._value = this._value + logs.length;
+    this._visibleValue = this._visibleValue + logs.length;
     this._lastLogDate = logs[logs.length - 1].date;
 
     if (!this._isLive) {
@@ -55,7 +61,7 @@ export class LogsProgress {
       this._percent = (100 * timeProgress) / this._dateRangeDuration;
     }
 
-    if (!this._overflowWasNotified && this._value >= this._overflowWatermark) {
+    if (!this._overflowWasNotified && this.isOverflowing()) {
       this._overflowWasNotified = true;
       return true;
     }
@@ -85,7 +91,7 @@ export class LogsProgress {
   }
 
   isOverflowing() {
-    return this._value >= this._overflowWatermark;
+    return this._visibleValue >= this._overflowWatermark;
   }
 
   getLastLogDate() {
