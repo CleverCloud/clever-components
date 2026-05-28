@@ -12,19 +12,17 @@ title: '💡 Smart'
   <tr><td><strong>Requires auth</strong> <td>Yes
 </table>
 
-## ⚙️ Params
+### ⚙️ Params
 
-<table>
-  <tr><th>Name                   <th>Type                   <th>Details                                                     <th>Default
-  <tr><td><code>apiConfig</code> <td><code>ApiConfig</code> <td>Object with API configuration (target host, tokens...)      <td>
-  <tr><td><code>ownerId</code>   <td><code>String</code>    <td>UUID prefixed with <code>user_</code> or <code>orga_</code> <td>
-  <tr><td><code>appId</code>     <td><code>String</code>    <td>UUID prefixed with <code>app_</code> (optional)             <td>
-</table>
+| Name                 | Type        | Details                                                |
+|----------------------|-------------|--------------------------------------------------------|
+| `apiConfig`          | `ApiConfig` | Object with API configuration (target host, tokens...) |
+| `ownerId`            | `String`    | UUID prefixed with `user_` or `orga_`                  |
+| `appId`              | `String`    | UUID prefixed with `app_`                              |
 
-```js
+```ts
 interface ApiConfig {
   API_HOST: String,
-  WARP_10_HOST: String,
   API_OAUTH_TOKEN: String,
   API_OAUTH_TOKEN_SECRET: String,
   OAUTH_CONSUMER_KEY: String,
@@ -34,17 +32,9 @@ interface ApiConfig {
 
 ## 🌐 API endpoints
 
-<table>
-  <tr><th>Method <th>URL                                                 <th>Cache?
-  <tr><td>GET    <td><code>/v2/w10tokens/accessLogs/read/{orgaId}</code> <td>1 day
-</table>
-
-## 🌐 Warp10 macros
-
-<table>
-  <tr><th>Method <th>Macro                                               <th>Cache?
-  <tr><td>GET    <td><code>@clevercloud/accessLogs_status_code_v1</code> <td>30 seconds
-</table>
+| Method | URL                                                   | Cache   |
+|--------|-------------------------------------------------------|---------|
+| `GET`  | `/v4/stats/organisations/{ownerId}/http-status-codes` | Default |
 
 ## ⬇️️ Examples
 
@@ -56,7 +46,6 @@ If you only specify a `ownerId` and no `appId`, the data represent the whole org
 <cc-smart-container context='{
   "apiConfig": {
     "API_HOST": "",
-    "WARP_10_HOST": ""
     "API_OAUTH_TOKEN": "",
     "API_OAUTH_TOKEN_SECRET": "",
     "OAUTH_CONSUMER_KEY": "",
@@ -74,7 +63,6 @@ If you only specify a `ownerId` and no `appId`, the data represent the whole org
 <cc-smart-container context='{
   "apiConfig": {
     "API_HOST": "",
-    "WARP_10_HOST": ""
     "API_OAUTH_TOKEN": "",
     "API_OAUTH_TOKEN_SECRET": "",
     "OAUTH_CONSUMER_KEY": "",
