@@ -47,6 +47,10 @@ defineSmartComponent({
       controller.setNewDateRange(range);
     });
 
+    onEvent('cc-logs-clear', () => {
+      controller.clearVisibleLogs();
+    });
+
     onEvent('cc-logs-loading-pause', () => {
       controller.pause();
     });
@@ -147,6 +151,11 @@ class SmartController extends LogsStream {
   _appendLogs(logs) {
     super._appendLogs(logs);
     this._component.appendLogs(logs);
+  }
+
+  clearVisibleLogs() {
+    this.resetVisible();
+    this._component.clear();
   }
 
   /**
