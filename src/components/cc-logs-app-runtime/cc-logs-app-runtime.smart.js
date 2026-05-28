@@ -62,6 +62,10 @@ defineSmartComponent({
       controller.setNewInstanceSelection(instances);
     });
 
+    onEvent('cc-logs-clear', () => {
+      controller.clearVisibleLogs();
+    });
+
     onEvent('cc-logs-loading-pause', () => {
       controller.pause();
     });
@@ -216,6 +220,11 @@ class SmartController extends LogsStream {
     this.stop();
     this._instancesManager.clear();
     this._updateState({ type: 'loadingInstances' });
+  }
+
+  clearVisibleLogs() {
+    this.resetVisible();
+    this._component.clear();
   }
 
   /**
