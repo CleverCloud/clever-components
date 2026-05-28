@@ -1,6 +1,7 @@
 import { css, html, LitElement } from 'lit';
 import { createRef, ref } from 'lit/directives/ref.js';
 import {
+  iconRemixEraserLine as clearIcon,
   iconRemixCalendarScheduleLine as dateIcon,
   iconRemixPaletteLine as displayIcon,
   iconRemixPantoneLine as metadataIcon,
@@ -22,7 +23,7 @@ import { DATE_DISPLAYS, TIMEZONES } from '../cc-logs/date-displayer.js';
 import '../cc-popover/cc-popover.js';
 import '../cc-select/cc-select.js';
 import '../cc-toggle/cc-toggle.js';
-import { CcLogsOptionsChangeEvent } from './cc-logs-control.events.js';
+import { CcLogsClearEvent, CcLogsOptionsChangeEvent } from './cc-logs-control.events.js';
 
 /**
  * @type {{[key in LogsControlPalette]: string}}
@@ -248,6 +249,10 @@ export class CcLogsControl extends LitElement {
     this._logsRef.value?.scrollToBottom();
   }
 
+  _onClearButtonClick() {
+    this.dispatchEvent(new CcLogsClearEvent());
+  }
+
   /**
    * @param {CcSelectEvent<LogsControlPalette>} event
    */
@@ -326,6 +331,13 @@ export class CcLogsControl extends LitElement {
           a11y-name="${i18n('cc-logs-control.scroll-to-bottom')}"
           hide-text
           @cc-click=${this._onScrollToBottomButtonClick}
+        ></cc-button>
+
+        <cc-button
+          .icon=${clearIcon}
+          a11y-name="${i18n('cc-logs-control.clear')}"
+          hide-text
+          @cc-click=${this._onClearButtonClick}
         ></cc-button>
 
         <cc-popover
