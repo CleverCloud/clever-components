@@ -2,7 +2,6 @@ import { css, html, LitElement } from 'lit';
 import { createRef, ref } from 'lit/directives/ref.js';
 import { iconRemixPlayFill } from '../../assets/cc-remix.icons.js';
 import { i18n } from '../../translations/translation.js';
-import '../cc-block/cc-block.js';
 import '../cc-icon/cc-icon.js';
 import '../cc-link/cc-link.js';
 
@@ -11,7 +10,19 @@ import '../cc-link/cc-link.js';
  *
  * Clicking the play button replaces the thumbnail with an embedded YouTube iframe.
  *
- * @cssdisplay block
+ * ## Sizing
+ *
+ * The embedded video always keeps a 16/9 ratio. Two layouts are supported:
+ *
+ * - **Width-driven (default):** give the component a width and let its height grow on its own. The video
+ *   fills the width and its height follows the 16/9 ratio. Typical in a single-column layout.
+ * - **Contained:** give the component both a width and a height (e.g. a grid cell whose height is imposed
+ *   by a sibling) and set `--cc-homepage-video-container-type: size`. The 16/9 video is then scaled to fit
+ *   within both dimensions and centered below the header.
+ *
+ * @cssdisplay grid
+ *
+ * @cssprop {normal|size|inline-size} --cc-homepage-video-container-type - Sizing mode of the video area. Defaults to `inline-size` (width-driven). Set to `size` when the component has an imposed height, to contain the 16/9 video within both dimensions.
  */
 export class CcHomepageVideo extends LitElement {
   static get properties() {
@@ -74,36 +85,28 @@ export class CcHomepageVideo extends LitElement {
     const embedUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
 
     return html`
-      <cc-block>
-        <div slot="header-title" class="header">${i18n('cc-homepage-video.title')}</div>
-        <cc-link slot="header-right" href=${this.channelUrl}>${i18n('cc-homepage-video.link')}</cc-link>
-        <div slot="content" class="content-wrapper">
-          <div class="video-container">
-            ${this._playing
-              ? html`
-                  <iframe
-                    ${ref(this._iframeRef)}
-                    tabindex="-1"
-                    src=${embedUrl}
-                    title=${i18n('cc-homepage-video.iframe-title')}
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen"
-                  ></iframe>
-                `
-              : html`
-                  <button class="thumbnail" @click=${this._onPlay}>
-                    <img src=${thumbnailUrl} alt="" />
-                    <div class="play-button">
-                      <cc-icon
-                        .icon=${iconRemixPlayFill}
-                        size="xl"
-                        a11y-name=${i18n('cc-homepage-video.play')}
-                      ></cc-icon>
-                    </div>
-                  </button>
-                `}
-          </div>
+      <div class="header">${i18n('cc-homepage-video.title')}</div>
+      <cc-link href=${this.channelUrl}>${i18n('cc-homepage-video.link')}</cc-link>
+      <div class="main">
+        <div class="video-container">
+          ${this._playing
+            ? html`
+                <iframe
+                  ${ref(this._iframeRef)}
+                  tabindex="-1"
+                  src=${embedUrl}
+                  title=${i18n('cc-homepage-video.iframe-title')}
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen"
+                ></iframe>
+              `
+            : html`
+                <img class="thumbnail" src=${thumbnailUrl} alt="" />
+                <button class="play-button" @click=${this._onPlay}>
+                  <cc-icon .icon=${iconRemixPlayFill} a11y-name=${i18n('cc-homepage-video.play')}></cc-icon>
+                </button>
+              `}
         </div>
-      </cc-block>
+      </div>
     `;
   }
 
@@ -112,86 +115,102 @@ export class CcHomepageVideo extends LitElement {
       // language=CSS
       css`
         :host {
-          container-type: inline-size;
-          display: block;
-          height: 100%;
-        }
+          /* Aspect ratio of the video area. Referenced twice below (height derivation + width clamp), hence a variable. */
+          --video-aspect-ratio: 16 / 9;
+          /* Diameter of the round play button overlay. */
+          --play-icon-size: 4.5em;
 
-        cc-block {
-          border: solid 1px var(--cc-color-border-neutral-weak);
+          background-color: var(--cc-color-bg-default, #fff);
+          border: 1px solid var(--cc-color-border-neutral, #aaa);
           border-radius: var(--cc-border-radius-default, 0.25em);
           box-sizing: border-box;
-          display: block;
-          height: 100%;
-          min-height: 31em;
-          padding: 1em;
+          display: grid;
+          gap: 2em;
+          grid-template-columns: 1fr auto;
+          grid-template-rows: auto 1fr;
+          padding: 2em;
         }
 
-        .content-wrapper {
+        .header {
           align-items: center;
-          bottom: 1em;
-          display: flex;
-          justify-content: center;
-          left: 1em;
-          position: absolute;
-          right: 1em;
-          top: 5em;
+          color: var(--cc-color-text-primary-strongest);
+          font-size: 1.2em;
+          font-weight: bold;
+        }
+
+        .main {
+          /*
+           * The video area below is sized with container query units against this element. See the
+           * component JSDoc for the two layouts; this is why the default matters here:
+           * - inline-size: only the width is a query reference, cqh resolves against the viewport (so the
+           *   height term of the min() is inert). Always safe, even without a definite height.
+           * - size: both axes are query references, but a definite height is required or the container
+           *   collapses. Hence "size" is opt-in (set by consumers) and "inline-size" is the default.
+           */
+          container-type: var(--cc-homepage-video-container-type, inline-size);
+          display: grid;
+          grid-column: 1 / -1;
+          min-height: 0;
         }
 
         .video-container {
-          aspect-ratio: 16 / 9;
-          width: 100%;
+          /* Derives the height from the resolved width, keeping the video at a constant ratio. */
+          aspect-ratio: var(--video-aspect-ratio);
+          display: grid;
+          /* Centers the video within .main, used when it is contained (smaller than the container). */
+          margin: auto;
+          /*
+           * Pick the most constraining bound so the video always fits:
+           * - 100cqw: never wider than the container.
+           * - 100cqh * ratio: the width that keeps the video within the available height (height -> width).
+           * In inline-size mode the second term is huge (cqh = viewport) and min() falls back to 100cqw.
+           */
+          width: min(100cqw, 100cqh * var(--video-aspect-ratio));
         }
 
-        .video-container iframe {
-          border: none;
+        iframe,
+        .thumbnail,
+        .play-button {
           border-radius: 0.8em;
+          /* All three share the single grid cell => the play button is stacked on top of the thumbnail. */
+          grid-area: 1 / 1 / 2 / 2;
           height: 100%;
+          overflow: hidden;
           width: 100%;
         }
 
-        .thumbnail {
-          background: none;
+        iframe {
           border: none;
-          border-radius: 0.8em;
+        }
+
+        .play-button {
+          background: unset;
+          border: none;
           cursor: pointer;
           display: block;
-          height: 100%;
+          font-family: inherit;
+          font-size: unset;
+          margin: 0;
           padding: 0;
-          position: relative;
-          width: 100%;
         }
 
-        .thumbnail:focus-visible {
+        .play-button:focus-visible {
           outline: var(--cc-focus-outline, #000 solid 2px);
           outline-offset: var(--cc-focus-outline-offset);
         }
 
-        .thumbnail img {
-          border-radius: 0.8em;
-          display: block;
-          height: 100%;
-          object-fit: cover;
-          width: 100%;
-        }
-
-        .play-button {
-          align-items: center;
+        cc-icon {
           background: linear-gradient(135deg, #7b2ff7, #2196f3);
-          border: solid 0.7em white;
+          border: 0.6em solid #fff;
           border-radius: 50%;
+          box-sizing: border-box;
           color: #fff;
-          display: flex;
-          height: 4em;
-          justify-content: center;
-          left: 50%;
-          position: absolute;
-          top: 50%;
-          transform: translate(-50%, -50%);
-          width: 4em;
+          height: var(--play-icon-size);
+          padding: 0.6em;
+          width: var(--play-icon-size);
         }
 
-        .thumbnail:hover .play-button {
+        .play-button:hover cc-icon {
           background: linear-gradient(135deg, #6a1be0, #1a7fd4);
         }
       `,

@@ -9,16 +9,10 @@ export default {
 
 const conf = {
   component: 'cc-homepage-video',
-  displayMode: 'flex-wrap',
-  // language=CSS
-  css: `
-    cc-homepage-video {
-      width: 50em;
-    }
-  `,
 };
 
 export const defaultStory = makeStory(conf, {
+  docs: 'Default, width-driven layout: the component takes the available width and its height follows the 16/9 ratio of the video. This is the typical single-column usage, no extra styling needed.',
   items: [
     {
       videoUrl: 'https://youtu.be/6d0M0wZoGok',
@@ -28,6 +22,7 @@ export const defaultStory = makeStory(conf, {
 });
 
 export const errorStory = makeStory(conf, {
+  docs: 'When the video URL is unknown or invalid, YouTube returns no thumbnail and the play button overlay is shown on an empty background.',
   items: [
     {
       videoUrl: 'https://youtu.be/6d0M0wZoGop',
@@ -40,9 +35,20 @@ export const errorStory = makeStory(conf, {
   ],
 });
 
-export const fixedHeight = makeStory(conf, {
-  docs: 'When given a definite height larger than the `min-height` floor, the component fills it and the video stays centered below the header.',
-  css: `cc-homepage-video { height: 45em; width: 50em; }`,
+export const smallWidthBigHeight = makeStory(conf, {
+  docs: 'Contained layout (`--cc-homepage-video-container-type: size`) with an imposed width and height. Here the area is narrow and tall, so the video is limited by the **width** and centered vertically, leaving space above and below.',
+  css: `cc-homepage-video { height: 50em; width: 50%; --cc-homepage-video-container-type: size; }`,
+  items: [
+    {
+      videoUrl: 'https://youtu.be/6d0M0wZoGok',
+      channelUrl: 'https://www.youtube.com/@Clevercloud-platform',
+    },
+  ],
+});
+
+export const bigWidthSmallHeight = makeStory(conf, {
+  docs: 'Contained layout (`--cc-homepage-video-container-type: size`) with an imposed width and height. Here the area is wide and short, so the video is limited by the **height** and centered horizontally, leaving space on the sides.',
+  css: `cc-homepage-video { height: 20em; width: 100%; --cc-homepage-video-container-type: size; }`,
   items: [
     {
       videoUrl: 'https://youtu.be/6d0M0wZoGok',
