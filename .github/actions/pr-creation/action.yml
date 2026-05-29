@@ -1,0 +1,50 @@
+name: Pull request creation
+
+inputs:
+  ci-token:
+    description: 'GitHub PAT used to push the branch and open the PR (so that downstream workflows are triggered).'
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - name: '[Configure] git profile'
+      shell: bash
+      run: |
+        git config user.name "github-actions[bot]"
+        git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+    - name: '[Versioning] Create branch'
+      id: branch
+      shell: bash
+      run: |
+        BRANCH_NAME=chore/update-browserslist-db-$(date -u +%Y-%m)
+        git checkout -b "$BRANCH_NAME"
+        echo "name=$BRANCH_NAME" >> "$GITHUB_OUTPUT"
+    - name: '[Versioning] Add'
+      shell: bash
+      run: git add package-lock.json
+    - name: '[Versioning] Commit'
+      shell: bash
+      run: |
+        git commit -m "chore(deps): update browserslist-db"
+    - name: '[Versioning] Push'
+      shell: bash
+      run: git push --set-upstream origin HEAD
+    - name: '[Versioning] Create PR'
+      id: create-pr
+      shell: bash
+      run: node ./.github/scripts/manage-pull-request.js create
+      env:
+        GITHUB_TOKEN: ${{ inputs.ci-token }}
+        TITLE: 'chore(deps): update browserslist-db'
+        HEAD: ${{ steps.branch.outputs.name }}
+        BASE: master
+        BODY: |
+          Automated monthly update of browserslist-db (`npx update-browserslist-db@latest`).
+    - name: '[Versioning] Assign reviewers'
+      shell: bash
+      run: node ./.github/scripts/manage-pull-request.js assign-reviewers
+      env:
+        GITHUB_TOKEN: ${{ inputs.ci-token }}
+        PR_NUMBER: ${{ steps.create-pr.outputs.pr_number }}
