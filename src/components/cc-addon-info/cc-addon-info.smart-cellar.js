@@ -7,8 +7,6 @@ import '../cc-smart-container/cc-smart-container.js';
 import { CcAddonInfoClient } from './cc-addon-info.client.js';
 import './cc-addon-info.js';
 
-const PROVIDER_ID = 'cellar-addon';
-
 /**
  * @import { CcAddonInfo } from './cc-addon-info.js'
  * @import { AddonInfoStateLoading } from './cc-addon-info.types.js'
@@ -92,7 +90,7 @@ class Api extends CcAddonInfoClient {
    * @param {AbortSignal} config.signal - Signal to abort calls
    */
   constructor({ apiConfig, ownerId, addonId, signal }) {
-    super({ apiConfig, ownerId, addonId, providerId: PROVIDER_ID, signal });
+    super({ apiConfig, ownerId, addonId, signal });
   }
 
   /**

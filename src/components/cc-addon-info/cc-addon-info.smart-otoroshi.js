@@ -1,13 +1,16 @@
+import { GetAddonCommand } from '@clevercloud/client/cc-api-commands/addon/get-addon-command.js';
+import { CheckOtoroshiVersionCommand } from '@clevercloud/client/cc-api-commands/otoroshi/check-otoroshi-version-command.js';
+import { GetOtoroshiInfoCommand } from '@clevercloud/client/cc-api-commands/otoroshi/get-otoroshi-info-command.js';
+import { UpdateOtoroshiVersionCommand } from '@clevercloud/client/cc-api-commands/otoroshi/update-otoroshi-version-command.js';
 import { getAssetUrl } from '../../lib/assets-url.js';
+import { getCcApiClientWithOAuth } from '../../lib/cc-api-client.js';
 import { getDocUrl } from '../../lib/dev-hub-url.js';
 import { notifyError, notifySuccess } from '../../lib/notifications.js';
 import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-smart-container/cc-smart-container.js';
-import { CcAddonInfoClient, formatVersionState } from './cc-addon-info.client.js';
+import { formatVersionState, getGrafanaAppLink } from './cc-addon-info.client.js';
 import './cc-addon-info.js';
-
-const PROVIDER_ID = 'otoroshi';
 
 /**
  * @import { CcAddonInfo } from './cc-addon-info.js'
@@ -40,7 +43,7 @@ defineSmartComponent({
     } = context;
     let logsUrl = '';
 
-    const api = new CcAddonInfoClient({ apiConfig, ownerId, addonId, providerId: PROVIDER_ID, grafanaLink, signal });
+    const ccApiClient = getCcApiClientWithOAuth(apiConfig);
 
     /** @type {AddonInfoStateLoading} */
     const LOADING_STATE = {
@@ -76,16 +79,28 @@ defineSmartComponent({
       href: getDocUrl('/addons/otoroshi'),
     });
 
-    api
-      .getAddonInfo()
-      .then(({ operatorVersionInfo, addonInfo, grafanaAppLink, operator }) => {
+    Promise.all([
+      ccApiClient.send(new GetAddonCommand({ ownerId, addonId }), { signal }),
+      ccApiClient.send(new GetOtoroshiInfoCommand({ addonId }), { signal }),
+      ccApiClient.send(new CheckOtoroshiVersionCommand({ addonId }), { signal }),
+    ])
+      .then(async ([addon, operator, versionInfo]) => {
         const javaAppId = operator.resources.entrypoint;
         logsUrl = context.logsUrlPattern.replace(':id', javaAppId);
 
+        const grafanaAppLink = await getGrafanaAppLink({
+          grafanaLink,
+          ownerId,
+          dashboardPath: '/d/runtime/application-runtime',
+          appId: javaAppId,
+          ccApiClient,
+          signal,
+        });
+
         updateComponent('state', {
           type: 'loaded',
-          version: formatVersionState(operatorVersionInfo),
-          creationDate: addonInfo.creationDate,
+          version: formatVersionState(versionInfo),
+          creationDate: addon.creationDate,
           openGrafanaLink: grafanaAppLink,
           openScalabilityLink: scalabilityUrlPattern.replace(':id', javaAppId),
           linkedServices: [
@@ -121,9 +136,10 @@ defineSmartComponent({
         },
       );
 
-      api
-        .updateOperatorVersion(targetVersion)
-        .then(({ availableVersions }) => {
+      ccApiClient
+        .send(new UpdateOtoroshiVersionCommand({ addonId, targetVersion }))
+        .then(() => ccApiClient.send(new CheckOtoroshiVersionCommand({ addonId })))
+        .then((versionInfo) => {
           notifySuccess(
             i18n('cc-addon-info.version.update.success.content', { logsUrl }),
             i18n('cc-addon-info.version.update.success.heading', { version: targetVersion }),
@@ -132,13 +148,7 @@ defineSmartComponent({
             'state',
             /** @param {AddonInfoStateLoaded} state */
             (state) => {
-              const needUpdate = targetVersion !== state.version.latest;
-              state.version = formatVersionState({
-                installed: targetVersion,
-                available: availableVersions,
-                latest: state.version.latest,
-                needUpdate,
-              });
+              state.version = formatVersionState(versionInfo);
             },
           );
         })
