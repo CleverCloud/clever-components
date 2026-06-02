@@ -5,6 +5,27 @@ title: 'Changelog'
 
 # Changelog
 
+## [25.4.0](https://github.com/CleverCloud/clever-components/compare/25.3.1...25.4.0) (2026-06-02)
+
+
+### 🚀 Features
+
+* **cc-logs-addon-runtime:** handle cc-logs-clear event to clear displayed logs ([7ca4cc9](https://github.com/CleverCloud/clever-components/commit/7ca4cc95d3b0929f7bd976657fb65a3c4445dced))
+* **cc-logs-app-access:** handle cc-logs-clear event to clear displayed logs ([ef3b11c](https://github.com/CleverCloud/clever-components/commit/ef3b11c56053d5bcc025f8d1791dfef9893b81e6))
+* **cc-logs-app-runtime:** handle cc-logs-clear event to clear displayed logs ([efbf0b3](https://github.com/CleverCloud/clever-components/commit/efbf0b3d75b7a2dbe5421ddf05b1ba5b9602c4fb))
+* **cc-logs-control:** add button to request log clearing ([740ef7d](https://github.com/CleverCloud/clever-components/commit/740ef7d4eb76f8329b442f6e365da1e8cf8aa8c0))
+* **cc-logsmap:** add smart component using the new cc-api-client ([d39696e](https://github.com/CleverCloud/clever-components/commit/d39696e5dd428ec3fd4530cbed105c6d0fda9e9b))
+* **cc-search-bar:** init component ([025bfda](https://github.com/CleverCloud/clever-components/commit/025bfdac4606b98444b0aeece9400c22577824df))
+* **cc-tile-requests:** add smart component using the new cc-api-client ([d88176f](https://github.com/CleverCloud/clever-components/commit/d88176f3632bb76b0cd77c1ba41b80383d417b10))
+* **logs:** track visible-log count separately for overflow detection ([dcca11f](https://github.com/CleverCloud/clever-components/commit/dcca11f70aaabfeb5bc6441233f669bcc3dabfe2))
+
+
+### 🐛 Bug Fixes
+
+* **cc-domain-management:** include path prefix in delete and mark-as-primary buttons a11y-name ([25a595a](https://github.com/CleverCloud/clever-components/commit/25a595a8cf1d930e6ce2f701b6d37e02bc6f9944))
+* **cc-homepage-onboarding:** enclose the component in a cc-block ([45ad7a8](https://github.com/CleverCloud/clever-components/commit/45ad7a851aad7a37dbe9bcd331bd4fc7ea417415))
+* **cc-network-group-dashboard:** prevent error when 404 ([f4ee959](https://github.com/CleverCloud/clever-components/commit/f4ee9593e562bcc64dd9b1f95acf239ae9d5e876))
+
 ## [25.3.1](https://github.com/CleverCloud/clever-components/compare/25.3.0...25.3.1) (2026-05-13)
 
 
