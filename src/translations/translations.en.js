@@ -1864,6 +1864,19 @@ export const translations = {
   'cc-range-selector.summary.selected': `selected`,
   'cc-range-selector.summary.unselected': `unselected`,
   //#endregion
+  //#region cc-search-bar
+  'cc-search-bar.external-link.name': `new window`,
+  'cc-search-bar.external-link.title': /** @param {{linkText: string}} _ */ ({ linkText }) =>
+    `${linkText} - new window`,
+  'cc-search-bar.heading': `Search bar`,
+  'cc-search-bar.initial.description': () =>
+    sanitize`Start searching by keywords, id or filter (for example: <code>is:app</code>, <code>is:addon</code>…).<br>You can search across organizations, resources (applications, add-ons, etc.), pages and documentation.`,
+  'cc-search-bar.initial.title': `Search across all your content`,
+  'cc-search-bar.label': `What are you looking for?`,
+  'cc-search-bar.no-result.description': `Try different keywords or check the spelling`,
+  'cc-search-bar.no-result.title': `No result found`,
+  'cc-search-bar.placeholder': `Search by keywords...`,
+  //#endregion
   //#region cc-select
   'cc-select.error.empty': `You must select a value`,
   'cc-select.required': `required`,

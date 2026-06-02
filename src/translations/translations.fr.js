@@ -1887,6 +1887,19 @@ export const translations = {
   'cc-range-selector.summary.selected': `sélectionné`,
   'cc-range-selector.summary.unselected': `non sélectionné`,
   //#endregion
+  //#region cc-search-bar
+  'cc-search-bar.external-link.name': `nouvelle fenêtre`,
+  'cc-search-bar.external-link.title': /** @param {{linkText: string}} _ */ ({ linkText }) =>
+    `${linkText} - nouvelle fenêtre`,
+  'cc-search-bar.heading': `Barre de recherche`,
+  'cc-search-bar.initial.description': () =>
+    sanitize`Commencez à chercher par mots-clés, id ou filtre (par exemple : <code>is:app</code>, <code>is:addon</code>…).<br>Vous pouvez effectuer une recherche parmi les organisations, les ressources (applications, add-ons, etc.), les pages et la documentation.`,
+  'cc-search-bar.initial.title': `Cherchez parmi tous vos contenus`,
+  'cc-search-bar.label': `Que cherchez-vous ?`,
+  'cc-search-bar.no-result.description': `Essayez d'autres mots-clés ou vérifiez l'orthographe`,
+  'cc-search-bar.no-result.title': `Aucun résultat`,
+  'cc-search-bar.placeholder': `Recherche par mots-clés...`,
+  //#endregion
   //#region cc-select
   'cc-select.error.empty': `Sélectionnez une valeur`,
   'cc-select.required': `obligatoire`,
