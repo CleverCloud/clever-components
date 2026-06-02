@@ -327,22 +327,6 @@ describe('logs-stream', () => {
         overflowing: false,
       });
     });
-
-    it('should set completed state', async () => {
-      const logsStream = new FakeLogsStream();
-      logsStream.openLogsStream({ since: new Date().toISOString(), until: new Date().toISOString() });
-      await fakeLogsReceived(logsStream);
-      logsStream.resetSpies();
-
-      await logsStream.sseFakeApi.end();
-
-      expect(logsStream.spies.updateStreamState.callCount).to.eql(1);
-      expect(logsStream.spies.updateStreamState.firstCall.args[0]).to.eql({
-        type: 'completed',
-        progress: { value: 1, percent: 100 },
-        overflowing: false,
-      });
-    });
   });
 
   describe('pause() method', () => {

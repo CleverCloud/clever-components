@@ -1276,6 +1276,7 @@ export const translations = {
   'cc-logs-app-runtime.options.display-instance': `Display instance name`,
   //#endregion
   //#region cc-logs-control
+  'cc-logs-control.clear': `Clear logs`,
   'cc-logs-control.date-display': `Date format`,
   'cc-logs-control.date-display.datetime-iso': `Date and hour ISO`,
   'cc-logs-control.date-display.datetime-short': `Date and hour`,

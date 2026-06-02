@@ -1287,6 +1287,7 @@ export const translations = {
   'cc-logs-app-runtime.options.display-instance': `Afficher le nom de l'instance`,
   //#endregion
   //#region cc-logs-control
+  'cc-logs-control.clear': `Effacer les logs`,
   'cc-logs-control.date-display': `Format de date`,
   'cc-logs-control.date-display.datetime-iso': `Date et heure ISO`,
   'cc-logs-control.date-display.datetime-short': `Date et heure`,

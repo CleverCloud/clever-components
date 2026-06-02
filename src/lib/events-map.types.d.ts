@@ -110,7 +110,7 @@ import {
   CcKvCommandExecuteEvent,
   CcKvTerminalStateChangeEvent,
 } from '../components/cc-kv-terminal/cc-kv-terminal.events.js';
-import { CcLogsOptionsChangeEvent } from '../components/cc-logs-control/cc-logs-control.events.js';
+import { CcLogsClearEvent, CcLogsOptionsChangeEvent } from '../components/cc-logs-control/cc-logs-control.events.js';
 import { CcLogsDateRangeSelectionChangeEvent } from '../components/cc-logs-date-range-selector/cc-logs-date-range-selector.events.js';
 import { CcLogsInstancesSelectionChangeEvent } from '../components/cc-logs-instances/cc-logs-instances.events.js';
 import {
@@ -307,6 +307,7 @@ declare global {
     'cc-kv-string-value-update': CcKvStringValueUpdateEvent;
     'cc-kv-terminal-state-change': CcKvTerminalStateChangeEvent;
     'cc-log-inspect': CcLogInspectEvent;
+    'cc-logs-clear': CcLogsClearEvent;
     'cc-logs-date-range-selection-change': CcLogsDateRangeSelectionChangeEvent;
     'cc-logs-follow-change': CcLogsFollowChangeEvent;
     'cc-logs-instances-selection-change': CcLogsInstancesSelectionChangeEvent;

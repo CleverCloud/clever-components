@@ -180,6 +180,10 @@ export class LogsStream {
     });
   }
 
+  resetVisible() {
+    this.#progress.resetVisible();
+  }
+
   /**
    * @return {Date|null} The date of the last received log. Or `null` if no logs have been received.
    */
