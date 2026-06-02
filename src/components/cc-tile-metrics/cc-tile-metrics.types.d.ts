@@ -1,3 +1,5 @@
+import type { MetricData } from '@clevercloud/client/cc-api-commands/metrics/metrics.types.js';
+
 export type TileMetricsMetricsState =
   | TileMetricsMetricsStateLoading
   | TileMetricsMetricsStateError
@@ -21,12 +23,7 @@ export interface TileMetricsMetricsStateEmpty {
   type: 'empty';
 }
 
-export interface Metric {
-  // Timestamp in ms
-  timestamp: number;
-  // Value is a percentage (e.g: 14.02)
-  value: number;
-}
+export type Metric = MetricData;
 
 export interface MetricsData {
   cpuMetrics: Metric[];

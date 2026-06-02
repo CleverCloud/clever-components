@@ -35,10 +35,10 @@ interface ApiConfig {
 
 ## 🌐 API endpoints
 
-| Method | URL                                                                                                          | Cache   |
-|--------|--------------------------------------------------------------------------------------------------------------|---------|
-| `GET`  | `/v4/metrics/organisations/{ownerId}/resources/{appId}/metrics?interval="P1D"&span="PT1H"&only=cpu&only=mem` | Default |
-| `GET`  | `/v4/saas/grafana/{ownerId}`                                                                                 | Default |
+| Method | URL                                                                                                        | Cache   |
+|--------|------------------------------------------------------------------------------------------------------------|---------|
+| `GET`  | `/v4/stats/organisations/{ownerId}/resources/{appId}/metrics?interval="P1D"&span="PT1H"&only=cpu&only=mem` | Default |
+| `GET`  | `/v4/saas/grafana/{ownerId}`                                                                               | Default |
 
 
 

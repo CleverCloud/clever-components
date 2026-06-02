@@ -2,33 +2,33 @@ import { GetStatusCodeDistributionCommand } from '@clevercloud/client/cc-api-com
 import { getCcApiClientWithOAuth } from '../../lib/cc-api-client.js';
 import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
 import '../cc-smart-container/cc-smart-container.js';
-import './cc-tile-status-codes.js';
+import './cc-tile-requests.js';
 
 /**
- * @import { CcTileStatusCodes } from './cc-tile-status-codes.js'
- * @import { StatusCodesData } from './cc-tile-status-codes.types.js'
+ * @import { CcTileRequests } from './cc-tile-requests.js'
+ * @import { RequestsData } from './cc-tile-requests.types.js'
  * @import { ApiConfig } from '../../lib/send-to-api.types.js'
  * @import { OnContextUpdateArgs } from '../../lib/smart/smart-component.types.js'
  */
 
 defineSmartComponent({
-  selector: 'cc-tile-status-codes',
+  selector: 'cc-tile-requests',
   params: {
     apiConfig: { type: Object },
     ownerId: { type: String },
     appId: { type: String, optional: true },
   },
   /**
-   * @param {OnContextUpdateArgs<CcTileStatusCodes>} args
+   * @param {OnContextUpdateArgs<CcTileRequests>} args
    */
   onContextUpdate({ context, updateComponent, signal }) {
     const { apiConfig, ownerId, appId } = context;
 
     updateComponent('state', { type: 'loading' });
 
-    fetchStatusCodes({ apiConfig, signal, ownerId, appId })
-      .then((statusCodes) => {
-        updateComponent('state', { type: 'loaded', statusCodes });
+    fetchRequests({ apiConfig, signal, ownerId, appId })
+      .then((data) => {
+        updateComponent('state', { type: 'loaded', data });
       })
       .catch((error) => {
         console.log(error);
@@ -43,17 +43,23 @@ defineSmartComponent({
  * @param {AbortSignal} settings.signal
  * @param {string} settings.ownerId
  * @param {string} settings.appId
- * @return {Promise<StatusCodesData>}
+ * @return {Promise<Array<RequestsData>>}
  */
-async function fetchStatusCodes({ apiConfig, signal, ownerId, appId }) {
+async function fetchRequests({ apiConfig, signal, ownerId, appId }) {
+  const to = new Date();
+  to.setHours(to.getHours() - 1, 0, 0, 0);
+
   const data = await getCcApiClientWithOAuth(apiConfig).send(
     new GetStatusCodeDistributionCommand({
       ownerId,
       applicationId: appId,
-      excludeNonStandardStatusCodes: true,
+      to,
     }),
     { signal },
   );
 
-  return data.byStatusCode.statuses;
+  return data.byDate.map((entry) => {
+    const time = new Date(entry.date).getTime();
+    return [time, time + 1000 * 60 * 60 - 1, entry.total];
+  });
 }

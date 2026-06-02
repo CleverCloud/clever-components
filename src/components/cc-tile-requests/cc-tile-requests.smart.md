@@ -1,14 +1,14 @@
 ---
-kind: '🛠 Overview/<cc-tile-status-codes>'
+kind: '🛠 Overview/<cc-tile-requests>'
 title: '💡 Smart'
 ---
-# 💡 Smart `<cc-tile-status-codes>`
+# 💡 Smart `<cc-tile-requests>`
 
 ## ℹ️ Details
 
 <table>
-  <tr><td><strong>Component    </strong> <td><a href="🛠-overview-cc-tile-status-codes--default-story"><code>&lt;cc-tile-status-codes&gt;</code></a>
-  <tr><td><strong>Selector     </strong> <td><code>cc-tile-status-codes</code>
+  <tr><td><strong>Component    </strong> <td><a href="🛠-overview-cc-tile-requests--default-story"><code>&lt;cc-tile-requests&gt;</code></a>
+  <tr><td><strong>Selector     </strong> <td><code>cc-tile-requests</code>
   <tr><td><strong>Requires auth</strong> <td>Yes
 </table>
 
@@ -32,9 +32,9 @@ interface ApiConfig {
 
 ## 🌐 API endpoints
 
-| Method | URL                                                   | Cache   |
-|--------|-------------------------------------------------------|---------|
-| `GET`  | `/v4/stats/organisations/{ownerId}/http-status-codes` | Default |
+| Method | URL                                               | Cache   |
+|--------|---------------------------------------------------|---------|
+| `GET`  | `/v4/stats/organisations/{ownerId}/http-requests` | Default |
 
 ## ⬇️️ Examples
 
@@ -53,7 +53,7 @@ If you only specify a `ownerId` and no `appId`, the data represent the whole org
   },
   "ownerId": ""
 }'>
-  <cc-tile-status-codes></cc-tile-status-codes>
+  <cc-tile-requests></cc-tile-requests>
 </cc-smart-container>
 ```
 
@@ -71,6 +71,6 @@ If you only specify a `ownerId` and no `appId`, the data represent the whole org
   "ownerId": "",
   "appId": ""
 }'>
-  <cc-tile-status-codes></cc-tile-status-codes>
+    <cc-tile-requests></cc-tile-requests>
 </cc-smart-container>
 ```

@@ -1,5 +1,6 @@
-import { getOrganisationApplicationMetrics } from '@clevercloud/client/esm/api/v4/resources.js';
+import { GetMetricsCommand } from '@clevercloud/client/cc-api-commands/metrics/get-metrics-command.js';
 import { getGrafanaOrganisation } from '@clevercloud/client/esm/api/v4/saas.js';
+import { getCcApiClientWithOAuth } from '../../lib/cc-api-client.js';
 import { sendToApi } from '../../lib/send-to-api.js';
 import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
 import '../cc-smart-container/cc-smart-container.js';
@@ -7,7 +8,7 @@ import './cc-tile-metrics.js';
 
 /**
  * @import { CcTileMetrics } from './cc-tile-metrics.js'
- * @import { RawMetric, MetricsData, Metric } from './cc-tile-metrics.types.js'
+ * @import { MetricsData, Metric } from './cc-tile-metrics.types.js'
  * @import { ApiConfig } from '../../lib/send-to-api.types.js'
  * @import { OnContextUpdateArgs } from '../../lib/smart/smart-component.types.js'
  */
@@ -70,39 +71,25 @@ defineSmartComponent({
  * @param {AbortSignal} parameters.signal
  * @returns {Promise<MetricsData>}
  */
-function fetchMetrics({ apiConfig, ownerId, appId, signal }) {
-  return getOrganisationApplicationMetrics({
-    ownerId,
-    resourceId: appId,
-    interval: 'P1D',
-    span: 'PT1H',
-    // @ts-expect-error FIXME: the client expects a string, which makes sense since it's using this as a query param. We should fix this but we need to check how the string is supposed to be formatted (separator, etc.)
-    only: ['cpu', 'mem'],
-  })
-    .then(sendToApi({ apiConfig, signal }))
-    .then(
-      /** @param {RawMetric[]} metrics */ (metrics) => {
-        const cpuMetrics = extractMetric(metrics, 'cpu');
-        const memMetrics = extractMetric(metrics, 'mem');
-        return { cpuMetrics, memMetrics };
-      },
-    );
-}
+async function fetchMetrics({ apiConfig, ownerId, appId, signal }) {
+  const client = getCcApiClientWithOAuth(apiConfig);
 
-/**
- * @param {RawMetric[]} metrics
- * @param {string} name
- * @returns {Metric[]}
- */
-function extractMetric(metrics, name) {
-  const metric = metrics?.find((m) => m.name === name)?.data ?? [];
-  return metric.map(({ timestamp, value }) => {
-    return {
-      // API returns timestamps in microseconds
-      timestamp: timestamp / 1000,
-      value: parseFloat(value),
-    };
-  });
+  const metrics = await client.send(
+    new GetMetricsCommand({
+      ownerId,
+      applicationId: appId,
+      interval: 'P1D',
+      span: 'PT1H',
+      metrics: ['cpu', 'mem'],
+      timestampUnit: 'ms',
+    }),
+    { signal },
+  );
+
+  return {
+    cpuMetrics: metrics.cpu ?? [],
+    memMetrics: metrics.mem ?? [],
+  };
 }
 
 /**
