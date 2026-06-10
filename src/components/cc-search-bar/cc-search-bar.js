@@ -125,7 +125,9 @@ export class CcSearchBar extends LitElement {
         <div class="search-bar">
           ${this._renderSearchInput()}
           ${hasItems
-            ? html`<div class="sections">${filteredSections.map((section) => this._renderSection(section))}</div>`
+            ? html`<div class="sections" tabindex="-1">
+                ${filteredSections.map((section) => this._renderSection(section))}
+              </div>`
             : this._renderEmpty()}
         </div>
       </cc-dialog>
@@ -216,6 +218,10 @@ export class CcSearchBar extends LitElement {
       css`
         :host {
           display: contents;
+        }
+
+        cc-dialog {
+          --cc-dialog-width: 45em;
         }
 
         cc-dialog::part(dialog) {
