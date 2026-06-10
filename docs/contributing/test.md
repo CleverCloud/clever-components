@@ -7,7 +7,7 @@ title: 'Test'
 
 We use `Web Test Runner` to run tests on some essential parts of our libs and most of our components.
 
-You can run all tests by using the `npm run test` command.
+You can run all tests by using the `pnpm run test` command.
 This command runs `*.test.js` files from the `test` folder as well as from the `src/components` folder.
 
 ## How to manage visual tests
@@ -43,8 +43,8 @@ You may find that testing everything is too slow and too verbose for your taste,
 
 To do so, you have two solutions:
 
-* use the `npm run test path/to/your/test-file` with the `--watch` option if you want it to run everytime you update the file or its dependencies.
-* use the `npm run test:watch` command and press `F` to enter the `focus` mode. The test runner lists files by number and asks for the number of the file you want to focus on.
+* use the `pnpm run test path/to/your/test-file` with the `--watch` option if you want it to run everytime you update the file or its dependencies.
+* use the `pnpm run test:watch` command and press `F` to enter the `focus` mode. The test runner lists files by number and asks for the number of the file you want to focus on.
 
 ## How to run tests on a specific groups?
 
@@ -57,15 +57,15 @@ We have configured several test groups to help organize and run specific sets of
 To run tests for a specific group, use:
 
 ```bash
-npm run test:group <group-name>
+pnpm run test:group <group-name>
 ```
 
 For example:
-* Run all unit tests: `npm run test:group unit`
-* Run test file for a specific component: `npm run test:group test:cc-input-date`
-* Run tests for a specific component story: `npm run test:group a11y:cc-input-date`
+* Run all unit tests: `pnpm run test:group unit`
+* Run test file for a specific component: `pnpm run test:group test:cc-input-date`
+* Run tests for a specific component story: `pnpm run test:group a11y:cc-input-date`
 
-You can use the same logic with the `npm run test:watch:group` command for development.
+You can use the same logic with the `pnpm run test:watch:group` command for development.
 
 ## How to debug with Web Test Runner?
 

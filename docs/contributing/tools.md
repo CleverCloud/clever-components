@@ -15,5 +15,5 @@ Here's list of tools we recommand to work on this project:
 * [WebStorm](https://www.jetbrains.com/fr-fr/webstorm/)
 * [clever-tools](https://github.com/CleverCloud/clever-tools)
 * [s3cmd](https://s3tools.org/s3cmd)
-* [Volta](https://volta.sh/)
+* [mise](https://mise.jdx.dev/)
 * [Web Component Dev Tools](https://open-wc.org/guides/tools/web-component-devtools/#download)
