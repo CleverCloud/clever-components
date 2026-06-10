@@ -1,8 +1,10 @@
 import { CcEvent } from '../events.js';
 import { COMPONENTS, CURRENT_CONTEXT, LAST_CONTEXT, META } from './smart-symbols.js';
 
-interface SmartContainerComponentsMap<T extends SmartComponent>
-  extends Map<SmartComponentCoreDefinition<T>, Array<SmartComponent>> {
+interface SmartContainerComponentsMap<T extends SmartComponent> extends Map<
+  SmartComponentCoreDefinition<T>,
+  Array<SmartComponent>
+> {
   get<K extends T>(k: SmartComponentCoreDefinition<K>): Array<K> | undefined;
   set<K extends T>(key: SmartComponentCoreDefinition<K>, value: Array<K>): this;
   has<K extends T>(k: SmartComponentCoreDefinition<K>): boolean;

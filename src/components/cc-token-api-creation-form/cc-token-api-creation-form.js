@@ -208,10 +208,10 @@ export class CcTokenApiCreationForm extends LitElement {
   }
 
   _onConfigFormSubmit() {
-    this.state = {
+    this.state = /** @type {TokenApiCreationFormStateLoaded} */ ({
       ...this.state,
       activeStep: 'validation',
-    };
+    });
   }
 
   _onValidationFormSubmit() {

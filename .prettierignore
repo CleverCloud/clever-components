@@ -8,3 +8,6 @@ test-mocha/cem/fixtures
 
 # Ignore MD files
 **/*.md
+
+# Ignore lock files
+pnpm-lock.yaml
