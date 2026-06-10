@@ -16,41 +16,36 @@ jobs:
         uses: actions/checkout@v5
         with:
           fetch-depth: 0
-      - name: '[Prepare] Setup Node.js'
-        uses: actions/setup-node@v6
-        with:
-          node-version-file: 'package.json'
-          cache: 'npm'
-      - name: '[Prepare] Install dependencies'
-        run: npm ci
+      - name: '[Prepare] Setup CI (mise + dependencies)'
+        uses: ./.github/actions/ci-setup
 
       - name: '[Code quality] Check commit message'
         if: github.event_name == 'pull_request'
         run: node ./node_modules/@commitlint/cli/cli.js --from ${{ github.event.pull_request.base.sha }} --to ${{ github.event.pull_request.head.sha }} --verbose
       - name: '[Code quality] Check ESLint'
-        run: npm run lint
+        run: pnpm run lint
       - name: '[Code quality] Check Lit'
-        run: npm run components:check-lit
+        run: pnpm run components:check-lit
       - name: '[Code quality] Check types'
-        run: npm run typecheck
+        run: pnpm run typecheck
       - name: '[Code quality] Check Stylelint'
-        run: npm run stylelint
+        run: pnpm run stylelint
       - name: '[Code quality] Check Prettier (formatting)'
-        run: npm run format:check
+        run: pnpm run format:check
       - name: '[Code quality] Check i18n'
-        run: npm run components:check-i18n
+        run: pnpm run components:check-i18n
 
       - name: '[Code Generation] Check global events map'
-        run: npm run components:events-map-check
+        run: pnpm run components:events-map-check
 
       - name: '[Unit tests] Clever components'
-        run: npm run test
+        run: pnpm run test
       - name: '[Unit tests] Mocha tests (CEM, ESLint & Prettier custom rules)'
-        run: npm run test:mocha
+        run: pnpm run test:mocha
 
       - name: '[Build] Clever components'
-        run: npm run components:build
+        run: pnpm run components:build
       - name: '[Build] Documentation'
-        run: npm run components:docs
+        run: pnpm run components:docs
       - name: '[Build] CDN'
-        run: VERSION=0.0.0 npm run cdn-release:build
+        run: VERSION=0.0.0 pnpm run cdn-release:build

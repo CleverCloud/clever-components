@@ -23,7 +23,7 @@ runs:
         echo "name=$BRANCH_NAME" >> "$GITHUB_OUTPUT"
     - name: '[Versioning] Add'
       shell: bash
-      run: git add package-lock.json
+      run: git add pnpm-lock.yaml
     - name: '[Versioning] Commit'
       shell: bash
       run: |
@@ -41,7 +41,7 @@ runs:
         HEAD: ${{ steps.branch.outputs.name }}
         BASE: master
         BODY: |
-          Automated monthly update of browserslist-db (`npx update-browserslist-db@latest`).
+          Automated monthly update of browserslist-db (`pnpm dlx update-browserslist-db@latest`).
     - name: '[Versioning] Assign reviewers'
       shell: bash
       run: node ./.github/scripts/manage-pull-request.js assign-reviewers
