@@ -305,10 +305,10 @@ Events must be properly documented:
 
 After creating or modifying events:
 
-- Run the `components:events-map-generate` npm task to synchronize the global event map:
+- Run the `components:events-map-generate` pnpm task to synchronize the global event map:
 
 ```
-npm run components:events-map-generate
+pnpm run components:events-map-generate
 ```
 
 This task updates the global events map.

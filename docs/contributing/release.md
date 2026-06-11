@@ -43,19 +43,19 @@ VERSION=${version} && git fetch --tags origin "$VERSION" && git checkout "$VERSI
 Then you must install dependencies:
 
 ```sh
-npm ci
+pnpm install --frozen-lockfile
 ```
 
 Publishing on npmjs.com (stable):
 
 ```sh
-npm publish --access public
+pnpm publish --access public --no-git-checks
 ```
 
 Publishing on npmjs.com (beta):
 
 ```sh
-npm publish --access public --tag beta
+pnpm publish --access public --no-git-checks --tag beta
 ```
 
 ### Publish CDN on Clever Cloud
@@ -74,17 +74,17 @@ You must get the fresh released code:
 Then you must install dependencies:
 
 ```sh
-npm ci
+pnpm install --frozen-lockfile
 ```
 
 Then you must build the CDN with:
 
 ```sh
-(export VERSION=${version} && npm run cdn-release:build)
+(export VERSION=${version} && pnpm run cdn-release:build)
 ```
 
 Publication is done with:
 
 ```sh
-(export VERSION=${version} && export SMART_CDN_CELLAR_KEY_ID=${***} && export SMART_CDN_CELLAR_SECRET_KEY=${***} && npm run cdn-release:publish "${VERSION}")
+(export VERSION=${version} && export SMART_CDN_CELLAR_KEY_ID=${***} && export SMART_CDN_CELLAR_SECRET_KEY=${***} && pnpm run cdn-release:publish "${VERSION}")
 ```

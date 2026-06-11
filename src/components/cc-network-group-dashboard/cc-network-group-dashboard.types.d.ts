@@ -3,11 +3,10 @@ import { AddonInfoStateBaseProperties } from '../cc-addon-info/cc-addon-info.typ
 
 export interface NetworkGroupDashboardHeaderProperties extends Pick<AddonHeaderBaseProperties, 'id' | 'name'> {}
 
-export interface NetworkGroupDashboardInfoProperties
-  extends Pick<
-    AddonInfoStateBaseProperties,
-    'description' | 'subnet' | 'lastIp' | 'numberOfMembers' | 'numberOfPeers'
-  > {}
+export interface NetworkGroupDashboardInfoProperties extends Pick<
+  AddonInfoStateBaseProperties,
+  'description' | 'subnet' | 'lastIp' | 'numberOfMembers' | 'numberOfPeers'
+> {}
 
 export type NetworkGroupDashboardState =
   | NetworkGroupDashboardStateLoaded
@@ -16,14 +15,12 @@ export type NetworkGroupDashboardState =
   | NetworkGroupDashboardStateError;
 
 export interface NetworkGroupDashboardStateLoaded
-  extends NetworkGroupDashboardHeaderProperties,
-    NetworkGroupDashboardInfoProperties {
+  extends NetworkGroupDashboardHeaderProperties, NetworkGroupDashboardInfoProperties {
   type: 'loaded';
 }
 
 export interface NetworkGroupDashboardStateDeleting
-  extends NetworkGroupDashboardHeaderProperties,
-    NetworkGroupDashboardInfoProperties {
+  extends NetworkGroupDashboardHeaderProperties, NetworkGroupDashboardInfoProperties {
   type: 'deleting';
 }
 

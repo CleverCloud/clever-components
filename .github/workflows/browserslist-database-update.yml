@@ -18,21 +18,16 @@ jobs:
         uses: actions/checkout@v5
         with:
           token: ${{ secrets.CI_TOKEN }}
-      - name: '[Prepare] Setup Node.js'
-        uses: actions/setup-node@v6
-        with:
-          node-version-file: 'package.json'
-          cache: 'npm'
-      - name: '[Prepare] Install dependencies'
-        run: npm ci
+      - name: '[Prepare] Setup CI (mise + dependencies)'
+        uses: ./.github/actions/ci-setup
 
       - name: '[Update] browserslist database'
-        run: npx update-browserslist-db@latest
+        run: pnpm dlx update-browserslist-db@latest
 
-      - name: '[Check] Detect package-lock.json changes'
+      - name: '[Check] Detect pnpm-lock.yaml changes'
         id: check
         run: |
-          if git diff --quiet -- package-lock.json; then
+          if git diff --quiet -- pnpm-lock.yaml; then
             echo "has_changes=false" >> "$GITHUB_OUTPUT"
           else
             echo "has_changes=true" >> "$GITHUB_OUTPUT"
@@ -43,8 +38,8 @@ jobs:
       - name: '[Check] Display detected changes'
         if: steps.check.outputs.has_changes == 'true'
         run: |
-          echo "Changes detected in package-lock.json:"
-          git diff --stat -- package-lock.json
+          echo "Changes detected in pnpm-lock.yaml:"
+          git diff --stat -- pnpm-lock.yaml
 
       - name: '[Check] Detect existing remote branch'
         id: branch

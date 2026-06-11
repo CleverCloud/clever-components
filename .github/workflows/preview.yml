@@ -23,17 +23,12 @@ jobs:
         with:
           ref: ${{ github.event.workflow_run.head_sha }}
           fetch-depth: 0
-      - name: '[Prepare] Setup Node.js'
-        uses: actions/setup-node@v6
-        with:
-          node-version-file: 'package.json'
-          cache: 'npm'
-      - name: '[Prepare] Install dependencies'
-        run: npm ci
+      - name: '[Prepare] Setup CI (mise + dependencies)'
+        uses: ./.github/actions/ci-setup
       - name: '[Prepare] Check if a preview already exists'
         id: check_preview
         run: |
-          if npm run preview:get "${BRANCH}" > /dev/null 2>&1; then
+          if pnpm run preview:get "${BRANCH}" > /dev/null 2>&1; then
             echo "exists=yes" >> $GITHUB_OUTPUT
           else
             echo "exists=no" >> $GITHUB_OUTPUT
@@ -44,9 +39,9 @@ jobs:
           PREVIEWS_CELLAR_SECRET_KEY: ${{ secrets.PREVIEWS_CELLAR_SECRET_KEY }}
 
       - name: '[Run] Build storybook'
-        run: npm run storybook:build
+        run: pnpm run storybook:build
       - name: '[Run] Publish preview'
-        run: npm run preview:publish "${BRANCH}"
+        run: pnpm run preview:publish "${BRANCH}"
         env:
           BRANCH: ${{ github.event.workflow_run.head_branch }}
           PREVIEWS_CELLAR_KEY_ID: ${{ secrets.PREVIEWS_CELLAR_KEY_ID }}
@@ -79,16 +74,11 @@ jobs:
         uses: actions/checkout@v5
         with:
           fetch-depth: 0
-      - name: '[Prepare] Setup Node.js'
-        uses: actions/setup-node@v6
-        with:
-          node-version-file: 'package.json'
-          cache: 'npm'
-      - name: '[Prepare] Install dependencies'
-        run: npm ci
+      - name: '[Prepare] Setup CI (mise + dependencies)'
+        uses: ./.github/actions/ci-setup
 
       - name: '[Run] Delete preview'
-        run: npm run preview:delete "${BRANCH}"
+        run: pnpm run preview:delete "${BRANCH}"
         env:
           BRANCH: ${{ github.event.pull_request.head.ref }}
           PREVIEWS_CELLAR_KEY_ID: ${{ secrets.PREVIEWS_CELLAR_KEY_ID }}

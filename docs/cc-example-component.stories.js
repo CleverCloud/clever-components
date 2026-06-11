@@ -8,7 +8,7 @@ export default {
   title: '🛠 Example section/<cc-example-component>',
   // This component name is used by Storybook's docs page for the API table.
   // It will use `custom-elements.json` documentation file.
-  // Run `npm run components:docs-json` to generate this JSON file.
+  // Run `pnpm run components:docs-json` to generate this JSON file.
   component: 'cc-example-component',
 };
 

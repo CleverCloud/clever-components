@@ -15,10 +15,8 @@ jobs:
     steps:
       - name: '[Prepare] Checkout'
         uses: actions/checkout@v5
-      - name: '[Prepare] Setup Node.js'
-        uses: actions/setup-node@v6
-        with:
-          node-version-file: 'package.json'
+      - name: '[Prepare] Setup mise (Node.js + pnpm)'
+        uses: jdx/mise-action@v4
       - name: 'Parse version from tag'
         id: version_parse
         run: node .github/scripts/parse-version-from-tag.js
@@ -38,20 +36,14 @@ jobs:
         with:
           fetch-depth: 0
           ref: ${{ github.ref_name }}
-      - name: '[Prepare] Setup Node.js'
-        uses: actions/setup-node@v6
-        with:
-          node-version-file: 'package.json'
-          cache: 'npm'
-          registry-url: 'https://registry.npmjs.org'
+      - name: '[Prepare] Setup CI (mise + dependencies)'
+        uses: ./.github/actions/ci-setup
       - name: '[Prepare] Extract NPM tag'
         id: npm_tag
         run: p=${{ needs.pre-publish.outputs.prerelease }} && echo "tag=${p:-latest}" >> $GITHUB_OUTPUT
-      - name: '[Prepare] Install dependencies'
-        run: npm ci
       - name: '[Publish] version ${{ github.ref_name }} with tag ${{ steps.npm_tag.outputs.tag }}'
         run: |
-          npm publish --access public --provenance --tag ${{ steps.npm_tag.outputs.tag }}
+          pnpm publish --access public --provenance --no-git-checks --tag ${{ steps.npm_tag.outputs.tag }}
   publish-cdn:
     name: 'Publish CDN to CleverCloud'
     needs: pre-publish
@@ -63,20 +55,15 @@ jobs:
         with:
           fetch-depth: 0
           ref: ${{ github.ref_name }}
-      - name: '[Prepare] Setup Node.js'
-        uses: actions/setup-node@v6
-        with:
-          node-version-file: 'package.json'
-          cache: 'npm'
-      - name: '[Prepare] Install dependencies'
-        run: npm ci
+      - name: '[Prepare] Setup CI (mise + dependencies)'
+        uses: ./.github/actions/ci-setup
       - name: '[Build]'
         env:
           VERSION: ${{ github.ref_name }}
         run: |
-          npm run cdn-release:build
+          pnpm run cdn-release:build
       - name: '[Publish] version ${{ github.ref_name }}'
         env:
           SMART_CDN_CELLAR_KEY_ID: ${{ secrets.SMART_CDN_CELLAR_KEY_ID }}
           SMART_CDN_CELLAR_SECRET_KEY: ${{ secrets.SMART_CDN_CELLAR_SECRET_KEY }}
-        run: npm run cdn-release:publish ${{ github.ref_name }}
+        run: pnpm run cdn-release:publish ${{ github.ref_name }}

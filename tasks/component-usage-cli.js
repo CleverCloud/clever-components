@@ -46,7 +46,7 @@ function reportError(msg) {
 
 if (values?.help) {
   console.log(`
-    Command: npm run components:graph-usage -- --depth number|--all --uses|--used-by global|cc-component
+    Command: pnpm run components:graph-usage -- --depth number|--all --uses|--used-by global|cc-component
     --depth (alias -d): Depth of the tree - value: number.
     --all (alias -a): The depth of tree will be infinity - value: no value.
     --uses (alias -u): Lists the components that use the component given in value param - value: global for all the components|cc-component for a specific component.

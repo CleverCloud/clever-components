@@ -1,13 +1,13 @@
 ---
 kind: '🏡 Getting Started'
-title: 'Install via NPM'
+title: 'Install via pnpm'
 ---
 
-# How to install components via NPM?
+# How to install components via pnpm?
 
 ## Prerequisite
 
-Make sure you have [Node.js](https://nodejs.org/) and [npm](https://www.npmjs.com/) installed.
+Make sure you have [Node.js](https://nodejs.org/) and [pnpm](https://pnpm.io/) installed.
 
 <cc-notice intent="info" message="You can use a bundler, but it is not mandatory."></cc-notice>
 
@@ -16,7 +16,7 @@ Make sure you have [Node.js](https://nodejs.org/) and [npm](https://www.npmjs.co
 First, install Clever Components as a dependency:
 
 ```bash
-npm install @clevercloud/components
+pnpm add @clevercloud/components
 ```
 
 ## Components
@@ -35,7 +35,7 @@ import('@clevercloud/components/dist/cc-notice.js');
 
 ## Theme
 
-The CSS file is available at `/dist/styles/default-theme.css` in the npm package [`@clevercloud/components`](https://www.npmjs.com/package/@clevercloud/components).
+The CSS file is available at `/dist/styles/default-theme.css` in the [`@clevercloud/components`](https://www.npmjs.com/package/@clevercloud/components) package.
 
 The specific solution to import this CSS file depends a lot on your project stack and config.
 

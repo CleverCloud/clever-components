@@ -34,7 +34,7 @@ export PREVIEWS_CELLAR_SECRET_KEY=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX;
 You can list the currently published previews with:
 
 ```
-npm run preview:list
+pnpm run preview:list
 ```
 
 You can also browse this page:
@@ -46,13 +46,13 @@ https://clever-components-preview.cellar-c2.services.clever-cloud.com/index.html
 When you're working on a branch, and you want to publish a preview, you'll need to build the static Storybook first:
 
 ```
-npm run storybook:build
+pnpm run storybook:build
 ```
 
 Once the build is ready, you can publish a preview with:
 
 ```
-npm run preview:publish
+pnpm run preview:publish
 ```
 
 * By the default, the preview will be named like your current branch.
@@ -61,7 +61,7 @@ npm run preview:publish
 You can publish a preview with a different name with:
 
 ```
-npm run preview:publish feature-x-blue
+pnpm run preview:publish feature-x-blue
 ```
 
 This is often required when you work on a branch but you want to share multiple iterations/ideas of a given feature.
@@ -71,7 +71,7 @@ This is often required when you work on a branch but you want to share multiple 
 When you're done with a preview, you can delete it with:
 
 ```
-npm run preview:delete preview-name
+pnpm run preview:delete preview-name
 ```
 
 ## CDN previews
@@ -93,7 +93,7 @@ export SMART_CDN_PREVIEW_CELLAR_SECRET_KEY=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 You can get a published preview details with:
 
 ```
-npm run cdn-preview:get preview-name
+pnpm run cdn-preview:get preview-name
 ```
 
 The preview name argument can be omitted if you want to get details of the preview corresponding to the current branch.
@@ -103,7 +103,7 @@ The preview name argument can be omitted if you want to get details of the previ
 You can list the currently published previews with:
 
 ```
-npm run cdn-preview:list
+pnpm run cdn-preview:list
 ```
 
 You can also browse this page:
@@ -115,13 +115,13 @@ https://preview-components.clever-cloud.com/list.html
 When you're working on a branch, and you want to publish a preview, you'll need to build the CDN first:
 
 ```
-npm run cdn-preview:build
+pnpm run cdn-preview:build
 ```
 
 Once the build is ready, you can publish a preview with:
 
 ```
-npm run cdn-preview:publish
+pnpm run cdn-preview:publish
 ```
 
 * By default, the preview will be named like your current branch.
@@ -131,13 +131,13 @@ You can publish a preview with a different name.
 First, you need to build it with:
 
 ```
-PREVIEW=feature-x-blue npm run cdn-preview:build
+PREVIEW=feature-x-blue pnpm run cdn-preview:build
 ```
 
 Then, you publish it with:
 
 ```
-npm run cdn-preview:publish feature-x-blue
+pnpm run cdn-preview:publish feature-x-blue
 ```
 
 This is often required when you work on a branch, but you want to share multiple iterations/ideas of a given feature.
@@ -147,5 +147,5 @@ This is often required when you work on a branch, but you want to share multiple
 When you're done with a preview, you can delete it with:
 
 ```
-npm run cdn-preview:delete preview-name
+pnpm run cdn-preview:delete preview-name
 ```
