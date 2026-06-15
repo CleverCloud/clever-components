@@ -24,6 +24,15 @@ export class CellarClient {
       endpoint: `https://${CELLAR_HOST}`,
       credentials: { accessKeyId, secretAccessKey },
       region: 'REGION',
+      // Since v3.729.0, @aws-sdk/client-s3 enables integrity checksums by default
+      // (WHEN_SUPPORTED). For streaming bodies (we upload via `createReadStream`),
+      // the checksum middleware switches the request to `aws-chunked` trailer mode,
+      // which omits `Content-Length` — and Cellar's current infrastructure rejects
+      // that with `MissingContentLength` (HTTP 411). `WHEN_REQUIRED` restores the
+      // pre-3.729 behaviour. This is the config Clever Cloud officially recommends:
+      // https://www.clever.cloud/developers/doc/addons/cellar/
+      requestChecksumCalculation: 'WHEN_REQUIRED',
+      responseChecksumValidation: 'WHEN_REQUIRED',
     });
   }
 
