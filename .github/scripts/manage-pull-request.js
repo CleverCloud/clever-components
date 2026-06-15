@@ -1,12 +1,63 @@
+import { createConfigBuilder } from '@clevercloud/reglage';
 import { Octokit } from '@octokit/rest';
 import { appendFile, readFile } from 'node:fs/promises';
-import { validateEnv } from './validate-env.js';
+import { z } from 'zod';
+import { describeOptions, exitWithConfigErrors, pickKeysFromObject, readFileAsSchema } from './config-utils.js';
 
 /**
  * @import { RestEndpointMethodTypes } from '@octokit/rest'
+ * @import { ConfigBuilder, InvalidConfigError } from '@clevercloud/reglage'
  */
 
-const ACTIONS = /** @type {const} */ (['create', 'assign-reviewers']);
+/**
+ * Catalogue of every option these actions can read, with its Zod schema and
+ * documentation. This is the single source of truth: validation, coercion and
+ * the usage text are all derived from here.
+ *
+ * BODY / BODY_FILE_PATH and REVIEWERS / REVIEWERS_FILE_PATH use optional schemas
+ * because each pair is "either, or neither" rather than a required value. When a
+ * `*_FILE_PATH` is set, its contents are resolved in `#resolveConfig()` (BODY) or
+ * `getReviewers()` (reviewers).
+ */
+const OPTIONS = /** @type {const} */ ({
+  GITHUB_TOKEN: { schema: z.string().min(1), secret: true, documentation: 'GitHub API token' },
+  GITHUB_REPOSITORY: {
+    schema: z.string().regex(/^[^/]+\/[^/]+$/, 'must be in owner/repo format'),
+    documentation: 'Repository in format owner/repo',
+  },
+  TITLE: { schema: z.string().min(1), documentation: 'Pull request title' },
+  HEAD: { schema: z.string().min(1), documentation: 'Source branch (the branch with changes)' },
+  BASE: { schema: z.string().min(1), documentation: 'Target branch (where to merge into)' },
+  BODY: { schema: z.string().optional(), documentation: 'Pull request body as string' },
+  BODY_FILE_PATH: { schema: z.string().optional(), documentation: 'Path to file containing pull request body' },
+  PR_NUMBER: { schema: z.coerce.number().int().positive(), documentation: 'Pull request number' },
+  REVIEWERS: {
+    schema: z.string().optional(),
+    documentation: 'Comma-separated list of GitHub handles (overrides file)',
+  },
+  REVIEWERS_FILE_PATH: {
+    schema: z.string().optional(),
+    documentation: 'Path to a JSON file containing an array of handles',
+  },
+});
+
+/**
+ * The per-action schema. Built via `pickKeysFromObject()` so the type system knows
+ * exactly which options that action reads, including the Zod schemas and
+ * documentation attached to each key. `#resolveConfig(action)` then returns a
+ * config narrowed to that exact subset, so e.g.
+ * `#resolveConfig('assign-reviewers').get('BODY')` is a compile error.
+ */
+const ACTION_OPTIONS = {
+  create: pickKeysFromObject(
+    ['GITHUB_TOKEN', 'GITHUB_REPOSITORY', 'TITLE', 'HEAD', 'BASE', 'BODY', 'BODY_FILE_PATH'],
+    OPTIONS,
+  ),
+  'assign-reviewers': pickKeysFromObject(
+    ['GITHUB_TOKEN', 'GITHUB_REPOSITORY', 'PR_NUMBER', 'REVIEWERS', 'REVIEWERS_FILE_PATH'],
+    OPTIONS,
+  ),
+};
 
 /**
  * GitHub Client for creating pull requests
@@ -82,10 +133,10 @@ class PullRequestActionManager {
 
   /**
    * @param {string} action
-   * @returns {action is typeof ACTIONS[number]}
+   * @returns {action is keyof typeof ACTION_OPTIONS}
    */
   isValidAction(action) {
-    return ACTIONS.includes(/** @type {typeof ACTIONS[number]} */ (action));
+    return Object.keys(ACTION_OPTIONS).includes(action);
   }
 
   printUsage() {
@@ -109,42 +160,59 @@ Environment variables by action:
               defaults to .github/reviewers.json)
 
 Variable descriptions:
-  GITHUB_TOKEN        GitHub API token
-  GITHUB_REPOSITORY   Repository in format owner/repo
-  TITLE               Pull request title
-  HEAD                Source branch (the branch with changes)
-  BASE                Target branch (where to merge into)
-  BODY                Pull request body as string
-  BODY_FILE_PATH      Path to file containing pull request body
-  PR_NUMBER           Pull request number
-  REVIEWERS           Comma-separated list of GitHub handles (overrides file)
-  REVIEWERS_FILE_PATH Path to a JSON file containing an array of handles
+${describeOptions(OPTIONS)}
 `);
   }
 
-  async getMessageBody() {
-    if (process.env.BODY_FILE_PATH) {
-      try {
-        return await readFile(process.env.BODY_FILE_PATH, { encoding: 'utf-8' });
-      } catch (error) {
-        console.error('✗ Error reading message file:', error instanceof Error ? error.message : 'unknown');
-        process.exit(1);
-      }
+  /**
+   * Resolve and validate an action's config from `process.env`. Exits with the
+   * validation errors if anything is missing or malformed.
+   *
+   * Called with a literal action, the returned config is narrowed to exactly the
+   * options that action reads: e.g. reading `PR_NUMBER` off a `create` config is
+   * a compile error because `create` never has it.
+   * @template {keyof typeof ACTION_OPTIONS} A
+   * @param {A} action
+   */
+  #resolveConfig(action) {
+    const builder = createConfigBuilder(ACTION_OPTIONS[action]);
+    builder.addSource('env', process.env);
+
+    // When BODY_FILE_PATH is set, the PR body is read from that file; this lives in
+    // a cross-field refinement so reading (and any read error) flows through the same
+    // config-validation path. BODY stays optional — unlike a comment, a PR body is not
+    // required. Only `create` carries BODY; the builder is typed for the generic action
+    // `A`, hence the single cast to the body-bearing subset.
+    if ('BODY' in ACTION_OPTIONS[action]) {
+      /** @type {ConfigBuilder<Pick<typeof OPTIONS, 'BODY' | 'BODY_FILE_PATH'>>} */ (builder).refine(
+        'BODY',
+        (schema, resolved) => {
+          const filePath = resolved.BODY_FILE_PATH;
+          return typeof filePath === 'string' ? readFileAsSchema(filePath, 'body') : schema;
+        },
+      );
     }
-    return process.env.BODY;
+
+    try {
+      return builder.buildConfig();
+    } catch (error) {
+      exitWithConfigErrors(/** @type {InvalidConfigError} */ (error));
+    }
   }
 
   /**
    * Resolve the list of reviewers.
    * Priority: REVIEWERS env (comma-separated) overrides the JSON file.
    * The file defaults to .github/reviewers.json and must contain a JSON array of handles.
+   * @param {string | undefined} reviewers
+   * @param {string | undefined} reviewersFilePath
    * @returns {Promise<string[]>}
    */
-  async getReviewers() {
-    if (process.env.REVIEWERS) {
-      return this.#parseReviewers(process.env.REVIEWERS);
+  async getReviewers(reviewers, reviewersFilePath) {
+    if (reviewers) {
+      return this.#parseReviewers(reviewers);
     }
-    const filePath = process.env.REVIEWERS_FILE_PATH ?? '.github/reviewers.json';
+    const filePath = reviewersFilePath ?? '.github/reviewers.json';
     try {
       const parsed = JSON.parse(await readFile(filePath, { encoding: 'utf-8' }));
       if (!Array.isArray(parsed)) {
@@ -155,25 +223,6 @@ Variable descriptions:
       console.error('✗ Error reading reviewers file:', error instanceof Error ? error.message : 'unknown');
       process.exit(1);
     }
-  }
-
-  /**
-   * Configuration mapping actions to their required environment variables
-   * @type {Record<typeof ACTIONS[number], string[]>}
-   */
-  #actionConfig = {
-    create: ['GITHUB_TOKEN', 'GITHUB_REPOSITORY', 'TITLE', 'HEAD', 'BASE'],
-    'assign-reviewers': ['GITHUB_TOKEN', 'GITHUB_REPOSITORY', 'PR_NUMBER'],
-  };
-
-  /**
-   * Validate environment variables for the given action
-   * @param {typeof ACTIONS[number]} action
-   * @returns {string[]} Array of validation errors
-   */
-  #validateEnvironment(action) {
-    const requiredEnvVars = this.#actionConfig[action];
-    return validateEnv(requiredEnvVars);
   }
 
   /**
@@ -188,25 +237,26 @@ Variable descriptions:
   }
 
   /**
-   * Retrieve and parse input values from environment variables
-   * @param {typeof ACTIONS[number]} action
+   * Validate and parse inputs for the given action.
+   * @param {keyof typeof ACTION_OPTIONS} action
    */
-  async #getInputsFromEnvironment(action) {
-    const [owner, repo] = process.env.GITHUB_REPOSITORY.split('/');
-
+  async validateAndGetInputs(action) {
     if (action === 'create') {
-      const body = await this.getMessageBody();
+      const config = this.#resolveConfig('create');
+      const [owner, repo] = config.get('GITHUB_REPOSITORY').split('/');
       return {
         owner,
         repo,
-        title: process.env.TITLE,
-        head: process.env.HEAD,
-        base: process.env.BASE,
-        body,
+        title: config.get('TITLE'),
+        head: config.get('HEAD'),
+        base: config.get('BASE'),
+        body: config.get('BODY'),
       };
     }
 
-    const reviewers = await this.getReviewers();
+    const config = this.#resolveConfig('assign-reviewers');
+    const [owner, repo] = config.get('GITHUB_REPOSITORY').split('/');
+    const reviewers = await this.getReviewers(config.get('REVIEWERS'), config.get('REVIEWERS_FILE_PATH'));
     if (reviewers.length === 0) {
       console.error('✗ No reviewers resolved (set the REVIEWERS env var or populate the reviewers file)');
       process.exit(1);
@@ -214,23 +264,9 @@ Variable descriptions:
     return {
       owner,
       repo,
-      prNumber: Number(process.env.PR_NUMBER),
+      prNumber: config.get('PR_NUMBER'),
       reviewers,
     };
-  }
-
-  /** @param {typeof ACTIONS[number]} action */
-  async validateAndGetInputs(action) {
-    const errors = this.#validateEnvironment(action);
-
-    if (errors.length > 0) {
-      console.error('Environment validation errors:');
-      errors.forEach((error) => console.error(`  - ${error}`));
-      console.error('\nRun with no arguments to see usage information.');
-      process.exit(1);
-    }
-
-    return await this.#getInputsFromEnvironment(action);
   }
 
   /**
@@ -252,7 +288,7 @@ Variable descriptions:
     }
   }
 
-  /** @param {typeof ACTIONS[number]} action */
+  /** @param {keyof typeof ACTION_OPTIONS} action */
   async executeAction(action) {
     const inputs = await this.validateAndGetInputs(action);
     this.client = new GithubPullRequestClient(process.env.GITHUB_TOKEN);

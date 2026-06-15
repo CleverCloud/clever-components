@@ -69,6 +69,9 @@ importers:
       '@clevercloud/eslint-config':
         specifier: ^1.0.1
         version: 1.1.0(eslint-import-resolver-node@0.3.10)(eslint@9.39.4(jiti@1.21.7))(typescript@5.9.3)
+      '@clevercloud/reglage':
+        specifier: ^0.0.6
+        version: 0.0.6(zod@4.4.3)
       '@commitlint/cli':
         specifier: ^18.5.0
         version: 18.6.1(@types/node@25.9.0)(typescript@5.9.3)
@@ -348,6 +351,9 @@ importers:
       vite:
         specifier: ^7.2.2
         version: 7.3.3(@types/node@25.9.0)(jiti@1.21.7)(terser@5.47.1)
+      zod:
+        specifier: ^4.4.3
+        version: 4.4.3
 
 packages:
 
@@ -691,6 +697,11 @@ packages:
     resolution: {integrity: sha512-zsJfPje1W1Ras5b99VFjEgTLTcgirmaRu89Brhij8TK3lh/iaolUxg/Gs3ZJXmjmZDciFIqVufCtbXAc8BtNYw==}
     peerDependencies:
       eslint: ^9.0.0
+
+  '@clevercloud/reglage@0.0.6':
+    resolution: {integrity: sha512-95OYcUpUBSDMa2YgFYNcnXsRsYQpIikt6q8X//wV5Gwu5JJhAnKI84cWBnseYrnD/Ze+hUYb2i6ilabEsJOnbA==}
+    peerDependencies:
+      zod: ^4
 
   '@commitlint/cli@18.6.1':
     resolution: {integrity: sha512-5IDE0a+lWGdkOvKH892HHAZgbAjcj1mT5QrfA/SVbLJV/BbBMGyKN0W5mhgjekPJJwEQdVNvhl9PwUacY58Usw==}
@@ -6159,6 +6170,9 @@ packages:
   zod@3.23.8:
     resolution: {integrity: sha512-XBx9AXhXktjUqnepgTiE5flcKIYWi/rme0Eaj+5Y0lftuGBq+jyRu/md4WnuxqgP1ubdpNCsYEYPxrzVHD8d6g==}
 
+  zod@4.4.3:
+    resolution: {integrity: sha512-ytENFjIJFl2UwYglde2jchW2Hwm4GJFLDiSXWdTrJQBIN9Fcyp7n4DhxJEiWNAJMV1/BqWfW/kkg71UDcHJyTQ==}
+
   zwitch@1.0.5:
     resolution: {integrity: sha512-V50KMwwzqJV0NpZIZFwfOD5/lyny3WlSzRiXgA0G7VUnRlqttta1L6UQIHzd6EuBY/cHGfwTIck7w1yH6Q5zUw==}
 
@@ -6720,6 +6734,10 @@ snapshots:
       - eslint-import-resolver-node
       - supports-color
       - typescript
+
+  '@clevercloud/reglage@0.0.6(zod@4.4.3)':
+    dependencies:
+      zod: 4.4.3
 
   '@commitlint/cli@18.6.1(@types/node@25.9.0)(typescript@5.9.3)':
     dependencies:
@@ -12778,5 +12796,7 @@ snapshots:
   yocto-queue@0.1.0: {}
 
   zod@3.23.8: {}
+
+  zod@4.4.3: {}
 
   zwitch@1.0.5: {}

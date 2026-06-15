@@ -86,6 +86,7 @@
     "@babel/preset-react": "^7.13.13",
     "@bundled-es-modules/chai": "^4.2.2",
     "@clevercloud/eslint-config": "^1.0.1",
+    "@clevercloud/reglage": "^0.0.6",
     "@commitlint/cli": "^18.5.0",
     "@commitlint/config-conventional": "^18.5.0",
     "@custom-elements-manifest/analyzer": "^0.9.4",
@@ -178,7 +179,8 @@
     "ts-lit-plugin": "^2.0.2",
     "typescript": "^5.8.3",
     "unified": "^9.2.1",
-    "vite": "^7.2.2"
+    "vite": "^7.2.2",
+    "zod": "^4.4.3"
   },
   "customElements": "dist/custom-elements.json"
 }
