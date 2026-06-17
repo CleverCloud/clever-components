@@ -233,7 +233,7 @@ export class CcPlanPicker extends CcFormControlElement {
       <ul part="option-footer">
         ${details.map((detail) => {
           return html`<li part="option-footer--detail">
-            <cc-icon .icon="${detail.icon}" size="md"></cc-icon>
+            <cc-icon .icon="${detail.icon}" size="md" part="option-footer--detail-icon"></cc-icon>
             <span>${detail.value}</span>
           </li>`;
         })}
@@ -318,6 +318,10 @@ export class CcPlanPicker extends CcFormControlElement {
           align-items: center;
           column-gap: 0.5em;
           display: inline-flex;
+        }
+
+        ::part(option-footer--detail-icon) {
+          flex: 0 0 auto;
         }
         /* endregion */
       `,
