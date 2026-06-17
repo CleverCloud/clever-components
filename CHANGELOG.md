@@ -5,6 +5,19 @@ title: 'Changelog'
 
 # Changelog
 
+## [25.5.0](https://github.com/CleverCloud/clever-components/compare/25.4.0...25.5.0) (2026-06-17)
+
+
+### 🚀 Features
+
+* **cc-addon-admin:** emit cc-addon-tags-was-changed after tags save ([30532fe](https://github.com/CleverCloud/clever-components/commit/30532fe3188e24619eeb19f7774c341056af7e45))
+
+
+### 🐛 Bug Fixes
+
+* **cc-plan-picker:** prevent detail icon from shrinking when description wraps ([ddffcf5](https://github.com/CleverCloud/clever-components/commit/ddffcf5e07be1754da204ca633043af45f081aa0))
+* **cc-search-bar:** widen dialog and add tabindex to sections ([33da402](https://github.com/CleverCloud/clever-components/commit/33da40254934998e9456a0ec896bee5afa18f19a))
+
 ## [25.4.0](https://github.com/CleverCloud/clever-components/compare/25.3.1...25.4.0) (2026-06-02)
 
 
