@@ -1,12 +1,58 @@
+import { createConfigBuilder } from '@clevercloud/reglage';
 import { Octokit } from '@octokit/rest';
-import { readFile } from 'node:fs/promises';
-import { validateEnv } from './validate-env.js';
+import { z } from 'zod';
+import { describeOptions, exitWithConfigErrors, pickKeysFromObject, readFileAsSchema } from './config-utils.js';
 
 /**
- * @typedef {import('@octokit/rest').RestEndpointMethodTypes} RestEndpointMethodTypes
+ * @import { RestEndpointMethodTypes } from '@octokit/rest'
+ * @import { ConfigBuilder, InvalidConfigError } from '@clevercloud/reglage'
+ * @typedef {RestEndpointMethodTypes["issues"]["listComments"]["response"]["data"]} CommentList
  */
 
-const ACTIONS = /** @type {const} */ (['create', 'edit', 'delete', 'create-or-edit']);
+/**
+ * Catalogue of every option these actions can read, with its Zod schema and
+ * documentation. This is the single source of truth: validation, coercion and
+ * the usage text are all derived from here.
+ *
+ * MESSAGE / MESSAGE_FILE_PATH use optional schemas because the requirement is
+ * "one of them" rather than a single named variable; that is enforced in
+ * `validateAndGetInputs()`. MARKER is required, but only included in
+ * `ACTION_OPTIONS` for the actions that need it.
+ */
+const OPTIONS = /** @type {const} */ ({
+  GITHUB_TOKEN: { schema: z.string().min(1), secret: true, documentation: 'GitHub API token' },
+  GITHUB_REPOSITORY: {
+    schema: z.string().regex(/^[^/]+\/[^/]+$/, 'must be in owner/repo format'),
+    documentation: 'Repository in format owner/repo',
+  },
+  PR_NUMBER: { schema: z.coerce.number().int().positive(), documentation: 'Pull request number' },
+  MARKER: { schema: z.string().min(1), documentation: 'Unique identifier to find existing comments' },
+  MESSAGE: { schema: z.string().optional(), documentation: 'Comment body as string' },
+  MESSAGE_FILE_PATH: { schema: z.string().optional(), documentation: 'Path to file containing comment body' },
+});
+
+/**
+ * The per-action schema. Built via `pickKeysFromObject()` so the type system knows
+ * exactly which options that action reads, including the Zod schemas and
+ * documentation attached to each key. `#resolveConfig(action)` then returns a
+ * config narrowed to that exact subset, so e.g.
+ * `#resolveConfig('delete').get('MESSAGE')` is a compile error.
+ */
+const ACTION_OPTIONS = {
+  create: pickKeysFromObject(
+    ['GITHUB_TOKEN', 'GITHUB_REPOSITORY', 'PR_NUMBER', 'MESSAGE', 'MESSAGE_FILE_PATH'],
+    OPTIONS,
+  ),
+  edit: pickKeysFromObject(
+    ['GITHUB_TOKEN', 'GITHUB_REPOSITORY', 'PR_NUMBER', 'MARKER', 'MESSAGE', 'MESSAGE_FILE_PATH'],
+    OPTIONS,
+  ),
+  delete: pickKeysFromObject(['GITHUB_TOKEN', 'GITHUB_REPOSITORY', 'PR_NUMBER', 'MARKER'], OPTIONS),
+  'create-or-edit': pickKeysFromObject(
+    ['GITHUB_TOKEN', 'GITHUB_REPOSITORY', 'PR_NUMBER', 'MARKER', 'MESSAGE', 'MESSAGE_FILE_PATH'],
+    OPTIONS,
+  ),
+};
 
 /**
  * GitHub Client for managing comments on pull requests
@@ -38,7 +84,7 @@ class GithubCommentClient {
    * @param {string} owner - Repository owner
    * @param {string} repo - Repository name
    * @param {number} prNumber - Pull request number
-   * @returns {Promise<RestEndpointMethodTypes["issues"]["listComments"]["response"]["data"]>}
+   * @returns {Promise<CommentList>}
    */
   async getComments(owner, repo, prNumber) {
     try {
@@ -57,7 +103,7 @@ class GithubCommentClient {
 
   /**
    * Find a specific comment by bot and marker
-   * @param {RestEndpointMethodTypes["issues"]["listComments"]["response"]["data"]} comments
+   * @param {CommentList} comments
    * @param {string} botLogin
    * @param {string} marker
    */
@@ -65,6 +111,19 @@ class GithubCommentClient {
     return comments.find(
       (c) => c.user && c.user.login === botLogin && typeof c.body === 'string' && c.body.includes(marker),
     );
+  }
+
+  /**
+   * Find an existing comment by bot and marker
+   * @param {string} owner - Repository owner
+   * @param {string} repo - Repository name
+   * @param {number} prNumber - Pull request number
+   * @param {string} marker - Marker to identify the comment
+   */
+  async findExistingComment(owner, repo, prNumber, marker) {
+    const botLogin = await this.getBotLogin();
+    const comments = await this.getComments(owner, repo, prNumber);
+    return this.#findTargetComment(comments, botLogin, marker);
   }
 
   /**
@@ -137,19 +196,6 @@ class GithubCommentClient {
       process.exit(1);
     }
   }
-
-  /**
-   * Find an existing comment by bot and marker
-   * @param {string} owner - Repository owner
-   * @param {string} repo - Repository name
-   * @param {number} prNumber - Pull request number
-   * @param {string} marker - Marker to identify the comment
-   */
-  async findExistingComment(owner, repo, prNumber, marker) {
-    const botLogin = await this.getBotLogin();
-    const comments = await this.getComments(owner, repo, prNumber);
-    return this.#findTargetComment(comments, botLogin, marker);
-  }
 }
 
 /**
@@ -162,10 +208,10 @@ class CommentActionManager {
 
   /**
    * @param {string} action
-   * @returns {action is typeof ACTIONS[number]}
+   * @returns {action is keyof typeof ACTION_OPTIONS}
    */
   isValidAction(action) {
-    return ACTIONS.includes(/** @type {typeof ACTIONS[number]} */ (action));
+    return Object.keys(ACTION_OPTIONS).includes(action);
   }
 
   printUsage() {
@@ -174,7 +220,7 @@ Usage: node manage-comment.js <action>
 
 Actions:
   create         Create a new comment
-  edit           Edit an existing comment  
+  edit           Edit an existing comment
   delete         Delete an existing comment
   create-or-edit Create comment if it doesn't exist, edit if it does
 
@@ -182,99 +228,108 @@ Environment variables by action:
 
   create:
     Required: GITHUB_TOKEN, GITHUB_REPOSITORY, PR_NUMBER, MESSAGE or MESSAGE_FILE_PATH
-    
+
   edit:
     Required: GITHUB_TOKEN, GITHUB_REPOSITORY, PR_NUMBER, MARKER, MESSAGE or MESSAGE_FILE_PATH
-    
+
   delete:
     Required: GITHUB_TOKEN, GITHUB_REPOSITORY, PR_NUMBER, MARKER
-    
+
   create-or-edit:
     Required: GITHUB_TOKEN, GITHUB_REPOSITORY, PR_NUMBER, MARKER, MESSAGE or MESSAGE_FILE_PATH
 
 Variable descriptions:
-  GITHUB_TOKEN      GitHub API token
-  GITHUB_REPOSITORY Repository in format owner/repo
-  PR_NUMBER         Pull request number
-  MARKER            Unique identifier to find existing comments
-  MESSAGE           Comment body as string
-  MESSAGE_FILE_PATH Path to file containing comment body
+${describeOptions(OPTIONS)}
 `);
   }
 
-  async getMessageBody() {
-    if (process.env.MESSAGE_FILE_PATH) {
-      try {
-        return await readFile(process.env.MESSAGE_FILE_PATH, { encoding: 'utf-8' });
-      } catch (error) {
-        console.error('✗ Error reading message file:', error instanceof Error ? error.message : 'unknown');
-        process.exit(1);
-      }
+  /**
+   * Resolve and validate an action's config from `process.env`. Exits with the
+   * validation errors if anything is missing or malformed.
+   *
+   * Called with a literal action, the returned config is narrowed to exactly the
+   * options that action reads: e.g. `#resolveConfig('delete').get('MESSAGE')` is a
+   * compile error because `delete` never has a message.
+   * @template {keyof typeof ACTION_OPTIONS} A
+   * @param {A} action
+   */
+  #resolveConfig(action) {
+    const builder = createConfigBuilder(ACTION_OPTIONS[action]);
+    builder.addSource('env', process.env);
+
+    // The "one of MESSAGE / MESSAGE_FILE_PATH" rule can't be expressed at the
+    // per-field schema level, so it lives in a cross-field refinement. Only the
+    // body-bearing actions carry MESSAGE; `delete` does not. The builder is typed
+    // for the generic action `A`, hence the single cast to bridge it to the
+    // message-bearing subset.
+    if ('MESSAGE' in ACTION_OPTIONS[action]) {
+      const MESSAGE_OR_FILE_REQUIRED = 'MESSAGE or MESSAGE_FILE_PATH is required for this action';
+      /** @type {ConfigBuilder<Pick<typeof OPTIONS, 'MESSAGE' | 'MESSAGE_FILE_PATH'>>} */ (builder).refine(
+        'MESSAGE',
+        (_schema, resolved) => {
+          const filePath = resolved.MESSAGE_FILE_PATH;
+          if (typeof filePath === 'string') {
+            return readFileAsSchema(filePath, 'message');
+          }
+          return z.string({ error: MESSAGE_OR_FILE_REQUIRED }).min(1, MESSAGE_OR_FILE_REQUIRED);
+        },
+      );
     }
-    return process.env.MESSAGE;
+
+    try {
+      return builder.buildConfig();
+    } catch (error) {
+      exitWithConfigErrors(/** @type {InvalidConfigError} */ (error));
+    }
   }
 
   /**
-   * Configuration mapping actions to their required environment variables
-   * @type {Record<typeof ACTIONS[number], string[]>}
+   * Validate and parse inputs for the given action. Required env vars and the
+   * "one of MESSAGE / MESSAGE_FILE_PATH" rule (including reading the file) are all
+   * enforced by `#resolveConfig()`, so `MESSAGE` resolves to the final body.
+   *
+   * @param {keyof typeof ACTION_OPTIONS} action
    */
-  #actionConfig = {
-    create: ['GITHUB_TOKEN', 'GITHUB_REPOSITORY', 'PR_NUMBER'],
-    edit: ['GITHUB_TOKEN', 'GITHUB_REPOSITORY', 'PR_NUMBER', 'MARKER'],
-    delete: ['GITHUB_TOKEN', 'GITHUB_REPOSITORY', 'PR_NUMBER', 'MARKER'],
-    'create-or-edit': ['GITHUB_TOKEN', 'GITHUB_REPOSITORY', 'PR_NUMBER', 'MARKER'],
-  };
-
-  /**
-   * Validate environment variables for the given action
-   * @param {typeof ACTIONS[number]} action
-   * @returns {string[]} Array of validation errors
-   */
-  #validateEnvironment(action) {
-    const requiredEnvVars = this.#actionConfig[action];
-    const errors = validateEnv(requiredEnvVars);
-    // Special case: either MESSAGE or MESSAGE_FILE_PATH is required
-    if (action !== 'delete' && !process.env.MESSAGE && !process.env.MESSAGE_FILE_PATH) {
-      errors.push('MESSAGE or MESSAGE_FILE_PATH is required for this action');
+  validateAndGetInputs(action) {
+    if (action === 'delete') {
+      const config = this.#resolveConfig('delete');
+      const [owner, repo] = config.get('GITHUB_REPOSITORY').split('/');
+      return {
+        owner,
+        repo,
+        prNumber: config.get('PR_NUMBER'),
+        marker: config.get('MARKER'),
+      };
     }
 
-    return errors;
-  }
-
-  /**
-   * Retrieve and parse input values from environment variables
-   * @param {typeof ACTIONS[number]} action
-   * @returns {Promise<{owner: string, repo: string, prNumber: number, marker?: string, body?: string}>}
-   */
-  async #getInputsFromEnvironment(action) {
-    const requiredEnvVars = this.#actionConfig[action];
-    const [owner, repo] = process.env.GITHUB_REPOSITORY.split('/');
-    const prNumber = Number(process.env.PR_NUMBER);
-    const marker = requiredEnvVars.includes('MARKER') ? process.env.MARKER : undefined;
-    const body = requiredEnvVars.includes('MESSAGE_OR_FILE') ? await this.getMessageBody() : undefined;
-
-    return { owner, repo, prNumber, marker, body };
-  }
-
-  /** @param {typeof ACTIONS[number]} action */
-  async validateAndGetInputs(action) {
-    // Step 1: Validate environment variables
-    const errors = this.#validateEnvironment(action);
-
-    if (errors.length > 0) {
-      console.error('Environment validation errors:');
-      errors.forEach((error) => console.error(`  - ${error}`));
-      console.error('\nRun with no arguments to see usage information.');
-      process.exit(1);
+    if (action === 'create') {
+      const config = this.#resolveConfig('create');
+      const [owner, repo] = config.get('GITHUB_REPOSITORY').split('/');
+      const body = /** @type {string} */ (config.get('MESSAGE'));
+      return {
+        owner,
+        repo,
+        prNumber: config.get('PR_NUMBER'),
+        body,
+      };
     }
 
-    // Step 2: Retrieve and parse inputs
-    return await this.#getInputsFromEnvironment(action);
+    // `edit` and `create-or-edit` share the same shape (marker + body).
+    const config = this.#resolveConfig(action);
+    const [owner, repo] = config.get('GITHUB_REPOSITORY').split('/');
+    const body = /** @type {string} */ (config.get('MESSAGE'));
+    return {
+      owner,
+      repo,
+      prNumber: config.get('PR_NUMBER'),
+      marker: config.get('MARKER'),
+      body,
+    };
   }
 
-  /** @param {typeof ACTIONS[number]} action */
+  /** @param {keyof typeof ACTION_OPTIONS} action */
   async executeAction(action) {
-    const { owner, repo, prNumber, marker, body } = await this.validateAndGetInputs(action);
+    const { owner, repo, prNumber, marker, body } = this.validateAndGetInputs(action);
     this.client = new GithubCommentClient(process.env.GITHUB_TOKEN);
 
     switch (action) {

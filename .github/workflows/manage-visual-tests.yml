@@ -29,12 +29,29 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       stories-groups: ${{ steps.get-stories-groups.outputs.stories-groups }}
+      playwright-version: ${{ steps.get-playwright-version.outputs.playwright-version }}
     steps:
       - name: '[Prepare] Checkout'
         uses: actions/checkout@v5
 
       - name: '[Prepare] Setup CI (mise + dependencies)'
         uses: ./.github/actions/ci-setup
+
+      # The Playwright Docker image tag must match the installed Playwright
+      # version, otherwise Playwright throws a version-mismatch error.
+      # We derive it from the installed dependency so it stays in sync
+      # automatically and the container jobs below reference it through `needs`.
+      # Expected output:
+      # - playwright-version: string - e.g. `1.60.0`
+      - name: '[Run] Get Playwright version'
+        id: get-playwright-version
+        run: |
+          PLAYWRIGHT_VERSION="$(pnpm why playwright --depth 0 --json | jq -r '.[0].version')"
+          if ! [[ "$PLAYWRIGHT_VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "::error::Unexpected Playwright version: '$PLAYWRIGHT_VERSION'"
+            exit 1
+          fi
+          echo "playwright-version=$PLAYWRIGHT_VERSION" >> "$GITHUB_OUTPUT"
 
       # Expected outputs
       # - stories-groups=Array<`stories-group-{number}`>
@@ -74,7 +91,7 @@ jobs:
     needs: [split-into-groups, check-for-expectation-update]
     runs-on: ubuntu-latest
     container:
-      image: mcr.microsoft.com/playwright:v1.55.0-noble
+      image: mcr.microsoft.com/playwright:v${{ needs.split-into-groups.outputs.playwright-version }}-noble
       options: --user 1001
     strategy:
       matrix:
@@ -110,7 +127,7 @@ jobs:
     needs: [split-into-groups, check-for-expectation-update, update-expectation]
     runs-on: ubuntu-latest
     container:
-      image: mcr.microsoft.com/playwright:v1.55.0-noble
+      image: mcr.microsoft.com/playwright:v${{ needs.split-into-groups.outputs.playwright-version }}-noble
       options: --user 1001
     strategy:
       matrix:

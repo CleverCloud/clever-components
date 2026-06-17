@@ -91,7 +91,7 @@ async function checkForLastExpectationUpdate() {
     }
     console.log('Expectation should be updated: ' + shouldUpdateExpectation);
   } catch (error) {
-    if (error instanceof Error && error.message === 'NoSuchKey') {
+    if (error instanceof Error && error.name === 'NoSuchKey') {
       console.log('No report found. Expectation should be updated');
       appendFileSync(process.env.GITHUB_OUTPUT, `should-update-expectation=true\n`);
     } else {
