@@ -24,6 +24,12 @@ export class CellarClient {
       endpoint: `https://${CELLAR_HOST}`,
       credentials: { accessKeyId, secretAccessKey },
       region: 'REGION',
+      // Cellar (S3-compatible) requires Content-Length. AWS SDK v3 (>=3.729)
+      // enables flexible checksums by default, which makes PutObject use aws-chunked
+      // trailing-checksum encoding for streams and omit Content-Length -> 411.
+      // WHEN_REQUIRED disables the default checksum so Content-Length is restored.
+      requestChecksumCalculation: 'WHEN_REQUIRED',
+      responseChecksumValidation: 'WHEN_REQUIRED',
     });
   }
 
