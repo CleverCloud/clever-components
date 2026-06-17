@@ -14,10 +14,11 @@ title: '💡 Smart'
 
 ## 👋️ Events fired
 
-| Name                         | Payload                       | Details                                                                                                                             |
-| ---------------------------- | ----------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
-| `cc-addon-was-deleted`       | `{ id: string, name: string}` | Fired when the add-on has been deleted successfully.<br/>Should be used to redirect to another page                                 |
-| `cc-addon-name-was-changed`  | `{ id: string, name: string}` | Fired when the add-on name has been changed successfully.<br/>Should be used to refresh the menu                                    |
+| Name                         | Payload                          | Details                                                                                                                             |
+| ---------------------------- | -------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
+| `cc-addon-was-deleted`       | `{ id: string, name: string}`    | Fired when the add-on has been deleted successfully.<br/>Should be used to redirect to another page                                 |
+| `cc-addon-name-was-changed`  | `{ id: string, name: string}`    | Fired when the add-on name has been changed successfully.<br/>Should be used to refresh the menu                                    |
+| `cc-addon-tags-was-changed`  | `{ id: string, tags: string[] }` | Fired when the add-on tags have been changed successfully.<br/>Should be used to refresh tag-driven views (e.g. the sidebar)        |
 
 ## ⚙️ Params
 

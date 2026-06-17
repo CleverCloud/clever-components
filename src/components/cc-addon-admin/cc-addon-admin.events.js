@@ -70,3 +70,16 @@ export class CcAddonNameWasChangedEvent extends CcEvent {
     super(CcAddonNameWasChangedEvent.TYPE, detail);
   }
 }
+
+/**
+ * Dispatched when an add-on's tags have been changed successfully.
+ * @extends {CcEvent<{id: string, tags: Array<string>}>}
+ */
+export class CcAddonTagsWasChangedEvent extends CcEvent {
+  static TYPE = 'cc-addon-tags-was-changed';
+
+  /** @param {{ id: string, tags: Array<string> }} detail */
+  constructor(detail) {
+    super(CcAddonTagsWasChangedEvent.TYPE, detail);
+  }
+}

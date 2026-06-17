@@ -10,7 +10,11 @@ import { notifyError, notifySuccess } from '../../lib/notifications.js';
 import { sendToApi } from '../../lib/send-to-api.js';
 import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
 import '../cc-smart-container/cc-smart-container.js';
-import { CcAddonNameWasChangedEvent, CcAddonWasDeletedEvent } from './cc-addon-admin.events.js';
+import {
+  CcAddonNameWasChangedEvent,
+  CcAddonTagsWasChangedEvent,
+  CcAddonWasDeletedEvent,
+} from './cc-addon-admin.events.js';
 import './cc-addon-admin.js';
 
 /**
@@ -85,6 +89,7 @@ defineSmartComponent({
         .onUpdateTags({ ownerId, addonId, tags })
         .then(() => {
           notifySuccess(i18n('cc-addon-admin.update-tags.success'));
+          component.dispatchEvent(new CcAddonTagsWasChangedEvent({ id: addonId, tags }));
           updateComponent('state', (state) => ({
             ...state,
             type: 'loaded',
