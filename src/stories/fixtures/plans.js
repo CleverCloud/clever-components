@@ -19,7 +19,7 @@ export const DEFAULT_PLANS = [
         value: 'Shared memory',
       },
       {
-        value: '1 vCPUs',
+        value: '1 shared vCPU with burstable performance',
         icon: iconCpu,
       },
     ],
