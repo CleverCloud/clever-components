@@ -1,6 +1,6 @@
 import { IconModel } from '../common.types.js';
 
-export type SearchBarItemType = 'app' | 'addon' | 'network-group' | 'cke';
+export type SearchBarItemType = 'app' | 'addon' | 'network-group' | 'cke' | 'oauth-consumer' | 'addon-provider';
 
 export interface SearchBarItem {
   label: string;

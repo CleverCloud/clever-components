@@ -19,6 +19,8 @@ const ITEM_TYPE_BADGE_INTENT = {
   addon: 'warning',
   'network-group': 'neutral',
   cke: 'neutral',
+  'oauth-consumer': 'neutral',
+  'addon-provider': 'neutral',
 };
 
 /**
@@ -39,6 +41,10 @@ function getItemTypeBadgeLabel(itemType) {
       return i18n('cc-search-bar.badge.network-group');
     case 'cke':
       return i18n('cc-search-bar.badge.cke');
+    case 'oauth-consumer':
+      return i18n('cc-search-bar.badge.oauth-consumer');
+    case 'addon-provider':
+      return i18n('cc-search-bar.badge.addon-provider');
   }
 }
 
@@ -74,10 +80,10 @@ export class CcSearchBar extends LitElement {
     /** @type {boolean} Displays or hides the search bar dialog. */
     this.open = false;
 
-    /** @type {SearchBarSection[]} The sections to display, each containing a label, icon, and items. */
+    /** @type {SearchBarSection[]} Sets the sections to display, each containing a label, icon, and items. */
     this.sections = [];
 
-    /** @type {string} The current search input value. */
+    /** @type {string} Sets the current search input value. */
     this.value = '';
   }
 

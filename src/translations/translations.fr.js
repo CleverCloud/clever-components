@@ -1889,9 +1889,11 @@ export const translations = {
   //#endregion
   //#region cc-search-bar
   'cc-search-bar.badge.addon': `ADD-ON`,
+  'cc-search-bar.badge.addon-provider': `ADD-ON PROVIDER`,
   'cc-search-bar.badge.app': `APP`,
   'cc-search-bar.badge.cke': `KUBE`,
   'cc-search-bar.badge.network-group': `NG`,
+  'cc-search-bar.badge.oauth-consumer': `OAUTH CONSUMER`,
   'cc-search-bar.external-link.name': `nouvelle fenêtre`,
   'cc-search-bar.external-link.title': /** @param {{linkText: string}} _ */ ({ linkText }) =>
     `${linkText} - nouvelle fenêtre`,
