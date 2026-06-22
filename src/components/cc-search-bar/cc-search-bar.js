@@ -19,13 +19,34 @@ import '../cc-input-text/cc-input-text.js';
 
 const KEYWORD_TOKEN_REGEX = /^is:./;
 
-/** @type {Record<SearchBarItemType, { label: string, intent: BadgeIntent }>} */
-const ITEM_TYPE_BADGE = {
-  app: { label: 'APP', intent: 'success' },
-  addon: { label: 'ADDON', intent: 'warning' },
-  'network-group': { label: 'NG', intent: 'neutral' },
-  cke: { label: 'KUBE', intent: 'neutral' },
+/** @type {Record<SearchBarItemType, BadgeIntent>} */
+const ITEM_TYPE_BADGE_INTENT = {
+  app: 'success',
+  addon: 'warning',
+  'network-group': 'neutral',
+  cke: 'neutral',
 };
+
+/**
+ * Returns the translated badge label for a given item type.
+ *
+ * Keys are spelled out one by one so `tasks/check-i18n.js` can statically detect them.
+ *
+ * @param {SearchBarItemType} itemType
+ * @returns {string}
+ */
+function getItemTypeBadgeLabel(itemType) {
+  switch (itemType) {
+    case 'app':
+      return i18n('cc-search-bar.badge.app');
+    case 'addon':
+      return i18n('cc-search-bar.badge.addon');
+    case 'network-group':
+      return i18n('cc-search-bar.badge.network-group');
+    case 'cke':
+      return i18n('cc-search-bar.badge.cke');
+  }
+}
 
 /**
  * A search bar dialog that displays categorized results.
@@ -184,7 +205,7 @@ export class CcSearchBar extends LitElement {
   /** @param {SearchBarItem} item */
   _renderItem(item) {
     const isExternal = isExternalUrl(item.href);
-    const badge = item.itemType != null ? ITEM_TYPE_BADGE[item.itemType] : null;
+    const badgeIntent = item.itemType != null ? ITEM_TYPE_BADGE_INTENT[item.itemType] : null;
     const title = isExternal ? i18n('cc-search-bar.external-link.title', { linkText: item.label }) : nothing;
     return html`
       <li>
@@ -196,7 +217,11 @@ export class CcSearchBar extends LitElement {
           title="${title}"
         >
           <span class="item-label">${item.label}</span>
-          ${badge != null ? html` <cc-badge intent="${badge.intent}" weight="dimmed">${badge.label}</cc-badge> ` : ''}
+          ${item.itemType != null
+            ? html`
+                <cc-badge intent="${badgeIntent}" weight="dimmed">${getItemTypeBadgeLabel(item.itemType)}</cc-badge>
+              `
+            : ''}
           ${isExternal
             ? html`
                 <cc-icon

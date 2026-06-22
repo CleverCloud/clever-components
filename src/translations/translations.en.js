@@ -1865,6 +1865,10 @@ export const translations = {
   'cc-range-selector.summary.unselected': `unselected`,
   //#endregion
   //#region cc-search-bar
+  'cc-search-bar.badge.addon': `ADD-ON`,
+  'cc-search-bar.badge.app': `APP`,
+  'cc-search-bar.badge.cke': `KUBE`,
+  'cc-search-bar.badge.network-group': `NG`,
   'cc-search-bar.external-link.name': `new window`,
   'cc-search-bar.external-link.title': /** @param {{linkText: string}} _ */ ({ linkText }) =>
     `${linkText} - new window`,
