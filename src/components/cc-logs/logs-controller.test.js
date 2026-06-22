@@ -196,6 +196,88 @@ describe('', () => {
     });
   });
 
+  describe('consumeIndexSpaceChange', () => {
+    it('should report no change at startup', () => {
+      expect(logsCtrl.consumeIndexSpaceChange()).to.deep.equal({ rebuilt: false, frontTrim: 0 });
+    });
+
+    it('should report no front trim when appending below the limit', () => {
+      logsCtrl.limit = 10;
+      appendLogs(4);
+
+      expect(logsCtrl.consumeIndexSpaceChange()).to.deep.equal({ rebuilt: false, frontTrim: 0 });
+    });
+
+    it('should report the number of logs trimmed off the front when the limit is reached', () => {
+      logsCtrl.limit = 6;
+      appendLogs(4);
+      logsCtrl.consumeIndexSpaceChange();
+
+      appendLogs(4);
+
+      // 4 + 4 = 8 logs, limit 6 -> 2 logs trimmed off the front
+      expect(logsCtrl.consumeIndexSpaceChange()).to.deep.equal({ rebuilt: false, frontTrim: 2 });
+    });
+
+    it('should accumulate the front trim across several appends until consumed', () => {
+      logsCtrl.limit = 6;
+      appendLogs(6);
+      logsCtrl.consumeIndexSpaceChange();
+
+      appendLogs(2);
+      appendLogs(3);
+
+      // 2 + 3 = 5 logs appended over a full list -> 5 logs trimmed off the front
+      expect(logsCtrl.consumeIndexSpaceChange()).to.deep.equal({ rebuilt: false, frontTrim: 5 });
+    });
+
+    it('should only count trimmed logs that pass the active filter', () => {
+      logsCtrl.limit = 6;
+      logsCtrl.filter = {
+        message: { value: 'Message 0000', type: 'strict' },
+        metadata: [],
+      };
+      // Matching logs are 00000..00009 (their message contains "Message 0000").
+      appendLogs(6);
+      logsCtrl.consumeIndexSpaceChange();
+
+      // Appending 4 more trims the 4 oldest full-list logs (00000..00003), all of which pass the filter.
+      appendLogs(4);
+
+      expect(logsCtrl.consumeIndexSpaceChange().frontTrim).to.equal(4);
+    });
+
+    it('should reset the accumulated change once consumed', () => {
+      logsCtrl.limit = 6;
+      appendLogs(6);
+      appendLogs(2);
+      logsCtrl.consumeIndexSpaceChange();
+
+      expect(logsCtrl.consumeIndexSpaceChange()).to.deep.equal({ rebuilt: false, frontTrim: 0 });
+    });
+
+    it('should report a rebuild when the filter changes', () => {
+      appendLogs(6);
+      logsCtrl.consumeIndexSpaceChange();
+
+      logsCtrl.filter = {
+        message: { value: 'Message', type: 'strict' },
+        metadata: [],
+      };
+
+      expect(logsCtrl.consumeIndexSpaceChange().rebuilt).to.equal(true);
+    });
+
+    it('should report a rebuild when cleared', () => {
+      appendLogs(6);
+      logsCtrl.consumeIndexSpaceChange();
+
+      logsCtrl.clear();
+
+      expect(logsCtrl.consumeIndexSpaceChange().rebuilt).to.equal(true);
+    });
+  });
+
   describe('filter', () => {
     describe('with metadata filter', () => {
       it('should be applied when setting new filter on metadata', () => {
