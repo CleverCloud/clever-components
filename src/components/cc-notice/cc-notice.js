@@ -136,7 +136,7 @@ export class CcNotice extends LitElement {
 
         .wrapper {
           align-items: start;
-          border-radius: var(--cc-border-radius-default, 0.25em);
+          border-radius: var(--cc-border-radius-large, 0.5em);
           display: grid;
           gap: var(--cc-spacing-4, 0.75em);
           grid-template-areas:
@@ -233,7 +233,7 @@ export class CcNotice extends LitElement {
 
           background-color: transparent;
           border: none;
-          border-radius: var(--cc-border-radius-small, 0.15em);
+          border-radius: var(--cc-border-radius-large, 0.5em);
           cursor: pointer;
           height: auto;
           padding: 0;

@@ -221,7 +221,7 @@ export class CcToggle extends LitElement {
 
         .toggle-group {
           background-color: var(--cc-color-bg-default, #fff);
-          border-radius: var(--cc-border-radius-small, 0.15em);
+          border-radius: var(--cc-border-radius-xs, 0.15em);
           box-sizing: border-box;
           display: flex;
           height: var(--height);
@@ -290,7 +290,7 @@ export class CcToggle extends LitElement {
 
         label::before {
           background-color: var(--cc-color-bg);
-          border-radius: var(--cc-border-radius-small, 0.15em);
+          border-radius: var(--cc-border-radius-xs, 0.15em);
           bottom: var(--space);
           content: '';
           display: block;

@@ -1011,7 +1011,7 @@ export class CcKvExplorer extends LitElement {
         .keys {
           background-color: var(--cc-color-bg-default, #fff);
           border: 1px solid var(--cc-color-border-neutral, #aaa);
-          border-radius: var(--cc-border-radius-default, 0.25em);
+          border-radius: var(--cc-border-radius-small, 0.25em);
           display: grid;
           grid-area: keys;
           grid-auto-rows: auto 1fr;
@@ -1057,7 +1057,7 @@ export class CcKvExplorer extends LitElement {
         .detail {
           background-color: var(--cc-color-bg-default, #fff);
           border: 1px solid var(--cc-color-border-neutral, #aaa);
-          border-radius: var(--cc-border-radius-default, 0.25em);
+          border-radius: var(--cc-border-radius-small, 0.25em);
           display: flex;
           flex-direction: column;
           grid-area: detail;
@@ -1171,7 +1171,7 @@ export class CcKvExplorer extends LitElement {
 
         .terminal {
           border: 1px solid var(--cc-color-border-neutral, #aaa);
-          border-radius: var(--cc-border-radius-default, 0.25em);
+          border-radius: var(--cc-border-radius-small, 0.25em);
           grid-area: terminal;
           max-height: 25em;
         }

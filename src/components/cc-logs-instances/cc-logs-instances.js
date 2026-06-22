@@ -632,7 +632,7 @@ export class CcLogsInstances extends LitElement {
           align-items: center;
           background-color: var(--cc-color-bg-neutral-readonly, #aaa);
           border: 1px solid var(--cc-color-border-neutral, #aaa);
-          border-radius: var(--cc-border-radius-default, 0.25em);
+          border-radius: var(--cc-border-radius-small, 0.25em);
           color: var(--cc-color-text-weak, #555);
           display: flex;
           font-family: var(--cc-ff-monospace, monospace);

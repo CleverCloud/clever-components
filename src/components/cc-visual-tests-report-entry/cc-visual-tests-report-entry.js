@@ -205,7 +205,7 @@ export class CcVisualTestsReportEntry extends LitElement {
 
         .viewbox {
           border: solid 1px var(--cc-color-border-neutral, #bfbfbf);
-          border-radius: var(--cc-border-radius-default, 0.25em);
+          border-radius: var(--cc-border-radius-small, 0.25em);
           box-sizing: border-box;
           overflow: hidden;
         }
@@ -227,13 +227,13 @@ export class CcVisualTestsReportEntry extends LitElement {
 
         .diff {
           border: solid 1px var(--cc-color-border-neutral, #bfbfbf);
-          border-radius: var(--cc-border-radius-default, 0.25em);
+          border-radius: var(--cc-border-radius-small, 0.25em);
           display: block;
         }
 
         cc-img-comparator {
           border: solid 1px var(--cc-color-border-neutral, #bfbfbf);
-          border-radius: var(--cc-border-radius-default, 0.25em);
+          border-radius: var(--cc-border-radius-small, 0.25em);
           margin-inline: auto;
           max-width: max-content;
           overflow: hidden;

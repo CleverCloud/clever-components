@@ -602,7 +602,7 @@ export class CcAddonInfo extends LitElement {
 
         .data-decoration {
           border: solid 1px var(--cc-color-border-neutral, #bfbfbf);
-          border-radius: var(--cc-border-radius-default, 0.25em);
+          border-radius: var(--cc-border-radius-small, 0.25em);
           font-weight: bold;
           padding: var(--cc-spacing-0, 0.125em) var(--cc-spacing-2, 0.35em);
         }
@@ -640,7 +640,7 @@ export class CcAddonInfo extends LitElement {
         }
 
         .linked-service__li cc-img {
-          border-radius: 0.19em;
+          border-radius: var(--cc-border-radius-xs, 0.15em);
           height: 1.5em;
           width: 1.5em;
         }

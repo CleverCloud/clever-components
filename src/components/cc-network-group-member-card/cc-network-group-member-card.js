@@ -341,7 +341,7 @@ export class CcNetworkGroupMemberCard extends LitElement {
 
         .member-card {
           border: solid 1px var(--cc-color-border-neutral-weak);
-          border-radius: var(--cc-border-radius-default, 0.25em);
+          border-radius: var(--cc-border-radius-small, 0.25em);
           container: member-card / inline-size;
           padding: var(--member-card-padding);
         }
@@ -373,7 +373,7 @@ export class CcNetworkGroupMemberCard extends LitElement {
         }
 
         .header-clickable:focus-visible {
-          border-radius: var(--cc-border-radius-default, 0.25em);
+          border-radius: var(--cc-border-radius-small, 0.25em);
           outline: var(--cc-focus-outline);
           /* Exception to the usual outline offset, since the header spans through the whole header with no padding */
           outline-offset: -2px;
@@ -392,7 +392,7 @@ export class CcNetworkGroupMemberCard extends LitElement {
 
         .identity-logo {
           background-color: var(--cc-color-bg-neutral-alt);
-          border-radius: var(--cc-border-radius-small, 0.15em);
+          border-radius: var(--cc-border-radius-xs, 0.15em);
           flex: 0 0 auto;
           height: 1.5em;
           width: 1.5em;

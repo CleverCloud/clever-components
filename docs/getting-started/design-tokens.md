@@ -116,10 +116,12 @@ As our design tokens only exist (for now) as CSS values, keys will be listed as 
 
 ### Border radius decisions
 
-| Key                          | Default value  |
-|:-----------------------------|:---------------|
-| `--cc-border-radius-default` | `0.25em`       |
-| `--cc-border-radius-small`   | `0.15em`       |
+| Key                         | Default value  |
+|:----------------------------|:---------------|
+| `--cc-border-radius-xs`     | `0.15em`       |
+| `--cc-border-radius-small`  | `0.25em`       |
+| `--cc-border-radius-medium` | `0.375em`      |
+| `--cc-border-radius-large`  | `0.5em`        |
 
 ### Spacing decisions
 

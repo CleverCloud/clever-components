@@ -153,7 +153,7 @@ export class CcEnvVarLinkedServices extends LitElement {
         .empty-msg {
           background-color: var(--cc-color-bg-default, #fff);
           border: 1px solid var(--cc-color-border-neutral, #aaa);
-          border-radius: var(--cc-border-radius-default, 0.25em);
+          border-radius: var(--cc-border-radius-small, 0.25em);
           box-sizing: border-box;
           padding: var(--cc-spacing-5, 1em);
         }

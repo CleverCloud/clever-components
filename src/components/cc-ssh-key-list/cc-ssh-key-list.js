@@ -418,7 +418,7 @@ export class CcSshKeyList extends LitElement {
         .key__fingerprint {
           background-color: var(--cc-color-bg-neutral);
           border-inline-start: 5px solid #a6a6a6;
-          border-radius: 0.125em;
+          border-radius: var(--cc-border-radius-xs, 0.15em);
           flex-basis: min(100%, 21.25em);
           flex-grow: 1;
           font-family: var(--cc-ff-monospace);
@@ -452,7 +452,7 @@ export class CcSshKeyList extends LitElement {
         [slot='info'] code {
           background-color: var(--cc-color-bg-neutral);
           border: 1px solid var(--cc-color-border-neutral-weak, #eee);
-          border-radius: var(--cc-border-radius-default, 0.25em);
+          border-radius: var(--cc-border-radius-small, 0.25em);
           display: inline-block;
           font-family: var(--cc-ff-monospace);
           font-size: 0.9em;

@@ -369,7 +369,7 @@ export class CcLogsAppRuntime extends LitElement {
         .wrapper.fullscreen {
           background-color: var(--cc-color-bg-default, #fff);
           border: 1px solid var(--cc-color-border-neutral, #aaa);
-          border-radius: var(--cc-border-radius-default, 0.25em);
+          border-radius: var(--cc-border-radius-small, 0.25em);
           margin: var(--cc-spacing-5, 1em);
           padding: var(--cc-spacing-5, 1em);
         }
@@ -377,7 +377,7 @@ export class CcLogsAppRuntime extends LitElement {
         .instances {
           background-color: var(--cc-color-bg-default, #fff);
           border: 1px solid var(--cc-color-border-neutral, #aaa);
-          border-radius: var(--cc-border-radius-default, 0.25em);
+          border-radius: var(--cc-border-radius-small, 0.25em);
           width: var(--instances-width);
         }
 

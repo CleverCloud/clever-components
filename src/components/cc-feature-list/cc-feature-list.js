@@ -166,7 +166,7 @@ export class CcFeatureList extends LitElement {
 
         .feature {
           border: solid 1px var(--cc-color-border-neutral-weak, #e7e7e7);
-          border-radius: var(--cc-border-radius-default);
+          border-radius: var(--cc-border-radius-small, 0.25em);
           display: flex;
           flex-direction: column;
           gap: var(--cc-spacing-3, 0.5em);

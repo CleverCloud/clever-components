@@ -393,7 +393,7 @@ export class CcTokenApiList extends LitElement {
         .api-token-card {
           align-items: center;
           border: solid 1px var(--cc-color-border-neutral-weak, #e6e6e6);
-          border-radius: var(--cc-border-radius-default, 0.25em);
+          border-radius: var(--cc-border-radius-small, 0.25em);
           display: grid;
           gap: var(--cc-spacing-3, 0.5em);
           grid-template-columns: [card-start info-start] 1fr [info-end actions-start] max-content [actions-end card-end];
@@ -524,7 +524,7 @@ export class CcTokenApiList extends LitElement {
         .api-token-card__actions__update__span {
           align-items: center;
           align-self: flex-end;
-          border-radius: var(--cc-border-radius-default, 0.25em);
+          border-radius: var(--cc-border-radius-small, 0.25em);
           color: var(--cc-color-text-weak, #404040);
           display: flex;
           gap: var(--cc-spacing-3, 0.5em);

@@ -315,7 +315,7 @@ export class CcHomepageOnboarding extends LitElement {
           align-items: center;
           background: transparent;
           border: none;
-          border-radius: var(--cc-border-radius-default, 0.25em);
+          border-radius: var(--cc-border-radius-small, 0.25em);
           cursor: pointer;
           display: flex;
           justify-content: center;
@@ -409,7 +409,7 @@ export class CcHomepageOnboarding extends LitElement {
         }
 
         .icon {
-          border-radius: 0.5em;
+          border-radius: var(--cc-border-radius-large, 0.5em);
           box-shadow:
             0 4px 6px -4px #0000001a,
             0 10px 15px -3px #0000001a;
@@ -484,7 +484,7 @@ export class CcHomepageOnboarding extends LitElement {
           align-items: center;
           background-color: var(--cc-color-bg-default, #fff);
           border: 1px solid #000;
-          border-radius: var(--cc-button-border-radius, 0.15em);
+          border-radius: var(--cc-border-radius-xs, 0.15em);
           box-sizing: border-box;
           color: var(--cc-color-text-primary-strongest, #3569aa);
           cursor: pointer;

@@ -319,7 +319,7 @@ export class CcKvTerminal extends LitElement {
         }
 
         .wrapper:focus-within {
-          border-radius: var(--cc-border-radius-small, 0.15em);
+          border-radius: var(--cc-border-radius-xs, 0.15em);
           outline: var(--cc-focus-outline, #000 solid 2px);
           outline-offset: var(--cc-focus-outline-offset, 2px);
         }

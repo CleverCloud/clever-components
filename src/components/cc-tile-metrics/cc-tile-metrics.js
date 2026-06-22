@@ -453,7 +453,7 @@ export class CcTileMetrics extends LitElement {
           align-items: center;
           /* TODO: Change variable when we have proper border token */
           border: 1px solid var(--cc-color-bg-strong);
-          border-radius: var(--cc-border-radius-small, 0.15em);
+          border-radius: var(--cc-border-radius-large, 0.5em);
           box-shadow: rgb(255 255 255 / 0%) 0 0 0 0;
           box-sizing: border-box;
           display: flex;

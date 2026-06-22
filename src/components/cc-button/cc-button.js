@@ -354,7 +354,7 @@ export class CcButton extends LitElement {
         .btn {
           background-color: var(--cc-color-bg-default, #fff);
           border: 1px solid #000;
-          border-radius: var(--cc-button-border-radius, 0.15em);
+          border-radius: var(--cc-border-radius-medium, 0.375em);
           cursor: pointer;
           font-weight: var(--cc-button-font-weight, bold);
           min-height: 2em;
@@ -654,7 +654,7 @@ export class CcButton extends LitElement {
 
         .cc-link:focus {
           background-color: var(--cc-color-bg-default, #fff);
-          border-radius: 0.1em;
+          border-radius: var(--cc-border-radius-medium, 0.375em);
           outline: var(--cc-focus-outline, #000 solid 2px);
           outline-offset: var(--cc-focus-outline-offset, 2px);
         }

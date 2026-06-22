@@ -429,7 +429,7 @@ export class CcNetworkGroupList extends LitElement {
 
         .network-group-card {
           border: solid 1px var(--cc-color-border-neutral-weak, #ccc);
-          border-radius: var(--cc-border-radius-default, 0.25em);
+          border-radius: var(--cc-border-radius-small, 0.25em);
           padding: var(--cc-spacing-5, 1em);
         }
 
@@ -450,7 +450,7 @@ export class CcNetworkGroupList extends LitElement {
 
         .network-group-card__header__heading__img {
           background-color: var(--cc-color-bg-neutral-alt);
-          border-radius: var(--cc-border-radius-default, 0.25em);
+          border-radius: var(--cc-border-radius-small, 0.25em);
           height: 1.375em;
           width: 1.375em;
         }

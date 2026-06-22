@@ -199,7 +199,7 @@ export class CcLogsmap extends LitElement {
       :host {
         background-color: var(--cc-color-bg-default, #fff);
         border: 1px solid var(--cc-color-border-neutral, #aaa);
-        border-radius: var(--cc-border-radius-default, 0.25em);
+        border-radius: var(--cc-border-radius-small, 0.25em);
         display: block;
         height: 15em;
         overflow: hidden;

@@ -212,7 +212,7 @@ export class CcHeaderOrga extends LitElement {
 
         .logo,
         .initials {
-          border-radius: var(--cc-border-radius-default, 0.25em);
+          border-radius: var(--cc-border-radius-small, 0.25em);
           flex: 0 0 auto;
           height: 3.25em;
           width: 3.25em;

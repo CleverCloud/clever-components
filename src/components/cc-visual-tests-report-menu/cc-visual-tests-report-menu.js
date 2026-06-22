@@ -312,7 +312,7 @@ export class CcVisualTestsReportMenu extends LitElement {
         .quick-nav a {
           align-items: center;
           background-color: var(--cc-color-bg-primary, #3569aa);
-          border-radius: var(--cc-border-radius-default, 0.25em);
+          border-radius: var(--cc-border-radius-small, 0.25em);
           color: var(--cc-color-text-inverted, #fff);
           display: flex;
           flex: 1 1 0;
@@ -350,7 +350,7 @@ export class CcVisualTestsReportMenu extends LitElement {
         .viewport-browser-list__item__link:focus-visible,
         .btn:focus-visible,
         .quick-nav a:focus {
-          border-radius: var(--cc-border-radius-default, 0.25em);
+          border-radius: var(--cc-border-radius-small, 0.25em);
           outline: var(--cc-focus-outline, #3569aa solid 2px);
           outline-offset: var(--cc-focus-outline-offset, 2px);
         }
@@ -409,7 +409,7 @@ export class CcVisualTestsReportMenu extends LitElement {
 
         .viewport-browser-list__item__link--active {
           background-color: var(--cc-color-bg-primary, #3569aa);
-          border-radius: var(--cc-border-radius-small, 0.15em);
+          border-radius: var(--cc-border-radius-xs, 0.15em);
           color: var(--cc-color-text-inverted, #fff);
         }
       `,

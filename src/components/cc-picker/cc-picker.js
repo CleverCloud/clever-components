@@ -287,7 +287,7 @@ export class CcPicker extends CcFormControlElement {
         }
 
         .fieldset:focus-visible {
-          border-radius: var(--cc-border-radius-default, 0.25em);
+          border-radius: var(--cc-border-radius-small, 0.25em);
           outline: var(--cc-focus-outline-error);
           outline-offset: 0.5em;
         }

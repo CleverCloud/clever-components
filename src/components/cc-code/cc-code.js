@@ -76,7 +76,7 @@ export class CcCode extends LitElement {
           align-items: start;
           background-color: var(--cc-color-bg-neutral);
           border: 1px solid var(--cc-color-border-neutral, #bfbfbf);
-          border-radius: var(--cc-border-radius-default, 0.25em);
+          border-radius: var(--cc-border-radius-small, 0.25em);
           display: flex;
           font-family: var(--cc-ff-monospace), serif;
           gap: var(--cc-spacing-3, 0.5em);

@@ -80,20 +80,20 @@ export class CcBlockDetails extends LitElement {
         }
 
         .btn-wrapper {
-          border-radius: var(--cc-border-radius-default, 0.25em);
+          border-radius: var(--cc-border-radius-large, 0.5em);
           grid-area: button;
         }
 
         :host([is-open]) .btn-wrapper {
           background-color: var(--cc-color-bg-default, #fff);
-          border-radius: var(--cc-border-radius-default, 0.25em) var(--cc-border-radius-default, 0.25em) 0 0;
+          border-radius: var(--cc-border-radius-large, 0.5em) var(--cc-border-radius-large, 0.5em) 0 0;
         }
 
         .button {
           align-items: center;
           background-color: transparent;
           border: solid 1px transparent;
-          border-radius: var(--cc-border-radius-default, 0.25em);
+          border-radius: var(--cc-border-radius-large, 0.5em);
           display: flex;
           font-family: inherit;
           font-size: 1em;
@@ -126,7 +126,7 @@ export class CcBlockDetails extends LitElement {
 
         .content {
           background-color: var(--cc-color-bg-default, #fff);
-          border-radius: var(--cc-border-radius-default, 0.25em);
+          border-radius: var(--cc-border-radius-large, 0.5em);
           box-sizing: border-box;
           display: none;
           grid-area: content;

@@ -694,7 +694,7 @@ export class CcGrid extends LitElement {
 
         td:focus[data-focusable='true'],
         th:focus[data-focusable='true'] {
-          border-radius: var(--cc-border-radius-default, 0.25em);
+          border-radius: var(--cc-border-radius-small, 0.25em);
           outline: var(--cc-focus-outline, #000 solid 2px);
           outline-offset: -2px;
         }
@@ -720,7 +720,7 @@ export class CcGrid extends LitElement {
           align-items: center;
           background: unset;
           border: none;
-          border-radius: var(--cc-border-radius-default, 0.25em);
+          border-radius: var(--cc-border-radius-small, 0.25em);
           cursor: pointer;
           display: flex;
           font-family: inherit;

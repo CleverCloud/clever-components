@@ -818,7 +818,7 @@ export class CcDomainManagement extends LitElement {
 
         code {
           background-color: var(--cc-color-bg-neutral);
-          border-radius: var(--cc-border-radius-default, 0.25em);
+          border-radius: var(--cc-border-radius-small, 0.25em);
           font-family: var(--cc-ff-monospace);
           padding: var(--cc-spacing-0, 0.125em) var(--cc-spacing-1, 0.25em);
           word-break: break-all;
@@ -896,7 +896,7 @@ export class CcDomainManagement extends LitElement {
         .domain {
           align-items: center;
           border: solid 1px var(--cc-color-border-neutral-weak);
-          border-radius: var(--cc-border-radius-default);
+          border-radius: var(--cc-border-radius-small, 0.25em);
           display: flex;
           flex-wrap: wrap;
           gap: var(--cc-spacing-3, 0.5em) var(--cc-spacing-5, 1em);

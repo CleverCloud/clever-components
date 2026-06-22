@@ -1116,7 +1116,7 @@ export class CcRangeSelector extends CcFormControlElement {
         }
 
         .fieldset:focus-visible {
-          border-radius: var(--cc-border-radius-default, 0.25em);
+          border-radius: var(--cc-border-radius-small, 0.25em);
           outline: var(--cc-focus-outline);
           outline-offset: 0.5em;
         }
@@ -1237,7 +1237,7 @@ export class CcRangeSelector extends CcFormControlElement {
         /* region option - custom button */
         .btn-custom {
           align-items: stretch;
-          border-radius: var(--cc-border-radius-default, 0.25em);
+          border-radius: var(--cc-border-radius-small, 0.25em);
           display: inline-flex;
           flex: 1 1 auto;
           user-select: auto;
