@@ -227,7 +227,7 @@ export class CcLogsMessageFilter extends LitElement {
         .error {
           background: var(--cc-color-bg-default, #fff);
           color: var(--cc-color-text-danger);
-          margin-right: 0.5em;
+          margin-right: var(--cc-spacing-3, 0.5em);
         }
       `,
     ];

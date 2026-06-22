@@ -59,7 +59,7 @@ export class CcDocList extends LitElement {
 
         .doc-wrapper {
           display: grid;
-          gap: 1em;
+          gap: var(--cc-spacing-5, 1em);
           grid-template-columns: repeat(auto-fit, minmax(20em, 1fr));
         }
       `,

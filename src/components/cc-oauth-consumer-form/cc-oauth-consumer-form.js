@@ -570,7 +570,7 @@ export class CcOauthConsumerForm extends LitElement {
 
         .wrapper {
           display: grid;
-          gap: 1.5em;
+          gap: var(--cc-spacing-7, 1.5em);
         }
 
         .description {
@@ -582,7 +582,7 @@ export class CcOauthConsumerForm extends LitElement {
         /* region information */
 
         .info-block {
-          padding-bottom: 1em;
+          padding-bottom: var(--cc-spacing-5, 1em);
         }
 
         .info-title {
@@ -610,18 +610,18 @@ export class CcOauthConsumerForm extends LitElement {
           flex: 1 1 0;
           font-size: 1.1em;
           font-weight: bold;
-          margin-bottom: 0.5em;
+          margin-bottom: var(--cc-spacing-3, 0.5em);
           padding-left: 0;
         }
 
         .rights-container {
           display: grid;
-          gap: 3em;
+          gap: var(--cc-spacing-10, 3em);
           grid-template-columns: 1fr 1fr;
         }
 
         :host([w-lt-750]) .rights-container {
-          gap: 1em;
+          gap: var(--cc-spacing-5, 1em);
           grid-template-columns: 1fr;
         }
 
@@ -630,20 +630,20 @@ export class CcOauthConsumerForm extends LitElement {
           border: none;
           display: flex;
           flex-direction: column;
-          gap: 0.5em;
+          gap: var(--cc-spacing-3, 0.5em);
         }
 
         .error-message {
           color: var(--cc-color-text-danger);
-          margin: 0.5em 0;
+          margin: var(--cc-spacing-3, 0.5em) 0;
         }
 
         .access-rights-section,
         .manage-rights-section {
           display: flex;
           flex-direction: column;
-          gap: 0.5em;
-          margin-left: 1em;
+          gap: var(--cc-spacing-3, 0.5em);
+          margin-left: var(--cc-spacing-5, 1em);
         }
 
         input[type='checkbox']:focus-visible {
@@ -657,9 +657,9 @@ export class CcOauthConsumerForm extends LitElement {
           align-items: center;
           display: flex;
           flex-wrap: wrap;
-          gap: 1em;
+          gap: var(--cc-spacing-5, 1em);
           justify-content: end;
-          margin-top: 1em;
+          margin-top: var(--cc-spacing-5, 1em);
         }
 
         :host([w-lt-450]) .oauth-form-buttons {
@@ -678,7 +678,7 @@ export class CcOauthConsumerForm extends LitElement {
 
         .danger-zone-wrapper {
           display: grid;
-          gap: 0.5em 1em;
+          gap: var(--cc-spacing-3, 0.5em) var(--cc-spacing-5, 1em);
           grid-template-areas:
             'title button'
             'description button';

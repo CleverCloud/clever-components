@@ -462,7 +462,7 @@ export class CcAddonBackups extends LitElement {
 
         .backup-icon,
         .backup-text {
-          margin-right: 0.5em;
+          margin-right: var(--cc-spacing-3, 0.5em);
         }
 
         .backup-icon {
@@ -478,7 +478,7 @@ export class CcAddonBackups extends LitElement {
         }
 
         .backup-text cc-link {
-          margin-right: 0.5em;
+          margin-right: var(--cc-spacing-3, 0.5em);
         }
 
         [title] {
@@ -492,7 +492,7 @@ export class CcAddonBackups extends LitElement {
         }
 
         cc-button[link] {
-          margin-right: 0.5em;
+          margin-right: var(--cc-spacing-3, 0.5em);
           vertical-align: baseline;
         }
 

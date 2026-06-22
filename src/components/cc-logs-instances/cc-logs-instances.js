@@ -568,7 +568,7 @@ export class CcLogsInstances extends LitElement {
         }
 
         .wrapper {
-          padding: 0.5em 0.75em;
+          padding: var(--cc-spacing-3, 0.5em) var(--cc-spacing-4, 0.75em);
         }
 
         .wrapper.wrapper--center {
@@ -584,7 +584,7 @@ export class CcLogsInstances extends LitElement {
         }
 
         .section {
-          margin-bottom: 1em;
+          margin-bottom: var(--cc-spacing-5, 1em);
         }
 
         .section--deploying {
@@ -610,9 +610,9 @@ export class CcLogsInstances extends LitElement {
           background-color: var(--cc-color-bg-neutral, #eee);
           color: var(--cc-color-text-weak, #555);
           display: flex;
-          gap: 0.5em;
-          margin-bottom: 0.5em;
-          padding: 0.5em 0.75em;
+          gap: var(--cc-spacing-3, 0.5em);
+          margin-bottom: var(--cc-spacing-3, 0.5em);
+          padding: var(--cc-spacing-3, 0.5em) var(--cc-spacing-4, 0.75em);
         }
 
         .section-header-icon {
@@ -637,19 +637,19 @@ export class CcLogsInstances extends LitElement {
           display: flex;
           font-family: var(--cc-ff-monospace, monospace);
           font-size: 0.7em;
-          padding: 0.2em;
+          padding: var(--cc-spacing-1, 0.25em);
         }
 
         .section-content {
           display: flex;
           flex-direction: column;
-          padding: 0.25em 0.75em 0.25em 1em;
+          padding: 0.25em var(--cc-spacing-4, 0.75em) 0.25em var(--cc-spacing-5, 1em);
         }
 
         .instances {
           align-items: center;
           display: grid;
-          gap: 0.5em;
+          gap: var(--cc-spacing-3, 0.5em);
           grid-template-columns: max-content max-content;
         }
 
@@ -660,13 +660,13 @@ export class CcLogsInstances extends LitElement {
         .instances.instances--ghost {
           display: flex;
           flex-direction: column;
-          margin-top: 1em;
+          margin-top: var(--cc-spacing-5, 1em);
         }
 
         .instance {
           align-items: center;
           display: flex;
-          gap: 0.5em;
+          gap: var(--cc-spacing-3, 0.5em);
         }
 
         .instance-id {
@@ -685,7 +685,7 @@ export class CcLogsInstances extends LitElement {
           font-size: 0.7em;
           height: 1em;
           justify-content: center;
-          padding: 0.2em;
+          padding: var(--cc-spacing-1, 0.25em);
           width: 1em;
         }
 
@@ -694,25 +694,25 @@ export class CcLogsInstances extends LitElement {
         }
 
         .deployments {
-          gap: 1em;
+          gap: var(--cc-spacing-5, 1em);
         }
 
         .deployment {
           display: flex;
           flex-direction: column;
-          gap: 0.5em;
+          gap: var(--cc-spacing-3, 0.5em);
         }
 
         .deployment-detail {
           align-items: center;
           color: var(--cc-color-text-weak, #555);
           display: grid;
-          gap: 0.5em;
+          gap: var(--cc-spacing-3, 0.5em);
           grid-template-columns: auto 1fr auto;
         }
 
         .deployment .instances {
-          padding-left: 1.5em;
+          padding-left: var(--cc-spacing-7, 1.5em);
         }
 
         cc-icon.deployment-state {
@@ -747,13 +747,13 @@ export class CcLogsInstances extends LitElement {
 
         .empty {
           font-style: italic;
-          padding-left: 0.75em;
+          padding-left: var(--cc-spacing-4, 0.75em);
         }
 
         input[type='checkbox'] {
           height: 1em;
           /* pixel perfect horizontal alignement with the header icon */
-          margin: 0 0 0 0.1em;
+          margin: 0 0 0 var(--cc-spacing-0, 0.125em);
           width: 1em;
         }
       `,

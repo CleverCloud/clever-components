@@ -329,9 +329,9 @@ export class CcKvTerminal extends LitElement {
           border-bottom: 1px solid var(--cc-color-border-neutral-strong);
           display: flex;
           flex-wrap: wrap;
-          gap: 1em;
+          gap: var(--cc-spacing-5, 1em);
           justify-content: space-between;
-          padding: 1em;
+          padding: var(--cc-spacing-5, 1em);
         }
 
         .header-warning {
@@ -339,20 +339,20 @@ export class CcKvTerminal extends LitElement {
 
           align-items: center;
           display: flex;
-          gap: 0.5em;
+          gap: var(--cc-spacing-3, 0.5em);
         }
 
         .scroller {
           overflow: auto;
-          padding: 0.5em;
+          padding: var(--cc-spacing-3, 0.5em);
         }
 
         .command {
           align-items: center;
           display: flex;
           font-weight: bold;
-          gap: 0.2em;
-          padding-bottom: 0.2em;
+          gap: var(--cc-spacing-1, 0.25em);
+          padding-bottom: var(--cc-spacing-1, 0.25em);
         }
 
         cc-icon {
@@ -371,13 +371,13 @@ export class CcKvTerminal extends LitElement {
 
         .result.last,
         .command.empty {
-          padding-bottom: 0.5em;
+          padding-bottom: var(--cc-spacing-3, 0.5em);
         }
 
         .prompt {
           align-items: center;
           display: flex;
-          gap: 0.2em;
+          gap: var(--cc-spacing-1, 0.25em);
           position: relative;
         }
 

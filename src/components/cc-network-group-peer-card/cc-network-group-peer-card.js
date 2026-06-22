@@ -127,15 +127,15 @@ export class CcNetworkGroupPeerCard extends LitElement {
           border-radius: var(--cc-border-radius-default);
           container: peer-card / inline-size;
           display: grid;
-          gap: 1em;
-          padding: 1em;
+          gap: var(--cc-spacing-5, 1em);
+          padding: var(--cc-spacing-5, 1em);
         }
 
         .peer-card__header {
           align-items: center;
           display: flex;
           flex-wrap: wrap;
-          gap: 1em;
+          gap: var(--cc-spacing-5, 1em);
           justify-content: space-between;
           line-height: var(--config-link-icon-size);
         }
@@ -147,7 +147,7 @@ export class CcNetworkGroupPeerCard extends LitElement {
         .metadata-list {
           display: flex;
           flex-wrap: wrap;
-          gap: 1em;
+          gap: var(--cc-spacing-5, 1em);
         }
 
         @container peer-card (max-width: 35em) {
@@ -158,7 +158,7 @@ export class CcNetworkGroupPeerCard extends LitElement {
 
         .metadata-item {
           display: flex;
-          gap: 0.5em;
+          gap: var(--cc-spacing-3, 0.5em);
           word-break: break-all;
         }
 

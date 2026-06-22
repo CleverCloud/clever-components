@@ -255,13 +255,13 @@ export class CcToast extends LitElement {
           display: flex;
           flex: 1 1 auto;
           flex-direction: column;
-          gap: 0.5em;
+          gap: var(--cc-spacing-3, 0.5em);
           justify-content: center;
           padding: var(--padding);
         }
 
         .content p {
-          margin-block: 0.5em;
+          margin-block: var(--cc-spacing-3, 0.5em);
         }
 
         .heading {
@@ -282,8 +282,8 @@ export class CcToast extends LitElement {
           border-radius: var(--cc-border-radius-small, 0.15em);
           cursor: pointer;
           height: auto;
-          margin: 0.25em;
-          padding: 0.2em;
+          margin: var(--cc-spacing-1, 0.25em);
+          padding: var(--cc-spacing-1, 0.25em);
           width: auto;
         }
 

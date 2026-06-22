@@ -661,16 +661,16 @@ export class CcGrid extends LitElement {
           border-bottom: 1px solid var(--cc-color-border-neutral-weak, #ccc);
           display: flex;
           min-width: 0;
-          padding: 0.75em 1.5em;
+          padding: var(--cc-spacing-4, 0.75em) var(--cc-spacing-7, 1.5em);
         }
 
         th {
           background-color: var(--cc-color-bg-neutral-disabled, #ccc);
           display: flex;
           font-weight: normal;
-          gap: 0.5em;
-          padding-bottom: 1em;
-          padding-top: 1em;
+          gap: var(--cc-spacing-3, 0.5em);
+          padding-bottom: var(--cc-spacing-5, 1em);
+          padding-top: var(--cc-spacing-5, 1em);
           position: sticky;
           top: 0;
           white-space: nowrap;
@@ -702,7 +702,7 @@ export class CcGrid extends LitElement {
         .icon-label {
           align-items: center;
           display: flex;
-          gap: 0.5em;
+          gap: var(--cc-spacing-3, 0.5em);
           min-width: 0;
         }
 
@@ -725,7 +725,7 @@ export class CcGrid extends LitElement {
           display: flex;
           font-family: inherit;
           font-size: unset;
-          gap: 0.5em;
+          gap: var(--cc-spacing-3, 0.5em);
           margin: 0;
           padding: 0;
         }

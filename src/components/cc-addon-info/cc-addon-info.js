@@ -548,8 +548,8 @@ export class CcAddonInfo extends LitElement {
           align-items: flex-start;
           display: flex;
           flex-wrap: wrap;
-          gap: 0.5em;
-          padding-block: 1em;
+          gap: var(--cc-spacing-3, 0.5em);
+          padding-block: var(--cc-spacing-5, 1em);
         }
 
         .section:focus-visible {
@@ -587,13 +587,13 @@ export class CcAddonInfo extends LitElement {
           display: flex;
           flex: 1 1 21em;
           flex-wrap: wrap;
-          gap: 0.5em;
+          gap: var(--cc-spacing-3, 0.5em);
         }
 
         .version__content {
           align-items: center;
           display: flex;
-          gap: 1em;
+          gap: var(--cc-spacing-5, 1em);
         }
 
         .version__content__version {
@@ -604,7 +604,7 @@ export class CcAddonInfo extends LitElement {
           border: solid 1px var(--cc-color-border-neutral, #bfbfbf);
           border-radius: var(--cc-border-radius-default, 0.25em);
           font-weight: bold;
-          padding: 0.12em 0.4em;
+          padding: var(--cc-spacing-0, 0.125em) var(--cc-spacing-2, 0.35em);
         }
 
         .billing__container {
@@ -620,23 +620,23 @@ export class CcAddonInfo extends LitElement {
         }
 
         .linked-services__content {
-          gap: 0.75em;
+          gap: var(--cc-spacing-4, 0.75em);
         }
 
         .linked-services__content ul {
-          column-gap: 1.5em;
+          column-gap: var(--cc-spacing-7, 1.5em);
           display: flex;
           flex-wrap: wrap;
           list-style: none;
           margin: 0;
           padding: 0;
-          row-gap: 0.5em;
+          row-gap: var(--cc-spacing-3, 0.5em);
         }
 
         .linked-service__li {
           align-items: center;
           display: flex;
-          gap: 0.5em;
+          gap: var(--cc-spacing-3, 0.5em);
         }
 
         .linked-service__li cc-img {
@@ -648,34 +648,34 @@ export class CcAddonInfo extends LitElement {
         .features__content {
           display: flex;
           flex-wrap: wrap;
-          gap: 0.75em 1.5em;
+          gap: var(--cc-spacing-4, 0.75em) var(--cc-spacing-7, 1.5em);
         }
 
         .features__content__item {
           align-items: center;
           display: flex;
           flex-wrap: wrap;
-          gap: 0.5em;
+          gap: var(--cc-spacing-3, 0.5em);
         }
 
         .dialog-desc {
-          margin-bottom: 1.25em;
+          margin-bottom: var(--cc-spacing-6, 1.25em);
         }
 
         .dialog-form {
           align-items: baseline;
           display: flex;
           flex-wrap: wrap;
-          gap: 0.5em 1em;
+          gap: var(--cc-spacing-3, 0.5em) var(--cc-spacing-5, 1em);
         }
 
         .dialog-form__version-from {
           display: flex;
-          gap: 1em;
+          gap: var(--cc-spacing-5, 1em);
         }
 
         .dialog-form cc-select {
-          column-gap: 1em;
+          column-gap: var(--cc-spacing-5, 1em);
           flex: 1 1 auto;
         }
 

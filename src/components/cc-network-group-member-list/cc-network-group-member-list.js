@@ -333,11 +333,11 @@ export class CcNetworkGroupMemberList extends LitElement {
       css`
         :host {
           display: grid;
-          gap: 1em;
+          gap: var(--cc-spacing-5, 1em);
         }
 
         .intro {
-          margin: 0 0 1em;
+          margin: 0 0 var(--cc-spacing-5, 1em);
         }
 
         .empty,
@@ -345,9 +345,9 @@ export class CcNetworkGroupMemberList extends LitElement {
           border: 1px solid var(--cc-color-border-neutral-weak);
           display: grid;
           font-weight: bold;
-          gap: 1.5em;
+          gap: var(--cc-spacing-7, 1.5em);
           justify-items: center;
-          padding: 1em;
+          padding: var(--cc-spacing-5, 1em);
         }
 
         .empty:focus-visible {
@@ -357,14 +357,14 @@ export class CcNetworkGroupMemberList extends LitElement {
 
         .member-list {
           display: grid;
-          gap: 0.5em;
+          gap: var(--cc-spacing-3, 0.5em);
         }
 
         .link-form {
           align-items: end;
           display: flex;
           flex-wrap: wrap;
-          gap: 1em;
+          gap: var(--cc-spacing-5, 1em);
         }
 
         .link-form__select {

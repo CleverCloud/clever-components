@@ -256,7 +256,7 @@ export class CcSearchBar extends LitElement {
         }
 
         cc-dialog::part(dialog) {
-          margin-block: 1em auto;
+          margin-block: var(--cc-spacing-5, 1em) auto;
           overflow: hidden;
         }
 
@@ -273,8 +273,8 @@ export class CcSearchBar extends LitElement {
         .input-wrapper {
           display: flex;
           flex-direction: column;
-          gap: 0.35em;
-          padding: 0.5em 0.5em 1em;
+          gap: var(--cc-spacing-2, 0.35em);
+          padding: var(--cc-spacing-3, 0.5em) var(--cc-spacing-3, 0.5em) var(--cc-spacing-5, 1em);
         }
 
         .input-field {
@@ -300,7 +300,7 @@ export class CcSearchBar extends LitElement {
           flex: 1;
           max-height: calc(100dvh - 16em);
           overflow-y: auto;
-          padding: 0 0.5em;
+          padding: 0 var(--cc-spacing-3, 0.5em);
         }
 
         .empty {
@@ -308,14 +308,14 @@ export class CcSearchBar extends LitElement {
           color: var(--cc-color-text-default, #000);
           display: flex;
           flex-direction: column;
-          gap: 0.5em;
-          padding: 1.5em 1em;
+          gap: var(--cc-spacing-3, 0.5em);
+          padding: var(--cc-spacing-7, 1.5em) var(--cc-spacing-5, 1em);
           text-align: center;
         }
 
         .empty-icon {
           color: var(--cc-color-text-primary-strongest, #000);
-          margin-bottom: 0.25em;
+          margin-bottom: var(--cc-spacing-1, 0.25em);
         }
 
         .empty-title {
@@ -335,16 +335,16 @@ export class CcSearchBar extends LitElement {
           background-color: var(--cc-color-bg-neutral, #f5f5f5);
           border-radius: var(--cc-border-radius-default, 0.25em);
           font-family: var(--cc-ff-monospace, monospace);
-          padding: 0.1em 0.3em;
+          padding: var(--cc-spacing-0, 0.125em) var(--cc-spacing-1, 0.25em);
         }
 
         .section:not(:last-child) {
           border-bottom: solid 1px var(--cc-color-border-neutral-weak, #e7e7e7);
-          padding-bottom: 1em;
+          padding-bottom: var(--cc-spacing-5, 1em);
         }
 
         .section:not(:first-child) {
-          padding-top: 0.5em;
+          padding-top: var(--cc-spacing-3, 0.5em);
         }
 
         .section-header {
@@ -353,10 +353,10 @@ export class CcSearchBar extends LitElement {
           display: flex;
           font-size: 1em;
           font-weight: normal;
-          gap: 0.4em;
+          gap: var(--cc-spacing-2, 0.35em);
           line-height: 1.3;
           margin: 0;
-          padding: 1em 0;
+          padding: var(--cc-spacing-5, 1em) 0;
         }
 
         .section-header-label {
@@ -366,10 +366,10 @@ export class CcSearchBar extends LitElement {
         .section-items {
           display: flex;
           flex-direction: column;
-          gap: 0.5em;
+          gap: var(--cc-spacing-3, 0.5em);
           list-style: none;
           margin: 0;
-          padding: 0.33em 0;
+          padding: var(--cc-spacing-2, 0.35em) 0;
         }
 
         .item {
@@ -378,9 +378,9 @@ export class CcSearchBar extends LitElement {
           color: var(--cc-color-text-default, #000);
           display: flex;
           font-weight: normal;
-          gap: 0.5em;
+          gap: var(--cc-spacing-3, 0.5em);
           letter-spacing: -0.15px;
-          padding: 0.5em;
+          padding: var(--cc-spacing-3, 0.5em);
           text-decoration: none;
         }
 

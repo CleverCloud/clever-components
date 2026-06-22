@@ -412,7 +412,7 @@ export class CcHeaderApp extends LitElement {
         .main {
           display: flex;
           flex-wrap: wrap;
-          gap: 1em;
+          gap: var(--cc-spacing-5, 1em);
         }
 
         .flavor-logo {
@@ -443,7 +443,7 @@ export class CcHeaderApp extends LitElement {
         .commits {
           display: flex;
           flex-wrap: wrap;
-          gap: 1em;
+          gap: var(--cc-spacing-5, 1em);
         }
 
         .name {
@@ -457,7 +457,7 @@ export class CcHeaderApp extends LitElement {
         }
 
         .commit_img {
-          margin-right: 0.2em;
+          margin-right: var(--cc-spacing-1, 0.25em);
         }
 
         .commit_img.git {
@@ -485,7 +485,7 @@ export class CcHeaderApp extends LitElement {
           align-self: center;
           display: flex;
           flex-wrap: wrap;
-          gap: 1em;
+          gap: var(--cc-spacing-5, 1em);
         }
 
         cc-button {
@@ -503,7 +503,7 @@ export class CcHeaderApp extends LitElement {
           flex-wrap: wrap;
           font-size: 0.9em;
           font-style: italic;
-          gap: 0.57em;
+          gap: var(--cc-spacing-3, 0.5em);
         }
 
         .status-icon {

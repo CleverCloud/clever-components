@@ -88,14 +88,14 @@ export class CcProductCard extends LitElement {
           border-radius: var(--cc-border-radius-default, 0.25em);
           box-sizing: border-box;
           display: grid;
-          gap: 0.25em 0.5em;
+          gap: var(--cc-spacing-1, 0.25em) var(--cc-spacing-3, 0.5em);
           grid-template-areas:
             'icon name status'
             'description description description';
           grid-template-columns: min-content auto 1fr;
           grid-template-rows: min-content auto;
           height: 100%;
-          padding: 1em;
+          padding: var(--cc-spacing-5, 1em);
           position: relative;
         }
 

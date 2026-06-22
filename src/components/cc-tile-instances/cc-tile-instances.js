@@ -191,7 +191,7 @@ export class CcTileInstances extends LitElement {
           color: var(--status-color, #000);
           flex: 1 1 0;
           font-size: 1.2em;
-          margin-left: 0.25em;
+          margin-left: var(--cc-spacing-1, 0.25em);
         }
 
         .size-label {
@@ -208,7 +208,7 @@ export class CcTileInstances extends LitElement {
 
         .error-message {
           display: grid;
-          gap: 0.75em;
+          gap: var(--cc-spacing-4, 0.75em);
           grid-template-columns: min-content 1fr;
           text-align: left;
         }

@@ -118,7 +118,7 @@ export class CcBreadcrumbs extends LitElement {
         .item-wrapper {
           align-items: center;
           display: flex;
-          gap: 0.2em;
+          gap: var(--cc-spacing-1, 0.25em);
           min-width: 0;
         }
 

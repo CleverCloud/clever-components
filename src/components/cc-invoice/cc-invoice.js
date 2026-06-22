@@ -95,7 +95,7 @@ export class CcInvoice extends LitElement {
 
         [slot='button'] {
           align-self: start;
-          margin-left: 1em;
+          margin-left: var(--cc-spacing-5, 1em);
         }
 
         cc-block {
@@ -113,7 +113,7 @@ export class CcInvoice extends LitElement {
         .info {
           display: flex;
           justify-content: center;
-          margin-bottom: 1em;
+          margin-bottom: var(--cc-spacing-5, 1em);
         }
 
         .frame {

@@ -172,23 +172,23 @@ export class CcProductList extends LitElement {
 
         .category-products {
           display: grid;
-          gap: 1em;
+          gap: var(--cc-spacing-5, 1em);
           grid-template-columns: repeat(auto-fill, minmax(20em, 1fr));
         }
 
         .category-title {
           align-items: center;
           color: var(--cc-product-list-category-title-color);
-          column-gap: 0.25em;
+          column-gap: var(--cc-spacing-1, 0.25em);
           display: flex;
-          margin-block-end: 0.5em;
+          margin-block-end: var(--cc-spacing-3, 0.5em);
         }
 
         .category-filter {
           border: none;
           display: flex;
           flex-wrap: wrap;
-          gap: 0.25em;
+          gap: var(--cc-spacing-1, 0.25em);
           padding: 0;
         }
 
@@ -214,15 +214,15 @@ export class CcProductList extends LitElement {
         .search-form {
           display: flex;
           flex-direction: column;
-          gap: 0.5em;
+          gap: var(--cc-spacing-3, 0.5em);
         }
 
         .search-form + .products {
-          margin-block-start: 1.5em;
+          margin-block-start: var(--cc-spacing-7, 1.5em);
         }
 
         .category + .category {
-          margin-block-start: 1.5em;
+          margin-block-start: var(--cc-spacing-7, 1.5em);
         }
       `,
     ];

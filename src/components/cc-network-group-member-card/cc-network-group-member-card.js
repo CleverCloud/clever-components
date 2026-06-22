@@ -334,7 +334,7 @@ export class CcNetworkGroupMemberCard extends LitElement {
     return [
       css`
         :host {
-          --member-card-padding: 1em;
+          --member-card-padding: var(--cc-spacing-5, 1em);
 
           display: block;
         }
@@ -356,7 +356,7 @@ export class CcNetworkGroupMemberCard extends LitElement {
           align-items: center;
           display: flex;
           flex-wrap: wrap;
-          gap: 0.5em;
+          gap: var(--cc-spacing-3, 0.5em);
           justify-content: space-between;
           margin-bottom: var(--member-card-padding);
           margin-inline: calc(var(--member-card-padding) * -1);
@@ -387,7 +387,7 @@ export class CcNetworkGroupMemberCard extends LitElement {
           align-items: center;
           display: flex;
           flex: 1 1 auto;
-          gap: 0.5em;
+          gap: var(--cc-spacing-3, 0.5em);
         }
 
         .identity-logo {
@@ -408,7 +408,7 @@ export class CcNetworkGroupMemberCard extends LitElement {
           align-items: center;
           display: flex;
           flex-wrap: wrap;
-          gap: 0.5em;
+          gap: var(--cc-spacing-3, 0.5em);
         }
 
         .deleted-member-identity-label {
@@ -422,7 +422,7 @@ export class CcNetworkGroupMemberCard extends LitElement {
         .peers-toggle {
           align-items: center;
           display: flex;
-          gap: 0.5em;
+          gap: var(--cc-spacing-3, 0.5em);
         }
 
         .peers-count {
@@ -468,8 +468,8 @@ export class CcNetworkGroupMemberCard extends LitElement {
 
         .peer-list {
           display: grid;
-          gap: 0.5em;
-          margin-block: 1em;
+          gap: var(--cc-spacing-3, 0.5em);
+          margin-block: var(--cc-spacing-5, 1em);
         }
 
         /* endregion */
@@ -480,15 +480,15 @@ export class CcNetworkGroupMemberCard extends LitElement {
           align-items: center;
           display: flex;
           flex-wrap: wrap;
-          gap: 1em;
+          gap: var(--cc-spacing-5, 1em);
           justify-content: space-between;
-          margin-top: 1em;
+          margin-top: var(--cc-spacing-5, 1em);
         }
 
         .dashboard-link {
           align-items: center;
           display: flex;
-          gap: 0.5em;
+          gap: var(--cc-spacing-3, 0.5em);
         }
 
         .dashboard-link-icon {
@@ -503,7 +503,7 @@ export class CcNetworkGroupMemberCard extends LitElement {
           align-items: center;
           display: flex;
           flex-wrap: wrap;
-          gap: 1em;
+          gap: var(--cc-spacing-5, 1em);
         }
 
         .deleted-member-footer-warning {

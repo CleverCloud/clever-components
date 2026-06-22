@@ -109,7 +109,7 @@ export class CcImgComparator extends LitElement {
         .heading {
           font-size: 0.9em;
           font-style: italic;
-          padding: 1em;
+          padding: var(--cc-spacing-5, 1em);
           position: absolute;
         }
 
@@ -143,7 +143,7 @@ export class CcImgComparator extends LitElement {
           border: solid 1px var(--cc-color-border-neutral, #bfbfbf);
           border-radius: 50%;
           display: flex;
-          padding: 0.5em;
+          padding: var(--cc-spacing-3, 0.5em);
           position: absolute;
           top: 50%;
           transform: translate(-50%, -50%);

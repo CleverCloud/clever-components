@@ -244,14 +244,14 @@ export class CcOauthConsumerInfo extends LitElement {
         .wrapper {
           container-type: inline-size;
           display: grid;
-          gap: 1.5em;
+          gap: var(--cc-spacing-7, 1.5em);
         }
 
         /* region Header */
 
         .header-wrapper {
           display: grid;
-          gap: 0.5em 1em;
+          gap: var(--cc-spacing-3, 0.5em) var(--cc-spacing-5, 1em);
           grid-template-areas:
             'logo name link'
             'logo description link';
@@ -315,18 +315,18 @@ export class CcOauthConsumerInfo extends LitElement {
         .access-grid,
         .rights-container {
           display: grid;
-          gap: 3em;
+          gap: var(--cc-spacing-10, 3em);
           grid-template-columns: 1fr 1fr;
         }
 
         :host([w-lt-550]) .access-grid,
         :host([w-lt-550]) .rights-container {
-          gap: 1em;
+          gap: var(--cc-spacing-5, 1em);
           grid-template-columns: 1fr;
         }
 
         .access-grid:first-of-type {
-          margin-bottom: 1em;
+          margin-bottom: var(--cc-spacing-5, 1em);
         }
 
         .access-grid dd {
@@ -340,7 +340,7 @@ export class CcOauthConsumerInfo extends LitElement {
         }
 
         dt {
-          margin-bottom: 0.35em;
+          margin-bottom: var(--cc-spacing-2, 0.35em);
         }
 
         /* end region */
@@ -350,7 +350,7 @@ export class CcOauthConsumerInfo extends LitElement {
         .header-rights {
           display: flex;
           flex-wrap: wrap;
-          gap: 1em;
+          gap: var(--cc-spacing-5, 1em);
         }
 
         .auth-title {
@@ -363,7 +363,7 @@ export class CcOauthConsumerInfo extends LitElement {
         .manage-rights {
           align-content: baseline;
           display: grid;
-          gap: 1em;
+          gap: var(--cc-spacing-5, 1em);
         }
 
         .rights-title {
@@ -372,13 +372,13 @@ export class CcOauthConsumerInfo extends LitElement {
 
         .rights-section {
           display: grid;
-          gap: 0.5em;
+          gap: var(--cc-spacing-3, 0.5em);
         }
 
         .right {
           align-items: center;
           display: flex;
-          gap: 0.5em;
+          gap: var(--cc-spacing-3, 0.5em);
         }
 
         /* end region */

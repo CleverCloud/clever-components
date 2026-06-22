@@ -109,7 +109,7 @@ class CcPickerOption extends LitElement {
 
         /* region body section */
         ::slotted([slot='body']) {
-          padding: 1em 1.25em;
+          padding: var(--cc-spacing-5, 1em) 1.25em;
         }
 
         .body {
@@ -129,7 +129,7 @@ class CcPickerOption extends LitElement {
         ::slotted([slot='footer']) {
           background-color: var(--cc-color-bg-neutral-alt, #e7e7e7);
           font-size: 0.875em;
-          padding: 0.5em 1.25em;
+          padding: var(--cc-spacing-3, 0.5em) 1.25em;
         }
         /* endregion */
 
@@ -138,7 +138,7 @@ class CcPickerOption extends LitElement {
           --cc-icon-color: var(--cc-color-bg-primary, #3569aa);
 
           align-self: start;
-          padding: 0.5em;
+          padding: var(--cc-spacing-3, 0.5em);
         }
 
         .icon-selection-style--radio {
@@ -149,14 +149,14 @@ class CcPickerOption extends LitElement {
           display: flex;
           height: 1lh;
           justify-content: center;
-          padding-block: 1em;
-          padding-inline-start: 1em;
+          padding-block: var(--cc-spacing-5, 1em);
+          padding-inline-start: var(--cc-spacing-5, 1em);
         }
         /* endregion */
 
         /* region selection style radio */
         :host([selection-style='radio']) ::slotted([slot='body']) {
-          padding-inline-start: 0.5em;
+          padding-inline-start: var(--cc-spacing-3, 0.5em);
         }
         /* endregion */
 

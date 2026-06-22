@@ -298,7 +298,7 @@ export class CcPicker extends CcFormControlElement {
           align-items: flex-end;
           cursor: pointer;
           display: flex;
-          gap: 2em;
+          gap: var(--cc-spacing-8, 2em);
           justify-content: space-between;
           margin: 0;
           padding-block-end: var(--cc-form-label-gap, 0.35em);
@@ -322,7 +322,7 @@ export class CcPicker extends CcFormControlElement {
         .tiles {
           display: flex;
           flex-wrap: wrap;
-          gap: 1em;
+          gap: var(--cc-spacing-5, 1em);
           grid-area: input;
         }
         /* endregion */
@@ -379,7 +379,7 @@ export class CcPicker extends CcFormControlElement {
         slot[name='help']::slotted(*) {
           color: var(--cc-color-text-weak);
           font-size: 0.9em;
-          margin: 0.3em 0 0;
+          margin: var(--cc-spacing-1, 0.25em) 0 0;
         }
 
         .help-container {
@@ -389,7 +389,7 @@ export class CcPicker extends CcFormControlElement {
         .error-container {
           color: var(--cc-color-text-danger, #be242d);
           grid-area: error;
-          margin: 0.5em 0 0;
+          margin: var(--cc-spacing-3, 0.5em) 0 0;
         }
         /* endregion */
 
