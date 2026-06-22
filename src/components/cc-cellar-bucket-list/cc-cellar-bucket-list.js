@@ -32,16 +32,6 @@ import {
   CcCellarBucketSortEvent,
 } from './cc-cellar-bucket-list.events.js';
 
-/**
- * @import { CellarBucketListState, CellarBucketListStateLoading, CellarBucketListStateLoaded, CellarBucketState, CellarBucketCreateFormState, CellarBucketSortColumn } from './cc-cellar-bucket-list.types.js'
- * @import { CellarBucketVersioning } from '../cc-cellar-explorer/cc-cellar-explorer.client.types.js'
- * @import { CcGrid } from '../cc-grid/cc-grid.js'
- * @import { CcGridColumnDefinition } from '../cc-grid/cc-grid.types.js'
- * @import { CcGridSortEvent } from '../cc-grid/cc-grid.events.js'
- * @import { TemplateResult } from 'lit'
- * @import { Ref } from 'lit/directives/ref.js'
- */
-
 /** @type {Array<CellarBucketState>} */
 const SKELETON_BUCKETS = [...Array(5)].map(() => ({
   type: 'bucket',
@@ -54,6 +44,16 @@ const SKELETON_BUCKETS = [...Array(5)].map(() => ({
 }));
 
 const NUMBER_OF_BUCKETS_ENABLING_FILTERING = 5;
+
+/**
+ * @import { CellarBucketListState, CellarBucketListStateLoading, CellarBucketListStateLoaded, CellarBucketState, CellarBucketCreateFormState, CellarBucketSortColumn } from './cc-cellar-bucket-list.types.js'
+ * @import { CellarBucketVersioning } from '../cc-cellar-explorer/cc-cellar-explorer.client.types.js'
+ * @import { CcGrid } from '../cc-grid/cc-grid.js'
+ * @import { CcGridColumnDefinition } from '../cc-grid/cc-grid.types.js'
+ * @import { CcGridSortEvent } from '../cc-grid/cc-grid.events.js'
+ * @import { TemplateResult } from 'lit'
+ * @import { Ref } from 'lit/directives/ref.js'
+ */
 
 /**
  * A component that allows to navigate through a Cellar addon.

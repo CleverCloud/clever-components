@@ -12,13 +12,6 @@ import '../cc-dialog/cc-dialog.js';
 import '../cc-notice/cc-notice.js';
 import { CcNetworkGroupDeleteEvent } from './cc-network-group-dashboard.events.js';
 
-/**
- * @import { NetworkGroupDashboardState } from './cc-network-group-dashboard.types.js'
- * @import { CcAddonHeaderState } from '../cc-addon-header/cc-addon-header.types.js'
- * @import { AddonInfoState } from '../cc-addon-info/cc-addon-info.types.js'
- * @import { PropertyValues } from 'lit'
- */
-
 const SKELETON_HEADER_STATE = {
   type: /** @type {const} */ ('loading'),
   name: fakeString(10),
@@ -35,6 +28,13 @@ const SKELETON_INFO_STATE = {
   numberOfMembers: 0,
   numberOfPeers: 0,
 };
+
+/**
+ * @import { NetworkGroupDashboardState } from './cc-network-group-dashboard.types.js'
+ * @import { CcAddonHeaderState } from '../cc-addon-header/cc-addon-header.types.js'
+ * @import { AddonInfoState } from '../cc-addon-info/cc-addon-info.types.js'
+ * @import { PropertyValues } from 'lit'
+ */
 
 /**
  * A component to display various info about a Network Group (name, subnet, last IP, number of members, number of peers...).

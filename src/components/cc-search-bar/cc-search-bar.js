@@ -11,12 +11,6 @@ import '../cc-dialog/cc-dialog.js';
 import '../cc-icon/cc-icon.js';
 import '../cc-input-text/cc-input-text.js';
 
-/**
- * @import { SearchBarItem, SearchBarItemType, SearchBarSection } from './cc-search-bar.types.js'
- * @import { BadgeIntent } from '../cc-badge/cc-badge.types.js'
- * @import { CcInputEvent } from '../common.events.js'
- */
-
 const KEYWORD_TOKEN_REGEX = /^is:./;
 
 /** @type {Record<SearchBarItemType, BadgeIntent>} */
@@ -47,6 +41,12 @@ function getItemTypeBadgeLabel(itemType) {
       return i18n('cc-search-bar.badge.cke');
   }
 }
+
+/**
+ * @import { SearchBarItem, SearchBarItemType, SearchBarSection } from './cc-search-bar.types.js'
+ * @import { BadgeIntent } from '../cc-badge/cc-badge.types.js'
+ * @import { CcInputEvent } from '../common.events.js'
+ */
 
 /**
  * A search bar dialog that displays categorized results.
