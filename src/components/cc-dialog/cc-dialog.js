@@ -265,15 +265,15 @@ export class CcDialog extends LitElement {
           color: var(--cc-color-text-primary-strongest);
           display: flex;
           font-weight: bold;
-          gap: 0.5em;
-          margin-bottom: 1.25em;
-          padding-bottom: 1.25em;
+          gap: var(--cc-spacing-3, 0.5em);
+          margin-bottom: var(--cc-spacing-6, 1.25em);
+          padding-bottom: var(--cc-spacing-6, 1.25em);
         }
 
         .dialog-content-body-wrapper {
           display: flex;
           flex-direction: column;
-          gap: 1em;
+          gap: var(--cc-spacing-5, 1em);
         }
       `,
     ];

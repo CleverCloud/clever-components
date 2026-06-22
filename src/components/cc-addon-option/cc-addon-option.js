@@ -83,7 +83,7 @@ export class CcAddonOption extends LitElement {
           display: grid;
           grid-gap: 1em;
           grid-template-columns: min-content 1fr;
-          padding: 1em;
+          padding: var(--cc-spacing-5, 1em);
         }
 
         ::slotted(.option-warning) {
@@ -124,7 +124,7 @@ export class CcAddonOption extends LitElement {
 
         cc-toggle {
           justify-self: end;
-          margin-top: 0.5em;
+          margin-top: var(--cc-spacing-3, 0.5em);
         }
 
         :host([enabled]) cc-toggle {

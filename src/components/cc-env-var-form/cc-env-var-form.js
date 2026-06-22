@@ -512,7 +512,7 @@ export class CcEnvVarForm extends LitElement {
         .button-bar {
           display: flex;
           flex-wrap: wrap;
-          gap: 1em;
+          gap: var(--cc-spacing-5, 1em);
         }
 
         .spacer {
@@ -520,13 +520,13 @@ export class CcEnvVarForm extends LitElement {
         }
 
         .error-container {
-          padding-bottom: 0.5em;
+          padding-bottom: var(--cc-spacing-3, 0.5em);
         }
 
         [slot='footer-right'] cc-link {
           align-items: center;
           display: flex;
-          gap: 0.5em;
+          gap: var(--cc-spacing-3, 0.5em);
         }
       `,
     ];

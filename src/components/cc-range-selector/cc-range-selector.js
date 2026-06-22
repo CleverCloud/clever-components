@@ -1140,7 +1140,7 @@ export class CcRangeSelector extends CcFormControlElement {
           align-items: flex-end;
           cursor: pointer;
           display: flex;
-          gap: 2em;
+          gap: var(--cc-spacing-8, 2em);
           justify-content: space-between;
           padding-block-end: var(--cc-form-label-gap, 0.35em);
           width: 100%;
@@ -1164,7 +1164,7 @@ export class CcRangeSelector extends CcFormControlElement {
           display: flex;
           flex-wrap: wrap;
           grid-area: input;
-          row-gap: 1em;
+          row-gap: var(--cc-spacing-5, 1em);
         }
         /* endregion */
 
@@ -1186,7 +1186,7 @@ export class CcRangeSelector extends CcFormControlElement {
           align-items: center;
           color: var(--cc-color-text-weak, #404040);
           display: inline-flex;
-          padding-inline: 0.125em;
+          padding-inline: var(--cc-spacing-0, 0.125em);
           visibility: hidden;
         }
 
@@ -1296,7 +1296,7 @@ export class CcRangeSelector extends CcFormControlElement {
         slot[name='help']::slotted(*) {
           color: var(--cc-color-text-weak, #404040);
           font-size: 0.9em;
-          margin: 0.3em 0 0;
+          margin: var(--cc-spacing-1, 0.25em) 0 0;
         }
 
         .help-container {
@@ -1306,7 +1306,7 @@ export class CcRangeSelector extends CcFormControlElement {
         .error-container {
           color: var(--cc-color-text-danger, #be242d);
           grid-area: error;
-          margin: 0.5em 0 0;
+          margin: var(--cc-spacing-3, 0.5em) 0 0;
         }
         /* endregion */
 

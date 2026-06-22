@@ -138,14 +138,14 @@ export class CcNotice extends LitElement {
           align-items: start;
           border-radius: var(--cc-border-radius-default, 0.25em);
           display: grid;
-          gap: 0.5em;
+          gap: var(--cc-spacing-4, 0.75em);
           grid-template-areas:
             'icon heading'
             '.    message';
           grid-template-columns: auto 1fr;
           grid-template-rows: auto auto;
           line-height: 1.4;
-          padding: 0.75em;
+          padding: var(--cc-spacing-7, 1.5em);
           position: relative;
         }
 
@@ -186,7 +186,7 @@ export class CcNotice extends LitElement {
         }
 
         .wrapper.closeable {
-          padding-right: 2em;
+          padding-right: var(--cc-spacing-8, 2em);
         }
 
         .wrapper.no-icon {

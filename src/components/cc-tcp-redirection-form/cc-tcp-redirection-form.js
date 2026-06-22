@@ -146,13 +146,13 @@ export class CcTcpRedirectionForm extends LitElement {
         cc-badge {
           /* cc-block title changes the font-size to 1.2em, which makes our badge way too big */
           font-size: 0.8em;
-          margin-left: 0.5em;
+          margin-left: var(--cc-spacing-3, 0.5em);
           vertical-align: middle;
         }
 
         .content {
           display: grid;
-          gap: 1em;
+          gap: var(--cc-spacing-5, 1em);
         }
 
         .description {
@@ -161,14 +161,14 @@ export class CcTcpRedirectionForm extends LitElement {
 
         .description p {
           margin: 0;
-          margin-bottom: 1em;
+          margin-bottom: var(--cc-spacing-5, 1em);
         }
 
         .description code {
           background-color: var(--cc-color-bg-neutral);
           border-radius: var(--cc-border-radius-default, 0.25em);
           font-family: var(--cc-ff-monospace);
-          padding: 0.15em 0.3em;
+          padding: var(--cc-spacing-0, 0.125em) var(--cc-spacing-1, 0.25em);
         }
 
         .empty-msg {

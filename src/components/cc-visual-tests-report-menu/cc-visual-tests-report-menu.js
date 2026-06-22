@@ -301,8 +301,8 @@ export class CcVisualTestsReportMenu extends LitElement {
 
         .quick-nav {
           display: flex;
-          gap: 1em;
-          padding: 1em;
+          gap: var(--cc-spacing-5, 1em);
+          padding: var(--cc-spacing-5, 1em);
         }
 
         .quick-nav li {
@@ -316,9 +316,9 @@ export class CcVisualTestsReportMenu extends LitElement {
           color: var(--cc-color-text-inverted, #fff);
           display: flex;
           flex: 1 1 0;
-          gap: 0.5em;
+          gap: var(--cc-spacing-3, 0.5em);
           justify-content: space-between;
-          padding: 0.5em 1em;
+          padding: var(--cc-spacing-3, 0.5em) var(--cc-spacing-5, 1em);
           text-decoration: none;
         }
 
@@ -329,8 +329,8 @@ export class CcVisualTestsReportMenu extends LitElement {
           cursor: pointer;
           display: flex;
           font: inherit;
-          gap: 0.5em;
-          padding: 0.2em 0.5em;
+          gap: var(--cc-spacing-3, 0.5em);
+          padding: var(--cc-spacing-1, 0.25em) var(--cc-spacing-3, 0.5em);
           text-align: start;
           width: 100%;
         }
@@ -358,7 +358,7 @@ export class CcVisualTestsReportMenu extends LitElement {
         .component-list {
           display: flex;
           flex-direction: column;
-          gap: 0.5em;
+          gap: var(--cc-spacing-3, 0.5em);
           overflow-x: hidden;
           overflow-y: auto;
           scrollbar-gutter: stable;
@@ -369,19 +369,19 @@ export class CcVisualTestsReportMenu extends LitElement {
         }
 
         .component-list__item__btn {
-          padding: 1em;
+          padding: var(--cc-spacing-5, 1em);
         }
 
         .story-list:not([hidden]) {
           background-color: var(--cc-color-bg-neutral-alt, #e7e7e7);
           display: flex;
           flex-direction: column;
-          padding: 0.5em 1em;
+          padding: var(--cc-spacing-3, 0.5em) var(--cc-spacing-5, 1em);
           transition: background-color 0.3s;
         }
 
         .story-list__item {
-          padding: 0.5em;
+          padding: var(--cc-spacing-3, 0.5em);
         }
 
         .story-list__item:not(:last-of-type) {
@@ -389,7 +389,7 @@ export class CcVisualTestsReportMenu extends LitElement {
         }
 
         .viewport-browser-list {
-          padding: 0.5em 0;
+          padding: var(--cc-spacing-3, 0.5em) 0;
         }
 
         .viewport-browser-list__item__link {
@@ -397,8 +397,8 @@ export class CcVisualTestsReportMenu extends LitElement {
           color: var(--cc-color-text-default, #262626);
           display: flex;
           justify-content: space-between;
-          margin-left: 1.5em;
-          padding: 0.5em;
+          margin-left: var(--cc-spacing-7, 1.5em);
+          padding: var(--cc-spacing-3, 0.5em);
           text-decoration: none;
           text-transform: capitalize;
         }

@@ -281,7 +281,7 @@ export class CcAddonAdmin extends LitElement {
 
         .one-line-form cc-input-text {
           flex: 1 1 10em;
-          margin-right: 0.5em;
+          margin-right: var(--cc-spacing-3, 0.5em);
         }
 
         .one-line-form cc-button {
@@ -297,14 +297,14 @@ export class CcAddonAdmin extends LitElement {
           border-radius: var(--cc-border-radius-default, 0.25em);
           box-shadow: 2px 4px 8px 0 rgb(0 0 0 / 12%);
           box-sizing: border-box;
-          padding: 4em;
+          padding: var(--cc-spacing-10, 3em);
           width: min(38em, 80%);
         }
 
         /* stylelint-disable-next-line media-feature-range-notation */
         @media screen and (max-width: 38em) {
           dialog {
-            padding: 1em;
+            padding: var(--cc-spacing-5, 1em);
           }
         }
 
@@ -325,7 +325,7 @@ export class CcAddonAdmin extends LitElement {
           border-radius: var(--cc-border-radius-default, 0.25em);
           color: var(--cc-color-text-weak);
           cursor: pointer;
-          padding: 0.5em;
+          padding: var(--cc-spacing-3, 0.5em);
           position: absolute;
           right: 1.5em;
           top: 1.5em;
@@ -354,12 +354,12 @@ export class CcAddonAdmin extends LitElement {
           border-bottom: solid 1px var(--cc-color-border-neutral-weak);
           color: var(--cc-color-text-primary-strongest);
           font-weight: bold;
-          margin-bottom: 1.25em;
-          padding-bottom: 1.25em;
+          margin-bottom: var(--cc-spacing-6, 1.25em);
+          padding-bottom: var(--cc-spacing-6, 1.25em);
         }
 
         .dialog-desc {
-          margin-bottom: 1.25em;
+          margin-bottom: var(--cc-spacing-6, 1.25em);
         }
 
         .dialog-form {
@@ -369,9 +369,9 @@ export class CcAddonAdmin extends LitElement {
         .dialog-form__actions {
           display: flex;
           flex-wrap: wrap;
-          gap: 1em;
+          gap: var(--cc-spacing-5, 1em);
           justify-content: end;
-          margin-top: 3.75em;
+          margin-top: var(--cc-spacing-10, 3em);
         }
 
         /* stylelint-disable-next-line media-feature-range-notation */
@@ -379,7 +379,7 @@ export class CcAddonAdmin extends LitElement {
           .dialog-form__actions {
             display: grid;
             justify-content: stretch;
-            margin-top: 2em;
+            margin-top: var(--cc-spacing-8, 2em);
           }
         }
       `,

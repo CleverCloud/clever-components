@@ -707,7 +707,7 @@ export class CcPricingEstimation extends LitElement {
       css`
         :host {
           display: block;
-          padding: 2em;
+          padding: var(--cc-spacing-8, 2em);
         }
 
         .skeleton {
@@ -740,7 +740,7 @@ export class CcPricingEstimation extends LitElement {
         .header--toggle {
           align-items: center;
           display: grid;
-          gap: 0 0.5em;
+          gap: 0 var(--cc-spacing-3, 0.5em);
           grid-template-areas:
             'heading counter btn'
             'total total total';
@@ -802,7 +802,7 @@ export class CcPricingEstimation extends LitElement {
         /* region content */
 
         .content {
-          margin-top: 1em;
+          margin-top: var(--cc-spacing-5, 1em);
         }
 
         .content--hidden {
@@ -814,14 +814,14 @@ export class CcPricingEstimation extends LitElement {
         .plan {
           align-items: center;
           border-bottom: solid 1px var(--cc-color-border-neutral-weak, #eee);
-          column-gap: 0.5em;
+          column-gap: var(--cc-spacing-3, 0.5em);
           display: grid;
           grid-template-areas:
             'plan-header plan-delete'
             'plan-features plan-features'
             'plan-price plan-price';
           grid-template-columns: 1fr auto;
-          padding-block: 1em;
+          padding-block: var(--cc-spacing-5, 1em);
         }
 
         .plan__toggle {
@@ -849,7 +849,7 @@ export class CcPricingEstimation extends LitElement {
           box-sizing: border-box;
           cursor: pointer;
           display: grid;
-          gap: 0.5em;
+          gap: var(--cc-spacing-3, 0.5em);
           grid-area: plan-header;
           grid-template-columns: auto 1fr auto;
           /* Remove the summary icon */
@@ -912,15 +912,15 @@ export class CcPricingEstimation extends LitElement {
           display: flex;
           flex-wrap: wrap;
           font-size: 0.9em;
-          gap: 0 0.5em;
+          gap: 0 var(--cc-spacing-3, 0.5em);
           grid-area: plan-features;
           line-height: 1.5;
-          margin-top: 1em;
+          margin-top: var(--cc-spacing-5, 1em);
         }
 
         .plan__features__feature {
           display: flex;
-          gap: 0.2em;
+          gap: var(--cc-spacing-1, 0.25em);
         }
 
         .plan__features__feature dt {
@@ -935,17 +935,17 @@ export class CcPricingEstimation extends LitElement {
           align-items: center;
           color: var(--cc-color-text-default, #000);
           display: grid;
-          gap: 0.5em 0.2em;
+          gap: var(--cc-spacing-3, 0.5em) var(--cc-spacing-1, 0.25em);
           grid-area: plan-price;
           grid-template-columns: 1fr auto 1fr;
           justify-content: space-between;
-          margin-top: 1em;
+          margin-top: var(--cc-spacing-5, 1em);
         }
 
         .plan__price__quantity {
           align-items: center;
           display: flex;
-          gap: 0.1em;
+          gap: var(--cc-spacing-0, 0.125em);
         }
 
         .plan__price__quantity__counter {
@@ -1010,7 +1010,7 @@ export class CcPricingEstimation extends LitElement {
         .form {
           display: flex;
           flex-wrap: wrap;
-          gap: 1em;
+          gap: var(--cc-spacing-5, 1em);
         }
 
         /* region cc-pricing-header styles */
@@ -1042,7 +1042,7 @@ export class CcPricingEstimation extends LitElement {
 
         sl-select::part(form-control-label) {
           /* same value as out own inputs */
-          padding-bottom: 0.35em;
+          padding-bottom: var(--cc-spacing-2, 0.35em);
         }
 
         sl-select::part(display-input) {
@@ -1072,7 +1072,7 @@ export class CcPricingEstimation extends LitElement {
 
         sl-option::part(checked-icon) {
           height: 0.7em;
-          margin-right: 0.5em;
+          margin-right: var(--cc-spacing-3, 0.5em);
           width: 0.7em;
         }
 

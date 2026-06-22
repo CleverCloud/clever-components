@@ -212,7 +212,7 @@ export class CcPricingHeader extends LitElement {
         .main {
           display: flex;
           flex-wrap: wrap;
-          gap: 1em;
+          gap: var(--cc-spacing-5, 1em);
         }
 
         sl-select {
@@ -242,7 +242,7 @@ export class CcPricingHeader extends LitElement {
 
         sl-select::part(form-control-label) {
           /* same value as out own inputs */
-          padding-bottom: 0.35em;
+          padding-bottom: var(--cc-spacing-2, 0.35em);
         }
 
         sl-select::part(display-input) {
@@ -272,7 +272,7 @@ export class CcPricingHeader extends LitElement {
 
         sl-option::part(checked-icon) {
           height: 0.7em;
-          margin-right: 0.5em;
+          margin-right: var(--cc-spacing-3, 0.5em);
           width: 0.7em;
         }
 
@@ -307,12 +307,12 @@ export class CcPricingHeader extends LitElement {
           --cc-zone-tag-textcolor: var(--cc-color-text-weak, #333);
 
           border-bottom: solid 1px var(--cc-color-border-neutral-weak, transparent);
-          padding: 1em 0.5em;
+          padding: var(--cc-spacing-5, 1em) var(--cc-spacing-3, 0.5em);
         }
 
         sl-option.zone-item::part(checked-icon) {
           align-self: flex-start;
-          margin-top: 0.3em;
+          margin-top: var(--cc-spacing-1, 0.25em);
         }
         /* endregion */
       `,

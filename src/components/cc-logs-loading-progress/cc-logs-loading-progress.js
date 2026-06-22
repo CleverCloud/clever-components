@@ -198,14 +198,14 @@ export class CcLogsLoadingProgress extends LitElement {
           color: var(--cc-color-text-weak);
           display: flex;
           flex-wrap: wrap;
-          gap: 0.5em;
+          gap: var(--cc-spacing-3, 0.5em);
           height: 1.75em;
-          padding: 0.5em;
+          padding: var(--cc-spacing-3, 0.5em);
         }
 
         .overflow-buttons {
           display: flex;
-          gap: 0.5em;
+          gap: var(--cc-spacing-3, 0.5em);
         }
 
         .loading-progress-message {
@@ -215,14 +215,14 @@ export class CcLogsLoadingProgress extends LitElement {
         .notice {
           align-items: center;
           display: flex;
-          gap: 0.5em;
+          gap: var(--cc-spacing-3, 0.5em);
         }
 
         .notice-message {
           align-items: center;
           display: flex;
           flex-wrap: wrap;
-          gap: 0.5em;
+          gap: var(--cc-spacing-3, 0.5em);
         }
 
         .notice cc-icon {

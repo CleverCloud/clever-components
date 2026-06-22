@@ -173,13 +173,13 @@ export class CcZone extends LitElement {
           box-shadow: 0 0 3px rgb(0 0 0 / 40%);
           display: inline-block;
           height: var(--lh);
-          margin-right: 1em;
+          margin-right: var(--cc-spacing-5, 1em);
           width: 2em;
         }
 
         :host([mode='small']) .flag,
         :host([mode='small-infra']) .flag {
-          margin-right: 0.5em;
+          margin-right: var(--cc-spacing-3, 0.5em);
           width: 1.33em;
         }
 
@@ -218,7 +218,7 @@ export class CcZone extends LitElement {
           --cc-img-fit: contain;
 
           height: var(--lh);
-          margin-left: 0.5em;
+          margin-left: var(--cc-spacing-3, 0.5em);
           width: 4em;
         }
 
@@ -231,8 +231,8 @@ export class CcZone extends LitElement {
         .tag-list {
           display: flex;
           flex-wrap: wrap;
-          gap: 0.5em;
-          margin-top: 0.1em;
+          gap: var(--cc-spacing-3, 0.5em);
+          margin-top: var(--cc-spacing-0, 0.125em);
         }
 
         .tag {

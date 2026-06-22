@@ -601,7 +601,7 @@ export class CcInputDate extends CcFormControlElement {
           align-items: flex-end;
           cursor: pointer;
           display: flex;
-          gap: 2em;
+          gap: var(--cc-spacing-8, 2em);
           justify-content: space-between;
           line-height: 1.25em;
           padding-block-end: var(--cc-form-label-gap, 0.35em);
@@ -634,12 +634,12 @@ export class CcInputDate extends CcFormControlElement {
         slot[name='help']::slotted(*) {
           color: var(--cc-color-text-weak, #333);
           font-size: 0.9em;
-          margin: 0.3em 0 0;
+          margin: var(--cc-spacing-1, 0.25em) 0 0;
         }
 
         .error-container {
           color: var(--cc-color-text-danger);
-          margin: 0.5em 0 0;
+          margin: var(--cc-spacing-3, 0.5em) 0 0;
         }
 
         /* endregion */
@@ -662,7 +662,7 @@ export class CcInputDate extends CcFormControlElement {
           min-width: 0;
           overflow: hidden;
           /* see input to know why 0.15em */
-          padding: 0.15em 0.5em;
+          padding: var(--cc-spacing-0, 0.125em) var(--cc-spacing-3, 0.5em);
         }
 
         /* RESET */
@@ -700,7 +700,7 @@ export class CcInputDate extends CcFormControlElement {
         .help-message {
           color: var(--cc-color-text-weak, #333);
           font-size: 0.9em;
-          margin: 0.3em 0 0;
+          margin: var(--cc-spacing-1, 0.25em) 0 0;
         }
 
         /* STATES */

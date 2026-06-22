@@ -125,10 +125,10 @@ export class CcHomepageVideo extends LitElement {
           border-radius: var(--cc-border-radius-default, 0.25em);
           box-sizing: border-box;
           display: grid;
-          gap: 2em;
+          gap: var(--cc-spacing-8, 2em);
           grid-template-columns: 1fr auto;
           grid-template-rows: auto 1fr;
-          padding: 2em;
+          padding: var(--cc-spacing-8, 2em);
         }
 
         .header {
@@ -206,7 +206,7 @@ export class CcHomepageVideo extends LitElement {
           box-sizing: border-box;
           color: #fff;
           height: var(--play-icon-size);
-          padding: 0.6em;
+          padding: var(--cc-spacing-3, 0.5em);
           width: var(--play-icon-size);
         }
 

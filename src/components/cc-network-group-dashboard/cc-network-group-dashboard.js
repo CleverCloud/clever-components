@@ -185,7 +185,7 @@ export class CcNetworkGroupDashboard extends LitElement {
         :host {
           container-type: inline-size;
           display: grid;
-          gap: 1.5em;
+          gap: var(--cc-spacing-7, 1.5em);
         }
 
         .danger-zone__heading {
@@ -194,7 +194,7 @@ export class CcNetworkGroupDashboard extends LitElement {
 
         .danger-zone__content {
           align-items: baseline;
-          column-gap: 4em;
+          column-gap: var(--cc-spacing-10, 3em);
           display: flex;
           flex-wrap: wrap;
           justify-content: space-between;

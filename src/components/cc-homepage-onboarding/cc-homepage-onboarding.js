@@ -306,8 +306,8 @@ export class CcHomepageOnboarding extends LitElement {
           align-items: center;
           display: flex;
           flex-direction: column;
-          gap: 2em;
-          padding: 0 3em 1em;
+          gap: var(--cc-spacing-8, 2em);
+          padding: 0 var(--cc-spacing-10, 3em) var(--cc-spacing-5, 1em);
           text-align: center;
         }
 
@@ -319,7 +319,7 @@ export class CcHomepageOnboarding extends LitElement {
           cursor: pointer;
           display: flex;
           justify-content: center;
-          padding: 0.35em;
+          padding: var(--cc-spacing-2, 0.35em);
           position: absolute;
           right: 0.5em;
           top: 0.5em;
@@ -350,7 +350,7 @@ export class CcHomepageOnboarding extends LitElement {
 
         .cards {
           display: grid;
-          gap: 1.3em;
+          gap: var(--cc-spacing-6, 1.25em);
           grid-template-columns: repeat(auto-fit, minmax(10em, 1fr));
           grid-template-rows: repeat(5, auto);
           width: 100%;
@@ -386,10 +386,10 @@ export class CcHomepageOnboarding extends LitElement {
             0 10px 15px -3px #0000001a;
           box-sizing: border-box;
           display: grid;
-          gap: 1.25em;
+          gap: var(--cc-spacing-6, 1.25em);
           grid-row: span 5;
           grid-template-rows: subgrid;
-          padding: 2em;
+          padding: var(--cc-spacing-8, 2em);
           text-align: left;
           transition: box-shadow 0.2s ease-in-out;
         }
@@ -415,7 +415,7 @@ export class CcHomepageOnboarding extends LitElement {
             0 10px 15px -3px #0000001a;
           box-sizing: border-box;
           overflow: hidden;
-          padding: 1em;
+          padding: var(--cc-spacing-5, 1em);
           transition: width 0.5s ease-in-out;
           width: 5em;
         }
@@ -492,7 +492,7 @@ export class CcHomepageOnboarding extends LitElement {
           font-weight: var(--cc-button-font-weight, bold);
           justify-content: center;
           min-height: 2em;
-          padding: 0 0.5em;
+          padding: 0 var(--cc-spacing-3, 0.5em);
           text-decoration: none;
           text-transform: var(--cc-button-text-transform, uppercase);
         }

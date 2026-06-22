@@ -171,7 +171,7 @@ export class CcTcpRedirection extends LitElement {
         .wrapper {
           display: flex;
           flex-wrap: wrap;
-          gap: 0.8em;
+          gap: var(--cc-spacing-4, 0.75em);
         }
 
         .icon {
@@ -201,7 +201,7 @@ export class CcTcpRedirection extends LitElement {
           display: flex;
           flex: 1 1 0;
           flex-wrap: wrap;
-          gap: 1em;
+          gap: var(--cc-spacing-5, 1em);
         }
 
         .text-wrapper {
@@ -217,7 +217,7 @@ export class CcTcpRedirection extends LitElement {
           background-color: var(--cc-color-bg-neutral);
           border-radius: var(--cc-border-radius-default, 0.25em);
           font-family: var(--cc-ff-monospace);
-          padding: 0.15em 0.3em;
+          padding: var(--cc-spacing-0, 0.125em) var(--cc-spacing-1, 0.25em);
         }
 
         .text-addendum:not(.skeleton) {

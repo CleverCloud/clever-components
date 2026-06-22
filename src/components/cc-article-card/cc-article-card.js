@@ -77,11 +77,11 @@ export class CcArticleCard extends LitElement {
           border-radius: var(--cc-border-radius-default, 0.25em);
           box-sizing: border-box;
           display: grid;
-          gap: 1em;
+          gap: var(--cc-spacing-5, 1em);
           grid-template-columns: 1fr;
           grid-template-rows: min-content min-content 1fr min-content;
           overflow: hidden;
-          padding: 1em;
+          padding: var(--cc-spacing-5, 1em);
         }
 
         .image {
@@ -89,7 +89,7 @@ export class CcArticleCard extends LitElement {
           display: block;
           height: 8em;
           justify-self: stretch;
-          margin: -1em -1em 0;
+          margin: calc(var(--cc-spacing-5, 1em) * -1) calc(var(--cc-spacing-5, 1em) * -1) 0;
         }
 
         .title {

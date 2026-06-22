@@ -155,7 +155,7 @@ export class CcEnvVarLinkedServices extends LitElement {
           border: 1px solid var(--cc-color-border-neutral, #aaa);
           border-radius: var(--cc-border-radius-default, 0.25em);
           box-sizing: border-box;
-          padding: 1em;
+          padding: var(--cc-spacing-5, 1em);
         }
 
         .loading {
@@ -164,7 +164,7 @@ export class CcEnvVarLinkedServices extends LitElement {
 
         cc-loader {
           height: 1.5em;
-          margin-right: 1em;
+          margin-right: var(--cc-spacing-5, 1em);
           width: 1.5em;
         }
 

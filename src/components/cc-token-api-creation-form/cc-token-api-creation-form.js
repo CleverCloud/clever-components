@@ -733,18 +733,18 @@ export class CcTokenApiCreationForm extends LitElement {
 
         /* FIXME: not great when viewport is reduced + should be handled by the cc-block component itself */
         cc-block {
-          padding-top: 2em;
+          padding-top: var(--cc-spacing-8, 2em);
         }
 
         /* FIXME: not great when viewport is reduced + should be handled by the cc-block component itself */
         cc-block > [slot='content'] {
-          padding-bottom: 1em;
-          padding-inline: 3em;
+          padding-bottom: var(--cc-spacing-5, 1em);
+          padding-inline: var(--cc-spacing-10, 3em);
         }
 
         /* FIXME: not great when viewport is reduced + should be handled by the cc-block component itself */
         [slot='header-title'] {
-          padding-inline: 1.5em;
+          padding-inline: var(--cc-spacing-7, 1.5em);
         }
 
         [slot='link'] {
@@ -758,14 +758,14 @@ export class CcTokenApiCreationForm extends LitElement {
         }
 
         .creation-steps-nav {
-          column-gap: 2em;
+          column-gap: var(--cc-spacing-8, 2em);
           display: flex;
           flex-wrap: wrap;
           list-style: none;
           margin: 0;
-          margin-block: 1em;
+          margin-block: var(--cc-spacing-5, 1em);
           padding: 0;
-          row-gap: 1em;
+          row-gap: var(--cc-spacing-5, 1em);
         }
 
         .creation-steps-nav__step-item {
@@ -776,9 +776,9 @@ export class CcTokenApiCreationForm extends LitElement {
           color: var(--cc-color-text-weak);
           display: flex;
           flex: 1 1 10em;
-          gap: 0.5em;
+          gap: var(--cc-spacing-3, 0.5em);
           line-height: 1.3em;
-          padding-block: 1em;
+          padding-block: var(--cc-spacing-5, 1em);
           position: relative;
           transition: all var(--transition-duration) ease-in-out;
         }
@@ -809,8 +809,8 @@ export class CcTokenApiCreationForm extends LitElement {
         }
 
         cc-expand {
-          margin-inline: -1em;
-          padding: 1em;
+          margin-inline: calc(var(--cc-spacing-5, 1em) * -1);
+          padding: var(--cc-spacing-5, 1em);
           transition: all var(--transition-duration) ease-in-out;
         }
 
@@ -850,13 +850,13 @@ export class CcTokenApiCreationForm extends LitElement {
 
         .form {
           display: grid;
-          gap: 1.5em;
+          gap: var(--cc-spacing-7, 1.5em);
         }
 
         .form__expiration {
           display: flex;
           flex-wrap: wrap;
-          gap: 1.5em;
+          gap: var(--cc-spacing-7, 1.5em);
         }
 
         .form__expiration cc-input-date,
@@ -868,9 +868,9 @@ export class CcTokenApiCreationForm extends LitElement {
           align-items: center;
           display: flex;
           flex-wrap: wrap;
-          gap: 1.5em;
+          gap: var(--cc-spacing-7, 1.5em);
           justify-content: flex-end;
-          margin-top: 1em;
+          margin-top: var(--cc-spacing-5, 1em);
         }
 
         .form__actions__submit-button {
@@ -879,7 +879,7 @@ export class CcTokenApiCreationForm extends LitElement {
 
         .copy-step-wrapper {
           display: grid;
-          gap: 1.5em;
+          gap: var(--cc-spacing-7, 1.5em);
         }
 
         .copy-step-wrapper cc-input-text {
@@ -901,8 +901,8 @@ export class CcTokenApiCreationForm extends LitElement {
           color: var(--cc-color-text-weak);
           cursor: pointer;
           display: flex;
-          gap: 0.5em;
-          padding: 0.25em 0.5em;
+          gap: var(--cc-spacing-3, 0.5em);
+          padding: 0.25em var(--cc-spacing-3, 0.5em);
           text-decoration: none;
         }
 

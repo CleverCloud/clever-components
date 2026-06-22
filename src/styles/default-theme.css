@@ -313,6 +313,20 @@
   --cc-border-radius-small: 0.15em;
   /*endregion */
 
+  /*region spacing */
+  --cc-spacing-0: 0.125em;
+  --cc-spacing-1: 0.25em;
+  --cc-spacing-2: 0.35em;
+  --cc-spacing-3: 0.5em;
+  --cc-spacing-4: 0.75em;
+  --cc-spacing-5: 1em;
+  --cc-spacing-6: 1.25em;
+  --cc-spacing-7: 1.5em;
+  --cc-spacing-8: 2em;
+  --cc-spacing-9: 2.5em;
+  --cc-spacing-10: 3em;
+  /*endregion */
+
   /*region Miscellaneous*/
   /**
    * An opacity value that passes a11y tests.

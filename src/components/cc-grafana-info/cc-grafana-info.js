@@ -234,13 +234,13 @@ export class CcGrafanaInfo extends LitElement {
           border-radius: var(--cc-border-radius-default, 0.25em);
           flex: 0 0 auto;
           height: 1.5em;
-          margin-right: 0.5em;
+          margin-right: var(--cc-spacing-3, 0.5em);
           width: 1.5em;
         }
 
         cc-icon {
           flex: 0 0 auto;
-          margin-right: 0.5em;
+          margin-right: var(--cc-spacing-3, 0.5em);
         }
 
         cc-link {
@@ -260,7 +260,7 @@ export class CcGrafanaInfo extends LitElement {
 
         br {
           display: block;
-          margin: 0.5em 0;
+          margin: var(--cc-spacing-3, 0.5em) 0;
         }
       `,
     ];

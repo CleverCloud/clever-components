@@ -128,12 +128,12 @@ export class CcWarningPayment extends LitElement {
         }
 
         ul {
-          margin: 0.5em 0 0 1.5em;
+          margin: var(--cc-spacing-3, 0.5em) 0 0 var(--cc-spacing-7, 1.5em);
           padding: 0;
         }
 
         li {
-          margin-top: 0.5em;
+          margin-top: var(--cc-spacing-3, 0.5em);
         }
       `,
     ];

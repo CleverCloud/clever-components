@@ -140,7 +140,7 @@ export class CcAddonLinkedApps extends LitElement {
           align-items: center;
           display: flex;
           flex-wrap: wrap;
-          gap: 0.5em;
+          gap: var(--cc-spacing-3, 0.5em);
         }
 
         .empty-msg {

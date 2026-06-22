@@ -176,18 +176,18 @@ export class CcTokenApiUpdateForm extends LitElement {
 
         /* FIXME: not great when viewport is reduced + should be handled by the cc-block component itself */
         cc-block {
-          padding-top: 2em;
+          padding-top: var(--cc-spacing-8, 2em);
         }
 
         /* FIXME: not great when viewport is reduced + should be handled by the cc-block component itself */
         cc-block > [slot='content'] {
-          padding-bottom: 2em;
-          padding-inline: 3em;
+          padding-bottom: var(--cc-spacing-8, 2em);
+          padding-inline: var(--cc-spacing-10, 3em);
         }
 
         /* FIXME: not great when viewport is reduced + should be handled by the cc-block component itself */
         [slot='header-title'] {
-          padding-inline: 1.5em;
+          padding-inline: var(--cc-spacing-7, 1.5em);
         }
 
         .intro {
@@ -195,21 +195,21 @@ export class CcTokenApiUpdateForm extends LitElement {
         }
 
         .content-wrapper {
-          margin-top: 1em;
+          margin-top: var(--cc-spacing-5, 1em);
         }
 
         .form {
           display: grid;
-          gap: 1.5em;
+          gap: var(--cc-spacing-7, 1.5em);
         }
 
         .form__actions {
           align-items: center;
           display: flex;
           flex-wrap: wrap;
-          gap: 1.5em;
+          gap: var(--cc-spacing-7, 1.5em);
           justify-content: flex-end;
-          margin-top: 1em;
+          margin-top: var(--cc-spacing-5, 1em);
         }
 
         .form__actions__submit-button {
@@ -227,8 +227,8 @@ export class CcTokenApiUpdateForm extends LitElement {
           color: var(--cc-color-text-weak);
           cursor: pointer;
           display: flex;
-          gap: 0.5em;
-          padding: 0.25em 0.5em;
+          gap: var(--cc-spacing-3, 0.5em);
+          padding: 0.25em var(--cc-spacing-3, 0.5em);
           text-decoration: none;
         }
 

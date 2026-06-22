@@ -121,6 +121,24 @@ As our design tokens only exist (for now) as CSS values, keys will be listed as 
 | `--cc-border-radius-default` | `0.25em`       |
 | `--cc-border-radius-small`   | `0.15em`       |
 
+### Spacing decisions
+
+These tokens are meant to be used for spacing values such as `padding`, `gap` and `margin`.
+
+| Key                | Default value |
+|:-------------------|:--------------|
+| `--cc-spacing-0`   | `0.125em`     |
+| `--cc-spacing-1`   | `0.25em`      |
+| `--cc-spacing-2`   | `0.35em`      |
+| `--cc-spacing-3`   | `0.5em`       |
+| `--cc-spacing-4`   | `0.75em`      |
+| `--cc-spacing-5`   | `1em`         |
+| `--cc-spacing-6`   | `1.25em`      |
+| `--cc-spacing-7`   | `1.5em`       |
+| `--cc-spacing-8`   | `2em`         |
+| `--cc-spacing-9`   | `2.5em`       |
+| `--cc-spacing-10`  | `3em`         |
+
 ### Form decisions
 
 | Key                          | Default value |

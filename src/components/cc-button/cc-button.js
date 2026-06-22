@@ -359,7 +359,7 @@ export class CcButton extends LitElement {
           font-weight: var(--cc-button-font-weight, bold);
           min-height: 2em;
           overflow: hidden;
-          padding: 0 0.5em;
+          padding: 0 var(--cc-spacing-3, 0.5em);
           /* used to absolutely position the <progress> */
           position: relative;
           text-transform: var(--cc-button-text-transform, uppercase);
@@ -466,7 +466,7 @@ export class CcButton extends LitElement {
         .text-wrapper {
           align-items: center;
           display: grid;
-          gap: 0.5em;
+          gap: var(--cc-spacing-3, 0.5em);
           grid-template-columns: min-content 1fr;
           height: 100%;
           justify-content: center;

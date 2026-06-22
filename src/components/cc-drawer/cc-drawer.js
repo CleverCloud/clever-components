@@ -145,7 +145,7 @@ export class CcDrawer extends LitElement {
       css`
         :host {
           --margin: 2em;
-          --padding: 2em;
+          --padding: var(--cc-spacing-8, 2em);
 
           display: none;
         }
@@ -200,7 +200,7 @@ export class CcDrawer extends LitElement {
           display: flex;
           flex-wrap: nowrap;
           margin: var(--padding);
-          padding-bottom: 0.5em;
+          padding-bottom: var(--cc-spacing-3, 0.5em);
         }
 
         .title {

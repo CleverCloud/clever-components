@@ -349,7 +349,7 @@ export class CcZoneInput extends LitElement {
         }
 
         .zone-list {
-          margin: 0.5em;
+          margin: var(--cc-spacing-3, 0.5em);
         }
 
         .zone-list:not(:hover):focus-within {
@@ -375,7 +375,7 @@ export class CcZoneInput extends LitElement {
           border: 0;
           box-sizing: border-box;
           display: block;
-          margin: -0.5em;
+          margin: calc(var(--cc-spacing-3, 0.5em) * -1);
           outline: none;
         }
 
@@ -384,7 +384,7 @@ export class CcZoneInput extends LitElement {
           border-radius: var(--cc-border-radius-default, 0.25em);
           box-sizing: border-box;
           display: block;
-          padding: 0.5em;
+          padding: var(--cc-spacing-3, 0.5em);
         }
 
         label {
