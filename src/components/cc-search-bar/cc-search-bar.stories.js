@@ -17,7 +17,7 @@ const getCcSearchBar = (container) => /** @type {CcSearchBar} */ (container.quer
 
 export default {
   tags: ['autodocs'],
-  title: '🧬 Atoms/<cc-search-bar>',
+  title: '🛠 Navigation/<cc-search-bar>',
   component: 'cc-search-bar',
 };
 
