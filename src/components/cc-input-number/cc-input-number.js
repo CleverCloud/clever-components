@@ -33,6 +33,8 @@ import { CcInputEvent, CcRequestSubmitEvent } from '../common.events.js';
  *
  * @cssprop {Size} --cc-form-label-gap - The space between the label and the control (defaults: `0.35em`).
  * @cssprop {Size} --cc-form-label-gap-inline - The space between the label and the control when layout is inline (defaults: `0.75em`).
+ * @cssprop {FontStyle} --cc-form-required-font-style - The font-style of the "required" mention next to the label (defaults: `italic`).
+ * @cssprop {TextTransform} --cc-form-required-text-transform - The text-transform of the "required" mention next to the label (defaults: `lowercase`).
  * @cssprop {Align} --cc-input-number-align - Change the alignment of the number present in the input (defaults: `right`).
  * @cssprop {Color} --cc-input-btn-icon-color - The color for the icon within the +/- buttons (defaults: `#595959`).
  * @cssprop {FontFamily} --cc-input-font-family - The font-family for the input content (defaults: `inherit`).
@@ -385,7 +387,8 @@ export class CcInputNumber extends CcFormControlElement {
         .required {
           color: var(--cc-color-text-weak);
           font-size: 0.9em;
-          font-variant: small-caps;
+          font-style: var(--cc-form-required-font-style, italic);
+          text-transform: var(--cc-form-required-text-transform, lowercase);
         }
 
         :host([inline]) .required {
