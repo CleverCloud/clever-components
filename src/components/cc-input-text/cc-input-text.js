@@ -38,6 +38,8 @@ const TAG_SEPARATOR = ' ';
  *
  * @cssprop {Size} --cc-form-label-gap - The space between the label and the control (defaults: `0.35em`).
  * @cssprop {Size} --cc-form-label-gap-inline - The space between the label and the control when layout is inline (defaults: `0.75em`).
+ * @cssprop {FontStyle} --cc-form-required-font-style - The font-style of the "required" mention next to the label (defaults: `italic`).
+ * @cssprop {TextTransform} --cc-form-required-text-transform - The text-transform of the "required" mention next to the label (defaults: `lowercase`).
  * @cssprop {Color} --cc-input-btn-icon-color - The color for the icon within the clipboard/secret button (defaults: `#595959`).
  * @cssprop {FontFamily} --cc-input-font-family - The font-family for the input content (defaults: `inherit` or `--cc-ff-monospace` when using the tags mode).
  * @cssprop {Color} --cc-input-label-color - The color for the input's label (defaults: `inherit`).
@@ -495,7 +497,8 @@ export class CcInputText extends CcFormControlElement {
         .required {
           color: var(--cc-color-text-weak);
           font-size: 0.9em;
-          font-variant: small-caps;
+          font-style: var(--cc-form-required-font-style, italic);
+          text-transform: var(--cc-form-required-text-transform, lowercase);
         }
 
         :host([inline]) .required {

@@ -143,12 +143,14 @@ These tokens are meant to be used for spacing values such as `padding`, `gap` an
 
 ### Form decisions
 
-| Key                          | Default value |
-|:-----------------------------|:--------------|
-| `--cc-form-controls-gap`     | `2em`         |
-| `--cc-form-controls-indent`  | `34px`        |
-| `--cc-form-label-gap`        | `0.35em`      |
-| `--cc-form-label-gap-inline` | `0.75em`      |
+| Key                                 | Default value |
+|:------------------------------------|:--------------|
+| `--cc-form-controls-gap`            | `2em`         |
+| `--cc-form-controls-indent`         | `34px`        |
+| `--cc-form-label-gap`               | `0.35em`      |
+| `--cc-form-label-gap-inline`        | `0.75em`      |
+| `--cc-form-required-font-style`     | `italic`      |
+| `--cc-form-required-text-transform` | `lowercase`   |
 
 ### Miscellaneous
 

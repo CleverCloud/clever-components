@@ -350,6 +350,12 @@
 
   /* space between a label and its control when inline */
   --cc-form-label-gap-inline: 0.75em;
+
+  /* font style of the "required" mention displayed next to a form control label */
+  --cc-form-required-font-style: italic;
+
+  /* text transform of the "required" mention displayed next to a form control label */
+  --cc-form-required-text-transform: lowercase;
   /*endregion*/
 
   /*region blur*/
