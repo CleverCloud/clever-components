@@ -154,7 +154,7 @@ export class CcOrderSummary extends LitElement {
         .summary {
           background-color: var(--cc-color-bg-neutral, #f5f5f5);
           border: 1px solid var(--cc-color-border-neutral-weak, #e7e7e7);
-          border-radius: var(--cc-border-radius-default, 0.25em);
+          border-radius: var(--cc-border-radius-small, 0.25em);
           display: flex;
           flex-direction: column;
           padding: var(--cc-spacing-7, 1.5em);
@@ -246,7 +246,7 @@ export class CcOrderSummary extends LitElement {
         /* region elements > misc */
         .logo {
           border: 1px solid var(--cc-color-border-neutral-weak, #e7e7e7);
-          border-radius: var(--cc-border-radius-default, 0.25em);
+          border-radius: var(--cc-border-radius-small, 0.25em);
           height: 3em;
           overflow: hidden;
           width: 3em;

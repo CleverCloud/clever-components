@@ -1024,7 +1024,7 @@ export class CcPricingEstimation extends LitElement {
           --sl-input-border-color: var(--cc-color-border-neutral-weak, #aaa);
           --sl-input-border-color-disabled: var(--cc-color-border-disabled, #eee);
           --sl-input-border-color-focus: var(--cc-color-border-focused, #777);
-          --sl-input-border-radius-medium: var(--cc-border-radius-default, 0.25em);
+          --sl-input-border-radius-medium: var(--cc-border-radius-small, 0.25em);
           --sl-input-color: var(--cc-color-text-default, #000);
           --sl-input-color-hover: var(--cc-pricing-hovered-color, #000);
           --sl-input-font-family: initial;

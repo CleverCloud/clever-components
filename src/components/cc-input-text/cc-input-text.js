@@ -625,7 +625,7 @@ export class CcInputText extends CcFormControlElement {
           --color: var(--cc-color-bg-soft, #eee);
 
           background-color: var(--color);
-          border-radius: 3px;
+          border-radius: var(--cc-border-radius-medium, 0.375em);
           box-shadow: 0 0 0 2px var(--color);
           padding: 1px 0;
         }
@@ -635,7 +635,7 @@ export class CcInputText extends CcFormControlElement {
         .ring {
           background: var(--cc-color-bg-default, #fff);
           border: 1px solid var(--cc-color-border-neutral-strong, #aaa);
-          border-radius: var(--cc-border-radius-default, 0.25em);
+          border-radius: var(--cc-border-radius-medium, 0.375em);
           bottom: 0;
           box-shadow: 0 0 0 0 rgb(255 255 255 / 0%);
           left: 0;
@@ -710,7 +710,7 @@ export class CcInputText extends CcFormControlElement {
         }
 
         .btn {
-          border-radius: var(--cc-border-radius-small, 0.15em);
+          border-radius: var(--cc-border-radius-medium, 0.375em);
           cursor: pointer;
           height: 1.6em;
           width: 1.6em;

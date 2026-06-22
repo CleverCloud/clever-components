@@ -157,7 +157,7 @@ export class CcBlock extends LitElement {
         :host {
           background-color: var(--cc-color-bg-default, #fff);
           border: 1px solid var(--cc-color-border-neutral, #aaa);
-          border-radius: var(--cc-border-radius-default, 0.25em);
+          border-radius: var(--cc-border-radius-large, 0.5em);
           box-sizing: border-box;
           display: block;
           overflow: hidden;
@@ -243,7 +243,7 @@ export class CcBlock extends LitElement {
 
         .header-img,
         ::slotted([slot='header-icon']) {
-          border-radius: var(--cc-border-radius-default, 0.25em);
+          border-radius: var(--cc-border-radius-small, 0.25em);
           height: 1.5em;
           width: 1.5em;
         }

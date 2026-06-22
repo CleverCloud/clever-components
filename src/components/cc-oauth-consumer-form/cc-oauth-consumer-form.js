@@ -600,7 +600,7 @@ export class CcOauthConsumerForm extends LitElement {
         }
 
         .rights-block:focus-visible {
-          border-radius: var(--cc-border-radius-default, 0.25em);
+          border-radius: var(--cc-border-radius-small, 0.25em);
           outline: var(--cc-focus-outline-error);
           /* Specific case for large areas */
           outline-offset: 8px;

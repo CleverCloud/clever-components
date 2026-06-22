@@ -278,7 +278,7 @@ export class CcInvoiceTable extends LitElement {
 
         table {
           border-collapse: collapse;
-          border-radius: 5px;
+          border-radius: var(--cc-border-radius-medium, 0.375em);
           overflow: hidden;
         }
 

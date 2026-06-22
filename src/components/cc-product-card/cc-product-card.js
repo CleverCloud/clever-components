@@ -85,7 +85,7 @@ export class CcProductCard extends LitElement {
           align-items: center;
           background-color: var(--cc-color-bg-default, #fff);
           border: 2px solid var(--cc-color-border-neutral, #aaa);
-          border-radius: var(--cc-border-radius-default, 0.25em);
+          border-radius: var(--cc-border-radius-small, 0.25em);
           box-sizing: border-box;
           display: grid;
           gap: var(--cc-spacing-1, 0.25em) var(--cc-spacing-3, 0.5em);
@@ -123,7 +123,7 @@ export class CcProductCard extends LitElement {
         /* region grid-items */
 
         cc-img {
-          border-radius: var(--cc-border-radius-default, 0.25em);
+          border-radius: var(--cc-border-radius-small, 0.25em);
           height: 2em;
           width: 2em;
         }

@@ -428,7 +428,7 @@ export class CcMap extends LitElement {
           align-items: center;
           background-color: var(--cc-color-bg-default, #fff);
           border: 1px solid var(--cc-color-border-neutral, #aaa);
-          border-radius: var(--cc-border-radius-default, 0.25em);
+          border-radius: var(--cc-border-radius-large, 0.5em);
           box-shadow: 0 0 1em rgb(0 0 0 / 40%);
           display: flex;
           justify-content: center;
@@ -445,7 +445,7 @@ export class CcMap extends LitElement {
           align-items: center;
           background-color: var(--cc-color-bg-default, #fff);
           border: 1px solid #bcc2d1;
-          border-radius: var(--cc-border-radius-default, 0.25em);
+          border-radius: var(--cc-border-radius-large, 0.5em);
           box-shadow: 0 0 1em rgb(0 0 0 / 40%);
           display: grid;
           gap: var(--cc-spacing-3, 0.5em);

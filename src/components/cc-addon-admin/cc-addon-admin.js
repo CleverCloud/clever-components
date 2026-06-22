@@ -294,7 +294,7 @@ export class CcAddonAdmin extends LitElement {
 
         dialog {
           border: none;
-          border-radius: var(--cc-border-radius-default, 0.25em);
+          border-radius: var(--cc-border-radius-small, 0.25em);
           box-shadow: 2px 4px 8px 0 rgb(0 0 0 / 12%);
           box-sizing: border-box;
           padding: var(--cc-spacing-10, 3em);
@@ -322,7 +322,7 @@ export class CcAddonAdmin extends LitElement {
         .dialog-close {
           background: none;
           border: none;
-          border-radius: var(--cc-border-radius-default, 0.25em);
+          border-radius: var(--cc-border-radius-small, 0.25em);
           color: var(--cc-color-text-weak);
           cursor: pointer;
           padding: var(--cc-spacing-3, 0.5em);

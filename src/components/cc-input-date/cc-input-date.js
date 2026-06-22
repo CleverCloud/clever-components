@@ -721,7 +721,7 @@ export class CcInputDate extends CcFormControlElement {
         .ring {
           background: var(--cc-color-bg-default, #fff);
           border: 1px solid var(--cc-color-border-neutral-strong, #aaa);
-          border-radius: var(--cc-border-radius-default, 0.25em);
+          border-radius: var(--cc-border-radius-medium, 0.375em);
           bottom: 0;
           box-shadow: 0 0 0 0 rgb(255 255 255 / 0%);
           left: 0;

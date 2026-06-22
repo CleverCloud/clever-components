@@ -472,7 +472,7 @@ export class CcLogsDateRangeSelector extends LitElement {
         }
 
         .option-button:focus {
-          border-radius: var(--cc-border-radius-small, 0.15em);
+          border-radius: var(--cc-border-radius-xs, 0.15em);
           outline: var(--cc-focus-outline, #000 solid 2px);
           z-index: 3;
         }

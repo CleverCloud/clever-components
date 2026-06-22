@@ -330,7 +330,7 @@ export class CcVisualTestsReport extends LitElement {
 
         .storybook-link {
           align-items: center;
-          border-radius: var(--cc-border-radius-default, 0.25em);
+          border-radius: var(--cc-border-radius-small, 0.25em);
           display: flex;
           text-decoration: none;
         }
@@ -390,7 +390,7 @@ export class CcVisualTestsReport extends LitElement {
         .metadata-list__item {
           background-color: var(--color);
           border: var(--bdw) solid var(--color);
-          border-radius: var(--cc-border-radius-default, 0.25em);
+          border-radius: var(--cc-border-radius-small, 0.25em);
           display: flex;
           flex-wrap: wrap;
           font-size: 0.8em;
@@ -415,7 +415,7 @@ export class CcVisualTestsReport extends LitElement {
         .metadata-list__item__value {
           align-items: center;
           background-color: var(--cc-color-bg-default, #fff);
-          border-radius: var(--cc-border-radius-small, 0.15em);
+          border-radius: var(--cc-border-radius-xs, 0.15em);
           color: var(--cc-color-text-primary, #3569aa);
           display: flex;
           flex-wrap: wrap;

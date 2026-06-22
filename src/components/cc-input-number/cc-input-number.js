@@ -495,7 +495,7 @@ export class CcInputNumber extends CcFormControlElement {
         .ring {
           background: var(--cc-color-bg-default, #fff);
           border: 1px solid var(--cc-color-border-neutral-strong, #aaa);
-          border-radius: var(--cc-border-radius-default, 0.25em);
+          border-radius: var(--cc-border-radius-medium, 0.375em);
           bottom: 0;
           box-shadow: 0 0 0 0 rgb(255 255 255 / 0%);
           left: 0;
@@ -561,7 +561,7 @@ export class CcInputNumber extends CcFormControlElement {
         }
 
         .btn {
-          border-radius: var(--cc-border-radius-small, 0.15em);
+          border-radius: var(--cc-border-radius-medium, 0.375em);
           cursor: pointer;
           flex-shrink: 0;
           height: 1.6em;

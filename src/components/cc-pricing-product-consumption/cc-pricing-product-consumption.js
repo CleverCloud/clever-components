@@ -639,7 +639,7 @@ export class CcPricingProductConsumption extends LitElement {
         }
 
         .interval-line {
-          --bdrs: var(--cc-border-radius-default, 0.25em);
+          --bdrs: var(--cc-border-radius-small, 0.25em);
         }
 
         .interval,

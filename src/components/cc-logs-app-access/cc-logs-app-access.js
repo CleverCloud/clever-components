@@ -352,7 +352,7 @@ export class CcLogsAppAccess extends LitElement {
         .wrapper.fullscreen {
           background-color: var(--cc-color-bg-default);
           border: 1px solid var(--cc-color-border-neutral);
-          border-radius: var(--cc-border-radius-default);
+          border-radius: var(--cc-border-radius-small, 0.25em);
           margin: var(--cc-spacing-5, 1em);
           padding: var(--cc-spacing-5, 1em);
         }

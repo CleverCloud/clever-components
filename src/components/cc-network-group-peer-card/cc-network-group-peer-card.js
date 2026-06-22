@@ -124,7 +124,7 @@ export class CcNetworkGroupPeerCard extends LitElement {
         .peer-card {
           background-color: var(--cc-color-bg-neutral);
           border: solid 1px var(--cc-color-border-neutral-weak);
-          border-radius: var(--cc-border-radius-default);
+          border-radius: var(--cc-border-radius-small, 0.25em);
           container: peer-card / inline-size;
           display: grid;
           gap: var(--cc-spacing-5, 1em);

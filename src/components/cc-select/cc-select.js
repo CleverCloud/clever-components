@@ -315,7 +315,7 @@ export class CcSelect extends CcFormControlElement {
         select {
           background-color: var(--cc-color-bg-default, #fff);
           border: 1px solid var(--cc-color-border-neutral-strong, #aaa);
-          border-radius: var(--cc-border-radius-default, 0.25em);
+          border-radius: var(--cc-border-radius-medium, 0.375em);
           box-sizing: border-box;
           grid-area: input;
           height: 2em;

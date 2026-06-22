@@ -32,7 +32,7 @@ const websiteStyles = `
     --cc-color-border-neutral-strong: #deddee;
     --cc-color-border-neutral-weak: #deddee;
 
-    --cc-border-radius-default: 0;
+    --cc-border-radius-small: 0;
 
     --cc-pricing-estimation-counter-bg: linear-gradient(90deg, #f57461, #cb1c42 50.48%, #a51050);
 

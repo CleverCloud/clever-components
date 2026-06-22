@@ -236,7 +236,7 @@ export class CcZonePicker extends CcFormControlElement {
 
         /* region cc-picker-option */
         input[type='radio']:focus-visible + label cc-picker-option {
-          border-radius: var(--cc-border-radius-default, 0.25em);
+          border-radius: var(--cc-border-radius-small, 0.25em);
           outline: var(--cc-focus-outline, #000 solid 2px);
           outline-offset: var(--cc-focus-outline-offset, 2px);
         }

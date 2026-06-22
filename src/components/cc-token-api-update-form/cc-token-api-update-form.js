@@ -233,7 +233,7 @@ export class CcTokenApiUpdateForm extends LitElement {
         }
 
         .form__actions__link-container__link:focus-visible {
-          border-radius: var(--cc-border-radius-default, 0.25em);
+          border-radius: var(--cc-border-radius-small, 0.25em);
           outline: var(--cc-focus-outline);
           outline-offset: var(--cc-focus-outline-offset, 2px);
         }

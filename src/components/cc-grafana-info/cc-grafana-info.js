@@ -231,7 +231,7 @@ export class CcGrafanaInfo extends LitElement {
         }
 
         cc-img {
-          border-radius: var(--cc-border-radius-default, 0.25em);
+          border-radius: var(--cc-border-radius-small, 0.25em);
           flex: 0 0 auto;
           height: 1.5em;
           margin-right: var(--cc-spacing-3, 0.5em);
@@ -249,7 +249,7 @@ export class CcGrafanaInfo extends LitElement {
         }
 
         .dashboard-screenshot {
-          border-radius: var(--cc-border-radius-default, 0.25em);
+          border-radius: var(--cc-border-radius-small, 0.25em);
           max-width: 50em;
           width: 100%;
         }

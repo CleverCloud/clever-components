@@ -333,7 +333,7 @@ export class CcSearchBar extends LitElement {
 
         .empty-description code {
           background-color: var(--cc-color-bg-neutral, #f5f5f5);
-          border-radius: var(--cc-border-radius-default, 0.25em);
+          border-radius: var(--cc-border-radius-small, 0.25em);
           font-family: var(--cc-ff-monospace, monospace);
           padding: var(--cc-spacing-0, 0.125em) var(--cc-spacing-1, 0.25em);
         }
@@ -374,7 +374,7 @@ export class CcSearchBar extends LitElement {
 
         .item {
           align-items: center;
-          border-radius: 0.5em;
+          border-radius: var(--cc-border-radius-large, 0.5em);
           color: var(--cc-color-text-default, #000);
           display: flex;
           font-weight: normal;
@@ -389,7 +389,7 @@ export class CcSearchBar extends LitElement {
         }
 
         .item:focus-visible {
-          border-radius: 0.625em;
+          border-radius: var(--cc-border-radius-large, 0.5em);
           outline: var(--cc-focus-outline);
           outline-offset: var(--cc-focus-outline-offset, 2px);
         }

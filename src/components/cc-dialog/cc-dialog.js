@@ -201,7 +201,7 @@ export class CcDialog extends LitElement {
 
         dialog {
           border: none;
-          border-radius: var(--cc-border-radius-default, 0.25em);
+          border-radius: var(--cc-border-radius-small, 0.25em);
           box-shadow: 2px 4px 8px 0 rgb(0 0 0 / 12%);
           box-sizing: border-box;
           padding: var(--cc-dialog-padding, var(--default-dialog-padding));
@@ -235,7 +235,7 @@ export class CcDialog extends LitElement {
           align-items: center;
           background: none;
           border: none;
-          border-radius: var(--cc-border-radius-default, 0.25em);
+          border-radius: var(--cc-border-radius-small, 0.25em);
           color: var(--cc-color-text-weak);
           cursor: pointer;
           display: flex;

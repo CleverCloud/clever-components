@@ -206,7 +206,7 @@ export class CcLink extends LitElement {
 
         .cc-link:focus-within {
           background-color: var(--cc-color-bg-default, #fff);
-          border-radius: var(--cc-border-radius-small, 0.15em);
+          border-radius: var(--cc-border-radius-xs, 0.15em);
           outline: var(--cc-focus-outline, #000 solid 2px);
           outline-offset: var(--cc-focus-outline-offset, 2px);
         }
@@ -278,7 +278,7 @@ export class CcLink extends LitElement {
           align-items: center;
           background-color: var(--cc-color-bg-primary, #3569aaff);
           border: 1px solid var(--cc-color-bg-primary, #3569aaff);
-          border-radius: var(--cc-button-border-radius, 0.15em);
+          border-radius: var(--cc-border-radius-medium, 0.375em);
           box-sizing: border-box;
           cursor: pointer;
           display: grid;

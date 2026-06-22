@@ -100,7 +100,7 @@ export class CcHomepageTemplateProject extends LitElement {
 
         .project-row {
           align-items: center;
-          border-radius: var(--cc-border-radius-default, 0.25em);
+          border-radius: var(--cc-border-radius-small, 0.25em);
           display: flex;
           gap: var(--cc-spacing-5, 1em);
           margin-inline: var(--cc-spacing-1, 0.25em);

@@ -215,7 +215,7 @@ export class CcTcpRedirection extends LitElement {
 
         .text:not(.skeleton) code {
           background-color: var(--cc-color-bg-neutral);
-          border-radius: var(--cc-border-radius-default, 0.25em);
+          border-radius: var(--cc-border-radius-small, 0.25em);
           font-family: var(--cc-ff-monospace);
           padding: var(--cc-spacing-0, 0.125em) var(--cc-spacing-1, 0.25em);
         }

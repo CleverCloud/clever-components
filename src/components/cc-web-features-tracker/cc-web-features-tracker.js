@@ -414,7 +414,7 @@ export class CcWebFeaturesTracker extends LitElement {
           background: none;
           background-color: var(--cc-color-bg-default, #fff);
           border: solid 1px var(--cc-color-border-neutral);
-          border-radius: var(--cc-border-radius-small, 0.15em);
+          border-radius: var(--cc-border-radius-xs, 0.15em);
           box-shadow: 0 0 0 0 rgb(255 255 255 / 0%);
           cursor: pointer;
           display: flex;

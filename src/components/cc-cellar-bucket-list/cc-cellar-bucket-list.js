@@ -543,7 +543,7 @@ export class CcCellarBucketList extends LitElement {
         .wrapper {
           background-color: var(--cc-color-bg-default, #fff);
           border: 1px solid var(--cc-color-border-neutral, #aaa);
-          border-radius: var(--cc-border-radius-default, 0.25em);
+          border-radius: var(--cc-border-radius-small, 0.25em);
           box-sizing: border-box;
           display: flex;
           flex-direction: column;
@@ -605,7 +605,7 @@ export class CcCellarBucketList extends LitElement {
 
         .list {
           border: 1px solid var(--cc-color-border-neutral-weak, #aaa);
-          border-radius: var(--cc-border-radius-default, 0.25em);
+          border-radius: var(--cc-border-radius-small, 0.25em);
           flex: 1;
           min-height: 0;
         }
@@ -620,7 +620,7 @@ export class CcCellarBucketList extends LitElement {
           align-content: center;
           align-items: center;
           border: 1px solid var(--cc-color-border-neutral, #aaa);
-          border-radius: var(--cc-border-radius-default, 0.25em);
+          border-radius: var(--cc-border-radius-small, 0.25em);
           color: var(--cc-color-text-primary-strongest, #000);
           display: flex;
           flex-direction: column;
