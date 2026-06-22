@@ -79,7 +79,7 @@ class CcLogsAppRuntimeSandbox extends LitElement {
 
       <div class="main">
         <cc-smart-container ${ref(this._smartContainerRef)}>
-          <cc-logs-app-runtime-beta class="cc-logs-app-runtime"></cc-logs-app-runtime-beta>
+          <cc-logs-app-runtime-beta class="cc-logs-app-runtime" limit="10000"></cc-logs-app-runtime-beta>
         </cc-smart-container>
       </div>
     `;

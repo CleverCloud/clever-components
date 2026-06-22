@@ -1,4 +1,4 @@
-import '@lit-labs/virtualizer';
+import { VirtualizerController } from '@tanstack/lit-virtual';
 import { css, html, LitElement, unsafeCSS } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { join } from 'lit/directives/join.js';
@@ -13,6 +13,7 @@ import { ansiStyles, ansiToLit, stripAnsi } from '../../lib/ansi/ansi.js';
 import defaultPalette from '../../lib/ansi/palettes/default.js';
 import { copyToClipboard, prepareLinesOfCodeForClipboard } from '../../lib/clipboard.js';
 import { hasClass } from '../../lib/dom.js';
+import { focusBySelector } from '../../lib/focus-helper.js';
 import { notifySuccess } from '../../lib/notifications.js';
 import { isStringEmpty, truncateString } from '../../lib/utils.js';
 import { i18n } from '../../translations/translation.js';
@@ -25,6 +26,28 @@ import { CcLogInspectEvent, CcLogsFollowChangeEvent } from './cc-logs.events.js'
 import { DateDisplayer } from './date-displayer.js';
 import { LogsController } from './logs-controller.js';
 import { LogsInputController } from './logs-input-controller.js';
+
+// The estimated height (in pixels) of a single log line.
+// This is only used by the virtualizer for logs that are not in the DOM yet (their real size is measured once rendered).
+const ESTIMATED_LOG_LINE_HEIGHT = 21;
+
+// How many extra logs the virtualizer renders above and below the viewport to smooth out scrolling.
+const VIRTUALIZER_OVERSCAN = 10;
+
+// The maximum distance (in pixels) from the bottom of the scroll container under which we consider the user is at the
+// bottom of the logs and the follow should be (re)activated. It absorbs sub-pixel rounding from dynamic measurement.
+const FOLLOW_SCROLL_THRESHOLD = 8;
+
+// How long (in milliseconds) auto-follow stays suppressed after a user interaction that must not be interrupted by a
+// fresh append re-pinning the view (selecting or dragging logs).
+const FOLLOW_SUPPRESS_MS = 150;
+
+// The `@tanstack/virtual-core` internals cc-logs reaches into that are NOT part of the public API: they are declared
+// `private` in the library's types, which is why they are accessed by string key. Every access is funnelled through
+// `_isVirtualizerScrolling()` / `_forceVirtualizerRemeasure()` so a library upgrade has a single audit point, and
+// `cc-logs.virtualizer-contract.test.js` asserts these fields still exist so an incompatible upgrade fails in CI
+// instead of silently breaking follow detection and overlap realignment. Verified against @tanstack/virtual-core 3.x.
+export const VIRTUALIZER_PRIVATE_FIELDS = ['scrollState', 'pendingMin', 'itemSizeCacheVersion'];
 
 /** @type {MetadataRendering} The default metadata renderer */
 const DEFAULT_METADATA_RENDERING = {
@@ -47,40 +70,12 @@ const DEFAULT_PALETTE_STYLE = ansiPaletteStyle(
 );
 
 /**
- * A function that can be disabled during an amount of time.
- */
-class TemporaryFunctionDisabler {
-  /**
-   * @param {() => any} callback
-   * @param {number} timeout
-   */
-  constructor(callback, timeout) {
-    this._callback = callback;
-    this._timeout = timeout;
-    this._timestamp = 0;
-  }
-
-  disable() {
-    this._timestamp = new Date().getTime();
-  }
-
-  call() {
-    const timeSinceDisabled = new Date().getTime() - this._timestamp;
-
-    if (timeSinceDisabled > this._timeout) {
-      return this._callback();
-    }
-  }
-}
-
-/**
  * @import { Log, Metadata, MetadataFilter, MetadataRenderer, MetadataRendering, LogMessageFilterMode } from './cc-logs.types.js'
  * @import { DateDisplay } from './date-display.types.js'
  * @import { AnsiPalette } from '../../lib/ansi/ansi.types.js'
  * @import { Timezone } from '../../lib/date/date.types.js'
- * @import { RangeChangedEvent, VisibilityChangedEvent } from '@lit-labs/virtualizer/events.js'
- * @import { LitVirtualizer as Virtualizer } from '@lit-labs/virtualizer/LitVirtualizer.js'
- * @import { TemplateResult, PropertyValues } from 'lit'
+ * @import { Virtualizer } from '@tanstack/virtual-core'
+ * @import { PropertyValues } from 'lit'
  * @import { EventWithTarget, GenericEventWithTarget } from '../../lib/events.types.js'
  * @import { Ref } from 'lit/directives/ref.js'
  */
@@ -99,7 +94,7 @@ class TemporaryFunctionDisabler {
  *
  * The component gives the ability to:
  *
- * * Display a huge amount of logs by using a <a href="https://github.com/lit/lit/tree/main/packages/labs/virtualizer">scroll virtualizer</a>.
+ * * Display a huge amount of logs by using a <a href="https://tanstack.com/virtual">scroll virtualizer</a>.
  * * Limit the amount of logs to be displayed.
  * * Filter the logs by metadata.
  * * Wrap the long lines.
@@ -283,9 +278,11 @@ export class CcLogs extends LitElement {
     /** @type {boolean} Whereas the focused index is in the DOM. */
     this._focusedIndexIsInDom = false;
 
-    // This function synchronizes the follow property according to the actual scroll position.
-    // This function can also be disabled during a small amount of time.
-    this._followSynchronizer = new TemporaryFunctionDisabler(() => this._synchronizeFollow(), 150);
+    /**
+     * @type {number} Timestamp (ms) until which auto-follow derivation is suppressed. Set while the user is selecting
+     * or dragging so a fresh append cannot silently re-pin the view to the bottom under them.
+     */
+    this._followSuppressedAt = 0;
 
     /** @type {LogsInputController} */
     this._inputCtrl = new LogsInputController(this);
@@ -293,8 +290,26 @@ export class CcLogs extends LitElement {
     /** @type {LogsController} */
     this._logsCtrl = new LogsController(this);
 
-    /** @type {Ref<Virtualizer>} A reference to the logs' container. */
+    /** @type {Ref<HTMLDivElement>} A reference to the scrollable logs' container. */
     this._logsRef = createRef();
+
+    // workaround for https://github.com/lit/lit/issues/3619
+    this._measureElement = this._measureElement.bind(this);
+
+    /** @type {number} The height in pixel of the horizontal scroll bar. */
+    this._horizontalScrollbarHeight = 0;
+
+    /**
+     * @type {VirtualizerController<HTMLDivElement, HTMLElement>} The virtualizer rendering only the visible logs.
+     * Its `count` and `paddingEnd` options are kept in sync within `willUpdate()`.
+     */
+    this._virtualizerController = new VirtualizerController(this, this._buildVirtualizerOptions());
+
+    // A trailing controller that keeps the view pinned to the bottom while following. It is registered AFTER the
+    // virtualizer controller on purpose: the virtualizer restores/anchors the scroll position in its own `hostUpdated`,
+    // so we must re-pin to the end after that, otherwise our scroll would be undone. `anchorTo: 'end'` then holds the
+    // pin through the asynchronous re-measurement of the freshly appended logs.
+    this.addController({ hostUpdated: () => this._pinToBottomIfFollowing() });
 
     /** @type {DateDisplayer} */
     this._dateDisplayer = this._resolveDateDisplayer();
@@ -302,8 +317,14 @@ export class CcLogs extends LitElement {
     /** @type {{last: number, first: number}} The range of visible logs in the virtualizer. */
     this._visibleRange = { first: -1, last: -1 };
 
-    /** @type {number} The height in pixel of the horizontal scroll bar. */
-    this._horizontalScrollbarHeight = 0;
+    /** @type {Log|null} A log we must scroll into view (and center) on the next update, set by the inspect action. */
+    this._logToScrollIntoView = null;
+
+    /**
+     * @type {string|null} Signature (rendered log ids + wrap mode) of the rows measured during the last `updated()`.
+     * Used to skip the re-measure loop when the rendered content did not change.
+     */
+    this._lastMeasureSignature = null;
 
     // workaround for https://github.com/lit/lit/issues/3619
     this._onMouseDownGutter = this._onMouseDownGutter.bind(this);
@@ -318,8 +339,6 @@ export class CcLogs extends LitElement {
    * @param {Array<Log>} logs The logs to append
    */
   appendLogs(logs) {
-    // We disable the follow modifier to prevent next visibilityChanged events to change the actual follow property.
-    this._followSynchronizer.disable();
     this._logsCtrl.append(logs);
   }
 
@@ -334,7 +353,11 @@ export class CcLogs extends LitElement {
    * Forces scroll to the bottom
    */
   scrollToBottom() {
+    // Explicit user/host intent: clear any follow suppression and re-pin to the end. `followOnAppend` then keeps the
+    // view glued to the bottom for the subsequent appends (kept in sync with `follow` in `willUpdate()`).
+    this._followSuppressedAt = 0;
     this._setFollow(true);
+    this._getVirtualizer().scrollToEnd({ behavior: 'auto' });
   }
 
   // endregion
@@ -342,6 +365,117 @@ export class CcLogs extends LitElement {
   _resolveDateDisplayer() {
     return new DateDisplayer(this.dateDisplay, this.timezone);
   }
+
+  // region Virtualizer
+
+  /**
+   * Builds the options for the TanStack virtualizer.
+   *
+   * This is only used to create the virtualizer. The dynamic options (`count` and `paddingEnd`) are then kept in sync
+   * through `setOptions()` on each update (see `willUpdate()`).
+   *
+   * @return {import('@tanstack/virtual-core').PartialKeys<import('@tanstack/virtual-core').VirtualizerOptions<HTMLDivElement, HTMLElement>, 'observeElementRect' | 'observeElementOffset' | 'scrollToFn'>}
+   */
+  _buildVirtualizerOptions() {
+    return {
+      getScrollElement: () => this._logsRef.value,
+      count: this._logsCtrl.listLength,
+      estimateSize: () => ESTIMATED_LOG_LINE_HEIGHT,
+      // We deliberately key the virtualizer's caches by index (the default) and NOT by log id.
+      // Keying by id makes the `itemSizeCache` and `elementsCache` grow by one entry for every log that ever scrolls
+      // into view (they are only pruned for disconnected elements, but our line elements are reused and stay
+      // connected). With an endless stream of logs this is an unbounded memory leak that eventually crashes the tab.
+      // Keying by index bounds both caches to the number of logs (the `limit`). The visible lines are kept measured
+      // correctly by the re-measure loop in `updated()`.
+      overscan: VIRTUALIZER_OVERSCAN,
+      // `anchorTo: 'end'` makes the virtualizer keep the view pinned to the bottom while logs are (re)measured: when a
+      // line settles to a height different from the estimate, it adjusts the scroll offset to absorb the change instead
+      // of letting the bottom drift. This is what makes following stable through the measurement churn of a big append —
+      // we only have to scroll to the end once (see `_pinToBottomIfFollowing()`) and the virtualizer holds it there.
+      anchorTo: 'end',
+      // Tolerance for considering the view "at the end" (must match the follow detection threshold).
+      scrollEndThreshold: FOLLOW_SCROLL_THRESHOLD,
+      // Adds some space at the bottom so the last log is not hidden behind the horizontal scrollbar.
+      paddingEnd: this._horizontalScrollbarHeight,
+      measureElement: (element, _entry, instance) => {
+        // Measure the real rendered height of a log line.
+        // We guard against a 0 height: a `ResizeObserver` notification can report a 0 height transiently when an
+        // element is being detached or reused (which happens a lot when logs are appended by buckets). Caching a 0
+        // would make several lines share the same vertical offset and overlap. We keep the row's last measured
+        // height when we have one (so an already-measured row does not shrink to the estimate for a frame), and
+        // fall back to the estimate only for a row that has never been measured.
+        const height = Math.round(element.getBoundingClientRect().height);
+        if (height > 0) {
+          return height;
+        }
+        const index = Number(element.dataset.index);
+        return instance.itemSizeCache.get(index) ?? ESTIMATED_LOG_LINE_HEIGHT;
+      },
+      onChange: (virtualizer) => this._onVirtualizerChange(virtualizer),
+    };
+  }
+
+  /**
+   * @return {Virtualizer<HTMLDivElement, HTMLElement>}
+   */
+  _getVirtualizer() {
+    return this._virtualizerController.getVirtualizer();
+  }
+
+  /**
+   * @param {Virtualizer<HTMLDivElement, HTMLElement>} virtualizer
+   * @return {boolean} Whether the virtualizer is currently driving (or reconciling) a programmatic scroll. Reads the
+   * private `scrollState` internal — see `VIRTUALIZER_PRIVATE_FIELDS`.
+   */
+  _isVirtualizerScrolling(virtualizer) {
+    return virtualizer['scrollState'] != null;
+  }
+
+  /**
+   * Forces the virtualizer to recompute its memoized measurements from index 0, after we mutated its `itemSizeCache`
+   * directly (clear or shift). Without this it would keep its stale, now-misaligned measurements.
+   *
+   * Reaches into the private `pendingMin` and `itemSizeCacheVersion` internals (and resets the public
+   * `measurementsCache`) — see `VIRTUALIZER_PRIVATE_FIELDS`.
+   *
+   * @param {Virtualizer<HTMLDivElement, HTMLElement>} virtualizer
+   */
+  _forceVirtualizerRemeasure(virtualizer) {
+    virtualizer.measurementsCache = [];
+    virtualizer['pendingMin'] = 0;
+    virtualizer['itemSizeCacheVersion']++;
+  }
+
+  /**
+   * Wired as the `ref` callback of every rendered log line.
+   *
+   * It registers the element with the virtualizer so it can measure its real height (logs have variable heights,
+   * especially when wrapping lines). The virtualizer reads the line index from the `data-index` attribute.
+   *
+   * @param {Element} [element]
+   */
+  _measureElement(element) {
+    this._getVirtualizer().measureElement(element == null ? null : /** @type {HTMLElement} */ (element));
+  }
+
+  /**
+   * Focuses the select button of the log at the given index.
+   *
+   * The element may not be in the DOM yet: after asking the virtualizer to scroll to it, we may need to wait for the
+   * next render(s) before being able to focus it.
+   *
+   * @param {number} logIndex
+   * @param {number} [remainingAttempts]
+   */
+  _focusLogButton(logIndex, remainingAttempts = 10) {
+    focusBySelector(this._logsRef.value, `.log[data-index="${logIndex}"] .select_button`, () => {
+      if (remainingAttempts > 0) {
+        requestAnimationFrame(() => this._focusLogButton(logIndex, remainingAttempts - 1));
+      }
+    });
+  }
+
+  // endregion
 
   /**
    * Calculates the new drag index according to the given direction and given offset.
@@ -360,15 +494,51 @@ export class CcLogs extends LitElement {
     throw new Error(`Illegal argument. direction ${direction} is not valid`);
   }
 
+  /** Suppresses auto-follow derivation for a short window (see `FOLLOW_SUPPRESS_MS`). */
+  _suppressFollow() {
+    this._followSuppressedAt = Date.now();
+  }
+
+  /** @return {boolean} Whether auto-follow derivation is currently suppressed. */
+  _isFollowSuppressed() {
+    return Date.now() - this._followSuppressedAt < FOLLOW_SUPPRESS_MS;
+  }
+
   /**
-   * Synchronizes the `follow` property according to the actual scroll position.
+   * @param {HTMLDivElement} container The scrollable logs container.
+   * @param {Virtualizer<HTMLDivElement, HTMLElement>} virtualizer
+   * @return {boolean} Whether the view is scrolled to the bottom, within `FOLLOW_SCROLL_THRESHOLD`.
    *
-   * If the scroll position shows the last line of log, the follow is activated.
-   * Otherwise, the follow is deactivated.
-   * An event is dispatched when the follow state changes.
+   * We measure against the virtualizer's `getTotalSize()` rather than the DOM `container.scrollHeight` because the DOM
+   * height (`.logs_inner`) is only refreshed on the next lit render, so it can lag behind a programmatic scroll and
+   * report a stale, larger value. `getTotalSize()` stays consistent with `scrollTop`.
    */
-  _synchronizeFollow() {
-    this._setFollow(this._visibleRange.last === Math.max(0, this._logsCtrl.listLength - 1));
+  _isAtBottom(container, virtualizer) {
+    const distanceToBottom = virtualizer.getTotalSize() - container.clientHeight - container.scrollTop;
+    return distanceToBottom <= FOLLOW_SCROLL_THRESHOLD;
+  }
+
+  /**
+   * Derives the `follow` property from the actual scroll position: the component follows when the view is at the bottom.
+   *
+   * With `anchorTo: 'end'`, the virtualizer keeps the view glued to the bottom across measurement churn and its own
+   * programmatic scrolls, so the only thing that moves the view away from the end is a genuine user scroll-up. That
+   * makes "at the end" a reliable proxy for "following": we no longer need to guess whether a scroll was the user's.
+   */
+  _syncFollow() {
+    const container = this._logsRef.value;
+    if (container == null || this._isFollowSuppressed() || this._logsCtrl.listLength === 0) {
+      return;
+    }
+    const virtualizer = this._getVirtualizer();
+    // Ignore scrolls that the virtualizer itself is driving: it is non-null while a programmatic scroll or its reconcile
+    // loop is in flight (e.g. `_pinToBottomIfFollowing()` pinning to a growing bottom). During that window the scroll
+    // event can fire with a `scrollTop` that momentarily lags the just-grown `getTotalSize()`, which would read as "not
+    // at the bottom" and wrongly unfollow. Only a user scroll happens with no programmatic scroll pending.
+    if (this._isVirtualizerScrolling(virtualizer)) {
+      return;
+    }
+    this._setFollow(this._isAtBottom(container, virtualizer));
   }
 
   /**
@@ -417,6 +587,144 @@ export class CcLogs extends LitElement {
       : `${metadataRendering.showName ? `${metadata.name}: ` : ''}${metadata.value}`;
   }
 
+  /**
+   * Keeps the virtualizer's index-keyed size cache aligned with the logs list.
+   *
+   * The virtualizer caches each rendered log's measured height in a `Map` keyed by index (we deliberately key by index
+   * and not by log id to bound memory — see `_buildVirtualizerOptions()`). When logs are trimmed off the front (FIFO
+   * once `limit` is reached), every surviving log's index decreases, but this cache does not follow on its own: the
+   * trim+append at the limit keeps `count` constant and the index edge keys unchanged, so the virtualizer's built-in
+   * edge-key-change detection never fires. The stale cached heights then apply to the wrong logs, which positions lines
+   * with the wrong height and makes them overlap (most visible with `wrap-lines` and multi-line logs, when scrolling up
+   * into a trimmed region).
+   *
+   * We therefore reach into the virtualizer internals (same defensive pattern as the `measureElement` 0-height guard)
+   * and either drop the cache (on a full rebuild: filter change / clear) or shift every cached index down by the
+   * front-trim count. We then force the memoized measurements to be recomputed from the start.
+   */
+  _realignVirtualizerSizeCache() {
+    const { rebuilt, frontTrim } = this._logsCtrl.consumeIndexSpaceChange();
+
+    const virtualizer = this._getVirtualizer();
+
+    if (rebuilt) {
+      // Full rebuild (filter change / clear): indices map to entirely different logs, drop the whole cache.
+      virtualizer.itemSizeCache.clear();
+    } else if (frontTrim > 0 && !this.follow) {
+      // FIFO front-trim shifted every surviving log's index down by `frontTrim`. Shift each measured height down by the
+      // same amount so it stays attached to the same log; cached indices that fall below 0 belonged to trimmed logs and
+      // are dropped. We only need this while the user is scrolled up reading history: the region they can scroll into
+      // must stay correctly positioned.
+      //
+      // While following the tail we deliberately SKIP this (see the `else` below). It is the dominant per-append cost at
+      // a large `limit` — both this O(cache size) shift and the O(count) recompute it forces — and it is unnecessary:
+      // only the bottom window is rendered while following, and it is re-measured at its (constant) indices on every
+      // update (see the loop in `updated()`), so its heights are always correct and the cache never accumulates the
+      // off-screen history that the shift exists to keep aligned. Skipping the shift is also what keeps the cache
+      // bounded to the visible window instead of letting it grow towards `limit`.
+      /** @type {Map<number, number>} */
+      const shiftedCache = new Map();
+      for (const [index, size] of virtualizer.itemSizeCache) {
+        const shiftedIndex = Number(index) - frontTrim;
+        if (shiftedIndex >= 0) {
+          shiftedCache.set(shiftedIndex, size);
+        }
+      }
+      virtualizer.itemSizeCache = shiftedCache;
+    } else {
+      // Nothing changed, or we are following the tail and the bottom window is kept correct by the per-update
+      // re-measure: nothing to realign.
+      return;
+    }
+
+    // Force the virtualizer to recompute its positions from the realigned cache.
+    this._forceVirtualizerRemeasure(virtualizer);
+  }
+
+  /**
+   * Keeps the view pinned to the bottom while `follow` is on.
+   *
+   * Runs in a trailing `ReactiveController.hostUpdated()` (registered after the virtualizer controller) so the scroll
+   * to the end is applied after the virtualizer's own post-update scroll anchoring, not before it (which would undo it).
+   * A single scroll to the end per update is enough: `anchorTo: 'end'` then keeps the view glued to the bottom while the
+   * freshly appended logs are measured. We skip it when already at the bottom to avoid redundant scrolls.
+   */
+  _pinToBottomIfFollowing() {
+    const container = this._logsRef.value;
+    if (!this.follow || container == null || this._logsCtrl.listLength === 0) {
+      return;
+    }
+    const virtualizer = this._getVirtualizer();
+    if (!this._isAtBottom(container, virtualizer)) {
+      virtualizer.scrollToEnd({ behavior: 'auto' });
+    }
+  }
+
+  /**
+   * This is called by the virtualizer whenever its state changes (scroll, resize, measurement).
+   *
+   * It replaces the `visibilityChanged` and `rangeChanged` events of the previous virtualizer:
+   *
+   * * It keeps track of the first and last visible logs (used for keyboard navigation).
+   * * It detects when the focused log leaves the DOM (when user scrolls far from it) so we don't lose the focus.
+   *
+   * @param {Virtualizer<HTMLDivElement, HTMLElement>} virtualizer
+   */
+  _onVirtualizerChange(virtualizer) {
+    // We deliberately do NOT re-derive `follow` here. `onChange` fires mid-append — after the total size has grown but
+    // before `followOnAppend` has pinned to the new bottom (that happens in the virtualizer's post-update step) — so the
+    // view is transiently "not at the bottom" and we would wrongly unfollow. `follow` is derived from real scroll events
+    // only (see `_onScroll`); `anchorTo: 'end'` guarantees every programmatic scroll settles at the bottom, so those
+    // scroll events only ever confirm following.
+
+    // `range` is the visible range (without overscan): this is the equivalent of the old `visibilityChanged` event.
+    const range = virtualizer.range;
+    this._visibleRange = range == null ? { first: -1, last: -1 } : { first: range.startIndex, last: range.endIndex };
+
+    // The virtual items are the rendered ones (visible range + overscan): this is the equivalent of the old
+    // `rangeChanged` event. We use it to detect when the focused log is removed from the DOM.
+    const renderedItems = virtualizer.getVirtualItems();
+    const renderedRange =
+      renderedItems.length > 0
+        ? { first: renderedItems[0].index, last: renderedItems[renderedItems.length - 1].index }
+        : { first: -1, last: -1 };
+    this._focusedIndexIsInDom = this._logsCtrl.isFocusedIndexInRange(renderedRange);
+    if (!this._focusedIndexIsInDom && this.shadowRoot?.activeElement != null) {
+      this._logsRef.value?.focus();
+    }
+  }
+
+  /**
+   * This event handler is called whenever the logs' container is scrolled (by the user or programmatically).
+   *
+   * It re-derives the `follow` property from the new scroll position. Because `anchorTo: 'end'` keeps the view pinned
+   * to the bottom for every programmatic scroll, a scroll that ends away from the bottom is necessarily the user's, so
+   * we can safely read the position synchronously here (no debounce, no scroll-direction guessing).
+   */
+  _onScroll() {
+    this._syncFollow();
+  }
+
+  /**
+   * This event handler is called whenever the user scrolls the logs' container with the wheel.
+   *
+   * It forces unfollowing on a scroll-up. We cannot rely on `_onScroll`/`_syncFollow` alone for this: during fast
+   * streaming `_pinToBottomIfFollowing()` re-pins to the bottom on almost every append, so the virtualizer's
+   * `scrollState` is almost always non-null and `_syncFollow()` bails out (to avoid unfollowing on the virtualizer's
+   * own programmatic scrolls). That would make it impossible to scroll away from the bottom while logs pour in. The
+   * `wheel` event is an unambiguous signal of user intent that does not go through the virtualizer, so we use it to
+   * break out of follow regardless of any programmatic scroll in flight. We also suppress auto-follow derivation for a
+   * short window so the next append cannot immediately re-pin the view under the user.
+   *
+   * @param {WheelEvent} e
+   */
+  _onWheel(e) {
+    if (e.deltaY < 0 && this.follow) {
+      this._suppressFollow();
+      this._setFollow(false);
+    }
+  }
+
   // region Focus logic
 
   /**
@@ -457,23 +765,11 @@ export class CcLogs extends LitElement {
       this._logsRef.value.focus();
     } else {
       // Scroll to the element to focus.
-      this._logsRef.value.element(logIndex)?.scrollIntoView({ block: 'nearest' });
+      this._getVirtualizer().scrollToIndex(logIndex, { align: 'auto' });
 
       // The element we want to focus may not be in the DOM yet.
       // We may need to wait for the virtualizer to redo its layout before being able to focus the element.
-      const tryToFocus = () => {
-        const element = /** @type {HTMLElement} */ (
-          this._logsRef.value.querySelector(`.log[data-index="${logIndex}"] .select_button`)
-        );
-        if (element != null) {
-          element.focus();
-          return true;
-        }
-        return false;
-      };
-      if (!tryToFocus()) {
-        this._logsRef.value.layoutComplete.then(tryToFocus);
-      }
+      this._focusLogButton(logIndex);
     }
   }
 
@@ -520,21 +816,6 @@ export class CcLogs extends LitElement {
       this._logsCtrl.extendSelection(this._logsCtrl.listLength - 1, 'replace');
     } else {
       this._logsCtrl.focus(this._logsCtrl.listLength - 1);
-    }
-  }
-
-  /**
-   * This event handler is called whenever the virtualizer adds child elements to the DOM, or removes child elements from the DOM.
-   *
-   * It helps in detecting when the focused button is removed from the DOM, which is when user scrolls far from the focused button.
-   * When the focused button is removed from the DOM, the focus is lost which is something we want to avoid.
-   * Instead, we move to focus on the logs container, and we store the index of the lost button (so that we know where we were when user plays with arrow keys).
-   * @param {RangeChangedEvent} e
-   */
-  _onRangeChanged(e) {
-    this._focusedIndexIsInDom = this._logsCtrl.isFocusedIndexInRange({ first: e.first, last: e.last });
-    if (!this._focusedIndexIsInDom && this.shadowRoot.activeElement != null) {
-      this._logsRef.value.focus();
     }
   }
 
@@ -598,7 +879,7 @@ export class CcLogs extends LitElement {
     }
 
     if (direction === 'up' || direction === 'down') {
-      this._logsRef.value.element(newIndex)?.scrollIntoView({ block: 'nearest' });
+      this._getVirtualizer().scrollToIndex(newIndex, { align: 'auto' });
     }
 
     this._draggedLogIndex = newIndex;
@@ -673,7 +954,7 @@ export class CcLogs extends LitElement {
    * It forces follow to stop.
    */
   _onSelectionChanged() {
-    this._followSynchronizer.disable();
+    this._suppressFollow();
     this._setFollow(false);
   }
 
@@ -741,44 +1022,13 @@ export class CcLogs extends LitElement {
     }
 
     const selectedLog = this._logsCtrl.getSelectedLogs()[0];
-    const logIndex = this._logsCtrl.getFirstSelectedLogIndex();
     this.dispatchEvent(new CcLogInspectEvent(selectedLog));
 
-    this._logsRef.value.layoutComplete.then(() => {
-      this._logsRef.value.element(logIndex)?.scrollIntoView({ block: 'center' });
-    });
-  }
-
-  // endregion
-
-  // region Follow logic
-
-  /**
-   * When logs are appended very fast, the visibilityChanged event is fired very often.
-   * We need to listen to the wheel event to force unfollowing.
-   *
-   * @param {WheelEvent} e
-   */
-  _onWheel(e) {
-    if (e.deltaY < 0) {
-      // When wheel up is detected, this means that the user wants to unfollow.
-      // We disable the follow modifier to prevent next visibilityChanged events to go against the user decision.
-      this._followSynchronizer.disable();
-      this._setFollow(false);
-    }
-  }
-
-  /**
-   * This event handler is called whenever the visible items in the logs container viewport change.
-   *
-   * It synchronizes the `follow` property according to the scroll position.
-   * It also keeps track of the first and last visible elements needed for keyboard navigation.
-   *
-   * @param {VisibilityChangedEvent} e
-   */
-  _onVisibilityChanged(e) {
-    this._visibleRange = { first: e.first, last: e.last };
-    this._followSynchronizer.call();
+    // Inspecting makes the host clear the message filter, which rebuilds the displayed list asynchronously (the new
+    // `message-filter` only reaches us on a later update). We therefore cannot scroll now: we remember the inspected
+    // log and scroll to it once that filter-clearing update has landed (see `updated()`), reading its index from the
+    // list that is actually displayed at that point.
+    this._logToScrollIntoView = selectedLog;
   }
 
   // endregion
@@ -810,70 +1060,94 @@ export class CcLogs extends LitElement {
         metadata: this.metadataFilter,
       };
     }
+
+    // Keep the dynamic virtualizer options in sync with the current state.
+    // We spread the existing options to preserve the ones set by the controller (observers, scroll function, the
+    // `onChange` wrapper that triggers re-renders…).
+    const virtualizer = this._getVirtualizer();
+    virtualizer.setOptions({
+      ...virtualizer.options,
+      count: this._logsCtrl.listLength,
+      paddingEnd: this._horizontalScrollbarHeight,
+    });
+
+    // Realign the index-keyed size cache with the (possibly trimmed) list before `render()` reads the measurements.
+    this._realignVirtualizerSizeCache();
   }
 
   /**
-   * @param {PropertyValues<CcLogs>} _changedProperties
+   * @param {PropertyValues<CcLogs>} changedProperties
    */
-  updated(_changedProperties) {
+  updated(changedProperties) {
+    const virtualizer = this._getVirtualizer();
+
+    // Deferred scroll requested by the inspect action: now that the message filter has been cleared (by the host) and
+    // the displayed list rebuilt, scroll the inspected log into the center. We read its index from the list that is
+    // actually displayed now, so it is correct whether or not a filter was active when inspect was clicked.
+    if (this._logToScrollIntoView != null && changedProperties.has('messageFilter')) {
+      const logIndex = this._logsCtrl.getList().indexOf(this._logToScrollIntoView);
+      this._logToScrollIntoView = null;
+      if (logIndex >= 0) {
+        virtualizer.scrollToIndex(logIndex, { align: 'center' });
+      }
+    }
+
     if (this._logsRef.value != null) {
       this._horizontalScrollbarHeight = this.wrapLines
         ? 0
         : this._logsRef.value.offsetHeight - this._logsRef.value.clientHeight;
+
+      // Re-measure the rendered log lines, but only when the rendered content changed since the last measure.
+      // We render the lines with a positional `map()` (and not a keyed `repeat()`, which is corrupted by the
+      // virtualizer's re-entrant updates while scrolling). With positional rendering, a line element is reused for a
+      // different log when the visible window moves, so the `ref` measuring callback is not called again, and we must
+      // (re)measure here. But `updated()` also fires for changes that leave the rendered rows untouched (follow toggles,
+      // selection, scrollbar-height state, measurement-settle re-renders); re-measuring every row then is pure wasted
+      // layout (a forced reflow per row). We therefore skip the loop unless the rendered logs or the wrap mode changed.
+      // Height changes we skip this way (e.g. a viewport resize) are still caught by the `ResizeObserver` the
+      // virtualizer keeps on each rendered element (registered by the `ref` measuring callback on mount).
+      const renderedLogs = this._logsCtrl.getList();
+      const measureSignature = `${this.wrapLines}|${virtualizer
+        .getVirtualItems()
+        .map((virtualItem) => renderedLogs[virtualItem.index]?.id)
+        .join(',')}`;
+      if (measureSignature !== this._lastMeasureSignature) {
+        this._lastMeasureSignature = measureSignature;
+        for (const logElement of this._logsRef.value.querySelectorAll('.log')) {
+          virtualizer.measureElement(/** @type {HTMLElement} */ (logElement));
+        }
+      }
     }
+
+    // The actual pin-to-bottom while following is done in `_pinToBottomIfFollowing()`, registered as a trailing
+    // controller so it runs after the virtualizer has restored/anchored its own scroll position.
   }
 
   render() {
-    const layout =
-      this.follow && this._logsCtrl.listLength > 0
-        ? {
-            pin: {
-              index: this._logsCtrl.listLength - 1,
-              block: 'start',
-            },
-          }
-        : null;
-
-    /**
-     * @param {Log} log
-     * @return {string}
-     */
-    function keyFunction(log) {
-      return log?.id;
-    }
-
-    /**
-     * @param {Log} log
-     * @param {number} index
-     * @return {TemplateResult}
-     */
-    const renderItem = (log, index) => {
-      if (log == null) {
-        return null;
-      }
-      return this._renderLog(log, index);
-    };
+    const virtualizer = this._getVirtualizer();
+    const virtualItems = virtualizer.getVirtualItems();
+    const logs = this._logsCtrl.getList();
 
     return html`
-      <div class="wrapper" style="--last-log-margin: ${this._horizontalScrollbarHeight}px">
-        <lit-virtualizer
+      <div class="wrapper">
+        <div
           ${ref(this._logsRef)}
           class="logs_container"
           tabindex="0"
-          .items=${this._logsCtrl.getList().slice()}
-          ?scroller=${true}
-          .keyFunction=${keyFunction}
-          .renderItem=${renderItem}
-          .layout=${layout}
           @click=${this._inputCtrl.onClick}
           @keydown=${this._inputCtrl.onKeyDown}
           @keyup=${this._inputCtrl.onKeyUp}
           @copy=${this._onCopy}
           @focus=${this._onFocusLogsContainer}
-          @visibilityChanged=${this._onVisibilityChanged}
-          @rangeChanged=${this._onRangeChanged}
+          @scroll=${this._onScroll}
           @wheel=${this._onWheel}
-        ></lit-virtualizer>
+        >
+          <div class="logs_inner" style="height: ${virtualizer.getTotalSize()}px;">
+            <div class="logs_window" style="transform: translateY(${virtualItems[0]?.start ?? 0}px);">
+              ${virtualItems.map((virtualItem) => this._renderLog(logs[virtualItem.index], virtualItem))}
+            </div>
+          </div>
+        </div>
         ${!this._logsCtrl.isSelectionEmpty()
           ? html` <div class="floating_buttons">
               <cc-button .icon=${iconCopy} @cc-click=${this._onCopySelectionToClipboard}>
@@ -896,9 +1170,14 @@ export class CcLogs extends LitElement {
    * Renders a single line of log.
    *
    * @param {Log} log
-   * @param {number} index
+   * @param {import('@tanstack/virtual-core').VirtualItem} virtualItem
    */
-  _renderLog(log, index) {
+  _renderLog(log, virtualItem) {
+    if (log == null) {
+      return null;
+    }
+
+    const index = virtualItem.index;
     const wrap = this.wrapLines;
     const dateDisplayer = this._dateDisplayer;
 
@@ -908,8 +1187,12 @@ export class CcLogs extends LitElement {
       : i18n('cc-logs.select-button.label', { index: index + 1 });
 
     /* eslint-disable lit-a11y/click-events-have-key-events */
+    // The row is rendered in normal flow inside `.logs_window` (which is translated to the first rendered row's
+    // offset). We deliberately do NOT position each row with its own `translateY`: stacking the rows in flow makes it
+    // impossible for two rows to overlap, even when a row's height has not been measured yet (it falls back to the
+    // estimate). The virtualizer still measures each row (via `data-index`) to keep the scroll size accurate.
     return html`
-      <p class="log ${classMap({ selected })}" data-index="${index}">
+      <p class="log ${classMap({ selected, wrap })}" data-index="${index}" ${ref(this._measureElement)}>
         <span class="gutter" @mousedown=${this._onMouseDownGutter} @click=${this._inputCtrl.onClickLog}>
           <button
             class="select_button"
@@ -1025,6 +1308,21 @@ export class CcLogs extends LitElement {
           flex: 1;
           font-family: var(--cc-ff-monospace, monospace);
           font-size: var(--font-size);
+          overflow: auto;
+        }
+
+        .logs_inner {
+          position: relative;
+          width: 100%;
+        }
+
+        /* The window holds the currently rendered rows. It is translated to the first rendered row's offset; the rows
+           themselves are laid out in normal flow inside it so they can never overlap (see _renderLog). */
+        .logs_window {
+          left: 0;
+          position: absolute;
+          top: 0;
+          width: 100%;
         }
 
         .log {
@@ -1032,11 +1330,19 @@ export class CcLogs extends LitElement {
           display: flex;
           gap: 0.5em;
           margin: 0;
-          width: 100%;
+          /* When lines are not wrapped, the line grows to fit its content so it can be scrolled horizontally,
+             while still being at least as wide as the viewport (so hover/selection backgrounds span the full width). */
+          min-width: 100%;
+          width: max-content;
 
           /* We don't need em here. At least with px we avoid strange blinking effect. */
           --spacing: 2px;
           --gutter-size: 1.5em;
+        }
+
+        /* When lines are wrapped, the line is constrained to the viewport width so its content wraps. */
+        .log.wrap {
+          width: 100%;
         }
 
         .log:hover {
@@ -1045,10 +1351,6 @@ export class CcLogs extends LitElement {
 
         .log.selected {
           background-color: var(--cc-color-ansi-background-selected);
-        }
-
-        .log:last-of-type {
-          margin-bottom: var(--last-log-margin);
         }
 
         .date,

@@ -159,6 +159,10 @@ class CcLogsSandbox extends LitElement {
     this._logsRef.value.appendLogs([this._newLog()]);
   }
 
+  _onAddManyClick() {
+    this._logsRef.value.appendLogs(Array.from({ length: 1000 }, () => this._newLog()));
+  }
+
   _onClearClick() {
     this._clear();
   }
@@ -268,6 +272,9 @@ class CcLogsSandbox extends LitElement {
         ></cc-button>
         <cc-button @cc-click=${this._onAddClick} ?primary=${true} ?outlined=${true} .icon=${addIcon}
           >Add one log
+        </cc-button>
+        <cc-button @cc-click=${this._onAddManyClick} ?primary=${true} ?outlined=${true} .icon=${addIcon}
+          >Add +1000 logs
         </cc-button>
         <cc-button @cc-click=${this._onClearClick} ?danger=${true} ?outlined=${true} .icon=${clearIcon}
           >Clear

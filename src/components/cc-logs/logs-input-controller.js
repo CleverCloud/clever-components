@@ -184,15 +184,19 @@ export class LogsInputController {
       // Find the log right under the mouse if 'inside',
       // or on the same y position if 'left' or 'right'.
       const elementsPath = this._getElementsFromPoint(e, position, distance);
-      const log = /** @type {HTMLElement} */ (
+      const log = /** @type {HTMLElement | undefined} */ (
         elementsPath.find((element) => element instanceof HTMLElement && hasClass(element, 'log'))
       );
 
-      const logIndex = Number(log.dataset.index);
-      // No need to trigger this._host.onDrag if it's the same index
-      if (this._dragIndex !== logIndex) {
-        this._host._onDrag({ logIndex }, isFirstDrag);
-        this._dragIndex = logIndex;
+      // The cursor may be over an element that is not a log (e.g. a gap between rows),
+      // in which case there is no log to drag onto.
+      if (log != null) {
+        const logIndex = Number(log.dataset.index);
+        // No need to trigger this._host.onDrag if it's the same index
+        if (this._dragIndex !== logIndex) {
+          this._host._onDrag({ logIndex }, isFirstDrag);
+          this._dragIndex = logIndex;
+        }
       }
     }
 

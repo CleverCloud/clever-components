@@ -20,6 +20,13 @@ export default {
 const conf = {
   component: 'cc-logs-beta',
   beta: true,
+  // The component relies on a virtualizer and therefore needs a bounded height to define its scroll viewport.
+  // language=CSS
+  css: `
+    cc-logs-beta {
+      height: 300px;
+    }
+  `,
 };
 
 export const defaultStory = makeStory(conf, {
