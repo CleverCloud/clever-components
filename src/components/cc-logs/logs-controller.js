@@ -33,6 +33,16 @@ export class LogsController {
     this._selectionLast = null;
     /** @type {number|null} The index of the focused log. */
     this._focusedIndex = null;
+    /**
+     * @type {number} The number of logs trimmed off the front of the filtered list since the last
+     * `consumeIndexSpaceChange()` call. Accumulated because several appends can be batched into a single render.
+     */
+    this._pendingFrontTrim = 0;
+    /**
+     * @type {boolean} Whether the filtered list was rebuilt from scratch (filter change / clear) since the last
+     * `consumeIndexSpaceChange()` call. When `true`, indices no longer map to the same logs at all.
+     */
+    this._pendingRebuild = false;
   }
 
   /**
@@ -88,8 +98,27 @@ export class LogsController {
     this._logs = [];
     this._logsFiltered = [];
     this._selection.clear();
+    this._pendingRebuild = true;
     this._updateList();
     this.clearFocus();
+  }
+
+  /**
+   * Reports — and resets — how the filtered list's index space changed since the last call.
+   *
+   * The virtualizer caches each rendered log's measured height in a map keyed by index.
+   * When logs are trimmed off the front (FIFO once `limit` is reached), every surviving log's index
+   * decreases, but the index-keyed size cache does not follow, so cached heights end up applying to the wrong logs
+   * (causing overlapping lines). The host uses this information to realign that cache.
+   *
+   * @return {{ rebuilt: boolean, frontTrim: number }} `rebuilt` when the whole list changed (filter / clear) and the
+   * cache should be dropped; `frontTrim` the number of logs removed from the front, by which cached indices must shift.
+   */
+  consumeIndexSpaceChange() {
+    const change = { rebuilt: this._pendingRebuild, frontTrim: this._pendingFrontTrim };
+    this._pendingRebuild = false;
+    this._pendingFrontTrim = 0;
+    return change;
   }
 
   // region selection
@@ -207,17 +236,6 @@ export class LogsController {
     return this._logs.filter((log) => this._selection.has(log));
   }
 
-  /**
-   * @return {number} The index of the first selected log, or `-1` if no log is selected.
-   */
-  getFirstSelectedLogIndex() {
-    if (this._selection.size === 0) {
-      return -1;
-    }
-    const firstSelectedLog = this._selection.values().next().value;
-    return this._logs.findIndex((log) => firstSelectedLog === log);
-  }
-
   // endregion
 
   // region focus
@@ -315,6 +333,9 @@ export class LogsController {
     this._logs.push(...logsToAdd);
 
     if (forceFilter) {
+      // The filtered list is rebuilt from scratch: indices no longer map to the same logs, so the size cache must be
+      // dropped entirely rather than shifted.
+      this._pendingRebuild = true;
       this._logsFiltered = [];
 
       this._logs.forEach((log) => {
@@ -333,6 +354,9 @@ export class LogsController {
       const logsToRemoveFiltered = logsToRemove.filter(this._filterCallback);
       // No need to filter the logs we want to keep
       this._logsFiltered.splice(0, logsToRemoveFiltered.length);
+      // Front-trimming shifts every surviving log's index down: record it so the host can realign the virtualizer's
+      // index-keyed size cache (see `consumeIndexSpaceChange()`).
+      this._pendingFrontTrim += logsToRemoveFiltered.length;
       // Only need to filter the new logs
       const logsToAddFiltered = logsToAdd.filter(this._filterCallback);
 
@@ -340,7 +364,7 @@ export class LogsController {
 
       // Handle focused log
       if (this._focusedIndex != null && logsToRemoveFiltered.length > 0) {
-        if (this._focusedIndex > logsToRemoveFiltered.length) {
+        if (this._focusedIndex >= logsToRemoveFiltered.length) {
           this.focus(this._focusedIndex - logsToRemoveFiltered.length);
         } else {
           this.clearFocus();
