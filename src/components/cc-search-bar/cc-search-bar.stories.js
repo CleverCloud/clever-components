@@ -17,7 +17,7 @@ const getCcSearchBar = (container) => /** @type {CcSearchBar} */ (container.quer
 
 export default {
   tags: ['autodocs'],
-  title: '🧬 Atoms/<cc-search-bar>',
+  title: '🛠 Navigation/<cc-search-bar>',
   component: 'cc-search-bar',
 };
 
@@ -67,6 +67,8 @@ const defaultSections = [
       },
       { label: 'test-kube-config', href: '#kube-1', itemType: 'cke' },
       { label: 'test-addon-pulsar', href: '#pulsar-1', itemType: 'addon' },
+      { label: 'my-oauth-consumer', href: '#consumer-1', itemType: 'oauth-consumer' },
+      { label: 'matomo-addon-provider', href: '#provider-1', itemType: 'addon-provider' },
     ],
   },
   {

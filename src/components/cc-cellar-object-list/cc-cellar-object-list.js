@@ -47,16 +47,6 @@ import {
   CcCellarObjectUploadEvent,
 } from './cc-cellar-object-list.events.js';
 
-/**
- * @import { CellarObjectListState, CellarObjectListStateLoading, CellarObjectListStateLoaded, CellarObjectListStateFiltering, CellarObjectState, CellarFileDetailsState, CellarDirectoryCreateFormState, CreationFormError } from './cc-cellar-object-list.types.js'
- * @import { CcBreadcrumbClickEvent } from '../cc-breadcrumbs/cc-breadcrumbs.events.js'
- * @import { CcGrid } from '../cc-grid/cc-grid.js'
- * @import { CcGridColumnDefinition } from '../cc-grid/cc-grid.types.js'
- * @import { TemplateResult } from 'lit'
- * @import { Ref } from 'lit/directives/ref.js'
- * @import { ErrorMessage } from '../../lib/form/validation.types.js'
- */
-
 /** @type {Array<Omit<CellarObjectState, 'key'>>} */
 const SKELETON_OBJECTS = [...Array(5)].map(() => ({
   type: 'file',
@@ -92,6 +82,16 @@ const ARCHIVE_CONTENT_TYPES = [
   'application/x-ace-compressed',
   'application/x-stuffit',
 ];
+
+/**
+ * @import { CellarObjectListState, CellarObjectListStateLoading, CellarObjectListStateLoaded, CellarObjectListStateFiltering, CellarObjectState, CellarFileDetailsState, CellarDirectoryCreateFormState, CreationFormError } from './cc-cellar-object-list.types.js'
+ * @import { CcBreadcrumbClickEvent } from '../cc-breadcrumbs/cc-breadcrumbs.events.js'
+ * @import { CcGrid } from '../cc-grid/cc-grid.js'
+ * @import { CcGridColumnDefinition } from '../cc-grid/cc-grid.types.js'
+ * @import { TemplateResult } from 'lit'
+ * @import { Ref } from 'lit/directives/ref.js'
+ * @import { ErrorMessage } from '../../lib/form/validation.types.js'
+ */
 
 /**
  * A component that allows to navigate through a Cellar addon's bucket.

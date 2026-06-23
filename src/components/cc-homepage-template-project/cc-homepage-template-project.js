@@ -8,12 +8,12 @@ import '../cc-block/cc-block.js';
 import '../cc-icon/cc-icon.js';
 import '../cc-notice/cc-notice.js';
 
+/** @type {TemplateProject[]} */
+const SKELETON_PROJECTS = new Array(5).fill({ name: fakeString(10), description: fakeString(40), href: '' });
+
 /**
  * @import { HomepageTemplateProjectState, TemplateProject } from './cc-homepage-template-project.types.js';
  */
-
-/** @type {TemplateProject[]} */
-const SKELETON_PROJECTS = new Array(5).fill({ name: fakeString(10), description: fakeString(40), href: '' });
 
 /**
  * A component displaying a list of pre-built template projects.
