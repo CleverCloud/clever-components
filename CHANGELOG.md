@@ -5,6 +5,18 @@ title: 'Changelog'
 
 # Changelog
 
+## [25.6.0](https://github.com/CleverCloud/clever-components/compare/25.5.0...25.6.0) (2026-06-23)
+
+
+### 🚀 Features
+
+* **cc-search-bar:** add oauth-consumer and addon-provider item types ([eade294](https://github.com/CleverCloud/clever-components/commit/eade294a82495e5bef07c58260236adc0fe873c1))
+
+
+### 🐛 Bug Fixes
+
+* **cc-search-bar:** stop translating oauth consumer and add-on provider ([cf1d6d6](https://github.com/CleverCloud/clever-components/commit/cf1d6d69a007bbb01cd76c5b5284ebdd79a6931b))
+
 ## [25.5.0](https://github.com/CleverCloud/clever-components/compare/25.4.0...25.5.0) (2026-06-17)
 
 
