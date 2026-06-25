@@ -290,6 +290,8 @@ class Api {
         return this.#addonDashboardUrlPattern.replace(':id', resourceId);
       case 'EXTERNAL':
         return null;
+      default:
+        throw new Error(`Unsupported network group member kind: ${kind}`);
     }
   }
 
@@ -333,6 +335,8 @@ class Api {
           url: getAssetUrl('/logos/external-peer.svg'),
           a11yName: i18n('cc-network-group-member-list.member.logo.a11y-name.external'),
         };
+      default:
+        throw new Error(`Unsupported network group member kind: ${kind}`);
     }
   }
 
@@ -342,8 +346,13 @@ class Api {
    * @returns {Promise<NetworkGroupMember>}
    * */
   async #getMemberWithInfo(member, rawPeerList) {
+    // The network group API returns `kind` in lowercase (e.g. "application"), whereas the rest of
+    // the codebase (and the client types) expect uppercase. Normalize it here so the kind-based
+    // switches resolve correctly instead of silently falling through to a "DELETED" member.
+    const kind = /** @type {Exclude<NetworkGroupMember['kind'], 'DELETED'>} */ (member.kind.toUpperCase());
+
     const [logo, peerList] = await Promise.all([
-      this.#getMemberLogo(member.id, member.kind),
+      this.#getMemberLogo(member.id, kind),
       Promise.all(
         rawPeerList.filter((peer) => peer.parentMember === member.id).map((peer) => this.#getPeerWithInfo(peer)),
       ),
@@ -362,8 +371,8 @@ class Api {
       label: member.label,
       domainName: member.domainName,
       logo,
-      kind: member.kind,
-      dashboardUrl: this.#getMemberDashboardUrl(member.id, member.kind),
+      kind,
+      dashboardUrl: this.#getMemberDashboardUrl(member.id, kind),
       peerList,
     };
   }
