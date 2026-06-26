@@ -5,6 +5,9 @@ allowBuilds:
 
 minimumReleaseAge: 10080
 
+minimumReleaseAgeExclude:
+  - '@clevercloud/client'
+
 # Pin axe-core to the version used before the pnpm migration (the npm lockfile
 # had 4.4.3). Newer versions flag pre-existing color-contrast issues on skeleton
 # placeholders; addressing those is tracked separately as an a11y task.
