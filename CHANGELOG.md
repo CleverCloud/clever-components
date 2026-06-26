@@ -5,6 +5,13 @@ title: 'Changelog'
 
 # Changelog
 
+## [25.6.1](https://github.com/CleverCloud/clever-components/compare/25.6.0...25.6.1) (2026-06-26)
+
+
+### 🐛 Bug Fixes
+
+* **cc-network-group-member-list:** prevent all members from being shown as deleted ([d1e27ca](https://github.com/CleverCloud/clever-components/commit/d1e27cafeeb16b4fb9c0327fdd1f20bb5bdc6b62))
+
 ## [25.6.0](https://github.com/CleverCloud/clever-components/compare/25.5.0...25.6.0) (2026-06-23)
 
 
