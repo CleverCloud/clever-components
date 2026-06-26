@@ -77,7 +77,7 @@ export function getDomainUrl(hostname, pathPrefix, isWildcard, isHttpOnly) {
  * @return {boolean}
  */
 export function isTestDomain(hostname) {
-  return hostname.endsWith('cleverapps.io');
+  return hostname.endsWith('.cleverapps.io');
 }
 
 /**
