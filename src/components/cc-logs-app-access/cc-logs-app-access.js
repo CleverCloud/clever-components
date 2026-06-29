@@ -358,6 +358,7 @@ export class CcLogsAppAccess extends LitElement {
         }
 
         .logs-wrapper {
+          min-height: 0;
           position: relative;
         }
 
