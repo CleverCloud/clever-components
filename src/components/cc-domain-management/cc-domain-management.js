@@ -1,3 +1,12 @@
+import {
+  DomainParseError,
+  getDomainUrl,
+  getHostWithWildcard,
+  isTestDomain,
+  isTestDomainWithSubdomain,
+  parseDomain,
+  sortDomains,
+} from '@clevercloud/client/esm/utils/domains.js';
 import { LitElement, css, html } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { createRef, ref } from 'lit/directives/ref.js';
@@ -12,15 +21,6 @@ import {
 } from '../../assets/cc-remix.icons.js';
 import { LostFocusController } from '../../controllers/lost-focus-controller.js';
 import { getDocUrl } from '../../lib/dev-hub-url.js';
-import {
-  DomainParseError,
-  getDomainUrl,
-  getHostWithWildcard,
-  isTestDomain,
-  isTestDomainWithSubdomain,
-  parseDomain,
-  sortDomains,
-} from '../../lib/domain.js';
 import { focusBySelector } from '../../lib/focus-helper.js';
 import { accessibilityStyles } from '../../styles/accessibility.js';
 import { cliCommandsStyles } from '../../styles/cli-commands.js';
