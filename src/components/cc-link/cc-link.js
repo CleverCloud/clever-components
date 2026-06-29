@@ -117,6 +117,7 @@ export class CcLink extends LitElement {
         return node.textContent;
       })
       .join('')
+      .replace(/\s+/g, ' ')
       .trim();
   }
 
