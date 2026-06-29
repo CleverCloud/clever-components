@@ -7,7 +7,7 @@ import {
   unmarkFavouriteDomain as unmarkPrimaryDomain,
 } from '@clevercloud/client/esm/api/v2/application.js';
 import { getDefaultLoadBalancersDnsInfo } from '@clevercloud/client/esm/api/v4/load-balancers.js';
-import { getHostWithWildcard, isTestDomain, parseDomain } from '../../lib/domain.js';
+import { getHostWithWildcard, isTestDomain, parseDomain } from '@clevercloud/client/esm/utils/domains.js';
 import { notify, notifyError, notifySuccess } from '../../lib/notifications.js';
 import { sendToApi } from '../../lib/send-to-api.js';
 import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
