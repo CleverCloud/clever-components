@@ -5,6 +5,13 @@ title: 'Changelog'
 
 # Changelog
 
+## [25.6.2](https://github.com/CleverCloud/clever-components/compare/25.6.1...25.6.2) (2026-06-29)
+
+
+### 🐛 Bug Fixes
+
+* **cc-link:** collapse inner whitespace in inferred title ([58e7bdf](https://github.com/CleverCloud/clever-components/commit/58e7bdf842cde8ccce4fbe7f8de350f8beb809f9)), closes [#1476](https://github.com/CleverCloud/clever-components/issues/1476)
+
 ## [25.6.1](https://github.com/CleverCloud/clever-components/compare/25.6.0...25.6.1) (2026-06-26)
 
 
