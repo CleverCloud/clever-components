@@ -5,6 +5,14 @@ title: 'Changelog'
 
 # Changelog
 
+## [25.6.3](https://github.com/CleverCloud/clever-components/compare/25.6.2...25.6.3) (2026-06-30)
+
+
+### 🐛 Bug Fixes
+
+* **cc-logs-addon-runtime:** scroll within logs box instead of whole page ([0219b18](https://github.com/CleverCloud/clever-components/commit/0219b185cece469a89356cbf95af1611be9309c0))
+* **cc-logs-app-access:** scroll within logs box instead of whole page ([30add57](https://github.com/CleverCloud/clever-components/commit/30add5778374a2286e7d5ede5a4df12f46cdaa94))
+
 ## [25.6.2](https://github.com/CleverCloud/clever-components/compare/25.6.1...25.6.2) (2026-06-29)
 
 
