@@ -123,6 +123,52 @@ export const withoutLink = makeStory(conf, {
   ],
 });
 
+export const withSelect = makeStory(conf, {
+  items: [
+    {
+      /** @type {FeatureListStateLoaded} */
+      state: {
+        type: 'loaded',
+        featureList: [
+          {
+            id: 'access-log',
+            name: 'Access log',
+            description:
+              'This feature flag enables the new Access Logs view, allowing users to explore detailed connection and activity records for their resources.  It provides improved filtering, search capabilities, and clearer data visualization.  Activating this flag will replace the legacy logs interface with the new version currently in final version.',
+            options: [
+              { label: 'Disable', value: 'disable' },
+              { label: 'Version A', value: 'versionA' },
+              { label: 'Version B', value: 'versionB' },
+              { label: 'Version C', value: 'versionC' },
+              { label: 'Version D', value: 'versionD' },
+              { label: 'Version E', value: 'versionE' },
+            ],
+            value: 'versionA',
+            displayMode: 'select',
+            status: 'alpha',
+            documentationLink: 'https://example.com/doc',
+            feedbackLink: 'https://example.com/feedback',
+          },
+          {
+            id: 'new-creation-tunnel',
+            name: 'New creation tunnel',
+            description:
+              'This feature flag enables the new creation flow currently in testing.  It introduces an improved step-by-step experience designed to simplify setup and enhance clarity throughout the process.  Activating this flag will replace the current creation tunnel with the experimental version.  Please note that this feature is still in beta and may undergo changes before its official release.',
+            options: [
+              { label: 'Disable', value: 'disable' },
+              { label: 'Enable', value: 'enable' },
+            ],
+            value: 'enable',
+            status: 'beta',
+            documentationLink: 'https://example.com/doc',
+            feedbackLink: 'https://example.com/feedback',
+          },
+        ],
+      },
+    },
+  ],
+});
+
 export const dataLoadedWithNoFeature = makeStory(conf, {
   items: [
     {
