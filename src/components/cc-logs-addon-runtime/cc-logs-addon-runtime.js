@@ -285,6 +285,7 @@ export class CcLogsAddonRuntime extends LitElement {
         }
 
         .logs-wrapper {
+          min-height: 0;
           position: relative;
         }
 
