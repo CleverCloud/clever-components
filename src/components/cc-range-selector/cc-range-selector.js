@@ -1240,7 +1240,7 @@ export class CcRangeSelector extends CcFormControlElement {
         /* region option - custom button */
         .btn-custom {
           align-items: stretch;
-          border-radius: var(--cc-border-radius-small, 0.25em);
+          border-radius: var(--cc-border-radius-medium, 0.375em);
           display: inline-flex;
           flex: 1 1 auto;
           user-select: auto;

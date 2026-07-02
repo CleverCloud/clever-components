@@ -611,7 +611,7 @@ export class CcCellarObjectList extends LitElement {
         .wrapper {
           background-color: var(--cc-color-bg-default, #fff);
           border: 1px solid var(--cc-color-border-neutral, #aaa);
-          border-radius: var(--cc-border-radius-small, 0.25em);
+          border-radius: var(--cc-border-radius-medium, 0.375em);
           box-sizing: border-box;
           display: flex;
           flex-direction: column;
@@ -675,7 +675,7 @@ export class CcCellarObjectList extends LitElement {
 
         .list {
           border: 1px solid var(--cc-color-border-neutral-weak, #aaa);
-          border-radius: var(--cc-border-radius-small, 0.25em);
+          border-radius: var(--cc-border-radius-medium, 0.375em);
           flex: 1;
           min-height: 0;
         }
