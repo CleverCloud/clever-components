@@ -492,9 +492,9 @@ export class CcKvListExplorer extends LitElement {
           align-items: center;
           border-bottom: 1px solid var(--cc-color-border-neutral-strong);
           display: grid;
-          gap: 0.5em;
+          gap: var(--cc-spacing-3, 0.5em);
           grid-template-columns: 1fr auto;
-          padding: 0.5em;
+          padding: var(--cc-spacing-3, 0.5em);
         }
 
         .elements {
@@ -505,16 +505,16 @@ export class CcKvListExplorer extends LitElement {
         .header {
           align-items: center;
           display: grid;
-          gap: 0.5em;
+          gap: var(--cc-spacing-3, 0.5em);
           grid-template-columns: 0.25fr 1fr;
-          padding: 0.25em 0.5em;
+          padding: 0.25em var(--cc-spacing-3, 0.5em);
           width: 100%;
         }
 
         .element-value {
           align-items: center;
           display: grid;
-          gap: 0.5em;
+          gap: var(--cc-spacing-3, 0.5em);
           grid-template-columns: 1fr auto;
         }
 
@@ -528,7 +528,7 @@ export class CcKvListExplorer extends LitElement {
         .header {
           background-color: var(--cc-color-bg-neutral-active, #d9d9d9);
           font-weight: bold;
-          padding: 0.5em;
+          padding: var(--cc-spacing-3, 0.5em);
           width: unset;
         }
 
@@ -541,12 +541,12 @@ export class CcKvListExplorer extends LitElement {
         }
 
         .element-value-input {
-          margin: 0.15em 0;
+          margin: var(--cc-spacing-0, 0.125em) 0;
         }
 
         .element-value-buttons {
           display: flex;
-          gap: 0.35em;
+          gap: var(--cc-spacing-2, 0.35em);
         }
 
         .skeleton {
@@ -561,14 +561,14 @@ export class CcKvListExplorer extends LitElement {
           flex: 1;
           flex-direction: column;
           justify-content: center;
-          padding: 0.5em;
+          padding: var(--cc-spacing-3, 0.5em);
         }
 
         .add-form {
           border-top: 1px solid var(--cc-color-border-neutral-strong);
           display: flex;
-          gap: 1em;
-          padding: 0.5em;
+          gap: var(--cc-spacing-5, 1em);
+          padding: var(--cc-spacing-3, 0.5em);
         }
 
         .add-form cc-input-text {

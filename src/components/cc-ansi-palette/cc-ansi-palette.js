@@ -127,7 +127,7 @@ export class CcAnsiPalette extends LitElement {
         .top,
         .hover,
         .selected {
-          padding: 0.2em;
+          padding: var(--cc-spacing-1, 0.25em);
         }
 
         .title {
@@ -152,14 +152,14 @@ export class CcAnsiPalette extends LitElement {
           display: grid;
           grid-column-gap: 0.5em;
           grid-template-columns: 1fr min-content min-content 1fr;
-          padding-bottom: 1em;
-          padding-top: 1em;
+          padding-bottom: var(--cc-spacing-5, 1em);
+          padding-top: var(--cc-spacing-5, 1em);
         }
 
         .color-line {
           align-items: center;
           display: flex;
-          gap: 0.5em;
+          gap: var(--cc-spacing-3, 0.5em);
         }
 
         .palette-squares {
@@ -178,7 +178,7 @@ export class CcAnsiPalette extends LitElement {
         .color {
           align-items: center;
           display: inline-flex;
-          gap: 1em;
+          gap: var(--cc-spacing-5, 1em);
           justify-content: center;
         }
 
@@ -193,7 +193,7 @@ export class CcAnsiPalette extends LitElement {
         .ratio {
           align-items: center;
           display: inline-flex;
-          gap: 0.3em;
+          gap: var(--cc-spacing-1, 0.25em);
           justify-content: center;
         }
 
@@ -206,7 +206,7 @@ export class CcAnsiPalette extends LitElement {
         }
 
         cc-input-text {
-          margin-top: 1em;
+          margin-top: var(--cc-spacing-5, 1em);
           max-height: 200px;
           overflow: auto;
         }

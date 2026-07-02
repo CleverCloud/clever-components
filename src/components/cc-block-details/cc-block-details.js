@@ -80,24 +80,24 @@ export class CcBlockDetails extends LitElement {
         }
 
         .btn-wrapper {
-          border-radius: var(--cc-border-radius-default, 0.25em);
+          border-radius: var(--cc-border-radius-large, 0.5em);
           grid-area: button;
         }
 
         :host([is-open]) .btn-wrapper {
           background-color: var(--cc-color-bg-default, #fff);
-          border-radius: var(--cc-border-radius-default, 0.25em) var(--cc-border-radius-default, 0.25em) 0 0;
+          border-radius: var(--cc-border-radius-large, 0.5em) var(--cc-border-radius-large, 0.5em) 0 0;
         }
 
         .button {
           align-items: center;
           background-color: transparent;
           border: solid 1px transparent;
-          border-radius: var(--cc-border-radius-default, 0.25em);
+          border-radius: var(--cc-border-radius-large, 0.5em);
           display: flex;
           font-family: inherit;
           font-size: 1em;
-          padding: 0.25em 0.6em 0.35em;
+          padding: var(--cc-spacing-1, 0.25em) var(--cc-spacing-3, 0.5em) var(--cc-spacing-2, 0.35em);
           position: relative;
           z-index: 1;
         }
@@ -112,7 +112,7 @@ export class CcBlockDetails extends LitElement {
         }
 
         .button cc-icon {
-          margin-left: 0.1em;
+          margin-left: var(--cc-spacing-0, 0.125em);
           transition: all 0.3s;
         }
 
@@ -126,11 +126,11 @@ export class CcBlockDetails extends LitElement {
 
         .content {
           background-color: var(--cc-color-bg-default, #fff);
-          border-radius: var(--cc-border-radius-default, 0.25em);
+          border-radius: var(--cc-border-radius-large, 0.5em);
           box-sizing: border-box;
           display: none;
           grid-area: content;
-          padding: 1em;
+          padding: var(--cc-spacing-8, 2em);
           width: 100%;
         }
 
@@ -147,7 +147,7 @@ export class CcBlockDetails extends LitElement {
         .links {
           align-items: center;
           display: flex;
-          gap: 0.5em;
+          gap: var(--cc-spacing-3, 0.5em);
           grid-area: links;
           justify-self: end;
         }
@@ -155,7 +155,7 @@ export class CcBlockDetails extends LitElement {
         @container (max-width: 34em) {
           .links {
             justify-self: unset;
-            margin-block-start: 0.5em;
+            margin-block-start: var(--cc-spacing-3, 0.5em);
           }
         }
 
@@ -164,7 +164,7 @@ export class CcBlockDetails extends LitElement {
           color: var(--cc-color-text-primary-highlight, blue);
           display: flex;
           flex-direction: row;
-          gap: 0.5em;
+          gap: var(--cc-spacing-3, 0.5em);
         }
       `,
     ];

@@ -296,7 +296,7 @@ export class CcVisualTestsReport extends LitElement {
         .skip-link {
           background-color: #fff;
           left: -9999px;
-          padding: 1em;
+          padding: var(--cc-spacing-5, 1em);
           position: absolute;
           top: 1em;
         }
@@ -319,9 +319,9 @@ export class CcVisualTestsReport extends LitElement {
         header {
           align-items: center;
           display: grid;
-          gap: 1em;
+          gap: var(--cc-spacing-5, 1em);
           grid-template-columns: 2em 1fr;
-          padding: 1.5em 1em;
+          padding: var(--cc-spacing-7, 1.5em) var(--cc-spacing-5, 1em);
         }
 
         h1 {
@@ -330,7 +330,7 @@ export class CcVisualTestsReport extends LitElement {
 
         .storybook-link {
           align-items: center;
-          border-radius: var(--cc-border-radius-default, 0.25em);
+          border-radius: var(--cc-border-radius-small, 0.25em);
           display: flex;
           text-decoration: none;
         }
@@ -360,11 +360,11 @@ export class CcVisualTestsReport extends LitElement {
         main {
           box-sizing: border-box;
           display: grid;
-          gap: 2em;
+          gap: var(--cc-spacing-8, 2em);
           grid-template-rows: max-content 1fr;
           overflow-x: hidden;
           overflow-y: auto;
-          padding: 1em;
+          padding: var(--cc-spacing-5, 1em);
           scrollbar-gutter: stable;
         }
 
@@ -374,23 +374,23 @@ export class CcVisualTestsReport extends LitElement {
 
         cc-block-section {
           margin-top: 0;
-          padding-top: 1em;
+          padding-top: var(--cc-spacing-5, 1em);
         }
 
         .metadata-list {
           --bdw: 2px;
           --color: var(--cc-color-bg-primary, #3569aa);
-          --padding: 0.5em;
+          --padding: var(--cc-spacing-3, 0.5em);
 
           display: flex;
           flex-wrap: wrap;
-          gap: 1em;
+          gap: var(--cc-spacing-5, 1em);
         }
 
         .metadata-list__item {
           background-color: var(--color);
           border: var(--bdw) solid var(--color);
-          border-radius: var(--cc-border-radius-default, 0.25em);
+          border-radius: var(--cc-border-radius-small, 0.25em);
           display: flex;
           flex-wrap: wrap;
           font-size: 0.8em;
@@ -409,23 +409,23 @@ export class CcVisualTestsReport extends LitElement {
           align-items: center;
           color: var(--cc-color-text-inverted, #fff);
           display: flex;
-          gap: 0.5em;
+          gap: var(--cc-spacing-3, 0.5em);
         }
 
         .metadata-list__item__value {
           align-items: center;
           background-color: var(--cc-color-bg-default, #fff);
-          border-radius: var(--cc-border-radius-small, 0.15em);
+          border-radius: var(--cc-border-radius-xs, 0.15em);
           color: var(--cc-color-text-primary, #3569aa);
           display: flex;
           flex-wrap: wrap;
-          gap: 0.5em;
+          gap: var(--cc-spacing-3, 0.5em);
         }
 
         cc-datetime-relative {
           border-inline-start: solid 2px var(--cc-color-bg-primary, #3569aa);
           font-style: italic;
-          padding-left: 0.5em;
+          padding-left: var(--cc-spacing-3, 0.5em);
         }
       `,
     ];

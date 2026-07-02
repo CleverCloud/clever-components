@@ -157,7 +157,7 @@ export class CcBlock extends LitElement {
         :host {
           background-color: var(--cc-color-bg-default, #fff);
           border: 1px solid var(--cc-color-border-neutral, #aaa);
-          border-radius: var(--cc-border-radius-default, 0.25em);
+          border-radius: var(--cc-border-radius-large, 0.5em);
           box-sizing: border-box;
           display: block;
           overflow: hidden;
@@ -166,8 +166,8 @@ export class CcBlock extends LitElement {
 
         .container {
           display: grid;
-          gap: 0.5em;
-          padding-block: 1em;
+          gap: var(--cc-spacing-3, 0.5em);
+          padding-block: var(--cc-spacing-5, 1em);
 
           --left-space: 1em;
         }
@@ -210,7 +210,7 @@ export class CcBlock extends LitElement {
           align-items: center;
           color: var(--cc-color-text-primary-strongest);
           display: none;
-          padding: 1em 1em 1em var(--left-space);
+          padding: var(--cc-spacing-5, 1em) var(--cc-spacing-5, 1em) var(--cc-spacing-5, 1em) var(--left-space);
         }
 
         .container[header-is-slotted] .header,
@@ -219,7 +219,7 @@ export class CcBlock extends LitElement {
         .container[header-icon-is-slotted] .header {
           display: flex;
           flex-wrap: wrap;
-          gap: 0.5em;
+          gap: var(--cc-spacing-3, 0.5em);
         }
 
         .container[header-is-slotted],
@@ -229,7 +229,7 @@ export class CcBlock extends LitElement {
         }
 
         ::slotted([slot='header']) {
-          padding: 1em 1em 1em var(--left-space);
+          padding: var(--cc-spacing-5, 1em) var(--cc-spacing-5, 1em) var(--cc-spacing-5, 1em) var(--left-space);
         }
 
         .header-icon {
@@ -243,7 +243,7 @@ export class CcBlock extends LitElement {
 
         .header-img,
         ::slotted([slot='header-icon']) {
-          border-radius: var(--cc-border-radius-default, 0.25em);
+          border-radius: var(--cc-border-radius-small, 0.25em);
           height: 1.5em;
           width: 1.5em;
         }
@@ -272,7 +272,7 @@ export class CcBlock extends LitElement {
           font-family: inherit;
           font-size: 1em;
           justify-content: space-between;
-          padding: 0 1em 0 0;
+          padding: 0 var(--cc-spacing-8, 2em) 0 0;
           text-align: start;
         }
 
@@ -298,12 +298,12 @@ export class CcBlock extends LitElement {
 
         .content {
           display: none;
-          gap: 1em;
+          gap: var(--cc-spacing-5, 1em);
         }
 
         ::slotted([slot='content']) {
           padding-left: var(--left-space);
-          padding-right: 1em;
+          padding-right: var(--cc-spacing-5, 1em);
         }
 
         .container[content-is-slotted] .content,
@@ -311,14 +311,14 @@ export class CcBlock extends LitElement {
         .container[content-body-is-slotted] .content,
         .container[content-footer-is-slotted] .content {
           display: grid;
-          gap: 1em;
+          gap: var(--cc-spacing-5, 1em);
         }
 
         .content-header,
         .content-body,
         .content-footer {
           display: none;
-          padding: 0 1em 0 var(--left-space);
+          padding: 0 var(--cc-spacing-5, 1em) 0 var(--left-space);
         }
 
         .container[content-header-is-slotted] .content-header,
@@ -328,18 +328,18 @@ export class CcBlock extends LitElement {
         }
 
         .content-body {
-          margin-block: -0.5em;
-          padding-block: 0.5em;
+          margin-block: calc(var(--cc-spacing-3, 0.5em) * -1);
+          padding-block: var(--cc-spacing-3, 0.5em);
         }
 
         slot[name='content-body'] {
           display: grid;
-          gap: 1em;
+          gap: var(--cc-spacing-5, 1em);
         }
 
         #content-and-footer {
           display: grid;
-          gap: 1em;
+          gap: var(--cc-spacing-5, 1em);
         }
 
         #content-and-footer.hidden {
@@ -356,10 +356,10 @@ export class CcBlock extends LitElement {
           box-shadow: inset 0 6px 6px -6px rgb(0 0 0 / 40%);
           display: none;
           flex-wrap: wrap;
-          gap: 1em;
+          gap: var(--cc-spacing-5, 1em);
           /* TODO doc */
           justify-content: flex-end;
-          padding: 0.5em 1em;
+          padding: var(--cc-spacing-3, 0.5em) var(--cc-spacing-5, 1em);
         }
 
         .footer-left {
@@ -390,7 +390,7 @@ export class CcBlock extends LitElement {
         }
 
         ::slotted([slot='footer']) {
-          padding: 0.5em 1em;
+          padding: var(--cc-spacing-3, 0.5em) var(--cc-spacing-5, 1em);
         }
 
         /* endregion */

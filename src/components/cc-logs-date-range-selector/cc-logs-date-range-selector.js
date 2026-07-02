@@ -395,7 +395,7 @@ export class CcLogsDateRangeSelector extends LitElement {
         .wrapper {
           display: flex;
           flex-direction: column;
-          gap: 0.5em;
+          gap: var(--cc-spacing-3, 0.5em);
           height: 100%;
         }
 
@@ -409,7 +409,7 @@ export class CcLogsDateRangeSelector extends LitElement {
           align-items: center;
           display: flex;
           font-size: 1.2em;
-          gap: 1em;
+          gap: var(--cc-spacing-5, 1em);
         }
 
         .options-popover-trigger div {
@@ -429,7 +429,7 @@ export class CcLogsDateRangeSelector extends LitElement {
         .options-popover-trigger--with-detail {
           align-items: center;
           display: flex;
-          gap: 0.25em;
+          gap: var(--cc-spacing-1, 0.25em);
         }
 
         .date-range {
@@ -451,8 +451,8 @@ export class CcLogsDateRangeSelector extends LitElement {
           align-items: center;
           border-left: 1px solid var(--cc-color-border-neutral, #000);
           display: flex;
-          margin-left: 1em;
-          padding: 1em;
+          margin-left: var(--cc-spacing-5, 1em);
+          padding: var(--cc-spacing-5, 1em);
         }
 
         .option-button {
@@ -463,16 +463,16 @@ export class CcLogsDateRangeSelector extends LitElement {
           display: grid;
           font-family: inherit;
           font-size: unset;
-          gap: 0.5em;
+          gap: var(--cc-spacing-3, 0.5em);
           grid-template-columns: auto 1fr auto;
           justify-items: start;
           margin: 0;
-          padding: 0.5em;
+          padding: var(--cc-spacing-3, 0.5em);
           white-space: nowrap;
         }
 
         .option-button:focus {
-          border-radius: var(--cc-border-radius-small, 0.15em);
+          border-radius: var(--cc-border-radius-xs, 0.15em);
           outline: var(--cc-focus-outline, #000 solid 2px);
           z-index: 3;
         }
@@ -483,17 +483,17 @@ export class CcLogsDateRangeSelector extends LitElement {
         }
 
         .option-button[data-selected='false'] {
-          padding-right: 1.5em;
+          padding-right: var(--cc-spacing-7, 1.5em);
         }
 
         .option-button-current {
-          margin-left: 1em;
+          margin-left: var(--cc-spacing-5, 1em);
         }
 
         .custom-date-range {
           display: flex;
           flex-direction: column;
-          gap: 0.75em;
+          gap: var(--cc-spacing-4, 0.75em);
           min-width: max-content;
         }
 

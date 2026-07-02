@@ -264,7 +264,7 @@ export class CcPopover extends LitElement {
         .content {
           background-color: var(--cc-color-bg-default, #fff);
           border: 1px solid var(--cc-color-border-neutral, #aaa);
-          border-radius: var(--cc-border-radius-default, 0.25em);
+          border-radius: var(--cc-border-radius-small, 0.25em);
           box-shadow:
             0 2px 4px rgb(38 38 38 / 25%),
             0 5px 15px rgb(38 38 38 / 25%);

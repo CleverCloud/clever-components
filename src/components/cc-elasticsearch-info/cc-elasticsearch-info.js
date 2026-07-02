@@ -142,7 +142,7 @@ export class CcElasticsearchInfo extends LitElement {
         .link-list {
           display: flex;
           flex-wrap: wrap;
-          gap: 1em;
+          gap: var(--cc-spacing-5, 1em);
         }
 
         cc-link {
@@ -151,14 +151,14 @@ export class CcElasticsearchInfo extends LitElement {
         }
 
         cc-link::part(img) {
-          border-radius: var(--cc-border-radius-default, 0.25em);
+          border-radius: var(--cc-border-radius-small, 0.25em);
           height: 1.5em;
           width: 1.5em;
         }
 
         cc-icon {
           flex: 0 0 auto;
-          margin-right: 0.5em;
+          margin-right: var(--cc-spacing-3, 0.5em);
         }
 
         /* SKELETON */

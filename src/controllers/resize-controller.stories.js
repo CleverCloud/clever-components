@@ -265,14 +265,14 @@ export const defaultStory = () => {
         width: 1em;
         height: 1em;
         margin-right: 0.5em;
-        border-radius: var(--cc-border-radius-default, 0.25em);
+        border-radius: var(--cc-border-radius-small, 0.25em);
         vertical-align: middle;
       }
 
       pre {
         padding: 1em;
         background-color: #f5f5f5;
-        border-radius: var(--cc-border-radius-default, 0.25em);
+        border-radius: var(--cc-border-radius-small, 0.25em);
       }
 
       demo-resize-controller {

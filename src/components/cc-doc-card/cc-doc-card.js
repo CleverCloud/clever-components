@@ -70,27 +70,27 @@ export class CcDocCard extends LitElement {
         :host {
           background-color: var(--cc-color-bg-default, #fff);
           border: 1px solid var(--cc-color-border-neutral, #aaa);
-          border-radius: var(--cc-border-radius-default, 0.25em);
+          border-radius: var(--cc-border-radius-medium, 0.375em);
           box-sizing: border-box;
           display: grid;
-          gap: 1em;
+          gap: var(--cc-spacing-5, 1em);
           grid-template-areas:
             'img title'
             'desc desc'
             'link link';
           grid-template-columns: min-content 1fr;
           grid-template-rows: min-content 1fr min-content;
-          padding: 1em;
+          padding: var(--cc-spacing-5, 1em);
         }
 
         .images {
           display: flex;
-          gap: 0.5em;
+          gap: var(--cc-spacing-3, 0.5em);
           grid-area: img;
         }
 
         cc-img {
-          border-radius: var(--cc-border-radius-default, 0.25em);
+          border-radius: var(--cc-border-radius-small, 0.25em);
           height: 2em;
           width: 2em;
         }

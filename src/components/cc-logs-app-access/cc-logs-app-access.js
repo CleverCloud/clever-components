@@ -345,16 +345,16 @@ export class CcLogsAppAccess extends LitElement {
         .wrapper {
           display: grid;
           flex: 1;
-          gap: 0.5em;
+          gap: var(--cc-spacing-3, 0.5em);
           grid-auto-rows: 1fr auto;
         }
 
         .wrapper.fullscreen {
           background-color: var(--cc-color-bg-default);
           border: 1px solid var(--cc-color-border-neutral);
-          border-radius: var(--cc-border-radius-default);
-          margin: 1em;
-          padding: 1em;
+          border-radius: var(--cc-border-radius-small, 0.25em);
+          margin: var(--cc-spacing-5, 1em);
+          padding: var(--cc-spacing-5, 1em);
         }
 
         .logs-wrapper {
@@ -369,7 +369,7 @@ export class CcLogsAppAccess extends LitElement {
         .logs-header {
           align-items: center;
           display: flex;
-          gap: 1em;
+          gap: var(--cc-spacing-5, 1em);
           width: 100%;
         }
 
@@ -395,7 +395,7 @@ export class CcLogsAppAccess extends LitElement {
         .overlay-logs-wrapper--loader {
           align-items: center;
           display: flex;
-          gap: 0.5em;
+          gap: var(--cc-spacing-3, 0.5em);
         }
 
         .overlay-logs-wrapper--loader cc-loader {

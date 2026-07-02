@@ -813,14 +813,14 @@ export class CcDomainManagement extends LitElement {
         .wrapper {
           display: flex;
           flex-direction: column;
-          gap: 1.5em;
+          gap: var(--cc-spacing-7, 1.5em);
         }
 
         code {
           background-color: var(--cc-color-bg-neutral);
-          border-radius: var(--cc-border-radius-default, 0.25em);
+          border-radius: var(--cc-border-radius-small, 0.25em);
           font-family: var(--cc-ff-monospace);
-          padding: 0.15em 0.3em;
+          padding: var(--cc-spacing-0, 0.125em) var(--cc-spacing-1, 0.25em);
           word-break: break-all;
         }
 
@@ -829,7 +829,7 @@ export class CcDomainManagement extends LitElement {
         .fieldgroup {
           display: flex;
           flex-wrap: wrap;
-          gap: 1em;
+          gap: var(--cc-spacing-5, 1em);
         }
 
         .fieldgroup__domain {
@@ -844,7 +844,7 @@ export class CcDomainManagement extends LitElement {
         form {
           display: flex;
           flex-direction: column;
-          gap: 1.5em;
+          gap: var(--cc-spacing-7, 1.5em);
           justify-content: flex-end;
         }
 
@@ -855,7 +855,7 @@ export class CcDomainManagement extends LitElement {
         .form-info {
           color: var(--cc-color-text-weak);
           line-height: 1.5;
-          margin-bottom: 1em;
+          margin-bottom: var(--cc-spacing-5, 1em);
         }
 
         .form-info p {
@@ -865,7 +865,7 @@ export class CcDomainManagement extends LitElement {
         .form-info__cleverapps {
           align-items: center;
           display: flex;
-          gap: 0.5em;
+          gap: var(--cc-spacing-3, 0.5em);
         }
 
         .form-info cc-icon {
@@ -875,7 +875,7 @@ export class CcDomainManagement extends LitElement {
         /** we need this because the help message contains a <code> tag that has some extra padding */
 
         [slot='help'] {
-          padding-top: 0.3em;
+          padding-top: var(--cc-spacing-1, 0.25em);
         }
 
         /** #endregion */
@@ -884,23 +884,23 @@ export class CcDomainManagement extends LitElement {
 
         .domain-count {
           font-size: 0.9em;
-          margin-left: 0.2em;
+          margin-left: var(--cc-spacing-1, 0.25em);
         }
 
         .domains {
           display: grid;
-          gap: 1em;
+          gap: var(--cc-spacing-5, 1em);
           grid-template-columns: repeat(auto-fit, minmax(min(25em, 100%), 1fr));
         }
 
         .domain {
           align-items: center;
           border: solid 1px var(--cc-color-border-neutral-weak);
-          border-radius: var(--cc-border-radius-default);
+          border-radius: var(--cc-border-radius-medium, 0.375em);
           display: flex;
           flex-wrap: wrap;
-          gap: 0.5em 1em;
-          padding: 1em;
+          gap: var(--cc-spacing-3, 0.5em) var(--cc-spacing-5, 1em);
+          padding: var(--cc-spacing-5, 1em);
         }
 
         .domain:hover {
@@ -928,7 +928,7 @@ export class CcDomainManagement extends LitElement {
           /** fixes icon alignment that differs depending on the font-family */
 
           font-family: var(--cc-ff-monospace, monospace);
-          padding: 0.3em;
+          padding: var(--cc-spacing-1, 0.25em);
           vertical-align: middle;
         }
 
@@ -943,13 +943,13 @@ export class CcDomainManagement extends LitElement {
         .badges {
           display: flex;
           flex-wrap: wrap;
-          gap: 0.5em;
+          gap: var(--cc-spacing-3, 0.5em);
         }
 
         .badge-content {
           align-items: center;
           display: flex;
-          gap: 0.5em;
+          gap: var(--cc-spacing-3, 0.5em);
         }
 
         .badge-content cc-icon {
@@ -959,7 +959,7 @@ export class CcDomainManagement extends LitElement {
         .actions {
           align-items: center;
           display: flex;
-          gap: 0.5em;
+          gap: var(--cc-spacing-3, 0.5em);
           margin-inline-start: auto;
         }
 
@@ -973,7 +973,7 @@ export class CcDomainManagement extends LitElement {
 
         .http-only-info cc-badge {
           line-height: normal;
-          margin-right: 0.5em;
+          margin-right: var(--cc-spacing-3, 0.5em);
         }
 
         .http-only-info {
@@ -986,7 +986,7 @@ export class CcDomainManagement extends LitElement {
 
         .certif-info {
           display: grid;
-          gap: 0.5em;
+          gap: var(--cc-spacing-3, 0.5em);
           line-height: 1.5;
         }
 
@@ -997,8 +997,8 @@ export class CcDomainManagement extends LitElement {
 
         .dns-info__desc {
           display: grid;
-          gap: 0.5em;
-          margin-bottom: 1em;
+          gap: var(--cc-spacing-3, 0.5em);
+          margin-bottom: var(--cc-spacing-5, 1em);
         }
 
         .dns-info div[slot='info'] {
@@ -1010,13 +1010,13 @@ export class CcDomainManagement extends LitElement {
         .a-records {
           align-content: baseline;
           display: grid;
-          gap: 1em;
+          gap: var(--cc-spacing-5, 1em);
           grid-template-columns: repeat(auto-fit, minmax(8em, 1fr));
         }
 
         .dns-info cc-notice[intent='info'] {
-          margin-bottom: 1em;
-          margin-top: 1.5em;
+          margin-bottom: var(--cc-spacing-5, 1em);
+          margin-top: var(--cc-spacing-7, 1.5em);
         }
 
         /** #endregion */
@@ -1024,7 +1024,7 @@ export class CcDomainManagement extends LitElement {
         /** #region dialogs */
 
         cc-dialog cc-notice {
-          margin-bottom: 0.5em;
+          margin-bottom: var(--cc-spacing-3, 0.5em);
         }
 
         cc-dialog p {

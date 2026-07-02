@@ -453,7 +453,7 @@ export class CcTileMetrics extends LitElement {
           align-items: center;
           /* TODO: Change variable when we have proper border token */
           border: 1px solid var(--cc-color-bg-strong);
-          border-radius: var(--cc-border-radius-small, 0.15em);
+          border-radius: var(--cc-border-radius-large, 0.5em);
           box-shadow: rgb(255 255 255 / 0%) 0 0 0 0;
           box-sizing: border-box;
           display: flex;
@@ -471,7 +471,7 @@ export class CcTileMetrics extends LitElement {
           align-items: center;
           display: flex;
           font-size: 0.8em;
-          gap: 0.5em;
+          gap: var(--cc-spacing-3, 0.5em);
         }
 
         /* endregion */
@@ -508,7 +508,7 @@ export class CcTileMetrics extends LitElement {
 
         .tile_body {
           align-items: center;
-          gap: 0 1em;
+          gap: 0 var(--cc-spacing-5, 1em);
           grid-template-areas:
             'icon-cpu chart-cpu percent-cpu'
             '. legend-cpu .'
@@ -565,12 +565,12 @@ export class CcTileMetrics extends LitElement {
           font-size: 0.75em;
           font-style: italic;
           justify-self: center;
-          margin-top: 0.5em;
+          margin-top: var(--cc-spacing-3, 0.5em);
         }
 
         .legend-cpu {
           grid-area: legend-cpu;
-          margin-bottom: 1.25em;
+          margin-bottom: var(--cc-spacing-6, 1.25em);
         }
 
         .legend-mem {
@@ -588,7 +588,7 @@ export class CcTileMetrics extends LitElement {
 
         .tile_docs ul {
           display: flex;
-          gap: 0.5em;
+          gap: var(--cc-spacing-3, 0.5em);
           list-style: none;
           margin: 0;
           padding: 0;
@@ -597,8 +597,8 @@ export class CcTileMetrics extends LitElement {
         .docs-links {
           align-items: flex-end;
           display: flex;
-          gap: 0.5em;
-          margin-top: 0.5em;
+          gap: var(--cc-spacing-3, 0.5em);
+          margin-top: var(--cc-spacing-3, 0.5em);
         }
 
         /* endregion */
@@ -636,7 +636,7 @@ export class CcTileMetrics extends LitElement {
 
         .error-message {
           display: grid;
-          gap: 0.75em;
+          gap: var(--cc-spacing-4, 0.75em);
           grid-template-columns: min-content 1fr;
           text-align: left;
         }

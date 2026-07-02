@@ -129,7 +129,7 @@ export class CcEnvVarInput extends LitElement {
         .wrapper {
           display: flex;
           flex-wrap: wrap;
-          gap: 0.5em;
+          gap: var(--cc-spacing-3, 0.5em);
         }
 
         .name {
@@ -139,7 +139,7 @@ export class CcEnvVarInput extends LitElement {
           font-family: var(--cc-ff-monospace, monospace);
           font-size: 0.875em;
           line-height: 1.6em;
-          padding-top: 0.35em;
+          padding-top: var(--cc-spacing-2, 0.35em);
           word-break: break-all;
         }
 
@@ -155,7 +155,7 @@ export class CcEnvVarInput extends LitElement {
           display: flex;
           flex: 2 1 27em;
           flex-wrap: wrap;
-          gap: 0.5em;
+          gap: var(--cc-spacing-3, 0.5em);
         }
 
         .value {

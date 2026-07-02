@@ -354,12 +354,12 @@ export class CcButton extends LitElement {
         .btn {
           background-color: var(--cc-color-bg-default, #fff);
           border: 1px solid #000;
-          border-radius: var(--cc-button-border-radius, 0.15em);
+          border-radius: var(--cc-border-radius-medium, 0.375em);
           cursor: pointer;
           font-weight: var(--cc-button-font-weight, bold);
           min-height: 2em;
           overflow: hidden;
-          padding: 0 0.5em;
+          padding: 0 var(--cc-spacing-3, 0.5em);
           /* used to absolutely position the <progress> */
           position: relative;
           text-transform: var(--cc-button-text-transform, uppercase);
@@ -466,7 +466,7 @@ export class CcButton extends LitElement {
         .text-wrapper {
           align-items: center;
           display: grid;
-          gap: 0.5em;
+          gap: var(--cc-spacing-3, 0.5em);
           grid-template-columns: min-content 1fr;
           height: 100%;
           justify-content: center;
@@ -654,7 +654,7 @@ export class CcButton extends LitElement {
 
         .cc-link:focus {
           background-color: var(--cc-color-bg-default, #fff);
-          border-radius: 0.1em;
+          border-radius: var(--cc-border-radius-medium, 0.375em);
           outline: var(--cc-focus-outline, #000 solid 2px);
           outline-offset: var(--cc-focus-outline-offset, 2px);
         }

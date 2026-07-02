@@ -131,7 +131,7 @@ export class CcAddonLinkedApps extends LitElement {
         }
 
         cc-link::part(img) {
-          border-radius: var(--cc-border-radius-default, 0.25em);
+          border-radius: var(--cc-border-radius-small, 0.25em);
           height: 1.6em;
           width: 1.6em;
         }
@@ -140,7 +140,7 @@ export class CcAddonLinkedApps extends LitElement {
           align-items: center;
           display: flex;
           flex-wrap: wrap;
-          gap: 0.5em;
+          gap: var(--cc-spacing-3, 0.5em);
         }
 
         .empty-msg {

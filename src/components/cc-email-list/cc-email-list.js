@@ -343,17 +343,17 @@ export class CcEmailList extends LitElement {
           align-items: center;
           display: flex;
           flex-wrap: wrap;
-          gap: 1em;
+          gap: var(--cc-spacing-5, 1em);
         }
 
         .address-line.secondary {
-          margin-bottom: 0.8em;
+          margin-bottom: var(--cc-spacing-4, 0.75em);
         }
 
         .address {
           align-items: center;
           display: flex;
-          gap: 1em;
+          gap: var(--cc-spacing-5, 1em);
         }
 
         .address.loading {
@@ -378,7 +378,7 @@ export class CcEmailList extends LitElement {
           align-items: center;
           display: flex;
           flex-wrap: wrap;
-          gap: 1em;
+          gap: var(--cc-spacing-5, 1em);
         }
 
         /* region FORM */
@@ -387,7 +387,7 @@ export class CcEmailList extends LitElement {
           align-items: start;
           display: flex;
           flex-wrap: wrap;
-          gap: 0 1em;
+          gap: 0 var(--cc-spacing-5, 1em);
           justify-content: flex-end;
         }
 

@@ -130,7 +130,7 @@ export class CcHeptapodInfo extends LitElement {
         .header {
           display: flex;
           flex-wrap: wrap;
-          gap: 0.5em 1em;
+          gap: var(--cc-spacing-3, 0.5em) var(--cc-spacing-5, 1em);
         }
 
         .header-logo {
@@ -147,7 +147,7 @@ export class CcHeptapodInfo extends LitElement {
         .pricing {
           display: flex;
           flex-wrap: wrap;
-          gap: 1em;
+          gap: var(--cc-spacing-5, 1em);
         }
 
         .pricing-item {
@@ -165,7 +165,7 @@ export class CcHeptapodInfo extends LitElement {
         .no-statistics {
           color: var(--cc-color-text-weak);
           font-style: italic;
-          margin: 0.2em;
+          margin: var(--cc-spacing-1, 0.25em);
         }
 
         /* SKELETON */

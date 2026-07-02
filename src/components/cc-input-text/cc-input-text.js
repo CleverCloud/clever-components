@@ -38,6 +38,8 @@ const TAG_SEPARATOR = ' ';
  *
  * @cssprop {Size} --cc-form-label-gap - The space between the label and the control (defaults: `0.35em`).
  * @cssprop {Size} --cc-form-label-gap-inline - The space between the label and the control when layout is inline (defaults: `0.75em`).
+ * @cssprop {FontStyle} --cc-form-required-font-style - The font-style of the "required" mention next to the label (defaults: `italic`).
+ * @cssprop {TextTransform} --cc-form-required-text-transform - The text-transform of the "required" mention next to the label (defaults: `lowercase`).
  * @cssprop {Color} --cc-input-btn-icon-color - The color for the icon within the clipboard/secret button (defaults: `#595959`).
  * @cssprop {FontFamily} --cc-input-font-family - The font-family for the input content (defaults: `inherit` or `--cc-ff-monospace` when using the tags mode).
  * @cssprop {Color} --cc-input-label-color - The color for the input's label (defaults: `inherit`).
@@ -472,7 +474,7 @@ export class CcInputText extends CcFormControlElement {
           align-items: flex-end;
           cursor: pointer;
           display: flex;
-          gap: 2em;
+          gap: var(--cc-spacing-8, 2em);
           justify-content: space-between;
           line-height: 1.25em;
           padding-block-end: var(--cc-form-label-gap, 0.35em);
@@ -495,7 +497,8 @@ export class CcInputText extends CcFormControlElement {
         .required {
           color: var(--cc-color-text-weak);
           font-size: 0.9em;
-          font-variant: small-caps;
+          font-style: var(--cc-form-required-font-style, italic);
+          text-transform: var(--cc-form-required-text-transform, lowercase);
         }
 
         :host([inline]) .required {
@@ -505,12 +508,12 @@ export class CcInputText extends CcFormControlElement {
         slot[name='help']::slotted(*) {
           color: var(--cc-color-text-weak);
           font-size: 0.9em;
-          margin: 0.3em 0 0;
+          margin: var(--cc-spacing-1, 0.25em) 0 0;
         }
 
         .error-container {
           color: var(--cc-color-text-danger);
-          margin: 0.5em 0 0;
+          margin: var(--cc-spacing-3, 0.5em) 0 0;
         }
 
         /* endregion */
@@ -536,7 +539,7 @@ export class CcInputText extends CcFormControlElement {
           min-width: 0;
           overflow: hidden;
           /* see input to know why 0.15em */
-          padding: 0.15em 0.5em;
+          padding: var(--cc-spacing-0, 0.125em) var(--cc-spacing-3, 0.5em);
         }
 
         /* RESET */
@@ -606,9 +609,11 @@ export class CcInputText extends CcFormControlElement {
         .input-underlayer {
           font-family: var(--cc-input-font-family, var(--cc-ff-monospace));
           height: auto;
+          /* Slightly taller than the base 2em to give the (bigger) tags some breathing room between lines. */
+          line-height: 2.3em;
           padding: 0 3px;
           word-break: break-all;
-          word-spacing: 0.5ch;
+          word-spacing: 0.7ch;
         }
 
         .input-underlayer {
@@ -625,8 +630,8 @@ export class CcInputText extends CcFormControlElement {
           --color: var(--cc-color-bg-soft, #eee);
 
           background-color: var(--color);
-          border-radius: 3px;
-          box-shadow: 0 0 0 2px var(--color);
+          border-radius: var(--cc-border-radius-small, 0.25em);
+          box-shadow: 0 0 0 3px var(--color);
           padding: 1px 0;
         }
 
@@ -635,7 +640,7 @@ export class CcInputText extends CcFormControlElement {
         .ring {
           background: var(--cc-color-bg-default, #fff);
           border: 1px solid var(--cc-color-border-neutral-strong, #aaa);
-          border-radius: var(--cc-border-radius-default, 0.25em);
+          border-radius: var(--cc-border-radius-medium, 0.375em);
           bottom: 0;
           box-shadow: 0 0 0 0 rgb(255 255 255 / 0%);
           left: 0;
@@ -704,13 +709,13 @@ export class CcInputText extends CcFormControlElement {
         .btn,
         .btn-copy {
           flex-shrink: 0;
-          margin: 0.2em 0.2em 0.2em 0;
-          margin-right: 0.15em;
+          margin: var(--cc-spacing-1, 0.25em) var(--cc-spacing-1, 0.25em) var(--cc-spacing-1, 0.25em) 0;
+          margin-right: var(--cc-spacing-0, 0.125em);
           z-index: 2;
         }
 
         .btn {
-          border-radius: var(--cc-border-radius-small, 0.15em);
+          border-radius: var(--cc-border-radius-medium, 0.375em);
           cursor: pointer;
           height: 1.6em;
           width: 1.6em;

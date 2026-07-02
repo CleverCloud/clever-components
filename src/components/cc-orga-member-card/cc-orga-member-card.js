@@ -413,7 +413,7 @@ export class CcOrgaMemberCard extends LitElement {
         .wrapper {
           align-items: center;
           display: grid;
-          gap: 0.8em 1em;
+          gap: var(--cc-spacing-4, 0.75em) var(--cc-spacing-5, 1em);
         }
 
         :host([w-gte-740]) .wrapper {
@@ -452,7 +452,7 @@ export class CcOrgaMemberCard extends LitElement {
         .identity {
           display: flex;
           flex-direction: column;
-          gap: 0.3em;
+          gap: var(--cc-spacing-1, 0.25em);
           grid-area: identity;
           /* makes the email address wrap if needed */
           word-break: break-all;
@@ -461,7 +461,7 @@ export class CcOrgaMemberCard extends LitElement {
         .name {
           display: flex;
           flex-wrap: wrap;
-          gap: 0.5em;
+          gap: var(--cc-spacing-3, 0.5em);
         }
 
         .status {
@@ -475,7 +475,7 @@ export class CcOrgaMemberCard extends LitElement {
 
         .actions {
           display: flex;
-          gap: 0.5em;
+          gap: var(--cc-spacing-3, 0.5em);
           grid-area: actions;
           justify-content: space-evenly;
           min-width: 4em;
@@ -484,7 +484,7 @@ export class CcOrgaMemberCard extends LitElement {
         .status__role-mfa {
           align-items: center;
           display: flex;
-          gap: 0.5em 1em;
+          gap: var(--cc-spacing-3, 0.5em) var(--cc-spacing-5, 1em);
         }
 
         .error-wrapper {
@@ -531,7 +531,7 @@ export class CcOrgaMemberCard extends LitElement {
         }
 
         :host([w-lt-740]) .error {
-          margin-top: 0.5em;
+          margin-top: var(--cc-spacing-3, 0.5em);
         }
         /* endregion */
 

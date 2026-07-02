@@ -1000,7 +1000,7 @@ export class CcKvExplorer extends LitElement {
         .filter-bar {
           align-items: center;
           display: flex;
-          gap: 1em;
+          gap: var(--cc-spacing-5, 1em);
           grid-area: top-bar;
         }
 
@@ -1011,7 +1011,7 @@ export class CcKvExplorer extends LitElement {
         .keys {
           background-color: var(--cc-color-bg-default, #fff);
           border: 1px solid var(--cc-color-border-neutral, #aaa);
-          border-radius: var(--cc-border-radius-default, 0.25em);
+          border-radius: var(--cc-border-radius-small, 0.25em);
           display: grid;
           grid-area: keys;
           grid-auto-rows: auto 1fr;
@@ -1034,9 +1034,9 @@ export class CcKvExplorer extends LitElement {
           background-color: var(--cc-color-bg-neutral);
           border-bottom: 1px solid var(--cc-color-border-neutral-strong);
           display: grid;
-          gap: 0.5em;
+          gap: var(--cc-spacing-3, 0.5em);
           grid-template-columns: 1fr auto auto;
-          padding: 1em;
+          padding: var(--cc-spacing-5, 1em);
         }
 
         .keys-list-empty {
@@ -1051,13 +1051,13 @@ export class CcKvExplorer extends LitElement {
         }
 
         cc-notice {
-          margin: 0.5em;
+          margin: var(--cc-spacing-3, 0.5em);
         }
 
         .detail {
           background-color: var(--cc-color-bg-default, #fff);
           border: 1px solid var(--cc-color-border-neutral, #aaa);
-          border-radius: var(--cc-border-radius-default, 0.25em);
+          border-radius: var(--cc-border-radius-small, 0.25em);
           display: flex;
           flex-direction: column;
           grid-area: detail;
@@ -1086,9 +1086,9 @@ export class CcKvExplorer extends LitElement {
           cursor: pointer;
           display: flex;
           flex: 1;
-          gap: 0.25em;
+          gap: var(--cc-spacing-1, 0.25em);
           min-width: 0;
-          padding: 0.35em;
+          padding: var(--cc-spacing-2, 0.35em);
         }
 
         .key label:hover {
@@ -1122,13 +1122,13 @@ export class CcKvExplorer extends LitElement {
         .detail-add {
           display: flex;
           flex-direction: column;
-          gap: 0.5em;
-          padding: 1em;
+          gap: var(--cc-spacing-3, 0.5em);
+          padding: var(--cc-spacing-5, 1em);
         }
 
         .add-form-header {
           display: grid;
-          gap: 0.35em;
+          gap: var(--cc-spacing-2, 0.35em);
           grid-template-columns: 1fr auto;
         }
 
@@ -1143,9 +1143,9 @@ export class CcKvExplorer extends LitElement {
           background-color: var(--cc-color-bg-neutral);
           border-bottom: 1px solid var(--cc-color-border-neutral-strong);
           display: grid;
-          gap: 0.5em;
+          gap: var(--cc-spacing-3, 0.5em);
           grid-template-columns: auto 1fr auto auto;
-          padding: 1em;
+          padding: var(--cc-spacing-5, 1em);
         }
 
         .edit-header-key-name {
@@ -1156,22 +1156,22 @@ export class CcKvExplorer extends LitElement {
         }
 
         .string-editor {
-          margin: 1em;
+          margin: var(--cc-spacing-5, 1em);
         }
 
         .buttons {
           border-top: 1px solid var(--cc-color-border-neutral);
           display: flex;
           flex-direction: row;
-          gap: 0.5em;
+          gap: var(--cc-spacing-3, 0.5em);
           justify-content: end;
-          margin-top: 1em;
-          padding-top: 1em;
+          margin-top: var(--cc-spacing-5, 1em);
+          padding-top: var(--cc-spacing-5, 1em);
         }
 
         .terminal {
           border: 1px solid var(--cc-color-border-neutral, #aaa);
-          border-radius: var(--cc-border-radius-default, 0.25em);
+          border-radius: var(--cc-border-radius-small, 0.25em);
           grid-area: terminal;
           max-height: 25em;
         }

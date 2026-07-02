@@ -231,7 +231,7 @@ export class CcKvListInput extends CcFormControlElement {
 
         .elements {
           display: grid;
-          gap: 0.35em;
+          gap: var(--cc-spacing-2, 0.35em);
           grid-template-columns: 1fr auto auto;
         }
 

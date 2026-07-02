@@ -112,9 +112,9 @@ export class CcKvStringEditor extends LitElement {
 
         .buttons {
           display: flex;
-          gap: 0.5em;
+          gap: var(--cc-spacing-3, 0.5em);
           justify-content: end;
-          margin-top: 1em;
+          margin-top: var(--cc-spacing-5, 1em);
         }
       `,
     ];

@@ -661,16 +661,16 @@ export class CcGrid extends LitElement {
           border-bottom: 1px solid var(--cc-color-border-neutral-weak, #ccc);
           display: flex;
           min-width: 0;
-          padding: 0.75em 1.5em;
+          padding: var(--cc-spacing-4, 0.75em) var(--cc-spacing-7, 1.5em);
         }
 
         th {
           background-color: var(--cc-color-bg-neutral-disabled, #ccc);
           display: flex;
           font-weight: normal;
-          gap: 0.5em;
-          padding-bottom: 1em;
-          padding-top: 1em;
+          gap: var(--cc-spacing-3, 0.5em);
+          padding-bottom: var(--cc-spacing-5, 1em);
+          padding-top: var(--cc-spacing-5, 1em);
           position: sticky;
           top: 0;
           white-space: nowrap;
@@ -694,7 +694,7 @@ export class CcGrid extends LitElement {
 
         td:focus[data-focusable='true'],
         th:focus[data-focusable='true'] {
-          border-radius: var(--cc-border-radius-default, 0.25em);
+          border-radius: var(--cc-border-radius-small, 0.25em);
           outline: var(--cc-focus-outline, #000 solid 2px);
           outline-offset: -2px;
         }
@@ -702,7 +702,7 @@ export class CcGrid extends LitElement {
         .icon-label {
           align-items: center;
           display: flex;
-          gap: 0.5em;
+          gap: var(--cc-spacing-3, 0.5em);
           min-width: 0;
         }
 
@@ -720,12 +720,12 @@ export class CcGrid extends LitElement {
           align-items: center;
           background: unset;
           border: none;
-          border-radius: var(--cc-border-radius-default, 0.25em);
+          border-radius: var(--cc-border-radius-small, 0.25em);
           cursor: pointer;
           display: flex;
           font-family: inherit;
           font-size: unset;
-          gap: 0.5em;
+          gap: var(--cc-spacing-3, 0.5em);
           margin: 0;
           padding: 0;
         }

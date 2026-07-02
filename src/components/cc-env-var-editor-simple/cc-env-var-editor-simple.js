@@ -175,15 +175,15 @@ despite the cc-block padding
 
       cc-env-var-create {
         background-color: var(--cc-color-bg-neutral);
-        margin-bottom: 0.5em;
-        margin-inline: -1em;
-        padding: 1em;
+        margin-bottom: var(--cc-spacing-3, 0.5em);
+        margin-inline: calc(var(--cc-spacing-5, 1em) * -1);
+        padding: var(--cc-spacing-5, 1em);
       }
 
       .message {
         color: var(--cc-color-text-weak);
         font-style: italic;
-        margin: 0.2em;
+        margin: var(--cc-spacing-1, 0.25em);
       }
     `;
   }

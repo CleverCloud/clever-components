@@ -93,9 +93,9 @@ export class CcBadge extends LitElement {
           border-radius: var(--border-radius, 1em);
           display: flex;
           font-size: 0.8em;
-          gap: 0.3em;
+          gap: var(--cc-spacing-1, 0.25em);
           justify-content: var(--cc-badge-justify-content, center);
-          padding: 0.2em 0.8em;
+          padding: var(--cc-spacing-1, 0.25em) var(--cc-spacing-4, 0.75em);
         }
 
         /* skeleton is more important */

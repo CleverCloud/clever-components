@@ -258,7 +258,7 @@ export class CcAddonHeader extends LitElement {
         .main {
           display: grid;
           flex-wrap: wrap;
-          gap: 1em;
+          gap: var(--cc-spacing-5, 1em);
           grid-auto-flow: column;
           justify-content: space-between;
           min-width: 0;
@@ -273,14 +273,14 @@ export class CcAddonHeader extends LitElement {
         .addon-information {
           display: flex;
           flex: 1 1 0;
-          gap: 1em;
+          gap: var(--cc-spacing-5, 1em);
           min-width: 0;
         }
 
         .logo {
           align-self: flex-start;
           background-color: var(--cc-color-bg-neutral-alt);
-          border-radius: var(--cc-border-radius-default, 0.25em);
+          border-radius: var(--cc-border-radius-small, 0.25em);
           height: 3.25em;
           overflow: hidden;
           width: 3.25em;
@@ -298,7 +298,7 @@ export class CcAddonHeader extends LitElement {
           align-items: center;
           display: flex;
           flex-wrap: wrap;
-          gap: 0.5em 0.75em;
+          gap: var(--cc-spacing-3, 0.5em) var(--cc-spacing-4, 0.75em);
         }
 
         .details__name {
@@ -309,7 +309,7 @@ export class CcAddonHeader extends LitElement {
         .details__id {
           align-items: center;
           display: flex;
-          gap: 0.5em;
+          gap: var(--cc-spacing-3, 0.5em);
           min-width: 0;
         }
 
@@ -325,7 +325,7 @@ export class CcAddonHeader extends LitElement {
           align-items: center;
           display: flex;
           flex-wrap: wrap;
-          gap: 0.75em;
+          gap: var(--cc-spacing-4, 0.75em);
         }
 
         .actions cc-link,
@@ -367,7 +367,7 @@ export class CcAddonHeader extends LitElement {
           display: flex;
           flex-wrap: wrap;
           font-size: 0.9em;
-          gap: 0.57em;
+          gap: var(--cc-spacing-3, 0.5em);
         }
 
         .messages {
@@ -376,7 +376,7 @@ export class CcAddonHeader extends LitElement {
           flex-wrap: wrap;
           font-size: 0.9em;
           font-style: italic;
-          gap: 0.57em;
+          gap: var(--cc-spacing-3, 0.5em);
         }
 
         .messages cc-link,

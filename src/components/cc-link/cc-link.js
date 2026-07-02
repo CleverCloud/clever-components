@@ -181,7 +181,7 @@ export class CcLink extends LitElement {
         a {
           align-items: center;
           display: inline-flex;
-          gap: 0.5em;
+          gap: var(--cc-spacing-3, 0.5em);
         }
 
         .link-slot {
@@ -193,7 +193,7 @@ export class CcLink extends LitElement {
         a:visited,
         a:active {
           color: var(--cc-color-text-primary-highlight, blue);
-          gap: 0.1em;
+          gap: var(--cc-spacing-0, 0.125em);
           text-decoration: none;
         }
 
@@ -206,7 +206,7 @@ export class CcLink extends LitElement {
 
         .cc-link:focus-within {
           background-color: var(--cc-color-bg-default, #fff);
-          border-radius: var(--cc-border-radius-small, 0.15em);
+          border-radius: var(--cc-border-radius-xs, 0.15em);
           outline: var(--cc-focus-outline, #000 solid 2px);
           outline-offset: var(--cc-focus-outline-offset, 2px);
         }
@@ -283,12 +283,12 @@ export class CcLink extends LitElement {
           cursor: pointer;
           display: grid;
           font-weight: var(--cc-button-font-weight, bold);
-          gap: 0.5em;
+          gap: var(--cc-spacing-3, 0.5em);
           grid-template-columns: min-content 1fr;
           height: 100%;
           justify-items: center;
           min-height: 2em;
-          padding: 0 0.5em;
+          padding: 0 var(--cc-spacing-3, 0.5em);
           text-transform: var(--cc-button-text-transform, uppercase);
           width: 100%;
         }

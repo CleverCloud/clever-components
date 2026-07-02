@@ -288,7 +288,7 @@ export class CcToaster extends LitElement {
           align-items: center;
           display: flex;
           flex-direction: column;
-          gap: 1em;
+          gap: var(--cc-spacing-5, 1em);
           pointer-events: none;
         }
 

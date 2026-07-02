@@ -228,7 +228,7 @@ export class CcInvoiceTable extends LitElement {
           align-items: center;
           display: flex;
           flex-wrap: wrap;
-          gap: 1em;
+          gap: var(--cc-spacing-5, 1em);
         }
 
         /* endregion */
@@ -237,7 +237,7 @@ export class CcInvoiceTable extends LitElement {
 
         .invoice-list {
           display: grid;
-          gap: 1.5em;
+          gap: var(--cc-spacing-7, 1.5em);
         }
 
         .invoice {
@@ -247,7 +247,7 @@ export class CcInvoiceTable extends LitElement {
 
         .invoice-icon,
         .invoice-text {
-          margin-right: 0.5em;
+          margin-right: var(--cc-spacing-3, 0.5em);
         }
 
         .invoice-icon {
@@ -278,13 +278,13 @@ export class CcInvoiceTable extends LitElement {
 
         table {
           border-collapse: collapse;
-          border-radius: 5px;
+          border-radius: var(--cc-border-radius-medium, 0.375em);
           overflow: hidden;
         }
 
         th,
         td {
-          padding: 0.5em 1em;
+          padding: var(--cc-spacing-3, 0.5em) var(--cc-spacing-5, 1em);
           text-align: left;
         }
 

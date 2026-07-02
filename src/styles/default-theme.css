@@ -309,8 +309,24 @@
 
   /*region border radius */
   /* Beware: since we use `em` units, the computed value of these tokens might vary even within the same component */
-  --cc-border-radius-default: 0.25em;
-  --cc-border-radius-small: 0.15em;
+  --cc-border-radius-small: 0.25em;
+  --cc-border-radius-xs: 0.15em;
+  --cc-border-radius-large: 0.5em;
+  --cc-border-radius-medium: 0.375em;
+  /*endregion */
+
+  /*region spacing */
+  --cc-spacing-0: 0.125em;
+  --cc-spacing-1: 0.25em;
+  --cc-spacing-2: 0.35em;
+  --cc-spacing-3: 0.5em;
+  --cc-spacing-4: 0.75em;
+  --cc-spacing-5: 1em;
+  --cc-spacing-6: 1.25em;
+  --cc-spacing-7: 1.5em;
+  --cc-spacing-8: 2em;
+  --cc-spacing-9: 2.5em;
+  --cc-spacing-10: 3em;
   /*endregion */
 
   /*region Miscellaneous*/
@@ -334,6 +350,12 @@
 
   /* space between a label and its control when inline */
   --cc-form-label-gap-inline: 0.75em;
+
+  /* font style of the "required" mention displayed next to a form control label */
+  --cc-form-required-font-style: italic;
+
+  /* text transform of the "required" mention displayed next to a form control label */
+  --cc-form-required-text-transform: lowercase;
   /*endregion*/
 
   /*region blur*/

@@ -193,7 +193,7 @@ export class CcZonePicker extends CcFormControlElement {
         /* region legend layout & style */
         legend {
           display: flex;
-          gap: 0.25em;
+          gap: var(--cc-spacing-1, 0.25em);
           margin-block-end: var(--cc-form-label-gap, 0.35em);
         }
 
@@ -214,7 +214,7 @@ export class CcZonePicker extends CcFormControlElement {
         /* region global layout */
         .form-controls {
           display: grid;
-          gap: 1em;
+          gap: var(--cc-spacing-5, 1em);
           grid-template-columns: repeat(auto-fill, minmax(12.5em, 1fr));
           margin-inline-start: var(--cc-form-controls-indent, 34px);
         }
@@ -225,18 +225,18 @@ export class CcZonePicker extends CcFormControlElement {
           color: var(--cc-color-text-primary-strongest);
           font-family: var(--cc-ff-form-legend), inherit;
           font-size: 1.15em;
-          margin-block-end: 0.25em;
+          margin-block-end: var(--cc-spacing-1, 0.25em);
           margin-inline-start: var(--cc-form-controls-indent, 34px);
         }
 
         .form-controls + .zone-section-title {
-          margin-block-start: 1em;
+          margin-block-start: var(--cc-spacing-5, 1em);
         }
         /* endregion */
 
         /* region cc-picker-option */
         input[type='radio']:focus-visible + label cc-picker-option {
-          border-radius: var(--cc-border-radius-default, 0.25em);
+          border-radius: var(--cc-border-radius-medium, 0.375em);
           outline: var(--cc-focus-outline, #000 solid 2px);
           outline-offset: var(--cc-focus-outline-offset, 2px);
         }
@@ -250,14 +250,14 @@ export class CcZonePicker extends CcFormControlElement {
         }
 
         cc-picker-option [slot='body'] {
-          margin-inline: -0.25em;
+          margin-inline: calc(var(--cc-spacing-1, 0.25em) * -1);
         }
 
         cc-picker-option .option-body--code {
           color: var(--cc-color-text-weak);
           font-size: 0.875em;
           line-height: 1.125;
-          padding-inline-start: 0.125em;
+          padding-inline-start: var(--cc-spacing-0, 0.125em);
         }
 
         cc-picker-option .option-body--name {
@@ -266,9 +266,9 @@ export class CcZonePicker extends CcFormControlElement {
         }
 
         cc-picker-option [slot='footer'] {
-          column-gap: 0.5em;
+          column-gap: var(--cc-spacing-3, 0.5em);
           display: flex;
-          padding-block: 0.75em;
+          padding-block: var(--cc-spacing-4, 0.75em);
         }
 
         cc-picker-option [slot='footer'] > cc-img {

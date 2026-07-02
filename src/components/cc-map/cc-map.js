@@ -394,7 +394,7 @@ export class CcMap extends LitElement {
           box-sizing: border-box;
           font-size: 0.9em;
           font-style: italic;
-          padding: 0.45em 1.1em;
+          padding: var(--cc-spacing-3, 0.5em) var(--cc-spacing-5, 1em);
         }
 
         .loader {
@@ -428,11 +428,11 @@ export class CcMap extends LitElement {
           align-items: center;
           background-color: var(--cc-color-bg-default, #fff);
           border: 1px solid var(--cc-color-border-neutral, #aaa);
-          border-radius: var(--cc-border-radius-default, 0.25em);
+          border-radius: var(--cc-border-radius-large, 0.5em);
           box-shadow: 0 0 1em rgb(0 0 0 / 40%);
           display: flex;
           justify-content: center;
-          padding: 1em;
+          padding: var(--cc-spacing-7, 1.5em);
         }
 
         .cc-map-marker {
@@ -445,12 +445,12 @@ export class CcMap extends LitElement {
           align-items: center;
           background-color: var(--cc-color-bg-default, #fff);
           border: 1px solid #bcc2d1;
-          border-radius: var(--cc-border-radius-default, 0.25em);
+          border-radius: var(--cc-border-radius-large, 0.5em);
           box-shadow: 0 0 1em rgb(0 0 0 / 40%);
           display: grid;
-          gap: 0.5em;
+          gap: var(--cc-spacing-3, 0.5em);
           grid-template-columns: min-content 1fr;
-          padding: 1em;
+          padding: var(--cc-spacing-7, 1.5em);
           text-align: center;
         }
 

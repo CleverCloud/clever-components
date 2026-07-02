@@ -160,17 +160,17 @@ export class CcFeatureList extends LitElement {
         .feature-list {
           display: flex;
           flex-direction: column;
-          gap: 0.5em;
-          margin-top: 1em;
+          gap: var(--cc-spacing-3, 0.5em);
+          margin-top: var(--cc-spacing-5, 1em);
         }
 
         .feature {
           border: solid 1px var(--cc-color-border-neutral-weak, #e7e7e7);
-          border-radius: var(--cc-border-radius-default);
+          border-radius: var(--cc-border-radius-medium, 0.375em);
           display: flex;
           flex-direction: column;
-          gap: 0.6em;
-          padding: 1em;
+          gap: var(--cc-spacing-3, 0.5em);
+          padding: var(--cc-spacing-5, 1em);
         }
 
         .feature .header {
@@ -178,7 +178,7 @@ export class CcFeatureList extends LitElement {
           display: flex;
           flex-direction: row;
           flex-wrap: wrap;
-          gap: 0.5em;
+          gap: var(--cc-spacing-3, 0.5em);
           justify-content: space-between;
         }
 
@@ -186,7 +186,7 @@ export class CcFeatureList extends LitElement {
           display: flex;
           flex-direction: row;
           flex-wrap: wrap;
-          gap: 0.75em;
+          gap: var(--cc-spacing-4, 0.75em);
         }
 
         .feature .title {
@@ -197,7 +197,7 @@ export class CcFeatureList extends LitElement {
           display: flex;
           flex-direction: row;
           flex-wrap: wrap;
-          gap: 0.75em;
+          gap: var(--cc-spacing-4, 0.75em);
         }
       `,
     ];
