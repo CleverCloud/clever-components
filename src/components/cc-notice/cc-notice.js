@@ -137,8 +137,9 @@ export class CcNotice extends LitElement {
         .wrapper {
           align-items: start;
           border-radius: var(--cc-border-radius-large, 0.5em);
+          /* Horizontal gap (icon <-> text) stays at spacing-4, vertical gap (heading <-> message) is tighter at spacing-3. */
+          column-gap: var(--cc-spacing-4, 0.75em);
           display: grid;
-          gap: var(--cc-spacing-4, 0.75em);
           grid-template-areas:
             'icon heading'
             '.    message';
@@ -147,6 +148,7 @@ export class CcNotice extends LitElement {
           line-height: 1.4;
           padding: var(--cc-spacing-7, 1.5em);
           position: relative;
+          row-gap: var(--cc-spacing-3, 0.5em);
         }
 
         :host([intent='success']) .wrapper {
