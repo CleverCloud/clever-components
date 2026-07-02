@@ -341,7 +341,7 @@ export class CcNetworkGroupMemberCard extends LitElement {
 
         .member-card {
           border: solid 1px var(--cc-color-border-neutral-weak);
-          border-radius: var(--cc-border-radius-small, 0.25em);
+          border-radius: var(--cc-border-radius-medium, 0.375em);
           container: member-card / inline-size;
           padding: var(--member-card-padding);
         }

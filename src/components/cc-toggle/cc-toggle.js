@@ -33,7 +33,7 @@ import { CcMultiSelectEvent, CcSelectEvent } from '../common.events.js';
  *
  * @cssprop {Size} --cc-form-label-gap - The space between the label and the control (defaults: `0.35em`).
  * @cssprop {Size} --cc-form-label-gap-inline - The space between the label and the control when layout is inline (defaults: `0.75em`).
- * @cssprop {BorderRadius} --cc-toggle-border-radius - Sets the value of the border radius CSS property (defaults: `0.15em`).
+ * @cssprop {BorderRadius} --cc-toggle-border-radius - Sets the value of the border radius CSS property (defaults: `0.25em`).
  * @cssprop {Color} --cc-toggle-color - The main color of the toggle (defaults: `#334252`). It must be defined directly on the element.
  * @cssprop {FontWeight} --cc-toggle-font-weight - Sets the value of the font weight CSS property (defaults: `bold`).
  * @cssprop {Filter} --cc-toggle-img-filter - A CSS filter to apply on images of all choices (defaults: `none`). It must be defined directly on the element.
@@ -221,7 +221,7 @@ export class CcToggle extends LitElement {
 
         .toggle-group {
           background-color: var(--cc-color-bg-default, #fff);
-          border-radius: var(--cc-border-radius-xs, 0.15em);
+          border-radius: var(--cc-border-radius-small, 0.25em);
           box-sizing: border-box;
           display: flex;
           height: var(--height);
@@ -247,7 +247,7 @@ export class CcToggle extends LitElement {
         label {
           /* used around the background */
           --space: 2px;
-          --border-radius: var(--cc-toggle-border-radius, 0.15em);
+          --border-radius: var(--cc-toggle-border-radius, var(--cc-border-radius-small, 0.25em));
 
           align-items: center;
           border-color: var(--cc-toggle-color);
@@ -290,7 +290,7 @@ export class CcToggle extends LitElement {
 
         label::before {
           background-color: var(--cc-color-bg);
-          border-radius: var(--cc-border-radius-xs, 0.15em);
+          border-radius: var(--cc-border-radius-small, 0.25em);
           bottom: var(--space);
           content: '';
           display: block;

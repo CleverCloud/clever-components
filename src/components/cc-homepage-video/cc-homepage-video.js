@@ -122,7 +122,7 @@ export class CcHomepageVideo extends LitElement {
 
           background-color: var(--cc-color-bg-default, #fff);
           border: 1px solid var(--cc-color-border-neutral, #aaa);
-          border-radius: var(--cc-border-radius-small, 0.25em);
+          border-radius: var(--cc-border-radius-large, 0.5em);
           box-sizing: border-box;
           display: grid;
           gap: var(--cc-spacing-8, 2em);

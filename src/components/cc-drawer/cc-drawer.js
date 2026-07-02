@@ -157,7 +157,7 @@ export class CcDrawer extends LitElement {
         dialog {
           background-color: var(--cc-color-bg-default, #fff);
           border: none;
-          border-radius: var(--cc-border-radius-small, 0.25em);
+          border-radius: var(--cc-border-radius-medium, 0.375em);
           box-shadow: 2px 4px 8px 0 rgb(0 0 0 / 12%);
           box-sizing: border-box;
           display: flex;

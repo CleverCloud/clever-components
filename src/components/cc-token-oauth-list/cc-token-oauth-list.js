@@ -259,7 +259,7 @@ export class CcTokenOauthList extends LitElement {
         .oauth-token-card {
           align-items: center;
           border: solid 1px var(--cc-color-border-neutral-weak, #e6e6e6);
-          border-radius: var(--cc-border-radius-small, 0.25em);
+          border-radius: var(--cc-border-radius-medium, 0.375em);
           display: grid;
           grid-template-columns: [card-start info-start] 1fr [info-end actions-start] auto [actions-end card-end];
           padding: var(--cc-spacing-5, 1em);

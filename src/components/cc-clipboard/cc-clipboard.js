@@ -94,7 +94,7 @@ export class CcClipboard extends LitElement {
         button {
           background: transparent;
           border: none;
-          border-radius: var(--cc-border-radius-xs, 0.15em);
+          border-radius: var(--cc-border-radius-small, 0.25em);
           color: var(--cc-clipboard-color, var(--cc-color-text-default, #000));
           cursor: pointer;
           display: block;

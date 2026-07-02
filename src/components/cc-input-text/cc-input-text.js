@@ -609,9 +609,11 @@ export class CcInputText extends CcFormControlElement {
         .input-underlayer {
           font-family: var(--cc-input-font-family, var(--cc-ff-monospace));
           height: auto;
+          /* Slightly taller than the base 2em to give the (bigger) tags some breathing room between lines. */
+          line-height: 2.3em;
           padding: 0 3px;
           word-break: break-all;
-          word-spacing: 0.5ch;
+          word-spacing: 0.7ch;
         }
 
         .input-underlayer {
@@ -628,8 +630,8 @@ export class CcInputText extends CcFormControlElement {
           --color: var(--cc-color-bg-soft, #eee);
 
           background-color: var(--color);
-          border-radius: var(--cc-border-radius-medium, 0.375em);
-          box-shadow: 0 0 0 2px var(--color);
+          border-radius: var(--cc-border-radius-small, 0.25em);
+          box-shadow: 0 0 0 3px var(--color);
           padding: 1px 0;
         }
 
