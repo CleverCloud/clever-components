@@ -9,6 +9,7 @@ import '../cc-block/cc-block.js';
 import '../cc-link/cc-link.js';
 import '../cc-loader/cc-loader.js';
 import '../cc-notice/cc-notice.js';
+import '../cc-select/cc-select.js';
 import '../cc-toggle/cc-toggle.js';
 import { CcFeatureSettingChangeEvent } from './cc-feature-list.events.js';
 
@@ -58,7 +59,7 @@ export class CcFeatureList extends LitElement {
    * @param {Feature} feature
    * @param {string} newValue
    */
-  _onToggleChange(feature, newValue) {
+  _onFeatureChange(feature, newValue) {
     if (this.state.type === 'loading') {
       return;
     }
@@ -110,11 +111,7 @@ export class CcFeatureList extends LitElement {
                 : ''}
             </div>
           </div>
-          <cc-toggle
-            .choices="${feature.options}"
-            value="${feature.value}"
-            @cc-select=${(/** @type {CcSelectEvent} */ event) => this._onToggleChange(feature, event.detail)}
-          ></cc-toggle>
+          ${this._renderFeatureControl(feature)}
         </div>
         <div>${feature.description}</div>
         ${feature.documentationLink != null || feature.feedbackLink != null
@@ -146,6 +143,36 @@ export class CcFeatureList extends LitElement {
             `
           : ''}
       </div>
+    `;
+  }
+
+  /**
+   * Renders the control used to change the feature value: a `cc-toggle` by default,
+   * or a `cc-select` when `feature.displayMode` is set to `'select'` (useful when there are too many options).
+   *
+   * @param {Feature} feature
+   * @return {TemplateResult<1>}
+   * @private
+   */
+  _renderFeatureControl(feature) {
+    if (feature.displayMode === 'select') {
+      return html`
+        <cc-select
+          hidden-label
+          .label="${feature.name}"
+          .options="${feature.options}"
+          .value="${feature.value}"
+          @cc-select=${(/** @type {CcSelectEvent} */ event) => this._onFeatureChange(feature, event.detail)}
+        ></cc-select>
+      `;
+    }
+
+    return html`
+      <cc-toggle
+        .choices="${feature.options}"
+        value="${feature.value}"
+        @cc-select=${(/** @type {CcSelectEvent} */ event) => this._onFeatureChange(feature, event.detail)}
+      ></cc-toggle>
     `;
   }
 
