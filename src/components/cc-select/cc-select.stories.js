@@ -67,6 +67,17 @@ export const required = makeStory(conf, {
   ],
 });
 
+export const hiddenLabel = makeStory(conf, {
+  items: [
+    {
+      label: 'Favourite artist',
+      hiddenLabel: true,
+      value: 'GAGA',
+      options: baseOptions,
+    },
+  ],
+});
+
 export const helpMessage = makeStory(conf, {
   items: [
     {

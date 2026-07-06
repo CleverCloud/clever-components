@@ -3,6 +3,7 @@ import { classMap } from 'lit/directives/class-map.js';
 import { createRef, ref } from 'lit/directives/ref.js';
 import { CcFormControlElement } from '../../lib/form/cc-form-control-element.abstract.js';
 import { RequiredValidator } from '../../lib/form/validation.js';
+import { accessibilityStyles } from '../../styles/accessibility.js';
 import { i18n } from '../../translations/translation.js';
 import { CcSelectEvent } from '../common.events.js';
 
@@ -45,6 +46,7 @@ export class CcSelect extends CcFormControlElement {
       // eslint-disable-next-line lit/no-native-attributes
       autofocus: { type: Boolean },
       disabled: { type: Boolean, reflect: true },
+      hiddenLabel: { type: Boolean, attribute: 'hidden-label' },
       inline: { type: Boolean, reflect: true },
       /** @required */
       label: { type: String },
@@ -66,6 +68,9 @@ export class CcSelect extends CcFormControlElement {
 
     /** @type {boolean} Sets `disabled` attribute on inner native `<select>` element. */
     this.disabled = false;
+
+    /** @type {boolean} Hides the label visually if `true`. The label remains mandatory and accessible to assistive technologies. */
+    this.hiddenLabel = false;
 
     /** @type {boolean} Sets the `<label>` on the left of the `<select>` element.
      * Only use this if your form contains 1 or 2 fields and your labels are short.
@@ -179,7 +184,7 @@ export class CcSelect extends CcFormControlElement {
     const hasErrorMessage = this.errorMessage != null && this.errorMessage !== '';
 
     return html`
-      <label for="input-id">
+      <label for="input-id" class="${classMap({ 'visually-hidden': this.hiddenLabel })}">
         <span class="label-text">${this.label}</span>
         ${this.required ? html` <span class="required">${i18n('cc-select.required')}</span> ` : ''}
       </label>
@@ -213,6 +218,7 @@ export class CcSelect extends CcFormControlElement {
 
   static get styles() {
     return [
+      accessibilityStyles,
       // language=CSS
       css`
         /* stylelint-disable no-duplicate-selectors */
