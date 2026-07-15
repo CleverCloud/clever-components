@@ -200,19 +200,19 @@ export class CcHeaderOrga extends LitElement {
           align-items: center;
           display: flex;
           flex-wrap: wrap;
-          gap: 1em;
+          gap: var(--cc-spacing-5, 1em);
           justify-content: space-between;
         }
 
         .identity {
           align-items: center;
           display: flex;
-          gap: 1em;
+          gap: var(--cc-spacing-5, 1em);
         }
 
         .logo,
         .initials {
-          border-radius: var(--cc-border-radius-default, 0.25em);
+          border-radius: var(--cc-border-radius-small, 0.25em);
           flex: 0 0 auto;
           height: 3.25em;
           width: 3.25em;
@@ -237,13 +237,13 @@ export class CcHeaderOrga extends LitElement {
         .enterprise {
           display: flex;
           flex-direction: column;
-          gap: 0.5em;
+          gap: var(--cc-spacing-3, 0.5em);
         }
 
         .enterprise-row {
           align-items: center;
           display: flex;
-          gap: 0.5em;
+          gap: var(--cc-spacing-3, 0.5em);
         }
 
         .enterprise-row cc-icon {
@@ -255,7 +255,7 @@ export class CcHeaderOrga extends LitElement {
         ::slotted([slot='footer']) {
           background-color: var(--cc-color-bg-neutral);
           border-top: solid 1px var(--cc-color-border-neutral-weak);
-          padding: 0.5em 1em;
+          padding: var(--cc-spacing-3, 0.5em) var(--cc-spacing-5, 1em);
         }
 
         /* SKELETON */

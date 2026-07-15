@@ -151,7 +151,7 @@ export class CcVisualTestsReportEntry extends LitElement {
       css`
         :host {
           display: grid;
-          gap: 1em;
+          gap: var(--cc-spacing-5, 1em);
           grid-template-rows: max-content 1fr;
         }
 
@@ -162,7 +162,7 @@ export class CcVisualTestsReportEntry extends LitElement {
         .header {
           display: flex;
           flex-wrap: wrap;
-          gap: 2em;
+          gap: var(--cc-spacing-8, 2em);
           justify-content: space-between;
         }
 
@@ -176,36 +176,36 @@ export class CcVisualTestsReportEntry extends LitElement {
         }
 
         .main-heading cc-icon {
-          margin-left: 0.5em;
+          margin-left: var(--cc-spacing-3, 0.5em);
         }
 
         .main-heading span {
           align-items: center;
           display: flex;
-          gap: 0.5em;
+          gap: var(--cc-spacing-3, 0.5em);
         }
 
         .heading {
           background-color: var(--cc-color-bg-neutral, #f5f5f5);
           font-weight: bold;
-          padding: 1em;
+          padding: var(--cc-spacing-5, 1em);
         }
 
         .three-way-diff {
           display: grid;
-          gap: 1em;
+          gap: var(--cc-spacing-5, 1em);
         }
 
         .three-way-diff__side-by-side {
           box-sizing: border-box;
           display: flex;
           flex-wrap: wrap;
-          gap: 1em;
+          gap: var(--cc-spacing-5, 1em);
         }
 
         .viewbox {
           border: solid 1px var(--cc-color-border-neutral, #bfbfbf);
-          border-radius: var(--cc-border-radius-default, 0.25em);
+          border-radius: var(--cc-border-radius-small, 0.25em);
           box-sizing: border-box;
           overflow: hidden;
         }
@@ -227,13 +227,13 @@ export class CcVisualTestsReportEntry extends LitElement {
 
         .diff {
           border: solid 1px var(--cc-color-border-neutral, #bfbfbf);
-          border-radius: var(--cc-border-radius-default, 0.25em);
+          border-radius: var(--cc-border-radius-small, 0.25em);
           display: block;
         }
 
         cc-img-comparator {
           border: solid 1px var(--cc-color-border-neutral, #bfbfbf);
-          border-radius: var(--cc-border-radius-default, 0.25em);
+          border-radius: var(--cc-border-radius-small, 0.25em);
           margin-inline: auto;
           max-width: max-content;
           overflow: hidden;

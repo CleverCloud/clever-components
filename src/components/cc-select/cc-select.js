@@ -33,6 +33,8 @@ const DEFAULT_ERROR_MESSAGES = {
  *
  * @cssprop {Size} --cc-form-label-gap - The space between the label and the control (defaults: `0.35em`).
  * @cssprop {Size} --cc-form-label-gap-inline - The space between the label and the control when layout is inline (defaults: `0.75em`).
+ * @cssprop {FontStyle} --cc-form-required-font-style - The font-style of the "required" mention next to the label (defaults: `italic`).
+ * @cssprop {TextTransform} --cc-form-required-text-transform - The text-transform of the "required" mention next to the label (defaults: `lowercase`).
  * @cssprop {Color} --cc-select-label-color - The color for the select's label (defaults: `inherit`).
  * @cssprop {FontSize} --cc-select-label-font-size - The font-size for the select's label (defaults: `inherit`).
  * @cssprop {FontWeight} --cc-select-label-font-weight - The font-weight for the select's label (defaults: `normal`).
@@ -252,7 +254,7 @@ export class CcSelect extends CcFormControlElement {
           align-items: flex-end;
           cursor: pointer;
           display: flex;
-          gap: 2em;
+          gap: var(--cc-spacing-8, 2em);
           justify-content: space-between;
           line-height: 1.25em;
           padding-block-end: var(--cc-form-label-gap, 0.35em);
@@ -275,7 +277,8 @@ export class CcSelect extends CcFormControlElement {
         .required {
           color: var(--cc-color-text-weak);
           font-size: 0.9em;
-          font-variant: small-caps;
+          font-style: var(--cc-form-required-font-style, italic);
+          text-transform: var(--cc-form-required-text-transform, lowercase);
         }
 
         :host([inline]) .required {
@@ -285,12 +288,12 @@ export class CcSelect extends CcFormControlElement {
         slot[name='help']::slotted(*) {
           color: var(--cc-color-text-weak);
           font-size: 0.9em;
-          margin: 0.3em 0 0;
+          margin: var(--cc-spacing-1, 0.25em) 0 0;
         }
 
         .error-container {
           color: var(--cc-color-text-danger);
-          margin: 0.5em 0 0;
+          margin: var(--cc-spacing-3, 0.5em) 0 0;
         }
         /* endregion */
 
@@ -315,11 +318,11 @@ export class CcSelect extends CcFormControlElement {
         select {
           background-color: var(--cc-color-bg-default, #fff);
           border: 1px solid var(--cc-color-border-neutral-strong, #aaa);
-          border-radius: var(--cc-border-radius-default, 0.25em);
+          border-radius: var(--cc-border-radius-medium, 0.375em);
           box-sizing: border-box;
           grid-area: input;
           height: 2em;
-          padding: 0 3em 0 0.5em;
+          padding: 0 var(--cc-spacing-10, 3em) 0 var(--cc-spacing-3, 0.5em);
         }
 
         select:hover {

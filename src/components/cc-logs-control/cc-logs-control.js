@@ -465,7 +465,7 @@ export class CcLogsControl extends LitElement {
       css`
         :host {
           display: grid;
-          gap: 0.5em;
+          gap: var(--cc-spacing-3, 0.5em);
           grid-template-rows:
             [header] auto
             [center] 1fr;
@@ -474,13 +474,13 @@ export class CcLogsControl extends LitElement {
         .header {
           align-items: center;
           display: flex;
-          gap: 0.35em;
+          gap: var(--cc-spacing-2, 0.35em);
           justify-content: end;
         }
 
         .center {
           display: flex;
-          gap: 0.5em;
+          gap: var(--cc-spacing-3, 0.5em);
           justify-content: stretch;
           min-height: 0;
         }
@@ -490,7 +490,7 @@ export class CcLogsControl extends LitElement {
         }
 
         .options {
-          margin: 0.5em 0.75em;
+          margin: var(--cc-spacing-3, 0.5em) var(--cc-spacing-4, 0.75em);
           white-space: nowrap;
         }
 
@@ -505,7 +505,7 @@ export class CcLogsControl extends LitElement {
         }
 
         .options-header:not(:first-of-type) {
-          margin-top: 1.85em;
+          margin-top: var(--cc-spacing-8, 2em);
         }
 
         .options-header::after {
@@ -517,8 +517,8 @@ export class CcLogsControl extends LitElement {
         .options-group {
           display: grid;
           grid-template-columns: minmax(max-content, 1fr);
-          margin: 1em 0.75em 0.75em;
-          row-gap: 0.75em;
+          margin: var(--cc-spacing-5, 1em) var(--cc-spacing-4, 0.75em) var(--cc-spacing-4, 0.75em);
+          row-gap: var(--cc-spacing-4, 0.75em);
         }
 
         input[type='checkbox'] {

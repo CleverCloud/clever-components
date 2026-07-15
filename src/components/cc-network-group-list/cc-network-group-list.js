@@ -381,11 +381,11 @@ export class CcNetworkGroupList extends LitElement {
         :host {
           container: host / inline-size;
           display: grid;
-          gap: 1em;
+          gap: var(--cc-spacing-5, 1em);
         }
 
         cc-loader {
-          margin-top: 2em;
+          margin-top: var(--cc-spacing-8, 2em);
         }
 
         .intro {
@@ -396,9 +396,9 @@ export class CcNetworkGroupList extends LitElement {
           border: 1px solid var(--cc-color-border-neutral-weak);
           display: grid;
           font-weight: bold;
-          gap: 1.5em;
+          gap: var(--cc-spacing-7, 1.5em);
           justify-items: center;
-          padding: 1em;
+          padding: var(--cc-spacing-5, 1em);
         }
 
         @container host (max-width: 34.375em) {
@@ -411,7 +411,7 @@ export class CcNetworkGroupList extends LitElement {
           align-items: end;
           display: flex;
           flex-wrap: wrap;
-          gap: 1em;
+          gap: var(--cc-spacing-5, 1em);
         }
 
         .link-form__select {
@@ -424,33 +424,33 @@ export class CcNetworkGroupList extends LitElement {
 
         .network-group-list {
           display: grid;
-          gap: 1em;
+          gap: var(--cc-spacing-5, 1em);
         }
 
         .network-group-card {
           border: solid 1px var(--cc-color-border-neutral-weak, #ccc);
-          border-radius: var(--cc-border-radius-default, 0.25em);
-          padding: 1em;
+          border-radius: var(--cc-border-radius-medium, 0.375em);
+          padding: var(--cc-spacing-5, 1em);
         }
 
         .network-group-card__header {
           display: flex;
           flex-wrap: wrap;
-          gap: 0.5em;
+          gap: var(--cc-spacing-3, 0.5em);
           justify-content: space-between;
-          margin-bottom: 1em;
+          margin-bottom: var(--cc-spacing-5, 1em);
         }
 
         .network-group-card__header__heading {
           align-items: center;
           display: flex;
           font-weight: bold;
-          gap: 0.5em;
+          gap: var(--cc-spacing-3, 0.5em);
         }
 
         .network-group-card__header__heading__img {
           background-color: var(--cc-color-bg-neutral-alt);
-          border-radius: var(--cc-border-radius-default, 0.25em);
+          border-radius: var(--cc-border-radius-small, 0.25em);
           height: 1.375em;
           width: 1.375em;
         }
@@ -458,7 +458,7 @@ export class CcNetworkGroupList extends LitElement {
         .network-group-card__id {
           color: var(--cc-color-text-weak);
           font-style: italic;
-          margin-bottom: 1em;
+          margin-bottom: var(--cc-spacing-5, 1em);
         }
 
         .network-group-card__id cc-clipboard {
@@ -468,21 +468,21 @@ export class CcNetworkGroupList extends LitElement {
 
         .peer-list {
           display: grid;
-          gap: 0.5em;
+          gap: var(--cc-spacing-3, 0.5em);
         }
 
         .network-group-card__footer {
           align-items: center;
           display: flex;
           justify-content: space-between;
-          margin-top: 1em;
+          margin-top: var(--cc-spacing-5, 1em);
         }
 
         .network-group-card__footer__link {
           align-items: center;
           color: var(--cc-color-text-primary-highlight);
           display: flex;
-          gap: 0.25em;
+          gap: var(--cc-spacing-1, 0.25em);
         }
 
         cc-dialog p {
@@ -493,7 +493,7 @@ export class CcNetworkGroupList extends LitElement {
           .network-group-card__footer {
             align-items: flex-start;
             flex-direction: column;
-            gap: 1em;
+            gap: var(--cc-spacing-5, 1em);
           }
 
           .unlink-btn {

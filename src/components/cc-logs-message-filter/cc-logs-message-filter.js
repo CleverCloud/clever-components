@@ -175,7 +175,7 @@ export class CcLogsMessageFilter extends LitElement {
           background: unset;
           background: var(--cc-color-bg-default, #fff);
           border: none;
-          border-radius: var(--cc-border-radius-default, 0.15em);
+          border-radius: var(--cc-border-radius-xs, 0.15em);
           color: var(--cc-color-text-default, #000);
           cursor: pointer;
           display: block;
@@ -227,7 +227,7 @@ export class CcLogsMessageFilter extends LitElement {
         .error {
           background: var(--cc-color-bg-default, #fff);
           color: var(--cc-color-text-danger);
-          margin-right: 0.5em;
+          margin-right: var(--cc-spacing-3, 0.5em);
         }
       `,
     ];

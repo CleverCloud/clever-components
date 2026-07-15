@@ -327,7 +327,7 @@ export class CcWebFeaturesTracker extends LitElement {
       css`
         :host {
           display: grid;
-          gap: 1em;
+          gap: var(--cc-spacing-5, 1em);
         }
 
         * {
@@ -349,14 +349,14 @@ export class CcWebFeaturesTracker extends LitElement {
 
         .empty {
           border: solid 1px var(--cc-color-border-neutral-weak, #eee);
-          padding: 2em;
+          padding: var(--cc-spacing-8, 2em);
           text-align: center;
         }
 
         .table-controls {
           display: flex;
           flex-wrap: wrap;
-          gap: 1em;
+          gap: var(--cc-spacing-5, 1em);
         }
 
         table {
@@ -377,7 +377,7 @@ export class CcWebFeaturesTracker extends LitElement {
         td {
           align-items: center;
           display: grid;
-          padding: 0.5em 1em;
+          padding: var(--cc-spacing-3, 0.5em) var(--cc-spacing-5, 1em);
           text-align: left;
         }
 
@@ -385,7 +385,7 @@ export class CcWebFeaturesTracker extends LitElement {
           background-color: var(--cc-color-bg-neutral-alt, #eee);
           color: var(--cc-color-text-strongest);
           min-width: max-content;
-          padding: 1em;
+          padding: var(--cc-spacing-5, 1em);
         }
 
         tbody th,
@@ -401,24 +401,24 @@ export class CcWebFeaturesTracker extends LitElement {
 
         .feature-name-th {
           display: grid;
-          gap: 0.5em;
+          gap: var(--cc-spacing-3, 0.5em);
         }
 
         .feature-name-th__btn-and-name {
           align-items: center;
           display: flex;
-          gap: 0.5em;
+          gap: var(--cc-spacing-3, 0.5em);
         }
 
         .feature-name-th__btn-and-name__btn {
           background: none;
           background-color: var(--cc-color-bg-default, #fff);
           border: solid 1px var(--cc-color-border-neutral);
-          border-radius: var(--cc-border-radius-small, 0.15em);
+          border-radius: var(--cc-border-radius-xs, 0.15em);
           box-shadow: 0 0 0 0 rgb(255 255 255 / 0%);
           cursor: pointer;
           display: flex;
-          padding: 0.3em;
+          padding: var(--cc-spacing-1, 0.25em);
           transition: box-shadow 75ms ease-in-out;
         }
 
@@ -448,7 +448,7 @@ export class CcWebFeaturesTracker extends LitElement {
         .current-status {
           align-items: center;
           display: grid;
-          gap: 0.5em;
+          gap: var(--cc-spacing-3, 0.5em);
           text-align: center;
         }
 
@@ -476,7 +476,7 @@ export class CcWebFeaturesTracker extends LitElement {
 
           align-items: center;
           display: flex;
-          gap: 0.5em;
+          gap: var(--cc-spacing-3, 0.5em);
         }
 
         .notice-icon {
@@ -488,13 +488,13 @@ export class CcWebFeaturesTracker extends LitElement {
         }
 
         .row--detailed .browser-support {
-          gap: 0.5em;
+          gap: var(--cc-spacing-3, 0.5em);
         }
 
         .browser-support p {
           align-items: center;
           display: flex;
-          gap: 0.5em;
+          gap: var(--cc-spacing-3, 0.5em);
         }
 
         .browser-support cc-icon {

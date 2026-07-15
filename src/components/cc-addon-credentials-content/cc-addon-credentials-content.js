@@ -295,8 +295,8 @@ export class CcAddonCredentialsContent extends LitElement {
           align-items: baseline;
           display: flex;
           flex-wrap: wrap;
-          gap: 0.5em;
-          padding-block: 1em;
+          gap: var(--cc-spacing-3, 0.5em);
+          padding-block: var(--cc-spacing-5, 1em);
         }
 
         .credential--align-center {
@@ -318,7 +318,7 @@ export class CcAddonCredentialsContent extends LitElement {
           display: flex;
           flex: 1 1 21em;
           flex-wrap: wrap;
-          gap: 0.5em;
+          gap: var(--cc-spacing-3, 0.5em);
         }
 
         cc-input-text {

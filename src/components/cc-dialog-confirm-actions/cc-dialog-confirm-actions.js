@@ -79,7 +79,7 @@ export class CcDialogConfirmActions extends LitElement {
         .dialog-actions {
           display: flex;
           flex-wrap: wrap;
-          gap: 1em;
+          gap: var(--cc-spacing-5, 1em);
           justify-content: end;
           margin-top: var(--cc-dialog-confirm-actions-margin-top, 2.75em);
         }

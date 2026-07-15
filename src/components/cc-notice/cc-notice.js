@@ -136,17 +136,19 @@ export class CcNotice extends LitElement {
 
         .wrapper {
           align-items: start;
-          border-radius: var(--cc-border-radius-default, 0.25em);
+          border-radius: var(--cc-border-radius-large, 0.5em);
+          /* Horizontal gap (icon <-> text) stays at spacing-4, vertical gap (heading <-> message) is tighter at spacing-3. */
+          column-gap: var(--cc-spacing-4, 0.75em);
           display: grid;
-          gap: 0.5em;
           grid-template-areas:
             'icon heading'
             '.    message';
           grid-template-columns: auto 1fr;
           grid-template-rows: auto auto;
           line-height: 1.4;
-          padding: 0.75em;
+          padding: var(--cc-spacing-7, 1.5em);
           position: relative;
+          row-gap: var(--cc-spacing-3, 0.5em);
         }
 
         :host([intent='success']) .wrapper {
@@ -186,7 +188,7 @@ export class CcNotice extends LitElement {
         }
 
         .wrapper.closeable {
-          padding-right: 2em;
+          padding-right: var(--cc-spacing-8, 2em);
         }
 
         .wrapper.no-icon {
@@ -233,7 +235,7 @@ export class CcNotice extends LitElement {
 
           background-color: transparent;
           border: none;
-          border-radius: var(--cc-border-radius-small, 0.15em);
+          border-radius: var(--cc-border-radius-large, 0.5em);
           cursor: pointer;
           height: auto;
           padding: 0;

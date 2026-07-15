@@ -253,7 +253,7 @@ export class CcPlanPicker extends CcFormControlElement {
 
         /* region cc-picker global layout & style */
         .picker-wrapper {
-          column-gap: 0.25em;
+          column-gap: var(--cc-spacing-1, 0.25em);
           display: flex;
         }
 
@@ -261,7 +261,7 @@ export class CcPlanPicker extends CcFormControlElement {
           --cc-icon-color: var(--cc-color-text-primary);
 
           flex: 0 0 auto;
-          padding-block: 0.25em;
+          padding-block: var(--cc-spacing-1, 0.25em);
         }
 
         .picker-wrapper cc-picker {
@@ -284,7 +284,7 @@ export class CcPlanPicker extends CcFormControlElement {
 
         cc-picker::part(tiles) {
           display: grid;
-          gap: 1em;
+          gap: var(--cc-spacing-5, 1em);
           grid-template-columns: repeat(auto-fill, minmax(13em, 1fr));
         }
         /* endregion */
@@ -292,7 +292,7 @@ export class CcPlanPicker extends CcFormControlElement {
         /* region cc-picker-option slotted content */
         ::part(option-body) {
           align-items: center;
-          column-gap: 0.375em;
+          column-gap: var(--cc-spacing-2, 0.35em);
           display: inline-flex;
           flex-wrap: wrap;
         }
@@ -311,12 +311,12 @@ export class CcPlanPicker extends CcFormControlElement {
           list-style-type: none;
           margin: 0;
           padding: 0;
-          row-gap: 0.25em;
+          row-gap: var(--cc-spacing-1, 0.25em);
         }
 
         ::part(option-footer--detail) {
           align-items: center;
-          column-gap: 0.5em;
+          column-gap: var(--cc-spacing-3, 0.5em);
           display: inline-flex;
         }
 

@@ -491,7 +491,7 @@ export class CcPricingProduct extends LitElement {
         th {
           color: var(--cc-color-text-weak, #333);
           font-weight: bold;
-          padding: 2em 0.5em;
+          padding: var(--cc-spacing-8, 2em) var(--cc-spacing-3, 0.5em);
           text-align: left;
         }
 
@@ -503,12 +503,12 @@ export class CcPricingProduct extends LitElement {
         td {
           color: var(--cc-color-text-default, #000);
           font-weight: 500;
-          padding: 1.5em 0.5em;
+          padding: var(--cc-spacing-7, 1.5em) var(--cc-spacing-3, 0.5em);
           white-space: nowrap;
         }
 
         td.btn-col {
-          padding: 0.25em 1em;
+          padding: 0.25em var(--cc-spacing-5, 1em);
         }
 
         tr:hover td {
@@ -522,7 +522,7 @@ export class CcPricingProduct extends LitElement {
         table em[title] code {
           box-sizing: border-box;
           left: 100%;
-          padding: 0 0.15em;
+          padding: 0 var(--cc-spacing-0, 0.125em);
           position: absolute;
         }
 
@@ -533,7 +533,7 @@ export class CcPricingProduct extends LitElement {
         .plan {
           border-bottom: 1px solid var(--cc-color-border-neutral-weak, #ddd);
           margin: 0;
-          padding: 1em;
+          padding: var(--cc-spacing-5, 1em);
         }
 
         .plan-name {
@@ -541,12 +541,12 @@ export class CcPricingProduct extends LitElement {
           font-size: 1.2em;
           font-weight: bold;
           justify-content: space-between;
-          margin-bottom: 1em;
+          margin-bottom: var(--cc-spacing-5, 1em);
         }
 
         .feature-list {
           display: grid;
-          gap: 1em;
+          gap: var(--cc-spacing-5, 1em);
           grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
         }
 

@@ -10,7 +10,7 @@ export const tileStyles = css`
     padding: 1em;
     border: 1px solid var(--cc-color-border-neutral, #aaa);
     background-color: var(--cc-color-bg-default, #fff);
-    border-radius: var(--cc-border-radius-default, 0.25em);
+    border-radius: var(--cc-border-radius-medium, 0.375em);
     grid-gap: 1em;
     grid-template-rows: auto 1fr;
   }
@@ -50,7 +50,7 @@ export const instanceDetailsStyles = css`
     padding: 0 var(--bubble-r);
     border: 1px solid var(--cc-color-border-neutral, #aaa);
     background-color: var(--cc-color-bg-neutral);
-    border-radius: var(--cc-border-radius-default, 0.25em);
+    border-radius: var(--cc-border-radius-small, 0.25em);
     font-weight: bold;
     line-height: 1.65em;
     text-align: center;

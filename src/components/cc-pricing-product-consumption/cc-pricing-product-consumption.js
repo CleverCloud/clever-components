@@ -569,7 +569,7 @@ export class CcPricingProductConsumption extends LitElement {
           border-style: solid;
           border-width: 1px 0 0;
           grid-column: 1 / -1;
-          margin: 1em 0;
+          margin: var(--cc-spacing-5, 1em) 0;
           width: 100%;
         }
 
@@ -583,7 +583,7 @@ export class CcPricingProductConsumption extends LitElement {
 
           align-self: center;
           grid-column: section-icon / span 1;
-          margin-right: 1em;
+          margin-right: var(--cc-spacing-5, 1em);
         }
 
         .section-icon.sum-icon {
@@ -604,7 +604,7 @@ export class CcPricingProductConsumption extends LitElement {
         }
 
         .section-title.section-title--subtotal {
-          margin-top: 0.5em;
+          margin-top: var(--cc-spacing-3, 0.5em);
         }
 
         .section-title.section-title--subtotal .section-title-text {
@@ -612,14 +612,14 @@ export class CcPricingProductConsumption extends LitElement {
         }
 
         .section-title-price {
-          margin-left: 1em;
+          margin-left: var(--cc-spacing-5, 1em);
         }
 
         .input-wrapper {
           align-items: end;
           display: flex;
           grid-column: input-wrapper / input-wrapper--end;
-          margin: 1em 0;
+          margin: var(--cc-spacing-5, 1em) 0;
           width: 100%;
         }
 
@@ -631,7 +631,7 @@ export class CcPricingProductConsumption extends LitElement {
         .input-unit {
           --cc-toggle-text-transform: capitalize;
 
-          margin-left: 0.5em;
+          margin-left: var(--cc-spacing-3, 0.5em);
         }
 
         .interval-list {
@@ -639,21 +639,21 @@ export class CcPricingProductConsumption extends LitElement {
         }
 
         .interval-line {
-          --bdrs: var(--cc-border-radius-default, 0.25em);
+          --bdrs: var(--cc-border-radius-small, 0.25em);
         }
 
         .interval,
         .interval-price,
         .estimated-price {
           align-self: stretch;
-          margin: 0.1em 0;
-          padding-left: 0.5em;
-          padding-top: 0.5em;
+          margin: var(--cc-spacing-0, 0.125em) 0;
+          padding-left: var(--cc-spacing-3, 0.5em);
+          padding-top: var(--cc-spacing-3, 0.5em);
         }
 
         .interval {
-          padding-bottom: 0.5em;
-          padding-right: 0.5em;
+          padding-bottom: var(--cc-spacing-3, 0.5em);
+          padding-right: var(--cc-spacing-3, 0.5em);
         }
 
         .interval-line.highlighted:not(.progressive) .interval {
@@ -698,7 +698,7 @@ export class CcPricingProductConsumption extends LitElement {
 
         .button-bar {
           grid-column: start / end;
-          margin-bottom: 1em;
+          margin-bottom: var(--cc-spacing-5, 1em);
         }
 
         /* endregion */
@@ -732,12 +732,12 @@ export class CcPricingProductConsumption extends LitElement {
         }
 
         .body--big .interval-price {
-          margin-left: 2em;
+          margin-left: var(--cc-spacing-8, 2em);
         }
 
         .body--big .estimated-price {
           grid-column: estimated-price / span 1;
-          margin-left: 2em;
+          margin-left: var(--cc-spacing-8, 2em);
         }
 
         /* endregion */
@@ -767,7 +767,7 @@ export class CcPricingProductConsumption extends LitElement {
         }
 
         .body--small .interval-price {
-          margin-bottom: 1.5em;
+          margin-bottom: var(--cc-spacing-7, 1.5em);
         }
 
         .body--small .estimated-price {
@@ -775,7 +775,7 @@ export class CcPricingProductConsumption extends LitElement {
         }
 
         .body--small .input-wrapper {
-          margin-bottom: 0.5em;
+          margin-bottom: var(--cc-spacing-3, 0.5em);
         }
 
         .section-toggle-btn {
@@ -786,7 +786,7 @@ export class CcPricingProductConsumption extends LitElement {
           display: flex;
           font-size: 1em;
           grid-column: input-wrapper / -1;
-          margin-block: 0.5em;
+          margin-block: var(--cc-spacing-3, 0.5em);
           padding: 0;
         }
 

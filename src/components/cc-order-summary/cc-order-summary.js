@@ -147,25 +147,25 @@ export class CcOrderSummary extends LitElement {
         .title {
           color: var(--cc-color-text-weak, #404040);
           font-weight: var(--cc-order-summary-font-weight, 600);
-          margin-block-end: 0.5em;
-          padding-inline: 0.125em;
+          margin-block-end: var(--cc-spacing-3, 0.5em);
+          padding-inline: var(--cc-spacing-0, 0.125em);
         }
 
         .summary {
           background-color: var(--cc-color-bg-neutral, #f5f5f5);
           border: 1px solid var(--cc-color-border-neutral-weak, #e7e7e7);
-          border-radius: var(--cc-border-radius-default, 0.25em);
+          border-radius: var(--cc-border-radius-small, 0.25em);
           display: flex;
           flex-direction: column;
-          padding: 1.5em;
-          row-gap: 2em;
+          padding: var(--cc-spacing-7, 1.5em);
+          row-gap: var(--cc-spacing-8, 2em);
         }
         /* endregion */
 
         /* region elements > header */
         .header {
           display: grid;
-          gap: 0.25em;
+          gap: var(--cc-spacing-1, 0.25em);
           grid-template-columns: 1fr min-content;
         }
 
@@ -180,7 +180,7 @@ export class CcOrderSummary extends LitElement {
         .header--tags {
           display: inline-flex;
           flex-wrap: wrap;
-          gap: 0.25em;
+          gap: var(--cc-spacing-1, 0.25em);
           grid-column: 1 / 2;
           grid-row: 2 / 3;
         }
@@ -199,14 +199,14 @@ export class CcOrderSummary extends LitElement {
 
         .body--item {
           align-items: baseline;
-          column-gap: 0.5em;
+          column-gap: var(--cc-spacing-3, 0.5em);
           display: flex;
         }
 
         .body--item:not(:last-child) {
           border-block-end: 1px dotted var(--cc-color-border-primary-weak, #ccd4dc);
-          margin-block-end: 1em;
-          padding-block-end: 1em;
+          margin-block-end: var(--cc-spacing-5, 1em);
+          padding-block-end: var(--cc-spacing-5, 1em);
         }
 
         .body--label {
@@ -224,8 +224,8 @@ export class CcOrderSummary extends LitElement {
         .details-container {
           display: flex;
           flex-direction: column;
-          padding-inline: 0.5em;
-          row-gap: 0.5em;
+          padding-inline: var(--cc-spacing-3, 0.5em);
+          row-gap: var(--cc-spacing-3, 0.5em);
         }
 
         ::slotted([slot='detail']) {
@@ -235,18 +235,18 @@ export class CcOrderSummary extends LitElement {
         }
 
         ::slotted([slot='detail']:first-child) {
-          margin-block-start: 1.5em;
+          margin-block-start: var(--cc-spacing-7, 1.5em);
         }
 
         ::slotted([slot='detail']:last-child) {
-          margin-block-end: 1.5em;
+          margin-block-end: var(--cc-spacing-7, 1.5em);
         }
         /* endregion */
 
         /* region elements > misc */
         .logo {
           border: 1px solid var(--cc-color-border-neutral-weak, #e7e7e7);
-          border-radius: var(--cc-border-radius-default, 0.25em);
+          border-radius: var(--cc-border-radius-small, 0.25em);
           height: 3em;
           overflow: hidden;
           width: 3em;
@@ -254,12 +254,12 @@ export class CcOrderSummary extends LitElement {
 
         .btn-submit {
           display: block;
-          margin-block-start: 0.5em;
+          margin-block-start: var(--cc-spacing-3, 0.5em);
         }
 
         .skeleton {
           background-color: var(--cc-color-bg-neutral-active, #d9d9d9);
-          padding-inline: 0.25em;
+          padding-inline: var(--cc-spacing-1, 0.25em);
         }
         /* endregion */
       `,

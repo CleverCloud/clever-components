@@ -355,7 +355,7 @@ export class CcSshKeyList extends LitElement {
         .create-form {
           display: flex;
           flex-direction: column;
-          gap: 1em;
+          gap: var(--cc-spacing-5, 1em);
         }
 
         .create-form__public-key {
@@ -372,7 +372,7 @@ export class CcSshKeyList extends LitElement {
         .key-list {
           display: flex;
           flex-direction: column;
-          gap: 2.5em;
+          gap: var(--cc-spacing-9, 2.5em);
         }
         /* endregion */
 
@@ -380,7 +380,7 @@ export class CcSshKeyList extends LitElement {
 
         .key {
           display: grid;
-          gap: 0.5em 0.75em;
+          gap: var(--cc-spacing-3, 0.5em) var(--cc-spacing-4, 0.75em);
           grid-template-areas:
             'key-icon key-name'
             '. key-form';
@@ -408,7 +408,7 @@ export class CcSshKeyList extends LitElement {
           align-items: center;
           display: flex;
           flex-wrap: wrap;
-          gap: 1em;
+          gap: var(--cc-spacing-5, 1em);
           grid-area: key-form;
           justify-content: flex-end;
         }
@@ -418,12 +418,12 @@ export class CcSshKeyList extends LitElement {
         .key__fingerprint {
           background-color: var(--cc-color-bg-neutral);
           border-inline-start: 5px solid #a6a6a6;
-          border-radius: 0.125em;
+          border-radius: var(--cc-border-radius-xs, 0.15em);
           flex-basis: min(100%, 21.25em);
           flex-grow: 1;
           font-family: var(--cc-ff-monospace);
           line-height: 1.5;
-          padding: 0.5em 0.75em;
+          padding: var(--cc-spacing-3, 0.5em) var(--cc-spacing-4, 0.75em);
           word-break: break-word;
         }
 
@@ -445,19 +445,19 @@ export class CcSshKeyList extends LitElement {
 
         [slot='info'] {
           display: grid;
-          gap: 1em;
-          margin-top: 1.5em;
+          gap: var(--cc-spacing-5, 1em);
+          margin-top: var(--cc-spacing-7, 1.5em);
         }
 
         [slot='info'] code {
           background-color: var(--cc-color-bg-neutral);
           border: 1px solid var(--cc-color-border-neutral-weak, #eee);
-          border-radius: var(--cc-border-radius-default, 0.25em);
+          border-radius: var(--cc-border-radius-small, 0.25em);
           display: inline-block;
           font-family: var(--cc-ff-monospace);
           font-size: 0.9em;
           line-height: 2;
-          padding: 0.25em 0.75em;
+          padding: 0.25em var(--cc-spacing-4, 0.75em);
           white-space: pre-wrap;
           word-break: break-all;
         }
@@ -475,7 +475,7 @@ export class CcSshKeyList extends LitElement {
           font-style: italic;
           line-height: 1.5;
           margin-bottom: 0;
-          margin-top: 1em;
+          margin-top: var(--cc-spacing-5, 1em);
         }
 
         /* endregion */
@@ -483,7 +483,7 @@ export class CcSshKeyList extends LitElement {
         [slot='footer-right'] cc-link {
           align-items: center;
           display: flex;
-          gap: 0.5em;
+          gap: var(--cc-spacing-3, 0.5em);
         }
       `,
     ];

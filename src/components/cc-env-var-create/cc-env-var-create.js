@@ -182,7 +182,7 @@ export class CcEnvVarCreate extends LitElement {
         .inline-form {
           display: flex;
           flex-wrap: wrap;
-          gap: 0.5em;
+          gap: var(--cc-spacing-3, 0.5em);
         }
 
         .name {
@@ -193,7 +193,7 @@ export class CcEnvVarCreate extends LitElement {
           display: flex;
           flex: 2 1 27em;
           flex-wrap: wrap;
-          gap: 1em 0.5em;
+          gap: var(--cc-spacing-5, 1em) var(--cc-spacing-3, 0.5em);
         }
 
         .value {
@@ -214,16 +214,16 @@ export class CcEnvVarCreate extends LitElement {
         }
 
         cc-notice {
-          margin-top: 1em;
+          margin-top: var(--cc-spacing-5, 1em);
         }
 
         /* i18n error message may contain <code> tags */
 
         cc-notice code {
           background-color: var(--cc-color-bg-neutral, #eee);
-          border-radius: var(--cc-border-radius-default, 0.25em);
+          border-radius: var(--cc-border-radius-small, 0.25em);
           font-family: var(--cc-ff-monospace, monospace);
-          padding: 0.15em 0.3em;
+          padding: var(--cc-spacing-0, 0.125em) var(--cc-spacing-1, 0.25em);
         }
       `,
     ];

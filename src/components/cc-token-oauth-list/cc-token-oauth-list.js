@@ -205,7 +205,7 @@ export class CcTokenOauthList extends LitElement {
           color: var(--cc-color-text-primary-highlight, blue);
           display: flex;
           flex-direction: row;
-          gap: 0.5em;
+          gap: var(--cc-spacing-3, 0.5em);
         }
 
         /* Reset default margins and paddings */
@@ -227,7 +227,7 @@ export class CcTokenOauthList extends LitElement {
         .empty {
           border: 1px solid var(--cc-color-border-neutral-weak);
           font-weight: bold;
-          padding: 1em;
+          padding: var(--cc-spacing-5, 1em);
           text-align: center;
         }
 
@@ -238,12 +238,12 @@ export class CcTokenOauthList extends LitElement {
         }
 
         .oauth-token-list-wrapper {
-          margin-top: 2.5em;
+          margin-top: var(--cc-spacing-9, 2.5em);
         }
 
         .oauth-token-list-wrapper__list {
           display: grid;
-          gap: 1.5em;
+          gap: var(--cc-spacing-7, 1.5em);
         }
 
         @supports (grid-template-columns: subgrid) {
@@ -259,10 +259,10 @@ export class CcTokenOauthList extends LitElement {
         .oauth-token-card {
           align-items: center;
           border: solid 1px var(--cc-color-border-neutral-weak, #e6e6e6);
-          border-radius: var(--cc-border-radius-default, 0.25em);
+          border-radius: var(--cc-border-radius-medium, 0.375em);
           display: grid;
           grid-template-columns: [card-start info-start] 1fr [info-end actions-start] auto [actions-end card-end];
-          padding: 1em;
+          padding: var(--cc-spacing-5, 1em);
         }
 
         :host([w-lt-730]) .oauth-token-card {
@@ -285,23 +285,23 @@ export class CcTokenOauthList extends LitElement {
           --cc-icon-size: 1.2em;
 
           align-items: center;
-          column-gap: 1em;
+          column-gap: var(--cc-spacing-5, 1em);
           display: flex;
           flex-wrap: wrap;
           grid-column: info-start / info-end;
-          margin-bottom: 1em;
-          row-gap: 0.5em;
+          margin-bottom: var(--cc-spacing-5, 1em);
+          row-gap: var(--cc-spacing-3, 0.5em);
         }
 
         .oauth-token-card__header__logo-name {
           align-items: center;
           display: flex;
           font-weight: bold;
-          gap: 0.5em;
+          gap: var(--cc-spacing-3, 0.5em);
         }
 
         .oauth-token-card__header__logo-name cc-img {
-          border-radius: var(--cc-border-radius-default, 0.25em);
+          border-radius: var(--cc-border-radius-small, 0.25em);
           height: 2em;
           width: 2em;
 
@@ -310,13 +310,13 @@ export class CcTokenOauthList extends LitElement {
 
         .oauth-token-card__info-list {
           display: flex;
-          gap: 1em;
+          gap: var(--cc-spacing-5, 1em);
           grid-column: info-start / info-end;
         }
 
         :host([w-lt-730]) .oauth-token-card__info-list {
           display: grid;
-          row-gap: 0.5em;
+          row-gap: var(--cc-spacing-3, 0.5em);
         }
 
         @supports (grid-template-columns: subgrid) {
@@ -327,14 +327,14 @@ export class CcTokenOauthList extends LitElement {
           }
 
           :host([w-lt-730]) .oauth-token-card__info-list {
-            row-gap: 0.5em;
+            row-gap: var(--cc-spacing-3, 0.5em);
           }
         }
 
         .oauth-token-card__info-list__item {
           display: flex;
           flex-wrap: wrap;
-          gap: 0.5em;
+          gap: var(--cc-spacing-3, 0.5em);
         }
 
         :host([w-lt-995]) .oauth-token-card__info-list__item {
@@ -361,7 +361,7 @@ export class CcTokenOauthList extends LitElement {
 
           align-items: center;
           display: flex;
-          gap: 0.5em;
+          gap: var(--cc-spacing-3, 0.5em);
           line-height: var(--line-height);
         }
 
@@ -369,7 +369,7 @@ export class CcTokenOauthList extends LitElement {
           align-items: center;
           display: flex;
           flex-wrap: wrap;
-          gap: 0.5em;
+          gap: var(--cc-spacing-3, 0.5em);
         }
 
         .oauth-token-card cc-button {

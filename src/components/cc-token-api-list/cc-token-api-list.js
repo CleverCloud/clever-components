@@ -344,9 +344,9 @@ export class CcTokenApiList extends LitElement {
           border: 1px solid var(--cc-color-border-neutral-weak);
           display: grid;
           font-weight: bold;
-          gap: 1.5em;
+          gap: var(--cc-spacing-7, 1.5em);
           justify-items: center;
-          padding: 1em;
+          padding: var(--cc-spacing-5, 1em);
         }
 
         .empty__no-password {
@@ -354,7 +354,7 @@ export class CcTokenApiList extends LitElement {
           display: flex;
           flex-wrap: wrap;
           font-weight: normal;
-          gap: 1em;
+          gap: var(--cc-spacing-5, 1em);
         }
 
         .empty__no-password__message {
@@ -372,12 +372,12 @@ export class CcTokenApiList extends LitElement {
         }
 
         .api-tokens-wrapper {
-          margin-top: 2.5em;
+          margin-top: var(--cc-spacing-9, 2.5em);
         }
 
         .api-tokens-wrapper__list {
           display: grid;
-          gap: 1.5em;
+          gap: var(--cc-spacing-7, 1.5em);
         }
 
         @supports (grid-template-columns: subgrid) {
@@ -393,11 +393,11 @@ export class CcTokenApiList extends LitElement {
         .api-token-card {
           align-items: center;
           border: solid 1px var(--cc-color-border-neutral-weak, #e6e6e6);
-          border-radius: var(--cc-border-radius-default, 0.25em);
+          border-radius: var(--cc-border-radius-medium, 0.375em);
           display: grid;
-          gap: 0.5em;
+          gap: var(--cc-spacing-3, 0.5em);
           grid-template-columns: [card-start info-start] 1fr [info-end actions-start] max-content [actions-end card-end];
-          padding: 1em;
+          padding: var(--cc-spacing-5, 1em);
         }
 
         .api-token-card--is-revoking > :not(cc-button),
@@ -422,11 +422,11 @@ export class CcTokenApiList extends LitElement {
 
         .api-token-card__header {
           align-items: center;
-          column-gap: 1em;
+          column-gap: var(--cc-spacing-5, 1em);
           display: flex;
           flex-wrap: wrap;
           grid-column: info-start / info-end;
-          row-gap: 0.5em;
+          row-gap: var(--cc-spacing-3, 0.5em);
         }
 
         .api-token-card__header__name {
@@ -437,7 +437,7 @@ export class CcTokenApiList extends LitElement {
           align-items: flex-start;
           display: flex;
           flex-wrap: wrap;
-          gap: 0.5em;
+          gap: var(--cc-spacing-3, 0.5em);
           grid-column: info-start / info-end;
         }
 
@@ -458,11 +458,11 @@ export class CcTokenApiList extends LitElement {
         }
 
         .api-token-card__info-list {
-          column-gap: 1em;
+          column-gap: var(--cc-spacing-5, 1em);
           display: flex;
           flex-wrap: wrap;
           grid-column: info-start / info-end;
-          row-gap: 0.5em;
+          row-gap: var(--cc-spacing-3, 0.5em);
         }
 
         @supports (grid-template-columns: subgrid) {
@@ -476,12 +476,12 @@ export class CcTokenApiList extends LitElement {
         .api-token-card__info-list__item {
           display: flex;
           flex-wrap: wrap;
-          gap: 0.5em;
+          gap: var(--cc-spacing-3, 0.5em);
         }
 
         :host([w-lt-730]) .api-token-card__info-list__item {
           display: grid;
-          row-gap: 0.5em;
+          row-gap: var(--cc-spacing-3, 0.5em);
         }
 
         @supports (grid-template-columns: subgrid) {
@@ -499,14 +499,14 @@ export class CcTokenApiList extends LitElement {
 
           align-items: center;
           display: flex;
-          gap: 0.5em;
+          gap: var(--cc-spacing-3, 0.5em);
         }
 
         .api-token-card__info-list__item dd {
           align-items: center;
           display: flex;
           flex-wrap: wrap;
-          gap: 0.5em;
+          gap: var(--cc-spacing-3, 0.5em);
         }
 
         .api-token-card cc-button {
@@ -518,16 +518,16 @@ export class CcTokenApiList extends LitElement {
 
         .api-token-card__actions__update {
           grid-column: actions-start / actions-end;
-          padding: 0.2em;
+          padding: var(--cc-spacing-1, 0.25em);
         }
 
         .api-token-card__actions__update__span {
           align-items: center;
           align-self: flex-end;
-          border-radius: var(--cc-border-radius-default, 0.25em);
+          border-radius: var(--cc-border-radius-small, 0.25em);
           color: var(--cc-color-text-weak, #404040);
           display: flex;
-          gap: 0.5em;
+          gap: var(--cc-spacing-3, 0.5em);
         }
 
         .api-token-card__actions__update--disabled {

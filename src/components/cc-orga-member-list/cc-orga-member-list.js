@@ -530,12 +530,12 @@ export class CcOrgaMemberList extends LitElement {
           align-items: flex-start;
           display: flex;
           flex-wrap: wrap;
-          gap: 1em 1.5em;
+          gap: var(--cc-spacing-5, 1em) var(--cc-spacing-7, 1.5em);
         }
 
         .info {
           font-style: italic;
-          margin: 0.5em 0;
+          margin: var(--cc-spacing-3, 0.5em) 0;
         }
 
         /* 100 is a weird value but this makes the input grow as much as possible
@@ -560,22 +560,22 @@ export class CcOrgaMemberList extends LitElement {
 
         .member-count {
           font-size: 0.9em;
-          margin-left: 0.2em;
+          margin-left: var(--cc-spacing-1, 0.25em);
         }
 
         .member-list {
           display: flex;
           flex-direction: column;
-          gap: 1.5em;
+          gap: var(--cc-spacing-7, 1.5em);
         }
 
         .filters {
           align-items: flex-end;
           display: flex;
           flex-wrap: wrap;
-          gap: 1em 2.5em;
+          gap: var(--cc-spacing-5, 1em) 2.5em;
           justify-content: space-between;
-          margin-bottom: 1em;
+          margin-bottom: var(--cc-spacing-5, 1em);
         }
 
         .filters cc-input-text {
@@ -585,7 +585,7 @@ export class CcOrgaMemberList extends LitElement {
         .filters__mfa {
           align-items: center;
           display: flex;
-          gap: 0.35em;
+          gap: var(--cc-spacing-2, 0.35em);
         }
 
         .filters__mfa input {
@@ -611,7 +611,7 @@ export class CcOrgaMemberList extends LitElement {
           align-items: center;
           display: flex;
           flex-wrap: wrap;
-          gap: 1.5em;
+          gap: var(--cc-spacing-7, 1.5em);
           justify-content: space-between;
         }
 
@@ -623,7 +623,7 @@ export class CcOrgaMemberList extends LitElement {
           display: flex;
           flex: 1 1 21em;
           flex-direction: column;
-          gap: 0.5em;
+          gap: var(--cc-spacing-3, 0.5em);
         }
 
         .leave cc-button {

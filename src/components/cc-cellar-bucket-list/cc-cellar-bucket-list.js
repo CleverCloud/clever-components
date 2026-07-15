@@ -543,27 +543,27 @@ export class CcCellarBucketList extends LitElement {
         .wrapper {
           background-color: var(--cc-color-bg-default, #fff);
           border: 1px solid var(--cc-color-border-neutral, #aaa);
-          border-radius: var(--cc-border-radius-default, 0.25em);
+          border-radius: var(--cc-border-radius-medium, 0.375em);
           box-sizing: border-box;
           display: flex;
           flex-direction: column;
-          gap: 1em;
+          gap: var(--cc-spacing-5, 1em);
           height: 100%;
-          padding: 1em;
+          padding: var(--cc-spacing-5, 1em);
         }
 
         .list-heading {
           align-items: center;
           display: flex;
           flex-wrap: wrap;
-          gap: 1em;
-          margin-bottom: 1em;
+          gap: var(--cc-spacing-5, 1em);
+          margin-bottom: var(--cc-spacing-5, 1em);
         }
 
         .list-heading--left {
           align-items: center;
           display: flex;
-          gap: 0.2em;
+          gap: var(--cc-spacing-1, 0.25em);
         }
 
         .list-heading--title {
@@ -580,7 +580,7 @@ export class CcCellarBucketList extends LitElement {
           align-items: center;
           display: flex;
           flex: 1 1 auto;
-          gap: 0.5em;
+          gap: var(--cc-spacing-3, 0.5em);
           justify-content: end;
         }
 
@@ -588,7 +588,7 @@ export class CcCellarBucketList extends LitElement {
           align-items: center;
           display: inline-flex;
           flex: 1;
-          gap: 0.5em;
+          gap: var(--cc-spacing-3, 0.5em);
           max-width: 28em;
         }
 
@@ -600,12 +600,12 @@ export class CcCellarBucketList extends LitElement {
           align-items: center;
           display: flex;
           justify-content: center;
-          padding: 1em;
+          padding: var(--cc-spacing-5, 1em);
         }
 
         .list {
           border: 1px solid var(--cc-color-border-neutral-weak, #aaa);
-          border-radius: var(--cc-border-radius-default, 0.25em);
+          border-radius: var(--cc-border-radius-medium, 0.375em);
           flex: 1;
           min-height: 0;
         }
@@ -620,12 +620,12 @@ export class CcCellarBucketList extends LitElement {
           align-content: center;
           align-items: center;
           border: 1px solid var(--cc-color-border-neutral, #aaa);
-          border-radius: var(--cc-border-radius-default, 0.25em);
+          border-radius: var(--cc-border-radius-small, 0.25em);
           color: var(--cc-color-text-primary-strongest, #000);
           display: flex;
           flex-direction: column;
-          gap: 1em;
-          padding: 1em;
+          gap: var(--cc-spacing-5, 1em);
+          padding: var(--cc-spacing-5, 1em);
         }
 
         .details-wrapper .details-icon-wrapper cc-icon {
@@ -644,15 +644,15 @@ export class CcCellarBucketList extends LitElement {
           border-bottom: 1px solid var(--cc-color-border-primary-weak, #aaa);
           display: flex;
           font-weight: bold;
-          margin-bottom: 1em;
-          margin-top: 2em;
-          padding-bottom: 0.5em;
+          margin-bottom: var(--cc-spacing-5, 1em);
+          margin-top: var(--cc-spacing-8, 2em);
+          padding-bottom: var(--cc-spacing-3, 0.5em);
         }
 
         .details-wrapper .details-actions {
           display: flex;
           flex-direction: column;
-          gap: 0.5em;
+          gap: var(--cc-spacing-3, 0.5em);
         }
 
         .details-wrapper .details-overview-list {
@@ -664,22 +664,22 @@ export class CcCellarBucketList extends LitElement {
         .details-wrapper .details-overview-list dt {
           font-size: 0.94em;
           font-weight: bold;
-          margin-bottom: 0.25em;
+          margin-bottom: var(--cc-spacing-1, 0.25em);
         }
 
         .details-wrapper .details-overview-list dd {
           font-size: 0.94em;
-          margin: 0 0 1em;
+          margin: 0 0 var(--cc-spacing-5, 1em);
         }
 
         .bucket-name-help {
           font-size: 1em;
-          padding-left: 1em;
+          padding-left: var(--cc-spacing-5, 1em);
         }
 
         .bucket-name-help li {
           margin: 0;
-          padding: 0.3em;
+          padding: var(--cc-spacing-1, 0.25em);
         }
       `,
     ];

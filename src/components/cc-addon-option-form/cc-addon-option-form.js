@@ -94,7 +94,7 @@ export class CcAddonOptionForm extends LitElement {
 
         .content {
           display: grid;
-          gap: 1em;
+          gap: var(--cc-spacing-5, 1em);
         }
 
         .button-bar {
@@ -108,7 +108,7 @@ export class CcAddonOptionForm extends LitElement {
 
         .option-warning {
           display: grid;
-          gap: 0.5em;
+          gap: var(--cc-spacing-3, 0.5em);
           grid-template-columns: min-content 1fr;
           text-align: left;
         }

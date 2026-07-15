@@ -188,12 +188,12 @@ export class CcEnvVarEditorJson extends LitElement {
         .error-list {
           display: grid;
           grid-gap: 0.75em;
-          margin-top: 1em;
+          margin-top: var(--cc-spacing-5, 1em);
         }
 
         .example {
           line-height: 1.5;
-          padding-bottom: 1em;
+          padding-bottom: var(--cc-spacing-5, 1em);
         }
 
         /* i18n error message may contain <code> tags */
@@ -201,9 +201,9 @@ export class CcEnvVarEditorJson extends LitElement {
         cc-notice code,
         .example code {
           background-color: var(--cc-color-bg-neutral, #eee);
-          border-radius: var(--cc-border-radius-default, 0.25em);
+          border-radius: var(--cc-border-radius-small, 0.25em);
           font-family: var(--cc-ff-monospace, monospace);
-          padding: 0.15em 0.3em;
+          padding: var(--cc-spacing-0, 0.125em) var(--cc-spacing-1, 0.25em);
         }
 
         cc-input-text {

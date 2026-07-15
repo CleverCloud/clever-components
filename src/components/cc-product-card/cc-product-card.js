@@ -85,17 +85,17 @@ export class CcProductCard extends LitElement {
           align-items: center;
           background-color: var(--cc-color-bg-default, #fff);
           border: 2px solid var(--cc-color-border-neutral, #aaa);
-          border-radius: var(--cc-border-radius-default, 0.25em);
+          border-radius: var(--cc-border-radius-small, 0.25em);
           box-sizing: border-box;
           display: grid;
-          gap: 0.25em 0.5em;
+          gap: var(--cc-spacing-1, 0.25em) var(--cc-spacing-3, 0.5em);
           grid-template-areas:
             'icon name status'
             'description description description';
           grid-template-columns: min-content auto 1fr;
           grid-template-rows: min-content auto;
           height: 100%;
-          padding: 1em;
+          padding: var(--cc-spacing-5, 1em);
           position: relative;
         }
 
@@ -123,7 +123,7 @@ export class CcProductCard extends LitElement {
         /* region grid-items */
 
         cc-img {
-          border-radius: var(--cc-border-radius-default, 0.25em);
+          border-radius: var(--cc-border-radius-small, 0.25em);
           height: 2em;
           width: 2em;
         }

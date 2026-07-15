@@ -169,17 +169,17 @@ export class CcZone extends LitElement {
         }
 
         .flag {
-          border-radius: var(--cc-border-radius-small, 0.15em);
+          border-radius: var(--cc-border-radius-xs, 0.15em);
           box-shadow: 0 0 3px rgb(0 0 0 / 40%);
           display: inline-block;
           height: var(--lh);
-          margin-right: 1em;
+          margin-right: var(--cc-spacing-5, 1em);
           width: 2em;
         }
 
         :host([mode='small']) .flag,
         :host([mode='small-infra']) .flag {
-          margin-right: 0.5em;
+          margin-right: var(--cc-spacing-3, 0.5em);
           width: 1.33em;
         }
 
@@ -218,7 +218,7 @@ export class CcZone extends LitElement {
           --cc-img-fit: contain;
 
           height: var(--lh);
-          margin-left: 0.5em;
+          margin-left: var(--cc-spacing-3, 0.5em);
           width: 4em;
         }
 
@@ -231,14 +231,14 @@ export class CcZone extends LitElement {
         .tag-list {
           display: flex;
           flex-wrap: wrap;
-          gap: 0.5em;
-          margin-top: 0.1em;
+          gap: var(--cc-spacing-3, 0.5em);
+          margin-top: var(--cc-spacing-0, 0.125em);
         }
 
         .tag {
           background-color: var(--cc-zone-tag-bgcolor, var(--cc-color-bg-soft, #eee));
           border: 1px solid var(--cc-zone-tag-bdcolor, transparent);
-          border-radius: var(--cc-border-radius-default, 0.25em);
+          border-radius: var(--cc-border-radius-small, 0.25em);
           box-sizing: border-box;
           color: var(--cc-zone-tag-textcolor, var(--cc-color-text-default, #000));
           display: flex;

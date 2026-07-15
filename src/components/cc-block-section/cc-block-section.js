@@ -51,8 +51,8 @@ export class CcBlockSection extends LitElement {
 
         :host(:not(:first-of-type)) {
           border-top: 1px solid var(--cc-color-border-neutral-weak, #eee);
-          margin-top: 1em;
-          padding-top: 2em;
+          margin-top: var(--cc-spacing-5, 1em);
+          padding-top: var(--cc-spacing-8, 2em);
         }
 
         ::slotted([slot='title']) {
@@ -66,12 +66,12 @@ export class CcBlockSection extends LitElement {
         .section {
           display: flex;
           flex-wrap: wrap;
-          margin: -0.5em -1.5em;
+          margin: calc(var(--cc-spacing-3, 0.5em) * -1) calc(var(--cc-spacing-7, 1.5em) * -1);
         }
 
         ::slotted([slot='info']),
         .main {
-          margin: 0.5em 1.5em;
+          margin: var(--cc-spacing-3, 0.5em) var(--cc-spacing-7, 1.5em);
         }
 
         ::slotted([slot='info']) {

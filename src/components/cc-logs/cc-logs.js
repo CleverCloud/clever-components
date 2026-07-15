@@ -1285,7 +1285,7 @@ export class CcLogs extends LitElement {
         :host {
           background-color: var(--cc-color-bg-default, #fff);
           border: 1px solid var(--cc-color-border-neutral, #aaa);
-          border-radius: var(--cc-border-radius-default, 0.25em);
+          border-radius: var(--cc-border-radius-small, 0.25em);
           display: block;
           overflow: hidden;
 
@@ -1328,7 +1328,7 @@ export class CcLogs extends LitElement {
         .log {
           align-items: center;
           display: flex;
-          gap: 0.5em;
+          gap: var(--cc-spacing-3, 0.5em);
           margin: 0;
           /* When lines are not wrapped, the line grows to fit its content so it can be scrolled horizontally,
              while still being at least as wide as the viewport (so hover/selection backgrounds span the full width). */

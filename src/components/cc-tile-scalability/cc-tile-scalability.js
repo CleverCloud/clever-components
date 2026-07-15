@@ -142,7 +142,7 @@ export class CcTileScalability extends LitElement {
 
         .error-message {
           display: grid;
-          gap: 0.75em;
+          gap: var(--cc-spacing-4, 0.75em);
           grid-template-columns: min-content 1fr;
           text-align: left;
         }

@@ -86,13 +86,13 @@ export class CcHomepageTemplateProject extends LitElement {
         }
 
         cc-block {
-          padding: 1em;
+          padding: var(--cc-spacing-5, 1em);
         }
 
         .project-list {
           display: flex;
           flex-direction: column;
-          gap: 0.3em;
+          gap: var(--cc-spacing-1, 0.25em);
           list-style: none;
           margin: 0;
           padding: 0;
@@ -100,11 +100,11 @@ export class CcHomepageTemplateProject extends LitElement {
 
         .project-row {
           align-items: center;
-          border-radius: var(--cc-border-radius-default, 0.25em);
+          border-radius: var(--cc-border-radius-small, 0.25em);
           display: flex;
-          gap: 1em;
-          margin-inline: 0.2em;
-          padding: 0.6em 0.8em;
+          gap: var(--cc-spacing-5, 1em);
+          margin-inline: var(--cc-spacing-1, 0.25em);
+          padding: var(--cc-spacing-3, 0.5em) var(--cc-spacing-4, 0.75em);
           text-decoration: none;
         }
 
@@ -135,7 +135,7 @@ export class CcHomepageTemplateProject extends LitElement {
           display: flex;
           flex: 1;
           flex-direction: column;
-          gap: 0.15em;
+          gap: var(--cc-spacing-0, 0.125em);
           min-width: 0;
         }
 
