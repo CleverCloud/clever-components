@@ -5,6 +5,30 @@ title: 'Changelog'
 
 # Changelog
 
+## [26.0.0](https://github.com/CleverCloud/clever-components/compare/25.6.3...26.0.0) (2026-07-20)
+
+
+### ⚠ BREAKING CHANGES
+
+* **design-tokens:** the border-radius tokens have been renamed. The `--cc-border-radius-default` token (0.25em) has been removed, use `--cc-border-radius-small` instead. The previous `--cc-border-radius-small` (0.15em) is now `--cc-border-radius-xs`.
+
+### 🚀 Features
+
+* **cc-feature-list:** add select display mode for features with many options ([c6a2be7](https://github.com/CleverCloud/clever-components/commit/c6a2be7a1612ed3610180f958dff4cf20964a206))
+* **cc-select:** add hidden-label property to visually hide the label ([28463c6](https://github.com/CleverCloud/clever-components/commit/28463c688aec973c94b3f932d18f203c0a3a88a6))
+
+
+### 🐛 Bug Fixes
+
+* **cc-network-group-list:** specify --org flag in CLI examples ([38c6bfc](https://github.com/CleverCloud/clever-components/commit/38c6bfcdee0f3a6d8f08bf68bda92dd9f9c9acab))
+* **cc-network-group-member-list:** remove unknown flag from CLI examples ([88b216c](https://github.com/CleverCloud/clever-components/commit/88b216cce267a51a5c4b461ee69fade3cfa303ea))
+* **cc-network-group-member-list:** specify --org flag in CLI examples ([fdeebee](https://github.com/CleverCloud/clever-components/commit/fdeebee05dd2da321347b9dd06ac2cdc4878f1c7))
+
+
+### 🛠 Code Refactoring
+
+* **design-tokens:** rework border-radius scale ([293c69b](https://github.com/CleverCloud/clever-components/commit/293c69b87ae3b177fa96cd8c7b0493312b7ff8bf))
+
 ## [25.6.3](https://github.com/CleverCloud/clever-components/compare/25.6.2...25.6.3) (2026-06-30)
 
 
