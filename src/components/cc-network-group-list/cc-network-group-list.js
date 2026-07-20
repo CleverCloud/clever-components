@@ -47,6 +47,7 @@ import { CcNetworkGroupLinkEvent, CcNetworkGroupUnlinkEvent } from './cc-network
 export class CcNetworkGroupList extends LitElement {
   static get properties() {
     return {
+      ownerId: { type: String, attribute: 'owner-id' },
       resourceId: { type: String, attribute: 'resource-id' },
       state: { type: Object },
       _isUnlinkDialogOpen: { type: Boolean, state: true },
@@ -59,6 +60,9 @@ export class CcNetworkGroupList extends LitElement {
 
     /** @type {NetworkGroupListState} Sets the state of the component */
     this.state = { type: 'loading' };
+
+    /** @type {string} Sets the owner ID for CLI command documentation */
+    this.ownerId = '<OWNER_ID>';
 
     /** @type {string} Sets the resource ID for CLI command documentation */
     this.resourceId = '<RESOURCE_ID>';
@@ -201,23 +205,23 @@ export class CcNetworkGroupList extends LitElement {
             <dl>
               <dt>${i18n('cc-network-group-list.cli.content.list-command')}</dt>
               <dd>
-                <cc-code>clever ng</cc-code>
+                <cc-code>clever ng --org ${this.ownerId}</cc-code>
               </dd>
               <dt>${i18n('cc-network-group-list.cli.content.create-command')}</dt>
               <dd>
-                <cc-code>clever ng create &lt;NG_LABEL&gt;</cc-code>
+                <cc-code>clever ng create --org ${this.ownerId} &lt;NG_LABEL&gt;</cc-code>
               </dd>
               <dt>${i18n('cc-network-group-list.cli.content.delete-command')}</dt>
               <dd>
-                <cc-code>clever ng delete &lt;NG_ID&gt;</cc-code>
+                <cc-code>clever ng delete --org ${this.ownerId} &lt;NG_ID&gt;</cc-code>
               </dd>
               <dt>${i18n('cc-network-group-list.cli.content.link-command')}</dt>
               <dd>
-                <cc-code>clever ng link ${this.resourceId} &lt;NG_ID&gt;</cc-code>
+                <cc-code>clever ng link --org ${this.ownerId} ${this.resourceId} &lt;NG_ID&gt;</cc-code>
               </dd>
               <dt>${i18n('cc-network-group-list.cli.content.unlink-command')}</dt>
               <dd>
-                <cc-code>clever ng unlink ${this.resourceId} &lt;NG_ID&gt;</cc-code>
+                <cc-code>clever ng unlink --org ${this.ownerId} ${this.resourceId} &lt;NG_ID&gt;</cc-code>
               </dd>
             </dl>
           </div>
