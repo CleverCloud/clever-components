@@ -43,6 +43,7 @@ export class CcNetworkGroupMemberList extends LitElement {
       linkFormState: { type: Object, attribute: 'link-form-state' },
       memberListState: { type: Object, attribute: 'member-list-state' },
       networkGroupId: { type: String, attribute: 'network-group-id' },
+      ownerId: { type: String, attribute: 'owner-id' },
       _memberIdToUnlink: { type: String, state: true },
       _showUnlinkDialog: { type: Boolean, state: true },
     };
@@ -59,6 +60,9 @@ export class CcNetworkGroupMemberList extends LitElement {
 
     /** @type {string} Sets the ID of the network group */
     this.networkGroupId = '<NETWORK_GROUP_ID>';
+
+    /** @type {string} Sets the owner ID for CLI command documentation */
+    this.ownerId = '<OWNER_ID>';
 
     /** @type {Ref<HTMLDivElement>} Ref to the empty text container */
     this._emptyTextRef = createRef();
@@ -222,15 +226,17 @@ export class CcNetworkGroupMemberList extends LitElement {
             <dl>
               <dt>${i18n('cc-network-group-member-list.cli.content.get-ng-command')}</dt>
               <dd>
-                <cc-code>clever ng get ${this.networkGroupId}</cc-code>
+                <cc-code>clever ng get --org ${this.ownerId} ${this.networkGroupId}</cc-code>
               </dd>
               <dt>${i18n('cc-network-group-member-list.cli.content.link-member-command')}</dt>
               <dd>
-                <cc-code>clever ng link --ng ${this.networkGroupId} &lt;RESOURCE_ID&gt;</cc-code>
+                <cc-code>clever ng link --org ${this.ownerId} --ng ${this.networkGroupId} &lt;RESOURCE_ID&gt;</cc-code>
               </dd>
               <dt>${i18n('cc-network-group-member-list.cli.content.unlink-member-command')}</dt>
               <dd>
-                <cc-code>clever ng unlink --ng ${this.networkGroupId} &lt;RESOURCE_ID&gt;</cc-code>
+                <cc-code
+                  >clever ng unlink --org ${this.ownerId} --ng ${this.networkGroupId} &lt;RESOURCE_ID&gt;</cc-code
+                >
               </dd>
             </dl>
           </div>
