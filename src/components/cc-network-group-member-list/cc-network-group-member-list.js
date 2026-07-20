@@ -230,13 +230,11 @@ export class CcNetworkGroupMemberList extends LitElement {
               </dd>
               <dt>${i18n('cc-network-group-member-list.cli.content.link-member-command')}</dt>
               <dd>
-                <cc-code>clever ng link --org ${this.ownerId} --ng ${this.networkGroupId} &lt;RESOURCE_ID&gt;</cc-code>
+                <cc-code>clever ng link --org ${this.ownerId} &lt;RESOURCE_ID&gt; ${this.networkGroupId}</cc-code>
               </dd>
               <dt>${i18n('cc-network-group-member-list.cli.content.unlink-member-command')}</dt>
               <dd>
-                <cc-code
-                  >clever ng unlink --org ${this.ownerId} --ng ${this.networkGroupId} &lt;RESOURCE_ID&gt;</cc-code
-                >
+                <cc-code>clever ng unlink --org ${this.ownerId} &lt;RESOURCE_ID&gt; ${this.networkGroupId}</cc-code>
               </dd>
             </dl>
           </div>
