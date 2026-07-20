@@ -23,12 +23,14 @@ const conf = {
 };
 
 const networkGroupId = 'ng_xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx';
+const ownerId = 'orga_XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX';
 
 export const defaultStory = makeStory(conf, {
   /** @type {Partial<CcNetworkGroupMemberList>[]} */
   items: [
     {
       networkGroupId,
+      ownerId,
       memberListState: {
         type: 'loaded',
         memberList: networkGroupMemberList,
@@ -46,6 +48,7 @@ export const loading = makeStory(conf, {
   items: [
     {
       networkGroupId,
+      ownerId,
       memberListState: { type: 'loading' },
       linkFormState: { type: 'loading' },
     },
@@ -57,6 +60,7 @@ export const loadingWithLinkForm = makeStory(conf, {
   items: [
     {
       networkGroupId,
+      ownerId,
       memberListState: {
         type: 'loaded',
         memberList: networkGroupMemberList,
@@ -71,6 +75,7 @@ export const error = makeStory(conf, {
   items: [
     {
       networkGroupId,
+      ownerId,
       memberListState: { type: 'error' },
       linkFormState: { type: 'error' },
     },
@@ -82,6 +87,7 @@ export const dataLoadedWithNoMembers = makeStory(conf, {
   items: [
     {
       networkGroupId,
+      ownerId,
       memberListState: {
         type: 'loaded',
         memberList: [],
@@ -99,6 +105,7 @@ export const dataLoadedWithLinkFormEmpty = makeStory(conf, {
   items: [
     {
       networkGroupId,
+      ownerId,
       memberListState: {
         type: 'loaded',
         memberList: networkGroupMemberList,
@@ -116,6 +123,7 @@ export const dataLoadedWithDeletedMembers = makeStory(conf, {
   items: [
     {
       networkGroupId,
+      ownerId,
       memberListState: {
         type: 'loaded',
         memberList: [...networkGroupMemberList, memberDeletedApp, memberDeletedAddon],
@@ -133,6 +141,7 @@ export const waitingWithLinkFormLinking = makeStory(conf, {
   items: [
     {
       networkGroupId,
+      ownerId,
       memberListState: {
         type: 'loaded',
         memberList: networkGroupMemberList,
@@ -151,6 +160,7 @@ export const waitingWithMemberListUnlinking = makeStory(conf, {
   items: [
     {
       networkGroupId,
+      ownerId,
       memberListState: {
         type: 'loaded',
         memberList: networkGroupMemberList,

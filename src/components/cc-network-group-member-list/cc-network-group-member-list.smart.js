@@ -54,6 +54,7 @@ defineSmartComponent({
     updateComponent('memberListState', { type: 'loading' });
     updateComponent('linkFormState', { type: 'loading' });
     updateComponent('networkGroupId', networkGroupId);
+    updateComponent('ownerId', ownerId);
     component.resetLinkForm();
 
     /** Fetches network group, applications, and addons, then updates both states. */

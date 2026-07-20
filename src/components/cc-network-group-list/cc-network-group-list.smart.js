@@ -49,6 +49,7 @@ defineSmartComponent({
     } = /** @type {Context} */ context;
     updateComponent('state', { type: 'loading' });
     updateComponent('resourceId', resourceId);
+    updateComponent('ownerId', ownerId);
 
     const ccApiClient = getCcApiClientWithOAuth(apiConfig);
     let resolvedResourceId;

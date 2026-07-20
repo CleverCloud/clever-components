@@ -14,6 +14,7 @@ export default {
  */
 
 const RESOURCE_ID = 'app_XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX';
+const OWNER_ID = 'orga_XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX';
 
 const conf = {
   component: 'cc-network-group-list',
@@ -23,6 +24,7 @@ export const defaultStory = makeStory(conf, {
   /** @type {Partial<CcNetworkGroupList>[]} */
   items: [
     {
+      ownerId: OWNER_ID,
       resourceId: RESOURCE_ID,
       state: {
         type: 'loaded',
@@ -43,6 +45,7 @@ export const dataLoadedWithEmpty = makeStory(conf, {
   /** @type {Partial<CcNetworkGroupList>[]} */
   items: [
     {
+      ownerId: OWNER_ID,
       resourceId: RESOURCE_ID,
       state: {
         type: 'loaded',
@@ -63,6 +66,7 @@ export const dataLoadedWithNoNetworkGroupToLink = makeStory(conf, {
   /** @type {Partial<CcNetworkGroupList>[]} */
   items: [
     {
+      ownerId: OWNER_ID,
       resourceId: RESOURCE_ID,
       state: {
         type: 'loaded',
@@ -83,6 +87,7 @@ export const loading = makeStory(conf, {
   /** @type {Partial<CcNetworkGroupList>[]} */
   items: [
     {
+      ownerId: OWNER_ID,
       resourceId: RESOURCE_ID,
       state: { type: 'loading' },
     },
@@ -93,6 +98,7 @@ export const error = makeStory(conf, {
   /** @type {Partial<CcNetworkGroupList>[]} */
   items: [
     {
+      ownerId: OWNER_ID,
       resourceId: RESOURCE_ID,
       state: { type: 'error' },
     },
@@ -103,6 +109,7 @@ export const unsupported = makeStory(conf, {
   /** @type {Partial<CcNetworkGroupList>[]} */
   items: [
     {
+      ownerId: OWNER_ID,
       resourceId: RESOURCE_ID,
       state: {
         type: 'unsupported',
@@ -116,6 +123,7 @@ export const waitingWithLinking = makeStory(conf, {
   /** @type {Partial<CcNetworkGroupList>[]} */
   items: [
     {
+      ownerId: OWNER_ID,
       resourceId: RESOURCE_ID,
       state: {
         type: 'loaded',
@@ -136,6 +144,7 @@ export const waitingWithUnlinking = makeStory(conf, {
   /** @type {Partial<CcNetworkGroupList>[]} */
   items: [
     {
+      ownerId: OWNER_ID,
       resourceId: RESOURCE_ID,
       state: {
         type: 'loaded',
