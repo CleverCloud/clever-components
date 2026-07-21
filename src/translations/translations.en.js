@@ -1874,6 +1874,9 @@ export const translations = {
   'cc-search-bar.external-link.name': `new window`,
   'cc-search-bar.external-link.title': /** @param {{linkText: string}} _ */ ({ linkText }) =>
     `${linkText} - new window`,
+  'cc-search-bar.footer.close': `Close`,
+  'cc-search-bar.footer.navigate': `Navigate`,
+  'cc-search-bar.footer.select': `Select`,
   'cc-search-bar.heading': `Search bar`,
   'cc-search-bar.initial.description': () =>
     sanitize`Start searching by keywords, id or filter (for example: <code>is:app</code>, <code>is:addon</code>…).<br>You can search across organizations, resources (applications, add-ons, etc.), pages and documentation.`,
