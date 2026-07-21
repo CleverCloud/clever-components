@@ -1897,6 +1897,9 @@ export const translations = {
   'cc-search-bar.external-link.name': `nouvelle fenêtre`,
   'cc-search-bar.external-link.title': /** @param {{linkText: string}} _ */ ({ linkText }) =>
     `${linkText} - nouvelle fenêtre`,
+  'cc-search-bar.footer.close': `Fermer`,
+  'cc-search-bar.footer.navigate': `Naviguer`,
+  'cc-search-bar.footer.select': `Sélectionner`,
   'cc-search-bar.heading': `Barre de recherche`,
   'cc-search-bar.initial.description': () =>
     sanitize`Commencez à chercher par mots-clés, id ou filtre (par exemple : <code>is:app</code>, <code>is:addon</code>…).<br>Vous pouvez effectuer une recherche parmi les organisations, les ressources (applications, add-ons, etc.), les pages et la documentation.`,
