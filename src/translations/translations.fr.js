@@ -1278,6 +1278,8 @@ export const translations = {
   //#region cc-logs-app-runtime
   'cc-logs-app-runtime.fullscreen': `Mode plein écran`,
   'cc-logs-app-runtime.fullscreen.exit': `Sortir du mode plein écran`,
+  'cc-logs-app-runtime.instances.collapse': `Réduire le panneau des instances`,
+  'cc-logs-app-runtime.instances.expand': `Déplier le panneau des instances`,
   'cc-logs-app-runtime.logs.error': `Une erreur est survenue pendant le chargement des logs`,
   'cc-logs-app-runtime.logs.loading': `Recherche de logs…`,
   'cc-logs-app-runtime.logs.warning.no-logs.message': `Il n'y a aucun log qui correspond aux critères sélectionnés`,

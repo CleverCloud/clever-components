@@ -4,6 +4,8 @@ import { createRef, ref } from 'lit/directives/ref.js';
 import {
   iconRemixFullscreenExitLine as fullscreenExitIcon,
   iconRemixFullscreenLine as fullscreenIcon,
+  iconRemixSidebarFoldLine as instancesCollapseIcon,
+  iconRemixSidebarUnfoldLine as instancesExpandIcon,
 } from '../../assets/cc-remix.icons.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-loader/cc-loader.js';
@@ -43,6 +45,11 @@ const CUSTOM_METADATA_RENDERERS = {
  */
 
 /**
+ * A component displaying the runtime logs of an application.
+ *
+ * ## Keyboard shortcuts
+ *
+ * * `Alt+I` to collapse or expand the instances panel (the left panel).
  *
  * @beta
  */
@@ -55,6 +62,7 @@ export class CcLogsAppRuntime extends LitElement {
       selectedInstances: { type: Array, attribute: 'selected-instances' },
       state: { type: Object },
       _fullscreen: { type: Boolean, state: true },
+      _instancesCollapsed: { type: Boolean, state: true },
       _messageFilter: { type: Object, state: true },
     };
   }
@@ -105,6 +113,9 @@ export class CcLogsAppRuntime extends LitElement {
     };
 
     this._fullscreen = false;
+
+    /** @type {boolean} Whether the instances panel is collapsed. */
+    this._instancesCollapsed = false;
   }
 
   /* region Public methods */
@@ -133,6 +144,22 @@ export class CcLogsAppRuntime extends LitElement {
 
   _onFullscreenToggle() {
     this._fullscreen = !this._fullscreen;
+  }
+
+  _onInstancesCollapseToggle() {
+    this._instancesCollapsed = !this._instancesCollapsed;
+  }
+
+  /**
+   * @param {KeyboardEvent} event
+   */
+  _onKeyDown(event) {
+    // `Alt+I` toggles the instances panel.
+    // `event.code` is used instead of `event.key` because Alt (Option on macOS) alters `event.key` on some layouts.
+    if (event.altKey && !event.ctrlKey && !event.metaKey && !event.shiftKey && event.code === 'KeyI') {
+      event.preventDefault();
+      this._onInstancesCollapseToggle();
+    }
   }
 
   /**
@@ -166,13 +193,14 @@ export class CcLogsAppRuntime extends LitElement {
     const overlay = {
       overlay: true,
       fullscreen: this._fullscreen,
+      'instances-collapsed': this._instancesCollapsed,
     };
     const wrapper = {
       wrapper: true,
       fullscreen: this._fullscreen,
     };
     return html`
-      <div class=${classMap(overlay)}>
+      <div class=${classMap(overlay)} @keydown=${this._onKeyDown}>
         <div class=${classMap(wrapper)}>
           <div class="logs-wrapper">${this._renderLogs()}</div>
           ${this._renderLoadingProgress()}
@@ -267,6 +295,17 @@ export class CcLogsAppRuntime extends LitElement {
         @cc-log-inspect=${this._onLogInspect}
       >
         <div slot="header" class="logs-header">
+          <cc-button
+            class="header-instances-toggle-button"
+            .icon=${this._instancesCollapsed ? instancesExpandIcon : instancesCollapseIcon}
+            a11y-name=${this._instancesCollapsed
+              ? i18n('cc-logs-app-runtime.instances.expand')
+              : i18n('cc-logs-app-runtime.instances.collapse')}
+            hide-text
+            a11y-expanded=${!this._instancesCollapsed}
+            @cc-click=${this._onInstancesCollapseToggle}
+          ></cc-button>
+
           <cc-logs-date-range-selector-beta
             class="date-range-selector"
             .value=${this.dateRangeSelection}
@@ -378,7 +417,25 @@ export class CcLogsAppRuntime extends LitElement {
           background-color: var(--cc-color-bg-default, #fff);
           border: 1px solid var(--cc-color-border-neutral, #aaa);
           border-radius: var(--cc-border-radius-small, 0.25em);
+          overflow: hidden;
+          transition:
+            width 0.2s ease-in-out,
+            border-width 0.2s ease-in-out;
           width: var(--instances-width);
+        }
+
+        .overlay.instances-collapsed {
+          --instances-width: 0;
+        }
+
+        .overlay.instances-collapsed .instances {
+          border-width: 0;
+        }
+
+        @media (prefers-reduced-motion) {
+          .instances {
+            transition: none;
+          }
         }
 
         .logs-wrapper {
