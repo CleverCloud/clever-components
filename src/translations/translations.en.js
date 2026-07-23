@@ -1267,6 +1267,8 @@ export const translations = {
   //#region cc-logs-app-runtime
   'cc-logs-app-runtime.fullscreen': `Fullscreen`,
   'cc-logs-app-runtime.fullscreen.exit': `Exit fullscreen`,
+  'cc-logs-app-runtime.instances.collapse': `Collapse instances panel`,
+  'cc-logs-app-runtime.instances.expand': `Expand instances panel`,
   'cc-logs-app-runtime.logs.error': `Something went wrong while loading logs`,
   'cc-logs-app-runtime.logs.loading': `Looking for log entries...`,
   'cc-logs-app-runtime.logs.warning.no-logs.message': `There are no logs matching the selected criteria`,
