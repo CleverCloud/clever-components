@@ -328,6 +328,7 @@ export const translations = {
   'cc-addon-info.specification.version': `Version`,
   'cc-addon-info.subnet.heading': `Subnet`,
   'cc-addon-info.total-content.buckets': `Buckets`,
+  'cc-addon-info.total-content.count': /** @param {{count: number}} _ */ ({ count }) => formatNumber(lang, count),
   'cc-addon-info.total-content.heading': `Content`,
   'cc-addon-info.total-content.objects': `Objects`,
   'cc-addon-info.traffic.heading': `Traffic`,

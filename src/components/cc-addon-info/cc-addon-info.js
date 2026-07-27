@@ -318,7 +318,7 @@ export class CcAddonInfo extends LitElement {
                         ${i18n('cc-addon-info.total-content.buckets')}
                       </dt>
                       <dd class="features__content__item__value data-decoration ${classMap({ skeleton })}">
-                        ${this.state.totalContent.buckets}
+                        ${i18n('cc-addon-info.total-content.count', { count: this.state.totalContent.buckets })}
                       </dd>
                     </div>
                     <div class="features__content__item">
@@ -326,7 +326,7 @@ export class CcAddonInfo extends LitElement {
                         ${i18n('cc-addon-info.total-content.objects')}
                       </dt>
                       <dd class="features__content__item__value data-decoration ${classMap({ skeleton })}">
-                        ${this.state.totalContent.objects}
+                        ${i18n('cc-addon-info.total-content.count', { count: this.state.totalContent.objects })}
                       </dd>
                     </div>
                   </dl>
