@@ -267,7 +267,7 @@ export class CcSearchBar extends LitElement {
         </span>
         <span class="footer-hint">
           <kbd class="footer-key">↵</kbd>
-          <span>${i18n('cc-search-bar.footer.select')}</span>
+          <span>${i18n('cc-search-bar.footer.enter')}</span>
         </span>
         <span class="footer-hint">
           <kbd class="footer-key footer-key--text">ESC</kbd>
