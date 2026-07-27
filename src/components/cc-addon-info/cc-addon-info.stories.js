@@ -1,6 +1,7 @@
 import { getDocUrl } from '../../lib/dev-hub-url.js';
 import {
   azimuttInfo,
+  cellarInfo,
   elasticInfo,
   jenkinsInfo,
   keycloakInfo,
@@ -360,6 +361,34 @@ export const elastic = makeStory(conf, {
       docLink: {
         text: i18n('cc-addon-info.doc-link.elastic'),
         href: getDocUrl('/addons/elastic'),
+      },
+    },
+  ],
+});
+
+export const cellar = makeStory(conf, {
+  /** @type {Partial<CcAddonInfo>[]} */
+  items: [
+    {
+      /** @type {AddonInfoStateLoaded} */
+      state: {
+        type: 'loaded',
+        ...cellarInfo,
+      },
+      docLink: {
+        text: i18n('cc-addon-info.doc-link.cellar'),
+        href: getDocUrl('/addons/cellar'),
+      },
+    },
+    {
+      /** @type {AddonInfoStateLoading} */
+      state: {
+        type: 'loading',
+        ...cellarInfo,
+      },
+      docLink: {
+        text: i18n('cc-addon-info.doc-link.cellar'),
+        href: getDocUrl('/addons/cellar'),
       },
     },
   ],
