@@ -5,6 +5,19 @@ title: 'Changelog'
 
 # Changelog
 
+## [26.1.0](https://github.com/CleverCloud/clever-components/compare/26.0.0...26.1.0) (2026-07-28)
+
+
+### 🚀 Features
+
+* **cc-search-bar:** add keyboard navigation and footer ([a1a457b](https://github.com/CleverCloud/clever-components/commit/a1a457bf8891872313b2635d3d01e6647853c8cb))
+
+
+### 🐛 Bug Fixes
+
+* **cc-addon-info:** format numbers for total content info (Cellar) ([e52d96f](https://github.com/CleverCloud/clever-components/commit/e52d96f67e3c41dd7d67e80ea80b9bb701a290e8)), closes [#1787](https://github.com/CleverCloud/clever-components/issues/1787)
+* **cc-tile-requests:** align the chart with the current hour ([e07ca0d](https://github.com/CleverCloud/clever-components/commit/e07ca0d4fb5d81f10a14bc85cdb2b7181e648c6c))
+
 ## [26.0.0](https://github.com/CleverCloud/clever-components/compare/25.6.3...26.0.0) (2026-07-20)
 
 
