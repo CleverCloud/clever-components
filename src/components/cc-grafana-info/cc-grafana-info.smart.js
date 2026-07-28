@@ -1,11 +1,10 @@
-import {
-  createGrafanaOrganisation,
-  deleteGrafanaOrganisation,
-  getGrafanaOrganisation,
-  resetGrafanaOrganisation,
-} from '@clevercloud/client/esm/api/v4/saas.js';
+import { DisableGrafanaCommand } from '@clevercloud/client/cc-api-commands/grafana/disable-grafana-command.js';
+import { EnableGrafanaCommand } from '@clevercloud/client/cc-api-commands/grafana/enable-grafana-command.js';
+import { GetGrafanaCommand } from '@clevercloud/client/cc-api-commands/grafana/get-grafana-command.js';
+import { ResetGrafanaCommand } from '@clevercloud/client/cc-api-commands/grafana/reset-grafana-command.js';
+import { tolerateNotFound } from '@clevercloud/client/utils/error-utils.js';
+import { getCcApiClientWithOAuth } from '../../lib/cc-api-client.js';
 import { notifyError, notifySuccess } from '../../lib/notifications.js';
-import { sendToApi } from '../../lib/send-to-api.js';
 import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-smart-container/cc-smart-container.js';
@@ -80,9 +79,9 @@ defineSmartComponent({
       );
 
       const promise = isEnabled
-        ? enableGrafanaOrganisation({ apiConfig, ownerId })
-            .then(() => {
-              fetch();
+        ? enableGrafanaOrganisation({ apiConfig, ownerId, grafanaBaseLink })
+            .then((info) => {
+              updateComponent('state', { type: 'loaded', info });
               notifySuccess(i18n('cc-grafana-info.enable.success'));
             })
             .catch((error) => {
@@ -122,33 +121,34 @@ defineSmartComponent({
 
 /**
  * @param {object} params
+ * @param {number} params.orgId
+ * @param {string} params.grafanaBaseLink
+ * @returns {string}
+ */
+function buildGrafanaLink({ orgId, grafanaBaseLink }) {
+  const grafanaLink = new URL('/d/home/clever-cloud-metrics-home', grafanaBaseLink);
+  grafanaLink.searchParams.set('orgId', String(orgId));
+  return grafanaLink.toString();
+}
+
+/**
+ * @param {object} params
  * @param {ApiConfig} params.apiConfig
  * @param {AbortSignal} params.signal
  * @param {string} params.ownerId
  * @param {string} params.grafanaBaseLink
  * @returns {Promise<GrafanaInfoEnabled|GrafanaInfoDisabled>}
  */
-function fetchGrafanaOrganisation({ apiConfig, signal, ownerId, grafanaBaseLink }) {
-  return getGrafanaOrganisation({ id: ownerId })
-    .then(sendToApi({ apiConfig, signal }))
-    .then(
-      /** @param {{id: string}} exposedVarsObject */ (exposedVarsObject) => {
-        const grafanaLink = new URL('/d/home/clever-cloud-metrics-home', grafanaBaseLink);
-        grafanaLink.searchParams.set('orgId', exposedVarsObject.id);
-        /** @type {GrafanaInfoEnabled} */
-        const grafanaInfo = { status: 'enabled', link: grafanaLink.toString() };
-        return grafanaInfo;
-      },
-    )
-    .catch(
-      /** @param {{response?: {status: number}}} error */ (error) => {
-        if (error.response?.status === 404 && error.toString().startsWith('Error: Grafana organization not found')) {
-          return { status: 'disabled' };
-        } else {
-          throw error;
-        }
-      },
-    );
+async function fetchGrafanaOrganisation({ apiConfig, signal, ownerId, grafanaBaseLink }) {
+  const ccApiClient = getCcApiClientWithOAuth(apiConfig);
+  // the command rejects with a 404 when this owner has no Grafana organisation
+  const grafanaOrg = await tolerateNotFound(ccApiClient.send(new GetGrafanaCommand({ ownerId }), { signal }));
+
+  if (grafanaOrg == null) {
+    return { status: 'disabled' };
+  }
+
+  return { status: 'enabled', link: buildGrafanaLink({ orgId: grafanaOrg.id, grafanaBaseLink }) };
 }
 
 /**
@@ -158,7 +158,8 @@ function fetchGrafanaOrganisation({ apiConfig, signal, ownerId, grafanaBaseLink 
  * @returns {Promise<void>}
  */
 function doResetGrafanaOrganisation({ apiConfig, ownerId }) {
-  return resetGrafanaOrganisation({ id: ownerId }).then(sendToApi({ apiConfig }));
+  const ccApiClient = getCcApiClientWithOAuth(apiConfig);
+  return ccApiClient.send(new ResetGrafanaCommand({ ownerId }));
 }
 
 /**
@@ -168,15 +169,20 @@ function doResetGrafanaOrganisation({ apiConfig, ownerId }) {
  * @returns {Promise<void>}
  */
 function disableGrafanaOrganisation({ apiConfig, ownerId }) {
-  return deleteGrafanaOrganisation({ id: ownerId }).then(sendToApi({ apiConfig }));
+  const ccApiClient = getCcApiClientWithOAuth(apiConfig);
+  return ccApiClient.send(new DisableGrafanaCommand({ ownerId }));
 }
 
 /**
  * @param {object} params
  * @param {ApiConfig} params.apiConfig
  * @param {string} params.ownerId
- * @returns {Promise<void>}
+ * @param {string} params.grafanaBaseLink
+ * @returns {Promise<GrafanaInfoEnabled>}
  */
-function enableGrafanaOrganisation({ apiConfig, ownerId }) {
-  return createGrafanaOrganisation({ id: ownerId }).then(sendToApi({ apiConfig }));
+async function enableGrafanaOrganisation({ apiConfig, ownerId, grafanaBaseLink }) {
+  const ccApiClient = getCcApiClientWithOAuth(apiConfig);
+  // the command performs the create call followed by a fetch of the created Grafana organisation
+  const grafanaOrg = await ccApiClient.send(new EnableGrafanaCommand({ ownerId }));
+  return { status: 'enabled', link: buildGrafanaLink({ orgId: grafanaOrg.id, grafanaBaseLink }) };
 }

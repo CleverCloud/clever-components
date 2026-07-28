@@ -1,22 +1,25 @@
 import {
-  addMember,
-  getAllMembers,
-  removeMemeber as removeMember,
-  updateMember,
-} from '@clevercloud/client/esm/api/v2/organisation.js';
-import { getId } from '@clevercloud/client/esm/api/v2/user.js';
+  ADD_ORGANISATION_MEMBER_ERROR_CODES,
+  AddOrganisationMemberCommand,
+} from '@clevercloud/client/cc-api-commands/organisation/add-organisation-member-command.js';
+import { ListOrganisationMemberCommand } from '@clevercloud/client/cc-api-commands/organisation/list-organisation-member-command.js';
+import {
+  REMOVE_ORGANISATION_MEMBER_ERROR_CODES,
+  RemoveOrganisationMemberCommand,
+} from '@clevercloud/client/cc-api-commands/organisation/remove-organisation-member-command.js';
+import {
+  UPDATE_ORGANISATION_MEMBER_ERROR_CODES,
+  UpdateOrganisationMemberCommand,
+} from '@clevercloud/client/cc-api-commands/organisation/update-organisation-member-command.js';
+import { GetProfileCommand } from '@clevercloud/client/cc-api-commands/profile/get-profile-command.js';
+import { isCcHttpErrorWithCode, isRateLimitError } from '@clevercloud/client/utils/error-utils.js';
+import { getCcApiClientWithOAuth } from '../../lib/cc-api-client.js';
 import { notifyError, notifySuccess } from '../../lib/notifications.js';
-import { sendToApi } from '../../lib/send-to-api.js';
 import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-smart-container/cc-smart-container.js';
 import { CcOrgaMemberLeftEvent } from './cc-orga-member-list.events.js';
 import { CcOrgaMemberList } from './cc-orga-member-list.js';
-
-const MEMBER_NOT_FOUND = 6501;
-const RATE_LIMIT_EXCEEDED = 'You have performed that request too much.';
-const UNAUTHORISED_ADMIN_ADDITION = 6451;
-const UNAUTHORISED_ADMIN_DELETION = 6452;
 
 /**
  * @import { OrgaMemberListStateLoaded } from './cc-orga-member-list.types.js'
@@ -92,15 +95,18 @@ defineSmartComponent({
           component.resetInviteMemberForm();
         })
         .catch(
-          /** @param {Error & {id: number}} error */
+          /** @param {Error} error */
           (error) => {
             console.error(error);
-            if (error.id === UNAUTHORISED_ADMIN_ADDITION) {
+            if (
+              isCcHttpErrorWithCode(error, ADD_ORGANISATION_MEMBER_ERROR_CODES.UNAUTHORISED_ADDITION) ||
+              isCcHttpErrorWithCode(error, ADD_ORGANISATION_MEMBER_ERROR_CODES.UNAUTHORISED_ROLE_ASSIGNMENT)
+            ) {
               notifyError(
                 i18n('cc-orga-member-list.error.unauthorised.text'),
                 i18n('cc-orga-member-list.error.unauthorised.heading'),
               );
-            } else if (error.message === RATE_LIMIT_EXCEEDED) {
+            } else if (isRateLimitError(error)) {
               notifyError(
                 i18n('cc-orga-member-list.invite.submit.error-rate-limit.message'),
                 i18n('cc-orga-member-list.invite.submit.error-rate-limit.title'),
@@ -157,15 +163,18 @@ defineSmartComponent({
           }
         })
         .catch(
-          /** @param {Error & {id: number}} error */
+          /** @param {Error} error */
           (error) => {
             console.error(error);
-            if (error.id === UNAUTHORISED_ADMIN_ADDITION || error.id === UNAUTHORISED_ADMIN_DELETION) {
+            if (
+              isCcHttpErrorWithCode(error, UPDATE_ORGANISATION_MEMBER_ERROR_CODES.UNAUTHORISED_ADDITION) ||
+              isCcHttpErrorWithCode(error, UPDATE_ORGANISATION_MEMBER_ERROR_CODES.UNAUTHORISED_ROLE_ASSIGNMENT)
+            ) {
               notifyError(
                 i18n('cc-orga-member-list.error.unauthorised.text'),
                 i18n('cc-orga-member-list.error.unauthorised.heading'),
               );
-            } else if (error.id === MEMBER_NOT_FOUND) {
+            } else if (isCcHttpErrorWithCode(error, UPDATE_ORGANISATION_MEMBER_ERROR_CODES.NOT_FOUND)) {
               notifyError(
                 i18n('cc-orga-member-list.error-member-not-found.text'),
                 i18n('cc-orga-member-list.error-member-not-found.heading'),
@@ -206,15 +215,15 @@ defineSmartComponent({
           );
         })
         .catch(
-          /** @param {Error & {id: number}} error */
+          /** @param {Error} error */
           (error) => {
             console.error(error);
-            if (error.id === UNAUTHORISED_ADMIN_DELETION) {
+            if (isCcHttpErrorWithCode(error, REMOVE_ORGANISATION_MEMBER_ERROR_CODES.UNAUTHORISED_DELETION)) {
               notifyError(
                 i18n('cc-orga-member-list.error.unauthorised.text'),
                 i18n('cc-orga-member-list.error.unauthorised.heading'),
               );
-            } else if (error.id === MEMBER_NOT_FOUND) {
+            } else if (isCcHttpErrorWithCode(error, REMOVE_ORGANISATION_MEMBER_ERROR_CODES.NOT_FOUND)) {
               notifyError(
                 i18n('cc-orga-member-list.error-member-not-found.text'),
                 i18n('cc-orga-member-list.error-member-not-found.heading'),
@@ -315,29 +324,21 @@ defineSmartComponent({
  * @return {Promise<Array<OrgaMember>>}
  */
 function getMemberList({ apiConfig, ownerId, signal }) {
+  const ccApiClient = getCcApiClientWithOAuth(apiConfig);
   return Promise.all([
-    getId().then(sendToApi({ apiConfig, signal })),
-    getAllMembers({ id: ownerId }).then(sendToApi({ apiConfig, signal })),
-  ]).then(([{ ownerId }, memberList]) => {
-    return memberList.map(
-      /**
-       * @param {Object} args
-       * @param {{id: string, avatar: string, name: string, email: string, preferredMFA: string}} args.member
-       * @param {OrgaMemberRole} args.role
-       * @param {string} args.job
-       * @return {OrgaMember}
-       */
-      ({ member, role, job }) => ({
-        id: member.id,
-        avatar: member.avatar,
-        name: member.name,
-        jobTitle: job,
-        role: role,
-        email: member.email,
-        isMfaEnabled: member.preferredMFA === 'TOTP',
-        isCurrentUser: member.id === ownerId,
-      }),
-    );
+    ccApiClient.send(new GetProfileCommand(), { signal }),
+    ccApiClient.send(new ListOrganisationMemberCommand({ organisationId: ownerId }), { signal }),
+  ]).then(([profile, memberList]) => {
+    return memberList.map((member) => ({
+      id: member.id,
+      avatar: member.avatar,
+      name: member.name,
+      jobTitle: member.jobTitle,
+      role: /** @type {OrgaMemberRole} */ (member.role),
+      email: member.emailAddress,
+      isMfaEnabled: member.preferredMFA === 'TOTP',
+      isCurrentUser: member.id === profile.id,
+    }));
   });
 }
 
@@ -350,8 +351,9 @@ function getMemberList({ apiConfig, ownerId, signal }) {
  * @return {Promise<void>}
  */
 function postNewMember({ apiConfig, ownerId, email, role }) {
-  // @ts-expect-error FIXME: invitationKey is required by types, need to check why and if it's a mistake from the client
-  return addMember({ id: ownerId }, { email, role, job: null }).then(sendToApi({ apiConfig }));
+  return getCcApiClientWithOAuth(apiConfig).send(
+    new AddOrganisationMemberCommand({ organisationId: ownerId, emailAddress: email, role }),
+  );
 }
 
 /**
@@ -362,7 +364,9 @@ function postNewMember({ apiConfig, ownerId, email, role }) {
  * @return {Promise<void>}
  */
 function deleteMember({ apiConfig, ownerId, id }) {
-  return removeMember({ id: ownerId, userId: id }).then(sendToApi({ apiConfig }));
+  return getCcApiClientWithOAuth(apiConfig).send(
+    new RemoveOrganisationMemberCommand({ organisationId: ownerId, memberId: id }),
+  );
 }
 
 /**
@@ -374,5 +378,7 @@ function deleteMember({ apiConfig, ownerId, id }) {
  * @return {Promise<void>}
  */
 function editMember({ apiConfig, ownerId, id, newRole }) {
-  return updateMember({ id: ownerId, userId: id }, { role: newRole }).then(sendToApi({ apiConfig }));
+  return getCcApiClientWithOAuth(apiConfig).send(
+    new UpdateOrganisationMemberCommand({ organisationId: ownerId, memberId: id, role: newRole }),
+  );
 }

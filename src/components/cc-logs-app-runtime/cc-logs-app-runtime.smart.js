@@ -1,13 +1,14 @@
-import { getDeployment as getDeploymentV2 } from '@clevercloud/client/esm/api/v2/application.js';
-import { getApplicationDeployment as getDeploymentV4 } from '@clevercloud/client/esm/api/v4/deployment.js';
 import {
-  getAllApplicationInstances as getApplicationInstancesV4,
-  getInstance as getInstanceV4,
-} from '@clevercloud/client/esm/api/v4/instance.js';
-import { ApplicationLogStream } from '@clevercloud/client/esm/streams/application-logs.js';
+  GetDeploymentCommand,
+  GetDeploymentCommandLegacy,
+} from '@clevercloud/client/cc-api-commands/deployment/get-deployment-command.js';
+import { GetApplicationInstanceCommand } from '@clevercloud/client/cc-api-commands/instance/get-application-instance-command.js';
+import { ListApplicationInstanceCommand } from '@clevercloud/client/cc-api-commands/instance/list-application-instance-command.js';
+import { StreamApplicationRuntimeLogCommand } from '@clevercloud/client/cc-api-commands/log/stream-application-runtime-log-command.js';
+import { isCcHttpErrorWithStatus } from '@clevercloud/client/utils/error-utils.js';
+import { getCcApiClientWithOAuth } from '../../lib/cc-api-client.js';
 import { isLive, lastXDays } from '../../lib/date/date-range-utils.js';
 import { LogsStream } from '../../lib/logs/logs-stream.js';
-import { sendToApi } from '../../lib/send-to-api.js';
 import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
 import { unique } from '../../lib/utils.js';
 import { dateRangeSelectionToDateRange } from '../cc-logs-date-range-selector/date-range-selection.js';
@@ -24,6 +25,7 @@ import './cc-logs-app-runtime.js';
  * @import { DateRange } from '../../lib/date/date-range.types.js'
  * @import { LogsStreamState } from '../../lib/logs/logs-stream.types.js'
  * @import { UpdateComponentCallback, OnContextUpdateArgs } from '../../lib/smart/smart-component.types.js'
+ * @import { ApplicationRuntimeLog } from '@clevercloud/client/cc-api-commands/log/log.types.js'
  */
 
 const INSTANCES_REFRESH_RATE = 2000;
@@ -97,7 +99,7 @@ defineSmartComponent({
 });
 
 /**
- * @extends {LogsStream<Log>}
+ * @extends {LogsStream<ApplicationRuntimeLog, Log>}
  */
 class SmartController extends LogsStream {
   /**
@@ -131,30 +133,28 @@ class SmartController extends LogsStream {
    * @param {number} maxRetryCount
    * @param {number} throttleElements
    * @param {number} throttlePerInMilliseconds
-   * @returns {ApplicationLogStream}
+   * @returns {Promise<import('../../lib/logs/logs-stream.types.js').LogsSse<ApplicationRuntimeLog>>}
    */
-  _createStream(dateRange, maxRetryCount, throttleElements, throttlePerInMilliseconds) {
+  async _createStream(dateRange, maxRetryCount, throttleElements, throttlePerInMilliseconds) {
     // This optimization should be done by the API.
     const optimizedRange = this._optimizeDateRange(dateRange);
 
-    return new ApplicationLogStream({
-      apiHost: this._apiConfig.API_HOST,
-      tokens: this._apiConfig,
-      ownerId: this._ownerId,
-      appId: this._appId,
-      // @ts-expect-error: FIXME: client types seem to expect Date but dateRange has string
-      since: optimizedRange.since,
-      // @ts-expect-error: FIXME: client types seem to expect Date but dateRange has string
-      until: optimizedRange.until,
-      instanceId: this._selection,
-      retryConfiguration: { enabled: true, maxRetryCount },
-      throttleElements,
-      throttlePerInMilliseconds,
-    });
+    return getCcApiClientWithOAuth(this._apiConfig).stream(
+      new StreamApplicationRuntimeLogCommand({
+        ownerId: this._ownerId,
+        applicationId: this._appId,
+        since: optimizedRange.since,
+        until: optimizedRange.until,
+        instanceId: this._selection,
+        throttleElements,
+        throttlePerInMilliseconds,
+      }),
+      { retry: { maxRetryCount } },
+    );
   }
 
   /**
-   * @param {any} rawLog Raw log coming from API
+   * @param {ApplicationRuntimeLog} rawLog Log coming from the API (already reshaped by the stream command)
    * @returns {Promise<Log>}
    */
   async _convertLog(rawLog) {
@@ -663,12 +663,14 @@ class InstancesManager {
     try {
       rawInstance = await this._api.fetchInstance(id);
     } catch (e) {
-      if (getErrorStatusCode(e) === 404) {
+      // an instance the API doesn't know about is a ghost instance
+      if (isCcHttpErrorWithStatus(e, 404)) {
         return {
           ghost: true,
           id,
         };
       }
+      throw e;
     }
     return this._convert(rawInstance);
   }
@@ -693,8 +695,8 @@ class InstancesManager {
       index: raw.index,
       deployment: deployment,
       state: raw.state,
-      creationDate: new Date(raw.creationDate),
-      deletionDate: raw.deletionDate != null ? new Date(raw.deletionDate) : null,
+      creationDate: new Date(raw.createdAt),
+      deletionDate: raw.deletedAt != null ? new Date(raw.deletedAt) : null,
       kind: raw.isBuildVm ? 'BUILD' : 'RUN',
     };
   }
@@ -764,7 +766,7 @@ class DeploymentsManager {
       // We want to fetch only deployments that we don't already know, or deployments that have a non-final state.
       .filter((id) => {
         const deployment = this._deploymentsMap.get(id);
-        return deployment == null || deployment.state === 'QUEUED' || deployment.state === 'WORK_IN_PROGRESS';
+        return deployment == null || !isFinalDeploymentState(deployment.state);
       });
 
     // We fetch and convert them all in parallel
@@ -805,7 +807,7 @@ class DeploymentsManager {
       return await this._convertV4(await this._api.fetchDeployment(id));
     } catch (e) {
       // fallback to API v2. This is to be removed one day.
-      if (getErrorStatusCode(e) === 404) {
+      if (isCcHttpErrorWithStatus(e, 404)) {
         return await this._convertV2(await this._api.fetchDeploymentV2(id));
       }
       throw e;
@@ -821,11 +823,11 @@ class DeploymentsManager {
     const result = {
       id: raw.id,
       state: raw.state,
-      creationDate: new Date(raw.startDate),
+      creationDate: new Date(raw.startsAt),
       commitId: raw.version.commitId,
     };
 
-    if (result.state === 'SUCCEEDED' || result.state === 'FAILED' || result.state === 'CANCELLED') {
+    if (isFinalDeploymentState(result.state)) {
       result.endDate = new Date(
         raw.steps.find(/** @param {any} rawStep */ (rawStep) => rawStep.state === result.state).date,
       );
@@ -839,8 +841,8 @@ class DeploymentsManager {
    * @return {Promise<Deployment>}
    */
   async _convertV2(raw) {
-    // V2: WIP | OK | CANCELLED | FAIL
-    // V4: QUEUED, WORK_IN_PROGRESS, FAILED, CANCELLED and SUCCEEDED.
+    // V2: QUEUED | WIP | TASK_RUNNING | OK | CANCELLED | FAIL
+    // V4: QUEUED | WORK_IN_PROGRESS | TASK_IN_PROGRESS | SUCCEEDED | CANCELLED | FAILED
 
     /** @type {DeploymentState} */
     let state;
@@ -848,6 +850,8 @@ class DeploymentsManager {
       state = 'QUEUED';
     } else if (raw.state === 'WIP') {
       state = 'WORK_IN_PROGRESS';
+    } else if (raw.state === 'TASK_RUNNING') {
+      state = 'TASK_IN_PROGRESS';
     } else if (raw.state === 'OK') {
       state = 'SUCCEEDED';
     } else if (raw.state === 'CANCELLED') {
@@ -857,15 +861,15 @@ class DeploymentsManager {
     }
 
     let endTime = null;
-    if (state === 'SUCCEEDED' || state === 'FAILED' || state === 'CANCELLED') {
+    if (isFinalDeploymentState(state)) {
       const instances = await this._api.fetchInstancesByDeployment(raw.uuid);
 
       for (const instance of instances) {
-        if (instance.deletionDate == null) {
+        if (instance.deletedAt == null) {
           endTime = null;
           break;
         }
-        const deletionTime = new Date(instance.deletionDate).getTime();
+        const deletionTime = new Date(instance.deletedAt).getTime();
         if (endTime == null) {
           endTime = deletionTime;
         } else {
@@ -884,6 +888,22 @@ class DeploymentsManager {
   }
 }
 
+/**
+ * `DeploymentsManager._convertV2()` (below, untouched by this migration) expects the legacy raw v2
+ * deployment payload shape (`state` using the old v2 API naming: WIP/OK/FAIL/CANCELLED/TASK_RUNNING).
+ * `GetDeploymentCommandLegacy` already normalizes `state` to the new v4-style naming, so we reverse
+ * that mapping in `fetchDeploymentV2()` below to keep feeding `_convertV2()` what it expects.
+ *
+ * @type {Record<string, string>}
+ */
+const V2_DEPLOYMENT_STATE_REVERSE_MAP = {
+  WORK_IN_PROGRESS: 'WIP',
+  TASK_IN_PROGRESS: 'TASK_RUNNING',
+  FAILED: 'FAIL',
+  CANCELLED: 'CANCELLED',
+  SUCCEEDED: 'OK',
+};
+
 class Api {
   /**
    * @param {ApiConfig} apiConfig
@@ -893,7 +913,6 @@ class Api {
   constructor(apiConfig, ownerId, appId) {
     this._apiConfig = apiConfig;
     this._applicationRef = { ownerId, applicationId: appId };
-    this._commonApiPrams = { id: ownerId, appId };
   }
 
   /**
@@ -901,16 +920,30 @@ class Api {
    * @returns {Promise<any>}
    */
   fetchDeployment(deploymentId) {
-    // @ts-expect-error FIXME: client types seem to expect Date but dateRange has string
-    return getDeploymentV4({ ...this._applicationRef, deploymentId }).then(sendToApi({ apiConfig: this._apiConfig }));
+    return getCcApiClientWithOAuth(this._apiConfig).send(
+      new GetDeploymentCommand({ ...this._applicationRef, deploymentId }),
+    );
   }
 
   /**
    * @param {string} deploymentId
    * @returns {Promise<any>}
    */
-  fetchDeploymentV2(deploymentId) {
-    return getDeploymentV2({ ...this._commonApiPrams, deploymentId }).then(sendToApi({ apiConfig: this._apiConfig }));
+  async fetchDeploymentV2(deploymentId) {
+    const deployment = await getCcApiClientWithOAuth(this._apiConfig).send(
+      new GetDeploymentCommandLegacy({ ...this._applicationRef, deploymentId }),
+    );
+    return {
+      uuid: deployment.id,
+      date: deployment.date,
+      // `DeploymentLegacy['state']` is typed as `Omit<DeploymentState, 'QUEUED'>`, which TS can't use
+      // as a `Record` index (`Omit` doesn't operate meaningfully on string-literal unions), hence the cast.
+      state: V2_DEPLOYMENT_STATE_REVERSE_MAP[/** @type {string} */ (deployment.state)],
+      commit: deployment.commit,
+      cause: deployment.cause,
+      instances: deployment.instances,
+      author: deployment.author,
+    };
   }
 
   /**
@@ -919,9 +952,8 @@ class Api {
    * @returns {Promise<Array<any>>}
    */
   fetchInstances(since, until) {
-    // @ts-expect-error FIXME: client types seem to expect a string but number is fine too since it's gonna be injected as queryParam, should be fixed in client types
-    return getApplicationInstancesV4({ ...this._applicationRef, limit: 100, since, until }).then(
-      sendToApi({ apiConfig: this._apiConfig }),
+    return getCcApiClientWithOAuth(this._apiConfig).send(
+      new ListApplicationInstanceCommand({ ...this._applicationRef, limit: 100, since, until }),
     );
   }
 
@@ -930,18 +962,19 @@ class Api {
    * @returns {Promise<Array<any>>}
    */
   fetchInstancesByDeployment(deploymentId) {
-    // @ts-expect-error FIXME: client types seem to expect a string but number is fine too since it's gonna be injected as queryParam, should be fixed in client types
-    return getApplicationInstancesV4({ ...this._applicationRef, limit: 100, deploymentId }).then(
-      sendToApi({ apiConfig: this._apiConfig }),
+    return getCcApiClientWithOAuth(this._apiConfig).send(
+      new ListApplicationInstanceCommand({ ...this._applicationRef, limit: 100, deploymentId }),
     );
   }
 
   /**
    * @param {string} instanceId
-   * @returns {Promise<Array<any>>}
+   * @returns {Promise<any>}
    */
   fetchInstance(instanceId) {
-    return getInstanceV4({ ...this._applicationRef, instanceId }).then(sendToApi({ apiConfig: this._apiConfig }));
+    return getCcApiClientWithOAuth(this._apiConfig).send(
+      new GetApplicationInstanceCommand({ ...this._applicationRef, instanceId }),
+    );
   }
 }
 
@@ -969,17 +1002,19 @@ function isGhostInstance(instance) {
 }
 
 /**
+ * A deployment in a final state will never change again: it can be cached and it has an end date.
+ *
+ * @param {DeploymentState} state
+ * @returns {boolean}
+ */
+function isFinalDeploymentState(state) {
+  return state === 'SUCCEEDED' || state === 'FAILED' || state === 'CANCELLED';
+}
+
+/**
  * @param {Deployment} deployment
  * @returns {boolean}
  */
 function isCurrentDeployment(deployment) {
-  return deployment.state === 'WORK_IN_PROGRESS' || deployment.state === 'QUEUED' || deployment.endDate == null;
-}
-
-/**
- * @param {{response?: { status: number}}} e
- * @return {number|null}
- */
-function getErrorStatusCode(e) {
-  return e.response?.status;
+  return !isFinalDeploymentState(deployment.state) || deployment.endDate == null;
 }

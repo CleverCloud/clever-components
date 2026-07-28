@@ -33,11 +33,6 @@ defineSmartComponent({
     ccApiClient
       .send(new GetNetworkGroupCommand({ networkGroupId, ownerId }), { signal, cache: { ttl: 1000 } })
       .then((ng) => {
-        if (ng == null) {
-          updateComponent('state', { type: 'error' });
-          return;
-        }
-
         updateComponent('state', {
           type: 'loaded',
           description: ng.description,

@@ -1,7 +1,8 @@
-import { get as getSelf } from '@clevercloud/client/esm/api/v2/organisation.js';
+import { CreateApiTokenCommand } from '@clevercloud/client/cc-api-bridge-commands/api-token/create-api-token-command.js';
+import { GetProfileCommand } from '@clevercloud/client/cc-api-commands/profile/get-profile-command.js';
+import { isCcHttpError } from '@clevercloud/client/utils/error-utils.js';
+import { getCcApiBridgeClient, getCcApiClientWithOAuth } from '../../lib/cc-api-client.js';
 import { notifyError } from '../../lib/notifications.js';
-import { sendToApi } from '../../lib/send-to-api.js';
-import { sendToAuthBridge } from '../../lib/send-to-auth-bridge.js';
 import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-smart-container/cc-smart-container.js';
@@ -65,10 +66,7 @@ defineSmartComponent({
         .catch(
           /** @param {Error} error */
           (error) => {
-            const errorCode =
-              'responseBody' in error && typeof error.responseBody === 'object' && 'code' in error.responseBody
-                ? error.responseBody.code
-                : null;
+            const errorCode = isCcHttpError(error) ? error.code : null;
             /** @type {TokenApiCreationFormStateLoadedValidation['credentialsError']} */
             let credentialsError;
 
@@ -101,7 +99,8 @@ defineSmartComponent({
 class Api {
   /** @param {ApiConfig & AuthBridgeConfig} apiConfig */
   constructor(apiConfig) {
-    this._authAndApiConfig = apiConfig;
+    this._ccApiClient = getCcApiClientWithOAuth(apiConfig);
+    this._ccApiBridgeClient = getCcApiBridgeClient(apiConfig);
 
     /** @type {string|null} */
     this._userEmail = null;
@@ -114,49 +113,30 @@ class Api {
    * @param {string} options.expirationDate
    * @param {string} options.password
    * @param {string} options.mfaCode
-   */
-  _prepareCreateApiTokenRequest({ name, description, expirationDate, password, mfaCode }) {
-    return Promise.resolve({
-      method: 'post',
-      url: '/api-tokens',
-      headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
-      body: { email: this._userEmail, password, mfaCode, name, description, expirationDate },
-    });
-  }
-
-  /**
-   * @param {object} options
-   * @param {string} options.name
-   * @param {string} options.description
-   * @param {string} options.expirationDate
-   * @param {string} options.password
-   * @param {string} options.mfaCode
+   * @returns {Promise<string>}
    */
   createApiToken({ name, description, expirationDate, password, mfaCode }) {
-    return this._prepareCreateApiTokenRequest({
-      password,
-      mfaCode,
-      name,
-      description,
-      expirationDate: expirationDate,
-    })
-      .then(sendToAuthBridge({ authBridgeConfig: this._authAndApiConfig }))
+    // the form can only be submitted once the user info has been fetched so `_userEmail` cannot be `null` at this point
+    const email = /** @type {string} */ (this._userEmail);
+    return this._ccApiBridgeClient
+      .send(
+        new CreateApiTokenCommand({
+          emailAddress: email,
+          password,
+          mfaCode,
+          name,
+          description,
+          expiresAt: expirationDate,
+        }),
+      )
       .then(({ apiToken }) => apiToken);
   }
 
   /** @returns {Promise<{ isMfaEnabled: boolean }>} */
   getUserInfo() {
-    return getSelf({})
-      .then(sendToApi({ apiConfig: this._authAndApiConfig }))
-      .then(
-        /**
-         * @param {{ email: string, preferredMFA: 'TOTP' | null }} user
-         * @returns {{ isMfaEnabled: boolean }}
-         */
-        (user) => {
-          this._userEmail = user.email;
-          return { isMfaEnabled: user.preferredMFA === 'TOTP' };
-        },
-      );
+    return this._ccApiClient.send(new GetProfileCommand()).then((profile) => {
+      this._userEmail = profile.emailAddress;
+      return { isMfaEnabled: profile.preferredMFA === 'TOTP' };
+    });
   }
 }

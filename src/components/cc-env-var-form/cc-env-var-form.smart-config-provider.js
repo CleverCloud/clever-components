@@ -1,7 +1,8 @@
-import { get as getAddon } from '@clevercloud/client/esm/api/v2/addon.js';
-import { getConfigProviderEnv, updateConfigProviderEnv } from '@clevercloud/client/esm/api/v4/addon.js';
+import { GetAddonCommand } from '@clevercloud/client/cc-api-commands/addon/get-addon-command.js';
+import { GetConfigProviderCommand } from '@clevercloud/client/cc-api-commands/config-provider/get-config-provider-command.js';
+import { UpdateConfigProviderCommand } from '@clevercloud/client/cc-api-commands/config-provider/update-config-provider-command.js';
+import { getCcApiClientWithOAuth } from '../../lib/cc-api-client.js';
 import { notifyError, notifySuccess } from '../../lib/notifications.js';
-import { sendToApi } from '../../lib/send-to-api.js';
 import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-smart-container/cc-smart-container.js';
@@ -10,8 +11,8 @@ import './cc-env-var-form.js';
 /**
  * @import { CcEnvVarForm } from './cc-env-var-form.js'
  * @import { EnvVarFormState, EnvVarFormStateLoaded, EnvVarFormStateSaving } from './cc-env-var-form.types.js'
- * @import { EnvVar, Addon } from '../common.types.js'
- * @import { ApiConfig } from '../../lib/send-to-api.types.js'
+ * @import { EnvVar } from '../common.types.js'
+ * @import { CcApiClient } from '@clevercloud/client/cc-api-client.js'
  * @import { OnContextUpdateArgs } from '../../lib/smart/smart-component.types.js'
  */
 
@@ -27,6 +28,7 @@ defineSmartComponent({
    */
   onContextUpdate({ context, onEvent, updateComponent, signal }) {
     const { apiConfig, ownerId, addonId } = context;
+    const ccApiClient = getCcApiClientWithOAuth(apiConfig);
 
     updateComponent('state', { type: 'loading' });
     updateComponent('resourceId', addonId);
@@ -34,15 +36,12 @@ defineSmartComponent({
     /** @type {string} realAddonId */
     let realAddonId = null;
 
-    fetchAddon({ apiConfig, ownerId, addonId, signal })
-      .then(
-        /** @param {Addon} addon */
-        (addon) => {
-          updateComponent('addonName', addon.name);
-          realAddonId = addon.realId;
-          return fetchVariables({ apiConfig, realAddonId, signal });
-        },
-      )
+    fetchAddon({ ccApiClient, ownerId, addonId, signal })
+      .then((addon) => {
+        updateComponent('addonName', addon.name);
+        realAddonId = addon.realId;
+        return fetchVariables({ ccApiClient, realAddonId, signal });
+      })
       .then(
         /** @param {Array<EnvVar>} variables */
         (variables) => {
@@ -65,7 +64,7 @@ defineSmartComponent({
           state.type = 'saving';
         },
       );
-      updateVariables({ apiConfig, realAddonId, variables })
+      updateVariables({ ccApiClient, realAddonId, variables })
         .then(() => {
           updateComponent(
             'state',
@@ -92,34 +91,33 @@ defineSmartComponent({
 
 /**
  * @param {object} params
- * @param {ApiConfig} params.apiConfig
+ * @param {CcApiClient} params.ccApiClient
  * @param {AbortSignal} params.signal
  * @param {string} params.ownerId
  * @param {string} params.addonId
- * @returns {Promise<Addon>}
  */
-function fetchAddon({ apiConfig, signal, ownerId, addonId }) {
-  return getAddon({ id: ownerId, addonId }).then(sendToApi({ apiConfig, signal }));
+function fetchAddon({ ccApiClient, signal, ownerId, addonId }) {
+  return ccApiClient.send(new GetAddonCommand({ ownerId, addonId }), { signal });
 }
 
 /**
  * @param {object} params
- * @param {ApiConfig} params.apiConfig
+ * @param {CcApiClient} params.ccApiClient
  * @param {AbortSignal} params.signal
  * @param {string} params.realAddonId
  * @returns {Promise<Array<EnvVar>>}
  */
-async function fetchVariables({ apiConfig, signal, realAddonId }) {
-  return getConfigProviderEnv({ configurationProviderId: realAddonId }).then(sendToApi({ apiConfig, signal }));
+function fetchVariables({ ccApiClient, signal, realAddonId }) {
+  return ccApiClient.send(new GetConfigProviderCommand({ addonId: realAddonId }), { signal });
 }
 
 /**
  * @param {object} params
- * @param {ApiConfig} params.apiConfig
+ * @param {CcApiClient} params.ccApiClient
  * @param {string} params.realAddonId
  * @param {Array<EnvVar>} params.variables
- * @returns {Promise<Addon>}
+ * @returns {Promise<Array<EnvVar>>}
  */
-async function updateVariables({ apiConfig, realAddonId, variables }) {
-  return updateConfigProviderEnv({ configurationProviderId: realAddonId }, variables).then(sendToApi({ apiConfig }));
+async function updateVariables({ ccApiClient, realAddonId, variables }) {
+  return ccApiClient.send(new UpdateConfigProviderCommand({ addonId: realAddonId, environment: variables }));
 }

@@ -1,3 +1,7 @@
+import {
+  ACCESS_RIGHTS,
+  MANAGE_RIGHTS,
+} from '@clevercloud/client/cc-api-commands/oauth-consumer/oauth-consumer-rights.js';
 import { css, html, LitElement } from 'lit';
 import { createRef, ref } from 'lit/directives/ref.js';
 import { iconRemixInformationFill as iconInfo } from '../../assets/cc-remix.icons.js';
@@ -7,6 +11,7 @@ import { fakeString } from '../../lib/fake-strings.js';
 import { formSubmit } from '../../lib/form/form-submit-directive.js';
 import { getFormDataMap } from '../../lib/form/form-utils.js';
 import { Validation } from '../../lib/form/validation.js';
+import { DISABLED_RIGHTS } from '../../lib/oauth-consumer.js';
 import { accessibilityStyles } from '../../styles/accessibility.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-block-section/cc-block-section.js';
@@ -46,39 +51,8 @@ const SKELETON_OAUTH_CONSUMER_FORM_DATA = {
   url: '',
   picture: '',
   baseUrl: '',
-  rights: {
-    accessOrganisations: false,
-    accessOrganisationsBills: false,
-    accessOrganisationsConsumptionStatistics: false,
-    accessOrganisationsCreditCount: false,
-    accessPersonalInformation: false,
-    manageOrganisations: false,
-    manageOrganisationsApplications: false,
-    manageOrganisationsMembers: false,
-    manageOrganisationsServices: false,
-    managePersonalInformation: false,
-    manageSshKeys: false,
-  },
+  rights: DISABLED_RIGHTS,
 };
-
-/** @type {Array<keyof OauthConsumerRights & `access${string}`>} */
-const ACCESS_RIGHT_KEYS = [
-  'accessOrganisations',
-  'accessOrganisationsBills',
-  'accessOrganisationsConsumptionStatistics',
-  'accessOrganisationsCreditCount',
-  'accessPersonalInformation',
-];
-
-/** @type {Array<keyof OauthConsumerRights & `manage${string}`>} */
-const MANAGE_RIGHT_KEYS = [
-  'manageOrganisations',
-  'manageOrganisationsApplications',
-  'manageOrganisationsMembers',
-  'manageOrganisationsServices',
-  'managePersonalInformation',
-  'manageSshKeys',
-];
 
 /**
  * @import { OauthConsumerFormState, OauthConsumerWithoutKeyAndSecret, OauthConsumerFormData } from './cc-oauth-consumer-form.types.js'
@@ -343,10 +317,10 @@ export class CcOauthConsumerForm extends LitElement {
    * @private
    */
   _renderOauthConsumerForm(formValues, isWaiting, skeleton) {
-    const isSelectAllAccessCheckedByDefault = ACCESS_RIGHT_KEYS.every(
+    const isSelectAllAccessCheckedByDefault = ACCESS_RIGHTS.every(
       (accessRightKey) => formValues.rights[accessRightKey],
     );
-    const isSelectAllManageCheckedByDefault = MANAGE_RIGHT_KEYS.every(
+    const isSelectAllManageCheckedByDefault = MANAGE_RIGHTS.every(
       (manageRightKey) => formValues.rights[manageRightKey],
     );
 
@@ -450,7 +424,7 @@ export class CcOauthConsumerForm extends LitElement {
                   <label for="select-all-access">${i18n('cc-oauth-consumer-form.rights.access-all')}</label>
                 </div>
                 <div class="access-rights-section" @input="${this._updateSelectAllAccessCheckbox}">
-                  ${ACCESS_RIGHT_KEYS.map((key) => this._renderRight(key, isWaiting, skeleton, formValues.rights[key]))}
+                  ${ACCESS_RIGHTS.map((key) => this._renderRight(key, isWaiting, skeleton, formValues.rights[key]))}
                 </div>
               </fieldset>
               <fieldset id="manage-rights-container">
@@ -467,7 +441,7 @@ export class CcOauthConsumerForm extends LitElement {
                   <label for="select-all-manage">${i18n('cc-oauth-consumer-form.rights.manage-all')}</label>
                 </div>
                 <div class="manage-rights-section" @input="${this._updateSelectAllManageCheckbox}">
-                  ${MANAGE_RIGHT_KEYS.map((key) => this._renderRight(key, isWaiting, skeleton, formValues.rights[key]))}
+                  ${MANAGE_RIGHTS.map((key) => this._renderRight(key, isWaiting, skeleton, formValues.rights[key]))}
                 </div>
               </fieldset>
             </div>

@@ -1,4 +1,4 @@
-import { HttpError } from '@clevercloud/client/esm/streams/clever-cloud-sse.js';
+import { isCcHttpErrorWithStatus } from '@clevercloud/client/utils/error-utils.js';
 import { Buffer } from '../buffer.js';
 import { LogsProgress } from './logs-progress.js';
 
@@ -12,30 +12,28 @@ const MAX_RETRY_COUNT = 10;
 const WAITING_TIMEOUT_LIVE = 2000;
 const WAITING_TIMEOUT_COLD = 16000;
 
-// FIXME: We're using `@typedef` instead of `@import` here due to a false positive from TS
-// See: https://github.com/microsoft/TypeScript/issues/60908/
 /**
- * @typedef {import('./logs-stream.types.js').AbstractLog} AbstractLog
- * @typedef {import('./logs-stream.types.js').LogsStreamState} LogsStreamState
- * @typedef {import('./logs-stream.types.js').LogsStreamStateRunning} LogsStreamStateRunning
- * @typedef {import('./logs-stream.types.js').LogsSse} LogsSse
- * @typedef {import('../date/date-range.types.js').DateRange} DateRange
+ * @import { AbstractLog, LogsStreamState, LogsStreamStateRunning, LogsSse } from './logs-stream.types.js'
+ * @import { DateRange } from '../date/date-range.types.js'
  */
 
 /**
  * This class controls all the logic of connecting to a Clever Log SSE and maintaining the right state according to the stream state and logs loading progress.
  *
  * It contains two abstract methods that must be implemented:
- * * `createStream()` method is responsible for creating the right Clever Log SSE client.
- * * `convertLog()` method is responsible for converting the raw log received from the API into the right log Object.
+ * * `createStream()` method is responsible for creating (and, since the underlying client resolves resource IDs
+ *   asynchronously, `await`-ing) the right Clever Log SSE client.
+ * * `convertLog()` method is responsible for converting the log received from the API (already reshaped by the
+ *   stream command itself) into the right log Object for the view.
  *
  * The converted logs are stored in an in-memory buffer before being sent to the view.
  *
+ * @template {any} R The type of the raw Log.
  * @template {AbstractLog} L The type of the transformed Log.
  * @abstract
  */
 export class LogsStream {
-  /** @type {LogsSse} */
+  /** @type {LogsSse<R>} */
   #logsStream;
   /** @type {Buffer<L>} */
   #logsBuffer;
@@ -47,6 +45,19 @@ export class LogsStream {
   #waitingTimer;
   /** @type {{live: number, cold: number}} */
   #waitingTimeout;
+  /**
+   * Incremented every time the current stream lifecycle is invalidated (`stop()`/`complete()`).
+   * Used to detect and discard a stream that finished being created (`_createStream()` is async)
+   * after it has already been superseded by a more recent call.
+   * @type {number}
+   */
+  #generation = 0;
+  /**
+   * Whether a `pause()` was requested while the underlying stream was not yet `open` (e.g. still
+   * connecting or resolving resource ids). The real pause is deferred until the stream actually opens.
+   * @type {boolean}
+   */
+  #pausePending = false;
 
   /**
    * @param {number} limit
@@ -82,7 +93,7 @@ export class LogsStream {
    * @param {number} _maxRetryCount
    * @param {number} _throttleElements
    * @param {number} _throttlePerInMilliseconds
-   * @return {LogsSse}
+   * @return {Promise<LogsSse<R>>}
    * @protected
    * @abstract
    */
@@ -91,7 +102,7 @@ export class LogsStream {
   }
 
   /**
-   * @param {number} _rawLog The raw log coming from the API
+   * @param {R} _rawLog The log coming from the API (already reshaped by the stream command's own converter)
    * @return {L|null|Promise<L|null>} A log that can be appended to the view or `null` if the log could not be converted
    * @protected
    * @abstract
@@ -111,13 +122,16 @@ export class LogsStream {
   openLogsStream(dateRange) {
     this.stop();
     this._updateStreamState({ type: 'connecting' });
-    this.#start(dateRange);
+    void this.#start(dateRange);
   }
 
   /**
    * Stops the running logs stream
    */
   stop() {
+    // invalidate any stream creation currently in flight (see `#start()`)
+    this.#generation++;
+    this.#pausePending = false;
     this.#waitingTimer.stop();
     this.#logsStream?.close({ type: USER_STREAM_CLOSE_REASON });
     this.#logsBuffer.clear();
@@ -141,7 +155,13 @@ export class LogsStream {
       //       without this `resuming` state, the state will be in `running` while the SSE is trying to reconnect
       //        (which can be quite long or even fail due to timeout or whatever error occurs in the network)
       this._updateStreamState(this.#buildRunningState());
-      this.#logsStream.resume();
+      if (this.#pausePending) {
+        // the underlying stream was never actually paused (it had not reached the `open` state yet), so
+        // there is nothing to resume: just cancel the pending pause.
+        this.#pausePending = false;
+      } else {
+        this.#logsStream.resume();
+      }
     }
   }
 
@@ -169,6 +189,9 @@ export class LogsStream {
    * Marks the current progression as `completed`.
    */
   complete() {
+    // invalidate any stream creation currently in flight (see `#start()`)
+    this.#generation++;
+    this.#pausePending = false;
     this.#waitingTimer.stop();
     this.#logsStream?.close({ type: COMPLETE_STREAM_CLOSE_REASON });
     this.#logsBuffer.flush();
@@ -224,35 +247,76 @@ export class LogsStream {
   /**
    * Creates a new LogsSse. Starts it and bind its lifecycle to the right methods.
    *
+   * Stream creation is asynchronous (resolving resource ids can require a network round trip), so this method
+   * captures the current `#generation` and re-checks it once the stream is ready: if `stop()` or a new
+   * `openLogsStream()` call happened in the meantime, the freshly created stream is dropped without ever being
+   * started (it holds no live connection yet, so there is nothing to close).
+   *
    * @param {DateRange} dateRange
    */
-  #start(dateRange) {
-    this.#logsStream = this._createStream(
-      dateRange,
-      MAX_RETRY_COUNT,
-      LOGS_THROTTLE_ELEMENTS,
-      THROTTLE_PER_IN_MILLISECONDS,
-    )
+  async #start(dateRange) {
+    const generation = this.#generation;
+
+    /** @type {LogsSse<R>} */
+    let stream;
+    try {
+      stream = await this._createStream(
+        dateRange,
+        MAX_RETRY_COUNT,
+        LOGS_THROTTLE_ELEMENTS,
+        THROTTLE_PER_IN_MILLISECONDS,
+      );
+    } catch (error) {
+      if (generation === this.#generation) {
+        this.#onStreamError(error);
+      }
+      return;
+    }
+
+    if (generation !== this.#generation) {
+      // superseded by a `stop()` or a new `openLogsStream()` call while we were creating this stream: discard it.
+      return;
+    }
+
+    this.#logsStream = stream
       // stream is opened
-      .on('open', () => this.#onStreamOpened(dateRange))
-      // log received in stream
+      .onOpen(() => this.#onStreamOpened(dateRange, stream))
+      // log received in stream (already converted by the command itself)
       .onLog(this.#onStreamLogEvent.bind(this))
       // error event received (not a fatal error: the logs stream will retry)
-      .on('error', this.#onStreamErrorEvent.bind(this));
+      .onError(this.#onStreamErrorEvent.bind(this));
 
     this.#logsStream
       // start stream
       .start()
-      // the stream ended normally
-      .then(this.#onStreamEnded.bind(this))
-      // the stream ended with error
-      .catch(this.#onStreamError.bind(this));
+      .then((closeReason) => {
+        // the stream ended normally
+        if (generation === this.#generation) {
+          this.#onStreamEnded(closeReason);
+        }
+      })
+      .catch((error) => {
+        // the stream ended with error
+        if (generation === this.#generation) {
+          this.#onStreamError(error);
+        }
+      });
   }
 
   /**
    * @param {DateRange} dateRange
+   * @param {LogsSse<R>} stream
    */
-  #onStreamOpened(dateRange) {
+  #onStreamOpened(dateRange, stream) {
+    if (this.#pausePending) {
+      this.#pausePending = false;
+      // The client only flips its internal state to `open` right after firing this `open` event
+      // (i.e. after this callback returns), so pausing synchronously here would still see the previous
+      // (not-yet-open) state and throw. Defer it to the next microtask so `pause()` is legal.
+      queueMicrotask(() => stream.pause());
+      return;
+    }
+
     // stream opening can occur after connecting or after resuming.
     // we start only when after connecting
     if (this.#streamState.type === 'connecting') {
@@ -262,7 +326,7 @@ export class LogsStream {
   }
 
   /**
-   * @param {any} rawLog raw log coming from the API
+   * @param {any} rawLog log coming from the API (already converted by the stream command)
    */
   async #onStreamLogEvent(rawLog) {
     this.#waitingTimer.stop();
@@ -290,23 +354,23 @@ export class LogsStream {
   }
 
   /**
-   * @param {any} event
+   * @param {any} error
    */
-  #onStreamErrorEvent(event) {
+  #onStreamErrorEvent(error) {
     if (this.#logsStream.retryCount >= 3) {
-      console.log('received an `error` event from log stream', event);
+      console.log('received an `error` event from log stream', error);
       // TODO: notify about the instability
     }
   }
 
   /**
-   * @param {Error|HttpError} error
+   * @param {any} error
    */
   #onStreamError(error) {
     console.error(error);
 
     // we consider 404 error as a valid stream end (but still as an error when handling live date range)
-    if (error instanceof HttpError && error.status === 404 && !this.#progress.isLive()) {
+    if (isCcHttpErrorWithStatus(error, 404) && !this.#progress.isLive()) {
       this.complete();
     } else {
       this._updateStreamState({
@@ -336,7 +400,15 @@ export class LogsStream {
       this.#streamState.type === 'waitingForFirstLog' ||
       this.#streamState.type === 'running'
     ) {
-      this.#logsStream?.pause();
+      if (this.#logsStream != null) {
+        if (this.#logsStream.state === 'open') {
+          this.#logsStream.pause();
+        } else {
+          // the stream has not reached the `open` state yet (still connecting, or in the middle of an
+          // automatic retry): pausing now would throw. Remember to pause it as soon as it opens.
+          this.#pausePending = true;
+        }
+      }
       this.#logsBuffer.flush();
       if (reason === 'user') {
         this._updateStreamState({

@@ -1,4 +1,5 @@
-import { ApplicationAccessLogStream } from '@clevercloud/client/esm/streams/access-logs.js';
+import { StreamApplicationAccessLogCommand } from '@clevercloud/client/cc-api-commands/log/stream-application-access-log-command.js';
+import { getCcApiClientWithOAuth } from '../../lib/cc-api-client.js';
 import { LogsStream } from '../../lib/logs/logs-stream.js';
 import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
 import { dateRangeSelectionToDateRange } from '../cc-logs-date-range-selector/date-range-selection.js';
@@ -12,6 +13,7 @@ import './cc-logs-app-access.js';
  * @import { LogsStreamState } from '../../lib/logs/logs-stream.types.js'
  * @import { ApiConfig } from '../../lib/send-to-api.types.js'
  * @import { OnContextUpdateArgs, UpdateComponentCallback } from '../../lib/smart/smart-component.types.js'
+ * @import { ApplicationAccessLog } from '@clevercloud/client/cc-api-commands/log/log.types.js'
  */
 
 defineSmartComponent({
@@ -76,7 +78,7 @@ defineSmartComponent({
 });
 
 /**
- * @extends LogsStream<Log>
+ * @extends LogsStream<ApplicationAccessLog, Log>
  */
 class SmartController extends LogsStream {
   /**
@@ -103,26 +105,24 @@ class SmartController extends LogsStream {
    * @param {number} maxRetryCount
    * @param {number} throttleElements
    * @param {number} throttlePerInMilliseconds
-   * @returns {ApplicationAccessLogStream}
+   * @returns {Promise<import('../../lib/logs/logs-stream.types.js').LogsSse<ApplicationAccessLog>>}
    */
-  _createStream(dateRange, maxRetryCount, throttleElements, throttlePerInMilliseconds) {
-    return new ApplicationAccessLogStream({
-      apiHost: this._apiConfig.API_HOST,
-      tokens: this._apiConfig,
-      ownerId: this._ownerId,
-      appId: this._appId,
-      // @ts-expect-error: FIXME: client types seem to expect Date but dateRange has string
-      since: dateRange.since,
-      // @ts-expect-error: FIXME: client types seem to expect Date but dateRange has string
-      until: dateRange.until,
-      retryConfiguration: { enabled: true, maxRetryCount },
-      throttleElements,
-      throttlePerInMilliseconds,
-    });
+  async _createStream(dateRange, maxRetryCount, throttleElements, throttlePerInMilliseconds) {
+    return getCcApiClientWithOAuth(this._apiConfig).stream(
+      new StreamApplicationAccessLogCommand({
+        ownerId: this._ownerId,
+        applicationId: this._appId,
+        since: dateRange.since,
+        until: dateRange.until,
+        throttleElements,
+        throttlePerInMilliseconds,
+      }),
+      { retry: { maxRetryCount } },
+    );
   }
 
   /**
-   * @param {any} rawLog
+   * @param {ApplicationAccessLog} rawLog Log coming from the API (already reshaped by the stream command)
    * @return {Log}
    */
   _convertLog(rawLog) {
@@ -172,26 +172,28 @@ class SmartController extends LogsStream {
 }
 
 /**
- * @param {any} log
+ * @param {ApplicationAccessLog} log Log coming from the API (already reshaped by the stream command: the legacy top-level
+ *   `http` property is now `detail`, discriminated by `type`).
  * @return {Log}
  */
 function convertLog(log) {
-  const { id, date, source, http } = log;
+  const { id, date, source, type, detail } = log;
 
-  if (http == null) {
+  if (type !== 'http') {
+    // todo: handle TCP and SSH access logs.
     return null;
   }
 
   return {
     id: id,
     date: new Date(date),
-    message: http.request.path,
+    message: detail.request.path,
     metadata: [
       { name: 'ip', value: source.ip },
       { name: 'country', value: source.countryCode ?? '' },
       { name: 'city', value: source.city ?? '' },
-      { name: 'method', value: http.request.method },
-      { name: 'status', value: http.response.statusCode },
+      { name: 'method', value: detail.request.method },
+      { name: 'status', value: String(detail.response.statusCode) },
     ],
   };
 }

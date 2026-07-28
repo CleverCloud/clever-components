@@ -125,14 +125,14 @@ export class KvKeyEditorSetCtrl extends KvKeyEditorCtrl {
       this.component.resetEditorForm();
 
       // re-fetch all elements if necessary
-      if (result.added) {
+      if (result.wasAdded) {
         this._scanner.reset();
         await this.load();
       } else {
         this._updateAddForm({ type: 'idle' });
       }
 
-      return result.added;
+      return result.wasAdded;
     } catch (e) {
       this._updateAddForm({ type: 'idle' });
       throw e;

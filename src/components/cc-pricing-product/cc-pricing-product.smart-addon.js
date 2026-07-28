@@ -1,8 +1,7 @@
-import { getAllAddonProviders } from '@clevercloud/client/esm/api/v2/product.js';
-import { ONE_DAY } from '@clevercloud/client/esm/with-cache.js';
+import { ListProductAddonCommand } from '@clevercloud/client/cc-api-commands/product/list-product-addon-command.js';
 import { fetchPriceSystem } from '../../lib/api-helpers.js';
+import { getCcApiClientWithOAuth } from '../../lib/cc-api-client.js';
 import { formatAddonProduct } from '../../lib/product.js';
-import { sendToApi } from '../../lib/send-to-api.js';
 import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
 import '../cc-smart-container/cc-smart-container.js';
 import './cc-pricing-product.js';
@@ -10,10 +9,13 @@ import './cc-pricing-product.js';
 /**
  * @import { CcPricingProduct } from './cc-pricing-product.js'
  * @import { PricingProductStateLoaded } from './cc-pricing-product.types.js'
- * @import { FormattedFeature, RawAddonProvider } from '../common.types.js'
+ * @import { FormattedFeature } from '../common.types.js'
  * @import { ApiConfig } from '../../lib/send-to-api.types.js'
  * @import { OnContextUpdateArgs } from '../../lib/smart/smart-component.types.js'
+ * @import { ProductAddon } from '@clevercloud/client/cc-api-commands/product/product.types.js'
  */
+
+const ONE_DAY = 1000 * 60 * 60 * 24;
 
 defineSmartComponent({
   selector: 'cc-pricing-product[mode="addon"]',
@@ -75,15 +77,18 @@ function fetchAddonProduct({ apiConfig, productId, zoneId, addonFeatures, curren
  * @param {ApiConfig} options.apiConfig - The API configuration.
  * @param {AbortSignal} options.signal - The abort signal for the fetch operation.
  * @param {string} options.productId - The ID of the product to fetch the addon provider for.
- * @returns {Promise<RawAddonProvider>} A promise that resolves to the addon provider object.
+ * @returns {Promise<ProductAddon>} A promise that resolves to the addon provider object.
  * @throws {Error} Throws an error if the addon provider is not found.
  */
 function fetchAddonProvider({ apiConfig, signal, productId }) {
-  // @ts-expect-error FIXME: `ownerId` is marked as required in the types but it's a public endpoint that doesn't need it
-  return getAllAddonProviders()
-    .then(sendToApi({ apiConfig, cacheDelay: ONE_DAY, signal }))
+  const ccApiClient = getCcApiClientWithOAuth(apiConfig);
+  // This endpoint is anonymous/public: we never pass an `ownerId` here (same as before the migration).
+  // `withVersions: false` because the legacy `getAllAddonProviders()` call never fetched version info
+  // (that data comes from a distinct endpoint we don't need here).
+  return ccApiClient
+    .send(new ListProductAddonCommand({ withVersions: false }), { signal, cache: { ttl: ONE_DAY } })
     .then(
-      /** @param {Array<RawAddonProvider>} allAddonProviders */
+      /** @param {Array<ProductAddon>} allAddonProviders */
       (allAddonProviders) => {
         const addonProvider = allAddonProviders.find((ap) => ap.id === productId);
         if (addonProvider == null) {

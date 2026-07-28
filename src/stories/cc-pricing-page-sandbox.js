@@ -14,7 +14,7 @@ import {
   formatEstimationPrices,
 } from '../lib/product.js';
 import { getFullProductAddon } from './fixtures/addon-plans.js';
-import { rawPriceSystemDollars, rawPriceSystemEuro } from './fixtures/price-system.js';
+import { priceSystemDollars, priceSystemEuro } from './fixtures/price-system.js';
 import { getFullProductRuntime } from './fixtures/runtime-plans.js';
 import { ZONES } from './fixtures/zones.js';
 import { createStoryItem } from './lib/make-story.js';
@@ -32,7 +32,8 @@ const FEATURES_TO_DISPLAY = [
 ];
 
 /**
- * @import { Temporality, PriceSystem, FormattedFeature } from '../components/common.types.js'
+ * @import { Temporality, FormattedFeature } from '../components/common.types.js'
+ * @import { PriceSystem } from '@clevercloud/client/cc-api-commands/price-system/price-system.types.js'
  * @import { CcPricingEstimation } from '../components/cc-pricing-estimation/cc-pricing-estimation.js'
  * @import { PricingEstimationState } from '../components/cc-pricing-estimation/cc-pricing-estimation.types.js'
  * @import { CcPricingCurrencyChangeEvent } from '../components/cc-pricing-page/cc-pricing-page.events.js'
@@ -64,8 +65,8 @@ export class CcPricingPageSandbox extends LitElement {
 
   static get PRICE_SYSTEMS() {
     return /** @type {const} */ ({
-      EUR: rawPriceSystemEuro,
-      USD: rawPriceSystemDollars,
+      EUR: priceSystemEuro,
+      USD: priceSystemDollars,
     });
   }
 

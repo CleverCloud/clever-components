@@ -2,7 +2,7 @@ import { GetAddonCommand } from '@clevercloud/client/cc-api-commands/addon/get-a
 import { CreateNetworkGroupMemberCommand } from '@clevercloud/client/cc-api-commands/network-group/create-network-group-member-command.js';
 import { DeleteNetworkGroupMemberCommand } from '@clevercloud/client/cc-api-commands/network-group/delete-network-group-member-command.js';
 import { ListNetworkGroupCommand } from '@clevercloud/client/cc-api-commands/network-group/list-network-group-command.js';
-import { ONE_DAY } from '@clevercloud/client/esm/with-cache.js';
+import { isNetworkGroupAddonCandidate } from '@clevercloud/client/cc-api-commands/network-group/network-group-utils.js';
 import { getCcApiClientWithOAuth } from '../../lib/cc-api-client.js';
 import { notify, notifyError, notifySuccess } from '../../lib/notifications.js';
 import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
@@ -26,6 +26,8 @@ import './cc-network-group-list.js';
  * @import { ApiConfig } from '../../lib/send-to-api.types.js';
  * @import { NetworkGroupListStateLoaded } from './cc-network-group-list.types.js';
  */
+
+const ONE_DAY = 1000 * 60 * 60 * 24;
 
 defineSmartComponent({
   selector: 'cc-network-group-list',
@@ -64,7 +66,7 @@ defineSmartComponent({
       });
       return {
         resolvedResourceId: addon.realId,
-        isSupported: addon.plan.slug !== 'dev',
+        isSupported: isNetworkGroupAddonCandidate(addon),
       };
     }
 
@@ -105,7 +107,10 @@ defineSmartComponent({
               id: peer.id,
               label: peer.label,
               publicKey: peer.publicKey,
-              ip: peer.endpoint.type === 'ServerEndpoint' ? peer.endpoint.ngTerm.host : peer.endpoint.ngIp,
+              ip:
+                peer.endpoint.type === 'ServerEndpoint'
+                  ? peer.endpoint.networkGroupTerm.host
+                  : peer.endpoint.networkGroupIp,
               type: peer.type,
             })),
           })),

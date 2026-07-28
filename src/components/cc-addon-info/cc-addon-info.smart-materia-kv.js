@@ -46,7 +46,7 @@ defineSmartComponent({
       .then((addon) => {
         updateComponent('state', {
           type: 'loaded',
-          creationDate: addon.creationDate,
+          creationDate: addon.createdAt,
         });
       })
       .catch((error) => {

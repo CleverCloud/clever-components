@@ -1,8 +1,8 @@
+import { isCcHttpErrorWithCode } from '@clevercloud/client/utils/error-utils.js';
 import { Abortable } from '../../lib/abortable.js';
 import { notifyError, notifySuccess } from '../../lib/notifications.js';
 import { isStringEmpty, sortByProps } from '../../lib/utils.js';
 import { i18n } from '../../translations/translation.js';
-import { isCellarExplorerErrorWithCode } from '../cc-cellar-explorer/cc-cellar-explorer.client.js';
 import '../cc-smart-container/cc-smart-container.js';
 import { CcCellarBucketCreatedEvent } from './cc-cellar-bucket-list.events.js';
 import './cc-cellar-bucket-list.js';
@@ -149,11 +149,11 @@ export class BucketsListController {
         this.#getComponent().dispatchEvent(new CcCellarBucketCreatedEvent(bucketName));
       }
     } catch (error) {
-      if (isCellarExplorerErrorWithCode(error, 'clever.file-explorer-proxy.cellar.bucket-already-exists')) {
+      if (isCcHttpErrorWithCode(error, 'clever.cellar.bucket-already-exists')) {
         this.#updateCreateForm({ type: 'idle', error: 'bucket-already-exists' });
-      } else if (isCellarExplorerErrorWithCode(error, 'clever.file-explorer-proxy.cellar.bucket-name-invalid')) {
+      } else if (isCcHttpErrorWithCode(error, 'clever.cellar.invalid-bucket-name')) {
         this.#updateCreateForm({ type: 'idle', error: 'bucket-name-invalid' });
-      } else if (isCellarExplorerErrorWithCode(error, 'clever.file-explorer-proxy.cellar.too-many-buckets')) {
+      } else if (isCcHttpErrorWithCode(error, 'clever.cellar.too-many-buckets')) {
         this.#updateCreateForm({ type: 'idle', error: 'too-many-buckets' });
       } else {
         console.log(error);
@@ -174,12 +174,12 @@ export class BucketsListController {
       notifySuccess(i18n('cc-cellar-bucket-list.success.bucket-deleted', { bucketName }));
       this.#removeBucket(bucketName);
     } catch (error) {
-      if (isCellarExplorerErrorWithCode(error, 'clever.file-explorer-proxy.cellar.bucket-not-found')) {
+      if (isCcHttpErrorWithCode(error, 'clever.cellar.bucket-not-found')) {
         notifySuccess(i18n('cc-cellar-bucket-list.success.bucket-already-deleted', { bucketName }));
         this.#removeBucket(bucketName);
       } else {
         this.#updateBucketDetails({ state: 'idle' });
-        if (isCellarExplorerErrorWithCode(error, 'clever.file-explorer-proxy.cellar.bucket-not-empty')) {
+        if (isCcHttpErrorWithCode(error, 'clever.cellar.bucket-not-empty')) {
           notifyError(i18n('cc-cellar-bucket-list.error.bucket-not-empty', { bucketName }));
         } else {
           console.log(error);
@@ -205,7 +205,7 @@ export class BucketsListController {
         },
       );
     } catch (error) {
-      if (isCellarExplorerErrorWithCode(error, 'clever.file-explorer-proxy.cellar.bucket-not-found')) {
+      if (isCcHttpErrorWithCode(error, 'clever.cellar.bucket-not-found')) {
         notifyError(i18n('cc-cellar-bucket-list.error.bucket-not-found', { bucketName }));
         this.#removeBucket(bucketName);
       } else {

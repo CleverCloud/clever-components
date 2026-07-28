@@ -28,7 +28,7 @@ export class KvTerminalCtrl {
     });
 
     try {
-      const { success, result } = await this._kvClient.sendCommandLine(commandLine);
+      const { isSuccess: success, result } = await this._kvClient.sendCommandLine(commandLine);
 
       this._updateTerminalState({
         type: 'idle',

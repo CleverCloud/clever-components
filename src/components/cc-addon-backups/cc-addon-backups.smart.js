@@ -1,15 +1,15 @@
-import { get as getAddon } from '@clevercloud/client/esm/api/v2/addon.js';
-import { getBackups } from '@clevercloud/client/esm/api/v2/backups.js';
-import { getAddon as getAddonFromProvider } from '@clevercloud/client/esm/api/v4/addon-providers.js';
-import { sendToApi } from '../../lib/send-to-api.js';
+import { GetAddonCommand } from '@clevercloud/client/cc-api-commands/addon/get-addon-command.js';
+import { ListBackupCommand } from '@clevercloud/client/cc-api-commands/backup/list-backup-command.js';
+import { GetElasticsearchInfoCommand } from '@clevercloud/client/cc-api-commands/elasticsearch/get-elasticsearch-info-command.js';
+import { getCcApiClientWithOAuth } from '../../lib/cc-api-client.js';
 import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
 import '../cc-smart-container/cc-smart-container.js';
 import './cc-addon-backups.js';
 
 /**
- * @import { Addon } from '../common.types.js'
  * @import { CcAddonBackups } from './cc-addon-backups.js'
- * @import { Backup } from './cc-addon-backups.types.js'
+ * @import { Backup, ProviderId } from './cc-addon-backups.types.js'
+ * @import { Backup as RemoteBackup } from '@clevercloud/client/cc-api-commands/backup/backup.types.js'
  * @import { ApiConfig } from '../../lib/send-to-api.types.js'
  * @import { OnContextUpdateArgs } from '../../lib/smart/smart-component.types.js'
  */
@@ -23,148 +23,111 @@ defineSmartComponent({
   /**
    * @param {OnContextUpdateArgs<CcAddonBackups>} args
    */
-  async onContextUpdate({ context, updateComponent, signal }) {
+  onContextUpdate({ context, updateComponent, signal }) {
     const { apiConfig, ownerId, addonId } = context;
 
     updateComponent('state', { type: 'loading' });
     updateComponent('addonId', addonId);
 
-    const api = new Api(apiConfig, signal);
-    const addon = await api.fetchAddon({ ownerId, addonId });
-    const addonDetails = await api.fetchAddonDetails({ addon, addonId });
-    api.fetchBackups({ addon, ownerId, addonDetails }).then((/** @type {Backup[]} */ rawBackups) => {
-      const backups = rawBackups.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
-      updateComponent('state', {
-        type: 'loaded',
-        providerId: getProviderId({ addon, addonDetails }),
-        passwordForCommand: addonDetails.password,
-        backups: backups,
+    const api = new Api({ apiConfig, signal });
+
+    api
+      .fetchBackupsData({ ownerId, addonId })
+      .then(({ providerId, passwordForCommand, backups }) => {
+        updateComponent('state', { type: 'loaded', providerId, passwordForCommand, backups });
+      })
+      .catch((error) => {
+        console.error(error);
+        updateComponent('state', { type: 'error' });
       });
-    });
   },
 });
 
 // -- API calls
 class Api {
   /**
-   * @param {ApiConfig} apiConfig
-   * @param {AbortSignal} signal
+   * @param {object} params
+   * @param {ApiConfig} params.apiConfig
+   * @param {AbortSignal} params.signal
    */
-  constructor(apiConfig, signal) {
-    this.apiConfig = apiConfig;
-    this.signal = signal;
+  constructor({ apiConfig, signal }) {
+    this._ccApiClient = getCcApiClientWithOAuth(apiConfig);
+    this._signal = signal;
   }
 
   /**
    * @param {object} params
    * @param {string} params.ownerId
    * @param {string} params.addonId
-   * @returns {Promise<Addon>}
    */
   fetchAddon({ ownerId, addonId }) {
-    return getAddon({ id: ownerId, addonId }).then(sendToApi({ apiConfig: this.apiConfig, signal: this.signal }));
+    return this._ccApiClient.send(new GetAddonCommand({ ownerId, addonId }), { signal: this._signal });
   }
 
   /**
    * @param {object} params
-   * @param {Addon} params.addon
    * @param {string} params.addonId
    */
-  fetchAddonDetails({ addon, addonId }) {
-    return getAddonFromProvider({
-      // @ts-ignore
-      providerId: addon.provider.id,
-      addonId,
-    }).then(sendToApi({ apiConfig: this.apiConfig, signal: this.signal }));
+  fetchElasticsearchInfo({ addonId }) {
+    return this._ccApiClient.send(new GetElasticsearchInfoCommand({ addonId }), { signal: this._signal });
   }
 
   /**
    * @param {object} params
-   * @param {Addon} params.addon
    * @param {string} params.ownerId
-   * @param {any} params.addonDetails
+   * @param {string} params.addonId
+   * @returns {Promise<RemoteBackup[]>}
    */
-  fetchBackups({ addon, ownerId, addonDetails }) {
-    switch (getProviderId({ addon, addonDetails })) {
-      case 'es-addon':
-        return this.getElasticsearchBackups({ addon, ownerId });
-      default:
-        return this.getDefaultBackups({ addon, addonDetails, ownerId });
+  fetchRawBackups({ ownerId, addonId }) {
+    return this._ccApiClient.send(new ListBackupCommand({ ownerId, addonId, withCommands: true }), {
+      signal: this._signal,
+    });
+  }
+
+  /**
+   * @param {object} params
+   * @param {string} params.ownerId
+   * @param {string} params.addonId
+   * @returns {Promise<{providerId: ProviderId, passwordForCommand: string, backups: Backup[]}>}
+   */
+  async fetchBackupsData({ ownerId, addonId }) {
+    const [addon, rawBackups] = await Promise.all([
+      this.fetchAddon({ ownerId, addonId }),
+      this.fetchRawBackups({ ownerId, addonId }),
+    ]);
+
+    /** @type {ProviderId} */
+    let providerId = /** @type {ProviderId} */ (addon.provider.id);
+    // For most providers, the restore/delete command password (if any) is carried by the backups themselves.
+    let passwordForCommand = rawBackups[0]?.commands?.password;
+
+    // The "es-addon" / "es-addon-old" distinction (and its password) can only be resolved through
+    // the Elasticsearch specific info endpoint (it depends on whether the Kibana service is enabled).
+    if (addon.provider.id === 'es-addon') {
+      const esInfo = await this.fetchElasticsearchInfo({ addonId });
+      const kibana = esInfo.services.find((service) => service.name === 'kibana');
+      providerId = kibana != null && kibana.isEnabled ? 'es-addon' : 'es-addon-old';
+      passwordForCommand = esInfo.config.password;
     }
-  }
 
-  /**
-   * @param {object} params
-   * @param {Addon} params.addon
-   * @param {string} params.ownerId
-   */
-  getElasticsearchBackups({ addon, ownerId }) {
-    return getBackups({ ownerId, ref: addon.realId })
-      .then(sendToApi({ apiConfig: this.apiConfig, signal: this.signal }))
-      .then((/** @type {any[]} */ backups) => {
-        return backups.map((b) => {
-          return {
-            createdAt: b.creation_date,
-            url: b.link,
-            expiresAt: b.delete_at,
-            restoreCommand: b.restore_command,
-            deleteCommand: b.delete_command,
-          };
-        });
-      });
-  }
-
-  /**
-   * @param {object} params
-   * @param {Addon} params.addon
-   * @param {any} params.addonDetails
-   * @param {string} params.ownerId
-   */
-  getDefaultBackups({ addon, addonDetails, ownerId }) {
-    return getBackups({ ownerId, ref: addon.realId })
-      .then(sendToApi({ apiConfig: this.apiConfig, signal: this.signal }))
-      .then((/** @type {any[]} */ backups) => {
-        return backups.map((backup) => {
-          return {
-            createdAt: backup.creation_date,
-            url: backup.download_url,
-            expiresAt: backup.delete_at,
-            restoreCommand: getRestoreCommand({ addon, addonDetails }),
-          };
-        });
-      });
+    return {
+      providerId,
+      passwordForCommand,
+      backups: rawBackups.map(toBackup),
+    };
   }
 }
 
 /**
- * @param {object} params
- * @param {Addon} params.addon
- * @param {any} params.addonDetails
+ * @param {RemoteBackup} backup
+ * @returns {Backup}
  */
-function getRestoreCommand({ addon, addonDetails }) {
-  switch (getProviderId({ addon, addonDetails })) {
-    case 'postgresql-addon':
-      return `pg_restore -h ${addonDetails.host} -p ${addonDetails.port} -U ${addonDetails.user} -d ${addonDetails.database} --no-owner --no-privileges --no-comments --format=c YOUR_BACKUP_FILE`;
-    case 'mysql-addon':
-      return `mysql -h ${addonDetails.host} -P ${addonDetails.port} -u ${addonDetails.user} -p ${addonDetails.database} < YOUR_BACKUP_FILE`;
-    case 'mongodb-addon':
-      return `mongorestore --host=${addonDetails.host} --port=${addonDetails.port} --username=${addonDetails.user} --nsFrom="${addonDetails.database}.*" --nsTo="${addonDetails.database}.*" --authenticationDatabase="${addonDetails.database}" --archive={YOUR_BACKUP_FILE} --gzip`;
-    default:
-      return null;
-  }
-}
-
-/**
- * @param {object} params
- * @param {Addon} params.addon
- * @param {any} params.addonDetails
- */
-function getProviderId({ addon, addonDetails }) {
-  // @ts-ignore
-  if (addon.provider.id === 'es-addon') {
-    const kibana = addonDetails.services.find((/** @type {{ name: string; }} */ s) => s.name === 'kibana');
-    return kibana != null && kibana.enabled ? 'es-addon' : 'es-addon-old';
-  }
-  // @ts-ignore
-  return addon.provider.id;
+function toBackup(backup) {
+  return {
+    createdAt: backup.createdAt,
+    expiresAt: backup.expiresAt,
+    url: backup.downloadUrl,
+    restoreCommand: backup.commands?.restoreCommand,
+    deleteCommand: backup.commands?.deleteCommand,
+  };
 }

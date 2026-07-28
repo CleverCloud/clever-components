@@ -1,3 +1,7 @@
+import {
+  ACCESS_RIGHTS,
+  MANAGE_RIGHTS,
+} from '@clevercloud/client/cc-api-commands/oauth-consumer/oauth-consumer-rights.js';
 import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
@@ -26,25 +30,6 @@ const SKELETON_OAUTH_CONSUMER_INFO = {
   key: fakeString(20),
   secret: fakeString(20),
 };
-
-/** @type {Array<keyof OauthConsumerRights & `access${string}`>} */
-const ACCESS_RIGHT_KEYS = [
-  'accessOrganisations',
-  'accessOrganisationsBills',
-  'accessOrganisationsConsumptionStatistics',
-  'accessOrganisationsCreditCount',
-  'accessPersonalInformation',
-];
-
-/** @type {Array<keyof OauthConsumerRights & `manage${string}`>} */
-const MANAGE_RIGHT_KEYS = [
-  'manageOrganisations',
-  'manageOrganisationsApplications',
-  'manageOrganisationsMembers',
-  'manageOrganisationsServices',
-  'managePersonalInformation',
-  'manageSshKeys',
-];
 
 const BREAKPOINTS = [460, 550];
 
@@ -204,11 +189,11 @@ export class CcOauthConsumerInfo extends LitElement {
             <div class="rights-container">
               <div class="access-rights">
                 <div class="rights-title">${i18n('cc-oauth-consumer-info.rights-title.access')}</div>
-                <div class="rights-section">${ACCESS_RIGHT_KEYS.map((key) => this._renderRight(key))}</div>
+                <div class="rights-section">${ACCESS_RIGHTS.map((key) => this._renderRight(key))}</div>
               </div>
               <div class="manage-rights">
                 <div class="rights-title">${i18n('cc-oauth-consumer-info.rights-title.manage')}</div>
-                <div class="rights-section">${MANAGE_RIGHT_KEYS.map((key) => this._renderRight(key))}</div>
+                <div class="rights-section">${MANAGE_RIGHTS.map((key) => this._renderRight(key))}</div>
               </div>
             </div>
           </cc-block-section>

@@ -1,6 +1,5 @@
-import { getAllZones } from '@clevercloud/client/esm/api/v4/product.js';
-import { ONE_DAY } from '@clevercloud/client/esm/with-cache.js';
-import { sendToApi } from '../../lib/send-to-api.js';
+import { ListZoneCommand } from '@clevercloud/client/cc-api-commands/zone/list-zone-command.js';
+import { getCcApiClientWithOAuth } from '../../lib/cc-api-client.js';
 import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
 import '../cc-smart-container/cc-smart-container.js';
 import './cc-pricing-header.js';
@@ -11,6 +10,8 @@ import './cc-pricing-header.js';
  * @import { ApiConfig } from '../../lib/send-to-api.types.js'
  * @import { OnContextUpdateArgs } from '../../lib/smart/smart-component.types.js'
  */
+
+const ONE_DAY = 1000 * 60 * 60 * 24;
 
 defineSmartComponent({
   selector: 'cc-pricing-header',
@@ -79,15 +80,15 @@ defineSmartComponent({
  * @returns {Promise<Zone[]>}
  */
 function fetchAllZones({ apiConfig, signal }) {
-  return getAllZones()
-    .then(sendToApi({ apiConfig, signal, cacheDelay: ONE_DAY }))
-    .then(
-      /**
-       * @param {Zone[]} zones
-       * @returns {Zone[]}
-       **/
-      (zones) => zones.filter((zone) => zone.tags.includes('for:applications')).map((zone) => cleanZoneTags(zone)),
-    );
+  const ccApiClient = getCcApiClientWithOAuth(apiConfig);
+  // This endpoint is anonymous/public: we never pass an `ownerId` here (same as before the migration).
+  return ccApiClient.send(new ListZoneCommand(), { signal, cache: { ttl: ONE_DAY } }).then(
+    /**
+     * @param {Zone[]} zones
+     * @returns {Zone[]}
+     **/
+    (zones) => zones.filter((zone) => zone.tags.includes('for:applications')).map((zone) => cleanZoneTags(zone)),
+  );
 }
 
 /**

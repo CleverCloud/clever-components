@@ -3,13 +3,17 @@ import { getAssetUrl } from './assets-url.js';
 // FIXME: We're using `@typedef` instead of `@import` here due to a false positive from TS
 // See: https://github.com/microsoft/TypeScript/issues/60908/
 /**
- * @typedef {import('../components/common.types.js').RawAddonProvider} RawAddonProvider
- * @typedef {import('../components/common.types.js').PriceSystem} PriceSystem
+ * @typedef {import('@clevercloud/client/cc-api-commands/addon-provider/addon-provider.types.js').AddonProviderFull} AddonProviderFull
+ * @typedef {import('@clevercloud/client/cc-api-commands/addon-provider/addon-provider.types.js').AddonProviderPlan} AddonProviderPlan
+ * @typedef {import('@clevercloud/client/cc-api-commands/addon-provider/addon-provider.types.js').AddonProviderFeature} AddonProviderFeature
+ * @typedef {import('@clevercloud/client/cc-api-commands/addon-provider/addon-provider.types.js').AddonProviderPlanFeature} AddonProviderPlanFeature
+ * @typedef {import('@clevercloud/client/cc-api-commands/product/product.types.js').ProductRuntime} ProductRuntime
+ * @typedef {import('@clevercloud/client/cc-api-commands/product/product.types.js').ProductRuntimeFlavor} ProductRuntimeFlavor
+ * @typedef {import('@clevercloud/client/cc-api-commands/price-system/price-system.types.js').PriceSystem} PriceSystem
  * @typedef {import('../components/common.types.js').FormattedFeature} FormattedFeature
  * @typedef {import('../components/common.types.js').PricingSection} PricingSection
  * @typedef {import('../components/common.types.js').PricingInterval} PricingInterval
  * @typedef {import('../components/common.types.js').Plan} Plan
- * @typedef {import('../components/common.types.js').Instance} Instance
  * @typedef {import('../components/cc-pricing-product/cc-pricing-product.types.js').PricingProductStateLoaded} PricingProductStateLoaded
  * @typedef {import('../components/cc-pricing-estimation/cc-pricing-estimation.types.js').PricingEstimationStateLoaded} PricingEstimationStateLoaded
  * @typedef {import('../components/cc-pricing-estimation/cc-pricing-estimation.types.js').FormattedRuntimePrice} FormattedRuntimePrice
@@ -18,7 +22,7 @@ import { getAssetUrl } from './assets-url.js';
 /**
  * Formats an add-on product with its features and plans.
  *
- * @param {RawAddonProvider} addonProvider
+ * @param {AddonProviderFull} addonProvider
  * @param {PriceSystem} priceSystem
  * @param {Array<FormattedFeature['code']>} selectedFeatures
  * @returns {Omit<PricingProductStateLoaded, 'type'>}
@@ -33,7 +37,7 @@ export function formatAddonProduct(addonProvider, priceSystem, selectedFeatures)
   };
 }
 
-// API returns interval prices in "euros / gigabyte / 1 hour" for "storage" (specified with service.time_interval_for_price.interval : "PT1H")
+// API returns interval prices in "euros / gigabyte / 1 hour" for "storage" (specified with service.timeIntervalForPrice.interval : "PT1H")
 // and just "euros / gigabyte" for timeless sections like traffic.
 // We want interval prices to be in "euros / byte / 30 days" for "storage" and "euros / byte" for others.
 // Therefore, we need to apply a price factor for on interval prices.
@@ -155,22 +159,24 @@ export function formatAddonHeptapod(priceSystem) {
  * @returns {Pick<PricingSection, 'secability' | 'intervals'>}
  */
 export function formatProductConsumptionIntervals(priceSystem, serviceName) {
-  const service = priceSystem.countable.find((c) => c.service === serviceName);
+  const service = priceSystem.countables.find((c) => c.service === serviceName);
 
   const secability =
-    service?.data_quantity_for_price?.secability === 'insecable' ? service.data_quantity_for_price.quantity : 1;
+    service?.dataQuantityForPrice?.secability === 'insecable' ? service.dataQuantityForPrice.quantity : 1;
 
-  const timeFactor = service?.time_interval_for_price?.interval === 'PT1H' ? THIRTY_DAYS_IN_HOURS : 1;
-  const quantityFactor = service?.data_quantity_for_price?.quantity ?? 1;
+  const timeFactor = service?.timeIntervalForPrice?.interval === 'PT1H' ? THIRTY_DAYS_IN_HOURS : 1;
+  const quantityFactor = service?.dataQuantityForPrice?.quantity ?? 1;
 
   const priceFactor = timeFactor / quantityFactor;
 
-  const intervals = service.price_plans.map((interval, idx, allIntervals) => {
-    const minRange = idx === 0 ? 0 : allIntervals[idx - 1].max_quantity;
+  // Price plans are already ordered by `maxQuantity` (`null` meaning "no limit") by the client, which matters
+  // here because intervals are contiguous quantity ranges: each one starts where the previous one ends.
+  const intervals = service.pricePlans.map((interval, idx, allIntervals) => {
+    const minRange = idx === 0 ? 0 : allIntervals[idx - 1].maxQuantity;
     /** @type {PricingInterval} */
     const formattedInterval = {
       minRange,
-      maxRange: interval.max_quantity,
+      maxRange: interval.maxQuantity,
       price: interval.price * priceFactor,
     };
     return formattedInterval;
@@ -182,7 +188,7 @@ export function formatProductConsumptionIntervals(priceSystem, serviceName) {
 /**
  * Formats add-on features based on provider features and selected features.
  *
- * @param {RawAddonProvider['features']|RawAddonProvider['plans'][number]['features']} providerFeatures - Array of provider feature objects.
+ * @param {Array<AddonProviderFeature>|Array<AddonProviderPlanFeature>} providerFeatures - Array of provider feature objects.
  * @param {Array<FormattedFeature['code']>} [selectedFeatures] - Array of selected feature codes.
  * @returns {Array<FormattedFeature>} Formatted addon features.
  */
@@ -190,21 +196,21 @@ export function formatAddonFeatures(providerFeatures, selectedFeatures) {
   // If selectedFeatures is not specified, we just use the features as is
   const featureCodes =
     selectedFeatures == null
-      ? providerFeatures.map((f) => f.name_code).filter((code) => code != null)
+      ? providerFeatures.map((f) => f.nameCode).filter((code) => code != null)
       : selectedFeatures;
 
   return featureCodes
     .map((code) => {
-      return providerFeatures.find((f) => f.name_code === code);
+      return providerFeatures.find((f) => f.nameCode === code);
     })
     .filter((feature) => feature != null)
     .map((feature) => {
       /** @type {FormattedFeature} */
       const formattedFeature = {
-        code: feature.name_code,
+        code: feature.nameCode,
         type: /** @type {FormattedFeature['type']} */ (feature.type.toLowerCase()),
         // @ts-ignore Only used when we format plan features
-        value: feature.computable_value ?? '',
+        value: feature.computableValue ?? '',
         name: feature.name,
       };
 
@@ -215,22 +221,22 @@ export function formatAddonFeatures(providerFeatures, selectedFeatures) {
 /**
  * Formats add-on plans based on provided plans, price system, and selected features.
  *
- * @param {RawAddonProvider['plans']} allPlans - Array of all available plans.
+ * @param {Array<AddonProviderPlan>} allPlans - Array of all available plans.
  * @param {PriceSystem} priceSystem - The price system object containing pricing information.
  * @param {Array<FormattedFeature['code']>} selectedFeatures - Array of selected feature codes.
  * @returns {Pick<Plan, 'name' | 'price' | 'features' | 'priceId'>[]} Formatted add-on plans with name, price, and features.
  */
 function formatAddonPlans(allPlans, priceSystem, selectedFeatures) {
   return allPlans.map((plan) => {
-    const priceItem = priceSystem.runtime.find(
-      (runtime) => runtime.slug_id.toLowerCase() === plan.price_id.toLowerCase(),
+    const priceItem = priceSystem.runtimes.find(
+      (runtime) => runtime.priceId.toLowerCase() === plan.priceId?.toLowerCase(),
     );
 
     return {
       name: plan.name,
       price: priceItem?.price ?? 0,
       features: formatAddonFeatures(plan.features, selectedFeatures),
-      priceId: priceItem?.slug_id,
+      priceId: priceItem?.priceId,
     };
   });
 }
@@ -238,7 +244,7 @@ function formatAddonPlans(allPlans, priceSystem, selectedFeatures) {
 /**
  * Formats a runtime product with its features and plans.
  *
- * @param {Instance} runtime - The runtime object containing variant and flavors information.
+ * @param {ProductRuntime} runtime - The runtime object containing variant and flavors information.
  * @param {PriceSystem} priceSystem - The price system object containing pricing information.
  * @returns {Omit<PricingProductStateLoaded, 'type'>} Formatted runtime product with name, features, and plans.
  */
@@ -254,7 +260,7 @@ export function formatRuntimeProduct(runtime, priceSystem) {
 /**
  * Formats runtime features based on the provided runtime object.
  *
- * @param {Instance} runtime - The runtime object containing variant information.
+ * @param {ProductRuntime} runtime - The runtime object containing variant information.
  * @returns {Array<FormattedFeature>} An array of feature objects with code and type properties.
  */
 function formatRuntimeFeatures(runtime) {
@@ -272,21 +278,21 @@ function formatRuntimeFeatures(runtime) {
 /**
  * Formats runtime plans based on the provided flavors, price system, and features.
  *
- * @param {Instance['flavors']} allFlavors - Array of all available flavors.
+ * @param {Array<ProductRuntimeFlavor>} allFlavors - Array of all available flavors.
  * @param {PriceSystem} priceSystem - The price system object containing pricing information.
  * @param {Array<FormattedFeature>} features - Array of formatted features.
  * @returns {Pick<Plan, 'name' | 'price' | 'features' | 'priceId'>[]} Formatted runtime plans with name, price, and features.
  */
 function formatRuntimePlans(allFlavors, priceSystem, features) {
   return allFlavors.map((flavor) => {
-    const priceItem = priceSystem.runtime.find(
-      (runtime) => runtime.slug_id.toLowerCase() === flavor.price_id.toLowerCase(),
+    const priceItem = priceSystem.runtimes.find(
+      (runtime) => runtime.priceId.toLowerCase() === flavor.priceId.toLowerCase(),
     );
     return {
       name: flavor.name,
       price: priceItem?.price ?? 0,
       features: formatRuntimeFeatureValues(features, flavor),
-      priceId: priceItem.slug_id,
+      priceId: priceItem.priceId,
     };
   });
 }
@@ -295,7 +301,7 @@ function formatRuntimePlans(allFlavors, priceSystem, features) {
  * Formats runtime feature values based on the provided features and flavor.
  *
  * @param {Array<FormattedFeature>} allFeatures - Array of all formatted features.
- * @param {Instance['flavors'][number]} flavor - The flavor object containing feature values.
+ * @param {ProductRuntimeFlavor} flavor - The flavor object containing feature values.
  * @returns {Array<FormattedFeature>} An array of feature objects with added value property.
  */
 function formatRuntimeFeatureValues(allFeatures, flavor) {
@@ -309,7 +315,7 @@ function formatRuntimeFeatureValues(allFeatures, flavor) {
  * Gets the runtime feature value based on the feature code and flavor.
  *
  * @param {FormattedFeature['code']} featureCode - The code of the feature to get the value for.
- * @param {Instance['flavors'][number]} flavor - The flavor object containing feature details.
+ * @param {ProductRuntimeFlavor} flavor - The flavor object containing feature details.
  * @returns {FormattedFeature['value']} The feature value based on the feature code.
  */
 function getRuntimeFeatureValue(featureCode, flavor) {
@@ -317,8 +323,8 @@ function getRuntimeFeatureValue(featureCode, flavor) {
     case 'cpu':
       return {
         cpu: flavor.cpus,
-        shared: flavor.microservice,
-        nice: flavor.nice,
+        shared: flavor.isSharedCpu,
+        nice: flavor.cpuPriorityOffset,
       };
     case 'memory':
       return flavor.memory.value;
@@ -333,10 +339,10 @@ function getRuntimeFeatureValue(featureCode, flavor) {
  * Returns a runner product based on the provided product ID.
  *
  * @param {string} productId - The ID of the product to retrieve ('jenkins-runner' or 'heptapod-runner').
- * @returns {Partial<Instance>|void} The runner product object if a valid product ID is provided, undefined otherwise.
+ * @returns {Partial<ProductRuntime>|void} The runner product object if a valid product ID is provided, undefined otherwise.
  */
 export function getRunnerProduct(productId) {
-  /** @type {Partial<Instance>} */
+  /** @type {Partial<ProductRuntime>} */
   const baseProduct = {
     type: 'docker',
     // Fake date
@@ -346,8 +352,8 @@ export function getRunnerProduct(productId) {
     defaultFlavor: null,
     // not used
     buildFlavor: null,
-    enabled: true,
-    comingSoon: false,
+    isEnabled: true,
+    isComingSoon: false,
     maxInstances: 40,
     tags: [],
     deployments: ['git'],
@@ -404,13 +410,13 @@ export function getRunnerProduct(productId) {
 /**
  * Generates a runner flavor object with the specified parameters.
  *
- * @param {string} prefix - The prefix for the price_id.
+ * @param {string} prefix - The prefix for the price id.
  * @param {string} name - The name of the flavor.
  * @param {number} cpus - The number of CPUs for the flavor.
  * @param {number} memory - The amount of memory in GB for the flavor.
  * @param {boolean} [microservice=false] - Whether the flavor is a microservice.
  * @param {number} [nice=0] - The nice value for the flavor.
- * @returns {Instance['flavors'][number]} The runner flavor object.
+ * @returns {ProductRuntimeFlavor} The runner flavor object.
  */
 function getRunnerFlavor(prefix, name, cpus, memory, microservice = false, nice = 0) {
   return {
@@ -422,19 +428,23 @@ function getRunnerFlavor(prefix, name, cpus, memory, microservice = false, nice 
     disk: null,
     // not used
     price: null,
-    available: true,
-    microservice,
-    // eslint-disable-next-line camelcase
-    machine_learning: false,
-    nice,
-    // eslint-disable-next-line camelcase
-    price_id: prefix + name,
+    isAvailable: true,
+    isSharedCpu: microservice,
+    isMachineLearning: false,
+    cpuPriorityOffset: nice,
+    priceId: prefix + name,
     memory: {
       unit: 'B',
       value: memory * 1024 ** 3,
       // not used
       formatted: null,
     },
+    // not used
+    cpuFactor: null,
+    // not used
+    memFactor: null,
+    // not used
+    systemOverheadFactor: null,
   };
 }
 
@@ -443,18 +453,16 @@ function getRunnerFlavor(prefix, name, cpus, memory, microservice = false, nice 
  * @returns {Omit<PricingEstimationStateLoaded, 'type'>}
  */
 export function formatEstimationPrices(priceSystem) {
-  /* eslint-disable camelcase */
-  const runtimePrices = priceSystem.runtime
+  const runtimePrices = priceSystem.runtimes
     .filter(({ source }) => source !== 'adc')
-    .map(({ slug_id, price }) => {
+    .map(({ priceId, price }) => {
       /** @type {FormattedRuntimePrice} */
       const formattedProductPrice = {
-        priceId: slug_id,
+        priceId,
         price,
       };
       return formattedProductPrice;
     });
-  /* eslint-enable camelcase */
 
   const countablePrices = [
     ...formatAddonCellar(priceSystem).sections,

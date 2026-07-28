@@ -7,6 +7,7 @@ import { DeleteNetworkGroupMemberCommand } from '@clevercloud/client/cc-api-comm
 import { GetNetworkGroupCommand } from '@clevercloud/client/cc-api-commands/network-group/get-network-group-command.js';
 import { GetNetworkGroupWireguardConfigurationUrlCommand } from '@clevercloud/client/cc-api-commands/network-group/get-network-group-wireguard-configuration-url-command.js';
 import { isNetworkGroupAddonCandidate } from '@clevercloud/client/cc-api-commands/network-group/network-group-utils.js';
+import { tolerateNotFound } from '@clevercloud/client/utils/error-utils.js';
 import { getAssetUrl } from '../../lib/assets-url.js';
 import { getCcApiClientWithOAuth } from '../../lib/cc-api-client.js';
 import { notify, notifyError, notifySuccess } from '../../lib/notifications.js';
@@ -27,6 +28,23 @@ const FIFTY_MINUTES = 50 * 60 * 1000;
  * @import { OnContextUpdateArgs } from '../../lib/smart/smart-component.types.js'
  * @import { Option } from '../cc-select/cc-select.types.js'
  */
+
+/**
+ * @typedef {NetworkGroup['members'][number]} RawNetworkGroupMember
+ * @typedef {Omit<RawNetworkGroupMember, 'kind'> & { kind: Exclude<RawNetworkGroupMember['kind'], 'LOADBALANCER'> }} DisplayedNetworkGroupMember
+ */
+
+/**
+ * The API also reports the load balancers attached to the network group as members. They are registered by the load
+ * balancer itself, not by the user, and this component offers no way to create, link or manage one, so we leave them
+ * out of the list.
+ *
+ * @param {RawNetworkGroupMember} member
+ * @returns {member is DisplayedNetworkGroupMember}
+ */
+function isDisplayedMember(member) {
+  return member.kind !== 'LOADBALANCER';
+}
 
 defineSmartComponent({
   selector: 'cc-network-group-member-list',
@@ -247,9 +265,9 @@ class Api {
       { signal: this.#signal },
     );
 
-    const memberListPromises = networkGroupData.members.map(async (member) =>
-      this.#getMemberWithInfo(member, networkGroupData.peers),
-    );
+    const memberListPromises = networkGroupData.members
+      .filter(isDisplayedMember)
+      .map(async (member) => this.#getMemberWithInfo(member, networkGroupData.peers));
 
     return Promise.all(memberListPromises);
   }
@@ -302,11 +320,11 @@ class Api {
   async #getMemberLogo(resourceId, kind) {
     switch (kind) {
       case 'APPLICATION': {
-        const applicationData = await this.#ccApiClient.send(
-          new GetApplicationCommand({ applicationId: resourceId, ownerId: this.#ownerId }),
-          {
+        // a deleted application answers with a 404: no logo, the member is reported as deleted
+        const applicationData = await tolerateNotFound(
+          this.#ccApiClient.send(new GetApplicationCommand({ applicationId: resourceId, ownerId: this.#ownerId }), {
             signal: this.#signal,
-          },
+          }),
         );
         if (applicationData == null) {
           return null;
@@ -317,9 +335,11 @@ class Api {
         };
       }
       case 'ADDON': {
-        const addonData = await this.#ccApiClient.send(
-          new GetAddonCommand({ addonId: resourceId, ownerId: this.#ownerId }),
-          { signal: this.#signal },
+        // a deleted add-on answers with a 404: no logo, the member is reported as deleted
+        const addonData = await tolerateNotFound(
+          this.#ccApiClient.send(new GetAddonCommand({ addonId: resourceId, ownerId: this.#ownerId }), {
+            signal: this.#signal,
+          }),
         );
         if (addonData == null) {
           return null;
@@ -338,7 +358,7 @@ class Api {
   }
 
   /**
-   * @param {NetworkGroup['members'][number]} member
+   * @param {DisplayedNetworkGroupMember} member
    * @param {NetworkGroup['peers']} rawPeerList
    * @returns {Promise<NetworkGroupMember>}
    * */
@@ -394,7 +414,7 @@ class Api {
       id: peer.id,
       label: peer.label,
       publicKey: peer.publicKey,
-      ip: peer.endpoint.type === 'ServerEndpoint' ? peer.endpoint.ngTerm.host : peer.endpoint.ngIp,
+      ip: peer.endpoint.type === 'ServerEndpoint' ? peer.endpoint.networkGroupTerm.host : peer.endpoint.networkGroupIp,
       type: peer.type,
       configLink,
     };

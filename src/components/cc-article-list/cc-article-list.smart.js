@@ -1,17 +1,13 @@
-import { request } from '@clevercloud/client/esm/request.fetch.js';
-import { withCache } from '@clevercloud/client/esm/with-cache.js';
+import { ListArticleCommand } from '@clevercloud/client/cc-api-commands/article/list-article-command.js';
+import { getCcApiClientWithOAuth } from '../../lib/cc-api-client.js';
 import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
-import { parseRssFeed } from '../../lib/xml-parser.js';
 import '../cc-smart-container/cc-smart-container.js';
 import './cc-article-list.js';
 
 /**
  * @import { CcArticleList } from './cc-article-list.js'
- * @import { ArticleCard } from '../cc-article-card/cc-article-card.types.js'
  * @import { OnContextUpdateArgs } from '../../lib/smart/smart-component.types.js'
  */
-
-const FOUR_HOURS = 1000 * 60 * 60 * 4;
 
 defineSmartComponent({
   selector: 'cc-article-list',
@@ -25,11 +21,13 @@ defineSmartComponent({
   onContextUpdate({ context, updateComponent, signal }) {
     updateComponent('state', { type: 'loading' });
 
-    const { lang, limit } = context;
+    const { lang, limit = 9 } = context;
 
-    fetchArticleList({ signal, lang, limit })
+    // the blog feed is public: an unauthenticated client is enough, and the command caches feed pages itself
+    getCcApiClientWithOAuth()
+      .send(new ListArticleCommand({ lang, limit }), { signal })
       .then((articles) => {
-        updateComponent('state', { type: 'loaded', articles: articles });
+        updateComponent('state', { type: 'loaded', articles });
       })
       .catch((error) => {
         console.error(error);
@@ -37,28 +35,3 @@ defineSmartComponent({
       });
   },
 });
-
-/**
- * @param {Object} params
- * @param {AbortSignal} params.signal
- * @param {'fr'|'en'} params.lang
- * @param {number} [params.limit]
- * @return {Promise<ArticleCard[]>}
- */
-async function fetchArticleList({ signal, lang, limit = 9 }) {
-  const url =
-    lang === 'fr'
-      ? 'https://www.clever.cloud/fr/feed/?format=excerpt'
-      : 'https://www.clever.cloud/feed/?format=excerpt';
-
-  const requestParams = {
-    method: 'get',
-    url,
-    headers: {},
-    signal,
-  };
-
-  const rssFeed = await withCache(requestParams, FOUR_HOURS, () => request(requestParams));
-
-  return parseRssFeed(rssFeed, limit);
-}

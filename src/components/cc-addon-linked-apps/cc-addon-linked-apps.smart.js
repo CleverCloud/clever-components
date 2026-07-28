@@ -1,19 +1,19 @@
-import { getLinkedApplications } from '@clevercloud/client/esm/api/v2/addon.js';
-import { listZones } from '@clevercloud/client/esm/api/v4/product.js';
-import { ONE_DAY } from '@clevercloud/client/esm/with-cache.js';
-import { sendToApi } from '../../lib/send-to-api.js';
+import { ListLinkCommand } from '@clevercloud/client/cc-api-commands/link/list-link-command.js';
+import { ListZoneCommand } from '@clevercloud/client/cc-api-commands/zone/list-zone-command.js';
+import { getCcApiClientWithOAuth } from '../../lib/cc-api-client.js';
 import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
 import '../cc-smart-container/cc-smart-container.js';
 import './cc-addon-linked-apps.js';
 
+const ONE_DAY = 1000 * 60 * 60 * 24;
+
 /**
  * @import { CcAddonLinkedApps } from './cc-addon-linked-apps.js'
  * @import { LinkedApplication } from './cc-addon-linked-apps.types.js'
- * @import { Zone } from '../common.types.js'
+ * @import { Zone } from '@clevercloud/client/cc-api-commands/zone/zone.types.js'
+ * @import { Link } from '@clevercloud/client/cc-api-commands/link/link.types.js'
  * @import { ApiConfig } from '../../lib/send-to-api.types.js'
  * @import { OnContextUpdateArgs } from '../../lib/smart/smart-component.types.js'
- * @typedef {{ variant: { logo: string, name: string }}} Instance
- * @typedef {{ name: string, instance: Instance, id: string, zone: string }} RawApp
  */
 
 defineSmartComponent({
@@ -54,21 +54,23 @@ function fetchApplications({ apiConfig, signal, ownerId, addonId }) {
   return Promise.all([
     fetchZones({ apiConfig, signal, ownerId }),
     fetchLinkedApplications({ apiConfig, signal, ownerId, addonId }),
-  ]).then(([zones, applications]) => {
-    return applications.map((app) => {
-      const { name, instance } = app;
-      const variantName = instance.variant?.name;
-      const variantLogoUrl = instance.variant?.logo;
-      const link = getApplicationLink(ownerId, app.id);
-      const zone = zones.find((z) => z.name === app.zone);
-      return {
-        name,
-        link,
-        variantName,
-        variantLogoUrl,
-        zone,
-      };
-    });
+  ]).then(([zones, links]) => {
+    return links
+      .filter((link) => link.type === 'link-to-application')
+      .map((link) => {
+        const { name, instance, id, zone: zoneName } = link.application;
+        const variantName = instance.variant?.name;
+        const variantLogoUrl = instance.variant?.logo;
+        const appLink = getApplicationLink(ownerId, id);
+        const zone = zones.find((z) => z.name === zoneName);
+        return {
+          name,
+          link: appLink,
+          variantName,
+          variantLogoUrl,
+          zone,
+        };
+      });
   });
 }
 
@@ -80,7 +82,10 @@ function fetchApplications({ apiConfig, signal, ownerId, addonId }) {
  * @returns {Promise<Zone[]>}
  */
 function fetchZones({ apiConfig, signal, ownerId }) {
-  return listZones({ ownerId }).then(sendToApi({ apiConfig, signal, cacheDelay: ONE_DAY }));
+  return getCcApiClientWithOAuth(apiConfig).send(new ListZoneCommand({ ownerId }), {
+    signal,
+    cache: { ttl: ONE_DAY },
+  });
 }
 
 /**
@@ -89,10 +94,10 @@ function fetchZones({ apiConfig, signal, ownerId }) {
  * @param {AbortSignal} parameters.signal
  * @param {string} parameters.ownerId
  * @param {string} parameters.addonId
- * @returns {Promise<RawApp[]>}
+ * @returns {Promise<Link[]>}
  */
 function fetchLinkedApplications({ apiConfig, signal, ownerId, addonId }) {
-  return getLinkedApplications({ id: ownerId, addonId }).then(sendToApi({ apiConfig, signal }));
+  return getCcApiClientWithOAuth(apiConfig).send(new ListLinkCommand({ ownerId, addonId }), { signal });
 }
 
 /**

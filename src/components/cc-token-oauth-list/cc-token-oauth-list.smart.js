@@ -1,9 +1,7 @@
-import {
-  todo_listSelfTokens as getAllTokens,
-  todo_revokeSelfToken as revokeToken,
-} from '@clevercloud/client/esm/api/v2/user.js';
+import { DeleteOauthTokenCommand } from '@clevercloud/client/cc-api-commands/oauth-token/delete-oauth-token-command.js';
+import { ListOauthTokenCommand } from '@clevercloud/client/cc-api-commands/oauth-token/list-oauth-token-command.js';
+import { getCcApiClientWithOAuth } from '../../lib/cc-api-client.js';
 import { notifyError, notifySuccess } from '../../lib/notifications.js';
-import { sendToApi } from '../../lib/send-to-api.js';
 import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-smart-container/cc-smart-container.js';
@@ -12,7 +10,6 @@ import './cc-token-oauth-list.js';
 /**
  * @import { CcTokenOauthList } from './cc-token-oauth-list.js'
  * @import { OauthTokenState, TokenOauthListStateLoaded, TokenOauthListStateRevokingAll, OauthToken } from './cc-token-oauth-list.types.js'
- * @import { RawTokenData } from '../cc-token-session-list/cc-token-session-list.types.js'
  * @import { ApiConfig } from '../../lib/send-to-api.types.js'
  * @import { OnContextUpdateArgs } from '../../lib/smart/smart-component.types.js'
  */
@@ -145,6 +142,7 @@ class Api {
   constructor(apiConfig, authBridgeConsumerKey) {
     this._apiConfig = apiConfig;
     this._authBridgeConsumerKey = authBridgeConsumerKey;
+    this._ccApiClient = getCcApiClientWithOAuth(apiConfig);
   }
 
   /**
@@ -153,31 +151,26 @@ class Api {
    * @returns {Promise<OauthToken[]>} A promise that resolves to an array of formatted OAuth tokens
    */
   getOauthTokens() {
-    return getAllTokens()
-      .then(sendToApi({ apiConfig: this._apiConfig }))
-      .then(
-        /** @param {Array<RawTokenData>} tokens */
-        (tokens) => {
-          return tokens
-            .filter(
-              (token) =>
-                token.consumer.key !== this._apiConfig.OAUTH_CONSUMER_KEY &&
-                token.employeeId == null &&
-                token.consumer.key !== this._authBridgeConsumerKey,
-            )
-            .map(
-              /** @return {OauthToken} */
-              (token) => ({
-                id: token.token,
-                consumerName: token.consumer.name,
-                creationDate: new Date(token.creationDate),
-                expirationDate: new Date(token.expirationDate),
-                lastUsedDate: new Date(token.lastUtilisation),
-                imageUrl: token.consumer.picture,
-              }),
-            );
-        },
-      );
+    return this._ccApiClient.send(new ListOauthTokenCommand()).then((tokens) => {
+      return tokens
+        .filter(
+          (token) =>
+            token.consumer.key !== this._apiConfig.OAUTH_CONSUMER_KEY &&
+            token.employeeId == null &&
+            token.consumer.key !== this._authBridgeConsumerKey,
+        )
+        .map(
+          /** @return {OauthToken} */
+          (token) => ({
+            id: token.token,
+            consumerName: token.consumer.name,
+            creationDate: new Date(token.createdAt),
+            expirationDate: new Date(token.expiresAt),
+            lastUsedDate: new Date(token.lastUsedAt),
+            imageUrl: token.consumer.picture,
+          }),
+        );
+    });
   }
 
   /**
@@ -187,7 +180,7 @@ class Api {
    * @returns {Promise<void>} A promise that resolves when the token is revoked
    */
   revokeOauthToken(tokenId) {
-    return revokeToken({ token: tokenId }).then(sendToApi({ apiConfig: this._apiConfig }));
+    return this._ccApiClient.send(new DeleteOauthTokenCommand({ token: tokenId }));
   }
 
   /**

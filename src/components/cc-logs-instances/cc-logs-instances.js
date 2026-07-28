@@ -56,7 +56,11 @@ const INSTANCE_DEPLOYING_STATES = ['BOOTING', 'STARTING', 'DEPLOYING', 'READY'];
 /** @type {Array<InstanceState>} */
 const INSTANCE_RUNNING_STATES = ['UP', 'MIGRATION_IN_PROGRESS', 'TASK_IN_PROGRESS', 'BUILDING'];
 /** @type {Array<DeploymentState>} */
-const DEPLOYMENT_WIP_STATES = ['QUEUED', 'WORK_IN_PROGRESS'];
+const DEPLOYMENT_WIP_STATES = ['QUEUED', 'WORK_IN_PROGRESS', 'TASK_IN_PROGRESS'];
+// Deployment states in which instances are actively being created or destroyed. `QUEUED` is left out: nothing has
+// started yet, so an instance cannot be deleted by it.
+/** @type {Array<DeploymentState>} */
+const DEPLOYMENT_ONGOING_STATES = ['WORK_IN_PROGRESS', 'TASK_IN_PROGRESS'];
 
 /**
  * @import { LogsInstancesState, DeploymentState, Deployment, InstanceState, Instance, GhostInstance } from './cc-logs-instances.types.js'
@@ -171,7 +175,7 @@ export class CcLogsInstances extends LitElement {
         class: 'instance-state--stopping',
       };
     }
-    if (instance.state === 'DELETED' && instance.deployment.state === 'WORK_IN_PROGRESS') {
+    if (instance.state === 'DELETED' && DEPLOYMENT_ONGOING_STATES.includes(instance.deployment.state)) {
       return {
         a11yName: i18n('cc-logs-instances.instance.state.deleted'),
         icon: iconInstanceDeleted,

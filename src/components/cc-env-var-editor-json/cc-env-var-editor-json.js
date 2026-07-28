@@ -1,4 +1,4 @@
-import { ERROR_TYPES, parseRawJson, toJson } from '@clevercloud/client/esm/utils/env-vars.js';
+import { ERROR_TYPES, parseRawJson, toJson } from '@clevercloud/client/utils/environment-utils.js';
 import { LitElement, css, html } from 'lit';
 import { i18n } from '../../translations/translation.js';
 import { CcEnvChangeEvent } from '../cc-env-var-form/cc-env-var-form.events.js';

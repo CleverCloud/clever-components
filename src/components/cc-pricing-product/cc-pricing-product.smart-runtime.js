@@ -1,8 +1,7 @@
-import { getAvailableInstances } from '@clevercloud/client/esm/api/v2/product.js';
-import { ONE_DAY } from '@clevercloud/client/esm/with-cache.js';
+import { ListProductRuntimeCommand } from '@clevercloud/client/cc-api-commands/product/list-product-runtime-command.js';
 import { fetchPriceSystem } from '../../lib/api-helpers.js';
+import { getCcApiClientWithOAuth } from '../../lib/cc-api-client.js';
 import { formatRuntimeProduct, getRunnerProduct } from '../../lib/product.js';
-import { sendToApi } from '../../lib/send-to-api.js';
 import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
 import '../cc-smart-container/cc-smart-container.js';
 import './cc-pricing-product.js';
@@ -10,10 +9,12 @@ import './cc-pricing-product.js';
 /**
  * @import { CcPricingProduct } from './cc-pricing-product.js'
  * @import { PricingProductStateLoaded } from './cc-pricing-product.types.js'
- * @import { Instance } from '../common.types.js'
  * @import { ApiConfig } from '../../lib/send-to-api.types.js'
  * @import { OnContextUpdateArgs } from '../../lib/smart/smart-component.types.js'
+ * @import { ProductRuntime } from '@clevercloud/client/cc-api-commands/product/product.types.js'
  */
+
+const ONE_DAY = 1000 * 60 * 60 * 24;
 
 defineSmartComponent({
   selector: 'cc-pricing-product[mode="runtime"]',
@@ -73,28 +74,28 @@ function fetchRuntimeProduct({ apiConfig, productId, zoneId, currency, signal })
  * @param {ApiConfig} options.apiConfig - The API configuration.
  * @param {string} options.productId - The ID of the product.
  * @param {AbortSignal} options.signal - The abort signal.
- * @returns {Promise<Instance>} A promise that resolves to the runtime information.
+ * @returns {Promise<ProductRuntime>} A promise that resolves to the runtime information.
  * @throws {Error} Throws an error if the product is not found and is not a runner.
  */
 function fetchRuntime({ apiConfig, productId, signal }) {
-  // @ts-expect-error FIXME: `for` is marked as required in the types but it's a public endpoint that doesn't need it + return type don't match
-  return getAvailableInstances()
-    .then(sendToApi({ apiConfig, cacheDelay: ONE_DAY, signal }))
-    .then(
-      /** @param {Array<Instance>} allRuntimes */
-      (allRuntimes) => {
-        const runtime = allRuntimes.find((f) => f.variant.slug === productId);
-        if (runtime == null) {
-          // For now, we have special cases for runners.
-          // If the API does not return the product, we provided some hard coded ones.
-          // This is only the list of plans with features, the prices come from the API.
-          const runnerProduct = getRunnerProduct(productId);
-          if (runnerProduct != null) {
-            return runnerProduct;
-          }
-          throw new Error(`Unknown variant slug: ${productId}`);
+  const ccApiClient = getCcApiClientWithOAuth(apiConfig);
+  // This endpoint is anonymous/public: we never pass an `ownerId` here (same as before the migration).
+  // @ts-expect-error FIXME: `getRunnerProduct()` may return a `Partial<ProductRuntime>` (or `void`), which doesn't strictly match `ProductRuntime`
+  return ccApiClient.send(new ListProductRuntimeCommand(), { signal, cache: { ttl: ONE_DAY } }).then(
+    /** @param {Array<ProductRuntime>} allRuntimes */
+    (allRuntimes) => {
+      const runtime = allRuntimes.find((f) => f.variant.slug === productId);
+      if (runtime == null) {
+        // For now, we have special cases for runners.
+        // If the API does not return the product, we provided some hard coded ones.
+        // This is only the list of plans with features, the prices come from the API.
+        const runnerProduct = getRunnerProduct(productId);
+        if (runnerProduct != null) {
+          return runnerProduct;
         }
-        return runtime;
-      },
-    );
+        throw new Error(`Unknown variant slug: ${productId}`);
+      }
+      return runtime;
+    },
+  );
 }

@@ -17,7 +17,7 @@ export interface LogsInstancesStateLoaded {
 
 export type LogsMode = 'live' | 'cold';
 
-export type DeploymentState = 'QUEUED' | 'WORK_IN_PROGRESS' | 'SUCCEEDED' | 'CANCELLED' | 'FAILED';
+export type DeploymentState = 'QUEUED' | 'WORK_IN_PROGRESS' | 'TASK_IN_PROGRESS' | 'SUCCEEDED' | 'CANCELLED' | 'FAILED';
 
 export interface Deployment {
   id: string;

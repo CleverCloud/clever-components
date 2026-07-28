@@ -1,3 +1,4 @@
+import { isCcHttpErrorWithCode } from '@clevercloud/client/utils/error-utils.js';
 import { KvKeyEditorCtrl } from './kv-key-editor-ctrl.js';
 import { KvScanner } from './kv-scanner.js';
 
@@ -232,8 +233,7 @@ export class KvListElementsScanner extends KvScanner {
         elements: [{ type: 'idle', index: element.index, value: element.value }],
       };
     } catch (e) {
-      const err = /** @type {any} */ (e);
-      if (err?.responseBody?.code === 'clever.redis-http.list-element-not-found') {
+      if (isCcHttpErrorWithCode(e, 'clever.redis-http.list-element-not-found')) {
         return emptyScanResult();
       }
       throw e;

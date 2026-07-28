@@ -148,7 +148,7 @@ export class KvKeyEditorHashCtrl extends KvKeyEditorCtrl {
       this._scanner.reset();
       await this.load();
 
-      return result.added;
+      return result.wasAdded;
     } catch (e) {
       this._updateAddForm({ type: 'idle' });
       throw e;

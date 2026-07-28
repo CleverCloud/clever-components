@@ -1,8 +1,9 @@
-import { ONE_SECOND } from '@clevercloud/client/esm/with-cache.js';
+import { GetKubernetesClusterCommand } from '@clevercloud/client/cc-api-commands/kubernetes/get-kubernetes-cluster-command.js';
+import { GetKubernetesKubeconfigPresignedUrlCommand } from '@clevercloud/client/cc-api-commands/kubernetes/get-kubernetes-kubeconfig-presigned-url-command.js';
 import { getAssetUrl } from '../../lib/assets-url.js';
+import { getCcApiClientWithOAuth } from '../../lib/cc-api-client.js';
 import { fakeString } from '../../lib/fake-strings.js';
 import { notify, notifyError } from '../../lib/notifications.js';
-import { sendToApi } from '../../lib/send-to-api.js';
 import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-smart-container/cc-smart-container.js';
@@ -13,9 +14,8 @@ const FIFTY_MINUTES = 50 * 60 * 1000;
 
 /**
  * @import { CcAddonHeader } from './cc-addon-header.js'
- * @import { DeploymentStatus, CcAddonHeaderStateLoaded, CcAddonHeaderStateLoading, KubeInfo } from './cc-addon-header.types.js'
+ * @import { DeploymentStatus, CcAddonHeaderStateLoaded, CcAddonHeaderStateLoading } from './cc-addon-header.types.js'
  * @import { Zone } from '../common.types.js'
- * @import { ApiConfig } from '../../lib/send-to-api.types.js'
  * @import { OnContextUpdateArgs } from '../../lib/smart/smart-component.types.js'
  */
 
@@ -31,7 +31,7 @@ defineSmartComponent({
   /** @param {OnContextUpdateArgs<CcAddonHeader>} args */
   onContextUpdate({ context, updateComponent, signal }) {
     const { apiConfig, ownerId, kubernetesId, productStatus } = context;
-    const api = new Api({ apiConfig, ownerId, kubernetesId, signal });
+    const ccApiClient = getCcApiClientWithOAuth(apiConfig);
 
     updateComponent('state', {
       type: 'loading',
@@ -42,10 +42,16 @@ defineSmartComponent({
       productStatus: fakeString(4),
     });
 
+    /** @returns {Promise<string>} */
+    function getKubeConfigUrl() {
+      return ccApiClient
+        .send(new GetKubernetesKubeconfigPresignedUrlCommand({ ownerId, clusterId: kubernetesId }), { signal })
+        .then(({ url }) => url);
+    }
+
     // clear when the component handled by the smart is disconnected from the DOM
     const kubeConfigFetchInterval = setInterval(() => {
-      api
-        .getKubeConfig()
+      getKubeConfigUrl()
         .then((kubeConfigUrl) => {
           updateComponent(
             'state',
@@ -78,9 +84,27 @@ defineSmartComponent({
       clearInterval(kubeConfigFetchInterval);
     });
 
-    api
-      .getKubeInfoWithKubeConfig()
-      .then(({ kubeInfo, kubeConfigUrl, zone }) => {
+    Promise.all([
+      ccApiClient.send(new GetKubernetesClusterCommand({ ownerId, clusterId: kubernetesId }), { signal }),
+      getKubeConfigUrl(),
+    ])
+      .then(([kubeInfo, kubeConfigUrl]) => {
+        if (kubeInfo.status === 'DELETED' || kubeInfo.status === 'DELETING') {
+          throw new Error('This cluster has been deleted');
+        }
+
+        /** @type {Zone} */
+        const zone = {
+          name: 'par',
+          country: 'France',
+          countryCode: 'FR',
+          city: 'Paris',
+          displayName: null,
+          lat: 48.8566,
+          lon: 2.3522,
+          tags: ['for:applications', 'for:par-only', 'infra:clever-cloud'],
+        };
+
         updateComponent('state', {
           type: 'loaded',
           providerId: PROVIDER_ID,
@@ -105,82 +129,3 @@ defineSmartComponent({
       });
   },
 });
-
-class Api {
-  /**
-   * @param {object} params
-   * @param {ApiConfig} params.apiConfig - API configuration
-   * @param {string} params.ownerId - Owner identifier
-   * @param {string} params.kubernetesId - Cluster identifier
-   * @param {AbortSignal} params.signal - Signal to abort calls
-   */
-  constructor({ apiConfig, ownerId, kubernetesId, signal }) {
-    this._apiConfig = apiConfig;
-    this._ownerId = ownerId;
-    this._kubernetesId = kubernetesId;
-    this._signal = signal;
-  }
-
-  /** @returns {Promise<KubeInfo>} */
-  _getKubeInfo() {
-    return getKubeInfo({ ownerId: this._ownerId, kubernetesId: this._kubernetesId })
-      .then(sendToApi({ apiConfig: this._apiConfig, signal: this._signal, cacheDelay: ONE_SECOND }))
-      .then((kubeInfo) => {
-        if (kubeInfo.status === 'DELETED' || kubeInfo.status === 'DELETING') {
-          throw new Error('This cluster has been deleted');
-        }
-        return kubeInfo;
-      });
-  }
-
-  /**
-   * @return {Promise<string>}
-   */
-  getKubeConfig() {
-    return getKubeConfig({ ownerId: this._ownerId, kubernetesId: this._kubernetesId })
-      .then(sendToApi({ apiConfig: this._apiConfig, signal: this._signal }))
-      .then(({ url }) => url);
-  }
-
-  async getKubeInfoWithKubeConfig() {
-    const kubeInfo = await this._getKubeInfo();
-    const kubeConfigUrl = await this.getKubeConfig();
-    /** @type {Zone} */
-    const zone = {
-      name: 'par',
-      country: 'France',
-      countryCode: 'FR',
-      city: 'Paris',
-      displayName: null,
-      lat: 48.8566,
-      lon: 2.3522,
-      tags: ['for:applications', 'for:par-only', 'infra:clever-cloud'],
-    };
-
-    return { kubeInfo, kubeConfigUrl, zone };
-  }
-}
-
-// FIXME: remove and use the clever-client call from the new clever-client
-/** @param {{ ownerId: string, kubernetesId: string }} params */
-function getKubeInfo(params) {
-  // no multipath for /self or /organisations/{id}
-  return Promise.resolve({
-    method: 'get',
-    url: `/v4/kubernetes/organisations/${params.ownerId}/clusters/${params.kubernetesId}`,
-    // no queryParams
-    // no body
-  });
-}
-
-// FIXME: remove and use the clever-client call from the new clever-client
-/** @param {{ ownerId: string, kubernetesId: string }} params */
-function getKubeConfig(params) {
-  // no multipath for /self or /organisations/{id}
-  return Promise.resolve({
-    method: 'get',
-    url: `/v4/kubernetes/organisations/${params.ownerId}/clusters/${params.kubernetesId}/kubeconfig/presigned-url`,
-    // no queryParams
-    // no body
-  });
-}

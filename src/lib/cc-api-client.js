@@ -1,3 +1,4 @@
+import { CcApiBridgeClient } from '@clevercloud/client/cc-api-bridge-client.js';
 import { CcApiClient } from '@clevercloud/client/cc-api-client.js';
 // FIXME: the import-x/resovler plugin needs to be configured to use `browser` export condition
 // eslint-disable-next-line import-x/no-unresolved
@@ -8,10 +9,13 @@ import { CcApiErrorEvent } from './send-to-api.events.js';
  * @typedef {Omit<ConstructorParameters<typeof CcApiClient>[0], 'hooks'>} CcApiClientConfigWithoutHooks
  */
 
-/** @import { ApiConfig, ApiTokenConfig } from './send-to-api.types.js' */
+/** @import { ApiConfig, ApiTokenConfig, AuthBridgeConfig } from './send-to-api.types.js' */
 
 /** @type {Map<string, CcApiClient>} */
 const clientCache = new Map();
+
+/** @type {Map<string, CcApiBridgeClient>} */
+const bridgeClientCache = new Map();
 
 /**
  * Generate a deterministic string key from a config object.
@@ -77,7 +81,7 @@ export function getCcApiClientWithOAuth(apiConfig) {
       createClient({
         authMethod: getOAuthMethod(apiConfig),
         baseUrl: apiConfig?.API_HOST,
-        defaultRequestConfig: { cors: true },
+        defaultRequestConfig: { isCorsEnabled: true },
       }),
     );
   }
@@ -105,13 +109,43 @@ export function getCcApiClientWithToken(apiTokenConfig) {
           apiToken: apiTokenConfig.API_TOKEN,
         },
         baseUrl: apiTokenConfig.API_HOST,
-        defaultRequestConfig: { cors: true },
+        defaultRequestConfig: { isCorsEnabled: true },
         resourceIdResolverStore: new LocalStorageStore(`cc-client-cache-${cacheKey}`),
       }),
     );
   }
 
   return clientCache.get(cacheKey);
+}
+
+/**
+ * Get or create a CcApiBridgeClient instance for the given auth bridge config.
+ * Clients are cached based on config content, so all components
+ * with the same config values will share the same client instance.
+ *
+ * @param {AuthBridgeConfig} authBridgeConfig
+ * @returns {CcApiBridgeClient}
+ */
+export function getCcApiBridgeClient(authBridgeConfig) {
+  const cacheKey = configToKey(authBridgeConfig);
+
+  if (!bridgeClientCache.has(cacheKey)) {
+    bridgeClientCache.set(
+      cacheKey,
+      new CcApiBridgeClient({
+        oauthTokens: {
+          consumerKey: authBridgeConfig.OAUTH_CONSUMER_KEY,
+          consumerSecret: authBridgeConfig.OAUTH_CONSUMER_SECRET,
+          token: authBridgeConfig.API_OAUTH_TOKEN,
+          secret: authBridgeConfig.API_OAUTH_TOKEN_SECRET,
+        },
+        baseUrl: authBridgeConfig.AUTH_BRIDGE_HOST,
+        defaultRequestConfig: { isCorsEnabled: true },
+      }),
+    );
+  }
+
+  return bridgeClientCache.get(cacheKey);
 }
 
 /**
