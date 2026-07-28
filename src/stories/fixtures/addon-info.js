@@ -216,6 +216,22 @@ export const pulsarInfo = {
 }
 
 /** @type {AddonInfoStateBaseProperties} */
+export const cellarInfo = {
+  creationDate: '2025-08-06T15:03:00Z',
+  totalContent: {
+    buckets: 12,
+    objects: 97332478,
+  },
+  traffic: {
+    inbound: 10737418240,
+    outbound: 5368709120,
+  },
+  usedSpaces: {
+    size: 549755813888,
+  },
+}
+
+/** @type {AddonInfoStateBaseProperties} */
 export const configInfo = {
   creationDate: '2025-06-15T10:30:00Z',
 }
