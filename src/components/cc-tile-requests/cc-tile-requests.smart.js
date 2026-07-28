@@ -11,6 +11,8 @@ import './cc-tile-requests.js';
  * @import { OnContextUpdateArgs } from '../../lib/smart/smart-component.types.js'
  */
 
+const ONE_HOUR = 1000 * 60 * 60;
+
 defineSmartComponent({
   selector: 'cc-tile-requests',
   params: {
@@ -46,20 +48,18 @@ defineSmartComponent({
  * @return {Promise<Array<RequestsData>>}
  */
 async function fetchRequests({ apiConfig, signal, ownerId, appId }) {
-  const to = new Date();
-  to.setHours(to.getHours() - 1, 0, 0, 0);
-
+  // Omitting `from`/`to` lets the API default to the last 24 whole hours ending at the current hour.
   const data = await getCcApiClientWithOAuth(apiConfig).send(
     new GetStatusCodeDistributionCommand({
       ownerId,
       applicationId: appId,
-      to,
     }),
     { signal },
   );
 
   return data.byDate.map((entry) => {
-    const time = new Date(entry.date).getTime();
-    return [time, time + 1000 * 60 * 60 - 1, entry.total];
+    // The API dates each bucket with its end boundary, the tile expects its start.
+    const end = new Date(entry.date).getTime();
+    return [end - ONE_HOUR, end - 1, entry.total];
   });
 }
