@@ -34,7 +34,7 @@ interface ApiConfig {
 
 | Method | URL                                               | Cache   |
 |--------|---------------------------------------------------|---------|
-| `GET`  | `/v4/stats/organisations/{ownerId}/http-requests` | Default |
+| `GET`  | `/v4/stats/organisations/{ownerId}/http-status-codes` | Default |
 
 ## ⬇️️ Examples
 
