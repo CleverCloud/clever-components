@@ -18,6 +18,7 @@ title: '💡 Smart'
 | Name                       | Payload | Details                                                                                                                           |
 |----------------------------|---------|-----------------------------------------------------------------------------------------------------------------------------------|
 | `cc-domain-primary-change` |         | Fired when the primary domain has been changed successfully.<br/>Should be used to refresh the app link within the console header |
+| `cc-domain-list-change`    |         | Fired when a domain has been added or deleted successfully.<br/>Should be used to refresh anything derived from the domain list, such as a link pointing at the app.<br/>Not fired on primary domain change, see `cc-domain-primary-change` |
 
 
 ## ⚙️ Params
