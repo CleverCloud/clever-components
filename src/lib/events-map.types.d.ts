@@ -43,6 +43,7 @@ import {
 import {
   CcDomainAddEvent,
   CcDomainDeleteEvent,
+  CcDomainListChangeEvent,
   CcDomainMarkAsPrimaryEvent,
   CcDomainPrimaryChangeEvent,
 } from '../components/cc-domain-management/cc-domain-management.events.js';
@@ -260,6 +261,7 @@ declare global {
     'cc-deployment-cancel': CcDeploymentCancelEvent;
     'cc-domain-add': CcDomainAddEvent;
     'cc-domain-delete': CcDomainDeleteEvent;
+    'cc-domain-list-change': CcDomainListChangeEvent;
     'cc-domain-mark-as-primary': CcDomainMarkAsPrimaryEvent;
     'cc-domain-primary-change': CcDomainPrimaryChangeEvent;
     'cc-email-add': CcEmailAddEvent;
