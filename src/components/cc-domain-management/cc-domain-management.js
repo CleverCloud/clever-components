@@ -546,6 +546,12 @@ export class CcDomainManagement extends LitElement {
     const hasDomains = domains.length > 0;
     const isOneRowMarkingPrimary = domains.filter((domain) => domain.type === 'marking-primary').length > 0;
     const hasHttpOnlyDomains = domains.filter((domain) => domain.isHttpOnly).length > 0;
+    // The grid is filled column by column, which requires an explicit row count.
+    // A single domain stays on one full width column.
+    // The grid is filled column by column, which requires an explicit row count.
+    // A single domain stays on one full width column.
+    const columnCount = domains.length > 1 ? 2 : 1;
+    const rowCount = Math.ceil(domains.length / columnCount);
 
     if (!hasDomains) {
       return html`
@@ -573,7 +579,7 @@ export class CcDomainManagement extends LitElement {
           `
         : ''}
 
-      <div class="domains">
+      <div class="domains" style="--domain-columns: ${columnCount}; --domain-rows: ${rowCount};">
         ${repeat(
           domains,
           ({ id }) => id,
@@ -807,6 +813,7 @@ export class CcDomainManagement extends LitElement {
       cliCommandsStyles,
       css`
         :host {
+          container-type: inline-size;
           display: block;
         }
 
@@ -890,7 +897,18 @@ export class CcDomainManagement extends LitElement {
         .domains {
           display: grid;
           gap: var(--cc-spacing-5, 1em);
-          grid-template-columns: repeat(auto-fit, minmax(min(25em, 100%), 1fr));
+        }
+
+        /* Domains are sorted by reversed hostname + path prefix. Filling the grid column by column
+           (instead of the default row by row) keeps that order readable as a straight top to bottom
+           scan within each column. The row and column counts cannot be derived in CSS, they are set
+           as inline custom properties when rendering the list. */
+        @container (width > 51em) {
+          .domains {
+            grid-auto-flow: column;
+            grid-template-columns: repeat(var(--domain-columns), 1fr);
+            grid-template-rows: repeat(var(--domain-rows), auto);
+          }
         }
 
         .domain {
