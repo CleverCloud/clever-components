@@ -972,8 +972,10 @@ export class CcDomainManagement extends LitElement {
            prefixes are what stands out when scanning a column.
            --cc-color-text-weak is only one step below --cc-color-text-default, which reads as the
            same color, hence the raw palette color here. Contrast stays above AA on the card
-           background. */
-        .repeated-hostname {
+           background.
+           A waiting domain is left out: its whole name is already dimmed by an opacity, which no
+           de-emphasized color could go through while keeping an AA contrast. */
+        .domain:not(.waiting) .repeated-hostname {
           color: var(--color-grey-60, #737373);
         }
 
