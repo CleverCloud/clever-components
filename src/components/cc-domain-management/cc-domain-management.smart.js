@@ -13,7 +13,7 @@ import { sendToApi } from '../../lib/send-to-api.js';
 import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-smart-container/cc-smart-container.js';
-import { CcDomainPrimaryChangeEvent } from './cc-domain-management.events.js';
+import { CcDomainListChangeEvent, CcDomainPrimaryChangeEvent } from './cc-domain-management.events.js';
 import { CcDomainManagement } from './cc-domain-management.js';
 
 /**
@@ -114,6 +114,9 @@ defineSmartComponent({
               domainListState.domains.push(newDomain);
             },
           );
+
+          // Dispatch event so consumers can refresh whatever they derive from the domain list
+          component.dispatchEvent(new CcDomainListChangeEvent());
         })
         .catch(
           /** @param {Error} error */
@@ -160,6 +163,12 @@ defineSmartComponent({
               domainListState.domains = domainListState.domains.filter((domain) => domain.id !== id);
             },
           );
+
+          // Dispatch event so consumers can refresh whatever they derive from the domain list. Deleting the
+          // primary domain does not re-emit `cc-domain-primary-change`, so this is the only signal consumers
+          // get in that case.
+          component.dispatchEvent(new CcDomainListChangeEvent());
+
           notifySuccess(i18n('cc-domain-management.list.delete.success', { domain: domainWithPathAndWildcard }));
         })
         .catch((error) => {

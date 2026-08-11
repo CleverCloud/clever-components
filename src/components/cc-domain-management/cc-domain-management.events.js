@@ -63,3 +63,20 @@ export class CcDomainPrimaryChangeEvent extends CcEvent {
     super(CcDomainPrimaryChangeEvent.TYPE, detail);
   }
 }
+
+/**
+ * Dispatched when a domain addition or deletion has been taken into account.
+ *
+ * Unlike `cc-domain-add` and `cc-domain-delete`, which are intents dispatched before the API call, this one is
+ * dispatched once the API has answered. Consumers deriving something from the domain list can safely refetch
+ * when they receive it.
+ *
+ * @extends {CcEvent}
+ */
+export class CcDomainListChangeEvent extends CcEvent {
+  static TYPE = 'cc-domain-list-change';
+
+  constructor() {
+    super(CcDomainListChangeEvent.TYPE);
+  }
+}
