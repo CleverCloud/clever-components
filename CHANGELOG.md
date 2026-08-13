@@ -5,6 +5,22 @@ title: 'Changelog'
 
 # Changelog
 
+## [26.2.0](https://github.com/CleverCloud/clever-components/compare/26.1.0...26.2.0) (2026-08-13)
+
+
+### 🚀 Features
+
+* **cc-domain-management:** de-emphasize repeated hostnames in the domain list ([ba4d683](https://github.com/CleverCloud/clever-components/commit/ba4d683978acfbb7d9f0750b3b2a70352625a3a7))
+* **cc-domain-management:** dispatch cc-domain-list-change after add and delete ([0acafb4](https://github.com/CleverCloud/clever-components/commit/0acafb43e3ccdc572f49c6a4c98e106748b0e497))
+* **filter-sections:** share the search and sidebar filter grammar ([700d7b0](https://github.com/CleverCloud/clever-components/commit/700d7b0a30effe0f982558e7894a19a63f2aa74b))
+
+
+### 🐛 Bug Fixes
+
+* **cc-domain-management:** fill the domain list column by column ([1d6a7c4](https://github.com/CleverCloud/clever-components/commit/1d6a7c40ab2fd154f1ae1f89d1f29f70eb499810))
+* **cc-domain-management:** keep waiting domains out of the hostname de-emphasis ([668f9e4](https://github.com/CleverCloud/clever-components/commit/668f9e4da3e8b4fc72789c671de46e00c25ffc2c))
+* **cc-search-bar:** advertise the project: keyword where users look for it ([703f448](https://github.com/CleverCloud/clever-components/commit/703f44854075b48686dc7506151f44fce471b565))
+
 ## [26.1.0](https://github.com/CleverCloud/clever-components/compare/26.0.0...26.1.0) (2026-07-28)
 
 
