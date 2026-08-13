@@ -1903,7 +1903,7 @@ export const translations = {
   'cc-search-bar.footer.navigate': `Naviguer`,
   'cc-search-bar.heading': `Barre de recherche`,
   'cc-search-bar.initial.description': () =>
-    sanitize`Commencez à chercher par mots-clés, id ou filtre (par exemple : <code>is:app</code>, <code>is:addon</code>…).<br>Vous pouvez effectuer une recherche parmi les organisations, les ressources (applications, add-ons, etc.), les pages et la documentation.`,
+    sanitize`Commencez à chercher par mots-clés, id ou filtre (par exemple : <code>is:app</code>, <code>is:addon</code>, <code>project:facturation</code>…).<br>Vous pouvez effectuer une recherche parmi les organisations, les ressources (applications, add-ons, etc.), les pages et la documentation.`,
   'cc-search-bar.initial.title': `Cherchez parmi tous vos contenus`,
   'cc-search-bar.label': `Que cherchez-vous ?`,
   'cc-search-bar.no-result.description': `Essayez d'autres mots-clés ou vérifiez l'orthographe`,

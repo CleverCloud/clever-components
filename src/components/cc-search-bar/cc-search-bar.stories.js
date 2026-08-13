@@ -52,9 +52,14 @@ const defaultSections = [
     label: 'Ressources in this organisation',
     icon: iconResources,
     items: [
-      { label: 'APM --0307-42dc-af99-b485ecc44536', href: '#apm-1', itemType: 'app' },
-      { label: 'fs-matomot-with-posthog', href: '#matomot-1', itemType: 'addon' },
-      { label: 'APM - apps-0307-42dc-af99-b485ecc44536', href: '#apm-2', itemType: 'app' },
+      { label: 'APM --0307-42dc-af99-b485ecc44536', href: '#apm-1', itemType: 'app', matchers: ['project:billing'] },
+      { label: 'fs-matomot-with-posthog', href: '#matomot-1', itemType: 'addon', matchers: ['project:billing'] },
+      {
+        label: 'APM - apps-0307-42dc-af99-b485ecc44536',
+        href: '#apm-2',
+        itemType: 'app',
+        matchers: ['project:analytics'],
+      },
       {
         label: 'network-groupups_4d65a2d6-0307-af99-b485ecc44536',
         href: '#ng-1',
@@ -182,10 +187,14 @@ empty sections are hidden.
 
 export const withKeywordFilter = makeStory(conf, {
   docs: `
-The query supports \`is:<value>\` keyword tokens. Items match a keyword token when it is in their derived
-matchers — \`is:<itemType>\` is added automatically for items with an \`itemType\`, and additional matchers can
-be provided via the \`matchers\` field. Tokens can be combined: \`is:app apm\` keeps only \`itemType: 'app'\`
-items whose label includes \`apm\`.
+The query supports \`is:<value>\` and \`project:<value>\` keyword tokens. Items match a keyword token when it is
+in their derived matchers — \`is:<itemType>\` is added automatically for items with an \`itemType\`, and any
+other matcher, \`project:<name>\` included, is provided via the \`matchers\` field. Anything else in the query
+is free text, matched against an item's label and id, so a colon in a URL or an id still searches as text.
+
+Tokens can be combined and all must pass: \`is:app apm\` keeps only \`itemType: 'app'\` items whose label
+includes \`apm\`. The items of this story carry \`project:billing\` and \`project:analytics\` matchers — try
+\`project:billing\` alone, or \`is:app project:billing\` to see both kinds of token narrow the same list.
   `,
   /** @param {HTMLElement} container */
   dom: (container) => {

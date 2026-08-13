@@ -5,14 +5,13 @@ import {
   iconRemixExternalLinkLine as iconExternalLink,
   iconRemixSearchLine as iconSearch,
 } from '../../assets/cc-remix.icons.js';
+import { filterSections } from '../../lib/filter-sections.js';
 import { isExternalUrl } from '../../lib/utils.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-badge/cc-badge.js';
 import '../cc-dialog/cc-dialog.js';
 import '../cc-icon/cc-icon.js';
 import '../cc-input-text/cc-input-text.js';
-
-const KEYWORD_TOKEN_REGEX = /^is:./;
 
 /** @type {Record<SearchBarItemType, BadgeIntent>} */
 const ITEM_TYPE_BADGE_INTENT = {
@@ -125,40 +124,22 @@ export class CcSearchBar extends LitElement {
   }
 
   /**
-   * Filters `this.sections` based on `this.value`, using a token-based syntax.
+   * Filters `this.sections` based on `this.value`, with the grammar shared with the console sidebar
+   * (see `lib/filter-sections.js`): `is:`/`project:` tokens are matched against an item's matchers,
+   * everything else is free text matched against its label and id, and every token must pass.
    *
-   * Tokens are split on whitespace and partitioned into:
-   * - keyword tokens (`is:<value>`): an item passes only if every keyword token
-   *   is present in its derived matchers (`is:<itemType>` and explicit `matchers`).
-   * - text tokens: an item passes only if every text token is `includes`'d in its
-   *   lowercased label or its lowercased id.
+   * `is:<itemType>` is folded into the matchers here so an item only setting `itemType` still answers
+   * `is:app`, and an empty query yields nothing rather than the whole list — a search bar shows no
+   * result until something is typed.
    *
    * @returns {SearchBarSection[]}
    */
   _getFilteredSections() {
-    const query = this.value.trim().toLowerCase();
-    if (query === '') {
-      return [];
-    }
-    const tokens = query.split(/\s+/);
-    const keywordTokens = tokens.filter((token) => KEYWORD_TOKEN_REGEX.test(token));
-    const textTokens = tokens.filter((token) => !KEYWORD_TOKEN_REGEX.test(token));
-
-    return this.sections
-      .map((section) => ({
-        ...section,
-        items: section.items.filter((item) => {
-          const itemMatchers = [...(item.itemType != null ? [`is:${item.itemType}`] : []), ...(item.matchers ?? [])];
-          const keywordsMatch = keywordTokens.every((keyword) => itemMatchers.includes(keyword));
-          if (!keywordsMatch) {
-            return false;
-          }
-          const label = item.label.toLowerCase();
-          const id = item.id?.toLowerCase() ?? '';
-          return textTokens.every((token) => label.includes(token) || id.includes(token));
-        }),
-      }))
-      .filter((section) => section.items.length > 0);
+    return filterSections(this.sections, this.value, {
+      getMatchers: (item) => [...(item.itemType != null ? [`is:${item.itemType}`] : []), ...(item.matchers ?? [])],
+      getTexts: (item) => [item.label, item.id],
+      emptyQuery: 'none',
+    });
   }
 
   _onDialogClose() {
