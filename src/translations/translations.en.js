@@ -1880,7 +1880,7 @@ export const translations = {
   'cc-search-bar.footer.navigate': `Navigate`,
   'cc-search-bar.heading': `Search bar`,
   'cc-search-bar.initial.description': () =>
-    sanitize`Start searching by keywords, id or filter (for example: <code>is:app</code>, <code>is:addon</code>…).<br>You can search across organizations, resources (applications, add-ons, etc.), pages and documentation.`,
+    sanitize`Start searching by keywords, id or filter (for example: <code>is:app</code>, <code>is:addon</code>, <code>project:billing</code>…).<br>You can search across organizations, resources (applications, add-ons, etc.), pages and documentation.`,
   'cc-search-bar.initial.title': `Search across all your content`,
   'cc-search-bar.label': `What are you looking for?`,
   'cc-search-bar.no-result.description': `Try different keywords or check the spelling`,
