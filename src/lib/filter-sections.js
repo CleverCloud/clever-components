@@ -68,8 +68,8 @@ export function matchesFilterQuery({ keywordTokens, textTokens }, matchers, text
  * @param {Array<S>} sections
  * @param {string} query
  * @param {object} [options]
- * @param {(item: any) => Array<string>} [options.getMatchers] - reads an item's matchers
- * @param {(item: any) => Array<string|null|undefined>} [options.getTexts] - reads an item's text fields
+ * @param {(item: S['items'][number]) => Array<string>} [options.getMatchers] - reads an item's matchers
+ * @param {(item: S['items'][number]) => Array<string|null|undefined>} [options.getTexts] - reads an item's text fields
  * @param {Array<string>} [options.keywordPrefixes]
  * @param {'all'|'none'} [options.emptyQuery] - what an empty query yields: every non-empty section, or
  * nothing. A sidebar shows everything unfiltered; a search bar shows no result until something is typed.
