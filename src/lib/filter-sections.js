@@ -2,10 +2,8 @@
  * Filter grammar shared by the resource lists that narrow sections of items with a text query:
  * `cc-search-bar` (global search) and the console's own sidebar.
  *
- * The two used to implement the grammar separately and had drifted apart — `project:` was a keyword on
- * one side and free text on the other, and they did not search the same fields. The tokenizing and the
- * matching semantics live here; what differs legitimately between call sites (which fields hold the
- * text, what an empty query means) stays configurable.
+ * The tokenizing and the matching semantics live here; what differs legitimately between call sites
+ * (which fields hold the text, what an empty query means) stays configurable.
  *
  * Grammar:
  * - the query is lowercased, trimmed, and split on whitespace into tokens,
@@ -74,7 +72,7 @@ export function matchesFilterQuery({ keywordTokens, textTokens }, matchers, text
  * @param {(item: any) => Array<string|null|undefined>} [options.getTexts] - reads an item's text fields
  * @param {Array<string>} [options.keywordPrefixes]
  * @param {'all'|'none'} [options.emptyQuery] - what an empty query yields: every non-empty section, or
- *   nothing. A sidebar shows everything unfiltered; a search bar shows no result until something is typed.
+ * nothing. A sidebar shows everything unfiltered; a search bar shows no result until something is typed.
  * @returns {Array<S>} the sections holding at least one matching item
  */
 export function filterSections(sections, query, options = {}) {
