@@ -11,6 +11,7 @@ import { LitElement, css, html } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { createRef, ref } from 'lit/directives/ref.js';
 import { repeat } from 'lit/directives/repeat.js';
+import { styleMap } from 'lit/directives/style-map.js';
 import {
   iconRemixDeleteBinLine as iconDelete,
   iconRemixLockUnlockFill as iconHttpOnly,
@@ -52,6 +53,37 @@ const DNS_DOCUMENTATION = getDocUrl('/administrate/domain-names');
  * @import { TemplateResult, PropertyValues } from 'lit'
  * @import { Ref } from 'lit/directives/ref.js'
  */
+
+/**
+ * Tells, for each domain, whether its hostname repeats the one displayed right above it.
+ * Domains are sorted by hostname, so repeats are always consecutive and de-emphasizing them makes
+ * the path prefixes stand out on apps exposing many paths on the same hostname.
+ *
+ * The hostname is compared with its wildcard prefix included, because `*.example.com` and
+ * `example.com` are two different hostnames from the user point of view even though they share the
+ * same `hostname` value.
+ *
+ * The first domain of a column is never flagged: its hostname sits at the top of a column, so the
+ * previous domain is not displayed above it. `rowCount` marks a column break only when the list is
+ * actually laid out on two columns. On a single column it merely skips one de-emphasis, which is
+ * why it errs on that side: a de-emphasized hostname always has its full-color twin right above it.
+ *
+ * @param {FormattedDomainInfo[]} domains - sorted domains, as displayed
+ * @param {number} rowCount - number of rows of the domain list layout
+ * @returns {boolean[]} one flag per domain, in the same order
+ */
+function getRepeatedHostnameFlags(domains, rowCount) {
+  return domains.map((domain, index) => {
+    if (index === 0 || index === rowCount) {
+      return false;
+    }
+    const previousDomain = domains[index - 1];
+    return (
+      getHostWithWildcard(domain.hostname, domain.isWildcard) ===
+      getHostWithWildcard(previousDomain.hostname, previousDomain.isWildcard)
+    );
+  });
+}
 
 /**
  * A component to manage domains associated to an application.
@@ -546,6 +578,11 @@ export class CcDomainManagement extends LitElement {
     const hasDomains = domains.length > 0;
     const isOneRowMarkingPrimary = domains.filter((domain) => domain.type === 'marking-primary').length > 0;
     const hasHttpOnlyDomains = domains.filter((domain) => domain.isHttpOnly).length > 0;
+    // The grid is filled column by column, which requires an explicit row count.
+    // A single domain stays on one full width column.
+    const columnCount = domains.length > 1 ? 2 : 1;
+    const rowCount = Math.ceil(domains.length / columnCount);
+    const repeatedHostnameFlags = getRepeatedHostnameFlags(domains, rowCount);
 
     if (!hasDomains) {
       return html`
@@ -573,11 +610,11 @@ export class CcDomainManagement extends LitElement {
           `
         : ''}
 
-      <div class="domains">
+      <div class="domains" style=${styleMap({ '--domain-columns': columnCount, '--domain-rows': rowCount })}>
         ${repeat(
           domains,
           ({ id }) => id,
-          (domain) => this._renderDomain(domain, isOneRowMarkingPrimary),
+          (domain, index) => this._renderDomain(domain, isOneRowMarkingPrimary, repeatedHostnameFlags[index]),
         )}
       </div>
     `;
@@ -586,9 +623,10 @@ export class CcDomainManagement extends LitElement {
   /**
    * @param {FormattedDomainInfo} domainInfo
    * @param {boolean} isOneRowMarkingPrimary
+   * @param {boolean} isHostnameRepeated - whether the hostname is already displayed on the domain right above
    * @returns {TemplateResult}
    **/
-  _renderDomain(domainInfo, isOneRowMarkingPrimary) {
+  _renderDomain(domainInfo, isOneRowMarkingPrimary, isHostnameRepeated) {
     const {
       type: domainItemStateType,
       id,
@@ -603,6 +641,7 @@ export class CcDomainManagement extends LitElement {
     const isMarkingPrimaryDisabled = isOneRowMarkingPrimary || domainItemStateType === 'deleting';
     const hostWithWildcard = getHostWithWildcard(hostname, isWildcard);
     const domainUrl = getDomainUrl(hostname, pathPrefix, isWildcard, isHttpOnly);
+    const hostnameClass = isHostnameRepeated ? 'repeated-hostname' : '';
 
     return html`
       <!--
@@ -612,7 +651,7 @@ export class CcDomainManagement extends LitElement {
       <div class="domain ${classMap({ primary: isPrimary, waiting })}" tabindex="-1">
         <span class="domain-name-with-path">
           <!-- These tags need to remain on the same line so there is no white-space when pasting domain+path -->
-          <span>${hostWithWildcard}</span><span class="path-prefix">${pathPrefix}</span>
+          <span class="${hostnameClass}">${hostWithWildcard}</span><span class="path-prefix">${pathPrefix}</span>
           <a
             class="domain-link"
             href="${domainUrl}"
@@ -807,6 +846,7 @@ export class CcDomainManagement extends LitElement {
       cliCommandsStyles,
       css`
         :host {
+          container-type: inline-size;
           display: block;
         }
 
@@ -890,7 +930,18 @@ export class CcDomainManagement extends LitElement {
         .domains {
           display: grid;
           gap: var(--cc-spacing-5, 1em);
-          grid-template-columns: repeat(auto-fit, minmax(min(25em, 100%), 1fr));
+        }
+
+        /* Domains are sorted by reversed hostname + path prefix. Filling the grid column by column
+           (instead of the default row by row) keeps that order readable as a straight top to bottom
+           scan within each column. The row and column counts cannot be derived in CSS, they are set
+           as inline custom properties when rendering the list. */
+        @container (width > 51em) {
+          .domains {
+            grid-auto-flow: column;
+            grid-template-columns: repeat(var(--domain-columns), 1fr);
+            grid-template-rows: repeat(var(--domain-rows), auto);
+          }
         }
 
         .domain {
@@ -915,6 +966,17 @@ export class CcDomainManagement extends LitElement {
         .domain-name-with-path {
           flex: 1 0 100%;
           word-break: break-all;
+        }
+
+        /* When the hostname repeats the one right above, it is de-emphasized so that the path
+           prefixes are what stands out when scanning a column.
+           --cc-color-text-weak is only one step below --cc-color-text-default, which reads as the
+           same color, hence the raw palette color here. Contrast stays above AA on the card
+           background.
+           A waiting domain is left out: its whole name is already dimmed by an opacity, which no
+           de-emphasized color could go through while keeping an AA contrast. */
+        .domain:not(.waiting) .repeated-hostname {
+          color: var(--color-grey-60, #737373);
         }
 
         .path-prefix {
