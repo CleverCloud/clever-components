@@ -201,6 +201,20 @@ export const coldMode = makeStory(conf, {
   items: [{ state: { state: 'loaded', selection: [], instances: ALL_INSTANCES, mode: 'cold' } }],
 });
 
+export const coldModeWithPartialDeploymentSelection = makeStory(conf, {
+  /** @type {Array<Partial<CcLogsInstances>>} */
+  items: [
+    {
+      state: {
+        state: 'loaded',
+        selection: [ALL_INSTANCES[0].id, ALL_INSTANCES[2].id, ...ALL_INSTANCES.slice(5, 9).map((i) => i.id)],
+        instances: ALL_INSTANCES,
+        mode: 'cold',
+      },
+    },
+  ],
+});
+
 export const coldModeWithGhostInstances = makeStory(conf, {
   /** @type {Array<Partial<CcLogsInstances>>} */
   items: [{ state: { state: 'loaded', selection: [], instances: ALL_INSTANCES_WITH_GHOSTS, mode: 'cold' } }],
