@@ -205,6 +205,8 @@ export class CcEnvVarLinkedServices extends LitElement {
 
         .dashboard-link {
           flex: 0 0 auto;
+          /* the slotted description is italic, the button label must not inherit it */
+          font-style: normal;
         }
 
         .empty-msg {
