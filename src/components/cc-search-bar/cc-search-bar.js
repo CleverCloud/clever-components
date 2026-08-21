@@ -91,7 +91,8 @@ export class CcSearchBar extends LitElement {
 
     /**
      * @type {number} Index of the virtually focused item within the flattened list of filtered items.
-     * `-1` means no item is virtually focused: the real focus stays on the input.
+     * The first item is virtually focused as soon as the filtering yields something, so `Enter` always
+     * opens a result (typing a resource id jumps straight to it). `-1` means the list is empty.
      */
     this._activeItemIndex = -1;
 
@@ -142,17 +143,27 @@ export class CcSearchBar extends LitElement {
     });
   }
 
+  /**
+   * Virtually focuses the first filtered item, or nothing when the filtering yields no item.
+   *
+   * The virtual focus never rests on the input: keeping it on the first item is what lets `Enter` open a
+   * result right away, which matters when a pasted resource id yields a single one.
+   */
+  _resetActiveItem() {
+    this._activeItemIndex = this._flatItems.length > 0 ? 0 : -1;
+  }
+
   _onDialogClose() {
     this.open = false;
-    this._activeItemIndex = -1;
+    // Reopening the dialog with the same query must start over from the first item, not from wherever the
+    // arrow keys left the selection.
+    this._resetActiveItem();
   }
 
   /** @param {CcInputEvent} e */
   _onInput(e) {
     this.value = e.detail;
-    // As soon as the query changes, the filtered items change: the virtually focused item may disappear,
-    // so we reset the virtual focus back to the input.
-    this._activeItemIndex = -1;
+    // The virtual focus is moved back to the first item by `willUpdate()`, which knows the new filtered list.
   }
 
   /**
@@ -176,7 +187,7 @@ export class CcSearchBar extends LitElement {
       this._activeItemIndex = this._activeItemIndex >= itemCount - 1 ? 0 : this._activeItemIndex + 1;
     } else if (e.key === 'ArrowUp') {
       e.preventDefault();
-      // Loop back to the last item when reaching the start (including from the input, index `-1`).
+      // Loop back to the last item when reaching the start.
       this._activeItemIndex = this._activeItemIndex <= 0 ? itemCount - 1 : this._activeItemIndex - 1;
     } else if (e.key === 'Enter' && this._activeItemIndex >= 0) {
       e.preventDefault();
@@ -194,16 +205,13 @@ export class CcSearchBar extends LitElement {
     if (changedProperties.has('value') || changedProperties.has('sections')) {
       this._filteredSections = this._getFilteredSections();
       this._flatItems = this._filteredSections.flatMap((section) => section.items);
+      // The filtered list changed, so the previously focused item is meaningless.
+      this._resetActiveItem();
     }
   }
 
   /** @param {PropertyValues} changedProperties */
   updated(changedProperties) {
-    // If the virtually focused item no longer exists (e.g. the sections changed), reset the focus to the input.
-    if (this._activeItemIndex >= this._flatItems.length) {
-      this._activeItemIndex = -1;
-      return;
-    }
     if (changedProperties.has('_activeItemIndex') && this._activeItemIndex >= 0) {
       // `block: 'nearest'` keeps the selection visible when scrolling through a long list (or when zoomed in)
       // without jumping around.
