@@ -853,6 +853,9 @@ export const translations = {
   'cc-env-var-input.value-placeholder': `valeur de la variable`,
   //#endregion
   //#region cc-env-var-linked-services
+  'cc-env-var-linked-services.dashboard-link': `Aller au tableau de bord`,
+  'cc-env-var-linked-services.dashboard-link.a11y-desc': /** @param {{name: string}} _ */ ({ name }) =>
+    `Aller au tableau de bord de ${name}`,
   'cc-env-var-linked-services.description.addon': /** @param {{serviceName: string, appName: string}} _ */ ({
     serviceName,
     appName,
