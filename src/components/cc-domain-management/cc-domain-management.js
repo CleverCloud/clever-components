@@ -991,6 +991,9 @@ export class CcDomainManagement extends LitElement {
 
           font-family: var(--cc-ff-monospace, monospace);
           padding: var(--cc-spacing-1, 0.25em);
+          /* Prevent selecting the domain link when triple clicking the domain line */
+          -webkit-user-select: none;
+          user-select: none;
           vertical-align: middle;
         }
 
