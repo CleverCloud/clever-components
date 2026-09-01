@@ -309,6 +309,8 @@ export class CcZoneInput extends LitElement {
       css`
         :host {
           display: block;
+
+          --label-border-width: 2px;
         }
 
         .wrapper {
@@ -352,10 +354,12 @@ export class CcZoneInput extends LitElement {
           margin: var(--cc-spacing-3, 0.5em);
         }
 
-        .zone-list:not(:hover):focus-within {
+        /* mostly for Firefox which tends to make scrollable area focusable */
+        .zone-list-wrapper:focus {
           border-radius: var(--cc-border-radius-medium, 0.375em);
           outline: var(--cc-focus-outline, #000 solid 2px);
-          outline-offset: var(--cc-focus-outline-offset, 2px);
+          /* make the focus visible despite the overflow hidden */
+          outline-offset: -3px;
         }
 
         .zone-choice {
@@ -380,7 +384,7 @@ export class CcZoneInput extends LitElement {
         }
 
         .label {
-          border: 2px solid var(--bd-color, transparent);
+          border: var(--label-border-width) solid transparent;
           border-radius: var(--cc-border-radius-medium, 0.375em);
           box-sizing: border-box;
           display: block;
@@ -392,7 +396,13 @@ export class CcZoneInput extends LitElement {
         }
 
         input:checked + .label {
-          --bd-color: var(--cc-color-bg-primary-highlight, #000);
+          background: var(--cc-color-bg-neutral-active, #eaeaea);
+        }
+
+        input:focus + .label {
+          outline: var(--cc-focus-outline, #000 solid 2px);
+          /* replace the transparent border with the visible outline */
+          outline-offset: calc(var(--label-border-width) * -1);
         }
 
         label.hovered,
