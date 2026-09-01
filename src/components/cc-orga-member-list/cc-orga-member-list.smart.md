@@ -23,10 +23,11 @@ title: '💡 Smart'
 
 ## ⚙️ Params
 
-| Name        | Type        | Details                                                 | Default |
-|-------------|-------------|---------------------------------------------------------|---------|
-| `apiConfig` | `ApiConfig` | Object with API configuration (target host, tokens...)  |         |
-| `ownerId`   | `string`    | UUID prefixed with orga_                                |         |
+| Name        | Type        | Details                                                                                                                                              | Default |
+|-------------|-------------|------------------------------------------------------------------------------------------------------------------------------------------------------|---------|
+| `apiConfig` | `ApiConfig` | Object with API configuration (target host, tokens...)                                                                                               |         |
+| `ownerId`   | `string`    | UUID prefixed with orga_                                                                                                                             |         |
+| `readonly`  | `boolean`   | *optional*. When `true`, the member list stays readable but every write is denied whatever the current user's role: no invite, no role change, no member removal and no leaving the organisation. | `false` |
 
 ```ts
 interface ApiConfig {
@@ -57,6 +58,7 @@ interface ApiConfig {
       OAUTH_CONSUMER_SECRET: "",
     },
     "ownerId": "",
+    "readonly": false,
 }'>
     <cc-orga-member-list></cc-orga-member-list>
 <cc-smart-container>

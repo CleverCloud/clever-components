@@ -49,6 +49,7 @@ const authorisationsAdmin = {
   invite: true,
   edit: true,
   delete: true,
+  leave: true,
 };
 /** @type {Partial<CcOrgaMemberList>} */
 const baseItem = {
@@ -337,6 +338,28 @@ export const dataLoadedWithCurrentUserAdmin = makeStory(conf, {
   items: [
     {
       authorisations: authorisationsAdmin,
+      memberListState: {
+        type: 'loaded',
+        memberList: baseMemberList,
+        identityFilter: '',
+        mfaDisabledOnlyFilter: false,
+        dangerZoneState: 'idle',
+      },
+    },
+  ],
+});
+
+export const dataLoadedWithMemberManagementDenied = makeStory(conf, {
+  docs: 'When member management is denied, the list stays readable but every write is gone: no invite form, no edit / remove buttons and no danger zone.',
+  /** @type {Partial<CcOrgaMemberList>[]} */
+  items: [
+    {
+      authorisations: {
+        invite: false,
+        edit: false,
+        delete: false,
+        leave: false,
+      },
       memberListState: {
         type: 'loaded',
         memberList: baseMemberList,

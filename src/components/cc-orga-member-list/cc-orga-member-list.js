@@ -41,7 +41,8 @@ const ORGA_MEMBER_DOCUMENTATION = getDocUrl('/account/administrate-organization'
  * Depending on the current user authorisations:
  *
  *  - The current user may remove members,
- *  - The current user may edit the role of members.
+ *  - The current user may edit the role of members,
+ *  - The current user may leave the organisation.
  *
  * @cssdisplay block
  */
@@ -60,6 +61,8 @@ export class CcOrgaMemberList extends LitElement {
       invite: false,
       edit: false,
       delete: false,
+      // a plain member may always leave the organisation, this has to stay the default to remain backward compatible
+      leave: true,
     };
   }
 
@@ -369,7 +372,9 @@ export class CcOrgaMemberList extends LitElement {
             : ''}
         </cc-block-section>
 
-        ${this.memberListState.type === 'loaded' ? this._renderDangerZone(this.memberListState) : ''}
+        ${(this.authorisations.leave ?? true) && this.memberListState.type === 'loaded'
+          ? this._renderDangerZone(this.memberListState)
+          : ''}
 
         <div slot="footer-right">
           <cc-link href="${ORGA_MEMBER_DOCUMENTATION}" .icon="${iconInfo}">
@@ -460,6 +465,7 @@ export class CcOrgaMemberList extends LitElement {
               .authorisations=${{
                 edit: this.authorisations.edit,
                 delete: this.authorisations.delete,
+                leave: this.authorisations.leave,
               }}
               .state=${memberState}
               @cc-orga-member-leave=${this._onLeaveFromCard}
