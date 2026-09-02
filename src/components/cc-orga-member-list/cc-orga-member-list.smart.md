@@ -18,6 +18,7 @@ title: '💡 Smart'
 | Name                  | Payload | Details                                                                                                       |
 |-----------------------|---------|---------------------------------------------------------------------------------------------------------------|
 | `cc-orga-member-left` |         | Fired when the current user leaves the organisation.<br/>Should be used to redirect the user to another page. |
+| `cc-orga-member-was-updated` | `OrgaMember` | Fired when a member has been updated successfully.<br/>Should be used to refresh anything derived from the member list, such as the current user's rights. The payload contains the member with its new role. |
 
 
 ## ⚙️ Params
