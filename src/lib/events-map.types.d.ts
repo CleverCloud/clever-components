@@ -163,6 +163,18 @@ import {
   CcOrgaMemberLeftEvent,
 } from '../components/cc-orga-member-list/cc-orga-member-list.events.js';
 import {
+  CcPostgresqlConnectionsKillEvent,
+  CcPostgresqlDatabaseResetEvent,
+  CcPostgresqlDirectHostGenerateEvent,
+  CcPostgresqlDirectHostWasGeneratedEvent,
+  CcPostgresqlExtensionActivateEvent,
+  CcPostgresqlInstancesRebootEvent,
+  CcPostgresqlPasswordResetEvent,
+  CcPostgresqlPasswordWasResetEvent,
+  CcPostgresqlReadOnlyUserCreateEvent,
+  CcPostgresqlReplicaPromoteEvent,
+} from '../components/cc-postgresql-admin/cc-postgresql-admin.events.js';
+import {
   CcPricingCurrencyChangeEvent,
   CcPricingPlanAddEvent,
   CcPricingPlanDeleteEvent,
@@ -351,6 +363,16 @@ declare global {
     'cc-orga-member-left': CcOrgaMemberLeftEvent;
     'cc-orga-member-update': CcOrgaMemberUpdateEvent;
     'cc-password-reset': CcPasswordResetEvent;
+    'cc-postgresql-connections-kill': CcPostgresqlConnectionsKillEvent;
+    'cc-postgresql-database-reset': CcPostgresqlDatabaseResetEvent;
+    'cc-postgresql-direct-host-generate': CcPostgresqlDirectHostGenerateEvent;
+    'cc-postgresql-direct-host-was-generated': CcPostgresqlDirectHostWasGeneratedEvent;
+    'cc-postgresql-extension-activate': CcPostgresqlExtensionActivateEvent;
+    'cc-postgresql-instances-reboot': CcPostgresqlInstancesRebootEvent;
+    'cc-postgresql-password-reset': CcPostgresqlPasswordResetEvent;
+    'cc-postgresql-password-was-reset': CcPostgresqlPasswordWasResetEvent;
+    'cc-postgresql-read-only-user-create': CcPostgresqlReadOnlyUserCreateEvent;
+    'cc-postgresql-replica-promote': CcPostgresqlReplicaPromoteEvent;
     'cc-pricing-currency-change': CcPricingCurrencyChangeEvent;
     'cc-pricing-plan-add': CcPricingPlanAddEvent;
     'cc-pricing-plan-delete': CcPricingPlanDeleteEvent;
