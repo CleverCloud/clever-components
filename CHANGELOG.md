@@ -5,6 +5,26 @@ title: 'Changelog'
 
 # Changelog
 
+## [26.3.0](https://github.com/CleverCloud/clever-components/compare/26.2.0...26.3.0) (2026-09-03)
+
+
+### 🚀 Features
+
+* **cc-orga-member-list:** dispatch cc-orga-member-was-updated after a role change ([b2a3083](https://github.com/CleverCloud/clever-components/commit/b2a3083349f28fe69db906753285bf308b601bd5))
+* **cc-orga-member-list:** let consumers deny member management ([12730c8](https://github.com/CleverCloud/clever-components/commit/12730c8e689514f9a242ba3d7e5b30b72a016cf0)), closes [#1807](https://github.com/CleverCloud/clever-components/issues/1807)
+
+
+### 🐛 Bug Fixes
+
+* **cc-domain-management:** prevent selecting the domain link with triple click ([3129afd](https://github.com/CleverCloud/clever-components/commit/3129afd2edf6d74c73256cefc05511567b9cc8d5))
+* **cc-search-bar:** virtually focus the first result so Enter opens it ([20cb9c8](https://github.com/CleverCloud/clever-components/commit/20cb9c889fa20859ff293a698003de7176a09478))
+* **cc-zone-input:** separate selection visual from focus outline ([d057fe9](https://github.com/CleverCloud/clever-components/commit/d057fe9b7f8c7d1f86dd531367a774c9be160a2e)), closes [#1810](https://github.com/CleverCloud/clever-components/issues/1810)
+
+
+### ↩ Reverts
+
+* **cc-domain-management:** drop the de-emphasis of repeated hostnames ([cbfca46](https://github.com/CleverCloud/clever-components/commit/cbfca46adc79aadb5b0d07248b44b48b644e0355))
+
 ## [26.2.0](https://github.com/CleverCloud/clever-components/compare/26.1.0...26.2.0) (2026-08-13)
 
 
