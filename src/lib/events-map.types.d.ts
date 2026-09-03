@@ -161,6 +161,7 @@ import {
 import {
   CcOrgaMemberInviteEvent,
   CcOrgaMemberLeftEvent,
+  CcOrgaMemberWasUpdatedEvent,
 } from '../components/cc-orga-member-list/cc-orga-member-list.events.js';
 import {
   CcPricingCurrencyChangeEvent,
@@ -350,6 +351,7 @@ declare global {
     'cc-orga-member-leave': CcOrgaMemberLeaveEvent;
     'cc-orga-member-left': CcOrgaMemberLeftEvent;
     'cc-orga-member-update': CcOrgaMemberUpdateEvent;
+    'cc-orga-member-was-updated': CcOrgaMemberWasUpdatedEvent;
     'cc-password-reset': CcPasswordResetEvent;
     'cc-pricing-currency-change': CcPricingCurrencyChangeEvent;
     'cc-pricing-plan-add': CcPricingPlanAddEvent;

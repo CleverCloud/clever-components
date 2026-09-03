@@ -10,7 +10,7 @@ import { sendToApi } from '../../lib/send-to-api.js';
 import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-smart-container/cc-smart-container.js';
-import { CcOrgaMemberLeftEvent } from './cc-orga-member-list.events.js';
+import { CcOrgaMemberLeftEvent, CcOrgaMemberWasUpdatedEvent } from './cc-orga-member-list.events.js';
 import { CcOrgaMemberList } from './cc-orga-member-list.js';
 
 const MEMBER_NOT_FOUND = 6501;
@@ -115,7 +115,9 @@ defineSmartComponent({
         });
     });
 
-    onEvent('cc-orga-member-update', ({ id, role, newRole, name, email, isCurrentUser }) => {
+    onEvent('cc-orga-member-update', ({ newRole, ...orgaMember }) => {
+      const { id, role, name, email, isCurrentUser } = orgaMember;
+
       if (component.memberListState.type !== 'loaded') {
         return;
       }
@@ -155,6 +157,8 @@ defineSmartComponent({
           if (isCurrentUser) {
             updateAuthorisations(newRole);
           }
+
+          component.dispatchEvent(new CcOrgaMemberWasUpdatedEvent({ ...orgaMember, role: newRole }));
         })
         .catch(
           /** @param {Error & {id: number}} error */

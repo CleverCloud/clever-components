@@ -34,3 +34,18 @@ export class CcOrgaMemberLeftEvent extends CcEvent {
     super(CcOrgaMemberLeftEvent.TYPE, detail);
   }
 }
+
+/**
+ * Dispatched when an organisation member has been updated.
+ * @extends {CcEvent<OrgaMember>}
+ */
+export class CcOrgaMemberWasUpdatedEvent extends CcEvent {
+  static TYPE = 'cc-orga-member-was-updated';
+
+  /**
+   * @param {OrgaMember} detail
+   */
+  constructor(detail) {
+    super(CcOrgaMemberWasUpdatedEvent.TYPE, detail);
+  }
+}
