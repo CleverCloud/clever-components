@@ -45,6 +45,7 @@ const BREAKPOINTS = [BREAKPOINT_TINY, BREAKPOINT_SMALL, BREAKPOINT_MEDIUM];
  * With the right authorisations:
  * - This component provides a way to delete the member from the organisation.
  * - This component provides a way to edit the role of the member within a given organisation.
+ * - On the current user's card, the delete button becomes a "leave the organisation" button, gated by the `leave` authorisation.
  *
  * ## Technical Details
  *
@@ -69,6 +70,7 @@ export class CcOrgaMemberCard extends LitElement {
     this.authorisations = {
       edit: false,
       delete: false,
+      leave: true,
     };
 
     /** @type {OrgaMemberCardState} Sets the state and data of the member. */
@@ -256,7 +258,12 @@ export class CcOrgaMemberCard extends LitElement {
     const waiting = this.state.type === 'updating' || this.state.type === 'deleting';
     const hasName = this.state.name != null;
     const hasError = (this.state.type === 'loaded' || this.state.type === 'editing') && this.state.error;
-    const hasAdminRights = this.authorisations.edit && this.authorisations.delete;
+    // on the current user's card, the delete button is the "leave the organisation" button.
+    // `leave` may be omitted by consumers written before it existed, they fall back to the `delete` authorisation.
+    const mayRemove = this.state.isCurrentUser
+      ? (this.authorisations.leave ?? this.authorisations.delete)
+      : this.authorisations.delete;
+    const hasAdminRights = this.authorisations.edit && mayRemove;
 
     return html`
       <div class="wrapper ${classMap({ 'has-actions': hasAdminRights, 'has-error': hasError })}">

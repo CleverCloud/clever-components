@@ -30,12 +30,13 @@ defineSmartComponent({
   params: {
     apiConfig: { type: Object },
     ownerId: { type: String },
+    readonly: { type: Boolean, optional: true },
   },
   /**
    * @param {OnContextUpdateArgs<CcOrgaMemberList>} args
    */
   onContextUpdate({ component, context, onEvent, updateComponent, signal }) {
-    const { apiConfig, ownerId } = context;
+    const { apiConfig, ownerId, readonly } = context;
 
     /**
      * Checks if a manager is trying to edit an admin
@@ -56,12 +57,20 @@ defineSmartComponent({
      * @param {OrgaMemberRole} [role] - the current role of the member to update
      */
     function updateAuthorisations(role) {
+      if (readonly) {
+        updateComponent('authorisations', { invite: false, edit: false, delete: false, leave: false });
+        return;
+      }
+
       const hasAdminRights = role === 'ADMIN' || role === 'MANAGER';
+      // `updateAuthorisations()` is called without any role once the current user has left the organisation
+      const isMember = role != null;
 
       updateComponent('authorisations', {
         invite: hasAdminRights,
         edit: hasAdminRights,
         delete: hasAdminRights,
+        leave: isMember,
       });
     }
 

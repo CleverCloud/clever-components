@@ -27,6 +27,7 @@ interface ListAuthorisations {
   invite: boolean;
   edit: boolean;
   delete: boolean;
+  leave?: boolean; // Defaults to `true`
 }
 
 export interface InviteMemberFormState {

@@ -66,9 +66,9 @@ export const dataLoadedWithEditAndDelete = makeStory(conf, {
     {
       state: { ...baseMember },
       authorisations: {
-        invite: true,
         edit: true,
         delete: true,
+        leave: true,
       },
     },
   ],
@@ -81,6 +81,25 @@ export const dataLoadedWithIsCurrentUser = makeStory(conf, {
       state: {
         ...baseMember,
         isCurrentUser: true,
+      },
+    },
+  ],
+});
+
+export const dataLoadedWithIsCurrentUserAndLeaveDenied = makeStory(conf, {
+  docs: 'On the current user\'s card, the delete button is the "leave the organisation" button. Without the `leave` authorisation, the action buttons are gone even for an admin.',
+  /** @type {Partial<CcOrgaMemberCard>[]} */
+  items: [
+    {
+      state: {
+        ...baseMember,
+        role: 'ADMIN',
+        isCurrentUser: true,
+      },
+      authorisations: {
+        edit: true,
+        delete: true,
+        leave: false,
       },
     },
   ],
@@ -157,9 +176,9 @@ export const editing = makeStory(conf, {
         type: 'editing',
       },
       authorisations: {
-        invite: true,
         edit: true,
         delete: true,
+        leave: true,
       },
     },
   ],
@@ -178,9 +197,9 @@ export const errorWithStateLoaded = makeStory(conf, {
         isCurrentUser: true,
       },
       authorisations: {
-        invite: true,
         edit: true,
         delete: true,
+        leave: true,
       },
     },
   ],
@@ -199,9 +218,9 @@ export const errorWithStateEditing = makeStory(conf, {
         isCurrentUser: true,
       },
       authorisations: {
-        invite: true,
         edit: true,
         delete: true,
+        leave: true,
       },
     },
   ],
@@ -216,9 +235,9 @@ export const updatingMemberRole = makeStory(conf, {
         type: 'updating',
       },
       authorisations: {
-        invite: true,
         edit: true,
         delete: true,
+        leave: true,
       },
     },
   ],
@@ -233,9 +252,9 @@ export const deletingMember = makeStory(conf, {
         type: 'deleting',
       },
       authorisations: {
-        invite: true,
         edit: true,
         delete: true,
+        leave: true,
       },
     },
   ],
@@ -247,9 +266,9 @@ export const simulations = makeStory(conf, {
     {
       state: baseMember,
       authorisations: {
-        invite: true,
         edit: true,
         delete: true,
+        leave: true,
       },
     },
   ],

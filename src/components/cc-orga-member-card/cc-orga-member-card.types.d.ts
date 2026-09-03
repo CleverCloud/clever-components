@@ -48,6 +48,7 @@ interface ToggleEditing {
 interface CardAuthorisations {
   edit: boolean;
   delete: boolean;
+  leave?: boolean; // Only used on the current user's card. Defaults to the `delete` authorisation, which used to gate the "leave" button.
 }
 
 interface UpdateMember extends OrgaMember {
