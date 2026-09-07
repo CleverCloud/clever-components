@@ -117,9 +117,9 @@ const withFade = (spec) => {
  *
  * #### Internal implementation of the toast dismiss
  *
- * Internally, we do not remove the `cc-toast` node from the DOM directly after receiving the `cc-toast:dismiss` event.
- * Instead, we trigger a CSS animation and listen to the `animationend` event so that we can remove the `cc-toast`
- * element from the DOM after the animation has finished.
+ * Internally, we rely on the `animate` directive from `@lit-labs/motion` to animate the `cc-toast` elements.
+ * When a toast is dismissed, we remove it from the list of toasts to render and the directive takes care of
+ * playing the out animation before the `cc-toast` element is actually removed from the DOM.
  *
  * @cssdisplay block
  */
