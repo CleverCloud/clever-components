@@ -9,14 +9,20 @@ import { getGrafanaAppLink } from './cc-addon-info.client.js';
 import './cc-addon-info.js';
 
 /**
+ * The application ids are only set once the matching service has been provisioned, so a service may be reported as
+ * enabled before we can link to it. We return `null` in that case, like for any service we don't know how to link.
+ *
  * @param {string} serviceName
- * @param {{ apmApplication: string, kibanaApplication: string }} esInfo
+ * @param {{ apmApplication?: string, kibanaApplication?: string }} esInfo
  * @param {string} appOverviewUrlPattern
- * @return {LinkedService}
+ * @return {LinkedService|null}
  */
 function getServiceData(serviceName, esInfo, appOverviewUrlPattern) {
   switch (serviceName) {
     case 'apm':
+      if (esInfo.apmApplication == null) {
+        return null;
+      }
       return {
         type: 'app',
         name: 'APM',
@@ -24,6 +30,9 @@ function getServiceData(serviceName, esInfo, appOverviewUrlPattern) {
         link: appOverviewUrlPattern.replace(':id', esInfo.apmApplication),
       };
     case 'kibana':
+      if (esInfo.kibanaApplication == null) {
+        return null;
+      }
       return {
         type: 'app',
         name: 'Kibana',
@@ -171,13 +180,14 @@ defineSmartComponent({
             installed: esInfo.version,
             latest: esInfo.version,
           },
-          creationDate: addon.creationDate,
+          creationDate: addon.createdAt,
           specifications,
-          encryption: encryptionFeature.enabled,
+          encryption: encryptionFeature.isEnabled,
           openGrafanaLink: grafanaAppLink,
           linkedServices: esInfo.services
-            .filter((service) => service.enabled)
+            .filter((service) => service.isEnabled)
             .map((service) => getServiceData(service.name, esInfo, appOverviewUrlPattern))
+            .filter((service) => service != null)
             .sort((a, b) => a.name.localeCompare(b.name)),
         });
       })
