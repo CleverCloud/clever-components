@@ -85,11 +85,6 @@ defineSmartComponent({
     ccApiClient
       .send(new GetKeycloakInfoCommand({ addonId }), { signal })
       .then((operator) => {
-        if (operator == null) {
-          updateComponent('state', { type: 'error' });
-          return;
-        }
-
         /** @type {AddonCredential[]} */
         const credentials = [
           {
