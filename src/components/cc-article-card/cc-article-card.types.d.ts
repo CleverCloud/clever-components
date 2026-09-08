@@ -9,7 +9,8 @@ export interface ArticleCardStateLoading {
 }
 
 export interface ArticleCard {
-  banner: string;
+  /** URL of the article banner image, absent when the article has none */
+  banner?: string;
   date: string;
   description: string;
   link: string;
