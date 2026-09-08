@@ -56,7 +56,7 @@ defineSmartComponent({
 
         const openLinks = [];
         const apmService = esInfo.services.find((service) => service.name === 'apm');
-        if (apmService?.enabled && esInfo.config.host != null) {
+        if (apmService?.isEnabled && esInfo.config.host != null) {
           const apmUrl = `https://kibana-${esInfo.config.host}/app/apm`;
           openLinks.push({
             name: 'APM',
@@ -64,7 +64,7 @@ defineSmartComponent({
           });
         }
         const kibanaService = esInfo.services.find((service) => service.name === 'kibana');
-        if (kibanaService?.enabled && esInfo.config.host != null) {
+        if (kibanaService?.isEnabled && esInfo.config.host != null) {
           const kibanaUrl = `https://kibana-${esInfo.config.host}/`;
           openLinks.push({
             name: 'KIBANA',

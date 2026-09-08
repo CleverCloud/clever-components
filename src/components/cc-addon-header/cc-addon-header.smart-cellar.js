@@ -1,19 +1,14 @@
-import { ONE_SECOND } from '@clevercloud/client/esm/with-cache.js';
+import { GetAddonCommand } from '@clevercloud/client/cc-api-commands/addon/get-addon-command.js';
+import { GetCellarInfoCommand } from '@clevercloud/client/cc-api-commands/cellar/get-cellar-info-command.js';
+import { GetZoneCommand } from '@clevercloud/client/cc-api-commands/zone/get-zone-command.js';
+import { getCcApiClientWithOAuth } from '../../lib/cc-api-client.js';
 import { fakeString } from '../../lib/fake-strings.js';
-import { sendToApi } from '../../lib/send-to-api.js';
 import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
 import '../cc-smart-container/cc-smart-container.js';
-import { CcAddonHeaderClient } from './cc-addon-header.client.js';
 import './cc-addon-header.js';
-
-const PROVIDER_ID = 'cellar-addon';
 
 /**
  * @import { CcAddonHeader } from './cc-addon-header.js'
- * @import { CellarInfo } from './cc-addon-header.types.js'
- * @import { RawAddon } from './cc-addon-header.types.js'
- * @import { Zone } from '../common.types.js';
- * @import { ApiConfig } from '../../lib/send-to-api.types.js'
  * @import { OnContextUpdateArgs } from '../../lib/smart/smart-component.types.js'
  */
 
@@ -29,7 +24,8 @@ defineSmartComponent({
   /** @param {OnContextUpdateArgs<CcAddonHeader>} args */
   onContextUpdate({ context, updateComponent, signal }) {
     const { apiConfig, ownerId, addonId, explorerUrlPattern } = context;
-    const api = new Api({ apiConfig, ownerId, addonId, signal });
+    const ccApiClient = getCcApiClientWithOAuth(apiConfig);
+
     updateComponent('state', {
       type: 'loading',
       ...(explorerUrlPattern != null && {
@@ -42,13 +38,20 @@ defineSmartComponent({
       }),
     });
 
-    api
-      .getCellarInfoWithZone()
-      .then(({ cellarInfo, rawAddon, zone }) => {
+    ccApiClient
+      .send(new GetAddonCommand({ ownerId, addonId }), { signal })
+      .then((addon) => {
+        return Promise.all([
+          addon,
+          ccApiClient.send(new GetCellarInfoCommand({ ownerId, addonId }), { signal }),
+          ccApiClient.send(new GetZoneCommand({ zoneName: addon.zone, ownerId }), { signal }),
+        ]);
+      })
+      .then(([addon, cellarInfo, zone]) => {
         updateComponent('state', {
           type: 'loaded',
-          providerId: rawAddon.provider.name,
-          providerLogoUrl: rawAddon.provider.logoUrl,
+          providerId: addon.provider.name,
+          providerLogoUrl: addon.provider.logoUrl,
           name: cellarInfo.name,
           id: cellarInfo.id,
           zone,
@@ -70,47 +73,3 @@ defineSmartComponent({
       });
   },
 });
-
-class Api extends CcAddonHeaderClient {
-  /**
-   * @param {Object} config - Configuration object
-   * @param {ApiConfig} config.apiConfig - API configuration
-   * @param {string} config.ownerId - Owner identifier
-   * @param {string} config.addonId - Addon identifier
-   * @param {AbortSignal} config.signal - Signal to abort calls
-   */
-  constructor({ apiConfig, ownerId, addonId, signal }) {
-    super({ apiConfig, ownerId, addonId, providerId: PROVIDER_ID, signal });
-  }
-
-  /**
-   * @return {Promise<CellarInfo>}
-   */
-  async _getCellarInfo() {
-    const rawAddon = await this.getAddon();
-    return getCellarInfo({ ownerId: this._ownerId, cellarId: rawAddon.realId }).then(
-      sendToApi({ apiConfig: this._apiConfig, signal: this._signal, cacheDelay: ONE_SECOND }),
-    );
-  }
-
-  /**
-   * @return {Promise<{ cellarInfo: CellarInfo, rawAddon: RawAddon, zone: Zone }>}
-   */
-  async getCellarInfoWithZone() {
-    const rawAddon = await this.getAddon();
-    const [cellarInfo, zone] = await Promise.all([this._getCellarInfo(), this.getZone(rawAddon.region)]);
-    return { cellarInfo, rawAddon, zone };
-  }
-}
-
-// FIXME: remove and use the clever-client call from the new clever-client
-/** @param {{ ownerId: string, cellarId: string }} params */
-function getCellarInfo(params) {
-  // no multipath for /self or /organisations/{id}
-  return Promise.resolve({
-    method: 'get',
-    url: `/v4/cellar/organisations/${params.ownerId}/cellar/${params.cellarId}`,
-    // no queryParams
-    // no body
-  });
-}
