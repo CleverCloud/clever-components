@@ -1,7 +1,9 @@
-import { addTcpRedir, getTcpRedirs, removeTcpRedir } from '@clevercloud/client/esm/api/v2/application.js';
-import { getNamespaces } from '@clevercloud/client/esm/api/v2/organisation.js';
+import { CreateTcpRedirectionCommand } from '@clevercloud/client/cc-api-commands/tcp-redirection/create-tcp-redirection-command.js';
+import { DeleteTcpRedirectionCommand } from '@clevercloud/client/cc-api-commands/tcp-redirection/delete-tcp-redirection-command.js';
+import { ListTcpRedirectionCommand } from '@clevercloud/client/cc-api-commands/tcp-redirection/list-tcp-redirection-command.js';
+import { ListTcpRedirectionNamespaceCommand } from '@clevercloud/client/cc-api-commands/tcp-redirection/list-tcp-redirection-namespace-command.js';
+import { getCcApiClientWithOAuth } from '../../lib/cc-api-client.js';
 import { notifyError, notifySuccess } from '../../lib/notifications.js';
-import { sendToApi } from '../../lib/send-to-api.js';
 import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-smart-container/cc-smart-container.js';
@@ -13,8 +15,6 @@ import './cc-tcp-redirection-form.js';
  * @import { TcpRedirectionFormStateLoaded } from '../cc-tcp-redirection-form/cc-tcp-redirection-form.types.js'
  * @import { ApiConfig } from '../../lib/send-to-api.types.js'
  * @import { OnContextUpdateArgs } from '../../lib/smart/smart-component.types.js'
- * @typedef {[{namespace: string}]} NamespacesApiPayload
- * @typedef {[{namespace: string, port: number}]} RedirectionsApiPayload
  */
 
 const PUBLIC_NAMESPACES = ['default', 'cleverapps'];
@@ -31,6 +31,7 @@ defineSmartComponent({
    */
   onContextUpdate({ context, onEvent, updateComponent, signal }) {
     const { apiConfig, ownerId, appId } = context;
+    const api = new Api({ apiConfig, signal });
 
     /**
      * @param {string} namespace
@@ -55,7 +56,8 @@ defineSmartComponent({
       updateRedirection(namespace, (redirectionState) => {
         redirectionState.type = 'waiting';
       });
-      createTcpRedirection({ apiConfig, ownerId, appId, namespace })
+      api
+        .createTcpRedirection({ ownerId, appId, namespace })
         .then(({ port }) => {
           notifySuccess(i18n('cc-tcp-redirection-form.create.success', { namespace }));
           updateRedirection(namespace, (redirectionState) => {
@@ -77,7 +79,8 @@ defineSmartComponent({
       updateRedirection(namespace, (redirectionState) => {
         redirectionState.type = 'waiting';
       });
-      deleteTcpRedirection({ apiConfig, ownerId, appId, sourcePort, namespace })
+      api
+        .deleteTcpRedirection({ ownerId, appId, sourcePort, namespace })
         .then(() => {
           notifySuccess(i18n('cc-tcp-redirection-form.delete.success', { namespace }));
           updateRedirection(namespace, (redirectionState) => {
@@ -98,7 +101,8 @@ defineSmartComponent({
     updateComponent('state', { type: 'loading' });
     updateComponent('applicationId', appId);
 
-    fetchTcpRedirectionsAndNamespaces({ apiConfig, ownerId, appId, signal })
+    api
+      .fetchTcpRedirectionsAndNamespaces({ ownerId, appId })
       .then((redirections) => {
         updateComponent('state', {
           type: 'loaded',
@@ -112,53 +116,79 @@ defineSmartComponent({
   },
 });
 
-/**
- * @param {Object} settings
- * @param {ApiConfig} settings.apiConfig
- * @param {AbortSignal} settings.signal
- * @param {string} settings.ownerId
- * @param {string} settings.appId
- * @returns {Promise<TcpRedirection[]>}
- */
-async function fetchTcpRedirectionsAndNamespaces({ apiConfig, signal, ownerId, appId }) {
-  return Promise.all([
-    getNamespaces({ id: ownerId }).then(sendToApi({ apiConfig, signal })),
-    getTcpRedirs({ id: ownerId, appId }).then(sendToApi({ apiConfig, signal })),
-  ]).then(
-    /** @param {[NamespacesApiPayload, RedirectionsApiPayload]} apiResponse */
-    ([namespaces, redirections]) => {
-      return namespaces.map(({ namespace }) => {
-        const sourcePort = redirections.find((redirection) => redirection.namespace === namespace)?.port;
-        const isPrivate = !PUBLIC_NAMESPACES.includes(namespace);
-        return { namespace, sourcePort, isPrivate };
-      });
-    },
-  );
-}
+class Api {
+  /**
+   * @param {object} params
+   * @param {ApiConfig} params.apiConfig
+   * @param {AbortSignal} params.signal
+   */
+  constructor({ apiConfig, signal }) {
+    this._ccApiClient = getCcApiClientWithOAuth(apiConfig);
+    this._signal = signal;
+  }
 
-/**
- * @param {Object} settings
- * @param {ApiConfig} settings.apiConfig
- * @param {string} settings.ownerId
- * @param {string} settings.appId
- * @param {string} settings.namespace
- * @returns {Promise<{ port: number }>}
- */
-async function createTcpRedirection({ apiConfig, ownerId, appId, namespace }) {
-  return addTcpRedir({ id: ownerId, appId }, { namespace }).then(sendToApi({ apiConfig }));
-}
+  /**
+   * @param {object} params
+   * @param {string} params.ownerId
+   */
+  fetchNamespaces({ ownerId }) {
+    return this._ccApiClient.send(new ListTcpRedirectionNamespaceCommand({ ownerId }), { signal: this._signal });
+  }
 
-/**
- * @param {Object} settings
- * @param {ApiConfig} settings.apiConfig
- * @param {string} settings.ownerId
- * @param {string} settings.appId
- * @param {number|null} settings.sourcePort
- * @param {string} settings.namespace
- * @returns {Promise<void>}
- */
-async function deleteTcpRedirection({ apiConfig, ownerId, appId, sourcePort, namespace }) {
-  return removeTcpRedir({ id: ownerId, appId, sourcePort: sourcePort?.toString(), namespace }).then(
-    sendToApi({ apiConfig }),
-  );
+  /**
+   * @param {object} params
+   * @param {string} params.ownerId
+   * @param {string} params.appId
+   */
+  fetchRedirections({ ownerId, appId }) {
+    return this._ccApiClient.send(new ListTcpRedirectionCommand({ ownerId, applicationId: appId }), {
+      signal: this._signal,
+    });
+  }
+
+  /**
+   * @param {object} params
+   * @param {string} params.ownerId
+   * @param {string} params.appId
+   * @returns {Promise<TcpRedirection[]>}
+   */
+  async fetchTcpRedirectionsAndNamespaces({ ownerId, appId }) {
+    const [namespaces, redirections] = await Promise.all([
+      this.fetchNamespaces({ ownerId }),
+      this.fetchRedirections({ ownerId, appId }),
+    ]);
+    return namespaces.map(({ namespace }) => {
+      const sourcePort = redirections.find((redirection) => redirection.namespace === namespace)?.port;
+      const isPrivate = !PUBLIC_NAMESPACES.includes(namespace);
+      return { namespace, sourcePort, isPrivate };
+    });
+  }
+
+  /**
+   * @param {object} params
+   * @param {string} params.ownerId
+   * @param {string} params.appId
+   * @param {string} params.namespace
+   * @returns {Promise<{ port: number }>}
+   */
+  createTcpRedirection({ ownerId, appId, namespace }) {
+    return this._ccApiClient.send(new CreateTcpRedirectionCommand({ ownerId, applicationId: appId, namespace }), {
+      signal: this._signal,
+    });
+  }
+
+  /**
+   * @param {object} params
+   * @param {string} params.ownerId
+   * @param {string} params.appId
+   * @param {number|null} params.sourcePort
+   * @param {string} params.namespace
+   * @returns {Promise<void>}
+   */
+  deleteTcpRedirection({ ownerId, appId, sourcePort, namespace }) {
+    return this._ccApiClient.send(
+      new DeleteTcpRedirectionCommand({ ownerId, applicationId: appId, namespace, port: sourcePort }),
+      { signal: this._signal },
+    );
+  }
 }
