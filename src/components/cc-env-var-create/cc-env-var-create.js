@@ -1,4 +1,4 @@
-import { validateName } from '@clevercloud/client/esm/utils/env-vars.js';
+import { validateName } from '@clevercloud/client/utils/environment-utils.js';
 import { css, html, LitElement } from 'lit';
 import { i18n } from '../../translations/translation.js';
 import '../cc-button/cc-button.js';
@@ -8,7 +8,7 @@ import '../cc-notice/cc-notice.js';
 import { CcEnvVarCreateEvent } from './cc-env-var-create.events.js';
 
 /**
- * @import { EnvVarValidationMode } from '../common.types.js'
+ * @import { EnvVarValidationMode } from '@clevercloud/client/utils/environment.types.js'
  * @import { CcInputText } from '../cc-input-text/cc-input-text.js'
  */
 
@@ -17,7 +17,7 @@ import { CcEnvVarCreateEvent } from './cc-env-var-create.events.js';
  *
  * ## Details
  *
- * * The validation of the variable name format is handled with [@clevercloud/client](https://github.com/CleverCloud/clever-client.js/blob/master/esm/utils/env-vars.js)
+ * * The validation of the variable name format is handled with [@clevercloud/client](https://github.com/CleverCloud/clever-client.js/blob/master/src/utils/environment-utils.ts)
  * * The validation of existing names is handled with the `variablesNames` property which is a list of already existing names.
  *
  * @cssdisplay block
