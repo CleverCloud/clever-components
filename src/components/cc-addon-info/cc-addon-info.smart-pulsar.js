@@ -59,7 +59,7 @@ defineSmartComponent({
             installed: pulsarInfo.cluster.version,
             latest: pulsarInfo.cluster.version,
           },
-          creationDate: addon.creationDate,
+          creationDate: addon.createdAt,
         });
       })
       .catch((error) => {
