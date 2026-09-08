@@ -1,4 +1,5 @@
-import { ResourceLogStream } from '@clevercloud/client/esm/streams/resource-logs.js';
+import { StreamAddonRuntimeLogCommand } from '@clevercloud/client/cc-api-commands/log/stream-addon-runtime-log-command.js';
+import { getCcApiClientWithOAuth } from '../../lib/cc-api-client.js';
 import { LogsStream } from '../../lib/logs/logs-stream.js';
 import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
 import { dateRangeSelectionToDateRange } from '../cc-logs-date-range-selector/date-range-selection.js';
@@ -12,6 +13,7 @@ import './cc-logs-addon-runtime.js';
  * @import { DateRange } from '../../lib/date/date-range.types.js'
  * @import { LogsStreamState } from '../../lib/logs/logs-stream.types.js'
  * @import { UpdateComponentCallback, OnContextUpdateArgs } from '../../lib/smart/smart-component.types.js'
+ * @import { AddonRuntimeLog } from '@clevercloud/client/cc-api-commands/log/log.types.js'
  */
 
 defineSmartComponent({
@@ -76,7 +78,7 @@ defineSmartComponent({
 });
 
 /**
- * @extends LogsStream<Log>
+ * @extends LogsStream<AddonRuntimeLog, Log>
  */
 class SmartController extends LogsStream {
   /**
@@ -113,26 +115,24 @@ class SmartController extends LogsStream {
    * @param {number} maxRetryCount
    * @param {number} throttleElements
    * @param {number} throttlePerInMilliseconds
-   * @returns {ResourceLogStream}
+   * @returns {Promise<import('../../lib/logs/logs-stream.types.js').LogsSse<AddonRuntimeLog>>}
    */
-  _createStream(dateRange, maxRetryCount, throttleElements, throttlePerInMilliseconds) {
-    return new ResourceLogStream({
-      apiHost: this._apiConfig.API_HOST,
-      tokens: this._apiConfig,
-      ownerId: this._ownerId,
-      addonId: this._addonId,
-      // @ts-expect-error: FIXME: client types seem to expect Date but dateRange has string
-      since: dateRange.since,
-      // @ts-expect-error: FIXME: client types seem to expect Date but dateRange has string
-      until: dateRange.until,
-      retryConfiguration: { enabled: true, maxRetryCount },
-      throttleElements,
-      throttlePerInMilliseconds,
-    });
+  async _createStream(dateRange, maxRetryCount, throttleElements, throttlePerInMilliseconds) {
+    return getCcApiClientWithOAuth(this._apiConfig).stream(
+      new StreamAddonRuntimeLogCommand({
+        ownerId: this._ownerId,
+        addonId: this._addonId,
+        since: dateRange.since,
+        until: dateRange.until,
+        throttleElements,
+        throttlePerInMilliseconds,
+      }),
+      { retry: { maxRetryCount } },
+    );
   }
 
   /**
-   * @param {any} rawLog
+   * @param {AddonRuntimeLog} rawLog Log coming from the API (already reshaped by the stream command)
    * @return {Log}
    */
   _convertLog(rawLog) {
@@ -174,17 +174,7 @@ class SmartController extends LogsStream {
 }
 
 /**
- * @param {object} log
- * @param {Date}   log.date
- * @param {string} log.hostname
- * @param {string} log.id
- * @param {string} log.instanceId
- * @param {string} log.message
- * @param {string} log.region
- * @param {string} log.resourceId
- * @param {string} log.service
- * @param {string} log.severity
- * @param {string} log.zone
+ * @param {AddonRuntimeLog} log
  * @return {Log}
  */
 function convertLog(log) {
@@ -192,7 +182,7 @@ function convertLog(log) {
 
   return {
     id: id,
-    date: date,
+    date: new Date(date),
     message: log.message,
     metadata: [],
   };
