@@ -1,7 +1,9 @@
-import { get as getSelf } from '@clevercloud/client/esm/api/v2/organisation.js';
+import { DeleteApiTokenCommand } from '@clevercloud/client/cc-api-bridge-commands/api-token/delete-api-token-command.js';
+import { ListApiTokenCommand } from '@clevercloud/client/cc-api-bridge-commands/api-token/list-api-token-command.js';
+import { RequestAuthPasswordResetCommand } from '@clevercloud/client/cc-api-commands/auth/request-auth-password-reset-command.js';
+import { GetProfileCommand } from '@clevercloud/client/cc-api-commands/profile/get-profile-command.js';
+import { getCcApiBridgeClient, getCcApiClientWithOAuth } from '../../lib/cc-api-client.js';
 import { notify, notifyError, notifySuccess } from '../../lib/notifications.js';
-import { sendToApi } from '../../lib/send-to-api.js';
-import { sendToAuthBridge } from '../../lib/send-to-auth-bridge.js';
 import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-smart-container/cc-smart-container.js';
@@ -9,7 +11,7 @@ import './cc-token-api-list.js';
 
 /**
  * @import { CcTokenApiList } from './cc-token-api-list.js'
- * @import { TokenApiListStateLoaded, ApiTokenStateIdle, ApiTokenState, ApiToken, RawApiToken } from './cc-token-api-list.types.js'
+ * @import { TokenApiListStateLoaded, ApiTokenStateIdle, ApiTokenState, ApiToken } from './cc-token-api-list.types.js'
  * @import { ApiConfig, AuthBridgeConfig } from '../../lib/send-to-api.types.js'
  * @import { OnContextUpdateArgs } from '../../lib/smart/smart-component.types.js'
  */
@@ -122,40 +124,16 @@ defineSmartComponent({
 class Api {
   /** @param {AuthBridgeConfig & ApiConfig} apiConfig */
   constructor(apiConfig) {
-    this._authAndApiConfig = apiConfig;
+    this._ccApiClient = getCcApiClientWithOAuth(apiConfig);
+    this._ccApiBridgeClient = getCcApiBridgeClient(apiConfig);
   }
 
   /** @returns {Promise<{ hasPassword: boolean }>} */
   _getUserInfo() {
-    return getSelf({})
-      .then(sendToApi({ apiConfig: this._authAndApiConfig }))
-      .then(
-        /**
-         * @param {{ email: string, partnerId: string, hasPassword: boolean }} user
-         * @returns {{ hasPassword: boolean }}
-         */
-        ({ email, partnerId, hasPassword }) => {
-          this._userEmail = email;
-          this._userPartnerId = partnerId;
-          return { hasPassword };
-        },
-      );
-  }
-
-  _listApiTokens() {
-    return Promise.resolve({
-      method: 'get',
-      url: '/api-tokens',
-      headers: { Accept: 'application/json' },
-    });
-  }
-
-  /** @param {string} apiTokenId */
-  _deleteApiToken(apiTokenId) {
-    return Promise.resolve({
-      method: 'delete',
-      url: `/api-tokens/${apiTokenId}`,
-      headers: { Accept: 'application/json' },
+    return this._ccApiClient.send(new GetProfileCommand()).then(({ emailAddress, partnerId, hasPassword }) => {
+      this._userEmail = emailAddress;
+      this._userPartnerId = partnerId;
+      return { hasPassword };
     });
   }
 
@@ -163,35 +141,20 @@ class Api {
   getApiTokens() {
     return Promise.all([
       this._getUserInfo(),
-      this._listApiTokens()
-        .then(sendToAuthBridge({ authBridgeConfig: this._authAndApiConfig }))
-        .then(
-          /** @param {RawApiToken[]} tokens */
-          (tokens) =>
-            tokens.map(
-              /** @returns {ApiToken} */
-              (token) => ({
-                id: token.apiTokenId,
-                creationDate: new Date(token.creationDate),
-                expirationDate: new Date(token.expirationDate),
-                name: token.name,
-                description: token.description,
-                isExpired: token.state === 'EXPIRED',
-              }),
-            ),
+      this._ccApiBridgeClient.send(new ListApiTokenCommand()).then((tokens) =>
+        tokens.map(
+          /** @returns {ApiToken} */
+          (token) => ({
+            id: token.apiTokenId,
+            creationDate: new Date(token.createdAt),
+            expirationDate: new Date(token.expiresAt),
+            name: token.name,
+            description: token.description,
+            isExpired: token.state === 'EXPIRED',
+          }),
         ),
+      ),
     ]);
-  }
-
-  /** @param {{ partner_id: string, login: string, drop_tokens: 'on'|'off' }} body */
-  _resetPasswordRequest(body) {
-    return Promise.resolve({
-      method: 'post',
-      url: `/v2/password_forgotten`,
-      headers: { Accept: 'application/json', 'Content-Type': 'application/x-www-form-urlencoded' },
-      // no query params
-      body,
-    });
   }
 
   /**
@@ -199,19 +162,17 @@ class Api {
    * @returns {Promise<void>}
    */
   revokeApiToken(apiTokenId) {
-    return this._deleteApiToken(apiTokenId).then(sendToAuthBridge({ authBridgeConfig: this._authAndApiConfig }));
+    return this._ccApiBridgeClient.send(new DeleteApiTokenCommand({ apiTokenId }));
   }
 
   /** @returns {Promise<string>} */
-  resetPassword() {
-    return this._resetPasswordRequest({
-      // eslint-disable-next-line camelcase
-      partner_id: this._userPartnerId,
-      login: this._userEmail,
-      // eslint-disable-next-line camelcase
-      drop_tokens: 'off',
-    })
-      .then(sendToApi({ apiConfig: this._authAndApiConfig }))
-      .then(() => this._userEmail);
+  async resetPassword() {
+    await this._ccApiClient.send(
+      new RequestAuthPasswordResetCommand({
+        login: this._userEmail,
+        partnerId: this._userPartnerId,
+      }),
+    );
+    return this._userEmail;
   }
 }
