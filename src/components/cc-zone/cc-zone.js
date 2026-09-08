@@ -8,18 +8,20 @@ import '../cc-img/cc-img.js';
 
 /** @type {Zone} */
 const SKELETON_ZONE = {
+  id: '',
   name: 'name',
   country: '????????????',
   countryCode: null,
   lon: 0,
   lat: 0,
   city: '??????????',
+  outboundIps: [],
   tags: ['????????', '????????????'],
 };
 
 /**
  * @import { ZoneState, ZoneModeType } from './cc-zone.types.js'
- * @import { Zone } from '../common.types.js'
+ * @import { Zone } from '@clevercloud/client/cc-api-commands/zone/zone.types.js'
  */
 
 /**
