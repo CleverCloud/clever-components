@@ -1,17 +1,16 @@
-import { getKeys } from '@clevercloud/client/esm/api/v2/github.js';
-import { get as getUser } from '@clevercloud/client/esm/api/v2/organisation.js';
-import {
-  todo_addSshKey as addSshKey,
-  todo_getSshKeys as getSshKeys,
-  todo_removeSshKey as removeSshKey,
-} from '@clevercloud/client/esm/api/v2/user.js';
-import { ONE_DAY } from '@clevercloud/client/esm/with-cache.js';
+import { GetProfileCommand } from '@clevercloud/client/cc-api-commands/profile/get-profile-command.js';
+import { CreatePersonalSshKeyCommand } from '@clevercloud/client/cc-api-commands/ssh-key/create-personal-ssh-key-command.js';
+import { DeletePersonalSshKeyCommand } from '@clevercloud/client/cc-api-commands/ssh-key/delete-personal-ssh-key-command.js';
+import { ListGithubSshKeyCommand } from '@clevercloud/client/cc-api-commands/ssh-key/list-github-ssh-key-command.js';
+import { ListPersonalSshKeyCommand } from '@clevercloud/client/cc-api-commands/ssh-key/list-personal-ssh-key-command.js';
+import { getCcApiClientWithOAuth } from '../../lib/cc-api-client.js';
 import { notifyError, notifySuccess } from '../../lib/notifications.js';
-import { sendToApi } from '../../lib/send-to-api.js';
 import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-smart-container/cc-smart-container.js';
 import './cc-ssh-key-list.js';
+
+const ONE_DAY = 1000 * 60 * 60 * 24;
 
 /**
  * @import { CcSshKeyList } from './cc-ssh-key-list.js'
@@ -30,13 +29,15 @@ defineSmartComponent({
    */
   onContextUpdate({ component, context, onEvent, updateComponent, signal }) {
     const { apiConfig } = context;
+    const api = new Api({ apiConfig, signal });
 
     // Retrieving SSH keys is done in two steps, hidden in the `fetchAllKeys()` implementation:
     // - first, we retrieve the current user information to check if their GitHub account is linked to their main account;
     // - then, we fetch the personal SSH keys and the GitHub keys if needed.
     // Note: we intentionally show `loading` type only on initial load and not on further actions, to keep a responsive UI.
     function refreshList() {
-      return fetchAllKeys({ apiConfig, signal, cacheDelay: 0 })
+      return api
+        .fetchAllKeys()
         .then(({ isGithubLinked, personalKeys, githubKeys }) => {
           updateComponent('keyListState', {
             type: 'loaded',
@@ -56,7 +57,8 @@ defineSmartComponent({
     onEvent('cc-ssh-key-create', ({ name, publicKey }) => {
       component.createKeyFormState = { type: 'creating' };
 
-      addKey({ apiConfig, key: { name: name.trim(), key: publicKey.trim() } })
+      api
+        .addKey({ key: { name: name.trim(), key: publicKey.trim() } })
         .then(() => {
           // re-fetching keys because we need fingerprint info sent from API to properly display newly created keys
           refreshList().then(() => {
@@ -83,7 +85,8 @@ defineSmartComponent({
         },
       );
 
-      deleteKey({ apiConfig, key: { name } })
+      api
+        .deleteKey({ key: { name } })
         .then(() => {
           // refreshing both personal and GitHub keys because we don't know if we should add the deleting key back to the GitHub list
           refreshList().then(() => notifySuccess(i18n('cc-ssh-key-list.success.delete', { name })));
@@ -112,7 +115,8 @@ defineSmartComponent({
         },
       );
 
-      importKey({ apiConfig, key: { name, key } })
+      api
+        .importKey({ key: { name, key } })
         .then(() => {
           notifySuccess(i18n('cc-ssh-key-list.success.import', { name }));
           updateComponent(
@@ -146,53 +150,64 @@ defineSmartComponent({
   },
 });
 
-/**
- * @param {Object} args
- * @param {ApiConfig} args.apiConfig
- * @param {AbortSignal} args.signal
- * @param {number} args.cacheDelay
- * @return {Promise<{
- *   isGithubLinked: boolean,
- *   personalKeys: Array<SshKey>,
- *   githubKeys: Array<GithubSshKey>,
- * }>}
- */
-async function fetchAllKeys({ apiConfig, signal, cacheDelay }) {
-  const [user, personalKeys] = await Promise.all([
-    getUser({}).then(sendToApi({ apiConfig, signal, cacheDelay: ONE_DAY })),
-    getSshKeys().then(sendToApi({ apiConfig, signal, cacheDelay })),
-  ]);
-
-  const isGithubLinked = user.oauthApps.includes('github');
-  let githubKeys;
-  if (isGithubLinked) {
-    githubKeys = await getKeys().then(sendToApi({ apiConfig, signal, cacheDelay }));
+// -- API calls
+class Api {
+  /**
+   * @param {object} params
+   * @param {ApiConfig} params.apiConfig
+   * @param {AbortSignal} params.signal
+   */
+  constructor({ apiConfig, signal }) {
+    this._ccApiClient = getCcApiClientWithOAuth(apiConfig);
+    this._signal = signal;
   }
 
-  return { isGithubLinked, personalKeys, githubKeys };
-}
+  /**
+   * @return {Promise<{
+   *   isGithubLinked: boolean,
+   *   personalKeys: Array<SshKey>,
+   *   githubKeys: Array<GithubSshKey>,
+   * }>}
+   */
+  async fetchAllKeys() {
+    const [user, personalKeys] = await Promise.all([
+      this._ccApiClient.send(new GetProfileCommand(), { signal: this._signal, cache: { ttl: ONE_DAY } }),
+      this._ccApiClient.send(new ListPersonalSshKeyCommand(), { signal: this._signal, cache: { ttl: 0 } }),
+    ]);
 
-/**
- * @param {Object} args
- * @param {ApiConfig} args.apiConfig
- * @param {{name: string, key: string}} args.key
- * @return {Promise<any>}
- */
-async function addKey({ apiConfig, key }) {
-  const name = encodeURIComponent(key.name);
-  const publicKey = key.key;
-  return addSshKey({ key: name }, JSON.stringify(publicKey)).then(sendToApi({ apiConfig }));
-}
+    const isGithubLinked = user.isLinkedToGitHub;
+    let githubKeys;
+    if (isGithubLinked) {
+      githubKeys = await this._ccApiClient.send(new ListGithubSshKeyCommand(), { signal: this._signal });
+    }
 
-const importKey = addKey;
+    return { isGithubLinked, personalKeys, githubKeys };
+  }
 
-/**
- * @param {Object} args
- * @param {ApiConfig} args.apiConfig
- * @param {{name: string}} args.key
- * @return {Promise<any>}
- */
-async function deleteKey({ apiConfig, key }) {
-  const name = encodeURIComponent(key.name);
-  return removeSshKey({ key: name }).then(sendToApi({ apiConfig }));
+  /**
+   * @param {object} params
+   * @param {{name: string, key: string}} params.key
+   * @return {Promise<any>}
+   */
+  addKey({ key }) {
+    return this._ccApiClient.send(new CreatePersonalSshKeyCommand(key));
+  }
+
+  /**
+   * @param {object} params
+   * @param {{name: string, key: string}} params.key
+   * @return {Promise<any>}
+   */
+  importKey({ key }) {
+    return this.addKey({ key });
+  }
+
+  /**
+   * @param {object} params
+   * @param {{name: string}} params.key
+   * @return {Promise<any>}
+   */
+  deleteKey({ key }) {
+    return this._ccApiClient.send(new DeletePersonalSshKeyCommand(key));
+  }
 }
