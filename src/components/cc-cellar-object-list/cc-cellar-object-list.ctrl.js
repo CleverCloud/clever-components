@@ -1,7 +1,9 @@
+import { GET_CELLAR_OBJECT_ERROR_CODES } from '@clevercloud/client/cc-api-commands/cellar/get-cellar-object-command.js';
+import { isCcHttpErrorWithCode } from '@clevercloud/client/utils/error-utils.js';
 import { Abortable } from '../../lib/abortable.js';
 import { i18n } from '../../lib/i18n/i18n.js';
 import { notifyError, notifySuccess } from '../../lib/notifications.js';
-import { isCellarExplorerErrorWithCode, pathToString } from '../cc-cellar-explorer/cc-cellar-explorer.client.js';
+import { pathToString } from '../cc-cellar-explorer/cc-cellar-explorer.client.js';
 import '../cc-smart-container/cc-smart-container.js';
 import { CcCellarNavigateToHomeEvent } from './cc-cellar-object-list.events.js';
 import './cc-cellar-object-list.js';
@@ -261,7 +263,7 @@ export class ObjectListController {
           filter: this.#filter,
         }),
       );
-      this.#objects = [...response.directories, ...response.content].map((object) =>
+      this.#objects = [...response.directories, ...response.items].map((object) =>
         object.type === 'file' ? /** @type {CellarFileState} */ ({ ...object, state: 'idle' }) : object,
       );
       this.#nextCursor = response.cursor;
@@ -324,6 +326,10 @@ export class ObjectListController {
   }
 
   /**
+   * Handles the errors shared by every command that targets a single object. They all declare the
+   * same `BUCKET_NOT_FOUND` code, and all but the upload declare `OBJECT_NOT_FOUND`, so one set of
+   * constants covers them.
+   *
    * @param {object} params
    * @param {unknown} params.error
    * @param {string} params.objectKey
@@ -331,10 +337,10 @@ export class ObjectListController {
    * @param {boolean} [params.deleteMode]
    */
   #handleErrorOnObject({ error, objectKey, orElse, deleteMode = false }) {
-    if (isCellarExplorerErrorWithCode(error, 'clever.cellar.bucket-not-found')) {
+    if (isCcHttpErrorWithCode(error, GET_CELLAR_OBJECT_ERROR_CODES.BUCKET_NOT_FOUND)) {
       notifyError(i18n('cc-cellar-object-list.error.bucket-not-found', { bucketName: this.#bucketName }));
       this.#getComponent().dispatchEvent(new CcCellarNavigateToHomeEvent());
-    } else if (isCellarExplorerErrorWithCode(error, 'clever.cellar.object-not-found')) {
+    } else if (isCcHttpErrorWithCode(error, GET_CELLAR_OBJECT_ERROR_CODES.OBJECT_NOT_FOUND)) {
       if (deleteMode) {
         notifySuccess(i18n('cc-cellar-object-list.success.object-already-deleted', { objectKey }));
       } else {
