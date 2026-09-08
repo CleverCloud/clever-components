@@ -25,7 +25,8 @@ const conf = {
 /**
  * @import { CcHeaderApp } from './cc-header-app.js'
  * @import { HeaderAppStateLoaded, HeaderAppStateLoading, HeaderAppStateError } from './cc-header-app.types.js'
- * @import { App, Zone } from '../common.types.js'
+ * @import { Zone } from '@clevercloud/client/cc-api-commands/zone/zone.types.js'
+ * @import { App } from '../common.types.js'
  */
 
 /**
