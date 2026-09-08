@@ -1,12 +1,13 @@
-import { get as getSelf } from '@clevercloud/client/esm/api/v2/organisation.js';
 import {
-  todo_addEmailAddress as addEmailAddress,
-  todo_getEmailAddresses as getEmailAddresses,
-  todo_removeEmailAddress as removeEmailAddress,
-  todo_getConfirmationEmail as sendConfirmationEmail,
-} from '@clevercloud/client/esm/api/v2/user.js';
+  CREATE_PROFILE_EMAIL_ADDRESS_ERROR_CODES,
+  CreateProfileEmailAddressCommand,
+} from '@clevercloud/client/cc-api-commands/profile/create-profile-email-address-command.js';
+import { DeleteProfileEmailAddressCommand } from '@clevercloud/client/cc-api-commands/profile/delete-profile-email-address-command.js';
+import { ListProfileEmailAddressCommand } from '@clevercloud/client/cc-api-commands/profile/list-profile-email-address-command.js';
+import { RequestProfileEmailConfirmationCommand } from '@clevercloud/client/cc-api-commands/profile/request-profile-email-confirmation-command.js';
+import { SetProfilePrimaryEmailAddressCommand } from '@clevercloud/client/cc-api-commands/profile/set-profile-primary-email-address-command.js';
+import { getCcApiClientWithOAuth } from '../../lib/cc-api-client.js';
 import { notify, notifyError, notifySuccess } from '../../lib/notifications.js';
-import { sendToApi } from '../../lib/send-to-api.js';
 import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-smart-container/cc-smart-container.js';
@@ -53,19 +54,19 @@ defineSmartComponent({
 
     api
       .fetchEmailAddresses()
-      .then(({ self, secondary }) => {
+      .then(({ primaryAddress, secondaryAddresses }) => {
         updateComponent('emailListState', {
           type: 'loaded',
           emailList: {
             primaryAddress: {
               type: 'idle',
-              address: self.email,
-              verified: self.emailValidated,
+              address: primaryAddress.address,
+              verified: primaryAddress.isVerified,
             },
-            secondaryAddresses: secondary.map((secondaryAddress) => ({
+            secondaryAddresses: secondaryAddresses.map((secondaryAddress) => ({
               type: 'idle',
-              address: secondaryAddress,
-              verified: true,
+              address: secondaryAddress.address,
+              verified: secondaryAddress.isVerified,
             })),
           },
         });
@@ -140,9 +141,9 @@ defineSmartComponent({
           component.resetAddEmailForm();
         })
         .catch(
-          /** @param {Error & {id?: number}} error */
+          /** @param {Error & {code?: string}} error */
           (error) => {
-            const errorCode = convertApiError(error.id);
+            const errorCode = convertApiError(error.code);
 
             if (errorCode == null) {
               console.error(error);
@@ -244,17 +245,17 @@ defineSmartComponent({
 });
 
 /**
- * @param {number} apiErrorId
+ * @param {string} apiErrorCode
  * @return {null|AddEmailError}
  */
-function convertApiError(apiErrorId) {
-  if (apiErrorId === 550) {
+function convertApiError(apiErrorCode) {
+  if (apiErrorCode === CREATE_PROFILE_EMAIL_ADDRESS_ERROR_CODES.INVALID_FORMAT) {
     return 'invalid';
   }
-  if (apiErrorId === 101) {
+  if (apiErrorCode === CREATE_PROFILE_EMAIL_ADDRESS_ERROR_CODES.ALREADY_DEFINED) {
     return 'already-defined';
   }
-  if (apiErrorId === 1004) {
+  if (apiErrorCode === CREATE_PROFILE_EMAIL_ADDRESS_ERROR_CODES.ALREADY_USED) {
     return 'used';
   }
   return null;
@@ -266,61 +267,39 @@ function convertApiError(apiErrorId) {
  * @param {AbortSignal} signal
  */
 function getApi(apiConfig, signal) {
+  const ccApiClient = getCcApiClientWithOAuth(apiConfig);
+
   return {
     /**
-     * @return {Promise<{self: {email: string, emailValidated: boolean}, secondary: Array<string>}>}
+     * @return {Promise<{primaryAddress: {address: string, isVerified: boolean}, secondaryAddresses: Array<{address: string, isVerified: boolean}>}>}
      */
     fetchEmailAddresses() {
-      return Promise.all([this.fetchPrimaryEmailAddress(), this.fetchSecondaryEmailAddresses()]).then(
-        ([self, secondary]) => {
-          return { self, secondary };
-        },
-      );
-    },
-
-    /**
-     * @return {Promise<{email: string, emailValidated: boolean}>}
-     */
-    fetchPrimaryEmailAddress() {
-      return getSelf({}).then(sendToApi({ apiConfig, signal }));
-    },
-
-    /**
-     * @return {Promise<Array<string>>}
-     */
-    fetchSecondaryEmailAddresses() {
-      return getEmailAddresses().then(sendToApi({ apiConfig, signal }));
+      return ccApiClient.send(new ListProfileEmailAddressCommand(), { signal });
     },
 
     sendConfirmationEmail() {
-      return sendConfirmationEmail().then(sendToApi({ apiConfig }));
+      return ccApiClient.send(new RequestProfileEmailConfirmationCommand());
     },
 
     /**
      * @param {string} address
      */
     addSecondaryEmailAddress(address) {
-      return addEmailAddress({ email: address }, {}).then(sendToApi({ apiConfig }));
+      return ccApiClient.send(new CreateProfileEmailAddressCommand({ address }));
     },
 
     /**
      * @param {string} address
      */
     deleteSecondaryEmailAddress(address) {
-      return removeEmailAddress({ email: address }).then(sendToApi({ apiConfig }));
+      return ccApiClient.send(new DeleteProfileEmailAddressCommand({ address }));
     },
 
     /**
      * @param {string} address
      */
     markSecondaryEmailAddressAsPrimary(address) {
-      return addEmailAddress(
-        { email: address },
-        {
-          // eslint-disable-next-line camelcase
-          make_primary: true,
-        },
-      ).then(sendToApi({ apiConfig }));
+      return ccApiClient.send(new SetProfilePrimaryEmailAddressCommand({ address }));
     },
   };
 }
