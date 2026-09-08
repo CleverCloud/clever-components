@@ -1,8 +1,11 @@
+import { CREATE_CELLAR_BUCKET_ERROR_CODES } from '@clevercloud/client/cc-api-commands/cellar/create-cellar-bucket-command.js';
+import { DELETE_CELLAR_BUCKET_ERROR_CODES } from '@clevercloud/client/cc-api-commands/cellar/delete-cellar-bucket-command.js';
+import { GET_CELLAR_BUCKET_ERROR_CODES } from '@clevercloud/client/cc-api-commands/cellar/get-cellar-bucket-command.js';
+import { isCcHttpErrorWithCode } from '@clevercloud/client/utils/error-utils.js';
 import { Abortable } from '../../lib/abortable.js';
 import { notifyError, notifySuccess } from '../../lib/notifications.js';
 import { isStringEmpty, sortByProps } from '../../lib/utils.js';
 import { i18n } from '../../translations/translation.js';
-import { isCellarExplorerErrorWithCode } from '../cc-cellar-explorer/cc-cellar-explorer.client.js';
 import '../cc-smart-container/cc-smart-container.js';
 import { CcCellarBucketCreatedEvent } from './cc-cellar-bucket-list.events.js';
 import './cc-cellar-bucket-list.js';
@@ -149,11 +152,11 @@ export class BucketsListController {
         this.#getComponent().dispatchEvent(new CcCellarBucketCreatedEvent(bucketName));
       }
     } catch (error) {
-      if (isCellarExplorerErrorWithCode(error, 'clever.file-explorer-proxy.cellar.bucket-already-exists')) {
+      if (isCcHttpErrorWithCode(error, CREATE_CELLAR_BUCKET_ERROR_CODES.BUCKET_ALREADY_EXISTS)) {
         this.#updateCreateForm({ type: 'idle', error: 'bucket-already-exists' });
-      } else if (isCellarExplorerErrorWithCode(error, 'clever.file-explorer-proxy.cellar.bucket-name-invalid')) {
+      } else if (isCcHttpErrorWithCode(error, CREATE_CELLAR_BUCKET_ERROR_CODES.INVALID_BUCKET_NAME)) {
         this.#updateCreateForm({ type: 'idle', error: 'bucket-name-invalid' });
-      } else if (isCellarExplorerErrorWithCode(error, 'clever.file-explorer-proxy.cellar.too-many-buckets')) {
+      } else if (isCcHttpErrorWithCode(error, CREATE_CELLAR_BUCKET_ERROR_CODES.TOO_MANY_BUCKETS)) {
         this.#updateCreateForm({ type: 'idle', error: 'too-many-buckets' });
       } else {
         console.log(error);
@@ -174,12 +177,12 @@ export class BucketsListController {
       notifySuccess(i18n('cc-cellar-bucket-list.success.bucket-deleted', { bucketName }));
       this.#removeBucket(bucketName);
     } catch (error) {
-      if (isCellarExplorerErrorWithCode(error, 'clever.file-explorer-proxy.cellar.bucket-not-found')) {
+      if (isCcHttpErrorWithCode(error, DELETE_CELLAR_BUCKET_ERROR_CODES.BUCKET_NOT_FOUND)) {
         notifySuccess(i18n('cc-cellar-bucket-list.success.bucket-already-deleted', { bucketName }));
         this.#removeBucket(bucketName);
       } else {
         this.#updateBucketDetails({ state: 'idle' });
-        if (isCellarExplorerErrorWithCode(error, 'clever.file-explorer-proxy.cellar.bucket-not-empty')) {
+        if (isCcHttpErrorWithCode(error, DELETE_CELLAR_BUCKET_ERROR_CODES.BUCKET_NOT_EMPTY)) {
           notifyError(i18n('cc-cellar-bucket-list.error.bucket-not-empty', { bucketName }));
         } else {
           console.log(error);
@@ -205,7 +208,7 @@ export class BucketsListController {
         },
       );
     } catch (error) {
-      if (isCellarExplorerErrorWithCode(error, 'clever.file-explorer-proxy.cellar.bucket-not-found')) {
+      if (isCcHttpErrorWithCode(error, GET_CELLAR_BUCKET_ERROR_CODES.BUCKET_NOT_FOUND)) {
         notifyError(i18n('cc-cellar-bucket-list.error.bucket-not-found', { bucketName }));
         this.#removeBucket(bucketName);
       } else {
