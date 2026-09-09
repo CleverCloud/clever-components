@@ -76,6 +76,8 @@ export class CcAddonCredentials extends LitElement {
         return i18n('cc-addon-credentials.choice.direct');
       case 'elastic':
         return i18n('cc-addon-credentials.choice.elastic');
+      case 'ferretdb':
+        return i18n('cc-addon-credentials.choice.ferretdb');
       case 'kibana':
         return i18n('cc-addon-credentials.choice.kibana');
       default:
