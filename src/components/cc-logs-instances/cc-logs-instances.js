@@ -1,4 +1,5 @@
 import { css, html, LitElement } from 'lit';
+import { repeat } from 'lit/directives/repeat.js';
 import {
   iconRemixToolsLine as iconBuildInstance,
   iconRemixCloseCircleFill as iconDeploymentCancelled,
@@ -16,6 +17,7 @@ import {
   iconRemixStopCircleLine as iconInstanceStopping,
 } from '../../assets/cc-remix.icons.js';
 import { groupBy } from '../../lib/utils.js';
+import { accessibilityStyles } from '../../styles/accessibility.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-datetime-relative/cc-datetime-relative.js';
 import '../cc-icon/cc-icon.js';
@@ -198,6 +200,27 @@ export class CcLogsInstances extends LitElement {
           selection: [...(this.state.selection ?? []), instanceId],
         };
       }
+
+      this.dispatchEvent(new CcLogsInstancesSelectionChangeEvent(this.state.selection));
+    }
+  }
+
+  /**
+   * Selects all the instances of a deployment, or deselects them all when they are already all selected.
+   *
+   * @param {Array<Instance>} instances
+   */
+  _onDeploymentClick(instances) {
+    if (this.state.state === 'loaded') {
+      const instanceIds = instances.map((instance) => instance.id);
+      const selection = this.state.selection ?? [];
+
+      this.state = {
+        ...this.state,
+        selection: instanceIds.every((instanceId) => selection.includes(instanceId))
+          ? selection.filter((instanceId) => !instanceIds.includes(instanceId))
+          : [...selection, ...instanceIds.filter((instanceId) => !selection.includes(instanceId))],
+      };
 
       this.dispatchEvent(new CcLogsInstancesSelectionChangeEvent(this.state.selection));
     }
@@ -423,22 +446,25 @@ export class CcLogsInstances extends LitElement {
   _renderInstancesGroupedByDeployment(instances) {
     const groups = groupBy(instances, (instance) => instance.deployment?.id);
 
+    const sortedGroups = Object.values(groups)
+      // deployment date is the date of the deployment of the first instance in the group
+      .map((instances) => ({ deploymentDate: instances[0].deployment.creationDate, instances }))
+      // sort by deployment date
+      .sort((o1, o2) => o2.deploymentDate - o1.deploymentDate);
+
     return html`
       <div class="section-content deployments">
-        ${Object.values(groups)
-          // deployment date is the date of the deployment of the first instance in the group
-          .map((instances) => ({ deploymentDate: instances[0].deployment.creationDate, instances }))
-          // sort by deployment date
-          .sort((o1, o2) => o2.deploymentDate - o1.deploymentDate)
-          // render group of instances
-          .map(
-            ({ instances }) => html`
-              <fieldset class="deployment">
-                ${this._renderDeploymentDetails(instances[0].deployment)}
-                <div class="instances">${this._renderInstances(instances, false)}</div>
-              </fieldset>
-            `,
-          )}
+        ${repeat(
+          sortedGroups,
+          // key on the deployment so that a reordering of the groups does not make lit reuse checkboxes by position
+          ({ instances }) => instances[0].deployment.id,
+          ({ instances }) => html`
+            <fieldset class="deployment">
+              ${this._renderDeploymentDetails(instances[0].deployment, instances)}
+              <div class="instances">${this._renderInstances(instances, false)}</div>
+            </fieldset>
+          `,
+        )}
       </div>
     `;
   }
@@ -473,16 +499,30 @@ export class CcLogsInstances extends LitElement {
 
   /**
    * @param {Deployment} deployment
+   * @param {Array<Instance>} instances
    */
-  _renderDeploymentDetails(deployment) {
+  _renderDeploymentDetails(deployment, instances) {
+    const id = `deployment-${deployment.id}`;
+    const selectedCount = instances.filter((instance) => this._isSelected(instance.id)).length;
+
     return html`
       <legend class="deployment-detail">
-        <div>${this._renderDeploymentState(deployment.state)}</div>
-        <div>
-          ${i18n('cc-logs-instances.deployment.deployed')}&nbsp;<cc-datetime-relative
-            datetime=${deployment.creationDate.toISOString()}
-          ></cc-datetime-relative>
-        </div>
+        <label class="deployment-selector" for="${id}" title="${i18n('cc-logs-instances.deployment.select')}">
+          <input
+            type="checkbox"
+            id="${id}"
+            .checked=${selectedCount === instances.length}
+            .indeterminate=${selectedCount > 0 && selectedCount < instances.length}
+            @change=${() => this._onDeploymentClick(instances)}
+          />
+          <span class="visually-hidden">${i18n('cc-logs-instances.deployment.select')}</span>
+          ${this._renderDeploymentState(deployment.state)}
+          <span>
+            ${i18n('cc-logs-instances.deployment.deployed')}&nbsp;<cc-datetime-relative
+              datetime=${deployment.creationDate.toISOString()}
+            ></cc-datetime-relative>
+          </span>
+        </label>
         ${this._renderCommit(deployment.commitId)}
       </legend>
     `;
@@ -541,6 +581,7 @@ export class CcLogsInstances extends LitElement {
 
   static get styles() {
     return [
+      accessibilityStyles,
       // language=CSS
       css`
         :host {
@@ -708,7 +749,13 @@ export class CcLogsInstances extends LitElement {
           color: var(--cc-color-text-weak, #555);
           display: grid;
           gap: var(--cc-spacing-3, 0.5em);
-          grid-template-columns: auto 1fr auto;
+          grid-template-columns: 1fr auto;
+        }
+
+        .deployment-selector {
+          align-items: center;
+          display: flex;
+          gap: var(--cc-spacing-3, 0.5em);
         }
 
         .deployment .instances {

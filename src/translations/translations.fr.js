@@ -1331,6 +1331,7 @@ export const translations = {
   'cc-logs-instances.deleted.header': `Instances supprimées`,
   'cc-logs-instances.deploying.header': `Déploiement en cours`,
   'cc-logs-instances.deployment.deployed': `Déployée`,
+  'cc-logs-instances.deployment.select': `Sélectionner toutes les instances listées pour ce déploiement`,
   'cc-logs-instances.deployment.state.cancelled': `Déploiement annulé`,
   'cc-logs-instances.deployment.state.failed': `Déploiement en échec`,
   'cc-logs-instances.deployment.state.succeeded': `Déploiement réussi`,
