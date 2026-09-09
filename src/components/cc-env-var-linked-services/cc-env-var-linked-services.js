@@ -1,6 +1,7 @@
 import { css, html, LitElement } from 'lit';
 import { i18n } from '../../translations/translation.js';
 import '../cc-env-var-form/cc-env-var-form.js';
+import '../cc-link/cc-link.js';
 import '../cc-loader/cc-loader.js';
 import '../cc-notice/cc-notice.js';
 
@@ -133,7 +134,23 @@ export class CcEnvVarLinkedServices extends LitElement {
               .state=${{ type: 'loaded', variables: service.variables, validationMode: 'simple' }}
               heading=${this._getServiceHeading(service.name)}
             >
-              ${this._getServiceDescription(service.name)}
+              <div class="service-description">
+                <p>${this._getServiceDescription(service.name)}</p>
+                ${service.dashboardUrl != null
+                  ? html`
+                      <cc-link
+                        class="dashboard-link"
+                        mode="button"
+                        href="${service.dashboardUrl}"
+                        a11y-desc="${i18n('cc-env-var-linked-services.dashboard-link.a11y-desc', {
+                          name: service.name,
+                        })}"
+                      >
+                        ${i18n('cc-env-var-linked-services.dashboard-link')}
+                      </cc-link>
+                    `
+                  : ''}
+              </div>
             </cc-env-var-form>
           `,
         )}
@@ -171,6 +188,25 @@ export class CcEnvVarLinkedServices extends LitElement {
         .service-list {
           display: grid;
           grid-gap: 1em;
+        }
+
+        .service-description {
+          align-items: center;
+          display: flex;
+          flex-wrap: wrap;
+          gap: var(--cc-spacing-3, 0.5em) var(--cc-spacing-5, 1em);
+          justify-content: space-between;
+        }
+
+        .service-description p {
+          flex: 1 1 20em;
+          margin: 0;
+        }
+
+        .dashboard-link {
+          flex: 0 0 auto;
+          /* the slotted description is italic, the button label must not inherit it */
+          font-style: normal;
         }
 
         .empty-msg {

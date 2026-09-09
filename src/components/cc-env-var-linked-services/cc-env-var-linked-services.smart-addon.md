@@ -19,6 +19,7 @@ title: '💡 Smart (for linked addons)'
   <tr><td><code>apiConfig</code> <td><code>ApiConfig</code> <td>Object with API configuration (target host, tokens...)      <td>
   <tr><td><code>ownerId</code>   <td><code>String</code>    <td>UUID prefixed with <code>user_</code> or <code>orga_</code> <td>
   <tr><td><code>appId</code>     <td><code>String</code>    <td>UUID prefixed with <code>app_</code>                        <td>
+  <tr><td><code>dashboardUrlByAddonId</code> <td><code>Object</code> <td>Optional. Map of add-on id to the URL of its dashboard within the host app. Add-ons found in this map get a link to their dashboard. <td>
 </table>
 
 ```ts
@@ -54,6 +55,9 @@ interface ApiConfig {
   },
   "ownerId": "",
   "appId": "",
+  "dashboardUrlByAddonId": {
+    "addon_xxx": "/organisations/orga_yyy/addons/postgresql/addon_xxx",
+  },
 }'>
   <cc-env-var-linked-services type="addon"></cc-env-var-linked-services>
 </cc-smart-container>
