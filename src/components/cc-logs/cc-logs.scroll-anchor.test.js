@@ -133,6 +133,42 @@ describe('cc-logs scroll anchoring', function () {
     expect(Math.abs(after.offset - before.offset), 'the view did not move').to.be.lessThan(ANCHOR_OFFSET_TOLERANCE);
   });
 
+  // Regression test: the virtualizer positions the logs it has not rendered yet from an estimated line height. When
+  // that estimate is too small, scrolling renders rows that measure taller than assumed, each row above the viewport
+  // corrects the scroll offset by its own error, and the view slides by the accumulated difference — with no log
+  // appended at all.
+  it('does not move the view after a scroll when no log is appended', async function () {
+    const el = await fixture(html`<cc-logs-beta style="display:block; height:300px;"></cc-logs-beta>`);
+    await el.updateComplete;
+    el.appendLogs(generateLogs(1000));
+    await settle(el);
+
+    const container = el.shadowRoot.querySelector('.logs_container');
+    container.scrollTop = 5000;
+    container.dispatchEvent(new Event('scroll'));
+    await settle(el, 4);
+    const before = topOfViewport(el);
+
+    await settle(el, 20);
+    const after = topOfViewport(el);
+
+    expect(after.id, 'the same log is still at the top of the viewport').to.equal(before.id);
+    expect(after.offset, 'the view did not move').to.equal(before.offset);
+    expect(Math.round(container.scrollTop), 'the scroll offset was not corrected').to.equal(5000);
+  });
+
+  it('estimates the logs it has not rendered at the real line height', async function () {
+    const el = await fixture(html`<cc-logs-beta style="display:block; height:300px;"></cc-logs-beta>`);
+    await el.updateComplete;
+    el.appendLogs(generateLogs(100));
+    await settle(el);
+
+    const row = el.shadowRoot.querySelector('.log');
+    expect(el._estimatedLineHeight, 'the estimate matches a rendered line').to.equal(
+      Math.round(row.getBoundingClientRect().height),
+    );
+  });
+
   it('still scrolls the trimmed-away history out of the view', async function () {
     const el = await fixture(html`<cc-logs-beta limit="1000" style="display:block; height:300px;"></cc-logs-beta>`);
     await el.updateComplete;

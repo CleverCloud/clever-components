@@ -27,9 +27,10 @@ import { DateDisplayer } from './date-displayer.js';
 import { LogsController } from './logs-controller.js';
 import { LogsInputController } from './logs-input-controller.js';
 
-// The estimated height (in pixels) of a single log line.
-// This is only used by the virtualizer for logs that are not in the DOM yet (their real size is measured once rendered).
-const ESTIMATED_LOG_LINE_HEIGHT = 21;
+// The fallback estimated height (in pixels) of a single log line, used by the virtualizer for logs that are not in the
+// DOM yet (their real size is measured once rendered). It only applies until the first line is rendered: from then on
+// the estimate is read from the CSS, see `_updateEstimatedLineHeight()`.
+const FALLBACK_LOG_LINE_HEIGHT = 21;
 
 // How many extra logs the virtualizer renders above and below the viewport to smooth out scrolling.
 const VIRTUALIZER_OVERSCAN = 10;
@@ -311,6 +312,12 @@ export class CcLogs extends LitElement {
     this._horizontalScrollbarHeight = 0;
 
     /**
+     * @type {number} The height in pixels the virtualizer assumes for a log line it has not rendered yet.
+     * Read from the CSS once the first line is in the DOM (see `_updateEstimatedLineHeight()`).
+     */
+    this._estimatedLineHeight = FALLBACK_LOG_LINE_HEIGHT;
+
+    /**
      * @type {VirtualizerController<HTMLDivElement, HTMLElement>} The virtualizer rendering only the visible logs.
      * Its `count` and `paddingEnd` options are kept in sync within `willUpdate()`.
      */
@@ -391,7 +398,7 @@ export class CcLogs extends LitElement {
     return {
       getScrollElement: () => this._logsRef.value,
       count: this._logsCtrl.listLength,
-      estimateSize: () => ESTIMATED_LOG_LINE_HEIGHT,
+      estimateSize: () => this._estimatedLineHeight,
       // We deliberately key the virtualizer's caches by index (the default) and NOT by log id.
       // Keying by id makes the `itemSizeCache` and `elementsCache` grow by one entry for every log that ever scrolls
       // into view (they are only pruned for disconnected elements, but our line elements are reused and stay
@@ -420,7 +427,7 @@ export class CcLogs extends LitElement {
           return height;
         }
         const index = Number(element.dataset.index);
-        return instance.itemSizeCache.get(index) ?? ESTIMATED_LOG_LINE_HEIGHT;
+        return instance.itemSizeCache.get(index) ?? this._estimatedLineHeight;
       },
       onChange: (virtualizer) => this._onVirtualizerChange(virtualizer),
     };
@@ -455,6 +462,47 @@ export class CcLogs extends LitElement {
     virtualizer.measurementsCache = [];
     virtualizer['pendingMin'] = 0;
     virtualizer['itemSizeCacheVersion']++;
+  }
+
+  /**
+   * Reads the height of a single-line log row from the CSS and uses it as the virtualizer's size estimate.
+   *
+   * The estimate is what the virtualizer assumes for every log it has not rendered yet, and a wrong one is not
+   * harmless: as soon as the user scrolls, the rows around the new position are rendered and measured, each measured
+   * row above the viewport corrects the scroll offset by its own error, and the view slides by the accumulated
+   * difference. A hardcoded estimate cannot be right either, because the row height is expressed in `em` and
+   * therefore follows the host's font size.
+   *
+   * A row is a flex line whose height is driven by its text: the line height of `.log--right` plus its vertical
+   * padding (the select button in the gutter is built to match). Reading those from the computed style gives the
+   * exact single-line height, in both wrap modes, without having to guess which rendered row happens to be one line
+   * tall.
+   */
+  _updateEstimatedLineHeight() {
+    const row = this._logsRef.value?.querySelector('.log .log--right');
+    if (row == null) {
+      return;
+    }
+
+    const style = window.getComputedStyle(row);
+    const lineHeight = Number.parseFloat(style.lineHeight);
+    const paddingTop = Number.parseFloat(style.paddingTop);
+    const paddingBottom = Number.parseFloat(style.paddingBottom);
+    if (!Number.isFinite(lineHeight) || !Number.isFinite(paddingTop) || !Number.isFinite(paddingBottom)) {
+      return;
+    }
+
+    const estimatedLineHeight = Math.round(lineHeight + paddingTop + paddingBottom);
+    if (estimatedLineHeight <= 0 || estimatedLineHeight === this._estimatedLineHeight) {
+      return;
+    }
+
+    this._estimatedLineHeight = estimatedLineHeight;
+    this._forceVirtualizerRemeasure(this._getVirtualizer());
+    // Every unrendered log just changed height, so the rendered window sits at a different offset. Nothing else will
+    // notice: we are called from `updated()`, and the re-measure that follows reports no change for rows the `ref`
+    // callback already measured. Ask for the render ourselves.
+    this.requestUpdate();
   }
 
   /**
@@ -1143,6 +1191,7 @@ export class CcLogs extends LitElement {
         .join(',')}`;
       if (measureSignature !== this._lastMeasureSignature) {
         this._lastMeasureSignature = measureSignature;
+        this._updateEstimatedLineHeight();
         for (const logElement of this._logsRef.value.querySelectorAll('.log')) {
           virtualizer.measureElement(/** @type {HTMLElement} */ (logElement));
         }
