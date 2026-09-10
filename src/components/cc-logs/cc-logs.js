@@ -43,11 +43,22 @@ const FOLLOW_SCROLL_THRESHOLD = 8;
 const FOLLOW_SUPPRESS_MS = 150;
 
 // The `@tanstack/virtual-core` internals cc-logs reaches into that are NOT part of the public API: they are declared
-// `private` in the library's types, which is why they are accessed by string key. Every access is funnelled through
-// `_isVirtualizerScrolling()` / `_forceVirtualizerRemeasure()` so a library upgrade has a single audit point, and
-// `cc-logs.virtualizer-contract.test.js` asserts these fields still exist so an incompatible upgrade fails in CI
-// instead of silently breaking follow detection and overlap realignment. Verified against @tanstack/virtual-core 3.x.
-export const VIRTUALIZER_PRIVATE_FIELDS = ['scrollState', 'pendingMin', 'itemSizeCacheVersion'];
+// `private` in the library's types, which is why they are accessed by string key. This list is the single audit point
+// for a library upgrade, and `cc-logs.virtualizer-contract.test.js` asserts every entry still exists so an
+// incompatible upgrade fails in CI instead of silently breaking follow detection, overlap realignment or scroll
+// anchoring. Verified against @tanstack/virtual-core 3.x.
+export const VIRTUALIZER_PRIVATE_FIELDS = [
+  // Non-null while the virtualizer drives a programmatic scroll (`_isVirtualizerScrolling()`).
+  'scrollState',
+  // Lowest index whose measurements must be recomputed (`_forceVirtualizerRemeasure()`).
+  'pendingMin',
+  // Bumped to invalidate the memoized measurements (`_forceVirtualizerRemeasure()`).
+  'itemSizeCacheVersion',
+  // Returns the per-index start/size measurements (`_realignVirtualizer()`).
+  'getMeasurements',
+  // Corrects the scroll offset to absorb a content-size change (`_realignVirtualizer()`).
+  'applyScrollAdjustment',
+];
 
 /** @type {MetadataRendering} The default metadata renderer */
 const DEFAULT_METADATA_RENDERING = {
@@ -588,24 +599,35 @@ export class CcLogs extends LitElement {
   }
 
   /**
-   * Keeps the virtualizer's index-keyed size cache aligned with the logs list.
+   * Keeps the virtualizer aligned with the logs list when the list's index space changes.
    *
-   * The virtualizer caches each rendered log's measured height in a `Map` keyed by index (we deliberately key by index
-   * and not by log id to bound memory — see `_buildVirtualizerOptions()`). When logs are trimmed off the front (FIFO
-   * once `limit` is reached), every surviving log's index decreases, but this cache does not follow on its own: the
-   * trim+append at the limit keeps `count` constant and the index edge keys unchanged, so the virtualizer's built-in
-   * edge-key-change detection never fires. The stale cached heights then apply to the wrong logs, which positions lines
-   * with the wrong height and makes them overlap (most visible with `wrap-lines` and multi-line logs, when scrolling up
-   * into a trimmed region).
+   * Everything here exists because the virtualizer's caches and scroll anchor are keyed by index, and a FIFO front-trim
+   * (once `limit` is reached) shifts every surviving log's index down. Two things then need realigning.
    *
-   * We therefore reach into the virtualizer internals (same defensive pattern as the `measureElement` 0-height guard)
-   * and either drop the cache (on a full rebuild: filter change / clear) or shift every cached index down by the
-   * front-trim count. We then force the memoized measurements to be recomputed from the start.
+   * **The size cache.** The virtualizer caches each rendered log's measured height in a `Map` keyed by index (we
+   * deliberately key by index and not by log id to bound memory — see `_buildVirtualizerOptions()`). That cache does
+   * not follow the trim on its own: trim+append at the limit keeps `count` constant and the index edge keys unchanged,
+   * so the virtualizer's built-in edge-key-change detection never fires. The stale cached heights then apply to the
+   * wrong logs, which positions lines with the wrong height and makes them overlap (most visible with `wrap-lines` and
+   * multi-line logs, when scrolling up into a trimmed region). We drop the cache on a full rebuild (filter change /
+   * clear) or shift every cached index down by the front-trim count.
+   *
+   * **The scroll offset.** The whole list slides up by the height of the trimmed logs, but nothing moves the scroll
+   * offset with it. `anchorTo: 'end'` cannot help: its anchor is a `getItemKey()` value, which is the index, so it
+   * pins the viewport to an index rather than to a log. Left alone, the user reading history sees the content scroll
+   * out from under them by one trim's worth of logs on every append. We therefore subtract the trimmed height from the
+   * scroll offset ourselves.
    */
-  _realignVirtualizerSizeCache() {
+  _realignVirtualizer() {
     const { rebuilt, frontTrim } = this._logsCtrl.consumeIndexSpaceChange();
 
     const virtualizer = this._getVirtualizer();
+
+    // The total height of the logs that just left the front of the list. It must be read here, before the size cache
+    // is touched, while the measurements still describe the pre-trim index space: the start offset of index
+    // `frontTrim` is exactly the summed height of the `frontTrim` logs that were trimmed.
+    const trimmedHeight =
+      !rebuilt && frontTrim > 0 && !this.follow ? (virtualizer['getMeasurements']()[frontTrim]?.start ?? 0) : 0;
 
     if (rebuilt) {
       // Full rebuild (filter change / clear): indices map to entirely different logs, drop the whole cache.
@@ -639,6 +661,13 @@ export class CcLogs extends LitElement {
 
     // Force the virtualizer to recompute its positions from the realigned cache.
     this._forceVirtualizerRemeasure(virtualizer);
+
+    // Move the scroll offset up with the content so the log the user is reading stays under their eyes.
+    // `applyScrollAdjustment()` is the virtualizer's own way to absorb a content-size change: it corrects the scroll
+    // offset without the correction being mistaken for a user scroll (which would toggle `follow`).
+    if (trimmedHeight > 0) {
+      virtualizer['applyScrollAdjustment'](-trimmedHeight);
+    }
   }
 
   /**
@@ -1071,8 +1100,9 @@ export class CcLogs extends LitElement {
       paddingEnd: this._horizontalScrollbarHeight,
     });
 
-    // Realign the index-keyed size cache with the (possibly trimmed) list before `render()` reads the measurements.
-    this._realignVirtualizerSizeCache();
+    // Realign the index-keyed size cache and the scroll offset with the (possibly trimmed) list, before `render()`
+    // reads the measurements.
+    this._realignVirtualizer();
   }
 
   /**
