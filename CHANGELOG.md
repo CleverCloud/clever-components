@@ -5,6 +5,13 @@ title: 'Changelog'
 
 # Changelog
 
+## [26.4.0](https://github.com/CleverCloud/clever-components/compare/26.3.0...26.4.0) (2026-09-11)
+
+
+### 🚀 Features
+
+* **cc-search-bar:** match items on an optional aliases field ([8978d6d](https://github.com/CleverCloud/clever-components/commit/8978d6dc67507be89232e72168d42cac565592b5))
+
 ## [26.3.0](https://github.com/CleverCloud/clever-components/compare/26.2.0...26.3.0) (2026-09-03)
 
 
