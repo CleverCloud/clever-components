@@ -1,7 +1,6 @@
-import { create } from '@clevercloud/client/esm/api/v2/oauth-consumer.js';
-import { snakeCase } from '../../lib/change-case.js';
+import { CreateOauthConsumerCommand } from '@clevercloud/client/cc-api-commands/oauth-consumer/create-oauth-consumer-command.js';
+import { getCcApiClientWithOAuth } from '../../lib/cc-api-client.js';
 import { notifyError, notifySuccess } from '../../lib/notifications.js';
-import { sendToApi } from '../../lib/send-to-api.js';
 import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-smart-container/cc-smart-container.js';
@@ -11,7 +10,6 @@ import './cc-oauth-consumer-form.js';
 /**
  * @import { CcOauthConsumerForm } from './cc-oauth-consumer-form.js'
  * @import { OauthConsumerWithoutKeyAndSecret } from './cc-oauth-consumer-form.types.js'
- * @import { OauthConsumer } from '../cc-oauth-consumer-info/cc-oauth-consumer-info.types.js'
  * @import { ApiConfig } from '../../lib/send-to-api.types.js'
  * @import { OnContextUpdateArgs } from '../../lib/smart/smart-component.types.js'
  */
@@ -62,7 +60,7 @@ class Api {
    * @param {string} ownerId
    */
   constructor(apiConfig, ownerId) {
-    this._apiConfig = apiConfig;
+    this._ccApiClient = getCcApiClientWithOAuth(apiConfig);
     this._ownerId = ownerId;
   }
 
@@ -71,23 +69,18 @@ class Api {
    * @return {Promise<string>} key
    */
   createOauthConsumer(data) {
-    const rights = Object.fromEntries(
-      Object.entries(data.rights).map(([name, isEnabled]) => {
-        const snakeCaseName = snakeCase(name);
-        return [snakeCaseName, isEnabled];
-      }),
-    );
-
-    const newOauthConsumer = {
-      name: data.name,
-      url: data.url,
-      baseUrl: data.baseUrl,
-      description: data.description,
-      picture: data.picture,
-      rights,
-    };
-    return create({ id: this._ownerId }, newOauthConsumer)
-      .then(sendToApi({ apiConfig: this._apiConfig }))
-      .then(/** @param {OauthConsumer} response */ (response) => response.key);
+    return this._ccApiClient
+      .send(
+        new CreateOauthConsumerCommand({
+          ownerId: this._ownerId,
+          name: data.name,
+          url: data.url,
+          baseUrl: data.baseUrl,
+          description: data.description,
+          picture: data.picture,
+          rights: data.rights,
+        }),
+      )
+      .then((oauthConsumer) => oauthConsumer.key);
   }
 }

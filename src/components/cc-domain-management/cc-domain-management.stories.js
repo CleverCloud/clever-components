@@ -48,6 +48,21 @@ export const dataLoadedWithMoreDomains = makeStory(conf, {
   ],
 });
 
+export const dataLoadedWithNoPrimaryDomain = makeStory(conf, {
+  items: [
+    {
+      applicationId: 'app_3f9b1c8e-2d7a-4c4f-91a6-8bde78f4a21b',
+      /** @type {DomainManagementListStateLoaded} */
+      domainListState: {
+        type: 'loaded',
+        domains: baseDomains.map((domain) => ({ ...domain, isPrimary: false })),
+      },
+      /** @type {DomainManagementDnsInfoStateLoaded} */
+      dnsInfoState: baseDnsInfo,
+    },
+  ],
+});
+
 export const dataLoadedWithHttpOnlyDomain = makeStory(conf, {
   items: [
     {

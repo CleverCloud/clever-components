@@ -72,7 +72,7 @@ defineSmartComponent({
         if (pulsarInfo.cluster.pulsarTlsPort != null) {
           cliUrl = `pulsar+ssl://${pulsarInfo.cluster.url}:${pulsarInfo.cluster.pulsarTlsPort}`;
         } else if (pulsarInfo.cluster.pulsarPort != null) {
-          cliUrl = `pulsar+ssl://${pulsarInfo.cluster.url}:${pulsarInfo.cluster.pulsarPort}`;
+          cliUrl = `pulsar://${pulsarInfo.cluster.url}:${pulsarInfo.cluster.pulsarPort}`;
         } else {
           throw new Error('Missing TLS port and default port');
         }

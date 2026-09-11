@@ -1,7 +1,7 @@
+import { GetGrafanaCommand } from '@clevercloud/client/cc-api-commands/grafana/get-grafana-command.js';
 import { GetMetricsCommand } from '@clevercloud/client/cc-api-commands/metrics/get-metrics-command.js';
-import { getGrafanaOrganisation } from '@clevercloud/client/esm/api/v4/saas.js';
+import { tolerateNotFound } from '@clevercloud/client/utils/error-utils.js';
 import { getCcApiClientWithOAuth } from '../../lib/cc-api-client.js';
-import { sendToApi } from '../../lib/send-to-api.js';
 import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
 import '../cc-smart-container/cc-smart-container.js';
 import './cc-tile-metrics.js';
@@ -53,10 +53,9 @@ defineSmartComponent({
       updateComponent('grafanaLinkState', { type: 'loading' });
       fetchGrafanaAppLink({ apiConfig, ownerId, appId, grafanaBaseLink: grafanaLink.base, signal })
         .then((grafanaAppLink) => {
-          updateComponent('grafanaLinkState', { type: 'loaded', link: grafanaAppLink });
+          updateComponent('grafanaLinkState', { type: 'loaded', link: grafanaAppLink ?? grafanaLink.console });
         })
         .catch(() => {
-          // If Grafana is not enabled we fallback to the Console Grafana page
           updateComponent('grafanaLinkState', { type: 'loaded', link: grafanaLink.console });
         });
     }
@@ -99,19 +98,21 @@ async function fetchMetrics({ apiConfig, ownerId, appId, signal }) {
  * @param {string} parameters.appId
  * @param {string} parameters.grafanaBaseLink
  * @param {AbortSignal} parameters.signal
- * @returns {Promise<string>}
+ * @returns {Promise<string|null>} the Grafana app dashboard link, or `null` when Grafana is not enabled
  */
-function fetchGrafanaAppLink({ apiConfig, ownerId, appId, grafanaBaseLink, signal }) {
-  return getGrafanaOrganisation({ id: ownerId })
-    .then(sendToApi({ apiConfig, signal }))
-    .then(
-      /** @param {{id: string}} grafanaOrg*/ (grafanaOrg) => {
-        const grafanaLink = new URL('/d/runtime/application-runtime', grafanaBaseLink);
-        grafanaLink.searchParams.set('orgId', grafanaOrg.id);
-        grafanaLink.searchParams.set('var-SELECT_APP', appId);
-        return grafanaLink.toString();
-      },
-    );
+async function fetchGrafanaAppLink({ apiConfig, ownerId, appId, grafanaBaseLink, signal }) {
+  const grafanaOrg = await tolerateNotFound(
+    getCcApiClientWithOAuth(apiConfig).send(new GetGrafanaCommand({ ownerId }), { signal }),
+  );
+
+  if (grafanaOrg == null) {
+    return null;
+  }
+
+  const grafanaLink = new URL('/d/runtime/application-runtime', grafanaBaseLink);
+  grafanaLink.searchParams.set('orgId', String(grafanaOrg.id));
+  grafanaLink.searchParams.set('var-SELECT_APP', appId);
+  return grafanaLink.toString();
 }
 
 /**

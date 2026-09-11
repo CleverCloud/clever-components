@@ -1,5 +1,7 @@
+import { GetApiTokenCommand } from '@clevercloud/client/cc-api-bridge-commands/api-token/get-api-token-command.js';
+import { UpdateApiTokenCommand } from '@clevercloud/client/cc-api-bridge-commands/api-token/update-api-token-command.js';
+import { getCcApiBridgeClient } from '../../lib/cc-api-client.js';
 import { notifyError, notifySuccess } from '../../lib/notifications.js';
-import { sendToAuthBridge } from '../../lib/send-to-auth-bridge.js';
 import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-smart-container/cc-smart-container.js';
@@ -69,44 +71,18 @@ class Api {
    * @param {string} tokenId
    */
   constructor(authBridgeConfig, tokenId) {
-    this._authBridgeConfig = authBridgeConfig;
+    this._ccApiBridgeClient = getCcApiBridgeClient(authBridgeConfig);
     this._tokenId = tokenId;
   }
 
-  /**
-   * @param {{ tokenId: string }} params
-   */
-  _getOneToken(params) {
-    return Promise.resolve({
-      method: 'get',
-      url: `/api-tokens/${params.tokenId}`,
-      headers: { Accept: 'application/json' },
-    });
-  }
-
-  /**
-   * @param {{ tokenId: string }} params
-   * @param {CcTokenChangePayload} body
-   */
-  _updateOneToken(params, body) {
-    return Promise.resolve({
-      method: 'put',
-      url: `/api-tokens/${params.tokenId}`,
-      headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
-      body,
-    });
-  }
-
   getToken() {
-    return this._getOneToken({ tokenId: this._tokenId }).then(
-      sendToAuthBridge({ authBridgeConfig: this._authBridgeConfig }),
-    );
+    return this._ccApiBridgeClient.send(new GetApiTokenCommand({ apiTokenId: this._tokenId }));
   }
 
   /** @param {CcTokenChangePayload} body */
   updateToken(body) {
-    return this._updateOneToken({ tokenId: this._tokenId }, body).then(
-      sendToAuthBridge({ authBridgeConfig: this._authBridgeConfig }),
+    return this._ccApiBridgeClient.send(
+      new UpdateApiTokenCommand({ apiTokenId: this._tokenId, name: body.name, description: body.description }),
     );
   }
 }

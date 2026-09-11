@@ -1,4 +1,5 @@
-import { Abortable } from '../../lib/abortable.js';
+import { isCcHttpErrorWithCode } from '@clevercloud/client/utils/error-utils.js';
+import { Abortable, isAbortError } from '../../lib/abortable.js';
 import { KvKeyEditorHashCtrl } from './kv-key-editor-hash-ctrl.js';
 import { KvKeyEditorListCtrl } from './kv-key-editor-list-ctrl.js';
 import { KvKeyEditorSetCtrl } from './kv-key-editor-set-ctrl.js';
@@ -61,7 +62,7 @@ export class KvDetailsCtrl {
     try {
       await this._currentEditorCtrl.load();
     } catch (e) {
-      if (!(e instanceof DOMException && e.name === 'AbortError')) {
+      if (!isAbortError(e)) {
         throw e;
       }
     }
@@ -82,8 +83,7 @@ export class KvDetailsCtrl {
     try {
       await this._currentEditorCtrl.create(keyValue);
     } catch (e) {
-      const errorCode = getErrorCode(e);
-      if (errorCode === 'clever.redis-http.key-already-exists') {
+      if (isCcHttpErrorWithCode(e, 'clever.redis-http.key-already-exists')) {
         this._updateDetailState({
           type: 'add',
           formState: { type: 'idle', errors: { keyName: 'already-used' } },
@@ -140,12 +140,4 @@ export class KvDetailsCtrl {
         );
     }
   }
-}
-
-/**
- * @param {{responseBody?: { code?: string}}} e
- * @return {string | null} e
- */
-function getErrorCode(e) {
-  return e?.responseBody?.code;
 }

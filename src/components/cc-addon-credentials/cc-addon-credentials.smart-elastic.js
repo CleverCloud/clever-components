@@ -83,8 +83,8 @@ defineSmartComponent({
       .then((esInfo) => {
         const kibanaService = esInfo.services.find((service) => service.name === 'kibana');
         const apmService = esInfo.services.find((service) => service.name === 'apm');
-        const isKibanaEnabled = kibanaService?.enabled ?? false;
-        const isApmEnabled = apmService?.enabled ?? false;
+        const isKibanaEnabled = kibanaService?.isEnabled ?? false;
+        const isApmEnabled = apmService?.isEnabled ?? false;
 
         /** @type {AddonCredential[]} */
         const elasticCredentials = [

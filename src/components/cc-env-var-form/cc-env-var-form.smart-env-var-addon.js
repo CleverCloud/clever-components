@@ -1,5 +1,5 @@
-import { getAllEnvVars } from '@clevercloud/client/esm/api/v2/addon.js';
-import { sendToApi } from '../../lib/send-to-api.js';
+import { GetEnvironmentCommand } from '@clevercloud/client/cc-api-commands/environment/get-environment-command.js';
+import { getCcApiClientWithOAuth } from '../../lib/cc-api-client.js';
 import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
 import '../cc-smart-container/cc-smart-container.js';
 import './cc-env-var-form.js';
@@ -7,7 +7,7 @@ import './cc-env-var-form.js';
 /**
  * @import { CcEnvVarForm } from './cc-env-var-form.js'
  * @import { EnvVar } from '../common.types.js'
- * @import { ApiConfig } from '../../lib/send-to-api.types.js'
+ * @import { CcApiClient } from '@clevercloud/client/cc-api-client.js'
  * @import { OnContextUpdateArgs } from '../../lib/smart/smart-component.types.js'
  */
 
@@ -23,11 +23,12 @@ defineSmartComponent({
    */
   onContextUpdate({ context, updateComponent, signal }) {
     const { apiConfig, ownerId, addonId } = context;
+    const ccApiClient = getCcApiClientWithOAuth(apiConfig);
 
     updateComponent('state', { type: 'loading' });
     updateComponent('resourceId', addonId);
 
-    fetchEnvVars({ apiConfig, signal, ownerId, addonId })
+    fetchEnvVars({ ccApiClient, signal, ownerId, addonId })
       .then(
         /** @param {Array<EnvVar>} variables */
         (variables) => {
@@ -46,12 +47,13 @@ defineSmartComponent({
 
 /**
  * @param {object} params
- * @param {ApiConfig} params.apiConfig
+ * @param {CcApiClient} params.ccApiClient
  * @param {AbortSignal} params.signal
  * @param {string} params.ownerId
  * @param {string} params.addonId
  * @returns {Promise<Array<EnvVar>>}
  */
-function fetchEnvVars({ apiConfig, signal, ownerId, addonId }) {
-  return getAllEnvVars({ id: ownerId, addonId }).then(sendToApi({ apiConfig, signal }));
+async function fetchEnvVars({ ccApiClient, signal, ownerId, addonId }) {
+  const { environment } = await ccApiClient.send(new GetEnvironmentCommand({ ownerId, addonId }), { signal });
+  return environment;
 }

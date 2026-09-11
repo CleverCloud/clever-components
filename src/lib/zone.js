@@ -1,5 +1,5 @@
 /**
- * @import { Zone } from '../components/common.types.js'
+ * @import { Zone } from '@clevercloud/client/cc-api-commands/zone/zone.types.js'
  */
 
 const CLEVER_CLOUD_ZONE = 'infra:clever-cloud';

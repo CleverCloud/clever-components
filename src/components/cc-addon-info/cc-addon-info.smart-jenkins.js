@@ -109,9 +109,9 @@ defineSmartComponent({
             installed: jenkinsInfo.version,
             latest: jenkinsInfo.version,
           },
-          creationDate: addon.creationDate,
+          creationDate: addon.createdAt,
           specifications,
-          encryption: encryptionFeature.enabled,
+          encryption: encryptionFeature.isEnabled,
         });
       })
       .catch((error) => {

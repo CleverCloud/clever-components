@@ -148,7 +148,7 @@ export class KvKeyEditorHashCtrl extends KvKeyEditorCtrl {
       this._scanner.reset();
       await this.load();
 
-      return result.added;
+      return result.wasAdded;
     } catch (e) {
       this._updateAddForm({ type: 'idle' });
       throw e;
@@ -221,7 +221,7 @@ export class KvHashElementsScanner extends KvScanner {
   /**
    * @param {number} count
    * @param {AbortSignal} [signal]
-   * @return {Promise<{cursor: number, total: number, elements: Array<CcKvHashElementState>}>}
+   * @return {Promise<{cursor: number, elements: Array<CcKvHashElementState>}>}
    */
   async fetch(count, signal) {
     const r = await this._kvClient.scanHash(this._keyName, signal, {
@@ -231,7 +231,6 @@ export class KvHashElementsScanner extends KvScanner {
     });
     return {
       cursor: r.cursor,
-      total: r.total,
       elements: r.elements.map((e) => ({ ...e, type: 'idle' })),
     };
   }

@@ -1,3 +1,5 @@
+import { InvoiceStatus } from '@clevercloud/client/cc-api-commands/invoice/invoice.types.js';
+import { EnvVarValidationMode } from '@clevercloud/client/utils/environment.types.js';
 import { TemplateResult } from 'lit';
 
 export type ValueOrArray<T> = T | Array<ValueOrArray<T>>;
@@ -12,19 +14,6 @@ export interface App {
   variantName: string; // Human name of the variant (PHP, Ruby, Python...)
   variantLogo: string; // HTTPS URL to the logo of the variant
   lastDeploymentLogsUrl?: string; // URL to the logs for the last deployment if app is not brand new
-}
-
-export interface Addon {
-  id: string;
-  realId: string;
-  name: string;
-  provider: AddonProvider;
-  plan: AddonPlan;
-  creationDate: number | string;
-}
-
-interface AddonPlan {
-  name: string;
 }
 
 export interface Scalability {
@@ -86,12 +75,10 @@ export interface Invoice {
   invoiceHtml?: string;
   number: string;
   paymentUrl: string;
-  status: InvoiceStatusType;
+  status: InvoiceStatus;
   total: InvoiceAmount;
   type: InvoiceType;
 }
-
-export type InvoiceStatusType = 'PENDING' | 'PROCESSING' | 'PAID' | 'PAYMENTHELD' | 'CANCELED' | 'REFUNDED' | 'WONTPAY';
 
 export type InvoiceType = 'INVOICE' | 'CREDITNOTE';
 
@@ -206,26 +193,6 @@ interface Temporality {
   digits?: number; // how many fraction digits to display the price
 }
 
-interface RedirectionNamespace {
-  namespace: string;
-}
-
-interface Redirection {
-  namespace: string;
-  sourcePort: number;
-}
-
-interface Zone {
-  name: string;
-  countryCode: string; // ISO 3166-1 alpha-2 code of the country (2 letters): "FR", "CA", "US"...
-  city: string; // Name of the city in english: "Paris", "Montreal", "New York City"...
-  country: string; // Name of the country in english: "France", "Canada", "United States"...
-  displayName?: string; // Optional display name for private zones (instead of displaying city + country): "ACME (dedicated)"...
-  tags: string[]; // Array of strings for semantic tags: ["region:eu", "infra:clever-cloud"], ["scope:private"]...
-  lat: number; // Latitude
-  lon: number; // Longitude
-}
-
 type AppStatus =
   | 'restart-failed'
   | 'restarting'
@@ -251,17 +218,6 @@ export interface EnvVarParseError {
   msg: string | Node;
   isWarning: Boolean;
 }
-
-export interface EnvVarRawError {
-  type: number;
-  name?: string;
-  pos?: {
-    line: number;
-    column: number;
-  };
-}
-
-export type EnvVarValidationMode = 'simple' | 'strict';
 
 export type EnvVarEditorState = EnvVarEditorStateLoading | EnvVarEditorStateLoaded;
 
@@ -289,175 +245,4 @@ export interface Notification {
 export interface NotificationOptions {
   timeout?: number;
   closeable?: boolean;
-}
-
-// FIXME: this should be provided by the client
-export interface Instance {
-  type: string;
-  version: string;
-  name: string;
-  variant: {
-    id: string;
-    slug: string;
-    name: string;
-    deployType: string;
-    logo: string;
-  };
-  description: string;
-  enabled: boolean;
-  comingSoon: boolean;
-  maxInstances: number;
-  tags: Array<string>;
-  deployments: Array<string>;
-  flavors: Array<{
-    name: string;
-    mem: number;
-    cpus: number;
-    gpus: number;
-    disk: number;
-    price: number;
-    available: boolean;
-    microservice: boolean;
-    machine_learning: boolean;
-    nice: number;
-    price_id: string;
-    memory: {
-      unit: string;
-      value: number;
-      formatted: string;
-    };
-  }>;
-  defaultFlavor: {
-    name: string;
-    mem: number;
-    cpus: number;
-    gpus: number;
-    disk: number;
-    price: number;
-    available: boolean;
-    microservice: boolean;
-    machine_learning: boolean;
-    nice: number;
-    price_id: string;
-    memory: {
-      unit: string;
-      value: number;
-      formatted: string;
-    };
-  };
-  buildFlavor: {
-    name: string;
-    mem: number;
-    cpus: number;
-    gpus: number;
-    disk: number;
-    price: number;
-    available: boolean;
-    microservice: boolean;
-    machine_learning: boolean;
-    nice: number;
-    price_id: string;
-    memory: {
-      unit: string;
-      value: number;
-      formatted: string;
-    };
-  };
-}
-
-// FIXME: this should be provided by the client
-export interface PriceSystem {
-  id?: string;
-  owner_id?: string;
-  start_date?: string;
-  end_date?: string;
-  zone_id: string;
-  currency: string;
-  runtime: Array<{
-    runtime_policy_id: string;
-    source: string;
-    flavor: string;
-    time_unit: string;
-    price: number;
-    slug_id: string;
-  }>;
-  countable: Array<{
-    countable_policy_id: string;
-    service: string;
-    data_unit: string;
-    data_quantity_for_price: {
-      secability: string;
-      quantity: number;
-    };
-    time_interval_for_price: {
-      secability: string;
-      interval: string;
-    };
-    first_x_free?: number;
-    price_plans: Array<{
-      plan_id: string;
-      max_quantity: number;
-      price: number;
-    }>;
-  }>;
-}
-
-export type AddonProvider = Pick<RawAddonProvider, 'name' | 'logoUrl'>;
-
-// FIXME: this should be provided by the client
-export interface RawAddonProvider {
-  id: string;
-  name: string;
-  website: string;
-  supportEmail: string;
-  googlePlusName: string;
-  twitterName: string;
-  analyticsId: string;
-  shortDesc: string;
-  longDesc: string;
-  logoUrl: string;
-  status: string;
-  openInNewTab: boolean;
-  canUpgrade: boolean;
-  regions: Array<string>;
-  plans: {
-    id: string;
-    name: string;
-    slug: string;
-    price: number;
-    price_id: string;
-    features: {
-      name: string;
-      type: 'BOOLEAN' | 'BOOLEAN_SHARED' | 'NUMBER_CPU_RUNTIME' | 'OBJECT' | 'SHARED' | 'BYTES' | 'NUMBER' | 'STRING';
-      value: string;
-      computable_value: string;
-      name_code:
-        | 'connection-limit'
-        | 'cpu'
-        | 'databases'
-        | 'disk-size'
-        | 'has-logs'
-        | 'has-metrics'
-        | 'max-db-size'
-        | 'memory'
-        | 'version'
-        | string;
-    }[];
-    zones: Array<string>;
-  }[];
-  features: {
-    name: string;
-    type: 'BOOLEAN' | 'BOOLEAN_SHARED' | 'SHARED' | 'OBJECT' | 'BYTES' | 'NUMBER' | 'RUNTIME' | 'STRING';
-    name_code:
-      | 'connection-limit'
-      | 'cpu'
-      | 'databases'
-      | 'disk-size'
-      | 'has-logs'
-      | 'has-metrics'
-      | 'max-db-size'
-      | 'memory'
-      | 'version'
-      | string;
-  }[];
 }
