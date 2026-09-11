@@ -6,6 +6,8 @@ export interface SearchBarItem {
   label: string;
   href: string;
   id?: string;
+  /** Extra texts the item can be found by, searched like its label and id but never displayed. */
+  aliases?: string[];
   itemType?: SearchBarItemType;
   matchers?: string[];
 }

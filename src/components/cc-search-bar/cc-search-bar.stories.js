@@ -53,7 +53,14 @@ const defaultSections = [
     icon: iconResources,
     items: [
       { label: 'APM --0307-42dc-af99-b485ecc44536', href: '#apm-1', itemType: 'app', matchers: ['project:billing'] },
-      { label: 'fs-matomot-with-posthog', href: '#matomot-1', itemType: 'addon', matchers: ['project:billing'] },
+      {
+        label: 'fs-matomot-with-posthog',
+        href: '#matomot-1',
+        id: 'addon_4d65a2d6-0307-42dc-af99-b485ecc44536',
+        aliases: ['postgresql_4d65a2d6'],
+        itemType: 'addon',
+        matchers: ['project:billing'],
+      },
       {
         label: 'APM - apps-0307-42dc-af99-b485ecc44536',
         href: '#apm-2',
@@ -71,7 +78,13 @@ const defaultSections = [
         itemType: 'app',
       },
       { label: 'test-kube-config', href: '#kube-1', itemType: 'cke' },
-      { label: 'test-addon-pulsar', href: '#pulsar-1', itemType: 'addon' },
+      {
+        label: 'test-addon-pulsar',
+        href: '#pulsar-1',
+        id: 'addon_9a84bf38-f874-4caf-a860-7d37b0df2a17',
+        aliases: ['pulsar_9a84bf38'],
+        itemType: 'addon',
+      },
       { label: 'my-oauth-consumer', href: '#consumer-1', itemType: 'oauth-consumer' },
       { label: 'matomo-addon-provider', href: '#provider-1', itemType: 'addon-provider' },
     ],
@@ -185,12 +198,32 @@ empty sections are hidden.
   },
 });
 
+export const withAliases = makeStory(conf, {
+  docs: `
+An item can carry \`aliases\`: texts it is also found by, but never displayed. The add-ons of this story are
+labelled with their name and keep their \`addon_xxx\` id, while their real id (\`postgresql_xxx\`,
+\`pulsar_xxx\`) sits in \`aliases\` — try \`postgresql\` or \`pulsar_9a84bf38\`. The same field lets a
+page answer to keywords its label does not contain, such as a support page found by \`help\`.
+  `,
+  /** @param {HTMLElement} container */
+  dom: (container) => {
+    render(
+      html`
+        <cc-button @cc-click="${() => getCcSearchBar(container).show()}" primary>Open Search Bar</cc-button>
+        <cc-search-bar open value="postgresql" .sections="${defaultSections}"></cc-search-bar>
+      `,
+      container,
+    );
+  },
+});
+
 export const withKeywordFilter = makeStory(conf, {
   docs: `
 The query supports \`is:<value>\` and \`project:<value>\` keyword tokens. Items match a keyword token when it is
 in their derived matchers — \`is:<itemType>\` is added automatically for items with an \`itemType\`, and any
 other matcher, \`project:<name>\` included, is provided via the \`matchers\` field. Anything else in the query
-is free text, matched against an item's label and id, so a colon in a URL or an id still searches as text.
+is free text, matched against an item's label, id and aliases, so a colon in a URL or an id still searches as
+text.
 
 Tokens can be combined and all must pass: \`is:app apm\` keeps only \`itemType: 'app'\` items whose label
 includes \`apm\`. The items of this story carry \`project:billing\` and \`project:analytics\` matchers — try
