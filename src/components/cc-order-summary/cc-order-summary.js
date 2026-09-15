@@ -1,33 +1,48 @@
 import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { hasSlottedChildren } from '../../directives/has-slotted-children.js';
 import { isStringBlank, isStringEmpty } from '../../lib/utils.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
 import { i18n } from '../../translations/translation.js';
-import '../cc-badge/cc-badge.js';
 import '../cc-button/cc-button.js';
 import '../cc-img/cc-img.js';
 import { CcProductCreateEvent } from './cc-order-summary.events.js';
 
 /**
- * @import { ConfigurationItem, OrderSummary } from './cc-order-summary.types.js'
+ * @import { ConfigurationItem, OrderSummary, TotalItem } from './cc-order-summary.types.js'
  */
 
 /**
  * Displays a summary of a product being ordered.
  *
  * The UI is composed of:
- * - global information about the product,
+ * - a title, with room for a leading icon,
+ * - a card with global information about the product,
  * - a configuration in the form of a list of label/value,
- * - a button to trigger the creation,
- * - a list of details for additional information.
+ * - the tags, in their own section,
+ * - a total and a button to trigger the creation,
+ * - a list of details for additional information, under the card.
+ *
+ * ## Details
+ *
+ * The card lays itself out from its own width, not from the viewport width.
+ * Under `30em` the configuration is a list of rows, with the label on the left and the value on the right.
+ * Above `30em` the rows become a label over value grid that fills as many columns as fit.
+ * Because the host uses inline-size containment, it needs a width from its parent: it collapses in a shrink-to-fit context.
+ *
+ * When `productName` is set, the logo becomes decorative: the product name is read from the visible text instead of
+ * from the logo alternative text, which drops a duplicate announcement.
  *
  * @cssdisplay block
  *
  * @cssprop {FontSize} --cc-order-summary-detail-font-size - The font-size for the list of details (defaults: `0.825em`).
  * @cssprop {FontWeight} --cc-order-summary-font-weight - Sets the value of the font weight CSS property (defaults: `600`).
+ * @cssprop {Color} --cc-order-summary-title-color - The color for the title (defaults: `--cc-color-text-weak`).
+ * @cssprop {FontSize} --cc-order-summary-title-font-size - The font-size for the title (defaults: `inherit`).
  *
- * @slot detail - a single piece of information displayed under the main part of the UI. You can insert multiple detail items.
+ * @slot detail - a single piece of information displayed under the card. You can insert multiple detail items.
+ * @slot title-icon - an icon displayed before the title.
  */
 
 export class CcOrderSummary extends LitElement {
@@ -54,21 +69,90 @@ export class CcOrderSummary extends LitElement {
     }
 
     return html`
-      <div class="title">${i18n('cc-order-summary.title')}</div>
-      <div class="summary">${this._renderSummary()}</div>
-      <div class="details-container">
+      <div class="title">
+        <slot name="title-icon"></slot>
+        <span>${i18n('cc-order-summary.title')}</span>
+      </div>
+      <div class="card">
+        ${this._renderHeader()} ${this._renderBody()} ${this._renderTags()} ${this._renderFooter()}
+      </div>
+      <div class="details" ${hasSlottedChildren()}>
         <slot name="detail"></slot>
       </div>
     `;
   }
 
-  _renderSummary() {
-    const { submitStatus } = this.orderSummary;
+  _renderHeader() {
+    const { name, productName, logo } = this.orderSummary;
+
+    // When the product name is visible, the logo is decorative and needs no alternative text.
+    const hasProductName = !isStringBlank(productName);
+    const hasLogo = !isStringEmpty(logo?.url) && (hasProductName || !isStringEmpty(logo?.alt));
+
+    return html`
+      <div class="header">
+        ${hasLogo
+          ? html`<cc-img class="header--logo" src="${logo.url}" a11y-name="${hasProductName ? '' : logo.alt}"></cc-img>`
+          : ``}
+        <div class="header--text">
+          ${hasProductName ? html`<div class="header--product-name">${productName}</div>` : ``}
+          ${!isStringEmpty(name)
+            ? html`<div class="header--name">${name}</div>`
+            : html`<div class="header--name header--name-empty">&hellip;</div>`}
+        </div>
+      </div>
+    `;
+  }
+
+  _renderBody() {
+    const configuration = this.orderSummary.configuration ?? [];
+
+    if (configuration.length === 0) {
+      return '';
+    }
+
+    return html`<dl class="body">
+      ${configuration.map((/** @type {ConfigurationItem} */ configItem) => {
+        const { label, value, a11yLive, skeleton, skeletonValueOnly } = configItem;
+        const ariaLive = a11yLive ? 'polite' : null;
+        const ariaAtomic = a11yLive ? 'false' : null;
+        return html`<div class="body--item" aria-live="${ifDefined(ariaLive)}" aria-atomic="${ifDefined(ariaAtomic)}">
+          <dt class="body--label">
+            <span class="${classMap({ skeleton })}">${label}</span>
+          </dt>
+          <dd class="body--value">
+            <span class="${classMap({ skeleton: skeleton || skeletonValueOnly })}">${value}</span>
+          </dd>
+        </div>`;
+      })}
+    </dl>`;
+  }
+
+  _renderTags() {
+    const visibleTags = this.orderSummary.tags?.filter((tag) => !isStringBlank(tag)) ?? [];
+
+    if (visibleTags.length === 0) {
+      return '';
+    }
+
+    return html`
+      <div class="tags">
+        <div class="tags--title" id="tags-title">${i18n('cc-order-summary.tags')}</div>
+        <ul class="tags--list" aria-labelledby="tags-title">
+          ${visibleTags.map((tag) => html`<li class="tags--item">${tag.trim()}</li>`)}
+        </ul>
+      </div>
+    `;
+  }
+
+  _renderFooter() {
+    const { total, submitStatus } = this.orderSummary;
     const disabled = submitStatus === 'disabled';
     const waiting = submitStatus === 'waiting';
+
     return html`
-      ${this._renderSummaryHeader()} ${this._renderSummaryBody()}
       <div class="footer">
+        ${total != null ? this._renderTotal(total) : ``}
         <cc-button
           class="btn-submit"
           type="submit"
@@ -83,44 +167,20 @@ export class CcOrderSummary extends LitElement {
     `;
   }
 
-  _renderSummaryHeader() {
-    const { name, tags, logo } = this.orderSummary;
+  /** @param {TotalItem} total */
+  _renderTotal(total) {
+    const { label, value, a11yLive, skeletonValueOnly } = total;
+    const ariaLive = a11yLive ? 'polite' : null;
+    // The whole item is announced, so a price update is read along with its label.
+    const ariaAtomic = a11yLive ? 'true' : null;
 
-    const tagTplFn = (/** @type {string} */ tag) =>
-      html`<cc-badge intent="info" weight="dimmed">${tag.trim()}</cc-badge>`;
-
-    return html`
-      <div class="header">
-        ${!isStringEmpty(name)
-          ? html`<div class="header--name">${name}</div>`
-          : html`<div class="header--name header--name-empty">&hellip;</div>`}
-        ${tags?.length > 0
-          ? html`<div class="header--tags">${tags.filter((tag) => !isStringBlank(tag)).map(tagTplFn)}</div>`
-          : ``}
-        ${!isStringEmpty(logo?.url) && !isStringEmpty(logo?.alt)
-          ? html`<div class="header--logo">
-              <cc-img class="logo" src="${logo.url}" a11y-name="${logo.alt}"></cc-img>
-            </div>`
-          : ``}
+    return html`<dl class="total">
+      <div class="total--item" aria-live="${ifDefined(ariaLive)}" aria-atomic="${ifDefined(ariaAtomic)}">
+        <dt class="total--label">${label}</dt>
+        <dd class="total--value">
+          <span class="${classMap({ skeleton: skeletonValueOnly })}">${value}</span>
+        </dd>
       </div>
-    `;
-  }
-
-  _renderSummaryBody() {
-    return html`<dl class="body">
-      ${this.orderSummary.configuration?.map((/** @type {ConfigurationItem} */ configItem) => {
-        const { label, value, a11yLive, skeleton, skeletonValueOnly } = configItem;
-        const ariaLive = a11yLive ? 'polite' : null;
-        const ariaAtomic = a11yLive ? 'false' : null;
-        return html`<div class="body--item" aria-live="${ifDefined(ariaLive)}" aria-atomic="${ifDefined(ariaAtomic)}">
-          <dt class="body--label">
-            <span class="${classMap({ skeleton })}">${label}</span>
-          </dt>
-          <dd class="body--value ${classMap({ skeleton: skeleton || skeletonValueOnly })}">
-            <span>${value}</span>
-          </dd>
-        </div>`;
-      })}
     </dl>`;
   }
 
@@ -130,6 +190,7 @@ export class CcOrderSummary extends LitElement {
       // language=CSS
       css`
         :host {
+          container-type: inline-size;
           display: block;
         }
 
@@ -145,68 +206,114 @@ export class CcOrderSummary extends LitElement {
 
         /* region blocks */
         .title {
-          color: var(--cc-color-text-weak, #404040);
+          align-items: center;
+          color: var(--cc-order-summary-title-color, var(--cc-color-text-weak, #404040));
+          display: flex;
+          font-size: var(--cc-order-summary-title-font-size, inherit);
           font-weight: var(--cc-order-summary-font-weight, 600);
+          gap: var(--cc-spacing-1, 0.25em);
           margin-block-end: var(--cc-spacing-3, 0.5em);
           padding-inline: var(--cc-spacing-0, 0.125em);
         }
 
-        .summary {
-          background-color: var(--cc-color-bg-neutral, #f5f5f5);
-          border: 1px solid var(--cc-color-border-neutral-weak, #e7e7e7);
-          border-radius: var(--cc-border-radius-small, 0.25em);
+        .card {
+          background-color: var(--cc-color-bg-default, #fff);
+          border: 1px solid var(--cc-color-border-neutral, #bfbfbf);
+          border-radius: var(--cc-border-radius-medium, 0.375em);
           display: flex;
           flex-direction: column;
-          padding: var(--cc-spacing-7, 1.5em);
-          row-gap: var(--cc-spacing-8, 2em);
+          /* Clips the section backgrounds to the rounded corners. */
+          overflow: hidden;
         }
         /* endregion */
 
         /* region elements > header */
         .header {
-          display: grid;
-          gap: var(--cc-spacing-1, 0.25em);
-          grid-template-columns: 1fr min-content;
+          column-gap: var(--cc-spacing-4, 0.75em);
+          display: flex;
+          padding: var(--cc-spacing-5, 1em) var(--cc-spacing-7, 1.5em);
+        }
+
+        .header--logo {
+          border-radius: var(--cc-border-radius-small, 0.25em);
+          flex: 0 0 auto;
+          height: 3em;
+          overflow: hidden;
+          width: 3em;
+        }
+
+        .header--text {
+          display: flex;
+          flex-direction: column;
+          min-width: 0;
+          padding-block-start: var(--cc-spacing-1, 0.25em);
         }
 
         .header--name {
           font-size: 1.125em;
           font-weight: var(--cc-order-summary-font-weight, 600);
-          grid-column: 1 / 2;
-          grid-row: 1 / 2;
           word-break: break-word;
         }
 
-        .header--tags {
-          display: inline-flex;
-          flex-wrap: wrap;
+        .header--product-name {
+          color: var(--cc-color-text-weak, #404040);
+        }
+        /* endregion */
+
+        /* region elements > tags */
+        .tags {
+          background-color: var(--cc-color-bg-neutral, #f5f5f5);
+          border-block-start: 1px solid var(--cc-color-border-neutral-weak, #e7e7e7);
+          display: flex;
+          flex-direction: column;
           gap: var(--cc-spacing-1, 0.25em);
-          grid-column: 1 / 2;
-          grid-row: 2 / 3;
+          padding: var(--cc-spacing-5, 1em) var(--cc-spacing-7, 1.5em);
         }
 
-        .header--logo {
-          grid-column: 2 / 3;
-          grid-row: 1 / 3;
+        .tags--title {
+          color: var(--cc-color-text-weak, #404040);
+          font-size: 0.875em;
+          font-weight: var(--cc-order-summary-font-weight, 600);
+        }
+
+        .tags--list {
+          display: flex;
+          flex-wrap: wrap;
+          gap: var(--cc-spacing-2, 0.35em);
+          list-style: none;
+          margin: 0;
+          padding: 0;
+        }
+
+        /* Close to the look of the tags typed in the tags mode of cc-input-text */
+        .tags--item {
+          background-color: var(--cc-color-bg-soft, #eee);
+          border-radius: var(--cc-border-radius-small, 0.25em);
+          color: var(--cc-color-text-default, #262626);
+          font-family: var(--cc-ff-monospace, monospace);
+          font-size: 0.85em;
+          overflow-wrap: anywhere;
+          padding: var(--cc-spacing-1, 0.25em);
         }
         /* endregion */
 
         /* region elements > body */
         .body {
+          border-block-start: 1px solid var(--cc-color-border-neutral-weak, #e7e7e7);
           display: flex;
           flex-direction: column;
+          padding: var(--cc-spacing-5, 1em) var(--cc-spacing-7, 1.5em);
         }
 
         .body--item {
           align-items: baseline;
-          column-gap: var(--cc-spacing-3, 0.5em);
+          column-gap: var(--cc-spacing-5, 1em);
           display: flex;
+          padding-block: var(--cc-spacing-4, 0.75em);
         }
 
-        .body--item:not(:last-child) {
-          border-block-end: 1px dotted var(--cc-color-border-primary-weak, #ccd4dc);
-          margin-block-end: var(--cc-spacing-5, 1em);
-          padding-block-end: var(--cc-spacing-5, 1em);
+        .body--item:not(:first-child) {
+          border-block-start: 1px solid var(--cc-color-border-neutral-weak, #e7e7e7);
         }
 
         .body--label {
@@ -217,46 +324,101 @@ export class CcOrderSummary extends LitElement {
         .body--value {
           flex: 0 1 auto;
           font-weight: var(--cc-order-summary-font-weight, 600);
+          text-align: end;
         }
         /* endregion */
 
         /* region elements > details */
-        .details-container {
+        .details {
           display: flex;
           flex-direction: column;
+          font-size: var(--cc-order-summary-detail-font-size, 0.825em);
           padding-inline: var(--cc-spacing-3, 0.5em);
           row-gap: var(--cc-spacing-3, 0.5em);
         }
 
+        /* The block padding only applies when a detail is slotted, so the container takes no room otherwise. */
+        .details[detail-is-slotted] {
+          padding-block: 1.5em;
+        }
+
         ::slotted([slot='detail']) {
           color: var(--cc-color-text-weak, #404040);
-          font-size: var(--cc-order-summary-detail-font-size, 0.825em);
           line-height: 1.5;
         }
+        /* endregion */
 
-        ::slotted([slot='detail']:first-child) {
-          margin-block-start: var(--cc-spacing-7, 1.5em);
+        /* region elements > footer */
+        .footer {
+          background-color: var(--cc-color-bg-primary-weaker, #e6eff8);
+          border-block-start: 1px solid var(--cc-color-border-neutral-weak, #e7e7e7);
+          display: flex;
+          flex-direction: column;
+          gap: var(--cc-spacing-5, 1em);
+          padding: var(--cc-spacing-5, 1em) var(--cc-spacing-7, 1.5em);
         }
 
-        ::slotted([slot='detail']:last-child) {
-          margin-block-end: var(--cc-spacing-7, 1.5em);
+        .total--label {
+          color: var(--cc-color-text-weak, #404040);
+        }
+
+        .total--value {
+          font-size: 1.5em;
+          font-weight: var(--cc-order-summary-font-weight, 600);
+        }
+
+        .btn-submit {
+          min-width: 8em;
+        }
+        /* endregion */
+
+        /* region wide card layout */
+        @container (width >= 30em) {
+          .body {
+            column-gap: var(--cc-spacing-7, 1.5em);
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(11em, 1fr));
+            padding-block: var(--cc-spacing-5, 1em);
+            row-gap: var(--cc-spacing-5, 1em);
+          }
+
+          .body--item {
+            align-items: start;
+            flex-direction: column;
+            padding-block: 0;
+            row-gap: var(--cc-spacing-1, 0.25em);
+          }
+
+          .body--item:not(:first-child) {
+            border-block-start: none;
+          }
+
+          /* Items stretch to the row height, so a growing label would push its value to the bottom of the row. */
+          .body--label {
+            flex: none;
+          }
+
+          .body--value {
+            text-align: start;
+          }
+
+          .footer {
+            align-items: center;
+            flex-direction: row;
+            justify-content: flex-end;
+          }
+
+          .total {
+            margin-inline-end: auto;
+          }
+
+          .btn-submit {
+            flex: 0 0 auto;
+          }
         }
         /* endregion */
 
         /* region elements > misc */
-        .logo {
-          border: 1px solid var(--cc-color-border-neutral-weak, #e7e7e7);
-          border-radius: var(--cc-border-radius-small, 0.25em);
-          height: 3em;
-          overflow: hidden;
-          width: 3em;
-        }
-
-        .btn-submit {
-          display: block;
-          margin-block-start: var(--cc-spacing-3, 0.5em);
-        }
-
         .skeleton {
           background-color: var(--cc-color-bg-neutral-active, #d9d9d9);
           padding-inline: var(--cc-spacing-1, 0.25em);
