@@ -17,3 +17,8 @@ export interface CategoryFilter {
   categoryName: string;
   toggled: boolean;
 }
+
+export interface ProductListFilter {
+  categoryFilter: string | null;
+  textFilter: string;
+}
