@@ -2,15 +2,10 @@ import { expect } from '@open-wc/testing';
 import { elementUpdated, fixture } from '@open-wc/testing-helpers';
 import * as hanbi from 'hanbi';
 import { html } from 'lit';
-import { addTranslations, setLanguage } from '../../lib/i18n/i18n.js';
 import { findActiveElement } from '../../lib/shadow-dom-utils.js';
-import { lang, translations } from '../../translations/translations.en.js';
 import '../cc-dialog/cc-dialog.js';
 import { CcConfirmEvent } from '../common.events.js';
 import './cc-dialog-confirm-form.js';
-
-addTranslations(lang, translations);
-setLanguage(lang);
 
 /** @import { CcDialog } from '../cc-dialog/cc-dialog.js'; */
 

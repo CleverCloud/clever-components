@@ -1,7 +1,5 @@
 import { expect, fixture, nextFrame } from '@open-wc/testing';
 import { html } from 'lit';
-import { addTranslations, setLanguage } from '../../lib/i18n/i18n.js';
-import { translations } from '../../translations/translations.en.js';
 import './cc-logs.js';
 
 /** @param {number} length @param {number} offset */
@@ -62,11 +60,6 @@ async function scrollUpTo(el, scrollTop) {
 // positions off-screen logs from an estimated height, so a trim can shift things by a few sub-line pixels. What must
 // never happen is the view jumping by a whole trim's worth of logs, which the log id assertion catches.
 const ANCHOR_OFFSET_TOLERANCE = 26;
-
-before(() => {
-  addTranslations('en', translations);
-  setLanguage('en');
-});
 
 describe('cc-logs scroll anchoring', function () {
   // The "ResizeObserver loop completed with undelivered notifications" warning is benign and already filtered by the

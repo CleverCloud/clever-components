@@ -7,8 +7,6 @@ import '../../src/components/cc-input-number/cc-input-number.js';
 import '../../src/components/cc-input-text/cc-input-text.js';
 import '../../src/components/cc-select/cc-select.js';
 import { formSubmit } from '../../src/lib/form/form-submit-directive.js';
-import { addTranslations, setLanguage } from '../../src/lib/i18n/i18n.js';
-import { translations } from '../../src/translations/translations.en.js';
 import { getElement } from '../helpers/element-helper.js';
 
 async function spyElement(formContent) {
@@ -56,11 +54,6 @@ async function spyElement(formContent) {
     },
   };
 }
-
-before(() => {
-  addTranslations('en', translations);
-  setLanguage('en');
-});
 
 describe('FormSubmitDirective', () => {
   describe('with native inputs', () => {

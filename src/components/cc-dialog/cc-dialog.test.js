@@ -2,14 +2,9 @@ import { elementUpdated, expect, fixture, nextFrame } from '@open-wc/testing';
 import { sendKeys } from '@web/test-runner-commands';
 import * as hanbi from 'hanbi';
 import { html } from 'lit';
-import { addTranslations, setLanguage } from '../../lib/i18n/i18n.js';
 import { findActiveElement } from '../../lib/shadow-dom-utils.js';
-import { lang, translations } from '../../translations/translations.en.js';
 import { CcCloseEvent, CcFocusRestorationFailEvent } from '../common.events.js';
 import './cc-dialog.js';
-
-addTranslations(lang, translations);
-setLanguage(lang);
 
 // Helper: Get close button from shadow root
 function getCloseButton(element) {
