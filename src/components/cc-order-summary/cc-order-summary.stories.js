@@ -1,5 +1,7 @@
+import { iconRemixReceiptLine } from '../../assets/cc-remix.icons.js';
 import { getAssetUrl } from '../../lib/assets-url.js';
 import { makeStory } from '../../stories/lib/make-story.js';
+import '../cc-icon/cc-icon.js';
 import './cc-order-summary.js';
 
 export default {
@@ -9,6 +11,7 @@ export default {
 };
 
 /**
+ * @import { CcIcon } from '../cc-icon/cc-icon.js'
  * @import { ConfigurationItem, OrderSummary, TotalItem } from './cc-order-summary.types.js'
  */
 
@@ -35,6 +38,14 @@ const conf = {
     }
   `,
 };
+
+/** @returns {CcIcon} */
+function createTitleIcon() {
+  const titleIcon = /** @type {CcIcon} */ (document.createElement('cc-icon'));
+  titleIcon.icon = iconRemixReceiptLine;
+  titleIcon.setAttribute('slot', 'title-icon');
+  return titleIcon;
+}
 
 /** @type {Array<ConfigurationItem>} */
 const appBaseConfigDatas = [
@@ -193,6 +204,28 @@ export const withAriaLive = makeStory(conf, {
         total: { ...appBaseTotalDatas, a11yLive: true },
       },
       innerHTML: appInnerHTML,
+    },
+  ],
+});
+
+export const withStyledTitle = makeStory(conf, {
+  docs: 'The title size and color are left to the consumer through `--cc-order-summary-title-font-size` and `--cc-order-summary-title-color`. The `title-icon` slot holds a leading icon.',
+  // language=CSS
+  css: [
+    conf.css,
+    `
+      cc-order-summary-beta {
+        --cc-order-summary-title-color: var(--cc-color-text-primary-strongest);
+        --cc-order-summary-title-font-size: 1.5em;
+      }
+    `,
+  ].join(''),
+  items: [
+    {
+      orderSummary: {
+        ...appBaseDatas,
+      },
+      children: () => [createTitleIcon(), appInnerHTML],
     },
   ],
 });

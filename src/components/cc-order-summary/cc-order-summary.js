@@ -17,6 +17,7 @@ import { CcProductCreateEvent } from './cc-order-summary.events.js';
  * Displays a summary of a product being ordered.
  *
  * The UI is composed of:
+ * - a title, with room for a leading icon,
  * - a card with global information about the product,
  * - a configuration in the form of a list of label/value,
  * - the tags, in their own section,
@@ -37,8 +38,11 @@ import { CcProductCreateEvent } from './cc-order-summary.events.js';
  *
  * @cssprop {FontSize} --cc-order-summary-detail-font-size - The font-size for the list of details (defaults: `0.825em`).
  * @cssprop {FontWeight} --cc-order-summary-font-weight - Sets the value of the font weight CSS property (defaults: `600`).
+ * @cssprop {Color} --cc-order-summary-title-color - The color for the title (defaults: `--cc-color-text-weak`).
+ * @cssprop {FontSize} --cc-order-summary-title-font-size - The font-size for the title (defaults: `inherit`).
  *
  * @slot detail - a single piece of information displayed under the card. You can insert multiple detail items.
+ * @slot title-icon - an icon displayed before the title.
  */
 
 export class CcOrderSummary extends LitElement {
@@ -65,7 +69,10 @@ export class CcOrderSummary extends LitElement {
     }
 
     return html`
-      <div class="title">${i18n('cc-order-summary.title')}</div>
+      <div class="title">
+        <slot name="title-icon"></slot>
+        <span>${i18n('cc-order-summary.title')}</span>
+      </div>
       <div class="card">
         ${this._renderHeader()} ${this._renderBody()} ${this._renderTags()} ${this._renderFooter()}
       </div>
@@ -199,8 +206,12 @@ export class CcOrderSummary extends LitElement {
 
         /* region blocks */
         .title {
-          color: var(--cc-color-text-weak, #404040);
+          align-items: center;
+          color: var(--cc-order-summary-title-color, var(--cc-color-text-weak, #404040));
+          display: flex;
+          font-size: var(--cc-order-summary-title-font-size, inherit);
           font-weight: var(--cc-order-summary-font-weight, 600);
+          gap: var(--cc-spacing-1, 0.25em);
           margin-block-end: var(--cc-spacing-3, 0.5em);
           padding-inline: var(--cc-spacing-0, 0.125em);
         }
