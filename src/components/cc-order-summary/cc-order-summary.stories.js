@@ -49,6 +49,7 @@ const appBaseTotalDatas = { label: 'Estimated price for 30 days', value: '16.00â
 /** @type {OrderSummary} */
 const appBaseDatas = {
   name: 'Front-end application',
+  productName: 'Node.js',
   logo: {
     url: getAssetUrl('/logos/nodejs.svg'),
     alt: 'NodeJS logo',
@@ -65,6 +66,7 @@ const appInnerHTML = `
 /** @type {OrderSummary} */
 const addonBaseDatas = {
   name: 'Customer orders database',
+  productName: 'PostgreSQL',
   logo: {
     url: getAssetUrl('/logos/pgsql.svg'),
     alt: 'PostgreSQL logo',
@@ -180,8 +182,14 @@ export const missingInfos = makeStory(conf, {
     {
       orderSummary: {
         ...appBaseDatas,
-        tags: null,
-        logo: null,
+        logo: { ...appBaseDatas.logo, alt: '' },
+      },
+      innerHTML: appInnerHTML,
+    },
+    {
+      orderSummary: {
+        ...appBaseDatas,
+        productName: null,
       },
       innerHTML: appInnerHTML,
     },
@@ -203,6 +211,7 @@ export const missingInfos = makeStory(conf, {
       orderSummary: {
         ...appBaseDatas,
         name: '',
+        productName: null,
         tags: ['  ', '  preprod  '],
         logo: null,
       },

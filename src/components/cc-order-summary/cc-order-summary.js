@@ -22,6 +22,11 @@ import { CcProductCreateEvent } from './cc-order-summary.events.js';
  * - a total and a button to trigger the creation,
  * - a list of details for additional information, under the card.
  *
+ * ## Details
+ *
+ * When `productName` is set, the logo becomes decorative: the product name is read from the visible text instead of
+ * from the logo alternative text, which drops a duplicate announcement.
+ *
  * @cssdisplay block
  *
  * @cssprop {FontSize} --cc-order-summary-detail-font-size - The font-size for the list of details (defaults: `0.825em`).
@@ -65,18 +70,23 @@ export class CcOrderSummary extends LitElement {
   }
 
   _renderHeader() {
-    const { name, logo } = this.orderSummary;
+    const { name, productName, logo } = this.orderSummary;
+
+    // When the product name is visible, the logo is decorative and needs no alternative text.
+    const hasProductName = !isStringBlank(productName);
+    const hasLogo = !isStringEmpty(logo?.url) && (hasProductName || !isStringEmpty(logo?.alt));
 
     return html`
       <div class="header">
-        ${!isStringEmpty(name)
-          ? html`<div class="header--name">${name}</div>`
-          : html`<div class="header--name header--name-empty">&hellip;</div>`}
-        ${!isStringEmpty(logo?.url) && !isStringEmpty(logo?.alt)
-          ? html`<div class="header--logo">
-              <cc-img class="logo" src="${logo.url}" a11y-name="${logo.alt}"></cc-img>
-            </div>`
+        ${hasLogo
+          ? html`<cc-img class="header--logo" src="${logo.url}" a11y-name="${hasProductName ? '' : logo.alt}"></cc-img>`
           : ``}
+        <div class="header--text">
+          ${hasProductName ? html`<div class="header--product-name">${productName}</div>` : ``}
+          ${!isStringEmpty(name)
+            ? html`<div class="header--name">${name}</div>`
+            : html`<div class="header--name header--name-empty">&hellip;</div>`}
+        </div>
       </div>
     `;
   }
@@ -201,23 +211,34 @@ export class CcOrderSummary extends LitElement {
 
         /* region elements > header */
         .header {
-          display: grid;
-          gap: var(--cc-spacing-1, 0.25em);
-          grid-template-columns: 1fr min-content;
+          column-gap: var(--cc-spacing-4, 0.75em);
+          display: flex;
           padding: var(--cc-spacing-5, 1em) var(--cc-spacing-7, 1.5em);
+        }
+
+        .header--logo {
+          border-radius: var(--cc-border-radius-small, 0.25em);
+          flex: 0 0 auto;
+          height: 3em;
+          overflow: hidden;
+          width: 3em;
+        }
+
+        .header--text {
+          display: flex;
+          flex-direction: column;
+          min-width: 0;
+          padding-block-start: var(--cc-spacing-1, 0.25em);
         }
 
         .header--name {
           font-size: 1.125em;
           font-weight: var(--cc-order-summary-font-weight, 600);
-          grid-column: 1 / 2;
-          grid-row: 1 / 2;
           word-break: break-word;
         }
 
-        .header--logo {
-          grid-column: 2 / 3;
-          grid-row: 1 / 3;
+        .header--product-name {
+          color: var(--cc-color-text-weak, #404040);
         }
         /* endregion */
 
@@ -333,14 +354,6 @@ export class CcOrderSummary extends LitElement {
         /* endregion */
 
         /* region elements > misc */
-        .logo {
-          border: 1px solid var(--cc-color-border-neutral-weak, #e7e7e7);
-          border-radius: var(--cc-border-radius-small, 0.25em);
-          height: 3em;
-          overflow: hidden;
-          width: 3em;
-        }
-
         .skeleton {
           background-color: var(--cc-color-bg-neutral-active, #d9d9d9);
           padding-inline: var(--cc-spacing-1, 0.25em);

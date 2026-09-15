@@ -1,5 +1,6 @@
 export interface OrderSummary {
   name: string;
+  productName?: string;
   tags?: Array<string>;
   logo?: LogoInfos;
   configuration?: Array<ConfigurationItem>;
