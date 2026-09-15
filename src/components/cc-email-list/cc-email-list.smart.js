@@ -53,7 +53,7 @@ defineSmartComponent({
 
     api
       .fetchEmailAddresses()
-      .then(({ self, secondary }) => {
+      .then(({ self, emails }) => {
         updateComponent('emailListState', {
           type: 'loaded',
           emailList: {
@@ -62,11 +62,14 @@ defineSmartComponent({
               address: self.email,
               verified: self.emailValidated,
             },
-            secondaryAddresses: secondary.map((secondaryAddress) => ({
-              type: 'idle',
-              address: secondaryAddress,
-              verified: true,
-            })),
+            // `GET /v2/self/emails` returns every address, including the primary one which we never want to list here
+            secondaryAddresses: emails
+              .filter((email) => email !== self.email)
+              .map((secondaryAddress) => ({
+                type: 'idle',
+                address: secondaryAddress,
+                verified: true,
+              })),
           },
         });
       })
@@ -213,21 +216,18 @@ defineSmartComponent({
         .then(() => {
           notifySuccess(i18n('cc-email-list.secondary.action.mark-as-primary.success', { address }));
 
-          if (component.emailListState.type === 'loaded') {
-            const primaryAddress = component.emailListState.emailList.primaryAddress.address;
-
-            updateComponent(
-              'emailListState',
-              /** @param {EmailListStateLoaded} emailListState */
-              (emailListState) => {
-                emailListState.emailList.primaryAddress.address = address;
-              },
-            );
-            updateSecondary(address, (secondaryAddressState) => {
-              secondaryAddressState.type = 'idle';
-              secondaryAddressState.address = primaryAddress;
-            });
-          }
+          updateComponent(
+            'emailListState',
+            /** @param {EmailListStateLoaded} emailListState */
+            (emailListState) => {
+              emailListState.emailList.primaryAddress.address = address;
+              // secondary addresses are always verified, so the promoted one is verified as well
+              emailListState.emailList.primaryAddress.verified = true;
+              emailListState.emailList.secondaryAddresses = emailListState.emailList.secondaryAddresses.filter(
+                (a) => a.address !== address,
+              );
+            },
+          );
         })
         .catch(
           /** @param {Error} error */
@@ -268,14 +268,12 @@ function convertApiError(apiErrorId) {
 function getApi(apiConfig, signal) {
   return {
     /**
-     * @return {Promise<{self: {email: string, emailValidated: boolean}, secondary: Array<string>}>}
+     * @return {Promise<{self: {email: string, emailValidated: boolean}, emails: Array<string>}>}
      */
     fetchEmailAddresses() {
-      return Promise.all([this.fetchPrimaryEmailAddress(), this.fetchSecondaryEmailAddresses()]).then(
-        ([self, secondary]) => {
-          return { self, secondary };
-        },
-      );
+      return Promise.all([this.fetchPrimaryEmailAddress(), this.fetchAllEmailAddresses()]).then(([self, emails]) => {
+        return { self, emails };
+      });
     },
 
     /**
@@ -286,9 +284,11 @@ function getApi(apiConfig, signal) {
     },
 
     /**
+     * Returns every address of the user: the primary one and the secondary ones.
+     *
      * @return {Promise<Array<string>>}
      */
-    fetchSecondaryEmailAddresses() {
+    fetchAllEmailAddresses() {
       return getEmailAddresses().then(sendToApi({ apiConfig, signal }));
     },
 
