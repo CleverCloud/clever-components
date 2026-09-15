@@ -1,6 +1,7 @@
 import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { hasSlottedChildren } from '../../directives/has-slotted-children.js';
 import { isStringBlank, isStringEmpty } from '../../lib/utils.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
 import { i18n } from '../../translations/translation.js';
@@ -68,7 +69,7 @@ export class CcOrderSummary extends LitElement {
       <div class="card">
         ${this._renderHeader()} ${this._renderBody()} ${this._renderTags()} ${this._renderFooter()}
       </div>
-      <div class="details-container">
+      <div class="details" ${hasSlottedChildren()}>
         <slot name="detail"></slot>
       </div>
     `;
@@ -317,25 +318,22 @@ export class CcOrderSummary extends LitElement {
         /* endregion */
 
         /* region elements > details */
-        .details-container {
+        .details {
           display: flex;
           flex-direction: column;
+          font-size: var(--cc-order-summary-detail-font-size, 0.825em);
           padding-inline: var(--cc-spacing-3, 0.5em);
           row-gap: var(--cc-spacing-3, 0.5em);
         }
 
+        /* The block padding only applies when a detail is slotted, so the container takes no room otherwise. */
+        .details[detail-is-slotted] {
+          padding-block: 1.5em;
+        }
+
         ::slotted([slot='detail']) {
           color: var(--cc-color-text-weak, #404040);
-          font-size: var(--cc-order-summary-detail-font-size, 0.825em);
           line-height: 1.5;
-        }
-
-        ::slotted([slot='detail']:first-child) {
-          margin-block-start: var(--cc-spacing-7, 1.5em);
-        }
-
-        ::slotted([slot='detail']:last-child) {
-          margin-block-end: var(--cc-spacing-7, 1.5em);
         }
         /* endregion */
 
