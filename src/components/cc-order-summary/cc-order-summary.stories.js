@@ -9,7 +9,7 @@ export default {
 };
 
 /**
- * @import { ConfigurationItem, OrderSummary } from './cc-order-summary.types.js'
+ * @import { ConfigurationItem, OrderSummary, TotalItem } from './cc-order-summary.types.js'
  */
 
 const conf = {
@@ -36,31 +36,17 @@ const conf = {
   `,
 };
 
-/** @type Array<ConfigurationItem> */
+/** @type {Array<ConfigurationItem>} */
 const appBaseConfigDatas = [
   { label: 'Instance count', value: '1' },
   { label: 'Instance size', value: 'XS' },
   { label: 'Zone', value: 'Paris (par)' },
-  { label: 'Estimated price for 30 days', value: '16.00€' },
 ];
 
-/** @type Array<ConfigurationItem> */
-const appBaseSkeletonConfigDatas = [
-  { label: 'Instance count', value: '1' },
-  { label: 'Instance size', value: 'XS' },
-  { label: 'Zone', value: 'Paris (par)' },
-  { label: 'Estimated price for 30 days', value: '16.00€', skeleton: true },
-];
+/** @type {TotalItem} */
+const appBaseTotalDatas = { label: 'Estimated price for 30 days', value: '16.00€' };
 
-/** @type Array<ConfigurationItem> */
-const appBaseAriaLiveConfigDatas = [
-  { label: 'Instance count', value: '1' },
-  { label: 'Instance size', value: 'XS' },
-  { label: 'Zone', value: 'Paris (par)' },
-  { label: 'Estimated price for 30 days', value: '16.00€', a11yLive: true },
-];
-
-/** @type OrderSummary */
+/** @type {OrderSummary} */
 const appBaseDatas = {
   name: 'Front-end application',
   logo: {
@@ -68,6 +54,7 @@ const appBaseDatas = {
     alt: 'NodeJS logo',
   },
   configuration: appBaseConfigDatas,
+  total: appBaseTotalDatas,
   tags: ['A.I.', 'preprod', '   '],
 };
 const appInnerHTML = `
@@ -75,7 +62,7 @@ const appInnerHTML = `
   <div slot="detail">The tags related to your zone are <code>for:applications</code>, <code>infra:clever-cloud</code>.</div>
 `;
 
-/** @type OrderSummary */
+/** @type {OrderSummary} */
 const addonBaseDatas = {
   name: 'Customer orders database',
   logo: {
@@ -87,8 +74,8 @@ const addonBaseDatas = {
     { label: 'Zone', value: 'Montreal (mtl)' },
     { label: 'Version', value: '15' },
     { label: 'Options', value: 'Kibana, APM, Encryption' },
-    { label: 'Estimated price for 30 days', value: '98.00€' },
   ],
+  total: { label: 'Estimated price for 30 days', value: '98.00€' },
   tags: ['customer', 'prod'],
 };
 const addonInnerHTML = `
@@ -131,19 +118,12 @@ export const skeleton = makeStory(conf, {
     {
       orderSummary: {
         ...appBaseDatas,
-        configuration: appBaseSkeletonConfigDatas,
-      },
-      innerHTML: appInnerHTML,
-    },
-    {
-      orderSummary: {
-        ...appBaseDatas,
         configuration: [
           { label: 'Instance count', value: '1' },
           { label: 'Instance size', value: 'XS' },
-          { label: 'Zone', value: 'Paris (par)' },
-          { label: 'Estimated price for 30 days', value: '16.00€', skeletonValueOnly: true },
+          { label: 'Zone', value: 'Paris (par)', skeleton: true },
         ],
+        total: { ...appBaseTotalDatas, skeletonValueOnly: true },
       },
       innerHTML: appInnerHTML,
     },
@@ -174,7 +154,7 @@ export const withAriaLive = makeStory(conf, {
     {
       orderSummary: {
         ...appBaseDatas,
-        configuration: appBaseAriaLiveConfigDatas,
+        total: { ...appBaseTotalDatas, a11yLive: true },
       },
       innerHTML: appInnerHTML,
     },
@@ -208,6 +188,14 @@ export const missingInfos = makeStory(conf, {
     {
       orderSummary: {
         ...appBaseDatas,
+        total: null,
+      },
+      innerHTML: appInnerHTML,
+    },
+    {
+      orderSummary: {
+        ...appBaseDatas,
+        total: null,
         configuration: [],
       },
     },

@@ -10,7 +10,7 @@ import '../cc-img/cc-img.js';
 import { CcProductCreateEvent } from './cc-order-summary.events.js';
 
 /**
- * @import { ConfigurationItem, OrderSummary } from './cc-order-summary.types.js'
+ * @import { ConfigurationItem, OrderSummary, TotalItem } from './cc-order-summary.types.js'
  */
 
 /**
@@ -19,7 +19,7 @@ import { CcProductCreateEvent } from './cc-order-summary.events.js';
  * The UI is composed of:
  * - a card with global information about the product,
  * - a configuration in the form of a list of label/value,
- * - a button to trigger the creation,
+ * - a total and a button to trigger the creation,
  * - a list of details for additional information, under the card.
  *
  * @cssdisplay block
@@ -110,12 +110,13 @@ export class CcOrderSummary extends LitElement {
   }
 
   _renderFooter() {
-    const { submitStatus } = this.orderSummary;
+    const { total, submitStatus } = this.orderSummary;
     const disabled = submitStatus === 'disabled';
     const waiting = submitStatus === 'waiting';
 
     return html`
       <div class="footer">
+        ${total != null ? this._renderTotal(total) : ``}
         <cc-button
           class="btn-submit"
           type="submit"
@@ -128,6 +129,23 @@ export class CcOrderSummary extends LitElement {
         </cc-button>
       </div>
     `;
+  }
+
+  /** @param {TotalItem} total */
+  _renderTotal(total) {
+    const { label, value, a11yLive, skeletonValueOnly } = total;
+    const ariaLive = a11yLive ? 'polite' : null;
+    // The whole item is announced, so a price update is read along with its label.
+    const ariaAtomic = a11yLive ? 'true' : null;
+
+    return html`<dl class="total">
+      <div class="total--item" aria-live="${ifDefined(ariaLive)}" aria-atomic="${ifDefined(ariaAtomic)}">
+        <dt class="total--label">${label}</dt>
+        <dd class="total--value">
+          <span class="${classMap({ skeleton: skeletonValueOnly })}">${value}</span>
+        </dd>
+      </div>
+    </dl>`;
   }
 
   static get styles() {
@@ -258,7 +276,17 @@ export class CcOrderSummary extends LitElement {
           border-block-start: 1px solid var(--cc-color-border-neutral-weak, #e7e7e7);
           display: flex;
           flex-direction: column;
+          gap: var(--cc-spacing-5, 1em);
           padding: var(--cc-spacing-5, 1em) var(--cc-spacing-7, 1.5em);
+        }
+
+        .total--label {
+          color: var(--cc-color-text-weak, #404040);
+        }
+
+        .total--value {
+          font-size: 1.5em;
+          font-weight: var(--cc-order-summary-font-weight, 600);
         }
         /* endregion */
 

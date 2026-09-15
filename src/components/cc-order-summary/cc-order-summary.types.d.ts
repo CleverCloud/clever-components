@@ -3,6 +3,7 @@ export interface OrderSummary {
   tags?: Array<string>;
   logo?: LogoInfos;
   configuration?: Array<ConfigurationItem>;
+  total?: TotalItem;
   submitStatus?: 'disabled' | 'waiting';
 }
 
@@ -18,3 +19,5 @@ export interface ConfigurationItem {
   skeleton?: boolean;
   skeletonValueOnly?: boolean;
 }
+
+export type TotalItem = Omit<ConfigurationItem, 'skeleton'>;
