@@ -1571,6 +1571,7 @@ export const translations = {
   //#endregion
   //#region cc-order-summary
   'cc-order-summary.create': `Créer`,
+  'cc-order-summary.tags': `Tags`,
   'cc-order-summary.title': `Récapitulatif de commande`,
   //#endregion
   //#region cc-orga-member-card

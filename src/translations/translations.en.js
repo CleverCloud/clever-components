@@ -1560,6 +1560,7 @@ export const translations = {
   //#endregion
   //#region cc-order-summary
   'cc-order-summary.create': `Create`,
+  'cc-order-summary.tags': `Tags`,
   'cc-order-summary.title': `Order summary`,
   //#endregion
   //#region cc-orga-member-card

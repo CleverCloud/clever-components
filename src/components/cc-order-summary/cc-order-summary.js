@@ -4,7 +4,6 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import { isStringBlank, isStringEmpty } from '../../lib/utils.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
 import { i18n } from '../../translations/translation.js';
-import '../cc-badge/cc-badge.js';
 import '../cc-button/cc-button.js';
 import '../cc-img/cc-img.js';
 import { CcProductCreateEvent } from './cc-order-summary.events.js';
@@ -19,6 +18,7 @@ import { CcProductCreateEvent } from './cc-order-summary.events.js';
  * The UI is composed of:
  * - a card with global information about the product,
  * - a configuration in the form of a list of label/value,
+ * - the tags, in their own section,
  * - a total and a button to trigger the creation,
  * - a list of details for additional information, under the card.
  *
@@ -55,7 +55,9 @@ export class CcOrderSummary extends LitElement {
 
     return html`
       <div class="title">${i18n('cc-order-summary.title')}</div>
-      <div class="card">${this._renderHeader()} ${this._renderBody()} ${this._renderFooter()}</div>
+      <div class="card">
+        ${this._renderHeader()} ${this._renderBody()} ${this._renderTags()} ${this._renderFooter()}
+      </div>
       <div class="details-container">
         <slot name="detail"></slot>
       </div>
@@ -63,19 +65,13 @@ export class CcOrderSummary extends LitElement {
   }
 
   _renderHeader() {
-    const { name, tags, logo } = this.orderSummary;
-
-    const tagTplFn = (/** @type {string} */ tag) =>
-      html`<cc-badge intent="info" weight="dimmed">${tag.trim()}</cc-badge>`;
+    const { name, logo } = this.orderSummary;
 
     return html`
       <div class="header">
         ${!isStringEmpty(name)
           ? html`<div class="header--name">${name}</div>`
           : html`<div class="header--name header--name-empty">&hellip;</div>`}
-        ${tags?.length > 0
-          ? html`<div class="header--tags">${tags.filter((tag) => !isStringBlank(tag)).map(tagTplFn)}</div>`
-          : ``}
         ${!isStringEmpty(logo?.url) && !isStringEmpty(logo?.alt)
           ? html`<div class="header--logo">
               <cc-img class="logo" src="${logo.url}" a11y-name="${logo.alt}"></cc-img>
@@ -107,6 +103,23 @@ export class CcOrderSummary extends LitElement {
         </div>`;
       })}
     </dl>`;
+  }
+
+  _renderTags() {
+    const visibleTags = this.orderSummary.tags?.filter((tag) => !isStringBlank(tag)) ?? [];
+
+    if (visibleTags.length === 0) {
+      return '';
+    }
+
+    return html`
+      <div class="tags">
+        <div class="tags--title" id="tags-title">${i18n('cc-order-summary.tags')}</div>
+        <ul class="tags--list" aria-labelledby="tags-title">
+          ${visibleTags.map((tag) => html`<li class="tags--item">${tag.trim()}</li>`)}
+        </ul>
+      </div>
+    `;
   }
 
   _renderFooter() {
@@ -202,17 +215,46 @@ export class CcOrderSummary extends LitElement {
           word-break: break-word;
         }
 
-        .header--tags {
-          display: inline-flex;
-          flex-wrap: wrap;
-          gap: var(--cc-spacing-1, 0.25em);
-          grid-column: 1 / 2;
-          grid-row: 2 / 3;
-        }
-
         .header--logo {
           grid-column: 2 / 3;
           grid-row: 1 / 3;
+        }
+        /* endregion */
+
+        /* region elements > tags */
+        .tags {
+          background-color: var(--cc-color-bg-neutral, #f5f5f5);
+          border-block-start: 1px solid var(--cc-color-border-neutral-weak, #e7e7e7);
+          display: flex;
+          flex-direction: column;
+          gap: var(--cc-spacing-1, 0.25em);
+          padding: var(--cc-spacing-5, 1em) var(--cc-spacing-7, 1.5em);
+        }
+
+        .tags--title {
+          color: var(--cc-color-text-weak, #404040);
+          font-size: 0.875em;
+          font-weight: var(--cc-order-summary-font-weight, 600);
+        }
+
+        .tags--list {
+          display: flex;
+          flex-wrap: wrap;
+          gap: var(--cc-spacing-2, 0.35em);
+          list-style: none;
+          margin: 0;
+          padding: 0;
+        }
+
+        /* Close to the look of the tags typed in the tags mode of cc-input-text */
+        .tags--item {
+          background-color: var(--cc-color-bg-soft, #eee);
+          border-radius: var(--cc-border-radius-small, 0.25em);
+          color: var(--cc-color-text-default, #262626);
+          font-family: var(--cc-ff-monospace, monospace);
+          font-size: 0.85em;
+          overflow-wrap: anywhere;
+          padding: var(--cc-spacing-1, 0.25em);
         }
         /* endregion */
 
