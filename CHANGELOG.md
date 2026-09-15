@@ -5,6 +5,25 @@ title: 'Changelog'
 
 # Changelog
 
+## [26.4.0](https://github.com/CleverCloud/clever-components/compare/26.3.0...26.4.0) (2026-09-15)
+
+
+### 🚀 Features
+
+* **cc-order-summary:** allow a title icon and title styling ([ac3ad2d](https://github.com/CleverCloud/clever-components/commit/ac3ad2d6233075a23d17b30bf01312cd75c3a585))
+* **cc-order-summary:** move the tags to their own section ([43ee3be](https://github.com/CleverCloud/clever-components/commit/43ee3bee701a1bb5f2d3d2ab028c4797b8bb9f0f))
+* **cc-order-summary:** restyle the summary as a sectioned card ([a25e789](https://github.com/CleverCloud/clever-components/commit/a25e78987b0f6f087338e7181d9812bff7eefa78))
+* **cc-order-summary:** show the product name beside the logo ([b16f318](https://github.com/CleverCloud/clever-components/commit/b16f31875de9b3affce476f462a07a6a23a4ef0c))
+* **cc-order-summary:** split the price out as a dedicated total ([8f3da9c](https://github.com/CleverCloud/clever-components/commit/8f3da9c340ac7ca871153e3461a48c8725396f1e))
+* **cc-order-summary:** use a grid layout on wide cards ([bf0698e](https://github.com/CleverCloud/clever-components/commit/bf0698eee8716bae06693e7408bdf783bf10b06c))
+* **cc-search-bar:** match items on an optional aliases field ([8978d6d](https://github.com/CleverCloud/clever-components/commit/8978d6dc67507be89232e72168d42cac565592b5))
+
+
+### 🐛 Bug Fixes
+
+* **cc-logs:** estimate unrendered log lines at their real height ([7065c6a](https://github.com/CleverCloud/clever-components/commit/7065c6a3b9c94d913d63c229947e4c3fac047376)), closes [#1818](https://github.com/CleverCloud/clever-components/issues/1818)
+* **cc-logs:** keep the scroll on the same log when older logs are trimmed ([16154b3](https://github.com/CleverCloud/clever-components/commit/16154b361cba25b53bfed5c2d0f45c7eab621157)), closes [#1818](https://github.com/CleverCloud/clever-components/issues/1818)
+
 ## [26.3.0](https://github.com/CleverCloud/clever-components/compare/26.2.0...26.3.0) (2026-09-03)
 
 
