@@ -115,6 +115,40 @@ export const defaultStory = makeStory(conf, {
   ],
 });
 
+export const wideCard = makeStory(conf, {
+  docs: 'Above `30em` of card width, the configuration rows become a label over value grid and the submit button moves next to the total.',
+  // The card lays itself out from its own width, so we only need a wider container to get the grid layout.
+  // language=CSS
+  css: [
+    conf.css,
+    `
+      cc-order-summary-beta {
+        max-width: 60em;
+      }
+    `,
+  ].join(''),
+  items: [
+    {
+      orderSummary: {
+        ...addonBaseDatas,
+      },
+      innerHTML: addonInnerHTML,
+    },
+    {
+      orderSummary: {
+        ...addonBaseDatas,
+        configuration: [
+          { label: 'Plan', value: 'M Medium Space' },
+          { label: 'Zone', value: 'Montreal (mtl)' },
+          { label: 'Options', value: 'Kibana, APM, Encryption, Backups, Logs, Metrics, Migration Tool' },
+          { label: 'Version', value: '15' },
+        ],
+      },
+      innerHTML: addonInnerHTML,
+    },
+  ],
+});
+
 export const skeleton = makeStory(conf, {
   items: [
     {

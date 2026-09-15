@@ -24,6 +24,11 @@ import { CcProductCreateEvent } from './cc-order-summary.events.js';
  *
  * ## Details
  *
+ * The card lays itself out from its own width, not from the viewport width.
+ * Under `30em` the configuration is a list of rows, with the label on the left and the value on the right.
+ * Above `30em` the rows become a label over value grid that fills as many columns as fit.
+ * Because the host uses inline-size containment, it needs a width from its parent: it collapses in a shrink-to-fit context.
+ *
  * When `productName` is set, the logo becomes decorative: the product name is read from the visible text instead of
  * from the logo alternative text, which drops a duplicate announcement.
  *
@@ -177,6 +182,7 @@ export class CcOrderSummary extends LitElement {
       // language=CSS
       css`
         :host {
+          container-type: inline-size;
           display: block;
         }
 
@@ -350,6 +356,56 @@ export class CcOrderSummary extends LitElement {
         .total--value {
           font-size: 1.5em;
           font-weight: var(--cc-order-summary-font-weight, 600);
+        }
+
+        .btn-submit {
+          min-width: 8em;
+        }
+        /* endregion */
+
+        /* region wide card layout */
+        @container (width >= 30em) {
+          .body {
+            column-gap: var(--cc-spacing-7, 1.5em);
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(11em, 1fr));
+            padding-block: var(--cc-spacing-5, 1em);
+            row-gap: var(--cc-spacing-5, 1em);
+          }
+
+          .body--item {
+            align-items: start;
+            flex-direction: column;
+            padding-block: 0;
+            row-gap: var(--cc-spacing-1, 0.25em);
+          }
+
+          .body--item:not(:first-child) {
+            border-block-start: none;
+          }
+
+          /* Items stretch to the row height, so a growing label would push its value to the bottom of the row. */
+          .body--label {
+            flex: none;
+          }
+
+          .body--value {
+            text-align: start;
+          }
+
+          .footer {
+            align-items: center;
+            flex-direction: row;
+            justify-content: flex-end;
+          }
+
+          .total {
+            margin-inline-end: auto;
+          }
+
+          .btn-submit {
+            flex: 0 0 auto;
+          }
         }
         /* endregion */
 
