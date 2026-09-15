@@ -17,17 +17,17 @@ import { CcProductCreateEvent } from './cc-order-summary.events.js';
  * Displays a summary of a product being ordered.
  *
  * The UI is composed of:
- * - global information about the product,
+ * - a card with global information about the product,
  * - a configuration in the form of a list of label/value,
  * - a button to trigger the creation,
- * - a list of details for additional information.
+ * - a list of details for additional information, under the card.
  *
  * @cssdisplay block
  *
  * @cssprop {FontSize} --cc-order-summary-detail-font-size - The font-size for the list of details (defaults: `0.825em`).
  * @cssprop {FontWeight} --cc-order-summary-font-weight - Sets the value of the font weight CSS property (defaults: `600`).
  *
- * @slot detail - a single piece of information displayed under the main part of the UI. You can insert multiple detail items.
+ * @slot detail - a single piece of information displayed under the card. You can insert multiple detail items.
  */
 
 export class CcOrderSummary extends LitElement {
@@ -55,35 +55,14 @@ export class CcOrderSummary extends LitElement {
 
     return html`
       <div class="title">${i18n('cc-order-summary.title')}</div>
-      <div class="summary">${this._renderSummary()}</div>
+      <div class="card">${this._renderHeader()} ${this._renderBody()} ${this._renderFooter()}</div>
       <div class="details-container">
         <slot name="detail"></slot>
       </div>
     `;
   }
 
-  _renderSummary() {
-    const { submitStatus } = this.orderSummary;
-    const disabled = submitStatus === 'disabled';
-    const waiting = submitStatus === 'waiting';
-    return html`
-      ${this._renderSummaryHeader()} ${this._renderSummaryBody()}
-      <div class="footer">
-        <cc-button
-          class="btn-submit"
-          type="submit"
-          primary
-          ?waiting=${waiting}
-          ?disabled=${disabled && !waiting}
-          @cc-click=${this._onCreateClick}
-        >
-          ${i18n('cc-order-summary.create')}
-        </cc-button>
-      </div>
-    `;
-  }
-
-  _renderSummaryHeader() {
+  _renderHeader() {
     const { name, tags, logo } = this.orderSummary;
 
     const tagTplFn = (/** @type {string} */ tag) =>
@@ -106,9 +85,15 @@ export class CcOrderSummary extends LitElement {
     `;
   }
 
-  _renderSummaryBody() {
+  _renderBody() {
+    const configuration = this.orderSummary.configuration ?? [];
+
+    if (configuration.length === 0) {
+      return '';
+    }
+
     return html`<dl class="body">
-      ${this.orderSummary.configuration?.map((/** @type {ConfigurationItem} */ configItem) => {
+      ${configuration.map((/** @type {ConfigurationItem} */ configItem) => {
         const { label, value, a11yLive, skeleton, skeletonValueOnly } = configItem;
         const ariaLive = a11yLive ? 'polite' : null;
         const ariaAtomic = a11yLive ? 'false' : null;
@@ -116,12 +101,33 @@ export class CcOrderSummary extends LitElement {
           <dt class="body--label">
             <span class="${classMap({ skeleton })}">${label}</span>
           </dt>
-          <dd class="body--value ${classMap({ skeleton: skeleton || skeletonValueOnly })}">
-            <span>${value}</span>
+          <dd class="body--value">
+            <span class="${classMap({ skeleton: skeleton || skeletonValueOnly })}">${value}</span>
           </dd>
         </div>`;
       })}
     </dl>`;
+  }
+
+  _renderFooter() {
+    const { submitStatus } = this.orderSummary;
+    const disabled = submitStatus === 'disabled';
+    const waiting = submitStatus === 'waiting';
+
+    return html`
+      <div class="footer">
+        <cc-button
+          class="btn-submit"
+          type="submit"
+          primary
+          ?waiting=${waiting}
+          ?disabled=${disabled && !waiting}
+          @cc-click=${this._onCreateClick}
+        >
+          ${i18n('cc-order-summary.create')}
+        </cc-button>
+      </div>
+    `;
   }
 
   static get styles() {
@@ -151,14 +157,14 @@ export class CcOrderSummary extends LitElement {
           padding-inline: var(--cc-spacing-0, 0.125em);
         }
 
-        .summary {
-          background-color: var(--cc-color-bg-neutral, #f5f5f5);
-          border: 1px solid var(--cc-color-border-neutral-weak, #e7e7e7);
-          border-radius: var(--cc-border-radius-small, 0.25em);
+        .card {
+          background-color: var(--cc-color-bg-default, #fff);
+          border: 1px solid var(--cc-color-border-neutral, #bfbfbf);
+          border-radius: var(--cc-border-radius-medium, 0.375em);
           display: flex;
           flex-direction: column;
-          padding: var(--cc-spacing-7, 1.5em);
-          row-gap: var(--cc-spacing-8, 2em);
+          /* Clips the section backgrounds to the rounded corners. */
+          overflow: hidden;
         }
         /* endregion */
 
@@ -167,6 +173,7 @@ export class CcOrderSummary extends LitElement {
           display: grid;
           gap: var(--cc-spacing-1, 0.25em);
           grid-template-columns: 1fr min-content;
+          padding: var(--cc-spacing-5, 1em) var(--cc-spacing-7, 1.5em);
         }
 
         .header--name {
@@ -193,20 +200,21 @@ export class CcOrderSummary extends LitElement {
 
         /* region elements > body */
         .body {
+          border-block-start: 1px solid var(--cc-color-border-neutral-weak, #e7e7e7);
           display: flex;
           flex-direction: column;
+          padding: var(--cc-spacing-5, 1em) var(--cc-spacing-7, 1.5em);
         }
 
         .body--item {
           align-items: baseline;
-          column-gap: var(--cc-spacing-3, 0.5em);
+          column-gap: var(--cc-spacing-5, 1em);
           display: flex;
+          padding-block: var(--cc-spacing-4, 0.75em);
         }
 
-        .body--item:not(:last-child) {
-          border-block-end: 1px dotted var(--cc-color-border-primary-weak, #ccd4dc);
-          margin-block-end: var(--cc-spacing-5, 1em);
-          padding-block-end: var(--cc-spacing-5, 1em);
+        .body--item:not(:first-child) {
+          border-block-start: 1px solid var(--cc-color-border-neutral-weak, #e7e7e7);
         }
 
         .body--label {
@@ -217,6 +225,7 @@ export class CcOrderSummary extends LitElement {
         .body--value {
           flex: 0 1 auto;
           font-weight: var(--cc-order-summary-font-weight, 600);
+          text-align: end;
         }
         /* endregion */
 
@@ -243,6 +252,16 @@ export class CcOrderSummary extends LitElement {
         }
         /* endregion */
 
+        /* region elements > footer */
+        .footer {
+          background-color: var(--cc-color-bg-primary-weaker, #e6eff8);
+          border-block-start: 1px solid var(--cc-color-border-neutral-weak, #e7e7e7);
+          display: flex;
+          flex-direction: column;
+          padding: var(--cc-spacing-5, 1em) var(--cc-spacing-7, 1.5em);
+        }
+        /* endregion */
+
         /* region elements > misc */
         .logo {
           border: 1px solid var(--cc-color-border-neutral-weak, #e7e7e7);
@@ -250,11 +269,6 @@ export class CcOrderSummary extends LitElement {
           height: 3em;
           overflow: hidden;
           width: 3em;
-        }
-
-        .btn-submit {
-          display: block;
-          margin-block-start: var(--cc-spacing-3, 0.5em);
         }
 
         .skeleton {

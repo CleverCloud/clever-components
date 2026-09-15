@@ -208,6 +208,12 @@ export const missingInfos = makeStory(conf, {
     {
       orderSummary: {
         ...appBaseDatas,
+        configuration: [],
+      },
+    },
+    {
+      orderSummary: {
+        ...appBaseDatas,
         name: '',
         tags: ['  ', '  preprod  '],
         logo: null,
