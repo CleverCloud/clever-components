@@ -74,6 +74,7 @@ export default {
       <head>
         <link rel="stylesheet" href="src/styles/default-theme.css" >
         <script type="module" src="${testFramework}"></script>
+        <script type="module" src="/test/helpers/global-i18n.js"></script>
         <script>
           window.process = {env: { NODE_ENV: "production" }}
         </script>

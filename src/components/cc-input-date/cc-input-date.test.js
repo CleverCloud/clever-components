@@ -2,18 +2,11 @@ import { elementUpdated, expect, fixture } from '@open-wc/testing';
 import { sendKeys } from '@web/test-runner-commands';
 import { html } from 'lit';
 import { getElement, moveInputCaretToPosition, replaceText, typeText } from '../../../test/helpers/element-helper.js';
-import { addTranslations, setLanguage } from '../../lib/i18n/i18n.js';
-import { translations } from '../../translations/translations.en.js';
 import './cc-input-date.js';
 
 function getInternalInput(element) {
   return element.shadowRoot.querySelector('#input');
 }
-
-before(() => {
-  addTranslations('en', translations);
-  setLanguage('en');
-});
 
 describe('Component cc-input-date', () => {
   describe('valueAsDate method', () => {
