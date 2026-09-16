@@ -24,7 +24,7 @@ import { CcLogsMessageFilterChangeEvent } from './cc-logs-message-filter.events.
 export class CcLogsMessageFilter extends LitElement {
   static get properties() {
     return {
-      filter: { type: String },
+      filter: { type: Object },
     };
   }
 

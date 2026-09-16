@@ -36,12 +36,17 @@ defineSmartComponent({
     appId: { type: String },
     deploymentId: { type: String, optional: true },
     dateRangeSelection: { type: Object, optional: true },
+    messageFilter: { type: Object, optional: true },
   },
   /**
    * @param {OnContextUpdateArgs<CcLogsAppRuntime>} args
    */
   onContextUpdate({ component, context, onEvent, updateComponent, signal }) {
-    const { apiConfig, ownerId, appId, deploymentId, dateRangeSelection } = context;
+    const { apiConfig, ownerId, appId, deploymentId, dateRangeSelection, messageFilter } = context;
+
+    if (messageFilter != null) {
+      updateComponent('messageFilter', messageFilter);
+    }
 
     const controller = new SmartController({
       apiConfig,
