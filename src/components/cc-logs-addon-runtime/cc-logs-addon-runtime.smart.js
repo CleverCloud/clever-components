@@ -21,15 +21,20 @@ defineSmartComponent({
     ownerId: { type: String },
     realAddonId: { type: String },
     dateRangeSelection: { type: Object, optional: true },
+    messageFilter: { type: Object, optional: true },
   },
   /**
    * @param {OnContextUpdateArgs<CcLogsAddonRuntime>} args
    */
   onContextUpdate({ component, context, onEvent, updateComponent, signal }) {
-    const { apiConfig, ownerId, realAddonId, dateRangeSelection } = context;
+    const { apiConfig, ownerId, realAddonId, dateRangeSelection, messageFilter } = context;
 
     if (dateRangeSelection != null) {
       updateComponent('dateRangeSelection', dateRangeSelection);
+    }
+
+    if (messageFilter != null) {
+      updateComponent('messageFilter', messageFilter);
     }
 
     const controller = new SmartController({
