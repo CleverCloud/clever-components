@@ -278,7 +278,7 @@ export class ObjectListController {
       });
       this.#getComponent().focusFirstCell();
     } catch (error) {
-      console.log(error);
+      console.error(error);
       this.#updateState({ type: 'error', bucketName: this.#bucketName, path: this.#path });
     }
   }
@@ -348,7 +348,7 @@ export class ObjectListController {
       }
       this.#removeObject(objectKey);
     } else {
-      console.log(error);
+      console.error(error);
       orElse();
     }
   }

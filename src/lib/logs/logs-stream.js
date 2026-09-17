@@ -368,7 +368,7 @@ export class LogsStream {
    */
   #onStreamErrorEvent(error) {
     if (this.#logsStream.retryCount >= 3) {
-      console.log('received an `error` event from log stream', error);
+      console.warn('received an `error` event from log stream', error);
       // TODO: notify about the instability
     }
   }

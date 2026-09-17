@@ -98,7 +98,7 @@ export class BucketsListController {
         buckets: this.#sortAndFilterItems(),
       });
     } catch (error) {
-      console.log(error);
+      console.error(error);
       this.#updateState({ type: 'error' });
     }
   }
@@ -159,7 +159,7 @@ export class BucketsListController {
       } else if (isCcHttpErrorWithCode(error, CREATE_CELLAR_BUCKET_ERROR_CODES.TOO_MANY_BUCKETS)) {
         this.#updateCreateForm({ type: 'idle', error: 'too-many-buckets' });
       } else {
-        console.log(error);
+        console.error(error);
         notifyError(i18n('cc-cellar-bucket-list.error.bucket-creation-failed', { bucketName }));
         this.#updateCreateForm(null);
       }
@@ -185,7 +185,7 @@ export class BucketsListController {
         if (isCcHttpErrorWithCode(error, DELETE_CELLAR_BUCKET_ERROR_CODES.BUCKET_NOT_EMPTY)) {
           notifyError(i18n('cc-cellar-bucket-list.error.bucket-not-empty', { bucketName }));
         } else {
-          console.log(error);
+          console.error(error);
           notifyError(i18n('cc-cellar-bucket-list.error.bucket-deletion-failed', { bucketName }));
         }
       }
@@ -212,7 +212,7 @@ export class BucketsListController {
         notifyError(i18n('cc-cellar-bucket-list.error.bucket-not-found', { bucketName }));
         this.#removeBucket(bucketName);
       } else {
-        console.log(error);
+        console.error(error);
         notifyError(i18n('cc-cellar-bucket-list.error.bucket-fetch-failed', { bucketName }));
       }
     } finally {
