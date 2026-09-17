@@ -2,6 +2,7 @@ import { GetAddonCommand } from '@clevercloud/client/cc-api-commands/addon/get-a
 import { CheckOtoroshiVersionCommand } from '@clevercloud/client/cc-api-commands/otoroshi/check-otoroshi-version-command.js';
 import { GetOtoroshiInfoCommand } from '@clevercloud/client/cc-api-commands/otoroshi/get-otoroshi-info-command.js';
 import { UpdateOtoroshiVersionCommand } from '@clevercloud/client/cc-api-commands/otoroshi/update-otoroshi-version-command.js';
+import { unlessAborted } from '../../lib/abortable.js';
 import { getAssetUrl } from '../../lib/assets-url.js';
 import { getCcApiClientWithOAuth } from '../../lib/cc-api-client.js';
 import { getDocUrl } from '../../lib/dev-hub-url.js';
@@ -119,10 +120,12 @@ defineSmartComponent({
           ],
         });
       })
-      .catch((error) => {
-        console.error(error);
-        updateComponent('state', { type: 'error' });
-      });
+      .catch((error) =>
+        unlessAborted(signal, error, () => {
+          console.error(error);
+          updateComponent('state', { type: 'error' });
+        }),
+      );
 
     onEvent('cc-addon-version-change', (targetVersion) => {
       updateComponent(

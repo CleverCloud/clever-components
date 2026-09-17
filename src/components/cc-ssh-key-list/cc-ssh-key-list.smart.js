@@ -3,6 +3,7 @@ import { CreatePersonalSshKeyCommand } from '@clevercloud/client/cc-api-commands
 import { DeletePersonalSshKeyCommand } from '@clevercloud/client/cc-api-commands/ssh-key/delete-personal-ssh-key-command.js';
 import { ListGithubSshKeyCommand } from '@clevercloud/client/cc-api-commands/ssh-key/list-github-ssh-key-command.js';
 import { ListPersonalSshKeyCommand } from '@clevercloud/client/cc-api-commands/ssh-key/list-personal-ssh-key-command.js';
+import { unlessAborted } from '../../lib/abortable.js';
 import { getCcApiClientWithOAuth } from '../../lib/cc-api-client.js';
 import { notifyError, notifySuccess } from '../../lib/notifications.js';
 import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
@@ -48,10 +49,12 @@ defineSmartComponent({
             githubKeys: githubKeys?.map((key) => ({ ...key, type: 'idle' })),
           });
         })
-        .catch((error) => {
-          console.error(error);
-          updateComponent('keyListState', { type: 'error' });
-        });
+        .catch((error) =>
+          unlessAborted(signal, error, () => {
+            console.error(error);
+            updateComponent('keyListState', { type: 'error' });
+          }),
+        );
     }
 
     onEvent('cc-ssh-key-create', ({ name, publicKey }) => {

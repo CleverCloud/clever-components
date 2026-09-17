@@ -4,6 +4,7 @@ import { DeleteNetworkGroupMemberCommand } from '@clevercloud/client/cc-api-comm
 import { ListNetworkGroupCommand } from '@clevercloud/client/cc-api-commands/network-group/list-network-group-command.js';
 import { isNetworkGroupAddonCandidate } from '@clevercloud/client/cc-api-commands/network-group/network-group-utils.js';
 import { isKnown } from '@clevercloud/client/utils/unknown-to-client-utils.js';
+import { unlessAborted } from '../../lib/abortable.js';
 import { getCcApiClientWithOAuth } from '../../lib/cc-api-client.js';
 import { notify, notifyError, notifySuccess } from '../../lib/notifications.js';
 import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
@@ -134,9 +135,10 @@ defineSmartComponent({
       }
       await refreshFormAndList(resolvedResourceId);
     } catch (error) {
-      console.error(error);
-      updateComponent('state', { type: 'error' });
-      return;
+      return unlessAborted(signal, error, () => {
+        console.error(error);
+        updateComponent('state', { type: 'error' });
+      });
     }
 
     onEvent('cc-network-group-link', async (networkGroupId) => {
@@ -162,14 +164,16 @@ defineSmartComponent({
       try {
         await refreshFormAndList(resolvedResourceId);
       } catch (refreshError) {
-        console.error(refreshError);
-        updateComponent('state', (state) => {
-          /** @type {NetworkGroupListStateLoaded} */ (state).linkFormState.type = 'idle';
-        });
-        notify({
-          message: i18n('cc-network-group-list.refresh.error'),
-          intent: 'danger',
-          options: { timeout: 0 },
+        unlessAborted(signal, refreshError, () => {
+          console.error(refreshError);
+          updateComponent('state', (state) => {
+            /** @type {NetworkGroupListStateLoaded} */ (state).linkFormState.type = 'idle';
+          });
+          notify({
+            message: i18n('cc-network-group-list.refresh.error'),
+            intent: 'danger',
+            options: { timeout: 0 },
+          });
         });
       }
     });
@@ -197,14 +201,16 @@ defineSmartComponent({
       try {
         await refreshFormAndList(resolvedResourceId);
       } catch (refreshError) {
-        console.error(refreshError);
-        updateComponent('state', (state) => {
-          /** @type {NetworkGroupListStateLoaded} */ (state).listState.type = 'loaded';
-        });
-        notify({
-          message: i18n('cc-network-group-list.refresh.error'),
-          intent: 'danger',
-          options: { timeout: 0 },
+        unlessAborted(signal, refreshError, () => {
+          console.error(refreshError);
+          updateComponent('state', (state) => {
+            /** @type {NetworkGroupListStateLoaded} */ (state).listState.type = 'loaded';
+          });
+          notify({
+            message: i18n('cc-network-group-list.refresh.error'),
+            intent: 'danger',
+            options: { timeout: 0 },
+          });
         });
       }
     });

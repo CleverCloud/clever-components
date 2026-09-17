@@ -1,6 +1,7 @@
 import { GetCellarCredentialsCommand } from '@clevercloud/client/cc-api-commands/cellar/get-cellar-credentials-command.js';
 import { GetCellarCredentialsPresignedUrlCommand } from '@clevercloud/client/cc-api-commands/cellar/get-cellar-credentials-presigned-url-command.js';
 import { RenewCellarCredentialsCommand } from '@clevercloud/client/cc-api-commands/cellar/renew-cellar-credentials-command.js';
+import { unlessAborted } from '../../lib/abortable.js';
 import { getCcApiClientWithOAuth } from '../../lib/cc-api-client.js';
 import { notifyError, notifySuccess } from '../../lib/notifications.js';
 import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
@@ -98,10 +99,12 @@ defineSmartComponent({
           },
         );
       })
-      .catch((error) => {
-        console.error(error);
-        updateComponent('state', { type: 'error' });
-      });
+      .catch((error) =>
+        unlessAborted(signal, error, () => {
+          console.error(error);
+          updateComponent('state', { type: 'error' });
+        }),
+      );
 
     onEvent('cc-addon-credentials-renew-secret', async () => {
       updateComponent('state', (state) => {

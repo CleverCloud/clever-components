@@ -3,6 +3,7 @@ import { GetAddonCommand } from '@clevercloud/client/cc-api-commands/addon/get-a
 import { UpdateAddonCommand } from '@clevercloud/client/cc-api-commands/addon/update-addon-command.js';
 import { ListTagCommand } from '@clevercloud/client/cc-api-commands/tag/list-tag-command.js';
 import { UpdateTagCommand } from '@clevercloud/client/cc-api-commands/tag/update-tag-command.js';
+import { unlessAborted } from '../../lib/abortable.js';
 import { getCcApiClientWithOAuth } from '../../lib/cc-api-client.js';
 import { i18n } from '../../lib/i18n/i18n.js';
 import { notifyError, notifySuccess } from '../../lib/notifications.js';
@@ -43,10 +44,12 @@ defineSmartComponent({
       .then(({ addon, tags }) => {
         updateComponent('state', { type: 'loaded', id: addon.id, name: addon.name, tags });
       })
-      .catch((error) => {
-        console.error(error);
-        updateComponent('state', { type: 'error' });
-      });
+      .catch((error) =>
+        unlessAborted(signal, error, () => {
+          console.error(error);
+          updateComponent('state', { type: 'error' });
+        }),
+      );
 
     onEvent('cc-addon-name-change', ({ name }) => {
       updateComponent('state', (state) => ({
@@ -66,14 +69,15 @@ defineSmartComponent({
         })
         .catch(
           /** @param {Error} error */
-          (error) => {
-            console.error(error);
-            notifyError(i18n('cc-addon-admin.update-name.error'));
-            updateComponent('state', (state) => ({
-              ...state,
-              type: 'loaded',
-            }));
-          },
+          (error) =>
+            unlessAborted(signal, error, () => {
+              console.error(error);
+              notifyError(i18n('cc-addon-admin.update-name.error'));
+              updateComponent('state', (state) => ({
+                ...state,
+                type: 'loaded',
+              }));
+            }),
         );
     });
 
@@ -95,14 +99,15 @@ defineSmartComponent({
         })
         .catch(
           /** @param {Error} error */
-          (error) => {
-            console.error(error);
-            updateComponent('state', (state) => ({
-              ...state,
-              type: 'loaded',
-            }));
-            notifyError(i18n('cc-addon-admin.update-tags.error'));
-          },
+          (error) =>
+            unlessAborted(signal, error, () => {
+              console.error(error);
+              updateComponent('state', (state) => ({
+                ...state,
+                type: 'loaded',
+              }));
+              notifyError(i18n('cc-addon-admin.update-tags.error'));
+            }),
         );
     });
 
@@ -121,11 +126,13 @@ defineSmartComponent({
           notifySuccess(i18n('cc-addon-admin.delete.success', { name }));
           component.dispatchEvent(new CcAddonWasDeletedEvent({ id, name }));
         })
-        .catch((error) => {
-          console.error(error);
-          notifyError(i18n('cc-addon-admin.delete.error', { name }));
-          updateComponent('state', (prevState) => ({ ...prevState, type: 'loaded' }));
-        });
+        .catch((error) =>
+          unlessAborted(signal, error, () => {
+            console.error(error);
+            notifyError(i18n('cc-addon-admin.delete.error', { name }));
+            updateComponent('state', (prevState) => ({ ...prevState, type: 'loaded' }));
+          }),
+        );
     });
   },
 });

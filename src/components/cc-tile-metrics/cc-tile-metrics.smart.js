@@ -1,6 +1,7 @@
 import { GetGrafanaCommand } from '@clevercloud/client/cc-api-commands/grafana/get-grafana-command.js';
 import { GetMetricsCommand } from '@clevercloud/client/cc-api-commands/metrics/get-metrics-command.js';
 import { tolerateNotFound } from '@clevercloud/client/utils/error-utils.js';
+import { unlessAborted } from '../../lib/abortable.js';
 import { getCcApiClientWithOAuth } from '../../lib/cc-api-client.js';
 import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
 import '../cc-smart-container/cc-smart-container.js';
@@ -42,10 +43,12 @@ defineSmartComponent({
           });
         }
       })
-      .catch((error) => {
-        console.error(error);
-        updateComponent('metricsState', { type: 'error' });
-      });
+      .catch((error) =>
+        unlessAborted(signal, error, () => {
+          console.error(error);
+          updateComponent('metricsState', { type: 'error' });
+        }),
+      );
 
     if (grafanaLink == null) {
       updateComponent('grafanaLinkState', { type: 'hidden' });
@@ -55,9 +58,11 @@ defineSmartComponent({
         .then((grafanaAppLink) => {
           updateComponent('grafanaLinkState', { type: 'loaded', link: grafanaAppLink ?? grafanaLink.console });
         })
-        .catch(() => {
-          updateComponent('grafanaLinkState', { type: 'loaded', link: grafanaLink.console });
-        });
+        .catch((error) =>
+          unlessAborted(signal, error, () => {
+            updateComponent('grafanaLinkState', { type: 'loaded', link: grafanaLink.console });
+          }),
+        );
     }
   },
 });

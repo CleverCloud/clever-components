@@ -12,6 +12,7 @@ import { UnsetPrimaryDomainCommand } from '@clevercloud/client/cc-api-commands/d
 import { GetLoadBalancerInfoCommand } from '@clevercloud/client/cc-api-commands/load-balancer/get-load-balancer-info-command.js';
 import { getHostWithWildcard, isTestDomain, parseDomain } from '@clevercloud/client/utils/domain-utils.js';
 import { isCcHttpErrorWithCode } from '@clevercloud/client/utils/error-utils.js';
+import { unlessAborted } from '../../lib/abortable.js';
 import { getCcApiClientWithOAuth } from '../../lib/cc-api-client.js';
 import { notify, notifyError, notifySuccess } from '../../lib/notifications.js';
 import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
@@ -69,10 +70,12 @@ defineSmartComponent({
         .then((domains) => {
           updateComponent('domainListState', { type: 'loaded', domains });
         })
-        .catch((error) => {
-          console.error(error);
-          updateComponent('domainListState', { type: 'error' });
-        });
+        .catch((error) =>
+          unlessAborted(signal, error, () => {
+            console.error(error);
+            updateComponent('domainListState', { type: 'error' });
+          }),
+        );
     }
 
     refreshDomainList();
@@ -81,10 +84,12 @@ defineSmartComponent({
       .then(({ cnameRecord, aRecords }) => {
         updateComponent('dnsInfoState', { type: 'loaded', cnameRecord, aRecords });
       })
-      .catch((error) => {
-        console.error(error);
-        updateComponent('dnsInfoState', { type: 'error' });
-      });
+      .catch((error) =>
+        unlessAborted(signal, error, () => {
+          console.error(error);
+          updateComponent('dnsInfoState', { type: 'error' });
+        }),
+      );
 
     onEvent('cc-domain-add', ({ hostname, pathPrefix, isWildcard }) => {
       const domainWithPathAndWildcard = getHostWithWildcard(hostname + pathPrefix, isWildcard);

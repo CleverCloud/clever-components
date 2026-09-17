@@ -13,6 +13,7 @@ import {
 } from '@clevercloud/client/cc-api-commands/organisation/update-organisation-member-command.js';
 import { GetProfileCommand } from '@clevercloud/client/cc-api-commands/profile/get-profile-command.js';
 import { isCcHttpErrorWithCode, isRateLimitError } from '@clevercloud/client/utils/error-utils.js';
+import { unlessAborted } from '../../lib/abortable.js';
 import { getCcApiClientWithOAuth } from '../../lib/cc-api-client.js';
 import { notifyError, notifySuccess } from '../../lib/notifications.js';
 import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
@@ -322,10 +323,12 @@ defineSmartComponent({
           dangerZoneState: 'idle',
         });
       })
-      .catch((error) => {
-        console.error(error);
-        updateComponent('memberListState', { type: 'error' });
-      });
+      .catch((error) =>
+        unlessAborted(signal, error, () => {
+          console.error(error);
+          updateComponent('memberListState', { type: 'error' });
+        }),
+      );
   },
 });
 

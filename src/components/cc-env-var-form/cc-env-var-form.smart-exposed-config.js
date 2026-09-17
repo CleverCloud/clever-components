@@ -1,6 +1,7 @@
 import { GetApplicationCommand } from '@clevercloud/client/cc-api-commands/application/get-application-command.js';
 import { GetExposedEnvironmentCommand } from '@clevercloud/client/cc-api-commands/environment/get-exposed-environment-command.js';
 import { UpdateExposedEnvironmentCommand } from '@clevercloud/client/cc-api-commands/environment/update-exposed-environment-command.js';
+import { unlessAborted } from '../../lib/abortable.js';
 import { getCcApiClientWithOAuth } from '../../lib/cc-api-client.js';
 import { notifyError, notifySuccess } from '../../lib/notifications.js';
 import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
@@ -39,10 +40,12 @@ defineSmartComponent({
         updateComponent('appName', app.name);
         updateComponent('state', { type: 'loaded', validationMode: 'simple', variables });
       })
-      .catch((error) => {
-        console.error(error);
-        updateComponent('state', { type: 'error' });
-      });
+      .catch((error) =>
+        unlessAborted(signal, error, () => {
+          console.error(error);
+          updateComponent('state', { type: 'error' });
+        }),
+      );
 
     onEvent('cc-env-var-form-submit', (variables) => {
       updateComponent(

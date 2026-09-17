@@ -1,6 +1,7 @@
 import { CreateKeycloakNetworkGroupCommand } from '@clevercloud/client/cc-api-commands/keycloak/create-keycloak-network-group-command.js';
 import { DeleteKeycloakNetworkGroupCommand } from '@clevercloud/client/cc-api-commands/keycloak/delete-keycloak-network-group-command.js';
 import { GetKeycloakInfoCommand } from '@clevercloud/client/cc-api-commands/keycloak/get-keycloak-info-command.js';
+import { unlessAborted } from '../../lib/abortable.js';
 import { getCcApiClientWithOAuth } from '../../lib/cc-api-client.js';
 import { getDocUrl } from '../../lib/dev-hub-url.js';
 import { notifyError, notifySuccess } from '../../lib/notifications.js';
@@ -111,10 +112,12 @@ defineSmartComponent({
           },
         );
       })
-      .catch((error) => {
-        console.error(error);
-        updateComponent('state', { type: 'error' });
-      });
+      .catch((error) =>
+        unlessAborted(signal, error, () => {
+          console.error(error);
+          updateComponent('state', { type: 'error' });
+        }),
+      );
 
     onEvent('cc-ng-enable', () => {
       updateNg({

@@ -2,6 +2,7 @@ import { CreateTcpRedirectionCommand } from '@clevercloud/client/cc-api-commands
 import { DeleteTcpRedirectionCommand } from '@clevercloud/client/cc-api-commands/tcp-redirection/delete-tcp-redirection-command.js';
 import { ListTcpRedirectionCommand } from '@clevercloud/client/cc-api-commands/tcp-redirection/list-tcp-redirection-command.js';
 import { ListTcpRedirectionNamespaceCommand } from '@clevercloud/client/cc-api-commands/tcp-redirection/list-tcp-redirection-namespace-command.js';
+import { unlessAborted } from '../../lib/abortable.js';
 import { getCcApiClientWithOAuth } from '../../lib/cc-api-client.js';
 import { notifyError, notifySuccess } from '../../lib/notifications.js';
 import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
@@ -66,13 +67,15 @@ defineSmartComponent({
             redirectionState.sourcePort = port;
           });
         })
-        .catch((error) => {
-          console.error(error);
-          notifyError(i18n('cc-tcp-redirection-form.create.error', { namespace }));
-          updateRedirection(namespace, (redirectionState) => {
-            redirectionState.type = 'loaded';
-          });
-        });
+        .catch((error) =>
+          unlessAborted(signal, error, () => {
+            console.error(error);
+            notifyError(i18n('cc-tcp-redirection-form.create.error', { namespace }));
+            updateRedirection(namespace, (redirectionState) => {
+              redirectionState.type = 'loaded';
+            });
+          }),
+        );
     });
 
     onEvent('cc-tcp-redirection-delete', ({ namespace, sourcePort }) => {
@@ -89,13 +92,15 @@ defineSmartComponent({
             redirectionState.sourcePort = null;
           });
         })
-        .catch((error) => {
-          console.error(error);
-          notifyError(i18n('cc-tcp-redirection-form.delete.error', { namespace }));
-          updateRedirection(namespace, (redirectionState) => {
-            redirectionState.type = 'loaded';
-          });
-        });
+        .catch((error) =>
+          unlessAborted(signal, error, () => {
+            console.error(error);
+            notifyError(i18n('cc-tcp-redirection-form.delete.error', { namespace }));
+            updateRedirection(namespace, (redirectionState) => {
+              redirectionState.type = 'loaded';
+            });
+          }),
+        );
     });
 
     updateComponent('state', { type: 'loading' });
@@ -109,10 +114,12 @@ defineSmartComponent({
           redirections: redirections.map((redirection) => ({ type: 'loaded', ...redirection })),
         });
       })
-      .catch((error) => {
-        console.error(error);
-        updateComponent('state', { type: 'error' });
-      });
+      .catch((error) =>
+        unlessAborted(signal, error, () => {
+          console.error(error);
+          updateComponent('state', { type: 'error' });
+        }),
+      );
   },
 });
 

@@ -1,6 +1,7 @@
 import { GetAddonCommand } from '@clevercloud/client/cc-api-commands/addon/get-addon-command.js';
 import { GetConfigProviderCommand } from '@clevercloud/client/cc-api-commands/config-provider/get-config-provider-command.js';
 import { UpdateConfigProviderCommand } from '@clevercloud/client/cc-api-commands/config-provider/update-config-provider-command.js';
+import { unlessAborted } from '../../lib/abortable.js';
 import { getCcApiClientWithOAuth } from '../../lib/cc-api-client.js';
 import { notifyError, notifySuccess } from '../../lib/notifications.js';
 import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
@@ -46,10 +47,11 @@ defineSmartComponent({
       )
       .catch(
         /** @param {Error} error */
-        (error) => {
-          console.error(error);
-          updateComponent('state', { type: 'error' });
-        },
+        (error) =>
+          unlessAborted(signal, error, () => {
+            console.error(error);
+            updateComponent('state', { type: 'error' });
+          }),
       );
 
     onEvent('cc-env-var-form-submit', (variables) => {

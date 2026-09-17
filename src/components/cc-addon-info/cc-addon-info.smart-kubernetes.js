@@ -1,4 +1,5 @@
 import { GetKubernetesClusterCommand } from '@clevercloud/client/cc-api-commands/kubernetes/get-kubernetes-cluster-command.js';
+import { unlessAborted } from '../../lib/abortable.js';
 import { getCcApiClientWithOAuth } from '../../lib/cc-api-client.js';
 import { getDocUrl } from '../../lib/dev-hub-url.js';
 import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
@@ -54,9 +55,11 @@ defineSmartComponent({
           creationDate: kubeInfo.createdAt,
         });
       })
-      .catch((error) => {
-        console.error(error);
-        updateComponent('state', { type: 'error' });
-      });
+      .catch((error) =>
+        unlessAborted(signal, error, () => {
+          console.error(error);
+          updateComponent('state', { type: 'error' });
+        }),
+      );
   },
 });

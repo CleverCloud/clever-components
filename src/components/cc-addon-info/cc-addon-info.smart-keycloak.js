@@ -2,6 +2,7 @@ import { GetAddonCommand } from '@clevercloud/client/cc-api-commands/addon/get-a
 import { CheckKeycloakVersionCommand } from '@clevercloud/client/cc-api-commands/keycloak/check-keycloak-version-command.js';
 import { GetKeycloakInfoCommand } from '@clevercloud/client/cc-api-commands/keycloak/get-keycloak-info-command.js';
 import { UpdateKeycloakVersionCommand } from '@clevercloud/client/cc-api-commands/keycloak/update-keycloak-version-command.js';
+import { unlessAborted } from '../../lib/abortable.js';
 import { getAssetUrl } from '../../lib/assets-url.js';
 import { getCcApiClientWithOAuth } from '../../lib/cc-api-client.js';
 import { getDocUrl } from '../../lib/dev-hub-url.js';
@@ -120,10 +121,12 @@ defineSmartComponent({
           ],
         });
       })
-      .catch((error) => {
-        console.error(error);
-        updateComponent('state', { type: 'error' });
-      });
+      .catch((error) =>
+        unlessAborted(signal, error, () => {
+          console.error(error);
+          updateComponent('state', { type: 'error' });
+        }),
+      );
 
     onEvent('cc-addon-version-change', (targetVersion) => {
       updateComponent(

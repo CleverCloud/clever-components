@@ -1,4 +1,5 @@
 import { GetStatusCodeDistributionCommand } from '@clevercloud/client/cc-api-commands/metrics/get-status-code-distribution-command.js';
+import { unlessAborted } from '../../lib/abortable.js';
 import { getCcApiClientWithOAuth } from '../../lib/cc-api-client.js';
 import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
 import '../cc-smart-container/cc-smart-container.js';
@@ -30,10 +31,12 @@ defineSmartComponent({
       .then((statusCodes) => {
         updateComponent('state', { type: 'loaded', statusCodes });
       })
-      .catch((error) => {
-        console.log(error);
-        updateComponent('state', { type: 'error' });
-      });
+      .catch((error) =>
+        unlessAborted(signal, error, () => {
+          console.error(error);
+          updateComponent('state', { type: 'error' });
+        }),
+      );
   },
 });
 

@@ -1,5 +1,6 @@
 import { DeleteNetworkGroupCommand } from '@clevercloud/client/cc-api-commands/network-group/delete-network-group-command.js';
 import { GetNetworkGroupCommand } from '@clevercloud/client/cc-api-commands/network-group/get-network-group-command.js';
+import { unlessAborted } from '../../lib/abortable.js';
 import { getCcApiClientWithOAuth } from '../../lib/cc-api-client.js';
 import { notifyError, notifySuccess } from '../../lib/notifications.js';
 import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
@@ -44,10 +45,12 @@ defineSmartComponent({
           numberOfPeers: ng.peers.length,
         });
       })
-      .catch((error) => {
-        console.error(error);
-        updateComponent('state', { type: 'error' });
-      });
+      .catch((error) =>
+        unlessAborted(signal, error, () => {
+          console.error(error);
+          updateComponent('state', { type: 'error' });
+        }),
+      );
 
     onEvent('cc-network-group-delete', (networkGroupId) => {
       updateComponent('state', (state) => {

@@ -1,4 +1,5 @@
 import { ListZoneCommand } from '@clevercloud/client/cc-api-commands/zone/list-zone-command.js';
+import { unlessAborted } from '../../lib/abortable.js';
 import { getCcApiClientWithOAuth } from '../../lib/cc-api-client.js';
 import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
 import '../cc-smart-container/cc-smart-container.js';
@@ -63,10 +64,12 @@ defineSmartComponent({
           updateComponent('state', { type: 'loaded', zones });
           updateComponent('selectedZoneId', zoneId);
         })
-        .catch((error) => {
-          updateComponent('state', { type: 'error' });
-          console.error(error);
-        });
+        .catch((error) =>
+          unlessAborted(signal, error, () => {
+            updateComponent('state', { type: 'error' });
+            console.error(error);
+          }),
+        );
     } else {
       updateComponent('selectedZoneId', zoneId);
     }

@@ -1,4 +1,5 @@
 import { ListProductAddonCommand } from '@clevercloud/client/cc-api-commands/product/list-product-addon-command.js';
+import { unlessAborted } from '../../lib/abortable.js';
 import { fetchPriceSystem } from '../../lib/api-helpers.js';
 import { getCcApiClientWithOAuth } from '../../lib/cc-api-client.js';
 import { formatAddonProduct } from '../../lib/product.js';
@@ -44,10 +45,12 @@ defineSmartComponent({
           plans: productDetails.plans,
         });
       })
-      .catch((error) => {
-        console.error(error);
-        updateComponent('state', { type: 'error' });
-      });
+      .catch((error) =>
+        unlessAborted(signal, error, () => {
+          console.error(error);
+          updateComponent('state', { type: 'error' });
+        }),
+      );
   },
 });
 

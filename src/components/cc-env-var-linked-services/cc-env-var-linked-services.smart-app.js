@@ -1,5 +1,6 @@
 import { GetApplicationCommand } from '@clevercloud/client/cc-api-commands/application/get-application-command.js';
 import { GetEnvironmentCommand } from '@clevercloud/client/cc-api-commands/environment/get-environment-command.js';
+import { unlessAborted } from '../../lib/abortable.js';
 import { getCcApiClientWithOAuth } from '../../lib/cc-api-client.js';
 import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
 import '../cc-smart-container/cc-smart-container.js';
@@ -39,12 +40,14 @@ defineSmartComponent({
           services: linkedServices,
         });
       })
-      .catch((e) => {
-        console.error(e);
-        updateComponent('state', {
-          type: 'error',
-        });
-      });
+      .catch((e) =>
+        unlessAborted(signal, e, () => {
+          console.error(e);
+          updateComponent('state', {
+            type: 'error',
+          });
+        }),
+      );
   },
 });
 

@@ -6,6 +6,7 @@ import { DeleteProfileEmailAddressCommand } from '@clevercloud/client/cc-api-com
 import { ListProfileEmailAddressCommand } from '@clevercloud/client/cc-api-commands/profile/list-profile-email-address-command.js';
 import { RequestProfileEmailConfirmationCommand } from '@clevercloud/client/cc-api-commands/profile/request-profile-email-confirmation-command.js';
 import { SetProfilePrimaryEmailAddressCommand } from '@clevercloud/client/cc-api-commands/profile/set-profile-primary-email-address-command.js';
+import { unlessAborted } from '../../lib/abortable.js';
 import { getCcApiClientWithOAuth } from '../../lib/cc-api-client.js';
 import { notify, notifyError, notifySuccess } from '../../lib/notifications.js';
 import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
@@ -71,10 +72,12 @@ defineSmartComponent({
           },
         });
       })
-      .catch((error) => {
-        console.error(error);
-        updateComponent('emailListState', { type: 'error' });
-      });
+      .catch((error) =>
+        unlessAborted(signal, error, () => {
+          console.error(error);
+          updateComponent('emailListState', { type: 'error' });
+        }),
+      );
 
     onEvent('cc-email-send-confirmation', (address) => {
       updateComponent(

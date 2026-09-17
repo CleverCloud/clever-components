@@ -1,5 +1,6 @@
 import { GetAddonCommand } from '@clevercloud/client/cc-api-commands/addon/get-addon-command.js';
 import { GetMatomoInfoCommand } from '@clevercloud/client/cc-api-commands/matomo/get-matomo-info-command.js';
+import { unlessAborted } from '../../lib/abortable.js';
 import { getAssetUrl } from '../../lib/assets-url.js';
 import { getCcApiClientWithOAuth } from '../../lib/cc-api-client.js';
 import { getDocUrl } from '../../lib/dev-hub-url.js';
@@ -125,9 +126,11 @@ defineSmartComponent({
           ],
         });
       })
-      .catch((error) => {
-        console.error(error);
-        updateComponent('state', { type: 'error' });
-      });
+      .catch((error) =>
+        unlessAborted(signal, error, () => {
+          console.error(error);
+          updateComponent('state', { type: 'error' });
+        }),
+      );
   },
 });

@@ -1,5 +1,6 @@
 import { GetKubernetesClusterCommand } from '@clevercloud/client/cc-api-commands/kubernetes/get-kubernetes-cluster-command.js';
 import { GetKubernetesKubeconfigPresignedUrlCommand } from '@clevercloud/client/cc-api-commands/kubernetes/get-kubernetes-kubeconfig-presigned-url-command.js';
+import { unlessAborted } from '../../lib/abortable.js';
 import { getAssetUrl } from '../../lib/assets-url.js';
 import { getCcApiClientWithOAuth } from '../../lib/cc-api-client.js';
 import { fakeString } from '../../lib/fake-strings.js';
@@ -82,20 +83,22 @@ defineSmartComponent({
             },
           );
         })
-        .catch((error) => {
-          console.error(error);
-          notify({
-            intent: 'danger',
-            message: i18n('cc-addon-header.error.fetch-kubeconfig'),
-            options: {
-              timeout: 0,
-              closeable: true,
-            },
-          });
-          updateComponent('state', {
-            type: 'error',
-          });
-        });
+        .catch((error) =>
+          unlessAborted(signal, error, () => {
+            console.error(error);
+            notify({
+              intent: 'danger',
+              message: i18n('cc-addon-header.error.fetch-kubeconfig'),
+              options: {
+                timeout: 0,
+                closeable: true,
+              },
+            });
+            updateComponent('state', {
+              type: 'error',
+            });
+          }),
+        );
     }, FIFTY_MINUTES);
 
     signal.addEventListener('abort', () => {
@@ -126,12 +129,14 @@ defineSmartComponent({
           deploymentStatus: /** @type {DeploymentStatus} */ (kubeInfo.status.toLowerCase()),
         });
       })
-      .catch((error) => {
-        console.error(error);
-        notifyError(i18n('cc-addon-header.error'));
-        updateComponent('state', {
-          type: 'error',
-        });
-      });
+      .catch((error) =>
+        unlessAborted(signal, error, () => {
+          console.error(error);
+          notifyError(i18n('cc-addon-header.error'));
+          updateComponent('state', {
+            type: 'error',
+          });
+        }),
+      );
   },
 });
