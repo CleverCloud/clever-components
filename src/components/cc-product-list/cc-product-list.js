@@ -5,6 +5,7 @@ import '../cc-badge/cc-badge.js';
 import '../cc-icon/cc-icon.js';
 import '../cc-input-text/cc-input-text.js';
 import '../cc-product-card/cc-product-card.js';
+import { CcProductListFilterChangeEvent } from './cc-product-list.events.js';
 import { getCategoryKey, ProductsController } from './products-controller.js';
 
 /**
@@ -45,10 +46,24 @@ export class CcProductList extends LitElement {
   }
 
   /**
+   * @param {string|null} categoryFilter
+   */
+  _dispatchFilterChange(categoryFilter) {
+    this.dispatchEvent(
+      new CcProductListFilterChangeEvent({
+        categoryFilter,
+        textFilter: this.textFilter ?? '',
+      }),
+    );
+  }
+
+  /**
    * @param {Event & { target: HTMLInputElement }} e
    */
   _onCategoryChange(e) {
-    this.categoryFilter = e.target.value;
+    // The `all` radio means "no category filter", we don't want to expose this internal value.
+    this.categoryFilter = e.target.value === 'all' ? null : e.target.value;
+    this._dispatchFilterChange(this.categoryFilter);
   }
 
   /**
@@ -56,6 +71,9 @@ export class CcProductList extends LitElement {
    */
   _onSearchInput({ detail: value }) {
     this.textFilter = value;
+    // `categoryFilter` may match no category, so we report the category the list actually applies.
+    const currentCategory = this._productsCrtl.getCurrentCategory();
+    this._dispatchFilterChange(currentCategory === 'all' ? null : currentCategory);
   }
 
   /**

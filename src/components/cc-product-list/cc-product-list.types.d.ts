@@ -23,3 +23,9 @@ export interface CategoryFilter {
   categoryName: string;
   toggled: boolean;
 }
+
+export interface ProductListFilter {
+  /** The id of the applied category, or its name when it has no id. `null` when all categories are shown. */
+  categoryFilter: string | null;
+  textFilter: string;
+}
