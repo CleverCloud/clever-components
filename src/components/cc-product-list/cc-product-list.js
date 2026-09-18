@@ -115,6 +115,7 @@ export class CcProductList extends LitElement {
         type="radio"
         id="${id}"
         .value=${value}
+        .checked=${isToggled}
         name="category-filter"
         class="visually-hidden"
         @change=${this._onCategoryChange}

@@ -29,6 +29,12 @@ function getDisplayedCategories(element) {
   );
 }
 
+function getCheckedCategories(element) {
+  return Array.from(element.shadowRoot.querySelectorAll('input[type="radio"]'))
+    .filter((radio) => radio.checked)
+    .map((radio) => radio.value);
+}
+
 describe('cc-product-list', () => {
   describe('categoryFilter property', () => {
     it('applies the category filter when the products are set after it', async () => {
@@ -38,6 +44,19 @@ describe('cc-product-list', () => {
       await elementUpdated(element);
 
       expect(getDisplayedCategories(element)).to.deep.equal(['Tools']);
+    });
+  });
+
+  describe('category radios', () => {
+    it('checks the radio of the category filter', async () => {
+      const element = await fixture(
+        html`<cc-product-list
+          .productsByCategories=${PRODUCTS_BY_CATEGORIES}
+          category-filter="Tools"
+        ></cc-product-list>`,
+      );
+
+      expect(getCheckedCategories(element)).to.deep.equal(['Tools']);
     });
   });
 });
