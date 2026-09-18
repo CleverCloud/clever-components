@@ -32,7 +32,7 @@ export class ProductsController {
     /** @type {CategoryFilter[]} Categories and their current state.  */
     this._categoriesFilters = [];
 
-    /** @type {string|null} Current category selected.  */
+    /** @type {string|null} Key of the applied category, `null` when all categories are shown.  */
     this._currentCategoryKey = null;
 
     /** @type {string|null} Current text filter.  */
@@ -73,13 +73,16 @@ export class ProductsController {
       categoryName: category.categoryName,
       toggled: false,
     }));
-    this._currentCategoryKey = 'all';
+    this._currentCategoryKey = null;
   }
 
   getCategories() {
     return this._categoriesFilters;
   }
 
+  /**
+   * @returns {string|null} the key of the applied category, `null` when all categories are shown
+   */
   getCurrentCategory() {
     return this._currentCategoryKey;
   }
@@ -95,18 +98,19 @@ export class ProductsController {
   }
 
   /**
-   * @param {string|null} categoryKey the category id, or its name when it has no id
+   * @param {string|null} categoryKey the category id, or its name when it has no id. `null`, an empty
+   * string or a key that matches no category shows all the categories.
    */
   setCategoryFilter(categoryKey) {
     const categoryExists = this._categoriesFilters.find((cat) => cat.key === categoryKey) != null;
 
-    // If we don't have a category or it doesn't exist we reset the category to 'all'
-    this._currentCategoryKey = isStringEmpty(categoryKey) || !categoryExists ? 'all' : categoryKey;
+    // If we don't have a category or it doesn't exist we show all the categories
+    this._currentCategoryKey = isStringEmpty(categoryKey) || !categoryExists ? null : categoryKey;
 
     this._categoriesFilters = this._categoriesFilters.map((category) => {
       return {
         ...category,
-        toggled: this._currentCategoryKey !== 'all' && this._currentCategoryKey === category.key,
+        toggled: this._currentCategoryKey != null && this._currentCategoryKey === category.key,
       };
     });
 
@@ -133,7 +137,7 @@ export class ProductsController {
   }
 
   _getProductsByCurrentCategory() {
-    return this._currentCategoryKey !== 'all'
+    return this._currentCategoryKey != null
       ? this._productsByCategories.filter((category) => getCategoryKey(category) === this._currentCategoryKey)
       : this._productsByCategories;
   }

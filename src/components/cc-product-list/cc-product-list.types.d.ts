@@ -10,7 +10,6 @@ export interface Product {
 export interface ProductsCategory {
   /**
    * A stable key used to filter the category. Never displayed. Defaults to `categoryName` when empty or absent.
-   * The key must not be `all`: this value means all categories, so such a category could never be selected.
    */
   id?: string;
   categoryName: string;
@@ -23,4 +22,10 @@ export interface CategoryFilter {
   key: string;
   categoryName: string;
   toggled: boolean;
+}
+
+export interface ProductListFilter {
+  /** The id of the applied category, or its name when it has no id. `null` when all categories are shown. */
+  categoryFilter: string | null;
+  textFilter: string;
 }

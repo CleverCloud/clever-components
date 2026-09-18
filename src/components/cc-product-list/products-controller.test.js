@@ -878,6 +878,32 @@ describe('ProductsController()', function () {
       ]);
     });
 
+    it('should be able to filter a category keyed all', function () {
+      productsCtrl.productsByCategories = [
+        {
+          id: 'all',
+          categoryName: 'aaa',
+          products: [generateProduct({ name: 'aaa two' })],
+        },
+        {
+          id: 'bbb-id',
+          categoryName: 'bbb',
+          products: [generateProduct({ name: 'bbb two' })],
+        },
+      ];
+
+      productsCtrl.setCategoryFilter('all');
+
+      expect(productsCtrl.getCurrentCategory()).to.equal('all');
+      expect(productsCtrl.getFilteredProductsByCategories()).to.deep.equal([
+        {
+          id: 'all',
+          categoryName: 'aaa',
+          products: [generateProduct({ name: 'aaa two' })],
+        },
+      ]);
+    });
+
     it('should fall back to the category name if the category id is empty', function () {
       productsCtrl.productsByCategories = [
         {
@@ -1488,7 +1514,7 @@ describe('ProductsController()', function () {
         },
       ]);
 
-      productsCtrl.setCategoryFilter('all');
+      productsCtrl.setCategoryFilter(null);
       expect(productsCtrl.getFilteredProductsByCategories()).to.deep.equal([
         {
           categoryName: 'aaa',

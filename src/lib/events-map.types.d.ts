@@ -171,6 +171,7 @@ import {
   CcPricingTemporalityChangeEvent,
   CcPricingZoneChangeEvent,
 } from '../components/cc-pricing-page/cc-pricing-page.events.js';
+import { CcProductListFilterChangeEvent } from '../components/cc-product-list/cc-product-list.events.js';
 import {
   CcRangeSelectEvent,
   CcRangeSelectorSelectCustomEvent,
@@ -360,6 +361,7 @@ declare global {
     'cc-pricing-temporality-change': CcPricingTemporalityChangeEvent;
     'cc-pricing-zone-change': CcPricingZoneChangeEvent;
     'cc-product-create': CcProductCreateEvent;
+    'cc-product-list-filter-change': CcProductListFilterChangeEvent;
     'cc-range-select': CcRangeSelectEvent;
     'cc-range-selector-select-custom': CcRangeSelectorSelectCustomEvent;
     'cc-request-submit': CcRequestSubmitEvent;

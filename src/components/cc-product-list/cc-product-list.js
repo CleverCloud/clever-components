@@ -5,6 +5,7 @@ import '../cc-badge/cc-badge.js';
 import '../cc-icon/cc-icon.js';
 import '../cc-input-text/cc-input-text.js';
 import '../cc-product-card/cc-product-card.js';
+import { CcProductListFilterChangeEvent } from './cc-product-list.events.js';
 import { ProductsController } from './products-controller.js';
 
 /**
@@ -45,10 +46,27 @@ export class CcProductList extends LitElement {
   }
 
   /**
+   * `categoryFilter` may match no category, so we report the category the list actually applies rather
+   * than the one that was asked for.
+   */
+  _dispatchFilterChange() {
+    this.dispatchEvent(
+      new CcProductListFilterChangeEvent({
+        categoryFilter: this._productsCrtl.getCurrentCategory(),
+        textFilter: this.textFilter ?? '',
+      }),
+    );
+  }
+
+  /**
    * @param {Event & { target: HTMLInputElement }} e
    */
   _onCategoryChange(e) {
-    this.categoryFilter = e.target.value;
+    // A category key can be any string, so the marker attribute, not the value, tells us the filter was cleared.
+    this.categoryFilter = e.target.dataset.allCategories != null ? null : e.target.value;
+    // `willUpdate` would only apply this on the next update, too late for the event to report the truth.
+    this._productsCrtl.setCategoryFilter(this.categoryFilter);
+    this._dispatchFilterChange();
   }
 
   /**
@@ -56,6 +74,7 @@ export class CcProductList extends LitElement {
    */
   _onSearchInput({ detail: value }) {
     this.textFilter = value;
+    this._dispatchFilterChange();
   }
 
   /**
@@ -90,8 +109,8 @@ export class CcProductList extends LitElement {
           ${this._renderCategory(
             'category-all',
             i18n('cc-product-list.all-label'),
-            'all',
-            this._productsCrtl.getCurrentCategory() === 'all',
+            null,
+            this._productsCrtl.getCurrentCategory() == null,
           )}
           ${categories.map((c, index) => this._renderCategory(`category-${index}`, c.categoryName, c.key, c.toggled))}
         </fieldset>
@@ -103,16 +122,17 @@ export class CcProductList extends LitElement {
   /**
    * @param {string} id links the radio to its label, built from the position so that it stays unique whatever the label
    * @param {string} label
-   * @param {string} value
+   * @param {string|null} categoryKey the category to filter by, `null` for the radio that shows all categories
    * @param {boolean} isToggled
    * @returns {TemplateResult}
    */
-  _renderCategory(id, label, value, isToggled) {
+  _renderCategory(id, label, categoryKey, isToggled) {
     return html`
       <input
         type="radio"
         id="${id}"
-        .value=${value}
+        .value=${categoryKey ?? ''}
+        ?data-all-categories=${categoryKey == null}
         .checked=${isToggled}
         name="category-filter"
         class="visually-hidden"
