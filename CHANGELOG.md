@@ -5,6 +5,13 @@ title: 'Changelog'
 
 # Changelog
 
+## [26.4.1](https://github.com/CleverCloud/clever-components/compare/26.4.0...26.4.1) (2026-09-18)
+
+
+### 🐛 Bug Fixes
+
+* **cc-range-selector-option:** stop clipping the border at the corners ([20588c3](https://github.com/CleverCloud/clever-components/commit/20588c32d3b3f6879dd2f428d5f99aaa14613def))
+
 ## [26.4.0](https://github.com/CleverCloud/clever-components/compare/26.3.0...26.4.0) (2026-09-15)
 
 
