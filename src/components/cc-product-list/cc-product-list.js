@@ -5,7 +5,7 @@ import '../cc-badge/cc-badge.js';
 import '../cc-icon/cc-icon.js';
 import '../cc-input-text/cc-input-text.js';
 import '../cc-product-card/cc-product-card.js';
-import { ProductsController } from './products-controller.js';
+import { getCategoryKey, ProductsController } from './products-controller.js';
 
 /**
  * @import { ProductsCategory } from './cc-product-list.types.js'
@@ -31,7 +31,7 @@ export class CcProductList extends LitElement {
   constructor() {
     super();
 
-    /** @type {string|null} a string to prefilter by a given category */
+    /** @type {string|null} the category to prefilter by: its id, or its name when it has no id. A value that matches no category shows all categories. */
     this.categoryFilter = null;
 
     /** @type {ProductsCategory[]} the list of products in their respective categories.  */
@@ -94,7 +94,7 @@ export class CcProductList extends LitElement {
             this._productsCrtl.getCurrentCategory() === 'all',
           )}
           ${categories.map((c, index) =>
-            this._renderCategory(`category-${index}`, c.categoryName, c.categoryName, c.toggled),
+            this._renderCategory(`category-${index}`, c.categoryName, getCategoryKey(c), c.toggled),
           )}
         </fieldset>
       </div>
