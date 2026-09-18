@@ -88,11 +88,14 @@ export class CcProductList extends LitElement {
         <fieldset class="category-filter">
           <legend class="visually-hidden">${i18n('cc-product-list.filter-category-legend')}</legend>
           ${this._renderCategory(
+            'category-all',
             i18n('cc-product-list.all-label'),
             'all',
             this._productsCrtl.getCurrentCategory() === 'all',
           )}
-          ${categories.map((c) => this._renderCategory(c.categoryName, c.categoryName, c.toggled))}
+          ${categories.map((c, index) =>
+            this._renderCategory(`category-${index}`, c.categoryName, c.categoryName, c.toggled),
+          )}
         </fieldset>
       </div>
       <div class="products">${this._renderProductsByCategories()}</div>
@@ -100,13 +103,13 @@ export class CcProductList extends LitElement {
   }
 
   /**
+   * @param {string} id links the radio to its label, built from the position so that it stays unique whatever the label
    * @param {string} label
    * @param {string} value
    * @param {boolean} isToggled
    * @returns {TemplateResult}
    */
-  _renderCategory(label, value, isToggled) {
-    const id = label.replace(' ', '-');
+  _renderCategory(id, label, value, isToggled) {
     return html`
       <input
         type="radio"
