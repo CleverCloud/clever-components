@@ -80,7 +80,6 @@ export class CcRangeSelectorOption extends LitElement {
         :host {
           border-radius: var(--cc-border-radius-medium, 0.375em);
           display: inline-flex;
-          overflow: hidden;
           width: fit-content;
         }
 
@@ -90,12 +89,19 @@ export class CcRangeSelectorOption extends LitElement {
           flex: 1 1 auto;
           line-height: 1.5;
         }
+
+        /* The parent sets the corners on the host (square ones inside a range), so we pass them down to the slotted element that draws the border */
+        .wrapper,
+        slot {
+          border-radius: inherit;
+        }
         /* endregion */
 
         /* region body section */
         ::slotted(*) {
           background-color: var(--cc-color-bg-default, #fff);
           border: 0.125em solid var(--cc-color-border-neutral, #bfbfbf);
+          border-radius: inherit;
           color: var(--cc-color-text-default, #262626);
           display: inline-block;
           flex: 1 1 auto;
