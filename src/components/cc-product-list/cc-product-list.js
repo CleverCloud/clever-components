@@ -66,7 +66,8 @@ export class CcProductList extends LitElement {
       this._productsCrtl.productsByCategories = this.productsByCategories;
     }
 
-    if (changedProperties.has('categoryFilter')) {
+    // Setting the products resets the category filter, so we apply it again.
+    if (changedProperties.has('categoryFilter') || changedProperties.has('productsByCategories')) {
       this._productsCrtl.toggleCategoryFilter(this.categoryFilter);
     }
     if (changedProperties.has('textFilter')) {
