@@ -36,7 +36,7 @@ type Tabs = {
   };
 };
 
-export type TabName = 'default' | 'admin' | 'api' | 'apm' | 'cli' | 'direct' | 'elastic' | 'kibana';
+export type TabName = 'default' | 'admin' | 'api' | 'apm' | 'cli' | 'direct' | 'elastic' | 'ferretdb' | 'kibana';
 
 // Copies from cc-addon-header, will need to mutualize
 export interface RawAddon {
