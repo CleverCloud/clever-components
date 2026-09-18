@@ -803,6 +803,37 @@ describe('ProductsController()', function () {
     });
   });
 
+  describe('filterCategory() with category ids', function () {
+    it('should return the corresponding products if the category id exists', function () {
+      productsCtrl.productsByCategories = [
+        {
+          id: 'aaa-id',
+          categoryName: 'aaa',
+          products: [generateProduct({ name: 'aaa two' })],
+        },
+        {
+          id: 'bbb-id',
+          categoryName: 'bbb',
+          products: [generateProduct({ name: 'bbb two' })],
+        },
+      ];
+
+      productsCtrl.toggleCategoryFilter('bbb-id');
+
+      expect(productsCtrl.getFilteredProductsByCategories()).to.deep.equal([
+        {
+          id: 'bbb-id',
+          categoryName: 'bbb',
+          products: [generateProduct({ name: 'bbb two' })],
+        },
+      ]);
+      expect(productsCtrl.getCategories()).to.deep.equal([
+        { id: 'aaa-id', categoryName: 'aaa', toggled: false },
+        { id: 'bbb-id', categoryName: 'bbb', toggled: true },
+      ]);
+    });
+  });
+
   describe('filterCategory() then search()', function () {
     it('should return the correct filter and search if everything is correct', function () {
       productsCtrl.productsByCategories = [

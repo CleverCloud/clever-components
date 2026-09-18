@@ -5,6 +5,16 @@ import { isStringEmpty } from '../../lib/utils.js';
  * @import { CcProductList } from './cc-product-list.js'
  */
 
+/**
+ * Returns the key used to filter a category: its id, or its name when it has no id.
+ *
+ * @param {ProductsByCategory|CategoryFilter} category
+ * @returns {string}
+ */
+export function getCategoryKey(category) {
+  return category.id ?? category.categoryName;
+}
+
 export class ProductsController {
   /**
    * @param {CcProductList} host
@@ -20,7 +30,7 @@ export class ProductsController {
     this._categoriesFilters = [];
 
     /** @type {string|null} Current category selected.  */
-    this._currentCategoryNameFilter = null;
+    this._currentCategoryKey = null;
 
     /** @type {string|null} Current text filter.  */
     this._currentTextFilter = '';
@@ -54,8 +64,12 @@ export class ProductsController {
    */
   set productsByCategories(productsByCategories) {
     this._productsByCategories = productsByCategories;
-    this._categoriesFilters = this._productsByCategories.map(({ categoryName }) => ({ categoryName, toggled: false }));
-    this._currentCategoryNameFilter = 'all';
+    this._categoriesFilters = this._productsByCategories.map(({ id, categoryName }) => ({
+      id,
+      categoryName,
+      toggled: false,
+    }));
+    this._currentCategoryKey = 'all';
   }
 
   getCategories() {
@@ -63,7 +77,7 @@ export class ProductsController {
   }
 
   getCurrentCategory() {
-    return this._currentCategoryNameFilter;
+    return this._currentCategoryKey;
   }
 
   /**
@@ -77,22 +91,23 @@ export class ProductsController {
   }
 
   /**
-   * @param {string} categoryName
+   * @param {string} categoryKey the category id, or its name when it has no id
    */
-  toggleCategoryFilter(categoryName) {
-    const categoryExists = this._categoriesFilters.find((cat) => cat.categoryName === categoryName) != null;
+  toggleCategoryFilter(categoryKey) {
+    const categoryExists = this._categoriesFilters.find((cat) => getCategoryKey(cat) === categoryKey) != null;
 
     // If we don't have a category or it doesn't exist we reset the category to 'all'
     // If we're being given the current category as it acts as a toggle we also reset to 'all'
-    this._currentCategoryNameFilter =
-      categoryName == null || categoryName === '' || !categoryExists || this._currentCategoryNameFilter === categoryName
+    this._currentCategoryKey =
+      categoryKey == null || categoryKey === '' || !categoryExists || this._currentCategoryKey === categoryKey
         ? 'all'
-        : categoryName;
+        : categoryKey;
 
     this._categoriesFilters = this._categoriesFilters.map((category) => {
       return {
+        id: category.id,
         categoryName: category.categoryName,
-        toggled: this._currentCategoryNameFilter !== 'all' && this._currentCategoryNameFilter === category.categoryName,
+        toggled: this._currentCategoryKey !== 'all' && this._currentCategoryKey === getCategoryKey(category),
       };
     });
 
@@ -119,8 +134,8 @@ export class ProductsController {
   }
 
   _getProductsByCurrentCategory() {
-    return this._currentCategoryNameFilter !== 'all'
-      ? this._productsByCategories.filter(({ categoryName }) => categoryName === this._currentCategoryNameFilter)
+    return this._currentCategoryKey !== 'all'
+      ? this._productsByCategories.filter((category) => getCategoryKey(category) === this._currentCategoryKey)
       : this._productsByCategories;
   }
 }
