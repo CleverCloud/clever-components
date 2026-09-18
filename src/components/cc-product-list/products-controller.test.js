@@ -714,7 +714,7 @@ describe('ProductsController()', function () {
         },
       ];
 
-      productsCtrl.toggleCategoryFilter('aaa');
+      productsCtrl.setCategoryFilter('aaa');
 
       expect(productsCtrl.getFilteredProductsByCategories()).to.deep.equal([
         {
@@ -736,7 +736,7 @@ describe('ProductsController()', function () {
         },
       ];
 
-      productsCtrl.toggleCategoryFilter('foobar');
+      productsCtrl.setCategoryFilter('foobar');
 
       expect(productsCtrl.getFilteredProductsByCategories()).to.deep.equal([
         {
@@ -762,7 +762,7 @@ describe('ProductsController()', function () {
         },
       ];
 
-      productsCtrl.toggleCategoryFilter('');
+      productsCtrl.setCategoryFilter('');
 
       expect(productsCtrl.getFilteredProductsByCategories()).to.deep.equal([
         {
@@ -788,7 +788,7 @@ describe('ProductsController()', function () {
         },
       ];
 
-      productsCtrl.toggleCategoryFilter(null);
+      productsCtrl.setCategoryFilter(null);
 
       expect(productsCtrl.getFilteredProductsByCategories()).to.deep.equal([
         {
@@ -798,6 +798,107 @@ describe('ProductsController()', function () {
         {
           categoryName: 'bbb',
           products: [generateProduct({ name: 'bbb two' })],
+        },
+      ]);
+    });
+
+    it('should keep the category applied when the same category is set again', function () {
+      productsCtrl.productsByCategories = [
+        {
+          categoryName: 'aaa',
+          products: [generateProduct({ name: 'aaa two' })],
+        },
+        {
+          categoryName: 'bbb',
+          products: [generateProduct({ name: 'bbb two' })],
+        },
+      ];
+
+      productsCtrl.setCategoryFilter('aaa');
+      productsCtrl.setCategoryFilter('aaa');
+
+      expect(productsCtrl.getFilteredProductsByCategories()).to.deep.equal([
+        {
+          categoryName: 'aaa',
+          products: [generateProduct({ name: 'aaa two' })],
+        },
+      ]);
+    });
+
+    it('should expose the resolved key and nothing the product list only needs', function () {
+      productsCtrl.productsByCategories = [
+        {
+          categoryName: 'aaa',
+          icon: 'aaa-icon',
+          products: [generateProduct({ name: 'aaa two' })],
+        },
+        {
+          categoryName: 'bbb',
+          icon: 'bbb-icon',
+          products: [generateProduct({ name: 'bbb two' })],
+        },
+      ];
+
+      productsCtrl.setCategoryFilter('aaa');
+
+      expect(productsCtrl.getCategories()).to.deep.equal([
+        { key: 'aaa', categoryName: 'aaa', toggled: true },
+        { key: 'bbb', categoryName: 'bbb', toggled: false },
+      ]);
+    });
+  });
+
+  describe('filterCategory() with category ids', function () {
+    it('should return the corresponding products if the category id exists', function () {
+      productsCtrl.productsByCategories = [
+        {
+          id: 'aaa-id',
+          categoryName: 'aaa',
+          products: [generateProduct({ name: 'aaa two' })],
+        },
+        {
+          id: 'bbb-id',
+          categoryName: 'bbb',
+          products: [generateProduct({ name: 'bbb two' })],
+        },
+      ];
+
+      productsCtrl.setCategoryFilter('bbb-id');
+
+      expect(productsCtrl.getFilteredProductsByCategories()).to.deep.equal([
+        {
+          id: 'bbb-id',
+          categoryName: 'bbb',
+          products: [generateProduct({ name: 'bbb two' })],
+        },
+      ]);
+      expect(productsCtrl.getCategories()).to.deep.equal([
+        { key: 'aaa-id', categoryName: 'aaa', toggled: false },
+        { key: 'bbb-id', categoryName: 'bbb', toggled: true },
+      ]);
+    });
+
+    it('should fall back to the category name if the category id is empty', function () {
+      productsCtrl.productsByCategories = [
+        {
+          id: '',
+          categoryName: 'aaa',
+          products: [generateProduct({ name: 'aaa two' })],
+        },
+        {
+          id: 'bbb-id',
+          categoryName: 'bbb',
+          products: [generateProduct({ name: 'bbb two' })],
+        },
+      ];
+
+      productsCtrl.setCategoryFilter('aaa');
+
+      expect(productsCtrl.getFilteredProductsByCategories()).to.deep.equal([
+        {
+          id: '',
+          categoryName: 'aaa',
+          products: [generateProduct({ name: 'aaa two' })],
         },
       ]);
     });
@@ -848,7 +949,7 @@ describe('ProductsController()', function () {
         },
       ];
 
-      productsCtrl.toggleCategoryFilter('aaa');
+      productsCtrl.setCategoryFilter('aaa');
       productsCtrl.textFilter = 'two';
 
       expect(productsCtrl.getFilteredProductsByCategories()).to.deep.equal([
@@ -909,7 +1010,7 @@ describe('ProductsController()', function () {
         },
       ];
 
-      productsCtrl.toggleCategoryFilter(null);
+      productsCtrl.setCategoryFilter(null);
       productsCtrl.textFilter = 'two';
 
       expect(productsCtrl.getFilteredProductsByCategories()).to.deep.equal([
@@ -980,7 +1081,7 @@ describe('ProductsController()', function () {
         },
       ];
 
-      productsCtrl.toggleCategoryFilter('aaa');
+      productsCtrl.setCategoryFilter('aaa');
       productsCtrl.textFilter = '';
 
       expect(productsCtrl.getFilteredProductsByCategories()).to.deep.equal([
@@ -1051,7 +1152,7 @@ describe('ProductsController()', function () {
         },
       ];
 
-      productsCtrl.toggleCategoryFilter('aaa');
+      productsCtrl.setCategoryFilter('aaa');
       productsCtrl.textFilter = 'not relevant search';
 
       expect(productsCtrl.getFilteredProductsByCategories()).to.deep.equal([]);
@@ -1101,7 +1202,7 @@ describe('ProductsController()', function () {
         },
       ];
 
-      productsCtrl.toggleCategoryFilter('not relevant');
+      productsCtrl.setCategoryFilter('not relevant');
       productsCtrl.textFilter = 'two';
 
       expect(productsCtrl.getFilteredProductsByCategories()).to.deep.equal([
@@ -1172,7 +1273,7 @@ describe('ProductsController()', function () {
         },
       ];
 
-      productsCtrl.toggleCategoryFilter(null);
+      productsCtrl.setCategoryFilter(null);
       productsCtrl.textFilter = '';
 
       expect(productsCtrl.getFilteredProductsByCategories()).to.deep.equal([
@@ -1265,7 +1366,7 @@ describe('ProductsController()', function () {
 
       productsCtrl.textFilter = 'unknown';
       expect(productsCtrl.getFilteredProductsByCategories()).to.deep.equal([]);
-      productsCtrl.toggleCategoryFilter('bbb');
+      productsCtrl.setCategoryFilter('bbb');
       expect(productsCtrl.getFilteredProductsByCategories()).to.deep.equal([]);
       productsCtrl.textFilter = 'two';
       expect(productsCtrl.getFilteredProductsByCategories()).to.deep.equal([
@@ -1326,7 +1427,7 @@ describe('ProductsController()', function () {
         },
       ];
 
-      productsCtrl.toggleCategoryFilter('aaa');
+      productsCtrl.setCategoryFilter('aaa');
       expect(productsCtrl.getFilteredProductsByCategories()).to.deep.equal([
         {
           categoryName: 'aaa',
@@ -1387,7 +1488,7 @@ describe('ProductsController()', function () {
         },
       ]);
 
-      productsCtrl.toggleCategoryFilter('all');
+      productsCtrl.setCategoryFilter('all');
       expect(productsCtrl.getFilteredProductsByCategories()).to.deep.equal([
         {
           categoryName: 'aaa',

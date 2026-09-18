@@ -31,7 +31,7 @@ export class CcProductList extends LitElement {
   constructor() {
     super();
 
-    /** @type {string|null} a string to prefilter by a given category */
+    /** @type {string|null} the category to prefilter by: its id, or its name when it has no id. A value that matches no category shows all categories. */
     this.categoryFilter = null;
 
     /** @type {ProductsCategory[]} the list of products in their respective categories.  */
@@ -68,7 +68,7 @@ export class CcProductList extends LitElement {
 
     // Setting the products resets the category filter, so we apply it again.
     if (changedProperties.has('categoryFilter') || changedProperties.has('productsByCategories')) {
-      this._productsCrtl.toggleCategoryFilter(this.categoryFilter);
+      this._productsCrtl.setCategoryFilter(this.categoryFilter);
     }
     if (changedProperties.has('textFilter')) {
       this._productsCrtl.textFilter = this.textFilter;
@@ -93,9 +93,7 @@ export class CcProductList extends LitElement {
             'all',
             this._productsCrtl.getCurrentCategory() === 'all',
           )}
-          ${categories.map((c, index) =>
-            this._renderCategory(`category-${index}`, c.categoryName, c.categoryName, c.toggled),
-          )}
+          ${categories.map((c, index) => this._renderCategory(`category-${index}`, c.categoryName, c.key, c.toggled))}
         </fieldset>
       </div>
       <div class="products">${this._renderProductsByCategories()}</div>
