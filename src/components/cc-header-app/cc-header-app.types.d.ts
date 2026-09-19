@@ -1,4 +1,5 @@
-import { App, AppStatus, Zone } from '../common.types.js';
+import { Zone } from '@clevercloud/client/cc-api-commands/zone/zone.types.js';
+import { App, AppStatus } from '../common.types.js';
 
 export type HeaderAppState = HeaderAppStateLoaded | HeaderAppStateLoading | HeaderAppStateError;
 

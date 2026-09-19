@@ -1,10 +1,11 @@
-import { ONE_SECOND } from '@clevercloud/client/esm/with-cache.js';
+import { GetCellarCredentialsCommand } from '@clevercloud/client/cc-api-commands/cellar/get-cellar-credentials-command.js';
+import { GetCellarCredentialsPresignedUrlCommand } from '@clevercloud/client/cc-api-commands/cellar/get-cellar-credentials-presigned-url-command.js';
+import { RenewCellarCredentialsCommand } from '@clevercloud/client/cc-api-commands/cellar/renew-cellar-credentials-command.js';
+import { getCcApiClientWithOAuth } from '../../lib/cc-api-client.js';
 import { notifyError, notifySuccess } from '../../lib/notifications.js';
-import { sendToApi } from '../../lib/send-to-api.js';
 import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-smart-container/cc-smart-container.js';
-import { CcAddonCredentialsClient } from './cc-addon-credentials.client.js';
 import './cc-addon-credentials.js';
 
 /** @type {AddonCredentialsStateLoading} */
@@ -33,13 +34,11 @@ const LOADING_STATE = {
     },
   },
 };
-const PROVIDER_ID = 'cellar-addon';
 
 /**
  * @import { CcAddonCredentials } from './cc-addon-credentials.js'
- * @import { CellarCredentials, AddonCredentialsStateLoaded, AddonCredentialsStateLoading } from './cc-addon-credentials.types.js'
+ * @import { AddonCredentialsStateLoaded, AddonCredentialsStateLoading } from './cc-addon-credentials.types.js'
  * @import { AddonCredential } from '../cc-addon-credentials-content/cc-addon-credentials-content.types.js'
- * @import { ApiConfig } from '../../lib/send-to-api.js'
  * @import { OnContextUpdateArgs } from '../../lib/smart/smart-component.types.js'
  */
 
@@ -53,14 +52,42 @@ defineSmartComponent({
   /**
    * @param {OnContextUpdateArgs<CcAddonCredentials>} args
    */
-  async onContextUpdate({ context, updateComponent, onEvent, signal }) {
+  onContextUpdate({ context, updateComponent, onEvent, signal }) {
     const { apiConfig, addonId, ownerId } = context;
-    const api = new Api({ apiConfig, ownerId, addonId, signal });
+    const ccApiClient = getCcApiClientWithOAuth(apiConfig);
+
+    /**
+     * @returns {Promise<AddonCredential[]>}
+     */
+    function getAllCredentials() {
+      return Promise.all([
+        ccApiClient.send(new GetCellarCredentialsCommand({ ownerId, addonId }), { signal }),
+        ccApiClient.send(new GetCellarCredentialsPresignedUrlCommand({ ownerId, addonId }), { signal }),
+      ]).then(([credentials, presignedUrl]) => {
+        return [
+          {
+            code: 'host',
+            value: credentials.host,
+          },
+          {
+            code: 'key-id',
+            value: credentials.keyId,
+          },
+          {
+            code: 'key-secret',
+            value: credentials.keySecret,
+          },
+          {
+            code: 'download-file',
+            value: presignedUrl.url,
+          },
+        ];
+      });
+    }
 
     updateComponent('state', LOADING_STATE);
 
-    api
-      .getAllCredentials()
+    getAllCredentials()
       .then((credentials) => {
         updateComponent(
           'state',
@@ -82,7 +109,7 @@ defineSmartComponent({
       });
 
       try {
-        await api.renewSecret();
+        await ccApiClient.send(new RenewCellarCredentialsCommand({ ownerId, addonId }));
       } catch (error) {
         console.error(error);
         notifyError(i18n('cc-addon-credentials.renew-secret.error'));
@@ -93,7 +120,7 @@ defineSmartComponent({
       }
 
       try {
-        const credentials = await api.getAllCredentials();
+        const credentials = await getAllCredentials();
         notifySuccess(i18n('cc-addon-credentials.renew-secret.success'));
         updateComponent(
           'state',
@@ -114,103 +141,3 @@ defineSmartComponent({
     });
   },
 });
-
-class Api extends CcAddonCredentialsClient {
-  /**
-   * @param {object} params
-   * @param {ApiConfig} params.apiConfig
-   * @param {string} params.ownerId
-   * @param {string} params.addonId
-   * @param {AbortSignal} params.signal
-   */
-  constructor({ apiConfig, ownerId, addonId, signal }) {
-    super({ apiConfig, ownerId, addonId, providerId: PROVIDER_ID, signal });
-  }
-
-  /**
-   * @return {Promise<CellarCredentials>}
-   */
-  async _getCredentials() {
-    const rawAddon = await this._getAddon();
-    return getCellarCredentials({ ownerId: this._ownerId, cellarId: rawAddon.realId }).then(
-      sendToApi({ apiConfig: this._apiConfig, signal: this._signal, cacheDelay: ONE_SECOND }),
-    );
-  }
-
-  /**
-   * @return {Promise<string>}
-   */
-  async _getPresignedUrl() {
-    const rawAddon = await this._getAddon();
-    return getCellarPresignedUrl({ ownerId: this._ownerId, cellarId: rawAddon.realId })
-      .then(sendToApi({ apiConfig: this._apiConfig, signal: this._signal }))
-      .then(({ url }) => url);
-  }
-
-  /**
-   * @return {Promise<AddonCredential[]>}
-   */
-  async getAllCredentials() {
-    const credential = await this._getCredentials();
-    const presignedUrl = await this._getPresignedUrl();
-    return [
-      {
-        code: 'host',
-        value: credential.host,
-      },
-      {
-        code: 'key-id',
-        value: credential.keyId,
-      },
-      {
-        code: 'key-secret',
-        value: credential.keySecret,
-      },
-      {
-        code: 'download-file',
-        value: presignedUrl,
-      },
-    ];
-  }
-
-  /**
-   * @return {Promise<string>}
-   */
-  async renewSecret() {
-    const { realId } = await this._getAddon();
-    return renewSecret({ ownerId: this._ownerId, cellarId: realId }).then(sendToApi({ apiConfig: this._apiConfig }));
-  }
-}
-
-// FIXME: remove and use the clever-client call from the new clever-client
-/** @param {{ ownerId: string, cellarId: string }} params */
-function getCellarCredentials(params) {
-  // no multipath for /self or /organisations/{id}
-  return Promise.resolve({
-    method: 'get',
-    url: `/v4/cellar/organisations/${params.ownerId}/cellar/${params.cellarId}/credentials`,
-    // no queryParams
-    // no body
-  });
-}
-
-// FIXME: remove and use the clever-client call from the new clever-client
-/** @param {{ ownerId: string, cellarId: string }} params */
-function getCellarPresignedUrl(params) {
-  return Promise.resolve({
-    method: 'get',
-    url: `/v4/cellar/organisations/${params.ownerId}/cellar/${params.cellarId}/credentials/presigned-url`,
-    // no queryParams
-    // no body
-  });
-}
-
-// FIXME: remove and use the clever-client call from the new clever-client
-/** @param {{ ownerId: string, cellarId: string }} params */
-function renewSecret(params) {
-  return Promise.resolve({
-    method: 'post',
-    url: `/v4/cellar/organisations/${params.ownerId}/cellar/${params.cellarId}/credentials/renew`,
-    headers: { Access: 'application/json' },
-  });
-}

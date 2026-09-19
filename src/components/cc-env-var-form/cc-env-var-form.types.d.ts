@@ -1,4 +1,5 @@
-import { EnvVar, EnvVarValidationMode } from '../common.types.js';
+import { EnvVarValidationMode } from '@clevercloud/client/utils/environment.types.js';
+import { EnvVar } from '../common.types.js';
 
 export type EnvVarFormState =
   | EnvVarFormStateLoading

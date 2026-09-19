@@ -6,7 +6,7 @@ import {
   isTestDomainWithSubdomain,
   parseDomain,
   sortDomains,
-} from '@clevercloud/client/esm/utils/domains.js';
+} from '@clevercloud/client/utils/domain-utils.js';
 import { LitElement, css, html } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { createRef, ref } from 'lit/directives/ref.js';
@@ -140,14 +140,14 @@ export class CcDomainManagement extends LitElement {
    */
   _getFormError(hostnameValue) {
     try {
-      const { pathname } = parseDomain(hostnameValue?.trim());
+      const { pathPrefix } = parseDomain(hostnameValue?.trim());
 
       if (!hostnameValue.match(/.+\..+/)) {
         return { code: 'invalid-format' };
       }
-      if (pathname !== '/') {
+      if (pathPrefix !== '/') {
         /** We store the path so we can tell users to move this part to the "Path" input field instead. */
-        return { code: 'hostname-contains-path', pathWithinHostname: pathname };
+        return { code: 'hostname-contains-path', pathWithinHostname: pathPrefix };
       }
 
       return null;
@@ -188,7 +188,7 @@ export class CcDomainManagement extends LitElement {
     const clipboardValue = event.clipboardData.getData('text');
 
     try {
-      const { hostname, pathname, isWildcard } = parseDomain(clipboardValue);
+      const { hostname, pathPrefix, isWildcard } = parseDomain(clipboardValue);
 
       this.domainFormState = {
         ...this.domainFormState,
@@ -198,7 +198,7 @@ export class CcDomainManagement extends LitElement {
         },
         pathPrefix: {
           ...this.domainFormState.pathPrefix,
-          value: pathname.replace(/\/$/, ''),
+          value: pathPrefix.replace(/\/$/, ''),
         },
       };
     } catch {
@@ -269,10 +269,10 @@ export class CcDomainManagement extends LitElement {
     };
 
     // we do this to strip off unwanted parts like query parameters for instance
-    const { hostname, pathname, isWildcard } = parseDomain(hostnameValue + pathPrefixValue);
+    const { hostname, pathPrefix, isWildcard } = parseDomain(hostnameValue + pathPrefixValue);
     this._domainToAdd = {
       hostname,
-      pathPrefix: pathname === '/' ? '' : pathname,
+      pathPrefix: pathPrefix === '/' ? '' : pathPrefix,
       isWildcard,
     };
 

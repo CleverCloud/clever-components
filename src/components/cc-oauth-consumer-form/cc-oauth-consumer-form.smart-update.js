@@ -1,7 +1,9 @@
-import { get as getOauthConsumer, remove, update } from '@clevercloud/client/esm/api/v2/oauth-consumer.js';
-import { camelCase, snakeCase } from '../../lib/change-case.js';
+import { DeleteOauthConsumerCommand } from '@clevercloud/client/cc-api-commands/oauth-consumer/delete-oauth-consumer-command.js';
+import { GetOauthConsumerCommand } from '@clevercloud/client/cc-api-commands/oauth-consumer/get-oauth-consumer-command.js';
+import { UpdateOauthConsumerCommand } from '@clevercloud/client/cc-api-commands/oauth-consumer/update-oauth-consumer-command.js';
+import { getCcApiClientWithOAuth } from '../../lib/cc-api-client.js';
 import { notifyError, notifySuccess } from '../../lib/notifications.js';
-import { sendToApi } from '../../lib/send-to-api.js';
+import { DISABLED_RIGHTS } from '../../lib/oauth-consumer.js';
 import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-smart-container/cc-smart-container.js';
@@ -11,26 +13,10 @@ import './cc-oauth-consumer-form.js';
 /**
  * @import { CcOauthConsumerForm } from './cc-oauth-consumer-form.js'
  * @import { OauthConsumerWithoutKeyAndSecret } from './cc-oauth-consumer-form.types.js'
- * @import { OauthConsumerRights, RawOauthConsumer } from '../cc-oauth-consumer-info/cc-oauth-consumer-info.types.js'
+ * @import { RawOauthConsumer } from '../cc-oauth-consumer-info/cc-oauth-consumer-info.types.js'
  * @import { ApiConfig } from '../../lib/send-to-api.types.js'
  * @import { OnContextUpdateArgs } from '../../lib/smart/smart-component.types.js'
  */
-
-/** @type {OauthConsumerRights} */
-const DISABLED_RIGHTS_BY_DEFAULT = {
-  almighty: false,
-  accessOrganisations: false,
-  accessOrganisationsBills: false,
-  accessOrganisationsConsumptionStatistics: false,
-  accessOrganisationsCreditCount: false,
-  accessPersonalInformation: false,
-  manageOrganisations: false,
-  manageOrganisationsApplications: false,
-  manageOrganisationsMembers: false,
-  manageOrganisationsServices: false,
-  managePersonalInformation: false,
-  manageSshKeys: false,
-};
 
 defineSmartComponent({
   selector: 'cc-oauth-consumer-form[smart-mode=update]',
@@ -49,15 +35,9 @@ defineSmartComponent({
     api
       .getOauthConsumer()
       .then((data) => {
-        const rightsFromApiData = Object.fromEntries(
-          Object.entries(data.rights).map(([name, isEnabled]) => {
-            const camelCaseName = camelCase(name);
-            return [camelCaseName, isEnabled];
-          }),
-        );
         const rights = {
-          ...DISABLED_RIGHTS_BY_DEFAULT,
-          ...rightsFromApiData,
+          ...DISABLED_RIGHTS,
+          ...Object.fromEntries(Object.entries(data.rights).filter(([, isEnabled]) => isEnabled != null)),
         };
 
         /** @type {OauthConsumerWithoutKeyAndSecret} */
@@ -132,43 +112,41 @@ class Api {
    * @param {string} key
    */
   constructor(apiConfig, ownerId, key) {
-    this._apiConfig = apiConfig;
+    this._ccApiClient = getCcApiClientWithOAuth(apiConfig);
     this._ownerId = ownerId;
     this._key = key;
   }
 
   /** @return {Promise<RawOauthConsumer>} */
   getOauthConsumer() {
-    return getOauthConsumer({ id: this._ownerId, key: this._key }).then(sendToApi({ apiConfig: this._apiConfig }));
+    return this._ccApiClient.send(
+      new GetOauthConsumerCommand({ ownerId: this._ownerId, oauthConsumerKey: this._key, withSecret: false }),
+    );
   }
 
   /**
    * @param {OauthConsumerWithoutKeyAndSecret} data
    * @return {Promise<void>}
    */
-  updateOauthConsumer(data) {
-    const rights = Object.fromEntries(
-      Object.entries(data.rights).map(([name, isEnabled]) => {
-        const snakeCaseName = snakeCase(name);
-        return [snakeCaseName, isEnabled];
+  async updateOauthConsumer(data) {
+    await this._ccApiClient.send(
+      new UpdateOauthConsumerCommand({
+        ownerId: this._ownerId,
+        oauthConsumerKey: this._key,
+        name: data.name,
+        url: data.url,
+        baseUrl: data.baseUrl,
+        description: data.description,
+        picture: data.picture,
+        rights: data.rights,
       }),
-    );
-
-    const updatedOauthConsumer = {
-      name: data.name,
-      url: data.url,
-      baseUrl: data.baseUrl,
-      description: data.description,
-      picture: data.picture,
-      rights: rights,
-    };
-    return update({ id: this._ownerId, key: this._key }, updatedOauthConsumer).then(
-      sendToApi({ apiConfig: this._apiConfig }),
     );
   }
 
   /** @return {Promise<void>} */
-  deleteOauthConsumer() {
-    return remove({ id: this._ownerId, key: this._key }).then(sendToApi({ apiConfig: this._apiConfig }));
+  async deleteOauthConsumer() {
+    await this._ccApiClient.send(
+      new DeleteOauthConsumerCommand({ ownerId: this._ownerId, oauthConsumerKey: this._key }),
+    );
   }
 }

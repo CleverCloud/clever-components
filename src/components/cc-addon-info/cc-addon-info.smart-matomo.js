@@ -100,7 +100,7 @@ defineSmartComponent({
         updateComponent('state', {
           type: 'loaded',
           version: { stateType: 'up-to-date', installed: operator.version, latest: operator.version },
-          creationDate: addon.creationDate,
+          creationDate: addon.createdAt,
           openGrafanaLink: grafanaAppLink,
           openScalabilityLink: scalabilityUrlPattern.replace(':id', phpAppId),
           linkedServices: [

@@ -1,4 +1,4 @@
-import { ERROR_TYPES, parseRaw, toNameEqualsValueString } from '@clevercloud/client/esm/utils/env-vars.js';
+import { ERROR_TYPES, parseRaw, toNameEqualsValueString } from '@clevercloud/client/utils/environment-utils.js';
 import { LitElement, css, html } from 'lit';
 import { i18n } from '../../translations/translation.js';
 import { CcEnvChangeEvent } from '../cc-env-var-form/cc-env-var-form.events.js';
@@ -14,7 +14,8 @@ const SKELETON_VARIABLES = [
 ];
 
 /**
- * @import { EnvVarEditorState, EnvVarParseError, EnvVarRawError, EnvVar } from '../common.types.js'
+ * @import { EnvVarParsingError } from '@clevercloud/client/utils/environment.types.js'
+ * @import { EnvVarEditorState, EnvVarParseError, EnvVar } from '../common.types.js'
  * @import { PropertyValues } from 'lit'
  */
 
@@ -57,7 +58,7 @@ export class CcEnvVarEditorExpert extends LitElement {
     this._variablesAsText = '';
   }
 
-  /** @param {EnvVarRawError[]} rawErrors */
+  /** @param {Array<EnvVarParsingError>} rawErrors */
   _setErrors(rawErrors) {
     this._errors = rawErrors.map(({ type, name, pos }) => {
       if (type === ERROR_TYPES.INVALID_NAME) {

@@ -1,3 +1,4 @@
+import { isCcHttpErrorWithCode } from '@clevercloud/client/utils/error-utils.js';
 import { notifyError, notifySuccess } from '../../lib/notifications.js';
 import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
 import { i18n } from '../../translations/translation.js';
@@ -354,13 +355,15 @@ defineSmartComponent({
     }
 
     /**
-     * @param {any} e
+     * @param {unknown} e
      * @param {function} orElse
      */
     function checkIfKeyNotFoundOrElse(e, orElse) {
-      if (isKeyNotFound(e)) {
+      if (isCcHttpErrorWithCode(e, 'clever.redis-http.key-not-found')) {
         notifyError(i18n('cc-kv-explorer.error.key-doesnt-exist'));
-        keysCtrl.onKeyNotFound(e.responseBody.context.key);
+        // the kv proxy names the missing key in the error body context
+        const body = /** @type {{context?: {key?: string}}} */ (e.response.body);
+        keysCtrl.onKeyNotFound(body?.context?.key);
         detailsCtrl.hide();
       } else {
         console.error(e);
@@ -369,19 +372,3 @@ defineSmartComponent({
     }
   },
 });
-
-/**
- * @param {{responseBody?: { code?: string}}} e
- * @return {string | null} e
- */
-function getErrorCode(e) {
-  return e?.responseBody?.code;
-}
-
-/**
- * @param {any} e
- * @return {e is {responseBody: { context: {key: string}}}}
- */
-function isKeyNotFound(e) {
-  return getErrorCode(e) === 'clever.redis-http.key-not-found';
-}
