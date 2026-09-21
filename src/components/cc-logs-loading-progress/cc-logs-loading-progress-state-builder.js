@@ -46,6 +46,16 @@ export function buildLogsLoadingProgressState(progressState) {
     };
   }
 
+  if (progressState.type === 'retrying') {
+    return {
+      type: 'retrying',
+      retryCount: progressState.retryCount,
+      maxRetryCount: progressState.maxRetryCount,
+      ...progressState.progress,
+      overflowing: progressState.overflowing,
+    };
+  }
+
   return {
     type: 'completed',
     ...progressState.progress,
