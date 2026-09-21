@@ -1251,6 +1251,12 @@ export const translations = {
   'cc-logs.copy': `Copier`,
   'cc-logs.inspect': `Inspecter`,
   'cc-logs.select-button.label': /** @param {{index: number}} _ */ ({ index }) => `Sélectionner la ligne ${index}`,
+  'cc-logs.stream.reconnected': `Reconnecté au flux de logs`,
+  'cc-logs.stream.retrying': /** @param {{retryCount: number, maxRetryCount: number}} _ */ ({
+    retryCount,
+    maxRetryCount,
+  }) =>
+    `Connexion au flux de logs perdue, reconnexion en cours (tentative ${formatNumber(lang, retryCount)} sur ${formatNumber(lang, maxRetryCount)})`,
   'cc-logs.unselect-button.label': /** @param {{index: number}} _ */ ({ index }) => `Désélectionner la ligne ${index}`,
   //#endregion
   //#region cc-logs-addon-runtime
@@ -1352,6 +1358,7 @@ export const translations = {
   //#region cc-logs-loading-progress
   'cc-logs-loading-progress.control.pause': `Mettre en pause`,
   'cc-logs-loading-progress.control.resume': `Reprendre`,
+  'cc-logs-loading-progress.icon-alt.connection-error': `Erreur de connexion`,
   'cc-logs-loading-progress.overflow.accept': `Continuer`,
   'cc-logs-loading-progress.overflow.discard': `Arrêter`,
   'cc-logs-loading-progress.overflow.info': /** @param {{limit: number}} _ */ ({ limit }) =>
@@ -1365,6 +1372,10 @@ export const translations = {
     count,
     percent,
   }) => `${formatNumber(lang, count)} logs chargés (${formatPercent(lang, percent)})`,
+  'cc-logs-loading-progress.retrying': /** @param {{ retryCount: number, maxRetryCount: number }} _ */ ({
+    retryCount,
+    maxRetryCount,
+  }) => `Reconnexion (${retryCount}/${maxRetryCount})`,
   //#endregion
   //#region cc-logs-message-filter
   'cc-logs-message-filter.bad-format': `Regex invalide`,
