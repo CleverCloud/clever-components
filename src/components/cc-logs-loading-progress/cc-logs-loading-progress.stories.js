@@ -92,6 +92,47 @@ export const paused = makeStory(conf, {
   ],
 });
 
+export const retrying = makeStory(conf, {
+  /** @type {Array<Partial<CcLogsLoadingProgress>>} */
+  items: [
+    {
+      state: {
+        type: 'retrying',
+        retryCount: 1,
+        value: 580,
+        percent: 5.8,
+        overflowing: false,
+      },
+      limit: 1000,
+    },
+    {
+      state: {
+        type: 'retrying',
+        retryCount: 1,
+        value: 580,
+        overflowing: false,
+      },
+      limit: 1000,
+    },
+  ],
+});
+
+export const retryingManyTimes = makeStory(conf, {
+  /** @type {Array<Partial<CcLogsLoadingProgress>>} */
+  items: [
+    {
+      state: {
+        type: 'retrying',
+        retryCount: 12,
+        value: 0,
+        percent: 0,
+        overflowing: false,
+      },
+      limit: 1000,
+    },
+  ],
+});
+
 export const overflowLimitReached = makeStory(conf, {
   /** @type {Array<Partial<CcLogsLoadingProgress>>} */
   items: [
@@ -151,6 +192,31 @@ export const pausedAfterOverflowing = makeStory(conf, {
     {
       state: {
         type: 'paused',
+        value: 1500,
+        overflowing: true,
+      },
+      limit: 1000,
+    },
+  ],
+});
+
+export const retryingAfterOverflowing = makeStory(conf, {
+  /** @type {Array<Partial<CcLogsLoadingProgress>>} */
+  items: [
+    {
+      state: {
+        type: 'retrying',
+        retryCount: 1,
+        value: 1500,
+        percent: 15,
+        overflowing: true,
+      },
+      limit: 1000,
+    },
+    {
+      state: {
+        type: 'retrying',
+        retryCount: 1,
         value: 1500,
         overflowing: true,
       },

@@ -1352,6 +1352,7 @@ export const translations = {
   //#region cc-logs-loading-progress
   'cc-logs-loading-progress.control.pause': `Mettre en pause`,
   'cc-logs-loading-progress.control.resume': `Reprendre`,
+  'cc-logs-loading-progress.icon-alt.connection-error': `Erreur de connexion`,
   'cc-logs-loading-progress.overflow.accept': `Continuer`,
   'cc-logs-loading-progress.overflow.discard': `Arrêter`,
   'cc-logs-loading-progress.overflow.info': /** @param {{limit: number}} _ */ ({ limit }) =>
@@ -1365,6 +1366,8 @@ export const translations = {
     count,
     percent,
   }) => `${formatNumber(lang, count)} logs chargés (${formatPercent(lang, percent)})`,
+  'cc-logs-loading-progress.retrying': /** @param {{ retryCount: number }} _ */ ({ retryCount }) =>
+    `Reconnexion (${retryCount}/10)`,
   //#endregion
   //#region cc-logs-message-filter
   'cc-logs-message-filter.bad-format': `Regex invalide`,
