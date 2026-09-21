@@ -12,8 +12,8 @@ importers:
   .:
     dependencies:
       '@clevercloud/client':
-        specifier: ^12.6.4
-        version: 12.6.4(eventsource@4.1.0)(linkedom@0.18.13)
+        specifier: file:clevercloud-client.tgz
+        version: file:clevercloud-client.tgz(eventsource@4.1.0)(linkedom@0.18.13)
       '@lit-labs/motion':
         specifier: ^1.0.7
         version: 1.1.0
@@ -706,8 +706,9 @@ packages:
   '@cacheable/utils@2.4.1':
     resolution: {integrity: sha512-eiFgzCbIneyMlLOmNG4g9xzF7Hv3Mga4LjxjcSC/ues6VYq2+gUbQI8JqNuw/ZM8tJIeIaBGpswAsqV2V7ApgA==}
 
-  '@clevercloud/client@12.6.4':
-    resolution: {integrity: sha512-cQAXY02wVU1hYHTyI2L3UKmYM+kcFb7/xgorLS4Ru4vKoTJFwFUhUzitIhVUqJ8oCNcS4ZhO/8m0rpZ9AdERJQ==}
+  '@clevercloud/client@file:clevercloud-client.tgz':
+    resolution: {integrity: sha512-3RMw8BsswVCnwLcKEXj0Dulrd5THQlDM8ZXVIQmtdRO1pbVeamfTybY3p1f3jx7e9qIpgwY7zkjSAoDedGdfyg==, tarball: file:clevercloud-client.tgz}
+    version: 12.6.4
     engines: {node: '>=22'}
     peerDependencies:
       eventsource: ^4.0.0
@@ -6873,7 +6874,7 @@ snapshots:
       hashery: 1.5.1
       keyv: 5.6.0
 
-  '@clevercloud/client@12.6.4(eventsource@4.1.0)(linkedom@0.18.13)':
+  '@clevercloud/client@file:clevercloud-client.tgz(eventsource@4.1.0)(linkedom@0.18.13)':
     dependencies:
       component-emitter: 1.3.1
       eventsource: 4.1.0
