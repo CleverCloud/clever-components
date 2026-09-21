@@ -363,13 +363,14 @@ export class LogsStream {
     }
   }
 
-  /**
-   * @param {any} error
-   */
-  #onStreamErrorEvent(error) {
-    if (this.#logsStream.retryCount >= 3) {
-      console.log('received an `error` event from log stream', error);
-      // TODO: notify about the instability
+  #onStreamErrorEvent() {
+    if (this.#logsStream.retryCount > 0) {
+      this._updateStreamState({
+        type: 'retrying',
+        retryCount: this.#logsStream.retryCount,
+        progress: this.#progress.getProgress(),
+        overflowing: this.#progress.isOverflowing(),
+      });
     }
   }
 
