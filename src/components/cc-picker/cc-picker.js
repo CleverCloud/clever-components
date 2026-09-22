@@ -27,6 +27,9 @@ const DEFAULT_ERROR_MESSAGES = {
  *
  * Once a value is selected, it cannot be unselected without script.
  *
+ * Option values must be unique. The selected tile is matched by value, so two options sharing a value both render as
+ * selected.
+ *
  * It extends `CcFormControlElement`, so it can be used in a form and its value can be submitted.
  *
  * @cssdisplay inline-block
@@ -177,6 +180,9 @@ export class CcPicker extends CcFormControlElement {
   }
 
   /**
+   * This is bound on each radio and not on the wrapper: option bodies take arbitrary DOM, so a delegated listener
+   * would also catch the input events coming from them.
+   *
    * @param {GenericEventWithTarget<InputEvent, HTMLInputElement>} e
    * @private
    */
@@ -185,7 +191,14 @@ export class CcPicker extends CcFormControlElement {
       return;
     }
 
-    this.value = e.target.value;
+    // we read the option from its position instead of the radio value: the DOM always gives back a string
+    const option = this.options?.[Number(e.target.dataset.index)];
+
+    if (option == null) {
+      return;
+    }
+
+    this.value = option.value;
     this.dispatchEvent(new CcSelectEvent(this.value));
   }
 
@@ -197,14 +210,7 @@ export class CcPicker extends CcFormControlElement {
     const hasErrorMessage = this.errorMessage != null && this.errorMessage !== '';
 
     return html`
-      <div
-        class="fieldset"
-        @input=${this._onTileSelect}
-        ${ref(this._pickerRef)}
-        role="group"
-        aria-labelledby="legend"
-        tabindex="-1"
-      >
+      <div class="fieldset" ${ref(this._pickerRef)} role="group" aria-labelledby="legend" tabindex="-1">
         <p class="legend" id="legend">
           <span class="legend-text">${this.label}</span>
           ${this.required ? html` <span class="required">${i18n('cc-picker.required')}</span> ` : ''}
@@ -237,7 +243,8 @@ export class CcPicker extends CcFormControlElement {
    */
   _renderOption(option, isError, index) {
     const { body, footer, value, disabled } = option;
-    const id = this.name + '-' + value;
+    // the id is built from the position so that it stays unique whatever the option value
+    const id = `${this.name}-option-${index}`;
     const isChecked = this.value === value;
     const isDisabled = this.disabled || disabled;
     const isReadonly = !isChecked && !isDisabled && this.readonly;
@@ -250,6 +257,8 @@ export class CcPicker extends CcFormControlElement {
         type="radio"
         id="${id}"
         name="${this.name}"
+        data-index="${index}"
+        @input=${this._onTileSelect}
         .value=${value}
         .checked=${isChecked}
         ?disabled=${isDisabled || (isReadonly && !isChecked)}
