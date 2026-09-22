@@ -5,6 +5,7 @@ import '../cc-badge/cc-badge.js';
 import '../cc-icon/cc-icon.js';
 import '../cc-input-text/cc-input-text.js';
 import '../cc-product-card/cc-product-card.js';
+import { CcProductListFilterChangeEvent } from './cc-product-list.events.js';
 import { ProductsController } from './products-controller.js';
 
 /**
@@ -31,7 +32,7 @@ export class CcProductList extends LitElement {
   constructor() {
     super();
 
-    /** @type {string|null} a string to prefilter by a given category */
+    /** @type {string|null} the category to prefilter by: its id, or its name when it has no id. A value that matches no category shows all categories. */
     this.categoryFilter = null;
 
     /** @type {ProductsCategory[]} the list of products in their respective categories.  */
@@ -45,10 +46,27 @@ export class CcProductList extends LitElement {
   }
 
   /**
+   * `categoryFilter` may match no category, so we report the category the list actually applies rather
+   * than the one that was asked for.
+   */
+  _dispatchFilterChange() {
+    this.dispatchEvent(
+      new CcProductListFilterChangeEvent({
+        categoryFilter: this._productsCrtl.getCurrentCategory(),
+        textFilter: this.textFilter ?? '',
+      }),
+    );
+  }
+
+  /**
    * @param {Event & { target: HTMLInputElement }} e
    */
   _onCategoryChange(e) {
-    this.categoryFilter = e.target.value;
+    // A category key can be any string, so the marker attribute, not the value, tells us the filter was cleared.
+    this.categoryFilter = e.target.dataset.allCategories != null ? null : e.target.value;
+    // `willUpdate` would only apply this on the next update, too late for the event to report the truth.
+    this._productsCrtl.setCategoryFilter(this.categoryFilter);
+    this._dispatchFilterChange();
   }
 
   /**
@@ -56,6 +74,7 @@ export class CcProductList extends LitElement {
    */
   _onSearchInput({ detail: value }) {
     this.textFilter = value;
+    this._dispatchFilterChange();
   }
 
   /**
@@ -66,8 +85,9 @@ export class CcProductList extends LitElement {
       this._productsCrtl.productsByCategories = this.productsByCategories;
     }
 
-    if (changedProperties.has('categoryFilter')) {
-      this._productsCrtl.toggleCategoryFilter(this.categoryFilter);
+    // Setting the products resets the category filter, so we apply it again.
+    if (changedProperties.has('categoryFilter') || changedProperties.has('productsByCategories')) {
+      this._productsCrtl.setCategoryFilter(this.categoryFilter);
     }
     if (changedProperties.has('textFilter')) {
       this._productsCrtl.textFilter = this.textFilter;
@@ -87,11 +107,12 @@ export class CcProductList extends LitElement {
         <fieldset class="category-filter">
           <legend class="visually-hidden">${i18n('cc-product-list.filter-category-legend')}</legend>
           ${this._renderCategory(
+            'category-all',
             i18n('cc-product-list.all-label'),
-            'all',
-            this._productsCrtl.getCurrentCategory() === 'all',
+            null,
+            this._productsCrtl.getCurrentCategory() == null,
           )}
-          ${categories.map((c) => this._renderCategory(c.categoryName, c.categoryName, c.toggled))}
+          ${categories.map((c, index) => this._renderCategory(`category-${index}`, c.categoryName, c.key, c.toggled))}
         </fieldset>
       </div>
       <div class="products">${this._renderProductsByCategories()}</div>
@@ -99,18 +120,20 @@ export class CcProductList extends LitElement {
   }
 
   /**
+   * @param {string} id links the radio to its label, built from the position so that it stays unique whatever the label
    * @param {string} label
-   * @param {string} value
+   * @param {string|null} categoryKey the category to filter by, `null` for the radio that shows all categories
    * @param {boolean} isToggled
    * @returns {TemplateResult}
    */
-  _renderCategory(label, value, isToggled) {
-    const id = label.replace(' ', '-');
+  _renderCategory(id, label, categoryKey, isToggled) {
     return html`
       <input
         type="radio"
         id="${id}"
-        .value=${value}
+        .value=${categoryKey ?? ''}
+        ?data-all-categories=${categoryKey == null}
+        .checked=${isToggled}
         name="category-filter"
         class="visually-hidden"
         @change=${this._onCategoryChange}

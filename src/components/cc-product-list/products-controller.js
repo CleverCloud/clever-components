@@ -5,6 +5,19 @@ import { isStringEmpty } from '../../lib/utils.js';
  * @import { CcProductList } from './cc-product-list.js'
  */
 
+/**
+ * Returns the key used to filter a category: its id, or its name when it has no id.
+ *
+ * An empty id is treated as no id: `setCategoryFilter` reads an empty key as "no filter", so such a
+ * category would be impossible to select.
+ *
+ * @param {ProductsByCategory} category
+ * @returns {string}
+ */
+function getCategoryKey(category) {
+  return isStringEmpty(category.id) ? category.categoryName : category.id;
+}
+
 export class ProductsController {
   /**
    * @param {CcProductList} host
@@ -19,8 +32,8 @@ export class ProductsController {
     /** @type {CategoryFilter[]} Categories and their current state.  */
     this._categoriesFilters = [];
 
-    /** @type {string|null} Current category selected.  */
-    this._currentCategoryNameFilter = null;
+    /** @type {string|null} Key of the applied category, `null` when all categories are shown.  */
+    this._currentCategoryKey = null;
 
     /** @type {string|null} Current text filter.  */
     this._currentTextFilter = '';
@@ -54,16 +67,24 @@ export class ProductsController {
    */
   set productsByCategories(productsByCategories) {
     this._productsByCategories = productsByCategories;
-    this._categoriesFilters = this._productsByCategories.map(({ categoryName }) => ({ categoryName, toggled: false }));
-    this._currentCategoryNameFilter = 'all';
+    // The key is resolved once here so that nothing else has to know how it is built.
+    this._categoriesFilters = this._productsByCategories.map((category) => ({
+      key: getCategoryKey(category),
+      categoryName: category.categoryName,
+      toggled: false,
+    }));
+    this._currentCategoryKey = null;
   }
 
   getCategories() {
     return this._categoriesFilters;
   }
 
+  /**
+   * @returns {string|null} the key of the applied category, `null` when all categories are shown
+   */
   getCurrentCategory() {
-    return this._currentCategoryNameFilter;
+    return this._currentCategoryKey;
   }
 
   /**
@@ -77,22 +98,19 @@ export class ProductsController {
   }
 
   /**
-   * @param {string} categoryName
+   * @param {string|null} categoryKey the category id, or its name when it has no id. `null`, an empty
+   * string or a key that matches no category shows all the categories.
    */
-  toggleCategoryFilter(categoryName) {
-    const categoryExists = this._categoriesFilters.find((cat) => cat.categoryName === categoryName) != null;
+  setCategoryFilter(categoryKey) {
+    const categoryExists = this._categoriesFilters.find((cat) => cat.key === categoryKey) != null;
 
-    // If we don't have a category or it doesn't exist we reset the category to 'all'
-    // If we're being given the current category as it acts as a toggle we also reset to 'all'
-    this._currentCategoryNameFilter =
-      categoryName == null || categoryName === '' || !categoryExists || this._currentCategoryNameFilter === categoryName
-        ? 'all'
-        : categoryName;
+    // If we don't have a category or it doesn't exist we show all the categories
+    this._currentCategoryKey = isStringEmpty(categoryKey) || !categoryExists ? null : categoryKey;
 
     this._categoriesFilters = this._categoriesFilters.map((category) => {
       return {
-        categoryName: category.categoryName,
-        toggled: this._currentCategoryNameFilter !== 'all' && this._currentCategoryNameFilter === category.categoryName,
+        ...category,
+        toggled: this._currentCategoryKey != null && this._currentCategoryKey === category.key,
       };
     });
 
@@ -119,8 +137,8 @@ export class ProductsController {
   }
 
   _getProductsByCurrentCategory() {
-    return this._currentCategoryNameFilter !== 'all'
-      ? this._productsByCategories.filter(({ categoryName }) => categoryName === this._currentCategoryNameFilter)
+    return this._currentCategoryKey != null
+      ? this._productsByCategories.filter((category) => getCategoryKey(category) === this._currentCategoryKey)
       : this._productsByCategories;
   }
 }
