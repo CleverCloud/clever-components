@@ -143,4 +143,18 @@ describe('cc-picker', () => {
       expect(labels.map((label) => label.getAttribute('for'))).to.eql(['pick-option-0', 'pick-option-1']);
     });
   });
+
+  describe('hidden label', () => {
+    it('keeps the label as the group accessible name while hiding it visually', async () => {
+      const element = await fixture(
+        html`<cc-picker name="pick" label="Topology" hidden-label .options=${OPTIONS}></cc-picker>`,
+      );
+      const group = element.shadowRoot.querySelector('[role="group"]');
+      const legend = element.shadowRoot.getElementById(group.getAttribute('aria-labelledby'));
+
+      expect(legend.textContent.trim()).to.equal('Topology');
+      expect(legend.classList.contains('visually-hidden')).to.equal(true);
+      expect(legend.classList.contains('legend')).to.equal(false);
+    });
+  });
 });

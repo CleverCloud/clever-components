@@ -50,6 +50,15 @@ export const required = makeStory(conf, {
   ],
 });
 
+export const hiddenLabel = makeStory(conf, {
+  items: [
+    {
+      ...DEFAULT_ITEM,
+      hiddenLabel: true,
+    },
+  ],
+});
+
 export const helpMessage = makeStory(conf, {
   items: [
     {

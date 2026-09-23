@@ -257,6 +257,15 @@ export const singleMode = makeStory(conf, {
   ],
 });
 
+export const hiddenLabel = makeStory(conf, {
+  items: [
+    {
+      ...DEFAULT_SELECTOR_RANGE,
+      hiddenLabel: true,
+    },
+  ],
+});
+
 export const inlineLabel = makeStory(conf, {
   items: [
     {

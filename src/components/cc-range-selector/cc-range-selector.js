@@ -78,6 +78,7 @@ export class CcRangeSelector extends CcFormControlElement {
       ...super.properties,
       customA11yDesc: { type: String, attribute: 'custom-a11y-desc' },
       disabled: { type: Boolean, reflect: true },
+      hiddenLabel: { type: Boolean, attribute: 'hidden-label' },
       inline: { type: Boolean, reflect: true },
       isCustomActive: { type: Boolean, attribute: 'is-custom-active' },
       label: { type: String },
@@ -101,6 +102,9 @@ export class CcRangeSelector extends CcFormControlElement {
 
     /** @type {boolean} Whether the component should be disabled (default: 'false') */
     this.disabled = false;
+
+    /** @type {boolean} Hides the label visually if `true`. The label remains mandatory and accessible to assistive technologies (default: 'false'). */
+    this.hiddenLabel = false;
 
     /**
      * @type {boolean} Sets the `<label>` on the left of the options.
@@ -830,7 +834,7 @@ export class CcRangeSelector extends CcFormControlElement {
         tabindex="-1"
       >
         <div class="fieldset-content">
-          <div class="legend" id="legend-${this.name}">
+          <div class="${this.hiddenLabel ? 'visually-hidden' : 'legend'}" id="legend-${this.name}">
             <span class="legend-text">${this.label}</span>
             ${this.required ? html` <span class="required">${i18n('cc-range-selector.required')}</span> ` : ''}
           </div>

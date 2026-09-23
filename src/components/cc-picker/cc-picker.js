@@ -58,6 +58,7 @@ export class CcPicker extends CcFormControlElement {
       // eslint-disable-next-line lit/no-native-attributes
       autofocus: { type: Boolean },
       disabled: { type: Boolean, reflect: true },
+      hiddenLabel: { type: Boolean, attribute: 'hidden-label' },
       inline: { type: Boolean, reflect: true },
       label: { type: String },
       options: { type: Array },
@@ -79,6 +80,9 @@ export class CcPicker extends CcFormControlElement {
 
     /** @type {boolean} Whether the component should be disabled (default: 'false') */
     this.disabled = false;
+
+    /** @type {boolean} Hides the label visually if `true`. The label remains mandatory and accessible to assistive technologies (default: 'false'). */
+    this.hiddenLabel = false;
 
     /** @type {boolean} Sets the `<label>` on the left of the tiles.
      * Only use this if your form contains 1 or 2 fields and your labels are short.
@@ -211,7 +215,7 @@ export class CcPicker extends CcFormControlElement {
 
     return html`
       <div class="fieldset" ${ref(this._pickerRef)} role="group" aria-labelledby="legend" tabindex="-1">
-        <p class="legend" id="legend">
+        <p class="${this.hiddenLabel ? 'visually-hidden' : 'legend'}" id="legend">
           <span class="legend-text">${this.label}</span>
           ${this.required ? html` <span class="required">${i18n('cc-picker.required')}</span> ` : ''}
         </p>
