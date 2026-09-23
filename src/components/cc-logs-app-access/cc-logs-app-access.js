@@ -5,6 +5,7 @@ import {
   iconRemixFullscreenExitLine as fullscreenExitIcon,
   iconRemixFullscreenLine as fullscreenIcon,
 } from '../../assets/cc-remix.icons.js';
+import { isStringEmpty } from '../../lib/utils.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-loader/cc-loader.js';
 import '../cc-logs-control/cc-logs-control.js';
@@ -192,6 +193,10 @@ export class CcLogsAppAccess extends LitElement {
   }
 
   _onLogInspect() {
+    if (isStringEmpty(this.messageFilter?.value)) {
+      return;
+    }
+
     this.messageFilter = { value: '', mode: this.messageFilter?.mode ?? 'loose' };
     // inspecting a log resets the filter, we notify it like any other filter change so that consumers stay in sync
     this.dispatchEvent(new CcLogsMessageFilterChangeEvent(this.messageFilter));
