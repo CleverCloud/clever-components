@@ -17,12 +17,13 @@ defineSmartComponent({
     apiConfig: { type: Object },
     ownerId: { type: String },
     appId: { type: String },
+    dashboardUrlByAddonId: { type: Object, optional: true },
   },
   /**
    * @param {OnContextUpdateArgs<CcEnvVarLinkedServices>} args
    */
   onContextUpdate({ context, updateComponent, signal }) {
-    const { apiConfig, ownerId, appId } = context;
+    const { apiConfig, ownerId, appId, dashboardUrlByAddonId } = context;
 
     updateComponent('state', { type: 'loading', name: '' });
 
@@ -37,7 +38,10 @@ defineSmartComponent({
       .then((linkedServices) => {
         updateComponent('state', {
           type: 'loaded',
-          services: linkedServices,
+          services: linkedServices.map((linkedService) => ({
+            ...linkedService,
+            dashboardUrl: dashboardUrlByAddonId?.[linkedService.id],
+          })),
         });
       })
       .catch((e) => {

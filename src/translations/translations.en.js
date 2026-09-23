@@ -846,6 +846,9 @@ export const translations = {
   'cc-env-var-input.value-placeholder': `variable value`,
   //#endregion
   //#region cc-env-var-linked-services
+  'cc-env-var-linked-services.dashboard-link': `Go to the dashboard`,
+  'cc-env-var-linked-services.dashboard-link.a11y-desc': /** @param {{name: string}} _ */ ({ name }) =>
+    `Go to the dashboard of ${name}`,
   'cc-env-var-linked-services.description.addon': /** @param {{serviceName: string, appName: string}} _ */ ({
     serviceName,
     appName,
