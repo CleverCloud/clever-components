@@ -1,7 +1,7 @@
 import { expect } from '@open-wc/testing';
 import { elementUpdated, fixture } from '@open-wc/testing-helpers';
-import * as hanbi from 'hanbi';
 import { html } from 'lit';
+import { createEventSpy } from '../../../test/helpers/event-helper.js';
 import { findActiveElement } from '../../lib/shadow-dom-utils.js';
 import '../cc-dialog/cc-dialog.js';
 import { CcConfirmEvent } from '../common.events.js';
@@ -33,14 +33,6 @@ async function getSubmitButton(ccDialogElement) {
 async function getCcInputText(ccDialogElement) {
   await elementUpdated(ccDialogElement);
   return ccDialogElement.querySelector('cc-dialog-confirm-form').shadowRoot.querySelector('cc-input-text');
-}
-
-function createEventSpy(element, eventType) {
-  const spy = hanbi.spy();
-  element.addEventListener(eventType, (event) => {
-    spy.handler(event);
-  });
-  return spy;
 }
 
 describe('cc-dialog-confirm-form', () => {

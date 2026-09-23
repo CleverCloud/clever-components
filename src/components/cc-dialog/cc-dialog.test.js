@@ -1,7 +1,7 @@
 import { elementUpdated, expect, fixture, nextFrame } from '@open-wc/testing';
 import { sendKeys } from '@web/test-runner-commands';
-import * as hanbi from 'hanbi';
 import { html } from 'lit';
+import { createEventSpy } from '../../../test/helpers/event-helper.js';
 import { findActiveElement } from '../../lib/shadow-dom-utils.js';
 import { CcCloseEvent, CcFocusRestorationFailEvent } from '../common.events.js';
 import './cc-dialog.js';
@@ -9,15 +9,6 @@ import './cc-dialog.js';
 // Helper: Get close button from shadow root
 function getCloseButton(element) {
   return element.shadowRoot.querySelector('.dialog-close');
-}
-
-// Helper: Spy on events
-function createEventSpy(element, eventType) {
-  const spy = hanbi.spy();
-  element.addEventListener(eventType, (event) => {
-    spy.handler(event);
-  });
-  return spy;
 }
 
 describe('cc-dialog component', () => {
