@@ -21,6 +21,7 @@ title: '💡 Smart'
 | `ownerId`            |         `string`         |   Yes    | UUID prefixed with `orga_` or `user_`       |         |
 | `realAddonId`        |         `string`         |   Yes    | Real addon ID                               |         |
 | `dateRangeSelection` | `LogsDateRangeSelection` |    No    | Initial date range                          |         |
+| `messageFilter`      | `LogsMessageFilterValue` |    No    | Initial log message filter                  |         |
 
 ```ts
 interface ApiConfig {
@@ -49,6 +50,11 @@ interface LogsDateRangeSelectionCustom {
   type: 'custom';
   since: string;
   until: string;
+}
+
+interface LogsMessageFilterValue {
+  value: string;
+  mode: 'loose' | 'strict' | 'regex';
 }
 
 type LogsDateRangePresetType = 'lastHour' | 'last4Hours' | 'last7Days' | 'today' | 'yesterday';

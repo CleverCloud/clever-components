@@ -5,6 +5,7 @@ import {
   iconRemixFullscreenExitLine as fullscreenExitIcon,
   iconRemixFullscreenLine as fullscreenIcon,
 } from '../../assets/cc-remix.icons.js';
+import { isStringEmpty } from '../../lib/utils.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-loader/cc-loader.js';
 import '../cc-logs-control/cc-logs-control.js';
@@ -12,6 +13,7 @@ import '../cc-logs-date-range-selector/cc-logs-date-range-selector.js';
 import '../cc-logs-instances/cc-logs-instances.js';
 import { buildLogsLoadingProgressState } from '../cc-logs-loading-progress/cc-logs-loading-progress-state-builder.js';
 import '../cc-logs-loading-progress/cc-logs-loading-progress.js';
+import { CcLogsMessageFilterChangeEvent } from '../cc-logs-message-filter/cc-logs-message-filter.events.js';
 import '../cc-logs-message-filter/cc-logs-message-filter.js';
 import '../cc-notice/cc-notice.js';
 
@@ -37,7 +39,6 @@ const CUSTOM_METADATA_RENDERERS = {
  * @import { CcLogsDateRangeSelectionChangeEvent } from '../cc-logs-date-range-selector/cc-logs-date-range-selector.events.js'
  * @import { LogsInstancesState } from '../cc-logs-instances/cc-logs-instances.types.js'
  * @import { LogsMessageFilterValue } from '../cc-logs-message-filter/cc-logs-message-filter.types.js'
- * @import { CcLogsMessageFilterChangeEvent } from '../cc-logs-message-filter/cc-logs-message-filter.events.js'
  * @import { TemplateResult, PropertyValues } from 'lit'
  * @import { Ref } from 'lit/directives/ref.js'
  */
@@ -51,11 +52,11 @@ export class CcLogsAppRuntime extends LitElement {
     return {
       dateRangeSelection: { type: Object, attribute: 'date-range-selection' },
       limit: { type: Number },
+      messageFilter: { type: Object, attribute: 'message-filter' },
       options: { type: Object },
       selectedInstances: { type: Array, attribute: 'selected-instances' },
       state: { type: Object },
       _fullscreen: { type: Boolean, state: true },
-      _messageFilter: { type: Object, state: true },
     };
   }
 
@@ -69,6 +70,9 @@ export class CcLogsAppRuntime extends LitElement {
 
     /** @type {number|null} The maximum number of logs to display. `null` for no limit. */
     this.limit = 1000;
+
+    /** @type {LogsMessageFilterValue} The filter applied to the log messages. */
+    this.messageFilter = { value: '', mode: 'loose' };
 
     /** @type {LogsOptions} The logs options. */
     this.options = {
@@ -92,9 +96,6 @@ export class CcLogsAppRuntime extends LitElement {
 
     /** @type {Ref<CcLogsControl>} */
     this._logsRef = createRef();
-
-    /** @type {LogsMessageFilterValue} */
-    this._messageFilter = { value: '', mode: 'loose' };
 
     /** @type {{instance: LogsMetadataDisplay}} */
     this._metadataDisplay = {
@@ -139,11 +140,17 @@ export class CcLogsAppRuntime extends LitElement {
    * @param {CcLogsMessageFilterChangeEvent} event
    */
   _onMessageFilterChange({ detail }) {
-    this._messageFilter = detail;
+    this.messageFilter = detail;
   }
 
   _onLogInspect() {
-    this._messageFilter = { value: '', mode: this._messageFilter?.mode ?? 'loose' };
+    if (isStringEmpty(this.messageFilter?.value)) {
+      return;
+    }
+
+    this.messageFilter = { value: '', mode: this.messageFilter?.mode ?? 'loose' };
+    // inspecting a log resets the filter, we notify it like any other filter change so that consumers stay in sync
+    this.dispatchEvent(new CcLogsMessageFilterChangeEvent(this.messageFilter));
   }
 
   /* endregion */
@@ -256,8 +263,8 @@ export class CcLogsAppRuntime extends LitElement {
         limit="${this.limit}"
         .dateDisplay=${this.options['date-display']}
         .metadataDisplay=${this._metadataDisplay}
-        .messageFilter=${this._messageFilter.value}
-        .messageFilterMode=${this._messageFilter.mode}
+        .messageFilter=${this.messageFilter.value}
+        .messageFilterMode=${this.messageFilter.mode}
         .metadataFilter=${metadataFilter}
         .metadataRenderers=${CUSTOM_METADATA_RENDERERS}
         .palette=${this.options.palette}
@@ -275,7 +282,7 @@ export class CcLogsAppRuntime extends LitElement {
 
           <cc-logs-message-filter-beta
             class="logs-message-filter"
-            .filter=${this._messageFilter}
+            .filter=${this.messageFilter}
             @cc-logs-message-filter-change=${this._onMessageFilterChange}
           ></cc-logs-message-filter-beta>
 
