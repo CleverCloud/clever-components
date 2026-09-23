@@ -5,6 +5,27 @@ title: 'Changelog'
 
 # Changelog
 
+## [26.5.0](https://github.com/CleverCloud/clever-components/compare/26.4.0...26.5.0) (2026-09-23)
+
+
+### 🚀 Features
+
+* **cc-logs:** allow to set the initial log message filter ([757c976](https://github.com/CleverCloud/clever-components/commit/757c9764f797af4273595bc88224c2ddaf7c626d))
+* **cc-picker:** add `hiddenLabel` prop ([755cefe](https://github.com/CleverCloud/clever-components/commit/755cefecb85f75e344fbdea94000f2befe4e7fee)), closes [#1833](https://github.com/CleverCloud/clever-components/issues/1833)
+* **cc-product-list:** dispatch cc-product-list-filter-change on filter change ([bf5a759](https://github.com/CleverCloud/clever-components/commit/bf5a7590d467e43419ce03ac603bf16035b705d7))
+* **cc-product-list:** filter categories by id ([074a780](https://github.com/CleverCloud/clever-components/commit/074a7801cbdce489132f5f8f513871c6511715cb))
+* **cc-range-selector:** add `hiddenLabel` prop ([2db3719](https://github.com/CleverCloud/clever-components/commit/2db3719103ceb881b404181b54cb044fdb5b9b7d)), closes [#1833](https://github.com/CleverCloud/clever-components/issues/1833)
+
+
+### 🐛 Bug Fixes
+
+* **cc-logs:** do not fire message filter change event when filter is already empty ([46d983d](https://github.com/CleverCloud/clever-components/commit/46d983d57abb198a57d0a86f50fe04828e6a3f67))
+* **cc-picker:** select the option by its position instead of the radio value ([4eb206a](https://github.com/CleverCloud/clever-components/commit/4eb206a17877b41f6350d5df1afc35bf0b4b4ec6)), closes [#1831](https://github.com/CleverCloud/clever-components/issues/1831)
+* **cc-product-list:** build category radio ids from their position ([4631ab3](https://github.com/CleverCloud/clever-components/commit/4631ab38be4148fc423e52c710a6dd4a738557e2))
+* **cc-product-list:** check the radio of the applied category ([dd93adf](https://github.com/CleverCloud/clever-components/commit/dd93adf3677e684ff59cfeed361a7ebe8b671955))
+* **cc-product-list:** keep the category filter when products change ([24b2b6d](https://github.com/CleverCloud/clever-components/commit/24b2b6d139a553e696c040ec7e558b467c131738))
+* **cc-range-selector-option:** stop clipping the border at the corners ([20588c3](https://github.com/CleverCloud/clever-components/commit/20588c32d3b3f6879dd2f428d5f99aaa14613def))
+
 ## [26.4.0](https://github.com/CleverCloud/clever-components/compare/26.3.0...26.4.0) (2026-09-15)
 
 
