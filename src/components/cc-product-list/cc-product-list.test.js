@@ -1,7 +1,7 @@
 import { expect } from '@open-wc/testing';
 import { elementUpdated, fixture } from '@open-wc/testing-helpers';
-import * as hanbi from 'hanbi';
 import { html } from 'lit';
+import { createEventSpy } from '../../../test/helpers/event-helper.js';
 import { CcInputEvent } from '../common.events.js';
 import { CcProductListFilterChangeEvent } from './cc-product-list.events.js';
 import './cc-product-list.js';
@@ -25,14 +25,6 @@ function generateProduct(name) {
     iconUrl: 'https://example.com/icon.png',
     url: 'https://example.com',
   };
-}
-
-function createEventSpy(element, eventType) {
-  const spy = hanbi.spy();
-  element.addEventListener(eventType, (event) => {
-    spy.handler(event);
-  });
-  return spy;
 }
 
 function getDisplayedCategories(element) {
