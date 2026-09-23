@@ -25,30 +25,35 @@ const conf = {
 /** @type {ZoneStateLoaded} */
 const zoneDefault = {
   type: 'loaded',
+  id: 'aad32a21-24f8-40b3-a750-baab218d927b',
   name: 'par',
   country: 'France',
   countryCode: 'FR',
   city: 'Paris',
   lat: 48.87,
   lon: 2.33,
+  outboundIps: [],
   tags: ['region:eu', 'infra:clever-cloud'],
 };
 
 /** @type {ZoneStateLoaded} */
 const zoneWithInfra = {
   type: 'loaded',
+  id: '83923989-e9e8-4070-a371-3aafc2c4b9e3',
   name: 'war',
   country: 'Poland',
   countryCode: 'PL',
   city: 'Warsaw',
   lat: 52.23,
   lon: 21.01,
+  outboundIps: [],
   tags: ['region:eu', 'infra:ovh'],
 };
 
 /** @type {ZoneStateLoaded} */
 const zoneWithDisplayName = {
   type: 'loaded',
+  id: 'e83c1d59-47a0-4f38-9b21-c6d5f80a3e12',
   name: 'acme-corp',
   displayName: 'ACME Corp',
   country: 'Germany',
@@ -56,30 +61,35 @@ const zoneWithDisplayName = {
   city: 'Berlin',
   lat: 52.52,
   lon: 13.39,
+  outboundIps: [],
   tags: ['region:eu', 'infra:clever-cloud'],
 };
 
 /** @type {ZoneStateLoaded} */
 const zoneWithoutTags = {
   type: 'loaded',
+  id: '9d2f7b41-08ac-4e35-bb17-71fa4c60d8e9',
   name: 'nyc',
   country: 'United States',
   countryCode: 'US',
   city: 'New York City',
   lat: 40.71,
   lon: -74.01,
+  outboundIps: [],
   tags: [],
 };
 
 /** @type {ZoneStateLoaded} */
 const zoneWithManyTags = {
   type: 'loaded',
+  id: '83923989-e9e8-4070-a371-3aafc2c4b9e3',
   name: 'war',
   country: 'Poland',
   countryCode: 'PL',
   city: 'Warsaw',
   lat: 52.23,
   lon: 21.01,
+  outboundIps: [],
   tags: [
     'region:eu',
     'infra:ovh',

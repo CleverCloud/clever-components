@@ -2,7 +2,8 @@ import { randomString } from '../../lib/utils.js';
 import { shiftDateField } from '../../lib/date/date-utils.js';
 
 /**
- * @import { Instance, GhostInstance, InstanceKind, InstanceState, Deployment, DeploymentState } from '../../components/cc-logs-instances/cc-logs-instances.types.js'
+ * @import { DeploymentState } from '@clevercloud/client/cc-api-commands/deployment/deployment.types.js'
+ * @import { Instance, GhostInstance, InstanceKind, InstanceState, Deployment } from '../../components/cc-logs-instances/cc-logs-instances.types.js'
  */
 
 /**

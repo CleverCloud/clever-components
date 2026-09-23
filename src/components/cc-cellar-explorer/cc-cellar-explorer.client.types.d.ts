@@ -1,3 +1,5 @@
+import { CellarAcl, CellarTag } from '@clevercloud/client/cc-api-commands/cellar/cellar.types.js';
+
 export interface CellarBucketsListResponse {
   buckets: Array<CellarBucket>;
   total: number;
@@ -18,7 +20,7 @@ export type CellarBucketVersioning = 'DISABLED' | 'ENABLED' | 'SUSPENDED';
 
 export interface CellarObjectsListResponse {
   cursor?: string;
-  content: Array<CellarFile>;
+  items: Array<CellarFile>;
   directories: Array<CellarDirectory>;
 }
 
@@ -40,18 +42,7 @@ export interface CellarDirectory {
 
 export interface CellarFileDetails extends CellarFile {
   contentType: string;
-  tags: Array<{ key: string; value: string }>;
+  tags: Array<CellarTag>;
   acl: Array<CellarAcl>;
   metadata: Record<string, string>;
-}
-
-export interface CellarAcl {
-  grantee: Array<CellarGrantee>;
-  permission: 'FULL_CONTROL' | 'READ' | 'READ_ACP' | 'WRITE' | 'WRITE_ACP';
-}
-
-export interface CellarGrantee {
-  id: string;
-  name: string;
-  type: 'AmazonCustomerByEmail' | 'CanonicalUser' | 'Group';
 }

@@ -2,7 +2,8 @@ import { GetAddonCommand } from '@clevercloud/client/cc-api-commands/addon/get-a
 import { CreateNetworkGroupMemberCommand } from '@clevercloud/client/cc-api-commands/network-group/create-network-group-member-command.js';
 import { DeleteNetworkGroupMemberCommand } from '@clevercloud/client/cc-api-commands/network-group/delete-network-group-member-command.js';
 import { ListNetworkGroupCommand } from '@clevercloud/client/cc-api-commands/network-group/list-network-group-command.js';
-import { ONE_DAY } from '@clevercloud/client/esm/with-cache.js';
+import { isNetworkGroupAddonCandidate } from '@clevercloud/client/cc-api-commands/network-group/network-group-utils.js';
+import { isKnown } from '@clevercloud/client/utils/unknown-to-client-utils.js';
 import { getCcApiClientWithOAuth } from '../../lib/cc-api-client.js';
 import { notify, notifyError, notifySuccess } from '../../lib/notifications.js';
 import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
@@ -25,7 +26,15 @@ import './cc-network-group-list.js';
  * @import { CcNetworkGroupList } from './cc-network-group-list.js';
  * @import { ApiConfig } from '../../lib/send-to-api.types.js';
  * @import { NetworkGroupListStateLoaded } from './cc-network-group-list.types.js';
+ * @import { NetworkGroupEndpoint, NetworkGroupPeer } from '@clevercloud/client/cc-api-commands/network-group/network-group.types.js';
+ * @import { Known } from '@clevercloud/client/utils/unknown-to-client-utils.js';
  */
+
+/**
+ * @typedef {Known<NetworkGroupPeer> & { endpoint: Known<NetworkGroupEndpoint> }} KnownNetworkGroupPeer
+ */
+
+const ONE_DAY = 1000 * 60 * 60 * 24;
 
 defineSmartComponent({
   selector: 'cc-network-group-list',
@@ -64,7 +73,7 @@ defineSmartComponent({
       });
       return {
         resolvedResourceId: addon.realId,
-        isSupported: addon.plan.slug !== 'dev',
+        isSupported: isNetworkGroupAddonCandidate(addon),
       };
     }
 
@@ -101,11 +110,11 @@ defineSmartComponent({
             id: networkGroup.id,
             name: networkGroup.label,
             dashboardUrl: networkGroupDashboardUrlPattern.replace(':id', networkGroup.id),
-            peerList: networkGroup.peers.map((peer) => ({
+            peerList: networkGroup.peers.filter(isKnownNetworkGroupPeer).map((peer) => ({
               id: peer.id,
               label: peer.label,
               publicKey: peer.publicKey,
-              ip: peer.endpoint.type === 'ServerEndpoint' ? peer.endpoint.ngTerm.host : peer.endpoint.ngIp,
+              ip: getNetworkGroupPeerIp(peer),
               type: peer.type,
             })),
           })),
@@ -201,3 +210,26 @@ defineSmartComponent({
     });
   },
 });
+
+/**
+ * The client is older than the API it talks to, so it publishes a peer kind or an endpoint kind it does not know as
+ * an unknown variant carrying only the raw payload. A peer card needs an id, a public key and an address, none of
+ * which such a variant exposes, so those peers are left out of the list.
+ *
+ * @param {NetworkGroupPeer} peer
+ * @returns {peer is KnownNetworkGroupPeer}
+ */
+function isKnownNetworkGroupPeer(peer) {
+  return isKnown(peer) && isKnown(peer.endpoint);
+}
+
+/**
+ * Returns the address the other peers reach this one at: a server peer answers on its network group host, a client
+ * peer only has a network group IP.
+ *
+ * @param {KnownNetworkGroupPeer} peer
+ * @returns {string}
+ */
+function getNetworkGroupPeerIp(peer) {
+  return peer.endpoint.type === 'ServerEndpoint' ? peer.endpoint.networkGroupTerm.host : peer.endpoint.networkGroupIp;
+}
