@@ -1,26 +1,24 @@
 import {
-  getAllDeployments,
-  getAllEnvVars,
-  redeploy,
-  updateAllEnvVars,
-} from '@clevercloud/client/esm/api/v2/application.js';
-import { toNameValueObject } from '@clevercloud/client/esm/utils/env-vars.js';
+  DEPLOY_APPLICATION_ERROR_CODES,
+  DeployApplicationCommand,
+} from '@clevercloud/client/cc-api-commands/application/deploy-application-command.js';
+import { ListDeploymentCommand } from '@clevercloud/client/cc-api-commands/deployment/list-deployment-command.js';
+import { GetEnvironmentCommand } from '@clevercloud/client/cc-api-commands/environment/get-environment-command.js';
+import { UpdateEnvironmentCommand } from '@clevercloud/client/cc-api-commands/environment/update-environment-command.js';
+import { isCcHttpErrorWithCode } from '@clevercloud/client/utils/error-utils.js';
+import { getCcApiClientWithOAuth } from '../../lib/cc-api-client.js';
 import { notifyError, notifySuccess } from '../../lib/notifications.js';
-import { sendToApi } from '../../lib/send-to-api.js';
 import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-smart-container/cc-smart-container.js';
 import { CcEnvVarsWasUpdatedEvent } from './cc-env-var-form.events.js';
 import './cc-env-var-form.js';
 
-// This happens when the app has never be deployed at all, we cannot deploy it because there is no commit to deploy
-const APP_CANNOT_BE_DEPLOYED_ERROR_CODE = 4014;
-
 /**
  * @import { CcEnvVarForm } from './cc-env-var-form.js'
  * @import { EnvVarFormState, EnvVarFormStateLoaded, EnvVarFormStateSaving } from './cc-env-var-form.types.js'
  * @import { EnvVar } from '../common.types.js'
- * @import { ApiConfig } from '../../lib/send-to-api.types.js'
+ * @import { CcApiClient } from '@clevercloud/client/cc-api-client.js'
  * @import { OnContextUpdateArgs } from '../../lib/smart/smart-component.types.js'
  */
 
@@ -37,14 +35,13 @@ defineSmartComponent({
    */
   onContextUpdate({ context, onEvent, updateComponent, component, signal }) {
     const { apiConfig, ownerId, appId, logsUrlPattern } = context;
-    const api = new Api({ apiConfig, ownerId, appId, signal });
+    const ccApiClient = getCcApiClientWithOAuth(apiConfig);
 
     updateComponent('state', { type: 'loading' });
     updateComponent('resourceId', appId);
     updateComponent('restartApp', false);
 
-    api
-      .fetchEnvVars()
+    fetchEnvVars({ ccApiClient, signal, ownerId, appId })
       .then(
         /** @param {Array<EnvVar>} variables */
         (variables) => {
@@ -67,9 +64,7 @@ defineSmartComponent({
           state.type = 'saving';
         },
       );
-      const newVarsObject = toNameValueObject(variables);
-      api
-        .updateVariables(newVarsObject)
+      updateVariables({ ccApiClient, ownerId, appId, variables })
         .then(() => {
           updateComponent(
             'state',
@@ -80,8 +75,8 @@ defineSmartComponent({
           );
           notifySuccess(i18n('cc-env-var-form.update.success'));
 
-          api.hasDeployments().then((hasDeployments) => {
-            if (hasDeployments) {
+          hasDeployments({ ccApiClient, ownerId, appId }).then((appHasDeployments) => {
+            if (appHasDeployments) {
               updateComponent('restartApp', true);
             }
           });
@@ -102,8 +97,7 @@ defineSmartComponent({
     });
 
     onEvent('cc-application-restart', () => {
-      api
-        .redeployApp()
+      redeployApp({ ccApiClient, ownerId, appId })
         .then(() => {
           updateComponent('restartApp', false);
 
@@ -112,9 +106,10 @@ defineSmartComponent({
             i18n('cc-env-var-form.redeploy.success.heading'),
           );
         })
-        .catch((/** @type {Error & { id: number }} */ error) => {
+        .catch((/** @type {Error} */ error) => {
           console.error(error);
-          if (error.id === APP_CANNOT_BE_DEPLOYED_ERROR_CODE) {
+          // The app has never been deployed at all, we cannot deploy it because there is no commit to deploy
+          if (isCcHttpErrorWithCode(error, DEPLOY_APPLICATION_ERROR_CODES.NEVER_DEPLOYED)) {
             notifyError(i18n('cc-env-var-form.redeploy.error.app-stopped'));
           } else {
             notifyError(i18n('cc-env-var-form.redeploy.error'));
@@ -124,45 +119,52 @@ defineSmartComponent({
   },
 });
 
-class Api {
-  /**
-   * @param {object} params
-   * @param {ApiConfig} params.apiConfig
-   * @param {AbortSignal} params.signal
-   * @param {string} params.ownerId
-   * @param {string} params.appId
-   */
-  constructor({ apiConfig, ownerId, appId, signal }) {
-    this._apiConfig = apiConfig;
-    this._ownerId = ownerId;
-    this._appId = appId;
-    this._signal = signal;
-  }
+/**
+ * @param {object} params
+ * @param {CcApiClient} params.ccApiClient
+ * @param {AbortSignal} params.signal
+ * @param {string} params.ownerId
+ * @param {string} params.appId
+ * @returns {Promise<Array<EnvVar>>}
+ */
+async function fetchEnvVars({ ccApiClient, signal, ownerId, appId }) {
+  const { environment } = await ccApiClient.send(new GetEnvironmentCommand({ ownerId, applicationId: appId }), {
+    signal,
+  });
+  return environment;
+}
 
-  /** @returns {Promise<Array<EnvVar>>} */
-  fetchEnvVars() {
-    return getAllEnvVars({ id: this._ownerId, appId: this._appId }).then(
-      sendToApi({ apiConfig: this._apiConfig, signal: this._signal }),
-    );
-  }
+/**
+ * @param {object} params
+ * @param {CcApiClient} params.ccApiClient
+ * @param {string} params.ownerId
+ * @param {string} params.appId
+ * @param {Array<EnvVar>} params.variables
+ * @returns {Promise<Array<EnvVar>>}
+ */
+function updateVariables({ ccApiClient, ownerId, appId, variables }) {
+  return ccApiClient.send(new UpdateEnvironmentCommand({ ownerId, applicationId: appId, environment: variables }));
+}
 
-  /** @param {Record<string, string>} newVarsObject */
-  updateVariables(newVarsObject) {
-    return updateAllEnvVars({ id: this._ownerId, appId: this._appId }, newVarsObject).then(
-      sendToApi({ apiConfig: this._apiConfig }),
-    );
-  }
+/**
+ * @param {object} params
+ * @param {CcApiClient} params.ccApiClient
+ * @param {string} params.ownerId
+ * @param {string} params.appId
+ * @returns {Promise<boolean>}
+ */
+async function hasDeployments({ ccApiClient, ownerId, appId }) {
+  const deployments = await ccApiClient.send(new ListDeploymentCommand({ ownerId, applicationId: appId }));
+  return deployments.length > 0;
+}
 
-  async hasDeployments() {
-    // @ts-expect-error FIXME: should be fixed in @clevercloud/client, limit is optional
-    const deployments = await getAllDeployments({ id: this._ownerId, appId: this._appId }).then(
-      sendToApi({ apiConfig: this._apiConfig }),
-    );
-    return deployments.length > 0;
-  }
-
-  redeployApp() {
-    // @ts-expect-error FIXME: should be fixed in @clevercloud/client, useCache is optional
-    return redeploy({ id: this._ownerId, appId: this._appId }).then(sendToApi({ apiConfig: this._apiConfig }));
-  }
+/**
+ * @param {object} params
+ * @param {CcApiClient} params.ccApiClient
+ * @param {string} params.ownerId
+ * @param {string} params.appId
+ * @returns {Promise<{ deploymentId: string }>}
+ */
+function redeployApp({ ccApiClient, ownerId, appId }) {
+  return ccApiClient.send(new DeployApplicationCommand({ ownerId, applicationId: appId }));
 }

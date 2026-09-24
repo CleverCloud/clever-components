@@ -1,5 +1,6 @@
 /**
- * @import { Invoice, InvoiceStatusType, InvoiceType } from '../../components/common.types.js'
+ * @import { InvoiceStatus } from '@clevercloud/client/cc-api-commands/invoice/invoice.types.js'
+ * @import { Invoice, InvoiceType } from '../../components/common.types.js'
  * @typedef {'01' | '02' | '03' | '04' | '05' | '06' | '07' | '08' | '09' | '10' | '11' | '12'} MonthNumberAsString
  */
 
@@ -7,7 +8,7 @@
  * @param {string} year
  * @param {MonthNumberAsString} month
  * @param {number} amount
- * @param {InvoiceStatusType} status
+ * @param {InvoiceStatus} status
  * @param {InvoiceType} [type]
  * @return {Invoice}
  */

@@ -1,5 +1,6 @@
+import { Zone } from '@clevercloud/client/cc-api-commands/zone/zone.types.js';
 import { ZoneModeType, ZoneStateLoaded } from '../cc-zone/cc-zone.types.js';
-import { Point, Zone } from '../common.types.js';
+import { Point } from '../common.types.js';
 
 export type ZoneInputState = ZoneInputStateLoaded | ZoneInputStateLoading | ZoneInputStateError;
 

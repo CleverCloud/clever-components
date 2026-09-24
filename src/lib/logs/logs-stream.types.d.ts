@@ -1,10 +1,10 @@
-import CleverCloudSse from '@clevercloud/client/esm/streams/clever-cloud-sse.js';
+import type { LogsStream } from '@clevercloud/client/cc-api-commands/log/abstract-logs-stream-command.js';
 
 export interface AbstractLog {
   date: Date;
 }
 
-export type LogsSse = CleverCloudSse & { onLog: (fn: (log: any) => void) => LogsSse };
+export type LogsSse<T> = LogsStream<T>;
 
 export type LogsStreamState =
   | LogsStreamStateIdle
@@ -12,6 +12,7 @@ export type LogsStreamState =
   | LogsStreamStateWaitingForFirstLog
   | LogsStreamStateError
   | LogsStreamStateRunning
+  | LogsStreamStateRetrying
   | LogsStreamStateCompleted
   | LogsStreamStatePaused;
 
@@ -29,6 +30,13 @@ export interface LogsStreamStateWaitingForFirstLog {
 
 export interface LogsStreamStateRunning {
   type: 'running';
+  progress: LogsProgressValue;
+  overflowing: boolean;
+}
+
+export interface LogsStreamStateRetrying {
+  type: 'retrying';
+  retryCount: number;
   progress: LogsProgressValue;
   overflowing: boolean;
 }

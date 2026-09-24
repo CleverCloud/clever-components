@@ -1,9 +1,7 @@
-import {
-  todo_listSelfTokens as getAllTokens,
-  todo_revokeSelfToken as revokeToken,
-} from '@clevercloud/client/esm/api/v2/user.js';
+import { DeleteOauthTokenCommand } from '@clevercloud/client/cc-api-commands/oauth-token/delete-oauth-token-command.js';
+import { ListOauthTokenCommand } from '@clevercloud/client/cc-api-commands/oauth-token/list-oauth-token-command.js';
+import { getCcApiClientWithOAuth } from '../../lib/cc-api-client.js';
 import { notifyError, notifySuccess } from '../../lib/notifications.js';
-import { sendToApi } from '../../lib/send-to-api.js';
 import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-smart-container/cc-smart-container.js';
@@ -11,7 +9,7 @@ import './cc-token-session-list.js';
 
 /**
  * @import { CcTokenSessionList } from './cc-token-session-list.js'
- * @import { SessionToken, SessionTokenState, SessionTokenStateIdle, TokenSessionListStateLoaded, TokenSessionListStateRevokingAll, RawTokenData } from './cc-token-session-list.types.js'
+ * @import { SessionToken, SessionTokenState, SessionTokenStateIdle, TokenSessionListStateLoaded, TokenSessionListStateRevokingAll } from './cc-token-session-list.types.js'
  * @import { ApiConfig } from '../../lib/send-to-api.types.js'
  * @import { OnContextUpdateArgs } from '../../lib/smart/smart-component.types.js'
  */
@@ -146,6 +144,7 @@ class Api {
   /** @param {ApiConfig} apiConfig */
   constructor(apiConfig) {
     this._apiConfig = apiConfig;
+    this._ccApiClient = getCcApiClientWithOAuth(apiConfig);
   }
 
   /**
@@ -154,33 +153,28 @@ class Api {
    * @returns {Promise<SessionToken[]>} A promise that resolves to an array of formatted session tokens
    */
   getSessionTokens() {
-    return getAllTokens()
-      .then(sendToApi({ apiConfig: this._apiConfig }))
-      .then(
-        /** @param {Array<RawTokenData>} tokens */
-        (tokens) => {
-          const filteredTokens = tokens
-            /*
-             * Only keep sessions related to the console in use and all login as sessions (those with an employeeId).
-             * We cannot keep only login as sessions for the console in use because the login as OAuth consumer
-             * is always the prod console OAuth consumer
-             */
-            .filter((token) => token.consumer.key === this._apiConfig.OAUTH_CONSUMER_KEY || token.employeeId != null)
-            .map((token) => {
-              /** @type {SessionToken} */
-              const formattedToken = {
-                id: token.token,
-                isCleverTeam: token.employeeId != null,
-                creationDate: new Date(token.creationDate),
-                expirationDate: new Date(token.expirationDate),
-                lastUsedDate: new Date(token.lastUtilisation),
-              };
-              return formattedToken;
-            });
+    return this._ccApiClient.send(new ListOauthTokenCommand()).then((tokens) => {
+      const filteredTokens = tokens
+        /*
+         * Only keep sessions related to the console in use and all login as sessions (those with an employeeId).
+         * We cannot keep only login as sessions for the console in use because the login as OAuth consumer
+         * is always the prod console OAuth consumer
+         */
+        .filter((token) => token.consumer.key === this._apiConfig.OAUTH_CONSUMER_KEY || token.employeeId != null)
+        .map((token) => {
+          /** @type {SessionToken} */
+          const formattedToken = {
+            id: token.token,
+            isCleverTeam: token.employeeId != null,
+            creationDate: new Date(token.createdAt),
+            expirationDate: new Date(token.expiresAt),
+            lastUsedDate: new Date(token.lastUsedAt),
+          };
+          return formattedToken;
+        });
 
-          return filteredTokens;
-        },
-      );
+      return filteredTokens;
+    });
   }
 
   /**
@@ -190,7 +184,7 @@ class Api {
    * @returns {Promise<void>} A promise that resolves when the token is revoked
    */
   revokeSessionToken(sessionTokenId) {
-    return revokeToken({ token: sessionTokenId }).then(sendToApi({ apiConfig: this._apiConfig }));
+    return this._ccApiClient.send(new DeleteOauthTokenCommand({ token: sessionTokenId }));
   }
 
   /**
