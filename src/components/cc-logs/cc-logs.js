@@ -8,6 +8,7 @@ import {
   iconRemixFocus_2Line as iconInspect,
   iconRemixCheckboxBlankCircleFill as iconSelected,
 } from '../../assets/cc-remix.icons.js';
+import { ResizeController } from '../../controllers/resize-controller.js';
 import { ansiPaletteStyle } from '../../lib/ansi/ansi-palette-style.js';
 import { ansiStyles, ansiToLit, stripAnsi } from '../../lib/ansi/ansi.js';
 import defaultPalette from '../../lib/ansi/palettes/default.js';
@@ -15,7 +16,7 @@ import { copyToClipboard, prepareLinesOfCodeForClipboard } from '../../lib/clipb
 import { hasClass } from '../../lib/dom.js';
 import { focusBySelector } from '../../lib/focus-helper.js';
 import { notifySuccess } from '../../lib/notifications.js';
-import { isStringEmpty, truncateString } from '../../lib/utils.js';
+import { isStringEmpty } from '../../lib/utils.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-badge/cc-badge.js';
 import '../cc-button/cc-button.js';
@@ -26,11 +27,8 @@ import { CcLogInspectEvent, CcLogsFollowChangeEvent } from './cc-logs.events.js'
 import { DateDisplayer } from './date-displayer.js';
 import { LogsController } from './logs-controller.js';
 import { LogsInputController } from './logs-input-controller.js';
-
-// The fallback estimated height (in pixels) of a single log line, used by the virtualizer for logs that are not in the
-// DOM yet (their real size is measured once rendered). It only applies until the first line is rendered: from then on
-// the estimate is read from the CSS, see `_updateEstimatedLineHeight()`.
-const FALLBACK_LOG_LINE_HEIGHT = 21;
+import { getMetadataRendering, getMetadataText, getRenderedMetadata } from './logs-layout.js';
+import { LogsSizeEstimator } from './logs-size-estimator.js';
 
 // How many extra logs the virtualizer renders above and below the viewport to smooth out scrolling.
 const VIRTUALIZER_OVERSCAN = 10;
@@ -61,15 +59,6 @@ export const VIRTUALIZER_PRIVATE_FIELDS = [
   'applyScrollAdjustment',
 ];
 
-/** @type {MetadataRendering} The default metadata renderer */
-const DEFAULT_METADATA_RENDERING = {
-  hidden: false,
-  intent: 'neutral',
-  showName: false,
-  size: 'auto',
-  strong: false,
-};
-
 // This style is the default ansi palette plus the ability to be overridden with the css theme.
 const DEFAULT_PALETTE_STYLE = ansiPaletteStyle(
   // @ts-ignore
@@ -82,7 +71,7 @@ const DEFAULT_PALETTE_STYLE = ansiPaletteStyle(
 );
 
 /**
- * @import { Log, Metadata, MetadataFilter, MetadataRenderer, MetadataRendering, LogMessageFilterMode } from './cc-logs.types.js'
+ * @import { Log, Metadata, MetadataFilter, MetadataRenderer, LogMessageFilterMode } from './cc-logs.types.js'
  * @import { DateDisplay } from './date-display.types.js'
  * @import { AnsiPalette } from '../../lib/ansi/ansi.types.js'
  * @import { Timezone } from '../../lib/date/date.types.js'
@@ -302,6 +291,14 @@ export class CcLogs extends LitElement {
     /** @type {LogsController} */
     this._logsCtrl = new LogsController(this);
 
+    /** @type {LogsSizeEstimator} Estimates the height of the logs the virtualizer has not rendered yet. */
+    this._sizeEstimator = new LogsSizeEstimator();
+
+    /** @type {number|null} The width of the component when the rendered logs were last measured. */
+    this._measuredWidth = null;
+
+    new ResizeController(this, { callback: (width) => this._onResize(width) });
+
     /** @type {Ref<HTMLDivElement>} A reference to the scrollable logs' container. */
     this._logsRef = createRef();
 
@@ -310,12 +307,6 @@ export class CcLogs extends LitElement {
 
     /** @type {number} The height in pixel of the horizontal scroll bar. */
     this._horizontalScrollbarHeight = 0;
-
-    /**
-     * @type {number} The height in pixels the virtualizer assumes for a log line it has not rendered yet.
-     * Read from the CSS once the first line is in the DOM (see `_updateEstimatedLineHeight()`).
-     */
-    this._estimatedLineHeight = FALLBACK_LOG_LINE_HEIGHT;
 
     /**
      * @type {VirtualizerController<HTMLDivElement, HTMLElement>} The virtualizer rendering only the visible logs.
@@ -398,7 +389,7 @@ export class CcLogs extends LitElement {
     return {
       getScrollElement: () => this._logsRef.value,
       count: this._logsCtrl.listLength,
-      estimateSize: () => this._estimatedLineHeight,
+      estimateSize: (index) => this._sizeEstimator.estimateHeight(this._logsCtrl.getList()[index]),
       // We deliberately key the virtualizer's caches by index (the default) and NOT by log id.
       // Keying by id makes the `itemSizeCache` and `elementsCache` grow by one entry for every log that ever scrolls
       // into view (they are only pruned for disconnected elements, but our line elements are reused and stay
@@ -427,7 +418,7 @@ export class CcLogs extends LitElement {
           return height;
         }
         const index = Number(element.dataset.index);
-        return instance.itemSizeCache.get(index) ?? this._estimatedLineHeight;
+        return instance.itemSizeCache.get(index) ?? this._sizeEstimator.rowHeight;
       },
       onChange: (virtualizer) => this._onVirtualizerChange(virtualizer),
     };
@@ -465,56 +456,97 @@ export class CcLogs extends LitElement {
   }
 
   /**
-   * Reads the height of a single-line log row from the CSS and uses it as the virtualizer's size estimate.
+   * Remembers which log the user has under the top of their viewport, and where exactly.
    *
-   * The estimate is what the virtualizer assumes for every log it has not rendered yet, and a wrong one is not
-   * harmless: as soon as the user scrolls, the rows around the new position are rendered and measured, each measured
-   * row above the viewport corrects the scroll offset by its own error, and the view slides by the accumulated
-   * difference. A hardcoded estimate cannot be right either, because the row height is expressed in `em` and
-   * therefore follows the host's font size.
+   * Measuring a row or changing the size estimate moves every log below it, including the one the user is reading. The
+   * virtualizer corrects the scroll offset itself for a row that grows above the viewport, but not while the user is
+   * scrolling backward (it refuses to fight the scroll they are driving). We would rather hold the view still, so we
+   * take the anchor before touching any size and put it back afterwards (see `_restoreScrollAnchor()`).
    *
-   * A row is a flex line whose height is driven by its text: the line height of `.log--right` plus its vertical
-   * padding (the select button in the gutter is built to match). Reading those from the computed style gives the
-   * exact single-line height, in both wrap modes, without having to guess which rendered row happens to be one line
-   * tall.
+   * There is nothing to hold while following: the view belongs to the bottom of the list, and
+   * `_pinToBottomIfFollowing()` keeps it there.
+   *
+   * @param {Virtualizer<HTMLDivElement, HTMLElement>} virtualizer
+   * @return {{ index: number, offset: number }|null} The anchored log and its offset from the top of the viewport
+   * (negative: the log starts above the viewport), or `null` when there is nothing to hold.
    */
-  _updateEstimatedLineHeight() {
-    const row = this._logsRef.value?.querySelector('.log .log--right');
-    if (row == null) {
+  _captureScrollAnchor(virtualizer) {
+    const container = this._logsRef.value;
+    if (container == null || this.follow) {
+      return null;
+    }
+
+    const scrollTop = container.scrollTop;
+    const anchoredItem = virtualizer.getVirtualItems().find((virtualItem) => virtualItem.end > scrollTop);
+    return anchoredItem == null ? null : { index: anchoredItem.index, offset: anchoredItem.start - scrollTop };
+  }
+
+  /**
+   * Puts the anchored log back where the user had it, after the sizes around it changed.
+   *
+   * We move the scroll offset on the container itself rather than through the virtualizer's `applyScrollAdjustment()`:
+   * that one scrolls back to the offset the virtualizer has recorded, which lags the real one while a wheel scroll is
+   * in flight, so it would undo part of the user's own scroll.
+   *
+   * @param {Virtualizer<HTMLDivElement, HTMLElement>} virtualizer
+   * @param {{ index: number, offset: number }|null} anchor
+   */
+  _restoreScrollAnchor(virtualizer, anchor) {
+    const container = this._logsRef.value;
+    if (anchor == null || container == null) {
       return;
     }
 
-    const style = window.getComputedStyle(row);
-    const lineHeight = Number.parseFloat(style.lineHeight);
-    const paddingTop = Number.parseFloat(style.paddingTop);
-    const paddingBottom = Number.parseFloat(style.paddingBottom);
-    if (!Number.isFinite(lineHeight) || !Number.isFinite(paddingTop) || !Number.isFinite(paddingBottom)) {
+    // Reads the anchored log's new offset. `getMeasurements()` covers the whole list, unlike `getVirtualItems()`: the
+    // rendered window may have moved while we were measuring.
+    const anchoredStart = virtualizer['getMeasurements']()[anchor.index]?.start;
+    if (anchoredStart == null) {
       return;
     }
 
-    const estimatedLineHeight = Math.round(lineHeight + paddingTop + paddingBottom);
-    if (estimatedLineHeight <= 0 || estimatedLineHeight === this._estimatedLineHeight) {
-      return;
+    const scrollTop = anchoredStart - anchor.offset;
+    if (Math.abs(scrollTop - container.scrollTop) >= 1) {
+      container.scrollTop = scrollTop;
     }
-
-    this._estimatedLineHeight = estimatedLineHeight;
-    this._forceVirtualizerRemeasure(this._getVirtualizer());
-    // Every unrendered log just changed height, so the rendered window sits at a different offset. Nothing else will
-    // notice: we are called from `updated()`, and the re-measure that follows reports no change for rows the `ref`
-    // callback already measured. Ask for the render ourselves.
-    this.requestUpdate();
   }
 
   /**
    * Wired as the `ref` callback of every rendered log line.
    *
-   * It registers the element with the virtualizer so it can measure its real height (logs have variable heights,
-   * especially when wrapping lines). The virtualizer reads the line index from the `data-index` attribute.
+   * On mount it registers the element with the virtualizer (element cache and `ResizeObserver`). The `updated()` loop
+   * does the same, but only when the rendered logs change. On unmount Lit calls it with `undefined`: the virtualizer
+   * then unobserves and forgets its disconnected elements, which nothing else does.
    *
    * @param {Element} [element]
    */
   _measureElement(element) {
     this._getVirtualizer().measureElement(element == null ? null : /** @type {HTMLElement} */ (element));
+  }
+
+  /**
+   * Measures a rendered log line and stores its height in the virtualizer, whatever the user is doing.
+   *
+   * `measureElement()` registers the element (element cache and `ResizeObserver`) but skips the measurement itself
+   * while the user is scrolling: the library avoids the layout cost mid-scroll and waits for the scroll to end. That
+   * trade-off does not work for us, because we render the rows in normal flow inside a window translated to the first
+   * rendered row's offset (see `_renderLog()`). A row the virtualizer has not measured is laid out at its real height
+   * anyway, so every row below it in the window sits lower than the virtualizer thinks, and the log the user is
+   * reading slides away — by a whole wrapped line or more with `wrap-lines`, then snaps back when the scroll ends and
+   * the real heights are finally read.
+   *
+   * We therefore hand the height to `resizeItem()` ourselves. It is the same call `measureElement()` makes, through
+   * the same `measureElement` option (which holds the 0-height guard, see `_buildVirtualizerOptions()`), and it does
+   * nothing when the height already matches what is cached.
+   *
+   * @param {Virtualizer<HTMLDivElement, HTMLElement>} virtualizer
+   * @param {HTMLElement} element
+   * @return {number} The height it measured.
+   */
+  _measureRenderedLog(virtualizer, element) {
+    virtualizer.measureElement(element);
+    const height = virtualizer.options.measureElement(element, undefined, virtualizer);
+    virtualizer.resizeItem(Number(element.dataset.index), height);
+    return height;
   }
 
   /**
@@ -611,60 +643,20 @@ export class CcLogs extends LitElement {
     }
   }
 
-  // endregion
-
-  // region Metadata logic
-
-  /**
-   * @param {Metadata} metadata
-   * @return {MetadataRendering}
-   */
-  _getMetadataRendering(metadata) {
-    const renderer = this.metadataRenderers?.[metadata.name];
-
-    if (renderer == null) {
-      return DEFAULT_METADATA_RENDERING;
-    }
-
-    const metadataRendering = typeof renderer === 'function' ? renderer(metadata) : renderer;
-
-    /** @type {MetadataRendering} */
-    return {
-      ...DEFAULT_METADATA_RENDERING,
-      ...metadataRendering,
-    };
-  }
-
-  /**
-   * @param {Metadata} metadata
-   * @param {MetadataRendering} metadataRendering
-   * @return {string}
-   */
-  _getMetadataText(metadata, metadataRendering) {
-    return metadataRendering.text != null
-      ? metadataRendering.text
-      : `${metadataRendering.showName ? `${metadata.name}: ` : ''}${metadata.value}`;
-  }
-
   /**
    * Keeps the virtualizer aligned with the logs list when the list's index space changes.
    *
-   * Everything here exists because the virtualizer's caches and scroll anchor are keyed by index, and a FIFO front-trim
-   * (once `limit` is reached) shifts every surviving log's index down. Two things then need realigning.
+   * The virtualizer keys its size cache and scroll anchor by index (see `_buildVirtualizerOptions()`), and a FIFO
+   * front-trim shifts every log's index down. The virtualizer does not notice: trim+append keeps `count` and the edge
+   * keys unchanged.
    *
-   * **The size cache.** The virtualizer caches each rendered log's measured height in a `Map` keyed by index (we
-   * deliberately key by index and not by log id to bound memory — see `_buildVirtualizerOptions()`). That cache does
-   * not follow the trim on its own: trim+append at the limit keeps `count` constant and the index edge keys unchanged,
-   * so the virtualizer's built-in edge-key-change detection never fires. The stale cached heights then apply to the
-   * wrong logs, which positions lines with the wrong height and makes them overlap (most visible with `wrap-lines` and
-   * multi-line logs, when scrolling up into a trimmed region). We drop the cache on a full rebuild (filter change /
-   * clear) or shift every cached index down by the front-trim count.
+   * **The size cache.** Left alone, cached heights apply to the wrong logs and rows overlap. We drop the cache on a
+   * rebuild (filter change, clear) and shift it down by the trim count otherwise. The shift also runs while following:
+   * the next trims move other logs under the indices the bottom window leaves behind, so skipping it makes the view
+   * jump as soon as the user scrolls up.
    *
-   * **The scroll offset.** The whole list slides up by the height of the trimmed logs, but nothing moves the scroll
-   * offset with it. `anchorTo: 'end'` cannot help: its anchor is a `getItemKey()` value, which is the index, so it
-   * pins the viewport to an index rather than to a log. Left alone, the user reading history sees the content scroll
-   * out from under them by one trim's worth of logs on every append. We therefore subtract the trimmed height from the
-   * scroll offset ourselves.
+   * **The scroll offset.** The list slides up by the trimmed height, and `anchorTo: 'end'` cannot follow it because
+   * it pins an index, not a log. We subtract the trimmed height from the scroll offset ourselves.
    */
   _realignVirtualizer() {
     const { rebuilt, frontTrim } = this._logsCtrl.consumeIndexSpaceChange();
@@ -680,18 +672,10 @@ export class CcLogs extends LitElement {
     if (rebuilt) {
       // Full rebuild (filter change / clear): indices map to entirely different logs, drop the whole cache.
       virtualizer.itemSizeCache.clear();
-    } else if (frontTrim > 0 && !this.follow) {
+    } else if (frontTrim > 0) {
       // FIFO front-trim shifted every surviving log's index down by `frontTrim`. Shift each measured height down by the
       // same amount so it stays attached to the same log; cached indices that fall below 0 belonged to trimmed logs and
-      // are dropped. We only need this while the user is scrolled up reading history: the region they can scroll into
-      // must stay correctly positioned.
-      //
-      // While following the tail we deliberately SKIP this (see the `else` below). It is the dominant per-append cost at
-      // a large `limit` — both this O(cache size) shift and the O(count) recompute it forces — and it is unnecessary:
-      // only the bottom window is rendered while following, and it is re-measured at its (constant) indices on every
-      // update (see the loop in `updated()`), so its heights are always correct and the cache never accumulates the
-      // off-screen history that the shift exists to keep aligned. Skipping the shift is also what keeps the cache
-      // bounded to the visible window instead of letting it grow towards `limit`.
+      // are dropped.
       /** @type {Map<number, number>} */
       const shiftedCache = new Map();
       for (const [index, size] of virtualizer.itemSizeCache) {
@@ -702,8 +686,7 @@ export class CcLogs extends LitElement {
       }
       virtualizer.itemSizeCache = shiftedCache;
     } else {
-      // Nothing changed, or we are following the tail and the bottom window is kept correct by the per-update
-      // re-measure: nothing to realign.
+      // The index space did not change: nothing to realign.
       return;
     }
 
@@ -768,6 +751,23 @@ export class CcLogs extends LitElement {
     this._focusedIndexIsInDom = this._logsCtrl.isFocusedIndexInRange(renderedRange);
     if (!this._focusedIndexIsInDom && this.shadowRoot?.activeElement != null) {
       this._logsRef.value?.focus();
+    }
+  }
+
+  /**
+   * A width change changes how many characters a wrapped line holds, so every log we have not rendered changes height.
+   * The rows we render are re-measured by the virtualizer's own `ResizeObserver`, but nothing re-reads the layout for
+   * the others: we drop the measure signature so that the next `updated()` does it.
+   *
+   * @param {number} width
+   */
+  _onResize(width) {
+    if (width === this._measuredWidth) {
+      return;
+    }
+    this._measuredWidth = width;
+    if (this.wrapLines) {
+      this._lastMeasureSignature = null;
     }
   }
 
@@ -1075,9 +1075,9 @@ export class CcLogs extends LitElement {
       const ts = this._dateDisplayer.format(log.date);
       const meta =
         log.metadata
-          ?.map((metadata) => ({ metadata, metadataRendering: this._getMetadataRendering(metadata) }))
+          ?.map((metadata) => ({ metadata, metadataRendering: getMetadataRendering(metadata, this.metadataRenderers) }))
           .filter(({ metadataRendering }) => !metadataRendering.hidden)
-          .map(({ metadata, metadataRendering }) => this._getMetadataText(metadata, metadataRendering)) ?? [];
+          .map(({ metadata, metadataRendering }) => getMetadataText(metadata, metadataRendering)) ?? [];
       const msg = stripAnsi(log.message);
       return [ts, ...meta, msg].filter((t) => t?.length > 0).join(' ');
     });
@@ -1126,6 +1126,9 @@ export class CcLogs extends LitElement {
     if (changedProperties.has('limit')) {
       this._logsCtrl.limit = this.limit;
     }
+
+    this._sizeEstimator.wrapLines = this.wrapLines;
+    this._sizeEstimator.metadataRenderers = this.metadataRenderers;
 
     if (
       changedProperties.has('messageFilter') ||
@@ -1191,10 +1194,36 @@ export class CcLogs extends LitElement {
         .join(',')}`;
       if (measureSignature !== this._lastMeasureSignature) {
         this._lastMeasureSignature = measureSignature;
-        this._updateEstimatedLineHeight();
-        for (const logElement of this._logsRef.value.querySelectorAll('.log')) {
-          virtualizer.measureElement(/** @type {HTMLElement} */ (logElement));
+        // Everything below changes the height of some logs, which moves every log under them. Hold on to the log the
+        // user is reading so we can put it back where they had it.
+        const anchor = this._captureScrollAnchor(virtualizer);
+        const layoutChanged = this._sizeEstimator.readLayout(this._logsRef.value.querySelector('.log .log--right'));
+        if (layoutChanged) {
+          this._forceVirtualizerRemeasure(virtualizer);
         }
+        /** @type {Array<{ log: Log, height: number }>} */
+        const measuredLogs = [];
+        for (const logElement of this._logsRef.value.querySelectorAll('.log')) {
+          const log = renderedLogs[Number(/** @type {HTMLElement} */ (logElement).dataset.index)];
+          const height = this._measureRenderedLog(virtualizer, /** @type {HTMLElement} */ (logElement));
+          if (log != null) {
+            measuredLogs.push({ log, height });
+          }
+        }
+        // We only learn while following. Correcting the count moves every log we have not rendered, which moves the
+        // whole history under the viewport; the anchor absorbs it, but not when the correction is big enough to leave
+        // the anchored log out of reach of the scroll offset. While following there is no history to hold still, and
+        // every log passes through the viewport to be measured.
+        const calibrated = this.follow && this._sizeEstimator.calibrate(measuredLogs);
+        if (calibrated) {
+          this._forceVirtualizerRemeasure(virtualizer);
+        }
+        if (layoutChanged || calibrated) {
+          // Every unrendered log just changed height, so the rendered window sits at a different offset. Nothing else
+          // will notice: the re-measure above reports no change for rows already measured. Ask for the render ourselves.
+          this.requestUpdate();
+        }
+        this._restoreScrollAnchor(virtualizer, anchor);
       }
     }
 
@@ -1329,22 +1358,19 @@ export class CcLogs extends LitElement {
    * @param {Metadata} metadata
    */
   _renderMetadata(metadata) {
-    const metadataRendering = this._getMetadataRendering(metadata);
-    if (metadataRendering.hidden) {
+    const rendered = getRenderedMetadata(metadata, this.metadataRenderers);
+    if (rendered == null) {
       return null;
     }
 
-    const text = this._getMetadataText(metadata, metadataRendering);
-    const size = metadataRendering.size ?? 0;
-    const truncatedText = typeof size === 'number' && size > 0 ? truncateString(text, size) : text;
     const classInfo = {
       metadata: true,
-      strong: metadataRendering.strong,
-      [metadataRendering.intent]: true,
+      strong: rendered.rendering.strong,
+      [rendered.rendering.intent]: true,
     };
 
     // Keep this in one line to avoid any extra whitespace.
-    return html`<span class="${classMap(classInfo)}" style="min-width: ${size}ch;">${truncatedText}</span>`;
+    return html`<span class="${classMap(classInfo)}" style="min-width: ${rendered.size}ch;">${rendered.text}</span>`;
   }
 
   /**
