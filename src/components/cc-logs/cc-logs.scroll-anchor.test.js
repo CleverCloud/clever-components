@@ -16,6 +16,18 @@ function generateLogs(length, offset = 0) {
 }
 
 /**
+ * Logs long enough to wrap over several lines, with a height that varies from one log to the next.
+ *
+ * @param {number} length @param {number} offset
+ */
+function generateWrappingLogs(length, offset = 0) {
+  return generateLogs(length, offset).map((log, i) => ({
+    ...log,
+    message: `${log.message} ${'lorem ipsum dolor sit amet consectetur '.repeat((i % 7) + 1)}`,
+  }));
+}
+
+/**
  * Describes what the user actually sees at the top of the viewport: which log crosses the top edge, and how far above
  * that edge it starts. Both must survive an append for the view to be considered stable.
  *
@@ -171,11 +183,126 @@ describe('cc-logs scroll anchoring', function () {
       await settle(el);
 
       const row = el.shadowRoot.querySelector('.log');
-      expect(el._estimatedLineHeight, 'the estimate matches a rendered line').to.equal(
+      expect(el._sizeEstimator.rowHeight, 'the estimate matches a rendered line').to.equal(
         Math.round(row.getBoundingClientRect().height),
       );
     });
   }
+
+  // Regression test: the virtualizer skips its own measurements while the user is scrolling (it waits for the scroll
+  // to end). We render the rows in normal flow, so an unmeasured row is laid out at its real height anyway and every
+  // row below it in the window sits where the virtualizer does not expect it. With `wrap-lines` a row is several lines
+  // tall while an unmeasured one is assumed to be one, so the view slides by whole lines mid-scroll, then snaps back
+  // once the scroll ends.
+  it('knows the real height of every rendered row, while the user is still scrolling (wrap-lines)', async function () {
+    const el = await fixture(
+      html`<cc-logs-beta wrap-lines style="display:block; height:300px; width:400px;"></cc-logs-beta>`,
+    );
+    await el.updateComplete;
+    el.appendLogs(generateWrappingLogs(2000));
+    await settle(el);
+
+    // Jump deep into history the component has never rendered, and look before the scroll has ended.
+    const container = el.shadowRoot.querySelector('.logs_container');
+    container.scrollTop = Math.round(container.scrollHeight / 3);
+    container.dispatchEvent(new Event('scroll'));
+    await el.updateComplete;
+    await el.updateComplete;
+
+    const virtualizer = el._getVirtualizer();
+    expect(virtualizer.isScrolling, 'the scroll has not ended yet').to.equal(true);
+    const measurements = virtualizer.getMeasurements();
+    /** @type {Array<string>} */
+    const misplaced = [];
+    for (const row of el.shadowRoot.querySelectorAll('.log')) {
+      const index = Number(row.dataset.index);
+      const realHeight = Math.round(row.getBoundingClientRect().height);
+      const knownHeight = Math.round(measurements[index].size);
+      if (realHeight !== knownHeight) {
+        misplaced.push(`index ${index}: ${realHeight}px tall, known as ${knownHeight}px`);
+      }
+    }
+    expect(
+      misplaced.length,
+      `the virtualizer knows the height of every rendered row (${misplaced.length} it does not, e.g. ${misplaced.slice(0, 3).join(' ; ')})`,
+    ).to.equal(0);
+  });
+
+  // Regression test: a log the component has not rendered yet is estimated from the number of characters it holds (see
+  // `LogsSizeEstimator.estimateHeight()`). Assuming a single line, as a non-wrapped log always is, packs the whole history the user
+  // has not visited into a fraction of the height it really needs, and scrolling up into it moves the rows around the
+  // viewport by the accumulated error.
+  it('estimates a log it has not rendered at the height it really takes (wrap-lines)', async function () {
+    const el = await fixture(
+      html`<cc-logs-beta follow wrap-lines style="display:block; height:300px; width:400px;"></cc-logs-beta>`,
+    );
+    await el.updateComplete;
+    // Stream in several times so the estimate is calibrated on the logs going past, as it is in a real stream.
+    for (let batch = 0; batch < 8; batch++) {
+      el.appendLogs(generateWrappingLogs(100, batch * 100));
+      await settle(el, 4);
+    }
+    await settle(el);
+
+    const logs = el._logsCtrl.getList();
+    /** @type {Array<string>} */
+    const misestimated = [];
+    for (const row of el.shadowRoot.querySelectorAll('.log')) {
+      const index = Number(row.dataset.index);
+      const realHeight = Math.round(row.getBoundingClientRect().height);
+      const estimatedHeight = el._sizeEstimator.estimateHeight(logs[index]);
+      // One line of tolerance: a message wraps on its spaces, so the last line of a log is only partly filled.
+      if (Math.abs(estimatedHeight - realHeight) > el._sizeEstimator._lineHeight) {
+        misestimated.push(`${logs[index].id}: ${realHeight}px tall, estimated at ${estimatedHeight}px`);
+      }
+    }
+    expect(
+      misestimated.length,
+      `every log is estimated within a line of its height (${misestimated.length} are not, e.g. ${misestimated.slice(0, 3).join(' ; ')})`,
+    ).to.equal(0);
+  });
+
+  // Regression test: the characters a line holds used to be read from the width of the first rendered row's text. That
+  // text shrinks to fit a short message, so the count depended on which log came first. Changing the count moves the
+  // logs, which changes the first rendered log: the count flipped between two values on every update, and the updates
+  // chained forever without yielding to the browser, which froze the tab.
+  it('counts the characters a line holds whatever log is rendered first (wrap-lines)', async function () {
+    /** @param {string} message */
+    async function charsPerLineFromWidth(message) {
+      const el = await fixture(
+        html`<cc-logs-beta wrap-lines style="display:block; height:300px; width:800px;"></cc-logs-beta>`,
+      );
+      await el.updateComplete;
+      el.appendLogs([{ ...generateLogs(1)[0], message }]);
+      await settle(el);
+      return el._sizeEstimator._charsPerLineFromWidth;
+    }
+
+    const fromShortLog = await charsPerLineFromWidth('short');
+    const fromLongLog = await charsPerLineFromWidth('lorem ipsum dolor sit amet consectetur '.repeat(5));
+
+    expect(fromShortLog, 'a line holds more than the short message').to.be.greaterThan('short'.length);
+    expect(fromShortLog, 'the count does not depend on the message').to.equal(fromLongLog);
+  });
+
+  // Regression test: the characters a line holds were only re-read when the rendered logs changed. Resizing the
+  // component while the same logs stay on screen left the count at the old width, so every log the component had not
+  // rendered was estimated for a line that no longer existed.
+  it('counts the characters a line holds again when the component is resized (wrap-lines)', async function () {
+    const el = await fixture(
+      html`<cc-logs-beta wrap-lines style="display:block; height:300px; width:800px;"></cc-logs-beta>`,
+    );
+    await el.updateComplete;
+    // Few enough logs to all be rendered: the rendered logs do not change with the width.
+    el.appendLogs(generateWrappingLogs(5));
+    await settle(el);
+    const charsPerLineAt800 = el._sizeEstimator._charsPerLineFromWidth;
+
+    el.style.width = '400px';
+    await settle(el);
+
+    expect(el._sizeEstimator._charsPerLineFromWidth, 'a line holds fewer characters').to.be.lessThan(charsPerLineAt800);
+  });
 
   it('still scrolls the trimmed-away history out of the view', async function () {
     const el = await fixture(html`<cc-logs-beta limit="1000" style="display:block; height:300px;"></cc-logs-beta>`);
