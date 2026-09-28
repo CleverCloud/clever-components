@@ -1,3 +1,4 @@
+import { DAY } from '../../lib/date/date-utils.js';
 import { makeStory, storyWait } from '../../stories/lib/make-story.js';
 import './cc-token-session-list.js';
 
@@ -16,14 +17,12 @@ const conf = {
   component: 'cc-token-session-list',
 };
 
-const ONE_DAY = 24 * 60 * 60 * 1000;
-
 /** @type {SessionToken} */
 const currentSession = {
   id: '2',
-  creationDate: new Date(Date.now() - 89 * ONE_DAY), // medium-aged token (90 days old)
-  expirationDate: new Date(Date.now() + 32 * ONE_DAY), // does not expire soon (32 days)
-  lastUsedDate: new Date(Date.now() - 7 * ONE_DAY), // recent use (7 days ago)
+  creationDate: new Date(Date.now() - 89 * DAY), // medium-aged token (90 days old)
+  expirationDate: new Date(Date.now() + 32 * DAY), // does not expire soon (32 days)
+  lastUsedDate: new Date(Date.now() - 7 * DAY), // recent use (7 days ago)
   isCleverTeam: false,
 };
 
@@ -32,41 +31,41 @@ const otherSessions = [
   {
     type: 'idle',
     id: '1',
-    creationDate: new Date(Date.now() - 180 * ONE_DAY), // long-lived token (180 days old)
-    expirationDate: new Date(Date.now() + 32 * ONE_DAY), // does not expire soon (32 days)
-    lastUsedDate: new Date(Date.now() - 30 * ONE_DAY), // 30 days ago
+    creationDate: new Date(Date.now() - 180 * DAY), // long-lived token (180 days old)
+    expirationDate: new Date(Date.now() + 32 * DAY), // does not expire soon (32 days)
+    lastUsedDate: new Date(Date.now() - 30 * DAY), // 30 days ago
     isCleverTeam: false,
   },
   {
     type: 'idle',
     id: '3',
-    creationDate: new Date(Date.now() - 240 * ONE_DAY), // very old token (240 days old)
-    expirationDate: new Date(Date.now() + 6 * ONE_DAY), // expires soon (6 days)
-    lastUsedDate: new Date(Date.now() - 10 * ONE_DAY), // 10 days ago
+    creationDate: new Date(Date.now() - 240 * DAY), // very old token (240 days old)
+    expirationDate: new Date(Date.now() + 6 * DAY), // expires soon (6 days)
+    lastUsedDate: new Date(Date.now() - 10 * DAY), // 10 days ago
     isCleverTeam: false,
   },
   {
     type: 'idle',
     id: '4',
-    creationDate: new Date(Date.now() - 350 * ONE_DAY), // extremely old token (350 days old)
-    expirationDate: new Date(Date.now() + 2 * ONE_DAY), // expires soon (2 days)
-    lastUsedDate: new Date(Date.now() - 2 * ONE_DAY), // very recent use (2 days ago)
+    creationDate: new Date(Date.now() - 350 * DAY), // extremely old token (350 days old)
+    expirationDate: new Date(Date.now() + 2 * DAY), // expires soon (2 days)
+    lastUsedDate: new Date(Date.now() - 2 * DAY), // very recent use (2 days ago)
     isCleverTeam: false,
   },
   {
     type: 'idle',
     id: '5',
-    creationDate: new Date(Date.now() - 70 * ONE_DAY), // newer token (70 days old)
-    expirationDate: new Date(Date.now() + 45 * ONE_DAY), // does not expire soon (45 days)
-    lastUsedDate: new Date(Date.now() - 1 * ONE_DAY), // very recent use (1 day ago)
+    creationDate: new Date(Date.now() - 70 * DAY), // newer token (70 days old)
+    expirationDate: new Date(Date.now() + 45 * DAY), // does not expire soon (45 days)
+    lastUsedDate: new Date(Date.now() - 1 * DAY), // very recent use (1 day ago)
     isCleverTeam: false,
   },
   {
     type: 'idle',
     id: '6',
-    creationDate: new Date(Date.now() - 80 * ONE_DAY), // medium-aged token (80 days old)
+    creationDate: new Date(Date.now() - 80 * DAY), // medium-aged token (80 days old)
     expirationDate: new Date(Date.now() + 6 * 60 * 60 * 1000), // expires soon (0.25 days)
-    lastUsedDate: new Date(Date.now() - 5 * ONE_DAY), // recent use (5 days ago)
+    lastUsedDate: new Date(Date.now() - 5 * DAY), // recent use (5 days ago)
     isCleverTeam: true,
   },
 ];
@@ -174,7 +173,7 @@ export const dataLoadedWithCleverTeamAndExpirationCloseNoVisibleWarning = makeSt
           if (session.isCleverTeam) {
             return {
               ...session,
-              expirationDate: new Date(Date.now() + 6 * ONE_DAY), // expires soon (6 days)
+              expirationDate: new Date(Date.now() + 6 * DAY), // expires soon (6 days)
             };
           }
 
@@ -194,7 +193,7 @@ export const dataLoadedWithCleverTeamAsCurrentSessionAndExpirationCloseNoVisible
         currentSessionToken: {
           ...currentSession,
           isCleverTeam: true,
-          expirationDate: new Date(Date.now() + 6 * ONE_DAY), // expires soon (6 days)
+          expirationDate: new Date(Date.now() + 6 * DAY), // expires soon (6 days)
         },
         otherSessionTokens: otherSessions,
       },

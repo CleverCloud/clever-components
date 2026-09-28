@@ -13,6 +13,7 @@ import {
   iconRemixCpuLine as iconCpu,
 } from '../../assets/cc-remix.icons.js';
 import { ResizeController } from '../../controllers/resize-controller.js';
+import { DAY } from '../../lib/date/date-utils.js';
 import { isStringEmpty } from '../../lib/utils.js';
 import { accessibilityStyles } from '../../styles/accessibility.js';
 import { tileStyles } from '../../styles/info-tiles.js';
@@ -39,10 +40,8 @@ const BOTTOM_THRESHOLD = 20;
 
 const NUMBER_OF_POINTS = 24;
 
-const ONE_DAY = 60 * 60 * 1000 * 24;
-
 const SKELETON_REQUESTS = Array.from(new Array(NUMBER_OF_POINTS)).map((_, index) => {
-  const startTs = Date.now() - ONE_DAY;
+  const startTs = Date.now() - DAY;
   return {
     skeleton: true,
     value: 0,

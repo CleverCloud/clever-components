@@ -2,6 +2,7 @@ import { ListProductAddonCommand } from '@clevercloud/client/cc-api-commands/pro
 import { unlessAborted } from '../../lib/abortable.js';
 import { fetchPriceSystem } from '../../lib/api-helpers.js';
 import { getCcApiClientWithOAuth } from '../../lib/cc-api-client.js';
+import { DAY } from '../../lib/date/date-utils.js';
 import { formatAddonProduct } from '../../lib/product.js';
 import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
 import '../cc-smart-container/cc-smart-container.js';
@@ -15,8 +16,6 @@ import './cc-pricing-product.js';
  * @import { OnContextUpdateArgs } from '../../lib/smart/smart-component.types.js'
  * @import { ProductAddon } from '@clevercloud/client/cc-api-commands/product/product.types.js'
  */
-
-const ONE_DAY = 1000 * 60 * 60 * 24;
 
 defineSmartComponent({
   selector: 'cc-pricing-product[mode="addon"]',
@@ -88,16 +87,14 @@ function fetchAddonProvider({ apiConfig, signal, productId }) {
   // This endpoint is public, it takes no `ownerId`.
   // `withVersions: false` because version info comes from a distinct endpoint, and the pricing page
   // does not display it.
-  return ccApiClient
-    .send(new ListProductAddonCommand({ withVersions: false }), { signal, cache: { ttl: ONE_DAY } })
-    .then(
-      /** @param {Array<ProductAddon>} allAddonProviders */
-      (allAddonProviders) => {
-        const addonProvider = allAddonProviders.find((ap) => ap.id === productId);
-        if (addonProvider == null) {
-          throw new Error(`Unknown add-on provider ID: ${productId}`);
-        }
-        return addonProvider;
-      },
-    );
+  return ccApiClient.send(new ListProductAddonCommand({ withVersions: false }), { signal, cache: { ttl: DAY } }).then(
+    /** @param {Array<ProductAddon>} allAddonProviders */
+    (allAddonProviders) => {
+      const addonProvider = allAddonProviders.find((ap) => ap.id === productId);
+      if (addonProvider == null) {
+        throw new Error(`Unknown add-on provider ID: ${productId}`);
+      }
+      return addonProvider;
+    },
+  );
 }

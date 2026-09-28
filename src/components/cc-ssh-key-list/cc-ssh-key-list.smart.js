@@ -5,13 +5,12 @@ import { ListGithubSshKeyCommand } from '@clevercloud/client/cc-api-commands/ssh
 import { ListPersonalSshKeyCommand } from '@clevercloud/client/cc-api-commands/ssh-key/list-personal-ssh-key-command.js';
 import { unlessAborted } from '../../lib/abortable.js';
 import { getCcApiClientWithOAuth } from '../../lib/cc-api-client.js';
+import { DAY } from '../../lib/date/date-utils.js';
 import { notifyError, notifySuccess } from '../../lib/notifications.js';
 import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-smart-container/cc-smart-container.js';
 import './cc-ssh-key-list.js';
-
-const ONE_DAY = 1000 * 60 * 60 * 24;
 
 /**
  * @import { CcSshKeyList } from './cc-ssh-key-list.js'
@@ -174,7 +173,7 @@ class Api {
    */
   async fetchAllKeys() {
     const [user, personalKeys] = await Promise.all([
-      this._ccApiClient.send(new GetProfileCommand(), { signal: this._signal, cache: { ttl: ONE_DAY } }),
+      this._ccApiClient.send(new GetProfileCommand(), { signal: this._signal, cache: { ttl: DAY } }),
       this._ccApiClient.send(new ListPersonalSshKeyCommand(), { signal: this._signal, cache: { ttl: 0 } }),
     ]);
 

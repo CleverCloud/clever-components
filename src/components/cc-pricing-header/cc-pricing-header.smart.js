@@ -1,6 +1,7 @@
 import { ListZoneCommand } from '@clevercloud/client/cc-api-commands/zone/list-zone-command.js';
 import { unlessAborted } from '../../lib/abortable.js';
 import { getCcApiClientWithOAuth } from '../../lib/cc-api-client.js';
+import { DAY } from '../../lib/date/date-utils.js';
 import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
 import '../cc-smart-container/cc-smart-container.js';
 import './cc-pricing-header.js';
@@ -11,8 +12,6 @@ import './cc-pricing-header.js';
  * @import { ApiConfig } from '../../lib/send-to-api.types.js'
  * @import { OnContextUpdateArgs } from '../../lib/smart/smart-component.types.js'
  */
-
-const ONE_DAY = 1000 * 60 * 60 * 24;
 
 defineSmartComponent({
   selector: 'cc-pricing-header',
@@ -85,7 +84,7 @@ defineSmartComponent({
 function fetchAllZones({ apiConfig, signal }) {
   const ccApiClient = getCcApiClientWithOAuth(apiConfig);
   // This endpoint is public, it takes no `ownerId`.
-  return ccApiClient.send(new ListZoneCommand(), { signal, cache: { ttl: ONE_DAY } }).then(
+  return ccApiClient.send(new ListZoneCommand(), { signal, cache: { ttl: DAY } }).then(
     /**
      * @param {Zone[]} zones
      * @returns {Zone[]}

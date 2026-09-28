@@ -2,11 +2,10 @@ import { ListLinkCommand } from '@clevercloud/client/cc-api-commands/link/list-l
 import { ListZoneCommand } from '@clevercloud/client/cc-api-commands/zone/list-zone-command.js';
 import { unlessAborted } from '../../lib/abortable.js';
 import { getCcApiClientWithOAuth } from '../../lib/cc-api-client.js';
+import { DAY } from '../../lib/date/date-utils.js';
 import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
 import '../cc-smart-container/cc-smart-container.js';
 import './cc-addon-linked-apps.js';
-
-const ONE_DAY = 1000 * 60 * 60 * 24;
 
 /**
  * @import { CcAddonLinkedApps } from './cc-addon-linked-apps.js'
@@ -87,7 +86,7 @@ function fetchApplications({ apiConfig, signal, ownerId, addonId }) {
 function fetchZones({ apiConfig, signal, ownerId }) {
   return getCcApiClientWithOAuth(apiConfig).send(new ListZoneCommand({ ownerId }), {
     signal,
-    cache: { ttl: ONE_DAY },
+    cache: { ttl: DAY },
   });
 }
 

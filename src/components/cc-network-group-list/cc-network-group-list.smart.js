@@ -6,6 +6,7 @@ import { isNetworkGroupAddonCandidate } from '@clevercloud/client/cc-api-command
 import { isKnown } from '@clevercloud/client/utils/unknown-to-client-utils.js';
 import { unlessAborted } from '../../lib/abortable.js';
 import { getCcApiClientWithOAuth } from '../../lib/cc-api-client.js';
+import { DAY } from '../../lib/date/date-utils.js';
 import { notify, notifyError, notifySuccess } from '../../lib/notifications.js';
 import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
 import { i18n } from '../../translations/translation.js';
@@ -34,8 +35,6 @@ import './cc-network-group-list.js';
 /**
  * @typedef {Known<NetworkGroupPeer> & { endpoint: Known<NetworkGroupEndpoint> }} KnownNetworkGroupPeer
  */
-
-const ONE_DAY = 1000 * 60 * 60 * 24;
 
 defineSmartComponent({
   selector: 'cc-network-group-list',
@@ -70,7 +69,7 @@ defineSmartComponent({
       }
       const addon = await ccApiClient.send(new GetAddonCommand({ ownerId, addonId: resourceId }), {
         signal,
-        cache: { ttl: ONE_DAY },
+        cache: { ttl: DAY },
       });
       return {
         resolvedResourceId: addon.realId,

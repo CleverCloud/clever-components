@@ -2,6 +2,7 @@ import { ListProductRuntimeCommand } from '@clevercloud/client/cc-api-commands/p
 import { unlessAborted } from '../../lib/abortable.js';
 import { fetchPriceSystem } from '../../lib/api-helpers.js';
 import { getCcApiClientWithOAuth } from '../../lib/cc-api-client.js';
+import { DAY } from '../../lib/date/date-utils.js';
 import { formatRuntimeProduct, getRunnerProduct } from '../../lib/product.js';
 import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
 import '../cc-smart-container/cc-smart-container.js';
@@ -14,8 +15,6 @@ import './cc-pricing-product.js';
  * @import { OnContextUpdateArgs } from '../../lib/smart/smart-component.types.js'
  * @import { ProductRuntime } from '@clevercloud/client/cc-api-commands/product/product.types.js'
  */
-
-const ONE_DAY = 1000 * 60 * 60 * 24;
 
 defineSmartComponent({
   selector: 'cc-pricing-product[mode="runtime"]',
@@ -84,7 +83,7 @@ function fetchRuntime({ apiConfig, productId, signal }) {
   const ccApiClient = getCcApiClientWithOAuth(apiConfig);
   // This endpoint is public, it takes no `ownerId`.
   // @ts-expect-error FIXME: `getRunnerProduct()` may return a `Partial<ProductRuntime>` (or `void`), which doesn't strictly match `ProductRuntime`
-  return ccApiClient.send(new ListProductRuntimeCommand(), { signal, cache: { ttl: ONE_DAY } }).then(
+  return ccApiClient.send(new ListProductRuntimeCommand(), { signal, cache: { ttl: DAY } }).then(
     /** @param {Array<ProductRuntime>} allRuntimes */
     (allRuntimes) => {
       const runtime = allRuntimes.find((f) => f.variant.slug === productId);

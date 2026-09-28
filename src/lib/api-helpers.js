@@ -4,6 +4,7 @@ import { GetInvoiceUrl } from '@clevercloud/client/cc-api-commands/invoice/get-i
 import { ListInvoiceCommand } from '@clevercloud/client/cc-api-commands/invoice/list-invoice-command.js';
 import { GetPriceSystemCommand } from '@clevercloud/client/cc-api-commands/price-system/get-price-system-command.js';
 import { getCcApiClientWithOAuth } from './cc-api-client.js';
+import { DAY } from './date/date-utils.js';
 
 // FIXME: We're using `@typedef` instead of `@import` here due to a false positive from TS
 // See: https://github.com/microsoft/TypeScript/issues/60908/
@@ -12,8 +13,6 @@ import { getCcApiClientWithOAuth } from './cc-api-client.js';
  * @typedef {import('../components/common.types.js').Invoice} Invoice
  * @typedef {import('@clevercloud/client/cc-api-commands/price-system/price-system.types.js').PriceSystem} PriceSystem
  */
-
-const ONE_DAY = 1000 * 60 * 60 * 24;
 
 /**
  * @param {object} options
@@ -81,7 +80,7 @@ export async function fetchPriceSystem({ apiConfig, signal, zoneId, currency }) 
   const ccApiClient = getCcApiClientWithOAuth(apiConfig);
   return ccApiClient.send(new GetPriceSystemCommand({ zone: zoneId, currency }), {
     signal,
-    cache: { ttl: ONE_DAY },
+    cache: { ttl: DAY },
   });
 }
 
