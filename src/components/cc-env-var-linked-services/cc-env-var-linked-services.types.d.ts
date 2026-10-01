@@ -24,4 +24,6 @@ export interface LinkedService {
   id: string;
   name: string;
   variables: Array<EnvVar>;
+  /** URL of the service dashboard within the host app. When set, a link to it is displayed. */
+  dashboardUrl?: string;
 }
