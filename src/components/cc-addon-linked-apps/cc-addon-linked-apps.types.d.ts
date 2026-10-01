@@ -1,4 +1,4 @@
-import { Zone } from '../common.types.js';
+import { Zone } from '@clevercloud/client/cc-api-commands/zone/zone.types.js';
 
 export type AddonLinkedAppsState = AddonLinkedAppsStateLoading | AddonLinkedAppsStateLoaded | AddonLinkedAppsStateError;
 

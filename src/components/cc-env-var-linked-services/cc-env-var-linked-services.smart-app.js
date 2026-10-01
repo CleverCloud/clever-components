@@ -1,5 +1,7 @@
-import { get, getAllEnvVarsForDependencies } from '@clevercloud/client/esm/api/v2/application.js';
-import { sendToApi } from '../../lib/send-to-api.js';
+import { GetApplicationCommand } from '@clevercloud/client/cc-api-commands/application/get-application-command.js';
+import { GetEnvironmentCommand } from '@clevercloud/client/cc-api-commands/environment/get-environment-command.js';
+import { unlessAborted } from '../../lib/abortable.js';
+import { getCcApiClientWithOAuth } from '../../lib/cc-api-client.js';
 import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
 import '../cc-smart-container/cc-smart-container.js';
 import './cc-env-var-linked-services.js';
@@ -7,7 +9,7 @@ import './cc-env-var-linked-services.js';
 /**
  * @import { CcEnvVarLinkedServices } from './cc-env-var-linked-services.js'
  * @import { LinkedService } from './cc-env-var-linked-services.types.js'
- * @import { ApiConfig } from '../../lib/send-to-api.types.js'
+ * @import { CcApiClient } from '@clevercloud/client/cc-api-client.js'
  * @import { OnContextUpdateArgs } from '../../lib/smart/smart-component.types.js'
  */
 
@@ -23,70 +25,64 @@ defineSmartComponent({
    */
   onContextUpdate({ context, updateComponent, signal }) {
     const { apiConfig, ownerId, appId } = context;
+    const ccApiClient = getCcApiClientWithOAuth(apiConfig);
 
     updateComponent('state', { type: 'loading', name: '' });
 
-    const api = new Api(apiConfig, signal);
-
-    api.fetchAppName({ ownerId, appId }).then((name) => {
+    fetchAppName({ ccApiClient, signal, ownerId, appId }).then((name) => {
       updateComponent('appName', name);
     });
 
-    api
-      .fetchEnvVarLinkedApps({ ownerId, appId })
+    fetchEnvVarLinkedApps({ ccApiClient, signal, ownerId, appId })
       .then((linkedServices) => {
         updateComponent('state', {
           type: 'loaded',
           services: linkedServices,
         });
       })
-      .catch((e) => {
-        console.error(e);
-        updateComponent('state', {
-          type: 'error',
-        });
-      });
+      .catch((e) =>
+        unlessAborted(signal, e, () => {
+          console.error(e);
+          updateComponent('state', {
+            type: 'error',
+          });
+        }),
+      );
   },
 });
 
-// -- API calls
-class Api {
-  /**
-   * @param {ApiConfig} apiConfig
-   * @param {AbortSignal} signal
-   */
-  constructor(apiConfig, signal) {
-    this.apiConfig = apiConfig;
-    this.signal = signal;
-  }
+/**
+ * @param {object} params
+ * @param {CcApiClient} params.ccApiClient
+ * @param {AbortSignal} params.signal
+ * @param {string} params.ownerId
+ * @param {string} params.appId
+ * @returns {Promise<Array<LinkedService>>}
+ */
+async function fetchEnvVarLinkedApps({ ccApiClient, signal, ownerId, appId }) {
+  const { linkedApplicationsEnvironment } = await ccApiClient.send(
+    new GetEnvironmentCommand({ ownerId, applicationId: appId, includeLinkedApplications: true }),
+    { signal },
+  );
 
-  /**
-   * @param {object} params
-   * @param {string} params.ownerId
-   * @param {string} params.appId
-   * @returns {Promise<LinkedService[]>}
-   */
-  async fetchEnvVarLinkedApps({ ownerId, appId }) {
-    const linkedApps = await getAllEnvVarsForDependencies({ id: ownerId, appId }).then(
-      sendToApi({ apiConfig: this.apiConfig, signal: this.signal }),
-    );
+  return linkedApplicationsEnvironment.map((linkedApp) => {
+    return {
+      id: linkedApp.applicationId,
+      name: linkedApp.applicationName,
+      variables: linkedApp.environment,
+    };
+  });
+}
 
-    return linkedApps.map((/** @type {any} */ linkedApp) => {
-      return {
-        id: linkedApp.app_id,
-        name: linkedApp.app_name,
-        variables: linkedApp.env,
-      };
-    });
-  }
-
-  /**
-   * @param {object} params
-   * @param {string} params.ownerId
-   * @param {string} params.appId
-   */
-  async fetchAppName({ ownerId, appId }) {
-    const app = await get({ id: ownerId, appId }).then(sendToApi({ apiConfig: this.apiConfig, signal: this.signal }));
-    return app.name;
-  }
+/**
+ * @param {object} params
+ * @param {CcApiClient} params.ccApiClient
+ * @param {AbortSignal} params.signal
+ * @param {string} params.ownerId
+ * @param {string} params.appId
+ * @returns {Promise<string>}
+ */
+async function fetchAppName({ ccApiClient, signal, ownerId, appId }) {
+  const app = await ccApiClient.send(new GetApplicationCommand({ ownerId, applicationId: appId }), { signal });
+  return app.name;
 }

@@ -1,4 +1,5 @@
 import { GetAddonCommand } from '@clevercloud/client/cc-api-commands/addon/get-addon-command.js';
+import { unlessAborted } from '../../lib/abortable.js';
 import { getCcApiClientWithOAuth } from '../../lib/cc-api-client.js';
 import { getDocUrl } from '../../lib/dev-hub-url.js';
 import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
@@ -46,12 +47,14 @@ defineSmartComponent({
       .then((addon) => {
         updateComponent('state', {
           type: 'loaded',
-          creationDate: addon.creationDate,
+          creationDate: addon.createdAt,
         });
       })
-      .catch((error) => {
-        console.error(error);
-        updateComponent('state', { type: 'error' });
-      });
+      .catch((error) =>
+        unlessAborted(signal, error, () => {
+          console.error(error);
+          updateComponent('state', { type: 'error' });
+        }),
+      );
   },
 });

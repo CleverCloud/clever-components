@@ -44,14 +44,3 @@ export interface ApiToken {
   description?: string;
   isExpired: boolean;
 }
-
-export interface RawApiToken {
-  apiTokenId: string;
-  userId: string;
-  creationDate: string; // ISO
-  expirationDate: string; // ISO
-  ip: string;
-  name: string;
-  description?: string;
-  state: 'ACTIVE' | 'EXPIRED';
-}

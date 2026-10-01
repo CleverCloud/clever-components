@@ -1,4 +1,5 @@
 import { GetElasticsearchInfoCommand } from '@clevercloud/client/cc-api-commands/elasticsearch/get-elasticsearch-info-command.js';
+import { unlessAborted } from '../../lib/abortable.js';
 import { getCcApiClientWithOAuth } from '../../lib/cc-api-client.js';
 import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
 import '../cc-smart-container/cc-smart-container.js';
@@ -83,8 +84,8 @@ defineSmartComponent({
       .then((esInfo) => {
         const kibanaService = esInfo.services.find((service) => service.name === 'kibana');
         const apmService = esInfo.services.find((service) => service.name === 'apm');
-        const isKibanaEnabled = kibanaService?.enabled ?? false;
-        const isApmEnabled = apmService?.enabled ?? false;
+        const isKibanaEnabled = kibanaService?.isEnabled ?? false;
+        const isApmEnabled = apmService?.isEnabled ?? false;
 
         /** @type {AddonCredential[]} */
         const elasticCredentials = [
@@ -156,9 +157,11 @@ defineSmartComponent({
           },
         );
       })
-      .catch((error) => {
-        console.error(error);
-        updateComponent('state', { type: 'error' });
-      });
+      .catch((error) =>
+        unlessAborted(signal, error, () => {
+          console.error(error);
+          updateComponent('state', { type: 'error' });
+        }),
+      );
   },
 });

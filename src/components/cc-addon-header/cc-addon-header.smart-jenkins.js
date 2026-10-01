@@ -1,6 +1,7 @@
 import { GetAddonCommand } from '@clevercloud/client/cc-api-commands/addon/get-addon-command.js';
 import { GetJenkinsInfoCommand } from '@clevercloud/client/cc-api-commands/jenkins/get-jenkins-info-command.js';
 import { GetZoneCommand } from '@clevercloud/client/cc-api-commands/zone/get-zone-command.js';
+import { unlessAborted } from '../../lib/abortable.js';
 import { getCcApiClientWithOAuth } from '../../lib/cc-api-client.js';
 import { fakeString } from '../../lib/fake-strings.js';
 import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
@@ -67,11 +68,13 @@ defineSmartComponent({
           ],
         });
       })
-      .catch((error) => {
-        console.error(error);
-        updateComponent('state', {
-          type: 'error',
-        });
-      });
+      .catch((error) =>
+        unlessAborted(signal, error, () => {
+          console.error(error);
+          updateComponent('state', {
+            type: 'error',
+          });
+        }),
+      );
   },
 });

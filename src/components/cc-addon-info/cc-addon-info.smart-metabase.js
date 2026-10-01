@@ -2,6 +2,7 @@ import { GetAddonCommand } from '@clevercloud/client/cc-api-commands/addon/get-a
 import { CheckMetabaseVersionCommand } from '@clevercloud/client/cc-api-commands/metabase/check-metabase-version-command.js';
 import { GetMetabaseInfoCommand } from '@clevercloud/client/cc-api-commands/metabase/get-metabase-info-command.js';
 import { UpdateMetabaseVersionCommand } from '@clevercloud/client/cc-api-commands/metabase/update-metabase-version-command.js';
+import { unlessAborted } from '../../lib/abortable.js';
 import { getAssetUrl } from '../../lib/assets-url.js';
 import { getCcApiClientWithOAuth } from '../../lib/cc-api-client.js';
 import { getDocUrl } from '../../lib/dev-hub-url.js';
@@ -106,7 +107,7 @@ defineSmartComponent({
         updateComponent('state', {
           type: 'loaded',
           version: formatVersionState(versionInfo),
-          creationDate: addon.creationDate,
+          creationDate: addon.createdAt,
           openGrafanaLink: grafanaAppLink,
           openScalabilityLink: scalabilityUrlPattern.replace(':id', javaAppId),
           linkedServices: [
@@ -125,10 +126,12 @@ defineSmartComponent({
           ],
         });
       })
-      .catch((error) => {
-        console.error(error);
-        updateComponent('state', { type: 'error' });
-      });
+      .catch((error) =>
+        unlessAborted(signal, error, () => {
+          console.error(error);
+          updateComponent('state', { type: 'error' });
+        }),
+      );
 
     onEvent('cc-addon-version-change', (targetVersion) => {
       updateComponent(

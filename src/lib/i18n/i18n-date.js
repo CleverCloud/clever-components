@@ -1,16 +1,18 @@
+import { DAY, HOUR, MINUTE, SECOND } from '../date/date-utils.js';
+
 /**
  * @import { DateFormatter, DateUnit, RelativeTimeFormatFunction } from './i18n.types.js'
  */
 
 /** @type {Array<{unit: DateUnit, duration: number}>} */
 const UNITS = [
-  { unit: 'year', duration: 1000 * 60 * 60 * 24 * 365.25 },
-  { unit: 'month', duration: 1000 * 60 * 60 * 24 * (365.25 / 12) },
-  { unit: 'week', duration: 1000 * 60 * 60 * 24 * 7 },
-  { unit: 'day', duration: 1000 * 60 * 60 * 24 },
-  { unit: 'hour', duration: 1000 * 60 * 60 },
-  { unit: 'minute', duration: 1000 * 60 },
-  { unit: 'second', duration: 1000 },
+  { unit: 'year', duration: DAY * 365.25 },
+  { unit: 'month', duration: DAY * (365.25 / 12) },
+  { unit: 'week', duration: DAY * 7 },
+  { unit: 'day', duration: DAY },
+  { unit: 'hour', duration: HOUR },
+  { unit: 'minute', duration: MINUTE },
+  { unit: 'second', duration: SECOND },
 ];
 
 /**

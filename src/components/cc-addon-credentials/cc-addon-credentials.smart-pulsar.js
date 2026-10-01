@@ -1,4 +1,5 @@
 import { GetPulsarInfoCommand } from '@clevercloud/client/cc-api-commands/pulsar/get-pulsar-info-command.js';
+import { unlessAborted } from '../../lib/abortable.js';
 import { getCcApiClientWithOAuth } from '../../lib/cc-api-client.js';
 import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
 import '../cc-smart-container/cc-smart-container.js';
@@ -72,7 +73,7 @@ defineSmartComponent({
         if (pulsarInfo.cluster.pulsarTlsPort != null) {
           cliUrl = `pulsar+ssl://${pulsarInfo.cluster.url}:${pulsarInfo.cluster.pulsarTlsPort}`;
         } else if (pulsarInfo.cluster.pulsarPort != null) {
-          cliUrl = `pulsar+ssl://${pulsarInfo.cluster.url}:${pulsarInfo.cluster.pulsarPort}`;
+          cliUrl = `pulsar://${pulsarInfo.cluster.url}:${pulsarInfo.cluster.pulsarPort}`;
         } else {
           throw new Error('Missing TLS port and default port');
         }
@@ -129,9 +130,11 @@ defineSmartComponent({
           },
         );
       })
-      .catch((error) => {
-        console.error(error);
-        updateComponent('state', { type: 'error' });
-      });
+      .catch((error) =>
+        unlessAborted(signal, error, () => {
+          console.error(error);
+          updateComponent('state', { type: 'error' });
+        }),
+      );
   },
 });

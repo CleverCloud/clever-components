@@ -12,8 +12,8 @@ importers:
   .:
     dependencies:
       '@clevercloud/client':
-        specifier: ^12.6.0
-        version: 12.6.0(eventsource@4.1.0)
+        specifier: ^12.6.6
+        version: 12.6.6(eventsource@4.1.0)
       '@lit-labs/motion':
         specifier: ^1.0.7
         version: 1.1.0
@@ -706,11 +706,15 @@ packages:
   '@cacheable/utils@2.4.1':
     resolution: {integrity: sha512-eiFgzCbIneyMlLOmNG4g9xzF7Hv3Mga4LjxjcSC/ues6VYq2+gUbQI8JqNuw/ZM8tJIeIaBGpswAsqV2V7ApgA==}
 
-  '@clevercloud/client@12.6.0':
-    resolution: {integrity: sha512-/yM1zMHBAFE/RIOWSYtlwY2gZjLcFW/yneIhGWOvVYT7/lDkwwunNG8UmfC9Eqj63xEhAgHV9BY9J1UAOVCwvA==}
+  '@clevercloud/client@12.6.6':
+    resolution: {integrity: sha512-MBUZVgBWI83OAO8Pr8sFFP5xQoDmS2tpoGyBUma2BLYmgXbYa3/XM1A+hk+4uW6CUQpxaGKlHMscVd1Wyuq/2w==}
     engines: {node: '>=22'}
     peerDependencies:
       eventsource: ^4.0.0
+      linkedom: ^0.18.13
+    peerDependenciesMeta:
+      linkedom:
+        optional: true
 
   '@clevercloud/eslint-config@1.1.0':
     resolution: {integrity: sha512-zsJfPje1W1Ras5b99VFjEgTLTcgirmaRu89Brhij8TK3lh/iaolUxg/Gs3ZJXmjmZDciFIqVufCtbXAc8BtNYw==}
@@ -2636,11 +2640,6 @@ packages:
 
   base64-js@1.5.1:
     resolution: {integrity: sha512-AKpaYlHn8t4SVbOHCy+b5+KKgvR4vrsD8vbvrbiQJps7fKDTkjkDry6ji0rUJjC0kzbNePLwzxq8iypo41qeWA==}
-
-  baseline-browser-mapping@2.11.19:
-    resolution: {integrity: sha512-Grytf1xOxOEMTGRwx6rLGKkTabd4vMg3VrKdj/7joCmV0qgh4QwMMO6xh34YEXQqirAuUdgQGa5orJQQ+69RBw==}
-    engines: {node: '>=6.0.0'}
-    hasBin: true
 
   baseline-browser-mapping@2.11.25:
     resolution: {integrity: sha512-gMmEShwwq7FJqMwvfRwvCl00v4kN+KOfJqXn+f4nrufak5gNHJOksd/60Dvjuz7sI8Y5WiSFBa8FEYr+zoyqCw==}
@@ -6799,7 +6798,7 @@ snapshots:
       hashery: 1.5.1
       keyv: 5.6.0
 
-  '@clevercloud/client@12.6.0(eventsource@4.1.0)':
+  '@clevercloud/client@12.6.6(eventsource@4.1.0)':
     dependencies:
       component-emitter: 1.3.1
       eventsource: 4.1.0
@@ -8876,8 +8875,6 @@ snapshots:
 
   base64-js@1.5.1: {}
 
-  baseline-browser-mapping@2.11.19: {}
-
   baseline-browser-mapping@2.11.25: {}
 
   basic-ftp@5.3.1: {}
@@ -8925,7 +8922,7 @@ snapshots:
 
   browserslist@4.28.4:
     dependencies:
-      baseline-browser-mapping: 2.11.19
+      baseline-browser-mapping: 2.11.25
       caniuse-lite: 1.0.30001810
       electron-to-chromium: 1.5.378
       node-releases: 2.0.48

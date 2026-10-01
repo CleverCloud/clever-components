@@ -1,6 +1,3 @@
-import { get as getAddon } from '@clevercloud/client/esm/api/v2/addon.js';
-import { ONE_SECOND } from '@clevercloud/client/esm/with-cache.js';
-import { sendToApi } from '../../lib/send-to-api.js';
 import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
 import { BucketsListController } from '../cc-cellar-bucket-list/cc-cellar-bucket-list.ctrl.js';
 import { ObjectListController } from '../cc-cellar-object-list/cc-cellar-object-list.ctrl.js';
@@ -15,7 +12,6 @@ import './cc-cellar-explorer.js';
  * @import { CellarBucketListState } from '../cc-cellar-bucket-list/cc-cellar-bucket-list.types.js'
  * @import { CellarObjectListState } from '../cc-cellar-object-list/cc-cellar-object-list.types.js'
  * @import { UpdateCallback } from '../common.types.js'
- * @import { ApiConfig } from '../../lib/send-to-api.js'
  * @import { OnContextUpdateArgs } from '../../lib/smart/smart-component.types.js'
  */
 
@@ -31,123 +27,89 @@ defineSmartComponent({
    */
   onContextUpdate({ component, context, onEvent, updateComponent, signal }) {
     const { apiConfig, ownerId, addonId } = context;
-    const api = new Api({ apiConfig, ownerId, addonId, signal });
 
-    updateComponent('state', { type: 'loading' });
+    updateComponent('state', { type: 'loaded', level: { type: 'buckets', state: { type: 'loading' } } });
 
-    api
-      .getRealAddonId()
-      .then((realAddonId) => {
-        updateComponent('state', { type: 'loaded', level: { type: 'buckets', state: { type: 'loading' } } });
+    const cellarClient = new CellarExplorerClient({ apiConfig, ownerId, addonId });
 
-        const cellarClient = new CellarExplorerClient({ apiConfig, ownerId, addonId: realAddonId });
-
-        /** @type {() => CcCellarBucketList} */
-        const getBucketListComponent = () => component.shadowRoot.querySelector('cc-cellar-bucket-list-beta');
-        /** @type {UpdateCallback<CellarBucketListState>} */
-        const updateBucketComponent = (newState) => {
-          updateComponent(
-            'state',
-            /** @param {CellarExplorerStateLoaded} state*/ (state) => {
-              if (state.level.type === 'buckets') {
-                if (typeof newState === 'function') {
-                  const result = newState(/** @type {any} */ (state.level.state));
-                  if (result != null && typeof result === 'object') {
-                    state.level.state = result;
-                  }
-                } else {
-                  state.level.state = newState;
-                }
+    /** @type {() => CcCellarBucketList} */
+    const getBucketListComponent = () => component.shadowRoot.querySelector('cc-cellar-bucket-list-beta');
+    /** @type {UpdateCallback<CellarBucketListState>} */
+    const updateBucketComponent = (newState) => {
+      updateComponent(
+        'state',
+        /** @param {CellarExplorerStateLoaded} state*/ (state) => {
+          if (state.level.type === 'buckets') {
+            if (typeof newState === 'function') {
+              const result = newState(/** @type {any} */ (state.level.state));
+              if (result != null && typeof result === 'object') {
+                state.level.state = result;
               }
-            },
-          );
-        };
+            } else {
+              state.level.state = newState;
+            }
+          }
+        },
+      );
+    };
 
-        const bucketsListController = new BucketsListController(
-          cellarClient,
-          getBucketListComponent,
-          updateBucketComponent,
-        );
-        bucketsListController.init(onEvent);
+    const bucketsListController = new BucketsListController(
+      cellarClient,
+      getBucketListComponent,
+      updateBucketComponent,
+    );
+    bucketsListController.init(onEvent);
 
-        /** @type {UpdateCallback<CellarObjectListState>} */
-        const updateObjectListComponent = (newState) => {
-          updateComponent(
-            'state',
-            /** @param {CellarExplorerStateLoaded} state*/ (state) => {
-              if (state.level.type === 'objects') {
-                if (typeof newState === 'function') {
-                  const result = newState(/** @type {any} */ (state.level.state));
-                  if (result != null && typeof result === 'object') {
-                    state.level.state = result;
-                  }
-                } else {
-                  state.level.state = newState;
-                }
+    /** @type {UpdateCallback<CellarObjectListState>} */
+    const updateObjectListComponent = (newState) => {
+      updateComponent(
+        'state',
+        /** @param {CellarExplorerStateLoaded} state*/ (state) => {
+          if (state.level.type === 'objects') {
+            if (typeof newState === 'function') {
+              const result = newState(/** @type {any} */ (state.level.state));
+              if (result != null && typeof result === 'object') {
+                state.level.state = result;
               }
-            },
-          );
-        };
+            } else {
+              state.level.state = newState;
+            }
+          }
+        },
+      );
+    };
 
-        /** @type {() => CcCellarObjectList} */
-        const getObjectListComponent = () => component.shadowRoot.querySelector('cc-cellar-object-list-beta');
-        const objectListController = new ObjectListController(
-          cellarClient,
-          getObjectListComponent,
-          updateObjectListComponent,
-        );
-        objectListController.init(onEvent);
+    /** @type {() => CcCellarObjectList} */
+    const getObjectListComponent = () => component.shadowRoot.querySelector('cc-cellar-object-list-beta');
+    const objectListController = new ObjectListController(
+      cellarClient,
+      getObjectListComponent,
+      updateObjectListComponent,
+    );
+    objectListController.init(onEvent);
 
-        onEvent('cc-cellar-bucket-created', (bucketName) => {
-          component.scrollToBucket(bucketName);
-        });
+    onEvent('cc-cellar-bucket-created', (bucketName) => {
+      component.scrollToBucket(bucketName);
+    });
 
-        onEvent('cc-cellar-navigate-to-home', () => {
-          updateComponent('state', { type: 'loaded', level: { type: 'buckets', state: { type: 'loading' } } });
-          bucketsListController.initialFetch();
-          component.focusFirstCell();
-        });
+    onEvent('cc-cellar-navigate-to-home', () => {
+      updateComponent('state', { type: 'loaded', level: { type: 'buckets', state: { type: 'loading' } } });
+      bucketsListController.initialFetch();
+      component.focusFirstCell();
+    });
 
-        onEvent('cc-cellar-navigate-to-bucket', (bucketName) => {
-          updateComponent('state', {
-            type: 'loaded',
-            level: { type: 'objects', state: { type: 'loading', bucketName, path: [] } },
-          });
-          objectListController.changeBucket(bucketName);
-        });
-
-        signal.onabort = () => {
-          cellarClient.close();
-          bucketsListController.abort();
-          objectListController.abort();
-        };
-      })
-      .catch((error) => {
-        console.log(error);
-        updateComponent('state', { type: 'error' });
+    onEvent('cc-cellar-navigate-to-bucket', (bucketName) => {
+      updateComponent('state', {
+        type: 'loaded',
+        level: { type: 'objects', state: { type: 'loading', bucketName, path: [] } },
       });
+      objectListController.changeBucket(bucketName);
+    });
+
+    signal.onabort = () => {
+      cellarClient.close();
+      bucketsListController.abort();
+      objectListController.abort();
+    };
   },
 });
-
-class Api {
-  /**
-   * @param {object} _
-   * @param {ApiConfig} _.apiConfig
-   * @param {string} _.ownerId
-   * @param {string} _.addonId
-   * @param {AbortSignal} _.signal
-   */
-  constructor({ apiConfig, ownerId, addonId, signal }) {
-    this._apiConfig = apiConfig;
-    this._ownerId = ownerId;
-    this._addonId = addonId;
-    this._signal = signal;
-  }
-
-  async getRealAddonId() {
-    const rawAddon = await getAddon({ id: this._ownerId, addonId: this._addonId }).then(
-      sendToApi({ apiConfig: this._apiConfig, signal: this._signal, cacheDelay: ONE_SECOND }),
-    );
-    return rawAddon.realId;
-  }
-}

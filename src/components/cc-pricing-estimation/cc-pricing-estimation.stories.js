@@ -1,7 +1,7 @@
 import { formatEstimationPrices } from '../../lib/product.js';
 import { getProductAddon } from '../../stories/fixtures/addon-plans.js';
 import { baseCellar } from '../../stories/fixtures/consumption-plans.js';
-import { rawPriceSystemDollars, rawPriceSystemEuro } from '../../stories/fixtures/price-system.js';
+import { priceSystemDollars, priceSystemEuro } from '../../stories/fixtures/price-system.js';
 import { getProductRuntime } from '../../stories/fixtures/runtime-plans.js';
 import { makeStory, storyWait } from '../../stories/lib/make-story.js';
 import './cc-pricing-estimation.js';
@@ -21,8 +21,8 @@ const conf = {
  * @import { PricingEstimationStateLoaded, RuntimePlanWithQuantity, CountablePlanWithQuantity } from './cc-pricing-estimation.types.js'
  */
 
-const pricesInEuro = formatEstimationPrices(rawPriceSystemEuro);
-const pricesInDollars = formatEstimationPrices(rawPriceSystemDollars);
+const pricesInEuro = formatEstimationPrices(priceSystemEuro);
+const pricesInDollars = formatEstimationPrices(priceSystemDollars);
 
 /** @type {PricingEstimationStateLoaded} */
 const defaultState = {

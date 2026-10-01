@@ -1,3 +1,4 @@
+import { unlessAborted } from '../../lib/abortable.js';
 import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
 import '../cc-smart-container/cc-smart-container.js';
 import './cc-web-features-tracker.js';
@@ -54,10 +55,12 @@ defineSmartComponent({
           webFeatures: formatter.getFormattedFeatures(),
         });
       })
-      .catch((error) => {
-        console.error(error);
-        updateComponent('state', { type: 'error' });
-      });
+      .catch((error) =>
+        unlessAborted(signal, error, () => {
+          console.error(error);
+          updateComponent('state', { type: 'error' });
+        }),
+      );
   },
 });
 

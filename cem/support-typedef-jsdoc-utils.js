@@ -146,7 +146,7 @@ export function findTypePath(importTag, ts, moduleFilePath) {
 
   // Use TypeScript's module resolution
   const compilerOptions = {
-    moduleResolution: ts.ModuleResolutionKind.NodeJs,
+    moduleResolution: ts.ModuleResolutionKind.Bundler,
     allowJs: true,
   };
 
@@ -173,7 +173,7 @@ export function extractImportsFromImportTag(importTag, ts, moduleFilePath) {
 
   // Use TypeScript's module resolution
   const compilerOptions = {
-    moduleResolution: ts.ModuleResolutionKind.NodeJs,
+    moduleResolution: ts.ModuleResolutionKind.Bundler,
     allowJs: true,
   };
 
@@ -335,17 +335,13 @@ export function findPathAndTypesFromImports(ts, filePath, ancestors = null) {
 
   // Use TypeScript's module resolution
   const compilerOptions = {
-    moduleResolution: ts.ModuleResolutionKind.NodeJs,
+    moduleResolution: ts.ModuleResolutionKind.Bundler,
     allowJs: true,
   };
 
   importsDeclaration.forEach((importNode) => {
     const types = [];
     const importFile = importNode.moduleSpecifier.text;
-    const isImportRelative = importFile.startsWith('./') || importFile.startsWith('../');
-    if (!isImportRelative) {
-      return;
-    }
 
     const result = ts.resolveModuleName(importFile, filePath, compilerOptions, ts.sys);
 
@@ -355,8 +351,14 @@ export function findPathAndTypesFromImports(ts, filePath, ancestors = null) {
 
     const resolvedPath = result.resolvedModule.resolvedFileName;
 
+    const namedBindings = importNode.importClause?.namedBindings;
+    // Skip side effect imports (`import './x.js'`) and namespace imports (`import * as x from './x.js'`)
+    if (namedBindings?.elements == null) {
+      return;
+    }
+
     if (!currentAncestors.includes(resolvedPath)) {
-      importNode.importClause.namedBindings.elements.forEach((nodeType) => types.push(nodeType.getText()));
+      namedBindings.elements.forEach((nodeType) => types.push(nodeType.getText()));
       imports.push({ types, path: resolvedPath });
       imports.push(...findPathAndTypesFromImports(ts, resolvedPath, [...currentAncestors, resolvedPath]));
     }
