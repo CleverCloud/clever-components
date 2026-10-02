@@ -1,3 +1,4 @@
+import { DAY, HOUR } from '../../lib/date/date-utils.js';
 import { makeStory, storyWait } from '../../stories/lib/make-story.js';
 import './cc-tile-metrics.js';
 import './cc-tile-metrics.smart.js';
@@ -56,9 +57,6 @@ const baseItems = [
   },
 ];
 
-const ONE_HOUR = 60 * 60 * 1000;
-const ONE_DAY = ONE_HOUR * 24;
-
 /**
  * @param {number} numberOfPoints
  * @param {number} usedValue
@@ -81,11 +79,11 @@ function fakeMetricData(numberOfPoints, usedValue, linearIncrease = false, shift
  * @returns {Metric[]}
  */
 function addTimestamp(array) {
-  const startTs = Date.now() - ONE_DAY;
+  const startTs = Date.now() - DAY;
   return array.map((item, index) => {
     return {
       ...item,
-      timestamp: startTs + index * ONE_HOUR,
+      timestamp: startTs + index * HOUR,
     };
   });
 }

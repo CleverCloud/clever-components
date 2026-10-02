@@ -1,3 +1,4 @@
+import { unlessAborted } from '../../lib/abortable.js';
 import { fetchPriceSystem } from '../../lib/api-helpers.js';
 import { formatEstimationPrices } from '../../lib/product.js';
 import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
@@ -42,9 +43,11 @@ defineSmartComponent({
       .then(({ runtimePrices, countablePrices }) => {
         updateComponent('state', { type: 'loaded', runtimePrices, countablePrices });
       })
-      .catch(() => {
-        updateComponent('state', { type: 'error' });
-      });
+      .catch((error) =>
+        unlessAborted(signal, error, () => {
+          updateComponent('state', { type: 'error' });
+        }),
+      );
   },
 });
 

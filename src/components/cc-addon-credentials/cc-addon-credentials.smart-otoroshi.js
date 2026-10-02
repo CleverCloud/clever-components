@@ -1,6 +1,7 @@
 import { CreateOtoroshiNetworkGroupCommand } from '@clevercloud/client/cc-api-commands/otoroshi/create-otoroshi-network-group-command.js';
 import { DeleteOtoroshiNetworkGroupCommand } from '@clevercloud/client/cc-api-commands/otoroshi/delete-otoroshi-network-group-command.js';
 import { GetOtoroshiInfoCommand } from '@clevercloud/client/cc-api-commands/otoroshi/get-otoroshi-info-command.js';
+import { unlessAborted } from '../../lib/abortable.js';
 import { getCcApiClientWithOAuth } from '../../lib/cc-api-client.js';
 import { getDocUrl } from '../../lib/dev-hub-url.js';
 import { fakeString } from '../../lib/fake-strings.js';
@@ -154,10 +155,12 @@ defineSmartComponent({
           },
         );
       })
-      .catch((error) => {
-        console.error(error);
-        updateComponent('state', { type: 'error' });
-      });
+      .catch((error) =>
+        unlessAborted(signal, error, () => {
+          console.error(error);
+          updateComponent('state', { type: 'error' });
+        }),
+      );
 
     onEvent('cc-ng-enable', () => {
       updateNg({

@@ -1,3 +1,4 @@
+import { HOUR } from '../../lib/date/date-utils.js';
 import { makeStory, storyWait } from '../../stories/lib/make-story.js';
 import './cc-tile-requests.js';
 
@@ -34,7 +35,6 @@ const REQUESTS_COUNTS_SIMILAR = [
   220024, 220132, 220088, 220248, 220242, 220101, 220092, 220011, 220736, 220521, 220098, 220881,
 ];
 
-const ONE_HOUR = 1000 * 60 * 60;
 const HOURS_IN_A_DAY = 24;
 
 /**
@@ -44,12 +44,12 @@ const HOURS_IN_A_DAY = 24;
 function generateData(dataSample) {
   const now = new Date();
   const nowTs = now.getTime();
-  const nowRoundedTs = nowTs - (nowTs % ONE_HOUR);
-  const startTs = nowRoundedTs - ONE_HOUR * HOURS_IN_A_DAY;
+  const nowRoundedTs = nowTs - (nowTs % HOUR);
+  const startTs = nowRoundedTs - HOUR * HOURS_IN_A_DAY;
 
   return Array.from(new Array(HOURS_IN_A_DAY)).map((_, i) => {
-    const sampleStartTs = startTs + i * ONE_HOUR;
-    const sampleEndTs = startTs + (i + 1) * ONE_HOUR;
+    const sampleStartTs = startTs + i * HOUR;
+    const sampleEndTs = startTs + (i + 1) * HOUR;
     const requestsCount = dataSample[i % dataSample.length];
     return [sampleStartTs, sampleEndTs, requestsCount];
   });

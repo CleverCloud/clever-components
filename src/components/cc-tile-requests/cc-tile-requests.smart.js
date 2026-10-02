@@ -1,5 +1,7 @@
 import { GetStatusCodeDistributionCommand } from '@clevercloud/client/cc-api-commands/metrics/get-status-code-distribution-command.js';
+import { unlessAborted } from '../../lib/abortable.js';
 import { getCcApiClientWithOAuth } from '../../lib/cc-api-client.js';
+import { HOUR } from '../../lib/date/date-utils.js';
 import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
 import '../cc-smart-container/cc-smart-container.js';
 import './cc-tile-requests.js';
@@ -10,8 +12,6 @@ import './cc-tile-requests.js';
  * @import { ApiConfig } from '../../lib/send-to-api.types.js'
  * @import { OnContextUpdateArgs } from '../../lib/smart/smart-component.types.js'
  */
-
-const ONE_HOUR = 1000 * 60 * 60;
 
 defineSmartComponent({
   selector: 'cc-tile-requests',
@@ -32,10 +32,12 @@ defineSmartComponent({
       .then((data) => {
         updateComponent('state', { type: 'loaded', data });
       })
-      .catch((error) => {
-        console.log(error);
-        updateComponent('state', { type: 'error' });
-      });
+      .catch((error) =>
+        unlessAborted(signal, error, () => {
+          console.error(error);
+          updateComponent('state', { type: 'error' });
+        }),
+      );
   },
 });
 
@@ -60,6 +62,6 @@ async function fetchRequests({ apiConfig, signal, ownerId, appId }) {
   return data.byDate.map((entry) => {
     // The API dates each bucket with its end boundary, the tile expects its start.
     const end = new Date(entry.date).getTime();
-    return [end - ONE_HOUR, end - 1, entry.total];
+    return [end - HOUR, end - 1, entry.total];
   });
 }

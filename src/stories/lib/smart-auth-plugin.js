@@ -17,14 +17,21 @@ export const injectAuthForSmartComponentsPlugin = {
     const isSandboxIndex = id.includes('/sandbox/index.js');
 
     if (isSmartStory || isDemoSmartIndex || isSandboxIndex) {
-      const { API_HOST, API_OAUTH_TOKEN, API_OAUTH_TOKEN_SECRET, OAUTH_CONSUMER_KEY, OAUTH_CONSUMER_SECRET } =
-        process.env;
+      const {
+        API_HOST,
+        AUTH_BRIDGE_HOST,
+        API_OAUTH_TOKEN,
+        API_OAUTH_TOKEN_SECRET,
+        OAUTH_CONSUMER_KEY,
+        OAUTH_CONSUMER_SECRET,
+      } = process.env;
 
       // language=JavaScript
       code += `
         updateRootContext({
           apiConfig: {
-            API_HOST: '${API_HOST}',
+            API_HOST: '${API_HOST ?? 'https://api.clever-cloud.com'}',
+            AUTH_BRIDGE_HOST: '${AUTH_BRIDGE_HOST ?? 'https://api-bridge.clever-cloud.com'}',
             API_OAUTH_TOKEN: '${API_OAUTH_TOKEN}',
             API_OAUTH_TOKEN_SECRET: '${API_OAUTH_TOKEN_SECRET}',
             OAUTH_CONSUMER_KEY: '${OAUTH_CONSUMER_KEY}',

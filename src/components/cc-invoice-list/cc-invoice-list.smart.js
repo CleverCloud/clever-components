@@ -1,3 +1,4 @@
+import { unlessAborted } from '../../lib/abortable.js';
 import { fetchAllInvoices } from '../../lib/api-helpers.js';
 import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
 import '../cc-smart-container/cc-smart-container.js';
@@ -30,9 +31,11 @@ defineSmartComponent({
           updateComponent('state', { type: 'loaded', invoices });
         },
       )
-      .catch((error) => {
-        console.error(error);
-        updateComponent('state', { type: 'error' });
-      });
+      .catch((error) =>
+        unlessAborted(signal, error, () => {
+          console.error(error);
+          updateComponent('state', { type: 'error' });
+        }),
+      );
   },
 });

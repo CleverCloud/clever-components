@@ -1,6 +1,7 @@
 export type LogsLoadingProgressState =
   | LogsLoadingProgressStateIdle
   | LogsLoadingProgressStateRunning
+  | LogsLoadingProgressStateRetrying
   | LogsLoadingProgressStatePaused
   | LogsLoadingProgressStateOverflowLimitReached
   | LogsLoadingProgressStateCompleted;
@@ -11,6 +12,15 @@ export interface LogsLoadingProgressStateIdle {
 
 export interface LogsLoadingProgressStateRunning {
   type: 'running';
+  value: number;
+  percent?: number;
+  overflowing: boolean;
+}
+
+export interface LogsLoadingProgressStateRetrying {
+  type: 'retrying';
+  retryCount: number;
+  maxRetryCount: number;
   value: number;
   percent?: number;
   overflowing: boolean;

@@ -1,5 +1,5 @@
 import { getFullProductAddon } from '../../stories/fixtures/addon-plans.js';
-import { rawPriceSystemDollars } from '../../stories/fixtures/price-system.js';
+import { priceSystemDollars } from '../../stories/fixtures/price-system.js';
 import { getFullProductRuntime } from '../../stories/fixtures/runtime-plans.js';
 import { makeStory, storyWait } from '../../stories/lib/make-story.js';
 import './cc-pricing-product.js';
@@ -281,7 +281,7 @@ export const dataLoadedWithDollars = makeStory(conf, {
       currency: 'USD',
       state: {
         type: 'loaded',
-        ...getFullProductAddon('postgresql-addon', addonFeatures, rawPriceSystemDollars),
+        ...getFullProductAddon('postgresql-addon', addonFeatures, priceSystemDollars),
       },
     },
   ],

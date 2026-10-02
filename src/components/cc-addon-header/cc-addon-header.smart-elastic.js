@@ -1,6 +1,7 @@
 import { GetAddonCommand } from '@clevercloud/client/cc-api-commands/addon/get-addon-command.js';
 import { GetElasticsearchInfoCommand } from '@clevercloud/client/cc-api-commands/elasticsearch/get-elasticsearch-info-command.js';
 import { GetZoneCommand } from '@clevercloud/client/cc-api-commands/zone/get-zone-command.js';
+import { unlessAborted } from '../../lib/abortable.js';
 import { getCcApiClientWithOAuth } from '../../lib/cc-api-client.js';
 import { fakeString } from '../../lib/fake-strings.js';
 import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
@@ -56,7 +57,7 @@ defineSmartComponent({
 
         const openLinks = [];
         const apmService = esInfo.services.find((service) => service.name === 'apm');
-        if (apmService?.enabled && esInfo.config.host != null) {
+        if (apmService?.isEnabled && esInfo.config.host != null) {
           const apmUrl = `https://kibana-${esInfo.config.host}/app/apm`;
           openLinks.push({
             name: 'APM',
@@ -64,7 +65,7 @@ defineSmartComponent({
           });
         }
         const kibanaService = esInfo.services.find((service) => service.name === 'kibana');
-        if (kibanaService?.enabled && esInfo.config.host != null) {
+        if (kibanaService?.isEnabled && esInfo.config.host != null) {
           const kibanaUrl = `https://kibana-${esInfo.config.host}/`;
           openLinks.push({
             name: 'KIBANA',
@@ -83,11 +84,13 @@ defineSmartComponent({
           openLinks,
         });
       })
-      .catch((error) => {
-        console.error(error);
-        updateComponent('state', {
-          type: 'error',
-        });
-      });
+      .catch((error) =>
+        unlessAborted(signal, error, () => {
+          console.error(error);
+          updateComponent('state', {
+            type: 'error',
+          });
+        }),
+      );
   },
 });

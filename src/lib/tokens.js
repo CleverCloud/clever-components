@@ -1,3 +1,5 @@
+import { DAY } from './date/date-utils.js';
+
 /**
  * @import { ExpirationWarningThresholds } from './tokens.types.js'
  */
@@ -29,15 +31,14 @@ const DEFAULT_THRESHOLDS = [
  */
 export function isExpirationClose({ creationDate, expirationDate }, thresholds = DEFAULT_THRESHOLDS) {
   const now = new Date();
-  const MILLISECONDS_PER_DAY = 1000 * 60 * 60 * 24;
 
   // Calculate token's total lifetime and remaining days
   const expirationTimestamp = expirationDate.getTime();
   const creationTimestamp = creationDate.getTime();
-  const totalTokenLifetimeInDays = Math.floor((expirationTimestamp - creationTimestamp) / MILLISECONDS_PER_DAY);
+  const totalTokenLifetimeInDays = Math.floor((expirationTimestamp - creationTimestamp) / DAY);
 
   // Calculate days remaining until expiration
-  const daysUntilExpiration = (expirationDate.getTime() - now.getTime()) / MILLISECONDS_PER_DAY;
+  const daysUntilExpiration = (expirationDate.getTime() - now.getTime()) / DAY;
 
   // Sort thresholds by maxApplicableTokenLifetimeInDays in ascending order to find the appropriate
   // threshold based on the token's total lifetime
