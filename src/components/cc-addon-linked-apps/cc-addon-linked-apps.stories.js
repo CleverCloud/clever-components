@@ -21,24 +21,28 @@ const conf = {
 /** @type {ZoneStateLoaded} */
 const ZONE_PAR = {
   type: 'loaded',
+  id: 'aad32a21-24f8-40b3-a750-baab218d927b',
   name: 'par',
   country: 'France',
   countryCode: 'FR',
   city: 'Paris',
   lat: 48.87,
   lon: 2.33,
+  outboundIps: [],
   tags: ['region:eu', 'infra:clever-cloud'],
 };
 
 /** @type {ZoneStateLoaded} */
 const ZONE_MTL = {
   type: 'loaded',
+  id: 'd62b134a-2671-4bba-8c46-b9a09a47aedd',
   name: 'mtl',
   country: 'Canada',
   countryCode: 'CA',
   city: 'Montreal',
   lat: 45.5,
   lon: -73.61,
+  outboundIps: [],
   tags: ['infra:ovh'],
 };
 

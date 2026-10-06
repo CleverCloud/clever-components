@@ -1,3 +1,6 @@
+import { DeploymentState } from '@clevercloud/client/cc-api-commands/deployment/deployment.types.js';
+import { InstanceState as RemoteInstanceState } from '@clevercloud/client/cc-api-commands/instance/instance.types.js';
+
 export type LogsInstancesState = LogsInstancesStateLoading | LogsInstancesStateError | LogsInstancesStateLoaded;
 
 export interface LogsInstancesStateLoading {
@@ -17,8 +20,6 @@ export interface LogsInstancesStateLoaded {
 
 export type LogsMode = 'live' | 'cold';
 
-export type DeploymentState = 'QUEUED' | 'WORK_IN_PROGRESS' | 'SUCCEEDED' | 'CANCELLED' | 'FAILED';
-
 export interface Deployment {
   id: string;
   state: DeploymentState;
@@ -27,17 +28,11 @@ export interface Deployment {
   endDate?: Date;
 }
 
-export type InstanceState =
-  | 'BOOTING'
-  | 'STARTING'
-  | 'DEPLOYING'
-  | 'BUILDING'
-  | 'READY'
-  | 'UP'
-  | 'STOPPING'
-  | 'DELETED'
-  | 'MIGRATION_IN_PROGRESS'
-  | 'TASK_IN_PROGRESS';
+/**
+ * A ghost instance carries no state at all, so `GHOST` never reaches this component: it is modelled by
+ * `GhostInstance` instead.
+ */
+export type InstanceState = Exclude<RemoteInstanceState, 'GHOST'>;
 export type InstanceKind = 'BUILD' | 'RUN';
 
 export interface Instance {

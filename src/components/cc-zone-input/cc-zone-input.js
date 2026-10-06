@@ -19,7 +19,7 @@ const BREAKPOINTS = [600];
  * @import { ZoneInputState, ZoneInputPoint, ZonePointMarkerState } from './cc-zone-input.types.js'
  * @import { CcMap } from '../cc-map/cc-map.js'
  * @import { CcMapMarkerEnterEvent, CcMapMarkerClickEvent } from '../cc-map/cc-map.events.js'
- * @import { Zone } from '../common.types.js'
+ * @import { Zone } from '@clevercloud/client/cc-api-commands/zone/zone.types.js'
  * @import { Ref } from 'lit/directives/ref.js'
  * @import { PropertyValues } from 'lit'
  */

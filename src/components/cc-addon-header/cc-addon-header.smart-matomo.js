@@ -3,6 +3,7 @@ import { GetMatomoInfoCommand } from '@clevercloud/client/cc-api-commands/matomo
 import { RebootMatomoCommand } from '@clevercloud/client/cc-api-commands/matomo/reboot-matomo-command.js';
 import { RebuildMatomoCommand } from '@clevercloud/client/cc-api-commands/matomo/rebuild-matomo-command.js';
 import { GetZoneCommand } from '@clevercloud/client/cc-api-commands/zone/get-zone-command.js';
+import { unlessAborted } from '../../lib/abortable.js';
 import { getCcApiClientWithOAuth } from '../../lib/cc-api-client.js';
 import { getDocUrl } from '../../lib/dev-hub-url.js';
 import { fakeString } from '../../lib/fake-strings.js';
@@ -85,12 +86,14 @@ defineSmartComponent({
           productStatus,
         });
       })
-      .catch((error) => {
-        console.error(error);
-        updateComponent('state', {
-          type: 'error',
-        });
-      });
+      .catch((error) =>
+        unlessAborted(signal, error, () => {
+          console.error(error);
+          updateComponent('state', {
+            type: 'error',
+          });
+        }),
+      );
 
     onEvent('cc-addon-restart', () => {
       updateComponent('state', (state) => {

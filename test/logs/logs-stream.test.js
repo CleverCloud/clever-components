@@ -1,4 +1,3 @@
-import CleverCloudSse from '@clevercloud/client/esm/streams/clever-cloud-sse.js';
 import { expect } from '@open-wc/testing';
 import * as hanbi from 'hanbi';
 import { LogsStream } from '../../src/lib/logs/logs-stream.js';
@@ -14,8 +13,12 @@ const BUFFER_TIMEOUT = 10;
 class FakeLogsStream extends LogsStream {
   /**
    * @param {number} [waitingTimeout]
+   * @param {object} [options]
+   * @param {boolean} [options.deferStreamCreation] When `true`, `_createStream()` returns a promise that only
+   * settles when `completeStreamCreation()` is called. This reproduces the window during which the underlying
+   * stream does not exist yet.
    */
-  constructor(waitingTimeout) {
+  constructor(waitingTimeout, { deferStreamCreation = false } = {}) {
     super(LIMIT, { waitingTimeout: { live: waitingTimeout, cold: waitingTimeout }, bufferTimeout: BUFFER_TIMEOUT });
     this._spies = {
       createStream: hanbi.spy(),
@@ -24,6 +27,15 @@ class FakeLogsStream extends LogsStream {
       appendLogs: hanbi.spy(),
     };
     this._fakeSse = new FakeSse();
+    this._deferStreamCreation = deferStreamCreation;
+  }
+
+  /**
+   * Resolves the pending `_createStream()` promise and waits for the stream to be wired up and started.
+   */
+  async completeStreamCreation() {
+    this._resolveStreamCreation();
+    await sleep(0);
   }
 
   resetSpies() {
@@ -47,6 +59,12 @@ class FakeLogsStream extends LogsStream {
   _createStream(_dateRange, _maxRetryCount, _throttleElements, _throttlePerInMilliseconds) {
     this._spies.createStream.handler(_dateRange, _maxRetryCount, _throttleElements, _throttlePerInMilliseconds);
 
+    if (this._deferStreamCreation) {
+      return new Promise((resolve) => {
+        this._resolveStreamCreation = () => resolve(this._fakeSse);
+      });
+    }
+
     return this._fakeSse;
   }
 
@@ -66,15 +84,22 @@ class FakeLogsStream extends LogsStream {
   }
 }
 
-class FakeSse extends CleverCloudSse {
+/**
+ * Fakes the shape of a `@clevercloud/client` `LogsStream` (a `CcSseStream`/`CcStream`).
+ *
+ * Notably, it reproduces the real client's tricky ordering where the `open` event is fired
+ * *before* `state` is flipped to `'open'` (see `CcStream#_onOpen()`), since `LogsStream` relies on
+ * this to safely defer a `pause()` requested while still connecting.
+ */
+class FakeSse {
   constructor() {
-    super();
+    this.retryCount = 0;
+    this.state = 'init';
     this._spies = {
       start: hanbi.spy(),
       pause: hanbi.spy(),
       resume: hanbi.spy(),
       close: hanbi.spy(),
-      end: hanbi.spy(),
     };
     this._fakeApi = {
       log: (log) => {
@@ -95,26 +120,9 @@ class FakeSse extends CleverCloudSse {
     return this._spies;
   }
 
-  async start() {
-    this._spies.start.handler();
-    this.emit('open', {});
-    return new Promise((resolve) => {
-      this._endResolver = () => {
-        resolve({ type: 'ENDED' });
-      };
-    });
-  }
-
-  pause() {
-    this._spies.pause.handler();
-  }
-
-  resume() {
-    this._spies.resume.handler();
-  }
-
-  close(reason = { type: 'UNKNOW' }) {
-    this._spies.close.handler(reason);
+  onOpen(callback) {
+    this._onOpenCallback = callback;
+    return this;
   }
 
   onLog(fn) {
@@ -123,6 +131,49 @@ class FakeSse extends CleverCloudSse {
     };
     return this;
   }
+
+  onError(callback) {
+    this._onErrorCallback = callback;
+    return this;
+  }
+
+  async start() {
+    this._spies.start.handler();
+    this._onOpenCallback?.();
+    this.state = 'open';
+    return new Promise((resolve) => {
+      this._endResolver = () => {
+        resolve({ type: 'ENDED' });
+      };
+    });
+  }
+
+  pause() {
+    this.state = 'paused';
+    this._spies.pause.handler();
+  }
+
+  resume() {
+    this.state = 'open';
+    this._spies.resume.handler();
+  }
+
+  close(reason = { type: 'UNKNOWN' }) {
+    this.state = 'closed';
+    this._spies.close.handler(reason);
+  }
+}
+
+/**
+ * Opens the logs stream and waits for the (asynchronous) stream creation and wiring to settle.
+ *
+ * @param {FakeLogsStream} logsStream
+ * @param {object} dateRange
+ */
+async function openLogsStream(logsStream, dateRange) {
+  logsStream.openLogsStream(dateRange);
+  // let the async `_createStream()` resolve and the stream be wired up (onOpen/onLog/onError + start()).
+  await sleep(0);
 }
 
 describe('logs-stream', () => {
@@ -135,9 +186,9 @@ describe('logs-stream', () => {
       expect(logsStream.spies.updateStreamState.firstCall.args[0]).to.eql({ type: 'idle' });
     });
 
-    it('should close the Sse', () => {
+    it('should close the Sse', async () => {
       const logsStream = new FakeLogsStream();
-      logsStream.openLogsStream({ since: new Date().toISOString() });
+      await openLogsStream(logsStream, { since: new Date().toISOString() });
 
       logsStream.stop();
       expect(logsStream.sseSpies.close.callCount).to.eql(1);
@@ -152,7 +203,7 @@ describe('logs-stream', () => {
 
     it('should not flush logs even if some logs remains in the buffer', async () => {
       const logsStream = new FakeLogsStream();
-      logsStream.openLogsStream({ since: new Date().toISOString() });
+      await openLogsStream(logsStream, { since: new Date().toISOString() });
       await fakeLogsReceived(logsStream); // this one is flushed immediately
       logsStream.resetSpies();
       await fakeLogsReceived(logsStream); // this one goes in the buffer
@@ -169,7 +220,7 @@ describe('logs-stream', () => {
 
     it('should convert the received log', async () => {
       const logsStream = new FakeLogsStream();
-      logsStream.openLogsStream({ since: new Date().toISOString() });
+      await openLogsStream(logsStream, { since: new Date().toISOString() });
 
       const [log] = await fakeLogsReceived(logsStream);
 
@@ -179,7 +230,7 @@ describe('logs-stream', () => {
 
     it('should flush the first log received immediately', async () => {
       const logsStream = new FakeLogsStream();
-      logsStream.openLogsStream({ since: new Date().toISOString() });
+      await openLogsStream(logsStream, { since: new Date().toISOString() });
 
       const [log] = await fakeLogsReceived(logsStream);
 
@@ -189,7 +240,7 @@ describe('logs-stream', () => {
 
     it('should not flush the second log received immediately', async () => {
       const logsStream = new FakeLogsStream();
-      logsStream.openLogsStream({ since: new Date().toISOString() });
+      await openLogsStream(logsStream, { since: new Date().toISOString() });
       await fakeLogsReceived(logsStream);
       logsStream.resetSpies();
 
@@ -200,7 +251,7 @@ describe('logs-stream', () => {
 
     it('should flush the logs when buffer flushes', async () => {
       const logsStream = new FakeLogsStream();
-      logsStream.openLogsStream({ since: new Date().toISOString() });
+      await openLogsStream(logsStream, { since: new Date().toISOString() });
       await fakeLogsReceived(logsStream);
       logsStream.resetSpies();
 
@@ -213,7 +264,7 @@ describe('logs-stream', () => {
 
     it('should set the running state at the right moment', async () => {
       const logsStream = new FakeLogsStream();
-      logsStream.openLogsStream({ since: new Date().toISOString() });
+      await openLogsStream(logsStream, { since: new Date().toISOString() });
       logsStream.resetSpies();
 
       await fakeLogsReceived(logsStream); // should update state
@@ -240,7 +291,7 @@ describe('logs-stream', () => {
 
     describe('when overflow watermark is reached', () => {
       async function reachWatermark(logsStream) {
-        logsStream.openLogsStream({ since: new Date().toISOString() });
+        await openLogsStream(logsStream, { since: new Date().toISOString() });
         await fakeLogsReceived(logsStream); // first is flushed immediately
         await fakeLogsReceived(logsStream, LIMIT - 1);
         logsStream.resetSpies();
@@ -314,7 +365,7 @@ describe('logs-stream', () => {
   describe('on stream ended', () => {
     it('should set completed state', async () => {
       const logsStream = new FakeLogsStream();
-      logsStream.openLogsStream({ since: new Date().toISOString(), until: new Date().toISOString() });
+      await openLogsStream(logsStream, { since: new Date().toISOString(), until: new Date().toISOString() });
       await fakeLogsReceived(logsStream);
       logsStream.resetSpies();
 
@@ -332,7 +383,7 @@ describe('logs-stream', () => {
   describe('pause() method', () => {
     it('should set paused state', async () => {
       const logsStream = new FakeLogsStream();
-      logsStream.openLogsStream({ since: new Date().toISOString() });
+      await openLogsStream(logsStream, { since: new Date().toISOString() });
       await fakeLogsReceived(logsStream);
       logsStream.resetSpies();
 
@@ -349,7 +400,7 @@ describe('logs-stream', () => {
 
     it('should pause the sse', async () => {
       const logsStream = new FakeLogsStream();
-      logsStream.openLogsStream({ since: new Date().toISOString() });
+      await openLogsStream(logsStream, { since: new Date().toISOString() });
       await fakeLogsReceived(logsStream);
       logsStream.resetSpies();
 
@@ -360,7 +411,7 @@ describe('logs-stream', () => {
 
     it('should do nothing if already paused', async () => {
       const logsStream = new FakeLogsStream();
-      logsStream.openLogsStream({ since: new Date().toISOString() });
+      await openLogsStream(logsStream, { since: new Date().toISOString() });
       await fakeLogsReceived(logsStream);
       logsStream.pause();
       logsStream.resetSpies();
@@ -368,6 +419,17 @@ describe('logs-stream', () => {
       logsStream.pause();
 
       expect(logsStream.sseSpies.pause.callCount).to.eql(0);
+    });
+
+    it('should stop the waiting timer', async () => {
+      const logsStream = new FakeLogsStream(50);
+      await openLogsStream(logsStream, { since: new Date().toISOString() });
+      logsStream.pause();
+      logsStream.resetSpies();
+
+      await sleep(55);
+
+      expect(logsStream.spies.updateStreamState.callCount).to.eql(0);
     });
 
     it('should do nothing if not started paused', async () => {
@@ -378,12 +440,86 @@ describe('logs-stream', () => {
 
       expect(logsStream.sseSpies.pause.callCount).to.eql(0);
     });
+
+    describe('while the stream is being created', () => {
+      it('should pause the sse as soon as it opens', async () => {
+        const logsStream = new FakeLogsStream(undefined, { deferStreamCreation: true });
+        logsStream.openLogsStream({ since: new Date().toISOString() });
+
+        logsStream.pause();
+        expect(logsStream.sseSpies.pause.callCount).to.eql(0);
+
+        await logsStream.completeStreamCreation();
+        expect(logsStream.sseSpies.pause.callCount).to.eql(1);
+      });
+
+      it('should set paused state', async () => {
+        const logsStream = new FakeLogsStream(undefined, { deferStreamCreation: true });
+        logsStream.openLogsStream({ since: new Date().toISOString() });
+        logsStream.resetSpies();
+
+        logsStream.pause();
+
+        expect(logsStream.spies.updateStreamState.callCount).to.eql(1);
+        expect(logsStream.spies.updateStreamState.firstCall.args[0]).to.eql({
+          type: 'paused',
+          reason: 'user',
+          // the progression is only started when the stream opens, so it is not live yet
+          progress: { value: 0, percent: null },
+          overflowing: false,
+        });
+      });
+
+      it('should be cancelled by a resume() occurring before the stream opens', async () => {
+        const logsStream = new FakeLogsStream(undefined, { deferStreamCreation: true });
+        logsStream.openLogsStream({ since: new Date().toISOString() });
+
+        logsStream.pause();
+        logsStream.resume();
+        await logsStream.completeStreamCreation();
+
+        expect(logsStream.sseSpies.pause.callCount).to.eql(0);
+        expect(logsStream.sseSpies.resume.callCount).to.eql(0);
+      });
+
+      it('should still start the progression when the stream opens', async () => {
+        const logsStream = new FakeLogsStream(1000, { deferStreamCreation: true });
+        logsStream.openLogsStream({ since: new Date().toISOString() });
+        logsStream.pause();
+        await logsStream.completeStreamCreation();
+        logsStream.resume();
+        logsStream.resetSpies();
+
+        await fakeLogsReceived(logsStream);
+
+        // a progression that was never started reports a live date range as a closed one
+        expect(logsStream.spies.updateStreamState.callCount).to.eql(1);
+        expect(logsStream.spies.updateStreamState.firstCall.args[0]).to.eql({
+          type: 'running',
+          progress: { value: 1 },
+          overflowing: false,
+        });
+      });
+
+      it('should not start the waiting timer while the stream is paused', async () => {
+        const logsStream = new FakeLogsStream(50, { deferStreamCreation: true });
+        logsStream.openLogsStream({ since: new Date().toISOString(), until: new Date().toISOString() });
+        logsStream.pause();
+        await logsStream.completeStreamCreation();
+        logsStream.resetSpies();
+
+        await sleep(55);
+
+        // with a closed date range, the waiting timer completes the stream: it must not run while paused
+        expect(logsStream.spies.updateStreamState.callCount).to.eql(0);
+      });
+    });
   });
 
   describe('resume() method', () => {
     it('should set running state', async () => {
       const logsStream = new FakeLogsStream();
-      logsStream.openLogsStream({ since: new Date().toISOString() });
+      await openLogsStream(logsStream, { since: new Date().toISOString() });
       await fakeLogsReceived(logsStream);
       logsStream.pause();
       logsStream.resetSpies();
@@ -400,7 +536,7 @@ describe('logs-stream', () => {
 
     it('should resume the sse', async () => {
       const logsStream = new FakeLogsStream();
-      logsStream.openLogsStream({ since: new Date().toISOString() });
+      await openLogsStream(logsStream, { since: new Date().toISOString() });
       await fakeLogsReceived(logsStream);
       logsStream.pause();
       logsStream.resetSpies();
@@ -410,9 +546,23 @@ describe('logs-stream', () => {
       expect(logsStream.sseSpies.resume.callCount).to.eql(1);
     });
 
+    it('should start the waiting timer back when no log has been received yet', async () => {
+      const logsStream = new FakeLogsStream(50, { deferStreamCreation: true });
+      logsStream.openLogsStream({ since: new Date().toISOString() });
+      logsStream.pause();
+      await logsStream.completeStreamCreation();
+
+      logsStream.resume();
+      logsStream.resetSpies();
+
+      await sleep(55);
+      expect(logsStream.spies.updateStreamState.callCount).to.eql(1);
+      expect(logsStream.spies.updateStreamState.firstCall.args[0]).to.eql({ type: 'waitingForFirstLog' });
+    });
+
     it('should do nothing if not paused', async () => {
       const logsStream = new FakeLogsStream();
-      logsStream.openLogsStream({ since: new Date().toISOString() });
+      await openLogsStream(logsStream, { since: new Date().toISOString() });
       await fakeLogsReceived(logsStream);
       logsStream.resetSpies();
 
@@ -425,7 +575,7 @@ describe('logs-stream', () => {
   describe('when no logs is received since a long time', () => {
     it('should set waiting state if no logs was received at all', async () => {
       const logsStream = new FakeLogsStream(50);
-      logsStream.openLogsStream({ since: new Date().toISOString() });
+      await openLogsStream(logsStream, { since: new Date().toISOString() });
       logsStream.resetSpies();
 
       await sleep(55);
@@ -438,7 +588,7 @@ describe('logs-stream', () => {
 
     it('should not set waiting state if one log has already been received', async () => {
       const logsStream = new FakeLogsStream(50);
-      logsStream.openLogsStream({ since: new Date().toISOString() });
+      await openLogsStream(logsStream, { since: new Date().toISOString() });
       await fakeLogsReceived(logsStream);
       logsStream.resetSpies();
 

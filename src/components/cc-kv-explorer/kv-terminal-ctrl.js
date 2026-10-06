@@ -1,3 +1,5 @@
+import { isCcHttpError, isCcHttpErrorWithCode } from '@clevercloud/client/utils/error-utils.js';
+
 /**
  * @import { CcKvExplorer } from './cc-kv-explorer.js'
  * @import { KvClient } from './kv-client.js'
@@ -28,7 +30,7 @@ export class KvTerminalCtrl {
     });
 
     try {
-      const { success, result } = await this._kvClient.sendCommandLine(commandLine);
+      const { isSuccess: success, result } = await this._kvClient.sendCommandLine(commandLine);
 
       this._updateTerminalState({
         type: 'idle',
@@ -44,8 +46,10 @@ export class KvTerminalCtrl {
         }),
       });
 
-      const errorCode = getErrorCode(e);
-      if (errorCode === 'clever.redis-http.unknown-command' || errorCode === 'clever.redis-http.bad-command-format') {
+      if (
+        isCcHttpErrorWithCode(e, 'clever.redis-http.unknown-command') ||
+        isCcHttpErrorWithCode(e, 'clever.redis-http.bad-command-format')
+      ) {
         throw e;
       }
     }
@@ -60,17 +64,19 @@ export class KvTerminalCtrl {
 }
 
 /**
- * @param {{responseBody?: { code?: string}}} e
- * @return {string | null} e
- */
-function getErrorCode(e) {
-  return e?.responseBody?.code;
-}
-
-/**
- * @param {{responseBody?: { message?: string}}} e
- * @return {string | null} e
+ * The message the kv proxy sent, which is the message Redis© itself returned for the command.
+ *
+ * It is read from the response body and not from `Error#message`, because the client prefixes that
+ * one with the HTTP status. The terminal prints this line as the command output, so it has to be
+ * the raw Redis© message.
+ *
+ * @param {unknown} e
+ * @return {string | null}
  */
 function getErrorMessage(e) {
-  return e?.responseBody?.message;
+  if (!isCcHttpError(e)) {
+    return null;
+  }
+  const body = /** @type {{message?: string}} */ (e.response.body);
+  return body?.message ?? null;
 }

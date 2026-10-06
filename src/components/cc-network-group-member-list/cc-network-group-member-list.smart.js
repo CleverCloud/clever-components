@@ -7,6 +7,9 @@ import { DeleteNetworkGroupMemberCommand } from '@clevercloud/client/cc-api-comm
 import { GetNetworkGroupCommand } from '@clevercloud/client/cc-api-commands/network-group/get-network-group-command.js';
 import { GetNetworkGroupWireguardConfigurationUrlCommand } from '@clevercloud/client/cc-api-commands/network-group/get-network-group-wireguard-configuration-url-command.js';
 import { isNetworkGroupAddonCandidate } from '@clevercloud/client/cc-api-commands/network-group/network-group-utils.js';
+import { tolerateNotFound } from '@clevercloud/client/utils/error-utils.js';
+import { isKnown } from '@clevercloud/client/utils/unknown-to-client-utils.js';
+import { unlessAborted } from '../../lib/abortable.js';
 import { getAssetUrl } from '../../lib/assets-url.js';
 import { getCcApiClientWithOAuth } from '../../lib/cc-api-client.js';
 import { notify, notifyError, notifySuccess } from '../../lib/notifications.js';
@@ -23,10 +26,30 @@ const FIFTY_MINUTES = 50 * 60 * 1000;
  * @import { NetworkGroupMember, NetworkGroupMemberLogo } from '../cc-network-group-member-card/cc-network-group-member-card.types.js';
  * @import { CcNetworkGroupMemberList } from './cc-network-group-member-list.js'
  * @import { NetworkGroupPeer } from '../cc-network-group-peer-card/cc-network-group-peer-card.types.js';
- * @import { NetworkGroup } from '@clevercloud/client/cc-api-commands/network-group/network-group.types.js';
+ * @import { NetworkGroup, NetworkGroupEndpoint } from '@clevercloud/client/cc-api-commands/network-group/network-group.types.js';
+ * @import { Known } from '@clevercloud/client/utils/unknown-to-client-utils.js';
  * @import { OnContextUpdateArgs } from '../../lib/smart/smart-component.types.js'
  * @import { Option } from '../cc-select/cc-select.types.js'
  */
+
+/**
+ * @typedef {NetworkGroup['members'][number]} RawNetworkGroupMember
+ * @typedef {Omit<RawNetworkGroupMember, 'kind'> & { kind: Exclude<RawNetworkGroupMember['kind'], 'LOADBALANCER'> }} DisplayedNetworkGroupMember
+ * @typedef {NetworkGroup['peers'][number]} RawNetworkGroupPeer
+ * @typedef {Known<RawNetworkGroupPeer> & { endpoint: Known<NetworkGroupEndpoint> }} KnownNetworkGroupPeer
+ */
+
+/**
+ * The API also reports the load balancers attached to the network group as members. They are registered by the load
+ * balancer itself, not by the user, and this component offers no way to create, link or manage one, so we leave them
+ * out of the list.
+ *
+ * @param {RawNetworkGroupMember} member
+ * @returns {member is DisplayedNetworkGroupMember}
+ */
+function isDisplayedMember(member) {
+  return member.kind !== 'LOADBALANCER';
+}
 
 defineSmartComponent({
   selector: 'cc-network-group-member-list',
@@ -89,9 +112,11 @@ defineSmartComponent({
       try {
         await refreshData();
       } catch (error) {
-        console.error(error);
-        updateComponent('memberListState', { type: 'error' });
-        updateComponent('linkFormState', { type: 'error' });
+        unlessAborted(signal, error, () => {
+          console.error(error);
+          updateComponent('memberListState', { type: 'error' });
+          updateComponent('linkFormState', { type: 'error' });
+        });
       }
     }
 
@@ -116,28 +141,31 @@ defineSmartComponent({
       try {
         await api.deleteMember(memberId);
       } catch (error) {
-        if (error instanceof Error) {
-          console.error(error.message);
-        }
-        updateComponent('memberListState', (memberListState) => {
-          memberListState.type = 'loaded';
+        return unlessAborted(signal, error, () => {
+          if (error instanceof Error) {
+            console.error(error.message);
+          }
+          updateComponent('memberListState', (memberListState) => {
+            memberListState.type = 'loaded';
+          });
+          notifyError(i18n('cc-network-group-member-list.member.unlink.error'));
         });
-        notifyError(i18n('cc-network-group-member-list.member.unlink.error'));
-        return;
       }
 
       try {
         await refreshData();
         notifySuccess(i18n('cc-network-group-member-list.member.unlink.success'));
       } catch (refreshError) {
-        console.error(refreshError);
-        updateComponent('memberListState', (memberListState) => {
-          memberListState.type = 'loaded';
-        });
-        notify({
-          message: i18n('cc-network-group-member-list.refresh.error'),
-          intent: 'danger',
-          options: { timeout: 0 },
+        unlessAborted(signal, refreshError, () => {
+          console.error(refreshError);
+          updateComponent('memberListState', (memberListState) => {
+            memberListState.type = 'loaded';
+          });
+          notify({
+            message: i18n('cc-network-group-member-list.refresh.error'),
+            intent: 'danger',
+            options: { timeout: 0 },
+          });
         });
       }
     });
@@ -155,34 +183,37 @@ defineSmartComponent({
       try {
         await api.createMember(memberId);
       } catch (error) {
-        console.error(error);
-        updateComponent(
-          'linkFormState',
-          /** @param {NetworkGroupMemberLinkFormStateIdle|NetworkGroupMemberLinkFormStateLinking} linkFormState */
-          (linkFormState) => {
-            linkFormState.type = 'idle';
-          },
-        );
-        notifyError(i18n('cc-network-group-member-list.member.link.error'));
-        return;
+        return unlessAborted(signal, error, () => {
+          console.error(error);
+          updateComponent(
+            'linkFormState',
+            /** @param {NetworkGroupMemberLinkFormStateIdle|NetworkGroupMemberLinkFormStateLinking} linkFormState */
+            (linkFormState) => {
+              linkFormState.type = 'idle';
+            },
+          );
+          notifyError(i18n('cc-network-group-member-list.member.link.error'));
+        });
       }
 
       try {
         await refreshData();
         notifySuccess(i18n('cc-network-group-member-list.member.link.success'));
       } catch (refreshError) {
-        console.error(refreshError);
-        updateComponent(
-          'linkFormState',
-          /** @param {NetworkGroupMemberLinkFormStateIdle|NetworkGroupMemberLinkFormStateLinking} linkFormState */
-          (linkFormState) => {
-            linkFormState.type = 'idle';
-          },
-        );
-        notify({
-          message: i18n('cc-network-group-member-list.refresh.error'),
-          intent: 'danger',
-          options: { timeout: 0 },
+        unlessAborted(signal, refreshError, () => {
+          console.error(refreshError);
+          updateComponent(
+            'linkFormState',
+            /** @param {NetworkGroupMemberLinkFormStateIdle|NetworkGroupMemberLinkFormStateLinking} linkFormState */
+            (linkFormState) => {
+              linkFormState.type = 'idle';
+            },
+          );
+          notify({
+            message: i18n('cc-network-group-member-list.refresh.error'),
+            intent: 'danger',
+            options: { timeout: 0 },
+          });
         });
       }
     });
@@ -247,9 +278,9 @@ class Api {
       { signal: this.#signal },
     );
 
-    const memberListPromises = networkGroupData.members.map(async (member) =>
-      this.#getMemberWithInfo(member, networkGroupData.peers),
-    );
+    const memberListPromises = networkGroupData.members
+      .filter(isDisplayedMember)
+      .map(async (member) => this.#getMemberWithInfo(member, networkGroupData.peers));
 
     return Promise.all(memberListPromises);
   }
@@ -302,24 +333,26 @@ class Api {
   async #getMemberLogo(resourceId, kind) {
     switch (kind) {
       case 'APPLICATION': {
-        const applicationData = await this.#ccApiClient.send(
-          new GetApplicationCommand({ applicationId: resourceId, ownerId: this.#ownerId }),
-          {
+        // a deleted application answers with a 404: no logo, the member is reported as deleted
+        const applicationData = await tolerateNotFound(
+          this.#ccApiClient.send(new GetApplicationCommand({ applicationId: resourceId, ownerId: this.#ownerId }), {
             signal: this.#signal,
-          },
+          }),
         );
         if (applicationData == null) {
           return null;
         }
         return {
-          url: applicationData.instance.variant.logo,
+          url: applicationData.instance.variant.logoUrl,
           a11yName: applicationData.instance.variant.name,
         };
       }
       case 'ADDON': {
-        const addonData = await this.#ccApiClient.send(
-          new GetAddonCommand({ addonId: resourceId, ownerId: this.#ownerId }),
-          { signal: this.#signal },
+        // a deleted add-on answers with a 404: no logo, the member is reported as deleted
+        const addonData = await tolerateNotFound(
+          this.#ccApiClient.send(new GetAddonCommand({ addonId: resourceId, ownerId: this.#ownerId }), {
+            signal: this.#signal,
+          }),
         );
         if (addonData == null) {
           return null;
@@ -338,7 +371,7 @@ class Api {
   }
 
   /**
-   * @param {NetworkGroup['members'][number]} member
+   * @param {DisplayedNetworkGroupMember} member
    * @param {NetworkGroup['peers']} rawPeerList
    * @returns {Promise<NetworkGroupMember>}
    * */
@@ -346,7 +379,10 @@ class Api {
     const [logo, peerList] = await Promise.all([
       this.#getMemberLogo(member.id, member.kind),
       Promise.all(
-        rawPeerList.filter((peer) => peer.parentMember === member.id).map((peer) => this.#getPeerWithInfo(peer)),
+        rawPeerList
+          .filter(isKnownNetworkGroupPeer)
+          .filter((peer) => peer.parentMember === member.id)
+          .map((peer) => this.#getPeerWithInfo(peer)),
       ),
     ]);
 
@@ -385,7 +421,7 @@ class Api {
     return url;
   }
 
-  /** @param {NetworkGroup['peers'][number]} peer
+  /** @param {KnownNetworkGroupPeer} peer
    * @returns {Promise<NetworkGroupPeer>}
    */
   async #getPeerWithInfo(peer) {
@@ -394,9 +430,32 @@ class Api {
       id: peer.id,
       label: peer.label,
       publicKey: peer.publicKey,
-      ip: peer.endpoint.type === 'ServerEndpoint' ? peer.endpoint.ngTerm.host : peer.endpoint.ngIp,
+      ip: getNetworkGroupPeerIp(peer),
       type: peer.type,
       configLink,
     };
   }
+}
+
+/**
+ * The client is older than the API it talks to, so it publishes a peer kind or an endpoint kind it does not know as
+ * an unknown variant carrying only the raw payload. A peer card needs an id, a public key and an address, none of
+ * which such a variant exposes, so those peers are left out of the list.
+ *
+ * @param {RawNetworkGroupPeer} peer
+ * @returns {peer is KnownNetworkGroupPeer}
+ */
+function isKnownNetworkGroupPeer(peer) {
+  return isKnown(peer) && isKnown(peer.endpoint);
+}
+
+/**
+ * Returns the address the other peers reach this one at: a server peer answers on its network group host, a client
+ * peer only has a network group IP.
+ *
+ * @param {KnownNetworkGroupPeer} peer
+ * @returns {string}
+ */
+function getNetworkGroupPeerIp(peer) {
+  return peer.endpoint.type === 'ServerEndpoint' ? peer.endpoint.networkGroupTerm.host : peer.endpoint.networkGroupIp;
 }

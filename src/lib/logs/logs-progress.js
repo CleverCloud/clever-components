@@ -19,6 +19,7 @@ export class LogsProgress {
   }
 
   reset() {
+    this._started = false;
     this._value = 0;
     this._visibleValue = 0;
     this._percent = null;
@@ -35,6 +36,7 @@ export class LogsProgress {
    * @param {DateRange} dateRange
    */
   start(dateRange) {
+    this._started = true;
     this._isLive = isLive(dateRange);
     this._dateRangeStart = new Date(dateRange.since).getTime();
     this._dateRangeDuration = this._isLive ? 0 : new Date(dateRange.until).getTime() - this._dateRangeStart;
@@ -104,5 +106,12 @@ export class LogsProgress {
 
   isEmpty() {
     return this._value === 0;
+  }
+
+  /**
+   * @returns {boolean} Whether the progression has been started with a date range.
+   */
+  isStarted() {
+    return this._started;
   }
 }

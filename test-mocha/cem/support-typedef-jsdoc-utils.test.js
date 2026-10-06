@@ -323,6 +323,8 @@ describe('CEM', function () {
       const file = 'cc-test-component.types.d.ts';
       const pathFile = path.resolve(ROOT_DIR, MODULE_DIR, file);
       const rootPath = path.resolve(ROOT_DIR, MODULE_DIR);
+      // `lit` is a bare import: it resolves through the `exports` field and pnpm symlinks it
+      const litPath = fs.realpathSync(path.resolve(ROOT_DIR, 'node_modules/lit/development/index.d.ts'));
 
       expect(findPathAndTypesFromImports(ts, pathFile)).to.have.deep.members([
         {
@@ -332,6 +334,10 @@ describe('CEM', function () {
         {
           types: ['ToSubImport', 'ToSubImportBar'],
           path: `${rootPath}/cem-test-import/cc-test-imports-sub.types.d.ts`,
+        },
+        {
+          types: ['TemplateResult'],
+          path: litPath,
         },
       ]);
     });

@@ -1,5 +1,7 @@
+import { OrganisationMemberRole } from '@clevercloud/client/cc-api-commands/organisation/organisation.types.js';
+
 /*region Member info*/
-export type OrgaMemberRole = 'ADMIN' | 'DEVELOPER' | 'ACCOUNTING' | 'MANAGER';
+export type OrgaMemberRole = Exclude<OrganisationMemberRole, 'NONE'>;
 
 export interface OrgaMember {
   id: string;

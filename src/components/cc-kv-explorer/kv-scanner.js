@@ -25,6 +25,8 @@ export class KvScanner {
     this._cursor = null;
     /** @type {F} */
     this._filter = null;
+    /** @type {number} */
+    this._total = 0;
 
     this._abortable = abortable;
     this._onChange = onChange;
@@ -49,9 +51,12 @@ export class KvScanner {
   }
 
   /**
+   * `total` is the number of elements the whole scanned entity holds. Only the key scan and the
+   * list scan report it, so the other scans leave it out.
+   *
    * @param {number} _count
    * @param {AbortSignal} [_signal]
-   * @return {Promise<{cursor: number, total: number, elements: Array<T>}>}
+   * @return {Promise<{cursor: number, total?: number, elements: Array<T>}>}
    * @protected
    */
   fetch(_count, _signal) {
@@ -156,6 +161,8 @@ export class KvScanner {
   }
 
   /**
+   * Only meaningful for a scan whose `fetch()` reports a total. It stays at `0` for the others.
+   *
    * @return {number}
    */
   get total() {
@@ -181,7 +188,9 @@ export class KvScanner {
       });
       this._elements = Array.from(this._map.values());
       this._cursor = f.cursor;
-      this._total = f.total;
+      if (f.total != null) {
+        this._total = f.total;
+      }
 
       this._onChange?.();
     }

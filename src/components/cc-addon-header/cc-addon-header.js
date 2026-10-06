@@ -38,7 +38,8 @@ const SKELETON_ADDON_INFO = {
 
 /**
  * @import { CcAddonHeaderState, CcAddonHeaderStateLoaded, DeploymentStatus } from './cc-addon-header.types.js'
- * @import { IconModel, Zone } from '../common.types.js'
+ * @import { Zone } from '@clevercloud/client/cc-api-commands/zone/zone.types.js'
+ * @import { IconModel } from '../common.types.js'
  * @import { ZoneState } from '../cc-zone/cc-zone.types.js'
  */
 

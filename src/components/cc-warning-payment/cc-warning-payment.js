@@ -1,4 +1,4 @@
-import { ERROR_TYPES } from '@clevercloud/client/esm/utils/payment.js';
+import { ERROR_TYPES } from '@clevercloud/client/utils/payment-utils.js';
 import { css, html, LitElement } from 'lit';
 import { i18n } from '../../translations/translation.js';
 import '../cc-link/cc-link.js';

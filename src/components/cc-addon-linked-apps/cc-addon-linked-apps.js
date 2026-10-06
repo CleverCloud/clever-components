@@ -18,7 +18,7 @@ const SKELETON_APPLICATIONS = [
 /**
  * @import { AddonLinkedAppsState, LinkedApplication } from './cc-addon-linked-apps.types.js'
  * @import { ZoneStateLoaded, ZoneStateLoading } from '../cc-zone/cc-zone.types.js'
- * @import { Zone } from '../common.types.js'
+ * @import { Zone } from '@clevercloud/client/cc-api-commands/zone/zone.types.js'
  * @import { TemplateResult } from 'lit'
  */
 

@@ -1,3 +1,4 @@
+import { DAY, HOUR, MINUTE, SECOND } from '../../lib/date/date-utils.js';
 import { makeStory } from '../../stories/lib/make-story.js';
 import './cc-datetime-relative.js';
 
@@ -5,13 +6,13 @@ export function createDateAgo({ seconds = 0, minutes = 0, hours = 0, days = 0, w
   const nowTs = new Date().getTime();
   const targetTs =
     nowTs -
-    seconds * 1000 -
-    minutes * 1000 * 60 -
-    hours * 1000 * 60 * 60 -
-    days * 1000 * 60 * 60 * 24 -
-    weeks * 1000 * 60 * 60 * 24 * 7 -
-    months * 1000 * 60 * 60 * 24 * (365.25 / 12) -
-    years * 1000 * 60 * 60 * 24 * 365.25;
+    seconds * SECOND -
+    minutes * MINUTE -
+    hours * HOUR -
+    days * DAY -
+    weeks * DAY * 7 -
+    months * DAY * (365.25 / 12) -
+    years * DAY * 365.25;
   const targetDate = new Date(targetTs);
   return targetDate.toISOString();
 }

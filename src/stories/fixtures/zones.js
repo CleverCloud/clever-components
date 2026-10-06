@@ -1,19 +1,22 @@
 /**
- * @import { Zone } from '../../components/common.types.js'
+ * @import { Zone } from '@clevercloud/client/cc-api-commands/zone/zone.types.js'
 */
 
 /** @type {Zone[]} */
 export const ZONES = [
   {
+    id: 'aad32a21-24f8-40b3-a750-baab218d927b',
     name: 'par',
     country: 'France',
     countryCode: 'FR',
     city: 'Paris',
     lat: 48.87,
     lon: 2.33,
+    outboundIps: [],
     tags: ['infra:clever-cloud', 'region:eu'],
   },
   {
+    id: '1f4b8e02-9c31-4d7a-8f60-2b5c0a17e934',
     name: 'priv1',
     country: 'France',
     countryCode: 'FR',
@@ -21,9 +24,11 @@ export const ZONES = [
     city: 'Paris',
     lat: 48.87,
     lon: 2.33,
+    outboundIps: [],
     tags: ['infra:clever-cloud', 'region:eu', 'scope:private'],
   },
   {
+    id: '5c07a3d8-6e14-4b92-a3f7-0d81c6be2705',
     name: 'priv2',
     country: 'France',
     countryCode: 'FR',
@@ -31,54 +36,66 @@ export const ZONES = [
     city: 'Paris',
     lat: 48.87,
     lon: 2.33,
+    outboundIps: [],
     tags: ['infra:clever-cloud', 'region:eu', 'scope:private'],
   },
   {
+    id: '83923989-e9e8-4070-a371-3aafc2c4b9e3',
     name: 'war',
     country: 'Poland',
     countryCode: 'PL',
     city: 'Warsaw',
     lat: 52.23,
     lon: 21.01,
+    outboundIps: [],
     tags: ['region:eu', 'infra:ovh'],
   },
   {
+    id: 'b9bd85cc-62db-492f-94f5-ad3e47367d8e',
     name: 'rbx',
     country: 'France',
     countryCode: 'FR',
     city: 'Roubaix',
     lat: 50.69,
     lon: 3.17,
+    outboundIps: [],
     tags: ['region:eu', 'infra:ovh'],
   },
   {
+    id: '3b9a58f4-bab4-439b-8662-e200d9805dba',
     name: 'sgp',
     country: 'Singapore',
     countryCode: 'SG',
     city: 'Singapore',
     lat: 1.34,
     lon: 103.83,
+    outboundIps: [],
     tags: ['infra:ovh'],
   },
   {
+    id: '1a886ae1-1643-448b-a6b1-5891ecd74e82',
     name: 'syd',
     country: 'Australia',
     countryCode: 'AU',
     city: 'Sydney',
     lat: -33.85,
     lon: 151.22,
+    outboundIps: [],
     tags: ['infra:ovh'],
   },
   {
+    id: 'd62b134a-2671-4bba-8c46-b9a09a47aedd',
     name: 'mtl',
     country: 'Canada',
     countryCode: 'CA',
     city: 'Montreal',
     lat: 45.50,
     lon: -73.61,
+    outboundIps: [],
     tags: ['infra:ovh'],
   },
   {
+    id: 'e83c1d59-47a0-4f38-9b21-c6d5f80a3e12',
     name: 'acme-corp',
     displayName: 'ACME Corp',
     country: 'Germany',
@@ -86,17 +103,20 @@ export const ZONES = [
     city: 'Berlin',
     lat: 52.52,
     lon: 13.39,
+    outboundIps: [],
     tags: ['region:eu', 'scope:private'],
   },
 ];
 
 /** @type {Zone} */
 export const ZONE = {
+  id: 'aad32a21-24f8-40b3-a750-baab218d927b',
   name: 'par',
   country: 'France',
   countryCode: 'fr',
   city: 'Paris',
   lat: 48.87,
   lon: 2.33,
+  outboundIps: [],
   tags: ['region:eu', 'infra:clever-cloud'],
 };
