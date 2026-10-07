@@ -15,6 +15,27 @@ function generateLogs(length, offset = 0) {
   });
 }
 
+// How many different log heights `generateWrappingLogs()` produces. It must not divide the batch sizes the tests
+// append, otherwise a front-trim would move a log of the very same height under each index and hide any drift.
+const REPEAT_COUNT = 7;
+
+/** @param {import('./cc-logs.types.js').Log} log @return {number} How many times the log's message repeats. */
+function repeatOf(log) {
+  return Number(log.id.split('-')[1]) % REPEAT_COUNT;
+}
+
+/**
+ * Logs whose height, once wrapped, only depends on `id % REPEAT_COUNT`.
+ *
+ * @param {number} length @param {number} offset
+ */
+function generateWrappingLogs(length, offset = 0) {
+  return generateLogs(length, offset).map((log) => ({
+    ...log,
+    message: `${log.message} ${'lorem ipsum dolor sit amet consectetur '.repeat(repeatOf(log) + 1)}`,
+  }));
+}
+
 /** @param {number} ms */
 function wait(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -143,32 +164,56 @@ describe('cc-logs native follow', function () {
     expect(s.distToBottom, 'still pinned to bottom').to.be.lessThan(8);
   });
 
-  it('skips the costly size-cache realign while following at the limit', async function () {
+  // Regression test: while following, every append at the limit trims the front of the list, so a different log moves
+  // under each index. The virtualizer's size cache is keyed by index, so the cache must follow that shift. It used to
+  // be skipped while following, on the grounds that the rendered bottom window is re-measured on every append anyway.
+  // But the entries that window leaves behind are not dropped: they stay under indices that now hold other logs. With
+  // `wrap-lines` those heights all differ, so the rows the user scrolls up into are laid out at another log's height.
+  it('keeps every cached height attached to its own log while following at the limit', async function () {
     const el = await fixture(
-      html`<cc-logs-beta follow limit="500" style="display:block; height:300px;"></cc-logs-beta>`,
+      html`<cc-logs-beta
+        follow
+        wrap-lines
+        limit="500"
+        style="display:block; height:300px; width:400px;"
+      ></cc-logs-beta>`,
     );
     await el.updateComplete;
-    // Fill past the limit so front-trim is now happening on every append.
-    for (let b = 0; b < 5; b++) {
-      el.appendLogs(generateLogs(200, b * 200));
+    // Stream well past the limit so the front-trim has moved the whole buffer several times over.
+    for (let b = 0; b < 15; b++) {
+      el.appendLogs(generateWrappingLogs(200, b * 200));
       await wait(20);
     }
-    for (let i = 0; i < 6; i++) {
+    for (let i = 0; i < 8; i++) {
       await nextFrame();
     }
     expect(el._logsCtrl.listLength, 'capped at limit').to.equal(500);
-    expect(el.follow, 'following').to.equal(true);
+    expect(el.follow, 'still following').to.equal(true);
 
-    // The realign shift is the only thing that ever REPLACES the virtualizer's `itemSizeCache` Map (the virtualizer
-    // itself only mutates it in place). While following, the shift+recompute is skipped — the dominant per-append cost
-    // at a large limit — because the re-measured bottom window keeps heights correct on its own.
-    const cacheRef = el._getVirtualizer().itemSizeCache;
-    el.appendLogs(generateLogs(200, 1000));
-    for (let i = 0; i < 6; i++) {
-      await nextFrame();
+    // A log's height only depends on how many times its message repeats, so the rendered rows give us the real height
+    // of every kind of log.
+    /** @type {Map<number, number>} */
+    const heightPerRepeat = new Map();
+    const logs = el._logsCtrl.getList();
+    for (const row of el.shadowRoot.querySelectorAll('.log')) {
+      const log = logs[Number(row.dataset.index)];
+      heightPerRepeat.set(repeatOf(log), Math.round(row.getBoundingClientRect().height));
     }
+    expect(heightPerRepeat.size, 'every kind of log is rendered').to.equal(REPEAT_COUNT);
 
-    expect(el.follow, 'still following after another front-trim').to.equal(true);
-    expect(el._getVirtualizer().itemSizeCache, 'the size-cache Map is not rebuilt while following').to.equal(cacheRef);
+    const cache = el._getVirtualizer().itemSizeCache;
+    expect(cache.size, 'the cache holds the logs that scrolled past').to.be.greaterThan(0);
+    /** @type {Array<string>} */
+    const stale = [];
+    for (const [index, size] of cache) {
+      const expectedSize = heightPerRepeat.get(repeatOf(logs[Number(index)]));
+      if (size !== expectedSize) {
+        stale.push(`index ${index}: cached ${size}, log is ${expectedSize} tall`);
+      }
+    }
+    expect(
+      stale.length,
+      `no cached height belongs to a log that has moved on (${stale.length} do, e.g. ${stale.slice(0, 3).join(' ; ')})`,
+    ).to.equal(0);
   });
 });
