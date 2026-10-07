@@ -249,6 +249,14 @@ export class CcOauthConsumerForm extends LitElement {
     this._shouldDisplayCheckboxGroupError = !isCheckboxGroupValid;
   }
 
+  async _onFormReset() {
+    this._shouldDisplayCheckboxGroupError = false;
+    // the `reset` event is dispatched before the checkboxes go back to their default state,
+    // so we wait for the reset to be over before validating the checkbox group
+    await this.updateComplete;
+    this._validateCheckboxGroup();
+  }
+
   /**
    * This is needed when we retrieve the data from the API on 'idle-update' state
    * @param {PropertyValues<CcOauthConsumerForm>} changedProperties
@@ -321,6 +329,7 @@ export class CcOauthConsumerForm extends LitElement {
         slot="content"
         ${formSubmit(this._onFormSubmit.bind(this), this._onFormInvalid.bind(this))}
         ${ref(this._formRef)}
+        @reset=${this._onFormReset}
       >
         <cc-block-section class="info-block">
           <div slot="title" class="info-title">${i18n('cc-oauth-consumer-form.info.title')}</div>
