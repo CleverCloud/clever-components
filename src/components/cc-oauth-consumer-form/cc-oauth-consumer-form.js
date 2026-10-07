@@ -205,8 +205,10 @@ export class CcOauthConsumerForm extends LitElement {
 
     this._shouldDisplayCheckboxGroupError = false;
 
+    // `getFormDataMap` returns a bare string instead of an array when a single checkbox is checked
+    const checkedRights = Array.isArray(data.rights) ? data.rights : [data.rights];
     const rightsWithUpdatedData = /** @type {OauthConsumerRights} */ (
-      Object.fromEntries(GRANTABLE_RIGHTS.map((right) => [right, data.rights.includes(right)]))
+      Object.fromEntries(GRANTABLE_RIGHTS.map((right) => [right, checkedRights.includes(right)]))
     );
 
     /** @type {OauthConsumerWithoutKeyAndSecret} */
