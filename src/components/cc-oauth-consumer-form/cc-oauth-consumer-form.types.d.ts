@@ -47,7 +47,7 @@ export interface OauthConsumerFormData extends FormDataMap {
   url: string;
   picture: string;
   baseUrl: string;
-  rights: Array<keyof OauthConsumerRights>;
+  rights: keyof OauthConsumerRights | Array<keyof OauthConsumerRights>;
 }
 
 export type OauthConsumerWithoutKeyAndSecret = Omit<OauthConsumer, 'key' | 'secret'>;

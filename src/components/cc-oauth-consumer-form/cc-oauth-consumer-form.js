@@ -205,8 +205,10 @@ export class CcOauthConsumerForm extends LitElement {
 
     this._shouldDisplayCheckboxGroupError = false;
 
+    // `getFormDataMap` returns a bare string instead of an array when a single checkbox is checked
+    const checkedRights = Array.isArray(data.rights) ? data.rights : [data.rights];
     const rightsWithUpdatedData = /** @type {OauthConsumerRights} */ (
-      Object.fromEntries(GRANTABLE_RIGHTS.map((right) => [right, data.rights.includes(right)]))
+      Object.fromEntries(GRANTABLE_RIGHTS.map((right) => [right, checkedRights.includes(right)]))
     );
 
     /** @type {OauthConsumerWithoutKeyAndSecret} */
@@ -245,6 +247,14 @@ export class CcOauthConsumerForm extends LitElement {
       return name !== 'rights' || validity.valid;
     });
     this._shouldDisplayCheckboxGroupError = !isCheckboxGroupValid;
+  }
+
+  async _onFormReset() {
+    this._shouldDisplayCheckboxGroupError = false;
+    // the `reset` event is dispatched before the checkboxes go back to their default state,
+    // so we wait for the reset to be over before validating the checkbox group
+    await this.updateComplete;
+    this._validateCheckboxGroup();
   }
 
   /**
@@ -319,6 +329,7 @@ export class CcOauthConsumerForm extends LitElement {
         slot="content"
         ${formSubmit(this._onFormSubmit.bind(this), this._onFormInvalid.bind(this))}
         ${ref(this._formRef)}
+        @reset=${this._onFormReset}
       >
         <cc-block-section class="info-block">
           <div slot="title" class="info-title">${i18n('cc-oauth-consumer-form.info.title')}</div>
