@@ -12,6 +12,7 @@ export type LogsStreamState =
   | LogsStreamStateWaitingForFirstLog
   | LogsStreamStateError
   | LogsStreamStateRunning
+  | LogsStreamStateRetrying
   | LogsStreamStateCompleted
   | LogsStreamStatePaused;
 
@@ -29,6 +30,13 @@ export interface LogsStreamStateWaitingForFirstLog {
 
 export interface LogsStreamStateRunning {
   type: 'running';
+  progress: LogsProgressValue;
+  overflowing: boolean;
+}
+
+export interface LogsStreamStateRetrying {
+  type: 'retrying';
+  retryCount: number;
   progress: LogsProgressValue;
   overflowing: boolean;
 }

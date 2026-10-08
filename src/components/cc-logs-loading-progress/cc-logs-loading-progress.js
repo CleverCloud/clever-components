@@ -1,6 +1,7 @@
 import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import {
+  iconRemixSignalWifiOffFill as iconConnectionError,
   iconRemixInformationFill as iconInfo,
   iconRemixPauseLine,
   iconRemixPlayLine,
@@ -30,6 +31,7 @@ export class CcLogsLoadingProgress extends LitElement {
     return {
       limit: { type: Number },
       state: { type: Object },
+      _notification: { type: String, state: true },
     };
   }
 
@@ -43,6 +45,9 @@ export class CcLogsLoadingProgress extends LitElement {
 
     /** @type {number|null} The overflow limit. `null` for no limit. */
     this.limit = 1000;
+
+    /** @type {string|null} Accessibility notication in case of disconnection / reconnection */
+    this._a11yNotification = null;
   }
 
   /* region Private methods */
@@ -94,63 +99,69 @@ export class CcLogsLoadingProgress extends LitElement {
 
     const shouldAskForOverflowDecision = this.state.type === 'overflowLimitReached';
     const shouldDisplayOverflowWarning =
-      (this.state.type === 'running' || this.state.type === 'paused' || this.state.type === 'completed') &&
+      (this.state.type === 'running' ||
+        this.state.type === 'paused' ||
+        this.state.type === 'retrying' ||
+        this.state.type === 'completed') &&
       this.state.overflowing;
 
-    return html`
-      <div class="wrapper ${classMap({ warning: shouldAskForOverflowDecision })}">
-        <div class="content inline">
-          ${this._renderPlayPauseButton()}
-          ${
-            shouldAskForOverflowDecision
-              ? html`
-                  <div class="notice warning">
-                    <cc-icon .icon="${iconWarning}" a11y-name="${i18n('cc-notice.icon-alt.warning')}"></cc-icon>
-                    <div class="notice-message">
-                      <div>${i18n('cc-logs-loading-progress.overflow.warning', { limit: this.limit })}</div>
-                      <div class="overflow-buttons">
-                        <cc-button link @cc-click=${this._onAcceptOverflow}>
-                          ${i18n('cc-logs-loading-progress.overflow.accept')}
-                        </cc-button>
-                        <cc-button link @cc-click=${this._onDiscardOverflow}>
-                          ${i18n('cc-logs-loading-progress.overflow.discard')}
-                        </cc-button>
-                      </div>
-                    </div>
+    return html` <div class="wrapper ${classMap({ warning: shouldAskForOverflowDecision })}">
+      <div class="content inline">
+        ${this._renderPlayPauseButton()}
+        ${shouldAskForOverflowDecision
+          ? html`
+              <div class="notice warning">
+                <cc-icon .icon="${iconWarning}" a11y-name="${i18n('cc-notice.icon-alt.warning')}"></cc-icon>
+                <div class="notice-message">
+                  <div>${i18n('cc-logs-loading-progress.overflow.warning', { limit: this.limit })}</div>
+                  <div class="overflow-buttons">
+                    <cc-button link @cc-click=${this._onAcceptOverflow}>
+                      ${i18n('cc-logs-loading-progress.overflow.accept')}
+                    </cc-button>
+                    <cc-button link @cc-click=${this._onDiscardOverflow}>
+                      ${i18n('cc-logs-loading-progress.overflow.discard')}
+                    </cc-button>
                   </div>
-                `
-              : ''
-          }
-          ${
-            !shouldAskForOverflowDecision
-              ? html`<div class="loading-progress-message">
-                  ${this._getLoadingProgressMessage(this.state.value, percent)}
-                </div>`
-              : ''
-          }
-          ${
-            shouldDisplayOverflowWarning
-              ? html`
-                  <div class="notice info">
-                    <cc-icon .icon="${iconInfo}" a11y-name="${i18n('cc-notice.icon-alt.info')}"></cc-icon>
-                    <div class="notice-message">
-                      ${i18n('cc-logs-loading-progress.overflow.info', { limit: this.limit })}
-                    </div>
-                  </div>
-                `
-              : ''
-          }
-        </div>
-        ${
-          percent != null
+                </div>
+              </div>
+            `
+          : ''}
+        ${!shouldAskForOverflowDecision
+          ? html`<div class="loading-progress-message">
+              ${this._getLoadingProgressMessage(this.state.value, percent)}
+            </div>`
+          : ''}
+        <div class="notice error" aria-live="polite" aria-atomic="false">
+          ${this.state.type === 'retrying'
             ? html`
-                <div class="progress-bar">
-                  <div class="progress-bar-track" style="width: ${percent}%;"></div>
+                <cc-icon
+                  .icon="${iconConnectionError}"
+                  a11y-name="${i18n('cc-logs-loading-progress.icon-alt.connection-error')}"
+                ></cc-icon>
+                <div class="notice-message">
+                  ${i18n('cc-logs-loading-progress.retrying', { retryCount: this.state.retryCount })}
                 </div>
               `
-            : ''
-        }
+            : ''}
+        </div>
+        ${shouldDisplayOverflowWarning
+          ? html`
+              <div class="notice info">
+                <cc-icon .icon="${iconInfo}" a11y-name="${i18n('cc-notice.icon-alt.info')}"></cc-icon>
+                <div class="notice-message">
+                  ${i18n('cc-logs-loading-progress.overflow.info', { limit: this.limit })}
+                </div>
+              </div>
+            `
+          : ''}
       </div>
+      ${percent != null
+        ? html`
+            <div class="progress-bar">
+              <div class="progress-bar-track" style="width: ${percent}%;"></div>
+            </div>
+          `
+        : ''}
     </div>`;
   }
 
@@ -236,6 +247,26 @@ export class CcLogsLoadingProgress extends LitElement {
 
         .notice.warning cc-icon {
           --cc-icon-color: var(--cc-color-text-warning);
+        }
+
+        .error {
+          color: var(--cc-color-text-danger);
+        }
+
+        @media (prefers-reduced-motion: no-preference) {
+          .error {
+            animation: 1s error-flash infinite alternate;
+          }
+        }
+
+        @keyframes error-flash {
+          from {
+            filter: contrast(100%);
+          }
+
+          to {
+            filter: contrast(200%);
+          }
         }
 
         .progress-bar {

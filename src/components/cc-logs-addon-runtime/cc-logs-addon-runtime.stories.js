@@ -115,6 +115,22 @@ export const paused = makeStory(conf, {
     (component) => appendLogs(component, 150),
 });
 
+export const retrying = makeStory(conf, {
+  /** @type {Array<Partial<CcLogsAddonRuntime>>} */
+  items: [
+    {
+      state: {
+        type: 'loaded',
+        streamState: { type: 'retrying', retryCount: 1, progress: { value: 150 }, overflowing: false },
+      },
+      limit: 100,
+    },
+  ],
+  onUpdateComplete:
+    /** @param {CcLogsAddonRuntime} component */
+    (component) => appendLogs(component, 150),
+});
+
 export const overflowWatermarkReached = makeStory(conf, {
   /** @type {Array<Partial<CcLogsAddonRuntime>>} */
   items: [
@@ -138,6 +154,22 @@ export const overflowing = makeStory(conf, {
       state: {
         type: 'loaded',
         streamState: { type: 'running', progress: { value: 210 }, overflowing: true },
+      },
+      limit: 100,
+    },
+  ],
+  onUpdateComplete:
+    /** @param {CcLogsAddonRuntime} component */
+    (component) => appendLogs(component, 210),
+});
+
+export const retryingWhileOverflowing = makeStory(conf, {
+  /** @type {Array<Partial<CcLogsAddonRuntime>>} */
+  items: [
+    {
+      state: {
+        type: 'loaded',
+        streamState: { type: 'retrying', retryCount: 1, progress: { value: 210 }, overflowing: true },
       },
       limit: 100,
     },
