@@ -5,6 +5,25 @@ title: 'Changelog'
 
 # Changelog
 
+## [26.6.0](https://github.com/CleverCloud/clever-components/compare/26.5.0...26.6.0) (2026-10-08)
+
+
+### 🚀 Features
+
+* **lib:** add a cached auth bridge client ([f17633c](https://github.com/CleverCloud/clever-components/commit/f17633c7453aeb76dcec0e3eea2fb66fe61ca510)), closes [#1816](https://github.com/CleverCloud/clever-components/issues/1816)
+* **lib:** add the disabled OAuth consumer rights map ([59b9d68](https://github.com/CleverCloud/clever-components/commit/59b9d687ad642d242e0a068e483370ba7e8bb00f)), closes [#1816](https://github.com/CleverCloud/clever-components/issues/1816)
+* **lib:** add the isAborted and unlessAborted helpers ([f1473f2](https://github.com/CleverCloud/clever-components/commit/f1473f222a95522b0774577ac50b947f0a252885))
+
+
+### 🐛 Bug Fixes
+
+* **cc-logs:** keep scrolled-up logs still with wrap-lines ([7c0bd2f](https://github.com/CleverCloud/clever-components/commit/7c0bd2f3cc84ad98de87d3d5fce2665a88c88eba)), closes [#1839](https://github.com/CleverCloud/clever-components/issues/1839)
+* **cc-oauth-consumer-form:** grant only the right checked alone ([b757d8d](https://github.com/CleverCloud/clever-components/commit/b757d8dd45a611f0449bf363c2e807ece9fed3b1)), closes [#1842](https://github.com/CleverCloud/clever-components/issues/1842)
+* **cc-oauth-consumer-form:** validate the rights again after a reset ([806df74](https://github.com/CleverCloud/clever-components/commit/806df74366a4fee613fa04ae6c78ee7f6bc97846)), closes [#1844](https://github.com/CleverCloud/clever-components/issues/1844)
+* **cem:** resolve type imports coming from package exports ([195bed4](https://github.com/CleverCloud/clever-components/commit/195bed499a9ceb807ab7ccc00bf81b4b46ed009d))
+* log errors with console.error ([4fdce0c](https://github.com/CleverCloud/clever-components/commit/4fdce0cbb8fd034563f21e1db2bf768b0b4c12e9))
+* **smart:** ignore the errors raised after an abort ([9dcbe8f](https://github.com/CleverCloud/clever-components/commit/9dcbe8fd896991934a89c707aa6d1ca9e4427cbe))
+
 ## [26.5.0](https://github.com/CleverCloud/clever-components/compare/26.4.0...26.5.0) (2026-09-23)
 
 
