@@ -14,8 +14,10 @@ const MY_AWESOME_CONST = 'foobar';
 // DOCS: You may setup/init constant data used when component is in skeleton state.
 const SKELETON_FOOBAR = [{ foo: '???????' }, { foo: '????' }, { foo: '???????' }];
 
+// DOCS: Declare the types you need with `@import`, never with the older `@typedef {import(...)}` form.
+// DOCS: The types live in `cc-example-component.types.d.ts` but are referenced as `.types.js`, this is intentional.
 /**
- * @typedef {import('./cc-example-component.types.js').ExampleInterface} ExampleInterface
+ * @import { ExampleInterface } from './cc-example-component.types.js'
  */
 
 /**
@@ -33,11 +35,10 @@ const SKELETON_FOOBAR = [{ foo: '???????' }, { foo: '????' }, { foo: '???????' }
  * * Technical details about bar.
  * * Technical details about baz.
  *
- * @cssdisplay block
+ * DOCS: `@cssdisplay` is mandatory, it is consumed by the `cem/support-cssdisplay-jsdoc.js` plugin.
+ * DOCS: Don't document properties with `@prop` here, the constructor `@type` annotations are the source of truth.
  *
- * @prop {String} one - Description for one.
- * @prop {Boolean} two - Description for two.
- * @prop {ExampleInterface[]} three - Description for three.
+ * @cssdisplay block
  *
  * @slot - The content of the button (text or HTML). If you want an image, please look at the `image` attribute.
  *

@@ -16,6 +16,8 @@ Merging the release Pull Request will perform the release:
 * Bump of the version number in the package.json
 * Commit and add git tag
 
+Git tags do not have a `v` prefix: the tag for the version `26.0.0` is `26.0.0`.
+
 ### Hotfix
 
 Standard releases are done on the `master` branch.
@@ -29,7 +31,7 @@ Clever components are published on two systems:
 * Package on npmjs.com
 * CDN on Clever Cloud
 
-Both publications are done automatically by a dedicated GitHub action.
+Both publications are done automatically by the `publish` GitHub workflow, which is triggered when a tag matching `x.y.z` or `x.y.z-beta.n` is pushed.
 But you still can perform them manually.
 
 ### Publish Package on npmjs.com
@@ -57,6 +59,8 @@ Publishing on npmjs.com (beta):
 ```sh
 pnpm publish --access public --no-git-checks --tag beta
 ```
+
+There is no explicit build step because `pnpm publish` triggers the `prepack` script, see [the tasks documentation](👋-contributing-tasks--docs).
 
 ### Publish CDN on Clever Cloud
 
@@ -88,3 +92,5 @@ Publication is done with:
 ```sh
 (export VERSION=${version} && export SMART_CDN_CELLAR_KEY_ID=${***} && export SMART_CDN_CELLAR_SECRET_KEY=${***} && pnpm run cdn-release:publish "${VERSION}")
 ```
+
+The `release` CDN environment is immutable: publishing over an already published version fails instead of replacing it.
