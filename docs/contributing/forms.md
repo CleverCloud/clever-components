@@ -8,13 +8,14 @@ In this guide, we detail how to handle forms and validation with Clever Componen
 
 ## Form Handling and Data
 
-Forms in Clever Components rely on the `formSubmit` directive, which:
+Forms in Clever Components rely on the `formSubmit` directive (`src/lib/form/form-submit-directive.js`), which:
 
-* Handles form submission,
-* Calls `validate()` or `checkValidity()` on each form control to retrieve the latest validity status,
-* Calls `reportInlineValidity()` to display or hide errors,
+* Handles form submission (it prevents the native submit and sets `novalidate` on the `<form>` element so the native validation UI never kicks in),
+* Calls `validate()` (on `CcFormControlElement` controls) or `checkValidity()` (on native controls) on each form control to retrieve the latest validity status,
+* Calls `reportInlineValidity()` on `CcFormControlElement` controls to display or hide errors (nothing is reported on native controls, we don't like the native error bubbles),
 * Sets focus on the first invalid field,
-* Calls appropriate callbacks once validation is done.
+* Calls appropriate callbacks once validation is done,
+* Dispatches a `cc-form-valid` event (detail: the form data) or a `cc-form-invalid` event (detail: the form validity) on the `<form>` element.
 
 The directive takes 2 optional callbacks:
 
@@ -27,6 +28,9 @@ Called when some fields are invalid.
 Example usage:
 
 ```js
+// this path assumes you are importing it from a component file in `src/components/cc-component-name/cc-component-name.js`
+import { formSubmit } from '../../lib/form/form-submit-directive.js';
+
 class MyForm extends LitElement {
   _onValid(formData) {
     // formData = {
@@ -68,14 +72,14 @@ Multiple form controls with the same name have their values automatically aggreg
 #### Components with internal array handling
 
 Form controls can manage array values internally.
-The array values are processed correctly by the `formSubmit` directive:
+They do so by overriding the protected `_getFormControlData()` method of `CcFormControlElement` and returning a `FormData` with one entry per value, all under the control's `name`.
+The array values are then processed correctly by the `formSubmit` directive:
 
 ```js
 <form ${formSubmit(this._onValid.bind(this))}>
-  <cc-input-text name="tags" .tags=${[]}></cc-input-text>
-  <cc-tcp-redirection-form name="redirections"></cc-tcp-redirection-form>
+  <cc-input-text name="tags" .tags=${['tag1', 'tag2']}></cc-input-text>
 </form>
-// formData.tags and formData.redirections will be arrays
+// formData.tags = ['tag1', 'tag2']
 ```
 
 ## Form Controls and Validation
@@ -87,16 +91,19 @@ We provide several form control components:
 * `<cc-input-text>`: For text input (with support for email/password/etc.),
 * `<cc-input-number>`: For numeric input with min/max constraints,
 * `<cc-input-date>`: For date selection,
-* `<cc-select>`: For option selection.
+* `<cc-select>`: For option selection,
+* `<cc-picker>`, `<cc-plan-picker>`, `<cc-zone-picker>`: For picking one item among several,
+* `<cc-range-selector>`: For picking a value within a range,
+* `<cc-kv-hash-input>`, `<cc-kv-list-input>`: For the Key/Value explorer inputs.
 
-Each control requires a `name` attribute.
+Each control requires a `name` attribute: form controls without a `name` are simply ignored by the `formSubmit` directive.
 
 For form submission, you can either use:
 
 - a `<cc-button>` element with an explicitly `type="submit"` attribute,
 - or if you don't need the `cc-button` styles or behavior, a native `<button>` element, which gets a `type="submit"` by default when placed within a `form` element.
 
-All Clever Components form controls extend `CcFormControlElement` which provides built-in validation:
+All Clever Components form controls extend `CcFormControlElement` (`src/lib/form/cc-form-control-element.abstract.js`), which implements the [ElementInternals](https://developer.mozilla.org/en-US/docs/Web/API/ElementInternals) API to make the custom element form-associated, and which provides built-in validation:
 
 * Required fields with `required` attribute,
 * Email format with `type="email"`,
@@ -121,7 +128,9 @@ Example with built-in validation:
 ### Custom Validation
 
 Add custom validation with the `customValidator` property.
-A custom validator is an object with a `validate` method that returns a `Validation` object.
+A custom validator is an object with a `validate(value, formData)` method that returns either `Validation.VALID` or `Validation.invalid(code)`.
+The second argument gives access to the values of all the other controls of the form, which is handy for cross-field validation (password confirmation for instance).
+You can also build one from a plain function with the `createValidator()` helper.
 
 ```js
 // this path assumes you are importing it a from a component file in `src/components/cc-component-name/cc-component-name.js`
@@ -151,7 +160,8 @@ render () {
 ### Custom Error Messages
 
 Override default messages or provide messages for custom validators by providing a `customErrorMessages` object.
-This object uses validation error codes as keys (like `empty`, `badEmail`) and maps them to error message strings or functions that return messages.
+This object uses validation error codes as keys and maps them to error message strings, `Node`s or functions that return one of those.
+The built-in codes are `empty` (`RequiredValidator`), `badEmail` (`EmailValidator`) and `badFormat`, `rangeUnderflow`, `rangeOverflow` (`NumberValidator`).
 
 ```js
 const ERROR_MESSAGES = {
@@ -174,6 +184,7 @@ render() {
 
 Native form controls are validated by the browser's built-in validation logic.
 The `formSubmit` directive runs `checkValidity()` on the form elements to retrieve the validity state of each element.
+For those controls, the `code` you get in the `formValidity` array is the browser's `validationMessage` (which is the string you passed to `setCustomValidity()` when you set one), and not one of our validation codes.
 
 You may want to enhance the native form controls with custom validation logic and inline error messages.
 To do so:
@@ -258,6 +269,23 @@ class MyForm extends LitElement {
 ```
 
 Note: For native validation constraints (like `required` or `type="email"`), you don't need the `onInput` handler - the browser's built-in validation already handles those cases.
+
+### Implicit submission
+
+Pressing <kbd>Enter</kbd> inside `<cc-input-text>`, `<cc-input-number>` or `<cc-input-date>` triggers `form.requestSubmit()` on the associated form, so the whole `formSubmit` flow (validation, reporting, callbacks) runs as it would with a submit button.
+Those components also dispatch a `cc-request-submit` event for the cases where the control is not inside a `<form>` element.
+For `<cc-input-text multi>` (textarea mode), <kbd>Ctrl</kbd>/<kbd>Cmd</kbd> + <kbd>Enter</kbd> is required, since <kbd>Enter</kbd> alone inserts a new line.
+See [ADR 0008: Why an event called `requestimplicitsubmit`?](📌-architecture-decision-records-adr-0008-why-an-event-called-requestimplicitsubmit--docs) for the reasoning behind this (the event was later renamed `cc-request-submit`).
+
+### Disabling and grouping
+
+Two decisions have a direct impact on how you write forms:
+
+* Don't use `disabled` to lock a form during an API call: use `readonly` on the form controls and `waiting` on the `<cc-button>`.
+`disabled` elements cannot receive focus, which causes focus loss and makes the state invisible to assistive technologies.
+See [ADR 0029: Limited Usage of the `disabled` Attribute](📌-architecture-decision-records-adr-0029-limited-usage-of-the-disabled-attribute--docs).
+* Don't use `<fieldset>` + `<legend>` to group form controls: use a `<div role="group" aria-labelledby="...">` instead.
+See [ADR 0025: Moving away from `fieldset` and `legend`](📌-architecture-decision-records-adr-0025-moving-away-from-fieldset-and-legend--docs).
 
 ## Smart Component Interactions
 
@@ -360,9 +388,13 @@ The smart component should handle:
 
 ```js
 defineSmartComponent({
-  selector: 'form-component',
-  params: {},
-  async onContextUpdate({ component, updateComponent, onEvent }) {
+  selector: 'cc-form-component',
+  params: {
+    apiConfig: { type: Object },
+  },
+  async onContextUpdate({ component, context, updateComponent, onEvent, signal }) {
+    const { apiConfig } = context;
+
     // Reset form and load initial data
     component.resetForm();
     updateComponent('formState', { type: 'loading' });
@@ -380,7 +412,7 @@ defineSmartComponent({
       });
 
     // Handle submission
-    onEvent('my-form-submit', (data) => {
+    onEvent('cc-my-form-submit', (data) => {
       updateComponent('formState', (formState) => {
         formState.type = 'submitting';
       });
