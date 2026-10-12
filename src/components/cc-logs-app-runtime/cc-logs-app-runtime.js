@@ -245,6 +245,7 @@ export class CcLogsAppRuntime extends LitElement {
       this.state.type === 'loaded' &&
       (this.state.streamState.type === 'connecting' ||
         this.state.streamState.type === 'running' ||
+        this.state.streamState.type === 'retrying' ||
         this.state.streamState.type === 'paused' ||
         this.state.streamState.type === 'completed')
         ? this.state.selection?.map((instanceId) => {

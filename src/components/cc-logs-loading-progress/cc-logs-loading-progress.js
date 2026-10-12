@@ -165,21 +165,22 @@ export class CcLogsLoadingProgress extends LitElement {
   }
 
   _renderPlayPauseButton() {
-    const running = this.state.type === 'running';
-    const paused = this.state.type === 'paused';
+    // pausing while retrying cancels the retry
+    const canPause = this.state.type === 'running' || this.state.type === 'retrying';
+    const canResume = this.state.type === 'paused';
 
-    if (!running && !paused) {
+    if (!canPause && !canResume) {
       return null;
     }
 
     return html`
       <cc-button
-        .icon=${running ? iconRemixPauseLine : iconRemixPlayLine}
+        .icon=${canPause ? iconRemixPauseLine : iconRemixPlayLine}
         hide-text
-        a11y-name=${running
+        a11y-name=${canPause
           ? i18n('cc-logs-loading-progress.control.pause')
           : i18n('cc-logs-loading-progress.control.resume')}
-        @cc-click=${running ? this._onPause : this._onResume}
+        @cc-click=${canPause ? this._onPause : this._onResume}
       ></cc-button>
     `;
   }
