@@ -7,6 +7,8 @@ title: 'Documentation and asset URLs'
 
 When working on components, you'll often need to link to documentation, developer hub pages, or static assets. This guide explains how to handle these URLs correctly.
 
+Going through these helpers is what makes the base URLs overridable by consumers of the library, see [Customizing base URLs](🏡-getting-started-customizing-base-urls--docs).
+
 ## Documentation URLs
 
 Use `getDocUrl()` to generate URLs for documentation pages on the Clever Cloud developer hub.
@@ -45,10 +47,13 @@ import { getDocUrl } from '../lib/dev-hub-url.js';
 
 export const translations = {
   'my-component.doc-link': () => sanitize`
-    Read more in the <a href="${getDocUrl('/path/to/doc')}">documentation</a>.
+    Read more in the <cc-link href="${getDocUrl('/path/to/doc')}">documentation</cc-link>.
   `,
 };
 ```
+
+Inside translations, links MUST use `<cc-link>`: the `sanitize` tag function is not aware of the `<a>` tag and would strip it.
+See [Translate and localize](👋-contributing-translate-and-localize--docs) for the full list of allowed tags and attributes.
 
 ## Developer hub URLs
 
@@ -107,6 +112,8 @@ const flag = getFlagUrl('fr');
 const logo = getInfraProviderLogoUrl('ovh');
 // => 'https://assets.clever-cloud.com/infra/ovh.svg'
 ```
+
+Both helpers return `null` when they receive `null`, and `getFlagUrl()` lowercases the country code for you.
 
 ## Best practices
 
