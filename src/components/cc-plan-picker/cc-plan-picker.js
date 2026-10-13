@@ -137,6 +137,17 @@ export class CcPlanPicker extends CcFormControlElement {
   }
 
   /**
+   * The inner `cc-picker` dispatches its own `cc-select`, which bubbles and crosses the shadow root.
+   * We stop it here so that a parent only gets the one we dispatch, with the resolved plan id.
+   *
+   * @param {CcSelectEvent<string>} e
+   * @private
+   */
+  _onPickerSelect(e) {
+    e.stopPropagation();
+  }
+
+  /**
    * @param {PropertyValues<CcPlanPicker>} changedProperties
    */
   willUpdate(changedProperties) {
@@ -212,6 +223,7 @@ export class CcPlanPicker extends CcFormControlElement {
     });
     return html`<cc-picker
       @input="${inputFn}"
+      @cc-select="${this._onPickerSelect}"
       label="${legend}"
       name=${name}
       .options=${options}
