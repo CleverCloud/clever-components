@@ -16,6 +16,14 @@ import { CcSelectEvent } from '../common.events.js';
 /**
  * A form control element component that allows you to select a plan from a list of plans and refine your choice in a sub picker if needed
  *
+ * The component corrects `value` so that it is always the id of a plan that can be selected:
+ *
+ * - the id of a plan with related plans is replaced by the id of its first related plan,
+ * - an id that matches no plan is replaced by the id of the first plan of the list, or of its first related plan.
+ *
+ * This happens every time `plans` or `value` changes, and it does not dispatch a `cc-select` event.
+ * While `plans` is empty, `value` is left as is.
+ *
  * @cssdisplay block
  *
  * @cssprop {Size} --cc-form-controls-gap - The vertical space between different form controls (defaults: `2em`).
@@ -132,7 +140,14 @@ export class CcPlanPicker extends CcFormControlElement {
    * @param {PropertyValues<CcPlanPicker>} changedProperties
    */
   willUpdate(changedProperties) {
-    if (changedProperties.has('plans') && changedProperties.has('value')) {
+    if (changedProperties.has('plans') || changedProperties.has('value')) {
+      // without plans there is nothing to resolve: we keep `value` as is, it is resolved once the plans are set
+      if (this.plans.length === 0) {
+        this._currentPlanId = null;
+        this._currentRelatedPlans = [];
+        return;
+      }
+
       const currentPlan = this._findPlan(this.plans, this.value);
       if (currentPlan.relatedPlans != null && currentPlan.relatedPlans.length > 0) {
         const valueExistsInRelated = currentPlan.relatedPlans.some((plan) => plan.id === this.value);
