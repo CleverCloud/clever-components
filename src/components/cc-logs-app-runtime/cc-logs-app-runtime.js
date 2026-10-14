@@ -5,7 +5,9 @@ import {
   iconRemixFullscreenExitLine as fullscreenExitIcon,
   iconRemixFullscreenLine as fullscreenIcon,
 } from '../../assets/cc-remix.icons.js';
+import { LogsStreamA11yStatusController } from '../../lib/logs/logs-stream-a11y-status-controller.js';
 import { isStringEmpty } from '../../lib/utils.js';
+import { accessibilityStyles } from '../../styles/accessibility.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-loader/cc-loader.js';
 import '../cc-logs-control/cc-logs-control.js';
@@ -97,6 +99,10 @@ export class CcLogsAppRuntime extends LitElement {
     /** @type {Ref<CcLogsControl>} */
     this._logsRef = createRef();
 
+    this._a11yStatus = new LogsStreamA11yStatusController(this, () =>
+      this.state.type === 'loaded' ? this.state.streamState : null,
+    );
+
     /** @type {{instance: LogsMetadataDisplay}} */
     this._metadataDisplay = {
       instance: {
@@ -183,6 +189,7 @@ export class CcLogsAppRuntime extends LitElement {
         <div class=${classMap(wrapper)}>
           <div class="logs-wrapper">${this._renderLogs()}</div>
           ${this._renderLoadingProgress()}
+          <div class="visually-hidden" aria-live="polite">${this._a11yStatus.status}</div>
         </div>
       </div>
     `;
@@ -343,6 +350,7 @@ export class CcLogsAppRuntime extends LitElement {
 
   static get styles() {
     return [
+      accessibilityStyles,
       // language=CSS
       css`
         /* stylelint-disable no-duplicate-selectors */

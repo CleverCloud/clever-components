@@ -127,9 +127,9 @@ export class CcLogsLoadingProgress extends LitElement {
               ${this._getLoadingProgressMessage(this.state.value, percent)}
             </div>`
           : ''}
-        <div class="notice error" aria-live="polite" aria-atomic="false">
-          ${this.state.type === 'retrying'
-            ? html`
+        ${this.state.type === 'retrying'
+          ? html`
+              <div class="notice error">
                 <cc-icon
                   .icon="${iconConnectionError}"
                   a11y-name="${i18n('cc-logs-loading-progress.icon-alt.connection-error')}"
@@ -140,9 +140,9 @@ export class CcLogsLoadingProgress extends LitElement {
                     maxRetryCount: this.state.maxRetryCount,
                   })}
                 </div>
-              `
-            : ''}
-        </div>
+              </div>
+            `
+          : ''}
         ${shouldDisplayOverflowWarning
           ? html`
               <div class="notice info">

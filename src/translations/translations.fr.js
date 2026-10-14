@@ -1251,6 +1251,12 @@ export const translations = {
   'cc-logs.copy': `Copier`,
   'cc-logs.inspect': `Inspecter`,
   'cc-logs.select-button.label': /** @param {{index: number}} _ */ ({ index }) => `Sélectionner la ligne ${index}`,
+  'cc-logs.stream.reconnected': `Reconnecté au flux de logs`,
+  'cc-logs.stream.retrying': /** @param {{retryCount: number, maxRetryCount: number}} _ */ ({
+    retryCount,
+    maxRetryCount,
+  }) =>
+    `Connexion au flux de logs perdue, reconnexion en cours (tentative ${formatNumber(lang, retryCount)} sur ${formatNumber(lang, maxRetryCount)})`,
   'cc-logs.unselect-button.label': /** @param {{index: number}} _ */ ({ index }) => `Désélectionner la ligne ${index}`,
   //#endregion
   //#region cc-logs-addon-runtime
