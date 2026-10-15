@@ -8,9 +8,10 @@ title: 'Contribute'
 ## We use ESLint
 
 We use [ESLint](https://eslint.org/) to enforce JS coding style and spot linting errors ASAP.
-Our configuration is based on [standardJS](https://standardjs.com/) + some small tweaks (see `.eslintrc.js`).
+Our configuration is a [flat config](https://eslint.org/docs/latest/use/configure/configuration-files) defined in `eslint.config.js`.
+It is based on the shared [`@clevercloud/eslint-config`](https://github.com/CleverCloud/tooling-javascript) package, plus several project specific configs and plugins that live in the `eslint` folder (i18n, Lit, Lit a11y and Web Components rules).
 
-All JavaScript files in `src`, `stories` and `tasks` are scanned.
+All JavaScript files of the repository are scanned, except the ones ignored through `.gitignore`.
 
 You can run the lint check with:
 
@@ -23,6 +24,49 @@ You can run the lint check (with autofix) with:
 ```bash
 pnpm run lint:fix
 ```
+
+## We use Prettier
+
+We use [Prettier](https://prettier.io/) to format all the files of the project (see `prettier.config.js` and `.prettierignore`).
+You can get more details by reading [the related ADR](📌-architecture-decision-records-adr-0026-introducing-prettier-as-a-formatter--docs).
+
+You can format the whole project with:
+
+```bash
+pnpm run format
+```
+
+You can check the formatting (like the CI does) with:
+
+```bash
+pnpm run format:check
+```
+
+## We use Stylelint
+
+We use [Stylelint](https://stylelint.io/) to enforce our CSS coding style directly inside the template literals of our components (see `stylelint.config.js`).
+You can get more details by reading [the related ADR](📌-architecture-decision-records-adr-0023-adding-stylelint--docs).
+
+```bash
+pnpm run stylelint
+pnpm run stylelint:fix
+```
+
+## We check types and Lit templates
+
+We use [TypeScript](https://www.typescriptlang.org/) in `checkJs` mode to typecheck our JSDoc annotated JavaScript (see `tsconfig.ci.json`).
+You can get more details by reading [the related ADR](📌-architecture-decision-records-adr-0027-enabling-type-checking--docs).
+
+We also use [lit-analyzer](https://github.com/runem/lit-analyzer) to spot errors inside our Lit templates.
+
+```bash
+pnpm run typecheck
+pnpm run components:check-lit
+```
+
+## We have a global quality gate
+
+All the checks that must pass before publishing are chained by the `prepack:prod` task, see [the tasks documentation](👋-contributing-tasks--docs) for the full list and the details of each task.
 
 ## We use Storybook
 
@@ -45,10 +89,10 @@ pnpm run storybook:build
 
 ## We build our components
 
-All our components and the different JavaScript files in `src/lib` are minified with [Terser](https://github.com/terser-js/terser) and end up in `dist`.
-We also use a specific babel plugin to minify the HTML and the CSS in our LitElement components: [babel-plugin-template-html-minifier](https://github.com/cfware/babel-plugin-template-html-minifier).
+All our components and the different JavaScript files in `src` (except tests and stories) are bundled with [Rollup](https://rollupjs.org/) and end up in `dist`, with their sourcemaps.
+The JavaScript is minified with [Terser](https://github.com/terser-js/terser), the stylesheets we copy in `dist/styles` are minified with [clean-css](https://github.com/clean-css/clean-css) and the SVG assets are optimized with [SVGO](https://github.com/svg/svgo).
 
-To process those files through babel and terser and keep the sourcemaps, we wrote a small script in `tasks/minify-components.js`.
+See `rollup/rollup-npm.config.js` and `rollup/rollup-common.js` for more details.
 
 You can run the build process with:
 
@@ -58,8 +102,10 @@ pnpm run components:build
 
 ## We document our components
 
-To document our Web Components, we use [web-component-analyzer](https://github.com/runem/web-component-analyzer).
-We chose the markdown output, they all end up in `.component-docs` and we integrate them manually in Storybook's stories as notes.
+To document our Web Components, we use the [Custom Elements Manifest analyzer](https://github.com/open-wc/custom-elements-manifest/tree/master/packages/analyzer).
+It produces a single `dist/custom-elements.json` file that Storybook consumes to generate the documentation of each component.
+The analyzer is configured in `custom-elements-manifest.config.mjs` and relies on several custom plugins that live in the `cem` folder.
+You can get more details by reading [the related ADR](📌-architecture-decision-records-adr-0016-embracing-custom-elements-manifest--docs).
 
 You can generate the components' docs with:
 
@@ -75,7 +121,7 @@ When we publish a new version, a build (`pnpm run components:build`) of the comp
 You can import any given component like this:
 
 ```js
-import '@clevercloud/components/dist/atoms/cc-button.js';
+import '@clevercloud/components/dist/cc-button.js';
 ```
 
 ##  We have precise rules for commit message format

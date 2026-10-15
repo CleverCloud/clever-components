@@ -17,6 +17,10 @@ For both outputs, we provide a way to publish a preview.
 
 ## Storybook previews
 
+Storybook previews are published automatically by the CI: every time the `Tests and build` workflow succeeds on a Pull Request (from a branch of this repository, `release-please--*` branches excluded), the `Preview` workflow builds the Storybook and publishes a preview named after the branch.
+A comment with the preview URL is added to the Pull Request the first time the preview is published and the preview is deleted automatically when the Pull Request is closed.
+The commands below are only required if you want to publish or manage a preview manually.
+
 _**WARNINGS:**_ All the following commands require 2 environment variables to access the Cellar `addon_9feadcac-4278-4af1-bfea-597477bf9b92`.
 
 * `PREVIEWS_CELLAR_KEY_ID`: the S3 `access_key`
