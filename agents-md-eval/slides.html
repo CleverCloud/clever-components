@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Évaluer une doc pour agents</title>
+<!-- Fonts: Bricolage Grotesque (display), Instrument Sans (body), JetBrains Mono (labels) -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@700&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* ===========================================
+   THEME: Clever Cloud colours (from default-theme.css)
+   Change these to change the whole look
+   =========================================== */
+:root {
+    --navy: #012A51;        /* blue-100 */
+    --navy-deep: #011a33;
+    --navy-lift: #0a4a86;
+    --blue: #3569AA;        /* blue-60 */
+    --ice: #CEDCFF;         /* blue-30 */
+    --paper: #F5F5F5;       /* grey-10 */
+    --red: #F72D36;         /* red-70 */
+    --red-deep: #BE242D;    /* red-100 */
+    --rose: #FBC8C2;        /* red-30 */
+    --stage-bg: #000d1a;
+    --slide-bg: var(--navy);
+    --font-display: 'Bricolage Grotesque', sans-serif;
+    --font-body: 'Instrument Sans', sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+    --ease: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ===========================================
+   BASE
+   =========================================== */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+/* --- viewport-base.css (mandatory, included in full) --- */
+/* ===========================================
+   FIXED 16:9 STAGE: MANDATORY BASE STYLES
+   Include this ENTIRE file in every presentation.
+   Slides are authored at 1920×1080 and scaled as a whole.
+   =========================================== */
+
+/* 1. Lock the browser viewport */
+html,
+body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    overflow: hidden;
+    background: var(--stage-bg, #000);
+}
+
+/* 2. Full-window deck viewport */
+.deck-viewport {
+    position: fixed;
+    inset: 0;
+    overflow: hidden;
+    background: var(--stage-bg, #000);
+}
+
+/* 3. Fixed 16:9 design canvas.
+   JavaScript sets transform: translate(...) scale(...). */
+.deck-stage {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 1920px;
+    height: 1080px;
+    overflow: hidden;
+    transform-origin: 0 0;
+    background: var(--slide-bg, #fff);
+}
+
+/* 4. Slides stack inside the fixed stage.
+   Content must be laid out at 1920×1080, not reflowed per device. */
+.slide {
+    position: absolute;
+    inset: 0;
+    width: 1920px;
+    height: 1080px;
+    overflow: hidden;
+    display: block;
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
+    background: var(--slide-bg, #fff);
+}
+
+.slide.active,
+.slide.visible {
+    visibility: visible;
+    opacity: 1;
+    pointer-events: auto;
+    z-index: 1;
+}
+
+/* 5. Keep media inside authored slide bounds */
+img,
+video,
+canvas,
+svg {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+/* 6. Presentation chrome stays outside the slide design system */
+.deck-controls {
+    position: fixed;
+    left: 50%;
+    bottom: 22px;
+    transform: translateX(-50%);
+    z-index: 1000;
+}
+
+/* 7. Print one fixed-size slide per page */
+@media print {
+    html,
+    body {
+        width: 1920px;
+        height: auto;
+        overflow: visible;
+        background: #fff;
+    }
+
+    .deck-viewport {
+        position: static;
+        overflow: visible;
+        background: #fff;
+    }
+
+    .deck-stage {
+        position: static;
+        width: auto;
+        height: auto;
+        transform: none !important;
+        background: none;
+    }
+
+    .slide {
+        position: relative;
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        pointer-events: auto !important;
+        width: 1920px;
+        height: 1080px;
+        break-after: page;
+        page-break-after: always;
+    }
+
+    .slide:last-child {
+        break-after: auto;
+        page-break-after: auto;
+    }
+
+    .deck-controls {
+        display: none !important;
+    }
+}
+
+/* 8. Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.2s !important;
+    }
+}
+
+
+/* ===========================================
+   SLIDE SURFACES
+   =========================================== */
+.slide {
+    color: var(--paper);
+    font-family: var(--font-body);
+    background: radial-gradient(1300px 900px at 82% 30%, var(--navy-lift) 0%, var(--navy) 55%, var(--navy-deep) 100%);
+}
+.slide.alt { background: radial-gradient(1300px 900px at 12% 85%, var(--navy-lift) 0%, var(--navy) 55%, var(--navy-deep) 100%); }
+.slide.statement { background: linear-gradient(135deg, var(--red-deep) 0%, #8f1820 100%); }
+
+/* Content frame: everything sits inside these margins */
+.pad { position: absolute; left: 96px; right: 96px; top: 84px; bottom: 112px; display: flex; flex-direction: column; gap: 52px; }
+.pad.spread { justify-content: space-between; }
+
+/* Deck chrome on every content slide */
+.chrome { position: absolute; left: 96px; right: 96px; bottom: 44px; display: flex; justify-content: space-between; font-family: var(--font-mono); font-size: 22px; color: var(--ice); opacity: .75; }
+
+/* ===========================================
+   TYPE
+   =========================================== */
+.kicker { font-family: var(--font-mono); font-size: 24px; letter-spacing: 1px; color: var(--rose); text-transform: uppercase; }
+h1 { font-family: var(--font-display); font-weight: 700; font-size: 128px; line-height: 1; letter-spacing: -3px; }
+h2 { font-family: var(--font-display); font-weight: 700; font-size: 80px; line-height: 1.04; letter-spacing: -2px; max-width: 1600px; }
+h3 { font-family: var(--font-display); font-weight: 700; font-size: 46px; line-height: 1.12; letter-spacing: -.5px; }
+p, li, td, th { font-size: 34px; line-height: 1.4; }
+.soft { color: var(--ice); }
+.mono { font-family: var(--font-mono); }
+.big { font-family: var(--font-display); font-weight: 700; font-size: 112px; line-height: 1; letter-spacing: -3px; }
+.head { display: flex; flex-direction: column; gap: 18px; }
+
+/* ===========================================
+   COMPONENTS
+   =========================================== */
+.row { display: flex; gap: 32px; }
+.row > * { flex: 1; }
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; }
+.panel { background: rgba(245, 245, 245, .07); border: 1px solid rgba(206, 220, 255, .3); border-radius: 22px; padding: 46px 48px; display: flex; flex-direction: column; gap: 20px; }
+.panel p { color: var(--ice); }
+.panel.light { background: var(--paper); color: var(--navy); border-color: var(--paper); }
+.panel.light p { color: #33485f; }
+.num { font-family: var(--font-mono); font-size: 26px; color: var(--rose); }
+.strip { background: rgba(1, 26, 51, .65); border-left: 6px solid var(--red); border-radius: 0 16px 16px 0; padding: 26px 34px; }
+.strip p { color: var(--paper); font-size: 32px; }
+.stack { display: flex; flex-direction: column; gap: 14px; }
+.arrow { flex: 0 0 44px; align-self: center; font-family: var(--font-mono); font-size: 44px; color: var(--ice); text-align: center; }
+
+/* Tables */
+table { width: 100%; border-collapse: collapse; }
+th { text-align: left; font-family: var(--font-mono); font-weight: 500; font-size: 24px; letter-spacing: 1px; text-transform: uppercase; color: var(--rose); padding: 0 24px 18px 0; border-bottom: 2px solid rgba(206, 220, 255, .5); }
+td { font-size: 32px; padding: 30px 24px 30px 0; border-bottom: 1px solid rgba(206, 220, 255, .25); vertical-align: top; }
+td.soft { color: var(--ice); }
+
+/* The signature device: one dot per run */
+.matrix { display: grid; gap: var(--gap, 22px); }
+.dot { aspect-ratio: 1; border-radius: 50%; background: var(--paper); opacity: 0; transform: scale(.2); transition: opacity .5s var(--ease), transform .5s var(--ease); }
+.dot.miss { background: transparent; border: var(--ring, 5px) solid var(--red); }
+.slide.statement .dot.miss { border-color: var(--paper); }
+.slide.visible .dot { opacity: 1; transform: none; }
+
+/* Diagrams: absolutely placed nodes over an SVG of arrows */
+.diagram { position: relative; width: 1728px; }
+.diagram svg { position: absolute; left: 0; top: 0; max-width: none; max-height: none; pointer-events: none; }
+.node { position: absolute; border-radius: 16px; padding: 18px 22px; display: flex; flex-direction: column; justify-content: center; gap: 4px; background: var(--paper); color: var(--navy); }
+.node h3 { font-size: 34px; letter-spacing: 0; }
+.node p { font-size: 26px; line-height: 1.25; color: #33485f; }
+.node.ghost { background: transparent; color: var(--paper); border: 3px dashed var(--ice); }
+.node.ghost p { color: var(--ice); }
+.node.agent { background: var(--red-deep); color: var(--paper); }
+.node.agent p { color: var(--rose); }
+.node.check { background: var(--ice); }
+.node.bad { background: var(--red); color: var(--paper); }
+.node.bad p { color: var(--paper); }
+.label { position: absolute; font-family: var(--font-mono); font-size: 26px; color: var(--rose); text-transform: uppercase; letter-spacing: 1px; }
+
+/* ===========================================
+   ANIMATION: staggered reveal on the visible slide
+   =========================================== */
+.reveal { opacity: 0; transform: translateY(26px); transition: opacity .7s var(--ease), transform .7s var(--ease); transition-delay: calc(var(--i, 0) * 90ms); }
+.slide.visible .reveal { opacity: 1; transform: none; }
+
+/* ===========================================
+   UI OUTSIDE THE STAGE (progress, notes, edit)
+   =========================================== */
+.progress { position: fixed; left: 0; bottom: 0; height: 4px; background: var(--red); z-index: 1000; transition: width .3s var(--ease); }
+.notes { position: fixed; left: 0; right: 0; bottom: 0; max-height: 34vh; overflow: auto; padding: clamp(12px, 2vw, 24px) clamp(16px, 4vw, 48px); background: rgba(1, 13, 26, .96); color: var(--paper); font: 400 clamp(14px, 1.3vw, 20px)/1.5 var(--font-body); border-top: 2px solid var(--red); z-index: 1001; display: none; }
+.notes.show { display: block; }
+.edit-hotzone { position: fixed; top: 0; left: 0; width: 80px; height: 80px; z-index: 10000; cursor: pointer; }
+.edit-toggle { position: fixed; top: 16px; left: 16px; border: 0; border-radius: 10px; padding: 8px 12px; font-size: 18px; background: var(--paper); cursor: pointer; opacity: 0; pointer-events: none; transition: opacity .3s ease; z-index: 10001; }
+.edit-toggle.show, .edit-toggle.active { opacity: 1; pointer-events: auto; }
+.edit-toggle.active { background: var(--red); color: #fff; }
+[contenteditable="true"] { outline: 2px dashed var(--rose); outline-offset: 6px; }
+@media print { .progress, .notes, .edit-hotzone, .edit-toggle { display: none !important; } .reveal, .dot { opacity: 1 !important; transform: none !important; } }
+</style>
+</head>
+<body>
+<div class="deck-viewport">
+<main class="deck-stage" id="deckStage">
+<!-- ===== SLIDE 01 ===== -->
+<section class="slide  active visible" data-notes="Plan : ce qu'est Claude API et le skill, les deux sous-commandes, à quoi elles servent, comment une eval se construit, puis l'application à notre doc pour agents et les résultats. Chaque point à droite est un run de l'eval ; les cercles rouges sont ceux où l'agent n'a pas ouvert la doc attendue.">
+<p class="kicker reveal" style="position:absolute;left:96px;top:88px">clever-components / AGENTS.md</p>
+<h1 class="reveal" style="--i:1;position:absolute;left:96px;top:250px;width:900px">Évaluer une doc pour agents</h1>
+<p class="soft reveal" style="--i:2;position:absolute;left:96px;top:700px;width:820px;font-size:36px">Ce qu'on a mesuré en appliquant build-eval à AGENTS.md, et ce que ça a changé.</p>
+<p class="mono soft reveal" style="--i:3;position:absolute;left:96px;bottom:80px;font-size:24px">octobre 2026</p>
+<div style="position:absolute;left:1100px;top:210px"><div class="matrix" data-n="72" data-miss="13,30,41,58,66" style="grid-template-columns:repeat(9,1fr);width:724px;--gap:22px;--ring:5px"></div></div>
+<p class="mono reveal" style="--i:6;position:absolute;left:1100px;top:880px;width:724px;display:flex;justify-content:space-between;font-size:26px"><span>72 runs</span><span style="color:var(--rose)">67 ont lu la bonne doc</span></p>
+
+</section>
+<!-- ===== SLIDE 02 ===== -->
+<section class="slide alt" data-notes="Deux sens du même nom. L'API, c'est le produit d'Anthropic. Le skill, c'est un paquet d'instructions que Claude Code charge quand on tape /claude-api. Les autres sous-commandes (migration de modèle, optimisation des coûts) ne sont pas le sujet ici.">
+<div class="pad"><div class="head"><p class="kicker reveal">C'est quoi</p><h2 class="reveal" style="--i:1">Claude API : une API, et un skill dans Claude Code</h2></div>
+<div class="row">
+<div class="panel  reveal" style="--i:2"><h3>L'API</h3><p>Le moyen d'appeler les modèles Claude depuis un programme : on envoie des messages, on reçoit une réponse.</p><p>C'est ce qui tourne derrière Claude Code et les autres agents de code.</p></div>
+<div class="panel light reveal" style="--i:3"><h3><span class="mono">/claude-api</span></h3><p>Un skill livré avec Claude Code : une référence à jour sur l'API, et des procédures guidées qu'on lance par sous-commande.</p><p>Deux nous intéressent : <b>prompt-audit</b> et <b>build-eval</b>.</p></div>
+</div></div>
+<div class="chrome"><span>Évaluer une doc pour agents</span><span>02 / 14</span></div>
+</section>
+<!-- ===== SLIDE 03 ===== -->
+<section class="slide " data-notes="prompt-audit est une relecture : il lit le texte et dit ce qui est daté. build-eval est une mesure : il fait tourner le système et compte. Les deux se complètent. Dans ce travail, c'est build-eval qui a été utilisé ; prompt-audit serait l'étape complémentaire.">
+<div class="pad"><div class="head"><p class="kicker reveal">Les deux sous-commandes</p><h2 class="reveal" style="--i:1">Relire les instructions, ou mesurer leur effet</h2></div>
+<div class="row">
+<div class="panel  reveal" style="--i:2"><h3><span class="mono">prompt-audit</span></h3><p><b style='color:var(--paper)'>« Mes instructions sont-elles encore justes ? »</b></p><p>Relit les prompts, CLAUDE.md, AGENTS.md et les skills. Cherche le texte écrit pour d'anciens modèles, les faits périmés, les contradictions.</p><p>Rend un rapport et un diff proposé. Rien n'est appliqué sans accord.</p></div>
+<div class="panel  reveal" style="--i:3"><h3><span class="mono">build-eval</span></h3><p><b style='color:var(--paper)'>« Est-ce que ça marche, et mon changement a-t-il aidé ? »</b></p><p>Construit un jeu de cas, un script qui les lance et une façon de noter chaque résultat.</p><p>Rend un chiffre qu'on peut remesurer après chaque modification.</p></div>
+</div></div>
+<div class="chrome"><span>Évaluer une doc pour agents</span><span>03 / 14</span></div>
+</section>
+<!-- ===== SLIDE 04 ===== -->
+<section class="slide alt" data-notes="L'enjeu : AGENTS.md est lu par tous les agents de l'équipe, à chaque session. Une erreur dedans se paie partout, et on ne la voit pas. L'eval sert à remplacer « je pense que c'est mieux » par un avant et un après.">
+<div class="pad"><div class="head"><p class="kicker reveal">À quoi ça sert</p><h2 class="reveal" style="--i:1">Sans mesure, on règle une doc d'agent à l'intuition</h2></div>
+<div class="row">
+<div class="panel  reveal" style="--i:2"><h3>Les instructions vieillissent</h3><p>Le code change, les modèles changent, le texte reste. Personne ne remarque quand une consigne devient fausse.</p></div>
+<div class="panel  reveal" style="--i:3"><h3>Les agents les suivent à la lettre</h3><p>Une phrase vague ou périmée produit du mauvais code, sans erreur visible.</p></div>
+<div class="panel  reveal" style="--i:4"><h3>Une reformulation peut aider ou casser</h3><p>Avec une eval, on le voit avant de le livrer à toute l'équipe.</p></div>
+</div></div>
+<div class="chrome"><span>Évaluer une doc pour agents</span><span>04 / 14</span></div>
+</section>
+<!-- ===== SLIDE 05 ===== -->
+<section class="slide " data-notes="Le skill mène un entretien : il propose, on valide. Il insiste sur deux points : montrer tous les cas avant de lancer, et montrer des exemples notés avant de faire confiance à la note. Pour un agent qui modifie du code, on note l'état final (les fichiers), pas ce que l'agent raconte.">
+<div class="pad"><div class="head"><p class="kicker reveal">Comment ça marche</p><h2 class="reveal" style="--i:1">Des cas, un lanceur, une notation</h2></div>
+<div style="display:flex;gap:14px;align-items:stretch">
+<div class="panel  reveal" style="--i:2"><p class="num">01</p><h3>Cadrer</h3><p>Un seul comportement à mesurer, et par où on le lance.</p></div>
+<div class="arrow reveal" style="--i:2">→</div>
+<div class="panel  reveal" style="--i:3"><p class="num">02</p><h3>Les cas</h3><p>15 à 100 tâches réalistes, relues et validées par un humain.</p></div>
+<div class="arrow reveal" style="--i:3">→</div>
+<div class="panel  reveal" style="--i:4"><p class="num">03</p><h3>La notation</h3><p>Des vérifications par programme d'abord, validées sur un pilote.</p></div>
+<div class="arrow reveal" style="--i:4">→</div>
+<div class="panel  reveal" style="--i:5"><p class="num">04</p><h3>Lancer</h3><p>Plusieurs répétitions, un rapport, puis on relance après chaque changement.</p></div>
+</div>
+<div class="strip reveal" style="--i:6"><p>Deux validations humaines sont obligatoires, sur les cas puis sur la notation. Le coût est mesuré sur un pilote avant le run complet.</p></div>
+</div>
+<div class="chrome"><span>Évaluer une doc pour agents</span><span>05 / 14</span></div>
+</section>
+<!-- ===== SLIDE 06 ===== -->
+<section class="slide alt" data-notes="AGENTS.md contient les règles permanentes et un tableau qui renvoie vers docs/contributing selon la tâche. On voulait savoir si ce renvoi est suivi, et si le suivre change le résultat. On avait un juge LLM au début : il notait tout à 1, on l'a retiré.">
+<div class="pad"><div class="head"><p class="kicker reveal">Appliqué à clever-components</p><h2 class="reveal" style="--i:1">Les agents ouvrent-ils les docs vers lesquelles AGENTS.md renvoie ?</h2></div>
+<div class="grid2">
+<div class="panel  reveal" style="--i:2"><h3>Le lanceur</h3><p>Un agent sans surveillance reçoit une tâche dans une copie jetable du dépôt.</p></div>
+<div class="panel  reveal" style="--i:3"><h3>Les cas</h3><p>19 tâches : 12 où une doc est nécessaire, 7 contrôles où elle ne l'est pas.</p></div>
+<div class="panel  reveal" style="--i:4"><h3>La notation</h3><p>Par programme : docs ouvertes, règle de la doc respectée dans le diff, format et lint.</p></div>
+<div class="panel  reveal" style="--i:5"><h3>Les runs</h3><p>Opus 5.5 et Sonnet 5.5, 3 répétitions par cas, soit 114 runs par mesure.</p></div>
+</div></div>
+<div class="chrome"><span>Évaluer une doc pour agents</span><span>06 / 14</span></div>
+</section>
+<!-- ===== SLIDE 07 ===== -->
+<section class="slide " data-notes="Lecture de gauche à droite. À gauche, ce que l'agent reçoit : la tâche, AGENTS.md qui est toujours chargé, et les docs en pointillé parce que c'est l'agent qui choisit de les ouvrir. Au milieu, l'agent travaille seul. À droite, ce qu'on récupère : le transcript, qui dit quelles docs ont été ouvertes, et l'état final, sur lequel on vérifie la règle et la qualité. Tout est vérifié par des scripts.">
+<div class="pad"><div class="head"><p class="kicker reveal">Le dispositif</p><h2 class="reveal" style="--i:1">Un run, de la tâche à la note</h2></div>
+<div class="diagram reveal" style="--i:2;height:564px">
+<svg width="1728" height="564" viewBox="0 0 1728 564" aria-label="La tâche, AGENTS.md et les docs entrent dans l'agent ; le transcript et l'état final en sortent ; trois vérifications les notent."><defs><marker id="d1-ice" orient="auto" markerUnits="userSpaceOnUse" markerWidth="22" markerHeight="22" refX="22" refY="11"><path d="M0 0 L22 11 L0 22 Z" fill="#CEDCFF"/></marker><marker id="d1-red" orient="auto" markerUnits="userSpaceOnUse" markerWidth="22" markerHeight="22" refX="22" refY="11"><path d="M0 0 L22 11 L0 22 Z" fill="#F72D36"/></marker><marker id="d1-paper" orient="auto" markerUnits="userSpaceOnUse" markerWidth="22" markerHeight="22" refX="22" refY="11"><path d="M0 0 L22 11 L0 22 Z" fill="#F5F5F5"/></marker></defs>
+<line x1="374" y1="72" x2="466" y2="72" stroke="#CEDCFF" stroke-width="4" marker-end="url(#d1-ice)"/><line x1="374" y1="282" x2="466" y2="282" stroke="#CEDCFF" stroke-width="4" marker-end="url(#d1-ice)"/><line x1="374" y1="492" x2="466" y2="492" stroke="#CEDCFF" stroke-width="4" stroke-dasharray="12 10" marker-end="url(#d1-ice)"/>
+<line x1="894" y1="144" x2="996" y2="144" stroke="#CEDCFF" stroke-width="4" marker-end="url(#d1-ice)"/><line x1="894" y1="420" x2="996" y2="420" stroke="#CEDCFF" stroke-width="4" marker-end="url(#d1-ice)"/>
+<line x1="1344" y1="144" x2="1436" y2="144" stroke="#CEDCFF" stroke-width="4" marker-end="url(#d1-ice)"/><line x1="1344" y1="348" x2="1436" y2="348" stroke="#CEDCFF" stroke-width="4" marker-end="url(#d1-ice)"/><line x1="1344" y1="492" x2="1436" y2="492" stroke="#CEDCFF" stroke-width="4" marker-end="url(#d1-ice)"/>
+</svg>
+<div class="node " style="left:0px;top:0px;width:360px;height:144px"><h3>1. La tâche</h3><p>une phrase, comme un collègue</p></div>
+<div class="node " style="left:0px;top:210px;width:360px;height:144px"><h3>AGENTS.md</h3><p>chargé à chaque session</p></div>
+<div class="node ghost" style="left:0px;top:420px;width:360px;height:144px"><h3>docs/contributing</h3><p>lues si l'agent le décide</p></div>
+<div class="node agent" style="left:480px;top:0px;width:400px;height:564px"><h3>2. L'agent travaille</h3><p>seul, dans une copie jetable du dépôt, sans historique git</p></div>
+<div class="node " style="left:1010px;top:72px;width:320px;height:144px"><h3>Le transcript</h3><p>fichiers lus, commandes</p></div>
+<div class="node " style="left:1010px;top:282px;width:320px;height:282px"><h3>3. L'état final</h3><p>le diff laissé dans le dépôt, ou la réponse</p></div>
+<div class="node check" style="left:1450px;top:72px;width:278px;height:144px"><h3>Docs lues ?</h3></div>
+<div class="node check" style="left:1450px;top:282px;width:278px;height:132px"><h3>Règle suivie ?</h3></div>
+<div class="node check" style="left:1450px;top:432px;width:278px;height:132px"><h3>Format, lint ?</h3></div>
+</div>
+<div class="strip reveal" style="--i:3"><p>4. Trois vérifications par programme, à droite. Le run est réussi quand les trois sont bonnes.</p></div>
+</div>
+<div class="chrome"><span>Évaluer une doc pour agents</span><span>07 / 14</span></div>
+</section>
+<!-- ===== SLIDE 08 ===== -->
+<section class="slide alt" data-notes="19 cas en tout, de ce type. Trois familles : des modifications de code où une règle n'existe que dans une doc, des questions dont la réponse est dans une doc, et des contrôles où aucune doc n'est nécessaire. Les contrôles servent à vérifier que les agents ne lisent pas tout systématiquement.">
+<div class="pad"><div class="head"><p class="kicker reveal">Exemples de cas</p><h2 class="reveal" style="--i:1">Une tâche, une doc attendue, une règle vérifiée</h2></div>
+<table class="reveal" style="--i:2">
+<tr><th style="width:42%">Tâche donnée à l'agent</th><th style="width:24%">Doc attendue</th><th style="width:34%">Ce qu'on vérifie</th></tr>
+<tr><td>« Dans cc-notice, colore le titre selon l'intent. »</td><td class="mono soft">wc-guidelines</td><td class="soft">chaque design token a une valeur de repli</td></tr>
+<tr><td>« Crée un composant cc-feedback-form avec validation. »</td><td class="mono soft">forms + 3 docs composant</td><td class="soft">la directive formSubmit, pas un submit fait main</td></tr>
+<tr><td>« Pourquoi nos tailles sont en em et pas en rem ? »</td><td class="mono soft">ADR-0021</td><td class="soft">la réponse cite la raison écrite dans l'ADR</td></tr>
+<tr><td>« Que fait la propriété weight de cc-badge ? »</td><td class="mono soft">aucune (contrôle)</td><td class="soft">réponse exacte, aucun fichier modifié</td></tr>
+</table></div>
+<div class="chrome"><span>Évaluer une doc pour agents</span><span>08 / 14</span></div>
+</section>
+<!-- ===== SLIDE 09 ===== -->
+<section class="slide statement" data-notes="Le cas en question : ajouter une couleur de titre dans cc-notice. La doc dit que chaque design token doit avoir une valeur de repli. Le fichier cc-notice n'en a presque pas. Résultat : tous les agents ont copié le fichier, pas la doc.">
+<div class="pad spread">
+<p class="kicker reveal" style="color:var(--paper)">Ce qu'on a appris</p>
+<h2 class="reveal" style="--i:1;font-size:96px;max-width:1500px">Une règle écrite seulement dans une doc perd contre le code voisin.</h2>
+<div class="row">
+<div class="stack reveal" style="--i:2"><h3>Le renvoi marche</h3><p>Pour « lequel j'utilise ? » et « comment je lance ça ? », les agents vont à la bonne doc.</p></div>
+<div class="stack reveal" style="--i:3"><h3>Ils copient le voisin</h3><p>Pour une petite modification, ils ne lisent pas la doc. Si le voisin est conforme, tout va bien.</p></div>
+<div class="stack reveal" style="--i:4"><h3>Lire n'est pas suivre</h3><p>Sur un cas, 6 runs sur 6 ont copié le mauvais motif, même après avoir lu la doc.</p></div>
+</div></div>
+<div class="chrome"><span>Évaluer une doc pour agents</span><span>09 / 14</span></div>
+</section>
+<!-- ===== SLIDE 10 ===== -->
+<section class="slide " data-notes="En haut, la règle n'est que dans wc-guidelines.md et le fichier cc-notice ne la respecte presque jamais : les six runs ont copié le fichier, y compris ceux qui avaient ouvert la doc. En bas, on a écrit la même règle en une phrase dans AGENTS.md, sans toucher au code : six sur six. Trait plein : la source que l'agent suit. Pointillé : celle qu'il ne suit pas.">
+<div class="pad"><div class="head"><p class="kicker reveal">Le mécanisme</p><h2 class="reveal" style="--i:1">La même règle, écrite à deux endroits</h2></div>
+<div class="diagram reveal" style="--i:2;height:696px">
+<svg width="1728" height="696" viewBox="0 0 1728 696" aria-label="Avant : la règle dans la doc est ignorée, le code voisin est copié, 0 sur 6. Après : la règle dans AGENTS.md est suivie, 6 sur 6."><defs><marker id="d2-ice" orient="auto" markerUnits="userSpaceOnUse" markerWidth="22" markerHeight="22" refX="22" refY="11"><path d="M0 0 L22 11 L0 22 Z" fill="#CEDCFF"/></marker><marker id="d2-red" orient="auto" markerUnits="userSpaceOnUse" markerWidth="22" markerHeight="22" refX="22" refY="11"><path d="M0 0 L22 11 L0 22 Z" fill="#F72D36"/></marker><marker id="d2-paper" orient="auto" markerUnits="userSpaceOnUse" markerWidth="22" markerHeight="22" refX="22" refY="11"><path d="M0 0 L22 11 L0 22 Z" fill="#F5F5F5"/></marker></defs>
+<line x1="694" y1="72" x2="826" y2="72" stroke="#CEDCFF" stroke-width="4" stroke-dasharray="12 10" marker-end="url(#d2-ice)"/><line x1="694" y1="240" x2="826" y2="240" stroke="#F72D36" stroke-width="5" marker-end="url(#d2-red)"/><line x1="1174" y1="156" x2="1286" y2="156" stroke="#F72D36" stroke-width="5" marker-end="url(#d2-red)"/>
+<line x1="694" y1="456" x2="826" y2="456" stroke="#F5F5F5" stroke-width="5" marker-end="url(#d2-paper)"/><line x1="694" y1="624" x2="826" y2="624" stroke="#CEDCFF" stroke-width="4" stroke-dasharray="12 10" marker-end="url(#d2-ice)"/><line x1="1174" y1="540" x2="1286" y2="540" stroke="#F5F5F5" stroke-width="5" marker-end="url(#d2-paper)"/>
+</svg>
+<p class="label" style="left:0;top:130px">Avant</p>
+<div class="node ghost" style="left:220px;top:0px;width:460px;height:144px"><h3>Règle dans la doc</h3><p>parfois lue, pas appliquée</p></div>
+<div class="node " style="left:220px;top:168px;width:460px;height:144px"><h3>Le code voisin</h3><p>sans fallback, copié par l'agent</p></div>
+<div class="node agent" style="left:840px;top:0px;width:320px;height:312px"><h3>L'agent</h3></div>
+<div class="node bad" style="left:1300px;top:72px;width:428px;height:168px"><h3>0 sur 6</h3><p>la règle n'est pas suivie</p></div>
+<p class="label" style="left:0;top:514px">Après</p>
+<div class="node " style="left:220px;top:384px;width:460px;height:144px"><h3>Règle dans AGENTS.md</h3><p>toujours chargée, appliquée</p></div>
+<div class="node ghost" style="left:220px;top:552px;width:460px;height:144px"><h3>Le code voisin</h3><p>sans fallback, inchangé, plus copié</p></div>
+<div class="node agent" style="left:840px;top:384px;width:320px;height:312px"><h3>L'agent</h3></div>
+<div class="node check" style="left:1300px;top:456px;width:428px;height:168px"><h3>6 sur 6</h3><p>la règle est suivie</p></div>
+</div>
+</div>
+<div class="chrome"><span>Évaluer une doc pour agents</span><span>10 / 14</span></div>
+</section>
+<!-- ===== SLIDE 11 ===== -->
+<section class="slide alt" data-notes="Un point par run, 3 répétitions sur chacun des deux modèles. Cercle rouge : raté. Point plein : réussi. Autres changements issus de l'eval : une ligne release dans le tableau de renvoi, une erreur corrigée dans smart-component.md.">
+<div class="pad"><div class="head"><p class="kicker reveal">Résultats</p><h2 class="reveal" style="--i:1">Deux phrases dans AGENTS.md, deux cas passés de 0 à 6 sur 6</h2></div>
+<div style="display:grid;grid-template-columns:1fr 360px 360px;column-gap:56px;row-gap:44px;align-items:center">
+<p class="mono reveal" style="--i:2;font-size:24px;color:var(--rose);text-transform:uppercase;letter-spacing:1px">Changement</p>
+<p class="mono reveal" style="--i:2;font-size:24px;color:var(--rose);text-transform:uppercase;letter-spacing:1px">Avant</p>
+<p class="mono reveal" style="--i:2;font-size:24px;color:var(--rose);text-transform:uppercase;letter-spacing:1px">Après</p>
+<div class="reveal" style="--i:3"><h3>Créer un composant : toujours lire les trois docs</h3><p class="soft">docs lues par l'agent</p></div>
+<div><div class="matrix" data-n="6" data-miss="0,1,2,3,4,5" style="grid-template-columns:repeat(6,1fr);--gap:14px;--ring:5px"></div><p class="mono soft" style="margin-top:14px">0 sur 6</p></div>
+<div><div class="matrix" data-n="6" data-miss="" style="grid-template-columns:repeat(6,1fr);--gap:14px;--ring:5px"></div><p class="mono" style="margin-top:14px">6 sur 6</p></div>
+<div class="reveal" style="--i:4"><h3>Design tokens : la règle du fallback écrite sur place</h3><p class="soft">règle respectée dans le diff</p></div>
+<div><div class="matrix" data-n="6" data-miss="0,1,2,3,4,5" style="grid-template-columns:repeat(6,1fr);--gap:14px;--ring:5px"></div><p class="mono soft" style="margin-top:14px">0 sur 6</p></div>
+<div><div class="matrix" data-n="6" data-miss="" style="grid-template-columns:repeat(6,1fr);--gap:14px;--ring:5px"></div><p class="mono" style="margin-top:14px">6 sur 6</p></div>
+</div></div>
+<div class="chrome"><span>Évaluer une doc pour agents</span><span>11 / 14</span></div>
+</section>
+<!-- ===== SLIDE 12 ===== -->
+<section class="slide " data-notes="Mesure finale, sur le code actuel après le retrait de l'ancien client API. L'écart entre Opus et Sonnet est dans le bruit, on ne s'en sert pas pour les classer. Le seul run où la règle n'est pas respectée est un agent qui s'est arrêté sur un plan sans écrire de code.">
+<div class="pad"><div class="head"><p class="kicker reveal">La mesure de référence</p><h2 class="reveal" style="--i:1">19 cas, 3 répétitions, deux modèles</h2></div>
+<div style="display:flex;gap:72px;align-items:center">
+<div style="flex:1;display:flex;flex-direction:column;gap:34px">
+<div class="reveal" style="--i:2"><p class="big">67 <span style="font-size:48px;letter-spacing:0">sur 72</span></p><p class="soft">runs où les docs requises ont été lues (Opus 34 sur 36, Sonnet 33 sur 36)</p></div>
+<div class="reveal" style="--i:3"><p class="big">71 <span style="font-size:48px;letter-spacing:0">sur 72</span></p><p class="soft">runs où la règle propre à la doc est respectée</p></div>
+<div class="reveal" style="--i:4"><p class="big">42 <span style="font-size:48px;letter-spacing:0">sur 42</span></p><p class="soft">contrôles réussis, sur les tâches sans doc</p></div>
+</div>
+<div style="flex:0 0 620px"><div class="matrix" data-n="72" data-miss="13,30,41,58,66" style="grid-template-columns:repeat(9,1fr);width:620px;--gap:18px;--ring:5px"></div><p class="mono soft" style="margin-top:22px;font-size:24px">docs requises lues : 67 points pleins, 5 cercles</p></div>
+</div></div>
+<div class="chrome"><span>Évaluer une doc pour agents</span><span>12 / 14</span></div>
+</section>
+<!-- ===== SLIDE 13 ===== -->
+<section class="slide alt" data-notes="Règles encore seulement dans les docs alors que le code existant est incohérent : readonly plutôt que disabled pendant une sauvegarde, role group plutôt que fieldset, le helper plural. Ce sont les prochaines candidates à une règle outillée ou à une phrase dans AGENTS.md. Coûts aux tarifs API rapportés par l'outil.">
+<div class="pad"><div class="head"><p class="kicker reveal">Et après</p><h2 class="reveal" style="--i:1">Ce qui doit toujours tenir va dans AGENTS.md ou dans l'outillage</h2></div>
+<div class="row">
+<div class="panel  reveal" style="--i:2"><h3>Outiller plutôt qu'écrire</h3><p>Une règle stylelint ou un hook ne dépend pas de ce que l'agent a lu. Retirer l'ancien client du code a mieux marché que toute consigne.</p></div>
+<div class="panel  reveal" style="--i:3"><h3>L'eval est au plafond</h3><p>Elle détecte une régression, pas une amélioration. Pour apprendre plus, il faut des cas plus durs, pas plus de répétitions.</p></div>
+<div class="panel  reveal" style="--i:4"><h3>Le coût</h3><p>Environ 26 $ pour une mesure complète, environ 80 $ pour tout le travail. À relancer quand AGENTS.md ou le code change beaucoup.</p></div>
+</div></div>
+<div class="chrome"><span>Évaluer une doc pour agents</span><span>13 / 14</span></div>
+</section>
+<!-- ===== SLIDE 14 ===== -->
+<section class="slide " data-notes="Résumé en une phrase. Si on ne devait garder qu'une chose : une doc pour agents se règle comme du code, avec une mesure avant et après.">
+<p class="kicker reveal" style="position:absolute;left:96px;top:88px">À retenir</p>
+<h1 class="reveal" style="--i:1;position:absolute;left:96px;top:230px;width:1250px;font-size:112px">Écrire la règle là où l'agent la lit toujours. Puis mesurer.</h1>
+<p class="soft reveal" style="--i:2;position:absolute;left:96px;top:760px;width:1000px;font-size:36px">Questions ?</p>
+<div style="position:absolute;right:96px;top:250px"><div class="matrix" data-n="36" data-miss="" style="grid-template-columns:repeat(6,1fr);width:360px;--gap:18px;--ring:5px"></div></div>
+
+</section>
+</main>
+</div>
+<!-- UI outside the stage: progress bar, speaker notes (N), edit mode (E) -->
+<div class="progress" id="progress"></div>
+<div class="notes" id="notes" aria-live="polite"></div>
+<div class="edit-hotzone"></div>
+<button class="edit-toggle" id="editToggle" title="Mode édition (E)">✏️</button>
+<script>
+/* ===========================================
+   SLIDE PRESENTATION CONTROLLER
+   Keyboard, wheel and touch navigation, stage scaling,
+   progress bar, speaker notes (N) and the dot matrices.
+   =========================================== */
+class SlidePresentation {
+    constructor() {
+        this.slides = [...document.querySelectorAll('.slide')];
+        this.stage = document.getElementById('deckStage');
+        this.progress = document.getElementById('progress');
+        this.notes = document.getElementById('notes');
+        this.current = 0;
+        this.buildMatrices();
+        this.setupStageScale();
+        this.setupKeyboardNav();
+        this.setupWheelNav();
+        this.setupTouchNav();
+        const fromHash = parseInt(location.hash.slice(1), 10);
+        this.showSlide(Number.isFinite(fromHash) ? fromHash - 1 : 0);
+    }
+
+    /* One dot per run: data-n dots, data-miss lists the hollow ones */
+    buildMatrices() {
+        document.querySelectorAll('.matrix').forEach((m) => {
+            const miss = new Set((m.dataset.miss || '').split(',').filter(Boolean).map(Number));
+            const n = Number(m.dataset.n);
+            for (let i = 0; i < n; i++) {
+                const d = document.createElement('div');
+                d.className = 'dot' + (miss.has(i) ? ' miss' : '');
+                d.style.transitionDelay = (250 + i * (n > 12 ? 16 : 70)) + 'ms';
+                m.appendChild(d);
+            }
+        });
+    }
+
+    setupStageScale() {
+        const scale = () => {
+            const factor = Math.min(window.innerWidth / 1920, window.innerHeight / 1080);
+            const x = (window.innerWidth - 1920 * factor) / 2;
+            const y = (window.innerHeight - 1080 * factor) / 2;
+            this.stage.style.transform = `translate(${x}px, ${y}px) scale(${factor})`;
+        };
+        scale();
+        window.addEventListener('resize', scale);
+    }
+
+    setupKeyboardNav() {
+        document.addEventListener('keydown', (e) => {
+            if (e.target.isContentEditable) return;
+            if (['ArrowRight', 'ArrowDown', 'PageDown', ' '].includes(e.key)) { e.preventDefault(); this.next(); }
+            else if (['ArrowLeft', 'ArrowUp', 'PageUp'].includes(e.key)) { e.preventDefault(); this.prev(); }
+            else if (e.key === 'Home') this.showSlide(0);
+            else if (e.key === 'End') this.showSlide(this.slides.length - 1);
+            else if (e.key === 'n' || e.key === 'N') this.notes.classList.toggle('show');
+        });
+    }
+
+    setupWheelNav() {
+        let locked = false;
+        window.addEventListener('wheel', (e) => {
+            if (locked || Math.abs(e.deltaY) < 20 || this.notes.contains(e.target)) return;
+            locked = true;
+            e.deltaY > 0 ? this.next() : this.prev();
+            setTimeout(() => (locked = false), 600);
+        }, { passive: true });
+    }
+
+    setupTouchNav() {
+        let startX = null;
+        window.addEventListener('touchstart', (e) => (startX = e.touches[0].clientX), { passive: true });
+        window.addEventListener('touchend', (e) => {
+            if (startX == null) return;
+            const dx = e.changedTouches[0].clientX - startX;
+            if (Math.abs(dx) > 50) dx < 0 ? this.next() : this.prev();
+            startX = null;
+        });
+    }
+
+    next() { this.showSlide(this.current + 1); }
+    prev() { this.showSlide(this.current - 1); }
+
+    showSlide(index) {
+        this.current = Math.max(0, Math.min(index, this.slides.length - 1));
+        this.slides.forEach((slide, i) => {
+            slide.classList.toggle('active', i === this.current);
+            slide.classList.toggle('visible', i === this.current);
+        });
+        this.progress.style.width = ((this.current + 1) / this.slides.length) * 100 + '%';
+        this.notes.textContent = this.slides[this.current].dataset.notes || '';
+        history.replaceState(null, '', '#' + (this.current + 1));
+    }
+}
+
+/* ===========================================
+   INLINE EDITING
+   Hover the top-left corner or press E, click any text, Ctrl+S saves a copy.
+   =========================================== */
+class InlineEditor {
+    constructor() {
+        this.isActive = false;
+        this.key = 'deck-edits:' + location.pathname;
+        this.toggle = document.getElementById('editToggle');
+        this.targets = () => document.querySelectorAll('.slide h1, .slide h2, .slide h3, .slide p, .slide td, .slide th');
+        const saved = localStorage.getItem(this.key);
+        if (saved) {
+            try {
+                const texts = JSON.parse(saved);
+                this.targets().forEach((el, i) => { if (texts[i] != null && !el.querySelector('.matrix')) el.innerHTML = texts[i]; });
+            } catch { /* ignore a corrupt draft */ }
+        }
+        document.addEventListener('input', () => this.isActive && this.save());
+        document.addEventListener('keydown', (e) => {
+            if ((e.ctrlKey || e.metaKey) && e.key === 's') { e.preventDefault(); this.exportFile(); }
+            else if ((e.key === 'e' || e.key === 'E') && !e.target.isContentEditable) this.toggleEditMode();
+            else if (e.key === 'Escape' && this.isActive) this.toggleEditMode();
+        });
+    }
+    toggleEditMode() {
+        this.isActive = !this.isActive;
+        this.targets().forEach((el) => el.setAttribute('contenteditable', this.isActive ? 'true' : 'false'));
+        this.toggle.classList.toggle('active', this.isActive);
+        this.toggle.classList.toggle('show', this.isActive);
+    }
+    save() { localStorage.setItem(this.key, JSON.stringify([...this.targets()].map((el) => el.innerHTML))); }
+    exportFile() {
+        const wasActive = this.isActive;
+        if (wasActive) this.toggleEditMode();
+        const blob = new Blob(['<!DOCTYPE html>\n' + document.documentElement.outerHTML], { type: 'text/html' });
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = location.pathname.split('/').pop() || 'slides.html';
+        a.click();
+        URL.revokeObjectURL(a.href);
+        if (wasActive) this.toggleEditMode();
+    }
+}
+
+new SlidePresentation();
+const editor = new InlineEditor();
+
+/* Edit button: JS-driven hover with a 400ms grace period (a CSS sibling selector would lose the hover) */
+const hotzone = document.querySelector('.edit-hotzone');
+const editToggle = document.getElementById('editToggle');
+let hideTimeout = null;
+const show = () => { clearTimeout(hideTimeout); editToggle.classList.add('show'); };
+const hide = () => { hideTimeout = setTimeout(() => { if (!editor.isActive) editToggle.classList.remove('show'); }, 400); };
+hotzone.addEventListener('mouseenter', show);
+hotzone.addEventListener('mouseleave', hide);
+editToggle.addEventListener('mouseenter', show);
+editToggle.addEventListener('mouseleave', hide);
+hotzone.addEventListener('click', () => editor.toggleEditMode());
+editToggle.addEventListener('click', () => editor.toggleEditMode());
+</script>
+</body>
+</html>
