@@ -1,0 +1,597 @@
+{
+  "base_sha": "df86d064da3265d7ee15b805eaf00421548e2d3e",
+  "max_budget_usd": 6,
+  "cases": [
+    {
+      "id": "D1",
+      "tags": ["doc", "smart", "api-client"],
+      "prompt": "The cc-tile-instances tile has no data wiring. Can you make it load the running instances of an application by itself?",
+      "docs": {
+        "required": ["smart-component"],
+        "optional": ["clever-client", "wc-guidelines", "codebase-map", "stories", "i18n"]
+      },
+      "allowed": [
+        "^src/components/cc-tile-instances/",
+        "^demo-smart/",
+        "^src/stories/fixtures/",
+        "^src/translations/translations\\.(en|fr)\\.js$"
+      ],
+      "checks": [
+        {
+          "type": "file_exists",
+          "path": "src/components/cc-tile-instances/cc-tile-instances.smart.js"
+        },
+        {
+          "type": "file_matches",
+          "name": "uses_new_api_client",
+          "rule": true,
+          "path": "src/components/cc-tile-instances/cc-tile-instances.smart.js",
+          "regexes": ["getCcApiClientWith(OAuth|Token)|@clevercloud/client/cc-api-commands/"]
+        },
+        {
+          "type": "file_not_matches",
+          "name": "no_legacy_api_client",
+          "rule": true,
+          "path": "src/components/cc-tile-instances/cc-tile-instances.smart.js",
+          "regexes": ["sendToApi", "@clevercloud/client/esm/api/"]
+        },
+        {
+          "type": "file_matches",
+          "name": "smart_structure",
+          "path": "src/components/cc-tile-instances/cc-tile-instances.smart.js",
+          "regexes": [
+            "defineSmartComponent\\(",
+            "import '\\./cc-tile-instances\\.js'",
+            "cc-smart-container/cc-smart-container\\.js"
+          ]
+        },
+        {
+          "type": "file_matches",
+          "name": "smart_md_sections",
+          "path": "src/components/cc-tile-instances/cc-tile-instances.smart.md",
+          "regexes": ["Details", "Params", "API endpoints"]
+        }
+      ]
+    },
+    {
+      "id": "D5",
+      "tags": ["control", "css", "tokens"],
+      "prompt": "Give cc-doc-card a subtle highlighted background and border when it is hovered.",
+      "docs": {
+        "required": [],
+        "optional": ["wc-guidelines", "wc-accessibility", "stories", "codebase-map"]
+      },
+      "allowed": ["^src/components/cc-doc-card/"],
+      "needs_stylelint": true,
+      "checks": [
+        {
+          "type": "added_lines_no_match",
+          "name": "token_fallbacks_and_em",
+          "rule": true,
+          "path": "src/components/cc-doc-card/cc-doc-card.js",
+          "regexes": ["var\\(--cc-[\\w-]+\\)", "\\d\\s*rem\\b"]
+        },
+        {
+          "type": "added_lines_match",
+          "name": "hover_rule_added",
+          "path": "src/components/cc-doc-card/cc-doc-card.js",
+          "regexes": [":hover", "var\\(--cc-color-"]
+        }
+      ]
+    },
+    {
+      "id": "D6",
+      "tags": ["doc", "i18n", "plural"],
+      "prompt": "In cc-ssh-key-list, show the number of keys next to each section title, like \"3 keys\".",
+      "docs": {
+        "required": ["i18n"],
+        "optional": ["wc-guidelines", "wc-accessibility", "stories", "codebase-map"]
+      },
+      "allowed": ["^src/components/cc-ssh-key-list/", "^src/translations/translations\\.(en|fr)\\.js$"],
+      "checks": [
+        {
+          "type": "added_lines_match",
+          "name": "plural_helper_en",
+          "rule": true,
+          "path": "src/translations/translations.en.js",
+          "regexes": ["plural\\("]
+        },
+        {
+          "type": "added_lines_match",
+          "name": "plural_helper_fr",
+          "rule": true,
+          "path": "src/translations/translations.fr.js",
+          "regexes": ["plural\\("]
+        },
+        {
+          "type": "added_lines_no_match",
+          "name": "no_manual_plural",
+          "rule": true,
+          "path_re": "^src/(translations/|components/cc-ssh-key-list/cc-ssh-key-list\\.js)",
+          "regexes": ["(===|!==|==|!=|>|<=?)\\s*1\\s*\\?", "Intl\\.PluralRules"]
+        },
+        {
+          "type": "added_lines_no_match",
+          "name": "own_key_prefix",
+          "rule": true,
+          "path": "src/components/cc-ssh-key-list/cc-ssh-key-list.js",
+          "regexes": ["i18n\\('(?!cc-ssh-key-list\\.)"]
+        },
+        {
+          "type": "i18n_keys",
+          "prefix": "cc-ssh-key-list."
+        }
+      ]
+    },
+    {
+      "id": "D8",
+      "tags": ["doc", "a11y", "live-region"],
+      "prompt": "In cc-ssh-key-list, screen reader users should be told how many keys are listed whenever the list changes.",
+      "docs": {
+        "required": ["wc-accessibility"],
+        "optional": ["wc-guidelines", "i18n", "stories", "codebase-map"]
+      },
+      "allowed": ["^src/components/cc-ssh-key-list/", "^src/translations/translations\\.(en|fr)\\.js$"],
+      "checks": [
+        {
+          "type": "added_lines_match",
+          "name": "polite_live_region",
+          "rule": true,
+          "path": "src/components/cc-ssh-key-list/cc-ssh-key-list.js",
+          "regexes": ["aria-live=\"polite\""]
+        },
+        {
+          "type": "added_lines_no_match",
+          "name": "no_alert_role",
+          "rule": true,
+          "path": "src/components/cc-ssh-key-list/cc-ssh-key-list.js",
+          "regexes": ["role=\"(alert|status)\"", "aria-live=\"assertive\""]
+        },
+        {
+          "type": "added_lines_match",
+          "name": "announcement_translated",
+          "path": "src/components/cc-ssh-key-list/cc-ssh-key-list.js",
+          "regexes": ["i18n\\('cc-ssh-key-list\\."]
+        }
+      ]
+    },
+    {
+      "id": "D9",
+      "tags": ["doc", "stories", "simulation"],
+      "prompt": "Add a story to cc-badge that shows it switching from skeleton to its final content after a couple of seconds.",
+      "docs": {
+        "required": ["stories"],
+        "optional": ["wc-guidelines", "codebase-map", "test"]
+      },
+      "allowed": ["^src/components/cc-badge/cc-badge\\.stories\\.js$"],
+      "checks": [
+        {
+          "type": "added_lines_match",
+          "name": "simulation_story_convention",
+          "rule": true,
+          "path": "src/components/cc-badge/cc-badge.stories.js",
+          "regexes": ["export const \\w*[sS]imulation\\w* = makeStory\\(conf", "simulations:", "storyWait\\("]
+        }
+      ]
+    },
+    {
+      "id": "D10",
+      "tags": ["doc", "tests", "command"],
+      "prompt": "I changed the markup of cc-badge. Can you run just its accessibility tests and tell me if they pass?",
+      "docs": {
+        "required": [["test", "codebase-map"]],
+        "optional": ["tasks", "stories"]
+      },
+      "allowed": [],
+      "checks": [
+        {
+          "type": "ran_commands",
+          "name": "a11y_group_command",
+          "rule": true,
+          "regexes": ["test:group\\s+a11y:cc-badge"]
+        },
+        {
+          "type": "no_command",
+          "name": "no_search_for_test_file",
+          "regex": "(find|ls|fd)\\b[^|;&]*a11y\\.test"
+        }
+      ]
+    },
+    {
+      "id": "D11",
+      "tags": ["doc", "question", "tests"],
+      "prompt": "How do I get the visual regression report for my cc-badge PR?",
+      "docs": {
+        "required": ["test"],
+        "optional": ["tasks", "previews", "codebase-map", "agent-tooling"]
+      },
+      "allowed": [],
+      "checks": [
+        {
+          "type": "answer_matches",
+          "name": "mentions_ci_label",
+          "rule": true,
+          "regexes": ["run-visual-tests"]
+        }
+      ]
+    },
+    {
+      "id": "D12",
+      "tags": ["doc", "question", "stories"],
+      "prompt": "The a11y run doesn't seem to check the simulation stories of cc-ssh-key-list. Is that a bug?",
+      "docs": {
+        "required": ["stories"],
+        "optional": ["test", "codebase-map"]
+      },
+      "allowed": [],
+      "checks": [
+        {
+          "type": "answer_matches",
+          "name": "simulations_disable_tests",
+          "rule": true,
+          "regexes": ["simulation", "disabl|skip|exclud|ignor|opt[- ]?out|not (run|tested|covered|checked)|by default"]
+        }
+      ]
+    },
+    {
+      "id": "D13",
+      "tags": ["doc", "new-component"],
+      "prompt": "Create a new cc-status-dot component: a small coloured dot followed by a label, with four intents (success, warning, danger, neutral) and a skeleton state.",
+      "docs": {
+        "required": ["wc-guidelines", "wc-accessibility", "stories"],
+        "optional": ["i18n", "codebase-map", "test"]
+      },
+      "allowed": [
+        "^src/components/cc-status-dot/",
+        "^src/translations/translations\\.(en|fr)\\.js$",
+        "^src/components/cc-visual-tests-report",
+        "^docs/"
+      ],
+      "needs_stylelint": true,
+      "checks": [
+        {
+          "type": "file_exists",
+          "path": "src/components/cc-status-dot/cc-status-dot.js"
+        },
+        {
+          "type": "file_exists",
+          "path": "src/components/cc-status-dot/cc-status-dot.stories.js"
+        },
+        {
+          "type": "file_matches",
+          "name": "cssdisplay_documented",
+          "rule": true,
+          "path": "src/components/cc-status-dot/cc-status-dot.js",
+          "regexes": ["@cssdisplay"]
+        },
+        {
+          "type": "file_not_matches",
+          "name": "jsdoc_and_css_conventions",
+          "rule": true,
+          "path": "src/components/cc-status-dot/cc-status-dot.js",
+          "regexes": ["@(prop|attr|fires)\\b", "var\\(--cc-[\\w-]+\\)", "\\d\\s*rem\\b"]
+        },
+        {
+          "type": "file_matches",
+          "name": "component_structure",
+          "path": "src/components/cc-status-dot/cc-status-dot.js",
+          "regexes": [
+            "class CcStatusDot extends",
+            "customElements\\.define\\('cc-status-dot', CcStatusDot\\)",
+            "var\\(--cc-color-"
+          ]
+        },
+        {
+          "type": "file_matches",
+          "name": "stories_use_make_story",
+          "path": "src/components/cc-status-dot/cc-status-dot.stories.js",
+          "regexes": ["makeStory\\(conf"]
+        },
+        {
+          "type": "cmd",
+          "name": "check_lit",
+          "run": "pnpm -s components:check-lit"
+        }
+      ]
+    },
+    {
+      "id": "D14",
+      "tags": ["control", "css", "tokens"],
+      "prompt": "In cc-notice, colour the heading according to the intent (success, warning, info, danger), using the matching text colour.",
+      "docs": {
+        "required": [],
+        "optional": ["wc-guidelines", "wc-accessibility", "stories", "codebase-map"]
+      },
+      "allowed": ["^src/components/cc-notice/"],
+      "needs_stylelint": true,
+      "checks": [
+        {
+          "type": "added_lines_no_match",
+          "name": "token_fallbacks_and_em",
+          "rule": true,
+          "path": "src/components/cc-notice/cc-notice.js",
+          "regexes": ["^\\s*(?!--)[a-z-]+:[^;]*var\\(--cc-[\\w-]+\\)", "\\d\\s*rem\\b"]
+        },
+        {
+          "type": "added_lines_match",
+          "name": "heading_colour_added",
+          "path": "src/components/cc-notice/cc-notice.js",
+          "regexes": ["heading", "var\\(--cc-color-text-"]
+        }
+      ]
+    },
+    {
+      "id": "D15",
+      "tags": ["doc", "forms", "new-component"],
+      "prompt": "Create a cc-feedback-form component: an email field and a message field, both required, with validation errors shown under the fields, and an event carrying the values when the form is submitted.",
+      "docs": {
+        "required": ["forms", "wc-guidelines", "wc-accessibility", "stories"],
+        "optional": ["i18n", "codebase-map", "test", "smart-component"]
+      },
+      "allowed": [
+        "^src/components/cc-feedback-form/",
+        "^src/translations/translations\\.(en|fr)\\.js$",
+        "^src/lib/events-map\\.types\\.d\\.ts$"
+      ],
+      "needs_stylelint": true,
+      "checks": [
+        {
+          "type": "file_exists",
+          "path": "src/components/cc-feedback-form/cc-feedback-form.js"
+        },
+        {
+          "type": "file_exists",
+          "path": "src/components/cc-feedback-form/cc-feedback-form.stories.js"
+        },
+        {
+          "type": "file_matches",
+          "name": "uses_form_submit_directive",
+          "rule": true,
+          "path": "src/components/cc-feedback-form/cc-feedback-form.js",
+          "regexes": ["form-submit-directive\\.js", "formSubmit\\("]
+        },
+        {
+          "type": "file_not_matches",
+          "name": "no_hand_rolled_submit",
+          "rule": true,
+          "path": "src/components/cc-feedback-form/cc-feedback-form.js",
+          "regexes": ["@submit=", "preventDefault\\(", "checkValidity\\("]
+        },
+        {
+          "type": "file_matches",
+          "name": "component_structure",
+          "path": "src/components/cc-feedback-form/cc-feedback-form.js",
+          "regexes": [
+            "class CcFeedbackForm extends",
+            "customElements\\.define\\('cc-feedback-form', CcFeedbackForm\\)",
+            "@cssdisplay",
+            "required"
+          ]
+        },
+        {
+          "type": "new_event_class",
+          "path": "src/components/cc-feedback-form/cc-feedback-form.events.js"
+        },
+        {
+          "type": "file_matches",
+          "name": "stories_use_make_story",
+          "path": "src/components/cc-feedback-form/cc-feedback-form.stories.js",
+          "regexes": ["makeStory\\(conf"]
+        },
+        {
+          "type": "i18n_keys",
+          "prefix": "cc-feedback-form."
+        },
+        {
+          "type": "cmd",
+          "name": "check_lit",
+          "run": "pnpm -s components:check-lit"
+        }
+      ]
+    },
+    {
+      "id": "D16",
+      "tags": ["doc", "question", "forms"],
+      "prompt": "With our form setup, how do I show an error that comes back from the API (for example \"email already used\") under the right field?",
+      "docs": {
+        "required": ["forms"],
+        "optional": ["smart-component", "wc-guidelines", "codebase-map"]
+      },
+      "allowed": [],
+      "checks": [
+        {
+          "type": "answer_matches",
+          "name": "error_code_mapped_in_component",
+          "rule": true,
+          "regexes": ["errorMessage|error-message", "code"]
+        }
+      ]
+    },
+    {
+      "id": "D17",
+      "tags": ["doc", "question", "adr"],
+      "prompt": "A designer asks why all our component sizes are in em and not rem. What was the reason for that choice?",
+      "docs": {
+        "required": ["adr-0021"],
+        "optional": ["wc-guidelines", "codebase-map"]
+      },
+      "allowed": [],
+      "checks": [
+        {
+          "type": "answer_matches",
+          "name": "cites_the_recorded_reason",
+          "rule": true,
+          "regexes": ["62\\.5|10\\s?px|admin|documentation (web)?site"]
+        }
+      ]
+    },
+    {
+      "id": "D18",
+      "tags": ["doc", "release", "commit"],
+      "seed": {
+        "pre_patch": "D18.pre.patch",
+        "patch": "D18.patch",
+        "staged": true
+      },
+      "prompt": "Commit this, then get it ready for the next release.",
+      "docs": {
+        "required": [["agent-tooling", "release"]],
+        "optional": ["tasks", "codebase-map"]
+      },
+      "allowed": [],
+      "checks": [
+        {
+          "type": "paths_untouched",
+          "name": "no_manual_changelog_or_version",
+          "rule": true,
+          "regex": "^(CHANGELOG\\.md|package\\.json)$"
+        },
+        {
+          "type": "answer_matches",
+          "name": "mentions_release_please",
+          "rule": true,
+          "regexes": ["release-please"]
+        },
+        {
+          "type": "commit_subject",
+          "name": "conventional_commit_scope",
+          "regex": "^(fix|docs|chore|style)\\(cc-badge\\): \\S"
+        }
+      ]
+    },
+    {
+      "id": "D19",
+      "tags": ["control", "layout", "fixtures"],
+      "prompt": "The fake SSH keys in the cc-ssh-key-list stories are going to be reused by the stories of another component. Move them to a shared place.",
+      "docs": {
+        "required": [],
+        "optional": ["codebase-map", "stories", "wc-guidelines"]
+      },
+      "allowed": ["^src/components/cc-ssh-key-list/cc-ssh-key-list\\.stories\\.js$", "^src/stories/fixtures/"],
+      "checks": [
+        {
+          "type": "path_added",
+          "name": "shared_data_in_fixtures",
+          "rule": true,
+          "regex": "^src/stories/fixtures/[\\w.-]+\\.js$"
+        },
+        {
+          "type": "file_matches",
+          "name": "stories_import_fixture",
+          "path": "src/components/cc-ssh-key-list/cc-ssh-key-list.stories.js",
+          "regexes": ["from '\\.\\./\\.\\./stories/fixtures/", "makeStory\\(conf"]
+        },
+        {
+          "type": "file_not_matches",
+          "name": "keys_no_longer_inline",
+          "path": "src/components/cc-ssh-key-list/cc-ssh-key-list.stories.js",
+          "regexes": ["const DUMMY_KEY_1 = \\{"]
+        }
+      ]
+    },
+    {
+      "id": "N1",
+      "tags": ["control", "fix", "replay"],
+      "replay": "58e7bdf8",
+      "prompt": "When the content of a cc-link is written on several lines in the HTML, the title attribute it generates is full of big gaps between the words.",
+      "docs": {
+        "required": [],
+        "optional": ["wc-guidelines", "wc-accessibility", "test", "stories"]
+      },
+      "allowed": ["^src/components/cc-link/"],
+      "checks": [
+        {
+          "type": "added_lines_match",
+          "name": "collapses_whitespace",
+          "path": "src/components/cc-link/cc-link.js",
+          "regexes": ["\\\\s[+{]|\\[\\\\s|\\\\n"]
+        }
+      ]
+    },
+    {
+      "id": "N2",
+      "tags": ["control", "question"],
+      "prompt": "What does the weight property of cc-badge do?",
+      "docs": {
+        "required": [],
+        "optional": []
+      },
+      "allowed": [],
+      "checks": [
+        {
+          "type": "answer_matches",
+          "name": "names_three_values",
+          "regexes": ["dimmed", "outlined", "strong"]
+        },
+        {
+          "type": "no_command",
+          "name": "no_script_run",
+          "regex": "(^|[\\s;&|(])(pnpm|npm|npx|yarn)\\s"
+        }
+      ]
+    },
+    {
+      "id": "N3",
+      "tags": ["control", "pre-pr", "scripts"],
+      "seed": {
+        "patch": "N3.patch",
+        "staged": false
+      },
+      "prompt": "I'm done with my change on cc-badge. Check that everything is fine before I open the PR.",
+      "docs": {
+        "required": [],
+        "optional": ["tasks", "test", "wc-guidelines"]
+      },
+      "allowed": ["^src/components/cc-badge/cc-badge\\.js$"],
+      "always_check": ["src/components/cc-badge/cc-badge.js"],
+      "needs_stylelint": true,
+      "checks": [
+        {
+          "type": "file_matches",
+          "name": "seeded_rule_kept",
+          "path": "src/components/cc-badge/cc-badge.js",
+          "regexes": [
+            "\\.strong\\.circle \\{[^}]*font-weight: bold;",
+            "\\.strong\\.circle \\{[^}]*color: var\\(--cc-color-text-inverted, #fff\\);"
+          ]
+        },
+        {
+          "type": "ran_commands",
+          "name": "ran_format_lint_stylelint",
+          "regexes": [
+            "(pnpm|npx)\\s+(run\\s+|exec\\s+)?(format|prettier)",
+            "(pnpm|npx)\\s+(run\\s+|exec\\s+)?(lint|eslint)\\b",
+            "(pnpm|npx)\\s+(run\\s+|exec\\s+)?stylelint"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "N4",
+      "tags": ["control", "commit"],
+      "seed": {
+        "pre_patch": "N4.pre.patch",
+        "patch": "N4.patch",
+        "staged": true
+      },
+      "prompt": "Commit this.",
+      "docs": {
+        "required": [],
+        "optional": []
+      },
+      "allowed": [],
+      "checks": [
+        {
+          "type": "commit_subject",
+          "name": "conventional_commit_scope",
+          "regex": "^fix\\(cc-notice\\): \\S"
+        },
+        {
+          "type": "cmd",
+          "name": "nothing_left_staged",
+          "run": "test -z \"$(git status --porcelain)\""
+        }
+      ]
+    }
+  ]
+}

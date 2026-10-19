@@ -1,0 +1,83 @@
+{
+  "metrics": [
+    {
+      "id": "pass",
+      "label": "Routed+correct",
+      "kind": "binary"
+    },
+    {
+      "id": "routed",
+      "label": "Docs read",
+      "kind": "binary"
+    },
+    {
+      "id": "doc_rule",
+      "label": "Doc rule",
+      "kind": "binary"
+    },
+    {
+      "id": "checks",
+      "label": "Other checks",
+      "kind": "binary"
+    },
+    {
+      "id": "end_state",
+      "label": "End state",
+      "kind": "float",
+      "scale": 1
+    },
+    {
+      "id": "process",
+      "label": "Process rules",
+      "kind": "float",
+      "scale": 1
+    },
+    {
+      "id": "doc_recall",
+      "label": "Doc recall",
+      "kind": "float",
+      "scale": 1
+    }
+  ],
+  "harness_paths": [
+    "lib.mjs",
+    "cases.json",
+    "seeds/N3.patch",
+    "seeds/N4.patch",
+    "seeds/N4.pre.patch",
+    "seeds/D18.patch",
+    "seeds/D18.pre.patch"
+  ],
+  "perf_fields": [
+    {
+      "id": "latency_s",
+      "label": "Duration",
+      "unit": "s"
+    },
+    {
+      "id": "tool_calls",
+      "label": "Tool calls"
+    },
+    {
+      "id": "num_turns",
+      "label": "Turns"
+    },
+    {
+      "id": "cost_cli_usd",
+      "label": "Cost (CLI)",
+      "unit": "$"
+    },
+    {
+      "id": "docs_read",
+      "label": "Docs read"
+    },
+    {
+      "id": "docs_not_needed",
+      "label": "Docs not needed"
+    },
+    {
+      "id": "files_changed",
+      "label": "Files changed"
+    }
+  ]
+}

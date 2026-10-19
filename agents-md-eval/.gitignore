@@ -1,0 +1,9 @@
+# bulk and derived output of eval runs
+results/*/traces/
+results/*/ref/
+results/*/progress.txt
+results/*.log
+results/report.html
+results/trajectory/
+results/archive/
+results/*/errors.jsonl

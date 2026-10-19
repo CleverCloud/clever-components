@@ -1,0 +1,16 @@
+diff --git a/src/components/cc-badge/cc-badge.js b/src/components/cc-badge/cc-badge.js
+index 5a8d160..88c0145 100644
+--- a/src/components/cc-badge/cc-badge.js
++++ b/src/components/cc-badge/cc-badge.js
+@@ -124,6 +124,11 @@ export class CcBadge extends LitElement {
+           width: 1.5em;
+         }
+ 
++        .strong.circle {
++          font-weight: bold;
++              color: var(--cc-color-text-inverted, #fff);
++        }
++
+         .dimmed {
+           background-color: var(--accent-color, #ccc);
+           border: 0.06em solid var(--accent-color, #ccc);
