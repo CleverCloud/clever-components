@@ -1,6 +1,6 @@
 ---
 kind: '👋 Contributing'
-title: 'Clever client'
+title: 'API client'
 ---
 
 # Clever client
@@ -37,4 +37,4 @@ This assumes `clever-client.js` is cloned **as a sibling of this repository**. T
 
 ## Where the client docs live
 
-In the `clever-client.js` repository: `README.md`, `NEW_CLIENT.md` (the new client) and its two ADRs, `docs/adr-0001-why-this-new-client.md` and `docs/adr-0002-why-exposing-data-as-events.md`.
+In the `clever-client.js` repository: `README.md`, `NEW_CLIENT.md` (the new client) and its two ADRs, `docs/adr/adr-0001-why-this-new-client.md` and `docs/adr/adr-0002-why-exposing-data-as-events.md`.

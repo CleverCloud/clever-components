@@ -15,8 +15,8 @@ This is also a great way for users to recognize patterns in our components.
   Stories are also the source of our automated tests.
   The accessibility test files and the visual test files are **generated on the fly** from the `*.stories.js` files by the Web Test Runner plugins in `web-test-runner/`.
 
-  This means every story **must** be created with the `makeStory()` helper, and its config **must** set the `component` property.
-  Stories are collected by keeping only the exported functions that carry a `component` property, so a story exported as a plain function, or a `dom` based story with no `component`, is silently skipped by the tests.
+  This means every story **must** be created with the `makeStory()` helper.
+  Stories are collected by keeping only the exported functions that carry a `component` property, which `makeStory()` always sets, so a story exported as a plain function or as a CSF (Component Story Format) object is silently skipped by the tests.
   </div>
 </cc-notice>
 
@@ -131,11 +131,11 @@ interface MakeStoryOptions {
   // by default, both are enabled unless the story defines `simulations`
   tests?: {
     accessibility?: {
-      enable?: boolean;
+      enable: boolean;
       ignoredRules?: Array<string>;
     },
     visual?: {
-      enable?: boolean;
+      enable: boolean;
     },
   },
   // Define the properties to set for each instance of the component
@@ -314,8 +314,6 @@ export const storyWithDom = makeStory({
   },
 });
 ```
-
-<cc-notice intent="warning" message="Keep the `component` property even when you use `dom`, otherwise the story is skipped by the generated accessibility and visual tests."></cc-notice>
 
 ### Present state changes with simulations
 

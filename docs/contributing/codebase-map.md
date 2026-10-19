@@ -43,7 +43,7 @@ Everything that is not a component.
 |---|---|
 | `events.js` | The `CcEvent` base class. |
 | `events-map.types.d.ts` | **Generated.** Maps event types to classes for typechecking. |
-| `cc-api-client.js` | Glue to `@clevercloud/client` (see `clever-client.md`). `send-to-api.events.js` and `send-to-api.types.d.ts` only hold the `cc-api-error` event and the config types it still uses. |
+| `cc-api-client.js` | Glue to `@clevercloud/client` (see `api-client.md`). `send-to-api.events.js` and `send-to-api.types.d.ts` only hold the `cc-api-error` event and the config types it still uses. |
 | `smart/` | `define-smart-component.js`, `smart-manager.js`: the smart component runtime. |
 | `form/` | `cc-form-control-element.abstract.js`, validation, submit directive. |
 | `i18n/` | Date, number, string and sanitize helpers used by translations. |
@@ -78,7 +78,6 @@ Storybook **infrastructure**, not stories:
 - `src/directives/`: Lit directives (`has-slotted-children.js` and its test).
 - `src/templates/`: sub-templates reused by several components (currently one).
 - `src/assets/`: SVGs, geo data, and the **generated** icon modules.
-- `src/operators.types.d.ts`: shared type helpers.
 
 ## Tests
 

@@ -161,7 +161,7 @@ render () {
 
 Override default messages or provide messages for custom validators by providing a `customErrorMessages` object.
 This object uses validation error codes as keys and maps them to error message strings, `Node`s or functions that return one of those.
-The built-in codes are `empty` (`RequiredValidator`), `badEmail` (`EmailValidator`) and `badFormat`, `rangeUnderflow`, `rangeOverflow` (`NumberValidator`).
+The built-in codes are `empty` (`RequiredValidator`), `badEmail` (`EmailValidator`) and `badType`, `rangeUnderflow`, `rangeOverflow` (`NumberValidator`).
 
 ```js
 const ERROR_MESSAGES = {
@@ -284,7 +284,7 @@ Two decisions have a direct impact on how you write forms:
 * Don't use `disabled` to lock a form during an API call: use `readonly` on the form controls and `waiting` on the `<cc-button>`.
 `disabled` elements cannot receive focus, which causes focus loss and makes the state invisible to assistive technologies.
 See [ADR 0029: Limited Usage of the `disabled` Attribute](📌-architecture-decision-records-adr-0029-limited-usage-of-the-disabled-attribute--docs).
-* Don't use `<fieldset>` + `<legend>` to group form controls: use a `<div role="group" aria-labelledby="...">` instead.
+* When the legend must sit next to the group, don't use `<fieldset>` + `<legend>`: use a `<div role="group" aria-labelledby="...">` instead.
 See [ADR 0025: Moving away from `fieldset` and `legend`](📌-architecture-decision-records-adr-0025-moving-away-from-fieldset-and-legend--docs).
 
 ## Smart Component Interactions
