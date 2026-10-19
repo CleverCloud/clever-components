@@ -1,6 +1,6 @@
 ---
 kind: '👋 Contributing'
-title: 'Test'
+title: 'Testing'
 ---
 
 # How to test your components?

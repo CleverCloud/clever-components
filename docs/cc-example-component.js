@@ -198,21 +198,21 @@ export class CcExampleComponent extends LitElement {
 
         /* region COMMON */
         .foobar {
-          color: red;
+          color: var(--cc-color-text-danger, #be242d);
         }
 
         /* endregion */
 
         /* region BIG */
         .foobar.big {
-          color: blue;
+          color: var(--cc-color-text-primary, #3569aa);
         }
 
         /* endregion */
 
         /* region SMALL */
         .foobar.small {
-          color: green;
+          color: var(--cc-color-text-success, #098846);
         }
 
         /* endregion */
