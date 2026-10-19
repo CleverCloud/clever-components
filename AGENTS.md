@@ -14,18 +14,18 @@ This file is the canonical instruction set for AI coding agents. Tool-specific e
 
 ## Layout
 
-| Path | What |
-|---|---|
-| `src/components/<tag>/` | One directory per component, files named after the tag |
-| `src/lib/` | Non-component logic: events, API glue, i18n engine, smart-component runtime, form abstractions |
-| `src/styles/` | Shared Lit style modules + design tokens (`default-theme.css`) |
-| `src/translations/` | `translations.en.js` / `translations.fr.js` + the `i18n()` function |
-| `src/stories/` | Storybook infrastructure (`lib/make-story.js`, fixtures), **not** the stories themselves |
-| `src/controllers/`, `src/directives/` | Reusable reactive controllers and Lit directives |
-| `test/` | Browser unit tests for `src/lib` (Web Test Runner) |
-| `test-mocha/` | Node-side tests for build tooling (CEM plugins, custom ESLint rules) |
-| `tasks/`, `cem/`, `rollup/`, `eslint/`, `web-test-runner/` | Build, analysis and test tooling |
-| `docs/` | Contributor docs, **published in the Storybook**, so anything added here is public |
+| Path                                                       | What                                                                                           |
+|------------------------------------------------------------|------------------------------------------------------------------------------------------------|
+| `src/components/<tag>/`                                    | One directory per component, files named after the tag                                         |
+| `src/lib/`                                                 | Non-component logic: events, API glue, i18n engine, smart-component runtime, form abstractions |
+| `src/styles/`                                              | Shared Lit style modules + design tokens (`default-theme.css`)                                 |
+| `src/translations/`                                        | `translations.en.js` / `translations.fr.js` + the `i18n()` function                            |
+| `src/stories/`                                             | Storybook infrastructure (`lib/make-story.js`, fixtures), **not** the stories themselves       |
+| `src/controllers/`, `src/directives/`                      | Reusable reactive controllers and Lit directives                                               |
+| `test/`                                                    | Browser unit tests for `src/lib` (Web Test Runner)                                             |
+| `test-mocha/`                                              | Node-side tests for build tooling (CEM plugins, custom ESLint rules)                           |
+| `tasks/`, `cem/`, `rollup/`, `eslint/`, `web-test-runner/` | Build, analysis and test tooling                                                               |
+| `docs/`                                                    | Contributor docs, **published in the Storybook**, so anything added here is public             |
 
 ## Component anatomy
 
@@ -60,17 +60,17 @@ Only `cc-foo.js` is mandatory; `cc-foo.stories.js` is expected for any new compo
 
 Read these when the task matches. For a small change to an existing file, the neighbouring code is usually enough; open the doc when the code around your change does not already show the pattern you need.
 
-| Task | Read |
-|---|---|
-| Understand where things are, in detail | `docs/contributing/codebase-map.md` |
-| Use `gh`, `playwright-cli`, Figma MCP, `clever-tools` | `docs/contributing/agent-tooling.md` |
-| Call the API, test a local client build | `docs/contributing/api-client.md` |
-| Create a new component | **Always:** `docs/contributing/wc-guidelines.md`, `docs/contributing/wc-accessibility.md`, `docs/contributing/stories.md` |
-| Change an existing component | `docs/contributing/wc-guidelines.md`; add `docs/contributing/wc-accessibility.md` when the change touches markup, labels, focus or anything announced to screen readers |
-| Write or change a smart component | `docs/contributing/smart-component.md` |
-| Write or change stories | `docs/contributing/stories.md` |
-| Forms | `docs/contributing/forms.md` |
-| i18n | `docs/contributing/i18n.md` |
-| Tests | `docs/contributing/testing.md` |
-| Prepare or understand a release, the CHANGELOG, versioning | `docs/contributing/release.md` |
-| Why something is the way it is | `docs/adr/` |
+| Task                                                       | Read                                                                                                                                                                    |
+|------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Understand where things are, in detail                     | `docs/contributing/codebase-map.md`                                                                                                                                     |
+| Use `gh`, `playwright-cli`, Figma MCP, `clever-tools`      | `docs/contributing/agent-tooling.md`                                                                                                                                    |
+| Call the API, test a local client build                    | `docs/contributing/api-client.md`                                                                                                                                       |
+| Create a new component                                     | **Always:** `docs/contributing/wc-guidelines.md`, `docs/contributing/wc-accessibility.md`, `docs/contributing/stories.md`                                               |
+| Change an existing component                               | `docs/contributing/wc-guidelines.md`; add `docs/contributing/wc-accessibility.md` when the change touches markup, labels, focus or anything announced to screen readers |
+| Write or change a smart component                          | `docs/contributing/smart-component.md`                                                                                                                                  |
+| Write or change stories                                    | `docs/contributing/stories.md`                                                                                                                                          |
+| Forms                                                      | `docs/contributing/forms.md`                                                                                                                                            |
+| i18n                                                       | `docs/contributing/i18n.md`                                                                                                                                             |
+| Tests                                                      | `docs/contributing/testing.md`                                                                                                                                          |
+| Prepare or understand a release, the CHANGELOG, versioning | `docs/contributing/release.md`                                                                                                                                          |
+| Why something is the way it is                             | `docs/adr/`                                                                                                                                                             |

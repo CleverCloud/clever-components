@@ -14,15 +14,15 @@ A condensed version, meant to be loaded by AI coding agents on every session, li
 
 One directory per component, named after the custom element tag. Files inside are always prefixed with that tag.
 
-| File | Required | Role |
-|---|---|---|
-| `cc-foo.js` | yes | The Lit element. Ends with `window.customElements.define('cc-foo', CcFoo)`. |
-| `cc-foo.stories.js` | expected | Storybook stories, built with `makeStory()`. Also the source of the generated a11y and visual tests. |
-| `cc-foo.types.d.ts` | common | Public types, imported in JSDoc as `./cc-foo.types.js`. |
-| `cc-foo.events.js` | ~51 components | `CcEvent` subclasses dispatched by the component. |
-| `cc-foo.smart.js` | optional | API wiring container, declared with `defineSmartComponent()`. |
-| `cc-foo.smart.md` | with `.smart.js` | Smart component docs: params and API calls. Published in the Storybook. |
-| `cc-foo.test.js` | rare (~11) | Hand-written browser tests, for behaviour stories can't cover. |
+| File                | Required         | Role                                                                                                 |
+|---------------------|------------------|------------------------------------------------------------------------------------------------------|
+| `cc-foo.js`         | yes              | The Lit element. Ends with `window.customElements.define('cc-foo', CcFoo)`.                          |
+| `cc-foo.stories.js` | expected         | Storybook stories, built with `makeStory()`. Also the source of the generated a11y and visual tests. |
+| `cc-foo.types.d.ts` | common           | Public types, imported in JSDoc as `./cc-foo.types.js`.                                              |
+| `cc-foo.events.js`  | ~51 components   | `CcEvent` subclasses dispatched by the component.                                                    |
+| `cc-foo.smart.js`   | optional         | API wiring container, declared with `defineSmartComponent()`.                                        |
+| `cc-foo.smart.md`   | with `.smart.js` | Smart component docs: params and API calls. Published in the Storybook.                              |
+| `cc-foo.test.js`    | rare (~11)       | Hand-written browser tests, for behaviour stories can't cover.                                       |
 
 Variants and helpers:
 
@@ -39,17 +39,17 @@ Two shared files sit at the root of `src/components/`:
 
 Everything that is not a component.
 
-| Path | Role |
-|---|---|
-| `events.js` | The `CcEvent` base class. |
-| `events-map.types.d.ts` | **Generated.** Maps event types to classes for typechecking. |
-| `cc-api-client.js` | Glue to `@clevercloud/client` (see `api-client.md`). `send-to-api.events.js` and `send-to-api.types.d.ts` only hold the `cc-api-error` event and the config types it still uses. |
-| `smart/` | `define-smart-component.js`, `smart-manager.js`: the smart component runtime. |
-| `form/` | `cc-form-control-element.abstract.js`, validation, submit directive. |
-| `i18n/` | Date, number, string and sanitize helpers used by translations. |
-| `notifications.js` | Toaster API. |
-| `date/`, `logs/`, `ansi/`, `leaflet/` | Domain helpers. |
-| `dom.js`, `clipboard.js`, `color.js`, `pricing.js`, … | Utilities. |
+| Path                                                  | Role                                                                                                                                                                             |
+|-------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `events.js`                                           | The `CcEvent` base class.                                                                                                                                                        |
+| `events-map.types.d.ts`                               | **Generated.** Maps event types to classes for typechecking.                                                                                                                     |
+| `cc-api-client.js`                                    | Glue to `@clevercloud/client` (see `api-client.md`). `send-to-api.events.js` and `send-to-api.types.d.ts` only hold the `cc-api-error` event and the config types it still uses. |
+| `smart/`                                              | `define-smart-component.js`, `smart-manager.js`: the smart component runtime.                                                                                                    |
+| `form/`                                               | `cc-form-control-element.abstract.js`, validation, submit directive.                                                                                                             |
+| `i18n/`                                               | Date, number, string and sanitize helpers used by translations.                                                                                                                  |
+| `notifications.js`                                    | Toaster API.                                                                                                                                                                     |
+| `date/`, `logs/`, `ansi/`, `leaflet/`                 | Domain helpers.                                                                                                                                                                  |
+| `dom.js`, `clipboard.js`, `color.js`, `pricing.js`, … | Utilities.                                                                                                                                                                       |
 
 ### `src/styles/`
 
@@ -81,23 +81,23 @@ Storybook **infrastructure**, not stories:
 
 ## Tests
 
-| Kind | Location | Runner |
-|---|---|---|
-| `src/lib` unit tests | `test/**/*.test.js`, mirroring the lib subdirectories | `pnpm test` (Web Test Runner, group `unit`) |
-| Component tests | `src/components/<tag>/<name>.test.js` | `pnpm test` |
-| a11y tests | **generated** from `*.stories.js` by `web-test-runner/story-file-to-a11y-tests-file-plugin.js` | `pnpm test:group a11y:cc-badge` |
-| Visual regression | **generated** from `*.stories.js` by `web-test-runner/visual-tests/story-file-to-visual-tests-file-plugin.js` | `pnpm test:visual` (Playwright chromium, desktop + mobile), baselines via `pnpm test:visual:update-expectation`, reports in `visual-test-reports/` (gitignored) |
-| Tooling tests | `test-mocha/**/*.test.js` with `*.test-data.js` and `fixtures/` | `pnpm test:mocha` (these need Node, not a browser) |
+| Kind                 | Location                                                                                                      | Runner                                                                                                                                                          |
+|----------------------|---------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `src/lib` unit tests | `test/**/*.test.js`, mirroring the lib subdirectories                                                         | `pnpm test` (Web Test Runner, group `unit`)                                                                                                                     |
+| Component tests      | `src/components/<tag>/<name>.test.js`                                                                         | `pnpm test`                                                                                                                                                     |
+| a11y tests           | **generated** from `*.stories.js` by `web-test-runner/story-file-to-a11y-tests-file-plugin.js`                | `pnpm test:group a11y:cc-badge`                                                                                                                                 |
+| Visual regression    | **generated** from `*.stories.js` by `web-test-runner/visual-tests/story-file-to-visual-tests-file-plugin.js` | `pnpm test:visual` (Playwright chromium, desktop + mobile), baselines via `pnpm test:visual:update-expectation`, reports in `visual-test-reports/` (gitignored) |
+| Tooling tests        | `test-mocha/**/*.test.js` with `*.test-data.js` and `fixtures/`                                               | `pnpm test:mocha` (these need Node, not a browser)                                                                                                              |
 
 ## Generated artifacts
 
-| Artifact | Generator | CI check |
-|---|---|---|
-| `src/lib/events-map.types.d.ts` | `pnpm components:events-map-generate` (`tasks/generate-events-map.js`, scans `src/**/*.events.js`) | `pnpm components:events-map-check` |
-| `src/assets/cc-remix.icons.js`, `cc-clever.icons.js` | `pnpm components:generate-icons-assets` | none |
-| `dist/custom-elements.json` | `pnpm components:docs` (`cem analyze`, config `custom-elements-manifest.config.mjs` + plugins in `cem/`) | none |
-| `dist/` npm bundle | `pnpm components:build` (rollup configs in `rollup/`) | none |
-| `storybook-static/` | `pnpm storybook:build` | none |
+| Artifact                                             | Generator                                                                                                | CI check                           |
+|------------------------------------------------------|----------------------------------------------------------------------------------------------------------|------------------------------------|
+| `src/lib/events-map.types.d.ts`                      | `pnpm components:events-map-generate` (`tasks/generate-events-map.js`, scans `src/**/*.events.js`)       | `pnpm components:events-map-check` |
+| `src/assets/cc-remix.icons.js`, `cc-clever.icons.js` | `pnpm components:generate-icons-assets`                                                                  | none                               |
+| `dist/custom-elements.json`                          | `pnpm components:docs` (`cem analyze`, config `custom-elements-manifest.config.mjs` + plugins in `cem/`) | none                               |
+| `dist/` npm bundle                                   | `pnpm components:build` (rollup configs in `rollup/`)                                                    | none                               |
+| `storybook-static/`                                  | `pnpm storybook:build`                                                                                   | none                               |
 
 The root `custom-elements.json` is a 64-byte stub pointing at `dist/custom-elements.json`.
 
