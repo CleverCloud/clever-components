@@ -2,7 +2,7 @@ import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { iconRemixExternalLinkLine as externalLinkIcon, iconRemixDownloadLine } from '../../assets/cc-remix.icons.js';
-import { isExternalUrl, isStringEmpty } from '../../lib/utils.js';
+import { isExternalUrl, isSafeLinkUrl, isStringEmpty } from '../../lib/utils.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-icon/cc-icon.js';
@@ -59,7 +59,7 @@ export class CcLink extends LitElement {
     /** @type {string|null} If set, enables `download` attribute value on the inner native `<a>` element. */
     this.download = null;
 
-    /** @type {string|null|undefined} The URL for the link. */
+    /** @type {string|null|undefined} The URL for the link. Only `http:`, `https:`, `mailto:`, `tel:`, `blob:` and relative URLs are allowed, other URLs are ignored. */
     this.href = null;
 
     /** @type {IconModel|null} If set, enables icon mode and displays the required icon in the <cc-icon> component. */
@@ -122,7 +122,7 @@ export class CcLink extends LitElement {
   }
 
   render() {
-    const href = this.href != null && !this.skeleton ? this.href : null;
+    const href = !this.skeleton && isSafeLinkUrl(this.href) ? this.href : null;
     const isDifferentOrigin = isExternalUrl(href);
     const target = isDifferentOrigin ? '_blank' : null;
     const rel = isDifferentOrigin ? 'noreferrer' : null;
