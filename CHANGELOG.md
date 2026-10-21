@@ -5,6 +5,19 @@ title: 'Changelog'
 
 # Changelog
 
+## [26.7.0](https://github.com/CleverCloud/clever-components/compare/26.6.0...26.7.0) (2026-10-21)
+
+
+### 🚀 Features
+
+* **utils:** add URL safety helpers ([b6bfbb0](https://github.com/CleverCloud/clever-components/commit/b6bfbb08264b69600710287dd4a4ac3df61f3845))
+
+
+### 🐛 Bug Fixes
+
+* **cc-link:** only allow safe URL schemes ([540c36f](https://github.com/CleverCloud/clever-components/commit/540c36feee08ca6d6cbbeef8ddad8cfa18869a41))
+* **cc-oauth-consumer-form:** only accept http(s) URLs ([9fe45c4](https://github.com/CleverCloud/clever-components/commit/9fe45c4d1025c379d0e3ae9b9c679b0ce342db13))
+
 ## [26.6.0](https://github.com/CleverCloud/clever-components/compare/26.5.0...26.6.0) (2026-10-13)
 
 
