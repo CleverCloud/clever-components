@@ -271,6 +271,55 @@ export function isExternalUrl(rawUrl) {
   }
 }
 
+const SAFE_LINK_PROTOCOLS = ['http:', 'https:', 'mailto:', 'tel:', 'blob:'];
+
+/**
+ * Checks if the given URL can safely be used as a link `href`.
+ * Only `http:`, `https:`, `mailto:`, `tel:` and `blob:` URLs are allowed, relative URLs are resolved against the current page.
+ * It relies on the URL parser so it applies the same normalization as the browser (case, leading/trailing control characters, tabs and newlines).
+ *
+ * @param {string|null} rawUrl
+ * @return {boolean}
+ */
+export function isSafeLinkUrl(rawUrl) {
+  if (rawUrl == null) {
+    return false;
+  }
+  try {
+    return SAFE_LINK_PROTOCOLS.includes(new URL(rawUrl, location.href).protocol);
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * Checks that the given value is an absolute HTTP(S) URL that the browser would not need to normalize.
+ * Empty values are invalid. Callers decide whether their field is optional.
+ *
+ * @param {unknown} rawUrl
+ * @return {boolean}
+ */
+export function isStrictHttpUrl(rawUrl) {
+  // Reject whitespace (\s), control characters (\p{Cc}, including C0/C1 and DEL),
+  // and backslashes (\\) before URL parsing can normalize them.
+  if (typeof rawUrl !== 'string' || /[\s\p{Cc}\\]/u.test(rawUrl)) {
+    return false;
+  }
+
+  // Require http:// or https:// followed by a host.
+  // new URL() also accepts forms like https:example.com and https:///example.com.
+  if (!/^https?:\/\/[^/\\]/i.test(rawUrl)) {
+    return false;
+  }
+
+  try {
+    const url = new URL(rawUrl);
+    return url.protocol === 'http:' || url.protocol === 'https:';
+  } catch {
+    return false;
+  }
+}
+
 /**
  * @param {string} string
  * @return {boolean}

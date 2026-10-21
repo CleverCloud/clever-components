@@ -2,6 +2,8 @@ import { expect } from '@bundled-es-modules/chai';
 import {
   clampNumber,
   groupBy,
+  isSafeLinkUrl,
+  isStrictHttpUrl,
   isStringBlank,
   isStringEmpty,
   randomString,
@@ -407,5 +409,78 @@ describe('sortByProps function', () => {
     const data = [{ value: 42 }];
     const sorted = data.sort(sortByProps([['value', 'asc']]));
     expect(sorted).to.eql([{ value: 42 }]);
+  });
+});
+
+describe('isSafeLinkUrl function', () => {
+  it('should return false for null', () => {
+    expect(isSafeLinkUrl(null)).to.equal(false);
+  });
+
+  it('should return true for http(s), relative, mailto, tel and blob URLs', () => {
+    expect(isSafeLinkUrl('https://example.com')).to.equal(true);
+    expect(isSafeLinkUrl('http://example.com')).to.equal(true);
+    expect(isSafeLinkUrl('/foo/bar')).to.equal(true);
+    expect(isSafeLinkUrl('foo')).to.equal(true);
+    expect(isSafeLinkUrl('#foo')).to.equal(true);
+    expect(isSafeLinkUrl('mailto:foo@example.com')).to.equal(true);
+    expect(isSafeLinkUrl('tel:+33123456789')).to.equal(true);
+    expect(isSafeLinkUrl('blob:https://example.com/uuid')).to.equal(true);
+  });
+
+  it('should return false for other schemes', () => {
+    expect(isSafeLinkUrl('javascript:alert(1)')).to.equal(false);
+    expect(isSafeLinkUrl('data:text/html,<script>alert(1)</script>')).to.equal(false);
+    expect(isSafeLinkUrl('vbscript:msgbox(1)')).to.equal(false);
+    expect(isSafeLinkUrl('file:///etc/passwd')).to.equal(false);
+  });
+
+  it('should return false for invalid URLs', () => {
+    expect(isSafeLinkUrl('https://[::1')).to.equal(false);
+  });
+
+  it('should return false for javascript: URLs obfuscated with case, whitespace and control characters', () => {
+    expect(isSafeLinkUrl('JaVaScRiPt:alert(1)')).to.equal(false);
+    expect(isSafeLinkUrl('  javascript:alert(1)')).to.equal(false);
+    expect(isSafeLinkUrl('\u0001javascript:alert(1)')).to.equal(false);
+    expect(isSafeLinkUrl('java\tscript:alert(1)')).to.equal(false);
+    expect(isSafeLinkUrl('java\nscript:alert(1)')).to.equal(false);
+  });
+});
+
+describe('isStrictHttpUrl function', () => {
+  it('should accept http and https URLs', () => {
+    expect(isStrictHttpUrl('https://example.com')).to.equal(true);
+    expect(isStrictHttpUrl('http://example.com/path?query=1#hash')).to.equal(true);
+    expect(isStrictHttpUrl('HTTPS://EXAMPLE.COM')).to.equal(true);
+  });
+
+  it('should reject non-string and empty values', () => {
+    expect(isStrictHttpUrl(null)).to.equal(false);
+    expect(isStrictHttpUrl(undefined)).to.equal(false);
+    expect(isStrictHttpUrl(42)).to.equal(false);
+    expect(isStrictHttpUrl('')).to.equal(false);
+  });
+
+  it('should reject other schemes', () => {
+    expect(isStrictHttpUrl('javascript:alert(1)')).to.equal(false);
+    expect(isStrictHttpUrl('data:text/html,<script>alert(1)</script>')).to.equal(false);
+    expect(isStrictHttpUrl('ftp://example.com')).to.equal(false);
+    expect(isStrictHttpUrl('mailto:foo@example.com')).to.equal(false);
+  });
+
+  it('should reject relative URLs', () => {
+    expect(isStrictHttpUrl('/foo')).to.equal(false);
+    expect(isStrictHttpUrl('//example.com')).to.equal(false);
+    expect(isStrictHttpUrl('example.com')).to.equal(false);
+  });
+
+  it('should reject URLs the parser would normalize', () => {
+    expect(isStrictHttpUrl(' https://example.com')).to.equal(false);
+    expect(isStrictHttpUrl('https://exa\tmple.com')).to.equal(false);
+    expect(isStrictHttpUrl('\u0001https://example.com')).to.equal(false);
+    expect(isStrictHttpUrl('https:\\\\example.com')).to.equal(false);
+    expect(isStrictHttpUrl('https:example.com')).to.equal(false);
+    expect(isStrictHttpUrl('https:///example.com')).to.equal(false);
   });
 });
