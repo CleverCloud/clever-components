@@ -13,6 +13,7 @@ import { formSubmit } from '../../lib/form/form-submit-directive.js';
 import { getFormDataMap } from '../../lib/form/form-utils.js';
 import { Validation } from '../../lib/form/validation.js';
 import { DISABLED_RIGHTS } from '../../lib/oauth-consumer.js';
+import { isStrictHttpUrl } from '../../lib/utils.js';
 import { accessibilityStyles } from '../../styles/accessibility.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-block-section/cc-block-section.js';
@@ -36,12 +37,8 @@ const URL_VALIDATOR = {
    * @return {Validity}
    */
   validate: (value) => {
-    try {
-      new URL(value);
-      return Validation.VALID;
-    } catch {
-      return Validation.invalid('invalidUrl');
-    }
+    // Values are trimmed on submit, so we validate the trimmed value
+    return isStrictHttpUrl(value.trim()) ? Validation.VALID : Validation.invalid('invalidUrl');
   },
 };
 
@@ -214,10 +211,10 @@ export class CcOauthConsumerForm extends LitElement {
     /** @type {OauthConsumerWithoutKeyAndSecret} */
     const oauthConsumer = {
       name: data.name,
-      url: data.url,
-      baseUrl: data.baseUrl,
+      url: data.url.trim(),
+      baseUrl: data.baseUrl.trim(),
       description: data.description,
-      picture: data.picture,
+      picture: data.picture.trim(),
       rights: rightsWithUpdatedData,
     };
 
