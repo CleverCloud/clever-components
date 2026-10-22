@@ -5,6 +5,13 @@ title: 'Changelog'
 
 # Changelog
 
+## [26.8.0](https://github.com/CleverCloud/clever-components/compare/26.7.0...26.8.0) (2026-10-22)
+
+
+### 🚀 Features
+
+* **cc-logs-*:** show `retrying` status ([71e23ef](https://github.com/CleverCloud/clever-components/commit/71e23ef249f45ed39bfdadfecb0929fae2388798))
+
 ## [26.7.0](https://github.com/CleverCloud/clever-components/compare/26.6.0...26.7.0) (2026-10-21)
 
 
