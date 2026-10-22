@@ -33,8 +33,11 @@ const WAITING_TIMEOUT_COLD = 16000;
  * @abstract
  */
 export class LogsStream {
-  /** @type {LogsSse<R>} */
-  #logsStream;
+  /**
+   * The stream of the current lifecycle, `null` while it is being created and once `stop()`/`complete()` closed it.
+   * @type {LogsSse<R>|null}
+   */
+  #logsStream = null;
   /** @type {Buffer<L>} */
   #logsBuffer;
   /** @type {LogsProgress<L>} */
@@ -53,11 +56,16 @@ export class LogsStream {
    */
   #generation = 0;
   /**
-   * Whether a `pause()` was requested while the underlying stream was not yet `open` (e.g. still
-   * connecting or resolving resource ids). The real pause is deferred until the stream actually opens.
+   * Whether a `pause()` was requested while the underlying stream was still being created (resolving resource ids):
+   * there is no stream to pause yet. The real pause happens as soon as the stream is started.
    * @type {boolean}
    */
   #pausePending = false;
+  /**
+   * The state displayed before the stream started retrying, to display it back once reconnected.
+   * @type {LogsStreamState|null}
+   */
+  #stateBeforeRetry = null;
 
   /**
    * @param {number} limit
@@ -132,8 +140,10 @@ export class LogsStream {
     // invalidate any stream creation currently in flight (see `#start()`)
     this.#generation++;
     this.#pausePending = false;
+    this.#stateBeforeRetry = null;
     this.#waitingTimer.stop();
     this.#logsStream?.close({ type: USER_STREAM_CLOSE_REASON });
+    this.#logsStream = null;
     this.#logsBuffer.clear();
     this.#progress.reset();
     this._updateStreamState({ type: 'idle' });
@@ -156,11 +166,12 @@ export class LogsStream {
       //        (which can be quite long or even fail due to timeout or whatever error occurs in the network)
       this._updateStreamState(this.#buildRunningState());
       if (this.#pausePending) {
-        // the underlying stream was never actually paused (it had not reached the `open` state yet), so
-        // there is nothing to resume: just cancel the pending pause.
+        // the underlying stream was never actually paused (it was still being created), so there is nothing to
+        // resume: just cancel the pending pause.
         this.#pausePending = false;
       } else {
-        this.#logsStream.resume();
+        // reconnects right away, even when the stream was paused while waiting to retry
+        this.#logsStream?.resume();
       }
       // the waiting timer was stopped by `pause()`. It is only relevant while waiting for the first log.
       if (this.#progress.isStarted() && this.#progress.isEmpty()) {
@@ -196,8 +207,10 @@ export class LogsStream {
     // invalidate any stream creation currently in flight (see `#start()`)
     this.#generation++;
     this.#pausePending = false;
+    this.#stateBeforeRetry = null;
     this.#waitingTimer.stop();
     this.#logsStream?.close({ type: COMPLETE_STREAM_CLOSE_REASON });
+    this.#logsStream = null;
     this.#logsBuffer.flush();
     this.#progress.complete();
     this._updateStreamState({
@@ -241,6 +254,12 @@ export class LogsStream {
     const overflowReached = this.#progress.progress(logs);
     if (overflowReached) {
       this.#pause('overflow');
+    } else if (this.#streamState.type === 'retrying') {
+      this._updateStreamState({
+        ...this.#streamState,
+        progress: this.#progress.getProgress(),
+        overflowing: this.#progress.isOverflowing(),
+      });
     } else if (this.#streamState.type !== 'paused') {
       this._updateStreamState(this.#buildRunningState());
     }
@@ -284,13 +303,13 @@ export class LogsStream {
 
     this.#logsStream = stream
       // stream is opened
-      .onOpen(() => this.#onStreamOpened(dateRange, stream))
+      .onOpen(() => this.#onStreamOpened(dateRange))
       // log received in stream (already converted by the command itself)
-      .onLog(this.#onStreamLogEvent.bind(this))
-      // error event received (not a fatal error: the logs stream will retry)
-      .onError(this.#onStreamErrorEvent.bind(this));
+      .onLog((rawLog) => this.#onStreamLogEvent(rawLog, generation))
+      // connection lost or attempt failed, and the stream will retry (a fatal error rejects `start()` instead)
+      .onRetry(({ error, retryCount, maxRetryCount }) => this.#onStreamRetry(error, retryCount, maxRetryCount));
 
-    this.#logsStream
+    stream
       // start stream
       .start()
       .then((closeReason) => {
@@ -305,43 +324,52 @@ export class LogsStream {
           this.#onStreamError(error);
         }
       });
+
+    // the stream is connecting: it can be paused now, and will not open until resumed
+    if (this.#pausePending) {
+      this.#pausePending = false;
+      stream.pause();
+    }
   }
 
   /**
    * @param {DateRange} dateRange
-   * @param {LogsSse<R>} stream
    */
-  #onStreamOpened(dateRange, stream) {
-    const pausePending = this.#pausePending;
-    this.#pausePending = false;
-
-    // stream opening can occur after connecting, after resuming or after an automatic retry.
-    // we start the progression on the first opening only. A `pause()` requested while the stream was
-    // connecting already moved the state to `paused`, but this is still the first opening.
+  #onStreamOpened(dateRange) {
+    // the stream opens again after each resume or retry, which must not start the progression over
     if (!this.#progress.isStarted()) {
       this.#progress.start(dateRange);
-      // a paused stream delivers no log, so the `waitingForFirstLog` detection would fire for a reason
-      // that is not the one it reports. `resume()` starts it back.
-      if (!pausePending) {
-        this.#startWaitingTimer();
-      }
+      this.#startWaitingTimer();
     }
 
-    if (pausePending) {
-      // The client only flips its internal state to `open` right after firing this `open` event
-      // (i.e. after this callback returns), so pausing synchronously here would still see the previous
-      // (not-yet-open) state and throw. Defer it to the next microtask so `pause()` is legal.
-      queueMicrotask(() => stream.pause());
+    if (this.#streamState.type === 'retrying') {
+      this.#onStreamReconnected();
+    }
+  }
+
+  #onStreamReconnected() {
+    const stateBeforeRetry = this.#stateBeforeRetry;
+    this.#stateBeforeRetry = null;
+
+    if (!this.#progress.isEmpty()) {
+      this._updateStreamState(this.#buildRunningState());
+    } else if (stateBeforeRetry?.type === 'waitingForFirstLog') {
+      this._updateStreamState({ type: 'waitingForFirstLog' });
+    } else {
+      this._updateStreamState({ type: 'connecting' });
+      this.#startWaitingTimer();
     }
   }
 
   /**
    * @param {any} rawLog log coming from the API (already converted by the stream command)
+   * @param {number} generation the generation of the stream that received the log
    */
-  async #onStreamLogEvent(rawLog) {
+  async #onStreamLogEvent(rawLog, generation) {
     this.#waitingTimer.stop();
     const convertedLog = await this._convertLog(rawLog);
-    if (convertedLog == null) {
+    // `stop()` or `complete()` may have landed while the log was being converted
+    if (convertedLog == null || generation !== this.#generation) {
       return;
     }
     if (this.#progress.isEmpty()) {
@@ -364,13 +392,28 @@ export class LogsStream {
   }
 
   /**
-   * @param {any} error
+   * @param {any} error the error that caused the retry
+   * @param {number} retryCount the number of this retry, starting at 1
+   * @param {number} maxRetryCount the maximum number of retries before the stream fails
    */
-  #onStreamErrorEvent(error) {
-    if (this.#logsStream.retryCount >= 3) {
-      console.warn('received an `error` event from log stream', error);
-      // TODO: notify about the instability
+  #onStreamRetry(error, retryCount, maxRetryCount) {
+    if (retryCount >= 3) {
+      console.warn('logs stream is retrying after an error', error);
     }
+    if (this.#streamState.type !== 'retrying') {
+      this.#stateBeforeRetry = this.#streamState;
+    }
+    this.#waitingTimer.stop();
+    this._updateStreamState({
+      type: 'retrying',
+      retryCount,
+      maxRetryCount,
+      progress: this.#progress.getProgress(),
+      overflowing: this.#progress.isOverflowing(),
+    });
+    // the logs received before the connection loss are displayed while retrying. If they reach the overflow limit,
+    // the stream is paused, which cancels the retry
+    this.#logsBuffer.flush();
   }
 
   /**
@@ -405,37 +448,54 @@ export class LogsStream {
    * @param {'user'|'overflow'} reason
    */
   #pause(reason) {
-    if (
+    // the buffered logs are displayed before pausing. They may reach the overflow limit, which pauses the stream
+    // for that reason instead
+    this.#logsBuffer.flush();
+    if (!this.#isPausable()) {
+      return;
+    }
+
+    // no log will be received while paused, so the `waitingForFirstLog` detection must not run
+    this.#waitingTimer.stop();
+    // once resumed, the stream reconnects from scratch: what was displayed before a retry no longer matters
+    this.#stateBeforeRetry = null;
+    if (this.#logsStream?.state === 'closed') {
+      // the stream ended: its last logs are flushed, and may reach the overflow limit, before it is completed.
+      // There is nothing left to pause
+    } else if (this.#logsStream != null) {
+      // also while connecting (the attempt is aborted) and while waiting to retry (the retry is cancelled)
+      this.#logsStream.pause();
+    } else {
+      // the stream is still being created: it is paused as soon as it is started
+      this.#pausePending = true;
+    }
+
+    if (reason === 'user') {
+      this._updateStreamState({
+        type: 'paused',
+        reason: 'user',
+        progress: this.#progress.getProgress(),
+        overflowing: this.#progress.isOverflowing(),
+      });
+    } else {
+      this._updateStreamState({
+        type: 'paused',
+        reason: 'overflow',
+        progress: this.#progress.getProgress(),
+      });
+    }
+  }
+
+  /**
+   * @returns {boolean} Whether the stream is in a state `pause()` applies to
+   */
+  #isPausable() {
+    return (
       this.#streamState.type === 'connecting' ||
       this.#streamState.type === 'waitingForFirstLog' ||
-      this.#streamState.type === 'running'
-    ) {
-      // no log will be received while paused, so the `waitingForFirstLog` detection must not run
-      this.#waitingTimer.stop();
-      if (this.#logsStream?.state === 'open') {
-        this.#logsStream.pause();
-      } else {
-        // the stream has not reached the `open` state yet (it is still being created, still connecting,
-        // or in the middle of an automatic retry): pausing now would throw. Remember to pause it as soon
-        // as it opens.
-        this.#pausePending = true;
-      }
-      this.#logsBuffer.flush();
-      if (reason === 'user') {
-        this._updateStreamState({
-          type: 'paused',
-          reason: 'user',
-          progress: this.#progress.getProgress(),
-          overflowing: this.#progress.isOverflowing(),
-        });
-      } else {
-        this._updateStreamState({
-          type: 'paused',
-          reason: 'overflow',
-          progress: this.#progress.getProgress(),
-        });
-      }
-    }
+      this.#streamState.type === 'running' ||
+      this.#streamState.type === 'retrying'
+    );
   }
 
   /**
@@ -475,9 +535,7 @@ class Timer {
    * @param {number} timeout
    */
   start(timeout) {
-    if (this.#id != null) {
-      stop();
-    }
+    this.stop();
     this.#id = setTimeout(() => {
       this._callback();
       this.#id = null;

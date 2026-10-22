@@ -12,8 +12,8 @@ importers:
   .:
     dependencies:
       '@clevercloud/client':
-        specifier: ^12.6.6
-        version: 12.6.6(eventsource@4.1.0)
+        specifier: ^12.6.7
+        version: 12.6.7(eventsource@4.1.0)
       '@lit-labs/motion':
         specifier: ^1.0.7
         version: 1.1.0
@@ -706,8 +706,8 @@ packages:
   '@cacheable/utils@2.4.1':
     resolution: {integrity: sha512-eiFgzCbIneyMlLOmNG4g9xzF7Hv3Mga4LjxjcSC/ues6VYq2+gUbQI8JqNuw/ZM8tJIeIaBGpswAsqV2V7ApgA==}
 
-  '@clevercloud/client@12.6.6':
-    resolution: {integrity: sha512-MBUZVgBWI83OAO8Pr8sFFP5xQoDmS2tpoGyBUma2BLYmgXbYa3/XM1A+hk+4uW6CUQpxaGKlHMscVd1Wyuq/2w==}
+  '@clevercloud/client@12.6.7':
+    resolution: {integrity: sha512-F0Mom+Xcd01GnVJFHSIQEi0jd3hEMVSR7qlaiirXE2StEOMl9kC8d7n7FOzGwR8aOV7lgJqVECJQprl+qu1RCQ==}
     engines: {node: '>=22'}
     peerDependencies:
       eventsource: ^4.0.0
@@ -2374,11 +2374,6 @@ packages:
 
   ajv-formats@2.1.1:
     resolution: {integrity: sha512-Wx0Kx52hxE7C18hkMEggYlEifqWZtYaRgouJor+WMdPnQyEK13vgEWyVNup7SoeeoLMsr4kf5h6dOW11I15MUA==}
-    peerDependencies:
-      ajv: ^8.0.0
-    peerDependenciesMeta:
-      ajv:
-        optional: true
 
   ajv-keywords@3.5.2:
     resolution: {integrity: sha512-5p6WTN0DdTGVQk6VjcEju19IgaHudalcfabD7yhDGeA6bcQnmL+CpveLJq/3hvfwd1aof6L386Ougkx6RfyMIQ==}
@@ -6798,7 +6793,7 @@ snapshots:
       hashery: 1.5.1
       keyv: 5.6.0
 
-  '@clevercloud/client@12.6.6(eventsource@4.1.0)':
+  '@clevercloud/client@12.6.7(eventsource@4.1.0)':
     dependencies:
       component-emitter: 1.3.1
       eventsource: 4.1.0
@@ -8593,8 +8588,8 @@ snapshots:
 
   agent-base@7.1.4: {}
 
-  ajv-formats@2.1.1(ajv@8.20.0):
-    optionalDependencies:
+  ajv-formats@2.1.1:
+    dependencies:
       ajv: 8.20.0
 
   ajv-keywords@3.5.2(ajv@6.15.0):
@@ -11956,7 +11951,7 @@ snapshots:
     dependencies:
       '@types/json-schema': 7.0.15
       ajv: 8.20.0
-      ajv-formats: 2.1.1(ajv@8.20.0)
+      ajv-formats: 2.1.1
       ajv-keywords: 5.1.0(ajv@8.20.0)
 
   semver@5.7.2: {}
