@@ -78,6 +78,18 @@ This project provides a series of tasks you can run as [pnpm scripts](https://pn
 ## `pnpm run components:docs`
 
 * Generate [Custom Elements Manifest](https://github.com/webcomponents/custom-elements-manifest) with [CEM analyzer](https://github.com/open-wc/custom-elements-manifest/tree/master/packages/analyzer) in `dist`.
+* See config in `custom-elements-manifest.config.mjs` and the custom plugins in `cem` for more details.
+* You can get more details by reading [the related ADR](📌-architecture-decision-records-adr-0016-embracing-custom-elements-manifest--docs).
+
+## `pnpm run components:events-map-check`
+
+* Check that `src/lib/events-map.types.d.ts` is up to date with the events declared in the `src/**/*.events.js` files.
+* Fails if the file needs to be regenerated.
+
+## `pnpm run components:events-map-generate`
+
+* Generate `src/lib/events-map.types.d.ts` from the events declared in the `src/**/*.events.js` files.
+* Should be executed each time an event is added, removed or updated.
 
 ## `pnpm run components:generate-icons-assets`
 
@@ -105,6 +117,16 @@ This project provides a series of tasks you can run as [pnpm scripts](https://pn
 
 * Checks that files are formatted correctly, used by the CI.
 
+## `pnpm run install-local:client`
+
+* Pack the local `../clever-client.js` project and install it in this project.
+* Useful to test changes made to `@clevercloud/client` before they are published.
+
+## `pnpm run install-local:config`
+
+* Pack the local `../tooling-javascript/eslint/config` project and install it in this project.
+* Useful to test changes made to `@clevercloud/eslint-config` before they are published.
+
 ## `pnpm run lint`
 
 * Check source files with [ESLint](https://eslint.org/).
@@ -113,7 +135,7 @@ This project provides a series of tasks you can run as [pnpm scripts](https://pn
 
 * Check source files with [ESLint](https://eslint.org/) and fix errors automatically when it's possible.
 
-## `pnpm run lint:fix`
+## `pnpm run lint:inspect-config`
 
 * Runs the [ESLint config inspector](https://github.com/eslint/config-inspector).
 * The config inspector opens up in a new browser tab but you can access `http://localhost:7777` if it doesn't open automatically.
@@ -121,14 +143,27 @@ This project provides a series of tasks you can run as [pnpm scripts](https://pn
 
 ## `pnpm run prepack`
 
+* This is run automatically before a `pnpm pack` and therefore before a `pnpm publish`.
+* It runs `pnpm run prepack:dev` when the `DEV` environment variable is set to `true`, and `pnpm run prepack:prod` otherwise.
+
+## `pnpm run prepack:dev`
+
+* Only run `pnpm run components:build`.
+* This is the shortcut used when packing the project locally, to test it in another project.
+
+## `pnpm run prepack:prod`
+
 * Run all tasks required before publishing on npm:
-  * `pnpm run test`
+  * `pnpm run format:check`
   * `pnpm run lint`
+  * `pnpm run stylelint`
   * `pnpm run components:check-lit`
+  * `pnpm run typecheck`
   * `pnpm run components:check-i18n`
+  * `pnpm run components:events-map-check`
+  * `pnpm run test`
   * `pnpm run components:build`
   * `pnpm run components:docs`
-* This is run automatically before a `pnpm pack` and therefore before a `pnpm publish`.
 
 ## `pnpm run prestorybook:build`
 
@@ -155,17 +190,14 @@ This project provides a series of tasks you can run as [pnpm scripts](https://pn
 * Publish (create or update) a branch on the preview system.
 * It uses current branch name by default, but you can provide a CLI param to override the name.
 
-## `pnpm run start`
-
-* Start a static HTTP server to serve the [Storybook](https://storybook.js.org/) from `storybook-static`.
-
 ## `pnpm run storybook:build`
 
 * Build [Storybook](https://storybook.js.org/) in production mode to `storybook-static`.
+* You can provide a `STORYBOOK_PATH` environment variable to build into a sub folder of `storybook-static`.
 
 ## `pnpm run storybook:dev`
 
-* Start prebuilt [Storybook](https://storybook.js.org/) in dev mode with [Web Dev Server](https://modern-web.dev/docs/dev-server/overview/).
+* Start [Storybook](https://storybook.js.org/) in dev mode on `http://localhost:6006` with [Vite](https://vite.dev/).
 * This implicitly generates the [Custom Elements Manifest](https://github.com/webcomponents/custom-elements-manifest) on each file change.
 
 ## `pnpm run stylelint`
@@ -178,7 +210,7 @@ Check the CSS of our components with [Stylelint](https://stylelint.io/) and fix 
 
 ## `pnpm run test`
 
-* Run all unit tests present in `test` with [Web Test Runner](https://modern-web.dev/docs/test-runner/overview/).
+* Run all the groups defined in `web-test-runner.config.js` with [Web Test Runner](https://modern-web.dev/docs/test-runner/overview/): the unit tests present in `test`, the component test files and the accessibility tests generated from the story files.
 
 ## `pnpm run test:group`
 
@@ -186,7 +218,7 @@ Check the CSS of our components with [Stylelint](https://stylelint.io/) and fix 
 * Groups available:
   * `unit` - Runs all unit tests from test/**/*.test.*
   * Individual component groups in format:
-    * `stories:${componentName}` - Run tests for a component's stories
+    * `a11y:${componentName}` - Run the accessibility tests generated from a component's stories
     * `test:${componentName}` - Run tests for a component's test file
 * Usage: `pnpm run test:group <group-name>`
 
@@ -202,7 +234,7 @@ Check the CSS of our components with [Stylelint](https://stylelint.io/) and fix 
 
 ## `pnpm run test:watch`
 
-* Run all unit tests present in `test` with [Web Test Runner](https://modern-web.dev/docs/test-runner/overview/) in watch mode.
+* Same as `pnpm run test` but with [Web Test Runner](https://modern-web.dev/docs/test-runner/overview/) in watch mode.
 
 ## `pnpm run test:watch:group`
 

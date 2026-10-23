@@ -66,7 +66,7 @@ export class RequiredValidator {
 /**
  * A validator that checks whether a value is a valid number and optionally if it is inside some given bounds.
  *
- * It considers an invalid number as invalid with `badFormat` error code.
+ * It considers an invalid number as invalid with `badType` error code.
  * It considers a number lower than the lower bound as invalid with `rangeUnderflow` error code.
  * It considers a number higher than the upper bound as invalid with `rangeOverflow` error code.
  *

@@ -1,6 +1,6 @@
 ---
 kind: '👋 Contributing'
-title: 'Test'
+title: 'Testing'
 ---
 
 # How to test your components?
@@ -8,13 +8,23 @@ title: 'Test'
 We use `Web Test Runner` to run tests on some essential parts of our libs and most of our components.
 
 You can run all tests by using the `pnpm run test` command.
-This command runs `*.test.js` files from the `test` folder as well as from the `src/components` folder.
+This command runs the unit tests from the `test` folder, the `*.test.js` files from the `src/components` folder and the accessibility tests generated from the `*.stories.js` files of the `src/components` folder.
+
+Some tests cannot run in a browser because they cover our build tooling (Custom Elements Manifest support, custom ESLint rules).
+They live in the `test-mocha` folder and run in Node.js with `Mocha`.
+You can run them with the `pnpm run test:mocha` command, or `pnpm run test:mocha:watch` if you want them to run everytime you update a file.
+
+Both `pnpm run test` and `pnpm run test:mocha` are run in CI on every Pull Request.
 
 ## How to manage visual tests
 
 Most component story files are tested automatically to check for visual changes through Web Test Runner.
 
 These visual tests are managed directly within the story files themselves through configuration options.
+
+There are no visual test files on disk: they are generated on the fly from every `*.stories.js` file by the `web-test-runner/visual-tests/story-file-to-visual-tests-file-plugin.js` plugin.
+They rely on a dedicated Web Test Runner config (`web-test-runner.visual-tests.config.js`) which uses `Playwright` instead of the default Chrome launcher and which splits the story files into a few `stories-group-<number>` groups so that they can be run in parallel.
+The corresponding commands are `pnpm run test:visual` (compare `actual` screenshots with the `expectation` ones) and `pnpm run test:visual:update-expectation` (capture the `expectation` screenshots).
 
 The tests are run in CI when you add the `run-visual-tests` label to a PR.
 In such cases:
@@ -35,6 +45,9 @@ You only need to create test files if you want to test aspects of a component ot
 
 These accessibility tests are managed directly within the story files themselves through configuration options.
 
+There are no accessibility test files on disk: they are generated on the fly from every `*.stories.js` file by the `web-test-runner/story-file-to-a11y-tests-file-plugin.js` plugin.
+This is why they are part of the default `pnpm run test` command and why their group is named after the story file (see below).
+
 Refer to the [Contributing - Writing Stories](👋-contributing-writing-stories--docs) docs to learn how to disable a11y tests or rules.
 
 ## How to run tests on a single test file?
@@ -50,8 +63,8 @@ To do so, you have two solutions:
 
 We have configured several test groups to help organize and run specific sets of tests:
 
-* `unit` - Runs all unit tests from `test/**/*.test.*`
-* Individual component groups - Each component has its own group named with the following pattern:
+* `unit` - Runs all unit tests from `test/**/*.test.*` (this includes the `*.test.html` files)
+* Individual component groups - Each `*.stories.js` and `*.test.js` file from `src/components` has its own group named with the following pattern:
   * `${'a11y'|'test'}:${componentName}`
 
 To run tests for a specific group, use:

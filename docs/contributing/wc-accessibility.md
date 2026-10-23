@@ -25,15 +25,47 @@ A "Read the documentation" link leading to the "JavaScript application" document
 
 To learn more about this subject, see the [G208 Technique of WCAG 2.2 - "Including the text of the visible label as part of the accessible name"](https://www.w3.org/WAI/WCAG22/Techniques/general/G208).
 
+### The `a11y-name` convention
+
+Several of our components (`cc-button`, `cc-icon`, `cc-img`, `cc-loader`, `cc-popover`...) expose an `a11y-name` attribute (`a11yName` property) to let consumers set an explicit accessible name.
+
+The same rule applies to its value: when the element has a visible text, the `a11y-name` **must** start with that visible text.
+For instance `a11y-name="Add to estimation - NodeJS XS"` on a button labelled "Add to estimation".
+
+## Visually hidden text
+
+When you need a text that is only exposed to assistive technologies, use the `visually-hidden` class.
+
+It is not a global class, it comes from the shared `accessibilityStyles` defined in `src/styles/accessibility.js` and you have to add it to your component styles:
+
+```js
+import { accessibilityStyles } from '../../styles/accessibility.js';
+
+static get styles() {
+  return [
+    accessibilityStyles,
+    // language=CSS
+    css`
+      /* your styles */
+    `,
+  ];
+}
+```
+
+Never use `display: none`, `visibility: hidden` or a zero size to hide such a text, these remove the element from the accessibility tree.
+
 ## Decorative SVGs
 
-This section only applies if you use `<svg>` elements. If you use an `<img>` tag, rely on the `alt` attribute.
+In components, icons are rendered with the [`cc-icon`](🧬-atoms-cc-icon--docs) component, which already applies the rules below: it sets `aria-hidden="true"` on the inner `<svg>` by default, and only exposes it (with `role="img"`, `aria-label` and a `<title>`) when the `a11y-name` attribute is set.
+So in most cases you have nothing to do, just don't set `a11y-name` on a decorative icon.
+
+The rest of this section applies if you write an `<svg>` element by hand. If you use an `<img>` tag, rely on the `alt` attribute.
 
 With `<svg>` elements, apply the same logic as you do with `<img>` elements to determine whether it is decorative or it conveys information.
 In most cases, it probably is decorative because we try to provide text next to the icon as much as possible.
 
 If the `<svg>` is decorative, then we need to make sure its content is not read by screen readers.
-To do so, we use the `<aria-hidden="true">` attribute on the `<svg>` element.
+To do so, we use the `aria-hidden="true"` attribute on the `<svg>` element.
 
 ### Example:
 ```html
@@ -42,8 +74,8 @@ To do so, we use the `<aria-hidden="true">` attribute on the `<svg>` element.
 
 **Note**: Make sure your `<svg>` element:
 * has no other `aria-` attribute (`aria-label`, etc.),
-* `role` attribute,
-* and no `<title>` or `<desc>` tags.
+* has no `role` attribute,
+* and has no `<title>` or `<desc>` tags.
 
 These do not make sense for a decorative `<svg>` and screen readers may try to announce these elements if you try to name them even though they are not supposed to be exposed (`aria-hidden="true"`).
 
@@ -79,3 +111,33 @@ Or with an `<svg>`:
 These cases are rare because we try to provide a text next to the icon as much as possible (in which case, a `title` is unnecessary)
 
 The `title` attribute is a complex subject, if you want to learn more about it, see [the a11y project - Use title attributes](https://www.a11yproject.com/posts/title-attributes/)) and the resources linked in this article.
+
+## Grouping form controls
+
+Related form controls must be grouped and the group must have an accessible name.
+
+`<fieldset>` and `<legend>` are the standard way to do it and some components still use them.
+But `<legend>` is very hard to style reliably, especially when it has to be displayed next to the group instead of above it.
+For these cases, we moved to `<div>` elements with `role="group"` and `aria-labelledby`, see [ADR 0025: Moving away from `fieldset` and `legend`](📌-architecture-decision-records-adr-0025-moving-away-from-fieldset-and-legend--docs):
+
+```html
+<div role="group" aria-labelledby="legend">
+  <p id="legend">Our legend</p>
+  <!-- inputs and labels -->
+</div>
+```
+
+## Announcing dynamic changes
+
+When a part of the UI changes without a user initiated navigation (an error message appearing, a copy confirmation, a counter updating), it must be announced.
+
+We rely on live regions for this: a container that is already in the DOM before the change, with `aria-live="polite"` and, most of the time, `aria-atomic="true"`.
+
+```html
+<div aria-live="polite" aria-atomic="true">${this._errorMessage}</div>
+```
+
+The container must exist and be rendered **before** the content changes, otherwise the change is not announced.
+This is why several components render an empty live region and only fill it later.
+
+The `cc-toaster` component is the general purpose implementation of this pattern, the reasoning behind it is detailed in [ADR 0019: How to make toaster accessible](📌-architecture-decision-records-adr-0019-how-to-make-toaster-accessible--docs).

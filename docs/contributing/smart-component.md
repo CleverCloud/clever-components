@@ -49,6 +49,8 @@ For more information, please refer to the [Getting Started - Smart Component](�
 
 ### API Clients
 
+Failed requests dispatch a `cc-api-error` event on `window`, which the host application can listen to (for instance to detect expired credentials).
+
 #### `getCcApiClientWithOAuth`
 
 Use `getCcApiClientWithOAuth` to obtain a shared `CcApiClient` instance authenticated with OAuth v1:
@@ -74,7 +76,16 @@ onContextUpdate({ context, signal }) {
 Key characteristics:
 - Returns a `CcApiClient` instance configured with OAuth v1 credentials from `apiConfig`,
 - Can be called with `null` or `undefined` to obtain an unauthenticated client using the default API host,
+- When `apiConfig` only contains `API_HOST` (no OAuth tokens), the client is unauthenticated but targets that host,
 - Clients are cached based on config content (via serialized keys in a `Map`), so all components with the same config values will share the same client instance, even if they use different object references.
+
+The second argument of `client.send()` is the request config: besides `signal`, you can pass a `cache` option to reuse a response for a given duration:
+
+```js
+import { DAY } from '../../lib/date/date-utils.js';
+
+client.send(new GetAddonCommand({ ownerId, addonId }), { signal, cache: { ttl: DAY } });
+```
 
 #### `getCcApiClientWithToken`
 
@@ -127,8 +138,12 @@ defineSmartComponent({
 A smart component reacts to changes in its context by receiving updates through the `onContextUpdate` callback.
 The `params` section defines the specific pieces of context data that the component needs to function and interact with APIs.
 Parameters can be marked as optional with `optional: true` if they are not strictly required.
-**At least one parameter must be mandatory (non-optional) - you cannot make all parameters optional**.
+`onContextUpdate` is not called as long as one of the mandatory (non-optional) params is `null` or `undefined`, and it is only called when the filtered context actually changes.
+**This is why you should always keep at least one mandatory parameter**: with an all-optional `params`, the component would only ever react once a value shows up in the context.
 The `type` values inside `params` serve as documentation and have no functional impact on the component's behavior.
+
+The `onContextUpdate` callback receives an object with `container`, `component`, `context`, `signal`, `onEvent` and `updateComponent`.
+It may be `async`.
 
 ### 3. State Updates and Data Fetching
 
@@ -137,7 +152,7 @@ The `updateComponent` helper is a powerful tool for managing component state:
 ```js
 // cc-my-component.smart.js
 // Pass a direct value to set the property
-updateComponent('state', { state: 'loading' });
+updateComponent('state', { type: 'loading' });
 
 // Pass a function to modify the property with Immer
 updateComponent('state', (state) => {
@@ -149,6 +164,8 @@ updateComponent('state', (state) => {
 Using [Immer](https://github.com/immerjs/immer) under the hood, `updateComponent` lets you write immutable updates in a mutable style.
 This allows for more concise and readable state updates while still triggering Lit's change detection.
 
+<cc-notice intent="info" message="The function form is a no-op when the property is currently `null` or `undefined`: Immer needs an existing value to produce the next one. Set the property with a direct value first."></cc-notice>
+
 When fetching data on context updates, start by destructuring the context parameters:
 
 ```js
@@ -157,19 +174,19 @@ onContextUpdate({ component, context, updateComponent, signal }) {
   const { apiConfig, userId } = context;
 
   // Set loading state
-  updateComponent('state', { state: 'loading' });
+  updateComponent('state', { type: 'loading' });
 
   // Fetch data using destructured context params
   fetchData(apiConfig, userId, signal)
     .then((data) => {
       updateComponent('state', {
-        state: 'loaded',
+        type: 'loaded',
         value: data
       });
     })
     .catch((error) => {
       console.error(error);
-      updateComponent('state', { state: 'error' });
+      updateComponent('state', { type: 'error' });
     });
 }
 ```
@@ -186,7 +203,7 @@ The `updateComponent` function provides the safest way to update component state
 ### 4. Reacting to UI events and updating remote data through API calls
 
 The `onEvent` helper simplifies event handling by wrapping `addEventListener` under the hood.
-It listens for Events dispatched by the UI component and provides direct access to the event payload (`event.detail`):
+It listens for Events dispatched by the UI component and provides direct access to the event payload (`event.detail` as the first argument, the raw event as an optional second argument):
 
 ```js
 // cc-my-component.smart.js
@@ -224,8 +241,8 @@ The `notifySuccess` and `notifyError` helpers provide a consistent way to show f
 // Show a success toast with title (second argument)
 notifySuccess('Operation completed successfully', 'Success');
 
-// Show an error toast without title
-notifyError('An error occurred', 'Error');
+// Show an error toast without title (the title is optional)
+notifyError('An error occurred');
 
 // Show a custom toast with more options
 notify({
@@ -239,6 +256,8 @@ notify({
 });
 ```
 
+Under the hood, all of them call `notify()`, which dispatches a `cc-notify` event on `window` (you can pass another target as a second argument).
+`notifySuccess()` uses the `success` intent and `notifyError()` uses the `danger` intent.
 These notification helpers ensure a consistent look and feel across the application while making it easy to provide feedback about API operations.
 Refer to the [cc-toaster component](🛠-toast-cc-toaster--default-story) for more info.
 
@@ -247,7 +266,19 @@ Refer to the [cc-toaster component](🛠-toast-cc-toaster--default-story) for mo
 Smart components should be documented in a separate `.smart.md` file alongside your component implementation.
 This documentation helps other developers understand how to use your smart component and what backend services it interacts with.
 
+The reference template to copy from is `docs/cc-example-component.smart.md`.
+
 ### Required Sections
+
+The file starts with a YAML frontmatter placing the page in the Storybook menu, right next to the component:
+
+```md
+---
+kind: '🛠 Section name/<cc-my-component>'
+title: '💡 Smart'
+---
+# 💡 Smart `<cc-my-component>`
+```
 
 1. Component Details block containing:
    - Link to component storybook
@@ -286,18 +317,23 @@ This documentation helps other developers understand how to use your smart compo
 | `POST`   | `/v2/users/{userId}`   | Default |
 ```
 
-4. Example usage showing the component with sample context:
+4. Example usage showing the component with sample context.
+The example must be inside an ` ```html ` code block:
 
-```md
+````md
 ## ⬇️️ Examples
 
-<cc-smart-container context='{
-  "apiConfig": {...},
-  "userId": "user_123"
-}'>
+```html
+<cc-smart-container context='{ "apiConfig": {}, "userId": "user_123" }'>
   <cc-my-component></cc-my-component>
 </cc-smart-container>
 ```
+````
+
+Two more sections are used when relevant:
+
+* `## 👋️ Events fired`, a table of the events the smart component dispatches on the component (name, payload, details), with the payload type definitions right after it.
+* `## ⚠️ Warnings!`, a list of things the integrator needs to know before using the smart component. No existing smart component has one yet: `docs/cc-example-component.smart.md` shows the expected shape.
 
 The documentation file should be named `cc-my-component.smart.md` and placed in the same directory as your component implementation.
 This ensures documentation stays close to the code and is easier to maintain.

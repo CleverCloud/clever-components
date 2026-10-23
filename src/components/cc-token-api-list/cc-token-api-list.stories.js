@@ -170,7 +170,7 @@ export const empty = makeStory(conf, {
 export const waitingWithRevokingOneToken = makeStory(conf, {
   tests: {
     accessibility: {
-      enabled: true,
+      enable: true,
       ignoredRules: ['color-contrast'], // the modify link  is failing color contrasts during revocation but it's a temporary state and it's disabled during the call so no real impact
     },
   },
@@ -198,7 +198,7 @@ export const waitingWithRevokingOneToken = makeStory(conf, {
 export const waitingWithDeletingExpiredToken = makeStory(conf, {
   tests: {
     accessibility: {
-      enabled: true,
+      enable: true,
       ignoredRules: ['color-contrast'], // the modify link  is failing color contrasts during deletion but it's a temporary state and it's disabled during the call so no real impact
     },
   },
