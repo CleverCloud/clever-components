@@ -69,6 +69,7 @@ export default [
       'test-mocha/**/*.*js',
       '.storybook/**/*.js',
       '.github/**/*.js',
+      '.claude/**/*.js',
     ],
     languageOptions: {
       globals: {
