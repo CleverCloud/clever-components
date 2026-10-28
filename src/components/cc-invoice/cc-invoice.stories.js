@@ -81,6 +81,11 @@ export const dataLoaded = makeStory(conf, {
   items: [{ state: defaultInvoiceState }],
 });
 
+export const dataLoadedWithNoPdfLink = makeStory(conf, {
+  /** @type {Array<Partial<CcInvoice>>} */
+  items: [{ state: { ...defaultInvoiceState, downloadUrl: undefined } }],
+});
+
 export const dataLoadedWithDollar = makeStory(conf, {
   /** @type {Array<Partial<CcInvoice>>} */
   items: [{ state: { ...defaultInvoiceState, currency: 'USD' } }],
