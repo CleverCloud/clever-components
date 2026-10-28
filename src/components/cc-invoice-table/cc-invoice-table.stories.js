@@ -55,6 +55,30 @@ export const dataLoadedWithProcessed = makeStory(conf, {
   items: [{ state: { type: 'loaded', invoices: processedInvoices('2019') } }],
 });
 
+export const dataLoadedWithPendingWithoutPdfLinks = makeStory(conf, {
+  /** @type {{ state: InvoiceTableStateLoaded }[] } */
+  items: [
+    {
+      state: {
+        type: 'loaded',
+        invoices: pendingInvoices('2020').map(({ downloadUrl: _, ...invoice }) => invoice),
+      },
+    },
+  ],
+});
+
+export const dataLoadedWithProcessedWithoutPdfLinks = makeStory(conf, {
+  /** @type {{ state: InvoiceTableStateLoaded }[] } */
+  items: [
+    {
+      state: {
+        type: 'loaded',
+        invoices: processedInvoices('2019').map(({ downloadUrl: _, ...invoice }) => invoice),
+      },
+    },
+  ],
+});
+
 export const dataLoadedWithCreditNotes = makeStory(conf, {
   /** @type {{ state: InvoiceTableStateLoaded }[] } */
   items: [
