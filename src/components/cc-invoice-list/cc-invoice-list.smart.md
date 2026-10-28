@@ -18,7 +18,7 @@ title: '💡 Smart'
   <tr><th>Name                                  <th>Type                   <th>Details                                                                                                                                                       <th>Default
   <tr><td><code>apiConfig</code>                <td><code>ApiConfig</code> <td>Some details about this param                                                                                                                                 <td>
   <tr><td><code>ownerId</code>                  <td><code>String</code>    <td>UUID prefixed with <code>user_</code> or <code>orga_</code>                                                                                                   <td>
-  <tr><td><code>invoicePdfUrlPattern</code>     <td><code>String</code>    <td>Optional. URL pattern for invoice PDF links. Use <code>:id</code> as placeholder for the invoice number. If not set, links point to the API download URL. <td>
+  <tr><td><code>invoicePdfUrlPattern</code>     <td><code>String</code>    <td>Optional. URL pattern for invoice PDF links. Use <code>:id</code> as placeholder for the invoice number. If not set, no PDF link is displayed. <td>
 </table>
 
 ```js

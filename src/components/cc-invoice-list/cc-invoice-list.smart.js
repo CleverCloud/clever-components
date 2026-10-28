@@ -29,7 +29,7 @@ defineSmartComponent({
       .then(
         /** @param {Invoice[]} invoices */
         (invoices) => {
-          // When a pattern is provided, PDF links point to it instead of the API download URL
+          // Without a pattern, invoices have no PDF link
           const invoicesWithPdfUrl =
             invoicePdfUrlPattern != null
               ? invoices.map((invoice) => ({

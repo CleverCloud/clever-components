@@ -1,6 +1,5 @@
 import { GetInvoiceCommand } from '@clevercloud/client/cc-api-commands/invoice/get-invoice-command.js';
 import { GetInvoiceHtmlCommand } from '@clevercloud/client/cc-api-commands/invoice/get-invoice-html-command.js';
-import { GetInvoiceUrl } from '@clevercloud/client/cc-api-commands/invoice/get-invoice-url.js';
 import { ListInvoiceCommand } from '@clevercloud/client/cc-api-commands/invoice/list-invoice-command.js';
 import { GetPriceSystemCommand } from '@clevercloud/client/cc-api-commands/price-system/get-price-system-command.js';
 import { getCcApiClientWithOAuth } from './cc-api-client.js';
@@ -25,7 +24,7 @@ import { DAY } from './date/date-utils.js';
 export async function fetchInvoice({ apiConfig, signal, ownerId, invoiceNumber }) {
   const ccApiClient = getCcApiClientWithOAuth(apiConfig);
   const rawInvoice = await ccApiClient.send(new GetInvoiceCommand({ ownerId, invoiceNumber }), { signal });
-  return formatInvoice(apiConfig, ownerId, rawInvoice);
+  return formatInvoice(ownerId, rawInvoice);
 }
 
 /**
@@ -59,7 +58,7 @@ export async function fetchAllInvoices({ apiConfig, signal, ownerId }) {
       // The listing endpoint applies no status filter, so it hands us invoices written off by accounting. They are
       // frozen and unpayable: there is nothing a customer can do with one, so we leave them out of the list.
       .filter((rawInvoice) => rawInvoice.status !== 'LOSS')
-      .map((rawInvoice) => formatInvoice(apiConfig, ownerId, rawInvoice))
+      .map((rawInvoice) => formatInvoice(ownerId, rawInvoice))
   );
 }
 
@@ -85,13 +84,12 @@ export async function fetchPriceSystem({ apiConfig, signal, zoneId, currency }) 
 }
 
 /**
- * @param {ApiConfig} apiConfig
  * @param {string} ownerId
  * @param {import('@clevercloud/client/cc-api-commands/invoice/invoice.types.js').Invoice
  *   | import('@clevercloud/client/cc-api-commands/invoice/invoice.types.js').InvoiceSummary} rawInvoice
  * @return {Invoice}
  */
-function formatInvoice(apiConfig, ownerId, rawInvoice) {
+function formatInvoice(ownerId, rawInvoice) {
   return {
     number: rawInvoice.invoiceNumber,
     emissionDate: rawInvoice.emittedAt,
@@ -101,21 +99,8 @@ function formatInvoice(apiConfig, ownerId, rawInvoice) {
       amount: rawInvoice.totalTax.amount + rawInvoice.totalTaxExcluded.amount,
       currency: rawInvoice.totalTaxExcluded.currency,
     },
-    downloadUrl: getDownloadUrl(apiConfig, ownerId, rawInvoice.invoiceNumber),
     paymentUrl: getPaymentUrl(ownerId, rawInvoice.invoiceNumber),
   };
-}
-
-/**
- * @param {ApiConfig} apiConfig
- * @param {string} ownerId
- * @param {string} invoiceNumber
- * @return {string}
- */
-function getDownloadUrl(apiConfig, ownerId, invoiceNumber) {
-  const ccApiClient = getCcApiClientWithOAuth(apiConfig);
-  const url = ccApiClient.getUrl(new GetInvoiceUrl({ ownerId, invoiceNumber, format: 'pdf' }));
-  return url.toString();
 }
 
 /**

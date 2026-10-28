@@ -32,9 +32,8 @@ defineSmartComponent({
         updateComponent('state', {
           type: 'loaded',
           number: invoiceNumber,
-          // When a pattern is provided, the PDF link points to it instead of the API download URL
-          downloadUrl:
-            invoicePdfUrlPattern != null ? invoicePdfUrlPattern.replace(':id', invoiceNumber) : invoice.downloadUrl,
+          // Without a pattern, the invoice has no PDF link
+          downloadUrl: invoicePdfUrlPattern?.replace(':id', invoiceNumber),
           emissionDate: invoice.emissionDate,
           amount: invoice.total.amount,
           currency: invoice.total.currency,
