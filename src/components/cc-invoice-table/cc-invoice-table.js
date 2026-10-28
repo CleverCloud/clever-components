@@ -2,7 +2,7 @@ import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { iconRemixFileTextLine as iconFile } from '../../assets/cc-remix.icons.js';
 import { ResizeController } from '../../controllers/resize-controller.js';
-import { sortBy } from '../../lib/utils.js';
+import { isExternalUrl, sortBy } from '../../lib/utils.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-icon/cc-icon.js';
@@ -188,9 +188,18 @@ export class CcInvoiceTable extends LitElement {
    * @private
    */
   _renderLinks(skeleton, invoice) {
+    // Browsers ignore `download` on cross-origin URLs, so we only set it on same-origin ones to avoid a misleading icon.
+    // Empty `download` value: the filename comes from the response Content-Disposition header.
+    const download = isExternalUrl(invoice.downloadUrl) ? null : '';
     return html`
       <div class="links">
-        <cc-link href="${invoice.downloadUrl}" ?skeleton="${skeleton}">${i18n('cc-invoice-table.open-pdf')}</cc-link>
+        ${invoice.downloadUrl != null
+          ? html`
+              <cc-link href="${invoice.downloadUrl}" .download=${download} ?skeleton="${skeleton}"
+                >${i18n('cc-invoice-table.open-pdf')}</cc-link
+              >
+            `
+          : ''}
         ${PENDING_STATUSES.includes(invoice.status)
           ? html`
               <cc-link href="${invoice.paymentUrl}" ?skeleton="${skeleton}">${i18n('cc-invoice-table.pay')}</cc-link>

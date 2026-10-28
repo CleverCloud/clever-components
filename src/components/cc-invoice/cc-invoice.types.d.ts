@@ -13,7 +13,7 @@ interface InvoiceStateError {
 interface InvoiceStateLoaded {
   type: 'loaded';
   number: string;
-  downloadUrl: string;
+  downloadUrl?: string;
   emissionDate: string;
   amount: number;
   currency: string; // ISO 4217 currency code

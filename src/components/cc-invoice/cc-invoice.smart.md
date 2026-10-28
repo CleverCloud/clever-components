@@ -15,10 +15,11 @@ title: '💡 Smart'
 ## ⚙️ Params
 
 <table>
-  <tr><th>Name                       <th>Type                   <th>Details                                                     <th>Default
-  <tr><td><code>apiConfig</code>     <td><code>ApiConfig</code> <td>Some details about this param                               <td>
-  <tr><td><code>ownerId</code>       <td><code>String</code>    <td>UUID prefixed with <code>user_</code> or <code>orga_</code> <td>
-  <tr><td><code>invoiceNumber</code> <td><code>String</code>    <td>A valid invoice number                                      <td>
+  <tr><th>Name                                  <th>Type                   <th>Details                                                                                                                                                      <th>Default
+  <tr><td><code>apiConfig</code>                <td><code>ApiConfig</code> <td>Some details about this param                                                                                                                                <td>
+  <tr><td><code>ownerId</code>                  <td><code>String</code>    <td>UUID prefixed with <code>user_</code> or <code>orga_</code>                                                                                                  <td>
+  <tr><td><code>invoiceNumber</code>            <td><code>String</code>    <td>A valid invoice number                                                                                                                                       <td>
+  <tr><td><code>invoicePdfUrlPattern</code>     <td><code>String</code>    <td>Optional. URL pattern for the invoice PDF link. Use <code>:id</code> as placeholder for the invoice number. If not set, no PDF link is displayed. <td>
 </table>
 
 ```js
@@ -50,7 +51,8 @@ interface ApiConfig {
     OAUTH_CONSUMER_KEY: "",
     OAUTH_CONSUMER_SECRET: "",
   },
-  "invoiceNumber": ""
+  "invoiceNumber": "",
+  "invoicePdfUrlPattern": "/invoices/:id.pdf"
 }'>
   <cc-invoice></cc-invoice>
 </cc-smart-container>

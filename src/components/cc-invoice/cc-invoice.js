@@ -2,6 +2,7 @@ import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { iconRemixFileTextLine as iconFile } from '../../assets/cc-remix.icons.js';
+import { isExternalUrl } from '../../lib/utils.js';
 import { skeletonStyles } from '../../styles/skeleton.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-block/cc-block.js';
@@ -15,6 +16,7 @@ const SKELETON_INVOICE = {
   emissionDate: '2020-01-01',
   number: '????????????',
   amount: 10.0,
+  downloadUrl: '',
 };
 
 /**
@@ -48,6 +50,10 @@ export class CcInvoice extends LitElement {
     const invoice = this.state.type === 'loaded' && !skeletonNumber ? this.state : SKELETON_INVOICE;
     const title = `${i18n('cc-invoice.title')} ${number}`;
 
+    // Browsers ignore `download` on cross-origin URLs, so we only set it on same-origin ones to avoid a misleading icon.
+    // Empty value: the filename comes from the response Content-Disposition header.
+    const pdfDownload = isExternalUrl(invoice.downloadUrl) ? null : '';
+
     return html`
       <cc-block .icon=${iconFile} class=${classMap({ 'has-errors': this.state.type === 'error' })}>
         <div slot="header-title">
@@ -59,11 +65,15 @@ export class CcInvoice extends LitElement {
           : ''}
         ${this.state.type !== 'error'
           ? html`
-              <div slot="header-right">
-                <cc-link href="${invoice.downloadUrl}" ?skeleton="${skeleton}"
-                  >${i18n('cc-invoice.download-pdf')}</cc-link
-                >
-              </div>
+              ${invoice.downloadUrl != null
+                ? html`
+                    <div slot="header-right">
+                      <cc-link href="${invoice.downloadUrl}" .download=${pdfDownload} ?skeleton="${skeleton}"
+                        >${i18n('cc-invoice.download-pdf')}</cc-link
+                      >
+                    </div>
+                  `
+                : ''}
               <div slot="content">
                 <div class="info">
                   <em class=${classMap({ skeleton })}>
