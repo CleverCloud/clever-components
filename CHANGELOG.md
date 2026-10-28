@@ -5,6 +5,21 @@ title: 'Changelog'
 
 # Changelog
 
+## [26.9.0](https://github.com/CleverCloud/clever-components/compare/26.8.0...26.9.0) (2026-10-28)
+
+
+### 🚀 Features
+
+* **cc-invoice-list:** add an `invoicePdfUrlPattern` smart param ([4e916ee](https://github.com/CleverCloud/clever-components/commit/4e916eef915ff9f8a7cac14f3247c925a238f77f))
+* **cc-invoice-table:** allow PDF link from same-origin URL ([057e82e](https://github.com/CleverCloud/clever-components/commit/057e82eb272172988ed4d59442fc718e71c1a55a))
+* **cc-invoice, cc-invoice-list:** stop falling back to the API for PDF links ([c599150](https://github.com/CleverCloud/clever-components/commit/c599150667d9f9e8675929ef827ffb02d31770c9))
+* **cc-invoice:** add an `invoicePdfUrlPattern` smart param ([b0fadc5](https://github.com/CleverCloud/clever-components/commit/b0fadc5d16fbb0a9f8707b0d35510fce4ad92b38))
+
+
+### 🐛 Bug Fixes
+
+* **cc-token-api-list:** run the a11y tests of the revoking and deleting stories ([c163713](https://github.com/CleverCloud/clever-components/commit/c1637138de03a5ef1171fcc191a35f03b194129a))
+
 ## [26.8.0](https://github.com/CleverCloud/clever-components/compare/26.7.0...26.8.0) (2026-10-22)
 
 
