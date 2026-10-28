@@ -15,6 +15,7 @@ defineSmartComponent({
   params: {
     apiConfig: { type: Object },
     ownerId: { type: String },
+    invoicePdfUrlPattern: { type: String, optional: true },
   },
   /**
    * @param {OnContextUpdateArgs<CcInvoiceList>} args
@@ -22,13 +23,21 @@ defineSmartComponent({
   onContextUpdate({ context, updateComponent, signal }) {
     updateComponent('state', { type: 'loading' });
 
-    const { apiConfig, ownerId } = context;
+    const { apiConfig, ownerId, invoicePdfUrlPattern } = context;
 
     fetchAllInvoices({ apiConfig, ownerId, signal })
       .then(
         /** @param {Invoice[]} invoices */
         (invoices) => {
-          updateComponent('state', { type: 'loaded', invoices });
+          // When a pattern is provided, PDF links point to it instead of the API download URL
+          const invoicesWithPdfUrl =
+            invoicePdfUrlPattern != null
+              ? invoices.map((invoice) => ({
+                  ...invoice,
+                  downloadUrl: invoicePdfUrlPattern.replace(':id', invoice.number),
+                }))
+              : invoices;
+          updateComponent('state', { type: 'loaded', invoices: invoicesWithPdfUrl });
         },
       )
       .catch((error) =>

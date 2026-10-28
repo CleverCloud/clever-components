@@ -103,6 +103,30 @@ export const dataLoadedWithNoProcessed = makeStory(conf, {
   ],
 });
 
+export const dataLoadedWithPendingWithoutPdfLinks = makeStory(conf, {
+  items: [
+    {
+      /** @type {InvoiceListStateLoaded} */
+      state: {
+        type: 'loaded',
+        invoices: pendingInvoices('2020').map(({ downloadUrl: _, ...invoice }) => invoice),
+      },
+    },
+  ],
+});
+
+export const dataLoadedWithProcessedWithoutPdfLinks = makeStory(conf, {
+  items: [
+    {
+      /** @type {InvoiceListStateLoaded} */
+      state: {
+        type: 'loaded',
+        invoices: processedInvoices('2019').map(({ downloadUrl: _, ...invoice }) => invoice),
+      },
+    },
+  ],
+});
+
 export const dataLoadedWithDollars = makeStory(conf, {
   items: [
     {
