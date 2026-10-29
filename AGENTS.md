@@ -7,7 +7,7 @@ This file is the canonical instruction set for AI coding agents. Tool-specific e
 
 ## Always do this
 
-- **After editing any file, before saying you are done:** `pnpm format` then `pnpm lint`, and `pnpm stylelint` if you touched CSS inside a component. These three are part of the publish gate (`prepack:prod`); skipping them means the change fails CI.
+- **After editing any file, before saying you are done:** `pnpm format` then `pnpm lint`, and `pnpm stylelint` if you touched CSS inside a component. These three are part of the code quality gate (`pnpm check`, also run by the CI); skipping them means the change fails CI.
 - **Before writing a new pattern, look at how an existing component does it.** This library is highly consistent by design: copy the closest neighbour rather than inventing.
 - **Never hand-edit generated files** (see Gotchas). Run the generator instead.
 - **Commit messages follow [conventional commits](https://www.conventionalcommits.org)**, scope = the component name: `fix(cc-badge): ...`. The scope drives the CHANGELOG, so a wrong scope ships a wrong release note.
@@ -52,7 +52,7 @@ Only `cc-foo.js` is mandatory; `cc-foo.stories.js` is expected for any new compo
 
 `docs/contributing/tasks.md` documents every script. What matters for an agent:
 
-- **Safe:** `format`, `lint`, `stylelint`, `typecheck`, `test`, `test:group`, `test:mocha`, `components:check-i18n`, `components:check-lit`, `components:events-map-check`, `components:build`, `components:docs`.
+- **Safe:** `check`, `format`, `lint`, `stylelint`, `typecheck`, `test`, `test:group`, `test:mocha`, `components:check-i18n`, `components:check-lit`, `components:events-map-check`, `components:build`, `components:docs`.
 - **Long-running / needs a human:** `storybook:dev` (dev server), `test:watch*`, `test:visual` (Playwright, slow).
 - **Never run unasked:** anything `preview:*`, `cdn-preview:*`, `cdn-release:*` (they publish to shared Cellar buckets and need secrets), `prepack*` (release path), `test:visual:update-expectation` (rewrites visual baselines).
 

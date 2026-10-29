@@ -112,6 +112,8 @@ The root `custom-elements.json` is a 64-byte stub pointing at `dist/custom-eleme
 
 ## Quality gates
 
-`pnpm prepack:prod` is the full gate, in order: `format:check`, `lint`, `stylelint`, `components:check-lit` (lit-analyzer), `typecheck` (`tsc -p tsconfig.ci.json`), `components:check-i18n`, `components:events-map-check`, `test`, `components:build`, `components:docs`.
+`pnpm check` is the code quality gate, run in parallel: `format:check`, `lint`, `stylelint`, `components:check-lit` (lit-analyzer), `typecheck` (`tsc -p tsconfig.ci.json`), `components:check-i18n`, `components:events-map-check`.
+
+The full gate is the `test-and-build` CI workflow (`.github/workflows/test-and-build.yml`), run on every pull request: the same checks, then `test`, `test:mocha`, `components:build`, `components:docs`, `cdn-release:build`.
 
 Note that `stylelint` only runs on `src/components/*/*.js`: it lints the CSS embedded in Lit templates and enforces declaration sorting (ADR-0011).
