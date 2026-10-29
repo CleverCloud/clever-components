@@ -31,6 +31,13 @@ const PRODUCTS = [
         searchTerms: ['FrankenPHP', 'Laravel', 'PHAR', 'Symfony'],
         iconUrl: 'https://assets.clever-cloud.com/logos/php.svg',
         url: '',
+        notices: [
+          {
+            title: 'Maintenance',
+            message: '<p>Provisioning is <strong>slower</strong> than usual.</p>',
+            intent: 'warning',
+          },
+        ],
         apiId: 'php',
       },
       {
