@@ -26,6 +26,7 @@
     "cdn-release:build": "rollup -c rollup/rollup-cdn.config.js",
     "cdn-release:publish": "node tasks/cdn-cli.js publish release",
     "cdn-release:ui": "node tasks/cdn-cli.js ui release",
+    "check": "pnpm run --no-bail --aggregate-output --reporter=append-only \"/^(format:check|lint|stylelint|components:check-lit|typecheck|components:check-i18n|components:events-map-check)$/\"",
     "components:build": "rollup -c rollup/rollup-npm.config.js",
     "components:check-i18n": "node tasks/check-i18n.js",
     "components:check-lit": "lit-analyzer src",
