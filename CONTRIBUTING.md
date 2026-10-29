@@ -66,7 +66,13 @@ pnpm run components:check-lit
 
 ## We have a global quality gate
 
-All the checks that must pass before publishing are chained by the `prepack:prod` task, see [the tasks documentation](👋-contributing-tasks--docs) for the full list and the details of each task.
+All the code quality checks are chained by the `check` task, run it before opening a pull request:
+
+```bash
+pnpm run check
+```
+
+The CI (`.github/workflows/test-and-build.yml`) runs the same checks on every pull request, plus the tests and the builds, see [the tasks documentation](👋-contributing-tasks--docs) for the details of each task.
 
 ## We use Storybook
 
