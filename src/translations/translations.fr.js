@@ -337,6 +337,7 @@ export const translations = {
   'cc-addon-info.specification.memory': `RAM`,
   'cc-addon-info.specification.mounts': `Mounts`,
   'cc-addon-info.specification.plan': `Plan`,
+  'cc-addon-info.specification.storage': `Stockage`,
   'cc-addon-info.specification.users': `Utilisateurs`,
   'cc-addon-info.specification.version': `Version`,
   'cc-addon-info.subnet.heading': `Sous-réseau`,
