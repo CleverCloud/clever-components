@@ -1,13 +1,15 @@
 import { css, html, LitElement } from 'lit';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { createRef, ref } from 'lit/directives/ref.js';
 import { EventHandler } from '../../lib/events.js';
+import '../cc-badge/cc-badge.js';
 import '../cc-button/cc-button.js';
 import { CcToggleEvent } from '../common.events.js';
 
 /**
  * @import { IconModel } from '../common.types.js'
  * @import { PopoverPosition } from './cc-popover.types.js'
- * @import { CcButton } from '../cc-button/cc-button.js'
+ * @import { BadgeIntent } from '../cc-badge/cc-badge.types.js'
  * @import { Ref } from 'lit/directives/ref.js'
  * @import { PropertyValues } from 'lit'
  */
@@ -20,7 +22,9 @@ import { CcToggleEvent } from '../common.events.js';
  * ### Button element
  *
  * The `button` is the element that will trigger the display of the floating content.
- * This element is a `<cc-button>`. The `cc-click` event will trigger the popover toggle.
+ * By default, this element is a `<cc-button>`. The `cc-click` event will trigger the popover toggle.
+ *
+ * When `intent` is set, the trigger is rendered as a `<cc-badge>` inside a native `<button>` instead (the `icon` and `hideText` properties are ignored).
  *
  * ### Popover content
  *
@@ -64,6 +68,7 @@ export class CcPopover extends LitElement {
       disabled: { type: Boolean, reflect: true },
       hideText: { type: Boolean, attribute: 'hide-text' },
       icon: { type: Object },
+      intent: { type: String },
       isOpen: { type: Boolean, attribute: 'is-open', reflect: true },
       position: { type: String },
     };
@@ -84,6 +89,9 @@ export class CcPopover extends LitElement {
     /** @type {IconModel|null} Sets the button icon. */
     this.icon = null;
 
+    /** @type {BadgeIntent|null} If set, the trigger is rendered as a `cc-badge` with this intent instead of a `cc-button`. */
+    this.intent = null;
+
     /** @type {boolean} Whether the popover is opened */
     this.isOpen = false;
 
@@ -93,12 +101,14 @@ export class CcPopover extends LitElement {
     /** @type {Ref<HTMLDivElement>} */
     this._contentRef = createRef();
 
-    /** @type {Ref<CcButton>} */
+    /** @type {Ref<HTMLElement>} */
     this._buttonRef = createRef();
 
     this._onOutsideClickHandler = new EventHandler(window, 'click', (event) => {
       const contentElement = this._contentRef.value;
-      if (contentElement != null && !event.composedPath().includes(contentElement)) {
+      const path = event.composedPath();
+      // Clicks on the trigger are already handled by `toggle()`.
+      if (contentElement != null && !path.includes(contentElement) && !path.includes(this._buttonRef.value)) {
         this.close();
       }
     });
@@ -216,19 +226,34 @@ export class CcPopover extends LitElement {
   render() {
     return html`
       <div class="wrapper">
-        <cc-button
-          ${ref(this._buttonRef)}
-          class="trigger-button"
-          .a11yExpanded=${this.isOpen}
-          .a11yName=${this.a11yName}
-          ?hide-text=${this.hideText}
-          ?disabled=${this.disabled}
-          .icon=${this.icon}
-          @cc-click=${this.toggle}
-        >
-          <slot name="button-content"></slot>
-        </cc-button>
-
+        ${this.intent != null
+          ? html`
+              <button
+                ${ref(this._buttonRef)}
+                class="trigger-badge"
+                type="button"
+                aria-expanded=${this.isOpen}
+                aria-label=${ifDefined(this.a11yName ?? undefined)}
+                ?disabled=${this.disabled}
+                @click=${this.toggle}
+              >
+                <cc-badge intent=${this.intent}><slot name="button-content"></slot></cc-badge>
+              </button>
+            `
+          : html`
+              <cc-button
+                ${ref(this._buttonRef)}
+                class="trigger-button"
+                .a11yExpanded=${this.isOpen}
+                .a11yName=${this.a11yName}
+                ?hide-text=${this.hideText}
+                ?disabled=${this.disabled}
+                .icon=${this.icon}
+                @cc-click=${this.toggle}
+              >
+                <slot name="button-content"></slot>
+              </cc-button>
+            `}
         ${this.isOpen && !this.disabled
           ? html`
               <div class="content ${this.position.replace('-', ' ')}" ${ref(this._contentRef)}>
@@ -259,6 +284,25 @@ export class CcPopover extends LitElement {
           --cc-button-text-transform: var(--cc-popover-trigger-button-text-transform);
 
           width: var(--cc-popover-trigger-button-width, inherit);
+        }
+
+        .trigger-badge {
+          background: none;
+          border: none;
+          border-radius: var(--cc-border-radius-small, 0.25em);
+          color: inherit;
+          cursor: pointer;
+          font: inherit;
+          padding: 0;
+        }
+
+        .trigger-badge:disabled {
+          cursor: default;
+        }
+
+        .trigger-badge:focus-visible {
+          outline: var(--cc-focus-outline, #000 solid 2px);
+          outline-offset: var(--cc-focus-outline-offset, 2px);
         }
 
         .content {
