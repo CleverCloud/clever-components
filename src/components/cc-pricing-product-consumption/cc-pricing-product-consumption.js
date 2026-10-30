@@ -535,6 +535,7 @@ export class CcPricingProductConsumption extends LitElement {
         :host {
           color: var(--cc-color-text-default, #000);
           display: block;
+          min-width: 0;
         }
 
         /* region COMMON */
@@ -749,7 +750,7 @@ export class CcPricingProductConsumption extends LitElement {
             [start section-icon] 1.5em
             [title input-wrapper interval-min interval-price] min-content
             [interval-min-sign] min-content
-            [interval-label] min-content
+            [interval-label] auto
             [interval-max-sign] min-content
             [interval-max toggle-btn title--end] min-content
             [input-wrapper--end interval-price--end title-total--end] 1fr
@@ -764,6 +765,10 @@ export class CcPricingProductConsumption extends LitElement {
           padding-bottom: 0;
           padding-top: 0;
           visibility: hidden;
+        }
+
+        .body--small .interval-label {
+          white-space: normal;
         }
 
         .body--small .interval-price {
