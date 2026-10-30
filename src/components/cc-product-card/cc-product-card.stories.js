@@ -118,6 +118,31 @@ export const noStatus = makeStory(conf, {
   }),
 });
 
+export const noIcon = makeStory(conf, {
+  items: productInMultipleWidth({
+    iconUrl: null,
+    name: 'My product',
+    description: 'my description',
+  }),
+});
+
+export const emptyIcon = makeStory(conf, {
+  items: productInMultipleWidth({
+    iconUrl: '',
+    name: 'My product',
+    description: 'my description',
+  }),
+});
+
+export const noIconAndNoStatus = makeStory(conf, {
+  items: productInMultipleWidth({
+    iconUrl: null,
+    name: 'My product',
+    description: 'my description',
+    productStatus: null,
+  }),
+});
+
 export const longName = makeStory(conf, {
   items: productInMultipleWidth({
     iconUrl: ICON_URL,

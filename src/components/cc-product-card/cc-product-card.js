@@ -1,4 +1,5 @@
 import { css, html, LitElement } from 'lit';
+import { classMap } from 'lit/directives/class-map.js';
 import { isStringEmpty } from '../../lib/utils.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-badge/cc-badge.js';
@@ -28,7 +29,7 @@ export class CcProductCard extends LitElement {
     /** @type {string|null} The description of the product */
     this.description = null;
 
-    /** @type {string} The icon url of the product */
+    /** @type {string|null} The icon url of the product, no space is reserved for the icon when it is missing or empty */
     this.iconUrl = null;
 
     /** @type {string} The name of the product */
@@ -42,10 +43,12 @@ export class CcProductCard extends LitElement {
   }
 
   render() {
+    const hasIcon = !isStringEmpty(this.iconUrl);
+
     // language=HTML
     return html`
-      <div class="wrapper">
-        ${this.iconUrl != null ? html` <cc-img src="${this.iconUrl}"></cc-img> ` : ''}
+      <div class="wrapper ${classMap({ 'wrapper--no-icon': !hasIcon })}">
+        ${hasIcon ? html` <cc-img src="${this.iconUrl}"></cc-img> ` : ''}
         <a class="name" href="${this.url}" title="${i18n('cc-product-card.select', { name: this.name })}">
           ${this.name}
         </a>
@@ -118,12 +121,20 @@ export class CcProductCard extends LitElement {
           grid-template-rows: min-content auto;
         }
 
+        .wrapper--no-icon {
+          grid-template-areas:
+            'name status'
+            'description description';
+          grid-template-columns: auto 1fr;
+        }
+
         /* endregion */
 
         /* region grid-items */
 
         cc-img {
           border-radius: var(--cc-border-radius-small, 0.25em);
+          grid-area: icon;
           height: 2em;
           width: 2em;
         }
@@ -131,6 +142,7 @@ export class CcProductCard extends LitElement {
         .name {
           color: var(--cc-color-text-strongest, #000);
           font-size: 1.75em;
+          grid-area: name;
           text-decoration: none;
         }
 
