@@ -1,6 +1,6 @@
 export interface Product {
   description: string;
-  iconUrl: string;
+  iconUrl?: string;
   productStatus?: string;
   searchTerms?: string[];
   name: string;

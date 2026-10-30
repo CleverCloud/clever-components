@@ -56,6 +56,21 @@ async function typeInSearch(element, value) {
 }
 
 describe('cc-product-list', () => {
+  describe('iconUrl of a product', () => {
+    it('does not set the icon-url attribute on the card when the product has no icon', async () => {
+      const element = await fixture(html`
+        <cc-product-list
+          .productsByCategories=${[
+            { categoryName: 'Add-ons', products: [{ name: 'Unknown', description: '', url: 'https://example.com' }] },
+          ]}
+        ></cc-product-list>
+      `);
+
+      const card = element.shadowRoot.querySelector('cc-product-card');
+      expect(card.hasAttribute('icon-url')).to.equal(false);
+    });
+  });
+
   describe('categoryFilter property', () => {
     it('applies the category filter when the products are set after it', async () => {
       const element = await fixture(html`<cc-product-list category-filter="Tools"></cc-product-list>`);

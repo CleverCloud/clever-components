@@ -1,4 +1,5 @@
 import { css, html, LitElement } from 'lit';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { accessibilityStyles } from '../../styles/accessibility.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-badge/cc-badge.js';
@@ -166,7 +167,7 @@ export class CcProductList extends LitElement {
                 <cc-product-card
                   name="${p.name}"
                   description="${p.description}"
-                  icon-url="${p.iconUrl}"
+                  icon-url="${ifDefined(p.iconUrl)}"
                   url="${p.url}"
                   product-status="${p.productStatus}"
                 ></cc-product-card>
