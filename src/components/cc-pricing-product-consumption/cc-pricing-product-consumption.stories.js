@@ -194,3 +194,71 @@ export const simulationsWithError = makeStory(conf, {
     ),
   ],
 });
+
+// TEMP: demo of #1855, to remove before merging
+export const tempFluidWidth = makeStory(conf, {
+  tests: { accessibility: { enable: false }, visual: { enable: false } },
+  dom: (container) => {
+    container.innerHTML = `
+      <style>
+        .controls { align-items: center; display: flex; flex-wrap: wrap; gap: 0.5em; margin-bottom: 1em; }
+        .readout { background: #f3f3f3; font-family: monospace; padding: 0.5em 1em; white-space: pre; }
+        .grid { display: grid; grid-template-columns: 1fr; margin-block: 1em; outline: 2px dashed #36f; }
+      </style>
+      <div class="controls">
+        <span>Container width:</span>
+        <button data-width="1000">1000px</button>
+        <button data-width="360">360px</button>
+        <button data-width="300">300px</button>
+        <input class="slider" type="range" min="250" max="1200" value="360" />
+        <button class="recreate">Recreate the component</button>
+      </div>
+      <div class="readout"></div>
+      <div class="grid"></div>
+    `;
+
+    const grid = container.querySelector('.grid');
+    const slider = container.querySelector('.slider');
+    const readout = container.querySelector('.readout');
+    /** @type {CcPricingProductConsumption} */
+    let component;
+
+    const setWidth = (width) => {
+      grid.style.width = `${width}px`;
+      slider.value = width;
+    };
+
+    const createComponent = () => {
+      component = document.createElement('cc-pricing-product-consumption');
+      component.action = 'none';
+      component.state = { type: 'loaded', ...basePulsar };
+      grid.replaceChildren(component);
+    };
+
+    const updateReadout = () => {
+      const body = component?.shadowRoot?.querySelector('.body');
+      if (body != null) {
+        const gridWidth = Math.round(grid.getBoundingClientRect().width);
+        const contentWidth = body.scrollWidth;
+        const mode = body.classList.contains('body--big') ? 'body--big (wide)' : 'body--small';
+        readout.textContent = [
+          `container width: ${gridWidth}px`,
+          `content width:   ${contentWidth}px`,
+          `component mode:  ${mode}`,
+          `overflow:        ${Math.max(contentWidth - gridWidth, 0)}px`,
+        ].join('\n');
+      }
+      requestAnimationFrame(updateReadout);
+    };
+
+    for (const button of container.querySelectorAll('[data-width]')) {
+      button.addEventListener('click', () => setWidth(button.dataset.width));
+    }
+    slider.addEventListener('input', () => setWidth(slider.value));
+    container.querySelector('.recreate').addEventListener('click', createComponent);
+
+    setWidth(360);
+    createComponent();
+    updateReadout();
+  },
+});
