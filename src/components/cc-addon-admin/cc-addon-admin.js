@@ -21,12 +21,15 @@ import { CcAddonDeleteEvent, CcAddonNameChangeEvent, CcAddonTagsChangeEvent } fr
  * A component displaying the admin interface of an add-on to edit its name or delete the add-on.
  *
  * @cssdisplay block
+ *
+ * @slot danger-zone - Additional content displayed within the danger zone description, e.g. a warning or the reason why the add-on cannot be deleted.
  */
 export class CcAddonAdmin extends LitElement {
   static get properties() {
     return {
       noDangerZoneBackupText: { type: Boolean, attribute: 'no-danger-zone-backup-text' },
       noDangerZoneVmText: { type: Boolean, attribute: 'no-danger-zone-vm-text' },
+      noDelete: { type: Boolean, attribute: 'no-delete' },
       state: { type: Object },
       _isDialogOpen: { type: Boolean, state: true },
       _name: { type: String, state: true },
@@ -42,6 +45,9 @@ export class CcAddonAdmin extends LitElement {
 
     /** @type {boolean} Hides the text about VM delay within the danger zone when set to `true` */
     this.noDangerZoneVmText = false;
+
+    /** @type {boolean} Hides the delete button and the default danger zone texts when set to `true` */
+    this.noDelete = false;
 
     /** @type {AddonAdminState} Sets the state of the component */
     this.state = { type: 'loading' };
@@ -210,30 +216,41 @@ export class CcAddonAdmin extends LitElement {
       <cc-block-section slot="content-body">
         <div slot="title" class="danger">${i18n('cc-addon-admin.danger-zone')}</div>
         <div slot="info" class="danger-desc">
-          <p>
-            <span>${i18n('cc-addon-admin.delete-disclaimer')}</span>
-            ${shouldShowVmText && shouldShowBackupsText
-              ? html`<span>${i18n('cc-addon-admin.delete-vm-and-backups')}</span>`
-              : ''}
-            ${shouldShowVmText && !shouldShowBackupsText ? html`<span>${i18n('cc-addon-admin.delete-vm')}</span>` : ''}
-            ${shouldShowBackupsText && !shouldShowVmText
-              ? html`<span>${i18n('cc-addon-admin.delete-backups')}</span>`
-              : ''}
-          </p>
+          ${!this.noDelete
+            ? html`
+                <p>
+                  <span>${i18n('cc-addon-admin.delete-disclaimer')}</span>
+                  ${shouldShowVmText && shouldShowBackupsText
+                    ? html`<span>${i18n('cc-addon-admin.delete-vm-and-backups')}</span>`
+                    : ''}
+                  ${shouldShowVmText && !shouldShowBackupsText
+                    ? html`<span>${i18n('cc-addon-admin.delete-vm')}</span>`
+                    : ''}
+                  ${shouldShowBackupsText && !shouldShowVmText
+                    ? html`<span>${i18n('cc-addon-admin.delete-backups')}</span>`
+                    : ''}
+                </p>
+              `
+            : ''}
+          <slot name="danger-zone"></slot>
         </div>
-        <div>
-          <cc-button
-            danger
-            ?skeleton=${isSkeleton}
-            ?disabled=${isFormDisabled && state.type !== 'deleting'}
-            ?waiting=${state.type === 'deleting'}
-            @cc-click=${this._onDeleteRequest}
-            >${i18n('cc-addon-admin.delete')}</cc-button
-          >
-        </div>
+        ${!this.noDelete
+          ? html`
+              <div>
+                <cc-button
+                  danger
+                  ?skeleton=${isSkeleton}
+                  ?disabled=${isFormDisabled && state.type !== 'deleting'}
+                  ?waiting=${state.type === 'deleting'}
+                  @cc-click=${this._onDeleteRequest}
+                  >${i18n('cc-addon-admin.delete')}</cc-button
+                >
+              </div>
+            `
+          : ''}
       </cc-block-section>
 
-      ${this.state.type === 'loaded' || this.state.type === 'deleting'
+      ${!this.noDelete && (this.state.type === 'loaded' || this.state.type === 'deleting')
         ? this._renderDeleteConfirmationDialog(this.state.name, this.state.type === 'deleting', this._isDialogOpen)
         : ''}
     `;
@@ -288,7 +305,13 @@ export class CcAddonAdmin extends LitElement {
           margin-top: var(--cc-margin-top-btn-horizontal-form);
         }
 
-        .danger-desc p {
+        .danger-desc {
+          display: grid;
+          gap: var(--cc-spacing-3, 0.5em);
+        }
+
+        .danger-desc p,
+        ::slotted([slot='danger-zone']) {
           margin: 0;
         }
 
