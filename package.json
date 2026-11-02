@@ -183,7 +183,7 @@
     "zod": "^4.4.3"
   },
   "peerDependencies": {
-    "@clevercloud/client": "^12.6.7"
+    "@clevercloud/client": "^12.6.8"
   },
   "customElements": "dist/custom-elements.json"
 }
