@@ -5,10 +5,20 @@ title: 'API client'
 
 # Clever client
 
-`clever-components` talks to the Clever Cloud API through [`clever-client.js`](https://github.com/CleverCloud/clever-client.js), published as `@clevercloud/client` and a direct dependency of this project.
+`clever-components` talks to the Clever Cloud API through [`clever-client.js`](https://github.com/CleverCloud/clever-client.js), published as `@clevercloud/client`.
 
 This page explains which client API to use and how to work against a local checkout of the client.
 How to call the client from a smart component is detailed in the [Smart Component guidelines](👋-contributing-smart-component-guidelines--docs).
+
+## Dependency declaration
+
+`@clevercloud/client` is declared only in `peerDependencies`: apps install the client themselves, so they and the components share a single copy, the app chooses its version, and an incompatible version shows up as a peer dependency warning at install time instead of a build or runtime failure.
+
+It must never go back to `dependencies`, and must not be added to `devDependencies` either: pnpm installs peer dependencies automatically (`autoInstallPeers` in `pnpm-workspace.yaml`), so our own build, tests, Storybook and the CDN bundle use the version resolved from the peer range, pinned by the lockfile.
+The range is declared in a single place, so what we build and test against cannot drift from what we declare to apps.
+
+When a component starts using a command that only exists in a newer client version, bump the `peerDependencies` range, then run `pnpm install` to update the lockfile.
+Raising the floor of the peer range forces apps to upgrade their client: say so in the commit message.
 
 ## Which client API to use
 

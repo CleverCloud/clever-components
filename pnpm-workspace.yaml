@@ -3,6 +3,11 @@ allowBuilds:
   esbuild: false
   unrs-resolver: false
 
+# Already pnpm's default, made explicit because the build relies on it:
+# `@clevercloud/client` is only declared in `peerDependencies`, and our own
+# build, tests and CDN bundle get it from this automatic install.
+autoInstallPeers: true
+
 minimumReleaseAge: 10080
 
 minimumReleaseAgeExclude:

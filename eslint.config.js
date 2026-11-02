@@ -104,7 +104,7 @@ export default [
     rules: {
       'import-x/no-extraneous-dependencies': [
         'error',
-        { devDependencies: true, optionalDependencies: false, peerDependencies: false },
+        { devDependencies: true, optionalDependencies: false, peerDependencies: true },
       ],
     },
   },
