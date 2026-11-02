@@ -1,7 +1,7 @@
-import { expect } from 'chai';
 import fs, { readFileSync } from 'fs';
 import path from 'path';
 import ts from 'typescript';
+import { describe, expect, it } from 'vitest';
 import {
   convertInterface,
   extractImportsFromImportTag,
@@ -15,7 +15,7 @@ import {
   getTypesFromConstructor,
 } from '../../cem/support-typedef-jsdoc-utils.js';
 
-const filename = 'test-mocha/cem/fixtures/cc-test-component.js';
+const filename = 'test-node/cem/fixtures/cc-test-component.js';
 const sourceCode = fs.readFileSync(filename, { encoding: 'utf-8' });
 
 const sourceAst = ts.createSourceFile(filename, sourceCode, ts.ScriptTarget.ES2015, true);
@@ -27,7 +27,7 @@ function getClassNodeFromSource(source) {
 }
 
 const ROOT_DIR = process.cwd();
-const MODULE_DIR = 'test-mocha/cem/fixtures';
+const MODULE_DIR = 'test-node/cem/fixtures';
 
 describe('CEM', function () {
   describe('getConstructorNode()', function () {
@@ -344,7 +344,7 @@ describe('CEM', function () {
   });
 
   describe('extractImportsFromImportTag()', function () {
-    const filenameWithImport = 'test-mocha/cem/fixtures/cc-test-component-with-import.js';
+    const filenameWithImport = 'test-node/cem/fixtures/cc-test-component-with-import.js';
     const sourceCodeWithImport = fs.readFileSync(filenameWithImport, { encoding: 'utf-8' });
     const sourceAstWithImport = ts.createSourceFile(
       filenameWithImport,

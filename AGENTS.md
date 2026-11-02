@@ -23,7 +23,7 @@ This file is the canonical instruction set for AI coding agents. Tool-specific e
 | `src/stories/`                                             | Storybook infrastructure (`lib/make-story.js`, fixtures), **not** the stories themselves       |
 | `src/controllers/`, `src/directives/`                      | Reusable reactive controllers and Lit directives                                               |
 | `test/`                                                    | Browser unit tests for `src/lib` (Web Test Runner)                                             |
-| `test-mocha/`                                              | Node-side tests for build tooling (CEM plugins, custom ESLint rules)                           |
+| `test-node/`                                              | Node-side tests for build tooling (CEM plugins, custom ESLint rules)                           |
 | `tasks/`, `cem/`, `rollup/`, `eslint/`, `web-test-runner/` | Build, analysis and test tooling                                                               |
 | `docs/`                                                    | Contributor docs, **published in the Storybook**, so anything added here is public             |
 
@@ -45,14 +45,14 @@ Only `cc-foo.js` is mandatory; `cc-foo.stories.js` is expected for any new compo
 - **Generated, never edit by hand:** `src/lib/events-map.types.d.ts` (`pnpm components:events-map-generate`), `src/assets/cc-*.icons.js` (`pnpm components:generate-icons-assets`), `dist/`, root `custom-elements.json` (a stub, the real manifest is `dist/custom-elements.json`, built by `pnpm components:docs`). Adding a `*.events.js` class without regenerating the events map fails CI.
 - **a11y and visual test files do not exist on disk.** They are synthesized from `*.stories.js` at test time. Don't look for `cc-foo.a11y.test.js`; fix the story instead.
 - **Stories must use `makeStory()`** from `src/stories/lib/make-story.js`: ad-hoc CSF exports silently break the derived a11y and visual tests.
-- **Two test runners:** `pnpm test` (Web Test Runner, browser) and `pnpm test:mocha` (Node, tooling only).
+- **Two test runners:** `pnpm test` (Web Test Runner, browser) and `pnpm test:node` (Vitest, Node, tooling only).
 - **Typechecking is opt-in per file**: `pnpm typecheck` uses `tsconfig.ci.json`, check its include/exclude lists before assuming a file is checked.
 
 ## Running scripts
 
 `docs/contributing/tasks.md` documents every script. What matters for an agent:
 
-- **Safe:** `format`, `lint`, `stylelint`, `typecheck`, `test`, `test:group`, `test:mocha`, `components:check-i18n`, `components:check-lit`, `components:events-map-check`, `components:build`, `components:docs`.
+- **Safe:** `format`, `lint`, `stylelint`, `typecheck`, `test`, `test:group`, `test:node`, `components:check-i18n`, `components:check-lit`, `components:events-map-check`, `components:build`, `components:docs`.
 - **Long-running / needs a human:** `storybook:dev` (dev server), `test:watch*`, `test:visual` (Playwright, slow).
 - **Never run unasked:** anything `preview:*`, `cdn-preview:*`, `cdn-release:*` (they publish to shared Cellar buckets and need secrets), `prepack*` (release path), `test:visual:update-expectation` (rewrites visual baselines).
 

@@ -87,7 +87,7 @@ Storybook **infrastructure**, not stories:
 | Component tests      | `src/components/<tag>/<name>.test.js`                                                                         | `pnpm test`                                                                                                                                                     |
 | a11y tests           | **generated** from `*.stories.js` by `web-test-runner/story-file-to-a11y-tests-file-plugin.js`                | `pnpm test:group a11y:cc-badge`                                                                                                                                 |
 | Visual regression    | **generated** from `*.stories.js` by `web-test-runner/visual-tests/story-file-to-visual-tests-file-plugin.js` | `pnpm test:visual` (Playwright chromium, desktop + mobile), baselines via `pnpm test:visual:update-expectation`, reports in `visual-test-reports/` (gitignored) |
-| Tooling tests        | `test-mocha/**/*.test.js` with `*.test-data.js` and `fixtures/`                                               | `pnpm test:mocha` (these need Node, not a browser)                                                                                                              |
+| Tooling tests        | `test-node/**/*.test.js` with `*.test-data.js` and `fixtures/`                                               | `pnpm test:node` (Vitest; these need Node, not a browser)                                                                                                              |
 
 ## Generated artifacts
 
@@ -105,7 +105,7 @@ The root `custom-elements.json` is a 64-byte stub pointing at `dist/custom-eleme
 
 - `tasks/`: Node scripts behind the `pnpm` scripts (i18n check, events map, icons, CDN and preview CLIs, usage graph, typechecking stats).
 - `cem/`: Custom Elements Manifest plugins (see ADR-0016). They consume JSDoc tags such as `@cssdisplay`, which is why component JSDoc must include it.
-- `eslint/`: custom ESLint rules, notably the i18n and Lit ones, tested in `test-mocha/`.
+- `eslint/`: custom ESLint rules, notably the i18n and Lit ones, tested in `test-node/`.
 - `rollup/`: npm and CDN build configs.
 - `web-test-runner/`: WTR plugins, including the a11y and visual test generators.
 - `.storybook/`: Storybook config. `main.js` pulls in `README.md`, `CONTRIBUTING.md`, `docs/**/!(*example*).md` and `src/**/*smart*.md`, which is why anything added under `docs/` becomes public documentation.

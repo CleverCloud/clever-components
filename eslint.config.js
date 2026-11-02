@@ -49,7 +49,8 @@ export default [
   },
   {
     name: 'mocha-context',
-    files: ['**/*.test.*js', 'test/**/*.js', 'test-mocha/**/*.js'],
+    files: ['**/*.test.*js', 'test/**/*.js'],
+    ignores: ['test-node/**/*.js'],
     languageOptions: {
       globals: {
         ...globals.mocha,
@@ -66,7 +67,8 @@ export default [
       'web-test-runner.config*.js',
       'web-test-runner/**/*.js',
       'src/stories/lib/smart-auth-plugin.js',
-      'test-mocha/**/*.*js',
+      'test-node/**/*.*js',
+      'vitest.config.js',
       '.storybook/**/*.js',
       '.github/**/*.js',
       '.claude/**/*.js',
@@ -84,7 +86,8 @@ export default [
     files: [
       '**/*.test.js',
       'test/**/*.*js',
-      'test-mocha/**/*.*js',
+      'test-node/**/*.*js',
+      'vitest.config.js',
       'src/stories/**/*.js',
       'eslint.config.js',
       'eslint/**/*.*js',
