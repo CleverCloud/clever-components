@@ -1,5 +1,5 @@
 [tools]
-node = "24"
+node = "26"
 pnpm = "11"
 
 [env]
