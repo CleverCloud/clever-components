@@ -59,6 +59,20 @@ This project provides a series of tasks you can run as [pnpm scripts](https://pn
 * Upload all assets in `cdn-ui` to the CDN remote object storage.
 * You can get more details by reading [the documentation about the release](👋-contributing-release--docs).
 
+## `pnpm run check`
+
+* Runs every code quality check in parallel:
+  * `pnpm run format:check`
+  * `pnpm run lint`
+  * `pnpm run stylelint`
+  * `pnpm run components:check-lit`
+  * `pnpm run typecheck`
+  * `pnpm run components:check-i18n`
+  * `pnpm run components:events-map-check`
+* The output of each check is printed once it is finished, so logs don't get mixed up.
+* A failing check does not stop the others: the task always runs them all, then lists the ones that failed and exits with a non-zero code.
+* It does not run the tests nor the builds, the CI (`.github/workflows/test-and-build.yml`) runs them on top of these checks.
+
 ## `pnpm run components:build`
 
 * Build components for npm with [Rollup](https://rollupjs.org/) in `dist` folder.
@@ -144,26 +158,8 @@ This project provides a series of tasks you can run as [pnpm scripts](https://pn
 ## `pnpm run prepack`
 
 * This is run automatically before a `pnpm pack` and therefore before a `pnpm publish`.
-* It runs `pnpm run prepack:dev` when the `DEV` environment variable is set to `true`, and `pnpm run prepack:prod` otherwise.
-
-## `pnpm run prepack:dev`
-
-* Only run `pnpm run components:build`.
-* This is the shortcut used when packing the project locally, to test it in another project.
-
-## `pnpm run prepack:prod`
-
-* Run all tasks required before publishing on npm:
-  * `pnpm run format:check`
-  * `pnpm run lint`
-  * `pnpm run stylelint`
-  * `pnpm run components:check-lit`
-  * `pnpm run typecheck`
-  * `pnpm run components:check-i18n`
-  * `pnpm run components:events-map-check`
-  * `pnpm run test`
-  * `pnpm run components:build`
-  * `pnpm run components:docs`
+* It runs `pnpm run components:build` then `pnpm run components:docs`, which is everything the published package needs.
+* It does not run any check nor test: `pnpm run check` and the tests run in the CI (`.github/workflows/test-and-build.yml`) on every pull request, including the release one.
 
 ## `pnpm run prestorybook:build`
 
