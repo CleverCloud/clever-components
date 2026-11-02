@@ -40,8 +40,8 @@ jobs:
 
       - name: '[Unit tests] Clever components'
         run: pnpm run test
-      - name: '[Unit tests] Mocha tests (CEM, ESLint & Prettier custom rules)'
-        run: pnpm run test:mocha
+      - name: '[Unit tests] Node tests (CEM & ESLint custom rules)'
+        run: pnpm run test:node
 
       - name: '[Build] Clever components'
         run: pnpm run components:build

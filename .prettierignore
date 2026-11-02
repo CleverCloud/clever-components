@@ -4,7 +4,7 @@ src/stories/assets
 
 # Ignore fixtures
 src/stories/fixtures
-test-mocha/cem/fixtures
+test-node/cem/fixtures
 
 # Ignore MD files
 **/*.md

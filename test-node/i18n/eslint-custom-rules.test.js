@@ -1,4 +1,5 @@
 import { RuleTester } from 'eslint';
+import { describe, it } from 'vitest';
 import i18nAlwaysArrowWithSanitizeTestData from './i18n-always-arrow-with-sanitize.test-data.js';
 import i18nAlwaysSanitizeWithHtmlTestData from './i18n-always-sanitize-with-html.test-data.js';
 import i18nAlwaysTemplateLiteralSanitizeTestData from './i18n-always-template-literal-sanitize.test-data.js';
@@ -7,6 +8,10 @@ import i18nNoSanitizeWithoutHtmlTestData from './i18n-no-sanitize-without-html.t
 import i18nOrderTestData from './i18n-order.test-data.js';
 import i18nValidKeyTestData from './i18n-valid-key.test-data.js';
 import i18nValidValueTestData from './i18n-valid-value.test-data.js';
+
+RuleTester.describe = describe;
+RuleTester.it = it;
+RuleTester.itOnly = it.only;
 
 const ruleTester = new RuleTester();
 

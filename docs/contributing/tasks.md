@@ -222,15 +222,14 @@ Check the CSS of our components with [Stylelint](https://stylelint.io/) and fix 
     * `test:${componentName}` - Run tests for a component's test file
 * Usage: `pnpm run test:group <group-name>`
 
-## `pnpm run test:mocha`
+## `pnpm run test:node`
 
-* Run unit tests present in `test-mocha` with [Mocha](https://mochajs.org/).
-* These tests cannot be run with `wtr` because they rely on Node.js / commonjs APIs.
+* Run tooling unit tests in `test-node` with [Vitest](https://vitest.dev/) in Node.js.
+* The `vitest.config.js` config restricts discovery to `test-node/**/*.test.js` and leaves browser tests to Web Test Runner.
 
-## `pnpm run test:mocha:watch`
+## `pnpm run test:node:watch`
 
-* Run unit tests present in `test-mocha` with [Mocha](https://mochajs.org/) in watch mode.
-* These tests cannot be run with `wtr` because they rely on Node.js / commonjs APIs.
+* Run the same tooling tests as `pnpm run test:node`, in watch mode.
 
 ## `pnpm run test:watch`
 

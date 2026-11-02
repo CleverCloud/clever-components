@@ -55,8 +55,8 @@
     "stylelint:fix": "stylelint src/components/*/*.js --fix",
     "test": "wtr",
     "test:group": "wtr --group",
-    "test:mocha": "mocha test-mocha/**/*.test.*js",
-    "test:mocha:watch": "mocha --watch test-mocha/**/*.*js",
+    "test:node": "vitest run",
+    "test:node:watch": "vitest watch",
     "test:watch": "wtr --watch",
     "test:watch:group": "wtr --watch --group",
     "test:visual": "wtr --config web-test-runner.visual-tests.config.js",
@@ -151,7 +151,6 @@
     "json5": "^1.0.1",
     "lit-analyzer": "2.0.0-pre.3",
     "mime-types": "^2.1.30",
-    "mocha": "^10.0.0",
     "postcss-styled-syntax": "^0.7.0",
     "prettier": "^3.6.0",
     "prettier-plugin-organize-imports": "^4.0.0",
@@ -182,6 +181,7 @@
     "typescript": "^5.8.3",
     "unified": "^9.2.1",
     "vite": "^7.2.2",
+    "vitest": "^5.0.5",
     "zod": "^4.4.3"
   },
   "customElements": "dist/custom-elements.json"

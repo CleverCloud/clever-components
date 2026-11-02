@@ -11,10 +11,13 @@ You can run all tests by using the `pnpm run test` command.
 This command runs the unit tests from the `test` folder, the `*.test.js` files from the `src/components` folder and the accessibility tests generated from the `*.stories.js` files of the `src/components` folder.
 
 Some tests cannot run in a browser because they cover our build tooling (Custom Elements Manifest support, custom ESLint rules).
-They live in the `test-mocha` folder and run in Node.js with `Mocha`.
-You can run them with the `pnpm run test:mocha` command, or `pnpm run test:mocha:watch` if you want them to run everytime you update a file.
+They live in the `test-node` folder and run in Node.js with `Vitest`.
+Run them with `pnpm run test:node`, or `pnpm run test:node:watch` to rerun them when files change.
+The `vitest.config.js` config restricts test discovery to `test-node/**/*.test.js`, so Vitest does not run browser tests.
+Import `describe`, `it`, and `expect` from `vitest` in these tests.
+ESLint rule tests also connect `RuleTester.describe`, `RuleTester.it`, and `RuleTester.itOnly` to Vitest.
 
-Both `pnpm run test` and `pnpm run test:mocha` are run in CI on every Pull Request.
+Both `pnpm run test` and `pnpm run test:node` run in CI on every Pull Request.
 
 ## How to manage visual tests
 
