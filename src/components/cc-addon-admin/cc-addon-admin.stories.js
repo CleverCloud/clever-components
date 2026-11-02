@@ -133,6 +133,39 @@ export const dataLoadedWithDangerZoneNoVmNoBackups = makeStory(conf, {
   ],
 });
 
+export const dataLoadedWithDangerZoneSlot = makeStory(conf, {
+  items: [
+    {
+      /** @type {AddonAdminStateLoaded} */
+      state: {
+        type: 'loaded',
+        ...addon,
+      },
+      noDangerZoneBackupText: true,
+      noDangerZoneVmText: true,
+      innerHTML: `
+        <p slot="danger-zone">Also, do not forget to delete the <code>bucket.json</code> file from your Git repository.</p>
+      `,
+    },
+  ],
+});
+
+export const dataLoadedWithNoDelete = makeStory(conf, {
+  items: [
+    {
+      /** @type {AddonAdminStateLoaded} */
+      state: {
+        type: 'loaded',
+        ...addon,
+      },
+      noDelete: true,
+      innerHTML: `
+        <p slot="danger-zone">You can't delete the FS-Bucket of a PHP FTP <a href="https://example.com/my-php-app">my-php-app</a> application.</p>
+      `,
+    },
+  ],
+});
+
 export const errorWithLoading = makeStory(conf, {
   items: [
     {
