@@ -489,3 +489,34 @@ export const irrelevantCategoryFilterAndIrrelevantInput = makeStory(conf, {
     },
   ],
 });
+
+export const productsWithoutIcon = makeStory(conf, {
+  items: [
+    {
+      productsByCategories: [
+        {
+          categoryName: 'Add-ons',
+          products: [
+            {
+              name: 'PostgreSQL',
+              description: 'A product with an icon, for comparison',
+              iconUrl: 'https://assets.clever-cloud.com/logos/pgsql.svg',
+              url: '',
+            },
+            {
+              name: 'Unknown provider',
+              description: 'A product whose `iconUrl` is left undefined',
+              url: '',
+            },
+            {
+              name: 'Another unknown provider',
+              description: 'A product whose `iconUrl` is an empty string',
+              iconUrl: '',
+              url: '',
+            },
+          ],
+        },
+      ],
+    },
+  ],
+});
