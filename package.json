@@ -102,7 +102,7 @@
     "@rollup/plugin-alias": "^3.1.2",
     "@rollup/plugin-commonjs": "^18.1.0",
     "@rollup/plugin-json": "^4.1.0",
-    "@rollup/plugin-node-resolve": "^13.0.0",
+    "@rollup/plugin-node-resolve": "^16.0.3",
     "@storybook/addon-docs": "^10.1.10",
     "@storybook/addon-links": "^10.1.10",
     "@storybook/web-components-vite": "^10.1.10",

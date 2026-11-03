@@ -48,8 +48,8 @@ export function getCdnRollupConfig(cdnEntryName, minifyJs) {
       importMetaUrlAssetsPlugin(),
       // convert CommonJS modules to ESM
       commonjs(),
-      // support resolving module using Node resolution algorithm. TODO: figure out why we need that
-      resolve(),
+      // support resolving module using Node resolution algorithm (resolve bare imports)
+      resolve({ browser: true }),
       // minify JS (if required)
       minifyJs && terserPlugin(),
       // add and minify default theme
