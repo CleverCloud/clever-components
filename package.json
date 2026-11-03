@@ -37,8 +37,8 @@
     "components:graph-usage": "node tasks/component-usage-cli.js",
     "format": "prettier . --write",
     "format:check": "prettier . --check",
-    "install-local:config": "OUT=\"$PWD/clevercloud-eslint-config.tgz\"; (cd ../tooling-javascript/eslint/config && pnpm pack --out \"$OUT\") && pnpm add -f ./clevercloud-eslint-config.tgz",
-    "install-local:client": "OUT=\"$PWD/clevercloud-client.tgz\"; (cd ../clever-client.js && pnpm pack --out \"$OUT\") && pnpm add -f ./clevercloud-client.tgz",
+    "install-local:config": "OUT=\"$PWD/clevercloud-eslint-config.tgz\"; (cd ../tooling-javascript/eslint/config && pnpm pack --out \"$OUT\") && pnpm add -D -f ./clevercloud-eslint-config.tgz",
+    "install-local:client": "OUT=\"$PWD/clevercloud-client.tgz\"; (cd ../clever-client.js && pnpm pack --out \"$OUT\") && pnpm add -D -f ./clevercloud-client.tgz",
     "lint": "eslint",
     "lint:fix": "eslint --fix",
     "lint:inspect-config": "eslint --inspect-config",
@@ -64,7 +64,6 @@
     "typecheck:stats": "node tasks/typechecking-stats.js"
   },
   "dependencies": {
-    "@clevercloud/client": "^12.6.7",
     "@lit-labs/motion": "^1.0.7",
     "@lit-labs/virtualizer": "^2.0.14",
     "@shoelace-style/shoelace": "^2.18.0",
@@ -182,6 +181,9 @@
     "vite": "^7.2.2",
     "vitest": "^5.0.5",
     "zod": "^4.4.3"
+  },
+  "peerDependencies": {
+    "@clevercloud/client": "^12.6.8"
   },
   "customElements": "dist/custom-elements.json"
 }

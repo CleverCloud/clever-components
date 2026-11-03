@@ -1,4 +1,5 @@
 import { expect } from '@bundled-es-modules/chai';
+import { GetProfileCommand } from '@clevercloud/client/cc-api-commands/profile/get-profile-command.js';
 import { getCcApiClientWithOAuth, getCcApiClientWithToken } from '../src/lib/cc-api-client.js';
 
 /**
@@ -16,18 +17,27 @@ function createMockApiConfig() {
 }
 
 /**
- * A minimal GetUrl-compatible object for testing `client.getUrl()`.
- * Only needs `.params` and `.get()` to satisfy the duck-typed interface.
+ * Sends a command with the given client while `window.fetch` is stubbed,
+ * and returns the URL of the request the client made.
+ * @param {import('@clevercloud/client/cc-api-client.js').CcApiClient} client
+ * @returns {Promise<URL>}
  */
-const TEST_GET_URL = {
-  params: {},
-  get() {
-    return '/v2/test';
-  },
-  get api() {
-    return 'cc-api';
-  },
-};
+async function getRequestedUrl(client) {
+  const originalFetch = window.fetch;
+  /** @type {Array<URL>} */
+  const requestedUrls = [];
+  window.fetch = async (input) => {
+    requestedUrls.push(new URL(input instanceof Request ? input.url : String(input)));
+    return new Response('{}', { status: 200, headers: { 'Content-Type': 'application/json' } });
+  };
+  try {
+    await client.send(new GetProfileCommand());
+  } finally {
+    window.fetch = originalFetch;
+  }
+  expect(requestedUrls).to.have.lengthOf(1);
+  return requestedUrls[0];
+}
 
 describe('getCcApiClientWithOAuth', function () {
   describe('basic functionality', function () {
@@ -138,10 +148,10 @@ describe('getCcApiClientWithOAuth', function () {
       expect(authenticatedClient).to.not.equal(unauthenticatedClient);
     });
 
-    it('should use the default API host as baseUrl', function () {
+    it('should use the default API host as baseUrl', async function () {
       const client = getCcApiClientWithOAuth(null);
 
-      const url = client.getUrl(TEST_GET_URL);
+      const url = await getRequestedUrl(client);
       expect(url.origin).to.equal('https://api.clever-cloud.com');
     });
   });
@@ -155,10 +165,10 @@ describe('getCcApiClientWithOAuth', function () {
       expect(client.send).to.be.a('function');
     });
 
-    it('should use the provided API_HOST as baseUrl', function () {
+    it('should use the provided API_HOST as baseUrl', async function () {
       const client = getCcApiClientWithOAuth({ API_HOST: 'https://custom.api.com' });
 
-      const url = client.getUrl(TEST_GET_URL);
+      const url = await getRequestedUrl(client);
       expect(url.origin).to.equal('https://custom.api.com');
     });
 
@@ -275,19 +285,17 @@ describe('getCcApiClientWithToken', function () {
   });
 
   describe('base URL behavior', function () {
-    it('should use the provided API_HOST as baseUrl', function () {
-      const apiTokenConfig = createMockApiTokenConfig();
+    it('should use the provided API_HOST as baseUrl', async function () {
+      const client = getCcApiClientWithToken(createMockApiTokenConfig());
 
-      const client = getCcApiClientWithToken(apiTokenConfig);
-
-      const url = client.getUrl(TEST_GET_URL);
+      const url = await getRequestedUrl(client);
       expect(url.origin).to.equal('https://api-bridge.example.com');
     });
 
-    it('should use the default API bridge host when API_HOST is omitted', function () {
+    it('should use the default API bridge host when API_HOST is omitted', async function () {
       const client = getCcApiClientWithToken({ API_TOKEN: 'token123' });
 
-      const url = client.getUrl(TEST_GET_URL);
+      const url = await getRequestedUrl(client);
       expect(url.origin).to.equal('https://api-bridge.clever-cloud.com');
     });
   });

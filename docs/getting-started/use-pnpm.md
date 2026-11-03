@@ -16,8 +16,18 @@ Make sure you have [Node.js](https://nodejs.org/) and [pnpm](https://pnpm.io/) i
 First, install Clever Components as a dependency:
 
 ```bash
-pnpm add @clevercloud/components
+pnpm add @clevercloud/components @clevercloud/client
 ```
+
+### The `@clevercloud/client` peer dependency
+
+Smart components call the Clever Cloud API through [`@clevercloud/client`](https://www.npmjs.com/package/@clevercloud/client).
+It is a **peer dependency**: your app must install it itself, with a version within the range declared in the `peerDependencies` of `@clevercloud/components`.
+
+This way, your app and the components share a single copy of the client, and your package manager warns you at install time if your version does not match what the components need.
+
+The floor of this range moves up when components start using commands that only exist in a newer client version.
+When you upgrade `@clevercloud/components`, check the peer dependency warnings from your package manager and upgrade `@clevercloud/client` if needed.
 
 ## Components
 

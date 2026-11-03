@@ -135,6 +135,7 @@ This project provides a series of tasks you can run as [pnpm scripts](https://pn
 
 * Pack the local `../clever-client.js` project and install it in this project.
 * Useful to test changes made to `@clevercloud/client` before they are published.
+* Adds `@clevercloud/client` to `devDependencies` as a `file:` dependency on the tarball, leaving the `peerDependencies` range untouched: revert `package.json` and the lockfile before committing (see [API client](👋-contributing-api-client--docs)).
 
 ## `pnpm run install-local:config`
 
