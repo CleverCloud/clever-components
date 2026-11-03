@@ -296,6 +296,7 @@ export const translations = {
   'cc-addon-info.doc-link.metabase': `Metabase - Documentation`,
   'cc-addon-info.doc-link.mysql': `MySQL - Documentation`,
   'cc-addon-info.doc-link.otoroshi': `Otoroshi - Documentation`,
+  'cc-addon-info.doc-link.postgresql': `PostgreSQL - Documentation`,
   'cc-addon-info.doc-link.pulsar': `Pulsar - Documentation`,
   'cc-addon-info.encryption.heading': `Encryption at rest`,
   'cc-addon-info.error': `Something went wrong while loading information`,
