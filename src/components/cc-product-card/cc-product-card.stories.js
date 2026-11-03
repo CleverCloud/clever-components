@@ -84,6 +84,7 @@ function renderProducts(products) {
         description="${product.description}"
         icon-url="${product.iconUrl}"
         product-status="${product.productStatus}"
+        .notices=${product.notices}
       ></cc-product-card>
     `;
   });
@@ -115,6 +116,39 @@ export const noStatus = makeStory(conf, {
     name: 'My product',
     description: 'my description',
     productStatus: null,
+  }),
+});
+
+const NOTICES = [
+  {
+    title: 'Maintenance',
+    message:
+      '<p>Provisioning is <strong>slower</strong> than usual. See <cc-link href="https://example.com">our status page</cc-link>.</p>',
+    intent: 'warning',
+  },
+  {
+    title: 'New',
+    message: '<p>Now available in <code>par</code> zone.</p>',
+    intent: 'info',
+  },
+];
+
+export const withNotice = makeStory(conf, {
+  items: productInMultipleWidth({
+    iconUrl: ICON_URL,
+    name: 'My product',
+    description: 'my description',
+    notices: [NOTICES[0]],
+  }),
+});
+
+export const withNoticesAndNoStatus = makeStory(conf, {
+  items: productInMultipleWidth({
+    iconUrl: ICON_URL,
+    name: 'My product',
+    description: 'my description',
+    productStatus: null,
+    notices: NOTICES,
   }),
 });
 

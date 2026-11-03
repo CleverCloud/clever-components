@@ -1,9 +1,16 @@
 import { css, html, LitElement } from 'lit';
+import { classMap } from 'lit/directives/class-map.js';
+import { sanitize } from '../../lib/i18n/i18n-sanitize.js';
 import { isStringEmpty } from '../../lib/utils.js';
 import { i18n } from '../../translations/translation.js';
 import '../cc-badge/cc-badge.js';
 import '../cc-button/cc-button.js';
 import '../cc-img/cc-img.js';
+import '../cc-popover/cc-popover.js';
+
+/**
+ * @import { ProductNotice } from './cc-product-card.types.js'
+ */
 
 /**
  * A component displaying some information about a product in a card.
@@ -17,6 +24,7 @@ export class CcProductCard extends LitElement {
       description: { type: String },
       iconUrl: { type: String, attribute: 'icon-url' },
       name: { type: String },
+      notices: { type: Array },
       productStatus: { type: String, attribute: 'product-status' },
       url: { type: String },
     };
@@ -34,6 +42,9 @@ export class CcProductCard extends LitElement {
     /** @type {string} The name of the product */
     this.name = null;
 
+    /** @type {ProductNotice[]|null} The notices about the product, each displayed as a tag opening a popover with the message */
+    this.notices = null;
+
     /** @type {string|null} The status availability of the product */
     this.productStatus = null;
 
@@ -42,15 +53,32 @@ export class CcProductCard extends LitElement {
   }
 
   render() {
+    const hasNotices = this.notices != null && this.notices.length > 0;
+    const hasStatus = !isStringEmpty(this.productStatus);
+
     // language=HTML
     return html`
-      <div class="wrapper">
+      <div class="wrapper ${classMap({ 'wrapper--no-status': !hasStatus && !hasNotices })}">
         ${this.iconUrl != null ? html` <cc-img src="${this.iconUrl}"></cc-img> ` : ''}
         <a class="name" href="${this.url}" title="${i18n('cc-product-card.select', { name: this.name })}">
           ${this.name}
         </a>
-        ${!isStringEmpty(this.productStatus)
-          ? html` <cc-badge class="product-status">${this.productStatus}</cc-badge> `
+        ${hasStatus || hasNotices
+          ? html`
+              <div class="status">
+                ${hasStatus ? html`<cc-badge class="product-status">${this.productStatus}</cc-badge>` : ''}
+                ${hasNotices
+                  ? this.notices.map(
+                      (notice) => html`
+                        <cc-popover class="notice" intent=${notice.intent} position="bottom-left">
+                          <span slot="button-content">${notice.title}</span>
+                          <div class="notice-message">${sanitize(/** @type {any} */ ([notice.message]))}</div>
+                        </cc-popover>
+                      `,
+                    )
+                  : ''}
+              </div>
+            `
           : ''}
         <p class="description">${this.description}</p>
       </div>
@@ -147,11 +175,34 @@ export class CcProductCard extends LitElement {
           outline: none;
         }
 
-        .product-status {
-          align-self: center;
+        .status {
+          align-items: center;
+          display: flex;
+          flex-wrap: wrap;
           font-size: 0.85em;
+          gap: var(--cc-spacing-2, 0.25em);
           grid-area: status;
+        }
+
+        .product-status {
           width: min-content;
+        }
+
+        /* Lifts the notice tag above the card link overlay (.name::after) */
+        .notice {
+          position: relative;
+          z-index: 1;
+        }
+
+        .notice-message {
+          cursor: auto;
+          font-size: 1rem;
+          max-width: 20em;
+          width: max-content;
+        }
+
+        .notice-message p {
+          margin: 0;
         }
 
         .description {

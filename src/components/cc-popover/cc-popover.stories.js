@@ -119,3 +119,10 @@ export const withNoCssPadding = makeStory(conf, {
     innerHTML: '<div>This is the popover content with no padding</div>',
   })),
 });
+
+export const withBadgeTrigger = makeStory(conf, {
+  items: ['neutral', 'info', 'success', 'warning', 'danger'].map((intent) => ({
+    intent,
+    innerHTML: `<span slot="button-content">${intent}</span><div>This is the popover content</div>`,
+  })),
+});

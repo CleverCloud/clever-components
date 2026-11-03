@@ -169,6 +169,7 @@ export class CcProductList extends LitElement {
                   icon-url="${p.iconUrl}"
                   url="${p.url}"
                   product-status="${p.productStatus}"
+                  .notices=${p.notices}
                 ></cc-product-card>
               `,
             )}
