@@ -5,6 +5,17 @@ title: 'Changelog'
 
 # Changelog
 
+## [26.9.1](https://github.com/CleverCloud/clever-components/compare/26.9.0...26.9.1) (2026-11-03)
+
+
+### 🐛 Bug Fixes
+
+* **cc-pricing-product-consumption:** make the layout fluid and able to leave the wide mode ([010eeb2](https://github.com/CleverCloud/clever-components/commit/010eeb2916b60c509b7b01cc17ade96007adfa6b)), closes [#1855](https://github.com/CleverCloud/clever-components/issues/1855)
+* **cc-product-card:** do not reserve space for a missing icon ([7062b92](https://github.com/CleverCloud/clever-components/commit/7062b92b174644c4c5c314e9d55629b752e798dc))
+* **cc-product-list:** do not turn an undefined iconUrl into an empty attribute ([0130062](https://github.com/CleverCloud/clever-components/commit/013006295ea5d5a67d3b2cb1bf21fff7f20d2a1e)), closes [#1866](https://github.com/CleverCloud/clever-components/issues/1866)
+* **cdn:** resolve `@clevercloud/client` imports properly ([60b5dcf](https://github.com/CleverCloud/clever-components/commit/60b5dcfec0123c25b520bd248ca97ec5c363dbea)), closes [#1875](https://github.com/CleverCloud/clever-components/issues/1875)
+* **deps:** make @clevercloud/client a peer dependency ([8effd41](https://github.com/CleverCloud/clever-components/commit/8effd410da455e711766e1e4de101a1583508783)), closes [#1871](https://github.com/CleverCloud/clever-components/issues/1871)
+
 ## [26.9.0](https://github.com/CleverCloud/clever-components/compare/26.8.0...26.9.0) (2026-10-28)
 
 
