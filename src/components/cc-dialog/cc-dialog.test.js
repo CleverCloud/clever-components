@@ -6,6 +6,33 @@ import { findActiveElement } from '../../lib/shadow-dom-utils.js';
 import { CcCloseEvent, CcFocusRestorationFailEvent } from '../common.events.js';
 import './cc-dialog.js';
 
+/**
+ * Helper: Hide native `closedby` support to exercise the fallback used by browsers without it (Safari, Chrome < 134, Firefox < 141)
+ * @return {() => void} restore function
+ */
+function hideNativeClosedBySupport() {
+  const descriptor = Object.getOwnPropertyDescriptor(HTMLDialogElement.prototype, 'closedBy');
+  delete HTMLDialogElement.prototype.closedBy;
+  return () => {
+    if (descriptor != null) {
+      Object.defineProperty(HTMLDialogElement.prototype, 'closedBy', descriptor);
+    }
+  };
+}
+
+/**
+ * Helper: Dispatch synthetic `pointerdown` + `click` on the native dialog at the given position.
+ * Synthetic events never trigger the native light dismiss, so only the component fallback can react to them.
+ */
+function clickNativeDialogAt(nativeDialog, { down, up }) {
+  nativeDialog.dispatchEvent(
+    new PointerEvent('pointerdown', { bubbles: true, composed: true, clientX: down.x, clientY: down.y }),
+  );
+  nativeDialog.dispatchEvent(
+    new MouseEvent('click', { bubbles: true, cancelable: true, composed: true, clientX: up.x, clientY: up.y }),
+  );
+}
+
 // Helper: Get close button from shadow root
 function getCloseButton(element) {
   return element.shadowRoot.querySelector('.dialog-close');
@@ -177,6 +204,105 @@ describe('cc-dialog component', () => {
       expect(dialog.open).to.equal(true);
       expect(nativeDialog.open).to.equal(true);
       expect(closeSpy.called).to.equal(false);
+    });
+
+    describe('Light dismiss fallback (browsers without closedby support)', () => {
+      let restoreClosedBySupport;
+
+      beforeEach(() => {
+        restoreClosedBySupport = hideNativeClosedBySupport();
+      });
+
+      afterEach(() => {
+        restoreClosedBySupport();
+      });
+
+      async function setup(closedBy) {
+        const container = await fixture(html`
+          <div>
+            <cc-dialog heading="Test Dialog" closed-by="${closedBy}" open>
+              <p>Dialog content</p>
+            </cc-dialog>
+          </div>
+        `);
+        const dialog = container.querySelector('cc-dialog');
+        const nativeDialog = dialog.shadowRoot.querySelector('dialog');
+        const rect = nativeDialog.getBoundingClientRect();
+        const backdrop = { x: rect.left - 10, y: rect.top - 10 };
+        const inside = { x: rect.left + 5, y: rect.top + 5 };
+        const closeSpy = createEventSpy(dialog, CcCloseEvent.TYPE);
+        return { dialog, nativeDialog, backdrop, inside, closeSpy };
+      }
+
+      it('should close dialog on backdrop click when closed-by is any', async () => {
+        const { dialog, nativeDialog, backdrop, closeSpy } = await setup('any');
+
+        clickNativeDialogAt(nativeDialog, { down: backdrop, up: backdrop });
+        await elementUpdated(dialog);
+
+        expect(dialog.open).to.equal(false);
+        expect(nativeDialog.open).to.equal(false);
+        expect(closeSpy.called).to.equal(true);
+      });
+
+      it('should not close dialog on click in the dialog padding', async () => {
+        const { dialog, nativeDialog, inside, closeSpy } = await setup('any');
+
+        clickNativeDialogAt(nativeDialog, { down: inside, up: inside });
+        await elementUpdated(dialog);
+
+        expect(dialog.open).to.equal(true);
+        expect(closeSpy.called).to.equal(false);
+      });
+
+      it('should not close dialog when the press starts inside and is released on the backdrop', async () => {
+        const { dialog, nativeDialog, backdrop, inside, closeSpy } = await setup('any');
+
+        clickNativeDialogAt(nativeDialog, { down: inside, up: backdrop });
+        await elementUpdated(dialog);
+
+        expect(dialog.open).to.equal(true);
+        expect(closeSpy.called).to.equal(false);
+      });
+
+      it('should not close dialog on backdrop click when closed-by is closerequest', async () => {
+        const { dialog, nativeDialog, backdrop, closeSpy } = await setup('closerequest');
+
+        clickNativeDialogAt(nativeDialog, { down: backdrop, up: backdrop });
+        await elementUpdated(dialog);
+
+        expect(dialog.open).to.equal(true);
+        expect(closeSpy.called).to.equal(false);
+      });
+
+      it('should not close dialog on backdrop click when closed-by is none', async () => {
+        const { dialog, nativeDialog, backdrop, closeSpy } = await setup('none');
+
+        clickNativeDialogAt(nativeDialog, { down: backdrop, up: backdrop });
+        await elementUpdated(dialog);
+
+        expect(dialog.open).to.equal(true);
+        expect(closeSpy.called).to.equal(false);
+      });
+    });
+
+    it('should leave light dismiss to the browser when closedby is natively supported', async () => {
+      const container = await fixture(html`
+        <div>
+          <cc-dialog heading="Test Dialog" closed-by="any" open>
+            <p>Dialog content</p>
+          </cc-dialog>
+        </div>
+      `);
+      const dialog = container.querySelector('cc-dialog');
+      const nativeDialog = dialog.shadowRoot.querySelector('dialog');
+      const rect = nativeDialog.getBoundingClientRect();
+      const backdrop = { x: rect.left - 10, y: rect.top - 10 };
+
+      clickNativeDialogAt(nativeDialog, { down: backdrop, up: backdrop });
+      await elementUpdated(dialog);
+
+      expect(dialog.open).to.equal(true);
     });
 
     it('should close dialog when open is set to false', async () => {
