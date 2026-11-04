@@ -313,3 +313,23 @@ export const multipleSections = makeStory(conf, {
     },
   ],
 });
+
+export const customOptionNameFontSize = makeStory(conf, {
+  // language=CSS
+  css: `
+    cc-zone-picker {
+      --cc-zone-picker-option-name-font-size: 1.125em;
+    }
+  `,
+  /** @type {Array<Partial<CcZonePicker>>} */
+  items: [
+    {
+      zonesSections: [
+        {
+          zones: PUBLIC_ZONES,
+        },
+      ],
+      value: 'par',
+    },
+  ],
+});
