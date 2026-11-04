@@ -6,8 +6,9 @@ import '../cc-toggle/cc-toggle.js';
 import { CcLogsmapModeChangeEvent } from './cc-logsmap.events.js';
 
 /**
- * @import { PointsOptions } from './cc-logsmap.types.js'
- * @import { HeatmapPoint, MapModeType, Point } from '../common.types.js'
+ * @import { DisplayedLogsmapPoint, LogsmapPoint, PointsOptions } from './cc-logsmap.types.js'
+ * @import { HeatmapPoint, MapModeType } from '../common.types.js'
+ * @import { MapPoint } from '../cc-map/cc-map.types.js'
  */
 
 /**
@@ -74,16 +75,16 @@ export class CcLogsmap extends LitElement {
     /** @type {number} Sets the zoom of the map (between 1 and 6). */
     this.viewZoom = 2;
 
-    /** @type {Point[]} */
+    /** @type {MapPoint[]} */
     this._points = [];
 
-    /** @type {Record<string, Point[]>} */
+    /** @type {Record<string, DisplayedLogsmapPoint[]>} */
     this._pointsByCoords = {};
   }
 
   /**
    * Add several points to the map with blinking dots markers.
-   * @param {Point[]} points - List of points.
+   * @param {LogsmapPoint[]} points - List of points.
    * @param {PointsOptions} options - Options to spread the display of the different points over time.
    */
   addPoints(points, options = {}) {
@@ -96,7 +97,7 @@ export class CcLogsmap extends LitElement {
     });
   }
 
-  /** @param {Point} point */
+  /** @param {LogsmapPoint} point */
   _addPoint({ lat, lon, count = 1, delay = 1000, tooltip }) {
     const coords = [lat, lon].join(',');
     const newPoint = { lat, lon, count, tooltip };
