@@ -5,6 +5,14 @@ title: 'Changelog'
 
 # Changelog
 
+## [26.10.0](https://github.com/CleverCloud/clever-components/compare/26.9.1...26.10.0) (2026-11-04)
+
+
+### 🚀 Features
+
+* **cc-product-card:** make the name font-size customisable ([3fbaae6](https://github.com/CleverCloud/clever-components/commit/3fbaae6e631bd634e251fc4ddca8183098272c94))
+* **cc-zone-picker:** make the option name font-size customisable ([c3ecde3](https://github.com/CleverCloud/clever-components/commit/c3ecde3ee3e5f416f54467dc67f6f860b8b99461))
+
 ## [26.9.1](https://github.com/CleverCloud/clever-components/compare/26.9.0...26.9.1) (2026-11-03)
 
 
