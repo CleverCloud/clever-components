@@ -122,6 +122,16 @@ export class CcDialog extends LitElement {
     this.open = false;
   }
 
+  /** @param {Event} e */
+  _onDialogCancel(e) {
+    // Browsers without native `closedby` support (Safari) fire `cancel` on Escape even when `closedBy` is `none`
+    if (this.closedBy === 'none') {
+      e.preventDefault();
+      return;
+    }
+    this._onDialogClose(e);
+  }
+
   disconnectedCallback() {
     super.disconnectedCallback();
     // Restore focus to the element that opened the dialog in case the dialog is removed while open
@@ -157,7 +167,7 @@ export class CcDialog extends LitElement {
         closedby="${this.closedBy}"
         part="dialog"
         ${ref(this._dialogRef)}
-        @cancel="${this._onDialogClose}"
+        @cancel="${this._onDialogCancel}"
         @cc-close-request="${this._onDialogClose}"
       >
         ${!this.hiddenCloseButton

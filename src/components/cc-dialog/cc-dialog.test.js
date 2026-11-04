@@ -136,6 +136,49 @@ describe('cc-dialog component', () => {
       expect(closeSpy.called).to.equal(true);
     });
 
+    it('should not close dialog when Escape key is pressed and closed-by is none', async () => {
+      const container = await fixture(html`
+        <div>
+          <cc-dialog heading="Test Dialog" closed-by="none" open>
+            <p>Dialog content</p>
+          </cc-dialog>
+        </div>
+      `);
+      const dialog = container.querySelector('cc-dialog');
+      const closeSpy = createEventSpy(dialog, CcCloseEvent.TYPE);
+
+      await sendKeys({ press: 'Escape' });
+      await elementUpdated(dialog);
+      await nextFrame();
+
+      expect(dialog.open).to.equal(true);
+      expect(closeSpy.called).to.equal(false);
+    });
+
+    it('should ignore the native cancel event when closed-by is none (browsers without closedby support)', async () => {
+      const container = await fixture(html`
+        <div>
+          <cc-dialog heading="Test Dialog" closed-by="none" open>
+            <p>Dialog content</p>
+          </cc-dialog>
+        </div>
+      `);
+      const dialog = container.querySelector('cc-dialog');
+      const nativeDialog = dialog.shadowRoot.querySelector('dialog');
+      const closeSpy = createEventSpy(dialog, CcCloseEvent.TYPE);
+
+      // Simulate the `cancel` event fired on Escape by browsers that ignore the `closedby` attribute
+      const cancelEvent = new Event('cancel', { cancelable: true });
+      nativeDialog.dispatchEvent(cancelEvent);
+      await elementUpdated(dialog);
+      await nextFrame();
+
+      expect(cancelEvent.defaultPrevented).to.equal(true);
+      expect(dialog.open).to.equal(true);
+      expect(nativeDialog.open).to.equal(true);
+      expect(closeSpy.called).to.equal(false);
+    });
+
     it('should close dialog when open is set to false', async () => {
       const container = await fixture(html`
         <div>
