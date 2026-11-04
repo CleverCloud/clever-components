@@ -48,7 +48,7 @@ describe('cc-logs-loading-progress', () => {
 
         await clickPlayPauseButton(element);
 
-        expect(getPlayPauseButton(element).a11yName).to.eql('Pause');
+        expect(getPlayPauseButton(element).a11yName).to.eql('Pause logs loading');
         expect(pauseSpy.callCount).to.eql(1);
         expect(resumeSpy.callCount).to.eql(0);
       });
@@ -61,7 +61,7 @@ describe('cc-logs-loading-progress', () => {
 
       await clickPlayPauseButton(element);
 
-      expect(getPlayPauseButton(element).a11yName).to.eql('Resume');
+      expect(getPlayPauseButton(element).a11yName).to.eql('Resume logs loading');
       expect(resumeSpy.callCount).to.eql(1);
       expect(pauseSpy.callCount).to.eql(0);
     });
