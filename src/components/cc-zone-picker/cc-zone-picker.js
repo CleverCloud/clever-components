@@ -22,6 +22,7 @@ import { CcSelectEvent } from '../common.events.js';
  *
  * @cssprop {Size} --cc-form-controls-indent - The horizontal space between the start of the line and the form control without the label (defaults: `34px`).
  * @cssprop {Size} --cc-form-label-gap - The space between the label and the control (defaults: `0.35em`).
+ * @cssprop {FontSize} --cc-zone-picker-option-name-font-size - The font-size of the zone name inside each option (defaults: `1.5em`).
  */
 export class CcZonePicker extends CcFormControlElement {
   static get properties() {
@@ -261,7 +262,7 @@ export class CcZonePicker extends CcFormControlElement {
         }
 
         cc-picker-option .option-body--name {
-          font-size: 1.5em;
+          font-size: var(--cc-zone-picker-option-name-font-size, 1.5em);
           line-height: 1.125;
         }
 

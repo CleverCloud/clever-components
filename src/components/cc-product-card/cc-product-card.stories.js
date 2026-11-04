@@ -167,6 +167,20 @@ export const longDescriptionAndLongName = makeStory(conf, {
   }),
 });
 
+export const customNameFontSize = makeStory(conf, {
+  // language=CSS
+  css: `
+    cc-product-card {
+      --cc-product-card-name-font-size: 1.25em;
+    }
+  `,
+  items: productInMultipleWidth({
+    iconUrl: ICON_URL,
+    name: 'My product',
+    description: 'my description',
+  }),
+});
+
 export const fakeProductList = makeStory(conf, {
   // language=CSS
   css: `

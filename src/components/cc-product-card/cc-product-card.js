@@ -11,6 +11,7 @@ import '../cc-img/cc-img.js';
  *
  * @cssdisplay block
  *
+ * @cssprop {FontSize} --cc-product-card-name-font-size - The font-size of the product name (defaults: `1.75em`).
  */
 export class CcProductCard extends LitElement {
   static get properties() {
@@ -141,7 +142,7 @@ export class CcProductCard extends LitElement {
 
         .name {
           color: var(--cc-color-text-strongest, #000);
-          font-size: 1.75em;
+          font-size: var(--cc-product-card-name-font-size, 1.75em);
           grid-area: name;
           text-decoration: none;
         }
