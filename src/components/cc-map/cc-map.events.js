@@ -1,18 +1,18 @@
 import { CcEvent } from '../../lib/events.js';
 
 /**
- * @import { Point } from '../common.types.js'
+ * @import { MapPoint } from './cc-map.types.js'
  */
 
 /**
  * Dispatched when a map marker has been clicked.
- * @extends {CcEvent<Point>}
+ * @extends {CcEvent<MapPoint>}
  */
 export class CcMapMarkerClickEvent extends CcEvent {
   static TYPE = 'cc-map-marker-click';
 
   /**
-   * @param {Point} detail
+   * @param {MapPoint} detail
    */
   constructor(detail) {
     super(CcMapMarkerClickEvent.TYPE, detail);
@@ -21,13 +21,13 @@ export class CcMapMarkerClickEvent extends CcEvent {
 
 /**
  * Dispatched when a map marker has been entered by the mouse pointer.
- * @extends {CcEvent<Point>}
+ * @extends {CcEvent<MapPoint>}
  */
 export class CcMapMarkerEnterEvent extends CcEvent {
   static TYPE = 'cc-map-marker-enter';
 
   /**
-   * @param {Point} detail
+   * @param {MapPoint} detail
    */
   constructor(detail) {
     super(CcMapMarkerEnterEvent.TYPE, detail);
@@ -36,13 +36,13 @@ export class CcMapMarkerEnterEvent extends CcEvent {
 
 /**
  * Dispatched when a map marker has been left by the mouse pointer.
- * @extends {CcEvent<Point>}
+ * @extends {CcEvent<MapPoint>}
  */
 export class CcMapMarkerLeaveEvent extends CcEvent {
   static TYPE = 'cc-map-marker-leave';
 
   /**
-   * @param {Point} detail
+   * @param {MapPoint} detail
    */
   constructor(detail) {
     super(CcMapMarkerLeaveEvent.TYPE, detail);
