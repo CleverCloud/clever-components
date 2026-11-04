@@ -1356,8 +1356,8 @@ export const translations = {
   'cc-logs-instances.stopping.header': `Instances arrêtées`,
   //#endregion
   //#region cc-logs-loading-progress
-  'cc-logs-loading-progress.control.pause': `Mettre en pause`,
-  'cc-logs-loading-progress.control.resume': `Reprendre`,
+  'cc-logs-loading-progress.control.pause': `Mettre en pause le chargement des logs`,
+  'cc-logs-loading-progress.control.resume': `Reprendre le chargement des logs`,
   'cc-logs-loading-progress.icon-alt.connection-error': `Erreur de connexion`,
   'cc-logs-loading-progress.overflow.accept': `Continuer`,
   'cc-logs-loading-progress.overflow.discard': `Arrêter`,
