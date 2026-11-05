@@ -5,6 +5,13 @@ title: 'Changelog'
 
 # Changelog
 
+## [26.10.2](https://github.com/CleverCloud/clever-components/compare/26.10.1...26.10.2) (2026-11-05)
+
+
+### 🐛 Bug Fixes
+
+* **cc-addon-header:** allow base properties in the loading state type ([9363719](https://github.com/CleverCloud/clever-components/commit/9363719e0ec7c766d602b6d0d157120845c8bcaf)), closes [#1614](https://github.com/CleverCloud/clever-components/issues/1614)
+
 ## [26.10.1](https://github.com/CleverCloud/clever-components/compare/26.10.0...26.10.1) (2026-11-05)
 
 
