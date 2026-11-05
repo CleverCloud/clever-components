@@ -88,6 +88,9 @@ export class CcDialog extends LitElement {
 
     /** @type {Element|null} */
     this._openerElement = null;
+
+    /** @type {boolean} Whether the last `pointerdown` happened on the backdrop, used by the light dismiss fallback */
+    this._isPointerDownOnBackdrop = false;
   }
 
   /** Opens the dialog by setting the `open` property to true. */
@@ -115,11 +118,62 @@ export class CcDialog extends LitElement {
     }
   }
 
+  /**
+   * Light dismiss fallback for browsers without native `closedby` support (Safari, Chrome < 134, Firefox < 141).
+   * Browsers that support it handle the backdrop click natively, so this must be a no-op for them.
+   *
+   * @return {boolean}
+   */
+  _shouldHandleLightDismiss() {
+    return this.closedBy === 'any' && !('closedBy' in HTMLDialogElement.prototype);
+  }
+
+  /**
+   * Clicks on the backdrop target the `<dialog>` itself, but so do clicks on its padding: the pointer position tells them apart.
+   *
+   * @param {MouseEvent} e
+   * @return {boolean}
+   */
+  _isOnBackdrop(e) {
+    const dialog = this._dialogRef.value;
+    if (dialog == null || e.target !== dialog) {
+      return false;
+    }
+    const rect = dialog.getBoundingClientRect();
+    return e.clientX < rect.left || e.clientX > rect.right || e.clientY < rect.top || e.clientY > rect.bottom;
+  }
+
   /** @param {Event} e */
   _onDialogClose(e) {
     // Prevent the native dialog close (`cancel` event) to manage it through the `open` property
     e?.preventDefault();
     this.open = false;
+  }
+
+  /** @param {Event} e */
+  _onDialogCancel(e) {
+    // Browsers without native `closedby` support (Safari) fire `cancel` on Escape even when `closedBy` is `none`
+    if (this.closedBy === 'none') {
+      e.preventDefault();
+      return;
+    }
+    this._onDialogClose(e);
+  }
+
+  /** @param {PointerEvent} e */
+  _onDialogPointerDown(e) {
+    this._isPointerDownOnBackdrop = this._shouldHandleLightDismiss() && this._isOnBackdrop(e);
+  }
+
+  /** @param {MouseEvent} e */
+  _onDialogClick(e) {
+    // Both the press and the release must happen on the backdrop, like the native light dismiss,
+    // so that a text selection started inside the dialog and released outside does not close it
+    const isLightDismiss = this._isPointerDownOnBackdrop && this._shouldHandleLightDismiss() && this._isOnBackdrop(e);
+    this._isPointerDownOnBackdrop = false;
+    if (isLightDismiss) {
+      this._onDialogClose(e);
+    }
   }
 
   disconnectedCallback() {
@@ -151,13 +205,17 @@ export class CcDialog extends LitElement {
   }
 
   render() {
+    // The `click` listener is the light dismiss fallback, a pointer-only gesture: its keyboard equivalent is Escape (`cancel`)
+    /* eslint-disable lit-a11y/click-events-have-key-events */
     return html`
       <dialog
         aria-labelledby="dialog-heading"
         closedby="${this.closedBy}"
         part="dialog"
         ${ref(this._dialogRef)}
-        @cancel="${this._onDialogClose}"
+        @cancel="${this._onDialogCancel}"
+        @click="${this._onDialogClick}"
+        @pointerdown="${this._onDialogPointerDown}"
         @cc-close-request="${this._onDialogClose}"
       >
         ${!this.hiddenCloseButton
@@ -186,6 +244,7 @@ export class CcDialog extends LitElement {
         </div>
       </dialog>
     `;
+    /* eslint-enable lit-a11y/click-events-have-key-events */
   }
 
   static get styles() {
