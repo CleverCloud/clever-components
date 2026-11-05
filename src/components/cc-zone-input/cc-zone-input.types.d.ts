@@ -1,6 +1,6 @@
 import { Zone } from '@clevercloud/client/cc-api-commands/zone/zone.types.js';
+import { MapPoint } from '../cc-map/cc-map.types.js';
 import { ZoneModeType, ZoneStateLoaded } from '../cc-zone/cc-zone.types.js';
-import { Point } from '../common.types.js';
 
 export type ZoneInputState = ZoneInputStateLoaded | ZoneInputStateLoading | ZoneInputStateError;
 
@@ -17,9 +17,7 @@ export interface ZoneInputStateError {
   type: 'error';
 }
 
-// FIXME: the `Point` type has a different type for `marker` & `tooltip` properties
-// maybe we could add this as an alternative within the original `Point` interface?
-export interface ZoneInputPoint extends Omit<Point, 'tooltip' | 'marker'> {
+export interface ZoneInputPoint extends MapPoint {
   marker: { tag: 'cc-map-marker-server'; state: ZonePointMarkerState; keyboard: false };
   tooltip: { tag: 'cc-zone'; state: ZoneStateLoaded; mode: ZoneModeType };
 }

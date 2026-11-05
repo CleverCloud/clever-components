@@ -11,8 +11,8 @@ import '../cc-loader/cc-loader.js';
 import { CcMapMarkerClickEvent, CcMapMarkerEnterEvent, CcMapMarkerLeaveEvent } from './cc-map.events.js';
 
 /**
- * @import { HeatmapPoint, MapModeType, Point } from '../common.types.js'
- * @import { CachedPoint, MapIconElement } from './cc-map.types.js'
+ * @import { HeatmapPoint, MapModeType } from '../common.types.js'
+ * @import { CachedPoint, MapIconElement, MapPoint } from './cc-map.types.js'
  * @import { PropertyValues } from 'lit'
  */
 
@@ -66,7 +66,7 @@ export class CcMap extends LitElement {
     /** @type {MapModeType} Sets map mode: `"points"` for points with custom markers and `"heatmap"` for a heatmap. */
     this.mode = 'points';
 
-    /** @type {Point[]} */
+    /** @type {MapPoint[]} Sets the list of points displayed with custom markers. */
     this.points = [];
 
     /** @type {number} Sets the zoom of the map (between 1 and 6). */
@@ -97,7 +97,7 @@ export class CcMap extends LitElement {
     this._map.addLayer(layerToAdd);
   }
 
-  /** @param {Point[]} newPoints */
+  /** @param {HeatmapPoint[]} newPoints */
   _updateHeatmap(newPoints) {
     if (!Array.isArray(newPoints)) {
       return;
@@ -119,7 +119,7 @@ export class CcMap extends LitElement {
     this._heatLayer.clearLayers().addLayer(new leaflet.HeatLayer(heatPoints, heatOptions));
   }
 
-  /** @param {Point[]} newPoints */
+  /** @param {MapPoint[]} newPoints */
   _updatePoints(newPoints) {
     if (!Array.isArray(newPoints)) {
       return;
@@ -147,7 +147,7 @@ export class CcMap extends LitElement {
 
   /**
    * @param {string} id
-   * @param {Point} point
+   * @param {MapPoint} point
    */
   _createMarker(id, point) {
     // Prepare icon with custom element
@@ -176,7 +176,7 @@ export class CcMap extends LitElement {
 
   /**
    * @param {string} id
-   * @param {Point} newPoint
+   * @param {MapPoint} newPoint
    */
   _updateMarker(id, newPoint) {
     this._pointsCache[id].point = newPoint;
