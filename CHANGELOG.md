@@ -5,6 +5,14 @@ title: 'Changelog'
 
 # Changelog
 
+## [26.10.1](https://github.com/CleverCloud/clever-components/compare/26.10.0...26.10.1) (2026-11-05)
+
+
+### 🐛 Bug Fixes
+
+* **cc-dialog:** fall back to light dismiss without native closedby support ([8f7ff57](https://github.com/CleverCloud/clever-components/commit/8f7ff57220feaea1fc385f8aa8abb8a4a66fcdc4)), closes [#1882](https://github.com/CleverCloud/clever-components/issues/1882)
+* **cc-dialog:** ignore escape when closed-by is none without native support ([ea8cc89](https://github.com/CleverCloud/clever-components/commit/ea8cc89a68c6814531f8e93a174a9b499073c4b6)), closes [#1882](https://github.com/CleverCloud/clever-components/issues/1882)
+
 ## [26.10.0](https://github.com/CleverCloud/clever-components/compare/26.9.1...26.10.0) (2026-11-04)
 
 
