@@ -39,6 +39,11 @@ interface ApiConfig {
 | `GET`      | `/v4/kubernetes/organisations/${ownerId}/clusters/${kubernetesId}`                           | Default                         |
 | `GET`      | `/v4/kubernetes/organisations/${ownerId}/clusters/${kubernetesId}/kubeconfig/presigned-url`  | Default (fetched every 50 mins) |
 
+The kubeconfig link is fetched independently of the cluster: if it cannot be retrieved, the header is still displayed, without the kubeconfig download link.
+
+* On a `403` (the user's role is not allowed to get a kubeconfig), no error is notified and the link is not refreshed anymore.
+* On any other error, an error toast is displayed once and the link keeps being refreshed every 50 mins.
+
 
 ## ⬇️️ Examples
 
