@@ -181,6 +181,19 @@ export const internalLink = makeStory(conf, {
   ],
 });
 
+export const mailtoAndTelLinks = makeStory(conf, {
+  items: [
+    {
+      href: 'mailto:support@example.com',
+      innerHTML: 'support@example.com',
+    },
+    {
+      href: 'tel:+33123456789',
+      innerHTML: '+33 1 23 45 67 89',
+    },
+  ],
+});
+
 export const withHtmlContent = makeStory(conf, {
   items: [
     {
