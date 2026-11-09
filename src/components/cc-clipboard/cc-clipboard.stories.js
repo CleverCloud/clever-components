@@ -26,3 +26,7 @@ export const shortText = makeStory(conf, {
 export const skeleton = makeStory(conf, {
   items: [{ value: 'Text to copy', skeleton: true }],
 });
+
+export const secret = makeStory(conf, {
+  items: [{ value: 'my-secret-password', secret: true }],
+});

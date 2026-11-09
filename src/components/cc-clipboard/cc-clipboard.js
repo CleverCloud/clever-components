@@ -24,6 +24,7 @@ import '../cc-icon/cc-icon.js';
 export class CcClipboard extends LitElement {
   static get properties() {
     return {
+      secret: { type: Boolean },
       skeleton: { type: Boolean },
       value: { type: String },
       _copied: { type: Boolean, state: true },
@@ -34,6 +35,9 @@ export class CcClipboard extends LitElement {
 
   constructor() {
     super();
+
+    /** @type {boolean} Prevents the value from being exposed in the button title and accessible name. */
+    this.secret = false;
 
     /** @type {boolean} Enables skeleton screen UI pattern (loading hint). */
     this.skeleton = false;
@@ -58,6 +62,10 @@ export class CcClipboard extends LitElement {
 
   render() {
     const tabIndex = this.skeleton ? -1 : null;
+    const label =
+      !this.secret && !isStringEmpty(this.value)
+        ? i18n('cc-clipboard.copy', { text: this.value })
+        : i18n('cc-clipboard.copy.empty');
 
     return html`
       <button
@@ -66,16 +74,10 @@ export class CcClipboard extends LitElement {
         class=${classMap({ skeleton: this.skeleton })}
         aria-disabled=${this.skeleton}
         @click=${this._copyToClipboard}
-        title=" ${!isStringEmpty(this.value)
-          ? i18n('cc-clipboard.copy', { text: this.value })
-          : i18n('cc-clipboard.copy.empty')}"
+        title=" ${label}"
       >
         <cc-icon class="copy-icon" .icon="${this._copied ? iconSuccess : iconCopy}" size="lg"></cc-icon>
-        <span class="visually-hidden">
-          ${!isStringEmpty(this.value)
-            ? i18n('cc-clipboard.copy', { text: this.value })
-            : i18n('cc-clipboard.copy.empty')}
-        </span>
+        <span class="visually-hidden">${label}</span>
       </button>
       <span class="visually-hidden" aria-live="polite"> ${this._copied ? i18n('cc-clipboard.copied') : ''} </span>
     `;
