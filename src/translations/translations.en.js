@@ -290,6 +290,7 @@ export const translations = {
   'cc-addon-info.doc-link.fs-bucket': `FS Bucket - Documentation`,
   'cc-addon-info.doc-link.jenkins': `Jenkins - Documentation`,
   'cc-addon-info.doc-link.keycloak': `Keycloak - Documentation`,
+  'cc-addon-info.doc-link.kms': `KMS - Documentation`,
   'cc-addon-info.doc-link.kubernetes': `Kubernetes - Documentation`,
   'cc-addon-info.doc-link.materia-kv': `Materia KV - Documentation`,
   'cc-addon-info.doc-link.matomo': `Matomo - Documentation`,
