@@ -293,7 +293,7 @@ export class CcSearchBar extends LitElement {
             label="${i18n('cc-search-bar.label')}"
             placeholder="${i18n('cc-search-bar.placeholder')}"
             value="${this.value}"
-            ?autofocus="${true}"
+            autofocus
             @cc-input="${this._onInput}"
             @keydown="${this._inputKeydownListener}"
           ></cc-input-text>

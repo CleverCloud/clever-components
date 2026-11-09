@@ -504,7 +504,7 @@ export class CcCellarBucketList extends LitElement {
     >
       <form ${formSubmit(this._onCreateBucketFormSubmit.bind(this))} ${ref(this._createBucketFormRef)}>
         <cc-input-text
-          ?autofocus=${true}
+          autofocus
           label=${i18n('cc-cellar-bucket-list.create.bucket-name.label')}
           name="bucketName"
           required
