@@ -50,12 +50,14 @@ export class CcProductCard extends LitElement {
     return html`
       <div class="wrapper ${classMap({ 'wrapper--no-icon': !hasIcon })}">
         ${hasIcon ? html` <cc-img src="${this.iconUrl}"></cc-img> ` : ''}
-        <a class="name" href="${this.url}" title="${i18n('cc-product-card.select', { name: this.name })}">
-          ${this.name}
-        </a>
-        ${!isStringEmpty(this.productStatus)
-          ? html` <cc-badge class="product-status">${this.productStatus}</cc-badge> `
-          : ''}
+        <div class="title">
+          <a class="name" href="${this.url}" title="${i18n('cc-product-card.select', { name: this.name })}">
+            ${this.name}
+          </a>
+          ${!isStringEmpty(this.productStatus)
+            ? html` <cc-badge class="product-status">${this.productStatus}</cc-badge> `
+            : ''}
+        </div>
         <p class="description">${this.description}</p>
       </div>
     `;
@@ -94,9 +96,9 @@ export class CcProductCard extends LitElement {
           display: grid;
           gap: var(--cc-spacing-1, 0.25em) var(--cc-spacing-3, 0.5em);
           grid-template-areas:
-            'icon name status'
-            'description description description';
-          grid-template-columns: min-content auto 1fr;
+            'icon title'
+            'description description';
+          grid-template-columns: min-content 1fr;
           grid-template-rows: min-content auto;
           height: 100%;
           padding: var(--cc-spacing-5, 1em);
@@ -114,19 +116,11 @@ export class CcProductCard extends LitElement {
           outline-offset: var(--cc-focus-outline-offset, 2px);
         }
 
-        .wrapper--no-status {
-          grid-template-areas:
-            'icon name'
-            'description description';
-          grid-template-columns: min-content 1fr;
-          grid-template-rows: min-content auto;
-        }
-
         .wrapper--no-icon {
           grid-template-areas:
-            'name status'
-            'description description';
-          grid-template-columns: auto 1fr;
+            'title'
+            'description';
+          grid-template-columns: 1fr;
         }
 
         /* endregion */
@@ -138,6 +132,14 @@ export class CcProductCard extends LitElement {
           grid-area: icon;
           height: 2em;
           width: 2em;
+        }
+
+        .title {
+          align-items: center;
+          display: flex;
+          flex-wrap: wrap;
+          gap: var(--cc-spacing-1, 0.25em) var(--cc-spacing-3, 0.5em);
+          grid-area: title;
         }
 
         .name {
@@ -161,10 +163,7 @@ export class CcProductCard extends LitElement {
         }
 
         .product-status {
-          align-self: center;
           font-size: 0.85em;
-          grid-area: status;
-          width: min-content;
         }
 
         .description {
