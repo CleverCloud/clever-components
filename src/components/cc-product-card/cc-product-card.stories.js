@@ -167,6 +167,15 @@ export const longDescriptionAndLongName = makeStory(conf, {
   }),
 });
 
+export const longStatus = makeStory(conf, {
+  items: productInMultipleWidth({
+    iconUrl: ICON_URL,
+    name: 'My product',
+    description: 'my description',
+    productStatus: 'TECH PREVIEW',
+  }),
+});
+
 export const customNameFontSize = makeStory(conf, {
   // language=CSS
   css: `
