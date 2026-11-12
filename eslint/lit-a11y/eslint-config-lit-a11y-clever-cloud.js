@@ -10,5 +10,7 @@ export default {
     ...eslintLitA11yPlugin.configs.recommended.rules,
     // redundant role may be necessary sometimes
     'lit-a11y/no-redundant-role': 'warn',
+    // autofocus can be a UX win without hindering accessibility (e.g. first field of a dialog), so we rely on reviews instead
+    'lit-a11y/no-autofocus': 'off',
   },
 };
