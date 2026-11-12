@@ -5,6 +5,24 @@ title: 'Changelog'
 
 # Changelog
 
+## [26.11.0](https://github.com/CleverCloud/clever-components/compare/26.10.1...26.11.0) (2026-11-12)
+
+
+### 🚀 Features
+
+* **cc-clipboard:** add a `secret` property to prevent exposing the value in the button title ([0afd9ce](https://github.com/CleverCloud/clever-components/commit/0afd9ce135ec7df7eb5fc361722355d1d38e7624))
+
+
+### 🐛 Bug Fixes
+
+* **cc-addon-header:** allow base properties in the loading state type ([9363719](https://github.com/CleverCloud/clever-components/commit/9363719e0ec7c766d602b6d0d157120845c8bcaf)), closes [#1614](https://github.com/CleverCloud/clever-components/issues/1614)
+* **cc-input-text:** do not expose the secret value in the clipboard button title ([f80bee5](https://github.com/CleverCloud/clever-components/commit/f80bee57d44e6cb485d713ea0ade929fade4b91d)), closes [#1514](https://github.com/CleverCloud/clever-components/issues/1514)
+* **cc-link:** do not treat `mailto:` and `tel:` links as opening a new window ([c343de3](https://github.com/CleverCloud/clever-components/commit/c343de354e3eb62b53dd6a23802336fa48c4b5f6)), closes [#1460](https://github.com/CleverCloud/clever-components/issues/1460)
+* **cc-logs-loading-progress:** make the pause/resume button name more explicit ([efc9219](https://github.com/CleverCloud/clever-components/commit/efc9219142dd42b72cf8597b2e925377ec99141f)), closes [#1035](https://github.com/CleverCloud/clever-components/issues/1035)
+* **cc-map:** use dedicated types matching the actual points API ([ca5bf1f](https://github.com/CleverCloud/clever-components/commit/ca5bf1fa7efabf9def6323047a68f761c6f8a4ec)), closes [#1512](https://github.com/CleverCloud/clever-components/issues/1512)
+* **cc-product-card:** keep a multi-word status badge on one line ([d6dd7eb](https://github.com/CleverCloud/clever-components/commit/d6dd7eb3a6a6129c0c5a910b5d2fd77f405f3768))
+* **cc-toggle:** wrap instead of overflowing when the available width is reduced ([6a99cca](https://github.com/CleverCloud/clever-components/commit/6a99cca0f70544716a99fad08e31f074873d532e)), closes [#1497](https://github.com/CleverCloud/clever-components/issues/1497)
+
 ## [26.10.1](https://github.com/CleverCloud/clever-components/compare/26.10.0...26.10.1) (2026-11-05)
 
 
