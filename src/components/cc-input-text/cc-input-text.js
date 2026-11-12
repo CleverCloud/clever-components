@@ -416,7 +416,15 @@ export class CcInputText extends CcFormControlElement {
               </button>
             `
           : ''}
-        ${clipboard ? html` <cc-clipboard class="btn-copy" value="${this.value}"></cc-clipboard> ` : ''}
+        ${clipboard
+          ? html`
+              <cc-clipboard
+                class="btn-copy"
+                value="${this.value}"
+                ?secret=${secret && !this._showSecret}
+              ></cc-clipboard>
+            `
+          : ''}
       </div>
 
       <div class="help-container" id="help-id">
