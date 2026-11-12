@@ -8,6 +8,8 @@ import { i18n } from '../../translations/translation.js';
 import '../cc-icon/cc-icon.js';
 import '../cc-img/cc-img.js';
 
+const SYSTEM_HANDLED_PROTOCOLS = ['mailto:', 'tel:'];
+
 /**
  * @import { IconModel } from '../common.types.js'
  * @import { EventWithTarget } from '../../lib/events.types.js'
@@ -20,6 +22,7 @@ import '../cc-img/cc-img.js';
  *
  * * The link has a display of `inline-flex` to ease vertical alignment and spacing.
  * * External URLs are automatically handled by adding `target="_blank"` and `rel="noreferrer"` on the link for security purposes.
+ * * `mailto:` and `tel:` URLs are not considered as external: they don't open a new window.
  * * The title is automatically inferred though it can be overridden by the `a11yDesc` attribute.
  *
  * @cssdisplay inline-flex
@@ -123,7 +126,8 @@ export class CcLink extends LitElement {
 
   render() {
     const href = !this.skeleton && isSafeLinkUrl(this.href) ? this.href : null;
-    const isDifferentOrigin = isExternalUrl(href);
+    // `mailto:` and `tel:` links are handled by the system (mail client, phone…), they don't open a new window
+    const isDifferentOrigin = isExternalUrl(href) && !isSystemHandledLink(href);
     const target = isDifferentOrigin ? '_blank' : null;
     const rel = isDifferentOrigin ? 'noreferrer' : null;
     const disableExternalIcon = this.disableExternalLinkIcon || this.mode !== 'default';
@@ -318,6 +322,21 @@ export class CcLink extends LitElement {
         /* endregion */
       `,
     ];
+  }
+}
+
+/**
+ * @param {string|null} href
+ * @returns {boolean} Whether the link is handled by the system (`mailto:` or `tel:`) instead of the browser
+ */
+function isSystemHandledLink(href) {
+  if (href == null) {
+    return false;
+  }
+  try {
+    return SYSTEM_HANDLED_PROTOCOLS.includes(new URL(href, location.href).protocol);
+  } catch {
+    return false;
   }
 }
 
