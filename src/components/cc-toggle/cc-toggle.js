@@ -198,6 +198,7 @@ export class CcToggle extends LitElement {
           --height: 2em;
 
           display: inline-flex;
+          max-width: 100%;
         }
 
         .group {
@@ -210,6 +211,7 @@ export class CcToggle extends LitElement {
           align-items: center;
           column-gap: var(--cc-form-label-gap-inline, 0.75em);
           flex-direction: row;
+          flex-wrap: wrap;
         }
 
         #legend {
@@ -224,10 +226,11 @@ export class CcToggle extends LitElement {
           border-radius: var(--cc-border-radius-small, 0.25em);
           box-sizing: border-box;
           display: flex;
-          height: var(--height);
           line-height: 1.25;
+          max-width: 100%;
+          min-height: var(--height);
           overflow: visible;
-          width: max-content;
+          width: fit-content;
         }
 
         /* We hide the <input> and only display the related <label> */
@@ -259,7 +262,7 @@ export class CcToggle extends LitElement {
           font-weight: var(--cc-toggle-font-weight, bold);
           gap: var(--cc-spacing-3, 0.5em);
           grid-auto-flow: column;
-          padding: 0 var(--cc-spacing-3, 0.5em);
+          padding: var(--cc-spacing-1, 0.25em) var(--cc-spacing-3, 0.5em);
           position: relative;
           text-transform: var(--cc-toggle-text-transform, uppercase);
           -moz-user-select: none;
