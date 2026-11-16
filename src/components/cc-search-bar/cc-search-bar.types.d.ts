@@ -10,6 +10,8 @@ export interface SearchBarItem {
   aliases?: string[];
   itemType?: SearchBarItemType;
   matchers?: string[];
+  /** Tags the user put on the item, as is (`env:prod`, `production`): found by `tag:<tag>` tokens. */
+  tags?: string[];
 }
 
 export interface SearchBarSection {
