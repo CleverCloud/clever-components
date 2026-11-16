@@ -126,8 +126,9 @@ export class CcSearchBar extends LitElement {
 
   /**
    * Filters `this.sections` based on `this.value`, with the grammar shared with the console sidebar
-   * (see `lib/filter-sections.js`): `is:`/`project:` tokens are matched against an item's matchers,
-   * everything else is free text matched against its label, id and aliases, and every token must pass.
+   * (see `lib/filter-sections.js`): `is:`/`project:` tokens are matched against an item's matchers, `tag:`
+   * ones against its `tags`, everything else is free text matched against its label, id and aliases, and
+   * every token must pass.
    *
    * `aliases` holds the texts an item is also known by but never displays: an add-on's real id, or the
    * keywords a page should answer to. Without it a caller can only make such a text searchable by
@@ -143,6 +144,7 @@ export class CcSearchBar extends LitElement {
     return filterSections(this.sections, this.value, {
       getMatchers: (item) => [...(item.itemType != null ? [`is:${item.itemType}`] : []), ...(item.matchers ?? [])],
       getTexts: (item) => [item.label, item.id, ...(item.aliases ?? [])],
+      getTags: (item) => item.tags ?? [],
       emptyQuery: 'none',
     });
   }
