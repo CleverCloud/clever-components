@@ -117,18 +117,19 @@ export class CcZonePicker extends CcFormControlElement {
     const { code } = zone;
     const disabled = zone.disabled || this.disabled;
     const readonly = !disabled && this.readonly;
+    // the radio sits inside its label so that it stays on its tile, see the `cc-picker-option` styles region
     return html`
-      <input
-        class="visually-hidden"
-        type="radio"
-        name="zone"
-        .value="${code}"
-        ?disabled=${disabled || (readonly && !isZoneSelected)}
-        .checked="${isZoneSelected}"
-        id="${code}"
-        aria-describedby="${ifDefined(zoneSectionHeaderId)}"
-      />
       <label for="${code}" class="option-wrapper">
+        <input
+          class="visually-hidden"
+          type="radio"
+          name="zone"
+          .value="${code}"
+          ?disabled=${disabled || (readonly && !isZoneSelected)}
+          .checked="${isZoneSelected}"
+          id="${code}"
+          aria-describedby="${ifDefined(zoneSectionHeaderId)}"
+        />
         <cc-picker-option ?selected="${isZoneSelected}" ?readonly="${readonly}" ?disabled="${disabled}">
           ${this._renderZoneBody(zone)} ${this._renderZoneFooter(zone)}
         </cc-picker-option>
@@ -236,14 +237,28 @@ export class CcZonePicker extends CcFormControlElement {
         /* endregion */
 
         /* region cc-picker-option */
-        input[type='radio']:focus-visible + label cc-picker-option {
+        input[type='radio']:focus-visible + cc-picker-option {
           border-radius: var(--cc-border-radius-medium, 0.375em);
           outline: var(--cc-focus-outline, #000 solid 2px);
           outline-offset: var(--cc-focus-outline-offset, 2px);
         }
 
+        /*
+         * The label is positioned so that its hidden radio stays on the tile, whatever the host page around.
+         * Without it, the radio is placed against a positioned ancestor of the host page: it does not scroll with the tile,
+         * and focusing it scrolls that ancestor.
+         */
         .option-wrapper {
           display: inline-flex;
+          position: relative;
+        }
+
+        /* The radio covers its tile, so focusing it scrolls the whole tile into view. It stays clipped by "visually-hidden". */
+        .option-wrapper input[type='radio'] {
+          height: 100%;
+          inset: 0;
+          margin: 0;
+          width: 100%;
         }
 
         .option-wrapper cc-picker-option {

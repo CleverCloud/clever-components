@@ -254,22 +254,23 @@ export class CcPicker extends CcFormControlElement {
     const isReadonly = !isChecked && !isDisabled && this.readonly;
     const isAutofocus = this.autofocus && this._shouldAutoFocus(index, value);
 
+    // the radio sits inside its label so that it stays on its tile, see the `tile` styles region
     return html`
-      <input
-        class="visually-hidden"
-        part="option--input-radio"
-        type="radio"
-        id="${id}"
-        name="${this.name}"
-        data-index="${index}"
-        @input=${this._onTileSelect}
-        .value=${value}
-        .checked=${isChecked}
-        ?disabled=${isDisabled || (isReadonly && !isChecked)}
-        aria-describedby="help-id error-id description-id"
-        ?autofocus=${isAutofocus}
-      />
       <label for="${id}" part="option--label">
+        <input
+          class="visually-hidden"
+          part="option--input-radio"
+          type="radio"
+          id="${id}"
+          name="${this.name}"
+          data-index="${index}"
+          @input=${this._onTileSelect}
+          .value=${value}
+          .checked=${isChecked}
+          ?disabled=${isDisabled || (isReadonly && !isChecked)}
+          aria-describedby="help-id error-id description-id"
+          ?autofocus=${isAutofocus}
+        />
         <cc-picker-option
           ?selected=${isChecked}
           ?disabled=${isDisabled}
@@ -343,16 +344,30 @@ export class CcPicker extends CcFormControlElement {
         /* endregion */
 
         /* region tile */
+        /*
+         * The label is positioned so that its hidden radio stays on the tile, whatever the host page around.
+         * Without it, the radio is placed against a positioned ancestor of the host page: it does not scroll with the tile,
+         * and focusing it scrolls that ancestor.
+         */
         label {
           display: grid;
+          position: relative;
         }
 
-        input[type='radio']:focus-visible + label cc-picker-option {
+        /* The radio covers its tile, so focusing it scrolls the whole tile into view. It stays clipped by "visually-hidden". */
+        input[type='radio'] {
+          height: 100%;
+          inset: 0;
+          margin: 0;
+          width: 100%;
+        }
+
+        input[type='radio']:focus-visible + cc-picker-option {
           outline: var(--cc-focus-outline, #000 solid 2px);
           outline-offset: var(--cc-focus-outline-offset, 2px);
         }
 
-        input[type='radio']:focus-visible + label cc-picker-option[error] {
+        input[type='radio']:focus-visible + cc-picker-option[error] {
           outline-color: var(--cc-color-border-danger, #be242d);
         }
         /* endregion */

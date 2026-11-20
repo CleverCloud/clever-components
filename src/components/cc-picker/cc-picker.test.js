@@ -1,5 +1,6 @@
 import { expect } from '@open-wc/testing';
-import { elementUpdated, fixture } from '@open-wc/testing-helpers';
+import { elementUpdated, fixture, nextFrame } from '@open-wc/testing-helpers';
+import { resetMouse, sendKeys, sendMouse } from '@web/test-runner-commands';
 import { html } from 'lit';
 import { createEventSpy } from '../../../test/helpers/event-helper.js';
 import { CcSelectEvent } from '../common.events.js';
@@ -23,6 +24,19 @@ function getSelectedTileIndexes(element) {
 
 async function clickTileAt(element, index) {
   getLabels(element)[index].click();
+  await elementUpdated(element);
+}
+
+/**
+ * Clicks with a real pointer, so that the browser also focuses the radio and scrolls it into view.
+ *
+ * @param {HTMLElement} element
+ * @param {number} index
+ */
+async function pointerClickTileAt(element, index) {
+  const { left, top, width, height } = getLabels(element)[index].getBoundingClientRect();
+  await sendMouse({ type: 'click', position: [Math.round(left + width / 2), Math.round(top + height / 2)] });
+  await resetMouse();
   await elementUpdated(element);
 }
 
@@ -141,6 +155,62 @@ describe('cc-picker', () => {
 
       expect(radios.map((radio) => radio.id)).to.eql(['pick-option-0', 'pick-option-1']);
       expect(labels.map((label) => label.getAttribute('for'))).to.eql(['pick-option-0', 'pick-option-1']);
+    });
+  });
+
+  // a scroller that is not positioned, inside an ancestor that is: a radio placed outside of the picker would escape
+  // the scroller, and focusing it would scroll the ancestor instead
+  // see https://github.com/CleverCloud/clever-components/issues/1858
+  describe('focus scroll', () => {
+    it('does not scroll a positioned ancestor of the scroller when a tile is clicked', async () => {
+      const frame = await fixture(html`
+        <div style="position: relative; height: 200px; overflow: hidden">
+          <div class="scroller" style="height: 100%; overflow-y: auto">
+            <div style="height: 400px"></div>
+            <cc-picker name="pick" .options=${OPTIONS}></cc-picker>
+          </div>
+        </div>
+      `);
+      const scroller = frame.querySelector('.scroller');
+      const element = frame.querySelector('cc-picker');
+      scroller.scrollTop = scroller.scrollHeight;
+      const scrollerScrollTop = scroller.scrollTop;
+
+      await pointerClickTileAt(element, 1);
+
+      expect(element.value).to.equal('TWO');
+      expect(element.shadowRoot.activeElement).to.equal(getRadios(element)[1]);
+      expect(frame.scrollTop).to.equal(0);
+      expect(scroller.scrollTop).to.equal(scrollerScrollTop);
+    });
+
+    it('scrolls each tile fully into view when moving the focus with the keyboard', async () => {
+      const options = Array.from({ length: 8 }, (_, index) => ({ body: `Option ${index}`, value: `option-${index}` }));
+      const frame = await fixture(html`
+        <div style="position: relative; height: 200px; overflow: hidden">
+          <div class="scroller" style="height: 100%; overflow-y: auto">
+            <cc-picker name="pick" .options=${options}></cc-picker>
+          </div>
+        </div>
+      `);
+      const scroller = frame.querySelector('.scroller');
+      const element = frame.querySelector('cc-picker');
+      // stacks the tiles in a single column, as a consumer would do through the `tiles` part
+      element.shadowRoot.querySelector('.tiles').style.flexDirection = 'column';
+      await pointerClickTileAt(element, 0);
+
+      for (let index = 1; index < options.length; index++) {
+        await sendKeys({ press: 'ArrowDown' });
+        await elementUpdated(element);
+        await nextFrame();
+
+        const tile = getLabels(element)[index].getBoundingClientRect();
+        const viewport = scroller.getBoundingClientRect();
+        expect(element.value).to.equal(`option-${index}`);
+        expect(tile.top).to.be.at.least(viewport.top - 1);
+        expect(tile.bottom).to.be.at.most(viewport.bottom + 1);
+      }
+      expect(frame.scrollTop).to.equal(0);
     });
   });
 
