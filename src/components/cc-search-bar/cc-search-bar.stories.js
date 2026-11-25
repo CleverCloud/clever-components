@@ -52,7 +52,13 @@ const defaultSections = [
     label: 'Ressources in this organisation',
     icon: iconResources,
     items: [
-      { label: 'APM --0307-42dc-af99-b485ecc44536', href: '#apm-1', itemType: 'app', matchers: ['project:billing'] },
+      {
+        label: 'APM --0307-42dc-af99-b485ecc44536',
+        href: '#apm-1',
+        itemType: 'app',
+        matchers: ['project:billing'],
+        tags: ['project:billing', 'env:prod'],
+      },
       {
         label: 'fs-matomot-with-posthog',
         href: '#matomot-1',
@@ -60,12 +66,14 @@ const defaultSections = [
         aliases: ['postgresql_4d65a2d6'],
         itemType: 'addon',
         matchers: ['project:billing'],
+        tags: ['project:billing', 'env:prod', 'critical'],
       },
       {
         label: 'APM - apps-0307-42dc-af99-b485ecc44536',
         href: '#apm-2',
         itemType: 'app',
         matchers: ['project:analytics'],
+        tags: ['project:analytics', 'env:staging'],
       },
       {
         label: 'network-groupups_4d65a2d6-0307-af99-b485ecc44536',
@@ -219,10 +227,11 @@ page answer to keywords its label does not contain, such as a support page found
 
 export const withKeywordFilter = makeStory(conf, {
   docs: `
-The query supports \`is:<value>\` and \`project:<value>\` keyword tokens. Items match a keyword token when it is
-in their derived matchers — \`is:<itemType>\` is added automatically for items with an \`itemType\`, and any
-other matcher, \`project:<name>\` included, is provided via the \`matchers\` field. Anything else in the query
-is free text, matched against an item's label, id and aliases, so a colon in a URL or an id still searches as
+The query supports \`is:<value>\`, \`project:<value>\` and \`tag:<value>\` keyword tokens. Items match a keyword token
+when it is in their derived matchers — \`is:<itemType>\` is added automatically for items with an \`itemType\`, and any
+other matcher, \`project:<name>\` included, is provided via the \`matchers\` field, and \`tag:<tag>\` ones are derived
+from the \`tags\` field (see the tag filter story). Anything else in the
+query is free text, matched against an item's label, id and aliases, so a colon in a URL or an id still searches as
 text.
 
 Tokens can be combined and all must pass: \`is:app apm\` keeps only \`itemType: 'app'\` items whose label
@@ -235,6 +244,35 @@ includes \`apm\`. The items of this story carry \`project:billing\` and \`projec
       html`
         <cc-button @cc-click="${() => getCcSearchBar(container).show()}" primary>Open Search Bar</cc-button>
         <cc-search-bar open value="is:app apm" .sections="${defaultSections}"></cc-search-bar>
+      `,
+      container,
+    );
+  },
+});
+
+export const withTagFilter = makeStory(conf, {
+  docs: `
+\`tag:<tag>\` narrows the list to the items carrying that tag, whatever the user named it. Tags are given as is
+in the items' \`tags\` field (\`tags: ['env:prod', 'critical']\`): the component matches them against \`tag:\` tokens
+itself, so the caller never writes the prefix.
+
+The tag is written as is after the prefix in the query, colons included, and must match exactly:
+\`tag:env:prod\` keeps the items tagged \`env:prod\`, \`tag:env\` keeps none. A tag without a colon works the same
+way: \`tag:critical\`. The casing does not matter.
+
+The prefix is what tells a tag apart from free text: \`env:prod\` alone is searched in labels, ids and aliases,
+not in tags. A \`project:\` tag is a tag like any other, so \`tag:project:billing\` matches the same items as
+\`project:billing\`.
+
+The items of this story are tagged \`env:prod\`, \`env:staging\` and \`critical\` — try \`tag:env:staging\`,
+\`tag:critical\`, or \`is:app tag:env:prod\` to combine a tag with another keyword.
+  `,
+  /** @param {HTMLElement} container */
+  dom: (container) => {
+    render(
+      html`
+        <cc-button @cc-click="${() => getCcSearchBar(container).show()}" primary>Open Search Bar</cc-button>
+        <cc-search-bar open value="tag:env:prod" .sections="${defaultSections}"></cc-search-bar>
       `,
       container,
     );
