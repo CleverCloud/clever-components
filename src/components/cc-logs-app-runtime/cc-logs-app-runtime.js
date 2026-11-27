@@ -12,6 +12,10 @@ import { i18n } from '../../translations/translation.js';
 import '../cc-loader/cc-loader.js';
 import '../cc-logs-control/cc-logs-control.js';
 import '../cc-logs-date-range-selector/cc-logs-date-range-selector.js';
+import {
+  isDateRangeSelectionValid,
+  sanitizeDateRangeSelection,
+} from '../cc-logs-date-range-selector/date-range-selection.js';
 import '../cc-logs-instances/cc-logs-instances.js';
 import { buildLogsLoadingProgressState } from '../cc-logs-loading-progress/cc-logs-loading-progress-state-builder.js';
 import '../cc-logs-loading-progress/cc-logs-loading-progress.js';
@@ -165,6 +169,9 @@ export class CcLogsAppRuntime extends LitElement {
    * @param {PropertyValues<CcLogsAppRuntime>} changedProperties
    */
   willUpdate(changedProperties) {
+    if (changedProperties.has('dateRangeSelection') && !isDateRangeSelectionValid(this.dateRangeSelection)) {
+      this.dateRangeSelection = sanitizeDateRangeSelection(this.dateRangeSelection) ?? { type: 'live' };
+    }
     if (changedProperties.has('options')) {
       this._metadataDisplay = {
         instance: {
