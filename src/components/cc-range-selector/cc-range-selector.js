@@ -1121,6 +1121,15 @@ export class CcRangeSelector extends CcFormControlElement {
           width: var(--cc-range-selector-options-width, fit-content);
         }
 
+        /*
+         * Positioned so that the hidden range inputs stay next to the options, whatever the host page around.
+         * Without it, they are placed against a positioned ancestor of the host page: they do not scroll with the options,
+         * and focusing one scrolls that ancestor.
+         */
+        .fieldset-content {
+          position: relative;
+        }
+
         .fieldset:focus-visible {
           border-radius: var(--cc-border-radius-small, 0.25em);
           outline: var(--cc-focus-outline);
