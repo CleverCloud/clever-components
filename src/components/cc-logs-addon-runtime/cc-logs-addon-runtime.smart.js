@@ -2,7 +2,10 @@ import { StreamAddonRuntimeLogCommand } from '@clevercloud/client/cc-api-command
 import { getCcApiClientWithOAuth } from '../../lib/cc-api-client.js';
 import { LogsStream } from '../../lib/logs/logs-stream.js';
 import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
-import { dateRangeSelectionToDateRange } from '../cc-logs-date-range-selector/date-range-selection.js';
+import {
+  dateRangeSelectionToDateRange,
+  sanitizeDateRangeSelection,
+} from '../cc-logs-date-range-selector/date-range-selection.js';
 import '../cc-smart-container/cc-smart-container.js';
 import './cc-logs-addon-runtime.js';
 
@@ -31,8 +34,9 @@ defineSmartComponent({
   onContextUpdate({ component, context, onEvent, updateComponent, signal }) {
     const { apiConfig, ownerId, realAddonId, dateRangeSelection, messageFilter } = context;
 
-    if (dateRangeSelection != null) {
-      updateComponent('dateRangeSelection', dateRangeSelection);
+    const validDateRangeSelection = sanitizeDateRangeSelection(dateRangeSelection);
+    if (validDateRangeSelection != null) {
+      updateComponent('dateRangeSelection', validDateRangeSelection);
     }
 
     if (messageFilter != null) {

@@ -18,10 +18,16 @@ import '../cc-icon/cc-icon.js';
 import '../cc-input-date/cc-input-date.js';
 import '../cc-popover/cc-popover.js';
 import { CcLogsDateRangeSelectionChangeEvent } from './cc-logs-date-range-selector.events.js';
-import { dateRangeSelectionToDateRange } from './date-range-selection.js';
+import {
+  dateRangeSelectionToDateRange,
+  isDateRangeSelectionValid,
+  PRESETS,
+  sanitizeDateRangeSelection,
+  warnInvalidDateRangeSelection,
+} from './date-range-selection.js';
 
 /** @type {Array<LogsDateRangeSelectOption>} */
-const OPTIONS = ['live', 'lastHour', 'last4Hours', 'today', 'yesterday', 'last7Days', 'custom'];
+const OPTIONS = ['live', ...PRESETS, 'custom'];
 
 /**
  * @import { LogsDateRangeSelection, LogsDateRangeSelectOption } from './cc-logs-date-range-selector.types.js'
@@ -126,9 +132,20 @@ export class CcLogsDateRangeSelector extends LitElement {
   }
 
   /**
+   * Applies the given selection and dispatches the change event.
+   *
+   * A malformed selection is ignored: it is neither applied nor dispatched, so that integrators never persist it.
+   *
    * @param {LogsDateRangeSelection} dateRangeSelection
    */
   _applyDateRange(dateRangeSelection) {
+    if (!isDateRangeSelectionValid(dateRangeSelection)) {
+      warnInvalidDateRangeSelection(dateRangeSelection);
+      // restore the option matching the current (valid) value
+      this._selectedOption = this._getOption(this.value);
+      return;
+    }
+
     this.value = dateRangeSelection;
     this._currentDateRange = dateRangeSelectionToDateRange(this.value);
     this.dispatchEvent(
@@ -141,11 +158,11 @@ export class CcLogsDateRangeSelector extends LitElement {
   /* region Event handlers */
 
   /**
-   * @param {Event & {target: {dataset: {option: LogsDateRangeSelectOption}}}} event
+   * @param {Event & {currentTarget: {dataset: {option: LogsDateRangeSelectOption}}}} event
    */
   _onOptionChange(event) {
     /** @type {LogsDateRangeSelectOption} */
-    const option = event.target.dataset.option;
+    const option = event.currentTarget.dataset.option;
 
     if (option === this._selectedOption) {
       this._optionSelectorRef.value.close();
@@ -222,6 +239,9 @@ export class CcLogsDateRangeSelector extends LitElement {
    */
   willUpdate(changedProperties) {
     if (changedProperties.has('value')) {
+      if (!isDateRangeSelectionValid(this.value)) {
+        this.value = sanitizeDateRangeSelection(this.value) ?? { type: 'live' };
+      }
       this._selectedOption = this._getOption(this.value);
       if (this.value.type === 'custom') {
         this._customDateRange = { since: this.value.since, until: this.value.until };
@@ -259,14 +279,10 @@ export class CcLogsDateRangeSelector extends LitElement {
                     data-selected="${isSelected}"
                     @click=${this._onOptionChange}
                   >
-                    <cc-icon .icon=${this._getOptionIcon(option)} data-option="${option}"></cc-icon>
-                    <span data-option="${option}">${this._renderOptionLabel(option, false)}</span>
+                    <cc-icon .icon=${this._getOptionIcon(option)}></cc-icon>
+                    <span>${this._renderOptionLabel(option, false)}</span>
                     ${isSelected
-                      ? html`<cc-icon
-                          class="option-button-current"
-                          .icon=${iconOptionSelected}
-                          data-option="${option}"
-                        ></cc-icon>`
+                      ? html`<cc-icon class="option-button-current" .icon=${iconOptionSelected}></cc-icon>`
                       : ''}
                   </button>
                 `;
