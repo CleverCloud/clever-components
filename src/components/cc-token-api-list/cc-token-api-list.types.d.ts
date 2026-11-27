@@ -20,10 +20,12 @@ export interface TokenApiListStateLoaded {
 
 export interface TokenApiListStateNoPassword {
   type: 'no-password';
+  isLinkedToGitHub?: boolean;
 }
 
 export interface TokenApiListStateResettingPassword {
   type: 'resetting-password';
+  isLinkedToGitHub?: boolean;
 }
 
 export type ApiTokenState = ApiTokenStateIdle | ApiTokenStateRevoking;

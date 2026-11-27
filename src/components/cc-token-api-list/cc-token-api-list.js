@@ -100,6 +100,14 @@ export class CcTokenApiList extends LitElement {
     return tokenB.creationDate.getTime() - tokenA.creationDate.getTime();
   }
 
+  /** @param {boolean} isLinkedToGitHub */
+  _getNoPasswordMessage(isLinkedToGitHub) {
+    if (isLinkedToGitHub) {
+      return i18n('cc-token-api-list.no-password.message-github');
+    }
+    return i18n('cc-token-api-list.no-password.message');
+  }
+
   /**
    * Handles the revocation of a specific token
    *
@@ -126,6 +134,7 @@ export class CcTokenApiList extends LitElement {
 
     const isResettingPassword = this.state.type === 'resetting-password';
     const hasNoPassword = this.state.type === 'no-password';
+    const isLinkedToGitHub = 'isLinkedToGitHub' in this.state && this.state.isLinkedToGitHub === true;
     const shouldDisplayCreateBtn = !isEmpty && !hasNoPassword && !isResettingPassword;
 
     return html`
@@ -150,7 +159,7 @@ export class CcTokenApiList extends LitElement {
                     ${i18n('cc-token-api-list.empty')}
                     <cc-notice>
                       <div slot="message" class="empty__no-password">
-                        <p class="empty__no-password__message">${i18n('cc-token-api-list.no-password.message')}</p>
+                        <p class="empty__no-password__message">${this._getNoPasswordMessage(isLinkedToGitHub)}</p>
                         <cc-button
                           primary
                           class="empty__no-password__btn"

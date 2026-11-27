@@ -2178,6 +2178,8 @@ export const translations = {
   'cc-token-api-list.main-heading': `API tokens`,
   'cc-token-api-list.no-password.create-password-btn': `Add a password`,
   'cc-token-api-list.no-password.message': () =>
+    sanitize`Your Clever Cloud account has no password. <strong>Setting one is required to create API tokens</strong>. Click the following button to <strong>add a password to your account</strong>, we’ll send you an email to confirm your identity.`,
+  'cc-token-api-list.no-password.message-github': () =>
     sanitize`Your Clever Cloud account is linked via GitHub and has no password. <strong>Setting one is required to create API tokens</strong>. Click the following button to <strong>add a password to your account</strong>, we’ll  send you an email to confirm your identity.`,
   'cc-token-api-list.no-password.reset-password-error': `Something went wrong while trying to send your password creation request`,
   'cc-token-api-list.no-password.reset-password-successful': /** @param {{ email: string }} _ */ ({ email }) =>
