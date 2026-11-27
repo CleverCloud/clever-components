@@ -12,6 +12,10 @@ import { i18n } from '../../translations/translation.js';
 import '../cc-loader/cc-loader.js';
 import '../cc-logs-control/cc-logs-control.js';
 import '../cc-logs-date-range-selector/cc-logs-date-range-selector.js';
+import {
+  isDateRangeSelectionValid,
+  sanitizeDateRangeSelection,
+} from '../cc-logs-date-range-selector/date-range-selection.js';
 import { buildLogsLoadingProgressState } from '../cc-logs-loading-progress/cc-logs-loading-progress-state-builder.js';
 import '../cc-logs-loading-progress/cc-logs-loading-progress.js';
 import { CcLogsMessageFilterChangeEvent } from '../cc-logs-message-filter/cc-logs-message-filter.events.js';
@@ -75,7 +79,7 @@ const CUSTOM_METADATA_RENDERERS = {
  * @import { LogsDateRangeSelection } from '../cc-logs-date-range-selector/cc-logs-date-range-selector.types.js'
  * @import { CcLogsDateRangeSelectionChangeEvent } from '../cc-logs-date-range-selector/cc-logs-date-range-selector.events.js'
  * @import { LogsMessageFilterValue } from '../cc-logs-message-filter/cc-logs-message-filter.types.js'
- * @import { TemplateResult } from 'lit'
+ * @import { TemplateResult, PropertyValues } from 'lit'
  * @import { Ref } from 'lit/directives/ref.js'
  */
 
@@ -209,6 +213,15 @@ export class CcLogsAppAccess extends LitElement {
   }
 
   /* endregion */
+
+  /**
+   * @param {PropertyValues<CcLogsAppAccess>} changedProperties
+   */
+  willUpdate(changedProperties) {
+    if (changedProperties.has('dateRangeSelection') && !isDateRangeSelectionValid(this.dateRangeSelection)) {
+      this.dateRangeSelection = sanitizeDateRangeSelection(this.dateRangeSelection) ?? { type: 'live' };
+    }
+  }
 
   render() {
     const fullscreen = { fullscreen: this._fullscreen };
