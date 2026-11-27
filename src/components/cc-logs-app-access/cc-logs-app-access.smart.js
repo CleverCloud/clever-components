@@ -4,7 +4,7 @@ import { LogsStream } from '../../lib/logs/logs-stream.js';
 import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
 import {
   dateRangeSelectionToDateRange,
-  isDateRangeSelectionValid,
+  sanitizeDateRangeSelection,
 } from '../cc-logs-date-range-selector/date-range-selection.js';
 import '../cc-smart-container/cc-smart-container.js';
 import './cc-logs-app-access.js';
@@ -34,8 +34,9 @@ defineSmartComponent({
   onContextUpdate({ component, context, onEvent, updateComponent, signal }) {
     const { apiConfig, ownerId, appId, dateRangeSelection, messageFilter } = context;
 
-    if (isDateRangeSelectionValid(dateRangeSelection)) {
-      updateComponent('dateRangeSelection', dateRangeSelection);
+    const validDateRangeSelection = sanitizeDateRangeSelection(dateRangeSelection);
+    if (validDateRangeSelection != null) {
+      updateComponent('dateRangeSelection', validDateRangeSelection);
     }
 
     if (messageFilter != null) {
