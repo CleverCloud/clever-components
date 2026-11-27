@@ -11,7 +11,10 @@ import { isLive, lastXDays } from '../../lib/date/date-range-utils.js';
 import { LogsStream } from '../../lib/logs/logs-stream.js';
 import { defineSmartComponent } from '../../lib/smart/define-smart-component.js';
 import { unique } from '../../lib/utils.js';
-import { dateRangeSelectionToDateRange } from '../cc-logs-date-range-selector/date-range-selection.js';
+import {
+  dateRangeSelectionToDateRange,
+  isDateRangeSelectionValid,
+} from '../cc-logs-date-range-selector/date-range-selection.js';
 import '../cc-smart-container/cc-smart-container.js';
 import './cc-logs-app-runtime.js';
 
@@ -96,7 +99,7 @@ defineSmartComponent({
 
     if (deploymentId != null) {
       controller.initByDeploymentId(deploymentId);
-    } else if (dateRangeSelection != null) {
+    } else if (isDateRangeSelectionValid(dateRangeSelection)) {
       controller.initByDateRangeSelection(dateRangeSelection);
     } else {
       controller.initByLastDeployment();

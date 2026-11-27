@@ -1,6 +1,10 @@
 import { expect } from '@open-wc/testing';
 import { withMockedNow } from '../../../test/helpers/mock-now.js';
-import { dateRangeSelectionToDateRange } from './date-range-selection.js';
+import {
+  dateRangeSelectionToDateRange,
+  isDateRangeSelectionValid,
+  sanitizeDateRangeSelection,
+} from './date-range-selection.js';
 
 describe('date-range-selection', () => {
   it('should generate a live range', () => {
@@ -66,6 +70,58 @@ describe('date-range-selection', () => {
     ).to.deep.equal({
       since: '2024-10-10T00:00:00.000Z',
       until: '2024-10-17T16:00:00.000Z',
+    });
+  });
+
+  describe('isDateRangeSelectionValid()', () => {
+    it('should accept well-formed selections', () => {
+      expect(isDateRangeSelectionValid({ type: 'live' })).to.equal(true);
+      expect(isDateRangeSelectionValid({ type: 'preset', preset: 'last7Days' })).to.equal(true);
+      expect(
+        isDateRangeSelectionValid({
+          type: 'custom',
+          since: '2024-10-10T00:00:00.000Z',
+          until: '2024-10-17T16:00:00.000Z',
+        }),
+      ).to.equal(true);
+    });
+
+    it('should reject malformed selections', () => {
+      expect(isDateRangeSelectionValid(null)).to.equal(false);
+      expect(isDateRangeSelectionValid(undefined)).to.equal(false);
+      expect(isDateRangeSelectionValid({})).to.equal(false);
+      expect(isDateRangeSelectionValid({ type: 'preset' })).to.equal(false);
+      expect(isDateRangeSelectionValid({ type: 'preset', preset: 'lastYear' })).to.equal(false);
+      expect(isDateRangeSelectionValid({ type: 'predefined', def: 'today' })).to.equal(false);
+      expect(isDateRangeSelectionValid({ type: 'custom', since: '2024-10-10T00:00:00.000Z' })).to.equal(false);
+      expect(isDateRangeSelectionValid({ type: 'custom', since: '2024-10-10T00:00:00.000Z', until: 'foo' })).to.equal(
+        false,
+      );
+      expect(isDateRangeSelectionValid({ type: 'custom', since: '', until: '2024-10-17T16:00:00.000Z' })).to.equal(
+        false,
+      );
+    });
+  });
+
+  describe('sanitizeDateRangeSelection()', () => {
+    it('should return a valid selection as is', () => {
+      const selection = { type: 'preset', preset: 'today' };
+      expect(sanitizeDateRangeSelection(selection)).to.equal(selection);
+    });
+
+    it('should fall back to the first preset when the preset is missing or unknown', () => {
+      const firstPreset = { type: 'preset', preset: 'lastHour' };
+      expect(sanitizeDateRangeSelection({ type: 'preset' })).to.deep.equal(firstPreset);
+      expect(sanitizeDateRangeSelection({ type: 'preset', preset: null })).to.deep.equal(firstPreset);
+      expect(sanitizeDateRangeSelection({ type: 'preset', preset: 'lastYear' })).to.deep.equal(firstPreset);
+    });
+
+    it('should return null for other malformed selections', () => {
+      expect(sanitizeDateRangeSelection(null)).to.equal(null);
+      expect(sanitizeDateRangeSelection(undefined)).to.equal(null);
+      expect(sanitizeDateRangeSelection({})).to.equal(null);
+      expect(sanitizeDateRangeSelection({ type: 'predefined', def: 'today' })).to.equal(null);
+      expect(sanitizeDateRangeSelection({ type: 'custom', since: 'foo', until: 'bar' })).to.equal(null);
     });
   });
 });
