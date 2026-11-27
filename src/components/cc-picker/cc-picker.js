@@ -311,7 +311,6 @@ export class CcPicker extends CcFormControlElement {
         /* region legend */
         .legend {
           align-items: flex-end;
-          cursor: pointer;
           display: flex;
           gap: var(--cc-spacing-8, 2em);
           justify-content: space-between;
