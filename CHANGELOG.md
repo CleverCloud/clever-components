@@ -5,6 +5,14 @@ title: 'Changelog'
 
 # Changelog
 
+## [26.11.1](https://github.com/CleverCloud/clever-components/compare/26.11.0...26.11.1) (2026-11-27)
+
+
+### 🐛 Bug Fixes
+
+* **cc-picker, cc-range-selector:** drop the pointer cursor on the legend ([023feb6](https://github.com/CleverCloud/clever-components/commit/023feb65ad19d494327d4e9a24ac2c5929afed8d)), closes [#1901](https://github.com/CleverCloud/clever-components/issues/1901)
+* **cc-token-api-list:** add message for non GitHub accounts with no passwords ([e24eb5e](https://github.com/CleverCloud/clever-components/commit/e24eb5ea2ae0370c0b665f5b81ac3bd115319485)), closes [#1905](https://github.com/CleverCloud/clever-components/issues/1905)
+
 ## [26.11.0](https://github.com/CleverCloud/clever-components/compare/26.10.1...26.11.0) (2026-11-25)
 
 
