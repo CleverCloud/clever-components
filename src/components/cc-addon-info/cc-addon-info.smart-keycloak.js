@@ -48,6 +48,7 @@ defineSmartComponent({
       creationDate: '2025-08-06 15:03:00',
       // if Grafana is totally disabled within the console, do not display a skeleton for grafana link
       openGrafanaLink: grafanaLink != null ? 'https://example.com' : null,
+      monthlyActiveUsers: 100,
       linkedServices: [
         {
           type: 'app',
@@ -99,6 +100,7 @@ defineSmartComponent({
           version: formatVersionState(versionInfo),
           creationDate: addon.createdAt,
           openGrafanaLink: grafanaAppLink,
+          monthlyActiveUsers: operator.monthlyActiveUsers,
           linkedServices: [
             {
               type: 'app',
