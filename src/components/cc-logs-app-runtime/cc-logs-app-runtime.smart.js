@@ -13,7 +13,7 @@ import { defineSmartComponent } from '../../lib/smart/define-smart-component.js'
 import { unique } from '../../lib/utils.js';
 import {
   dateRangeSelectionToDateRange,
-  isDateRangeSelectionValid,
+  sanitizeDateRangeSelection,
 } from '../cc-logs-date-range-selector/date-range-selection.js';
 import '../cc-smart-container/cc-smart-container.js';
 import './cc-logs-app-runtime.js';
@@ -97,10 +97,11 @@ defineSmartComponent({
       controller.pause();
     });
 
+    const validDateRangeSelection = deploymentId == null ? sanitizeDateRangeSelection(dateRangeSelection) : null;
     if (deploymentId != null) {
       controller.initByDeploymentId(deploymentId);
-    } else if (isDateRangeSelectionValid(dateRangeSelection)) {
-      controller.initByDateRangeSelection(dateRangeSelection);
+    } else if (validDateRangeSelection != null) {
+      controller.initByDateRangeSelection(validDateRangeSelection);
     } else {
       controller.initByLastDeployment();
     }
