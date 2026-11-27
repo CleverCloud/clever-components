@@ -300,6 +300,7 @@ export const translations = {
   'cc-addon-info.grafana.link': `Open Grafana`,
   'cc-addon-info.heading': `Information`,
   'cc-addon-info.last-ip.heading': `Last IP`,
+  'cc-addon-info.monthly-active-users.heading': `Monthly active users`,
   'cc-addon-info.number-of-members.heading': `Number of members`,
   'cc-addon-info.number-of-peers.heading': `Number of peers`,
   'cc-addon-info.plan.heading': `Plan`,

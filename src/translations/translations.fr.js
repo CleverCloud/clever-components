@@ -311,6 +311,7 @@ export const translations = {
   'cc-addon-info.grafana.link': `Ouvrir Grafana`,
   'cc-addon-info.heading': `Informations`,
   'cc-addon-info.last-ip.heading': `Dernière IP`,
+  'cc-addon-info.monthly-active-users.heading': `Utilisateurs actifs mensuels`,
   'cc-addon-info.number-of-members.heading': `Nombre de membres`,
   'cc-addon-info.number-of-peers.heading': `Nombre de pairs`,
   'cc-addon-info.plan.heading': `Plan`,

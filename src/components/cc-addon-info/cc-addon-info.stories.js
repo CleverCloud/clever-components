@@ -222,7 +222,7 @@ export const keycloak = makeStory(conf, {
         href: getDocUrl('/addons/keycloak'),
       },
       innerHTML: `
-        <p slot="billing">Keycloak, built with <cc-link href="https://please-open.it/">Please Open It</cc-link> and hosted on our services, is now generally available.<br>Operator services and management fees are added to the price of these resources.<br><strong>During the discovery phase, these fees are offered free of charge</strong>.</p>
+        <p slot="billing">Keycloak, built with <cc-link href="https://please-open.it/">Please Open It</cc-link>, is billed based on its underlying resources (Java application, PostgreSQL database, FS Bucket), plus a price per monthly active user that decreases by tier. The first 100 monthly active users are included.</p>
 `,
     },
     {
@@ -236,7 +236,28 @@ export const keycloak = makeStory(conf, {
         href: getDocUrl('/addons/keycloak'),
       },
       innerHTML: `
-         <p slot="billing">Keycloak, built with <cc-link href="https://please-open.it/">Please Open It</cc-link> and hosted on our services, is now generally available.<br>Operator services and management fees are added to the price of these resources.<br><strong>During the discovery phase, these fees are offered free of charge</strong>.</p>
+        <p slot="billing">Keycloak, built with <cc-link href="https://please-open.it/">Please Open It</cc-link>, is billed based on its underlying resources (Java application, PostgreSQL database, FS Bucket), plus a price per monthly active user that decreases by tier. The first 100 monthly active users are included.</p>
+`,
+    },
+  ],
+});
+
+export const keycloakWithZeroMonthlyActiveUsers = makeStory(conf, {
+  /** @type {Partial<CcAddonInfo>[]} */
+  items: [
+    {
+      /** @type {AddonInfoStateLoaded} */
+      state: {
+        type: 'loaded',
+        ...keycloakInfo,
+        monthlyActiveUsers: 0,
+      },
+      docLink: {
+        text: i18n('cc-addon-info.doc-link.keycloak'),
+        href: getDocUrl('/addons/keycloak'),
+      },
+      innerHTML: `
+        <p slot="billing">Keycloak, built with <cc-link href="https://please-open.it/">Please Open It</cc-link>, is billed based on its underlying resources (Java application, PostgreSQL database, FS Bucket), plus a price per monthly active user that decreases by tier. The first 100 monthly active users are included.</p>
 `,
     },
   ],

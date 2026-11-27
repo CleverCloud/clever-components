@@ -29,6 +29,7 @@ export interface AddonInfoStateBaseProperties {
   openGrafanaLink?: string;
   openScalabilityLink?: string;
   linkedServices?: Array<LinkedService>;
+  monthlyActiveUsers?: number;
   totalContent?: {
     buckets: number;
     objects: number;

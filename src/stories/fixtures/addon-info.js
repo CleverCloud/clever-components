@@ -71,6 +71,7 @@ export const keycloakInfo = {
   },
   creationDate: '2025-06-15T10:30:00Z',
   openGrafanaLink: 'https://grafana.example.com',
+  monthlyActiveUsers: 1234,
   linkedServices: [
     {
       type: 'app',

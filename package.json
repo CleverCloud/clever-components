@@ -85,6 +85,7 @@
     "@babel/plugin-syntax-import-attributes": "^7.27.1",
     "@babel/preset-react": "^7.13.13",
     "@bundled-es-modules/chai": "^4.2.2",
+    "@clevercloud/client": "file:clevercloud-client.tgz",
     "@clevercloud/eslint-config": "^1.0.1",
     "@clevercloud/reglage": "^0.0.6",
     "@commitlint/cli": "^18.5.0",
