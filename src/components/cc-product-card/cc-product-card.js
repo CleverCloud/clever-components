@@ -6,6 +6,8 @@ import '../cc-badge/cc-badge.js';
 import '../cc-button/cc-button.js';
 import '../cc-img/cc-img.js';
 
+/** @import { ProductCardBadge } from './cc-product-card.types.js' */
+
 /**
  * A component displaying some information about a product in a card.
  *
@@ -16,6 +18,8 @@ import '../cc-img/cc-img.js';
 export class CcProductCard extends LitElement {
   static get properties() {
     return {
+      additionalText: { type: String, attribute: 'additional-text' },
+      badges: { type: Array },
       description: { type: String },
       iconUrl: { type: String, attribute: 'icon-url' },
       name: { type: String },
@@ -26,6 +30,12 @@ export class CcProductCard extends LitElement {
 
   constructor() {
     super();
+
+    /** @type {string|null} The text shown in a grey band at the bottom of the card, line breaks are kept */
+    this.additionalText = null;
+
+    /** @type {Array<ProductCardBadge>} The badges shown next to the name, after the product status */
+    this.badges = [];
 
     /** @type {string|null} The description of the product */
     this.description = null;
@@ -45,10 +55,16 @@ export class CcProductCard extends LitElement {
 
   render() {
     const hasIcon = !isStringEmpty(this.iconUrl);
+    const hasAdditionalText = !isStringEmpty(this.additionalText);
 
     // language=HTML
     return html`
-      <div class="wrapper ${classMap({ 'wrapper--no-icon': !hasIcon })}">
+      <div
+        class="wrapper ${classMap({
+          'wrapper--no-icon': !hasIcon,
+          'wrapper--with-additional-text': hasAdditionalText,
+        })}"
+      >
         ${hasIcon ? html` <cc-img src="${this.iconUrl}"></cc-img> ` : ''}
         <div class="title">
           <a class="name" href="${this.url}" title="${i18n('cc-product-card.select', { name: this.name })}">
@@ -57,8 +73,12 @@ export class CcProductCard extends LitElement {
           ${!isStringEmpty(this.productStatus)
             ? html` <cc-badge class="product-status">${this.productStatus}</cc-badge> `
             : ''}
+          ${this.badges.map(
+            (badge) => html` <cc-badge class="badge" .intent="${badge.intent}">${badge.content}</cc-badge> `,
+          )}
         </div>
         <p class="description">${this.description}</p>
+        ${hasAdditionalText ? html` <p class="additional-text">${this.additionalText}</p> ` : ''}
       </div>
     `;
   }
@@ -123,6 +143,25 @@ export class CcProductCard extends LitElement {
           grid-template-columns: 1fr;
         }
 
+        /* The band of the additional text goes to the bottom edge of the card, so the wrapper drops its bottom padding. */
+        /* The overflow rounds the bottom corners of the band like the card. */
+        .wrapper--with-additional-text {
+          grid-template-areas:
+            'icon title'
+            'description description'
+            'additional-text additional-text';
+          grid-template-rows: min-content auto min-content;
+          overflow: hidden;
+          padding-block-end: 0;
+        }
+
+        .wrapper--no-icon.wrapper--with-additional-text {
+          grid-template-areas:
+            'title'
+            'description'
+            'additional-text';
+        }
+
         /* endregion */
 
         /* region grid-items */
@@ -162,7 +201,8 @@ export class CcProductCard extends LitElement {
           outline: none;
         }
 
-        .product-status {
+        .product-status,
+        .badge {
           font-size: 0.85em;
         }
 
@@ -171,6 +211,18 @@ export class CcProductCard extends LitElement {
           font-size: 0.8em;
           grid-area: description;
           line-height: 1.5em;
+        }
+
+        .additional-text {
+          background-color: var(--cc-color-bg-neutral-alt, #e7e7e7);
+          font-size: 0.875em;
+          grid-area: additional-text;
+          margin-block-start: var(--cc-spacing-3, 0.5em);
+          /* The padding of the wrapper is in the em of the wrapper. Dividing by the font-size of the band matches it exactly: */
+          /* the band goes edge to edge, and its text lines up with the content above it. */
+          margin-inline: calc(var(--cc-spacing-5, 1em) / -0.875);
+          padding: var(--cc-spacing-3, 0.5em) calc(var(--cc-spacing-5, 1em) / 0.875);
+          white-space: pre-line;
         }
 
         /*  endregion */

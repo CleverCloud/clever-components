@@ -168,6 +168,8 @@ export class CcProductList extends LitElement {
                   name="${p.name}"
                   description="${p.description}"
                   icon-url="${ifDefined(p.iconUrl)}"
+                  .badges="${p.badges ?? []}"
+                  additional-text="${ifDefined(p.additionalText)}"
                   url="${p.url}"
                   product-status="${p.productStatus}"
                 ></cc-product-card>

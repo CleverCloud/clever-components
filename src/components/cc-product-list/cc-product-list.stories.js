@@ -520,3 +520,38 @@ export const productsWithoutIcon = makeStory(conf, {
     },
   ],
 });
+
+export const productsWithBadgesAndAdditionalText = makeStory(conf, {
+  items: [
+    {
+      productsByCategories: [
+        {
+          categoryName: 'Add-ons',
+          products: [
+            {
+              name: 'PostgreSQL',
+              description:
+                'Object-relational database management system (ORDBMS), known for its robustness, scalability, and SQL standards compliance',
+              iconUrl: 'https://assets.clever-cloud.com/logos/pgsql.svg',
+              url: '',
+            },
+            {
+              name: 'MySQL',
+              description: 'Relational database management system (RDBMS)',
+              iconUrl: 'https://assets.clever-cloud.com/logos/mysql.svg',
+              badges: [{ content: 'Limited', intent: 'warning' }],
+              additionalText: 'Some additional text about the product.',
+              url: '',
+            },
+            {
+              name: 'Redis',
+              description: 'In-memory, key-value database, used for caching and real-time data management',
+              iconUrl: 'https://assets.clever-cloud.com/logos/redis.svg',
+              url: '',
+            },
+          ],
+        },
+      ],
+    },
+  ],
+});

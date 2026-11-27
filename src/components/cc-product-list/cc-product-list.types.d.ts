@@ -1,4 +1,10 @@
+import { ProductCardBadge } from '../cc-product-card/cc-product-card.types.js';
+
 export interface Product {
+  /** Shown in a grey band at the bottom of the card */
+  additionalText?: string;
+  /** Shown next to the name, after the product status */
+  badges?: ProductCardBadge[];
   description: string;
   iconUrl?: string;
   productStatus?: string;
