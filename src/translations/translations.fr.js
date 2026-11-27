@@ -2204,6 +2204,8 @@ export const translations = {
   'cc-token-api-list.main-heading': `Tokens d'API`,
   'cc-token-api-list.no-password.create-password-btn': `Ajouter un mot de passe`,
   'cc-token-api-list.no-password.message': () =>
+    sanitize`Votre compte Clever Cloud ne possède pas de mot de passe. <strong>L'ajout d'un mot de passe est nécessaire pour créer des tokens d'API</strong>. Cliquez sur le bouton ci-contre pour <strong>ajouter un mot de passe à votre compte</strong>, nous vous enverrons un e-mail pour confirmer votre identité.`,
+  'cc-token-api-list.no-password.message-github': () =>
     sanitize`Votre compte Clever Cloud est lié via GitHub et ne possède pas de mot de passe. <strong>L'ajout d'un mot de passe est nécessaire pour créer des tokens d'API</strong>. Cliquez sur le bouton ci-contre pour <strong>ajouter un mot de passe à votre compte</strong>, nous vous enverrons un e-mail pour confirmer votre identité.`,
   'cc-token-api-list.no-password.reset-password-error': `Une erreur est survenue lors de la demande de création de mot de passe`,
   'cc-token-api-list.no-password.reset-password-successful': /** @param {{ email: string }} _ */ ({ email }) =>

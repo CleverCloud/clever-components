@@ -11,7 +11,8 @@ import './cc-token-api-list.js';
 
 /**
  * @import { CcTokenApiList } from './cc-token-api-list.js'
- * @import { TokenApiListStateLoaded, ApiTokenStateIdle, ApiTokenState, ApiToken } from './cc-token-api-list.types.js'
+ * @import { TokenApiListStateLoaded, TokenApiListStateNoPassword, ApiTokenStateIdle, ApiTokenState, ApiToken } from './cc-token-api-list.types.js'
+ * @import { Profile } from '@clevercloud/client/cc-api-commands/profile/profile.types.js'
  * @import { ApiConfig, AuthBridgeConfig } from '../../lib/send-to-api.types.js'
  * @import { OnContextUpdateArgs } from '../../lib/smart/smart-component.types.js'
  */
@@ -22,7 +23,7 @@ defineSmartComponent({
     apiConfig: { type: Object },
   },
   /** @param {OnContextUpdateArgs<CcTokenApiList>} args */
-  onContextUpdate({ context, onEvent, updateComponent }) {
+  onContextUpdate({ component, context, onEvent, updateComponent }) {
     const { apiConfig } = context;
     const api = new Api(apiConfig);
 
@@ -52,9 +53,9 @@ defineSmartComponent({
 
     api
       .getApiTokens()
-      .then(([{ hasPassword }, tokens]) => {
+      .then(([{ hasPassword, isLinkedToGitHub }, tokens]) => {
         if (!hasPassword) {
-          updateComponent('state', { type: 'no-password' });
+          updateComponent('state', { type: 'no-password', isLinkedToGitHub });
           return;
         }
 
@@ -98,11 +99,13 @@ defineSmartComponent({
     });
 
     onEvent('cc-password-reset', () => {
-      updateComponent('state', { type: 'resetting-password' });
+      const noPasswordState = /** @type {TokenApiListStateNoPassword} */ (component.state);
+
+      updateComponent('state', { ...noPasswordState, type: 'resetting-password' });
       api
         .resetPassword()
         .then((email) => {
-          updateComponent('state', { type: 'no-password' });
+          updateComponent('state', noPasswordState);
           notify({
             intent: 'info',
             message: i18n('cc-token-api-list.no-password.reset-password-successful', { email }),
@@ -115,7 +118,7 @@ defineSmartComponent({
         .catch((error) => {
           console.error(error);
           notifyError(i18n('cc-token-api-list.no-password.reset-password-error'));
-          updateComponent('state', { type: 'no-password' });
+          updateComponent('state', noPasswordState);
         });
     });
   },
@@ -128,16 +131,16 @@ class Api {
     this._ccApiBridgeClient = getCcApiBridgeClient(apiConfig);
   }
 
-  /** @returns {Promise<{ hasPassword: boolean }>} */
+  /** @returns {Promise<Profile>} */
   _getUserInfo() {
-    return this._ccApiClient.send(new GetProfileCommand()).then(({ emailAddress, partnerId, hasPassword }) => {
-      this._userEmail = emailAddress;
-      this._userPartnerId = partnerId;
-      return { hasPassword };
+    return this._ccApiClient.send(new GetProfileCommand()).then((profile) => {
+      this._userEmail = profile.emailAddress;
+      this._userPartnerId = profile.partnerId;
+      return profile;
     });
   }
 
-  /** @returns {Promise<[{ hasPassword: boolean }, ApiToken[]]>} */
+  /** @returns {Promise<[Profile, ApiToken[]]>} */
   getApiTokens() {
     return Promise.all([
       this._getUserInfo(),

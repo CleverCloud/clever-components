@@ -129,6 +129,20 @@ export const dataLoadedWithNoPassword = makeStory(conf, {
       apiTokenUpdateHref,
       state: {
         type: 'no-password',
+        isLinkedToGitHub: false,
+      },
+    },
+  ],
+});
+
+export const dataLoadedWithNoPasswordAndGitHubLinked = makeStory(conf, {
+  /** @type {Partial<CcTokenApiList>[]} */
+  items: [
+    {
+      apiTokenUpdateHref,
+      state: {
+        type: 'no-password',
+        isLinkedToGitHub: true,
       },
     },
   ],
@@ -229,6 +243,20 @@ export const waitingWithResettingPassword = makeStory(conf, {
       apiTokenUpdateHref,
       state: {
         type: 'resetting-password',
+        isLinkedToGitHub: false,
+      },
+    },
+  ],
+});
+
+export const waitingWithResettingPasswordAndGitHubLinked = makeStory(conf, {
+  /** @type {Partial<CcTokenApiList>[]} */
+  items: [
+    {
+      apiTokenUpdateHref,
+      state: {
+        type: 'resetting-password',
+        isLinkedToGitHub: true,
       },
     },
   ],
