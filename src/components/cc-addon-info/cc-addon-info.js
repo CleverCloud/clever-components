@@ -385,6 +385,18 @@ export class CcAddonInfo extends LitElement {
             </div>
           </div>
 
+          ${this.state.monthlyActiveUsers != null
+            ? html`
+                <div class="section">
+                  <strong class="heading">${i18n('cc-addon-info.monthly-active-users.heading')}</strong>
+                  <div class="value">
+                    <p class="data-decoration ${classMap({ skeleton })}">
+                      ${i18n('cc-addon-info.type.number', { number: this.state.monthlyActiveUsers })}
+                    </p>
+                  </div>
+                </div>
+              `
+            : ''}
           ${this.state.linkedServices != null && this.state.linkedServices.length > 0
             ? html`
                 <div class="section">
