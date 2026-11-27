@@ -71,6 +71,69 @@ describe('cc-product-list', () => {
     });
   });
 
+  describe('badges of a product', () => {
+    it('sets the badges of the card to the badges of the product', async () => {
+      const badges = [
+        { content: 'Limited', intent: 'warning' },
+        { content: 'New', intent: 'info' },
+      ];
+      const element = await fixture(html`
+        <cc-product-list
+          .productsByCategories=${[
+            { categoryName: 'Add-ons', products: [{ name: 'PostgreSQL', description: '', url: '', badges }] },
+          ]}
+        ></cc-product-list>
+      `);
+
+      const card = element.shadowRoot.querySelector('cc-product-card');
+      expect(card.badges).to.deep.equal(badges);
+    });
+
+    it('sets an empty array of badges on the card when the product has none', async () => {
+      const element = await fixture(html`
+        <cc-product-list
+          .productsByCategories=${[
+            { categoryName: 'Add-ons', products: [{ name: 'PostgreSQL', description: '', url: '' }] },
+          ]}
+        ></cc-product-list>
+      `);
+
+      const card = element.shadowRoot.querySelector('cc-product-card');
+      expect(card.badges).to.deep.equal([]);
+    });
+  });
+
+  describe('additionalText of a product', () => {
+    it('sets the additional-text attribute on the card when the product has one', async () => {
+      const element = await fixture(html`
+        <cc-product-list
+          .productsByCategories=${[
+            {
+              categoryName: 'Add-ons',
+              products: [{ name: 'PostgreSQL', description: '', url: '', additionalText: 'Some text' }],
+            },
+          ]}
+        ></cc-product-list>
+      `);
+
+      const card = element.shadowRoot.querySelector('cc-product-card');
+      expect(card.getAttribute('additional-text')).to.equal('Some text');
+    });
+
+    it('does not set the additional-text attribute on the card when the product has none', async () => {
+      const element = await fixture(html`
+        <cc-product-list
+          .productsByCategories=${[
+            { categoryName: 'Add-ons', products: [{ name: 'PostgreSQL', description: '', url: '' }] },
+          ]}
+        ></cc-product-list>
+      `);
+
+      const card = element.shadowRoot.querySelector('cc-product-card');
+      expect(card.hasAttribute('additional-text')).to.equal(false);
+    });
+  });
+
   describe('categoryFilter property', () => {
     it('applies the category filter when the products are set after it', async () => {
       const element = await fixture(html`<cc-product-list category-filter="Tools"></cc-product-list>`);

@@ -176,6 +176,47 @@ export const longStatus = makeStory(conf, {
   }),
 });
 
+export const withBadges = makeStory(conf, {
+  items: productInMultipleWidth({
+    iconUrl: ICON_URL,
+    name: 'My product',
+    description: 'my description',
+    badges: [
+      { content: 'Limited', intent: 'warning' },
+      { content: 'New', intent: 'info' },
+    ],
+  }),
+});
+
+export const withAdditionalText = makeStory(conf, {
+  items: productInMultipleWidth({
+    iconUrl: ICON_URL,
+    name: 'My product',
+    description: 'my description',
+    additionalText: 'Some additional text about the product.',
+  }),
+});
+
+export const withMultilineAdditionalText = makeStory(conf, {
+  items: productInMultipleWidth({
+    iconUrl: ICON_URL,
+    name: 'My product',
+    description: 'my description',
+    additionalText:
+      'A first line of additional text.\nA second line of additional text, long enough to wrap when the card is narrow.',
+  }),
+});
+
+export const withBadgesAndAdditionalText = makeStory(conf, {
+  items: productInMultipleWidth({
+    iconUrl: ICON_URL,
+    name: 'My product',
+    description: 'my description',
+    badges: [{ content: 'Limited', intent: 'warning' }],
+    additionalText: 'Some additional text about the product.',
+  }),
+});
+
 export const customNameFontSize = makeStory(conf, {
   // language=CSS
   css: `
